@@ -3,127 +3,72 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Flex from '$web-common/Flex'
-import { getLocale , formatLocale } from '$web-common/locale'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import Toggle from '@brave/leo/react/toggle'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import { getLocale } from '$web-common/locale'
+import {
+  color,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
-import { BackArrow } from '../shared/Icons'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import Discover from './Discover'
-import OpmlControls from './OpmlControls'
+import NewsSettings from './NewsSettings'
 import { PopularPage } from './Popular'
 import SourcesList from './SourcesList'
 import { SuggestionsPage } from './Suggestions'
-import Dropdown from '@brave/leo/react/dropdown'
-import { loadTimeData } from '$web-common/loadTimeData'
 
-const Grid = styled.div`
-  width: 100%;
-  min-width: 730px;
-  height: 100%;
-
-  overflow: auto;
-  overscroll-behavior: none;
-
-  display: grid;
-  grid-template-columns: 307px auto;
-  grid-template-rows: 64px 2px auto;
-
-  grid-template-areas:
-    "back-button header"
-    "separator separator"
-    "sidebar content";
-`
-
-const Header = styled(Flex)`
-  grid-area: header;
-  padding: 24px;
-`
-
-const HeaderText = styled.span`
-  font-size: 16px;
-  font-weight: 500;
-`
-
-const BackButtonContainer = styled.div`
-  grid-area: back-button;
-  align-items: center;
+const PanelBody = styled.div`
   display: flex;
-  padding: 12px;
-  padding-left: 34px;
-  & > leo-button { max-width: max-content; }
+  max-height: calc(100vh - ${spacing['4Xl']});
 `
 
-const CloseButton = styled(Button)`
-  flex-grow: 0;
+const Sidebar = styled.nav`
+  flex: 0 0 228px;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing['2Xl']};
+  padding: ${spacing['2Xl']} 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  white-space: nowrap;
 `
 
-const Hr = styled.hr`
-  grid-area: separator;
-  width: 100%;
-  align-self: center;
-  background: ${color.divider.subtle};
-  height: 2px;
-  border-width: 0;
+const SidebarTitle = styled.h4`
+  color: ${color.text.primary};
+  padding: 0 ${spacing['2Xl']};
 `
 
-const Sidebar = styled.div`
-  position: relative;
-  overflow: hidden;
-  grid-area: sidebar;
-  background: ${color.page.background};
-
+const Content = styled.section`
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: ${spacing.m} ${spacing.m} ${spacing.m} 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   display: flex;
   flex-direction: column;
 `
 
-const SidebarScroll = styled.div`
-  flex: 1;
-  overflow: auto;
-  padding: 28px 22px 28px 32px;
-`
-
-const SidebarFooter = styled.div`
-  flex-shrink: 0;
-  padding: ${spacing.s};
-  border-top: 1px solid ${color.divider.subtle};
-`
-
-// Overlay on top of the sidebar, shown when it is disabled.
-const SidebarOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: ${color.container.background};
-  opacity: 0.7;
-`
-
-const Content = styled.div`
-  grid-area: content;
-  overflow: auto;
-  padding: 20px 64px;
+const ContentCard = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing['2Xl']};
+  padding: ${spacing['4Xl']};
+  border-radius: ${radius.xl};
+  background: ${color.page.background};
 `
 
 export default function Configure() {
   const {
-    setCustomizePage,
     customizePage,
-    toggleBraveNewsOnNTP,
     isOptInPrefEnabled,
     isShowOnNTPPrefEnabled,
-    openArticlesInNewTab,
-    setOpenArticlesInNewTab
   } = useBraveNews()
-
-  const feedV2Enabled =
-    loadTimeData.getBoolean('featureFlagBraveNewsFeedV2Enabled')
 
   // TODO(petemill): We'll probably need to have 2 toggles, or some other
   // way to know if brave news is "enabled" when Brave News is exposed
@@ -132,7 +77,7 @@ export default function Configure() {
 
   let content: JSX.Element
   if (!isBraveNewsFullyEnabled) {
-    content = <DisabledPlaceholder enableBraveNews={() => toggleBraveNewsOnNTP(true)} />
+    content = <DisabledPlaceholder />
   } else if (customizePage === 'suggestions') {
     content = <SuggestionsPage />
   } else if (customizePage === 'popular') {
@@ -142,53 +87,20 @@ export default function Configure() {
   }
 
   return (
-    <Grid id='brave-news-configure'>
-      <BackButtonContainer>
-        <Button onClick={() => setCustomizePage(null)} kind='plain-faint'>
-          <Flex direction='row' align='center' gap={spacing.m}>
-            {BackArrow}
-            <span>
-              {formatLocale(S.BRAVE_NEWS_BACK_TO_DASHBOARD, {
-                  $1: content => <strong key="$1">{content}</strong>
-              })}
-            </span>
-          </Flex>
-        </Button>
-      </BackButtonContainer>
-      <Header direction="row-reverse" gap={12} align="center" justify="space-between">
-        <CloseButton onClick={() => setCustomizePage(null)} kind='plain-faint'>
-          <Icon name='close' />
-        </CloseButton>
-        {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={spacing['2Xl']}>
-          <Flex direction="row" align="center" gap={spacing.l}>
-            <HeaderText>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</HeaderText>
-            <Toggle checked={isShowOnNTPPrefEnabled} onChange={e => toggleBraveNewsOnNTP(e.checked)} />
-          </Flex>
-          {feedV2Enabled && <Flex direction="row" align="center" gap={spacing.l}>
-            <span>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN)}</span>
-            <Dropdown size='small' value={openArticlesInNewTab ? 'true' : 'false'} onChange={e => setOpenArticlesInNewTab(e.value === 'true')}>
-              <span slot='value'>
-                {openArticlesInNewTab ? getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB) : getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}
-              </span>
-              <leo-option value={'true'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_NEW_TAB)}</leo-option>
-              <leo-option value={'false'}>{getLocale(S.BRAVE_NEWS_OPEN_ARTICLES_IN_CURRENT_TAB)}</leo-option>
-            </Dropdown>
-          </Flex>}
-        </Flex>}
-      </Header>
-      <Hr />
-      <Sidebar>
-        <SidebarScroll>
-          <SourcesList />
-        </SidebarScroll>
-        {isBraveNewsFullyEnabled && <SidebarFooter>
-          <OpmlControls />
-        </SidebarFooter>}
-        {!isBraveNewsFullyEnabled && <SidebarOverlay />}
-      </Sidebar>
-      <Content>
-        {content}
-      </Content>
-    </Grid>
+    <div id='brave-news-configure'>
+      <PanelBody>
+        <Sidebar>
+          <SidebarTitle>{getLocale(S.BRAVE_NEWS_SETTINGS_TITLE)}</SidebarTitle>
+          {isBraveNewsFullyEnabled && <SourcesList />}
+        </Sidebar>
+        <Content>
+          <ContentCard>
+            {customizePage !== 'suggestions' && customizePage !== 'popular' &&
+              <NewsSettings />}
+            {content}
+          </ContentCard>
+        </Content>
+      </PanelBody>
+    </div>
   )
 }

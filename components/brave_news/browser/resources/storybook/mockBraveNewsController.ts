@@ -173,7 +173,8 @@ export const mockBraveNewsController: Partial<BraveNewsControllerRemote> = {
   onCardVisited() {},
   onInteractionSessionStarted() {},
   onSidebarFilterUsage() {},
-  openSettings() {}
+  openSettings() {},
+  closeUI() {}
 }
 
 // @ts-expect-error mockBraveNewsController only implements the methods the feed

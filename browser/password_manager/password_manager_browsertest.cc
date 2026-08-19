@@ -26,7 +26,7 @@ class PasswordManagerTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     store_ = ProfilePasswordStoreFactory::GetForProfile(
-        browser()->profile(), ServiceAccessType::EXPLICIT_ACCESS);
+        browser()->GetProfile(), ServiceAccessType::EXPLICIT_ACCESS);
   }
 
  protected:

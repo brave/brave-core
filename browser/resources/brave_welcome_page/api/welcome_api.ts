@@ -5,6 +5,9 @@
 
 import {
   ColorScheme,
+  Feature,
+  FeatureVisibility,
+  OnboardingPhase,
   WelcomePageHandler,
   WelcomePageInterface,
   WelcomePageReceiver,
@@ -23,8 +26,24 @@ import {
 
 import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 import { createInterfaceApi, endpointsFor, state } from '$web-common/api'
+import { loadTimeData } from '$web-common/loadTimeData'
 
-export { ColorScheme, Theme, ChromeColor }
+export {
+  ColorScheme,
+  Feature,
+  FeatureVisibility,
+  OnboardingPhase,
+  Theme,
+  ChromeColor,
+}
+
+// Maps a feature onto the `FeatureVisibility` field that describes it.
+export const featureVisibilityKeys: Record<Feature, keyof FeatureVisibility> = {
+  [Feature.kAIChat]: 'aiChat',
+  [Feature.kWallet]: 'wallet',
+  [Feature.kRewards]: 'rewards',
+  [Feature.kVPN]: 'vpn',
+}
 
 // Type returned from requestDefaultBrowserState message.
 export interface DefaultBrowserInfo {
@@ -74,6 +93,14 @@ interface ApiInit {
     importData: (profileIndex: number, types: Set<ImportDataType>) => void
     addImportStatusListener: (fn: (status: ImportDataStatus) => void) => void
   }
+  isCrashReportingPrefManaged: boolean
+  isP3APrefManaged: boolean
+  isWebDiscoveryPrefManaged: boolean
+  webDiscoveryFeatureEnabled: boolean
+  aiChatFeatureEnabled: boolean
+  walletFeatureEnabled: boolean
+  rewardsFeatureEnabled: boolean
+  vpnFeatureEnabled: boolean
 }
 
 function defaultInit(): ApiInit {
@@ -119,6 +146,20 @@ function defaultInit(): ApiInit {
         })
       },
     },
+    isCrashReportingPrefManaged: loadTimeData.getBoolean(
+      'isCrashReportingPrefManaged',
+    ),
+    isP3APrefManaged: loadTimeData.getBoolean('isP3APrefManaged'),
+    isWebDiscoveryPrefManaged: loadTimeData.getBoolean(
+      'isWebDiscoveryPrefManaged',
+    ),
+    webDiscoveryFeatureEnabled: loadTimeData.getBoolean(
+      'webDiscoveryFeatureEnabled',
+    ),
+    aiChatFeatureEnabled: loadTimeData.getBoolean('aiChatFeatureEnabled'),
+    walletFeatureEnabled: loadTimeData.getBoolean('walletFeatureEnabled'),
+    rewardsFeatureEnabled: loadTimeData.getBoolean('rewardsFeatureEnabled'),
+    vpnFeatureEnabled: loadTimeData.getBoolean('vpnFeatureEnabled'),
   }
 }
 
@@ -150,6 +191,39 @@ export function createWelcomeApi(init = defaultInit()) {
             api.getVerticalTabsEnabled.update(enabled)
           },
         },
+        getFeatureVisibility: {
+          response: (r) => r.visibility,
+          prefetchWithArgs: [],
+          placeholderData: {
+            aiChat: true,
+            wallet: true,
+            rewards: true,
+            vpn: true,
+          },
+        },
+        setFeatureVisible: {
+          mutationResponse: () => {},
+          onMutate: ([feature, visible]: [Feature, boolean]) => {
+            api.getFeatureVisibility.update({
+              [featureVisibilityKeys[feature]]: visible,
+            })
+          },
+        },
+        setWebDiscoveryEnabled: {
+          mutationResponse: () => {},
+        },
+        setP3AEnabled: {
+          mutationResponse: () => {},
+        },
+        setCrashReportsEnabled: {
+          mutationResponse: () => {},
+        },
+        getWelcomeCompleteURL: {
+          response: (r) => r.url,
+        },
+        setOnboardingPhase: {
+          mutationResponse: () => {},
+        },
       }),
       ...endpointsFor(themeColorPickerHandler, {
         getChromeColors: {
@@ -165,6 +239,14 @@ export function createWelcomeApi(init = defaultInit()) {
         query: () => init.messages.getBrowserProfilesForImport(),
       },
       importDataStatus: state<ImportDataStatus>(''),
+      isCrashReportingPrefManaged: state(init.isCrashReportingPrefManaged),
+      isP3APrefManaged: state(init.isP3APrefManaged),
+      isWebDiscoveryPrefManaged: state(init.isWebDiscoveryPrefManaged),
+      webDiscoveryFeatureEnabled: state(init.webDiscoveryFeatureEnabled),
+      aiChatFeatureEnabled: state(init.aiChatFeatureEnabled),
+      walletFeatureEnabled: state(init.walletFeatureEnabled),
+      rewardsFeatureEnabled: state(init.rewardsFeatureEnabled),
+      vpnFeatureEnabled: state(init.vpnFeatureEnabled),
     },
 
     actions: {
@@ -188,6 +270,9 @@ export function createWelcomeApi(init = defaultInit()) {
     },
     onVerticalTabsEnabledChanged: () => {
       api.getVerticalTabsEnabled.invalidate()
+    },
+    onFeatureVisibilityChanged: () => {
+      api.getFeatureVisibility.invalidate()
     },
   })
 

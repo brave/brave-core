@@ -6,6 +6,7 @@ import { glob, rm } from 'node:fs/promises'
 import fs from 'fs-extra'
 import utils from '../lib/util.js'
 import config from '../lib/config.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
 
 const dedupe = (xs) => [...new Set(xs)]
 const getTestBinariesFromRecordingsPath = (outputDir) => {
@@ -42,7 +43,7 @@ export default (program) =>
       '--tests [testSuites]',
       'comma seperated list of testsuites to consider. By default it parses all recordings',
     )
-    .arguments('[build_config]')
+    .apply(buildOptions.supportBuildConfigArg)
     .action(async (buildConfig, args) => {
       config.buildConfig = buildConfig || config.buildConfig
       config.update(args)

@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom-forward.h"
 #include "build/build_config.h"
@@ -23,7 +24,7 @@
 class PrefService;
 
 namespace brave_vpn::v2 {
-
+class BraveVpnApiClient;
 class CredentialStore;
 class SkusServiceClient;
 
@@ -60,6 +61,7 @@ class PurchasedStateManager final {
   static constexpr base::TimeDelta kLoadTimeout = base::Seconds(30);
 
   PurchasedStateManager(PrefService* local_prefs,
+                        BraveVpnApiClient* api_client,
                         SkusServiceClient* skus_client,
                         PurchasedStateChangedCallback callback);
   ~PurchasedStateManager();
@@ -72,6 +74,7 @@ class PurchasedStateManager final {
   mojom::PurchasedInfo GetInfo() const;
   bool IsPurchased() const;
   std::string GetCurrentEnvironment() const;
+  std::optional<std::string> GetSubscriberCredential() const;
 
   void SetPurchasedState(const std::string& env,
                          mojom::PurchasedState state,
@@ -97,15 +100,22 @@ class PurchasedStateManager final {
       uint64_t sequence,
       const std::string& domain,
       skus::mojom::SkusResultPtr credential_as_cookie);
+  void OnGetSubscriberCredential(
+      uint64_t sequence,
+      const std::string& domain,
+      const base::Time& expiration_time,
+      base::expected<std::string, std::string> result);
   void RunPurchasedStateCallback(mojom::PurchasedState state,
                                  std::optional<std::string> description);
-  void ScheduleSubscriberCredentialRefresh();
+  void ScheduleSubscriberCredentialRefresh(const base::Time& expiration_time);
+  void RefreshSubscriberCredential();
 
 #if !BUILDFLAG(IS_ANDROID)
   void UpdatePurchasedStateForSessionExpired();
 #endif
 
   const raw_ref<PrefService> local_prefs_;
+  const raw_ref<BraveVpnApiClient> api_client_;
   const raw_ref<SkusServiceClient> skus_client_;
   PurchasedStateChangedCallback purchased_state_changed_callback_;
   std::unique_ptr<CredentialStore> credential_store_;
@@ -113,6 +123,7 @@ class PurchasedStateManager final {
   std::string loading_environment_;
   uint64_t loading_sequence_ = 0;
   base::OneShotTimer load_timeout_timer_;
+  base::OneShotTimer subscriber_credential_refresh_timer_;
   base::WeakPtrFactory<PurchasedStateManager> weak_factory_{this};
 };
 

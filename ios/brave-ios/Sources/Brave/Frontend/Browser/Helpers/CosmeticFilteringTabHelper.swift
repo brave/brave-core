@@ -5,7 +5,7 @@
 
 import BraveCore
 import BraveShields
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import os.log
 
 extension TabDataValues {
@@ -18,9 +18,10 @@ extension TabDataValues {
   }
 }
 
-public class CosmeticFilteringTabHelper {
+public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
 
   private weak var tab: (any TabState)?
+  private var mainFrameURL: URL?
   /// Cached standard selectors. Key is the URL's `baseDomain`.
   private var hiddenStandardSelectors: [String: Set<String>] = [:]
   /// Cached aggressive selectors. Key is the URL's `baseDomain`.
@@ -30,6 +31,33 @@ public class CosmeticFilteringTabHelper {
     tab: some TabState
   ) {
     self.tab = tab
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.addObserver(self)
+    }
+    tab.addPolicyDecider(self)
+  }
+
+  // MARK: - TabObserver
+
+  public func tabDidCreateWebView(_ tab: some TabState) {
+    BraveWebView.from(tab: tab)?.setCosmeticFilteringTabHelperBridge(self)
+  }
+
+  public func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
+  }
+
+  // MARK: - TabPolicyDecider
+
+  public func tab(
+    _ tab: some TabState,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    if let mainDocumentURL = request.mainDocumentURL, mainDocumentURL != mainFrameURL {
+      self.mainFrameURL = mainDocumentURL
+    }
+    return .allow
   }
 
   /// Removes all selectors from the selectors caches.
@@ -69,7 +97,7 @@ public class CosmeticFilteringTabHelper {
   ) -> (Set<String>, Set<String>) {
     var cachedStandardSelectors: Set<String> = .init()
     var cachedAggressiveSelectors: Set<String> = .init()
-    if let mainFrameURL = tab?.currentPageData?.mainFrameURL,
+    if let mainFrameURL = mainFrameURL,
       let (standard, aggressive) = cachedSelectors(for: mainFrameURL)
     {
       cachedStandardSelectors = standard
@@ -96,7 +124,7 @@ public class CosmeticFilteringTabHelper {
     for frameURL: URL
   ) async -> (UserScriptType.ContentCosmeticSetup, Set<String>)? {
     guard let tab = tab,
-      let mainFrameURL = tab.currentPageData?.mainFrameURL,
+      let mainFrameURL = mainFrameURL,
       let braveShieldsHelper = tab.braveShieldsHelper,
       // shield level is determined by the main frame
       case let mainFrameShieldLevel = braveShieldsHelper.shieldLevel(
@@ -131,6 +159,25 @@ public class CosmeticFilteringTabHelper {
     )
     return (setup, proceduralActions)
   }
+}
+
+@MainActor extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridge {
+
+  public func cosmeticFilteringArgs(for url: URL) async -> CosmeticFilteringArgs? {
+    guard let (setup, proceduralFilters) = await self.cosmeticFilteringSetup(for: url) else {
+      return nil
+    }
+    return .init(
+      hideFirstPartyContent: setup.hideFirstPartyContent,
+      genericHide: setup.genericHide,
+      firstSelectorsPollingDelayMs: setup.firstSelectorsPollingDelayMs.toNSNumber,
+      switchToSelectorsPollingThreshold: setup.switchToSelectorsPollingThreshold.toNSNumber,
+      fetchNewClassIdRulesThrottlingMs: setup.fetchNewClassIdRulesThrottlingMs.toNSNumber,
+      aggressiveSelectors: setup.aggressiveSelectors,
+      standardSelectors: setup.standardSelectors,
+      proceduralFilters: proceduralFilters
+    )
+  }
 
   /// Given a `frameURL` and `Set<String>`'s of `ids` and `classes`, determines
   /// which ids and classes should be hidden for the frame using the Tab's
@@ -142,19 +189,19 @@ public class CosmeticFilteringTabHelper {
     for frameURL: URL,
     ids: Set<String>,
     classes: Set<String>,
-  ) async -> (Set<String>, Set<String>)? {
+  ) async -> (Set<String>?, Set<String>?) {
     guard let tab = tab,
-      let tabPageData = tab.currentPageData,
+      let mainFrameURL,
       let braveShieldsHelper = tab.braveShieldsHelper,
       // shield level is determined by the main frame
       case let mainFrameShieldLevel = braveShieldsHelper.shieldLevel(
-        for: tabPageData.mainFrameURL,
+        for: mainFrameURL,
         considerAllShieldsOption: true
       ),
       mainFrameShieldLevel.isEnabled,
-      tabPageData.mainFrameURL.isWebPage(includeDataURIs: false)
+      mainFrameURL.isWebPage(includeDataURIs: false)
     else {
-      return nil
+      return (nil, nil)
     }
     let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
       isAdBlockEnabled: mainFrameShieldLevel.isEnabled
@@ -192,10 +239,25 @@ public class CosmeticFilteringTabHelper {
 
     // cache blocked selectors
     cacheSelectors(
-      for: tabPageData.mainFrameURL,
+      for: mainFrameURL,
       standardSelectors: standardSelectors,
       aggressiveSelectors: aggressiveSelectors
     )
     return (standardSelectors, aggressiveSelectors)
   }
 }
+
+extension Int? {
+  fileprivate var toNSNumber: NSNumber? {
+    guard let self else { return nil }
+    return NSNumber(integerLiteral: self)
+  }
+}
+
+#if DEBUG
+extension CosmeticFilteringTabHelper {
+  func setMainFrameURLForTesting(_ mainFrameURL: URL) {
+    self.mainFrameURL = mainFrameURL
+  }
+}
+#endif

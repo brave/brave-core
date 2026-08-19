@@ -108,23 +108,23 @@ action("generate_dsa_sig_for_dmg") {
 
   args = [
     "--sign-update",
-    rebase_path("$sign_update_path"),
+    rebase_path(sign_update_path, root_build_dir),
     "--sign-key-file",
     "$sparkle_dsa_private_key_file",
     "--target",
-    rebase_path(dmg_path),
+    rebase_path(dmg_path, root_build_dir),
     "--output",
-    rebase_path("$output_dmg_dsa_path"),
+    rebase_path(output_dmg_dsa_path, root_build_dir),
     "--dsa",
   ]
 
   inputs = [
     script,
-    "$sign_update_path",
+    sign_update_path,
     dmg_path,
   ]
 
-  outputs = [ "$output_dmg_dsa_path" ]
+  outputs = [ output_dmg_dsa_path ]
 
   deps = [ ":package" ]
 
@@ -146,19 +146,19 @@ action("generate_eddsa_sig_for_dmg") {
 
   args = [
     "--sign-update",
-    rebase_path("$sign_update_path"),
+    rebase_path("$sign_update_path", root_build_dir),
     "--sign-key",
-    "$sparkle_eddsa_private_key",
+    sparkle_eddsa_private_key,
     "--target",
-    rebase_path(dmg_path),
+    rebase_path(dmg_path, root_build_dir),
     "--output",
-    rebase_path("$output_dmg_eddsa_path"),
+    rebase_path(output_dmg_eddsa_path, root_build_dir),
     "--eddsa",
   ]
 
   inputs = [
     script,
-    "$sign_update_path",
+    sign_update_path,
     dmg_path,
   ]
 
@@ -184,15 +184,15 @@ action("build_delta_installer") {
 
   args = [
     "--binary-delta",
-    rebase_path("$binary_delta_path"),
+    rebase_path(binary_delta_path, root_build_dir),
     "--root-out-dir",
-    rebase_path("$root_out_dir"),
+    rebase_path(root_build_dir, root_build_dir),
     "--old-dmg",
-    rebase_path("$root_out_dir/$last_chrome_installer"),
+    rebase_path("$root_out_dir/$last_chrome_installer", root_build_dir),
     "--new-dmg",
-    rebase_path(dmg_path),
+    rebase_path(dmg_path, root_build_dir),
     "--delta-output",
-    rebase_path("$output_delta_path"),
+    rebase_path(output_delta_path, root_build_dir),
   ]
 
   inputs = [
@@ -219,23 +219,23 @@ action("generate_eddsa_sig_for_delta") {
 
   args = [
     "--sign-update",
-    rebase_path("$sign_update_path"),
+    rebase_path(sign_update_path, root_build_dir),
     "--sign-key",
-    "$sparkle_eddsa_private_key",
+    sparkle_eddsa_private_key,
     "--target",
-    rebase_path("$target_delta_path"),
+    rebase_path(target_delta_path, root_build_dir),
     "--output",
-    rebase_path("$output_delta_eddsa_path"),
+    rebase_path(output_delta_eddsa_path, root_build_dir),
     "--eddsa",
   ]
 
   inputs = [
     script,
-    "$sign_update_path",
-    "$target_delta_path",
+    sign_update_path,
+    target_delta_path,
   ]
 
-  outputs = [ "$output_delta_eddsa_path" ]
+  outputs = [ output_delta_eddsa_path ]
 
   deps = [ ":build_delta_installer" ]
 }
@@ -251,11 +251,11 @@ action("preinstall") {
   output = preinstall_script
 
   args = [
-    rebase_path("//chrome/installer/mac/pkg_preinstall.in"),
+    rebase_path("//chrome/installer/mac/pkg_preinstall.in", root_build_dir),
     brave_exe,
     "Contents/Frameworks/$chrome_product_full_name Framework.framework",
     chrome_mac_bundle_id,
-    rebase_path(output),
+    rebase_path(output, root_build_dir),
   ]
 
   inputs = [
@@ -273,11 +273,11 @@ if (install_omaha4_with_pkg) {
     output = postinstall_script
 
     args = [
-      rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
+      rebase_path("//chrome/installer/mac/pkg_postinstall.in", root_build_dir),
       brave_exe,
       "Contents/Frameworks/$chrome_product_full_name Framework.framework",
       mac_browser_bundle_identifier,
-      rebase_path(output),
+      rebase_path(output, root_build_dir),
     ]
 
     inputs = [

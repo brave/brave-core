@@ -14,6 +14,7 @@
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
@@ -23,6 +24,7 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/cookie_control_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/farbling_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/protection_stats_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_javascript_feature.h"
@@ -35,6 +37,7 @@
 #include "brave/ios/browser/web/de_amp/de_amp_javascript_feature.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
+#include "brave/ios/browser/web/fullscreen/fullscreen_helper_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_javascript_feature.h"
 #include "brave/ios/browser/web/media/media_backgrounding_javascript_feature.h"
 #include "brave/ios/browser/web/navigator/brave_navigator_javascript_feature.h"
@@ -73,6 +76,11 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/ios/browser/brave_wallet/cardano_provider_javascript_feature.h"
+#include "brave/ios/browser/brave_wallet/ethereum_provider_javascript_feature.h"
 #endif
 
 BraveWebClient::BraveWebClient() {}
@@ -164,6 +172,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(DeAmpJavaScriptFeature::GetInstance());
     features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
+    features.push_back(FullscreenHelperJavaScriptFeature::GetInstance());
     features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(
         MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
@@ -180,10 +189,20 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(
         skus::SkusJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(youtube::YouTubeQualityJavaScriptFeature::GetInstance());
+    features.push_back(CosmeticFilteringJavaScriptFeature::GetInstance());
     if (!base::FeatureList::IsEnabled(
             brave::features::kUseChromiumWebViewsAutofill)) {
       features.push_back(LoginsJavaScriptFeature::GetInstance());
     }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    features.push_back(
+        brave_wallet::EthereumProviderJavaScriptFeature::FromBrowserState(
+            browser_state));
+    features.push_back(
+        brave_wallet::CardanoProviderJavaScriptFeature::FromBrowserState(
+            browser_state));
+#endif
 
     // Some privacy related features need to be injected in a specific order
     // as they may override similar JavaScript APIs

@@ -52,7 +52,7 @@ class AdsTabHelper final : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
-  bool UserHasOptedInToNotificationAds() const;
+  bool IsNotificationAdsEnabled() const;
 
   bool IsVisible() const;
 
@@ -71,6 +71,7 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MaybeNotifyTabDidChange();
 
   void MaybeNotifyTabDidLoad();
+  void MaybeNotifyTabDidFailToLoad();
 
   bool ShouldNotifyTabContentDidChange() const;
   void MaybeNotifyTabTextContentDidChange();

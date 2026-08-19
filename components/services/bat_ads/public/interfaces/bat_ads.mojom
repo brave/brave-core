@@ -46,6 +46,7 @@ interface BatAdsClientNotifier {
                      bool is_visible);
   NotifyTabDidLoad(int32 tab_id,
                    int32 http_status_code);
+  NotifyTabDidFailToLoad(int32 tab_id);
   NotifyDidCloseTab(int32 tab_id);
 
   NotifyUserGestureEventTriggered(int32 page_transition);
@@ -196,8 +197,19 @@ interface AdsInternals {
   CreateAdsInternalsPageHandler(pending_remote<AdsInternalsPage> page);
   GetAdsInternals() => (string response);
   ClearAdsData() => (bool success);
+  GetDiagnostics() => (string response);
+  SetDiagnosticId(string diagnostic_id);
 };
 
 interface AdsInternalsPage {
   UpdateBraveRewardsEnabled(bool enabled);
+};
+
+// Exposes the Brave Rewards diagnostic log to brave://ads-internals so it can
+// be viewed alongside ads-specific diagnostics without duplicating it.
+interface AdsInternalsLogs {
+  // A null `num_lines` returns the full log.
+  GetLog(uint32? num_lines) => (string log);
+  ClearLog() => (bool success);
+  ToggleVerboseLoggingAndRestart();
 };

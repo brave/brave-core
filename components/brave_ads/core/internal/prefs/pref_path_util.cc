@@ -23,8 +23,8 @@ bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path) {
                      kNewTabPageShowSponsoredImagesBackgroundImage;
 }
 
-bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(std::string_view path) {
-  return path == prefs::kOptedInToNotificationAds;
+bool DoesMatchNotificationAdsEnabledPrefPath(std::string_view path) {
+  return path == prefs::kNotificationsEnabled;
 }
 
 bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path) {

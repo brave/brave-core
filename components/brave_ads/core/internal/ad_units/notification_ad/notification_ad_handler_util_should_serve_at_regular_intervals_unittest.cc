@@ -62,7 +62,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
-    test::SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds,
+    test::SetProfileBooleanPrefValue(prefs::kNotificationsEnabled,
                                      GetParam().opted_in);
 
     test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
@@ -91,8 +91,8 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           : "ShouldNotServeAtRegularIntervals";
 
   const std::string opted_in = test_param.param.opted_in
-                                   ? "OptedInToNotificationAds"
-                                   : "NotOptedInToNotificationAds";
+                                   ? "NotificationAdsAreEnabled"
+                                   : "NotificationAdsAreDisabled";
 
   const std::string should_browser_enter_foreground =
       test_param.param.should_browser_enter_foreground

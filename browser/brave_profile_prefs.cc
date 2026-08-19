@@ -42,6 +42,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
@@ -59,7 +60,7 @@
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "build/build_config.h"
-#include "chrome/browser/new_tab_page/ntp_pref_names.h"
+#include "chrome/browser/new_tab_page/prefs/ntp_pref_names.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
@@ -101,6 +102,10 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/email_aliases_service.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
@@ -133,7 +138,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/themes/pref_names.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
@@ -564,12 +569,21 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 
-  welcome_ui::prefs::RegisterProfilePrefs(registry);
+  brave_welcome_page::prefs::RegisterProfilePrefs(registry);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  // Registered unconditionally so the prefs exist even when the kEmailAliases
+  // feature is disabled at runtime. The Brave Origin settings page gates the
+  // Email Aliases toggle on the build flag alone and writes
+  // kEmailAliasesEnabled, which would otherwise hit an unregistered-pref
+  // NOTREACHED.
+  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)

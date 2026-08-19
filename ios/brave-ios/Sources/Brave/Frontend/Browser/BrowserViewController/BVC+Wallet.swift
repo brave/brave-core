@@ -248,4 +248,29 @@ extension BrowserViewController {
   func openWalletHome() {
     openDestinationURL(.webUI.wallet.home)
   }
+
+  func scanAddressQRCode(completion: @escaping (String) -> Void) {
+    struct ScannerContainer: View {
+      var onFound: (String) -> Void
+      @State private var address: String = ""
+      @State private var complete: Bool = false
+
+      var body: some View {
+        AddressQRCodeScannerView(coin: BraveWallet.CoinType.eth, address: $address)
+          .onChange(of: address) { _, newValue in
+            guard !complete, !newValue.isEmpty else { return }
+            complete = true
+            onFound(newValue)
+          }
+          .onDisappear {
+            guard !complete else { return }
+            complete = true
+            onFound("")
+          }
+      }
+    }
+    let vc = UIHostingController(rootView: ScannerContainer(onFound: completion))
+    vc.modalPresentationStyle = .fullScreen
+    present(vc, animated: true)
+  }
 }

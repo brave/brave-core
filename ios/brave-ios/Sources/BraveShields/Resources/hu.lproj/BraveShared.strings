@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automatikus megsemmisítés";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Böngészési adatok automatikus megsemmisítése";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresszív";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Érvénytelen szabály - `%1$@` - a következő sorban: %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Itt adja hozzá az egyéni szűrőket, soronként egyet.";
+"CustomFiltersPlaceholder" = "Egyéni szűrők hozzáadása";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Az egyéni szűrők esetén legfeljebb %i sor támogatott.";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domén blokkolva";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Egyéni szűrők szerkesztése";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Kérje meg a weboldalakat, hogy ne adják el vagy osszák meg az adatait. [További információk](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Soha";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "A böngészési adatok soha nem törlődnek automatikusan";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Alkalmazás bezárásakor";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "A böngészési adatok automatikusan törlődnek, amikor a Brave alkalmazás bezárul / újraindul";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Webhelylapok bezárásakor";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "A böngészési adatok automatikusan törlődnek, amikor egy webhelyhez tartozó összes lap bezárul";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "A megsemmisítés minden lapot be fog zárni, és az összes webhelyadatot törölni fogja. Ezt nem lehet visszavonni.";

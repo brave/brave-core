@@ -295,7 +295,7 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   profile_pref_change_registrar_.Add(
-      brave_ads::prefs::kOptedInToNotificationAds,
+      brave_ads::prefs::kNotificationsEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
@@ -324,7 +324,7 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (key == ntp_background_images::prefs::
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
-      key == brave_ads::prefs::kOptedInToNotificationAds ||
+      key == brave_ads::prefs::kNotificationsEnabled ||
       key == brave_ads::prefs::kOptedInToSearchResultAds) {
     p3a::RecordAdTypesEnabled(prefs_);
   }
@@ -346,7 +346,7 @@ void RewardsServiceImpl::CheckPreferences() {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  if (prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
+  if (prefs_->GetBoolean(brave_ads::prefs::kNotificationsEnabled)) {
     // If the user has enabled Ads, but the "enabled" pref is missing, set the
     // "enabled" pref to true.
     if (!prefs_->GetUserPrefValue(prefs::kEnabled)) {
@@ -466,8 +466,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
         self->prefs_->SetString(prefs::kUserVersion,
                                 prefs::kCurrentUserVersion);
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-        self->prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
-                                 true);
+        self->prefs_->SetBoolean(brave_ads::prefs::kNotificationsEnabled, true);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       }
 

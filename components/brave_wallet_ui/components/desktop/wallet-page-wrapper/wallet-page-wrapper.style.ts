@@ -47,6 +47,7 @@ export const LayoutCardWrapper = styled.div<{
   hideCardHeader?: boolean
   headerHeight: number
   padding?: string
+  isSidePanel?: boolean
 }>`
   --header-top-position: calc(
     var(--layout-top-position) + ${(p) => p.headerHeight}px
@@ -56,7 +57,8 @@ export const LayoutCardWrapper = styled.div<{
     p.hideCardHeader
       ? 'var(--no-header-top-position)'
       : 'var(--header-top-position)'};
-  --bottom-position: ${(p) => (p.hideNav ? 0 : layoutSmallCardBottom)}px;
+  --bottom-position: ${(p) =>
+    p.hideNav || p.isSidePanel ? 0 : layoutSmallCardBottom}px;
   /*
     (100vw / 2) - (${maxCardWidth}px / 2) makes the card body perfectly centered
     horizontally in the browser window.

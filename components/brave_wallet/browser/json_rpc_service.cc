@@ -660,9 +660,8 @@ mojom::NetworkInfoPtr JsonRpcService::GetNetworkSync(
 }
 
 void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
-  // Only try to update is_eip1559 for localhost or custom chains.
-  if (chain_id != brave_wallet::mojom::kLocalhostChainId &&
-      !network_manager_->CustomChainExists(chain_id, mojom::CoinType::ETH)) {
+  // Only try to update is_eip1559 for custom chains.
+  if (!network_manager_->CustomChainExists(chain_id, mojom::CoinType::ETH)) {
     return;
   }
 

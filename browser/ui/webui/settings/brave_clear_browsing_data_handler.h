@@ -6,11 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_HANDLER_H_
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class Profile;
+
+namespace base {
+class ListValue;
+class Value;
+}  // namespace base
 
 namespace settings {
 
@@ -32,6 +38,7 @@ class BraveClearBrowsingDataHandler : public ClearBrowsingDataHandler {
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   void HandleClearBraveAdsData(const base::ListValue& args);
+  void OnClearBraveAdsDataComplete(base::Value callback_id, bool success);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   void OnRewardsEnabledPreferenceChanged();
@@ -39,6 +46,10 @@ class BraveClearBrowsingDataHandler : public ClearBrowsingDataHandler {
   raw_ptr<Profile> profile_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  base::WeakPtrFactory<BraveClearBrowsingDataHandler> weak_ptr_factory_{this};
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 };
 
 }  // namespace settings

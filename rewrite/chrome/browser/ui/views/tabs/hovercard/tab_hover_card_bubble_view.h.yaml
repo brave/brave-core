@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add a public method for the Brave subclass and test.
+    add_to_public:
+      class_name: TabHoverCardBubbleView
+      code: 'bool HasThumbnailView() const;'
+
+  - description: Add a protected method for the Brave subclass to override.
+    add_to_protected:
+      class_name: TabHoverCardBubbleView
+      code: |
+        void BraveUpdateCardContent(const HoverCardAnchorTarget* anchor_target);
+
+  - description: |
+      Add a factory method for to create TabCardView in private section.
+
+      This will create BraveTabCardView instead of TabCardView. As the
+      TabCardView is a private inner class of TabHoverCardBubbleView, the
+      factory method should be in the private section, after declaring the
+      TabCardView
+    regex:
+      re_pattern: '(class TabHoverCardBubbleView.*?{.*?class TabCardView;)'
+      re_flags: [DOTALL]
+      replace: \1\n  std::unique_ptr<TabCardView> CreateTabCardView();
+
+  - description: Let the Brave subclass reach private members.
+    add_friend:
+      class_name: TabHoverCardBubbleView
+      friend_type: class BraveTabCardView

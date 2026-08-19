@@ -90,6 +90,8 @@
     </message>
     <if expr="is_chromeos">
       </if>
+    <if expr="is_win or is_macosx">
+      </if>
     <if expr="is_chromeos or is_win">
       </if>
     <if expr="is_win and _google_chrome">
@@ -127,7 +129,7 @@
       <if expr="is_win">
         </if>
       </if>
-    <if expr="not is_chromeos and _google_chrome">
+    <if expr="_google_chrome">
       </if>
 
     <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_INCOGNITO_SUBHEADER" desc="The subheader of the second item in the 'User Education Module' in the Safety Hub page. This item explains Private mode.">

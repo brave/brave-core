@@ -7,10 +7,14 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
@@ -59,9 +63,10 @@ void ReaderModeToolbarView::SetDelegate(Delegate* delegate) {
   delegate_ = delegate;
 }
 
-ReaderModeToolbarView::ReaderModeToolbarView(
-    content::BrowserContext* browser_context) {
-  toolbar_ = std::make_unique<Toolbar>(this, browser_context);
+ReaderModeToolbarView::ReaderModeToolbarView(BrowserWindowInterface* browser)
+    : browser_(browser) {
+  CHECK(browser);
+  toolbar_ = std::make_unique<Toolbar>(this, browser_->GetProfile());
   AddChildView(toolbar_.get());
   SetVisible(false);
 }
@@ -73,6 +78,7 @@ void ReaderModeToolbarView::SetVisible(bool visible) {
     content::WebContents::CreateParams create_params(
         toolbar_->GetBrowserContext(), FROM_HERE);
     toolbar_contents_ = content::WebContents::Create(create_params);
+    webui::SetBrowserWindowInterface(toolbar_contents_.get(), browser_);
 
     const GURL toolbar_url(kSpeedreaderPanelURL);
     content::NavigationController::LoadURLParams params(toolbar_url);
@@ -137,12 +143,12 @@ void ReaderModeToolbarView::UpdateBorderAndBackground() {
     SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
                                             kColorToolbarContentAreaSeparator));
     SetBackground(views::CreateSolidBackground(kColorToolbar));
-    toolbar_->holder()->SetCornerRadii(rounded_corners_);
+    toolbar_->holder()->SetNativeViewCornerRadii(rounded_corners_);
   } else {
     SetBorder(nullptr);
     SetBackground(
         views::CreateRoundedRectBackground(kColorToolbar, rounded_corners_));
-    toolbar_->holder()->SetCornerRadii(rounded_corners_);
+    toolbar_->holder()->SetNativeViewCornerRadii(rounded_corners_);
   }
 }
 

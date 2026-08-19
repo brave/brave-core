@@ -11,6 +11,7 @@
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_android_dynamic_colors_enabled"
+        android:persistent="false"
         android:icon="@drawable/ic_themes"
         android:title="@string/brave_android_dynamic_colors_title"
         android:summary="@string/brave_android_dynamic_colors_summary"

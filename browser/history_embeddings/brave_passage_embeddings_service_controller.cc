@@ -5,125 +5,42 @@
 
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
-#include <optional>
 #include <utility>
 
-#include "base/check.h"
-#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
-#include "base/notreached.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
-#include "brave/browser/local_ai/background_web_contents_factory.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
-#include "brave/components/local_ai/core/url_constants.h"
-#include "brave/components/local_ai/core/utils.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/passage_embeddings/core/passage_embeddings_features.h"
+#include "components/optimization_guide/proto/models.pb.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_launcher.h"
-#include "components/passage_embeddings/core/passage_embeddings_types.h"
-#include "mojo/public/cpp/base/big_buffer.h"
-#include "mojo/public/cpp/bindings/callback_helpers.h"
-#include "url/gurl.h"
+#include "content/public/browser/service_process_host.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace passage_embeddings {
 
 namespace {
 
-mojom::PassagePriority ToMojom(PassagePriority priority) {
-  switch (priority) {
-    case kUserInitiated:
-      return mojom::PassagePriority::kUserInitiated;
-    case kUrgent:
-      return mojom::PassagePriority::kUrgent;
-    case kPassive:
-    case kLatent:
-      return mojom::PassagePriority::kPassive;
-  }
-}
-
-// Completion callback for local_ai::CreateBackgroundWebContents().
-//
-// Registers the OTR profile with the controller so we tear the service down
-// before the profile is destroyed on shutdown (otherwise the WebContents inside
-// the embedder would outlive its BrowserContext), then forwards the
-// BackgroundWebContents to the embedder.
-void OnBackgroundWebContentsCreated(
-    BraveBatchPassageEmbedder::BackgroundWebContentsCreatedCallback callback,
-    std::unique_ptr<local_ai::BackgroundWebContents> contents,
-    Profile* otr_profile) {
-  if (otr_profile) {
-    BravePassageEmbeddingsServiceController::Get()->ObserveGuestOTRProfile(
-        otr_profile);
-  }
-  std::move(callback).Run(std::move(contents));
-}
-
-void CreateBackgroundWebContents(
-    local_ai::BackgroundWebContents::Delegate* delegate,
-    BraveBatchPassageEmbedder::BackgroundWebContentsCreatedCallback callback) {
-  local_ai::CreateBackgroundWebContents(
-      GURL(local_ai::kUntrustedLocalAIURL), IDS_LOCAL_AI_TASK_MANAGER_TITLE,
-      /*sandbox_flags=*/std::nullopt,
-      static_cast<BraveBatchPassageEmbedder*>(delegate)->GetWeakPtr(),
-      base::BindOnce(&OnBackgroundWebContentsCreated, std::move(callback)));
-}
-
-local_ai::mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
-    const base::FilePath& weights_path,
-    const base::FilePath& weights_dense1_path,
-    const base::FilePath& weights_dense2_path,
-    const base::FilePath& tokenizer_path,
-    const base::FilePath& config_path) {
-  auto weights = local_ai::ReadFileToBigBuffer(weights_path);
-  if (!weights) {
-    return nullptr;
-  }
-  auto weights_dense1 = local_ai::ReadFileToBigBuffer(weights_dense1_path);
-  if (!weights_dense1) {
-    return nullptr;
-  }
-  auto weights_dense2 = local_ai::ReadFileToBigBuffer(weights_dense2_path);
-  if (!weights_dense2) {
-    return nullptr;
-  }
-  auto tokenizer = local_ai::ReadFileToBigBuffer(tokenizer_path);
-  if (!tokenizer) {
-    return nullptr;
-  }
-  auto config = local_ai::ReadFileToBigBuffer(config_path);
-  if (!config) {
-    return nullptr;
-  }
-  auto model_files = local_ai::mojom::ModelFiles::New();
-  model_files->weights = std::move(*weights);
-  model_files->weights_dense1 = std::move(*weights_dense1);
-  model_files->weights_dense2 = std::move(*weights_dense2);
-  model_files->tokenizer = std::move(*tokenizer);
-  model_files->config = std::move(*config);
-  return model_files;
-}
-
-// `StubServiceLauncher` is provided to `PassageEmbeddingsServiceController`,
-// and is used to spin up a sandboxed process. We pass a stub because we manage
-// the embedding service in-process, and the launcher path is never taken.
-class StubServiceLauncher : public PassageEmbeddingsServiceLauncher {
+// Launches the sandboxed Passage Embeddings utility process, whose LoadModels
+// is chromium_src-overridden to run EmbeddingGemma on LiteRT's CompiledModel
+// inside that process.
+class LitertServiceLauncher : public PassageEmbeddingsServiceLauncher {
  public:
   static PassageEmbeddingsServiceLauncher& Create() {
-    static base::NoDestructor<StubServiceLauncher> launcher;
+    static base::NoDestructor<LitertServiceLauncher> launcher;
     return *launcher;
   }
 
   void LaunchService(mojo::PendingReceiver<mojom::PassageEmbeddingsService>
                          receiver) override {
-    NOTREACHED();
+    content::ServiceProcessHost::Launch<mojom::PassageEmbeddingsService>(
+        std::move(receiver), content::ServiceProcessHost::Options()
+                                 .WithDisplayName("Passage Embeddings Service")
+                                 .Pass());
   }
-  void OnServiceDisconnected(bool is_idle) override { NOTREACHED(); }
-  bool AllowedToLaunch() const override { return false; }
+  void OnServiceDisconnected(bool is_idle) override {}
+  bool AllowedToLaunch() const override { return true; }
 };
 
 }  // namespace
@@ -137,10 +54,9 @@ BravePassageEmbeddingsServiceController::Get() {
 
 BravePassageEmbeddingsServiceController::
     BravePassageEmbeddingsServiceController()
-    : PassageEmbeddingsServiceController(StubServiceLauncher::Create()) {
-  // AddObserver re-fires OnLocalModelsReady synchronously if the
-  // component is already installed; our handler sets model_dir_ready_
-  // and notifies observer_list_ via EmbedderMetadataUpdated.
+    : PassageEmbeddingsServiceController(LitertServiceLauncher::Create()) {
+  // AddObserver re-fires OnLocalModelsReady synchronously if the component is
+  // already installed, so this also covers a model installed before startup.
   updater_state_observation_.Observe(
       local_ai::LocalModelsUpdaterState::GetInstance());
 }
@@ -154,171 +70,38 @@ bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
   return false;
 }
 
-void BravePassageEmbeddingsServiceController::MaybeLaunchService() {
-  if (service_) {
-    return;
-  }
-  service_ = std::make_unique<BravePassageEmbeddingsService>(
-      base::BindRepeating(&CreateBackgroundWebContents));
-  // service_remote_ is intentionally left unbound:
-  // BravePassageEmbeddingsService exposes an in-process BindPassageEmbedder()
-  // that we call directly from GetEmbeddings() instead of routing LoadModels
-  // through a mojo pipe (the upstream mojom requires physical model files,
-  // which we don't have).
-}
-
-void BravePassageEmbeddingsServiceController::ResetServiceRemote() {
-  DVLOG(3) << "ResetServiceRemote (service_=" << (service_ ? "set" : "null")
-           << ")";
-  ResetEmbedderRemote();
-  service_.reset();
-  otr_profile_observation_.Reset();
-}
-
-void BravePassageEmbeddingsServiceController::BindLocalAIReceiver(
-    mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver) {
-  if (service_) {
-    service_->BindLocalAIReceiver(std::move(receiver));
-  }
-}
-
-void BravePassageEmbeddingsServiceController::ObserveGuestOTRProfile(
-    Profile* otr_profile) {
-  CHECK(otr_profile);
-  if (otr_profile_observation_.IsObservingSource(otr_profile)) {
-    return;
-  }
-  otr_profile_observation_.Reset();
-  otr_profile_observation_.Observe(otr_profile);
-}
-
-void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
-    Profile* profile) {
-  DVLOG(1) << "Guest OTR profile is being destroyed; tearing down service "
-              "to release BackgroundWebContents";
-  // ResetServiceRemote drops service_ (and with it the BackgroundWebContents)
-  // and calls otr_profile_observation_.Reset() so we stop observing.
-  ResetServiceRemote();
-}
-
-bool BravePassageEmbeddingsServiceController::IsModelAvailable() {
-  // Mirrors upstream's "do we have a model path to load from?" check
-  // — true once LocalModelsUpdaterState reports the component is
-  // installed. SchedulingEmbedder retries on the
-  // EmbedderMetadataUpdated notification fired in OnLocalModelsReady.
-  return model_dir_ready_;
-}
-
 void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
     const base::FilePath& install_dir) {
-  model_dir_ready_ = !install_dir.empty();
-  if (!model_dir_ready_) {
-    // Component uninstall (or test reset) cleared the dir. Tear the
-    // service down if any so it doesn't outlive the model files.
-    if (service_) {
-      ResetServiceRemote();
-    }
-    return;
-  }
-  // SchedulingEmbedder is the only observer and SubmitWorkToEmbedder()
-  // short-circuits if work is already in flight, so re-firing on
-  // repeated component-updater notifications is harmless.
-  observer_list_.Notify(&EmbedderMetadataObserver::EmbedderMetadataUpdated,
-                        GetEmbedderMetadata());
-}
-
-EmbedderMetadata
-BravePassageEmbeddingsServiceController::GetEmbedderMetadata() {
-  return EmbedderMetadata(/*model_version=*/1,
-                          /*output_size=*/768,
-                          /*search_score_threshold=*/0.45);
-}
-
-void BravePassageEmbeddingsServiceController::GetEmbeddings(
-    std::vector<std::string> passages,
-    PassagePriority priority,
-    GetEmbeddingsResultCallback callback) {
-  if (passages.empty()) {
-    std::move(callback).Run({}, ComputeEmbeddingsStatus::kSuccess);
-    return;
-  }
-
-  if (!IsModelAvailable()) {
-    DVLOG(1) << "GetEmbeddings called before model dir is ready";
-    std::move(callback).Run({}, ComputeEmbeddingsStatus::kModelUnavailable);
-    return;
-  }
-
-  if (!embedder_remote_) {
-    MaybeLaunchService();
-    auto receiver = embedder_remote_.BindNewPipeAndPassReceiver();
-    // When the embedder pipe goes idle or disconnects, tear the whole
-    // service down to free the WASM renderer.
-    embedder_remote_.set_disconnect_handler(base::BindOnce(
-        &BravePassageEmbeddingsServiceController::ResetServiceRemote,
-        base::Unretained(this)));
-    embedder_remote_.set_idle_handler(
-        kEmbedderTimeout.Get(),
-        base::BindRepeating(
-            &BravePassageEmbeddingsServiceController::ResetServiceRemote,
-            base::Unretained(this)));
-    DVLOG(3) << "GetEmbeddings: posting model-file load for new embedder";
-    LoadModelFilesAndBind(std::move(receiver));
-  }
-
-  embedder_remote_->GenerateEmbeddings(
-      std::move(passages), ToMojom(priority),
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          base::BindOnce(
-              [](GetEmbeddingsResultCallback cb,
-                 std::vector<mojom::PassageEmbeddingsResultPtr> results) {
-                auto status = results.empty()
-                                  ? ComputeEmbeddingsStatus::kExecutionFailure
-                                  : ComputeEmbeddingsStatus::kSuccess;
-                std::move(cb).Run(std::move(results), status);
-              },
-              std::move(callback)),
-          std::vector<mojom::PassageEmbeddingsResultPtr>()));
-}
-
-void BravePassageEmbeddingsServiceController::LoadModelFilesAndBind(
-    mojo::PendingReceiver<mojom::PassageEmbedder> receiver) {
-  auto* updater_state = local_ai::LocalModelsUpdaterState::GetInstance();
+  // The component ships the LiteRT model in optimization guide's own layout:
+  // model.tflite, model-info.pb, and the SentencePiece model listed in its
+  // additional_files. Loading it here reads the version and the embedder
+  // metadata from the component rather than hard-coding them, and reports no
+  // model at all when an older component (or a withheld download) leaves any
+  // of those files missing.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&LoadLocalModelFilesFromDisk,
-                     updater_state->GetEmbeddingGemmaModel(),
-                     updater_state->GetEmbeddingGemmaDense1(),
-                     updater_state->GetEmbeddingGemmaDense2(),
-                     updater_state->GetEmbeddingGemmaTokenizer(),
-                     updater_state->GetEmbeddingGemmaConfig()),
       base::BindOnce(
-          &BravePassageEmbeddingsServiceController::OnLocalModelFilesLoaded,
-          weak_ptr_factory_.GetWeakPtr(), std::move(receiver)));
+          &optimization_guide::LoadAndVerifyModelInfoOffThread,
+          optimization_guide::proto::OPTIMIZATION_TARGET_PASSAGE_EMBEDDER,
+          local_ai::LocalModelsUpdaterState::GetInstance()
+              ->GetEmbeddingGemmaLitertDir()),
+      base::BindOnce(
+          &BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded,
+          base::Unretained(this)));
 }
 
-void BravePassageEmbeddingsServiceController::OnLocalModelFilesLoaded(
-    mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
-    local_ai::mojom::ModelFilesPtr model_files) {
-  if (!service_) {
-    DVLOG(1) << "Service torn down before model files finished loading";
-    return;
+void BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded(
+    std::optional<optimization_guide::ModelInfo> model_info) {
+  if (!model_info) {
+    VLOG(1) << "No usable LiteRT model in the EmbeddingGemma component; "
+               "passage embeddings disabled until it ships one";
   }
-  if (!model_files) {
-    DVLOG(1) << "Model files load failed; tearing down service";
-    // Receiver pipe is dropped here; embedder_remote_'s disconnect
-    // handler will fire and call ResetServiceRemote.
-    return;
-  }
-  service_->BindPassageEmbedder(
-      std::move(receiver), std::move(model_files),
-      base::BindOnce([](bool success) {
-        DVLOG_IF(1, !success)
-            << "BravePassageEmbeddingsService reported BindPassageEmbedder "
-               "failure; this batch will return an empty result";
-      }));
+  // Upstream validates the metadata, records the model paths and notifies
+  // observers. With no model info it clears the model recorded before, whose
+  // dir the component updater removes once this version is installed.
+  PassageEmbeddingsServiceController::MaybeUpdateModelInfo(model_info);
 }
 
 }  // namespace passage_embeddings

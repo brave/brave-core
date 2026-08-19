@@ -42,10 +42,10 @@ void BraveAccountService::BindInterface(
                : ActiveState().AddReceiver(std::move(pending_receiver));
 }
 
-base::OneShotTimer* BraveAccountService::AuthValidateTimerForTesting() {
+base::OneShotTimer* BraveAccountService::UpdateEmailTimerForTesting() {
   CHECK_IS_TEST();
   auto* logged_in = std::get_if<LoggedInState>(&state_);
-  return logged_in ? &logged_in->auth_validate_timer_for_testing()  // IN-TEST
+  return logged_in ? &logged_in->update_email_timer_for_testing()  // IN-TEST
                    : nullptr;
 }
 

@@ -241,6 +241,34 @@ extension Strings {
     value: "Unfortunately, Brave crashed or did not close properly.\nRestore your tabs?",
     comment: "Restore Tabs Prompt Description"
   )
+  public static let enableCrashReporterAlertTitle = NSLocalizedString(
+    "EnableCrashReporterAlertTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable automatic crash reports",
+    comment: "The title on an alert presented to the user after the app crashes"
+  )
+  public static let enableCrashReporterAlertMessage = NSLocalizedString(
+    "EnableCrashReporterAlertMessage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "If you experience a crash or freeze, Brave can automatically send anonymous diagnostic reports to fix the issue. You can always turn this off in Settings later.",
+    comment: "The message on an alert presented to the user after the app crashes"
+  )
+  public static let enableCrashReporterConfirmButtonTitle = NSLocalizedString(
+    "EnableCrashReporterConfirmButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable",
+    comment: "The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting"
+  )
+  public static let enableCrashReporterDenyButtonTitle = NSLocalizedString(
+    "EnableCrashReporterDenyButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Not Now",
+    comment: "The button title on an alert presented to the user after the app crashes that ignores the alert"
+  )
   public static let restoreTabNegativeButtonTitle = NSLocalizedString(
     "RestoreTabNegativeButtonTitle",
     tableName: "BraveShared",
@@ -1168,6 +1196,20 @@ extension Strings {
       value: "Shred All Tabs",
       comment: "A button title that when tapped allows users to shred all of their tabs"
     )
+    public static let viewHistoryMenuItemLabel = NSLocalizedString(
+      "tabGrid.viewHistoryMenuItemLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "History",
+      comment: "Label for history menu item button that when tapped presents the users history & recently closed tabs"
+    )
+    public static let viewSyncedTabsMenuItemLabel = NSLocalizedString(
+      "tabGrid.viewSyncedTabsMenuItemLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sync",
+      comment: "Label for synced tabs menu item that when tapped presents the users synced tabs"
+    )
     public static let viewHistoryAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewHistoryAccessibilityLabel",
       tableName: "BraveShared",
@@ -1195,6 +1237,27 @@ extension Strings {
       bundle: .module,
       value: "Private Browsing",
       comment: "Accessibility label for the regular browsing option in the browsing mode picker"
+    )
+    public static let tabsCountFormatSingular = NSLocalizedString(
+      "tabGrid.tabsCountFormatSingular",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "%lld Tab",
+      comment: "A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab'"
+    )
+    public static let tabsCountFormatPlural = NSLocalizedString(
+      "tabGrid.tabsCountFormatPlural",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "%lld Tabs",
+      comment: "A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs'"
+    )
+    public static let privateBrowsingModeTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingModeTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Private",
+      comment: "A label in the tab tray mode switcher for private browsing mode"
     )
     public static let privateBrowsingInfoTitle = NSLocalizedString(
       "tabGrid.privateBrowsingInfoTitle",
@@ -2309,6 +2372,24 @@ extension Strings {
         bundle: .module,
         value: "This private ping lets Brave estimate active users.",
         comment: "Description to explain the daily usage ping toggle"
+      )
+
+    public static let sendCrashReportsTitle =
+      NSLocalizedString(
+        "settings.sendCrashReportsTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Send crash reports",
+        comment: "Title to explain the send crash reports toggle"
+      )
+
+    public static let sendCrashReportsDescription =
+      NSLocalizedString(
+        "settings.sendCrashReportsDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Send anonymous diagnostic reports if you experience a crash or freeze.",
+        comment: "Description to explain the send crash reports toggle"
       )
 
     public static let surveyPanelistTitle =
@@ -4229,14 +4310,6 @@ extension Strings {
       value: "Sponsored Images",
       comment:
         "A selection to let the users see sponsored image backgrounds when opening a new tab."
-    )
-    public static let settingsSponsoredImagesAndVideosSelection = NSLocalizedString(
-      "ntp.settingsSponsoredImagesAndVideosSelection",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Sponsored Images & Videos",
-      comment:
-        "A selection to let the users see sponsored image and video backgrounds when opening a new tab."
     )
     public static let settingsAutoOpenKeyboard = NSLocalizedString(
       "ntp.settingsAutoOpenKeyboard",
@@ -7781,6 +7854,28 @@ extension Strings {
       bundle: .module,
       value: "on %@",
       comment: "This is a suffix statement. example: SomeChannel on Twitter"
+    )
+    public static let settingsResetTitle = NSLocalizedString(
+      "rewards.settingsResetTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Reset",
+      comment: "Title of a button that resets the user's Brave Rewards profile"
+    )
+    public static let settingsResetConfirmationTitle = NSLocalizedString(
+      "rewards.settingsResetConfirmationTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Reset Brave Rewards",
+      comment: "Title of a confirmation dialog shown before resetting Brave Rewards"
+    )
+    public static let settingsResetConfirmationMessage = NSLocalizedString(
+      "rewards.settingsResetConfirmationMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value:
+        "By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled.",
+      comment: "Message of a confirmation dialog shown before resetting Brave Rewards"
     )
   }
 }

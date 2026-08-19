@@ -16,7 +16,6 @@ brave_policies = [
   "BraveSoftware/BravePlaylistEnabled.yaml",
   "BraveSoftware/BraveReduceLanguageEnabled.yaml",
   "BraveSoftware/BraveRewardsDisabled.yaml",
-  "BraveSoftware/BraveSearchResultAdsEnabled.yaml",
   "BraveSoftware/BraveShieldsDisabledForUrls.yaml",
   "BraveSoftware/BraveShieldsEnabledForUrls.yaml",
   "BraveSoftware/BraveSpeedreaderEnabled.yaml",
@@ -34,6 +33,7 @@ brave_policies = [
   "BraveSoftware/DefaultBraveReferrersSetting.yaml",
   "BraveSoftware/DefaultBraveRemember1PStorageSetting.yaml",
   "BraveSoftware/EmailAliasesEnabled.yaml",
+  "BraveSoftware/PsstEnabled.yaml",
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
 ]

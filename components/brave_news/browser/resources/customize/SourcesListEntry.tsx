@@ -5,6 +5,8 @@
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
+import { color, effect, font, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../shared/Context'
@@ -15,37 +17,43 @@ interface Props {
   publisherId: string
 }
 
-const ToggleButton = styled.button`
+const RemoveButton = styled.button`
   all: unset;
+  --leo-icon-size: ${icon.m};
+
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  color: var(--brave-color-text02);
+  color: ${color.icon.default};
+  padding: ${spacing.s};
+  border-radius: ${radius.s};
+
   &:hover {
-    text-decoration: underline;
+    color: ${color.icon.interactive};
   }
-  &:active {
-    color: var(--brave-color-interactive08);
-  }
+
   &:focus-visible {
-    outline: 1px solid var(--brave-color-focusBorder);
-    outline-offset: 4px;
+    outline: ${effect.focusState};
   }
 `
 
 const Container = styled(Flex)`
-  padding: 10px 0;
+  padding: ${spacing.m} 0;
+  min-width: 0;
 
-  &:not(:hover, :has(:focus-visible)) ${ToggleButton} {
+  &:not(:hover, :has(:focus-visible)) ${RemoveButton} {
     opacity: 0;
   }
 `
 
 const FavIconContainer = styled.div`
-  flex: 0 0 24px;
-  height: 24px;
+  flex: 0 0 ${icon.l};
+  height: ${icon.l};
   flex-shrink: 0;
-  border-radius: 100px;
-  color: #6B7084;
+  border-radius: ${radius.full};
+  color: ${color.icon.default};
 
   img {
     width: 100%;
@@ -55,13 +63,12 @@ const FavIconContainer = styled.div`
 
 const Text = styled.span`
   flex: 1 1 0;
-  word-break: break-word;
-  font-size: 14px;
-  font-weight: 500;
-`
-
-const ChannelNameText = styled(Text)`
-  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: ${font.default.regular};
+  color: ${color.text.primary};
 `
 
 function FavIcon (props: { publisherId: string }) {
@@ -83,30 +90,41 @@ function FavIcon (props: { publisherId: string }) {
 export function FeedListEntry (props: Props) {
   const publisher = usePublisher(props.publisherId)
   const { setFollowed } = usePublisherFollowed(props.publisherId)
+  const unfollowLabel = getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)
 
   return (
-    <Container direction="row" justify="space-between" align='center' gap={8}>
+    <Container direction="row" justify="space-between" align='center' gap={spacing.m}>
       <FavIcon publisherId={props.publisherId} />
-      <Text>{publisher.publisherName}</Text>
-      <ToggleButton onClick={() => setFollowed(false)}>
-        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
-      </ToggleButton>
+      <Text title={publisher.publisherName}>{publisher.publisherName}</Text>
+      <RemoveButton
+        onClick={() => setFollowed(false)}
+        title={unfollowLabel}
+        aria-label={unfollowLabel}
+      >
+        <Icon name='trash' />
+      </RemoveButton>
     </Container>
   )
 }
 
 export function ChannelListEntry (props: { channelName: string }) {
   const { setSubscribed } = useChannelSubscribed(props.channelName)
+  const channelName = getTranslatedChannelName(props.channelName)
+  const unfollowLabel = getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)
 
   return (
-    <Container direction="row" justify='space-between' align='center' gap={8}>
+    <Container direction="row" justify='space-between' align='center' gap={spacing.m}>
       <FavIconContainer>
         {ChannelIcons[props.channelName] ?? ChannelIcons.default}
       </FavIconContainer>
-      <ChannelNameText>{getTranslatedChannelName(props.channelName)}</ChannelNameText>
-      <ToggleButton onClick={() => setSubscribed(false)}>
-        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
-      </ToggleButton>
+      <Text title={channelName}>{channelName}</Text>
+      <RemoveButton
+        onClick={() => setSubscribed(false)}
+        title={unfollowLabel}
+        aria-label={unfollowLabel}
+      >
+        <Icon name='trash' />
+      </RemoveButton>
     </Container>
   )
 }

@@ -161,7 +161,6 @@
 <translation id="2546283357679194313">Cookies y datos de sitios</translation>
 <translation id="3127075554145176599">Consigue la mejor protección de Brave frente a amenazas online</translation>
 <translation id="2570922361219980984">El acceso a la ubicación también está desactivado en este dispositivo. Actívalo en los <ph name="BEGIN_LINK"/>ajustes de Android<ph name="END_LINK"/>.</translation>
-<translation id="257931822824936280">Ampliado (hacer clic para contraer)</translation>
 <translation id="2586657967955657006">Portapapeles</translation>
 <translation id="2588271083332682494">Ordena con grupos de pestañas</translation>
 <translation id="2592917252160773942">Los sitios pueden solicitar tu cámara</translation>
@@ -404,7 +403,6 @@
 <translation id="509133520954049755">Solicitar vista para ordenador</translation>
 <translation id="5091663350197390230">Cuando esta opción está activada, los sitios pueden usar JavaScript. Si está desactivada, los sitios no pueden usar JavaScript.</translation>
 <translation id="5099358668261120049">Esta acción eliminará todos los datos y las cookies almacenados por <ph name="ORIGIN"/> o por su aplicación en tu pantalla de inicio.</translation>
-<translation id="5100237604440890931">Contraído (hacer clic para ampliar)</translation>
 <translation id="7143053178237996319">Puedes usar Brave cada vez que toques enlaces en mensajes, documentos y otras aplicaciones</translation>
 <translation id="512938610812707830">Hoja inferior de colecciones de temas del aspecto de la página Nueva pestaña abierta a altura completa</translation>
 <translation id="5137460097045297858">Hoja inferior del feed de Discover abierta a media altura</translation>
@@ -445,7 +443,7 @@
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloqueado</translation>
 <translation id="5617702678271228680">Hoja inferior de las tarjetas de la página Nueva pestaña</translation>
 <translation id="5621413808884657932">Si se activa, los sitios pueden solicitar permiso para acceder a otras aplicaciones y servicios de este dispositivo. Si se desactiva, los sitios no pueden acceder a otras aplicaciones y servicios de este dispositivo.</translation>
-<translation id="5632485077360054581">Muéstrame cómo</translation>
+<translation id="5632485077360054581">Ver cómo</translation>
 <translation id="5649053991847567735">Descargas automáticas</translation>
 <translation id="5668404140385795438">Ignora la solicitud de un sitio web para no ampliar la imagen</translation>
 <translation id="5668843533782548925">Los sitios son más lentos, pero más seguros</translation>
@@ -692,7 +690,6 @@ Protección Avanzada controla estos ajustes de Brave:</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> permitida</translation>
 <translation id="8200772114523450471">Reanudar</translation>
 <translation id="8211406090763984747">La conexión es segura</translation>
-<translation id="822964464349305906"><ph name="TYPE_1"/> o <ph name="TYPE_2"/></translation>
 <translation id="823874716226307142">Si se activa, los sitios pueden solicitar permiso para acceder a otros dispositivos de tu red local. Si se desactiva, los sitios no pueden acceder a otros dispositivos de tu red local.</translation>
 <translation id="8249310407154411074">Mover al principio</translation>
 <translation id="8261506727792406068">Eliminar</translation>

@@ -7,11 +7,15 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
 
 namespace ai_chat::features {
 
@@ -52,6 +56,9 @@ const base::FeatureParam<bool> kShouldIndentPageContentBlocks{
 // Enable remote model fetching from server endpoint
 BASE_FEATURE(kAIChatRemoteModelsConfig, base::FEATURE_DISABLED_BY_DEFAULT);
 
+const base::FeatureParam<base::TimeDelta> kRemoteModelsCacheTTL{
+    &kAIChatRemoteModelsConfig, "cache_ttl", base::Days(1)};
+
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }
@@ -69,6 +76,11 @@ bool IsAIChatFirstEnabled() {
 }
 
 BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enables experimental "workspace" local coding-agent tools that let Leo view,
+// search, and edit files within a user-selected local folder.
+// See https://github.com/brave/brave-browser/issues/57388.
+BASE_FEATURE(kAIChatWorkspaceTools, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatAgentProfile, base::FEATURE_DISABLED_BY_DEFAULT);
 
@@ -96,7 +108,7 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled() {
       features::kAIChatGlobalSidePanelEverywhere);
 }
 
-BASE_FEATURE(kAIChatMoveFullPageToSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatMoveFullPageToSidePanel, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kCustomSiteDistillerScripts, base::FEATURE_ENABLED_BY_DEFAULT);
 
@@ -152,12 +164,6 @@ BASE_FEATURE(kNEARModels,
              "AIChatNEARModels",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-const base::FeatureParam<bool> kNEARModelsEncryption{&kNEARModels, "encryption",
-                                                     false};
-
-const base::FeatureParam<bool> kNEARModelsEncryptionSearch{
-    &kNEARModels, "encryption_search", false};
-
 bool IsNEARModelsEnabled() {
   return base::FeatureList::IsEnabled(features::kNEARModels);
 }
@@ -199,8 +205,28 @@ bool IsAIChatWebUIEnabled() {
 
 BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsShowAIChatInputOnNewTabPageEnabled() {
-  return base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage);
+const base::FeatureParam<bool> kShowAIChatInputOnNewTabPageDayZero{
+    &kShowAIChatInputOnNewTabPage, "day_zero", false};
+
+bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
+                                          bool is_first_run) {
+  CHECK(local_state);
+  // If feature was enabled via day zero experiment at install time, leave
+  // the feature enabled forever.
+  if (local_state->GetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled)) {
+    return true;
+  }
+  if (!base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage)) {
+    return false;
+  }
+  if (kShowAIChatInputOnNewTabPageDayZero.Get()) {
+    if (!is_first_run) {
+      // Existing users are not included in the day zero study.
+      return false;
+    }
+    local_state->SetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled, true);
+  }
+  return true;
 }
 
 BASE_FEATURE(kAIChatDeepResearch,
@@ -217,10 +243,15 @@ bool IsBraveSyncAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveSyncAIChat);
 }
 
-BASE_FEATURE(kAIChatConversationShare, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatConversationShare, base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{
     &kAIChatConversationShare, "viewer_base_url",
     "https://leo-ai.brave.app/shared/"};
+
+const base::FeatureParam<int> kAIChatConversationShareExpiryDays{
+    &kAIChatConversationShare, "expiry_days", 7};
+
+BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace ai_chat::features

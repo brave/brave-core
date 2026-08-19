@@ -1,0 +1,46 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_vpn.mojom;
+
+// Newest version of the browser to agent contract below, sent by browsers in
+// BindBrowserHost(). The agent accepts a range of versions rather than an
+// exact match, so a browser and agent from different updates can still talk;
+// it answers anything outside that range with kVersionMismatch. Bump on an
+// incompatible change, and prefer [MinVersion] for additive ones.
+//
+// Note that on official desktop builds message ID scrambling already stops
+// binaries from different Brave versions exchanging messages at all, so this
+// handshake is only reachable between binaries sharing that salt.
+const uint32 kProtocolVersion = 1;
+
+// Browser's subordinate surface, passed to the agent's BrowserHost, so the
+// agent can call back into the browser once it accepts.
+interface BrowserEndpoint {
+};
+
+enum BrowserAuthResult {
+  kAccepted,
+  kRejected,
+  kVersionMismatch,
+  kHostAlreadyRequested,
+};
+
+// The browser's connection to the agent, and the only interface reachable on
+// a fresh connection. The browser MUST keep this remote alive for as long as
+// it uses the BrowserHost obtained from it. The underlying transport is bound
+// to this receiver, so dropping it tears down the whole connection,
+// BrowserHost included.
+interface BrowserHostProvider {
+  BindBrowserHost(uint32 protocol_version,
+                  pending_remote<BrowserEndpoint> browser_endpoint,
+                  pending_receiver<BrowserHost> host)
+                    => (BrowserAuthResult result);
+};
+
+// Agent browser-facing real API surface, owns the VPN related functionality
+// passed to the authenticanted browsers.
+interface BrowserHost {
+};

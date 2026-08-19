@@ -141,22 +141,6 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [53620],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
-    "META": {"sizes": {"includes": [110]}},
-    "includes": [53640],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_send_page/brave_wallet_send_page.grd": {
-    "META": {"sizes": {"includes": [60]}},
-    "includes": [53660],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_deposit_page/brave_wallet_deposit_page.grd": {
-    "META": {"sizes": {"includes": [100]}},
-    "includes": [53680],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_fund_wallet_page/brave_wallet_fund_wallet_page.grd": {
-    "META": {"sizes": {"includes": [80]}},
-    "includes": [53700],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [53720]
@@ -223,7 +207,7 @@
     "includes": [53980],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
-    "META": {"sizes": {"includes": [45]}},
+    "META": {"sizes": {"includes": [50]}},
     "includes": [54000],
   },
   "brave/ios/web/test/test_resources.grd": {
@@ -233,14 +217,6 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page_static_resources.grd": {
     "META": {"sizes": {"includes": [1]}},
     "includes": [54030],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_module/candle_embedding_module.grd": {
-    "META": {"sizes": {"includes": [2]}},
-    "includes": [54035],
-  },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-local_ai/local_ai.grd": {
-    "META": {"sizes": {"includes": [1]}},
-    "includes": [54037],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page.grd": {
     "META": {"sizes": {"includes": [20]}},

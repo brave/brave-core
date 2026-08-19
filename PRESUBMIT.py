@@ -153,7 +153,7 @@ def CheckPatchFormatted(input_api, output_api):
         return [
             output_api.PresubmitError(
                 f'The code requires formatting. '
-                f'Please run: npm run presubmit -- --fix.\n\n{err}')
+                f'Please run: pnpm run presubmit --fix.\n\n{err}')
         ]
 
 
@@ -175,7 +175,7 @@ def CheckESLint(input_api, output_api):
             return [
                 output_api.PresubmitError(
                     f'ESLint issues found. '
-                    f'Run npm run eslint -- (--fix) to reproduce.\n\n{err}')
+                    f'Run pnpm run eslint (--fix) to reproduce.\n\n{err}')
             ]
 
 
@@ -232,7 +232,6 @@ def CheckLicense(input_api, output_api):
 
     files_to_check = input_api.DEFAULT_FILES_TO_CHECK + (r'.+\.gni?$', )
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
-        r"\.storybook/",
         r"ios/browser/api/brave_rewards/legacy_database/core_data_models/",
         r'win_build_output/',
     )

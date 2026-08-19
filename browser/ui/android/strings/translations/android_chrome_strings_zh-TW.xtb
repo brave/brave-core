@@ -15,9 +15,11 @@
 <translation id="1052842760770519282">無法存取部分密碼</translation>
 <translation id="1057623954802068161">捲動到頁面頂端</translation>
 <translation id="1066338698580889414">提示通知的宣傳內容已顯示在整個畫面</translation>
+<translation id="1067048845568873861">建立時間</translation>
 <translation id="1070689840697074178">你可以在這裡下載 PDF</translation>
 <translation id="107147699690128016">如果變更副檔名，這個檔案可能會在其他應用程式中開啟，並可能對裝置造成損害。</translation>
 <translation id="1073328695547557412">輕觸 Brave 智慧鏡頭圖示</translation>
+<translation id="1075811647922107217">網頁大小</translation>
 <translation id="1080116354587839789">符合視窗寬度</translation>
 <translation id="1086486568852410168">用 Brave 智慧鏡頭搜尋</translation>
 <translation id="1087799850623149508">按住網址列即可移到底部</translation>
@@ -30,7 +32,6 @@
 <translation id="1108938384783527433">同步處理歷史記錄</translation>
 <translation id="1111673857033749125">儲存在您其他裝置上的書籤會顯示在這裡。</translation>
 <translation id="1123537484474186311"><ph name="TAB_TITLE"/>，子母畫面分頁</translation>
-<translation id="1124357650933674597">{NUM_WINDOWS,plural, =1{還原 1 個視窗}other{還原 # 個視窗}}</translation>
 <translation id="1126696498560056882">管理這部裝置上的帳戶</translation>
 <translation id="9171525955914564119">如要在所有裝置上存取書籤和其他資料，請以「<ph name="EMAIL"/>」身分登入 Brave</translation>
 <translation id="1138458427267715730">如果產品在任何網站上降價，透過快訊取得通知</translation>
@@ -74,14 +75,12 @@
 <translation id="1269129608791067105">這裡會顯示你的歷史記錄</translation>
 <translation id="1273937721055267968">封鎖 <ph name="DOMAIN"/></translation>
 <translation id="1280921956537356716">開啟提示通知</translation>
-<translation id="1283039547216852943">輕觸即可展開</translation>
 <translation id="1289129165308566697">查看其他裝置上的歷史記錄</translation>
 <translation id="129553762522093515">最近關閉的分頁</translation>
 <translation id="1298077576058087471">節省高達 60% 的數據用量，閱讀今日新聞</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> - 來自 <ph name="DEVICE_NAME"/></translation>
 <translation id="1310482092992808703">將分頁加入群組</translation>
 <translation id="1318262688555255786">分享「<ph name="PAGE_TITLE"/>」的網頁連結，來源：<ph name="PAGE_URL"/></translation>
-<translation id="1320912611264252795">書籤儲存流程資料夾已開啟，目前顯示整個版面的內容</translation>
 <translation id="1327257854815634930">瀏覽記錄已開啟</translation>
 <translation id="6773423637732432200">無法更新 Brave。更多選項</translation>
 <translation id="3169981355900570544">Brave 功能快速鍵</translation>
@@ -116,6 +115,7 @@
 <translation id="1435593198351412143">自動開啟 PDF</translation>
 <translation id="1437543266176261764">在 <ph name="APP_NAME"/> 中執行</translation>
 <translation id="1448440926884431741">在書籤中整理所追蹤的產品</translation>
+<translation id="1452651021404174820">選擇裝置</translation>
 <translation id="1455845192930279203">仍要從 <ph name="DOWNLOAD_DOMAIN"/> 下載「<ph name="FILE_NAME"/>」(<ph name="FILE_SIZE"/>) 嗎？</translation>
 <translation id="1460751212339734034">不必重複輸入網址，節省寶貴時間</translation>
 <translation id="146522654774760805">密碼和自動填入</translation>
@@ -123,6 +123,7 @@
 <translation id="1477626028522505441">伺服器發生問題，因此無法下載 <ph name="FILE_NAME"/>。</translation>
 <translation id="147982357559798527">已變更</translation>
 <translation id="5970766554644855317">這裡可能並未顯示所有歷史記錄，請開啟完整的 Brave 歷史記錄，才能查看所有記錄。</translation>
+<translation id="1483493594462132177">傳送</translation>
 <translation id="1495677929897281669">返回分頁</translation>
 <translation id="1496514951988037011">使用者名稱</translation>
 <translation id="1501480321619201731">刪除群組</translation>
@@ -177,6 +178,7 @@
 <translation id="1792959175193046959">你隨時可以變更預設的下載位置</translation>
 <translation id="1796666869097395659">將分頁縮到最小，稍後再返回查看</translation>
 <translation id="7401204338724669842">Brave 提示</translation>
+<translation id="1803799720926799756">檔案大小</translation>
 <translation id="1807246157184219062">淺色</translation>
 <translation id="1807709131360304325">開啟新視窗</translation>
 <translation id="1812027881030482584">無法在「<ph name="SITE_ETLD_PLUS_ONE"/>」上繼續使用「<ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>」</translation>
@@ -252,6 +254,7 @@
 <translation id="2149968176347646218">連線不安全</translation>
 <translation id="2149973817440762519">編輯書籤</translation>
 <translation id="526235294307144732">如要將 Brave 資料儲存到 Brave 帳戶，或使用帳戶中的 Brave 資料，請輸入通關密語</translation>
+<translation id="2164015935042801524">在這裡按一下滑鼠右鍵即可垂直顯示分頁</translation>
 <translation id="2166228530126694506">版本 <ph name="VERSION_NUMBER"/></translation>
 <translation id="2172688499998841696">圖片說明功能已關閉</translation>
 <translation id="2172905120685242547">要關閉視窗嗎？</translation>
@@ -292,6 +295,7 @@
 <translation id="2323763861024343754">網站儲存資料量</translation>
 <translation id="2327445548174191329">來自 <ph name="DEVICE_NAME"/></translation>
 <translation id="2328474416100889417">所有共用對象都將立即無法存取「<ph name="GROUP_NAME"/>」分頁群組，邀請連結也會全部失效</translation>
+<translation id="3096606216245789753">隆重推出 Brave 內建 AI 模式</translation>
 <translation id="2330186936255788117">更多書籤</translation>
 <translation id="2332515770639153015">已啟用安全瀏覽強化防護功能</translation>
 <translation id="233375395665273385">刪除並登出</translation>
@@ -304,6 +308,7 @@
 <translation id="351551888962017708">預先載入更多網頁。收到其他網站或應用程式的要求時，系統可能會透過 Brave 伺服器預先載入這些網頁。</translation>
 <translation id="2366554533468315977">這項商品的網路價格記錄</translation>
 <translation id="2367818124433749493">開發人員捷徑</translation>
+<translation id="2369058545741334020">以閱讀模式開啟</translation>
 <translation id="2385605401818128172">你可以查看傳送大量通知的網站，並禁止這些網站再傳送通知</translation>
 <translation id="2386938421315164605">隱藏和取消隱藏主題</translation>
 <translation id="2390510615457643724">要再次下載「<ph name="FILE_NAME"/>」(<ph name="FILE_SIZE"/>) 嗎？</translation>
@@ -312,6 +317,7 @@
 <translation id="2411239243988279592"><ph name="TAB_TITLE"/>，選取的分頁，正在播放音訊</translation>
 <translation id="2413014528833954543">無法檢查這部裝置上的密碼</translation>
 <translation id="2414886740292270097">深色</translation>
+<translation id="2415037988255164008">要還原視窗嗎？</translation>
 <translation id="2421705177906985956">目前沒有可顯示的網站</translation>
 <translation id="2426805022920575512">選擇其他帳戶</translation>
 <translation id="2427025860753516072">{FILE_COUNT,plural, =1{影片，清單中有 1 部影片}other{影片，清單中有 # 部影片}}</translation>
@@ -497,7 +503,6 @@
 <translation id="3161699713309727585"><ph name="BUTTON_TEXT"/>，在新分頁中開啟</translation>
 <translation id="3166827708714933426">分頁與視窗快速鍵</translation>
 <translation id="3167258285411721858">你可以要求 <ph name="HOST_NAME"/> 顯示行動版網站</translation>
-<translation id="3183941812169784232">要還原所有視窗嗎？</translation>
 <translation id="3187472288455401631">廣告評估功能</translation>
 <translation id="3189635831478931757">「<ph name="GROUP_TITLE"/>」分頁群組</translation>
 <translation id="3200536777393523575">要關閉目前的視窗嗎？</translation>
@@ -545,6 +550,7 @@
 <translation id="4114256890962999877">如要繼續存取密碼，請立即匯出密碼、更新 Google Play 服務，再將密碼匯入回 Brave 密碼管理工具。<ph name="BEGIN_LINK"/>查看完整操作說明<ph name="END_LINK"/>。</translation>
 <translation id="3435738964857648380">安全性</translation>
 <translation id="3435914367318771664">將分頁加入新群組</translation>
+<translation id="3436118221454753036">問問 AI 模式</translation>
 <translation id="3830890663494219270">如要在所有裝置上使用你的密碼和其他資料，請登入 Brave</translation>
 <translation id="3439276997620616816">這裡會顯示最近關閉的分頁</translation>
 <translation id="3443221991560634068">重新載入目前網頁</translation>
@@ -571,6 +577,7 @@
 <translation id="3524334353996115845">讓 <ph name="ORIGIN"/> 驗證你的身分</translation>
 <translation id="3527085408025491307">資料夾</translation>
 <translation id="3542235761944717775">可用空間：<ph name="KILOBYTES"/> KB</translation>
+<translation id="3547933853190131743">使用 AI 模式搜尋</translation>
 <translation id="719175600387583059">預先載入的網頁已加密，而且與網頁連結的網站或應用程式是 Brave 網站或應用程式，因此以私密方式預先載入這些網頁時，Brave 伺服器不會收到新資訊。</translation>
 <translation id="3549657413697417275">搜尋你的記錄</translation>
 <translation id="3557336313807607643">新增為聯絡人</translation>
@@ -594,6 +601,7 @@
 <translation id="871233388178581868">若有已存密碼，Brave 可執行安全檢查</translation>
 <translation id="3636940436873918441">偏好語言</translation>
 <translation id="7120697372526128040">如果忘記通關密語或想變更這項設定，請<ph name="BEGIN_LINK"/>刪除帳戶中的 Brave 資料<ph name="END_LINK"/>。</translation>
+<translation id="3649090831059057090"><ph name="WINDOW_TITLE"/> - <ph name="TAB_COUNT"/></translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>：<ph name="WEBSITE_URL"/></translation>
 <translation id="5399378599142661690">開啟 Brave 應用程式主畫面</translation>
 <translation id="368329460027487650">已登出。開啟登入選項。</translation>
@@ -618,6 +626,8 @@
 <translation id="3739899004075612870">已加入 <ph name="PRODUCT_NAME"/> 書籤</translation>
 <translation id="3740290940447881599">請確認你信任這個網站</translation>
 <translation id="3740525748616366977">這部裝置不支援語音搜尋功能</translation>
+<translation id="3749289110408117711">檔案名稱</translation>
+<translation id="3756823472711156529">還原群組</translation>
 <translation id="7338686239886724619">使用這張卡片結帳時，系統會填入虛擬卡號，保護你的實際卡片資料。你可以在 Brave 錢包管理卡片。<ph name="BEGIN_LINK1"/>進一步瞭解虛擬卡片<ph name="END_LINK1"/></translation>
 <translation id="376561056759077985">部分資料尚未儲存</translation>
 <translation id="3770620323585347665">命名視窗</translation>
@@ -645,6 +655,7 @@
 <translation id="3870538285500327859"><ph name="TAB_TITLE"/>，已選取的子母畫面分頁</translation>
 <translation id="3870908470613821006">所有使用者將立即無法存取「<ph name="GROUP_NAME"/>」分頁群組，且該群組將從所有裝置中刪除</translation>
 <translation id="3873174561423636563">如要繼續，<ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> 會將你的<ph name="FIELDS_STRING"/>提供給這個網站。詳情請參閱這個網站的《<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>》。</translation>
+<translation id="3882323608730650973">修改過</translation>
 <translation id="3892148308691398805">複製文字</translation>
 <translation id="3893858854379998374">如要將書籤儲存到帳戶，請刪除未使用的書籤</translation>
 <translation id="3898498281932368596">封鎖並退出</translation>
@@ -674,6 +685,7 @@
 <translation id="399788104667917863">在工具列中固定</translation>
 <translation id="4000212216660919741">離線首頁</translation>
 <translation id="4694008025405984126">自訂及管理 Brave 選單中有醒目顯示項目</translation>
+<translation id="4002066346123236978">標題</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{你的 Brave 帳戶有 1 組密碼外洩}other{你的 Brave 帳戶有 # 組密碼外洩}}</translation>
 <translation id="7002462047122704254">如要在所有裝置上存取書籤和其他資料，請登入 Brave</translation>
 <translation id="4024768890073681126">瀏覽器由家長管理</translation>
@@ -695,7 +707,6 @@
 <translation id="7268155614575494857">請新增你在這個網站的使用者名稱，Brave 密碼管理工具才能儲存登入資訊</translation>
 <translation id="4095146165863963773">要刪除應用程式資料嗎？</translation>
 <translation id="4095483462103784441">建立新分頁群組</translation>
-<translation id="4096227151372679484">書籤儲存流程已開啟，目前顯示半個版面的內容</translation>
 <translation id="1523634703470981382">Brave 密碼管理工具更新資訊已開啟</translation>
 <translation id="4113030288477039509">您的管理員已停用這項功能</translation>
 <translation id="4116038641877404294">下載網頁以便離線存取</translation>
@@ -1061,7 +1072,6 @@
 <translation id="569536719314091526">透過 [更多選項] 按鈕將這個網頁翻譯成任何語言</translation>
 <translation id="2320748512701464301">Brave 可確保安全性，例如防範資料侵害事件或封鎖不安全的網站等等</translation>
 <translation id="5698878456427040674">請確認系統是否支援所選帳戶。</translation>
-<translation id="5700415746238689851">開啟 Gemini</translation>
 <translation id="5709213329446699338"><ph name="SITE"/> 要求與序列埠連線</translation>
 <translation id="5715150588940290235">要刪除已儲存的安全碼嗎？</translation>
 <translation id="572328651809341494">最近開啟的分頁</translation>
@@ -1117,7 +1127,6 @@
 <translation id="59577092665511740">請選擇帳戶。</translation>
 <translation id="5958275228015807058">前往「下載」主畫面尋找你的檔案和網頁</translation>
 <translation id="4262327329851675629">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave 已停止顯示近期未造訪網站的通知}other{Brave 已停止顯示近期未造訪網站的通知}}</translation>
-<translation id="5962718611393537961">輕觸即可收合</translation>
 <translation id="5964869237734432770">停止取得圖片說明</translation>
 <translation id="5972844218283131174">全部取消選取</translation>
 <translation id="5975083100439434680">縮小</translation>
@@ -1225,6 +1234,7 @@
 <translation id="634208815998129842">工作管理員</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 和另外 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> 個地址}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 和另外 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> 個地址}}</translation>
 <translation id="6345878117466430440">標示為已讀取</translation>
+<translation id="6350745006329795504">管理你的裝置</translation>
 <translation id="6356893102071098867">請確認所選的帳戶是否正確</translation>
 <translation id="6364438453358674297">從歷史記錄中移除建議項目？</translation>
 <translation id="806493401838431801">Brave 會以更頻繁的次數預先載入你可能造訪的網頁。這項設定可能會提高數據用量。</translation>
@@ -1280,6 +1290,7 @@
 <translation id="6556501700899673703">Lexend</translation>
 <translation id="6560414384669816528">使用 Sogou 搜尋</translation>
 <translation id="656065428026159829">顯示更多</translation>
+<translation id="6565781844089373403">還原視窗</translation>
 <translation id="6565959834589222080">有可用 Wi-Fi 時，系統會使用 Wi-Fi</translation>
 <translation id="657177046675873214">如要將書籤同步到所有裝置，請在設定中開啟「書籤」</translation>
 <translation id="6573096386450695060">一律允許</translation>
@@ -1354,6 +1365,7 @@
 <translation id="6846298663435243399">載入中…</translation>
 <translation id="6850409657436465440">下載作業仍在進行中</translation>
 <translation id="6850830437481525139">關閉了 <ph name="TAB_COUNT"/> 個分頁</translation>
+<translation id="6852437757508328589">{NUM_RESULTS,plural, =1{找到 1 筆結果}other{找到 # 筆結果}}</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{音訊檔案，清單中有 1 個音訊檔案}other{音訊檔案，清單中有 # 個音訊檔案}}</translation>
 <translation id="4046835482356054431">Brave 探索 - 關閉</translation>
 <translation id="6864459304226931083">下載圖片</translation>
@@ -1389,6 +1401,7 @@
 <translation id="6937524809504266803">個人化與連結</translation>
 <translation id="6937876069006524083">暱稱 (選填)</translation>
 <translation id="6942665639005891494">你隨時可以使用 [設定] 選單選項變更預設的下載位置</translation>
+<translation id="6944854424004126054">還原視窗</translation>
 <translation id="6945221475159498467">選取</translation>
 <translation id="6955535239952325894">受管理的瀏覽器已停用這項設定</translation>
 <translation id="6963766334940102469">刪除書籤</translation>
@@ -1878,12 +1891,14 @@
 <translation id="8998837250940831980">無法將分頁最小化，請稍後再試。</translation>
 <translation id="9010094279589497751">隨時都能快速開啟 Gemini</translation>
 <translation id="9012585441087414258">防範已知的不安全網站、下載內容和擴充功能。如果某個網頁含有可疑內容，系統會將網址和部分網頁內容傳送給「Brave 安全瀏覽」功能。</translation>
+<translation id="9014097371980259227">我們調整了部分工具的位置，方便你使用 AI 模式搜尋</translation>
 <translation id="9019199799064251516">不鎖定汽車設定檔就繼續嗎？</translation>
 <translation id="9022774213089566801">經常造訪</translation>
 <translation id="9022871169049522985">網站和廣告主可評估廣告成效</translation>
 <translation id="5687542525349822727">將 Brave 設為預設瀏覽器</translation>
 <translation id="9027728231343310283">復原 <ph name="SITE"/></translation>
 <translation id="9035378196785279980">移至\u2026</translation>
+<translation id="904146253922032365">按住即可垂直顯示分頁</translation>
 <translation id="9042893549633094279">隱私權和安全性</translation>
 <translation id="1612219807314383628">快速啟動 Brave 搜尋</translation>
 <translation id="9050666287014529139">通關密語</translation>
@@ -1905,6 +1920,7 @@
 <translation id="7708077127614889658">在 Brave 視窗中開啟</translation>
 <translation id="2324185818196590038">如要享有最貼近個人需求的使用體驗，請將 Brave 加入「網路和應用程式活動」以及連結的 Brave 服務</translation>
 <translation id="9099220545925418560">以你的瀏覽記錄做為依據。這項設定已關閉。</translation>
+<translation id="9099674669267916096">頁數</translation>
 <translation id="9100610230175265781">請提供通關密語</translation>
 <translation id="9101137867221042551">管理設定</translation>
 <translation id="9102803872260866941">預覽分頁已開啟</translation>
@@ -1948,7 +1964,6 @@
 <translation id="938850635132480979">錯誤：<ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">請輸入通關密語</translation>
 <translation id="945522503751344254">提供意見</translation>
-<translation id="949667118776341807">旋轉</translation>
 <translation id="5406914950576900927">Brave 可以在中國使用 <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> 搜尋。你可以在<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>中變更這項設定。</translation>
 <translation id="961856697154696964">刪除瀏覽資料</translation>
 <translation id="963246339335003378">開啟工作管理員</translation>

@@ -10,8 +10,11 @@ import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import { InferControlsFromArgs } from '../../../../../.storybook/utils'
+import { InferControlsFromArgs } from '$storybook/utils'
+import {
+  ConversationDataJson,
+  parseConversationData,
+} from '../../common/conversation_serialization'
 import * as Mojom from '../../common/mojom'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
@@ -170,33 +173,6 @@ const MODELS: Mojom.Model[] = [
       },
     },
   },
-  {
-    key: 'chat-near-glm-5',
-    displayName: 'GLM-5',
-    visionSupport: false,
-    audioSupport: false,
-    videoSupport: false,
-    supportsTools: false,
-    supportedCapabilities: [
-      Mojom.ConversationCapability.CHAT,
-      Mojom.ConversationCapability.DEEP_RESEARCH,
-    ],
-    isSuggestedModel: true,
-    isNearModel: true,
-    supportsPrivateInference: false,
-    options: {
-      leoModelOptions: {
-        name: 'near-glm-5',
-        displayMaker: 'Z.ai',
-        description: '',
-        category: Mojom.ModelCategory.CHAT,
-        access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
-        maxAssociatedContentLength: 128000,
-        longConversationWarningCharacterLimit: 128000,
-      },
-      customModelOptions: undefined,
-    },
-  },
 ]
 
 const SAMPLE_QUESTIONS = [
@@ -255,6 +231,32 @@ const SAMPLE_SKILLS: Mojom.Skill[] = [
     model: undefined,
     createdTime: { internalValue: BigInt(Date.now() * 1000) },
     lastUsed: { internalValue: BigInt((Date.now() - 3600000) * 1000) },
+  },
+]
+
+// base::Time counts microseconds from the Windows epoch, so shift the JS epoch
+// by the same offset used by mojoTimeToJSDate().
+function jsDateToMojoTime(date: Date) {
+  const epochDeltaInMs = Date.UTC(1970, 0, 1) - Date.UTC(1601, 0, 1)
+  // Convert to BigInt before scaling to microseconds: the result exceeds
+  // Number.MAX_SAFE_INTEGER.
+  return {
+    internalValue: BigInt(date.getTime() + epochDeltaInMs) * BigInt(1000),
+  }
+}
+
+const SAMPLE_CONVERSATION_SHARES: Mojom.ConversationShare[] = [
+  {
+    shareId: 'a1b2c3d4e5f6',
+    conversationUuid: '1',
+    conversationTitle: 'What is the best way to make a cup of tea?',
+    createdTime: jsDateToMojoTime(new Date(Date.now() - 3600000)),
+  },
+  {
+    shareId: 'f6e5d4c3b2a1',
+    conversationUuid: '2',
+    conversationTitle: 'Summarize the latest news about space exploration',
+    createdTime: jsDateToMojoTime(new Date(Date.now() - 3 * 86400000)),
   },
 ]
 
@@ -362,7 +364,6 @@ type CustomArgs = {
   isUploadingFiles: boolean
   attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
-  generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
   isTemporaryChat: boolean
   isDragActive: boolean
@@ -414,7 +415,6 @@ const args: CustomArgs = {
   isUploadingFiles: false,
   attachmentsDialog: null,
   isNewConversation: false,
-  generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
   isTemporaryChat: false,
   isDragActive: false,
@@ -462,10 +462,6 @@ const meta: Meta<CustomArgs> = {
       options: CONVERSATIONS.map((conversation) => conversation.uuid),
       control: { type: 'select' },
     },
-    generatedUrlToBeOpened: {
-      options: [{ url: 'https://www.example.com' }],
-      control: { type: 'select' },
-    },
     ratingTurnUuid: {
       options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
       control: { type: 'select' },
@@ -490,23 +486,49 @@ const meta: Meta<CustomArgs> = {
 async function getConversationContent(
   conversationType: (typeof CONVERSATION_TYPES)[number],
 ): Promise<Mojom.ConversationTurn[]> {
+  // When adding new varieties of conversation content, add it to one of these
+  // cases or create a new case for any sub-variations of the content's rendering.
+  // These files are created from real data by enabling the
+  // brave://flags/#brave-ai-chat-export-json feature flag and clicking the
+  // "Copy entire conversation" menu item with alt+meta keys pressed.
+  // Then get the content in devtools with `copy(JSON.parse(_your_pasted_content_.data))`
+  // and paste it as the ConversationDataJson literal of a new file in
+  // ./conversations, so that the type checker validates the shape.
+  let serializedContent: ConversationDataJson | undefined
   switch (conversationType) {
     case 'ALL':
-      return (await import('./conversations/all')).default
+      serializedContent = (await import('./conversations/all')).default
+      break
     case 'MEMORY':
-      return (await import('./conversations/memory')).default
+      serializedContent = (await import('./conversations/memory')).default
+      break
     case 'SEARCH':
-      return (await import('./conversations/search')).default
+      serializedContent = (await import('./conversations/search')).default
+      break
     case 'SEARCHING':
-      return (await import('./conversations/searching')).default
+      serializedContent = (await import('./conversations/searching')).default
+      break
     case 'WEATHER':
-      return (await import('./conversations/weather')).default
+      serializedContent = (await import('./conversations/weather')).default
+      break
     case 'CODE_EXECUTION':
-      return (await import('./conversations/code_execution')).default
+      serializedContent = (await import('./conversations/code_execution'))
+        .default
+      break
     case 'MULTI_TOOL_MULTI_TURN':
-      return (await import('./conversations/multi_tool_multi_turn')).default
+      serializedContent = (
+        await import('./conversations/multi_tool_multi_turn')
+      ).default
+      break
     case 'MULTI_TOOL_MULTI_TURN_IN_PROGRESS':
-      return (await import('./conversations/multi_tool_multi_turn')).InProgress
+      serializedContent = (
+        await import('./conversations/multi_tool_multi_turn_in_progress')
+      ).default
+      break
+  }
+
+  if (serializedContent) {
+    return parseConversationData(JSON.stringify(serializedContent)).messages
   }
 
   return []
@@ -577,6 +599,8 @@ function StoryContext(
               : Mojom.PremiumStatus.Inactive,
             info: null,
           }),
+        getConversationShares: () =>
+          Promise.resolve({ shares: SAMPLE_CONVERSATION_SHARES }),
       }}
       bookmarksService={{
         getBookmarks: () => Promise.resolve({ bookmarks: SAMPLE_BOOKMARKS }),
@@ -656,6 +680,7 @@ function StoryContext(
         isMobile: args.isMobile,
         isHistoryFeatureEnabled: args.isHistoryEnabled,
         isConversationShareEnabled: true,
+        isAIChatExportJSONEnabled: true,
         skillDialog: args.skillDialog,
       }}
       conversationOverrides={{
@@ -667,7 +692,6 @@ function StoryContext(
         attachmentsDialog: args.attachmentsDialog,
         isDragActive: args.isDragActive,
         isDragOver: args.isDragOver,
-        generatedUrlToBeOpened: args.generatedUrlToBeOpened,
         isUploadingFiles: args.isUploadingFiles,
       }}
       deps={[...Object.values(args)]}

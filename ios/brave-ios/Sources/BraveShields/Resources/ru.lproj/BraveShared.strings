@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Автоуничтожение данных";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Автоматически стирать данные просмотра";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Агрессивный";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Неверное правило «`%1$@`» в строке %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Добавьте сюда свои пользовательские фильтры по одному на строку.";
+"CustomFiltersPlaceholder" = "Добавить пользовательские фильтры";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Лимит строк для пользовательских фильтров: %i";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Домен заблокирован";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Изменить пользовательские фильтры";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Попросите сайты не продавать и не передавать ваши данные. [Подробнее](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Никогда";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Данные о работе в браузере никогда не удаляются автоматически";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "При закрытии приложения";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Данные о работе в браузере автоматически удаляются при закрытии / перезапуске приложения Brave";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "При закрытии вкладок";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Данные о работе в браузере автоматически удаляются при закрытии всех вкладок сайта";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Все данные сайта будут уничтожены, а вкладки с ним — закрыты. Это действие нельзя отменить.";
@@ -236,7 +251,7 @@
 "TheConnectionIsNotSecure" = "Подключение к сайту %@ уязвимо";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Трекеры & Блокировка рекламы";
+"TrackersAndAdsBlocking" = "Трекеры и блокировка рекламы";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Обновить списки";

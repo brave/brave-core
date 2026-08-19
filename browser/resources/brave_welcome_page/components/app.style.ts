@@ -15,18 +15,19 @@ export const style = scoped.css`
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: ${color.primitive.neutral['0']};
     background-image: none;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    background: linear-gradient(45deg, #200000 0%, #800000 27.45%, #FF4710 61%);
     padding: ${spacing.xl};
   }
 
   .welcome-container {
     position: relative;
     max-width: 1130px;
-    max-height: 700px;
+    min-width: min-content;
+    max-height: 720px;
     width: 100%;
     height: calc(100dvh - 2 * ${spacing.xl});
     background-color: ${color.material.thick};
@@ -38,12 +39,13 @@ export const style = scoped.css`
 
 style.passthrough.css`
   & {
-    font: ${font.large.regular};
+    font: ${font.default.regular};
     color: ${color.text.primary};
   }
 
   h1, h2, h3, h4, p {
     margin: 0;
+    text-wrap: pretty;
   }
 
   h1 {
@@ -94,6 +96,7 @@ style.passthrough.css`
   }
 
   .step-text {
+    font: ${font.large.regular};
     display: flex;
     flex-direction: column;
     gap: ${spacing['2Xl']};
@@ -144,13 +147,12 @@ style.passthrough.css`
     }
 
     .step-text {
-      max-width: 430px;
-      width: 40%;
+      max-width: 350px;
       align-self: stretch;
     }
 
     .step-ui {
-      align-self: center;
+      align-self: safe center;
     }
   }
 `

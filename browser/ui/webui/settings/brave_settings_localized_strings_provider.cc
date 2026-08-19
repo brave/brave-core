@@ -147,6 +147,9 @@ constexpr char16_t kPsstLearnMoreUrl[] =
     u"https://support.brave.app/hc/en-us/articles/47405731650957";
 #endif
 
+constexpr char16_t kBraveAccountLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/45530506862349";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -214,6 +217,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_PLAYLIST_TOGGLE_TITLE},
       {"braveEmailAliasesToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE},
+#if BUILDFLAG(ENABLE_PSST)
+      {"bravePsstToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_PSST_TOGGLE_TITLE},
+#endif
       {"braveOriginWebDiscoveryProjectToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},
       {"braveOriginP3AToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE},
@@ -638,7 +644,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_PERSONALIZATION_LABEL},
       {"braveLeoAssistantCustomizationLinkLabel",
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_LINK_LABEL},
-      {"braveLeoModelSubtitle-chat-basic", IDS_CHAT_UI_CHAT_BASIC_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-instant",
        IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-haiku",
@@ -646,8 +651,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoModelSubtitle-chat-claude-sonnet",
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"braveLeoModelSubtitle-chat-qwen", IDS_CHAT_UI_CHAT_QWEN_SUBTITLE},
-      {"braveLeoModelSubtitle-chat-near-glm-5",
-       IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE},
       {"braveLeoModelSubtitle-chat-near-glm-5-1",
        IDS_CHAT_UI_CHAT_NEAR_GLM_5_1_SUBTITLE},
       {"braveLeoModelSubtitle-chat-glm-4-7-flash",
@@ -679,6 +682,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_LABEL},
       {"braveLeoAssistantEditModelLabel",
        IDS_SETTINGS_LEO_ASSISTANT_EDIT_MODEL_LABEL},
+      {"braveLeoAssistantRequiredLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_REQUIRED_LABEL},
       {"braveLeoAssistantInputModelLabel",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL},
       {"braveLeoAssistantInputModelRequestName",
@@ -840,6 +845,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
       // Delete browsing data settings
       {"clearBraveAdsData", IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA},
+      {"clearBraveAdsDataToastLabel",
+       IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA_TOAST_LABEL},
+      {"clearBraveAdsDataErrorToastLabel",
+       IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA_ERROR_TOAST_LABEL},
       {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
 
       // Misc (TODO: Organize this)
@@ -893,6 +902,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_TOR_REQUESTED_BRIDGES_PLACEHOLDER},
       {"torProvidedBridgesPlaceholder",
        IDS_SETTINGS_TOR_PROVIDED_BRIDGES_PLACEHOLDER},
+      {"torInvalidBridgeError", IDS_SETTINGS_TOR_INVALID_BRIDGE_ERROR},
       {"torRequestBridgeDialogTitle",
        IDS_SETTINGS_TOR_REQUEST_BRIDGE_DIALOG_TITLE},
       {"torRequestBridgeDialogWaiting",
@@ -1296,6 +1306,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
   if (brave_account::features::IsBraveAccountEnabled()) {
     html_source->AddLocalizedStrings(webui::kBraveAccountSettingsStrings);
+    html_source->AddString("braveAccountLearnMoreURL",
+                           kBraveAccountLearnMoreURL);
   }
 }
 

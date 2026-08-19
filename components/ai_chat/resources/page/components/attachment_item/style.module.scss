@@ -17,10 +17,26 @@
   box-sizing: border-box;
 }
 
+.imageButton {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--leo-radius-s);
+  flex-shrink: 0;
+
+  &:focus-visible {
+    outline: 2px solid var(--leo-color-primary-40);
+    outline-offset: 2px;
+  }
+}
+
 .image {
   width: 40px;
   height: 40px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: var(--leo-radius-s);
   flex-shrink: 0;
 }

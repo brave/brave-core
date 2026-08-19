@@ -150,7 +150,7 @@ class BraveLocationBarViewColorOverridesTest : public InProcessBrowserTest {
   }
 
   LocationBar* GetLocationBar() {
-    return browser()->window()->GetLocationBar();
+    return BrowserWindow::FromBrowser(browser())->GetLocationBar();
   }
 };
 

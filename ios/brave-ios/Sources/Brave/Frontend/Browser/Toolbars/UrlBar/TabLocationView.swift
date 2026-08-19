@@ -493,7 +493,6 @@ class TabLocationView: UIView {
 
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
-    backgroundColor = browserColors.containerBackground
     urlDisplayLabel.textColor = browserColors.textPrimary
     placeholderLabel.textColor = browserColors.textTertiary
     readerModeButton.unselectedTintColor = browserColors.iconDefault

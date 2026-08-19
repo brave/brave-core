@@ -1,0 +1,14 @@
+diff --git a/components/autofill/core/common/autofill_debug_features.cc b/components/autofill/core/common/autofill_debug_features.cc
+index 4fb9b840fa20f2218e7f67a4001e11f625857121..47788ea7df268f5d1b2082e2dbace8f9fa677316 100644
+--- a/components/autofill/core/common/autofill_debug_features.cc
++++ b/components/autofill/core/common/autofill_debug_features.cc
+@@ -127,7 +127,8 @@ BASE_FEATURE_PARAM(std::string,
+ // autofill server API url up to the parent "directory" of the "query" and
+ // "upload" resources.
+ // i.e., https://other.autofill.server:port/tbproxy/af/
+-BASE_FEATURE(kAutofillServerCommunication, base::FEATURE_ENABLED_BY_DEFAULT);
++// kAutofillServerCommunication feature state is enforced via plaster rewrite.
++BASE_FEATURE(kAutofillServerCommunication, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // When set to a non-zero value, the value is attached as an experiment ID to
+ // all predictions requests to the Autofill server, as if it were an active GWS

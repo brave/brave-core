@@ -42,6 +42,7 @@ export function getWalletLocationPathname(locationKey: string): string {
 export function isPersistableSessionRoute(
   route?: string,
   isPanel?: boolean,
+  isSidePanel?: boolean,
 ): boolean {
   if (!route) {
     return false
@@ -109,11 +110,6 @@ export function isPersistableSessionRoute(
      */
     || route.includes(WalletRoutes.Market + '/')
     /**
-     * Web3 route uses a query param to determine the
-     * dappCategory and can not be exact matched.
-     */
-    || route.includes(WalletRoutes.Web3)
-    /**
      * Insure that the Connections route is an exact match.
      */
     || routePath === WalletRoutes.Connections
@@ -122,7 +118,7 @@ export function isPersistableSessionRoute(
      * collectionName and can not be exact matched.
      */
     || route.includes(WalletRoutes.PortfolioNFTCollectionsStart)
-  if (isPanel) {
+  if (isPanel && !isSidePanel) {
     return isPersistableInPanel
   }
   return (
@@ -145,10 +141,15 @@ export function isPersistableSessionRoute(
   )
 }
 
-export function getInitialSessionRoute(isPanel?: boolean): string | undefined {
+export function getInitialSessionRoute(
+  isPanel?: boolean,
+  isSidePanel?: boolean,
+): string | undefined {
   const route =
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE) || ''
-  return isPersistableSessionRoute(route, isPanel) ? route : undefined
+  return isPersistableSessionRoute(route, isPanel, isSidePanel)
+    ? route
+    : undefined
 }
 
 export function getOnboardingTypeFromPath(

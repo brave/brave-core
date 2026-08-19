@@ -17,15 +17,10 @@ import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
-
-import java.util.Set;
 
 /** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
@@ -37,6 +32,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
 
     private boolean mAddTransitionDelay = true;
     private boolean mOverridePreviousWallet;
+    private boolean mCreationHandled;
 
     @NonNull
     public static OnboardingCreatingWalletFragment newInstance(
@@ -65,6 +61,12 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setAnimatedBackground(view.findViewById(R.id.creating_wallet_root));
+
+        // React to the request outcome that lives in the model. LiveData replays the latest value,
+        // so a fragment recreated by a rotation is notified even if the request already finished.
+        mOnboardingViewModel
+                .getWalletCreationSucceeded()
+                .observe(getViewLifecycleOwner(), this::onWalletCreationSucceeded);
     }
 
     @Override
@@ -74,23 +76,35 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
         PostTask.postDelayedTask(
                 TaskTraits.USER_BLOCKING, () -> mAddTransitionDelay = false, NEXT_PAGE_DELAY_MS);
 
+        // Trigger the request; the model runs it only once and keeps it alive across rotations and
+        // while the activity is in the background.
         KeyringModel keyringModel = getKeyringModel();
-        if (keyringModel != null) {
-            // Check if a wallet is already present and skip only
-            // when not restoring a wallet over an existing one from
-            // unlock screen button.
-            keyringModel.isWalletCreated(
-                    isCreated -> {
-                        if (isCreated && !mOverridePreviousWallet) {
-                            goToNextPage();
-                            return;
-                        }
-                        if (mOnboardingViewModel.getRecoveryPhrase() == null) {
-                            createWallet(keyringModel);
-                        } else {
-                            restoreWallet(keyringModel);
-                        }
-                    });
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        if (keyringModel != null && jsonRpcService != null) {
+            mOnboardingViewModel.createOrRestoreWallet(
+                    keyringModel, jsonRpcService, getKeyringService(), mOverridePreviousWallet);
+        }
+
+        // The observer only fires while the fragment is at least started, which can be before it is
+        // resumed; handle an outcome that is already available now that it is the resumed page.
+        onWalletCreationSucceeded(mOnboardingViewModel.getWalletCreationSucceeded().getValue());
+    }
+
+    private void onWalletCreationSucceeded(@Nullable final Boolean succeeded) {
+        // Act only while this fragment is the resumed page: the pager keeps it started off screen
+        // after we have moved on, and it must not navigate again from there. isResumed() is true
+        // only for the current page.
+        if (succeeded == null || mCreationHandled || !isResumed()) {
+            return;
+        }
+        mCreationHandled = true;
+        if (succeeded) {
+            setupWalletModel();
+            goToNextPage();
+        } else {
+            Toast.makeText(requireActivity(), R.string.account_recovery_failed, Toast.LENGTH_LONG)
+                    .show();
+            requireActivity().finish();
         }
     }
 
@@ -103,73 +117,24 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
         }
     }
 
-    private void restoreWallet(@NonNull final KeyringModel keyringModel) {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        KeyringService keyringService = getKeyringService();
-
-        if (jsonRpcService != null) {
-            Set<NetworkInfo> availableNetworks = mOnboardingViewModel.getAvailableNetworks();
-            Set<NetworkInfo> selectedNetworks = mOnboardingViewModel.getSelectedNetworks();
-
-            keyringModel.restoreWallet(
-                    mOnboardingViewModel.getPassword(),
-                    mOnboardingViewModel.requireRecoveryPhrase(),
-                    mOnboardingViewModel.isLegacyRestoreEnabled(),
-                    availableNetworks,
-                    selectedNetworks,
-                    jsonRpcService,
-                    result -> {
-                        if (result) {
-                            if (keyringService != null) {
-                                keyringService.notifyWalletBackupComplete();
-                            }
-                            Utils.setCryptoOnboarding(false);
-                            setupWalletModel();
-                            goToNextPage();
-                        } else {
-                            Toast.makeText(
-                                            requireActivity(),
-                                            R.string.account_recovery_failed,
-                                            Toast.LENGTH_LONG)
-                                    .show();
-                            requireActivity().finish();
-                        }
-                    });
-        }
-    }
-
-    private void createWallet(@NonNull final KeyringModel keyringModel) {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-
-        if (jsonRpcService != null) {
-            Set<NetworkInfo> availableNetworks = mOnboardingViewModel.getAvailableNetworks();
-            Set<NetworkInfo> selectedNetworks = mOnboardingViewModel.getSelectedNetworks();
-            keyringModel.createWallet(
-                    mOnboardingViewModel.getPassword(),
-                    availableNetworks,
-                    selectedNetworks,
-                    jsonRpcService,
-                    recoveryPhrases -> {
-                        Utils.setCryptoOnboarding(false);
-                        setupWalletModel();
-                        goToNextPage();
-                    });
-        }
-    }
-
     private void goToNextPage() {
         // Go to the next page after wallet creation is done.
-        if (mOnNextPage != null) {
-            // Add small delay if the Wallet creation completes faster than {@code
-            // NEXT_PAGE_DELAY_MS}.
-            if (mAddTransitionDelay) {
-                PostTask.postDelayedTask(
-                        TaskTraits.USER_BLOCKING,
-                        () -> mOnNextPage.incrementPages(1),
-                        NEXT_PAGE_DELAY_MS);
-            } else {
-                mOnNextPage.incrementPages(1);
-            }
+        if (mOnNextPage == null) {
+            return;
+        }
+        // Add small delay if the Wallet creation completes faster than {@code NEXT_PAGE_DELAY_MS}.
+        if (mAddTransitionDelay) {
+            PostTask.postDelayedTask(
+                    TaskTraits.USER_BLOCKING,
+                    () -> {
+                        // The fragment may be detached by the time the delayed task runs.
+                        if (mOnNextPage != null) {
+                            mOnNextPage.incrementPages(1);
+                        }
+                    },
+                    NEXT_PAGE_DELAY_MS);
+        } else {
+            mOnNextPage.incrementPages(1);
         }
     }
 

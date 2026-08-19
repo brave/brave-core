@@ -14,6 +14,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_observer.h"
+#include "brave/components/brave_ads/browser/application_state/shutdown_monitor.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
@@ -117,6 +119,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
+      std::unique_ptr<ShutdownMonitor> shutdown_monitor,
       ResourceComponent& resource_component,
       history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -149,7 +152,7 @@ class AdsServiceImpl : public AdsService,
 
   bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToNewTabPageAds() const;
-  bool UserHasOptedInToNotificationAds() const;
+  bool IsNotificationAdsEnabled() const;
   bool UserHasOptedInToSearchResultAds() const;
 
   bool CanStartBatAdsService() const;
@@ -223,6 +226,7 @@ class AdsServiceImpl : public AdsService,
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
   void NotificationAdTimedOut(const std::string& placement_id);
   void CloseAllNotificationAds();
+  void RegisterOrUnregisterLanguageResourceComponent();
 
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
   // new tab with ad business logic.
@@ -312,6 +316,7 @@ class AdsServiceImpl : public AdsService,
                           bool is_restoring,
                           bool is_visible) override;
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
+  void NotifyTabDidFailToLoad(int32_t tab_id) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
 
   void NotifyUserGestureEventTriggered(int32_t page_transition) override;
@@ -397,6 +402,9 @@ class AdsServiceImpl : public AdsService,
   // ApplicationStateObserver:
   void OnBrowserDidBecomeActive() override;
   void OnBrowserDidResignActive() override;
+
+  // ShutdownMonitor:
+  void OnBrowserWillShutdown();
 
   // ResourceComponentObserver:
   void OnResourceComponentDidChange(const std::string& manifest_version,
@@ -484,6 +492,9 @@ class AdsServiceImpl : public AdsService,
   std::unique_ptr<ApplicationStateMonitor> application_state_monitor_;
   base::ScopedObservation<ApplicationStateMonitor, ApplicationStateObserver>
       application_state_monitor_observation_{this};
+
+  std::unique_ptr<ShutdownMonitor> shutdown_monitor_;
+  base::CallbackListSubscription app_terminating_subscription_;
 
   // Reset eagerly in Shutdown() so the observer is detached from
   // PolicyService before the destructor runs.

@@ -5,6 +5,6 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="true" android:drawable="@drawable/blue_48_rounded_bg"/>
+    <item android:state_enabled="true" android:drawable="@drawable/themed_button_48_rounded_bg"/>
     <item android:drawable="@drawable/add_custom_filter_button_background_disabled"/>
 </selector>

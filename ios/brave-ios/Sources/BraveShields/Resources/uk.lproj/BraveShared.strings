@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Автоматичне очищення";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Автоматично знищувати дані перегляду";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Агресивно";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Недійсне правило «%1$@» у рядку %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Додайте користувацькі фільтри, один на рядок.";
+"CustomFiltersPlaceholder" = "Додавання користувацьких фільтрів";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Користувацькі фільтри не підтримують більше %i рядків";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Домен заблоковано";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Редагувати користувацькі фільтри";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Забороніть сайтам продавати або передавати ваші дані. [Дізнатися більше] (https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Ніколи";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Дані перегляду ніколи не знищуються автоматично";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Застосунок закрито";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Дані перегляду автоматично знищуються, коли застосунок Brave закривається / перезапускається";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Вкладки сайту закрито";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Дані перегляду автоматично знищуються, коли всі вкладки, відкриті для сайту, закриваються";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Очищення призведе до закриття всіх вкладок, та видалення всіх даних сайту. Цю дію неможливо скасувати.";

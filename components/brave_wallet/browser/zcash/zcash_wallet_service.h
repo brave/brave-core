@@ -32,9 +32,7 @@ namespace brave_wallet {
 
 class OrchardSyncState;
 class ZCashAutoSyncManager;
-class ZCashCreateOrchardToOrchardTransactionTask;
 class ZCashCreateOrchardToTransparentTransactionTask;
-class ZCashCreateTransparentToOrchardTransactionTask;
 class ZCashCreateTransparentTransactionTask;
 class ZCashGetTransparentUtxosContext;
 class ZCashGetZCashChainTipStatusTask;
@@ -127,11 +125,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
   GetTransactionType(const mojom::AccountIdPtr& account_id,
-                     bool use_shielded_pool,
+                     mojom::ZCashTokenType from_token_type,
                      const std::string& addr);
 
   void GetTransactionType(mojom::AccountIdPtr account_id,
-                          bool use_shielded_pool,
+                          mojom::ZCashTokenType from_token_type,
                           const std::string& addr,
                           GetTransactionTypeCallback callback) override;
 
@@ -141,23 +139,37 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   virtual void GetUtxos(const mojom::AccountIdPtr& account_id,
                         GetUtxosCallback);
 
-  void CreateFullyTransparentTransaction(mojom::AccountIdPtr account_id,
-                                         const std::string& address_to,
-                                         uint64_t amount,
-                                         CreateTransactionCallback callback);
+  virtual void CreateFullyTransparentTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      CreateTransactionCallback callback);
 
-  void CreateOrchardToOrchardTransaction(mojom::AccountIdPtr account_id,
-                                         const std::string& address_to,
-                                         uint64_t amount,
-                                         std::optional<OrchardMemo> memo,
-                                         CreateTransactionCallback callback);
-  void CreateTransparentToOrchardTransaction(
+  virtual void CreateOrchardToTransparentTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      CreateTransactionCallback callback);
+
+  virtual void CreateTransparentToIronwoodTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       std::optional<OrchardMemo> memo,
       CreateTransactionCallback callback);
-  void CreateOrchardToTransparentTransaction(
+  virtual void CreateIronwoodToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateOrchardToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateIronwoodToTransparentTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
@@ -176,6 +188,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void Reset();
 
+  void ShutdownSyncStateForTesting();
+
  protected:
   OrchardSyncState::SequenceBound& sync_state();
   ZCashRpc& zcash_rpc();
@@ -189,8 +203,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                               const std::optional<std::string>&)>;
 
   friend class ZCashCompleteTransactionTask;
-  friend class ZCashCreateOrchardToOrchardTransactionTask;
-  friend class ZCashCreateTransparentToOrchardTransactionTask;
   friend class ZCashCreateTransparentTransactionTask;
   friend class ZCashDiscoverNextUnusedZCashAddressTask;
   friend class ZCashGetZCashChainTipStatusTask;
@@ -260,16 +272,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       base::expected<ZCashTransaction, std::string> result);
 
   void MaybeInitAutoSyncManagers();
-
-  void OnCreateTransparentToOrchardTransactionTaskDone(
-      ZCashCreateTransparentToOrchardTransactionTask* task,
-      CreateTransactionCallback callback,
-      base::expected<ZCashTransaction, std::string> result);
-
-  void OnCreateOrchardToOrchardTransactionTaskDone(
-      ZCashCreateOrchardToOrchardTransactionTask* task,
-      CreateTransactionCallback callback,
-      base::expected<ZCashTransaction, std::string> result);
 
   void OnCreateOrchardToTransparentTransactionTaskDone(
       ZCashCreateOrchardToTransparentTransactionTask* task,
@@ -357,10 +359,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       resolve_transaction_status_tasks_;
 
   OrchardSyncState::SequenceBound sync_state_;
-  TaskContainer<ZCashCreateTransparentToOrchardTransactionTask>
-      create_shield_transaction_tasks_;
-  TaskContainer<ZCashCreateOrchardToOrchardTransactionTask>
-      create_shielded_transaction_tasks_;
   TaskContainer<ZCashCreateOrchardToTransparentTransactionTask>
       create_orchard_to_transparent_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>

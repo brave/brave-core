@@ -20,6 +20,45 @@ function base64Encode(bytes: Uint8Array): string {
 }
 
 /**
+ * Compresses `bytes` with gzip.
+ *
+ * The transform is only drained as the reader below consumes it, so the write
+ * is deliberately not awaited - awaiting it before reading would deadlock on a
+ * payload larger than the stream's queue. A failure inside the transform errors
+ * the readable side too, so the read loop is what surfaces it.
+ */
+async function gzipCompress(
+  bytes: Uint8Array<ArrayBuffer>,
+): Promise<Uint8Array<ArrayBuffer>> {
+  const stream = new CompressionStream('gzip')
+  const writer = stream.writable.getWriter()
+  writer
+    .write(bytes)
+    .then(() => writer.close())
+    .catch(() => {})
+
+  const reader = stream.readable.getReader()
+  const chunks: Uint8Array[] = []
+  let length = 0
+  let done, value
+  while ((({ done, value } = await reader.read()), !done)) {
+    if (!value) {
+      continue
+    }
+    chunks.push(value)
+    length += value.length
+  }
+
+  const compressed = new Uint8Array(length)
+  let offset = 0
+  for (const chunk of chunks) {
+    compressed.set(chunk, offset)
+    offset += chunk.length
+  }
+  return compressed
+}
+
+/**
  * Encodes bytes as URL-safe base64 without padding. The viewer decodes the key
  * fragment with a base64url decoder.
  */
@@ -32,8 +71,8 @@ function base64UrlEncode(bytes: Uint8Array): string {
 
 export interface EncryptedShare {
   /**
-   * The AES-GCM ciphertext, prefixed with the IV and standard-base64 encoded.
-   * This is uploaded to the sharing server.
+   * The AES-GCM ciphertext of the gzipped payload, prefixed with the IV and
+   * standard-base64 encoded. This is uploaded to the sharing server.
    */
   ciphertext: string
 
@@ -46,11 +85,11 @@ export interface EncryptedShare {
 }
 
 /**
- * Encrypts `plaintext` with a freshly generated AES-GCM key so it can be shared
- * via the Brave sharing server without the server being able to read it. The
- * returned ciphertext is uploaded to the server; the key is only ever placed in
- * the URL fragment. See the `decryptShare` viewer routine for the inverse
- * operation this must remain compatible with.
+ * Compresses and encrypts `plaintext` with a freshly generated AES-GCM key so
+ * it can be shared via the Brave sharing server without the server being able
+ * to read it. The returned ciphertext is uploaded to the server; the key is
+ * only ever placed in the URL fragment. See the `decryptShare` viewer routine
+ * for the inverse operation this must remain compatible with.
  */
 export async function encryptForSharing(
   plaintext: string,
@@ -63,15 +102,22 @@ export async function encryptForSharing(
 
   const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH))
   // Copy the encoded plaintext into a fresh ArrayBuffer-backed array so it
-  // satisfies WebCrypto's BufferSource parameter type (TextEncoder.encode
-  // returns a Uint8Array<ArrayBufferLike>).
+  // satisfies the stream's and WebCrypto's BufferSource parameter types
+  // (TextEncoder.encode returns a Uint8Array<ArrayBufferLike>).
   const encoded: Uint8Array<ArrayBuffer> = new Uint8Array(
     new TextEncoder().encode(plaintext),
   )
+  // Compress before encrypting - ciphertext is incompressible, so this is the
+  // only point in the pipeline where it can happen, and it is where it pays off
+  // most: the payload is JSON, which gzip shrinks several-fold, and it undoes
+  // the 1.33x cost of the base64 attachment bytes within that JSON. The viewer
+  // decompresses after decrypting, detecting gzip from its magic bytes so that
+  // shares created before this existed still load.
+  const compressed = await gzipCompress(encoded)
   const ciphertext = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
     key,
-    encoded,
+    compressed,
   )
 
   // The viewer expects a single blob of `iv || ciphertext(+tag)`.

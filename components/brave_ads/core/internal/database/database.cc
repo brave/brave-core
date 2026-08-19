@@ -82,6 +82,7 @@ mojom::DBTransactionResultInfoPtr Database::RunTransaction(
   if (!db_.is_open() && !db_.Open(db_path_)) {
     mojom_db_transaction_result->status_code =
         mojom::DBTransactionResultInfo::StatusCode::kFailedToOpenDatabase;
+    SetSqliteResult(mojom_db_transaction_result);
     return mojom_db_transaction_result;
   }
 
@@ -92,6 +93,7 @@ mojom::DBTransactionResultInfoPtr Database::RunTransaction(
       MaybeRaze(mojom_db_transaction, trace_id);
   if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to raze database";
+    SetSqliteResult(mojom_db_transaction_result);
     return mojom_db_transaction_result;
   }
 
@@ -101,18 +103,16 @@ mojom::DBTransactionResultInfoPtr Database::RunTransaction(
       RunActions(mojom_db_transaction, mojom_db_transaction_result, trace_id);
   if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
     VLOG(0) << "Failed run database actions";
+    SetSqliteResult(mojom_db_transaction_result);
     return mojom_db_transaction_result;
   }
 
   // Maybe vacuum the database. This must be done after any other actions are
   // run. The database is configured to auto-vacuum with some limitations, but
-  // it is good practice to run this action manually.
+  // it is good practice to run this action manually. `MaybeVacuum` never fails
+  // the transaction, so there is no failure branch here.
   mojom_db_transaction_result->status_code =
       MaybeVacuum(mojom_db_transaction, trace_id);
-  if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
-    VLOG(0) << "Failed to vacuum database";
-    return mojom_db_transaction_result;
-  }
 
   return mojom_db_transaction_result;
 }
@@ -179,8 +179,11 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunActions(
       }
     }
 
-    // Rollback the transaction if the action failed.
+    // Rollback the transaction if the action failed. Capture the SQLite result
+    // before rolling back, since the rollback itself runs a SQL statement that
+    // would otherwise overwrite it.
     if (result_code != mojom::DBTransactionResultInfo::StatusCode::kSuccess) {
+      SetSqliteResult(mojom_db_transaction_result);
       transaction.Rollback();
       return result_code;
     }
@@ -434,6 +437,25 @@ void Database::ErrorCallback(int extended_error,
       DUMP_WILL_BE_NOTREACHED();
     }
   }
+}
+
+void Database::SetSqliteResult(
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
+  CHECK(mojom_db_transaction_result);
+
+  if (mojom_db_transaction_result->sqlite_result) {
+    // Already captured at the point of failure, before a later operation (e.g.
+    // a transaction rollback) could overwrite SQLite's last-error state. This
+    // guards against this one transaction's own redundant, later call
+    // overwriting that early capture, not against reused state from an earlier
+    // transaction: `RunTransaction` constructs a brand new
+    // `mojom_db_transaction_result` on every call.
+    return;
+  }
+
+  const int result_code = db_.GetErrorCode();
+  mojom_db_transaction_result->sqlite_result = mojom::DBSqliteResultInfo::New(
+      result_code, db_.GetDiagnosticInfo(result_code, /*statement=*/nullptr));
 }
 
 void Database::OnMemoryPressure(base::MemoryPressureLevel /*level*/) {

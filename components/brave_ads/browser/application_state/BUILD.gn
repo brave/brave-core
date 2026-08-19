@@ -12,6 +12,7 @@ source_set("application_state") {
     "application_state_monitor.cc",
     "application_state_monitor.h",
     "application_state_observer.h",
+    "shutdown_monitor.h",
   ]
 
   public_deps = [ "//base" ]

@@ -47,10 +47,16 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Luôn cập nhật: Thêm video trong quá trình bạn duyệt web, xem sau.";
 
 /* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Thêm video vào Danh sách phát Brave.";
+
+/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Phát lại tốt hơn trong Danh sách phát";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Chỉ cần nhấn nút để thêm video vào danh sách phát";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Tạo danh sách phát với nội dung bạn yêu thích. Thêm tệp đa phương tiện từ bất kỳ trang nào.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Nhấn %@ để thêm mục đầu tiên của bạn";

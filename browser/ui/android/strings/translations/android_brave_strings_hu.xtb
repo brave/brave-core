@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">A weblapok eredeti (nem AMP) URL-címeinek felkeresése minden esetben, a Google gyorsított mobilweblap (AMP) változatai helyett</translation>
 <translation id="920638232916443453">Követő URL-ek automatikus átirányítása</translation>
 <translation id="1118970888826017401">Engedélyezi a felső szintű átirányításkövető URL-ek megkerülésének támogatását.</translation>
-<translation id="94154759592465111">Scriptek blokkolása</translation>
+<translation id="4824468494729001999">Parancsfájlok letiltása</translation>
 <translation id="7714773920987474116">Blokkolja a JavaScriptet (megzavarhatja az oldalak működését)</translation>
 <translation id="2233004324252915283">A YouTube ajánlott tartalmainak letiltása</translation>
 <translation id="1005372663692637999">Letiltja a Következő és a Záróképernyő elemeket a youtube.com webhelyen.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Törli a cookie-kat és egyéb webhelyadatokat, amikor bezár egy adott oldalt</translation>
 <translation id="7740929262043547697">Elemblokkolás engedélyezése privát Windows-ablakokban</translation>
 <translation id="1260864846935682371">Engedélyezi a Shields elemblokkolás funkcióját privát Windows-ablakokban. Felhívjuk figyelmét, hogy a privát ablakaiban blokkolt elemek a nem privát Windows-ablakokban is blokkolva lesznek.</translation>
+<translation id="4021136205151368133">Megjegyzés: ez csökkentheti a Brave adatvédelmi védelmét.</translation>
+<translation id="2876155735620608356">Shields aktív ezen az oldalon</translation>
+<translation id="8605306630462821888">Shields inaktív ezen az oldalon</translation>
+<translation id="1574700443447059851">Nyomkövetők, hirdetések és még több blokkolva.</translation>
+<translation id="4039014515785210563">Válassza ki, hogyan kezelje a nyomkövetőket és a hirdetéseket</translation>
+<translation id="8423733350479881051">Válassza ki, hogyan kezelje a cookie-kat</translation>
+<translation id="9064628362799094520">A webhely adatainak megsemmisítése</translation>
+<translation id="2862348905922940916">Ezen oldal visszaállítása a Shields alapértelmezett beállításaira</translation>
+<translation id="269939061709857874">Az oldal visszaállítva a Shields alapértelmezett beállításaira</translation>
+<translation id="3623708006387030755">Shields globális beállítások</translation>
+<translation id="2387532482048804818">Értesítsen minket, ha a webhely nem működött megfelelően engedélyezett pajzsokkal.</translation>
+<translation id="5412004902081180614">Bejelentés</translation>
+<translation id="1209739344687072997">Nem működő oldal jelentése</translation>
+<translation id="2606165159306988240">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően ezzel az oldallal.</translation>
+<translation id="6806248680442980382">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek.</translation>
+<translation id="7549123865054511884">Mi nem működik ezen az oldalon?</translation>
+<translation id="9094461910562981998">Kapcsolatba léphetnek velem itt (opcionális)</translation>
+<translation id="7645128170699559106">E-mail, X felhasználónév és egyéb</translation>
+<translation id="446579367766109694">Ha megadja az elérhetőségi adatokat, azokat a jövőbeli jelentésekhez tároljuk</translation>
+<translation id="2653659639078652383">Elküldés</translation>
+<translation id="8459191579769999214">Képernyőkép megtekintése</translation>
+<translation id="4530541918195747729">Jelentés elküldve. Köszönjük!</translation>
+<translation id="5528772406060281700">Megsemmisíti a webhelyadatokat</translation>
+<translation id="6795622376590884449">Automatikus megsemmisítés</translation>
+<translation id="3520341243738311408">Amikor a webhely lapjai bezárulnak</translation>
+<translation id="3559735673608367395">Amikor az alkalmazás kilép</translation>
+<translation id="9140049656798805345">Webhelyadatok megsemmisítése most</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
 <translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
 <translation id="5254037869598726291">Az anonimizált P3A információk segítségével a Brave felmérheti az átlagos használatot, és biztosíthatja a népszerű funkciók folyamatos fejlesztését.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Privát termékinformációk</translation>
 <translation id="3545804467215833536">Koppintson a Brave pajzsok megtekintéséhez</translation>
 <translation id="1724327820822194498">Nézze meg, oldalanként mi mindent blokkolt a Brave a pajzsok segítségével.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> és további <ph name="TRACKER"/> reklám és nyomkövető blokkolva</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> és más hirdetések illetve nyomkövetők blokkolva</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklám és nyomkövető blokkolva</translation>
 <translation id="8281886186245836920">Kihagyás</translation>
-<translation id="986879628471635371">Előkészítési hibaelhárítás</translation>
 <translation id="5806601733251372221">Brave védelem</translation>
-<translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Brave jutalmak</translation>
-<translation id="5870330605209713397">magánéletet tiszteletben tartó hirdetések megtekintésével, és alapértelmezettként támogassa kedvenc oldalait és alkotóit.</translation>
-<translation id="5302488867897327287">A Brave Rewards használatára kattintva elfogadja a</translation>
 <translation id="4281844954008187215">Szolgáltatási feltételek</translation>
 <translation id="6871397658902960384">Böngészés elkezdése</translation>
-<translation id="454386012157232640">Nem láttam hirdetést</translation>
-<translation id="1448877943847791441">A Brave ennyi idő múlva fogja mutatni az első hirdetésed:</translation>
-<translation id="4410793187232041318">Mostantól tokeneket szerez a Brave Ads-től</translation>
 <translation id="6511854390690723657">Ez az első Brave hirdetése. Koppintson, ha szeretne többet megtudni.</translation>
-<translation id="2070991379950719711">Használja a Brave Rewardsot</translation>
-<translation id="48520986898237073">Tovább a pénztárcához</translation>
 <translation id="6213254277250932867">12 szavas helyreállítási kifejezésem van</translation>
 <translation id="4225265925807365011">24 szavas helyreállítási kifejezésem van</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">QR-kód beolvasása</translation>
 <translation id="5317781812114905957">Utasítások</translation>
 <translation id="8515319483805157233">A QR-kód alapján történő kereséshez helyezze a QR-kódot a keret közepéhez.</translation>
+<translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="7658239707568436148">Elvetés</translation>
 <translation id="1201402288615127009">Tovább</translation>
 <translation id="8481779960444041069">A fokozott adatvédelemhez állítsa be a Brave-et alapértelmezett böngészőként</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Mappa megnyitása</translation>
 <translation id="8985635554450124959">A szinkronizálást nem lehetett beállítani</translation>
 <translation id="7173114856073700355">Beállítások megnyitása</translation>
-<translation id="496896260395129787">Ez a Brave szinkronizációs fiók törölve lett egy másik eszközről. Ha nem akarta letiltani a Szinkronizálást, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hozza létre újra a fiókot.</translation>
+<translation id="674078455841038219">Ez a Brave szinkronizációs fiók törölve lett egy másik eszközről. Ha nem akarta letiltani a Szinkronizálást, hozza létre újra a fiókot.</translation>
+<translation id="8913415701676265311">Újbóli létrehozás</translation>
 <translation id="4094590686212463338">Nem sikerült csatlakozni ehhez a szinkronizálási lánchoz, mert a lánc törölve lett.</translation>
 <translation id="4908081302669157000">Telefonszámok, címek és e-mail-címek</translation>
+<translation id="1571419474754278280">Leo AI beszélgetések</translation>
 <translation id="1056898198331236512">Figyelmeztetés</translation>
 <translation id="1426410128494586442">Igen</translation>
 <translation id="7811264919113243207">Ezzel megosztja Brave adatait – beleértve akár a jelszavait – az ezt a QR-kódot generáló eszközzel.
@@ -366,10 +383,9 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1413177583895309156">A Brave VPN titkosítja és védi az online tevékenységét a Brave böngészőn kívül is.</translation>
 <translation id="3974348661685061050">Próbálja ki ingyenesen 7 napig</translation>
 <translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Brave Ads-hirdetések</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Új lap</translation>
 <translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását.</translation>
-<translation id="8748471354357836070">További információk / lemondási lehetőségek</translation>
+<translation id="6165508094623778733">Tudj meg többet</translation>
 <translation id="3171669670217312786">Háttérképek</translation>
 <translation id="8522669544471808198">Háttérképek megjelenítése</translation>
 <translation id="6258554626602400736">Hirdetések megjelenítése az Új lap oldalon</translation>
@@ -397,7 +413,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7151914815476509258">Nyomkövetők és hirdetések letiltása (standard)</translation>
 <translation id="7384778069178817075">Összes követő és reklám engedélyezve</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>A "Minden süti blokkolása" opciót már nem használjuk. Ha szeretné megtudni, hogyan lehet ezt az opciót használni, látogasson el a <ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>súgó oldalunkra<ph name="END_LINK_1"/>.</translation>
-<translation id="3763681089644577874">Sütik tiltása</translation>
+<translation id="8823559166155093873">Sütik letiltása</translation>
 <translation id="614747795780742163">Nem engedi, hogy a weboldalak információkat tároljanak korábbi látogatásaidról</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
 <translation id="6196640612572343990">Harmadik féltől származó cookie-k letiltása</translation>
@@ -408,7 +424,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1876882294512858963">Böngészés mindig rejtett módban</translation>
 <translation id="554464532999080267">Kérdezzen rá, mielőtt rejtett módra vált (standard)</translation>
 <translation id="926857659063503456">Soha ne váltson rejtett módra</translation>
-<translation id="3895527457258986253">Lenyomatkészítés blokkolása</translation>
+<translation id="6531019308847917584">Ujjlenyomat-leolvasás letiltása</translation>
 <translation id="7854108565842971747">Ezek az alapértelmezett Shields beállítások új oldalak esetén. Ezek módosítása nem lesz hatással a meglévő oldalankénti beállításokra.</translation>
 <translation id="218587021686734263">Ujjlenyomatvétel megakadályozása a nyelvi beállításokkal</translation>
 <translation id="1706099589708266367">Korlátozza a webhelyek által Önről a böngésző nyelvi beállításai alapján megszerezhető ismereteket.</translation>
@@ -418,22 +434,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7445306466605902444">Ujjlenyomat-felismerés letiltva (szigorú, a webhelyek összeomolhatnak)</translation>
 <translation id="5582686930349810484">Ujjlenyomat-felismerés letiltva (standard)</translation>
 <translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
-<translation id="876424292214881779">Blokkoltuk a hirdetéseket és más bizarr dolgokat</translation>
-<translation id="6849027612978668678">A webhelyek gyakran tartalmaznak cookie-kat és szkripteket, amelyek megpróbálják azonosítani Önt és eszközét. Ki akarják deríteni, hogy Ön kicsoda, és követni akarják Önt az interneten – minden webhelyen nyomon követik, mit csinál. A Brave letiltja ezeket az eszközöket, így Ön anélkül böngészhet, hogy követnék.</translation>
-<translation id="8553998445606452168">Bővebben a Brave Shieldsről</translation>
-<translation id="8912304686498704084">FEL</translation>
-<translation id="4963218453264888510">LE</translation>
-<translation id="7474113515179313724">A Brave adatvédelmi rendszere nélkül böngészel. Nem működik megfelelően ha be van kapcsolva Shields?</translation>
 <translation id="4226543734057230801">Ethereum-hálózatok</translation>
 <translation id="3504157706952484145">Filecoin-hálózatok</translation>
 <translation id="1561541094377237745">Solana-hálózatok</translation>
 <translation id="7141438739990875547">Bitcoin-hálózatok</translation>
 <translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
 <translation id="7898672232170410330">Blokkelem</translation>
-<translation id="9064628362799094520">A webhely adatainak megsemmisítése</translation>
-<translation id="8949611615512336262">Automatikus megsemmisítés: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Webhelyadatok megsemmisítése most</translation>
-<translation id="6795622376590884449">Automatikus megsemmisítés</translation>
 <translation id="7961015016161918242">Soha</translation>
 <translation id="3200744626782631683">A böngészési adatok soha nem kerülnek automatikusan törlésre</translation>
 <translation id="1991004083507807299">Webhelylapok bezárásakor</translation>
@@ -444,23 +450,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2997451887458851244">Frissítse az „Auto Shred” funkciót, és állítsa be, hogy mely adatok törlésre kerüljenek</translation>
 <translation id="363903976200491771">A böngészési adatok automatikus törlése</translation>
 <translation id="1028873002018537235">A böngészési előzmények törlése</translation>
-<translation id="1209739344687072997">Nem működő oldal jelentése</translation>
-<translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
-<translation id="1653405824851871276">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Bővebb információk.</translation>
-<translation id="8740275226259417070">Ez egy hibaoldal. Nem jelenthető nem működő oldalként.</translation>
 <translation id="721949491455392748">Tartalmazza az aktuális oldal képernyőképét</translation>
-<translation id="8459191579769999214">Képernyőkép megtekintése</translation>
 <translation id="6476216365964140603">További részletek (opcionális)</translation>
-<translation id="6145852496180774737">Kapcsolatba léphetnek velem itt: (opcionális)</translation>
-<translation id="6367576083705149078">Ha kitölti elérhetőségi adatait, azokat tároljuk, hogy a jövőben bizonyos oldalakon felmerülő problémákat jelenthessünk.</translation>
-<translation id="7616645803364270729">E-mailben, Twitteren stb.</translation>
-<translation id="5299848999918506028">Köszönjük!</translation>
-<translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="3037432377946455872">Mi a fő probléma, amit lát?</translation>
 <translation id="8731661215617360873">Válasszon ki egy lehetőséget</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
-<translation id="7205939464631857223">Az összes letiltott elem törlése</translation>
 <translation id="5370478469168390143">Adatok mentése online</translation>
 <translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
 <translation id="7427391215172269363">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
@@ -510,17 +504,17 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2718046830255553131">Az adatvédelmi jelentések adatai törölve lettek.</translation>
 <translation id="8376263745431603066">"Éjszakai mód” engedélyezése (kísérleti)</translation>
 <translation id="1383876407941801731">Keresés</translation>
-<translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="13296465911709339">A szöveged a vágólapra lett másolva.</translation>
 <translation id="2735834606413553397">A nyilvános cím át lett másolva a vágólapra.</translation>
 <translation id="2977461003134694205">Adatvédelmi statisztikák</translation>
 <translation id="8804164990146287819">Adatvédelmi szabályzat</translation>
 <translation id="5705882733397021510">Vissza</translation>
+<translation id="8450375131309292971">Lehúzás a frissítéshez</translation>
+<translation id="880475987868032564">Engedélyezi a lehúzással történő frissítés mozdulatát. Az oldal tetejéről lefelé húzva frissül az oldal.</translation>
 <translation id="7889432931837317731">Automatikus megnyitás, ha lehetséges</translation>
 <translation id="1029304566263314007">A letöltés előrehaladásáról szóló értesítések megjelenítése</translation>
 <translation id="2977501775944575564">Párhuzamos letöltés</translation>
 <translation id="6224180438946945617">A párhuzamos letöltés engedélyezése a gyorsabb letöltés érdekében</translation>
-<translation id="8967385052772844086">Teljes adatvédelmi jelentés megtekintése</translation>
 <translation id="3479552764303398839">Ne most</translation>
 <translation id="7138272885617540195">Alkalmazás-hivatkozások megnyitásának engedélyezése Brave-en kívüli alkalmazásokban</translation>
 <translation id="4954512758656527938">Alapértelmezett Ethereum pénztárca</translation>
@@ -784,7 +778,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="2156993118928861787">Érvénytelen cím</translation>
 <translation id="7791543448312431591">Hozzáadás</translation>
 <translation id="6889920539620318793">Beállítás aktívként</translation>
-<translation id="2653659639078652383">Elküldés</translation>
 <translation id="4945690646623486292">Hálózat kiválasztása</translation>
 <translation id="8006088103295786154">Hozzáférés a Brave pénztárcához</translation>
 <translation id="5308380583665731573">Csatlakozás</translation>
@@ -1105,7 +1098,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1336494649091412226">Biztosan kilép a Brave-ből?</translation>
 <translation id="6061635824229591714">Megsemmisíti a webhelyadatokat?</translation>
 <translation id="1265051174491933207">A megsemmisítés törli a webhelyadatokat, és bezárja az összes „<ph name="SITE_NAME"/>” lapot. Ez nem visszavonható.</translation>
-<translation id="5528772406060281700">Megsemmisíti a webhelyadatokat</translation>
 <translation id="4426990318287827331">Adatok megsemmisítése</translation>
 <translation id="7942415993090181327">Csevegési előzmények</translation>
 <translation id="6859935199732075666">Biztonságos böngészés hibáinak megjelenítése</translation>

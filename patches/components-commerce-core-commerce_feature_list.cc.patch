@@ -1,0 +1,48 @@
+diff --git a/components/commerce/core/commerce_feature_list.cc b/components/commerce/core/commerce_feature_list.cc
+index 30567b8c4ae4498861fd49e92038fc8cd1405df1..410f243a99a54656e7d9886b2ecb3e423e7443da 100644
+--- a/components/commerce/core/commerce_feature_list.cc
++++ b/components/commerce/core/commerce_feature_list.cc
+@@ -125,13 +125,16 @@ const re2::RE2& GetCouponPartnerMerchantPattern() {
+ 
+ BASE_FEATURE(kCommerceAllowLocalImages, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kCommerceAllowOnDemandBookmarkUpdates feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kCommerceAllowOnDemandBookmarkUpdates,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kCommerceMerchantViewer feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kCommerceMerchantViewer, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kCommerceLocalPDPDetection, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kPriceAnnotations feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPriceAnnotations, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPriceInsights, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -214,11 +217,13 @@ BASE_FEATURE(kDiscountsUiRefactor, base::FEATURE_DISABLED_BY_DEFAULT);
+ const base::FeatureParam<bool> kDeleteAllMerchantsOnClearBrowsingHistory{
+     &kCommerceMerchantViewer, "delete_all_merchants_on_clear_history", false};
+ 
++// kShoppingList feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kShoppingList, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPriceTrackingSubscriptionServiceLocaleKey,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
++// kShoppingPDPMetrics feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kShoppingPDPMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kSubscriptionsApi, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -227,8 +232,10 @@ BASE_FEATURE(kInStockNotification, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kShoppingPageTypes, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kRetailCoupons, base::FEATURE_ENABLED_BY_DEFAULT);
++// kRetailCoupons feature state is enforced via plaster rewrite.
++BASE_FEATURE(kRetailCoupons, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kCommerceDeveloper feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kCommerceDeveloper, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const char kRetailCouponsWithCodeParam[] = "RetailCouponsWithCodeParam";

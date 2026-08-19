@@ -2070,7 +2070,7 @@ TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
 
   // SetNetwork for other origin will be ignored.
   EXPECT_CALL(*observer_, ChainChangedEvent(testing::_)).Times(0);
-  SetNetwork(mojom::kLocalhostChainId,
+  SetNetwork(mojom::kBnbSmartChainMainnetChainId,
              url::Origin::Create(GURL("https://a.com")));
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));

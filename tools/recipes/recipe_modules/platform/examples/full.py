@@ -19,6 +19,13 @@ def RunSteps(api):
         api.step('mac only', ['echo', 'mac'])
     if api.platform.is_linux:
         api.step('linux only', ['echo', 'linux'])
+    api.step('report capacity', [
+        'echo',
+        str(api.platform.cpu_count),
+        str(api.platform.total_memory),
+    ])
+    api.step('report machine',
+             ['echo', str(api.platform.bits), api.platform.arch])
 
 
 def GenTests(api):
@@ -46,4 +53,52 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'mac only'),
         api.post_process(post_process.DoesNotRun, 'windows only'),
         api.post_process(post_process.StatusSuccess),
+    )
+    # A simulated host reports fixed capacity, so a `ResourceCost` schedules
+    # identically wherever the tests run.
+    yield api.test(
+        'default capacity',
+        api.platform.name('linux'),
+        api.post_process(post_process.StepCommandContains, 'report capacity',
+                         ['8', '16384']),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
+    )
+    # Either figure can be overridden, to exercise a step that has to queue.
+    yield api.test(
+        'overridden capacity',
+        api.platform.name('linux'),
+        api.platform.capacity(cpu_count=2, total_memory=1024),
+        api.post_process(post_process.StepCommandContains, 'report capacity',
+                         ['2', '1024']),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
+    )
+    # A simulated host defaults to 64-bit intel.
+    yield api.test(
+        'default machine',
+        api.platform.name('linux'),
+        api.post_process(post_process.StepCommandContains, 'report machine',
+                         ['64', 'intel']),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
+    )
+    # `api.platform(...)` sets name, bitness and architecture together.
+    yield api.test(
+        'arm mac',
+        api.platform('mac', 64, 'arm'),
+        api.post_process(post_process.StepCommandContains, 'report machine',
+                         ['64', 'arm']),
+        api.post_process(post_process.MustRun, 'mac only'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
+    )
+    yield api.test(
+        '32 bit windows',
+        api.platform('win', 32),
+        api.post_process(post_process.StepCommandContains, 'report machine',
+                         ['32', 'intel']),
+        api.post_process(post_process.MustRun, 'windows only'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )

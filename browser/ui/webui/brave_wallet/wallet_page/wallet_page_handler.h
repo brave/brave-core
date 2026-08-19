@@ -33,6 +33,7 @@ class WalletPageHandler : public mojom::PageHandler {
   void UnlockWalletUI() override;
   void ShowOnboarding(bool is_new_wallet) override;
   void OpenWalletHome() override;
+  void ScanQRCode(ScanQRCodeCallback callback) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED

@@ -23,11 +23,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceScreen;
 
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.metrics.RecordHistogram;
@@ -37,6 +41,7 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -44,6 +49,7 @@ import org.chromium.chrome.browser.password_manager.BravePasswordManagerHelper;
 import org.chromium.chrome.browser.password_manager.ManagePasswordsReferrer;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveSettingsPreferenceGroupAdapter;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.chrome.browser.settings.MainSettings;
@@ -131,6 +137,36 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private final ImportFlow mImportFlow = new ImportFlow();
 
     private @MonotonicNonNull SearchViewProvider.Observer mSearchViewObserver;
+
+    private final OnBackPressedCallback mBackPressedCallback =
+            new OnBackPressedCallback(/* enabled= */ false) {
+                @Override
+                public void handleOnBackPressed() {
+                    SearchView searchView =
+                            mSearchItem == null ? null : (SearchView) mSearchItem.getActionView();
+                    if (searchView != null && !searchView.isIconified()) {
+                        // The toolbar search view is open, return to the full Password Manager
+                        // passwords list
+                        searchView.setQuery("", false);
+                        searchView.setIconified(true);
+                        // Exit search mode entirely (query = null, not ""), so Save passwords /
+                        // Auto sign-in switches and Import/Export are restored, not just the
+                        // empty-query list.
+                        filterPasswords(null);
+                    }
+                }
+            };
+
+    @Override
+    protected @NonNull PreferenceGroupAdapter onCreateAdapter(
+            @NonNull PreferenceScreen preferenceScreen) {
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen) {
+            @Override
+            protected boolean shouldClearIconTint(@NonNull Preference preference) {
+                return preference instanceof PasswordEntryPreference;
+            }
+        };
+    }
 
     public ExportFlow getExportFlowForTesting() {
         return mExportFlow;
@@ -327,11 +363,21 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
         // Disable animations of preference changes.
         getListView().setItemAnimator(null);
+        requireActivity()
+                .getOnBackPressedDispatcher()
+                .addCallback(getViewLifecycleOwner(), mBackPressedCallback);
     }
 
     @Override
     public void setSearchViewObserver(SearchViewProvider.Observer observer) {
-        mSearchViewObserver = observer;
+        // Enable the back callback exactly while the local search view is open, so back collapses
+        // the search instead of exiting the fragment (see mBackPressedCallback). SearchUtils drives
+        // this observer: onUpdated(true) on open, onUpdated(false) on close.
+        mSearchViewObserver =
+                visible -> {
+                    mBackPressedCallback.setEnabled(visible);
+                    observer.onUpdated(visible);
+                };
     }
 
     @Initializer
@@ -505,6 +551,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     public void passwordListAvailable(int count) {
         resetList(PREF_KEY_CATEGORY_SAVED_PASSWORDS);
         resetNoEntriesTextMessage();
+        if (mSearchQuery != null) {
+            // In search mode the results are added directly to the preference screen (there is no
+            // saved-passwords category), so resetList() above does not remove them. Clear them here
+            // so repeated password-store updates (e.g. OnLoginsRetained) don't accumulate duplicate
+            // rows.
+            getPreferenceScreen().removeAll();
+        }
 
         mNoPasswords = count == 0;
         if (mNoPasswords) {

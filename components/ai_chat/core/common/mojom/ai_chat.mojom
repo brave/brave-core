@@ -110,6 +110,28 @@ struct ConversationArchive {
   array<ContentArchive> associated_content;
 };
 
+// A conversation the user has uploaded to the sharing server, as recorded
+// locally when the share was created.
+struct ConversationShare {
+  // Identifies the share on the sharing server. It is the last path component
+  // of the shared link, so it lets the user match a record with a link they
+  // have already sent to someone.
+  string share_id;
+
+  // The conversation this share was made from. Viewing the share doesn't need
+  // it - the uploaded copy is self-contained - but it relates the share back to
+  // the conversation it came from, which may since have been deleted.
+  string conversation_uuid;
+
+  // Title of the conversation at the time it was shared. The conversation may
+  // since have been renamed or deleted.
+  string conversation_title;
+
+  // When the conversation was shared. The sharing server deletes shares after
+  // a fixed period, so this also indicates when the link will stop working.
+  mojo_base.mojom.Time created_time;
+};
+
 struct Skill {
   string id;
   string shortcut;
@@ -174,8 +196,11 @@ interface Service {
   // base64-encoded blob (12-byte AES-GCM IV followed by the ciphertext)
   // produced by the UI. |key_fragment| is the URL-safe-base64 decryption key
   // which is never sent to the sharing server; it is appended to the server's
-  // viewer URL as a fragment to build the full shareable link. When
-  // |copy_to_clipboard| is true, that full link is written to the system
+  // viewer URL as a fragment to build the full shareable link.
+  // |conversation_uuid| and |conversation_title| are recorded alongside the
+  // share so the user can recognize it in the share management UI and so the
+  // share can be related back to the conversation it came from. When
+  // |copy_to_clipboard| is true, the full link is written to the system
   // clipboard marked as confidential (excluded from clipboard history and other
   // data-leak-prevention surfaces) - this must happen in the browser process
   // because the renderer cannot set clipboard confidentiality flags. Returns
@@ -183,8 +208,27 @@ interface Service {
   // failed.
   ShareConversation(string encrypted_contents,
                     string key_fragment,
+                    string conversation_uuid,
+                    string conversation_title,
                     bool copy_to_clipboard)
       => (url.mojom.Url? shared_conversation_url);
+
+  // Metadata for every conversation the user has shared and which hasn't yet
+  // expired, most recently shared first.
+  GetConversationShares() => (array<ConversationShare> shares);
+
+  // Asks the sharing server to delete the shared conversation identified by
+  // |share_id| and forgets the local record of it. Returns false if the server
+  // could not be reached, in which case the record is kept so the user can
+  // retry.
+  DeleteConversationShare(string share_id) => (bool success);
+
+  // Copies the link of an existing share to the system clipboard, marked as
+  // confidential in the same way as when the share was created. The link
+  // includes the conversation's decryption key, so it is not returned to the
+  // caller - keys for past shares stay in the browser process. Does nothing if
+  // there is no record of |share_id|.
+  CopyConversationShareLink(string share_id);
 
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
@@ -249,6 +293,14 @@ interface AIChatUIHandler {
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 
+  // Get the favicon which the browser has stored for a page as a data URL, so
+  // that it can be included in data which will be displayed outside of the
+  // browser, e.g. a shared conversation. Null if the browser doesn't have one.
+  // The UI renders favicons from the browser's favicon service directly
+  // (chrome://favicon2), so this is only needed when the image data itself is
+  // required.
+  GetFaviconDataURL(url.mojom.Url page_url) => (string? data_url);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 
@@ -286,6 +338,9 @@ interface ChatUI {
   // if any.
   OnNewDefaultConversation(int32? content_id);
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
+
+  // Notifies that the display mode has changed - standalone vs side panel
+  OnDisplayModeChanged(bool is_standalone);
 };
 
 struct ConversationState {

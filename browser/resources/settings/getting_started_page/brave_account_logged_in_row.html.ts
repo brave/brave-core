@@ -79,7 +79,7 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
             ${this.i18n(BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE)}
           </div>
           <div class="description">
-            <div id="email">${this.state.email}</div>
+            <div id="email">${this.truncatedEmail}</div>
           </div>
         </div>
         <leo-button kind="plain"

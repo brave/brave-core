@@ -28,8 +28,13 @@ installationAppPath="$installationPath/@APP_BUNDLE@"
 appDataDir="$HOME/Library/Application Support/@PRODUCT_DIR_NAME@"
 promoCodePath="$appDataDir/promoCode"
 
-# pkg runs this script as root so we need to get current username
+# pkg runs this script as root so we need to get current username. When the
+# pkg is installed via `sudo installer ...`, $USER is root rather than the
+# installing user; fall back to the invoking user or the console user then.
 userName="$USER"
+if [[ -z "$userName" || "$userName" == "root" ]]; then
+  userName="${SUDO_USER:-$(stat -f%Su /dev/console)}"
+fi
 
 echo "Installer path is: $installerPath"
 echo "Username is: $userName"

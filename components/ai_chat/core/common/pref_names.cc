@@ -48,7 +48,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterListPref(kBraveAIChatUserMemories);
     registry->RegisterDictionaryPref(kBraveAIChatSkills);
     registry->RegisterBooleanPref(kBraveAIChatOllamaFetchEnabled, false);
+    registry->RegisterStringPref(kBraveAIChatConversationShares, "");
     registry->RegisterDictionaryPref(kAIChatObliviousHttpKeyConfigs);
+    registry->RegisterTimePref(kRemoteModelsCachedAt, {});
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }
@@ -63,6 +65,7 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Added 11/2023
   registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
+  registry->RegisterBooleanPref(kNtpInputDayZeroEnabled, false);
 }
 
 }  // namespace ai_chat::prefs

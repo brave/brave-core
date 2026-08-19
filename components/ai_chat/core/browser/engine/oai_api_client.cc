@@ -79,7 +79,6 @@ base::DictValue OAIAPIClient::CreateJSONRequestBody(
 
   dict.Set("messages", std::move(messages));
   dict.Set("stream", is_sse_enabled);
-  dict.Set("temperature", 0.7);
   dict.Set("model", model_request_name);
 
   if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
@@ -448,7 +447,7 @@ void OAIAPIClient::OnQueryDataReceived(
   }
 
   for (auto& tool_result :
-       ParseToolCallsFromOAIResponse(result_dict, std::nullopt)) {
+       ParseToolCallsFromOAIResponse(result_dict, model_key)) {
     callback.Run(std::move(tool_result));
   }
 }

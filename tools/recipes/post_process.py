@@ -105,6 +105,16 @@ def StepCommandContains(check: Checker, step_odict: Steps, step: str,
                         step_odict[step]['cmd']))
 
 
+def StepCommandDoesNotContain(check: Checker, step_odict: Steps, step: str,
+                              argument_sequence: Sequence[str]) -> None:
+    """Assert that a step's command did not contain the given argument
+    sequence."""
+    check(
+        'command line for step %s did not contain %s' %
+        (step, argument_sequence), not _is_subsequence(
+            [str(a) for a in argument_sequence], step_odict[step]['cmd']))
+
+
 def StepCommandRE(check: Checker, step_odict: Steps, step: str,
                   expected_patterns: Sequence[str | re.Pattern]) -> None:
     """Assert that a step's command matches the given list of regexes.

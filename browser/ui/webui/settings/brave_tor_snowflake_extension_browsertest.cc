@@ -62,23 +62,23 @@ class TorSnowflakeExtensionBrowserTest : public InProcessBrowserTest {
         extensions::ExtensionBuilder("Snowflake")
             .SetID(kSnowflakeExtensionId)
             .Build());
-    extensions::ExtensionRegistrar::Get(browser()->profile())
+    extensions::ExtensionRegistrar::Get(browser()->GetProfile())
         ->AddExtension(extension);
   }
 
   void EnableSnowflake(bool enable) {
     if (enable) {
-      extensions::ExtensionRegistrar::Get(browser()->profile())
+      extensions::ExtensionRegistrar::Get(browser()->GetProfile())
           ->EnableExtension(kSnowflakeExtensionId);
     } else {
-      extensions::ExtensionRegistrar::Get(browser()->profile())
+      extensions::ExtensionRegistrar::Get(browser()->GetProfile())
           ->DisableExtension(kSnowflakeExtensionId,
                              {extensions::disable_reason::DISABLE_USER_ACTION});
     }
   }
 
   bool IsSnowflakeInstalled() {
-    return extensions::ExtensionRegistry::Get(browser()->profile())
+    return extensions::ExtensionRegistry::Get(browser()->GetProfile())
         ->GetInstalledExtension(kSnowflakeExtensionId);
   }
 

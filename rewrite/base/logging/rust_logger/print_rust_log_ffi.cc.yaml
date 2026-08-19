@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Consult ShouldPrintRustLog (defined in the chromium_src override) first:
+      it remaps trace/debug severities to verbose and reports whether the
+      message should still fall through to the upstream formatting below.
+    preempt_function_impl:
+      function_name: print_rust_log
+      code: |-
+        if (!ShouldPrintRustLog(severity)) {
+          return;
+        }

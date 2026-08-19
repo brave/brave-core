@@ -12,14 +12,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.biometrics.BiometricPrompt;
-import android.os.Build;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -55,6 +53,9 @@ import javax.crypto.NoSuchPaddingException;
 public abstract class BaseWalletNextPageFragment extends Fragment {
     public interface BiometricAuthenticationCallback {
         void authenticationSuccess(@NonNull final String unlockWalletPassword);
+
+        /** Invoked when the user dismisses the biometric prompt by tapping back or Cancel. */
+        default void authenticationDismissed() {}
     }
 
     // Might be {@code null} when detached from the screen.
@@ -149,8 +150,13 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     /** Shows biometric authentication button if supported and if it was previously set. */
     protected void showBiometricAuthenticationButton(@NonNull final View view) {
-        if (Utils.isBiometricSupported(requireContext())
-                && KeystoreHelper.shouldUseBiometricToUnlock()) {
+        final Context context = getContext();
+        if (context == null) {
+            // An async biometric callback can run after the fragment has detached for example
+            // when a rotation cancels the prompt; there is no attached view to update.
+            return;
+        }
+        if (Utils.isBiometricSupported(context) && KeystoreHelper.shouldUseBiometricToUnlock()) {
             view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.GONE);
@@ -158,7 +164,6 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
     protected void showBiometricAuthenticationDialog(
             @NonNull final View biometricUnlockButton,
             @NonNull final BiometricAuthenticationCallback biometricAuthenticationCallback,
@@ -216,10 +221,20 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                         super.onAuthenticationError(errorCode, errString);
 
                         final Context context = getContext();
+                        if (context == null) {
+                            // A rotation may cancel the prompt and report the error once the
+                            // fragment has detached.
+                            return;
+                        }
                         // Error code 10 is when the user taps back to dismiss the dialog,
                         // there's no need to show a toast to log this action.
-                        if (!TextUtils.isEmpty(errString) && context != null && errorCode != 10) {
+                        if (!TextUtils.isEmpty(errString) && errorCode != 10) {
                             Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
+                        }
+                        // Both tapping back and the Cancel button report a user cancellation, which
+                        // is the dismissal we want to remember across a rotation.
+                        if (errorCode == BIOMETRIC_ERROR_USER_CANCELED) {
+                            biometricAuthenticationCallback.authenticationDismissed();
                         }
                         showBiometricAuthenticationButton(biometricUnlockButton);
                     }

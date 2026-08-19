@@ -273,7 +273,7 @@ where R: Rng + ?Sized {
 ///
 /// Panics if `amount > length`.
 #[cfg(feature = "std")]
-#[cfg_attr(doc_cfg, doc(cfg(feature = "std")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 pub fn sample_weighted<R, F, X>(
     rng: &mut R, length: usize, weight: F, amount: usize,
 ) -> Result<IndexVec, WeightedError>

@@ -22,7 +22,8 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
-#include "brave/components/brave_account/endpoints/verify_resend.h"
+#include "brave/components/brave_account/flows/cancel_verification.h"
+#include "brave/components/brave_account/flows/resend_verification_email.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -176,32 +177,44 @@ class StateBase : public mojom::Authentication {
 
  private:
   // Flow helpers, each owned by one state and implementing that state's
-  // flow overrides on its owner's behalf: `Register` and `ResetPassword` owned
-  // by `LoggedOutState` (the `Register*` and `ResetPassword*` overrides),
-  // `ChangePassword` owned by `LoggedInState` (the `ChangePassword*`
-  // overrides). They are friended on `StateBase` (not on the owning state)
-  // because the plumbing they borrow through their back-reference - request
-  // lifetime (`in_flight_`, `SendStateOwnedRequest()`), crypto, and
+  // flow overrides on its owner's behalf: `Login`, `Register`, and
+  // `ResetPassword` owned by `LoggedOutState` (the `LoginStep*`, `Register*`,
+  // and `ResetPassword*` overrides), `ChangePassword`, `GetServiceToken`, and
+  // `LogOut` owned by `LoggedInState` (the `ChangePassword*`,
+  // `GetServiceToken`, and `LogOut` overrides). `CancelVerification` and
+  // `ResendVerificationEmail` are the exceptions: they are owned by `StateBase`
+  // itself (see `cancel_verification_` and `resend_verification_email_` below),
+  // because their overrides are valid in both states. `UpdateEmail`, owned by
+  // `LoggedInState`, implements no mojom override at all: it drives itself,
+  // polling in the background to refresh the stored email. They are friended on
+  // `StateBase` (not on the owning state) because the plumbing they borrow
+  // through their back-reference - request lifetime (`in_flight_`,
+  // `SendStateOwnedRequest()`, `SendCallerOwnedRequest()`), crypto, and
   // `account_state_prefs_` - is bound to `StateBase` and can't move out.
+  friend class CancelVerification;
   friend class ChangePassword;
+  friend class GetServiceToken;
+  friend class Login;
+  friend class LogOut;
   friend class Register;
+  friend class ResendVerificationEmail;
   friend class ResetPassword;
+  friend class UpdateEmail;
 
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) final;
 
-  void RegisterPasswordInit(mojom::Service initiating_service,
-                            const std::string& email,
-                            const std::string& blinded_message,
-                            RegisterPasswordInitCallback callback) override;
+  void RegisterStep1(mojom::Service initiating_service,
+                     const std::string& email,
+                     const std::string& blinded_message,
+                     RegisterStep1Callback callback) override;
 
-  void RegisterPasswordFinalize(
-      const std::string& encrypted_verification_token,
-      const std::string& serialized_record,
-      RegisterPasswordFinalizeCallback callback) override;
+  void RegisterStep2(const std::string& encrypted_verification_token,
+                     const std::string& serialized_record,
+                     RegisterStep2Callback callback) override;
 
-  void RegisterVerifyComplete(const std::string& code,
-                              RegisterVerifyCompleteCallback callback) override;
+  void RegisterStep3(const std::string& code,
+                     RegisterStep3Callback callback) override;
 
   void ResendVerificationEmail(
       mojom::VerificationIntentPtr intent,
@@ -209,55 +222,44 @@ class StateBase : public mojom::Authentication {
 
   void CancelVerification(mojom::VerificationIntentPtr intent) override;
 
-  void ResetPasswordVerifyInit(
-      const std::string& email,
-      ResetPasswordVerifyInitCallback callback) override;
+  void ResetPasswordStep1(const std::string& email,
+                          ResetPasswordStep1Callback callback) override;
 
-  void ResetPasswordVerifyComplete(
-      const std::string& code,
-      ResetPasswordVerifyCompleteCallback callback) override;
+  void ResetPasswordStep2(const std::string& code,
+                          ResetPasswordStep2Callback callback) override;
 
-  void ResetPasswordPasswordInit(
-      const std::string& blinded_message,
-      ResetPasswordPasswordInitCallback callback) override;
+  void ResetPasswordStep3(const std::string& blinded_message,
+                          ResetPasswordStep3Callback callback) override;
 
-  void ResetPasswordPasswordFinalize(
-      const std::string& serialized_record,
-      const std::string& email,
-      ResetPasswordPasswordFinalizeCallback callback) override;
+  void ResetPasswordStep4(const std::string& serialized_record,
+                          const std::string& email,
+                          ResetPasswordStep4Callback callback) override;
 
-  void LoginInitialize(mojom::Service initiating_service,
-                       const std::string& email,
-                       const std::string& serialized_ke1,
-                       LoginInitializeCallback callback) override;
+  void LoginStep1(mojom::Service initiating_service,
+                  const std::string& email,
+                  const std::string& serialized_ke1,
+                  LoginStep1Callback callback) override;
 
-  void LoginFinalize(const std::string& encrypted_login_token,
-                     const std::string& client_mac,
-                     LoginFinalizeCallback callback) override;
+  void LoginStep2(const std::string& encrypted_login_token,
+                  const std::string& client_mac,
+                  LoginStep2Callback callback) override;
 
-  void ChangePasswordVerifyInit(
-      const std::string& email,
-      ChangePasswordVerifyInitCallback callback) override;
+  void ChangePasswordStep1(const std::string& email,
+                           ChangePasswordStep1Callback callback) override;
 
-  void ChangePasswordVerifyComplete(
-      const std::string& code,
-      ChangePasswordVerifyCompleteCallback callback) override;
+  void ChangePasswordStep2(const std::string& code,
+                           ChangePasswordStep2Callback callback) override;
 
-  void ChangePasswordPasswordInit(
-      const std::string& blinded_message,
-      ChangePasswordPasswordInitCallback callback) override;
+  void ChangePasswordStep3(const std::string& blinded_message,
+                           ChangePasswordStep3Callback callback) override;
 
-  void ChangePasswordPasswordFinalize(
-      const std::string& serialized_record,
-      ChangePasswordPasswordFinalizeCallback callback) override;
+  void ChangePasswordStep4(const std::string& serialized_record,
+                           ChangePasswordStep4Callback callback) override;
 
   void LogOut() override;
 
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
-
-  void OnResendVerificationEmail(ResendVerificationEmailCallback callback,
-                                 endpoints::VerifyResend::Response response);
 
   void RemoveRequestHandle(
       std::list<endpoint_client::RequestHandle>::iterator slot);
@@ -271,6 +273,8 @@ class StateBase : public mojom::Authentication {
   const AddObserverCallback add_observer_;
   mojo::ReceiverSet<mojom::Authentication> receivers_;
   std::list<endpoint_client::RequestHandle> in_flight_;
+  class CancelVerification cancel_verification_{*this};
+  class ResendVerificationEmail resend_verification_email_{*this};
   base::WeakPtrFactory<StateBase> weak_factory_{this};
 };
 

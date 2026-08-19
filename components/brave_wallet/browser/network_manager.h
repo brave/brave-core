@@ -79,6 +79,10 @@ class NetworkManager {
                          const std::optional<url::Origin>& origin,
                          std::string_view chain_id);
 
+  void MigrateDeadNetwork(mojom::CoinType coin,
+                          const std::string& chain_id,
+                          const std::string& fallback_chain_id);
+
   void SetNetworkURLForTesting(const std::string& chain_id, GURL url);
 
  private:

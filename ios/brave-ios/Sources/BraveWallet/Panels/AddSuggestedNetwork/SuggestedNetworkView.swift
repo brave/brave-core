@@ -152,34 +152,21 @@ struct SuggestedNetworkView: View {
       )
       VStack(spacing: 8) {
         faviconAndOrigin
-        if let chain, chain.chainId != BraveWallet.LocalhostChainId {
-          Text(headerTitle)
-            .font(.headline)
-            .foregroundColor(Color(braveSystemName: .textPrimary))
-            .multilineTextAlignment(.center)
-          Text(headerDescription)
-            .font(.subheadline)
-            .foregroundColor(Color(braveSystemName: .textPrimary))
-            .multilineTextAlignment(.center)
-          if case .addNetwork = mode {
-            Button {
-              openWalletURL(.brave.support)
-            } label: {
-              Text(Strings.Wallet.learnMoreButton)
-                .foregroundColor(Color(braveSystemName: .textInteractive))
-            }
+        Text(headerTitle)
+          .font(.headline)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+          .multilineTextAlignment(.center)
+        Text(headerDescription)
+          .font(.subheadline)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+          .multilineTextAlignment(.center)
+        if case .addNetwork = mode {
+          Button {
+            openWalletURL(.brave.support)
+          } label: {
+            Text(Strings.Wallet.learnMoreButton)
+              .foregroundColor(Color(braveSystemName: .textInteractive))
           }
-        } else {
-          VStack(alignment: .leading) {
-            Label(Strings.Wallet.localhostNotSupported, systemImage: "exclamationmark.triangle")
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
-          }
-          .padding(24)
-          .background(
-            Color(braveSystemName: .systemfeedbackErrorBackground),
-            in: .rect(cornerRadius: 10, style: .continuous)
-          )
         }
       }
       .frame(maxWidth: .infinity)
@@ -193,7 +180,7 @@ struct SuggestedNetworkView: View {
     List {
       Section {
         Group {
-          if let chain = chain, chain.chainId != BraveWallet.LocalhostChainId {
+          if let chain = chain {
             VStack(alignment: .leading) {
               Text(Strings.Wallet.networkNameTitle)
                 .fontWeight(.semibold)
@@ -329,24 +316,23 @@ struct SuggestedNetworkView: View {
     .buttonStyle(.outline)
     .controlSize(.large)
     .disabled(isLoading)
-    if let chain, chain.chainId != BraveWallet.LocalhostChainId {
-      WalletLoadingButton(
-        isLoading: isLoading,
-        action: {  // approve
-          handleAction(approved: true)
-        },
-        label: {
-          HStack {
-            Image(braveSystemName: "leo.check.circle-filled")
-            Text(actionButtonTitle)
-              .multilineTextAlignment(.center)
-          }
+
+    WalletLoadingButton(
+      isLoading: isLoading,
+      action: {  // approve
+        handleAction(approved: true)
+      },
+      label: {
+        HStack {
+          Image(braveSystemName: "leo.check.circle-filled")
+          Text(actionButtonTitle)
+            .multilineTextAlignment(.center)
         }
-      )
-      .buttonStyle(.filled)
-      .controlSize(.large)
-      .disabled(isLoading)
-    }
+      }
+    )
+    .buttonStyle(.filled)
+    .controlSize(.large)
+    .disabled(isLoading)
   }
 
   private func handleAction(approved: Bool) {

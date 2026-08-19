@@ -56,7 +56,7 @@ def main():
               f"{', '.join(map(str, IGNORED_CARGO_ADVISORIES))}")
 
     args = parse_args()
-    args.source_root = os.path.normpath(args.source_root)
+    args.source_root = os.path.abspath(args.source_root)
     errors = 0
 
     if args.input_dir:

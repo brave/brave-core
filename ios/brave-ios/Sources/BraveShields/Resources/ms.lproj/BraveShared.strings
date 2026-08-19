@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Penghapus Auto";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Cincang Data Pelayaran Secara Automatik";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresif";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Peraturan tidak sah `%1$@` pada baris %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Tambah penapis tersuai anda di sini, satu bagi setiap baris.";
+"CustomFiltersPlaceholder" = "Tambah Penapis Tersuai";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Penapis tersuai tidak menyokong lebih daripada %i baris";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domain Disekat";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Edit Penapis Tersuai";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Minta laman web agar tidak menjual atau kongsikan data anda. [Ketahui lebih lanjut](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Tidak sama sekali";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Data pelayaran tidak pernah dicincang secara automatik";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Aplikasi Ditutup";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Data pelayaran dicincang secara automatik apabila apl Brave ditutup / dimulakan semula";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Tab Laman Ditutup";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Data pelayaran dicincang secara automatik apabila semua tab yang terbuka ke sesuatu tapak ditutup";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Penghapusan akan menutup semua tab, dan memadamkan semua data laman. Tindakan ini tidak boleh dibuat asal.";

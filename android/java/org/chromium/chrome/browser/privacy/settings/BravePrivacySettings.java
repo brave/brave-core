@@ -47,9 +47,11 @@ import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDi
 import org.chromium.chrome.browser.safety_hub.SafetyHubExpandablePreference;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
+import org.chromium.chrome.browser.settings.BraveTextButtonPreference;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
@@ -230,7 +232,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private @Nullable ChromeSwitchPreference mSendCrashReports;
     private @Nullable ChromeSwitchPreference mBraveStatsUsagePing;
     private ChromeSwitchPreference mSurveyPanelist;
-    private ChromeBasePreference mSurveyPanelistLearnMore;
+    private BraveTextButtonPreference mSurveyPanelistLearnMore;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
     private PreferenceCategory mSocialBlockingCategory;
     private ChromeSwitchPreference mSocialBlockingGoogle;
@@ -337,7 +339,9 @@ public class BravePrivacySettings extends PrivacySettings {
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
-                                            requireContext().getColor(R.color.brave_link),
+                                            BraveDynamicColors.getTextButtonColor(
+                                                    requireContext().getTheme(),
+                                                    requireContext().getColor(R.color.brave_link)),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(
                                                         requireContext(),
@@ -436,16 +440,9 @@ public class BravePrivacySettings extends PrivacySettings {
         mSurveyPanelist.setOnPreferenceChangeListener(this);
         mSurveyPanelist.setVisible(surveyPanelistEnabled);
         mSurveyPanelistLearnMore =
-                (ChromeBasePreference) findPreference(PREF_SURVEY_PANELIST_LEARN_MORE);
+                (BraveTextButtonPreference) findPreference(PREF_SURVEY_PANELIST_LEARN_MORE);
         mSurveyPanelistLearnMore.setVisible(surveyPanelistEnabled);
-        SpannableString spannableString =
-                new SpannableString(getContext().getString(R.string.survey_panelist_learn_more));
-        spannableString.setSpan(
-                new ForegroundColorSpan(getContext().getColor(R.color.brave_link)),
-                0,
-                spannableString.length(),
-                0);
-        mSurveyPanelistLearnMore.setTitle(spannableString);
+        mSurveyPanelistLearnMore.setTitle(R.string.survey_panelist_learn_more);
         mSurveyPanelistLearnMore.setOnPreferenceClickListener(
                 preference -> {
                     TabUtils.openUrlInCustomTab(requireContext(), SURVEY_PANELIST_LEARN_MORE_LINK);

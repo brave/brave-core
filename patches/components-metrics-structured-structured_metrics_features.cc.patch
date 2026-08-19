@@ -1,0 +1,14 @@
+diff --git a/components/metrics/structured/structured_metrics_features.cc b/components/metrics/structured/structured_metrics_features.cc
+index 72e65bdf147da1b4f2a57dd9358c7d9c0d9f3204..a8b3dd4595d4ee0d7ff96e7d60da1d9938d73e6f 100644
+--- a/components/metrics/structured/structured_metrics_features.cc
++++ b/components/metrics/structured/structured_metrics_features.cc
+@@ -9,7 +9,8 @@
+ 
+ namespace metrics::structured {
+ 
+-BASE_FEATURE(kPhoneHubStructuredMetrics, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPhoneHubStructuredMetrics feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPhoneHubStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ constexpr base::FeatureParam<int> kLimitFilesPerScanParam{
+     &features::kStructuredMetrics, "file_limit", 100};

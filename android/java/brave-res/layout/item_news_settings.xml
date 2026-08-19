@@ -88,7 +88,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textAlignment="center"
-               android:textColor="@color/news_text_color"
+               android:textColor="@color/brave_news_settings_follow_button_text_color"
                android:layout_gravity="center_vertical"
                android:textAllCaps="false"
                android:lines="1"

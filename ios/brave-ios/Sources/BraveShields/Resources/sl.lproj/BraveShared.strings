@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Samodejno uničevanje";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Samodejno uniči podatke brskanja";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresivno";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Neveljavno pravilo `%1$@` na vrstici %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Tukaj dodajte svoje filtere po meri, po enega na vrstico.";
+"CustomFiltersPlaceholder" = "Dodaj filtre po meri";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Filtri po meri ne podpirajo več kot %i vrstic";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domena blokirana";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Uredi filtre po meri";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Prositi spletna mesta, naj ne prodajajo ali delijo vaših podatkov. [Več o tem](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nikoli";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Podatki o brskanju se nikoli ne uničijo samodejno";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Zapiranje aplikacije";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Podatki o brskanju se samodejno uničijo, ko je aplikacija Brave zaprta/znova zagnana";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Zavihek mesta zaprt";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Podatki o brskanju se samodejno uničijo, ko se zaprejo vsi zavihki, odprti na spletnem mestu";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Brisanje bo zaprlo vse zavihke in izbrisalo vse podatke mesta. To dejanja ni mogoče razveljaviti.";

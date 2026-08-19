@@ -61,11 +61,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:background="@drawable/blue_48_rounded_bg"
+                    android:background="@drawable/themed_button_48_rounded_bg"
                     app:backgroundTint="@null"
                     android:text="@string/turn_on_brave_news"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/globalFilledButtonTextColor"
                     android:textSize="16sp"
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="20dp"
@@ -80,7 +80,7 @@
                     android:background="@android:color/transparent"
                     android:text="@string/brave_news_optin_learn_more"
                     android:textAllCaps="false"
-                    android:textColor="@color/onboarding_negative_button_color"
+                    android:textColor="?attr/globalTextButtonTextColor"
                     android:textSize="14sp"
                     style="?android:attr/borderlessButtonStyle"/>
 
@@ -120,7 +120,7 @@
                android:layout_width="match_parent"
                android:layout_height="1dp"
                android:layout_marginTop="6dp"
-               android:background="@color/news_settings_divider_color"/>
+               android:background="?attr/colorOutline"/>
 
           <TextView
                android:id="@+id/tv_search"

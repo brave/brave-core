@@ -520,9 +520,11 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     index++;
 
     auto entry = mojom::ConversationTurn::New(
-        entry_uuid, character_type, action_type, text, prompt, selected_text,
-        std::nullopt, date, std::nullopt, std::nullopt, std::move(skill), false,
-        model_key, std::move(near_verification_status));
+        entry_uuid, std::nullopt /* thread_uuid */, character_type, action_type,
+        text, prompt, selected_text, std::nullopt, date, std::nullopt,
+        std::nullopt, std::move(skill), false, model_key,
+        std::move(near_verification_status),
+        std::vector<std::string>{} /* child_thread_uuids */);
 
     // events
     struct Event {

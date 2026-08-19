@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">Інформацію про цей магазин відкрито на половину висоти</translation>
 <translation id="7204204600596740190">Режим вибору кількох вкладок</translation>
 <translation id="7211038039686180558">Групи вкладок автоматично зберігаються й синхронізуються з усіма пристроями, на яких ви ввійшли в обліковий запис</translation>
-<translation id="731648547091221002">Вибрано: <ph name="COLOR_NAME"/></translation>
 <translation id="7326879924029668159">Переглянути правила повернення й інше</translation>
 <translation id="7352298686197644113">Дізнайтеся, який товар на відкритих вкладках дешевший</translation>
 <translation id="7369451074646620503">Група вкладок "<ph name="TAB_GROUP_NAME"/>" більше не доступна</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Оцінка – <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> відгук}one{Оцінка – <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> відгук}few{Оцінка – <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> відгуки}many{Оцінка – <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> відгуків}other{Оцінка – <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> відгуку}}</translation>
 <translation id="7885132941432959125">Перемістити вкладку праворуч</translation>
 <translation id="7887334752153342268">Створити копію</translation>
-<translation id="7939917283308035850">Не вибрано: <ph name="COLOR_NAME"/></translation>
 <translation id="7961015016161918242">Ніколи</translation>
 <translation id="7966321538264951561">Закрити пропозицію.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Перемістити вкладку в нове вікно}one{Перемістити вкладку в інше вікно}few{Перемістити вкладку в інше вікно}many{Перемістити вкладку в інше вікно}other{Перемістити вкладку в інше вікно}}</translation>

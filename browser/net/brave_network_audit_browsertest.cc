@@ -81,7 +81,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     auto* template_url_service =
-        TemplateURLServiceFactory::GetForProfile(browser()->profile());
+        TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
     search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
 
     auto* google_template_url =
@@ -114,7 +114,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
                           std::vector<std::string>());
   }
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
 
  private:
   base::FilePath net_log_path_;
@@ -135,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   // Add a password to the password manager.
   password_manager::PasswordStoreInterface* password_store =
       ProfilePasswordStoreFactory::GetForProfile(
-          browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS)
+          browser()->GetProfile(), ServiceAccessType::IMPLICIT_ACCESS)
           .get();
   password_manager::PasswordForm signin_form;
   signin_form.signon_realm = "https://www.facebook.com/";

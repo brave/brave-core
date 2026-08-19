@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
@@ -111,6 +112,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             mLayoutChannels = (View) view.findViewById(R.id.layout_channels);
             mLayoutFollowing = (View) view.findViewById(R.id.layout_following);
 
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mBtnTurnOnNews);
             BraveTouchUtils.ensureMinTouchTarget(mBtnTurnOnNews);
             BraveTouchUtils.ensureMinTouchTarget(mLayoutChannels);
             BraveTouchUtils.ensureMinTouchTarget(mLayoutFollowing);

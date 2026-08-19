@@ -9,16 +9,6 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "content/public/browser/storage_partition_config.h"
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#define blob_url_loader_factory \
-  blob_url_loader_factory;      \
-  std::optional<content::StoragePartitionConfig> storage_partition_config
-#endif
-
 #include <chrome/browser/ui/navigator/browser_navigator_params.h>  // IWYU pragma: export
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#undef blob_url_loader_factory
-#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_NAVIGATOR_BROWSER_NAVIGATOR_PARAMS_H_

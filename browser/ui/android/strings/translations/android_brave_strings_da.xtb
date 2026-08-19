@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Besøg altid originale (ikke-AMP) URL'er i stedet for Googles Accelerated Mobile Page-versioner</translation>
 <translation id="920638232916443453">Automatisk videresendelse af sporings-URLs</translation>
 <translation id="1118970888826017401">Aktivér understøttelse af tilsidesættelse af topniveau videresendelse af sporings-URLs</translation>
-<translation id="94154759592465111">Bloker scripts</translation>
+<translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="7714773920987474116">Blokerer Javascript (kan ødelægge websider)</translation>
 <translation id="2233004324252915283">Bloker for anbefalet indhold fra YouTube</translation>
 <translation id="1005372663692637999">Blokerer for næste og slutkortselementer på youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Rydder cookies og andet sidedata, når du lukker en side</translation>
 <translation id="7740929262043547697">Tillad elementblokering i private Windows</translation>
 <translation id="1260864846935682371">Aktiverer Shields-funktionen Blokér elementer i private Windows. Bemærk, at elementer blokeret i private Windows også vil blive blokeret i ikke-private Windows.</translation>
+<translation id="4021136205151368133">Bemærk: dette kan reducere Braves beskyttelse af privatlivets fred.</translation>
+<translation id="2876155735620608356">Shields er aktiveret for denne side</translation>
+<translation id="8605306630462821888">Shields er deaktiveret for denne side</translation>
+<translation id="1574700443447059851">Trackere, reklamer og mere er blokeret.</translation>
+<translation id="4039014515785210563">Vælg hvordan trackere og ads håndteres</translation>
+<translation id="8423733350479881051">Vælg hvordan cookies håndteres</translation>
+<translation id="9064628362799094520">Makulér sidens data</translation>
+<translation id="2862348905922940916">Nulstil denne side til Shields-standardindstillinger</translation>
+<translation id="269939061709857874">Siden er nulstillet til Shields-standardindstillinger</translation>
+<translation id="3623708006387030755">Globale Shields-indstillinger</translation>
+<translation id="2387532482048804818">Fortæl os, hvis siden ikke virkede korrekt med skjoldene oppe.</translation>
+<translation id="5412004902081180614">Rapporter</translation>
+<translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
+<translation id="2606165159306988240">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med denne side.</translation>
+<translation id="6806248680442980382">Tak, fordi du hjælper med at gøre Brave bedre for alle. Denne rapport vil kun indeholde de oplysninger, der er nødvendige for, at vi kan reparere dette website.</translation>
+<translation id="7549123865054511884">Hvad fungerer ikke på denne side?</translation>
+<translation id="9094461910562981998">Kontakt mig via (valgfrit)</translation>
+<translation id="7645128170699559106">E-mail, X-brugernavn og mere</translation>
+<translation id="446579367766109694">Hvis du oplyser dine kontaktoplysninger, vil de blive gemt til fremtidige rapporter</translation>
+<translation id="2653659639078652383">Indsend</translation>
+<translation id="8459191579769999214">Vis skærmbillede</translation>
+<translation id="4530541918195747729">Rapport indsendt. Tak!</translation>
+<translation id="5528772406060281700">Makulér sidedata</translation>
+<translation id="6795622376590884449">Automakulér</translation>
+<translation id="3520341243738311408">Når faner til siden lukkes</translation>
+<translation id="3559735673608367395">Når appen afsluttes</translation>
+<translation id="9140049656798805345">Makulér sidedata nu</translation>
 <translation id="1680858055899097121">Vedhold ikke faner mellem browsingsessioner</translation>
 <translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
 <translation id="5254037869598726291">Anonymiseret P3A-information hjælper Brave med at estimere generelt forbrug og sikre, at vi forbedrer populære funktioner.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Privat produktindsigt</translation>
 <translation id="3545804467215833536">Klik for at se Brave Shields</translation>
 <translation id="1724327820822194498">Med Shields kan du se alt det skadelige fra hver eneste side, som Brave har blokeret.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> og <ph name="TRACKER"/> andre annoncer &amp; trackere blokeret</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> og andre annoncer og trackere er blokeret</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annoncer &amp; trackere blokeret</translation>
 <translation id="8281886186245836920">Spring over</translation>
-<translation id="986879628471635371">Onboarding for fejlfinding</translation>
 <translation id="5806601733251372221">Brave-Skjolde</translation>
-<translation id="8537217141725709400">Tjen <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Belønninger</translation>
-<translation id="5870330605209713397">ved at se reklamer som respekterer dit privatliv og som standard støtte dine yndlingssider og -skabere.</translation>
-<translation id="5302488867897327287">Ved at trykke på Begynd at bruge Brave Rewards, accepterer du</translation>
 <translation id="4281844954008187215">Servicevilkår</translation>
 <translation id="6871397658902960384">Begynd at browse</translation>
-<translation id="454386012157232640">Jeg så ikke en annonce</translation>
-<translation id="1448877943847791441">Brave viser din første annonce i</translation>
-<translation id="4410793187232041318">Nu vil du tjene mønter fra Brave Ads</translation>
 <translation id="6511854390690723657">Dette er din første Brave-annonce. Tryk for at lære mere.</translation>
-<translation id="2070991379950719711">Begynd at bruge Brave Rewards</translation>
-<translation id="48520986898237073">Fortsæt til tegnebog</translation>
 <translation id="6213254277250932867">Jeg har en gendannelsessætning på 12 ord</translation>
 <translation id="4225265925807365011">Jeg har en gendannelsessætning på 24 ord</translation>
 <translation id="3570367516044491911">Indstil som standardbrowser</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Scan QR-kode</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="8515319483805157233">For at søge efter QR-kode skal du sørge for, at QR-koden er i midten af rammen.</translation>
+<translation id="3333887201479867589">Brave Belønninger</translation>
 <translation id="7658239707568436148">Annuller</translation>
 <translation id="1201402288615127009">Næste</translation>
 <translation id="8481779960444041069">For at forbedre dit privatliv skal du indstille Brave til at være din standardbrowser</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Åbn mappe</translation>
 <translation id="8985635554450124959">Synkronisering kunne ikke konfigureres</translation>
 <translation id="7173114856073700355">Åbn Indstillinger</translation>
-<translation id="496896260395129787">Denne Brave Sync-konto blev slettet fra en anden enhed. Hvis du ikke ønskede at deaktivere Sync, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>skal du genskabe kontoen</translation>
+<translation id="674078455841038219">Denne Brave Sync-konto blev slettet fra en anden enhed. Hvis du ikke ønskede at deaktivere Sync, så genopret kontoen.</translation>
+<translation id="8913415701676265311">Genopret</translation>
 <translation id="4094590686212463338">Kunne ikke skutte til denne synkroniseringskæde. Synkroniseringskæden blev slettet.</translation>
 <translation id="4908081302669157000">Telefonnumre, e-mail og adresser</translation>
+<translation id="1571419474754278280">Leo AI-samtaler</translation>
 <translation id="1056898198331236512">Advarsel</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="7811264919113243207">Dette deler din Brave-data, potentielt inklusive din adgangskode, med den enhed, der genererede denne QR-kode.
@@ -366,10 +383,9 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1413177583895309156">Brave VPN krypterer og beskytter alt, hvad du foretager dig online, også uden for Brave-browseren.</translation>
 <translation id="3974348661685061050">Prøv gratis i syv dage</translation>
 <translation id="5789441016350810005">Brave Ads sendt når browseren er i baggrunden</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Side på ny fane</translation>
 <translation id="5927196110206824867">Sponsorerede baggrundsbilleder støtter Braves mission om at opbygge et uafhængigt, brugerorienteret internet. Og i modsætning til Big Tech måler vi annoncepræstationer anonymt for at beskytte dit privatliv.</translation>
-<translation id="8748471354357836070">Få mere at vide / fravalgsmuligheder</translation>
+<translation id="6165508094623778733">Lær mere</translation>
 <translation id="3171669670217312786">Baggrundsbilleder</translation>
 <translation id="8522669544471808198">Vis baggrundsbilleder</translation>
 <translation id="6258554626602400736">Vis annoncer i ny fane</translation>
@@ -397,7 +413,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7151914815476509258">Blokér trackere og reklamer (standard)</translation>
 <translation id="7384778069178817075">Tillad alle trackere &amp; reklamer</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Indstillingen "Bloker alle cookies" er blevet forældet. Besøg<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>vores hjælpeside<ph name="END_LINK_1"/>for at finde ud af, hvordan du aktiverer denne mulighed.</translation>
-<translation id="3763681089644577874">Blokér cookies</translation>
+<translation id="8823559166155093873">Blokér cookies</translation>
 <translation id="614747795780742163">Forhindrer hjemmesider i at gemme oplysninger om dine tidligere besøg</translation>
 <translation id="6883611015375728278">Blokér alle cookies</translation>
 <translation id="6196640612572343990">Bloker cookies fra tredjeparter</translation>
@@ -408,7 +424,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1876882294512858963">Gå altid Off-The-Record</translation>
 <translation id="554464532999080267">Spørg, før du går Off-The-Record (standard)</translation>
 <translation id="926857659063503456">Gå aldrig Off-The-Record</translation>
-<translation id="3895527457258986253">Blokér fingeraftrykslæsning</translation>
+<translation id="6531019308847917584">Blokér fingeraftryk</translation>
 <translation id="7854108565842971747">Her er Shields' standardindstillinger til nye websider. Hvis du ændrer dem, vil det ikke få indflydelse på dine eksisterende indstillinger for specifikke sider.</translation>
 <translation id="218587021686734263">Forhindrer fingeraftryk via sprogindstillinger</translation>
 <translation id="1706099589708266367">Reducerer, hvor meget websteder kan finde ud af om dig baseret på din browsers sprogindstillinger.</translation>
@@ -418,22 +434,12 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7445306466605902444">Fingeraftryk blokeret (streng, kan ødelægge sider)</translation>
 <translation id="5582686930349810484">Fingeraftryk er blokeret (standard)</translation>
 <translation id="769702552748212954">Tillad al fingeraftrykning</translation>
-<translation id="876424292214881779">Reklamer og andet utøj blev blokeret</translation>
-<translation id="6849027612978668678">Sider indeholder ofte cookies og scripts, som forsøger at identificere dig og din enhed. De vil vide, hvem du er, og følge dig via web-tracking, for at se hvad du laver på alle websteder.\n\nBrave blokerer disse, så du kan browse uden at blive forfulgt.</translation>
-<translation id="8553998445606452168">Om Brave Shields</translation>
-<translation id="8912304686498704084">Op</translation>
-<translation id="4963218453264888510">NED</translation>
-<translation id="7474113515179313724">Du ser denne side uden Braves privatlivsbeskyttelse. Fungerer den ikke korrekt med Shields slået til?</translation>
 <translation id="4226543734057230801">Ethereum-netværker</translation>
 <translation id="3504157706952484145">Filecoin-netværker</translation>
 <translation id="1561541094377237745">Solana-netværker</translation>
 <translation id="7141438739990875547">Bitcoin-netværker</translation>
 <translation id="9055546041146396417">Hvis denne side ser forkert ud så prøv uden Shields.</translation>
 <translation id="7898672232170410330">Blokér element</translation>
-<translation id="9064628362799094520">Makulér sidens data</translation>
-<translation id="8949611615512336262">Automakulér: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Makulér sidedata nu</translation>
-<translation id="6795622376590884449">Automakulér</translation>
 <translation id="7961015016161918242">Aldrig</translation>
 <translation id="3200744626782631683">Browsingdata slettes aldrig automatisk</translation>
 <translation id="1991004083507807299">Sidefane lukket</translation>
@@ -444,23 +450,11 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2997451887458851244">Opdater »Auto Shred« og angiv, hvilke data der skal slettes</translation>
 <translation id="363903976200491771">Slet browserdata automatisk</translation>
 <translation id="1028873002018537235">Slet browserhistorikken</translation>
-<translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
-<translation id="8510478288840333677">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med Shields</translation>
-<translation id="1653405824851871276">Tak, fordi du hjælper med at gøre Brave bedre for alle. Denne rapport vil kun indeholde de oplysninger, der er nødvendige for, at vi kan reparere dette website.<ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Lær mere.</translation>
-<translation id="8740275226259417070">Dette er en fejlside. Den kan ikke rapporteres som et ødelagt website.</translation>
 <translation id="721949491455392748">Inkludér skærmbillede af nuværende side</translation>
-<translation id="8459191579769999214">Vis skærmbillede</translation>
 <translation id="6476216365964140603">Flere detaljer (valgfrit)</translation>
-<translation id="6145852496180774737">Kontakt mig via: (valgfrit)</translation>
-<translation id="6367576083705149078">Hvis du oplyser dine kontaktoplysninger, vil de blive gemt til fremtidige rapporter.</translation>
-<translation id="7616645803364270729">E-mail, Twitter etc.</translation>
-<translation id="5299848999918506028">Tak!</translation>
-<translation id="76550953340008122">Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!</translation>
 <translation id="3037432377946455872">Hvad er det største problem, du oplever?</translation>
 <translation id="8731661215617360873">Vælg en mulighed</translation>
 <translation id="650318023204990401">Avancerede kontroller</translation>
-<translation id="7205939464631857223">Ryd alle blokerede elementer</translation>
 <translation id="5370478469168390143">Gem data online</translation>
 <translation id="1118508688433541158">Browse hurtigere og blokér reklamer med Brave</translation>
 <translation id="7427391215172269363">Hver dag sparer jeg data ved at bruge Brave som browser.</translation>
@@ -510,17 +504,17 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2718046830255553131">Data fra databeskyttelsesrapporter er blevet ryddet.</translation>
 <translation id="8376263745431603066">Aktivér "Nattilstand" (eksperimentel)</translation>
 <translation id="1383876407941801731">Søg</translation>
-<translation id="6165508094623778733">Få mere at vide</translation>
 <translation id="13296465911709339">Din tekst er kopieret til udklipsholderen.</translation>
 <translation id="2735834606413553397">Offentlig adresse blev kopieret til udklipsholderen.</translation>
 <translation id="2977461003134694205">Databeskyttelsesstatistik</translation>
 <translation id="8804164990146287819">Privatlivspolitik</translation>
 <translation id="5705882733397021510">Gå tilbage</translation>
+<translation id="8450375131309292971">Træk for at opdatere</translation>
+<translation id="880475987868032564">Aktiverer træk-for-at-opdatere-gestussen. Ved at stryge nedad fra toppen af en side opdateres siden.</translation>
 <translation id="7889432931837317731">Åbn automatisk, når det er muligt</translation>
 <translation id="1029304566263314007">Vis meddelelser om downloadfremskridt</translation>
 <translation id="2977501775944575564">Parallel downloading</translation>
 <translation id="6224180438946945617">Aktivér parallel downloadg for at øge downloadhastigheden</translation>
-<translation id="8967385052772844086">Se fuld databeskyttelsesrapport</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
 <translation id="7138272885617540195">Tillad applinks at åbne i apps udenfor Brave</translation>
 <translation id="4954512758656527938">Standard Ethereum-wallet</translation>
@@ -784,7 +778,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2156993118928861787">Ugyldig adresse</translation>
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="6889920539620318793">Markér som aktiv</translation>
-<translation id="2653659639078652383">Indsend</translation>
 <translation id="4945690646623486292">Vælg netværk</translation>
 <translation id="8006088103295786154">Tilgå Brave Wallet</translation>
 <translation id="5308380583665731573">Forbind</translation>
@@ -1105,7 +1098,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1336494649091412226">Er du sikker på, at du vil forlade Brave?</translation>
 <translation id="6061635824229591714">Makulér sidedata?</translation>
 <translation id="1265051174491933207">Makulering vil slette sidedata og lukke alle faner med '<ph name="SITE_NAME"/>'. Dette kan ikke fortrydes.</translation>
-<translation id="5528772406060281700">Makulér sidedata</translation>
 <translation id="4426990318287827331">Makulér data</translation>
 <translation id="7942415993090181327">Chathistorik</translation>
 <translation id="6859935199732075666">Vis Beskyttet browsing-</translation>

@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Účty";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Overte sa, prosím, aby ste mohli spravovať svoje heslá.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Týmto sa uložené heslá pre %@ odstránia zo synchronizačného reťazca a z vášho zariadenia.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Ponúknuť uloženie hesiel";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Zadajte heslo";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Odkryť";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Hľadať webové stránky";
@@ -1528,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Automatické prehrávanie";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Vypnutý";
 
 /* Auto Save turn On Option */
@@ -1537,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Iba Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Pridanie videosúborov a zvukových súborov na použitie v režime offline môže zabrať veľa úložného priestoru vo vašom zariadení, ako aj použiť mobilné dáta";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Ukladanie video a audio súborov do vyrovnávacej pamäte môže spotrebovať mobilné dáta aj úložný priestor vo vašom zariadení";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Po otvorení obsahu v playliste táto možnosť uchová otvorené položky playlistu v zariadení, aby ste ich mohli prehrávať aj bez pripojenia k internetu.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1550,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Aj napriek tomu pridať";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Vaše zariadenie má málo miesta. Pridanie tohto videa do Playlistu môže zlyhať alebo ovplyvniť ďalšie sťahovania.";
+"playlist.playlistDiskSpaceWarningMessage" = "Vaše zariadenie má málo miesta. Pridanie tohto videa do Playlistu môže zlyhať alebo ovplyvniť ďalšie videá vo vyrovnávacej pamäti.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Úložný priestor je takmer plný";
@@ -1561,20 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Povoliť dlhé stlačenie";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Médiá v playliste a offline dáta";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Offline údaje zoznamu skladieb";
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Údaje Playlistu";
 
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Zmeniť";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Obnoviť";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Táto možnosť odstráni všetky videá zo zoznamu videí, ako aj z úložiska režimu offline.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Táto možnosť odstráni všetky údaje Playlistu.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Zoznam";
@@ -1585,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Zapamätať si pozíciu prehrávania súboru";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Odstrániť";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1605,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Pridať do zoznamu skladieb";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Zobraziť v zozname skladieb Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Vrátiť naspäť";
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave bol nečakane zatvorený.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "S odmenami Brave si môžete prezerať reklamy zo siete Brave, ktoré chránia súkromie. Žiadne sledovače. Žiadne spomalenia. A vaše dáta zostanú úplne v bezpečí.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Zapnúť odmeny";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknite kamkoľvek na obrazovke a pokračujte na Brave Talk.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Teraz môžete začať bezplatný hovor";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Ak chcete začať bezplatný hovor, zapnite Brave Rewards";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Zapnite na podporu značky Brave a komunity BAT.";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Ďakujeme, že podporujete značku Brave a komunitu BAT.";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Kliknutím súhlasíte s %1$ @ a %2$ @. Odvolať to môžete kedykoľvek v Nastaveniach.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Podporte značku Brave a komunitu BAT povolením Brave Rewards a zobrazovaním Brave Ads.";
@@ -3177,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Automatické otváranie klávesnice";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Otvoriť odkazy z Ask Brave a Vyhľadávania Brave na kartách s náhľadom";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Povoliť karty rýchleho náhľadu";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Po zatvorení aplikácie nechajte karty súkromného prehliadania otvorené, čím zaistíte bezproblémové pokračovanie súkromných relácií prehliadania.";

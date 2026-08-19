@@ -103,4 +103,10 @@
          icon in this wider container on regular NTP and when the URL bar is focused,
          which leaves a ~14dp gap before the leading lion icon in Brave's omnibox. -->
     <dimen name="status_view_width_wide">0dp</dimen>
+
+    <!-- Material's bottom sheet width cap, above which the sheet is centred rather than stretched.
+         Brave's AppModalStyle inherits from Widget.Design.BottomSheet.Modal, which predates the
+         cap that Widget.MaterialComponents.BottomSheet adds, so sheets that want it set it
+         explicitly on their BottomSheetBehavior. -->
+    <dimen name="bottom_sheet_max_width">640dp</dimen>
 </resources>

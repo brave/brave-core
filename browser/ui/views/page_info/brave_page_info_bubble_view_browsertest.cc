@@ -89,7 +89,7 @@ class BravePageInfoBubbleViewBrowserTestBase : public InProcessBrowserTest {
 
     // Set a site permission, so that the page info permissions subpage has an
     // entry to display.
-    HostContentSettingsMapFactory::GetForProfile(browser()->profile())
+    HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile())
         ->SetContentSettingDefaultScope(test_url, test_url,
                                         ContentSettingsType::GEOLOCATION,
                                         CONTENT_SETTING_ALLOW);

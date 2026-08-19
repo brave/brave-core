@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "अपने-आप श्रेड करें";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "ब्राउज़िंग डेटा स्वचालित रूप से नष्ट करें";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "एग्रेसिव";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "लाइन %2$i पर अमान्य नियम '%1$@'";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "यहाँ अपनी कस्टम फ़ाइलें एक लाइन में एक जोड़ें।";
+"CustomFiltersPlaceholder" = "कस्टम फ़िल्टर जोड़ें";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "कस्टम फ़िल्टर्स %i से ज़्यादा लाइनों को सपोर्ट नहीं करते";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "डोमेन ब्लॉक है";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "कस्टम फ़िल्टर में बदलाव करें";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "वेबसाइटों को अपना डेटा बेचने या शेयर करने से मना करें। [ज़्यादा जानें](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "कभी नहीं";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "ब्राउज़िंग डेटा कभी भी स्वचालित रूप से श्रेड नहीं किया जाता है";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "ऐप बंद होने पर";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "जब Brave ऐप बंद / पुनरारंभ किया जाता है तो ब्राउज़िंग डेटा स्वचालित रूप से श्रेड कर दिया जाता है";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "साइट के टैब बंद होने पर";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "जब किसी साइट पर खुले सभी टैब बंद कर दिए जाते हैं तो ब्राउज़िंग डेटा स्वचालित रूप से श्रेड कर दिया जाता है";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "डेटा श्रेड करने से सभी टैब बंद हो जाएंगे, और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";

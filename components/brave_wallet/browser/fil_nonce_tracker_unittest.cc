@@ -51,7 +51,7 @@ class FilNonceTrackerUnitTest : public testing::Test {
 
     url_loader_factory_.AddResponse(
         network_manager_
-            ->GetNetworkURL(mojom::kLocalhostChainId, mojom::CoinType::FIL)
+            ->GetNetworkURL(mojom::kFilecoinTestnet, mojom::CoinType::FIL)
             .spec(),
         GetResultString());
     url_loader_factory_.AddResponse(
@@ -112,43 +112,43 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
       MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
                     mojom::AccountKind::kDerived,
                     "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy"));
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
-               true, uint64_t(2));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinTestnet, fil_acc,
+               true, uint64_t{2});
 
   // tx count: 2, confirmed: [2], pending: null
   FilTxMeta meta(fil_acc, std::make_unique<FilTransaction>());
   meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_chain_id(mojom::kLocalhostChainId);
+  meta.set_chain_id(mojom::kFilecoinTestnet);
   meta.set_status(mojom::TransactionStatus::Confirmed);
-  meta.tx()->set_nonce(uint64_t(2));
+  meta.tx()->set_nonce(uint64_t{2});
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
-               true, uint64_t(3));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinTestnet, fil_acc,
+               true, uint64_t{3});
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Confirmed);
-  meta.tx()->set_nonce(uint64_t(3));
+  meta.tx()->set_nonce(uint64_t{3});
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
-               true, uint64_t(4));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinTestnet, fil_acc,
+               true, uint64_t{4});
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
-  meta.tx()->set_nonce(uint64_t(4));
+  meta.tx()->set_nonce(uint64_t{4});
   meta.set_id(TxMeta::GenerateMetaID());
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
   meta.set_id(TxMeta::GenerateMetaID());
   ASSERT_TRUE(tx_state_manager.AddOrUpdateTx(meta));
 
-  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kLocalhostChainId, fil_acc,
-               true, uint64_t(5));
+  GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinTestnet, fil_acc,
+               true, uint64_t{5});
 
   // tx count: 2, confirmed: null, pending: null (mainnet)
   GetNextNonce(FROM_HERE, &nonce_tracker, mojom::kFilecoinMainnet, fil_acc,
-               true, uint64_t(2));
+               true, uint64_t{2});
 }
 
 }  // namespace brave_wallet

@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Image search with Google no longer works with the URL that is listed in
+      the prepopulated_engines.json because Google dropped that endpoint and
+      migrated image search to Lens. We disable the lense so the upstream code
+      falls through to the no longer working URL. Override the condition to
+      always use the new Lens URL even though the Lens feature is turned off in
+      Brave.
+
+    regex:
+      re_pattern:
+        '(IsEnabled\(lens::features::kLensStandalone\))(\) \{\s+return
+        lens::features::GetHomepageURLForLens)'
+      re_flags: [DOTALL]
+      replace: '\1 || ((true))\2'

@@ -15,6 +15,7 @@ source_set("zcash_decoder") {
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/common",
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/services/brave_wallet/public/proto:zcash_proto",
@@ -27,6 +28,7 @@ source_set("zcash_decoder_unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:test_support",
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/proto:zcash_proto",

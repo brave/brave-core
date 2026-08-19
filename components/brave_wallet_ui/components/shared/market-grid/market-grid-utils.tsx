@@ -21,8 +21,8 @@ import {
 } from './market-grid.style'
 
 // Components
-import { AssetNameAndIcon } from '../../asset-name-and-icon'
-import { AssetPriceChange } from '../../asset-price-change'
+import { AssetNameAndIcon } from './components/asset_name_and_icon/asset_name_and_icon'
+import { AssetPriceChange } from './components/asset_price_change/asset_price_change'
 import { getLocale } from '../../../../common/locale'
 
 // Render cells for a grid row

@@ -39,10 +39,12 @@ export class BraveAccountLoggedInRowElement extends
     return {
       ...super.properties,
       isChangingPassword: { type: Boolean, state: true },
+      truncatedEmail: { type: String, state: true },
     }
   }
 
   protected accessor isChangingPassword = false
+  protected accessor truncatedEmail = ''
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
 
@@ -76,7 +78,7 @@ export class BraveAccountLoggedInRowElement extends
     let error: ChangePasswordError | undefined
 
     try {
-      await this.browserProxy.authentication.changePasswordVerifyInit(
+      await this.browserProxy.authentication.changePasswordStep1(
         this.state.email)
     } catch (e) {
       if (e && typeof e === 'object') {
@@ -112,11 +114,10 @@ export class BraveAccountLoggedInRowElement extends
       return
     }
 
-    if (!this.resizeObserver) {
-      const emailEl =
-          this.shadowRoot?.querySelector<HTMLElement>('#email')
-      if (!emailEl) return
+    const emailEl = this.shadowRoot?.querySelector<HTMLElement>('#email')
+    if (!emailEl) return
 
+    if (!this.resizeObserver) {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')!
       ctx.font = getComputedStyle(emailEl).font
@@ -126,8 +127,12 @@ export class BraveAccountLoggedInRowElement extends
         this.truncateEmail(emailEl)
       })
       this.resizeObserver.observe(emailEl)
-      this.truncateEmail(emailEl)
     }
+
+    // Re-truncate on every `state` change so a live email update (e.g. from
+    // `AuthValidate` polling) is reflected even when the layout width is
+    // unchanged and the `ResizeObserver` does not fire.
+    this.truncateEmail(emailEl)
   }
 
   private truncateEmail(emailEl: HTMLElement) {
@@ -137,10 +142,13 @@ export class BraveAccountLoggedInRowElement extends
     if (!email) return
 
     const availableWidth = emailEl.clientWidth
-    if (!availableWidth) return
+    if (!availableWidth) {
+      this.truncatedEmail = email
+      return
+    }
 
     if (this.measure(email) <= availableWidth) {
-      emailEl.textContent = email
+      this.truncatedEmail = email
       return
     }
 
@@ -167,7 +175,7 @@ export class BraveAccountLoggedInRowElement extends
       }
     }
 
-    emailEl.textContent = truncatedEmail
+    this.truncatedEmail = truncatedEmail
   }
 
   private cleanUpEmailTruncation() {

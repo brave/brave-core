@@ -19,9 +19,9 @@ extension BrowserViewController: KeyboardHelperDelegate {
       tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
     let isKeyboardActiveForFindInPage = tabManager.selectedTab?.isFindNavigatorVisible == true
     let isBraveOriginatedKeyboard = state.isLocal
-    if isKeyboardActiveForWebContent || isKeyboardActiveForFindInPage, isBraveOriginatedKeyboard,
-      isUsingBottomBar
-    {
+    isBrowserContentKeyboardActive =
+      (isKeyboardActiveForWebContent || isKeyboardActiveForFindInPage) && isBraveOriginatedKeyboard
+    if isBrowserContentKeyboardActive, isUsingBottomBar {
       UIView.animate(withDuration: 0.1) { [self] in
         // We can't actually set the toolbar state to collapsed since bar collapsing/expanding is
         // based on many web view traits such as content size and such so we will just use the
@@ -55,6 +55,7 @@ extension BrowserViewController: KeyboardHelperDelegate {
     keyboardWillHideWithState state: KeyboardState
   ) {
     keyboardState = nil
+    isBrowserContentKeyboardActive = false
     // Always reset things after orientation change that may change bottom bar
     if isUsingBottomBar, !toolbarVisibilityViewModel.isEnabled {
       UIView.animate(withDuration: 0.1) { [self] in

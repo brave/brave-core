@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Tài khoản";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Vui lòng xác thực để quản lý mật khẩu của bạn.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Thao tác này sẽ xóa (các) mật khẩu đã lưu cho %@ khỏi chuỗi đồng bộ và thiết bị của bạn.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Đề nghị lưu mật khẩu";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Nhập mật khẩu";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Hiển thị";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Tìm kiếm trang web";
@@ -1528,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Tự động phát";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Tắt";
 
 /* Auto Save turn On Option */
@@ -1537,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Chỉ với Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Việc thêm các tệp video và âm thanh để sử dụng ngoại tuyến có thể sử dụng nhiều dung lượng lưu trữ trên thiết bị của bạn cũng như sử dụng dữ liệu di động của bạn";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Lưu bộ nhớ đệm các tệp video và âm thanh có thể tiêu tốn cả dữ liệu di động và dung lượng lưu trữ trên thiết bị của bạn";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Sau khi mở nội dung trong Danh sách phát, tùy chọn này sẽ giữ các mục của danh sách phát đã mở trên thiết bị của bạn để bạn có thể phát chúng mà không cần kết nối Internet.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1550,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Vẫn thêm";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Thiết bị của bạn hết dung lượng. Thêm video này vào Danh sách phát có thể thất bại hoặc ảnh hưởng đến các lần tải khác.";
+"playlist.playlistDiskSpaceWarningMessage" = "Thiết bị của bạn sắp hết dung lượng. Thêm video này vào Danh sách phát có thể thất bại hoặc ảnh hưởng đến các video đã lưu vào bộ nhớ đệm khác.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Sắp đầy dung lượng lưu trữ";
@@ -1561,20 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Bật Nhấn và giữ";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Tệp đa phương tiện & Dữ liệu ngoại tuyến của Danh sách phát";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Dữ liệu ngoại tuyến của Danh sách phát";
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Dữ liệu Danh sách phát";
 
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Thay đổi";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Đặt lại";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Tùy chọn này sẽ xóa tất cả video khỏi Danh sách phát cũng như bộ nhớ của chế độ Ngoại tuyến.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Tùy chọn này sẽ xóa toàn bộ dữ liệu Danh sách phát.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Danh sách phát";
@@ -1585,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Nhớ vị trí phát tệp";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Xóa";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1605,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Thêm vào Danh sách phát";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Xem trong Danh sách phát Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Hoàn tác";
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave đóng đột ngột.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Với Phần thưởng Brave, bạn có thể xem quảng cáo với cam kết bảo vệ quyền riêng tư từ mạng lưới Quảng cáo Brave. Không có trình theo dõi. Không làm giảm tốc độ. Và dữ liệu của bạn được bảo mật hoàn toàn.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Bật Phần thưởng";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Bật để góp phần hỗ trợ Brave và cộng đồng BAT.";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Cảm ơn bạn vì đã góp phần hỗ trợ Brave và cộng đồng BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Khi bấm, bạn đồng ý với %1$@ và %2$@. Tắt bất kỳ lúc nào trong Cài đặt.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Góp phần hỗ trợ Brave và cộng đồng BAT bằng cách bật Phần thưởng Brave và xem Quảng cáo Brave.";
@@ -3177,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Tự động mở bàn phím";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Mở liên kết từ Ask Brave và Brave Tìm kiếm trong các tab xem trước";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Bật tab Xem nhanh";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Vẫn mở các thẻ duyệt riêng tư khi bạn đóng ứng dụng, đảm bảo phiên duyệt riêng tư tiếp tục không bị gián đoạn.";

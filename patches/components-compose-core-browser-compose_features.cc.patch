@@ -1,0 +1,14 @@
+diff --git a/components/compose/core/browser/compose_features.cc b/components/compose/core/browser/compose_features.cc
+index bc0d7b5a05d1f5d3e867e11e12a2c8d8c74f9ccf..5cd8929e8dbff14a1e330e0cce835926c238308d 100644
+--- a/components/compose/core/browser/compose_features.cc
++++ b/components/compose/core/browser/compose_features.cc
+@@ -10,7 +10,8 @@ namespace compose::features {
+ 
+ // Note: Compose is enabled by default because it is country--restricted at
+ // runtime.
+-BASE_FEATURE(kEnableCompose, "Compose", base::FEATURE_ENABLED_BY_DEFAULT);
++// kEnableCompose feature state is enforced via plaster rewrite.
++BASE_FEATURE(kEnableCompose, "Compose", base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kComposeInputParams, base::FEATURE_DISABLED_BY_DEFAULT);
+ 

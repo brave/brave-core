@@ -1,0 +1,47 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# These features are declared unconditionally upstream, but Brave only wants
+# them off on Android; desktop keeps the upstream default.
+
+substitutions:
+  - description: 'Ship kAndroidOpenIncognitoAsWindow disabled on Android.'
+    regex:
+      pattern:
+        'BASE_FEATURE(kAndroidOpenIncognitoAsWindow,
+        base::FEATURE_ENABLED_BY_DEFAULT);'
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kAndroidOpenIncognitoAsWindow, base::FEATURE_DISABLED_BY_DEFAULT);
+        #else
+        BASE_FEATURE(kAndroidOpenIncognitoAsWindow, base::FEATURE_ENABLED_BY_DEFAULT);
+        #endif
+
+  - description: 'Ship kFeedContainment disabled on Android.'
+    regex:
+      pattern:
+        'BASE_FEATURE(kFeedContainment, base::FEATURE_ENABLED_BY_DEFAULT);'
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kFeedContainment, base::FEATURE_DISABLED_BY_DEFAULT);
+        #else
+        BASE_FEATURE(kFeedContainment, base::FEATURE_ENABLED_BY_DEFAULT);
+        #endif
+
+  - description: |-
+      Ship kInterestFeedV2 disabled on Android.
+
+      InterestFeedV2 is cached in ChromeCachedFlags. If the default value
+      here is changed, please update the cached one's default value in
+      CachedFeatureFlags.
+    regex:
+      pattern:
+        'BASE_FEATURE(kInterestFeedV2, base::FEATURE_ENABLED_BY_DEFAULT);'
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kInterestFeedV2, base::FEATURE_DISABLED_BY_DEFAULT);
+        #else
+        BASE_FEATURE(kInterestFeedV2, base::FEATURE_ENABLED_BY_DEFAULT);
+        #endif

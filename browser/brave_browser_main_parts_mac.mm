@@ -9,8 +9,10 @@
 #include "base/logging.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/ui/commands/accelerator_menu_coordinator_mac.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
+#include "brave/components/commands/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
@@ -60,6 +62,11 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
 int BraveBrowserMainPartsMac::PreMainMessageLoopRun() {
   int result = ChromeBrowserMainPartsMac::PreMainMessageLoopRun();
 
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    accelerator_menu_coordinator_ =
+        std::make_unique<commands::AcceleratorMenuCoordinatorMac>();
+  }
+
   if (base::FeatureList::IsEnabled(brave::kUpgradeWhenIdle)) {
     if (UsesOmaha4()) {
       upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>(
@@ -106,5 +113,6 @@ void BraveBrowserMainPartsMac::PostMainMessageLoopRun() {
   // upgrade_when_idle_ has a pointer to that profile manager and is no longer
   // needed. We therefore reset it here to avoid a potential use-after-free.
   upgrade_when_idle_.reset();
+  accelerator_menu_coordinator_.reset();
   ChromeBrowserMainPartsMac::PostMainMessageLoopRun();
 }

@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.adapters.OnboardingNetwo
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +77,9 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
         mEditText = view.findViewById(R.id.text_search_networks_edit_text);
 
         mShowTestnets = view.findViewById(R.id.show_testnets);
+        // Restore the checkbox before attaching the listener and building the adapter, so the
+        // initial grid content already reflects it.
+        mShowTestnets.setChecked(mOnboardingViewModel.isNetworkSelectionShowTestnets());
         mShowTestnets.setOnCheckedChangeListener(this);
 
         mNetworks = view.findViewById(R.id.recycler_view_networks);
@@ -84,7 +88,11 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
         if (networkLists != null) {
             mOnboardingNetworkSelectorGridAdapter =
                     new OnboardingNetworkSelectorGridAdapter(
-                            requireContext(), mShowTestnets.isChecked(), networkLists, this);
+                            requireContext(),
+                            mShowTestnets.isChecked(),
+                            networkLists,
+                            this,
+                            mOnboardingViewModel.getNetworkSelectionSelected());
             mNetworks.setAdapter(mOnboardingNetworkSelectorGridAdapter);
 
             @IntegerRes
@@ -128,6 +136,17 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
                             /* Not used. */
                         }
                     });
+
+            // Restore the search text from before a configuration change; the watcher re-applies
+            // the filter.
+            final String searchQuery = mOnboardingViewModel.getNetworkSelectionSearchQuery();
+            if (!TextUtils.isEmpty(searchQuery)) {
+                mNetworks.setVisibility(View.INVISIBLE);
+                mEditText.setText(searchQuery);
+                mEditText.setSelection(searchQuery.length());
+            } else {
+                mNetworks.setVisibility(View.VISIBLE);
+            }
         }
 
         mContinueButton = view.findViewById(R.id.continue_button);
@@ -173,6 +192,20 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mOnboardingNetworkSelectorGridAdapter == null) {
+            return;
+        }
+        // Capture the selection, checkbox and search text so they survive a configuration change.
+        final Editable searchText = mEditText.getText();
+        mOnboardingViewModel.setNetworkSelectionState(
+                mOnboardingNetworkSelectorGridAdapter.getSelectedNetworks(),
+                mShowTestnets.isChecked(),
+                searchText == null ? null : searchText.toString());
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (mOnboardingNetworkSelectorGridAdapter != null) {
             mOnboardingNetworkSelectorGridAdapter.showTestNetworks(isChecked);
@@ -183,5 +216,12 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
     public void selectedNetworks(int selectedNetworks) {
         mSelectedNetworks = selectedNetworks;
         updateSelectedNetworksButton();
+    }
+
+    @Override
+    public void onFilteringDone() {
+        if (mNetworks.getVisibility() != View.VISIBLE) {
+            mNetworks.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The Chromium-bundled Node.js binary path.
+if (host_os == "win") {
+  node_bin = "//third_party/node/win/node.exe"
+} else if (host_os == "mac") {
+  if (host_cpu == "arm64") {
+    node_bin = "//third_party/node/mac_arm64/node-darwin-arm64/bin/node"
+  } else {
+    node_bin = "//third_party/node/mac/node-darwin-x64/bin/node"
+  }
+} else if (host_os == "linux") {
+  node_bin = "//third_party/node/linux/node-linux-x64/bin/node"
+} else {
+  assert(false, "Unsupported host_os: $host_os")
+}

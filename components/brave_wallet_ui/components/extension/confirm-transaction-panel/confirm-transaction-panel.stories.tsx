@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { PanelWrapper } from '../../../panel/style'
+import { PanelWrapper } from '../../../panel/panel_wrapper/panel_wrapper'
 import { LongWrapper } from '../../../stories/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
@@ -16,7 +16,7 @@ export const _ConfirmTransactionPanel = {
       <WalletPanelStory>
         <PanelWrapper>
           <LongWrapper>
-            <ConfirmTransactionPanel retrySimulation={() => {}} />
+            <ConfirmTransactionPanel />
           </LongWrapper>
         </PanelWrapper>
       </WalletPanelStory>

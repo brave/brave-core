@@ -13,17 +13,13 @@ import { ColorScheme } from '../api/welcome_api'
 import { useWelcomeApi } from '../api/welcome_api_context'
 import { useStepTransition } from './use_step_transition'
 import { getString } from '../lib/strings'
+import { StepComponentProps } from './step_component_props'
 import { StepHeader } from './step_header'
 import { ThemeColorSelector } from './theme_color_selector'
 
 import { style } from './appearance_step.style'
 
-interface Props {
-  onBack: () => void
-  onNext: () => void
-}
-
-export function AppearanceStep(props: Props) {
+export function AppearanceStep(props: StepComponentProps) {
   const api = useWelcomeApi()
 
   useStepTransition()
@@ -121,7 +117,9 @@ export function AppearanceStep(props: Props) {
             size='large'
             onClick={props.onNext}
           >
-            {getString('WELCOME_PAGE_CONTINUE_BUTTON_LABEL')}
+            {props.isLastStep
+              ? getString('WELCOME_PAGE_START_BROWSING_BUTTON_LABEL')
+              : getString('WELCOME_PAGE_CONTINUE_BUTTON_LABEL')}
           </Button>
         </div>
       </footer>

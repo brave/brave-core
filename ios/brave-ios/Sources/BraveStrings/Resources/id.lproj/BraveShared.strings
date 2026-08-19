@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Akun";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Silakan lakukan autentikasi untuk mengelola kata sandi Anda.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Tindakan ini akan menghapus kata sandi tersimpan untuk %@ dari Sync Chain dan perangkat Anda.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Tawarkan untuk menyimpan kata sandi";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Masukkan Kata Sandi";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Ungkap";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Cari Situs Web";
@@ -1528,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Pemutar Otomatis";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Nonaktifkan";
 
 /* Auto Save turn On Option */
@@ -1537,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Hanya Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Menambahkan berkas video dan audio untuk penggunaan luring dapat menghabiskan banyak penyimpanan di perangkat Anda, selain juga menggunakan data seluler Anda";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Menyimpan cache berkas video dan audio dapat menghabiskan data seluler dan ruang penyimpanan pada perangkat Anda";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Setelah membuka konten di Daftar Putar, opsi ini akan menyimpan item daftar putar yang dibuka di perangkat, jadi Anda bisa memutarnya tanpa koneksi internet.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1550,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Tambahkan Saja";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Perangkat Anda hampir penuh. Menambahkan video ini ke Playlist mungkin gagal atau mempengaruhi download lainnya.";
+"playlist.playlistDiskSpaceWarningMessage" = "Perangkat Anda hampir penuh. Menambahkan video ini ke Playlist mungkin gagal atau mempengaruhi video lain yang tersimpan dalam cache.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Penyimpanan Hampir Penuh";
@@ -1561,20 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Mengaktifkan Tekan Terus";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Media Daftar Putar & Data Offline";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Data Luring Daftar Putar";
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Data Playlist";
 
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Ubah";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Setel ulang";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Opsi ini akan menghapus semua video dari Daftar Putar, begitu pula penyimpanan moda Luring.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Opsi ini akan menghapus semua data Playlist.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Daftar Putar";
@@ -1585,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Ingat Posisi Pemutaran Kembali Berkas";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Hapus";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1605,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Tambahkan ke Daftar Putar";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Lihat di Brave Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Urungkan";
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave Ditutup Mendadak.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, Anda dapat melihat iklan yang menghormati privasi dari jaringan Brave Ads. Tanpa pelacak. Tanpa hambatan. Dan data Anda akan tetap aman sepenuhnya.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Aktifkan Imbalan";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Klik di mana saja pada layar untuk melanjutkan ke Brave Talk.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Kini, Anda dapat mulai melakukan panggilan gratis";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Untuk memulai panggilan gratis, aktifkan Brave Rewards";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Aktifkan untuk membantu mendukung Brave dan komunitas BAT.";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Terima kasih telah membantu mendukung Brave dan komunitas BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Dengan mengklik, Anda menyetujui %1$@ dan %2$@. Nonaktifkan kapan saja di Pengaturan.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Bantulah mendukung Brave dan komunitas BAT dengan mengaktifkan Imbalan Brave dan melihat Iklan Brave.";
@@ -3177,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Papan Ketik Terbuka Otomatis";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Buka tautan dari Ask Brave dan Brave Penelusuran di tab pratinjau";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Aktifkan Tab Tampilan Cepat";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Menjaga tab peramban privat  tetap terbuka ketika Anda menutup aplikasi, memastikan sesi perambanan privat tetap berlanjut dengan mulus.";

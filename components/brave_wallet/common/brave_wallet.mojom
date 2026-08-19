@@ -437,6 +437,9 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
+  // Close the Wallet Chromium side panel (not the popup bubble panel).
+  CloseSidePanel();
+
   ConnectToSite(array<string> accounts, PermissionLifetimeOption option);
 
   CancelConnectToSite();
@@ -475,6 +478,10 @@ interface PageHandler {
   // Wallet WebUI in another tab. For example, the user taps the button
   // to open Wallet WebUI in another tab while syncing ZCash Shielded Account.
   OpenWalletHome();
+
+  // Mobile only
+  // - Used by Wallet WebUI when user needs to scan QR code to read address
+  ScanQRCode() => (string address);
 };
 
 enum AssetPriceTimeframe {
@@ -1525,8 +1532,6 @@ const string kMainnetChainId = "0x1";
 
 const string kSepoliaChainId = "0xaa36a7";
 
-const string kLocalhostChainId = "0x539";
-
 const string kPolygonMainnetChainId = "0x89";
 
 const string kBnbSmartChainMainnetChainId = "0x38";
@@ -2120,9 +2125,10 @@ struct ZCashKeyId {
 struct ZCashBalance {
   uint64 total_balance;
   uint64 transparent_balance;
-  // Orchrad balance, Ironwood balance TBD.
-  uint64 shielded_balance;
-  uint64 shielded_pending_balance;
+  uint64 orchard_balance;
+  uint64 orchard_pending_balance;
+  uint64 ironwood_balance;
+  uint64 ironwood_pending_balance;
   // Transparent balances
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
@@ -2156,13 +2162,19 @@ struct ZCashAccountInfo {
 enum ZCashTxType {
   kUnknown = 0,
   kTransparentToTransparent = 1,
-  kTransparentToOrchard = 2,
-  kOrchardToOrchard = 3,
   kOrchardToTransparent = 4,
-  // Internal transfer to the account's shielded address
-  kShielding = 5,
-  // Internal transfer to the account's transparent address
-  kUnshielding = 6,
+  // Internal transfer to a same-keyring account's Ironwood shielded address
+  kShieldingIronwood = 5,
+  // Internal transfer to a same-keyring account's transparent address
+  // (from Orchard)
+  kUnshieldingOrchard = 6,
+  kTransparentToIronwood = 7,
+  kOrchardToIronwood = 8,
+  kIronwoodToIronwood = 9,
+  kIronwoodToTransparent = 10,
+  // Internal transfer to a same-keyring account's transparent address
+  // (from Ironwood)
+  kUnshieldingIronwood = 11,
 };
 
 enum ZCashAddressError {
@@ -2174,6 +2186,7 @@ enum ZCashAddressError {
   kInvalidAddressNetworkMismatch = 5,
   kNotZCashAccount,
   kInvalidSenderType,
+  kInvalidRecipientType,
 };
 
 struct ZCashOrchardNoteInfo {
@@ -2233,7 +2246,7 @@ interface ZCashWalletService {
       => (string? tx_id, string? error_message);
 
   GetTransactionType(
-      AccountId account_id, bool use_shielded_pool, string recipient)
+      AccountId account_id, ZCashTokenType from_token_type, string recipient)
       => (ZCashTxType tx_type, ZCashAddressError error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
@@ -2373,16 +2386,17 @@ struct BtcTxData {
 struct ZecTxInput {
   string address;
   uint64 value;
+  ZCashTokenType pool = kNone;
 };
 
 struct ZecTxOutput {
   string address;
   uint64 value;
+  ZCashTokenType pool = kNone;
 };
 
 struct ZecTxData {
-  // Whether Orchard pool is used. Ironwood TBD.
-  bool use_shielded_pool;
+  ZCashTokenType zcash_token_type = kNone;
   string to;
   bool sending_max_amount;
   // Memo field should exist only for shielded output.
@@ -2431,6 +2445,9 @@ struct PolkadotTxdata {
   uint128 fee;
   bool sending_max_amount;
   PolkadotAssetId? asset_id;
+  // 0x-prefixed hex of the blob the sender signs, for displaying in the UI
+  // before transaction confirmation.
+  string? signature_payload;
 };
 
 union TxDataUnion {
@@ -2557,7 +2574,7 @@ struct NewZCashTransactionParams {
   bool sending_max_amount;
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
-  bool use_shielded_pool;
+  ZCashTokenType zcash_token_type;
   SwapInfo? swap_info;
 };
 
@@ -2960,11 +2977,8 @@ struct SignCardanoTransactionRequest {
 
   string raw_tx_data;
 
-  // Transaction inputs.
-  // Inputs that belong to the selected account has address and value filled.
-  array<CardanoTxInput> inputs;
-  // Transaction outputs.
-  array<CardanoTxOutput> outputs;
+  // Human-readable transaction summary for the signing UI.
+  string details_json;
 };
 
 enum ExternalWalletType {

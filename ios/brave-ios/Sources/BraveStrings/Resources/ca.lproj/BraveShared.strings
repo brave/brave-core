@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Comptes";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Autentifica't per gestionar les teves contrasenyes.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Això eliminarà la contrasenya o les contrasenyes desades de %@ de la vostra cadena de sincronització i del vostre aparell.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Ofereix desar contrasenyes";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Introdueix la contrasenya";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Revela";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Cerca llocs web";
@@ -1528,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Reproducció automàtica";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Desactivat";
 
 /* Auto Save turn On Option */
@@ -1537,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Només Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Si afegeixes fitxers de vídeo i àudio per utilitzar-los fora de línia, pots utilitzar molt d'emmagatzematge al teu dispositiu i també utilitzar les teves dades mòbils";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Emmagatzemar a la memòria cau els fitxers de vídeo i àudio pot consumir tant dades mòbils com espai d'emmagatzematge del vostre aparell";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Un cop hagis obert contingut des de la Llista de reproducció, aquesta opció mantindrà els arxius oberts a la llista de reproducció al teu dispositiu perquè puguis reproduir-los sense connexió a internet.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1550,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Afegir de totes formes";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "El vostre aparell té poc espai. Afegir aquest vídeo a la Llista de reproducció pot fallar o afectar altres descàrregues.";
+"playlist.playlistDiskSpaceWarningMessage" = "El vostre aparell té poc espai. Afegir aquest vídeo a la Llista de reproducció pot fallar o afectar altres vídeos desats a la memòria cau.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Emmagatzematge gairebé ple";
@@ -1561,20 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Activa premsa llarga";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Llista de reproducció d'arxius & Dades fora de línia";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Dades fora de línia de la llista de reproducció";
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Dades de la llista de reproducció";
 
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Canvia";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Restableix";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Aquesta opció suprimirà tots els vídeos de la llista de reproducció, així com l'emmagatzematge en mode fora de línia.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Aquesta opció eliminarà totes les dades de la Llista de reproducció.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Llista de reproducció";
@@ -1585,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Recorda la posició de reproducció del fitxer";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Suprimeix";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1605,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Afegeix a la llista de reproducció";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Mostra a la Llista de reproducció de Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Desfés";
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave s'ha tancat inesperadament.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Amb Recompenses de Brave, pots veure anuncis que preserven la privacitat des de la xarxa d'Anuncis de Brave. Sense rastrejadors. Sense alentiments. I les teves dades es mantenen totalment segures.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Activa les recompenses";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Clica a qualsevol lloc de la pantalla per continuar a Conversa de Brave.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Ara pots iniciar una trucada gratuïta";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Per iniciar una trucada gratuïta, activa Recompenses de Brave";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Activa per ajudar a donar suport a Brave i a la comunitat BAT.";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Gràcies per ajudar a donar suport a Brave i a la comunitat BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "En clicar, acceptes les %1$@ i %2$@. Desactiva-ho en qualsevol moment a Configuració.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Ajuda a donar suport a Brave i a la comunitat BAT activant Recompenses de Brave i veient Anuncis de Brave.";
@@ -3177,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Obertura automàtica del teclat";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Obre els enllaços d'Ask Brave i del Cercador de Brave en pestanyes de vista prèvia";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Activa les pestanyes de vista ràpida";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Mantingues obertes les pestanyes de navegació d'incògnit quan tanquis l'aplicació, assegurant-te que les sessions de navegació d'incògnit continuïn sense problemes. ";

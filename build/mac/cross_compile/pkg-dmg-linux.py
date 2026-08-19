@@ -24,7 +24,7 @@ def main():
     assert exists(DMG_TOOL_PATH), DMG_TOOL_PATH + \
         ' does not exist. Please make sure that checkout_dmg_tool is set to' \
         ' True in the "custom_vars" section of the "src/brave" section of' \
-        ' your .gclient file, then `npm run sync` (without `--target_os=mac`)' \
+        ' your .gclient file, then `pnpm run sync` (without `--target_os=mac`)' \
         ' to download and build it.'
     args = parse_args()
     assert not listdir(args.source), 'The --source=... dir must be empty.'

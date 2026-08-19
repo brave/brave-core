@@ -54,7 +54,8 @@ class BraveWalletPermissionContextBrowserTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   content::WebContents* web_contents() {

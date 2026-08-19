@@ -1,7 +1,18 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..d29e73ada9cc7e614eff27da86565bb9ea48b6c1 100644
+index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..061400f3b5d4743d278f431f396eadf37dd9ce80 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
+@@ -284,8 +284,8 @@ public class ToolbarPhone extends ToolbarLayout
+     private @Nullable PhoneCaptureStateToken mPhoneCaptureStateToken;
+     private @Nullable ButtonData mButtonData;
+ 
+-    private final @ColorInt int mToolbarBackgroundColorForNtp;
+-    private final @ColorInt int mLocationBarBackgroundColorForNtp;
++    @ColorInt int mToolbarBackgroundColorForNtp;
++    @ColorInt int mLocationBarBackgroundColorForNtp;
+     private boolean mUseAdjustedTintColorForNtp;
+     private boolean mIsToolbarExpandedOnNtp;
+ 
 @@ -595,6 +595,7 @@ public class ToolbarPhone extends ToolbarLayout
          if (mOptionalButtonCoordinator != null) {
              mOptionalButtonCoordinator.setBackgroundColorFilter(color);
@@ -26,19 +37,20 @@ index 32041e70256cdcc770b1f9af7ab9cb7d2a0daeac..d29e73ada9cc7e614eff27da86565bb9
          // Draw the tab stack button and associated text if necessary.
          ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator =
                  getTabSwitcherButtonCoordinator();
-@@ -2094,6 +2097,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2093,7 +2096,7 @@ public class ToolbarPhone extends ToolbarLayout
+ 
      @Override
      public void onHomeButtonIsEnabledUpdate(boolean homeButtonEnabled) {
-         mIsHomeButtonEnabled = homeButtonEnabled;
+-        mIsHomeButtonEnabled = homeButtonEnabled;
 +        mIsHomeButtonEnabled = false;
          updateButtonVisibility();
      }
  
-@@ -2504,6 +2508,7 @@ public class ToolbarPhone extends ToolbarLayout
-         } else {
-             populateUrlClearExpansionAnimatorSet(animators);
-         }
-+        if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
-         mUrlFocusLayoutAnimator = new AnimatorSet();
-         mUrlFocusLayoutAnimator.playTogether(animators);
+@@ -2498,6 +2501,7 @@ public class ToolbarPhone extends ToolbarLayout
+     }
  
+     private void createAndRunFocusAnimatorLegacy(boolean hasFocus, boolean shouldShowKeyboard) {
++        if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
+         List<Animator> animators = new ArrayList<>();
+         if (hasFocus) {
+             populateUrlExpansionAnimatorSet(animators);

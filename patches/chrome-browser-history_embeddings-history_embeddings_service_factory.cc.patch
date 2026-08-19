@@ -1,0 +1,34 @@
+diff --git a/chrome/browser/history_embeddings/history_embeddings_service_factory.cc b/chrome/browser/history_embeddings/history_embeddings_service_factory.cc
+index 3b67ca1f8f84484016bfab9f4ed6fe36efc9f3cc..3f940b3a27a85a42b1ae408182281d0a7dc83c01 100644
+--- a/chrome/browser/history_embeddings/history_embeddings_service_factory.cc
++++ b/chrome/browser/history_embeddings/history_embeddings_service_factory.cc
+@@ -101,7 +101,13 @@ std::unique_ptr<KeyedService> HistoryEmbeddingsServiceFactory::
+     return nullptr;
+   }
+ 
+-  return std::make_unique<history_embeddings::ChromeHistoryEmbeddingsService>(
++  return std::make_unique<history_embeddings::
++#if BUILDFLAG(ENABLE_LOCAL_AI)
++    BraveHistoryEmbeddingsService
++#else
++    ChromeHistoryEmbeddingsService
++#endif
++    >(
+       profile,
+       HistoryServiceFactory::GetForProfile(profile,
+                                            ServiceAccessType::EXPLICIT_ACCESS),
+@@ -171,7 +177,13 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
+     }
+   }
+ 
+-  return std::make_unique<history_embeddings::ChromeHistoryEmbeddingsService>(
++  return std::make_unique<history_embeddings::
++#if BUILDFLAG(ENABLE_LOCAL_AI)
++    BraveHistoryEmbeddingsService
++#else
++    ChromeHistoryEmbeddingsService
++#endif
++    >(
+       profile,
+       HistoryServiceFactory::GetForProfile(profile,
+                                            ServiceAccessType::EXPLICIT_ACCESS),

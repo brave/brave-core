@@ -539,6 +539,14 @@ export const VerticalDivider = styled.div<{ margin?: string }>`
   margin: ${(p) => p.margin || 0};
 `
 
+export const HorizontalDivider = styled.div`
+  flex-shrink: 0;
+  align-self: stretch;
+  min-width: 2px;
+  width: 2px;
+  background-color: ${leo.color.divider.subtle};
+`
+
 export const BraveRewardsIndicator = styled.div`
   font: ${leo.font.xSmall.regular};
 

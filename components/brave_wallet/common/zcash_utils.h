@@ -50,6 +50,11 @@ inline constexpr uint8_t kOrchardSpendingKeySize = 32;
 inline constexpr size_t kOrchardCompleteBlockHashSize = 32u;
 // Block number where Orchard support was added
 inline constexpr size_t kNu5BlockUpdate = 1687104;
+// TODO(cypt4): NU7/Ironwood activation heights are not finalized.
+// Ironwood tree state is supplied only when a batch's last block is at or
+// above these heights.
+inline constexpr uint32_t kIronwoodActivationHeightMainnet = 3428143;
+inline constexpr uint32_t kIronwoodActivationHeightTestnet = 4134000;
 
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
@@ -141,7 +146,6 @@ struct OrchardNote {
   uint32_t orchard_commitment_tree_position = 0;
   OrchardRho rho{};
   OrchardRseed seed{};
-  // Note plaintext version: 2 for Orchard, 3 for Ironwood.
   uint32_t note_version = 0;
 
   bool operator==(const OrchardNote& other) const = default;
@@ -171,6 +175,7 @@ struct OrchardInput {
   OrchardNote note;
   std::optional<OrchardNoteWitness> witness;
 
+  bool operator==(const OrchardInput& other) const = default;
   base::DictValue ToValue() const;
   static std::optional<OrchardInput> FromValue(const base::DictValue& value);
 };

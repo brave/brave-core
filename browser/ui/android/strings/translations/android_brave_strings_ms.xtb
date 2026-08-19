@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Sentiasa layari URL halaman (bukan AMP) asal dan bukannya versi Halaman Mudah Alih Dipercepatkan Google</translation>
 <translation id="920638232916443453">Penghalaan semula automatik URL penjejakan</translation>
 <translation id="1118970888826017401">Dayakan sokongan untuk memintas URL penjejakan hala semula aras atas.</translation>
-<translation id="94154759592465111">Sekat Skrip</translation>
+<translation id="4824468494729001999">Sekat skrip</translation>
 <translation id="7714773920987474116">Menyekat JavaScript (boleh merosakkan laman)</translation>
 <translation id="2233004324252915283">Sekat kandungan disyorkan YouTube</translation>
 <translation id="1005372663692637999">Menyekat unsur seterusnya dan kad akhir di youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Kosongkan kuki dan data laman lain apabila anda menutup laman</translation>
 <translation id="7740929262043547697">Benarkan penyekatan elemen dalam tetingkap peribadi</translation>
 <translation id="1260864846935682371">Mengaktifkan ciri Sekat Elemen Perisai dalam tetingkap peribadi. Ambil perhatian bahawa elemen yang disekat dalam tetingkap peribadi juga akan disekat dalam tetingkap bukan peribadi.</translation>
+<translation id="4021136205151368133">Nota: ini mungkin mengurangkan perlindungan privasi Brave.</translation>
+<translation id="2876155735620608356">Perisai berfungsi untuk laman web ini</translation>
+<translation id="8605306630462821888">Perisai dimatikan untuk laman web ini</translation>
+<translation id="1574700443447059851">Penjejak, iklan dan banyak lagi disekat.</translation>
+<translation id="4039014515785210563">Pilih cara mengendalikan penjejak dan iklan</translation>
+<translation id="8423733350479881051">Pilih cara mengendalikan cookie</translation>
+<translation id="9064628362799094520">Hapuskan data laman</translation>
+<translation id="2862348905922940916">Tetapkan semula laman web ini kepada lalai Perisai</translation>
+<translation id="269939061709857874">Laman web ditetapkan semula kepada lalai Perisai</translation>
+<translation id="3623708006387030755">Tetapan global Perisai</translation>
+<translation id="2387532482048804818">Beritahu kami jika laman tidak berfungsi dengan lancar melalui Shields ke atas.</translation>
+<translation id="5412004902081180614">Laporkan</translation>
+<translation id="1209739344687072997">Laporkan laman yang  terputus-putus</translation>
+<translation id="2606165159306988240">Beritahu pembangun Brave bahawa laman web ini tidak berfungsi dengan betul dengan laman web ini.</translation>
+<translation id="6806248680442980382">Terima kasih kerana membantu dalam menambah baik Brave untuk semua pengguna. Laporan ini hanya akan mengandungi maklumat yang diperlukan untuk kami selesaikan isu pada laman ini.</translation>
+<translation id="7549123865054511884">Apa yang tidak berfungsi pada laman web ini?</translation>
+<translation id="9094461910562981998">Hubungi saya melalui (pilihan)</translation>
+<translation id="7645128170699559106">E-mel, nama pengguna X dan banyak lagi</translation>
+<translation id="446579367766109694">Jika anda memberikan maklumat hubungan, ia akan disimpan untuk laporan akan datang</translation>
+<translation id="2653659639078652383">Serah</translation>
+<translation id="8459191579769999214">Lihat tangkapan skrin</translation>
+<translation id="4530541918195747729">Laporan dihantar. Terima kasih!</translation>
+<translation id="5528772406060281700">Hapuskan Data Laman</translation>
+<translation id="6795622376590884449">Penghapus Auto</translation>
+<translation id="3520341243738311408">Apabila tab laman web ditutup</translation>
+<translation id="3559735673608367395">Apabila aplikasi keluar</translation>
+<translation id="9140049656798805345">Hapuskan Data Laman Sekarang</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
 <translation id="7142548388914389999">Benarkan analitik produk pengekalan privasi (P3A)</translation>
 <translation id="5254037869598726291">Maklumat P3A tanpa nama membantu Brave menganggarkan penggunaan keseluruhan, dan memastikan kami’ meningkatkan ciri popular.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Cerapan produk peribadi</translation>
 <translation id="3545804467215833536">Ketik untuk melihat Brave Shields</translation>
 <translation id="1724327820822194498">Lihat semua perkara buruk yang disekat oleh Brave, pada setiap halaman, dengan bantuan Shields.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> dan <ph name="TRACKER"/> penjejak &amp; iklan yang lain disekat</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> dan iklan &amp; penjejak lain disekat</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> iklan &amp; penjejak disekat</translation>
 <translation id="8281886186245836920">Langkau</translation>
-<translation id="986879628471635371">Penyertaan pencarisilapan</translation>
 <translation id="5806601733251372221">Pelindung Brave</translation>
-<translation id="8537217141725709400">Memperoleh <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">dengan melihat iklan yang menghormati privasi dan menyokong laman kegemaran anda secara lalai.</translation>
-<translation id="5302488867897327287">Dengan mengetik Mula menggunakan Ganjaran Brave, anda bersetuju dengan</translation>
 <translation id="4281844954008187215">Syarat Perkhidmatan</translation>
 <translation id="6871397658902960384">Mulakan melayari Internet</translation>
-<translation id="454386012157232640">Saya tidak nampak iklan</translation>
-<translation id="1448877943847791441">Brave akan menunjukkan iklan pertama anda dalam</translation>
-<translation id="4410793187232041318">Kini anda akan memperoleh token daripada Iklan Brave.</translation>
 <translation id="6511854390690723657">Ini iklan Brave pertama anda. Ketik untuk mengetahui lebih lanjut.</translation>
-<translation id="2070991379950719711">Mula menggunakan Ganjaran Brave</translation>
-<translation id="48520986898237073">Teruskan ke dompet</translation>
 <translation id="6213254277250932867">Saya mempunyai frasa pemulihan 12 perkataan</translation>
 <translation id="4225265925807365011">Saya mempunyai frasa pemulihan 24 perkataan</translation>
 <translation id="3570367516044491911">Tetapkan sebagai pelayar lalai</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Imbas Kod QR</translation>
 <translation id="5317781812114905957">Arahan</translation>
 <translation id="8515319483805157233">Untuk mencari mengikut Kod QR, sejajarkan Kod QR di tengah bingkai.</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="1201402288615127009">Seterusnya</translation>
 <translation id="8481779960444041069">Untuk menambah baik privasi anda, tetapkan Brave sebagai Penyemak Imbas lalai anda</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Buka folder</translation>
 <translation id="8985635554450124959">Penyegerakan tidak dapat disetkan</translation>
 <translation id="7173114856073700355">Buka Tetapan</translation>
-<translation id="496896260395129787">Akaun Segerak Brave ini telah dipadamkan daripada peranti lain. Jika anda tidak sengaja menyahdayakan Segerak, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>cipta semula akaun</translation>
+<translation id="674078455841038219">Akaun Penyelarasan Brave ini telah dipadamkan daripada peranti lain. Jika anda tidak sengaja menyahdayakan Penyelarasan, cipta semula akaun.</translation>
+<translation id="8913415701676265311">Cipta semula</translation>
 <translation id="4094590686212463338">Tidak dapat menyertai rantaian segerak ini. Rantaian segerak telah dipadamkan.</translation>
 <translation id="4908081302669157000">Nombor telefon, e-mel dan alamat</translation>
+<translation id="1571419474754278280">Perbualan Leo AI</translation>
 <translation id="1056898198331236512">Amaran</translation>
 <translation id="1426410128494586442">Ya</translation>
 <translation id="7811264919113243207">Ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, kepada peranti yang menghasilkan kod QR ini.
@@ -366,10 +383,9 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1413177583895309156">Brave VPN menyulitkan dan melindungi segala yang anda lakukan dalam talian, walaupun di luar pelayar Brave.</translation>
 <translation id="3974348661685061050">Cuba percuma selama 7 hari</translation>
 <translation id="5789441016350810005">Brave Ads dihantar apabila pelayar dibuka di latar belakang</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Halaman Tab Baharu</translation>
 <translation id="5927196110206824867">Imej latar yang ditaja menyokong misi Brave untuk membina Web bebas yang mengutamakan pengguna. Dan tidak seperti Big Tech, kami mengukur prestasi iklan secara tanpa nama untuk mengekalkan privasi anda.</translation>
-<translation id="8748471354357836070">Ketahui lebih lanjut / pilihan untuk keluar</translation>
+<translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="3171669670217312786">Imej Latar belakang</translation>
 <translation id="8522669544471808198">Papar Imej Latar Belakang</translation>
 <translation id="6258554626602400736">Paparkan iklan di Halaman Tab Baharu</translation>
@@ -400,7 +416,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7151914815476509258">Sekat penjejak &amp; iklan (Standard)</translation>
 <translation id="7384778069178817075">Benarkan semua penjejak &amp; iklan</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Pilihan "Sekat Semua Kuki" tidak lagi disokong. Untuk mengetahui cara mengaktifkan pilihan ini secara paksa, lawati<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>halaman bantuan kami<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Sekat Kuki</translation>
+<translation id="8823559166155093873">Sekat kuki</translation>
 <translation id="614747795780742163">Mengelakkan laman web daripada menyimpan maklumat tentang kunjungan-kunjungan anda sebelum ini</translation>
 <translation id="6883611015375728278">Sekat semua kuki</translation>
 <translation id="6196640612572343990">Sekat kuki pihak ketiga</translation>
@@ -411,7 +427,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1876882294512858963">Sentiasa gunakan mod Tanpa Siar</translation>
 <translation id="554464532999080267">Tanya sebelum menggunakan mod Tanpa Siar (standard)</translation>
 <translation id="926857659063503456">Jangan sekali-kali gunakan mod Tanpa Siar</translation>
-<translation id="3895527457258986253">Sekat Cetakan Jari</translation>
+<translation id="6531019308847917584">Sekat cap jari</translation>
 <translation id="7854108565842971747">Ini adalah tetapan Perisai lalai untuk tapak baharu. Mengubah ini tidak akan mempengaruhi tetapan setiap tapak sedia ada anda.</translation>
 <translation id="218587021686734263">Halang cap jari melalui tetapan bahasa</translation>
 <translation id="1706099589708266367">Mengurangkan tahap kemampuan laman web mempelajari tentang anda berdasarkan tetapan bahasa pelayar anda.</translation>
@@ -421,22 +437,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7445306466605902444">Pengecapan jari disekat (ketat, mungkin akan melanggar laman)</translation>
 <translation id="5582686930349810484">Pengecapan jari disekat (standard)</translation>
 <translation id="769702552748212954">Benarkan semua pengecapan jari</translation>
-<translation id="876424292214881779">Iklan dan perkara buruk lain disekat</translation>
-<translation id="6849027612978668678">Laman kerap memasukkan kuki dan skrip yang cuba mengenal pasti anda dan peranti anda. Laman ingin mengetahui identiti anda dan mengikuti anda ke seluruh web, seterusnya menjejaki tindakan anda pada setiap laman.\n\nBrave akan menyekat semua hal ini supaya anda boleh melayari laman tanpa diikuti.</translation>
-<translation id="8553998445606452168">Mengenai Brave Shields</translation>
-<translation id="8912304686498704084">ATAS</translation>
-<translation id="4963218453264888510">BAWAH</translation>
-<translation id="7474113515179313724">Anda sedang melayari laman ini tanpa perlindungan privasi Brave. Adakah ia berfungsi dengan Shields diaktifkan?</translation>
 <translation id="4226543734057230801">Rangkaian Ethereum</translation>
 <translation id="3504157706952484145">Rangkaian Filecoin</translation>
 <translation id="1561541094377237745">Rangkaian Solana</translation>
 <translation id="7141438739990875547">Rangkaian Bitcoin</translation>
 <translation id="9055546041146396417">Sekiranya laman ini nampaknya rosak, cuba Shields.</translation>
 <translation id="7898672232170410330">Sekat elemen</translation>
-<translation id="9064628362799094520">Hapuskan data laman</translation>
-<translation id="8949611615512336262">Penghapus Auto: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Hapuskan Data Laman Sekarang</translation>
-<translation id="6795622376590884449">Penghapus Auto</translation>
 <translation id="7961015016161918242">Tidak sama sekali</translation>
 <translation id="3200744626782631683">Data pelayaran tidak pernah dipadam secara automatik.</translation>
 <translation id="1991004083507807299">Tab Laman Ditutup</translation>
@@ -447,23 +453,11 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2997451887458851244">Kemas kini Auto Shred dan laras data yang dihancurkan.</translation>
 <translation id="363903976200491771">Menghancurkan data pelayaran secara automatik</translation>
 <translation id="1028873002018537235">Padam sejarah pelayaran</translation>
-<translation id="1209739344687072997">Laporkan laman yang  terputus-putus</translation>
-<translation id="8510478288840333677">Beritahu pembangun Brave yang laman ini tidak berfungsi dengan baik dengan Shields:</translation>
-<translation id="1653405824851871276">Terima kasih kerana membantu dalam menambah baik Brave untuk semua pengguna. Laporan ini hanya akan mengandungi maklumat yang diperlukan untuk kami selesaikan isu pada laman ini. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Ketahui lebih lanjut</translation>
-<translation id="8740275226259417070">Ini ialah halaman ralat. Keadaan ini tidak boleh dilaporkan sebagai laman rosak.</translation>
 <translation id="721949491455392748">Sertakan tangkapan skrin halaman semasa</translation>
-<translation id="8459191579769999214">Lihat tangkapan skrin</translation>
 <translation id="6476216365964140603">Butiran tambahan (pilihan)</translation>
-<translation id="6145852496180774737">Hubungi saya melalui: (pilihan)</translation>
-<translation id="6367576083705149078">Jika anda memberikan maklumat hubungan, ia akan disimpan untuk laporan akan datang.</translation>
-<translation id="7616645803364270729">E-mel, Twitter, dll.</translation>
-<translation id="5299848999918506028">Terima kasih!</translation>
-<translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
 <translation id="3037432377946455872">Apakah isu utama yang anda hadapi?</translation>
 <translation id="8731661215617360873">Buat satu pilihan</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
-<translation id="7205939464631857223">Kosongkan semua elemen yang disekat</translation>
 <translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
 <translation id="1118508688433541158">Layar dengan lebih pantas dan sekat iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menjimatkan data dengan melayari Web dengan Brave.</translation>
@@ -513,17 +507,17 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2718046830255553131">Data laporan privasi telah dibersihkan.</translation>
 <translation id="8376263745431603066">Dayakan "Mod Malam" (Eksperimen)</translation>
 <translation id="1383876407941801731">Cari</translation>
-<translation id="6165508094623778733">Ketahui lebih lanjut</translation>
 <translation id="13296465911709339">Teks anda telah disalin ke papan klip.</translation>
 <translation id="2735834606413553397">Alamat awam telah disalin ke papan keratan.</translation>
 <translation id="2977461003134694205">Stat Privasi</translation>
 <translation id="8804164990146287819">Dasar Privasi</translation>
 <translation id="5705882733397021510">Kembali</translation>
+<translation id="8450375131309292971">Tarik untuk muat semula</translation>
+<translation id="880475987868032564">Mendayakan gerak isyarat tarik untuk muat semula. Meleret ke bawah dari bahagian atas halaman akan memuat semula halaman.</translation>
 <translation id="7889432931837317731">Buka secara automatik bila mungkin</translation>
 <translation id="1029304566263314007">Tunjukkan pemberitahuan perkembangan muat turun</translation>
 <translation id="2977501775944575564">Muat Turun Selari</translation>
 <translation id="6224180438946945617">Dayakan muat turun selari untuk mempercepat kelajuan muat turun</translation>
-<translation id="8967385052772844086">Lihat Laporan Privasi penuh</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="7138272885617540195">Benarkan pautan apl dibuka dalam apl di luar Brave</translation>
 <translation id="4954512758656527938">Dompet Ethereum lalai</translation>
@@ -787,7 +781,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2156993118928861787">Alamat tidak sah</translation>
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
-<translation id="2653659639078652383">Serah</translation>
 <translation id="4945690646623486292">Pilih Rangkaian</translation>
 <translation id="8006088103295786154">Akses Dompet Brave</translation>
 <translation id="5308380583665731573">Sambung</translation>
@@ -1108,7 +1101,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1336494649091412226">Adakah anda pasti mahu keluar daripada Brave?</translation>
 <translation id="6061635824229591714">Hapuskan Data Laman?</translation>
 <translation id="1265051174491933207">Penghapusan akan memadamkan data laman dan menutup semua tab bagi '<ph name="SITE_NAME"/>'. Tindakan ini tidak boleh dibuat asal.</translation>
-<translation id="5528772406060281700">Hapuskan Data Laman</translation>
 <translation id="4426990318287827331">Hapuskan Data</translation>
 <translation id="7942415993090181327">Sejarah sembang</translation>
 <translation id="6859935199732075666">Tunjukkan ralat Menyemak Imbas Secara Selamat</translation>

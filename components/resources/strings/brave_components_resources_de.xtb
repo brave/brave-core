@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Der nächste Nonce-Wert konnte nicht abgerufen werden</translation>
 <translation id="6180576227145734714">Transaktionsdaten 'to' müssen bei Angabe eine gültige Adresse sein</translation>
 <translation id="6688162556547723415">Die angeforderte Methode und/oder das angeforderte Konto wurden vom Benutzer nicht autorisiert.</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="7020503656406658141">Preise</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="1987317783729300807">Konten</translation>
 <translation id="3567988240819868195">Markt</translation>
@@ -1822,7 +1820,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="803703704549420287">Filter zurücksetzen</translation>
 <translation id="1472675084647422956">Mehr anzeigen</translation>
 <translation id="4522570452068850558">Details</translation>
-<translation id="4583937519241190398">Verifiziert von DappRadar</translation>
 <translation id="8713438253026855351">Zu einem geschützten Konto wechseln</translation>
 <translation id="3526789880090101085">Geschütztes Konto</translation>
 <translation id="3155166394760577549">Aktiviere Shielding, um die Privatsphäre deiner Transaktionen zu verbessern.</translation>
@@ -1955,6 +1952,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="6261915643960475695">Unternehmen</translation>
 <translation id="8265589281845759879">Autos</translation>
 <translation id="7726519849288907308">Berühmtheiten</translation>
+<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="6807791860691150411">Bildung</translation>
 <translation id="3706423975342040244">Unterhaltung</translation>
@@ -2171,6 +2169,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="2367972762794486313">Apps anzeigen</translation>
 <translation id="3142853026316054951">Fokusmodus ein- oder ausschalten</translation>
 <translation id="3468387898712904997">Neuer E-Mail-Alias</translation>
+<translation id="4711475997833555304">Erstellen Sie eine zufällige E-Mail-Adresse, die an Ihren Posteingang weitergeleitet wird.</translation>
 <translation id="2796584247246518451">Neuer temporärer Container</translation>
 <translation id="8591883849678260674">Orginal anzeigen</translation>
 <translation id="1969654232209826429">Min. Lesezeit</translation>
@@ -2230,8 +2229,10 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8743383817154663379">Etwas ist schiefgelaufen beim Bearbeiten deiner Anfrage. Bitte versuche es später noch einmal.</translation>
 <translation id="2712650703044366764">Dieses Modell hat einen ungültigen Endpunkt. Bitte überprüfe deine Konfiguration und versuche es erneut.</translation>
 <translation id="7092656392206649236">Bei der Kommunikation mit Leo ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.</translation>
+<translation id="4539536233699928121">Bei der Kommunikation mit NEAR ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.</translation>
 <translation id="3552709750512842961">Statuscode: <ph name="STATUS_CODE"/>, Fehlercode: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Statuscode: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Statuscode: <ph name="STATUS_CODE"/>, innerer Statuscode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Sie haben die Premium-Antwortquote erreicht. Bitte versuchen Sie es in ein paar Stunden erneut.</translation>
 <translation id="3683964919745779766">Es scheint, dass das Kontingent für dieses Modell erreicht oder keine Credits mehr verfügbar sind. Bitte versuche es später erneut.</translation>
 <translation id="7692501701960747469">Es scheint ein Problem mit dem API-Schlüssel zu geben. Bitte prüfe die Konfiguration und versuche es erneut.</translation>
@@ -2405,6 +2406,9 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="9051226419897869406">Chatten Sie privat mit Brave Leo</translation>
 <translation id="2414904697165579184">Antworten basierend auf dem/den Inhalt(en) der Tabs gestalten</translation>
 <translation id="8258324391302611485">Der Inhalt dieser Seite wird zusammen mit deinen Nachrichten an Leo gesendet.</translation>
+<translation id="443008484043213881">Tools</translation>
+<translation id="4343623396828510727">Diese Websites stellen Tools bereit, die Leo verwenden kann, um Daten an diese Website zu senden und von ihr zu empfangen. Fügen Sie diese Tools nicht hinzu oder genehmigen Sie sie nicht, wenn diese Unterhaltung Daten enthält, die diese Website nicht sehen soll.</translation>
+<translation id="5021823940147712387">Tools entfernen</translation>
 <translation id="318819763888864209">Alle Abonnements werden automatisch verlängert, können aber jederzeit vor der Erneuerung gekündigt werden.</translation>
 <translation id="5091223967610958">Teilen Sie den Hostnamen der Seite, auf der Sie sind (<ph name="HOST_NAME"/>), damit wir Leo noch weiter verbessern können.</translation>
 <translation id="8732450785281947197">Leo-KI-Tools</translation>
@@ -2483,6 +2487,9 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7918928051723770926">Aufgabe abgeschlossen</translation>
 <translation id="2113810663179257944">Codeausführung</translation>
 <translation id="4838375634693651776">Zur Unterstützung deiner Anfrage wird Code in der Sandbox ausgeführt</translation>
+<translation id="6990975553143971265">Ihr Browserverlauf wird nach "<ph name="QUERY"/>" durchsucht</translation>
+<translation id="8302511726757276645">Ihr Browserverlauf wird durchsucht</translation>
+<translation id="8410699755320690690">Brave KI möchte Ihren Browserverlauf durchsuchen. Die Suche wird lokal auf Ihrem Gerät ausgeführt, sodass Ihr vollständiger Verlauf nirgendwohin gesendet wird. Nur die Titel, URLs und indexierten Textpassagen der übereinstimmenden Seiten werden als Teil dieser Unterhaltung an Brave KI gesendet.</translation>
 <translation id="4379566111233326721">Code:</translation>
 <translation id="3542130965673205258">Ausgabe:</translation>
 <translation id="6911817209337314910">Es werden einige Optionen generiert, aus denen du auswählen kannst</translation>
@@ -2692,6 +2699,21 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="7586067492365979844">Wir haben Brave Shields überarbeitet und umgestaltet. Es ist nun in die Website-Informationen eingebunden, sodass Sie alle wichtigen Funktionen an einer Stelle finden.</translation>
 <translation id="9114542678887529043">Wir haben Brave Shields überarbeitet und umgestaltet. Sie können darauf zugreifen, indem Sie auf das Website-Symbol in der Adressleiste klicken.</translation>
 <translation id="4242533952199664413">Einstellungen öffnen</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Gerätespeicher</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Schriftart</translation>
+<translation id="436315497893815819">Hardware-Nebenläufigkeit</translation>
+<translation id="7846634333498149051">Tastatur</translation>
+<translation id="5302048478445481009">Sprache</translation>
+<translation id="7986250835989845763">Mediengeräte</translation>
+<translation id="4267171000817377500">Plug-ins</translation>
+<translation id="3441653493275994384">Bildschirm</translation>
+<translation id="1772612984983840854">Sprachsynthese</translation>
+<translation id="1167475333911019229">Seriennummer des USB-Geräts</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Datenschutz. Standardmäßig.</translation>
 <translation id="4366423156486478559">Seien Sie bei jedem Link, den Sie anklicken, geschützt. Legen Sie einfach Brave als Standard fest und surfen Sie – privat.</translation>
 <translation id="3830912418080848377">Einstellungen importieren</translation>
@@ -2728,7 +2750,6 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6821966107067356137">RSS-Feed hinzufügen</translation>
 <translation id="2478076885740497414">App installieren</translation>
 <translation id="8293206222192510085">Lesezeichen hinzufügen</translation>
-<translation id="1010029336854254368">Menü freigeben</translation>
 <translation id="7758460733045216901">Lesezeichen-Panel</translation>
 <translation id="958268166261124668">Brave VPN: Verbunden</translation>
 <translation id="6021669293402055982">Brave VPN: Verbindung unterbrochen</translation>
@@ -2832,7 +2853,7 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="1602850501393095406">Drücke ↑, um hervorzuheben</translation>
 <translation id="8367705492654390392">Beliebige Frage stellen</translation>
 <translation id="8525248723479742219">Später abspielen</translation>
-<translation id="1751249301761991853">Dein Profil</translation>
+<translation id="1751249301761991853">Persönliches</translation>
 <translation id="1122068467107743258">Arbeit</translation>
 <translation id="8372721116225477180">Social Media</translation>
 <translation id="1539343118617844331">Schule</translation>
@@ -2851,17 +2872,31 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="5816720995022674532">Auf Linux-Geräten ist die Verwendung von Brave Origin kostenlos. Sie können die Browser-Version allerdings trotzdem <ph name="BEGIN_LINK"/>käuflich erwerben<ph name="END_LINK"/>, wenn Sie Brave als Unternehmen unterstützen möchten. Mit dem Kauf erhalten Sie zudem die Möglichkeit, Brave Origin auch auf Geräten mit Android, iOS, macOS und Windows zu nutzen.</translation>
 <translation id="3065220545261045367">Brave durch den Kauf von Brave Origin unterstützen</translation>
 <translation id="2069499076031488636">Brave Origin weiterhin kostenlos unter Linux nutzen</translation>
+<translation id="6820590295368504396">Keine Verbindung zum SKU-Dienst möglich</translation>
+<translation id="2525146368601152300">Kauf-ID ist leer</translation>
+<translation id="7858444547014304753">Ungültige Kauf-ID</translation>
+<translation id="2016076837307423164">Anmeldedaten konnten nicht abgerufen werden</translation>
+<translation id="3890481923176188801">Kauf nicht gefunden</translation>
 <translation id="5713644099811900409">Brave-Konto</translation>
 <translation id="2906576968270573525">Melden Sie sich an oder erstellen Sie ein Brave-Konto</translation>
 <translation id="6972754398087986839">Loslegen</translation>
 <translation id="5378207817582281342">Fast geschafft!</translation>
 <translation id="3750210661641549834">Um Ihr Konto zu erstellen, verifizieren Sie bitte Ihre E-Mail-Adresse.</translation>
-<translation id="4129813507847680661">Registrierungscode eingeben</translation>
+<translation id="4351175281479794167">Verifizierungscode eingeben</translation>
 <translation id="1672793037892810340">Sie sollten eine E-Mail mit einem Code erhalten haben, den Sie eingeben müssen.</translation>
 <translation id="4821255729182569254">Bestätigungs-E-Mail erneut senden</translation>
 <translation id="5837679375142747484">Keine E-Mail erhalten? Überprüfen Sie Ihren Spam-Ordner oder <ph name="BEGIN_LINK"/>fordern Sie sie erneut an<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Keine E-Mail erhalten? Überprüfen Sie Ihren Spam-Ordner oder fordern Sie sie erneut an.</translation>
 <translation id="1020730839570724178">Registrierung abbrechen</translation>
+<translation id="7155125570724238786">Um Ihr Passwort zurückzusetzen, verifizieren Sie bitte Ihre E-Mail-Adresse.</translation>
+<translation id="816074628631172140">Ihre E-Mail-Adresse wurde verifiziert. Legen Sie ein neues Passwort fest, um das Zurücksetzen Ihres Passworts abzuschließen.</translation>
+<translation id="7543374051303238869">Neues Passwort festlegen</translation>
+<translation id="8378209932853841849">Zurücksetzen des Passworts abbrechen</translation>
+<translation id="4405566535206792621">Um Ihr Passwort zu ändern, verifizieren Sie bitte Ihre E-Mail-Adresse.</translation>
+<translation id="3135333563420939059">Ihre E-Mail-Adresse wurde verifiziert. Legen Sie ein neues Passwort fest, um die Änderung Ihres Passworts abzuschließen.</translation>
+<translation id="4227581348172626540">Passwortänderung abbrechen</translation>
+<translation id="808894953321890993">Passwort ändern</translation>
+<translation id="7967687455715421528">Passwort kann nicht geändert werden</translation>
 <translation id="4869737930995549965">Abmelden</translation>
 <translation id="5538654494923870167">Erste Schritte mit Ihrem Brave Konto</translation>
 <translation id="1544145635547515689">Brave-Konto erstellen</translation>
@@ -2876,10 +2911,11 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="5486261815000869482">Passwort bestätigen</translation>
 <translation id="7345706641791090287">Bestätigen Sie Ihr Passwort.</translation>
 <translation id="7114054701490058191">Passwörter stimmen nicht überein.</translation>
+<translation id="4277028893293644418">Passwort zurücksetzen</translation>
+<translation id="9033485352495162741">Bestätigung erfolgreich. Geben Sie nun Ihr gewünschtes neues Passwort ein:</translation>
 <translation id="1293857704520741614">Melden Sie sich bei Ihrem Konto an</translation>
 <translation id="118617366439356381">Passwort vergessen?</translation>
 <translation id="5183159033908953146">Bestätigen Sie die E-Mail-Adresse für Ihr Brave-Konto. Sie erhalten dann einen Link, um Ihr Passwort zurückzusetzen. Der Link ist nur 30 Minuten lang gültig.</translation>
-<translation id="3997368361371298873">Achtung: Da Sie auf diesem Gerät nicht angemeldet sind, werden beim Zurücksetzen Ihres Passworts <ph name="BEGIN_BOLD"/>alle Ihre Daten<ph name="END_BOLD"/> auf dem Server gelöscht. Falls Sie über ein anderes Gerät verfügen, auf dem Sie angemeldet sind, ändern Sie Ihr Passwort von diesem Gerät aus, anstatt Ihr Passwort zurückzusetzen.</translation>
 <translation id="3674472551471103443">Passwort zurücksetzen</translation>
 <translation id="2755539422340788311">Verifizieren Sie Ihre E-Mail-Adresse</translation>
 <translation id="6641436078676327508">Sie sollten eine E-Mail mit einem Kurzcode erhalten haben. Bitte geben Sie diesen hier ein, um fortzufahren.</translation>
@@ -2896,10 +2932,16 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="7144067487084094749">Für diese E-Mail-Adresse besteht bereits ein Konto. Versuchen Sie, sich anzumelden, anstatt ein Konto zu erstellen.</translation>
 <translation id="5288951359968156008">Die Domain dieser E-Mail-Adresse wird nicht unterstützt. Bitte verwenden Sie eine andere E-Mail-Adresse.</translation>
 <translation id="7625678607509255072">Limit für E-Mail-Verifizierungen überschritten. Bitte warten Sie 30 Minuten, bevor Sie es erneut versuchen.</translation>
-<translation id="4582421696414628320">Verifizierung abgelaufen. Starten Sie den Registrierungsvorgang erneut.</translation>
+<translation id="9121175588136821850">Verifizierungscode abgelaufen. Starten Sie den Registrierungsvorgang erneut.</translation>
 <translation id="8439543211004394821">Es wurden zu viele falsche Codes eingegeben. Starten Sie den Registrierungsvorgang erneut.</translation>
 <translation id="3229986152760633988">Falscher Code, bitte versuchen Sie es erneut.</translation>
 <translation id="818783632689113711">Für diese E-Mail-Adresse wurde bereits ein Konto angefordert. Bitte überprüfe deine E-Mails oder versuche es in 30 Minuten erneut.</translation>
+<translation id="4776810543245166572">Für diese E-Mail-Adresse wurde kein Konto gefunden.</translation>
+<translation id="7090885444036935209">Ungültige E-Mail-Adresse.</translation>
+<translation id="1542836798393843657">Zu viele Verifizierungsversuche für diese E-Mail-Adresse. Versuchen Sie es in 24 Stunden erneut.</translation>
+<translation id="7572012011062736429">Interner Fehler. Schließen Sie das Dialogfeld, brechen Sie die Verifizierung ab und versuchen Sie es erneut.</translation>
+<translation id="2477280119520811719">Verifizierungscode abgelaufen. Starten Sie den Vorgang zur Passwortänderung erneut.</translation>
+<translation id="7103280722523884198">Es wurden zu viele falsche Codes eingegeben. Starten Sie den Vorgang zur Passwortänderung erneut.</translation>
 <translation id="4178004989875422946">Ein Brave-Konto ermöglicht Ihnen den einfachen Zugriff auf Brave-Dienste.</translation>
 <translation id="4902897635127068510">Meintest du <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Die Feststelltaste ist aktiviert.</translation>
@@ -2908,6 +2950,7 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="2112559299194052697">Erneutes Senden nicht möglich</translation>
 <translation id="7932611814134267012">Es wurden bereits zu viele Verifizierungs-E-Mails gesendet. Bitte überprüfen Sie Ihren Spam-Ordner.</translation>
 <translation id="1364223093800750401">Die E-Mail-Adresse wurde bereits verifiziert.</translation>
+<translation id="1353061468772282268">Der Verifizierungscode ist abgelaufen. Brechen Sie die Verifizierung ab und versuchen Sie es erneut.</translation>
 <translation id="3353844160742960162">Anpassung der Datenschutzeinstellungen</translation>
 <translation id="528205534230423181">Diese Website bietet Datenschutzeinstellungen, die Brave automatisch für Sie anpassen kann. Wir empfehlen Folgendes:</translation>
 <translation id="1063227610401477317">Änderungen übernehmen</translation>

@@ -52,21 +52,6 @@ export const ErrorText = styled(Text)`
   margin-bottom: 10px;
 `
 
-export const LegacyCheckboxRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
-export const CheckboxRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  margin-bottom: 50px;
-`
-
 export const RecoveryPhraseInput = styled.input`
   font: ${leo.font.components.tableheader};
   width: 100%;

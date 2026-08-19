@@ -1365,7 +1365,7 @@ class TransactionParserTests: XCTestCase {
     let mockToAccountAddress = "t1J3jktmALhAhc2neCSyBrLBhxjTercFhCM"
 
     let transactionData: BraveWallet.ZecTxData = .init(
-      useShieldedPool: false,
+      zcashTokenType: .transparent,
       to: mockToAccountAddress,
       sendingMaxAmount: false,
       memo: nil,

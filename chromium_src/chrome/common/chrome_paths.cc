@@ -3,11 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define RegisterPathProvider RegisterPathProvider_ChromiumImpl
-#include <chrome/common/chrome_paths.cc>
-#undef RegisterPathProvider
-
+#include "base/base_paths.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "brave/components/constants/brave_paths.h"
 
 namespace brave {
@@ -42,11 +41,4 @@ void RegisterBravePathProvider() {
 
 }  // namespace brave
 
-namespace chrome {
-
-void RegisterPathProvider() {
-  RegisterPathProvider_ChromiumImpl();
-  brave::RegisterBravePathProvider();
-}
-
-}  // namespace chrome
+#include <chrome/common/chrome_paths.cc>

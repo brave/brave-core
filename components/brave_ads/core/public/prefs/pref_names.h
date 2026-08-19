@@ -22,7 +22,8 @@ inline constexpr char kGracePeriod[] = "brave.brave_ads.grace_period";
 
 inline constexpr char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
 
-inline constexpr char kOptedInToNotificationAds[] = "brave.brave_ads.enabled";
+inline constexpr char kNotificationsEnabled[] =
+    "brave.brave_ads.notifications.enabled";
 inline constexpr char kMaximumNotificationAdsPerHour[] =
     "brave.brave_ads.ads_per_hour";
 
@@ -58,8 +59,6 @@ inline constexpr char kSaveAds[] = "brave.brave_ads.reactions.saved_ads";
 inline constexpr char kMarkedAsInappropriate[] =
     "brave.brave_ads.reactions.marked_as_inappropriate";
 
-inline constexpr char kHasMigratedClientState[] =
-    "brave.brave_ads.state.has_migrated.client.v7";
 inline constexpr char kBrowserVersionNumber[] =
     "brave.brave_ads.browser_version_number";
 

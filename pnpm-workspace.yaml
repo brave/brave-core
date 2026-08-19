@@ -7,8 +7,8 @@
 
 # Packages allowed to run install/build lifecycle scripts.
 allowBuilds:
-  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119': true
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a': true
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/20ef7060208f692feeb7c4f1364550fcb3d85454': true
   '@parcel/watcher': true
   blake-hash: true
   bufferutil: true
@@ -23,6 +23,16 @@ allowBuilds:
   usb: true
   utf-8-validate: true
 
+catalog:
+  '@types/react': '19.2.17'
+  '@types/react-dom': '19.2.3'
+  'react': '19.2.7'
+  'react-dom': '19.2.7'
+  'styled-components': '6.4.3'
+
+# HTTP fetch timeout in milliseconds (5 minutes).
+fetchTimeout: 300000
+
 # Minimum age (minutes) a published dependency version must have.
 minimumReleaseAge: 5040
 
@@ -31,22 +41,23 @@ nodeLinker: isolated
 
 # Force specific versions for dependencies across the graph.
 overrides:
+  # React overrides.
+  '@brave/brave-ui>styled-components': 'catalog:'
+  '@types/react': 'catalog:'
+  '@types/react-dom': 'catalog:'
+  'react': 'catalog:'
+  'react-dom': 'catalog:'
+
   # Security-related overrides.
   'axios': '1.18.0'
   'elliptic': '6.6.1'
   'esbuild': '0.28.1'
   'http-proxy-middleware': '2.0.10'
+  'postcss': '8.5.23'
   'prismjs': '1.30.0'
   'protobufjs': '7.6.5'
   'tiny-secp256k1': '1.1.7'
   'uuid': '14.0.0'
-
-  # React overrides.
-  'react': '19.2.7'
-  'react-dom': '19.2.7'
-  '@types/react': '19.2.17'
-  '@types/react-dom': '19.2.3'
-  '@brave/brave-ui>styled-components': '6.4.3'
 
 # Relax peer dependency version checks for listed packages.
 peerDependencyRules:

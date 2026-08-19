@@ -36,11 +36,14 @@ static_library("browser") {
   ]
 
   deps = [
+    "api",
     "//base",
     "//brave/components/brave_vpn/common",
     "//brave/components/resources:strings",
     "//components/prefs",
     "//net",
+    "//services/network/public/cpp",
+    "//third_party/icu",
     "//ui/base",
     "//url",
   ]
@@ -51,6 +54,8 @@ source_set("unit_tests") {
 
   sources = [
     "brave_vpn_service_impl_unittest.cc",
+    "credential_store_test_util.cc",
+    "credential_store_test_util.h",
     "credential_store_unittest.cc",
     "credential_summary_unittest.cc",
     "purchased_state_manager_unittest.cc",
@@ -59,9 +64,11 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    "api",
     "//base",
     "//base:i18n",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/resources:strings",

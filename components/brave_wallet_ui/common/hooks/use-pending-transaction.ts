@@ -37,7 +37,6 @@ import {
   isCardanoTransaction,
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
-import { isShieldedToken } from '../../utils/asset-utils'
 
 // Custom Hooks
 import useGetTokenInfo from './use-get-token-info'
@@ -573,9 +572,8 @@ export const usePendingTransactions = () => {
       && txAccount
       && transactionDetails?.recipient
       ? {
-          chainId: transactionsNetwork.chainId,
           accountId: txAccount.accountId,
-          useShieldedPool: isShieldedToken(txToken),
+          fromTokenType: txToken.zcashTokenType,
           address: transactionDetails.recipient,
         }
       : skipToken,
@@ -585,10 +583,13 @@ export const usePendingTransactions = () => {
   const fromOrb = useAccountOrb(txAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
   const isShieldingFunds =
-    getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kShieldingIronwood
   const isUnshieldingFunds =
     getZCashTransactionTypeResult.txType
-    === BraveWallet.ZCashTxType.kUnshielding
+      === BraveWallet.ZCashTxType.kUnshieldingOrchard
+    || getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kUnshieldingIronwood
 
   const transactionTitle = React.useMemo(
     (): string =>

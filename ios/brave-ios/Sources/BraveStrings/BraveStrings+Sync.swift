@@ -65,7 +65,7 @@ extension Strings {
       "sync.newSyncCode",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Start a new Sync Chain",
+      value: "New Sync Chain",
       comment: "New sync code button title"
     )
     public static let scanSyncCode = NSLocalizedString(

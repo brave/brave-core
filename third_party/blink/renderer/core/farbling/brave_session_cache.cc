@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_user_agent/common/brand_names.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -209,6 +210,23 @@ bool BlockScreenFingerprinting(ExecutionContext* context,
   return level != BraveFarblingLevel::OFF;
 }
 
+blink::UserAgentMetadata MaybeHideBraveBrand(
+    ExecutionContext* context,
+    blink::UserAgentMetadata metadata) {
+  if (!context || !BraveSessionCache::From(*context).ShouldHideBraveBrand()) {
+    return metadata;
+  }
+  for (auto* brand_list :
+       {&metadata.brand_version_list, &metadata.brand_full_version_list}) {
+    for (auto& brand_version : *brand_list) {
+      if (brand_version.brand == brave_user_agent::kBraveBrand) {
+        brand_version.brand = brave_user_agent::kGoogleChromeBrand;
+      }
+    }
+  }
+  return metadata;
+}
+
 int FarbledPointerScreenCoordinate(const DOMWindow* view,
                                    FarbleKey key,
                                    int client_coordinate,
@@ -275,24 +293,34 @@ void BraveSessionCache::Init() {
 }
 
 blink::WebGLFarbledExtensionHandler*
-BraveSessionCache::CreateWebGLFarbledExtensionHandler(
-    const blink::Vector<blink::String>& supported_extensions) {
-  CHECK(!webgl_farbled_extension_handler_);
+BraveSessionCache::CreateWebGLFarbledExtensionHandler(const bool is_webgl2) {
+  auto level = GetBraveFarblingLevel(
+      is_webgl2 ? ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2
+                : ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+  DCHECK(base::FeatureList::IsEnabled(
+             blink::features::kWebGLBalancedFingerprintingProtection) &&
+         level == BraveFarblingLevel::BALANCED);
 
-  auto level =
-      GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
-  webgl_farbled_extension_handler_ =
-      level == BraveFarblingLevel::OFF
-          ? blink::WebGLFarbledExtensionHandler::CreateOffHandler(
-                supported_extensions)
-      : level == BraveFarblingLevel::BALANCED
-          ? blink::WebGLFarbledExtensionHandler::CreateBalancedHandler(
-                supported_extensions,
-                default_shields_settings_->farbling_token.low())
-          : blink::WebGLFarbledExtensionHandler::CreateMaximumHandler(
-                supported_extensions);
+  // Check no handler was created before.
+  if (is_webgl2) {
+    CHECK(!webgl2_farbled_extension_handler_);
+  } else {
+    CHECK(!webgl_farbled_extension_handler_);
+  }
 
-  return webgl_farbled_extension_handler_.get();
+  std::unique_ptr<blink::WebGLFarbledExtensionHandler>
+      farbled_extension_handler =
+          blink::WebGLFarbledExtensionHandler::CreateHandler(
+              default_shields_settings_->farbling_token.low());
+
+  if (is_webgl2) {
+    webgl2_farbled_extension_handler_ = std::move(farbled_extension_handler);
+  } else {
+    webgl_farbled_extension_handler_ = std::move(farbled_extension_handler);
+  }
+
+  return is_webgl2 ? webgl2_farbled_extension_handler_.get()
+                   : webgl_farbled_extension_handler_.get();
 }
 
 std::optional<blink::BraveAudioFarblingHelper>
@@ -357,7 +385,7 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
       }
       // choose which channel (R, G, or B) to perturb
       uint8_t channel = v % 3;
-      uint64_t pixel_index = 4 * (v % pixel_count) + channel;
+      size_t pixel_index = 4 * (v % pixel_count) + channel;
       data[pixel_index] = data[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
       // find next pixel to perturb

@@ -1,0 +1,12 @@
+diff --git a/components/multistep_filter/core/features.cc b/components/multistep_filter/core/features.cc
+index 6d3aa220a173f4ce4e1025738e5ad8d8fe3cff50..2a3eee30beb931152771b63004d04de66804dc0c 100644
+--- a/components/multistep_filter/core/features.cc
++++ b/components/multistep_filter/core/features.cc
+@@ -14,6 +14,7 @@ namespace multistep_filter {
+ 
+ // Enables the Multistep Filter feature to generate filter suggestions to users
+ // based on their previous browsing history.
++// kMultistepFilter feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kMultistepFilter, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // The maximum number of `FilterAnnotation` candidates to process when

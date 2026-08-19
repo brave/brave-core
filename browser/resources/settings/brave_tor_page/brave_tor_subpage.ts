@@ -124,7 +124,24 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         computed: 'computeProvidedBridgesPlaceholder_(useBridges_, providedBridges_)'
       },
 
+      // The bridge line the browser refused, or '' if the last submission was
+      // accepted or none has been made yet.
+      invalidBridge_: {
+        type: String,
+        value: ''
+      },
+
       isTorManaged_: Boolean,
+
+      // PrefControlMixin checks for a pref being valid, so have to fake it,
+      // same as torEnabledPref_ below, since useBridges_ isn't backed by a
+      // real chrome.settingsPrivate pref.
+      useBridgesValuePref_: {
+        type: Object,
+        value() {
+          return {}
+        },
+      },
 
       torEnabledPref_: {
         type: Object,
@@ -181,7 +198,9 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private declare shouldShowBridgesGroup_: boolean
   private declare requestedBridgesPlaceholder_: string
   private declare providedBridgesPlaceholder_: string
+  private declare invalidBridge_: string
   private declare isTorManaged_: boolean
+  private declare useBridgesValuePref_: chrome.settingsPrivate.PrefObject
   private declare torEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
   private declare torSnowflakeExtensionAllowed_: boolean
@@ -401,8 +420,14 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private setBridgesConfig_(event: Event) {
     event.stopPropagation()
     const newConfig = this.getCurrentConfig_()
-    this.loadedConfig_ = newConfig
-    this.browserProxy_.setBridgesConfig(newConfig)
+    this.invalidBridge_ = ''
+    this.browserProxy_.setBridgesConfig(newConfig).then(() => {
+      this.loadedConfig_ = newConfig
+    }, (invalidBridge: string) => {
+      // Nothing was stored, so leave loadedConfig_ alone: the Apply button
+      // stays available and what the user typed is still on screen.
+      this.invalidBridge_ = invalidBridge
+    })
   }
 
   private requestBridges_() {

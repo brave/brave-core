@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
-index a8ceae38c751f7c793777ca569e9c2bc115aea35..403ae6ebdf15652744a8224597c48b8d478ec86e 100644
+index 05ddda45c3da6b49bdbeeaa264b235d6321ba9de..da8fef645217f18bd6b8d71f62aea1244c1aa02c 100644
 --- a/chrome/browser/ui/page_action/page_action_model.h
 +++ b/chrome/browser/ui/page_action/page_action_model.h
-@@ -136,16 +136,34 @@ class PageActionModelInterface {
-   virtual bool GetShowTrailingIcon() const = 0;
+@@ -140,16 +140,34 @@ class PageActionModelInterface {
+   virtual std::optional<ui::ColorId> GetOverrideBackgroundColorId() const = 0;
  
    virtual bool IsEphemeral() const = 0;
 +  virtual void SetOverrideChipColors(
@@ -42,7 +42,7 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..403ae6ebdf15652744a8224597c48b8d
  
    actions::ActionId GetActionId() const override;
  
-@@ -256,6 +274,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -264,6 +282,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -50,11 +50,11 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..403ae6ebdf15652744a8224597c48b8d
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -282,7 +301,12 @@ class PageActionModel : public PageActionModelInterface {
-     kAnimationStyle,
+@@ -291,7 +310,12 @@ class PageActionModel : public PageActionModelInterface {
      kTrailingImage,
      kShowTrailingIcon,
--    kMaxValue = kShowTrailingIcon,
+     kOverrideBackgroundColor,
+-    kMaxValue = kOverrideBackgroundColor,
 +    kAlwaysShowLabel,
 +    kOverrideChipColors,
 +    kOverrideHeight,

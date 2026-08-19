@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Tilit";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Todenna, niin pääset hallitsemaan salasanoja.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Tämä poistaa tallennetut salasanat kohteelle %@ synkronointiketjustasi ja laitteeltasi.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Tarjoa salasanojen tallennusta";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Anna salasana";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Näytä";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Hae sivustoja";
@@ -1528,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Automaattinen toisto";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "Päältä";
 
 /* Auto Save turn On Option */
@@ -1537,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Vain Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "Video- ja äänitiedostojen lisääminen offline-käyttöä varten voi käyttää paljon laitteen tallennustilaa sekä matkapuhelimen dataa.";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Video- ja äänitiedostojen välimuistiin tallentaminen voi kuluttaa sekä mobiilidataa että tallennustilaa laitteellasi";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Kun olet avannut sisältöä soittolistassa, tämä vaihtoehto säilyttää avatut soittolistan kohteet laitteessa, jotta voit toistaa niitä ilman internetyhteyttä.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1550,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Lisää joka tapauksessa";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Laitteellasi on vähän tilaa. Tämän videon lisääminen Soittolistaan saattaa epäonnistua tai vaikuttaa muihin latauskohtiin.";
+"playlist.playlistDiskSpaceWarningMessage" = "Laitteellasi on vähän tilaa. Tämän videon lisääminen Soittolistaan saattaa epäonnistua tai vaikuttaa muihin välimuistiin tallennettuihin videoihin.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Tallennustila lähes täynnä";
@@ -1561,20 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Ota Pidä painettuna -asetus käyttöön";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Soittolistamedia ja offline-tiedot";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Soittolistan offline-tiedot";
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "Soittolistan tiedot";
 
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Vaihda";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "Tyhjennä";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "Tämä vaihtoehto poistaa kaikki videot soittolistasta sekä offline-tilan tallennustilasta.";
+"playlist.playlistResetPlaylistOptionFooterText" = "Tämä valinta poistaa kaikki Soittolistan tiedot.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Soittolista";
@@ -1585,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Muista tiedoston toistopaikka";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "Poista";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1605,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "Lisää soittolistaan";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Katso Brave-soittolistassa";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Pura";
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave suljettiin yllättäen.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Brave-palkintojen avulla voit tarkastella Brave-mainosverkoston yksityisyyttä suojelevia mainoksia. Ei seurantaohjelmia. Ei hidastavia tekijöitä. Ja tietosi pysyvät täysin suojattuina.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Ota Rewards käyttöön";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Voit nyt aloittaa ilmaisen puhelun";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Ota käyttöön tukeaksesi Bravea ja BAT-yhteisöä.";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Kiitos, että autat tukemaan Bravea ja BAT-yhteisöä!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Klikkaamalla hyväksyt seuraavat: %1$@ ja %2$@. Poista käytöstä milloin tahansa asetuksissa.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Tue Bravea ja BAT-yhteisöä ottamalla Brave-palkinnot käyttöön ja katsomalla Brave-mainoksia.";
@@ -3177,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "Näppäimistön automaattinen avaaminen";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "Avaa linkit Ask Bravesta ja Brave-hausta esikatselu-välilehdillä";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "Ota pikakatselu-välilehdet käyttöön";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Pidä yksityiset selainvälilehdet auki, kun suljet sovelluksen. Näin varmistat, että voit jatkaa yksityisiä selausistuntoja saumattomasti.";

@@ -321,13 +321,6 @@ import os.log
       Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
       throw error
     }
-
-    try await compile(
-      encodedContentRuleList: result.rulesJSON,
-      for: blocklistType,
-      version: version,
-      modes: modes
-    )
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes

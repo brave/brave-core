@@ -207,6 +207,11 @@
                                               kBraveShieldsContentSettingsIOS];
 }
 
++ (Feature*)kShowUpdatedShieldsPanel {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kShowUpdatedShieldsPanel];
+}
+
 + (Feature*)kBraveIOSDebugAdblock {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kBraveIOSDebugAdblock];

@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/platform/loader/fetch/resource.cc b/third_party/blink/renderer/platform/loader/fetch/resource.cc
+index 6ffb8ce5eb080a967534fb478e20238eb4fa48f8..afcc206015a198f036441c968a6e54bd14f9228e 100644
+--- a/third_party/blink/renderer/platform/loader/fetch/resource.cc
++++ b/third_party/blink/renderer/platform/loader/fetch/resource.cc
+@@ -79,7 +79,7 @@ namespace blink {
+ // Feature that prevents an extension resource (chrome-extension://...) from
+ // being fetched across isolated worlds.
+ BASE_FEATURE(kPreventExtensionResourceFetchAcrossIsolatedWorlds,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Feature that prevents resources fetched via a Service Worker from being
+ // reused across different script worlds.

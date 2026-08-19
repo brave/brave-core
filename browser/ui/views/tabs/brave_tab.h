@@ -118,6 +118,13 @@ class BraveTab : public Tab
     return small_accent_icon_view_;
   }
 
+  // Updates whether the small accent icon paints to a composited layer.
+  void UpdateSmallAccentIconLayer();
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::optional<ContainerCardData> GetContainerCardData() const override;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
  private:
   friend class BraveTabTest;
 
@@ -186,9 +193,6 @@ class BraveTab : public Tab
 
   // Lays out the small tab accent icon view (visibility and bounds).
   void LayoutSmallTabAccentIcon();
-
-  // Updates whether the small accent icon paints to a composited layer.
-  void UpdateSmallAccentIconLayer();
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Starts observing container list changes if not already observing.

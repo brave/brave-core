@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Destruição automática";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Destruir automaticamente os dados de navegação";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressivo";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Regra inválida `%1$@` on-line %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Adicione seus filtros personalizados aqui, um por linha.";
+"CustomFiltersPlaceholder" = "Adicionar filtros personalizados";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Os filtros personalizados não suportam mais que %i linhas";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domínio Bloqueado";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Editar filtros personalizados";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Peça aos websites que não vendam ou partilhem os seus dados. [Saiba mais](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nunca";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Os dados de navegação nunca são triturados automaticamente";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Fechar aplicativo";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Os dados de navegação são triturados automaticamente quando a aplicação Brave é fechada / reiniciada";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Abas do site fechadas";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Os dados de navegação são triturados automaticamente quando todos os separadores abertos num site são fechados";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "A destruição fechará todas as abas, e excluirá todos os dados do site. Isso não pode ser desfeito.";

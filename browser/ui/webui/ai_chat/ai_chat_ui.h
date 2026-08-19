@@ -28,6 +28,7 @@
 #endif  // #if !BUILDFLAG(IS_ANDROID)
 
 namespace ai_chat {
+class AIChatFullPageLinkObserver;
 class AIChatUIPageHandlerBrowserTest;
 class BookmarksPageHandler;
 }  // namespace ai_chat
@@ -64,6 +65,9 @@ class AIChatUI : public ui::MojoWebUIController {
     embedder_ = embedder;
   }
 
+  // Get a reference to the page handler communicating with the page.
+  ai_chat::AIChatUIPageHandler* page_handler() { return page_handler_.get(); }
+
   static constexpr std::string_view GetWebUIName() { return "AIChatPanel"; }
 
  private:
@@ -71,6 +75,11 @@ class AIChatUI : public ui::MojoWebUIController {
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
   std::unique_ptr<ai_chat::BookmarksPageHandler> bookmarks_page_handler_;
   std::unique_ptr<ai_chat::HistoryUIHandler> history_ui_handler_;
+
+  // Moves a full-page conversation into the side panel when a link in it opens
+  // a new tab. Only created when `kAIChatMoveFullPageToSidePanel` is enabled,
+  // so the feature stays inert while it is off.
+  std::unique_ptr<ai_chat::AIChatFullPageLinkObserver> full_page_link_observer_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/hats/hats_service_desktop.cc b/chrome/browser/ui/hats/hats_service_desktop.cc
+index 60aa942ad245e9e028e60478036faf05ac4613de..44855e0d3e4c9cca3e510537897927d6c6e7520c 100644
+--- a/chrome/browser/ui/hats/hats_service_desktop.cc
++++ b/chrome/browser/ui/hats/hats_service_desktop.cc
+@@ -443,6 +443,7 @@ bool HatsServiceDesktop::CanShowSurvey(const std::string& trigger) const {
+ 
+ HatsService::LaunchError HatsServiceDesktop::RunCommonLaunchChecks(
+     const std::string& trigger) const {
++  if ((true)) return LaunchError::kError;
+   // Survey should not be loaded if the corresponding survey config is
+   // unavailable.
+   const auto config_iterator = survey_configs_by_triggers_.find(trigger);

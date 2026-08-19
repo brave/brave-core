@@ -15,6 +15,7 @@ import {
   EmailAliasesMetricsRemote,
   EmailAliasesServiceInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { useBraveAccountState, isAccountLoggedIn } from './use_email_aliases'
 
 const PageCol = styled(Col)`
   font: ${font.default.regular};
@@ -33,12 +34,25 @@ const BraveAccountSignIn = () => {
   })
 }
 
-export const SignInPage = () => (
-  <PageCol>
-    <Introduction />
-    <BraveAccountSignIn />
-  </PageCol>
-)
+export const SignInPage = ({
+  onLoggedInChange,
+}: {
+  onLoggedInChange?: (loggedIn: boolean) => void
+} = {}) => {
+  const accountState = useBraveAccountState()
+  const loggedIn = isAccountLoggedIn(accountState)
+
+  React.useEffect(() => {
+    onLoggedInChange?.(loggedIn)
+  }, [loggedIn, onLoggedInChange])
+
+  return (
+    <PageCol>
+      <Introduction />
+      <BraveAccountSignIn />
+    </PageCol>
+  )
+}
 
 export const ManagePage = ({
   aliasesUpdate,

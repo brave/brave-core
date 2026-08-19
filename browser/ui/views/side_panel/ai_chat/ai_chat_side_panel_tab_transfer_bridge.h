@@ -53,6 +53,14 @@ class AIChatSidePanelTabTransferBridge {
   // factory). Returns null when there is no pending transfer.
   std::unique_ptr<content::WebContents> TakePendingContents();
 
+  // Reverse (side panel -> tab). Moves the live AI Chat `side_panel_contents`
+  // out of the side panel and into a new full-page tab (preserving state), then
+  // closes the panel. Returns true when it moved the contents; false (leaving
+  // everything untouched) when `side_panel_contents` is not the live panel
+  // conversation or is a tab-associated (contextual) conversation, in which
+  // case the caller opens a fresh full-page tab instead.
+  bool MoveSidePanelContentsToTab(content::WebContents* side_panel_contents);
+
  private:
   // Clears any cached AI Chat side panel view (in both the window-scoped and
   // active tab-scoped registries) so the entry factory is guaranteed to run

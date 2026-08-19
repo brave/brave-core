@@ -9,6 +9,7 @@ import '../lib/checkEnvironment.js'
 import { program } from 'commander'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
+import * as buildOptions from '../lib/buildOptions.ts'
 
 program
   .description(
@@ -29,16 +30,8 @@ program
     '[build_config_or_gn_args...]',
     'optional build config followed by GN args; if omitted or the first value starts with "-", the default build config is used.',
   )
-  .option('-C <build_dir>', 'override build dir; absolute or relative to out/')
-  .option('--target_os <target_os>', 'target OS used to select the build dir')
-  .option(
-    '--target_arch <target_arch>',
-    'target architecture used to select the build dir',
-  )
-  .option(
-    '--target_environment <target_environment>',
-    'target environment used to select the build dir (device, catalyst, simulator)',
-  )
+  .apply(buildOptions.supportBuildDir)
+  .apply(buildOptions.supportTargetConfig)
   .allowUnknownOption(true)
   .helpOption(false)
   .showHelpAfterError(true)

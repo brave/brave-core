@@ -654,7 +654,7 @@ extension Preferences {
     // Migrate old Background Sponsored Images setting
     DeprecatedPreferences.backgroundSponsoredImages.migrate { isEnabled in
       Preferences.NewTabPage.backgroundMediaType =
-        isEnabled ? .sponsoredImagesAndVideos : .defaultImages
+        isEnabled ? .sponsoredImages : .defaultImages
     }
 
     Migration.backgroundSponsoredImagesCompleted.value = true

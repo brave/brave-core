@@ -6,16 +6,74 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 
 #include <algorithm>
+#include <array>
+#include <initializer_list>
+#include <optional>
+#include <string_view>
 
+#include "base/check.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+namespace {
+
+OrchardFullViewKey GetTestnetAccount0Fvk() {
+  auto seed = bip39::MnemonicToSeed(
+      "excuse youth title hurt fancy senior olympic coach number spray "
+      "predict before shrug obvious game winner hurry tray load trap garbage "
+      "comic else degree",
+      "");
+  CHECK(seed);
+
+  auto key = HDKeyZip32::GenerateFromSeed(seed.value());
+  CHECK(key);
+  key = key->DeriveHardenedChild(kZip32Purpose);
+  CHECK(key);
+  key = key->DeriveHardenedChild(kTestnetCoinType);
+  CHECK(key);
+  key = key->DeriveHardenedChild(0);
+  CHECK(key);
+  return key->GetFullViewKey();
+}
+
+void AddIronwoodAction(zcash::mojom::CompactTx* tx,
+                       std::string_view nullifier_hex,
+                       std::string_view cmx_hex,
+                       std::string_view ephemeral_key_hex,
+                       std::string_view ciphertext_hex) {
+  auto action = zcash::mojom::CompactOrchardAction::New();
+  action->nullifier = PrefixedHexStringToBytes(nullifier_hex).value();
+  action->cmx = PrefixedHexStringToBytes(cmx_hex).value();
+  action->ephemeral_key = PrefixedHexStringToBytes(ephemeral_key_hex).value();
+  action->ciphertext = PrefixedHexStringToBytes(ciphertext_hex).value();
+  tx->ironwood_actions.push_back(std::move(action));
+}
+
+zcash::mojom::CompactBlockPtr MakeIronwoodBlock(
+    uint32_t height,
+    std::initializer_list<std::array<std::string_view, 8>> txs) {
+  auto block = zcash::mojom::CompactBlock::New();
+  block->height = height;
+  for (const auto& tx_data : txs) {
+    auto tx = zcash::mojom::CompactTx::New();
+    AddIronwoodAction(tx.get(), tx_data[0], tx_data[1], tx_data[2], tx_data[3]);
+    AddIronwoodAction(tx.get(), tx_data[4], tx_data[5], tx_data[6], tx_data[7]);
+    block->vtx.push_back(std::move(tx));
+  }
+  return block;
+}
+
+}  // namespace
 
 TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
   auto scanner = OrchardBlockScanner(OrchardFullViewKey(
@@ -178,21 +236,21 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
     blocks.push_back(std::move(block));
   }
 
-  auto result = scanner.ScanBlocks({}, std::move(blocks));
+  auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
 
-  EXPECT_EQ(result.value().discovered_notes.size(), 4u);
-  EXPECT_EQ(result.value().discovered_notes[0].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[0].amount, 3625561528u);
-  EXPECT_EQ(result.value().discovered_notes[1].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[1].amount, 891903885u);
-  EXPECT_EQ(result.value().discovered_notes[2].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[2].amount, 1881904414u);
-  EXPECT_EQ(result.value().discovered_notes[3].block_id, 11u);
-  EXPECT_EQ(result.value().discovered_notes[3].amount, 2549979667u);
-  EXPECT_EQ(result.value().latest_scanned_block_id, 11u);
-  EXPECT_EQ(result.value().latest_scanned_block_hash, "0xaabb");
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 4u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].amount, 3625561528u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[1].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[1].amount, 891903885u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[2].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[2].amount, 1881904414u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[3].block_id, 11u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[3].amount, 2549979667u);
+  EXPECT_EQ(result.value().orchard.latest_scanned_block_id, 11u);
+  EXPECT_EQ(result.value().orchard.latest_scanned_block_hash, "0xaabb");
 
-  EXPECT_EQ(result.value().found_spends.size(), 5u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 5u);
 }
 
 TEST(OrchardBlockScannerTest, WrongInput) {
@@ -219,11 +277,11 @@ TEST(OrchardBlockScannerTest, WrongInput) {
         PrefixedHexStringToBytes(
             "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e98047a337876e7e")
             .value();
-    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
     PrefixedHexStringToBytes(
         "0x4502e339901e397717839167cbb4037e0ecf6813b51c81fe085a7b782f124228",
         &action->cmx);
-    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
 
     tx->orchard_actions.push_back(std::move(action));
 
@@ -232,7 +290,7 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -247,13 +305,13 @@ TEST(OrchardBlockScannerTest, WrongInput) {
                             "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e980"
                             "47a337876e7eea19")
                             .value();
-    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
     // short cmx
     action->cmx =
         PrefixedHexStringToBytes(
             "0x4502e339901e397717839167cbb4037e0ecf6813b51c81fe085a7b782f1242")
             .value();
-    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
     tx->orchard_actions.push_back(std::move(action));
 
     block->vtx.push_back(std::move(tx));
@@ -261,7 +319,7 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -276,14 +334,13 @@ TEST(OrchardBlockScannerTest, WrongInput) {
                             "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e980"
                             "47a337876e7eea19")
                             .value();
-    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
     // short cmx
     action->cmx = PrefixedHexStringToBytes(
                       "0x4502e339901e397717839167cbb4037e0ecf6813b51c81fe085a7b"
                       "782f124228")
                       .value();
-    action->ephemeral_key =
-        std::vector<uint8_t>(kOrchardEphemeralKeySize - 1, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize - 1);
     tx->orchard_actions.push_back(std::move(action));
 
     block->vtx.push_back(std::move(tx));
@@ -291,7 +348,7 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -306,13 +363,13 @@ TEST(OrchardBlockScannerTest, WrongInput) {
                             "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e980"
                             "47a337876e7eea19")
                             .value();
-    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize - 1, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize - 1);
     // short cmx
     action->cmx = PrefixedHexStringToBytes(
                       "0x4502e339901e397717839167cbb4037e0ecf6813b51c81fe085a7b"
                       "782f124228")
                       .value();
-    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
     tx->orchard_actions.push_back(std::move(action));
 
     block->vtx.push_back(std::move(tx));
@@ -320,7 +377,7 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -335,13 +392,13 @@ TEST(OrchardBlockScannerTest, WrongInput) {
                             "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e980"
                             "47a337876e7eea19")
                             .value();
-    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
     // https://github.com/zkcrypto/bls12_381/blob/9ea427c0eb1a7e2ac16902a322aea156c496ddb0/src/scalar.rs#L936-L937
     action->cmx = std::vector<uint8_t>(
         {1,   0,  0,   0,   255, 255, 255, 255, 254, 91, 254,
          255, 2,  164, 189, 83,  5,   216, 161, 9,   8,  216,
          57,  51, 72,  125, 157, 41,  83,  167, 237, 115});
-    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
     tx->orchard_actions.push_back(std::move(action));
 
     block->vtx.push_back(std::move(tx));
@@ -349,7 +406,7 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 
@@ -361,14 +418,14 @@ TEST(OrchardBlockScannerTest, WrongInput) {
     auto action = zcash::mojom::CompactOrchardAction::New();
 
     action->nullifier = std::vector<uint8_t>(kOrchardNullifierSize, 254);
-    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
 
     action->cmx = std::vector<uint8_t>(
         {0x8e, 0xab, 0x45, 0xe9, 0x52, 0x44, 0x91, 0x8e, 0xe6, 0x7e, 0x8f,
          0x39, 0x15, 0x1f, 0x7d, 0x1b, 0x2d, 0x2f, 0x1d, 0xc8, 0x02, 0x80,
          0xc4, 0x53, 0x21, 0xfd, 0xe3, 0xc7, 0x27, 0x05, 0x83, 0x3f});
 
-    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
     tx->orchard_actions.push_back(std::move(action));
 
     block->vtx.push_back(std::move(tx));
@@ -376,14 +433,14 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 
     blocks.push_back(std::move(block));
 
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 
   // Empty blocks list
   {
     std::vector<zcash::mojom::CompactBlockPtr> blocks;
-    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
     EXPECT_FALSE(result.has_value());
   }
 }
@@ -473,19 +530,20 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers_SameBatch) {
     blocks.push_back(std::move(block));
   }
 
-  auto result = scanner.ScanBlocks({}, std::move(blocks));
+  auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
 
-  EXPECT_EQ(result.value().discovered_notes.size(), 1u);
-  EXPECT_EQ(result.value().discovered_notes[0].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[0].amount, 3625561528u);
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 1u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].amount, 3625561528u);
 
-  EXPECT_EQ(result.value().found_spends.size(), 2u);
-  EXPECT_EQ(result.value().found_spends[0].block_id, 10u);
-  EXPECT_EQ(result.value().found_spends[1].block_id, 11u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 2u);
+  EXPECT_EQ(result.value().orchard.found_spends[0].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.found_spends[1].block_id, 11u);
 
   EXPECT_EQ(
-      std::vector<uint8_t>(result.value().found_spends[1].nullifier.begin(),
-                           result.value().found_spends[1].nullifier.end()),
+      std::vector<uint8_t>(
+          result.value().orchard.found_spends[1].nullifier.begin(),
+          result.value().orchard.found_spends[1].nullifier.end()),
       PrefixedHexStringToBytes(
           "0x6588cc7fabfab2b2a4baa89d4dfafaa50cc89d22f96d10fb7689461b921ad40d")
           .value());
@@ -516,12 +574,12 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   spend.block_id = 10;
 
   action->nullifier = nullifier_bytes;
-  action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+  action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
   action->cmx =
       PrefixedHexStringToBytes(
           "0x4502e339901e397717839167cbb4037e0ecf6813b51c81fe085a7b782f124228")
           .value();
-  action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+  action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
 
   tx->orchard_actions.push_back(std::move(action));
 
@@ -533,19 +591,162 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   note.block_id = 10;
   std::ranges::copy(nullifier_bytes, note.nullifier.begin());
   note.amount = 1;
-  note.note_version = 2;
 
   notes.push_back(note);
   blocks.push_back(std::move(block));
 
   OrchardTreeState tree_state;
 
-  auto result = scanner.ScanBlocks(tree_state, std::move(blocks));
+  auto result = scanner.ScanBlocks(tree_state, std::move(blocks), std::nullopt);
 
   EXPECT_TRUE(result.has_value());
-  EXPECT_EQ(result.value().found_spends.size(), 1u);
-  EXPECT_EQ(result.value().found_spends[0].nullifier, spend.nullifier);
-  EXPECT_EQ(result.value().discovered_notes.size(), 0u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 1u);
+  EXPECT_EQ(result.value().orchard.found_spends[0].nullifier, spend.nullifier);
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 0u);
+}
+
+TEST(OrchardBlockScannerTest, DiscoverNewIronwoodNotes) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+
+  auto scanner = OrchardBlockScanner(GetTestnetAccount0Fvk());
+
+  // Real Ironwood actions from ironwood_output_2.log block height 4192915
+  // (tx[0] with ironwood_actions=2). One action decrypts to this wallet.
+  std::vector<zcash::mojom::CompactBlockPtr> blocks;
+  blocks.push_back(MakeIronwoodBlock(
+      4192915u,
+      {std::array<std::string_view, 8>{
+          "0x1a178bf08e4cdef63c605e088c4cc9fd88309c082d96158d6c0e3fef5b58af1a",
+          "0x9572a165af118d1e2e357ae47029693abd8c84f9ae18c42677b5c829e36c8d19",
+          "0xed27be986554a51f0c131f39df6719fb37ed666f991a7cae4a5bd718e20a7211",
+          "0xc4265db4374f155391318fd2a12209e70f7769e4d5737ed5e58d9bd0215138d6f5"
+          "f5c16651d375f14b824d1ec6657f29cc2fc359",
+          "0x953e4d93616329aa37e22f822add2390245005a21ff6f8ccc450b8b5e1d7c729",
+          "0xbae31185b14c5e960e759a53e5065e8a2dc1afcbd0c86add7b365b4a6e9dbd10",
+          "0xf09c4747b6b12d8b944102b0a464c0779a5521702f50fa2964d931684fe80520",
+          "0x722ca2af84867ab2ba800d35cf7c9487730138a0713431bf7ada7cf6ad7fd21a8e"
+          "f82ec28dd977916208aae518b6592c06e04db0"}}));
+  blocks.back()->hash = {0xaa, 0xbb};
+
+  OrchardTreeState ironwood_tree_state;
+  auto result =
+      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result.value().ironwood.has_value());
+  EXPECT_EQ(result.value().ironwood->found_spends.size(), 2u);
+  EXPECT_EQ(result.value().ironwood->discovered_notes.size(), 1u);
+  EXPECT_EQ(result.value().ironwood->discovered_notes[0].block_id, 4192915u);
+  EXPECT_EQ(result.value().ironwood->discovered_notes[0].amount, 100000000u);
+  EXPECT_EQ(result.value().ironwood->latest_scanned_block_id, 4192915u);
+  EXPECT_EQ(result.value().ironwood->latest_scanned_block_hash, "0xaabb");
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 0u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 0u);
+}
+
+// Builds a block that contains ironwood_actions with valid nullifier sizes.
+// Returns a single block at the given height.
+std::vector<zcash::mojom::CompactBlockPtr> BuildBlocksWithIronwoodActions(
+    uint32_t height,
+    size_t num_ironwood_actions) {
+  auto block = zcash::mojom::CompactBlock::New();
+  block->height = height;
+  block->hash = {0x01, 0x02};
+
+  auto tx = zcash::mojom::CompactTx::New();
+  for (size_t i = 0; i < num_ironwood_actions; i++) {
+    auto action = zcash::mojom::CompactOrchardAction::New();
+    action->nullifier = std::vector<uint8_t>(kOrchardNullifierSize,
+                                             static_cast<uint8_t>(i + 1));
+    action->cmx = std::vector<uint8_t>(kOrchardCmxSize);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize);
+    tx->ironwood_actions.push_back(std::move(action));
+  }
+  block->vtx.push_back(std::move(tx));
+
+  std::vector<zcash::mojom::CompactBlockPtr> blocks;
+  blocks.push_back(std::move(block));
+  return blocks;
+}
+
+// Builds one block per height in `heights`, each with `actions_per_block`
+// ironwood actions.
+std::vector<zcash::mojom::CompactBlockPtr> BuildIronwoodBlocksAtHeights(
+    const std::vector<uint32_t>& heights,
+    size_t actions_per_block) {
+  std::vector<zcash::mojom::CompactBlockPtr> blocks;
+  for (uint32_t height : heights) {
+    auto single = BuildBlocksWithIronwoodActions(height, actions_per_block);
+    blocks.push_back(std::move(single[0]));
+  }
+  return blocks;
+}
+
+// With the Ironwood feature flag OFF, ironwood_actions in blocks are
+// ignored even when a non-null Ironwood tree state is passed.
+TEST(OrchardBlockScannerTest, IronwoodFeatureOff_ResultIsNullopt) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "false"}});
+
+  auto scanner = OrchardBlockScanner(OrchardFullViewKey(
+      {0x74, 0x0b, 0xbe, 0x5d, 0x05, 0x80, 0xb2, 0xca, 0xd4, 0x30, 0x18,
+       0x0d, 0x02, 0xcc, 0x12, 0x8b, 0x9a, 0x14, 0x0d, 0x5e, 0x07, 0xc1,
+       0x51, 0x72, 0x1d, 0xc1, 0x6d, 0x25, 0xd4, 0xe2, 0x0f, 0x15, 0x9f,
+       0x2f, 0x82, 0x67, 0x38, 0x94, 0x5a, 0xd0, 0x1f, 0x47, 0xf7, 0x0d,
+       0xb0, 0xc3, 0x67, 0xc2, 0x46, 0xc2, 0x0c, 0x61, 0xff, 0x55, 0x83,
+       0x94, 0x8c, 0x39, 0xde, 0xa9, 0x68, 0xfe, 0xfd, 0x1b, 0x02, 0x1c,
+       0xcf, 0x89, 0x60, 0x4f, 0x5f, 0x7c, 0xc6, 0xe0, 0x34, 0xb3, 0x2d,
+       0x33, 0x89, 0x08, 0xb8, 0x19, 0xfb, 0xe3, 0x25, 0xfe, 0xe6, 0x45,
+       0x8b, 0x56, 0xb4, 0xca, 0x71, 0xa7, 0xe4, 0x3d}));
+
+  OrchardTreeState ironwood_tree_state;
+  auto blocks = BuildBlocksWithIronwoodActions(10u, 3);
+
+  auto result =
+      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value().ironwood, std::nullopt);
+}
+
+// With the Ironwood feature flag ON and a non-null Ironwood tree state,
+// ironwood_actions are scanned and the result.ironwood field is populated.
+TEST(OrchardBlockScannerTest, IronwoodFeatureOn_IronwoodResultPopulated) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+
+  auto scanner = OrchardBlockScanner(OrchardFullViewKey(
+      {0x74, 0x0b, 0xbe, 0x5d, 0x05, 0x80, 0xb2, 0xca, 0xd4, 0x30, 0x18,
+       0x0d, 0x02, 0xcc, 0x12, 0x8b, 0x9a, 0x14, 0x0d, 0x5e, 0x07, 0xc1,
+       0x51, 0x72, 0x1d, 0xc1, 0x6d, 0x25, 0xd4, 0xe2, 0x0f, 0x15, 0x9f,
+       0x2f, 0x82, 0x67, 0x38, 0x94, 0x5a, 0xd0, 0x1f, 0x47, 0xf7, 0x0d,
+       0xb0, 0xc3, 0x67, 0xc2, 0x46, 0xc2, 0x0c, 0x61, 0xff, 0x55, 0x83,
+       0x94, 0x8c, 0x39, 0xde, 0xa9, 0x68, 0xfe, 0xfd, 0x1b, 0x02, 0x1c,
+       0xcf, 0x89, 0x60, 0x4f, 0x5f, 0x7c, 0xc6, 0xe0, 0x34, 0xb3, 0x2d,
+       0x33, 0x89, 0x08, 0xb8, 0x19, 0xfb, 0xe3, 0x25, 0xfe, 0xe6, 0x45,
+       0x8b, 0x56, 0xb4, 0xca, 0x71, 0xa7, 0xe4, 0x3d}));
+
+  OrchardTreeState ironwood_tree_state;
+  constexpr size_t kIronwoodActionCount = 3;
+  auto blocks = BuildBlocksWithIronwoodActions(10u, kIronwoodActionCount);
+
+  auto result =
+      scanner.ScanBlocks(OrchardTreeState(), blocks, ironwood_tree_state);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result.value().ironwood.has_value());
+  EXPECT_EQ(result.value().ironwood->found_spends.size(), kIronwoodActionCount);
 }
 
 }  // namespace brave_wallet

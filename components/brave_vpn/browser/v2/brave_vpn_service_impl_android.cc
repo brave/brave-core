@@ -5,9 +5,27 @@
 
 #include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
 
+#include <optional>
+#include <utility>
+
+#include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/notimplemented.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
+#include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
 
 namespace brave_vpn::v2 {
+namespace {
+// Bridges the endpoint client's typed result to the legacy ResponseCallback
+// contract: value -> (payload, true); error -> (error string, false).
+void RunResponseCallback(BraveVpnServiceImpl::ResponseCallback callback,
+                         base::expected<std::string, std::string> result) {
+  const bool success = result.has_value();
+  std::move(callback).Run(
+      success ? std::move(result).value() : std::move(result).error(), success);
+}
+}  // namespace
 
 void BraveVpnServiceImpl::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   NOTIMPLEMENTED();
@@ -63,7 +81,13 @@ void BraveVpnServiceImpl::VerifyPurchaseToken(ResponseCallback callback,
                                               const std::string& product_id,
                                               const std::string& product_type,
                                               const std::string& bundle_id) {
-  NOTIMPLEMENTED();
+  if (!api_client_) {
+    std::move(callback).Run({}, false);
+    return;
+  }
+  api_client_->VerifyPurchaseToken(
+      base::BindOnce(&RunResponseCallback, std::move(callback)), purchase_token,
+      product_id, product_type, bundle_id);
 }
 
 void BraveVpnServiceImpl::GetSubscriberCredential(
@@ -73,12 +97,23 @@ void BraveVpnServiceImpl::GetSubscriberCredential(
     const std::string& validation_method,
     const std::string& purchase_token,
     const std::string& bundle_id) {
-  NOTIMPLEMENTED();
+  if (!api_client_) {
+    std::move(callback).Run({}, false);
+    return;
+  }
+  api_client_->GetSubscriberCredential(
+      base::BindOnce(&RunResponseCallback, std::move(callback)), product_type,
+      product_id, validation_method, purchase_token, bundle_id);
 }
 
 void BraveVpnServiceImpl::GetSubscriberCredentialV12(
     ResponseCallback callback) {
-  NOTIMPLEMENTED();
+  std::optional<std::string> subscriber_credential =
+      purchased_state_manager_
+          ? purchased_state_manager_->GetSubscriberCredential()
+          : std::nullopt;
+  std::move(callback).Run(subscriber_credential.value_or(""),
+                          subscriber_credential.has_value());
 }
 
 void BraveVpnServiceImpl::RecordAllMetrics() {

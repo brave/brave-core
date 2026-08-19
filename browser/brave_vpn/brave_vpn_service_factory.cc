@@ -57,6 +57,8 @@ std::unique_ptr<KeyedService> BuildVpnService_V2(
 
   return std::make_unique<v2::BraveVpnServiceImpl>(
       local_state, profile_prefs,
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
       base::BindRepeating(
           [](content::BrowserContext* context) {
             return skus::SkusServiceFactory::GetForContext(context);

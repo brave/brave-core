@@ -44,6 +44,12 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
     simulate_initialization_failure_ = true;
   }
 
+  // Causes subsequently launched services to disconnect instead of replying
+  // when `Shutdown` is called.
+  void set_simulate_shutdown_disconnect() {
+    simulate_shutdown_disconnect_ = true;
+  }
+
   // BatAdsServiceFactory:
   mojo::Remote<bat_ads::mojom::BatAdsService> Launch() const override;
 
@@ -62,6 +68,7 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   mutable size_t shutdown_count_ = 0;
 
   bool simulate_initialization_failure_ = false;
+  bool simulate_shutdown_disconnect_ = false;
 
   // Owns the service implementation so the receiver stays alive for as long
   // as the `mojo::Remote` returned by `Launch` is in use.

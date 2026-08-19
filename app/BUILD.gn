@@ -25,32 +25,32 @@ action("generate_command_metadata") {
   output_cc = "$target_gen_dir/command_utils.cc"
   outputs = [ output_cc ]
 
-  args = rebase_path(command_files) + [
+  args = rebase_path(command_files, root_build_dir) + [
            "--output_cc",
-           rebase_path(output_cc),
+           rebase_path(output_cc, root_build_dir),
            "--template_cc",
-           rebase_path(cc_template),
+           rebase_path(cc_template, root_build_dir),
          ]
 }
 
 source_set("command_ids") {
   sources = [ "brave_command_ids.h" ]
 
-  deps = [
-    "//base",
-    "//brave/components/resources:strings",
-    "//chrome/app:command_ids",
-    "//chrome/app:generated_resources",
-    "//components/strings:components_strings",
-    "//services/screen_ai/buildflags",
-    "//third_party/re2",
-    "//ui/strings:ui_strings",
-  ]
-
   if (!is_android) {
     sources +=
         [ "command_utils.h" ] + get_target_outputs(":generate_command_metadata")
-    deps += [ ":generate_command_metadata" ]
+    deps = [
+      ":generate_command_metadata",
+      "//base",
+      "//brave/components/resources:strings",
+      "//chrome/app:branded_strings",
+      "//chrome/app:command_ids",
+      "//chrome/app:generated_resources",
+      "//components/strings:components_strings",
+      "//services/screen_ai/buildflags",
+      "//third_party/re2",
+      "//ui/strings:ui_strings",
+    ]
   }
 }
 
@@ -139,9 +139,12 @@ source_set("unit_tests") {
     "//chrome/browser/preloading",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/omnibox",
     "//components/aggregation_service",
-    "//components/attribution_reporting",
+    "//components/attribution_reporting:features",
     "//components/autofill/core/common",
+    "//components/browser_actuator/internal:features",
+    "//components/browser_actuator/public:feature_list",
     "//components/browsing_data/core",
     "//components/commerce/core:feature_list",
     "//components/compose/core/browser:features",
@@ -164,6 +167,7 @@ source_set("unit_tests") {
     "//components/metrics/structured:structured_metrics_features",
     "//components/multistep_filter/core:features",
     "//components/network_time",
+    "//components/ntp_tiles",
     "//components/omnibox/browser",
     "//components/one_time_tokens/core/common:features",
     "//components/optimization_guide/core",
@@ -217,7 +221,10 @@ source_set("unit_tests") {
     ]
   }
   if (is_win) {
-    deps += [ "//chrome/browser/startup" ]
+    deps += [
+      "//chrome/browser/startup",
+      "//chrome/browser/win:mica_titlebar",
+    ]
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]

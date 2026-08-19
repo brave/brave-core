@@ -81,16 +81,26 @@ Shared abstractions used by the entry points and tests:
   `install_extra_deps.py sync src/path/to/install/dir`.
 
   Repin an entry in place with the `setdep` subcommand, which rewrites the
-  archive's `object_name`, `sha256sum`, and `size_bytes` while preserving every
-  comment, blank line, and quote style in the `EXTRA_DEPS` file:
+  archive's `object_name`, `sha256sum`, `size_bytes`, and (optionally)
+  `overlayed_on`, while preserving every comment, blank line, and quote style in
+  the `EXTRA_DEPS` file:
 
   ```sh
   install_extra_deps.py setdep \
     -r src/path/to/install/dir@<archive>.tar.xz,<hex sha256>,<size_bytes>
   ```
 
+  For an overlay entry, append the new upstream archive it sits on as a fourth
+  field:
+
+  ```sh
+  install_extra_deps.py setdep \
+    -r src/path/to/install/dir@<archive>.tar.xz,<hex sha256>,<size_bytes>,<upstream archive>
+  ```
+
   Join a multi-object (e.g. per-platform) entry's objects with `?`, in the
-  entry's existing order. Repeat `-r` to repin several entries at once.
+  entry's existing order. Repeat `-r` to repin several entries at once. The
+  object count must match the entry's current count.
 
 ## Subdirectories
 
@@ -98,7 +108,15 @@ Shared abstractions used by the entry points and tests:
   ...). See [`alias/README.md`](alias/README.md).
 - `bootstrap/` — An experiment to boostrap some of our python utils in the
   user's PATH.
-- `test/` — Shared test fixtures, including `FakeChromiumRepo`.
+- `test/` — Shared test fixtures:
+  - `fake_chromium_repo.py` — `FakeChromiumRepo`, a real git checkout shaped
+    like `src/` with brave inside it, plus an emulation of the `npm run` build
+    commands (`init`, `apply_patches`, `update_patches`, `chromium_rebase_l10n`,
+    `gnrt`) over it.
+  - `fake_terminal.py` — `FakeTerminal`, which routes `terminal.run` so that git
+    runs for real against the fake checkout while everything else is emulated,
+    and `ConsoleCapture`, which captures what a command prints.
+  - `fake_gh.py` — `FakeGh`, a stand-in for the `gh` CLI.
 - `toolchain/` — Scripts to build platform-specific toolchains when rebasing
   Chromium.
 
@@ -113,3 +131,8 @@ Tests should keep mock use to a minimum. Make sure to always use
 `FakeChromiumRepo` should rely always on relative paths derived from
 `Repository.brave.root` to permit tests to be run in integration with the
 repository sandbox provided with `FakeChromiumRepo`.
+
+A command can also be driven end to end, with `main()` called on an argument
+list and only the things a fake checkout cannot serve emulated (see the `test/`
+fixtures above). `brockit_lift_test.py` does this for `brockit.py lift`, and is
+the place to look for the pattern.

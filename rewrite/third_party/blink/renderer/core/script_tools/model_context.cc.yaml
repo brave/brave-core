@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Allow chrome-untrusted:// WebUI documents to use the Model Context (WebMCP)
+      API.
+
+      The Leo "workspace" tools run on a hidden chrome-untrusted://leo-workspace
+      page and register themselves via navigator.modelContext.
+    regex:
+      re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
+      replace: |-
+        \1 ||
+                 (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
+                      "chrome-untrusted" &&
+                   document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
+                      ai_chat::kAIChatLeoWorkspaceUIHost);

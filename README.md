@@ -80,27 +80,27 @@ Follow the instructions for your platform:
 Once you have the prerequisites installed, you can get the code and initialize
 the build environment.
 
+**Clone the repo.** `brave-core` must be checked out into `./src/brave` within a
+pre-existing project folder:
+
 ```bash
 git clone git@github.com:brave/brave-core.git path-to-your-project-folder/src/brave
 cd path-to-your-project-folder/src/brave
-npm install
-
-# the Chromium source is downloaded, which has a large history (gigabytes of data)
-# this might take really long to finish depending on internet speed
-
-npm run init
 ```
 
-brave-core based android builds should use
-`npm run init -- --target_os=android --target_arch=arm` (or whichever CPU type
-you want to build for) brave-core based iOS builds should use
-`npm run init -- --target_os=ios`
+**Initialize the build environment.** This step will download the Chromium
+source, which has a large history (10's of gigabytes of data). This might take a
+really long time to finish depending on internet speed.
 
-You can also set the target_os and target_arch for init and build using:
+```bash
+# Most builds:
+pnpm run init
 
-```
-npm config set target_os android
-npm config set target_arch arm
+# Android builds (replace `arm` with whichever CPU type you want to build for):
+pnpm run init --target_os=android --target_arch=arm
+
+# iOS builds:
+pnpm run init --target_os=ios
 ```
 
 Additional config needed to build are documented at
@@ -115,41 +115,40 @@ The default build type is component.
 
 ```
 # start the component build compile
-npm run build
+pnpm run build
 ```
 
 To do a release build:
 
 ```
 # start the release compile
-npm run build Release
+pnpm run build Release
 ```
 
 brave-core based android builds should use
-`npm run build -- --target_os=android --target_arch=arm` or set the npm config
-variables as specified above for `init`
+`pnpm run build --target_os=android --target_arch=arm`
 
 brave-core based iOS builds should use the Xcode project found in
 `ios/brave-ios/App`. You can open this project directly or run
-`npm run ios_bootstrap -- --open_xcodeproj` to have it opened in Xcode. See the
+`pnpm run ios_bootstrap --open_xcodeproj` to have it opened in Xcode. See the
 [iOS Developer Environment](https://github.com/brave/brave-browser/wiki/iOS-Development-Environment#Building)
 for more information on iOS builds.
 
 ### Build Configurations
 
-Running a release build with `npm run build Release` can be very slow and use a
+Running a release build with `pnpm run build Release` can be very slow and use a
 lot of RAM, especially on Linux with the Gold LLVM plugin.
 
 To run a statically linked build (takes longer to build, but starts faster):
 
 ```bash
-npm run build -- Static
+pnpm run build Static
 ```
 
 To run a debug build (Component build with is_debug=true):
 
 ```bash
-npm run build -- Debug
+pnpm run build Debug
 ```
 
 NOTE: the build will take a while to complete. Depending on your processor and
@@ -159,33 +158,33 @@ memory, it could potentially take a few hours.
 
 To start the build:
 
-`npm start [Release|Component|Static|Debug]`
+`pnpm start [Release|Component|Static|Debug]`
 
 ## Update Brave
 
-`npm run sync -- [--force] [--init] [--create] [brave_core_ref]`
+`pnpm run sync [--force] [--init] [--create] [brave_core_ref]`
 
 **This will attempt to stash your local changes in brave-core, but it's safer to
 commit local changes before running this**
 
-`npm run sync` will (depending on the below flags):
+`pnpm run sync` will (depending on the below flags):
 
 1. 📥 Update sub-projects (chromium, brave-core) to latest commit of a git ref
    (e.g. tag or branch)
 2. 🤕 Apply patches
 3. 🔄 Update gclient DEPS dependencies
-4. ⏩ Run hooks (e.g. to perform `npm install` on child projects)
+4. ⏩ Run hooks
 
 | flag                           | Description                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `[no flags]`                   | updates chromium if needed and re-applies patches. If the chromium version did not change, it will only re-apply patches that have changed. Will update child dependencies **only if any project needed updating during this script run**. <br> **Use this if you want the script to manage keeping you up to date instead of pulling or switching branches manually. **   |
 | `--force`                      | updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-core/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies. <br> **Use this if you're having trouble and want to force the branches back to a known state. ** |
-| `--init`                       | force update both _Chromium_ and _brave-core_ to the versions specified in brave-core/package.json and force updates all dependent repos - same as `npm run init`                                                                                                                                                                                                          |
+| `--init`                       | force update both _Chromium_ and _brave-core_ to the versions specified in brave-core/package.json and force updates all dependent repos - same as `pnpm run init`                                                                                                                                                                                                         |
 | `--sync_chromium (true/false)` | Will force or skip the chromium version update when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.                                                        |
 | `-D, --delete_unused_deps`     | Will delete from the working copy any dependencies that have been removed since the last sync. Mimics `gclient sync -D`.                                                                                                                                                                                                                                                   |
 
-Run `npm run sync brave_core_ref` to checkout the specified _brave-core_ ref and
-update all dependent repos including chromium if needed.
+Run `pnpm run sync brave_core_ref` to checkout the specified _brave-core_ ref
+and update all dependent repos including chromium if needed.
 
 ## Scenarios
 
@@ -201,7 +200,7 @@ src/brave> git checkout -b branch_name
 ```bash
 src/brave> git fetch origin
 src/brave> git checkout [-b] branch_name
-src/brave> npm run sync
+src/brave> pnpm run sync
 ...Updating 2 patches...
 ...Updating child dependencies...
 ...Running hooks...
@@ -211,7 +210,7 @@ src/brave> npm run sync
 
 ```bash
 src/brave> git pull
-src/brave> npm run sync
+src/brave> pnpm run sync
 ...Updating 2 patches...
 ...Updating child dependencies...
 ...Running hooks...
@@ -222,7 +221,7 @@ src/brave> npm run sync
 ```bash
 src/brave> git checkout master
 src/brave> git pull
-src/brave> npm run sync -- --init
+src/brave> pnpm run sync --init
 ```
 
 #### When you know that DEPS didn't change, but .patch files did (quickest attempt to perform a mini-sync before a build):
@@ -230,7 +229,7 @@ src/brave> npm run sync -- --init
 ```bash
 src/brave> git checkout featureB
 src/brave> git pull
-src/brave> npm run apply_patches
+src/brave> pnpm run apply_patches
 ...Applying 2 patches...
 ```
 

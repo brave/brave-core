@@ -42,14 +42,10 @@ import {
 } from './common/pending_tx_actions_footer'
 import { TransactionQueueSteps } from './common/queue'
 import { EditPendingTransactionGas } from './common/gas'
-import { TxWarningBanner } from './common/tx_warnings'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 import {
   PendingTransactionNetworkFeeAndSettings, //
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
-import {
-  TransactionSimulationNotSupportedSheet, //
-} from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
 
 // Styled Components
 import {
@@ -80,7 +76,6 @@ import {
 } from '../shared-panel-styles'
 import { Column, Row, Text } from '../../shared/style'
 import { NetworkFeeRow } from './common/style'
-import { FooterContainer } from './common/pending_tx_actions_footer.style'
 import { LongWrapper } from '../../../stories/style'
 
 type confirmPanelTabs = 'transaction' | 'details'
@@ -88,13 +83,7 @@ type confirmPanelTabs = 'transaction' | 'details'
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
-export const ConfirmTransactionPanel = ({
-  retrySimulation,
-  showSimulationNotSupportedMessage,
-}: {
-  readonly retrySimulation?: () => void
-  showSimulationNotSupportedMessage?: boolean
-}) => {
+export const ConfirmTransactionPanel = () => {
   // queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
@@ -161,8 +150,6 @@ export const ConfirmTransactionPanel = ({
   // state
   const [selectedTab, setSelectedTab] =
     React.useState<confirmPanelTabs>('transaction')
-  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
-    React.useState(false)
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
@@ -468,16 +455,6 @@ export const ConfirmTransactionPanel = ({
         </NetworkFeeRow>
 
         <Column fullWidth>
-          <FooterContainer>
-            {retrySimulation
-              && !isSimulationWarningDismissed
-              && !showSimulationNotSupportedMessage && (
-                <TxWarningBanner
-                  retrySimulation={retrySimulation}
-                  onDismiss={() => setIsSimulationWarningDismissed(true)}
-                />
-              )}
-          </FooterContainer>
           <PendingTransactionActionsFooter
             onConfirm={onConfirm}
             onReject={onReject}
@@ -494,9 +471,6 @@ export const ConfirmTransactionPanel = ({
             isUnshieldingFunds={isUnshieldingFunds}
           />
         </Column>
-        {showSimulationNotSupportedMessage && (
-          <TransactionSimulationNotSupportedSheet />
-        )}
       </StyledWrapper>
     </LongWrapper>
   )

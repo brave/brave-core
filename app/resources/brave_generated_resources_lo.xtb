@@ -87,6 +87,10 @@
 <translation id="3295805221342028003">ເປີດ Leo AI ໃນສະຫ່າງດ້ານຂ້າງ</translation>
 <translation id="7400808612454224939">ຈັດການການຕັ້ງຄ່າ Leo AI</translation>
 <translation id="5385064007245738696">ກ່ຽວກັບ Leo AI</translation>
+<translation id="334252345105450327">ຖ່າຍຮູບໜ້າຈໍ</translation>
+<translation id="191886777375280620">ຈັບພາບໜ້າຈໍ</translation>
+<translation id="3114478090884951591">ພື້ນທີ່ທີ່ມອງເຫັນໄດ້</translation>
+<translation id="2026367923222947564">ໜ້າເຕັມ</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ເບິ່ງໃນ Web Extensions Store</translation>
 <translation id="3161744659507801211">ຄໍ່າເຕືອນ: Brave ບໍ່່າສາມາດປ້ອງກັນ Extension ຈາກການບັນທຶກປະຫວັດແມ່ນໄດ້ທ່າພິເສດ.</translation>
@@ -345,6 +349,9 @@
 <translation id="3435896845095436175">ເປີດໃຊ້ງານ</translation>
 <translation id="9031526219709160683">ກະທັດລາວໂອ Brave ສາມາດຊ່ວຍທ່ານໃຫ້ໄດ້ສະັກ​ວາດຕັ້ງຄ່າກາຍເປັນສ່ວນຕົວຂອງ​ໂຣກ​ເວ​ບໄຊ​ທ​ໄ​ທ​ນີ້. ທ່ານຕ້ອງການ​ທົ່ວ​ລຽ​ມ​ຂໍ້ສະເໜີອື່ນໆ​ຂອງ Brave ບໍ?</translation>
 <translation id="5739953050957336013">ທົ່ວ​ລຽ​ມ​ຂໍ້ສະເໜີ</translation>
+<translation id="515462386448976244">ເຄື່ອງມືແນະນຳການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວ</translation>
+<translation id="6911328085206170823">ບໍ່ຕ້ອງສະແດງສຳລັບເວັບໄຊສ໌ນີ້</translation>
+<translation id="6157507628047001360">ປິດການໃຊ້ງານການປັບແຕ່ງການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="9082792303833649978">ການຕັ້ງຄ່ານີ້ຖືກຄວບຄຸມໂດຍຜູ້ບໍລິຫານຂອງທ່ານ ຫຼືໂດຍນະໂຍບາຍຂອງ Brave ອື່ນໆ</translation>
 <translation id="1940221956626514677">ປັບແຕ່ງຫນ້າຕ່າງ</translation>
 <translation id="6501807887341963552">ຊຳນຳແລະສີຖ່ານ</translation>
@@ -352,6 +359,8 @@
 <translation id="3575561030014162610">ຫາກຕ້ອງການນຳເຂົ້າລະຫັດຜ່ານໄປ <ph name="BRAND"/> ໃນອຸປະກອນນີ້, ໃຫ້ເລືອກຟາຍ CVS</translation>
 <translation id="8570228839666486945">AI ໃນອຸປະກອນ</translation>
 <translation id="3456536577668402695">ການຄົ້ນຫາ ແລະ ເນື້ອຫາໜ້າເວັບຂອງທ່ານຖືກປະມວນຜົນຢູ່ໃນອຸປະກອນນີ້. ບໍ່ມີຫຍັງຖືກສົ່ງໄປຫາ Brave ຫຼື ຖືກເບິ່ງໂດຍຜູ້ກວດສອບທີ່ເປັນມະນຸດ.</translation>
+<translation id="4751537843966994505">ການຄົ້ນຫາ History ຕາມຄວາມໝາຍ</translation>
+<translation id="6175973371938222040">ຈັດດັດຊະນີໜ້າທີ່ທ່ານເຂົ້າຢ້ຽມຢາມໄວ້ໃນເຄື່ອງເພື່ອໃຫ້ທ່ານສາມາດຄົ້ນຫາ history ຂອງທ່ານຕາມຄວາມໝາຍໄດ້. ການປະມວນຜົນທັງໝົດຢູ່ໃນ device ນີ້.</translation>
 <translation id="9156965752763025780">ການປ່ຽນແປງຂອງທ່ານຈະມີຜົນໃນຄັ້ງຕໍ່ໄປທີ່ທ່ານເປີດໃຊ້ງານ Brave   ໃໝ່.</translation>
 <translation id="7179921470347911571">ເປີດໃໝ່ດຽວນີ້</translation>
 <translation id="1426410128494586442">ແມ່ນ</translation>
@@ -414,6 +423,7 @@
 <translation id="2396127686705429331">ສະແດງປຸ່ມບັນທອງເປັນທີ່ຈົດເປົ້າເເມ່ກ</translation>
 <translation id="443318149139185498">ໃຊ້ໂລໂກ້ຮູບວາດເສັ້ນໂຄງເທິງປຸ່ມເມນູຕົ້ນຕໍ່</translation>
 <translation id="2814998458708016836">ໃຊ້ແຖບ transcription</translation>
+<translation id="536791223757510666">ໃຊ້ໂໝດແບບກະທັດຮັດ</translation>
 <translation id="4749586705247636385">ສະແດງມຸມຄອບໂດຍມີຄວາມໂຄ້ງໃນບ່ອນເນື້ອຫາຫຼັກ</translation>
 <translation id="4109670531935487117">ສະແດງຄຳແນະນຳອັດຕະໂນມັດໃນແຖບທີ່ຢູ່</translation>
 <translation id="4579877808890085926">ຂໍ້ສະເໜີໃນອຸປະກອນ</translation>
@@ -531,6 +541,7 @@
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="1199170151481311646">ຂໍ້ມູນວິເຄາະທີ່ປົກປ້ອງຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="5990642573624858459">ການລາຍງານສະຖິຕິ</translation>
+<translation id="6560669651825861597">ມີຜົນຕໍ່ profile ຂອງ browser ທັງໝົດ</translation>
 <translation id="2441719842399509963">ຕັ້ງຄ່າທັງຫມົດໃຫ້ເປັນຄ່າເລີ່ມຕົ້ນ</translation>
 <translation id="2587535830241068901">ປັບແຕ່ງ browser ຂອງທ່ານໂດຍຍັງຄົງສະໜັບສະໜູນ Brave</translation>
 <translation id="123297831435065577">Brave Origin ແມ່ນເວີຊັນແບບເສຍຄ່າຂອງ ບຣາວເຊີ ສຳລັບຜູ້ໃຊ້ທີ່ບໍ່ຕ້ອງການຄຸນສົມບັດທັງໝົດທີ່ສະໜັບສະໜຸນ Brave ເປັນທຸລະກິດ, ແຕ່ຍັງຕ້ອງການຄວາມເປັນສ່ວນຕົວທີ່ Brave ເທົ່ານັ້ນສະເໜີໃຫ້. ຜູ້ໃຊ້ Origin ຈະສືບຕໍ່ໄດ້ຮັບຜົນປະໂຫຍດຈາກຄວາມເປັນສ່ວນຕົວອັນດັບໜຶ່ງຂອງພວກເຮົາ, adblock, ແລະ ຄວາມໄວ (ຜ່ານ Shields), ພ້ອມທັງການອັບເດດຊອບແວເປັນປະຈໍາ, ແພັດ Chromium, ແລະ ການປັບປຸງຄວາມປອດໄພ ແລະ ຄວາມເປັນສ່ວນຕົວ.</translation>
@@ -558,6 +569,16 @@
 <translation id="5825943197137337319">ໄອທີເທົ່າກັບຂອງສາທາເທົ່ານັ້ນ</translation>
 <translation id="1689062823386843231">ປິດ UDP ບໍ່ຜ່ານ Proxy</translation>
 <translation id="3540231253392253941">ໃຊ້ບໍລິການ Google ສໍາຫັດຂໍ້ຄວາມ Push</translation>
+<translation id="5813105074916486721">ການເກັບຮັກສາ history ໃນເຄື່ອງ</translation>
+<translation id="5671611745062206644">Brave ເກັບຮັກສາ browsing history ຂອງທ່ານໄວ້ໃນເຄື່ອງດົນເທົ່າໃດ</translation>
+<translation id="7184510058087008090">1 ວັນ</translation>
+<translation id="8097397186614425669">1 ອາທິດ</translation>
+<translation id="1600157116238060201">1 ເດືອນ</translation>
+<translation id="6774350394520543146">3 ເດືອນ</translation>
+<translation id="2268310966956852466">6 ເດືອນ</translation>
+<translation id="5353781333882815543">1 ປີ</translation>
+<translation id="6796569320325473726">5 ປີ</translation>
+<translation id="1658834457013045127">ຕະຫຼອດໄປ</translation>
 <translation id="933652931229970927">ສົ່ງລາຍງານວິນິດໄສໂດຍອັດຕະໂນມັດ</translation>
 <translation id="8868426106596092089">ຊ່ວຍປະເສີດຄວາມເສີຍຫາຍໂຄງຄືອງຂອງ Brave ໂດຍການສົ່ງລາຍງານວິສັດຕອບນົວ່າຂອງບຣາວເມືອ Brave Browser ເປັນໜ້້ອງສາຍ ຫຼືຄ້າງ</translation>
 <translation id="4891600875049212418">ເຂົ້າເລືອກ Off-The-Record ເມື່ອໄປເທິງເວັບໄຊທ໌ທີ່ມີຄວາມອ່ອນໄຫວ</translation>
@@ -676,6 +697,7 @@
 <translation id="4908081302669157000">ໝາຍເຫດໂທ, ປີ, ແລະທີ່ຢູ່</translation>
 <translation id="294985549514492876">ແອັບເວບ (PWAs)</translation>
 <translation id="7029809446516969842">ລະຫັດຜ່ານ</translation>
+<translation id="1571419474754278280">ການສົນທະນາ Leo AI</translation>
 <translation id="6011308810877101166">ພັດທະນາການແນະນຳການຄົ້ນຫາ</translation>
 <translation id="2332576387809612040">ເມື່ອເປີດ, Brave ຈະສົ່ງສິ່ງທີ່ທ່ານພິມໃນແຖບທີ່ຢູ່ ຫຼື ກ່ອງຄົ້ນຫາໄປຫາເຄື່ອງມືຄົ້ນຫາເລີ່ມຕົ້ນຂອງທ່ານເພື່ອໄດ້ຮັບຄໍາແນະນໍາທີ່ດີກວ່າ. ເມື່ອປິດ, Brave ຈະສະແດງຄໍາ້ແນະນໍາທີ່ສ້າງຂຶ້ນຈາກອຸປະກອນຂອງທ່ານພຽງຢ່າງດຽວ. ນີ້ຈະຖືກປິດຢູ່ໃນຫ້ອງສ່ວນຕົວສະເໝີ.</translation>
 <translation id="5522403133543437426">ເຄື່ອງມືຄົ້ນຫາທີ່ໃຊ້ຢູ່ແຖບທີ່ຢູ່ຫລອດ.</translation>

@@ -138,7 +138,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   void CheckOnionLocationLabel(Browser* browser,
                                const GURL& url,
                                bool wait_for_tor_window = true) {
-    bool is_tor = browser->profile()->IsTor();
+    bool is_tor = browser->GetProfile()->IsTor();
     auto* onion_location_view = GetOnionLocationView(browser);
     ASSERT_TRUE(onion_location_view);
     EXPECT_TRUE(onion_location_view->GetVisible());
@@ -186,7 +186,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   }
 
   Browser* OpenTorWindow() {
-    return TorProfileManager::SwitchToTorProfile(browser()->profile());
+    return TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   }
 
  private:
@@ -295,7 +295,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
-  ASSERT_FALSE(browser()->profile()->IsTor());
+  ASSERT_FALSE(browser()->GetProfile()->IsTor());
 
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
@@ -313,7 +313,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
-  ASSERT_FALSE(browser()->profile()->IsTor());
+  ASSERT_FALSE(browser()->GetProfile()->IsTor());
 
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
@@ -331,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
-  ASSERT_FALSE(browser()->profile()->IsTor());
+  ASSERT_FALSE(browser()->GetProfile()->IsTor());
 
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
@@ -426,7 +426,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, Download) {
   };
 
   content::DownloadManager* download_manager =
-      browser()->profile()->GetDownloadManager();
+      browser()->GetProfile()->GetDownloadManager();
   auto download_awaiter = std::make_unique<DownloadAwaiter>();
   download_manager->AddObserver(download_awaiter.get());
 

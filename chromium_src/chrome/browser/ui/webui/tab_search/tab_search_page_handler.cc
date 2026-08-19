@@ -19,6 +19,7 @@
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -234,7 +235,7 @@ void TabSearchPageHandler::OnGetFocusTabs(
     new_browser->tab_strip_model()->AppendTab(std::move(detached_tab_model),
                                               false /* foreground */);
   }
-  new_browser->window()->Show();
+  BrowserWindow::FromBrowser(new_browser)->Show();
 
   std::move(callback).Run(true, nullptr);
 }

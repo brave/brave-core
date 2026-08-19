@@ -1,0 +1,15 @@
+diff --git a/components/aggregation_service/features.cc b/components/aggregation_service/features.cc
+index f38918997afd60b790a873dc3424c52ea1762fb8..b5cfe3d0d91bbee82834c16d68d66fbe7a93febe 100644
+--- a/components/aggregation_service/features.cc
++++ b/components/aggregation_service/features.cc
+@@ -11,8 +11,9 @@
+ 
+ namespace aggregation_service {
+ 
++// kAggregationServiceMultipleCloudProviders feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kAggregationServiceMultipleCloudProviders,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<std::string> kAggregationServiceCoordinatorAllowlist{
+     &kAggregationServiceMultipleCloudProviders, "allowlist", ""};

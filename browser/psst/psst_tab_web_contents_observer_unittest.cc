@@ -12,6 +12,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/json/json_writer.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
@@ -19,18 +21,25 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_command_line.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "build/build_config.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/metrics/metrics_state_manager.h"
+#include "components/metrics/test/test_enabled_state_provider.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/tabs/public/mock_tab_interface.h"
+#include "components/variations/service/test_variations_service.h"
+#include "components/variations/variations_switches.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -64,6 +73,17 @@ MATCHER_P4(PsstWebsiteSettingsEq,
   return arg.consent_status == consent_status &&
          arg.script_version == script_version && arg.user_id == user_id &&
          arg.uids_to_perform == uids_to_perform;
+}
+
+std::string WithCountryIdParams(const std::string& script,
+                                const std::string& country_id = "") {
+  return base::StrCat(
+      {"window.__bravePsstParams = ",
+       base::WriteJsonWithOptions(
+           base::Value(base::DictValue().Set("countryId", country_id)),
+           base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", script});
 }
 
 }  // namespace
@@ -113,6 +133,12 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
   loop->Quit();
 }
 
+ACTION(CheckIfMatchWithoutRule) {
+  std::move(
+      const_cast<base::OnceCallback<void(std::unique_ptr<MatchedRule>)>&>(arg1))
+      .Run(nullptr);
+}
+
 // testing::InvokeArgument<N> does not work with base::OnceCallback, so we
 // define our own gMock action to run the 2nd argument.
 ACTION_P(InsertScriptInPageCallback, future, value) {
@@ -127,6 +153,14 @@ ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
       const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
       .Run(value.Clone());
   future->SetValue(value.Clone());
+}
+
+// Captures the script result callback instead of running it, so that the test
+// can decide when (and after which navigations) it is invoked.
+ACTION_P(HoldInsertScriptInPageCallback, holder) {
+  *holder = std::move(
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(
+          arg1));
 }
 
 ACTION_P(ShowCallback, future, urls_to_skip) {
@@ -207,9 +241,22 @@ class PsstTabWebContentsObserverUnitTestBase
     ON_CALL(mock_tab, GetContents())
         .WillByDefault(testing::Return(web_contents()));
 
+    psst_settings_service_ =
+        PsstSettingsServiceFactory::GetInstance()->GetForProfile(profile());
+
+    variations::TestVariationsService::RegisterPrefs(
+        variations_local_state_.registry());
+    metrics_state_manager_ = metrics::MetricsStateManager::Create(
+        &variations_local_state_, &enabled_state_provider_,
+        /*backup_registry_key=*/std::wstring(),
+        /*user_data_dir=*/base::FilePath());
+    variations_service_ = std::make_unique<variations::TestVariationsService>(
+        &variations_local_state_, metrics_state_manager_.get());
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
-        new PsstTabWebContentsObserver(mock_tab, rule_registry_.get(), &prefs_,
-                                       std::move(ui_delegate)));
+        new PsstTabWebContentsObserver(
+            mock_tab, rule_registry_.get(), psst_settings_service_,
+            variations_service_.get(), std::move(ui_delegate)));
     psst_web_contents_observer_->SetInjectScriptCallback(
         inject_script_callback_.Get());
     psst_web_contents_observer_->SetInjectAsyncScriptCallback(
@@ -217,12 +264,13 @@ class PsstTabWebContentsObserverUnitTestBase
   }
 
   void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
     ui_delegate_ = nullptr;
+    psst_web_contents_observer_.reset();
+    psst_settings_service_ = nullptr;
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
-  PrefService* prefs() { return &prefs_; }
 
   MatchedRule* CreateMatchedRule(const std::string& user_script,
                                  const std::string& policy_script,
@@ -240,9 +288,27 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_async_script_callback_;
   }
 
+  // Sets up an expectation that `user_script` is injected. Production code
+  // always prepends a countryId params block to the user script before
+  // injecting it (see PsstTabWebContentsObserver::InsertUserScript), so this
+  // wraps `user_script` the same way tests don't need to know about that
+  // detail.
+  auto& ExpectUserScriptInjected(const std::string& user_script) {
+    return EXPECT_CALL(inject_script_callback_,
+                       Run(WithCountryIdParams(user_script), _));
+  }
+
   MockUiDelegate& ui_delegate() { return *ui_delegate_; }
 
   tabs::MockTabInterface& mock_tab_interface() { return mock_tab; }
+
+  PsstSettingsService* psst_settings_service() {
+    return psst_settings_service_;
+  }
+
+  variations::VariationsService* variations_service() {
+    return variations_service_.get();
+  }
 
  protected:
   base::test::ScopedFeatureList feature_list_;
@@ -256,7 +322,13 @@ class PsstTabWebContentsObserverUnitTestBase
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  raw_ptr<PsstSettingsService> psst_settings_service_;
   tabs::MockTabInterface mock_tab;
+  TestingPrefServiceSimple variations_local_state_;
+  metrics::TestEnabledStateProvider enabled_state_provider_{/*consent=*/false,
+                                                            /*enabled=*/false};
+  std::unique_ptr<metrics::MetricsStateManager> metrics_state_manager_;
+  std::unique_ptr<variations::TestVariationsService> variations_service_;
 };
 
 class PsstTabWebContentsObserverUnitTest
@@ -279,7 +351,8 @@ class PsstTabWebContentsObserverUnitTest
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(),
+                variations_service(), 2),
             nullptr);
 }
 
@@ -291,10 +364,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto web_contents = content::WebContentsTester::CreateTestWebContents(
       otr_profile, site_instance);
 
-  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                mock_tab_interface(), otr_profile,
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
-            nullptr);
+  EXPECT_EQ(
+      PsstTabWebContentsObserver::MaybeCreateForWebContents(
+          mock_tab_interface(), otr_profile, std::make_unique<MockUiDelegate>(),
+          psst_settings_service(), variations_service(), 2),
+      nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -367,7 +441,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(2);
 
   base::test::TestFuture<base::Value> first_nav_user_script_insert_future;
-  EXPECT_CALL(inject_script_callback(), Run(first_nav_user_script, _))
+  ExpectUserScriptInjected(first_nav_user_script)
       .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_future,
                                            base::Value()));
 
@@ -388,7 +462,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           CreateMatchedRule(second_nav_user_script, policy_script_)));
 
   base::test::TestFuture<base::Value> second_nav_user_script_insert_future;
-  EXPECT_CALL(inject_script_callback(), Run(second_nav_user_script, _))
+  ExpectUserScriptInjected(second_nav_user_script)
       .WillOnce(InsertScriptInPageCallback(
           &second_nav_user_script_insert_future, base::Value()));
   EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
@@ -400,6 +474,132 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   second_nav_check_loop.Run();
   EXPECT_EQ(base::Value(), second_nav_user_script_insert_future.Take());
+}
+
+// The user script runs asynchronously in the renderer, so its result can come
+// back after the user has already navigated elsewhere. The result must be
+// dropped: no UI update and no policy script injection into the new page.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptResultArrivingAfterNavigationIsDropped) {
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  base::RunLoop second_nav_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &first_nav_check_loop,
+          CreateMatchedRule(user_script_, policy_script_)));
+  // The second page has no matching rule, so it starts no flow of its own and
+  // anything observed afterwards can only come from the stale first flow.
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+
+  // Hold the user script result until after the second navigation commits.
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_user_script_callback;
+  ExpectUserScriptInjected(user_script_)
+      .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
+
+  // The stale result must not reach the UI or trigger the policy script.
+  EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    observer.Wait();
+  }
+  first_nav_check_loop.Run();
+  ASSERT_FALSE(held_user_script_callback.is_null());
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), second_navigation_url);
+    observer.Wait();
+  }
+  second_nav_check_loop.Run();
+
+  // A result that would otherwise drive the whole flow: it has a user id and
+  // tasks, so on a still-current page it would show the consent dialog and run
+  // the policy script.
+  std::move(held_user_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("initial_execution", true)
+              .Set("user_id", user_id_)
+              .Set("site_name", "example")
+              .Set("tasks", base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings")))));
+}
+
+// A back navigation re-commits an already visited entry as a new page, so a
+// user script result held from that entry's earlier visit is still stale and
+// must be dropped.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptResultArrivingAfterBackNavigationToSameEntryIsDropped) {
+  const GURL second_navigation_url("https://example2.com");
+
+  base::RunLoop first_nav_check_loop;
+  base::RunLoop second_nav_check_loop;
+  // The back navigation may or may not reach DocumentOnLoadCompleted in the
+  // test harness, so no run loop is tied to a rule check for it. What matters
+  // for this test is only that the back navigation commits.
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(
+          CheckIfMatchCallback(&first_nav_check_loop,
+                               CreateMatchedRule(user_script_, policy_script_)))
+      .WillRepeatedly(CheckIfMatchWithoutRule());
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
+      .WillOnce(CheckIfMatchFailsCallback(&second_nav_check_loop));
+
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_user_script_callback;
+  ExpectUserScriptInjected(user_script_)
+      .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
+
+  EXPECT_CALL(ui_delegate(), GetPsstWebsiteSettings).Times(0);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    observer.Wait();
+  }
+  first_nav_check_loop.Run();
+  ASSERT_FALSE(held_user_script_callback.is_null());
+
+  {
+    DocumentOnLoadObserver observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), second_navigation_url);
+    observer.Wait();
+  }
+  second_nav_check_loop.Run();
+
+  content::NavigationSimulator::GoBack(web_contents());
+  ASSERT_EQ(url_, web_contents()->GetLastCommittedURL());
+
+  std::move(held_user_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("initial_execution", true)
+              .Set("user_id", user_id_)
+              .Set("site_name", "example")
+              .Set("tasks", base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings")))));
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
@@ -417,7 +617,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto value = base::Value();
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(value)));
   EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
@@ -492,8 +692,42 @@ TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
   observer.Wait();
 }
 
+// Verifies the country id reported by the variations service is threaded
+// through to the injected user script, ensuring the wiring between
+// PsstTabWebContentsObserver and VariationsService is intact.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptInjectedWithCountryIdFromVariationsService) {
+  const std::string country_id = "us";
+  base::test::ScopedCommandLine scoped_command_line;
+  scoped_command_line.GetProcessCommandLine()->AppendSwitchASCII(
+      variations::switches::kVariationsOverrideCountry, country_id);
+  ASSERT_EQ(country_id, variations_service()->GetLatestCountry());
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
+
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  EXPECT_CALL(inject_script_callback(),
+              Run(WithCountryIdParams(user_script_, country_id), _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           base::Value()));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url_);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(base::Value(), user_script_insert_future.Take());
+}
+
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  prefs()->SetBoolean(prefs::kPsstEnabled, false);
+  psst_settings_service()->SetPsstEnabled(false);
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -527,7 +761,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an empty value
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value()));
   // No policy script executed
@@ -557,7 +791,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   // User script result is an empty dictionary
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value(base::DictValue())));
   // No policy script executed
@@ -585,7 +819,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an empty dictionary
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value(base::DictValue())));
   // No policy script executed
@@ -644,21 +878,21 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(),
               GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
   const auto script_with_parameters = base::StrCat(
-      {"const params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(script_params.Clone(),
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
@@ -707,7 +941,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
     EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
         .Times(1);
 
-    EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+    ExpectUserScriptInjected(user_script_)
         .WillOnce(InsertScriptInPageCallback(
             &user_script_insert_future, test_case.user_script_result.Clone()));
     // No policy script executed
@@ -757,14 +991,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
       .Times(1);
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -845,21 +1079,21 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                                         .Set("description", task_description))))
           .Set("result", true));
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url_),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
   const auto policy_script_with_parameters = base::StrCat(
-      {"const params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(script_params.Clone(),
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
@@ -920,7 +1154,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto script_params = base::Value(base::DictValue().Set("user_id", "value"));
 
   // User script's callback is delayed, causing the flow to fail
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageDelayedCallback(
           &user_script_insert_future, task_environment(),
           kScriptTimeout.InSeconds() + 1, script_params.Clone()));
@@ -975,13 +1209,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings"))));
 
-  ON_CALL(ui_delegate(),
-          GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
-      .WillByDefault([&settings](const url::Origin&, const std::string&) {
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
+      .WillOnce([&settings](const url::Origin&, const std::string&) {
         return settings.Clone();
       });
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
+  ExpectUserScriptInjected(user_script_)
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
@@ -1003,7 +1237,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto expected_policy_params = script_params.Clone();
   expected_policy_params.GetDict().Set("initial_execution", true);
   const auto script_with_parameters = base::StrCat(
-      {"const params = ",
+      {"window.__bravePsstParams = ",
        base::WriteJsonWithOptions(expected_policy_params,
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
@@ -1050,7 +1284,8 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
                 mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), prefs(), 2),
+                std::make_unique<MockUiDelegate>(), psst_settings_service(),
+                variations_service(), 2),
             nullptr);
 }
 

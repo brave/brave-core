@@ -25,7 +25,7 @@ import { TransactionComplete } from './complete'
 
 // Styled Components
 import { LongWrapper } from '../../../../stories/style'
-import { PanelWrapper } from '../../../../panel/style'
+import { PanelWrapper } from '../../../../panel/panel_wrapper/panel_wrapper'
 
 export const _TransactionComplete = {
   render: (args: StorybookTransactionArgs) => {
@@ -41,10 +41,7 @@ export const _TransactionComplete = {
 
     return (
       <WalletPanelStory>
-        <PanelWrapper
-          width={390}
-          height={650}
-        >
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <TransactionComplete
               transaction={transaction}

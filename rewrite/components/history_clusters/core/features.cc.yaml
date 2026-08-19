@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kHistoryClustersInternalsPage disabled.'
+    set_feature_flag_default_state:
+      feature_name: kHistoryClustersInternalsPage
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kHistoryClustersNavigationContextClustering disabled.'
+    set_feature_flag_default_state:
+      feature_name: kHistoryClustersNavigationContextClustering
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kJourneys disabled.'
+    set_feature_flag_default_state:
+      feature_name: kJourneys
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kJourneysImages disabled.'
+    set_feature_flag_default_state:
+      feature_name: kJourneysImages
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kOmniboxHistoryClusterProvider disabled.'
+    set_feature_flag_default_state:
+      feature_name: kOmniboxHistoryClusterProvider
+      value: base::FEATURE_DISABLED_BY_DEFAULT

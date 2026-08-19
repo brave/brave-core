@@ -26,10 +26,13 @@ import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.settings.BottomInsetViewProvider;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.url.mojom.Url;
 
-public class AddCustomFilterListsFragment extends BravePreferenceFragment {
+public class AddCustomFilterListsFragment extends BravePreferenceFragment
+        implements BottomInsetViewProvider {
     private FilterListAndroidHandler mFilterListAndroidHandler;
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
@@ -38,6 +41,11 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_add_custom_filter_lists, container, false);
+    }
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView;
     }
 
     @Override
@@ -56,6 +64,7 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment {
     private void setData() {
         initFilterListAndroidHandler();
         Button addBtn = getView().findViewById(R.id.btn_add);
+        BraveDynamicColors.applyToFilledButtonIfEnabled(addBtn);
         TextInputEditText urlEditText = getView().findViewById(R.id.enter_url_edittext);
         urlEditText.requestFocus();
         urlEditText.addTextChangedListener(

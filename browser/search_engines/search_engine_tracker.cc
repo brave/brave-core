@@ -227,7 +227,7 @@ SearchEngineTracker::SearchEngineTracker(
                           base::Unretained(this)));
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
-      brave_ads::prefs::kOptedInToNotificationAds,
+      brave_ads::prefs::kNotificationsEnabled,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
                           base::Unretained(this)));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -281,8 +281,8 @@ void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   UMA_HISTOGRAM_BOOLEAN(
       kWebDiscoveryAndAdsMetric,
-      enabled && profile_prefs_->GetBoolean(
-                     brave_ads::prefs::kOptedInToNotificationAds));
+      enabled &&
+          profile_prefs_->GetBoolean(brave_ads::prefs::kNotificationsEnabled));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   // Record web discovery default engine metric

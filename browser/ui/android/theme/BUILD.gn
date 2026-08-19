@@ -28,6 +28,7 @@ android_library("dynamic_colors_java") {
     "//chrome/browser/preferences:java",
     "//components/cached_flags:java",
     "//third_party/android_deps:material_design_java",
+    "//ui/android:ui_no_recycler_view_java",
   ]
 }
 

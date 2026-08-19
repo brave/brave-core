@@ -87,6 +87,10 @@
 <translation id="3295805221342028003">Leo AIને સાઇડબારમાં ખોલો</translation>
 <translation id="7400808612454224939">Leo AI સેટિંગ્સ મેનેજ કરો</translation>
 <translation id="5385064007245738696">Leo AI વિશે</translation>
+<translation id="334252345105450327">સ્ક્રીનશૉટ લો</translation>
+<translation id="191886777375280620">સ્ક્રીનશૉટ કૅપ્ચર કરો</translation>
+<translation id="3114478090884951591">દૃશ્યમાન વિસ્તાર</translation>
+<translation id="2026367923222947564">સંપૂર્ણ પૃષ્ઠ</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Web Extensions Storeમાં જુઓ</translation>
 <translation id="3161744659507801211">ચેતવણી: Brave ખાનગી વિંડોમાં એક્સ્ટેંશન્સની ઈતિહાસ રેકોડિંગને રોકી શકતું નથી.</translation>
@@ -346,6 +350,9 @@
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="9031526219709160683">Brave આ સાઇટની ગોપનીયતા સેટિંગ્સને ઑપ્ટિમાઇজ કરવામાં તમને મદદ કરી શકે છે. શું તમે Brave ની સૂચનોની સમીક્ષા કરવા માંગો છો?</translation>
 <translation id="5739953050957336013">સૂચનોની સમીક્ષા કરો</translation>
+<translation id="515462386448976244">ગોપનીયતા સેટિંગ્સ સૂચન સાધન</translation>
+<translation id="6911328085206170823">આ સાઇટ માટે બતાવશો નહીં</translation>
+<translation id="6157507628047001360">ગોપનીયતા સેટિંગ્સ ટ્યુનિંગ અક્ષમ કરો</translation>
 <translation id="9082792303833649978">આ સેટિંગ તમારા સંચાલક દ્વારા અથવા બીજાં Brave પોલીસી દ્વારા સંચાલિત છે.</translation>
 <translation id="1940221956626514677">ટૂલબાર કસ્ટમાઇઝ કરો</translation>
 <translation id="6501807887341963552">થીમ અને રંગો</translation>
@@ -353,6 +360,8 @@
 <translation id="3575561030014162610">આ ડિવાઇસ પર <ph name="BRAND"/> પર પાસવર્ડ ઇમ્પોર્ટ કરવા માટે, એક CSV ફાઇલ પસંદ કરો</translation>
 <translation id="8570228839666486945">ઑન-ડિવાઇસ AI</translation>
 <translation id="3456536577668402695">તમારી શોધો અને પૃષ્ઠ સામગ્રીઓ આ ઉપકરણ પર પ્રક્રિયા કરવામાં આવે છે. કંઈપણ Brave ને મોકલવામાં આવતું નથી અથવા માનવ સમીક્ષકો દ્વારા જોવામાં આવતું નથી.</translation>
+<translation id="4751537843966994505">સિમેન્ટિક ઇતિહાસ શોધ</translation>
+<translation id="6175973371938222040">તમે સ્થાનિક રીતે મુલાકાત લો છો તે પૃષ્ઠોને અનુક્રમિત કરો જેથી તમે તમારા ઇતિહાસને અર્થ દ્વારા શોધી શકો. બધી પ્રક્રિયા આ ડિવાઇસ પર જ રહે છે.</translation>
 <translation id="9156965752763025780">તમારા ફેરફારો તમે આગલી વખતે Brave ફરીથી લોંચ કરશો ત્યારે પ્રભાવમાં આવશે.</translation>
 <translation id="7179921470347911571">હવે ફરીથી લોંચ કરો</translation>
 <translation id="1426410128494586442">હા</translation>
@@ -415,6 +424,7 @@
 <translation id="2396127686705429331">બુકમાર્ક્સ બટન બતાવો</translation>
 <translation id="443318149139185498">મુખ્ય મેનુ બટન પર આઉટલાઇન લોગો વાપરો</translation>
 <translation id="2814998458708016836">વિશાળ સરનામું બાર વાપરો</translation>
+<translation id="536791223757510666">કોમ્પેક્ટ મોડનો ઉપયોગ કરો</translation>
 <translation id="4749586705247636385">મુખ્ય સામગ્રી વિસ્તારોમાં રાઉન્ડ કરેલા ખૂણા બતાવો</translation>
 <translation id="4109670531935487117">એડ્રેસ બારમાં ઓટોકમ્પ્લીટ સૂચનો બતાવો</translation>
 <translation id="4579877808890085926">ઑન-ડિવાઇસ સૂચનો</translation>
@@ -532,6 +542,7 @@
 <translation id="4590997608186539865">પ્લેલિસ્ટ</translation>
 <translation id="1199170151481311646">ગોપનીયતા જાળવતો વિશ્લેષણ</translation>
 <translation id="5990642573624858459">આંકડાકીય અહેવાલ</translation>
+<translation id="6560669651825861597">બધા બ્રાઉઝર પ્રોફાઇલ્સને અસર કરે છે</translation>
 <translation id="2441719842399509963">બધાને ડીફોલ્ટ પર રીસેટ કરો</translation>
 <translation id="2587535830241068901">Brave ને સપોર્ટ કરતા કરતી વખતે તમારું બ્રાઉઝર કસ્ટમાઇઝ કરો</translation>
 <translation id="123297831435065577">Brave Origin એ બ્રાઉઝરનું ચૂકવેલ સંસ્કરણ છે એવા વપરાશકર્તાઓ માટે કે જેમને તમામ ફીચર્સની જરૂર નથી જે Brave ને બિઝનેસ તરીકે સમર્થન આપે છે, પરંતુ તેમ છતાં તેઓ માત્ર Brave દ્વારા આપવામાં આવતી ગોપનીયતા ચાહે છે. Origin વપરાશકર્તાઓ અમારી ઉદ્યોગ-અગ્રણી ગોપનીયતા, adblock, અને ગતિ (શિલ્ડ્સ દ્વારા) નો લાભ મેળવવાનું ચાલુ રાખશે, તેમજ નિયમિત સોફ્ટવેર અપડેટ્સ, Chromium પેચ્સ, અને સુરક્ષા અને ગોપનીયતા સુધારણાઓ.</translation>
@@ -559,6 +570,16 @@
 <translation id="5825943197137337319">માત્ર ડિફૉલ્ટ જાહેર ઇન્ટરફેસ</translation>
 <translation id="1689062823386843231">બિન-પ્રોક્સી UDPને નિષ્ક્રિય કરો</translation>
 <translation id="3540231253392253941">પ્રકાશન સંદેશા માટે Google સેવાઓનો ઉપયોગ કરશે</translation>
+<translation id="5813105074916486721">સ્થાનિક ઇતિહાસ જાળવણી</translation>
+<translation id="5671611745062206644">Brave તમારા બ્રાઉઝિંગ ઇતિહાસને સ્થાનિક રીતે કેટલા સમય માટે સંગ્રહિત કરે છે</translation>
+<translation id="7184510058087008090">1 દિવસ</translation>
+<translation id="8097397186614425669">1 અઠવાડિયું</translation>
+<translation id="1600157116238060201">1 મહિનો</translation>
+<translation id="6774350394520543146">3 મહિના</translation>
+<translation id="2268310966956852466">6 મહિના</translation>
+<translation id="5353781333882815543">1 વર્ષ</translation>
+<translation id="6796569320325473726">5 વર્ષ</translation>
+<translation id="1658834457013045127">હંમેશા માટે</translation>
 <translation id="933652931229970927">આપમેળે ડાયગ્નોસ્ટિક્સ રિપોર્ટ મોકલો</translation>
 <translation id="8868426106596092089">Brave બ્રાઉઝર ક્રેશ થાય અથવા ફ્રીઝ થાય ત્યારે ડાયગ્નોસ્ટિક રિપોર્ટસ આપમેળે મોકલવાથી Braveની ઉત્પાદન સ્થિરતા સુધારવામાં મદદ કરો.</translation>
 <translation id="4891600875049212418">સંવેદનશીલ સાઇટ્સની મુલાકાત લેતી વખતે રેકોર્ડ-થી-દૂર થઈ જાઓ</translation>
@@ -681,6 +702,7 @@
 <translation id="4908081302669157000">ફોન નંબર્સ, ઇમેઇલ અને સરનામા</translation>
 <translation id="294985549514492876">વેબ ઍપ્સ (PWAs)</translation>
 <translation id="7029809446516969842">પાસવર્ડ્સ</translation>
+<translation id="1571419474754278280">Leo AI વાતચીતો</translation>
 <translation id="6011308810877101166">શોધ સૂચનો સુધારો</translation>
 <translation id="2332576387809612040">જ્યારે સમર્થન કરેલા Brave એ સરનામાં બાર અથવા સ્પર્ધક બોકસમાં તમરા લખેલા શબ્દો ને મોડલ કરવા માટે તમારા ફોલ્ટ સર્ચ એન્જિન ને મોકલે છે. જયારે બંધ હોય ત્યારે, Brave માત્ર આપના ઉપકરણમાં બનાવેલ સૂચનો દેખડાવે છે. આ પ્રાઇવેટ વિન્ડોઝમાં હંમેશા બંધ હોઈ છે.</translation>
 <translation id="5522403133543437426">એડ્રેસ બારમાં વપરાશમાં આવેલી સર્ચ એન્જિન.</translation>

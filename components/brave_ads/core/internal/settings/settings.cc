@@ -43,9 +43,9 @@ bool UserHasOptedInToNewTabPageAds() {
                  kNewTabPageShowSponsoredImagesBackgroundImage);
 }
 
-bool UserHasOptedInToNotificationAds() {
+bool IsNotificationAdsEnabled() {
   return UserHasJoinedBraveRewards() &&
-         GetProfileBooleanPref(prefs::kOptedInToNotificationAds);
+         GetProfileBooleanPref(prefs::kNotificationsEnabled);
 }
 
 int GetMaximumNotificationAdsPerHour() {

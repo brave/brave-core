@@ -1,0 +1,13 @@
+diff --git a/components/gcm_driver/gcm_desktop_utils.cc b/components/gcm_driver/gcm_desktop_utils.cc
+index 4052fd500040a1564495ba69c9ce3a5900c7d81d..b7f63f46e605958b9a507f2e0dca760bbf38ea8f 100644
+--- a/components/gcm_driver/gcm_desktop_utils.cc
++++ b/components/gcm_driver/gcm_desktop_utils.cc
+@@ -89,7 +89,7 @@ std::unique_ptr<GCMDriver> CreateGCMDriverDesktop(
+     const scoped_refptr<base::SequencedTaskRunner>& io_task_runner,
+     const scoped_refptr<base::SequencedTaskRunner>& blocking_task_runner,
+     os_crypt_async::OSCryptAsync* os_crypt_async) {
+-  return std::unique_ptr<GCMDriver>(new GCMDriverDesktop(
++  return std::unique_ptr<GCMDriver>(new BraveGCMDriverDesktop(
+       std::move(gcm_client_factory),
+       GetChromeBuildInfo(channel, product_category_for_subtypes), prefs,
+       store_path, get_socket_factory_callback, std::move(url_loader_factory),

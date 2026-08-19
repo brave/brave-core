@@ -176,13 +176,15 @@ class TransactionConfirmationStoreTests: XCTestCase {
     }
 
     let zcashWalletService = BraveWallet.TestZCashWalletService()
-    zcashWalletService._transactionType = { $3(.shielding, .noError) }
+    zcashWalletService._transactionType = { $3(.shieldingIronwood, .noError) }
     zcashWalletService._balance = { accountId, completion in
       let zcashBalance: BraveWallet.ZCashBalance = .init(
         totalBalance: 100_000,
         transparentBalance: 50_000,
-        shieldedBalance: 50_000,
-        shieldedPendingBalance: 0,
+        orchardBalance: 50_000,
+        orchardPendingBalance: 0,
+        ironwoodBalance: 0,
+        ironwoodPendingBalance: 0,
         balances: [:]
       )
       completion(zcashBalance, "")

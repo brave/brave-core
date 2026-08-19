@@ -47,10 +47,16 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Nu rata nimic: Adaugă videoclipuri în timp ce navighezi și urmărește-le mai târziu.";
 
 /* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Adaugă videoclipuri la Brave Playlist.";
+
+/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "Redarea de conținut este mai bună cu Brave Playlist";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "Apasă butonul pentru a adăuga videoclipuri într-un Playlist";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Creează playlist-uri cu conținutul pe care îl iubești. Adaugă media de pe orice pagină.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Apasă %@ pentru a adăuga primul element";

@@ -6,8 +6,11 @@
 #include "brave/browser/ui/webui/settings/brave_clear_browsing_data_handler.h"
 
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "base/test/bind.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
@@ -69,8 +72,31 @@ class TestingBraveClearBrowsingDataHandler
   size_t javascript_allowed_count_ = 0;
 };
 
+void VerifyAdsDataClearedResponseExpectation(content::TestWebUI& test_web_ui,
+                                             const std::string& callback_id,
+                                             bool expected_success) {
+  const content::TestWebUI::CallData& call_data =
+      *test_web_ui.call_data().back();
+  EXPECT_EQ("cr.webUIResponse", call_data.function_name());
+  EXPECT_EQ(callback_id, call_data.arg1()->GetString());
+  EXPECT_TRUE(/*resolved*/ call_data.arg2()->GetBool());
+  EXPECT_EQ(expected_success, /*success*/ call_data.arg3()->GetBool());
+}
+
 class BraveClearBrowsingDataHandlerTest : public testing::Test {
  protected:
+  brave_ads::AdsServiceMock* SetUpAdsServiceMock() {
+    brave_ads::AdsServiceFactory::GetInstance()->SetTestingFactory(
+        profile_.get(),
+        base::BindLambdaForTesting([](content::BrowserContext* /*context*/)
+                                       -> std::unique_ptr<KeyedService> {
+          return std::make_unique<brave_ads::AdsServiceMock>();
+        }));
+
+    return static_cast<brave_ads::AdsServiceMock*>(
+        brave_ads::AdsServiceFactory::GetForProfile(profile_.get()));
+  }
+
   content::BrowserTaskEnvironment browser_task_environment_;
 
   std::unique_ptr<TestingProfile> profile_ = TestingProfile::Builder().Build();
@@ -85,14 +111,14 @@ TEST_F(BraveClearBrowsingDataHandlerTest,
 
   // Act
   handler.HandleGetBraveRewardsEnabled(
-      /*args=*/base::ListValue().Append(/*callback_id*/ "foo"));
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
 
   // Assert
   EXPECT_EQ(1U, handler.javascript_allowed_count());
   const content::TestWebUI::CallData& call_data =
       *handler.test_web_ui()->call_data().back();
   EXPECT_EQ("cr.webUIResponse", call_data.function_name());
-  EXPECT_EQ(/*callback_id*/ "foo", call_data.arg1()->GetString());
+  EXPECT_EQ(/*callback_id=*/"foo", call_data.arg1()->GetString());
   EXPECT_TRUE(/*resolved*/ call_data.arg2()->GetBool());
   EXPECT_FALSE(/*rewards_enabled*/ call_data.arg3()->GetBool());
 }
@@ -106,46 +132,124 @@ TEST_F(BraveClearBrowsingDataHandlerTest,
 
   // Act
   handler.HandleGetBraveRewardsEnabled(
-      /*args=*/base::ListValue().Append(/*callback_id*/ "foo"));
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
 
   // Assert
   EXPECT_EQ(1U, handler.javascript_allowed_count());
   const content::TestWebUI::CallData& call_data =
       *handler.test_web_ui()->call_data().back();
   EXPECT_EQ("cr.webUIResponse", call_data.function_name());
-  EXPECT_EQ(/*callback_id*/ "foo", call_data.arg1()->GetString());
+  EXPECT_EQ(/*callback_id=*/"foo", call_data.arg1()->GetString());
   EXPECT_TRUE(/*resolved*/ call_data.arg2()->GetBool());
   EXPECT_TRUE(/*rewards_enabled*/ call_data.arg3()->GetBool());
 }
 
 TEST_F(BraveClearBrowsingDataHandlerTest,
-       HandleClearBraveAdsDataWithNullServiceDoesNotCrash) {
+       HandleClearBraveAdsDataResolvesWithFailureWhenServiceIsNull) {
   // Arrange
   TestingBraveClearBrowsingDataHandler handler(profile_.get());
 
-  // Act & Assert
-  handler.HandleClearBraveAdsData(/*args=*/{});
+  // Act
+  handler.HandleClearBraveAdsData(
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
+
+  // Assert
+  EXPECT_EQ(1U, handler.javascript_allowed_count());
+  VerifyAdsDataClearedResponseExpectation(*handler.test_web_ui(),
+                                          /*callback_id=*/"foo",
+                                          /*expected_success=*/false);
 }
 
 TEST_F(BraveClearBrowsingDataHandlerTest,
-       HandleClearBraveAdsDataCallsClearDataOnAdsService) {
+       HandleClearBraveAdsDataResolvesWithSuccessWhenClearingSucceeds) {
   // Arrange
-  brave_ads::AdsServiceFactory::GetInstance()->SetTestingFactory(
-      profile_.get(),
-      base::BindLambdaForTesting([](content::BrowserContext* /*context*/)
-                                     -> std::unique_ptr<KeyedService> {
-        return std::make_unique<brave_ads::AdsServiceMock>();
-      }));
-
-  auto* const ads_service_mock = static_cast<brave_ads::AdsServiceMock*>(
-      brave_ads::AdsServiceFactory::GetForProfile(profile_.get()));
+  brave_ads::AdsServiceMock* const ads_service_mock = SetUpAdsServiceMock();
 
   TestingBraveClearBrowsingDataHandler handler(profile_.get());
 
-  EXPECT_CALL(*ads_service_mock, ClearData);
+  EXPECT_CALL(*ads_service_mock, ClearData)
+      .WillOnce(base::test::RunOnceCallback<0>(/*success=*/true));
 
   // Act
-  handler.HandleClearBraveAdsData(/*args=*/{});
+  handler.HandleClearBraveAdsData(
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
+
+  // Assert
+  EXPECT_EQ(1U, handler.javascript_allowed_count());
+  VerifyAdsDataClearedResponseExpectation(*handler.test_web_ui(),
+                                          /*callback_id=*/"foo",
+                                          /*expected_success=*/true);
+}
+
+TEST_F(BraveClearBrowsingDataHandlerTest,
+       HandleClearBraveAdsDataResolvesWithFailureWhenClearingFails) {
+  // Arrange
+  brave_ads::AdsServiceMock* const ads_service_mock = SetUpAdsServiceMock();
+
+  TestingBraveClearBrowsingDataHandler handler(profile_.get());
+
+  EXPECT_CALL(*ads_service_mock, ClearData)
+      .WillOnce(base::test::RunOnceCallback<0>(/*success=*/false));
+
+  // Act
+  handler.HandleClearBraveAdsData(
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
+
+  // Assert
+  EXPECT_EQ(1U, handler.javascript_allowed_count());
+  VerifyAdsDataClearedResponseExpectation(*handler.test_web_ui(),
+                                          /*callback_id=*/"foo",
+                                          /*expected_success=*/false);
+}
+
+TEST_F(
+    BraveClearBrowsingDataHandlerTest,
+    HandleClearBraveAdsDataDoesNotCrashWhenHandlerDestroyedBeforeClearingCompletes) {
+  // Arrange
+  brave_ads::AdsServiceMock* const ads_service_mock = SetUpAdsServiceMock();
+
+  brave_ads::ResultCallback captured_callback;
+  EXPECT_CALL(*ads_service_mock, ClearData)
+      .WillOnce([&captured_callback](brave_ads::ResultCallback callback) {
+        captured_callback = std::move(callback);
+      });
+
+  auto handler =
+      std::make_unique<TestingBraveClearBrowsingDataHandler>(profile_.get());
+  handler->HandleClearBraveAdsData(
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
+  ASSERT_TRUE(captured_callback);
+
+  // Act
+  handler.reset();
+
+  // Assert
+  std::move(captured_callback).Run(/*success=*/true);
+}
+
+TEST_F(BraveClearBrowsingDataHandlerTest,
+       HandleClearBraveAdsDataDoesNotResolveAfterJavascriptDisallowed) {
+  // Arrange
+  brave_ads::AdsServiceMock* const ads_service_mock = SetUpAdsServiceMock();
+
+  brave_ads::ResultCallback captured_callback;
+  EXPECT_CALL(*ads_service_mock, ClearData)
+      .WillOnce([&captured_callback](brave_ads::ResultCallback callback) {
+        captured_callback = std::move(callback);
+      });
+
+  TestingBraveClearBrowsingDataHandler handler(profile_.get());
+  handler.HandleClearBraveAdsData(
+      /*args=*/base::ListValue().Append(/*callback_id=*/"foo"));
+  ASSERT_TRUE(captured_callback);
+
+  handler.DisallowJavascript();
+
+  // Act
+  std::move(captured_callback).Run(/*success=*/true);
+
+  // Assert
+  EXPECT_TRUE(handler.test_web_ui()->call_data().empty());
 }
 
 TEST_F(BraveClearBrowsingDataHandlerTest,

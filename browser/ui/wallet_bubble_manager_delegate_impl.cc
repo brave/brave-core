@@ -226,8 +226,7 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   views::View* anchor_view;
   if (browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
-    anchor_view = static_cast<BraveBrowserView*>(
-                      BrowserView::GetBrowserViewForBrowser(browser))
+    anchor_view = BraveBrowserView::GetBrowserViewForBrowser(browser)
                       ->GetWalletButtonAnchorView();
   } else {
     anchor_view =
@@ -241,7 +240,9 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
-  webui_bubble_manager_->CloseBubble();
+  if (webui_bubble_manager_) {
+    webui_bubble_manager_->CloseBubble();
+  }
 }
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {

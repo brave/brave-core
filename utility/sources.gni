@@ -19,6 +19,7 @@ brave_utility_deps = [
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/tor/buildflags",
+  "//brave/services/passage_embeddings:chromium_impl",
   "//mojo/public/cpp/bindings",
 ]
 

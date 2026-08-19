@@ -33,7 +33,6 @@ import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { isValidFilAddress } from '../../../../utils/address-utils'
 import { makeSendRoute } from '../../../../utils/routes-utils'
-import { isShieldedToken } from '../../../../utils/asset-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
@@ -94,6 +93,9 @@ import {
   WalletPageWrapper, //
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
+import {
+  DefaultPanelHeader, //
+} from '../../../../components/desktop/card-headers/default-panel-header'
 import {
   PanelActionHeader, //
 } from '../../../../components/desktop/card-headers/panel-action-header'
@@ -158,6 +160,7 @@ export const SendScreen = React.memo(() => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
   const isMobileOrPanel = isMobile || isPanel
   const isIOS = useSafeUISelector(UISelectors.isIOS)
   const isKeyboardVisible = useIsKeyboardVisible()
@@ -196,11 +199,8 @@ export const SendScreen = React.memo(() => {
       && accountFromParams
       && toAddressOrUrl
       ? {
-          chainId: networkFromParams.chainId,
           accountId: accountFromParams.accountId,
-          useShieldedPool: isShieldedToken({
-            zcashTokenType: zcashTokenTypeFromParams,
-          }),
+          fromTokenType: zcashTokenTypeFromParams,
           address: toAddressOrUrl,
         }
       : skipToken,
@@ -257,13 +257,30 @@ export const SendScreen = React.memo(() => {
     && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
     && getZCashTransactionTypeResult.txType
-      === BraveWallet.ZCashTxType.kShielding
+      === BraveWallet.ZCashTxType.kShieldingIronwood
   const isUnshieldingFunds =
     tokenFromParams
     && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
-    && getZCashTransactionTypeResult.txType
-      === BraveWallet.ZCashTxType.kUnshielding
+    && (getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kUnshieldingOrchard
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kUnshieldingIronwood)
+  // Ironwood transactions support TBD.
+  const isUnsupportedIronwoodTransaction =
+    tokenFromParams?.coin === BraveWallet.CoinType.ZEC
+    && (getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kShieldingIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kTransparentToIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kOrchardToIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kIronwoodToIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kIronwoodToTransparent
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kUnshieldingIronwood)
   // memos & computed
   const sendAmountValidationError: SendAmountValidationErrorType | undefined =
     React.useMemo(() => {
@@ -523,7 +540,7 @@ export const SendScreen = React.memo(() => {
           const memoArray =
             memoText !== '' ? new TextEncoder().encode(memoText) : undefined
           await sendZecTransaction({
-            useShieldedPool: isShieldedToken(tokenFromParams),
+            zcashTokenType: tokenFromParams.zcashTokenType,
             network: networkFromParams,
             fromAccount,
             to: toAddress,
@@ -677,6 +694,8 @@ export const SendScreen = React.memo(() => {
     || (tokenFromParams?.coin === BraveWallet.CoinType.BTC
       && !isWarningAcknowledged)
     || isAccountSyncing
+    // Ironwood transaction creation is not yet supported.
+    || isUnsupportedIronwoodTransaction
 
   // render
   return (
@@ -684,9 +703,15 @@ export const SendScreen = React.memo(() => {
       <WalletPageWrapper
         wrapContentInBox={true}
         noCardPadding={true}
-        hideNav={isMobileOrPanel}
+        useCardInPanel={true}
+        hideNav={!isSidePanel && isMobileOrPanel}
         cardHeader={
-          isMobileOrPanel ? (
+          isSidePanel ? (
+            <DefaultPanelHeader
+              expandRoute={WalletRoutes.Send}
+              title={getLocale('braveWalletSend')}
+            />
+          ) : isMobileOrPanel ? (
             <PanelActionHeader
               title={getLocale('braveWalletSend')}
               expandRoute={WalletRoutes.Send}
@@ -756,9 +781,11 @@ export const SendScreen = React.memo(() => {
                   && getZCashTransactionTypeResult
                   && toAddressOrUrl
                   && (getZCashTransactionTypeResult.txType
-                    === BraveWallet.ZCashTxType.kTransparentToOrchard
+                    === BraveWallet.ZCashTxType.kTransparentToIronwood
                     || getZCashTransactionTypeResult.txType
-                      === BraveWallet.ZCashTxType.kOrchardToOrchard) && (
+                      === BraveWallet.ZCashTxType.kOrchardToIronwood
+                    || getZCashTransactionTypeResult.txType
+                      === BraveWallet.ZCashTxType.kIronwoodToIronwood) && (
                     <AddMemo
                       memoText={memoText}
                       onUpdateMemoText={setMemoText}

@@ -7,6 +7,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 
 brave_browser_content_settings_deps = [
   "//brave/components/brave_shields/content/browser",
+  "//brave/components/brave_user_agent/browser",
   "//brave/components/containers/buildflags",
   "//components/user_prefs",
 ]

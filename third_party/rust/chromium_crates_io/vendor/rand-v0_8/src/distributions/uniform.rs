@@ -53,7 +53,7 @@
 //! `low < high`). The example below merely wraps another back-end.
 //!
 //! The `new`, `new_inclusive` and `sample_single` functions use arguments of
-//! type SampleBorrow<X> in order to support passing in values by reference or
+//! type `SampleBorrow<X>` in order to support passing in values by reference or
 //! by value. In the implementation of these functions, you can choose to
 //! simply use the reference returned by [`SampleBorrow::borrow`], or you can choose
 //! to copy or clone the value, whatever is appropriate for your type.
@@ -117,8 +117,6 @@ use crate::{Rng, RngCore};
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)] // rustc doesn't detect that this is actually used
 use crate::distributions::utils::Float;
-
-#[cfg(feature = "simd_support")] use packed_simd::*;
 
 #[cfg(feature = "serde1")]
 use serde::{Serialize, Deserialize};
@@ -428,6 +426,15 @@ pub struct UniformInt<X> {
 
 macro_rules! uniform_int_impl {
     ($ty:ty, $unsigned:ident, $u_large:ident) => {
+        impl UniformInt<$ty> {
+            /// Get the maximum possible value
+            #[allow(unused)]
+            #[inline]
+            pub(crate) fn max(&self) -> $ty {
+                self.range.wrapping_sub(1).wrapping_add(self.low)
+            }
+        }
+
         impl SampleUniform for $ty {
             type Sampler = UniformInt<$ty>;
         }
@@ -569,151 +576,6 @@ uniform_int_impl! { u64, u64, u64 }
 uniform_int_impl! { usize, usize, usize }
 uniform_int_impl! { u128, u128, u128 }
 
-#[cfg(feature = "simd_support")]
-macro_rules! uniform_simd_int_impl {
-    ($ty:ident, $unsigned:ident, $u_scalar:ident) => {
-        // The "pick the largest zone that can fit in an `u32`" optimization
-        // is less useful here. Multiple lanes complicate things, we don't
-        // know the PRNG's minimal output size, and casting to a larger vector
-        // is generally a bad idea for SIMD performance. The user can still
-        // implement it manually.
-
-        // TODO: look into `Uniform::<u32x4>::new(0u32, 100)` functionality
-        //       perhaps `impl SampleUniform for $u_scalar`?
-        impl SampleUniform for $ty {
-            type Sampler = UniformInt<$ty>;
-        }
-
-        impl UniformSampler for UniformInt<$ty> {
-            type X = $ty;
-
-            #[inline] // if the range is constant, this helps LLVM to do the
-                      // calculations at compile-time.
-            fn new<B1, B2>(low_b: B1, high_b: B2) -> Self
-                where B1: SampleBorrow<Self::X> + Sized,
-                      B2: SampleBorrow<Self::X> + Sized
-            {
-                let low = *low_b.borrow();
-                let high = *high_b.borrow();
-                assert!(low.lt(high).all(), "Uniform::new called with `low >= high`");
-                UniformSampler::new_inclusive(low, high - 1)
-            }
-
-            #[inline] // if the range is constant, this helps LLVM to do the
-                      // calculations at compile-time.
-            fn new_inclusive<B1, B2>(low_b: B1, high_b: B2) -> Self
-                where B1: SampleBorrow<Self::X> + Sized,
-                      B2: SampleBorrow<Self::X> + Sized
-            {
-                let low = *low_b.borrow();
-                let high = *high_b.borrow();
-                assert!(low.le(high).all(),
-                        "Uniform::new_inclusive called with `low > high`");
-                let unsigned_max = ::core::$u_scalar::MAX;
-
-                // NOTE: these may need to be replaced with explicitly
-                // wrapping operations if `packed_simd` changes
-                let range: $unsigned = ((high - low) + 1).cast();
-                // `% 0` will panic at runtime.
-                let not_full_range = range.gt($unsigned::splat(0));
-                // replacing 0 with `unsigned_max` allows a faster `select`
-                // with bitwise OR
-                let modulo = not_full_range.select(range, $unsigned::splat(unsigned_max));
-                // wrapping addition
-                let ints_to_reject = (unsigned_max - range + 1) % modulo;
-                // When `range` is 0, `lo` of `v.wmul(range)` will always be
-                // zero which means only one sample is needed.
-                let zone = unsigned_max - ints_to_reject;
-
-                UniformInt {
-                    low,
-                    // These are really $unsigned values, but store as $ty:
-                    range: range.cast(),
-                    z: zone.cast(),
-                }
-            }
-
-            fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Self::X {
-                let range: $unsigned = self.range.cast();
-                let zone: $unsigned = self.z.cast();
-
-                // This might seem very slow, generating a whole new
-                // SIMD vector for every sample rejection. For most uses
-                // though, the chance of rejection is small and provides good
-                // general performance. With multiple lanes, that chance is
-                // multiplied. To mitigate this, we replace only the lanes of
-                // the vector which fail, iteratively reducing the chance of
-                // rejection. The replacement method does however add a little
-                // overhead. Benchmarking or calculating probabilities might
-                // reveal contexts where this replacement method is slower.
-                let mut v: $unsigned = rng.gen();
-                loop {
-                    let (hi, lo) = v.wmul(range);
-                    let mask = lo.le(zone);
-                    if mask.all() {
-                        let hi: $ty = hi.cast();
-                        // wrapping addition
-                        let result = self.low + hi;
-                        // `select` here compiles to a blend operation
-                        // When `range.eq(0).none()` the compare and blend
-                        // operations are avoided.
-                        let v: $ty = v.cast();
-                        return range.gt($unsigned::splat(0)).select(result, v);
-                    }
-                    // Replace only the failing lanes
-                    v = mask.select(v, rng.gen());
-                }
-            }
-        }
-    };
-
-    // bulk implementation
-    ($(($unsigned:ident, $signed:ident),)+ $u_scalar:ident) => {
-        $(
-            uniform_simd_int_impl!($unsigned, $unsigned, $u_scalar);
-            uniform_simd_int_impl!($signed, $unsigned, $u_scalar);
-        )+
-    };
-}
-
-#[cfg(feature = "simd_support")]
-uniform_simd_int_impl! {
-    (u64x2, i64x2),
-    (u64x4, i64x4),
-    (u64x8, i64x8),
-    u64
-}
-
-#[cfg(feature = "simd_support")]
-uniform_simd_int_impl! {
-    (u32x2, i32x2),
-    (u32x4, i32x4),
-    (u32x8, i32x8),
-    (u32x16, i32x16),
-    u32
-}
-
-#[cfg(feature = "simd_support")]
-uniform_simd_int_impl! {
-    (u16x2, i16x2),
-    (u16x4, i16x4),
-    (u16x8, i16x8),
-    (u16x16, i16x16),
-    (u16x32, i16x32),
-    u16
-}
-
-#[cfg(feature = "simd_support")]
-uniform_simd_int_impl! {
-    (u8x2, i8x2),
-    (u8x4, i8x4),
-    (u8x8, i8x8),
-    (u8x16, i8x16),
-    (u8x32, i8x32),
-    (u8x64, i8x64),
-    u8
-}
-
 impl SampleUniform for char {
     type Sampler = UniformChar;
 }
@@ -730,7 +592,22 @@ impl SampleUniform for char {
 #[derive(Clone, Copy, Debug)]
 #[cfg_attr(feature = "serde1", derive(Serialize, Deserialize))]
 pub struct UniformChar {
+    #[cfg_attr(feature = "serde1", serde(deserialize_with = "deser_sampler"))]
     sampler: UniformInt<u32>,
+}
+
+#[cfg(feature = "serde1")]
+fn deser_sampler<'de, D>(d: D) -> Result<UniformInt<u32>, D::Error>
+where
+D: serde::Deserializer<'de>,
+{
+    let sampler = <UniformInt<u32> as serde::Deserialize>::deserialize(d)?;
+    if sampler.max() > std::char::MAX as u32 - CHAR_SURROGATE_LEN {
+        return Err(serde::de::Error::custom(
+            "bad sampler range for UniformChar",
+        ));
+    }
+    Ok(sampler)
 }
 
 /// UTF-16 surrogate range start
@@ -997,23 +874,6 @@ macro_rules! uniform_float_impl {
 
 uniform_float_impl! { f32, u32, f32, u32, 32 - 23 }
 uniform_float_impl! { f64, u64, f64, u64, 64 - 52 }
-
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f32x2, u32x2, f32, u32, 32 - 23 }
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f32x4, u32x4, f32, u32, 32 - 23 }
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f32x8, u32x8, f32, u32, 32 - 23 }
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f32x16, u32x16, f32, u32, 32 - 23 }
-
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f64x2, u64x2, f64, u64, 64 - 52 }
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f64x4, u64x4, f64, u64, 64 - 52 }
-#[cfg(feature = "simd_support")]
-uniform_float_impl! { f64x8, u64x8, f64, u64, 64 - 52 }
-
 
 /// The back-end implementing [`UniformSampler`] for `Duration`.
 ///
@@ -1295,18 +1155,6 @@ mod tests {
             }};
         }
         t!(i8, i16, i32, i64, isize, u8, u16, u32, u64, usize, i128, u128);
-
-        #[cfg(feature = "simd_support")]
-        {
-            t!(u8x2, u8x4, u8x8, u8x16, u8x32, u8x64 => u8);
-            t!(i8x2, i8x4, i8x8, i8x16, i8x32, i8x64 => i8);
-            t!(u16x2, u16x4, u16x8, u16x16, u16x32 => u16);
-            t!(i16x2, i16x4, i16x8, i16x16, i16x32 => i16);
-            t!(u32x2, u32x4, u32x8, u32x16 => u32);
-            t!(i32x2, i32x4, i32x8, i32x16 => i32);
-            t!(u64x2, u64x4, u64x8 => u64);
-            t!(i64x2, i64x4, i64x8 => i64);
-        }
     }
 
     #[test]
@@ -1327,6 +1175,24 @@ mod tests {
         for _ in 0..100 {
             let c = d.sample(&mut rng);
             assert!((c as u32) < 0xD800 || (c as u32) > 0xDFFF);
+        }
+    }
+
+    #[test]
+    #[cfg(feature = "serde1")]
+    fn test_char_bad_deser() {
+        let json = r#"{"sampler":{"low":4294967200,"range":0,"z":0}}"#;
+        let result = serde_json::from_str::<Uniform<char>>(json);
+        assert!(result.is_err());
+        let err = result.unwrap_err();
+        assert_eq!(err.classify(), serde_json::error::Category::Data);
+
+        #[cfg(feature = "alloc")]
+        {
+            assert_eq!(
+                alloc::string::ToString::to_string(&err),
+                       "bad sampler range for UniformChar at line 1 column 46"
+            );
         }
     }
 
@@ -1415,16 +1281,6 @@ mod tests {
 
         t!(f32, f32, 32 - 23);
         t!(f64, f64, 64 - 52);
-        #[cfg(feature = "simd_support")]
-        {
-            t!(f32x2, f32, 32 - 23);
-            t!(f32x4, f32, 32 - 23);
-            t!(f32x8, f32, 32 - 23);
-            t!(f32x16, f32, 32 - 23);
-            t!(f64x2, f64, 64 - 52);
-            t!(f64x4, f64, 64 - 52);
-            t!(f64x8, f64, 64 - 52);
-        }
     }
 
     #[test]
@@ -1444,7 +1300,6 @@ mod tests {
     #[cfg(all(
         feature = "std",
         not(target_arch = "wasm32"),
-        not(target_arch = "asmjs")
     ))]
     fn test_float_assertions() {
         use super::SampleUniform;
@@ -1489,16 +1344,6 @@ mod tests {
 
         t!(f32, f32);
         t!(f64, f64);
-        #[cfg(feature = "simd_support")]
-        {
-            t!(f32x2, f32);
-            t!(f32x4, f32);
-            t!(f32x8, f32);
-            t!(f32x16, f32);
-            t!(f64x2, f64);
-            t!(f64x4, f64);
-            t!(f64x8, f64);
-        }
     }
 
 
@@ -1578,6 +1423,7 @@ mod tests {
         let r = Uniform::from(2u32..7);
         assert_eq!(r.0.low, 2);
         assert_eq!(r.0.range, 5);
+        assert_eq!(r.0.max(), 6);
         let r = Uniform::from(2.0f64..7.0);
         assert_eq!(r.0.low, 2.0);
         assert_eq!(r.0.scale, 5.0);
@@ -1588,6 +1434,7 @@ mod tests {
         let r = Uniform::from(2u32..=6);
         assert_eq!(r.0.low, 2);
         assert_eq!(r.0.range, 5);
+        assert_eq!(r.0.max(), 6);
         let r = Uniform::from(2.0f64..=7.0);
         assert_eq!(r.0.low, 2.0);
         assert!(r.0.scale > 5.0);

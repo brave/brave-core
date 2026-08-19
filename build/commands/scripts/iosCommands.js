@@ -8,7 +8,7 @@ import fs from 'fs-extra'
 import path from 'node:path'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
 
 const bootstrap = (options = {}) => {
   const utilConfig = config.defaultOptions
@@ -56,7 +56,7 @@ program
       'target environment',
     ).choices(['device', 'catalyst', 'simulator']),
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action((buildConfig, options) => {
     config.buildConfig = buildConfig || config.defaultBuildConfig
     config.targetOS = 'ios'

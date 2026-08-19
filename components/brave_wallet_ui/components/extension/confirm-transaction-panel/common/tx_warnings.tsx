@@ -4,11 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import Alert from '@brave/leo/react/alert'
-
-// types
-import { BraveWallet } from '../../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -26,42 +22,34 @@ import {
   CollapseTitle,
 } from './tx_warnings.styles'
 
+export type TransactionWarningSeverity = 'warning' | 'critical'
+
+export type TransactionWarning = {
+  message: string
+  severity: TransactionWarningSeverity
+}
+
 export function TxWarningBanner({
-  retrySimulation,
   onDismiss,
   isCritical,
   children,
 }: React.PropsWithChildren<{
-  retrySimulation?: (() => void) | (() => Promise<void>)
   onDismiss?: (() => void) | (() => Promise<void>)
   isCritical?: boolean
 }>) {
   // render
   return (
     <FullWidth>
-      <Alert type={retrySimulation ? 'info' : isCritical ? 'error' : 'warning'}>
+      <Alert type={isCritical ? 'error' : 'warning'}>
         <div slot='icon'>{/* No Icon */}</div>
 
         <Row justifyContent='space-between'>
-          {retrySimulation ? (
-            <AlertTitle isInfo>
-              {getLocale('braveWalletTransactionPreviewFailed')}{' '}
-              <Button
-                kind='plain'
-                onClick={retrySimulation}
-              >
-                <u>{getLocale('braveWalletButtonRetry')}</u>
-              </Button>
-            </AlertTitle>
-          ) : (
-            <AlertTitle isCritical={isCritical}>{children}</AlertTitle>
-          )}
+          <AlertTitle isCritical={isCritical}>{children}</AlertTitle>
           {onDismiss && (
             <div>
               <WarningButton
                 kind='plain'
                 onClick={onDismiss}
-                isInfo={!!retrySimulation}
                 isCritical={isCritical}
               >
                 <WarningCloseIcon />
@@ -82,15 +70,14 @@ export function TransactionWarnings({
   classifyAs,
 }: {
   classifyAs: 'risks' | 'issues'
-  warnings: Array<Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>>
+  warnings: TransactionWarning[]
   isWarningCollapsed: boolean
   setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
   onDismiss?: (() => void) | (() => Promise<void>)
 }): JSX.Element | null {
   // memos
   const hasCriticalWarnings = warnings.some(
-    (warning) =>
-      warning.severity === BraveWallet.BlowfishWarningSeverity.kCritical,
+    (warning) => warning.severity === 'critical',
   )
 
   // no warnings

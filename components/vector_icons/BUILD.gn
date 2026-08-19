@@ -37,6 +37,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_browser_sidebar_right.icon",
     "leo_browser_split_view_unsplit.icon",
     "leo_browser_split_view_vertical.icon",
+    "leo_calendar_time.icon",
     "leo_carat_down.icon",
     "leo_carat_last.icon",
     "leo_carat_right.icon",

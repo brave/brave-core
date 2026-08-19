@@ -1,0 +1,50 @@
+diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
+index 95415e5abb2105d9345c870fe2d8f24d1bb6eaff..c50564ccab930ac5f5552db49d7f50b1da6adadd 100644
+--- a/chrome/browser/ui/unload_controller.cc
++++ b/chrome/browser/ui/unload_controller.cc
+@@ -174,6 +174,9 @@ void UnloadController::OnWindowClosing() {
+     tab_restore_service->BrowserClosing(
+         browser_->GetFeatures().live_tab_context());
+   }
++  if (MaybeHandleSharedPinnedTabsClosing(browser_)) {
++    return;
++  }
+ 
+   if (!browser_->GetTabStripModel()->empty()) {
+     // Closing all the tabs results in eventually calling back to
+@@ -450,6 +453,7 @@ UnloadController::GetBrowserClosingStatus() {
+ bool UnloadController::TryToCloseWindow(
+     bool skip_beforeunload,
+     const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
++  confirmed_to_close_ = true;
+   cancel_download_confirmation_state_ =
+       CancelDownloadConfirmationState::kResponseReceived;
+   // The devtools browser gets its beforeunload events as the results of
+@@ -472,6 +476,7 @@ bool UnloadController::TryToCloseWindow(
+ }
+ 
+ void UnloadController::ResetTryToCloseWindow() {
++  confirmed_to_close_ = false;
+   cancel_download_confirmation_state_ =
+       CancelDownloadConfirmationState::kNotPrompted;
+   if (!is_calling_before_unload_handlers()) {
+@@ -570,6 +575,9 @@ void UnloadController::OnTabStripModelChanged(
+ }
+ 
+ void UnloadController::TabStripEmpty() {
++  if (!browser_->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
++    return;
++  }
+   // Set is_attempting_to_close_browser_ here, so that extensions, etc, do not
+   // attempt to add tabs to the browser before it closes.
+   is_attempting_to_close_browser_ = true;
+@@ -921,6 +929,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+ }
+ 
+ void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
++  if (result == WarnBeforeClosingResult::kDoNotClose) {
++    confirmed_to_close_ = false;
++  }
+   switch (result) {
+     case WarnBeforeClosingResult::kOkToClose:
+       chrome::CloseWindow(browser_);

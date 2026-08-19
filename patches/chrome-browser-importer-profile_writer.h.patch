@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/importer/profile_writer.h b/chrome/browser/importer/profile_writer.h
+index f609d99dde302a8226a246c9b51870c8f27ffab7..8a76ae3faf445bdfaee40a3613dc78f251848466 100644
+--- a/chrome/browser/importer/profile_writer.h
++++ b/chrome/browser/importer/profile_writer.h
+@@ -92,6 +92,12 @@ class ProfileWriter : public base::RefCountedThreadSafe<ProfileWriter> {
+   virtual void AddAutocompleteFormDataEntries(
+       const std::vector<autofill::AutocompleteEntry>& autocomplete_entries);
+ 
++  void AddCreditCard(const std::u16string& name_on_card,
++                  const std::u16string& expiration_month,
++                  const std::u16string& expiration_year,
++                  const std::u16string& decrypted_card_number,
++                  const std::string& origin);
++
+  protected:
+   friend class base::RefCountedThreadSafe<ProfileWriter>;
+ 

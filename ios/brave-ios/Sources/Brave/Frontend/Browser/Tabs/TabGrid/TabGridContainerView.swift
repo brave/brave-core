@@ -119,6 +119,10 @@ class TabGridContainerView: UIView {
       scrolledToInitialTab = true
       scrollToSelectedItem(animated: false)
     }
+
+    if #available(iOS 26.0, *) {
+      updateScrollEdgeViews()
+    }
   }
 
   override var canBecomeFirstResponder: Bool {
@@ -152,6 +156,10 @@ class TabGridContainerView: UIView {
     )
   }
 
+  // iOS 26+ views needed to support the `UIScrollEdgeElementContainerInteraction`
+  private var topEdgeView: UIView?
+  private var bottomEdgeView: UIView?
+
   private func prepareCollectionView() {
     collectionView.alwaysBounceVertical = true
     collectionView.backgroundColor = .clear
@@ -174,6 +182,51 @@ class TabGridContainerView: UIView {
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+
+    if #available(iOS 26.0, *) {
+      // In order to support scroll edge effects in this view we must create scroll edge container
+      // interactions, however this interaction does not work unless the view its added to contains
+      // a glass view hierarchy in it (UIGlassEffect/UIGlassContainerEffect). We dont render the
+      // header/footer bars in this representable, so instead we need to create temporary views
+      // that will be added to the container view and laid out using the insets we already pass in.
+      let topEdgeView = UIVisualEffectView(effect: UIGlassEffect())
+      let topEdgeContainerInteraction = UIScrollEdgeElementContainerInteraction()
+      topEdgeContainerInteraction.scrollView = collectionView
+      topEdgeContainerInteraction.edge = .top
+      topEdgeView.addInteraction(topEdgeContainerInteraction)
+      addSubview(topEdgeView)
+      self.topEdgeView = topEdgeView
+
+      let bottomEdgeView = UIVisualEffectView(effect: UIGlassEffect())
+      let bottomEdgeContainerInteraction = UIScrollEdgeElementContainerInteraction()
+      bottomEdgeContainerInteraction.scrollView = collectionView
+      bottomEdgeContainerInteraction.edge = .bottom
+      bottomEdgeView.addInteraction(bottomEdgeContainerInteraction)
+      addSubview(bottomEdgeView)
+      self.bottomEdgeView = bottomEdgeView
+
+      collectionView.topEdgeEffect.style = .soft
+      collectionView.bottomEdgeEffect.style = .soft
+    }
+  }
+
+  @available(iOS 26.0, *)
+  private func updateScrollEdgeViews() {
+    // width is set to `CGFloat.leastNormalMagnitude` for both of these so that they dont appear
+    // in the actual view. The views frames MUST intersect with the scroll view and they cannot
+    // be hidden/have an alpha of 0 or `UIScrollEdgeElementContainerInteraction` does not work
+    topEdgeView?.frame = .init(
+      x: 0,
+      y: 0,
+      width: CGFloat.leastNormalMagnitude,
+      height: maskInsets.top + safeAreaInsets.top
+    )
+    bottomEdgeView?.frame = .init(
+      x: 0,
+      y: bounds.height - maskInsets.bottom - safeAreaInsets.bottom,
+      width: CGFloat.leastNormalMagnitude,
+      height: maskInsets.bottom + safeAreaInsets.bottom
+    )
   }
 
   private func updateContentInsets() {
@@ -188,6 +241,11 @@ class TabGridContainerView: UIView {
         collectionView.contentOffset.y = -maskInsets.top
       }
     }
+
+    if #available(iOS 26.0, *) {
+      updateScrollEdgeViews()
+    }
+
     // iOS 18+'s SwiftUI animation sharing feature is broken and causes weird jumps so we can't use
     // Animation.toolbarsSizeAnimation directly
     let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.825)

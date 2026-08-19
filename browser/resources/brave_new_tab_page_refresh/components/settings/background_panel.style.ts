@@ -3,7 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import {
+  color,
+  effect,
+  font,
+  icon,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
+
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -12,95 +20,77 @@ export const style = scoped.css`
     flex-direction: column;
   }
 
-  label .subtext {
-    font: ${font.small.regular};
-    color: ${color.text.secondary};
-
-    a {
-      color: inherit;
-    }
-  }
-
   .background-options {
-    padding: 16px;
-    margin-bottom: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-
-    button {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    padding: ${spacing['2Xl']};
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: ${spacing.xl};
   }
 
   .preview {
-    background: var(--preview-background, ${color.container.highlight});
+    position: relative;
+    background: var(--preview-background, ${color.page.background});
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    border-radius: 10px;
-    width: 198px;
-    height: 156px;
+    border-radius: ${radius.m};
+    border: solid 1px ${color.divider.faint};
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+
+    &.selected {
+      box-shadow: ${effect.elevation['01']};
+    }
   }
 
   .background-option {
     position: relative;
     text-align: center;
 
-    &:hover .remove-image {
-      visibility: visible;
+    > button:first-child {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: ${spacing.m};
+      padding-bottom: ${spacing.m};
     }
-  }
 
-  .allow-remove:hover .selected-marker {
-    visibility: hidden;
+    &:hover,
+    &:focus-within {
+      .remove-image {
+        visibility: visible;
+      }
+    }
   }
 
   .remove-image {
-    --leo-icon-size: 24px;
+    --leo-icon-color: ${color.icon.default};
+    --leo-icon-size: ${icon.m};
 
     position: absolute;
-    inset-block-start: 10px;
-    inset-inline-end: 10px;
-    background-color: #fff;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
-    padding: 6px;
+    inset-block-start: ${spacing.m};
+    inset-inline-end: ${spacing.m};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: ${icon.l};
+    height: ${icon.l};
+    background-color: ${color.white};
+    border-radius: ${radius.full};
     visibility: hidden;
-
-    &:hover {
-      color: ${color.icon.interactive};
-    }
   }
 
   .upload {
-    --leo-icon-size: 36px;
-    --leo-progressring-size: 36px;
+    --leo-icon-size: 24px;
+    --leo-progressring-size: 24px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-    border: solid 2px ${color.divider.subtle};
+    gap: ${spacing.xl};
+    border: solid 2px ${color.divider.faint};
     font: ${font.small.regular};
-  }
-
-  h4 {
-    padding: 16px 16px 0;
-
-    button {
-      --leo-icon-size: 20px;
-
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      &:hover {
-        color: ${color.text.interactive};
-      }
-    }
   }
 `

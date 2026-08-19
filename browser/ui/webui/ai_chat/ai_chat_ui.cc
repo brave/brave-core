@@ -14,6 +14,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_full_page_link_observer.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -105,6 +106,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isConversationShareEnabled",
                      base::FeatureList::IsEnabled(
                          ai_chat::features::kAIChatConversationShare));
+  source->AddBoolean(
+      "isAIChatExportJSONEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatExportJSON));
   // Brave client version, used to tag serialized conversations for sharing.
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());
@@ -133,6 +137,16 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   content::URLDataSource::Add(profile_,
                               std::make_unique<ThemeSource>(profile_));
 #endif
+
+  // Links in a conversation are plain anchors, so the browser opens them
+  // without going through any AI Chat handler. Watch for that so a full-page
+  // conversation can move into the side panel and let the link take its place.
+  if (base::FeatureList::IsEnabled(
+          ai_chat::features::kAIChatMoveFullPageToSidePanel)) {
+    full_page_link_observer_ =
+        std::make_unique<ai_chat::AIChatFullPageLinkObserver>(
+            web_ui->GetWebContents());
+  }
 }
 
 AIChatUI::~AIChatUI() = default;

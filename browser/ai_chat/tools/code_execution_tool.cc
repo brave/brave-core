@@ -16,11 +16,12 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "base/values.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/ai_chat/core/browser/tools/bignumber_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
+#include "brave/components/ai_chat/core/browser/tools/interface_removal_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
@@ -226,6 +227,7 @@ void CodeExecutionTool::ResolveRequest(
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
     : profile_(Profile::FromBrowserContext(browser_context)),
       execution_time_limit_(kExecutionTimeLimit) {
+  code_plugins_.push_back(std::make_unique<InterfaceRemovalCodePlugin>());
   code_plugins_.push_back(std::make_unique<BigNumberCodePlugin>());
   if (ChartCodePlugin::IsEnabled()) {
     code_plugins_.push_back(std::make_unique<ChartCodePlugin>());
@@ -302,6 +304,10 @@ void CodeExecutionTool::SetExecutionTimeLimitForTesting(
 void CodeExecutionTool::AddCodePluginForTesting(
     std::unique_ptr<CodePlugin> plugin) {
   code_plugins_.push_back(std::move(plugin));
+}
+
+void CodeExecutionTool::ClearCodePluginsForTesting() {
+  code_plugins_.clear();
 }
 
 std::string CodeExecutionTool::WrapScript(const std::string& script) {

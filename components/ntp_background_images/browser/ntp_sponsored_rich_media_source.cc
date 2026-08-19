@@ -51,7 +51,7 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
 
   const base::FilePath request_path =
       base::FilePath::FromUTF8Unsafe(URLToRequestPath(url));
-  const std::optional<base::FilePath> file_path =
+  std::optional<base::FilePath> file_path =
       MaybeGetFilePathForRequestPath(request_path, images_data->campaigns);
   if (!file_path) {
     return DenyAccess(std::move(callback));

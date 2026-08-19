@@ -1,0 +1,40 @@
+diff --git a/components/feed/feed_feature_list.cc b/components/feed/feed_feature_list.cc
+index 4ef72a4b65288af7eddddd331d396c05dc72160c..9222fed043488ed6e858363e93cf3d679802272a 100644
+--- a/components/feed/feed_feature_list.cc
++++ b/components/feed/feed_feature_list.cc
+@@ -21,7 +21,11 @@ namespace feed {
+ // InterestFeedV2 takes precedence over InterestFeedContentSuggestions.
+ // InterestFeedV2 is cached in ChromeCachedFlags. If the default value here is
+ // changed, please update the cached one's default value in CachedFeatureFlags.
++#if BUILDFLAG(IS_ANDROID)
++BASE_FEATURE(kInterestFeedV2, base::FEATURE_DISABLED_BY_DEFAULT);
++#else
+ BASE_FEATURE(kInterestFeedV2, base::FEATURE_ENABLED_BY_DEFAULT);
++#endif
+ 
+ BASE_FEATURE(kDiscoFeedEndpoint, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kXsurfaceMetricsReporting, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -48,7 +52,11 @@ BASE_FEATURE(kFeedSignedOutViewDemotion, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kRefreshFeedOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++#if BUILDFLAG(IS_ANDROID)
++BASE_FEATURE(kFeedContainment, base::FEATURE_DISABLED_BY_DEFAULT);
++#else
+ BASE_FEATURE(kFeedContainment, base::FEATURE_ENABLED_BY_DEFAULT);
++#endif
+ 
+ BASE_FEATURE(kFeedRecyclerBinderUnmountOnDetach,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -57,7 +65,11 @@ BASE_FEATURE(kFeedStreaming, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kFeedAudioOverviews, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++#if BUILDFLAG(IS_ANDROID)
++BASE_FEATURE(kAndroidOpenIncognitoAsWindow, base::FEATURE_DISABLED_BY_DEFAULT);
++#else
+ BASE_FEATURE(kAndroidOpenIncognitoAsWindow, base::FEATURE_ENABLED_BY_DEFAULT);
++#endif
+ 
+ BASE_FEATURE(kWideScreenFeedForFoldables, base::FEATURE_DISABLED_BY_DEFAULT);
+ 

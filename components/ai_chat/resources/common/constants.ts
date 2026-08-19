@@ -6,8 +6,6 @@
 import * as Mojom from './mojom'
 import { modelIcons, fallbackModelIcon } from './model_icon_map'
 
-export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
-
 export function getModelIcon(model: Mojom.Model): string {
   // Check if it's an Ollama model by endpoint
   if (

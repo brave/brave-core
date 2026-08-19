@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
-import { getLocale } from '../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // types
 import {
@@ -186,10 +186,7 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.FIL) {
-    if (
-      chainId === BraveWallet.FILECOIN_MAINNET
-      || chainId === BraveWallet.LOCALHOST_CHAIN_ID
-    ) {
+    if (chainId === BraveWallet.FILECOIN_MAINNET) {
       return BraveWallet.KeyringId.kFilecoin
     }
     if (chainId === BraveWallet.FILECOIN_TESTNET) {

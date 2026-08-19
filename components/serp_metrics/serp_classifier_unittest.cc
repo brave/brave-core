@@ -72,7 +72,8 @@ TEST(SerpClassifierTest, IsNotSameSearchQueryWithStartpage) {
 }
 
 TEST(SerpClassifierTest, OnlyClassifyAllowedSearchEngines) {
-  for (const auto* prepopulated_engine :
+  for (const TemplateURLPrepopulateData::PrepopulatedEngine*
+           prepopulated_engine :
        regional_capabilities::GetAllPrepopulatedEngines()) {
     VerifySerpClassifierExpectation(*prepopulated_engine);
   }
@@ -88,6 +89,35 @@ TEST(SerpClassifierTest, ClassifyStartpageSearchEngine) {
   // does not support.
   EXPECT_TRUE(MaybeClassifySearchEngine(
       GURL(R"(https://www.startpage.com/sp/search)")));
+}
+
+TEST(SerpClassifierTest, ClassifyAskBraveSearchAsBraveSearch) {
+  const std::optional<SearchEngineType> search_engine_type =
+      MaybeClassifySearchEngine(
+          GURL(R"(https://search.brave.com/ask?q=foobar)"));
+  ASSERT_TRUE(search_engine_type);
+  EXPECT_EQ(SEARCH_ENGINE_BRAVE, *search_engine_type);
+}
+
+TEST(SerpClassifierTest, DoNotClassifyAskBraveSearchWithoutSearchTerms) {
+  EXPECT_FALSE(
+      MaybeClassifySearchEngine(GURL(R"(https://search.brave.com/ask)")));
+}
+
+TEST(SerpClassifierTest, DoNotClassifyAskBraveSearchWithWrongHost) {
+  EXPECT_FALSE(MaybeClassifySearchEngine(GURL(R"(https://foo.com/ask?q=bar)")));
+}
+
+TEST(SerpClassifierTest, IsSameSearchQueryForAskBraveSearch) {
+  EXPECT_TRUE(IsSameSearchQuery(
+      GURL(R"(https://search.brave.com/ask?q=foobar)"),
+      GURL(R"(https://search.brave.com/ask?q=foobar&t=web)")));
+}
+
+TEST(SerpClassifierTest, IsNotSameSearchQueryForAskBraveSearch) {
+  EXPECT_FALSE(
+      IsSameSearchQuery(GURL(R"(https://search.brave.com/ask?q=foo)"),
+                        GURL(R"(https://search.brave.com/ask?q=bar)")));
 }
 
 TEST(SerpClassifierTest, DoNotClassifyNonSearchEngine) {

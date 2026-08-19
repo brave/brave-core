@@ -11,9 +11,12 @@
 #include "base/component_export.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT));
+
+class PrefService;
 
 namespace ai_chat::features {
 
@@ -66,6 +69,11 @@ extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatRemoteModelsConfig);
 
+// How long a cached remote model list is considered fresh before it must be
+// re-fetched.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<base::TimeDelta> kRemoteModelsCacheTTL;
+
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);
@@ -77,6 +85,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatFirst);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatFirstEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatUserChoiceTool);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatWorkspaceTools);
 
 // Enables experimental features being enabled in a separate profile. If
 // disabled, the features will not be enabled anywhere.
@@ -99,7 +109,8 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled();
 // Moves the full-page AI Chat conversation into the side panel when an
 // in-conversation link is clicked, and back into a tab when opening the
 // conversation full-page, transferring the live WebContents to preserve state.
-// Desktop only; disabled by default.
+// Desktop only.
+// https://github.com/brave/brave-browser/issues/57047
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatMoveFullPageToSidePanel);
 
@@ -134,10 +145,6 @@ BASE_DECLARE_FEATURE(kTabManagementTool);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kNEARModels);
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<bool> kNEARModelsEncryption;
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<bool> kNEARModelsEncryptionSearch;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsNEARModelsEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
@@ -168,7 +175,9 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatWebUIEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kShowAIChatInputOnNewTabPage);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsShowAIChatInputOnNewTabPageEnabled();
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
+                                          bool is_first_run);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatDeepResearch);
@@ -178,6 +187,7 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kBraveSyncAIChat);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 
 // Enables sharing a conversation from the conversation header.
+// https://github.com/brave/brave-browser/issues/56444
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatConversationShare);
 
@@ -187,6 +197,18 @@ BASE_DECLARE_FEATURE(kAIChatConversationShare);
 // fragment.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl;
+
+// How long the sharing server keeps a shared conversation before deleting it.
+// Locally stored records of shares are purged on the same schedule so that the
+// share management UI doesn't list shares which no longer exist.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kAIChatConversationShareExpiryDays;
+
+// Enables copying serialized conversation data as JSON to the clipboard when
+// using the alt+meta modifier keys and the "Copy entire conversation" menu
+// option.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatExportJSON);
 
 }  // namespace ai_chat::features
 

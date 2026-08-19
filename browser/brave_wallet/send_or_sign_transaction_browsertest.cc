@@ -9,7 +9,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -21,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -65,8 +63,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 constexpr char kSignedTransaction[] =
     "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b2296211"
-    "80820a95a0c58904f26f5ac0e86a292d9a832bbb56ab8d7bfb9f74a5eafa99778bf059ea93"
-    "a07db1772583c02ae58637916c03a3a1d9fd98044dd83c52da6870fee25a8575e1";
+    "80820135a0a1816813f50a34074d948e38405afca1efc3b3b656d9bf5430dc457f6a845491"
+    "a001e969580492a64d11967ba507dcb5436f11795a207171cded8b363a718aed87";
 
 }  // namespace
 
@@ -170,7 +168,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -191,7 +189,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_rpc()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_for_rpc()->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_for_rpc()->Start());
-    SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);
+    SetNetworkForTesting(mojom::kPolygonMainnetChainId, std::nullopt);
   }
 
   content::WebContents* web_contents() {
@@ -200,7 +198,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   KeyringService* keyring_service() {
@@ -218,7 +216,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   TxService* tx_service() { return brave_wallet_service()->tx_service(); }
 
   HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   net::EmbeddedTestServer* https_server_for_files() {
@@ -332,7 +331,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
     EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-        blink::PermissionType::BRAVE_ETHEREUM, browser()->profile(),
+        blink::PermissionType::BRAVE_ETHEREUM, browser()->GetProfile(),
         web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin(),
         account_id->address));
   }
@@ -384,7 +383,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       const std::string& test_method,
       const std::string& data = "",
       bool skip_restore = false,
-      const std::string& chain_id = mojom::kLocalhostChainId) {
+      const std::string& chain_id = mojom::kPolygonMainnetChainId) {
     if (!skip_restore) {
       RestoreWallet();
     }
@@ -454,7 +453,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   void TestUserRejected(
       bool sign_only,
       const std::string& test_method,
-      const std::string& chain_id = mojom::kLocalhostChainId) {
+      const std::string& chain_id = mojom::kPolygonMainnetChainId) {
     RestoreWallet();
     GURL url = https_server_for_files()->GetURL(
         "a.com", "/send_or_sign_transaction.html");
@@ -490,7 +489,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                     ->tx_data_union->get_eth_tx_data_1559()
                     ->base_data->nonce.empty());
 
-    RejectTransaction(mojom::kLocalhostChainId, infos[0]->id);
+    RejectTransaction(mojom::kPolygonMainnetChainId, infos[0]->id);
 
     infos = GetAllTransactionInfo(chain_id);
     EXPECT_EQ(1UL, infos.size());
@@ -564,7 +563,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
     if (chain && !skip_rpc_url_override) {
       base::RunLoop run_loop1;
-      browser()->profile()->GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
+      browser()->GetProfile()->GetPrefs()->ClearPref(
+          kBraveWalletCustomNetworks);
       chain->rpc_endpoints =
           std::vector<GURL>({https_server_for_rpc()->base_url()});
       json_rpc_service()->AddChain(
@@ -703,8 +703,8 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSend1Data0xSign) {
   TestUserApproved(
       "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
-      "1101820a95a0ea3d09b65bb17424978c9ec3c9319c157523374dde70025b52034ae33f85"
-      "82a8a02a879841219186d6d1029d674a6ad428e5e6693ac6b92304905fcaae533d69a3",
+      "1101820136a0a05ea78a4bb565339f7c51a3d0c5526f9ffb1f9c3996054231f18300dc94"
+      "aa4da046426e4cc0948ebe5f99aa48d2f7eb6f5e76cdf968fd8758b270cf9ebb5dd651",
       "send1", "0x1");
 }
 
@@ -712,8 +712,8 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSend2Data0xSign) {
   TestUserApproved(
       "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
-      "1111820a96a0fe7acb8944ff3223ddb123ac046129093998087d9895203cb472ed865b6a"
-      "7213a071581e1fd537e114e7416322c06857f38df4e1f91e1abc9adb7cfb5840eaabca",
+      "1111820135a03af5edf4bfb8a376bf4cf70847a627e4ae37adbd370ad0d9cad1204c1904"
+      "636da00e71b124873cd1c70c08c5746af102d994a1fb2dda9926a1e38d6d27ddcb7046",
       "send2", "0x11");
 }
 
@@ -934,7 +934,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionLegacyTx) {
-  SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);
+  SetNetworkForTesting(mojom::kPolygonMainnetChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(false);
   TestUserApproved(std::nullopt, "request");
 }
@@ -967,7 +967,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSignTransactionLegacyTx) {
-  SetNetworkForTesting(mojom::kLocalhostChainId, std::nullopt);  // localhost
+  SetNetworkForTesting(mojom::kPolygonMainnetChainId, std::nullopt);
   observer()->SetExpectEip1559Tx(false);
   TestUserApproved(kSignedTransaction, "request");
 }

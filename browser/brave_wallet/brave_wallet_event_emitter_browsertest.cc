@@ -67,7 +67,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
@@ -100,7 +100,8 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   content::WebContents* web_contents() {
@@ -109,7 +110,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   KeyringService* keyring_service() {

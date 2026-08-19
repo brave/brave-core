@@ -15,6 +15,7 @@ import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//tools/grit/repack.gni")
 
@@ -42,6 +43,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_sync:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/https_upgrade_exceptions/browser:unit_tests",
+    "//brave/components/image_metadata_stripper/internal:unit_tests",
     "//brave/components/json:unit_tests",
     "//brave/components/oblivious_http:unit_tests",
     "//brave/components/screenshot/core/browser:unit_tests",
@@ -66,6 +68,11 @@ test("brave_components_unittests") {
     ]
   }
 
+  if (enable_extensions) {
+    deps +=
+        [ "//brave/components/extension_malware_blocklist/browser:unit_tests" ]
+  }
+
   if (enable_psst) {
     deps += [ "//brave/components/psst/core/browser:unit_tests" ]
   }
@@ -83,6 +90,14 @@ test("brave_components_unittests") {
       "//brave/components/ai_chat/core/browser:unit_tests",
       "//brave/components/ai_chat/core/browser/ollama:unit_tests",
       "//brave/components/ai_chat/core/common:unit_tests",
+      "//brave/components/web_mcp/core/browser:unit_tests",
+    ]
+  }
+
+  if (enable_brave_vpn_v2) {
+    deps += [
+      "//brave/components/brave_vpn/browser/v2/api:unit_tests",
+      "//brave/components/brave_vpn/common/v2:unit_tests",
     ]
   }
 

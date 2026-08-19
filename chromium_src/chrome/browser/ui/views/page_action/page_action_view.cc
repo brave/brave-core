@@ -6,8 +6,10 @@
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 
 #include <algorithm>
+#include <optional>
 
 #include "chrome/browser/ui/page_action/page_action_model.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/layout/layout_types.h"
@@ -22,6 +24,16 @@ void MaybeOverrideBorder(const page_actions::PageActionModelInterface* source,
   if (source && source->GetOverrideBorder().has_value()) {
     border_insets = source->GetOverrideBorder().value();
   }
+}
+
+// Brave doesn't use a background color for page action chips: honour the
+// model's SkColor override if set, otherwise keep the chip transparent.
+std::optional<SkColor> GetBraveBackgroundColor(
+    const page_actions::PageActionModelInterface* source) {
+  if (source && source->GetOverrideBackgroundColor()) {
+    return *source->GetOverrideBackgroundColor();
+  }
+  return SK_ColorTRANSPARENT;
 }
 
 }  // namespace
@@ -121,16 +133,6 @@ bool PageActionView::ShouldAlwaysShowLabel() const {
   }
 
   return IconLabelBubbleView::ShouldAlwaysShowLabel();
-}
-
-SkColor PageActionView::GetBackgroundColor() const {
-  const PageActionModelInterface* source = observation_.GetSource();
-  if (source && source->GetOverrideBackgroundColor()) {
-    return *source->GetOverrideBackgroundColor();
-  }
-
-  // Brave doesn't use a background color for page action chips.
-  return SK_ColorTRANSPARENT;
 }
 
 SkColor PageActionView::GetForegroundColor() const {

@@ -154,6 +154,31 @@ TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer) {
                   container->background_color);
 }
 
+TEST_F(ContainersServiceTest, GetOrCreateTemporaryContainerByName) {
+  // A synced container with the same name must not be returned: the caller
+  // asked for a temporary container.
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(MakeContainer("container-id", "Shared Name"));
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  auto container = service_->GetOrCreateTemporaryContainerByName("Shared Name");
+  ASSERT_TRUE(container);
+  EXPECT_TRUE(IsTemporaryContainerId(container->id));
+  EXPECT_EQ("Shared Name", container->name);
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
+
+  // The same name resolves to the same temporary container.
+  auto reused = service_->GetOrCreateTemporaryContainerByName("Shared Name");
+  ASSERT_TRUE(reused);
+  EXPECT_EQ(container->id, reused->id);
+
+  // A different name creates another temporary container.
+  auto other = service_->GetOrCreateTemporaryContainerByName("Other Name");
+  ASSERT_TRUE(other);
+  EXPECT_TRUE(IsTemporaryContainerId(other->id));
+  EXPECT_NE(container->id, other->id);
+}
+
 TEST_F(ContainersServiceTest,
        Observer_OnContainersListChanged_WhenContainersListPrefChanges) {
   testing::NiceMock<MockContainersServiceObserver> observer;

@@ -1,0 +1,17 @@
+diff --git a/components/network_time/network_time_tracker.cc b/components/network_time/network_time_tracker.cc
+index ada56340053a010e8cd88045ae96ce3695b51619..901459c045c49623d7e39b2ea892bf21c1e5a14d 100644
+--- a/components/network_time/network_time_tracker.cc
++++ b/components/network_time/network_time_tracker.cc
+@@ -60,9 +60,11 @@ namespace network_time {
+ // Network time queries are enabled on Android and all desktop platforms except
+ // Chrome OS, which uses tlsdated to set the system time.
+ #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_IOS)
++// kNetworkTimeServiceQuerying feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kNetworkTimeServiceQuerying, base::FEATURE_DISABLED_BY_DEFAULT);
+ #else
+-BASE_FEATURE(kNetworkTimeServiceQuerying, base::FEATURE_ENABLED_BY_DEFAULT);
++// kNetworkTimeServiceQuerying feature state is enforced via plaster rewrite.
++BASE_FEATURE(kNetworkTimeServiceQuerying, base::FEATURE_DISABLED_BY_DEFAULT);
+ #endif
+ 
+ namespace {

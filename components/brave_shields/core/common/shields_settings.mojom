@@ -33,6 +33,9 @@ struct ShieldsSettings {
   array<string> origins_to_allow_scripts;
   bool reduce_language;
   bool enforced_script_blocking;
+  // Set for sites on the brave-checks.txt list, which report "Google Chrome"
+  // instead of "Brave" in Sec-CH-UA and navigator.userAgentData.
+  bool hide_brave_brand;
 };
 
 enum AdBlockMode {

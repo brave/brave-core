@@ -13,6 +13,61 @@ import {
   applyCompiledSelector,
   compileProceduralSelector,
 } from './procedural_filters'
+import type { ProceduralSelector } from './procedural_filters'
+
+type StyleAction = {
+  type: 'style'
+  arg: string
+}
+type RemoveAction = {
+  type: 'remove'
+}
+type RemoveAttrAction = {
+  type: 'remove-attr'
+  arg: string
+}
+type RemoveClassAction = {
+  type: 'remove-class'
+  arg: string
+}
+
+type CosmeticFilterAction =
+  | StyleAction
+  | RemoveAction
+  | RemoveAttrAction
+  | RemoveClassAction
+
+type ProceduralActionFilter = {
+  selector: ProceduralSelector
+  action?: CosmeticFilterAction
+}
+
+declare global {
+  interface Window {
+    content_cosmetic: {
+      cosmeticStyleSheet: CSSStyleSheet
+      allSelectorsToRules: Map<string, number>
+      observingHasStarted: boolean
+      hide1pContent: boolean
+      generichide: boolean
+      firstRunQueue: Set<string>
+      secondRunQueue: Set<string>
+      finalRunQueue: Set<string>
+      allQueues: Set<string>[]
+      numQueues: any
+      alreadyUnhiddenSelectors: Set<string>
+      alreadyKnownFirstPartySubtrees: WeakSet<any>
+      _hasDelayOcurred: boolean
+      _startCheckingId: number | undefined
+      firstSelectorsPollingDelayMs: number | undefined
+      switchToSelectorsPollingThreshold: number | undefined
+      fetchNewClassIdRulesThrottlingMs: number | undefined
+      tryScheduleQueuePump: () => void
+      proceduralActionFilters?: ProceduralActionFilter[]
+      hasProceduralActions: boolean
+    }
+  }
+}
 
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),

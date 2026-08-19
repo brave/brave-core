@@ -5,9 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -28,10 +27,12 @@ import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.misc_metrics.mojom.OpeningScreenSwitchType;
@@ -59,7 +60,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mShowSponsoredImagesPref;
     private ChromeSwitchPreference mShowBraveStatsPref;
     private ChromeSwitchPreference mShowTopSitesPref;
-    private ChromeBasePreference mLearnMorePreference;
+    private BraveTextButtonPreference mLearnMorePreference;
     private BraveRadioButtonGroupOpeningScreenPreference mOpeningScreenPref;
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -100,19 +101,10 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
         mLearnMorePreference =
-                (ChromeBasePreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
+                (BraveTextButtonPreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
         if (mLearnMorePreference != null && rewardsDisabledByPolicy) {
             mLearnMorePreference.setVisible(false);
         } else if (mLearnMorePreference != null) {
-            SpannableString spannableString =
-                    new SpannableString(
-                            getContext().getString(R.string.sponsored_images_learn_more));
-            spannableString.setSpan(
-                    new ForegroundColorSpan(getContext().getColor(R.color.brave_link)),
-                    0,
-                    spannableString.length(),
-                    0);
-            mLearnMorePreference.setTitle(spannableString);
             mLearnMorePreference.setOnPreferenceClickListener(
                     preference -> {
                         try {
@@ -241,4 +233,27 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             Log.e(TAG, "recordOpeningScreenSwitch " + e);
         }
     }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    BackgroundImagesPreferences.class.getName(),
+                    R.xml.background_images_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = BackgroundImagesPreferences.class.getName();
+                    // Sponsored images and their "learn more" link are hidden when Brave Rewards
+                    // is disabled by policy, mirroring onActivityCreated().
+                    if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_SHOW_SPONSORED_IMAGES);
+                        indexData.removeEntryForKey(frag, PREF_SPONSORED_IMAGES_LEARN_MORE);
+                    }
+                    // The opening-screen section (PREF_OPENING_SCREEN_CATEGORY) is shown only when
+                    // the Fresh NTP feature is enabled with a non-"A" variant, but it needs no
+                    // handling here: the PreferenceCategory itself is never indexed, and its single
+                    // child (PREF_OPENING_SCREEN) is a custom radio-group widget with no
+                    // android:title, so it is not matchable by search regardless of feature state.
+                }
+            };
 }

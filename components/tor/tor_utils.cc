@@ -5,18 +5,25 @@
 
 #include "brave/components/tor/tor_utils.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/tor/tor_constants.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/ip_address.h"
+#include "net/base/url_util.h"
 
 namespace {
 constexpr const char kUseBridgesKey[] = "use_bridges";
@@ -101,17 +108,100 @@ const std::vector<std::string>& GetBuiltinBridges(
   }
 }
 
+// Bridge lines are forwarded verbatim to the Tor control port by
+// TorControl::SetupBridges(), where a malformed one is more than just useless;
+// see IsSafeBridgeChar(). Rather than pattern-matching them, validate against
+// the grammar Tor's own parse_bridge_line() accepts:
+//
+//   [<transport-name>] <host>[:<port>] [<fingerprint>] [<key>=<value> ...]
+//
+// See GetBuiltinBridges() for examples of well formed lines.
+//
+// That check is applied where a bad line can still be acted on, which is never
+// here:
+//
+//   - BraveTorHandler::SetBridgesConfig() rejects a submission containing one,
+//     so the person who typed it is told rather than having it discarded. It is
+//     the only place `provided_bridges` and `requested_bridges` are given new
+//     values.
+//   - UpdateBuiltinBridges() filters, because `builtin_bridges` arrives from
+//     Tor's moat service with nobody to report a bad line to.
+//   - TorControl::SetupBridges() filters again as the last line of defence,
+//     covering a hand-edited pref file or a list stored by an older build.
+//
+// Loading a list out of prefs is therefore verbatim. Filtering here would not
+// merely ignore a line, it would delete it: the settings page writes back
+// whatever it reads, and TorProfileServiceImpl::OnBuiltinBridgesResponse()
+// rewrites the whole pref once a day to store a refreshed built-in list, which
+// would drop the other two lists on the floor as a side effect.
+
+// Fingerprints are hex encoded SHA-1 digests of the bridge's identity key.
+constexpr size_t kFingerprintLength = 40;
+
+// Names of pluggable transport arguments (`cert`, `iat-mode`, `utls-imitate`,
+// ...) and of the transports themselves (`obfs4`, `meek_lite`, ...).
+bool IsValidIdentifier(std::string_view token) {
+  return !token.empty() && std::ranges::all_of(token, [](char c) {
+    return base::IsAsciiAlphaNumeric(c) || c == '_' || c == '-';
+  });
+}
+
+bool IsSafeBridgeChar(char c) {
+  // Printable ASCII only. This rejects CR and LF, which would terminate the
+  // control port command and inject an additional one, along with tabs, NULs
+  // and every non-ASCII byte. A double quote or a backslash is excluded on top
+  // of that because either would alter the quoting of the SETCONF argument.
+  return base::IsAsciiPrintable(c) && c != '"' && c != '\\';
+}
+
+bool IsValidHostPort(std::string_view token) {
+  std::string host;
+  int port = -1;
+  // Handles bracketed IPv6 literals, and rejects embedded credentials
+  // (`user:password@host`), a trailing bare colon and out-of-range ports. The
+  // port is optional: Tor defaults it to 443.
+  if (!net::ParseHostAndPort(token, &host, &port)) {
+    return false;
+  }
+  // ParseHostAndPort() accepts port 0, which Tor cannot connect to.
+  if (port == 0) {
+    return false;
+  }
+  net::IPAddress ip;
+  if (ip.AssignFromIPLiteral(host)) {
+    return true;
+  }
+  // Deliberately case-folded rather than canonicalized: the original line, not
+  // a canonical form of it, is what gets handed to Tor, and Tor does no
+  // canonicalization of its own. Case folding is the only normalization that
+  // does not change which characters are present, and
+  // IsCanonicalizedHostCompliant() assumes lower-case input.
+  return net::IsCanonicalizedHostCompliant(base::ToLowerASCII(host));
+}
+
+bool IsFingerprint(std::string_view token) {
+  return token.size() == kFingerprintLength &&
+         std::ranges::all_of(token, [](char c) { return base::IsHexDigit(c); });
+}
+
+// Trailing pluggable transport arguments, e.g. `iat-mode=0` or `cert=...`.
+// Values are opaque to us, so only the shape and the key are checked.
+bool IsValidTransportArg(std::string_view token) {
+  const auto key_value = base::SplitStringOnce(token, '=');
+  return key_value && !key_value->second.empty() &&
+         IsValidIdentifier(key_value->first);
+}
+
 std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
   std::vector<std::string> result;
   if (!v) {
     return result;
   }
-
+  result.reserve(v->size());
   for (const auto& s : *v) {
-    if (!s.is_string()) {
-      continue;
+    if (const std::string* bridge = s.GetIfString()) {
+      result.push_back(*bridge);
     }
-    result.push_back(s.GetString());
   }
   return result;
 }
@@ -119,6 +209,69 @@ std::vector<std::string> LoadBridgesList(const base::ListValue* v) {
 }  // namespace
 
 namespace tor {
+
+bool IsValidBridgeLine(std::string_view line) {
+  if (line.empty() || line.size() > kMaxBridgeLineLength) {
+    return false;
+  }
+  if (!std::ranges::all_of(line, &IsSafeBridgeChar)) {
+    return false;
+  }
+
+  // Tor splits `Bridge` lines on spaces, so a field never contains one.
+  // IsSafeBridgeChar() already rejected every other kind of whitespace, so the
+  // pieces need no trimming.
+  const std::vector<std::string_view> tokens = base::SplitStringPiece(
+      line, " ", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (tokens.empty()) {
+    return false;
+  }
+
+  auto token = tokens.begin();
+
+  // The leading transport name is optional. It never contains a ':' or a '.',
+  // while the <host>[:<port>] that follows it always contains one of the two,
+  // so the two forms can be told apart without look-ahead.
+  if (token->find_first_of(":.") == std::string_view::npos) {
+    if (!IsValidIdentifier(*token)) {
+      return false;
+    }
+    ++token;
+  }
+
+  // <host>[:<port>] is the only required field.
+  if (token == tokens.end() || !IsValidHostPort(*token)) {
+    return false;
+  }
+  ++token;
+
+  // The fingerprint is optional and, when present, directly follows the host.
+  if (token != tokens.end() && IsFingerprint(*token)) {
+    ++token;
+  }
+
+  // Everything that is left has to be a transport argument.
+  return std::ranges::all_of(token, tokens.end(), &IsValidTransportArg);
+}
+
+std::vector<std::string> FilterBridgeLines(
+    base::span<const std::string> bridges) {
+  std::vector<std::string> result;
+  result.reserve(std::min(bridges.size(), kMaxBridgeLines));
+
+  for (const auto& bridge : bridges) {
+    if (result.size() == kMaxBridgeLines) {
+      VLOG(1) << "Ignoring Tor bridges beyond the first " << kMaxBridgeLines;
+      break;
+    }
+    if (!IsValidBridgeLine(bridge)) {
+      VLOG(1) << "Dropping malformed Tor bridge line: " << bridge;
+      continue;
+    }
+    result.push_back(bridge);
+  }
+  return result;
+}
 
 BridgesConfig::BridgesConfig() = default;
 BridgesConfig::BridgesConfig(BridgesConfig&&) noexcept = default;
@@ -136,7 +289,11 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
 
 void BridgesConfig::UpdateBuiltinBridges(const base::DictValue& dict) {
   auto load_builtin = [&](BuiltinType type) {
-    auto list = LoadBridgesList(dict.FindList(GetBuiltinTypeName(type)));
+    // This dict comes from Tor's moat service, so there is nobody to report a
+    // bad line to. Leaving nothing stored for a wholly unusable payload makes
+    // GetBuiltinBridges() fall back to the hardcoded list.
+    auto list = FilterBridgeLines(
+        LoadBridgesList(dict.FindList(GetBuiltinTypeName(type))));
     if (!list.empty()) {
       builtin_bridges[type] = std::move(list);
     }

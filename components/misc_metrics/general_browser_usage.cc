@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
 #include "brave/components/time_period_storage/iso_weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -70,6 +71,7 @@ void GeneralBrowserUsage::ReportInstallTime() {
   int days_since_install =
       (base::Time::Now() - first_run_time_).InDaysFloored();
   if (days_since_install < 0 || days_since_install > 30) {
+    p3a_utils::SetCustomAttribute(kDayZeroAttributeName, std::nullopt);
     return;
   }
   auto start_of_report_day = first_run_time_ + base::Days(days_since_install);
@@ -80,15 +82,18 @@ void GeneralBrowserUsage::ReportInstallTime() {
   std::string day_zero_variant =
       local_state_->GetString(kMiscMetricsDayZeroVariantAtInstall);
   if (day_zero_variant.empty()) {
+    p3a_utils::SetCustomAttribute(kDayZeroAttributeName, std::nullopt);
     return;
   }
+  std::string day_zero_variant_lower = base::ToLowerASCII(day_zero_variant);
   // Get index of first char (0-25 for a-z)
-  int variant_index = base::ToLowerASCII(day_zero_variant[0]) - 'a';
+  int variant_index = day_zero_variant_lower[0] - 'a';
   if (variant_index < 0) {
     return;
   }
   local_state_->SetTime(kMiscMetricsLastDayZeroReport, base::Time::Now());
   UMA_HISTOGRAM_EXACT_LINEAR(kDayZeroVariantHistogramName, variant_index, 31);
+  p3a_utils::SetCustomAttribute(kDayZeroAttributeName, day_zero_variant_lower);
 }
 
 void GeneralBrowserUsage::ReportProfileCount(size_t count) {

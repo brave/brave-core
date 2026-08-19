@@ -8,103 +8,112 @@
 
 //! Random number generators and adapters
 //!
-//! This crate provides a small selection of non-[portable] generators.
-//! See also [Types of generators] and [Our RNGs] in the book.
+//! ## Background: Random number generators (RNGs)
 //!
-//! ## Generators
+//! Computers cannot produce random numbers from nowhere. We classify
+//! random number generators as follows:
 //!
-//! This crate provides a small selection of non-[portable] random number generators:
-//!
-//! -   [`OsRng`] is a stateless interface over the operating system's random number
-//!     source. This is typically secure with some form of periodic re-seeding.
-//! -   [`ThreadRng`], provided by [`crate::rng()`], is a handle to a
-//!     thread-local generator with periodic seeding from [`OsRng`]. Because this
-//!     is local, it is typically much faster than [`OsRng`]. It should be
-//!     secure, but see documentation on [`ThreadRng`].
-//! -   [`StdRng`] is a CSPRNG chosen for good performance and trust of security
-//!     (based on reviews, maturity and usage). The current algorithm is ChaCha12,
-//!     which is well established and rigorously analysed.
-//!     [`StdRng`] is the deterministic generator used by [`ThreadRng`] but
-//!     without the periodic reseeding or thread-local management.
-//! -   [`SmallRng`] is a relatively simple, insecure generator designed to be
-//!     fast, use little memory, and pass various statistical tests of
-//!     randomness quality.
-//!
-//! The algorithms selected for [`StdRng`] and [`SmallRng`] may change in any
-//! release and may be platform-dependent, therefore they are not
-//! [reproducible][portable].
-//!
-//! ### Additional generators
-//!
-//! -   The [`rdrand`] crate provides an interface to the RDRAND and RDSEED
-//!     instructions available in modern Intel and AMD CPUs.
-//! -   The [`rand_jitter`] crate provides a user-space implementation of
-//!     entropy harvesting from CPU timer jitter, but is very slow and has
-//!     [security issues](https://github.com/rust-random/rand/issues/699).
-//! -   The [`rand_chacha`] crate provides [portable] implementations of
-//!     generators derived from the [ChaCha] family of stream ciphers
-//! -   The [`rand_pcg`] crate provides [portable] implementations of a subset
-//!     of the [PCG] family of small, insecure generators
-//! -   The [`rand_xoshiro`] crate provides [portable] implementations of the
-//!     [xoshiro] family of small, insecure generators
-//!
-//! For more, search [crates with the `rng` tag].
+//! -   "True" random number generators (TRNGs) use hard-to-predict data sources
+//!     (e.g. the high-resolution parts of event timings and sensor jitter) to
+//!     harvest random bit-sequences, apply algorithms to remove bias and
+//!     estimate available entropy, then combine these bits into a byte-sequence
+//!     or an entropy pool. This job is usually done by the operating system or
+//!     a hardware generator (HRNG).
+//! -   "Pseudo"-random number generators (PRNGs) use algorithms to transform a
+//!     seed into a sequence of pseudo-random numbers. These generators can be
+//!     fast and produce well-distributed unpredictable random numbers (or not).
+//!     They are usually deterministic: given algorithm and seed, the output
+//!     sequence can be reproduced. They have finite period and eventually loop;
+//!     with many algorithms this period is fixed and can be proven sufficiently
+//!     long, while others are chaotic and the period depends on the seed.
+//! -   "Cryptographically secure" pseudo-random number generators (CSPRNGs)
+//!     are the sub-set of PRNGs which are secure. Security of the generator
+//!     relies both on hiding the internal state and using a strong algorithm.
 //!
 //! ## Traits and functionality
 //!
-//! All generators implement [`RngCore`] and thus also [`Rng`][crate::Rng].
-//! See also the [Random Values] chapter in the book.
+//! All RNGs implement the [`RngCore`] trait, as a consequence of which the
+//! [`Rng`] extension trait is automatically implemented. Secure RNGs may
+//! additionally implement the [`CryptoRng`] trait.
 //!
-//! Secure RNGs may additionally implement the [`CryptoRng`] trait.
+//! All PRNGs require a seed to produce their random number sequence. The
+//! [`SeedableRng`] trait provides three ways of constructing PRNGs:
+//!
+//! -   `from_seed` accepts a type specific to the PRNG
+//! -   `from_rng` allows a PRNG to be seeded from any other RNG
+//! -   `seed_from_u64` allows any PRNG to be seeded from a `u64` insecurely
+//! -   `from_entropy` securely seeds a PRNG from fresh entropy
 //!
 //! Use the [`rand_core`] crate when implementing your own RNGs.
 //!
-//! [portable]: https://rust-random.github.io/book/crate-reprod.html
-//! [Types of generators]: https://rust-random.github.io/book/guide-gen.html
-//! [Our RNGs]: https://rust-random.github.io/book/guide-rngs.html
-//! [Random Values]: https://rust-random.github.io/book/guide-values.html
+//! ## Our generators
+//!
+//! This crate provides several random number generators:
+//!
+//! -   [`OsRng`] is an interface to the operating system's random number
+//!     source. Typically the operating system uses a CSPRNG with entropy
+//!     provided by a TRNG and some type of on-going re-seeding.
+//! -   [`ThreadRng`], provided by the [`thread_rng`] function, is a handle to a
+//!     thread-local CSPRNG with periodic seeding from [`OsRng`]. Because this
+//!     is local, it is typically much faster than [`OsRng`]. It should be
+//!     secure, though the paranoid may prefer [`OsRng`].
+//! -   [`StdRng`] is a CSPRNG chosen for good performance and trust of security
+//!     (based on reviews, maturity and usage). The current algorithm is ChaCha12,
+//!     which is well established and rigorously analysed.
+//!     [`StdRng`] provides the algorithm used by [`ThreadRng`] but without
+//!     periodic reseeding.
+//! -   [`SmallRng`] is an **insecure** PRNG designed to be fast, simple, require
+//!     little memory, and have good output quality.
+//!
+//! The algorithms selected for [`StdRng`] and [`SmallRng`] may change in any
+//! release and may be platform-dependent, therefore they should be considered
+//! **not reproducible**.
+//!
+//! ## Additional generators
+//!
+//! **TRNGs**: The [`rdrand`] crate provides an interface to the RDRAND and
+//! RDSEED instructions available in modern Intel and AMD CPUs.
+//! The [`rand_jitter`] crate provides a user-space implementation of
+//! entropy harvesting from CPU timer jitter, but is very slow and has
+//! [security issues](https://github.com/rust-random/rand/issues/699).
+//!
+//! **PRNGs**: Several companion crates are available, providing individual or
+//! families of PRNG algorithms. These provide the implementations behind
+//! [`StdRng`] and [`SmallRng`] but can also be used directly, indeed *should*
+//! be used directly when **reproducibility** matters.
+//! Some suggestions are: [`rand_chacha`], [`rand_pcg`], [`rand_xoshiro`].
+//! A full list can be found by searching for crates with the [`rng` tag].
+//!
 //! [`Rng`]: crate::Rng
 //! [`RngCore`]: crate::RngCore
 //! [`CryptoRng`]: crate::CryptoRng
 //! [`SeedableRng`]: crate::SeedableRng
+//! [`thread_rng`]: crate::thread_rng
 //! [`rdrand`]: https://crates.io/crates/rdrand
 //! [`rand_jitter`]: https://crates.io/crates/rand_jitter
 //! [`rand_chacha`]: https://crates.io/crates/rand_chacha
 //! [`rand_pcg`]: https://crates.io/crates/rand_pcg
 //! [`rand_xoshiro`]: https://crates.io/crates/rand_xoshiro
-//! [crates with the `rng` tag]: https://crates.io/keywords/rng
-//! [chacha]: https://cr.yp.to/chacha.html
-//! [PCG]: https://www.pcg-random.org/
-//! [xoshiro]: https://prng.di.unimi.it/
+//! [`rng` tag]: https://crates.io/keywords/rng
 
-mod reseeding;
-pub use reseeding::ReseedingRng;
+#[cfg_attr(doc_cfg, doc(cfg(feature = "std")))]
+#[cfg(feature = "std")] pub mod adapter;
 
-#[deprecated(since = "0.9.2")]
 pub mod mock; // Public so we don't export `StepRng` directly, making it a bit
               // more clear it is intended for testing.
 
-#[cfg(feature = "small_rng")]
-mod small;
-#[cfg(all(
-    feature = "small_rng",
-    any(target_pointer_width = "32", target_pointer_width = "16")
-))]
-mod xoshiro128plusplus;
 #[cfg(all(feature = "small_rng", target_pointer_width = "64"))]
 mod xoshiro256plusplus;
+#[cfg(all(feature = "small_rng", not(target_pointer_width = "64")))]
+mod xoshiro128plusplus;
+#[cfg(feature = "small_rng")] mod small;
 
-#[cfg(feature = "std_rng")]
-mod std;
-#[cfg(feature = "thread_rng")]
-pub(crate) mod thread;
+#[cfg(feature = "std_rng")] mod std;
+#[cfg(all(feature = "std", feature = "std_rng"))] pub(crate) mod thread;
 
-#[cfg(feature = "small_rng")]
-pub use self::small::SmallRng;
-#[cfg(feature = "std_rng")]
-pub use self::std::StdRng;
-#[cfg(feature = "thread_rng")]
-pub use self::thread::ThreadRng;
+#[cfg(feature = "small_rng")] pub use self::small::SmallRng;
+#[cfg(feature = "std_rng")] pub use self::std::StdRng;
+#[cfg(all(feature = "std", feature = "std_rng"))] pub use self::thread::ThreadRng;
 
-#[cfg(feature = "os_rng")]
-pub use rand_core::OsRng;
+#[cfg_attr(doc_cfg, doc(cfg(feature = "getrandom")))]
+#[cfg(feature = "getrandom")] pub use rand_core::OsRng;

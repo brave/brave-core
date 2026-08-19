@@ -71,6 +71,9 @@ class BraveNewsController
 
     // Opens the New Tab Page and shows the Brave News customize modal.
     virtual void OpenSettings() = 0;
+
+    // Closes the Brave News side panel.
+    virtual void CloseUI() = 0;
   };
 
   BraveNewsController(
@@ -118,7 +121,8 @@ class BraveNewsController
   // Variant of FindFeeds used by the toolbar action view. |initiator_origin|
   // (the active tab's origin) is used as the request initiator so that feed
   // requests carry a Sec-Fetch-Site header reflecting their relationship to the
-  // active tab.
+  // active tab. It also prevents the request from reaching the local network,
+  // since the feed URL came from the page rather than the user.
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  const std::optional<url::Origin>& initiator_origin,
                  FindFeedsCallback callback);
@@ -132,6 +136,13 @@ class BraveNewsController
   void SubscribeToNewDirectFeed(
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;
+  // Variant of SubscribeToNewDirectFeed used by the toolbar action view. See
+  // the |FindFeeds| overload taking |initiator_origin|, which has the same
+  // meaning here.
+  void SubscribeToNewDirectFeed(
+      const GURL& feed_url,
+      const std::optional<url::Origin>& initiator_origin,
+      SubscribeToNewDirectFeedCallback callback);
   void RemoveDirectFeed(const std::string& publisher_id) override;
   void GetImageData(const GURL& padded_image_url,
                     GetImageDataCallback callback) override;
@@ -152,6 +163,7 @@ class BraveNewsController
   void OnCardVisited(uint32_t depth) override;
   void OnSidebarFilterUsage() override;
   void OpenSettings() override;
+  void CloseUI() override;
 
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;

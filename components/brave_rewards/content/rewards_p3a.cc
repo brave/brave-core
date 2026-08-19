@@ -88,7 +88,7 @@ void RecordAdTypesEnabled(PrefService* prefs) {
       prefs->GetBoolean(ntp_background_images::prefs::
                             kNewTabPageShowSponsoredImagesBackgroundImage);
   int notification_enabled =
-      prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
+      prefs->GetBoolean(brave_ads::prefs::kNotificationsEnabled);
   int answer = (notification_enabled << 1) | ntp_enabled;
   UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, answer, 4);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

@@ -10,20 +10,13 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.63"
+edition = "2018"
 name = "rand_core"
-version = "0.9.3"
+version = "0.6.4"
 authors = [
     "The Rand Project Developers",
     "The Rust Project Developers",
 ]
-build = false
-autolib = false
-autobins = false
-autoexamples = false
-autotests = false
-autobenches = false
 description = """
 Core random number generator traits and tools for implementation.
 """
@@ -43,25 +36,28 @@ repository = "https://github.com/rust-random/rand"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--generate-link-to-definition"]
+rustdoc-args = [
+    "--cfg",
+    "doc_cfg",
+]
 
 [package.metadata.playground]
 all-features = true
 
-[features]
-os_rng = ["dep:getrandom"]
-serde = ["dep:serde"]
-std = ["getrandom?/std"]
-
-[lib]
-name = "rand_core"
-path = "src/lib.rs"
-
 [dependencies.getrandom]
-version = "0.3.0"
+version = "0.2"
 optional = true
 
 [dependencies.serde]
 version = "1"
 features = ["derive"]
 optional = true
+
+[features]
+alloc = []
+serde1 = ["serde"]
+std = [
+    "alloc",
+    "getrandom",
+    "getrandom/std",
+]

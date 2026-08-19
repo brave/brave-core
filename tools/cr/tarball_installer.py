@@ -16,7 +16,10 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 import hashlib
 import json
+import ntpath
+import posixpath
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -223,22 +226,106 @@ class TarballInstaller:
         `tar.getnames()`), recorded in the `_content_names` sidecar.
         """
         if zipfile.is_zipfile(archive_path):
-            with zipfile.ZipFile(archive_path) as archive:
-                names = archive.namelist()
-                archive.extractall(path=self.dest_dir)
-                return names
+            return self._extract_zip(archive_path)
+        return self._extract_tar(archive_path)
+
+    def _extract_tar(self, archive_path: Path) -> list[str]:
+        """Extract a tar archive into `dest_dir`, vetting its members first.
+
+        The archive is checked against `_check_members` and then extracted with
+        the fully-trusted filter.
+
+        `filter='data'` is deliberately not used. Its first backport (Python
+        3.10.12) resolves a symlink's target against the destination root rather
+        than against the directory holding the link. Vetting the members
+        ourselves gives the same containment guarantee on every runtime, rather
+        than one that varies with whichever interpreter happens to invoke us.
+        """
         with tarfile.open(archive_path, mode='r:*') as tar:
-            names = tar.getnames()
-            # The `filter='data'` extraction guard (PEP 706) only exists on
-            # Python 3.12+ and the 3.8.17/3.9.17/3.10.12/3.11.4 backports. This
-            # script runs under whatever bare `python3` invoked `launcher.py`
-            # (no vpython guarantee), so fall back when the runtime is older.
-            # `tarfile.data_filter` is present exactly when the kwarg is.
+            members = tar.getmembers()
+            self._check_members(members)
             if hasattr(tarfile, 'data_filter'):
-                tar.extractall(path=self.dest_dir, filter='data')
+                tar.extractall(path=self.dest_dir, filter='fully_trusted')
             else:
                 tar.extractall(path=self.dest_dir)
-            return names
+            return [member.name for member in members]
+
+    def _check_members(self, members: list[tarfile.TarInfo]) -> None:
+        """Raise `ValueError` unless every member stays inside `dest_dir`.
+
+        A purely lexical check over the archive's own metadata: it never calls
+        `realpath` and never looks at what is on disk, so it answers the same
+        way on every runtime and whatever state the destination is in.
+        """
+        for member in members:
+            self._check_contained(member, member.name)
+            if member.issym():
+                # A symlink's target is relative to the directory holding it.
+                self._check_contained(
+                    member,
+                    posixpath.join(posixpath.dirname(member.name),
+                                   member.linkname))
+            elif member.islnk():
+                # A hardlink names another member, from the archive root.
+                self._check_contained(member, member.linkname)
+            elif member.isdev():
+                # Extracting fully-trusted means device and FIFO members would
+                # be created verbatim; no archive we pin carries any.
+                raise ValueError(f'{self.object_name}: refusing to extract '
+                                 f'the device/FIFO member {member.name!r}')
+
+    def _check_contained(self, member: tarfile.TarInfo, path: str) -> None:
+        """Raise `ValueError` unless `path` stays under the destination.
+
+        `path` is relative to the archive root: a member name, or a link target
+        already resolved against the directory holding the link.
+        """
+        # Tar member names are posix paths, so a backslash is an ordinary
+        # character here -- but Windows resolves it as a separator, where
+        # `..\evil` climbs out of a destination that looks contained on posix.
+        if '\\' in path:
+            raise ValueError(f'{self.object_name}: member {member.name!r} '
+                             f'resolves to {path!r}, which holds a backslash '
+                             f'Windows would treat as a separator')
+        # A leading separator, or a drive letter (`C:/evil`, absolute on
+        # Windows while looking relative here), names somewhere else outright.
+        if path.startswith('/') or ntpath.splitdrive(path)[0]:
+            raise ValueError(f'{self.object_name}: member {member.name!r} '
+                             f'resolves to the absolute path {path!r}')
+        # `..` alone, or as the leading component: a name merely *starting*
+        # with two dots (`..foo`) is an ordinary file.
+        normalized = posixpath.normpath(path)
+        if normalized == '..' or normalized.startswith('../'):
+            raise ValueError(f'{self.object_name}: member {member.name!r} '
+                             f'resolves to {path!r}, which is outside '
+                             f'{self.dest_dir}')
+
+    def _extract_zip(self, archive_path: Path) -> list[str]:
+        """Extract a zip archive into `dest_dir`, keeping modes and symlinks.
+
+        `zipfile.extractall` ignores the Unix permission bits zip stores in
+        the high 16 bits of `external_attr` and writes symlink entries out as
+        plain files holding the link target as text, silently turning an
+        executable or a symlink into neither. Shelling out to `unzip`
+        restores both, the same way `script/lib/util.extract_zip` does; on
+        Windows neither concept applies to the extracted tree, so `zipfile`
+        is kept there (and `unzip` may not even be on PATH).
+        """
+        with zipfile.ZipFile(archive_path) as archive:
+            names = archive.namelist()
+            if sys.platform == 'win32':
+                archive.extractall(path=self.dest_dir)
+                return names
+        # `unzip -d` only creates a single missing directory level, unlike
+        # `zipfile.extractall`, which makes the whole path -- so make sure
+        # `dest_dir` (freshly wiped for an owned dep) exists first.
+        self.dest_dir.mkdir(parents=True, exist_ok=True)
+        subprocess.run(
+            ['unzip', '-o', '-q',
+             str(archive_path), '-d',
+             str(self.dest_dir)],
+            check=True)
+        return names
 
     def _write_sidecars(self, member_names: list[str]) -> None:
         """Write the sidecar set, each with a `.stamp` tail."""

@@ -25,19 +25,18 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.RobolectricUtil;
-import org.chromium.base.test.util.Features.DisableFeatures;
-import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController.ToolbarPositionAndSource;
@@ -47,7 +46,6 @@ import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 /** Unit tests for {@link BraveTabbedNavigationBarColorControllerBase}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 29)
-@DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
 public class BraveTabbedNavigationBarColorControllerBaseTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -59,6 +57,8 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
 
     private final SettableMonotonicObservableSupplier<TabModel> mTabModelSupplier =
             ObservableSuppliers.createMonotonic();
+    private final SettableNullableObservableSupplier<Tab> mTabSupplier =
+            ObservableSuppliers.createNullable();
 
     private BraveTabbedNavigationBarColorControllerBase mBase;
     private Context mContext;
@@ -71,6 +71,7 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
                         R.style.Theme_BrowserUI_DayNight);
 
         when(mTabModelSelector.getCurrentTabModelSupplier()).thenReturn(mTabModelSupplier);
+        when(mTabModelSelector.getCurrentTabSupplier()).thenReturn(mTabSupplier);
 
         // Pre-set the "bottom toolbar initialized" flags to bypass the isSmallScreen() call
         // inside BottomToolbarConfiguration (which requires a running Activity).
@@ -114,7 +115,9 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
     }
 
     @Test
-    public void testGetNavigationBarColor_dynamicColorsDisabled_regularTab() {
+    public void testGetNavigationBarColor_dynamicColorsUserDisabled_regularTab() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
         when(mTabModelSelector.isIncognitoSelected()).thenReturn(false);
         assertEquals(
                 mContext.getColor(R.color.default_bg_color_baseline),
@@ -122,7 +125,9 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
     }
 
     @Test
-    public void testGetNavigationBarColor_dynamicColorsDisabled_incognitoTab() {
+    public void testGetNavigationBarColor_dynamicColorsUserDisabled_incognitoTab() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
         when(mTabModelSelector.isIncognitoSelected()).thenReturn(true);
         assertEquals(
                 mContext.getColor(R.color.toolbar_background_primary_dark),
@@ -130,9 +135,10 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     @Config(sdk = Build.VERSION_CODES.S)
-    public void testGetNavigationBarColor_dynamicColorsEnabled_delegatesToUpstream() {
+    public void testGetNavigationBarColor_dynamicColorsUserEnabled_delegatesToUpstream() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
         // When dynamic colors is enabled, the Brave-specific block is skipped and the
         // upstream TabbedNavigationBarColorController logic runs, returning the semantic
         // bottom system nav color rather than Brave's hardcoded colors.
@@ -142,20 +148,9 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    public void testGetNavigationBarColor_dynamicColorsBelowAndroidS_usesBraveColor() {
-        when(mTabModelSelector.isIncognitoSelected()).thenReturn(false);
-        assertEquals(
-                mContext.getColor(R.color.default_bg_color_baseline),
-                mBase.getNavigationBarColor(false));
-    }
-
-    @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    @Config(sdk = Build.VERSION_CODES.S)
-    public void testGetNavigationBarColor_dynamicColorsUserDisabled_usesBraveColor() {
+    public void testGetNavigationBarColor_dynamicColorsUserEnabledBelowAndroidS_usesBraveColor() {
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
         when(mTabModelSelector.isIncognitoSelected()).thenReturn(false);
         assertEquals(
                 mContext.getColor(R.color.default_bg_color_baseline),

@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -70,6 +71,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
+  void GetFaviconDataURL(const GURL& page_url,
+                         GetFaviconDataURLCallback callback) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
@@ -121,6 +124,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   raw_ptr<web::WebState> owner_web_state_ = nullptr;
   raw_ptr<ProfileIOS> profile_ = nullptr;
+
+  // Tracks in-progress favicon lookups so they are cancelled with `this`.
+  base::CancelableTaskTracker favicon_task_tracker_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;

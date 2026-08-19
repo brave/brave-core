@@ -5,6 +5,7 @@
 
 import("//brave/build/config.gni")
 import("//brave/build/redirect_cc.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
 import("//build/config/locales.gni")
@@ -129,6 +130,14 @@ group("all") {
       "//brave/test:brave_network_audit_tests",
       "//chrome/test:browser_tests",
     ]
+
+    if (target_os == "linux" && target_cpu == "x64") {
+      deps += [ "//chrome/test:interactive_ui_tests" ]
+      if (enable_ai_chat) {
+        deps +=
+            [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+      }
+    }
   }
 
   if (toolkit_views) {
@@ -187,8 +196,14 @@ if (!is_ios) {
     }
   }
 
+  if (enable_ai_chat) {
+    group("ai-chat-shared-conversation-lib") {
+      deps = [ "//brave/components/ai_chat/resources/shared_conversation_lib" ]
+    }
+  }
+
   group("storybook") {
-    deps = [ "//brave/.storybook:storybook" ]
+    deps = [ "//brave/build/storybook:storybook_deps" ]
   }
 }
 
@@ -577,10 +592,11 @@ template("create_dist_template") {
       file_inputs += [ rebase_path(input, brave_dist_dir) ]
     }
 
-    rebase_base_dir = rebase_path(brave_dist_dir)
+    base_dir = brave_dist_dir
+    base_dir_arg = rebase_path(base_dir, root_build_dir)
 
     outputs = [ invoker.output ]
-    rebase_output = rebase_path(invoker.output)
+    output_arg = rebase_path(invoker.output, base_dir)
 
     dir_inputs = invoker.dir_inputs
 
@@ -592,10 +608,10 @@ template("create_dist_template") {
     }
 
     args = [
-      "--base-dir=$rebase_base_dir",
+      "--base-dir=$base_dir_arg",
       "--inputs=$file_inputs",
       "--dir-inputs=$dir_inputs",
-      "--output=$rebase_output",
+      "--output=$output_arg",
     ]
   }
 }
@@ -695,10 +711,10 @@ action("create_dist_zips") {
     dir_inputs = []
     if (is_mac) {
       dir_inputs += [ brave_exe ]
-      rebase_base_dir = rebase_path(root_out_dir)
+      base_dir = root_build_dir
       deps += [ "//chrome:chrome_app" ]
     } else {
-      rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
+      base_dir = brave_dist_dir
     }
 
     if (!is_mac && !is_android && !is_ios) {
@@ -712,12 +728,13 @@ action("create_dist_zips") {
       }
     }
 
-    rebase_output = rebase_path(output)
+    base_dir_arg = rebase_path(base_dir, root_build_dir)
+    output_arg = rebase_path(output, base_dir)
     args = [
-      "--base-dir=$rebase_base_dir",
+      "--base-dir=$base_dir_arg",
       "--inputs=$file_inputs",
       "--dir-inputs=$dir_inputs",
-      "--output=$rebase_output",
+      "--output=$output_arg",
     ]
   }  # !is_win
 }
@@ -780,10 +797,9 @@ if (current_toolchain == host_toolchain) {
     outputs = [ output ]
 
     args = [
-      "--source_root=" + rebase_path("//brave"),
-      "--cargo_audit_exe=" +
-          rebase_path("$root_build_dir/cargo-audit$host_exe_suffix"),
-      "--output=" + rebase_path(output),
+      "--source_root=" + rebase_path("//brave", root_build_dir),
+      "--cargo_audit_exe=./cargo-audit$host_exe_suffix",
+      "--output=" + rebase_path(output, root_build_dir),
     ]
 
     if (audit_dev_deps) {

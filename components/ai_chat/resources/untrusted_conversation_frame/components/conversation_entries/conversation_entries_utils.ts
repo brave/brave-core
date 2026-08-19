@@ -52,6 +52,40 @@ export function groupConversationEntries(
 }
 
 /**
+ * Pairs a human turn with the following (potentially grouped) assistant turn.
+ * Free-hanging human or assistant turns form their own pair.
+ */
+export function getPairedConversationGroups(
+  allEntries: Mojom.ConversationTurn[],
+): Mojom.ConversationTurn[][][] {
+  const groupedEntries = groupConversationEntries(allEntries)
+  const result: Mojom.ConversationTurn[][][] = []
+
+  for (let i = 0; i < groupedEntries.length; i++) {
+    const entry = groupedEntries[i][0]
+
+    if (entry.characterType !== Mojom.CharacterType.HUMAN) {
+      result.push([groupedEntries[i]])
+      continue
+    }
+
+    const nextEntry = groupedEntries[i + 1]?.[0]
+    if (
+      !nextEntry
+      || nextEntry.characterType !== Mojom.CharacterType.ASSISTANT
+    ) {
+      result.push([groupedEntries[i]])
+      continue
+    }
+
+    result.push([groupedEntries[i], groupedEntries[i + 1]])
+    i++
+  }
+
+  return result
+}
+
+/**
  * A task is an assistant response group with at least {@link TASK_TOOL_COUNT}
  * task tool use events.
  * @param group Group of assistant conversation entries from

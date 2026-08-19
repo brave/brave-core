@@ -30,7 +30,6 @@
 #include "chrome/common/url_constants.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_utils.h"
 #include "url/gurl.h"
@@ -66,7 +65,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -74,10 +72,6 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/components/brave_rewards/core/pref_names.h"
 #endif
 
 using content::WebUI;
@@ -97,15 +91,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   CHECK(profile);
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  } else if (host == kAdsInternalsHost &&
-             !profile->GetPrefs()->GetBoolean(
-                 brave_rewards::prefs::kDisabledByPolicy)) {
-    return new AdsInternalsUI(
-        web_ui, url.host(),
-        brave_ads::AdsServiceFactory::GetForProfile(profile),
-        *profile->GetPrefs());
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
@@ -209,11 +194,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost ||
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-      (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile() &&
-       !profile->GetPrefs()->GetBoolean(
-           brave_rewards::prefs::kDisabledByPolicy)) ||
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       (url.host() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {
     return &NewWebUI;

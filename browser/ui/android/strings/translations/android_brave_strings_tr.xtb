@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Google'ın Hızlandırılmış Mobil Sayfa sürümleri yerine her zaman orijinal (AMP olmayan) sayfa URL'lerini ziyaret et</translation>
 <translation id="920638232916443453">İzleme URL'lerini otomatik olarak yönlendir</translation>
 <translation id="1118970888826017401">En üst seviye yönlendirme izleme URL'lerini atlamak için desteği etkinleştir</translation>
-<translation id="94154759592465111">Komut Dizilerini Engelle</translation>
+<translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="7714773920987474116">JavaScript'i engeller (sitelerde bozulma olabilir)</translation>
 <translation id="2233004324252915283">YouTube'da tavsiye edilen içerikleri engelle</translation>
 <translation id="1005372663692637999">youtube.com adresinde sonraki ve bitiş kartı öğelerini engeller.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Bir siteyi kapattığınızda çerezleri ve diğer site verilerini temizler</translation>
 <translation id="7740929262043547697">Gizli Windows pencerelerinde öğe engellemeye izin ver</translation>
 <translation id="1260864846935682371">Bu, gizli Windows pencerelerinde Kalkanlar Öğeleri Engelle özelliğini etkinleştirir. Gizli Windows pencerelerinde engellenen öğelerin, normal Windows pencerelerinde de engelleneceğini unutmayın.</translation>
+<translation id="4021136205151368133">Not: Bu, Brave'in gizlilik korumalarını azaltabilir.</translation>
+<translation id="2876155735620608356">Bu site için Kalkanlar açık</translation>
+<translation id="8605306630462821888">Bu site için Kalkanlar kapalı</translation>
+<translation id="1574700443447059851">İzleyiciler, reklamlar ve daha fazlası engellendi.</translation>
+<translation id="4039014515785210563">İzleyicilerin ve reklamların nasıl işleneceğini seçin</translation>
+<translation id="8423733350479881051">Çerezlerin nasıl işleneceğini seçin</translation>
+<translation id="9064628362799094520">Site verilerini yok et</translation>
+<translation id="2862348905922940916">Bu siteyi Kalkanlar varsayılanlarına sıfırla</translation>
+<translation id="269939061709857874">Site, Kalkanlar varsayılanlarına sıfırlandı</translation>
+<translation id="3623708006387030755">Kalkanlar genel ayarları</translation>
+<translation id="2387532482048804818">Kalkanlar açık durumdayken web sitesi düzgün çalışmıyorsa bunu bize bildirin.</translation>
+<translation id="5412004902081180614">Bildir</translation>
+<translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
+<translation id="2606165159306988240">Brave'in geliştiricilerine bu sitenin bu site ile düzgün çalışmadığını bildirin.</translation>
+<translation id="6806248680442980382">Brave'in herkes için daha iyi olmasına yardımcı olduğunuz için teşekkürler. Bu rapor sadece bu siteyi düzeltmemiz için gereken bilgileri içerecektir.</translation>
+<translation id="7549123865054511884">Bu sitede ne çalışmıyor?</translation>
+<translation id="9094461910562981998">Benimle şuradan iletişime geçin (isteğe bağlı)</translation>
+<translation id="7645128170699559106">E-posta, X kullanıcı adı ve daha fazlası</translation>
+<translation id="446579367766109694">İletişim bilgilerinizi verirseniz, gelecekteki raporlar için saklanacaktır</translation>
+<translation id="2653659639078652383">Gönder</translation>
+<translation id="8459191579769999214">Ekran görüntüsünü görüntüle</translation>
+<translation id="4530541918195747729">Rapor gönderildi. Teşekkürler!</translation>
+<translation id="5528772406060281700">Site Verileri Yok Edilsin mi</translation>
+<translation id="6795622376590884449">Otomatik Yok Et</translation>
+<translation id="3520341243738311408">Site sekmeleri kapatıldığında</translation>
+<translation id="3559735673608367395">Uygulamadan çıkıldığında</translation>
+<translation id="9140049656798805345">Site Verilerini Şimdi Yok Et</translation>
 <translation id="1680858055899097121">Göz atma oturumları arasında sekmeleri açık bırakmayın</translation>
 <translation id="7142548388914389999">Gizlilik korumalı ürün analizine izin ver (P3A)</translation>
 <translation id="5254037869598726291">Anonimleştirilmiş P3A bilgisi, Brave'in genel kullanımı tahmin etmesine yardımcı olur ve popüler özellikleri geliştirmeye devam etmemizi garanti eder.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Özel ürün içgörüleri</translation>
 <translation id="3545804467215833536">Brave Kalkanlarını görmek için dokunun</translation>
 <translation id="1724327820822194498">Brave'in Kalkanlar ile her sayfada engellediği zararlı şeyleri görün.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> ve <ph name="TRACKER"/> diğer reklam &amp; izleyicileri engellendi</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> ve diğer reklam &amp; izleyiciler engellendi</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklam &amp; izleyicisi engellendi</translation>
 <translation id="8281886186245836920">Atla</translation>
-<translation id="986879628471635371">Ekleme sorunlarının giderilmesi</translation>
 <translation id="5806601733251372221">Brave Kalkanları</translation>
-<translation id="8537217141725709400"><ph name="TOKEN"/> Kazanın</translation>
-<translation id="3333887201479867589">Brave Ödülleri</translation>
-<translation id="5870330605209713397">gizliliğe duyarlı reklamları görüntüleyerek ve favori siteleriniz ile kurucularını varsayılan olarak destekleyin.</translation>
-<translation id="5302488867897327287">Brave Ödülleri'ni Kullanmaya Başla tuşuna dokunarak şunları kabul etmiş olursunuz:</translation>
 <translation id="4281844954008187215">Kullanım Şartları</translation>
 <translation id="6871397658902960384">Taramaya başlayın</translation>
-<translation id="454386012157232640">Bir reklam görmedim</translation>
-<translation id="1448877943847791441">Brave ilk reklamınızı şu süre içinde gösterecek:</translation>
-<translation id="4410793187232041318">Şimdi Brave Ads'den jeton kazanacaksın.</translation>
 <translation id="6511854390690723657">Bu, ilk Brave reklamınız. Daha fazla bilgi almak için tıklayın.</translation>
-<translation id="2070991379950719711">Brave Ödülleri'ni kullanmaya Başla</translation>
-<translation id="48520986898237073">Cüzdana devam et</translation>
 <translation id="6213254277250932867">12 kelimelik kurtarma ifadem var</translation>
 <translation id="4225265925807365011">24 kelimelik kurtarma ifadem var</translation>
 <translation id="3570367516044491911">Varsayılan tarayıcı olarak ayarla</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">QR Kodunu Tara</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="8515319483805157233">QR Koduyla arama yapmak için QR Kodunu çerçevenin ortasına hizalayın.</translation>
+<translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="7658239707568436148">İptal et</translation>
 <translation id="1201402288615127009">İleri</translation>
 <translation id="8481779960444041069">Gizliliğinizi geliştirmek için Brave'i varsayılan Tarayıcınız olarak ayarlayın</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Klasörü aç</translation>
 <translation id="8985635554450124959">Eşitleme ayarlanamadı</translation>
 <translation id="7173114856073700355">Ayarları Aç</translation>
-<translation id="496896260395129787">Bu Brave Sync hesabı, başka bir cihazdan silindi. Senkronizasyonu devre dışı bırakmak istemediyseniz <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hesabı yeniden oluşturun</translation>
+<translation id="674078455841038219">Bu Brave Eşitleme hesabı, başka bir cihazdan silindi. Eşitlemeyi devre dışı bırakmak istemediyseniz hesabı yeniden oluşturun.</translation>
+<translation id="8913415701676265311">Yeniden oluştur</translation>
 <translation id="4094590686212463338">Bu senkronizasyon zincirine katılınamadı. Senkronizasyon zinciri silindi.</translation>
 <translation id="4908081302669157000">Telefon numaraları, e-postalar ve adresler</translation>
+<translation id="1571419474754278280">Leo AI Sohbetleri</translation>
 <translation id="1056898198331236512">Uyarı</translation>
 <translation id="1426410128494586442">Evet</translation>
 <translation id="7811264919113243207">Bu, potansiyel olarak şifrelerinizi de içeren Brave verilerinizi bu QR kodunu üretmiş olan cihazla paylaşacaktır.
@@ -367,10 +384,9 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1413177583895309156">Brave VPN, Brave tarayıcısının dışında bile, çevrimiçi yaptığınız her şeyi şifreler ve korur.</translation>
 <translation id="3974348661685061050">7 gün ücretsiz deneyin</translation>
 <translation id="5789441016350810005">Brave Ads, tarayıcı arka plandayken gönderildi</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
 <translation id="5927196110206824867">Sponsorlu arka plan görselleri Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu destekliyor. Ve Teknoloji Devleri'nin aksine, gizliliğinizi korumak için reklam performansını anonim olarak ölçüyoruz.</translation>
-<translation id="8748471354357836070">Daha fazla bilgi edinin / tercihleri devre dışı bırakın</translation>
+<translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="3171669670217312786">Arka Plan Resimleri</translation>
 <translation id="8522669544471808198">Arka Plan Resimlerini Göster</translation>
 <translation id="6258554626602400736">Yeni Sekme Sayfası Reklamlarını Göster</translation>
@@ -398,7 +414,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7151914815476509258">İzleyicileri &amp; reklamları engelle (Standart)</translation>
 <translation id="7384778069178817075">Tüm izleyicilere &amp; reklamlara izin ver</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>"Tüm Çerezleri Engelle" seçeneği kullanımdan kaldırılmıştır. Bu seçeneği nasıl etkinleştireceğinizi öğrenmek için<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>yardım sayfamızı<ph name="END_LINK_1"/> ziyaret edin</translation>
-<translation id="3763681089644577874">Çerezleri Engelle</translation>
+<translation id="8823559166155093873">Çerezleri engelle</translation>
 <translation id="614747795780742163">Websitelerinin önceki ziyaretleriniz hakkında bilgi depolamasının önüne geçer</translation>
 <translation id="6883611015375728278">Tüm çerezleri engelle</translation>
 <translation id="6196640612572343990">Üçüncü taraf çerezlerini engelle</translation>
@@ -409,7 +425,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1876882294512858963">Hep Kayıt Dışı kal</translation>
 <translation id="554464532999080267">Kayıt Dışına geçmeden önce sor (standart)</translation>
 <translation id="926857659063503456">Asla Kayıt Dışı kalma</translation>
-<translation id="3895527457258986253">Parmak İzi Kontrolünü Engelle</translation>
+<translation id="6531019308847917584">Parmak izi kontrolünü engelle</translation>
 <translation id="7854108565842971747">Bunlar yeni siteler için varsayılan Kalkan ayarlarıdır. Değiştirilmeleri, site başına mevcut ayarlarınızı etkilemeyecektir.</translation>
 <translation id="218587021686734263">Dil ayarlarıyla parmak izini önleme</translation>
 <translation id="1706099589708266367">Tarayıcınızın dil ayarlarına bağlı olarak web sitelerinin sizin hakkınızda edinebileceği bilgiyi azaltır.</translation>
@@ -419,22 +435,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7445306466605902444">Parmak izi engelli (katı, siteleri kırabilir)</translation>
 <translation id="5582686930349810484">Parmak izi engelli (standart)</translation>
 <translation id="769702552748212954">Tüm parmak izlerine izin ver</translation>
-<translation id="876424292214881779">Reklam ve diğer tuhaflıklar engellendi</translation>
-<translation id="6849027612978668678">Siteler genelde, sizi ve cihazınızı tanımlamaya çalışan çerezler ve küçük programlar içerir. Kim olduğunuzu çözmeye çalışıp sizi web'de takip ederler ve girdiğiniz her sitede ne yaptığınızı izlemek isterler.\n\nBrave, siz takip edilmeden gezinebilmeniz için bu tür şeyleri engeller.</translation>
-<translation id="8553998445606452168">Brave Shields Hakkında</translation>
-<translation id="8912304686498704084">AÇIK</translation>
-<translation id="4963218453264888510">KAPALI</translation>
-<translation id="7474113515179313724">Bu siteyi Brave'in gizlilik koruması olmadan tarıyorsunuz. Shields açıkken doğru çalışmıyor mu?</translation>
 <translation id="4226543734057230801">Ethereum ağları</translation>
 <translation id="3504157706952484145">Filecoin ağları</translation>
 <translation id="1561541094377237745">Solana ağları</translation>
 <translation id="7141438739990875547">Bitcoin ağları</translation>
 <translation id="9055546041146396417">Bu site bozuk görüntülenirse, Shileds'ı kapatmayı deneyin.</translation>
 <translation id="7898672232170410330">Öğeyi engelle</translation>
-<translation id="9064628362799094520">Siteyi yok et</translation>
-<translation id="8949611615512336262">Otomatik Yok Et: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Site Verilerini Şimdi Yok Et</translation>
-<translation id="6795622376590884449">Otomatik Yok Et</translation>
 <translation id="7961015016161918242">Hiçbir Zaman</translation>
 <translation id="3200744626782631683">Tarama verileri hiçbir zaman otomatik olarak silinmez</translation>
 <translation id="1991004083507807299">Site Sekmeleri Kapatıldığında</translation>
@@ -445,23 +451,11 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2997451887458851244">"Otomatik Silme" özelliğini güncelleyin ve hangi verilerin silineceğini ayarlayın</translation>
 <translation id="363903976200491771">Tarama verilerini otomatik olarak sil</translation>
 <translation id="1028873002018537235">Tarama geçmişini sil</translation>
-<translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
-<translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
-<translation id="1653405824851871276">Brave'in herkes için daha iyi olmasına yardımcı olduğunuz için teşekkürler. Bu rapor sadece bu siteyi düzeltmemiz için gereken bilgileri içerecektir. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Learn more.</translation>
-<translation id="8740275226259417070">Bu bir hata sayfasıdır. Bozuk bir site olarak rapor edilemez.</translation>
 <translation id="721949491455392748">Mevcut sayfanın ekran görüntüsünü dahil et</translation>
-<translation id="8459191579769999214">Ekran görüntüsünü görüntüle</translation>
 <translation id="6476216365964140603">Ek ayrıntılar (isteğe bağlı)</translation>
-<translation id="6145852496180774737">Benimle şuradan iletişime geçin (isteğe bağlı):</translation>
-<translation id="6367576083705149078">İletişim bilgilerinizi verirseniz, gelecekteki raporlar için saklanacaktır.</translation>
-<translation id="7616645803364270729">E-posta, Twitter, vb.</translation>
-<translation id="5299848999918506028">Teşekkür ederiz!</translation>
-<translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
 <translation id="3037432377946455872">Karşılaştığınız ana sorun nedir?</translation>
 <translation id="8731661215617360873">Bir seçenek seçin</translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
-<translation id="7205939464631857223">Engellenen tüm öğeleri temizle</translation>
 <translation id="5370478469168390143">Çevrimiçi Verileri Kaydet</translation>
 <translation id="1118508688433541158">Brave ile daha hızlı gezinin ve reklamları engelleyin</translation>
 <translation id="7427391215172269363">İnternette Brave'le gezinerek her gün veriden tasarruf ediyorum.</translation>
@@ -511,17 +505,17 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2718046830255553131">Gizlilik raporları verileri silindi.</translation>
 <translation id="8376263745431603066">"Gece Modu"nu etkinleştir (Deneysel)</translation>
 <translation id="1383876407941801731">Ara</translation>
-<translation id="6165508094623778733">Daha fazla bilgi edinin</translation>
 <translation id="13296465911709339">Metnin panoya kopyalandı.</translation>
 <translation id="2735834606413553397">Halka açık adres panoya kopyalandı.</translation>
 <translation id="2977461003134694205">Gizlilik İstatistikleri</translation>
 <translation id="8804164990146287819">Gizlilik Şartları</translation>
 <translation id="5705882733397021510">Geri Git</translation>
+<translation id="8450375131309292971">Yenilemek için çekin</translation>
+<translation id="880475987868032564">Yenilemek için çekme hareketini etkinleştirir. Bir sayfanın üstünden aşağı doğru kaydırmak sayfayı yeniler.</translation>
 <translation id="7889432931837317731">Mümkün olduğunda otomatik olarak aç</translation>
 <translation id="1029304566263314007">İndirme ilerleme durumu bildirimlerini göster</translation>
 <translation id="2977501775944575564">Paralel İndirme</translation>
 <translation id="6224180438946945617">İndirme hızlarını artırmak için paralel indirmeyi etkinleştirin</translation>
-<translation id="8967385052772844086">Tüm Gizlilik Raporunu görüntüleyin</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
 <translation id="7138272885617540195">Uygulama bağlantılarının Brave dışındaki uygulamalarda açılmasına izin ver</translation>
 <translation id="4954512758656527938">Varsayılan Ethereum cüzdanı</translation>
@@ -785,7 +779,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2156993118928861787">Geçersiz adres</translation>
 <translation id="7791543448312431591">Ekle</translation>
 <translation id="6889920539620318793">Aktif olarak ayarla</translation>
-<translation id="2653659639078652383">Gönder</translation>
 <translation id="4945690646623486292">Ağ Seç</translation>
 <translation id="8006088103295786154">Brave Cüzdan'a Eriş</translation>
 <translation id="5308380583665731573">Bağlan</translation>
@@ -1106,7 +1099,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1336494649091412226">Brave'den çıkmak istediğinize emin misiniz?</translation>
 <translation id="6061635824229591714">Site Verileri Yok Edilsin mi?</translation>
 <translation id="1265051174491933207">Yok etme bu sitenin açık tüm <ph name="SITE_NAME"/> sekmelerini kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.</translation>
-<translation id="5528772406060281700">Site Verileri Yok Edilsin mi</translation>
 <translation id="4426990318287827331">Verileri Yok Et</translation>
 <translation id="7942415993090181327">Sohbet geçmişi</translation>
 <translation id="6859935199732075666">Güvenli Gezinti hatalarını göster</translation>

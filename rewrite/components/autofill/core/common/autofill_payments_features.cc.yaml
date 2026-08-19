@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# set_feature_flag_default_state's regex stops at the first `);`, but this
+# file closes each #if/#else branch with its own `);` rather than a single
+# `;` after #endif, so the macro would only rewrite the #if branch and leave
+# a dangling #else/#endif behind. Collapse the whole conditional block with a
+# plain regex instead.
+
+substitutions:
+  - description: 'Ship kAutofillEnableAmountExtraction disabled.'
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kAutofillEnableAmountExtraction,.+?#endif[^\n]*\n(?:[
+        \t]*//[^\n]*\n)*'
+      replace: |
+        BASE_FEATURE(kAutofillEnableAmountExtraction,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+      re_flags: [DOTALL]
+
+  - description: 'Ship kAutofillEnableBuyNowPayLater disabled.'
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kAutofillEnableBuyNowPayLater,.+?#endif[^\n]*\n(?:[
+        \t]*//[^\n]*\n)*'
+      replace: |
+        BASE_FEATURE(kAutofillEnableBuyNowPayLater,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+      re_flags: [DOTALL]

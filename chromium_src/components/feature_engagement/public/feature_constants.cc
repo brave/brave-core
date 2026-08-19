@@ -3,10 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_override.h"
-
-// This override allows Brave to define its own IPH features, and to modify the
-// IPH features defined by Chromium.
+// This override allows Brave to define its own IPH features.
 
 #include <components/feature_engagement/public/feature_constants.cc>
 
@@ -17,21 +14,5 @@ BASE_FEATURE(kIPHBraveShieldsInPageInfoFeature,
              "IPH_BraveShieldsInPageInfo",
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
-    {kIPHAutofillAccountNameEmailSuggestionFeature,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHDiscardRingFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHGMCCastStartStopFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHPasswordsManagementBubbleAfterSaveFeature,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHPdfInkSignaturesFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHReadingListInSidePanelFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHSideBySidePinnableFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHSideBySideTabSwitchFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kIPHTabGroupsSaveV2IntroFeature, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
-}});
 
 }  // namespace feature_engagement

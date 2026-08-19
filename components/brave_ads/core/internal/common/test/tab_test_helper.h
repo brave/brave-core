@@ -38,6 +38,7 @@ class TabHelper final {
   void NavigateToUrl(int32_t tab_id,
                      const std::vector<GURL>& redirect_chain,
                      int http_status_code);
+  void FailToLoadUrl(int32_t tab_id, const std::vector<GURL>& redirect_chain);
   void SelectTab(int32_t tab_id);
   void CloseTab(int32_t tab_id);
 

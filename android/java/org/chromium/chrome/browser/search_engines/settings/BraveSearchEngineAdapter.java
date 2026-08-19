@@ -37,11 +37,25 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         super(context, profile, siteSearchClickHandler);
     }
 
-    public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
+    public static void setDSEPrefs(String templateUrlShortName, Profile profile) {
         ChromeSharedPreferences.getInstance()
                 .writeString(
                         profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
-                        templateUrl.getShortName());
+                        templateUrlShortName);
+    }
+
+    // The private DSE short name is a Java-only pref. Read/write it without materializing the OTR
+    // profile: creating one CHECK-fails when incognito is disabled by policy. See
+    // OffTheRecordProfileImpl::Init in chrome/browser/profiles/off_the_record_profile_impl.cc.
+    public static void setPrivateDSEPrefs(String templateUrlShortName) {
+        ChromeSharedPreferences.getInstance()
+                .writeString(PRIVATE_DSE_SHORTNAME, templateUrlShortName);
+    }
+
+    // Java-only counterpart of getDSEShortName() for private mode: reads the same
+    // SharedPreferences entry without needing an OTR profile. Returns null if unset.
+    public static String getPrivateDSEShortName() {
+        return ChromeSharedPreferences.getInstance().readString(PRIVATE_DSE_SHORTNAME, null);
     }
 
     public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {
@@ -59,7 +73,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         if (templateUrlService != null) {
             templateUrlService.setSearchEngine(keyword);
         } else {
-            setDSEPrefs(templateUrl, profile);
+            setDSEPrefs(templateUrl.getShortName(), profile);
         }
     }
 
@@ -84,7 +98,8 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             // overwrite.
             if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
                 // Set it for normal tab only
-                setDSEPrefs(dseTemplateUrl, ProfileManager.getLastUsedRegularProfile());
+                setDSEPrefs(
+                        dseTemplateUrl.getShortName(), ProfileManager.getLastUsedRegularProfile());
                 BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
             }
         }
@@ -165,8 +180,8 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             return;
         }
 
-        TemplateUrl templateUrl = (TemplateUrl) getItem(position);
-        setDSEPrefs(templateUrl, mProfile);
+        TemplateUrlSnapshot templateUrlSnapshot = getItem(position);
+        setDSEPrefs(templateUrlSnapshot.getShortName(), mProfile);
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, true);
     }

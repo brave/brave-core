@@ -38,10 +38,15 @@ class DirectFeedController {
   DirectFeedController(const DirectFeedController&) = delete;
   DirectFeedController& operator=(const DirectFeedController&) = delete;
 
-  void VerifyFeedUrl(const GURL& feed_url, IsValidCallback callback);
-  // When |initiator_origin| is set (e.g. the active tab's origin when the
-  // request comes from the toolbar), it is used as the request initiator so the
-  // feed requests carry an appropriate Sec-Fetch-Site header.
+  // |initiator_origin| should be set when the feed URL came from a web page
+  // (e.g. the active tab's origin when the request comes from the toolbar). It
+  // is used as the request initiator, so the feed requests carry an appropriate
+  // Sec-Fetch-Site header, and it prevents the request from reaching the local
+  // network. It should be left unset for feed URLs the user provided directly.
+  void VerifyFeedUrl(const GURL& feed_url,
+                     const std::optional<url::Origin>& initiator_origin,
+                     IsValidCallback callback);
+  // See |VerifyFeedUrl| for the meaning of |initiator_origin|.
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  const std::optional<url::Origin>& initiator_origin,
                  mojom::BraveNewsController::FindFeedsCallback callback);

@@ -7,6 +7,7 @@
 
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/test/confirmation_user_data_builder_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -73,6 +75,52 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveConfirmationQueueItems) {
   const auto [success, got_items] = test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_EQ(confirmation_queue_items, got_items);
+}
+
+TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
+       GetLegacyRewardConfirmationRecoversNonRfcDerivation) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  std::optional<ConfirmationInfo> confirmation =
+      test::BuildRewardConfirmationWithoutDynamicUserData(
+          /*use_random_uuids=*/false);
+  ASSERT_TRUE(confirmation);
+  ASSERT_TRUE(confirmation->reward);
+
+  // Simulate a confirmation queued by a pre-RFC build: a legacy-derived
+  // unblinded token with a matching legacy credential. The `rfc` flag is not
+  // persisted in the queue, so on read it defaults to the RFC 9497 derivation.
+  const std::optional<std::string> unblinded_token_base64 =
+      confirmation->reward->unblinded_token.EncodeBase64();
+  ASSERT_TRUE(unblinded_token_base64);
+  confirmation->reward->unblinded_token =
+      cbr::UnblindedToken(*unblinded_token_base64, /*rfc=*/false);
+  const std::optional<std::string> credential_base64url =
+      BuildRewardCredential(*confirmation);
+  ASSERT_TRUE(credential_base64url);
+  confirmation->reward->credential_base64url = *credential_base64url;
+  ASSERT_TRUE(IsValid(*confirmation));
+
+  test::SaveConfirmationQueueItems(
+      test::BuildConfirmationQueueItems(*confirmation, /*count=*/1));
+
+  // Act
+  base::test::TestFuture<bool, ConfirmationQueueItemList> test_future;
+  database_table_.GetAll(
+      test_future.GetCallback<bool, const ConfirmationQueueItemList&>());
+  const auto [success, got_items] = test_future.Take();
+
+  // Assert
+  ASSERT_TRUE(success);
+  ASSERT_EQ(1U, got_items.size());
+  ASSERT_TRUE(got_items.front().confirmation.reward);
+  // The legacy derivation must be recovered so the confirmation still verifies
+  // and can be processed, instead of validating as invalid and crashing on
+  // `CHECK(IsValid(...))` during queue processing.
+  EXPECT_FALSE(got_items.front().confirmation.reward->unblinded_token.rfc());
+  EXPECT_TRUE(IsValid(got_items.front().confirmation));
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,

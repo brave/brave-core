@@ -13,7 +13,6 @@ import {
   mockSolanaAccount,
   mockSolDappSignAllTransactionsRequest,
   mockSolDappSignAndSendTransactionRequest,
-  mockSvmSimulationResult,
 } from '../../../common/constants/mocks'
 
 // utils
@@ -44,7 +43,6 @@ const storyContextProps: WalletPanelStoryProps = {
         txStatus: BraveWallet.TransactionStatus.Unapproved,
       }),
     ],
-    svmSimulationResponse: mockSvmSimulationResult,
   },
   uiStateOverride: {
     selectedPendingTransactionId: mockSolDappSignAndSendTransactionRequest.id,

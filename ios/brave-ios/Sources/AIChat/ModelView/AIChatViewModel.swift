@@ -11,7 +11,6 @@ import SwiftUI
 import WebKit
 
 public enum AIChatModelKey: String {
-  case chatBasic = "chat-basic"
   case chatQwen = "chat-qwen"
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
@@ -217,7 +216,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
     self.currentModel = self.models.first(where: { $0.key == state.currentModelKey })
     if self.currentModel == nil {
-      let defaultModel = premiumStatus == .active ? "chat-claude-sonnet" : "chat-basic"
+      let defaultModel = premiumStatus == .active ? "chat-claude-sonnet" : "chat-automatic"
       self.currentModel = self.models.first(where: { $0.key == defaultModel })
     }
     self.conversationHistory = api.conversationHistory
@@ -363,9 +362,6 @@ extension AiChat.Model {
     }
 
     switch modelKey {
-    case .chatBasic:
-      return Strings.AIChat.introMessageLlamaMessageDescription
-
     case .chatQwen:
       return Strings.AIChat.introMessageQwenMessageDescription
 
@@ -383,9 +379,6 @@ extension AiChat.Model {
     }
 
     switch modelKey {
-    case .chatBasic:
-      return Strings.AIChat.introMessageLlamaModelPurposeDescription
-
     case .chatQwen:
       return Strings.AIChat.introMessageQwenModelPurposeDescription
 

@@ -183,7 +183,6 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
 
         mHasUnicodeWarning = Validations.hasUnicode(message);
         if (mHasUnicodeWarning) {
-            mSignMessageText.setLines(12);
             View view = getView();
             if (view != null) {
                 TextView warningLinkText = view.findViewById(R.id.non_ascii_warning_text_link);

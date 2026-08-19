@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">या स्टोअरविषयी माहिती अर्ध्या उंचीवर उघडली आहे</translation>
 <translation id="7204204600596740190">एकाहून अधिक निवड मोड</translation>
 <translation id="7211038039686180558">तुमचे टॅब गट तुमच्या सर्व साइन इन केलेल्या डिव्हाइसवर आपोआप सेव्ह आणि अपडेट होतात</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> निवडला आहे</translation>
 <translation id="7326879924029668159">रिटर्न धोरण आणि आणखी बरेच काही पहा</translation>
 <translation id="7352298686197644113">तुमच्या उघड्या असलेल्या टॅबमध्ये कोणत्या आयटमची किंमत आणखी कमी आहे ते पहा</translation>
 <translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" हा टॅब गट आता उपलब्ध नाही</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> रेटिंग, <ph name="REVIEWS_COUNT_ONE"/> परीक्षण}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> रेटिंग, <ph name="REVIEWS_COUNT_MANY"/> परीक्षणे}}</translation>
 <translation id="7885132941432959125">टॅब उजवीकडे हलवा</translation>
 <translation id="7887334752153342268">डुप्लिकेट</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> निवडलेला नाही</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="7966321538264951561">सूचना डिसमिस करा.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{टॅब नवीन विंडोवर हलवा}other{टॅब दुसर्‍या विंडोवर हलवा}}</translation>

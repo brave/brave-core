@@ -8,29 +8,16 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_deref.h"
-#include "base/functional/bind.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
-#include "brave/components/brave_account/brave_account_service_constants.h"
-#include "brave/components/brave_account/endpoint_client/with_headers.h"
-#include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/mojom/change_password.mojom.h"
+#include "brave/components/brave_account/mojom/login.mojom.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
 #include "brave/components/brave_account/mojom/reset_password.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
-#include "net/http/http_status_code.h"
 
 namespace brave_account {
 
-using endpoint_client::SetBearerToken;
-using endpoint_client::WithHeaders;
-using endpoints::VerifyDelete;
-using endpoints::VerifyResend;
 using internal::MakeCalledInWrongStateError;
-using internal::MakeClientError;
-using internal::MakeRequest;
-using internal::MakeServerError;
 
 void StateBase::AddReceiver(
     mojo::PendingReceiver<mojom::Authentication> receiver) {
@@ -70,141 +57,92 @@ void StateBase::AddObserver(
   add_observer_.Run(std::move(observer));
 }
 
-void StateBase::RegisterPasswordInit(mojom::Service initiating_service,
-                                     const std::string& email,
-                                     const std::string& blinded_message,
-                                     RegisterPasswordInitCallback callback) {
+void StateBase::RegisterStep1(mojom::Service initiating_service,
+                              const std::string& email,
+                              const std::string& blinded_message,
+                              RegisterStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
-void StateBase::RegisterPasswordFinalize(
-    const std::string& encrypted_verification_token,
-    const std::string& serialized_record,
-    RegisterPasswordFinalizeCallback callback) {
+void StateBase::RegisterStep2(const std::string& encrypted_verification_token,
+                              const std::string& serialized_record,
+                              RegisterStep2Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
-void StateBase::RegisterVerifyComplete(
-    const std::string& code,
-    RegisterVerifyCompleteCallback callback) {
+void StateBase::RegisterStep3(const std::string& code,
+                              RegisterStep3Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
 void StateBase::ResendVerificationEmail(
     mojom::VerificationIntentPtr intent,
     ResendVerificationEmailCallback callback) {
-  auto verification_token =
-      GetDecryptedVerificationToken<mojom::ResendConfirmationEmailError>(
-          std::move(intent));
-  if (!verification_token.has_value()) {
-    return std::move(callback).Run(
-        base::unexpected(std::move(verification_token).error()));
-  }
-
-  auto request = MakeRequest<WithHeaders<VerifyResend::Request>>();
-  SetBearerToken(request, *verification_token);
-  // Server side will determine locale based on the Accept-Language request
-  // header (which is included automatically by upstream).
-  request.body.locale = "";
-  request.timeout_duration = kVerifyResendTimeout;
-
-  SendStateOwnedRequest<VerifyResend>(
-      std::move(request),
-      base::BindOnce(&StateBase::OnResendVerificationEmail,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  resend_verification_email_(std::move(intent), std::move(callback));
 }
 
 void StateBase::CancelVerification(mojom::VerificationIntentPtr intent) {
-  CHECK(intent);
-
-  if (intent->is_logged_out_intent() &&
-      intent->get_logged_out_intent() ==
-          mojom::LoggedOutVerificationIntent::kRegistration) {
-    // Best-effort notification to the server, since server side will clean up
-    // verification tokens automatically (currently after 30 minutes).
-    // Not adopted into the state's in-flight bag:
-    // best-effort with no callback that touches state.
-    if (const auto verification_token =
-            GetDecryptedVerificationToken(std::move(intent));
-        !verification_token.empty()) {
-      auto request = MakeRequest<WithHeaders<VerifyDelete::Request>>();
-      SetBearerToken(request, verification_token);
-
-      SendUnownedRequest<VerifyDelete>(std::move(request));
-    }
-  }
-
-  // LoggedOutWithVerification ==> LoggedOut (no state swap), or
-  // LoggedInWithVerification ==> LoggedIn (no state swap).
-  account_state_prefs_->ClearVerification();
+  cancel_verification_(std::move(intent));
 }
 
-void StateBase::ResetPasswordVerifyInit(
-    const std::string& email,
-    ResetPasswordVerifyInitCallback callback) {
+void StateBase::ResetPasswordStep1(const std::string& email,
+                                   ResetPasswordStep1Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordVerifyComplete(
-    const std::string& code,
-    ResetPasswordVerifyCompleteCallback callback) {
+void StateBase::ResetPasswordStep2(const std::string& code,
+                                   ResetPasswordStep2Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordPasswordInit(
-    const std::string& blinded_message,
-    ResetPasswordPasswordInitCallback callback) {
+void StateBase::ResetPasswordStep3(const std::string& blinded_message,
+                                   ResetPasswordStep3Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::ResetPasswordPasswordFinalize(
-    const std::string& serialized_record,
-    const std::string& email,
-    ResetPasswordPasswordFinalizeCallback callback) {
+void StateBase::ResetPasswordStep4(const std::string& serialized_record,
+                                   const std::string& email,
+                                   ResetPasswordStep4Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ResetPasswordError>());
 }
 
-void StateBase::LoginInitialize(mojom::Service,
-                                const std::string&,
-                                const std::string&,
-                                LoginInitializeCallback callback) {
+void StateBase::LoginStep1(mojom::Service initiating_service,
+                           const std::string& email,
+                           const std::string& serialized_ke1,
+                           LoginStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
-void StateBase::LoginFinalize(const std::string&,
-                              const std::string&,
-                              LoginFinalizeCallback callback) {
+void StateBase::LoginStep2(const std::string& encrypted_login_token,
+                           const std::string& client_mac,
+                           LoginStep2Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
-void StateBase::ChangePasswordVerifyInit(
-    const std::string& email,
-    ChangePasswordVerifyInitCallback callback) {
+void StateBase::ChangePasswordStep1(const std::string& email,
+                                    ChangePasswordStep1Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
-void StateBase::ChangePasswordVerifyComplete(
-    const std::string& code,
-    ChangePasswordVerifyCompleteCallback callback) {
+void StateBase::ChangePasswordStep2(const std::string& code,
+                                    ChangePasswordStep2Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
-void StateBase::ChangePasswordPasswordInit(
-    const std::string& blinded_message,
-    ChangePasswordPasswordInitCallback callback) {
+void StateBase::ChangePasswordStep3(const std::string& blinded_message,
+                                    ChangePasswordStep3Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
-void StateBase::ChangePasswordPasswordFinalize(
-    const std::string& serialized_record,
-    ChangePasswordPasswordFinalizeCallback callback) {
+void StateBase::ChangePasswordStep4(const std::string& serialized_record,
+                                    ChangePasswordStep4Callback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
@@ -215,26 +153,6 @@ void StateBase::GetServiceToken(mojom::Service,
                                 GetServiceTokenCallback callback) {
   std::move(callback).Run(
       MakeCalledInWrongStateError<mojom::GetServiceTokenError>());
-}
-
-void StateBase::OnResendVerificationEmail(
-    ResendVerificationEmailCallback callback,
-    VerifyResend::Response response) {
-  if (response.status_code == net::HTTP_NO_CONTENT) {
-    return std::move(callback).Run(mojom::ResendConfirmationEmailResult::New());
-  }
-
-  if (!response.body || response.body->has_value()) {
-    return std::move(callback).Run(
-        base::unexpected(MakeServerError<mojom::ResendConfirmationEmailError>(
-            response.status_code.value_or(response.net_error),
-            mojom::ResendConfirmationEmailServerErrorCode::kInvalidResponse)));
-  }
-
-  std::move(callback).Run(
-      base::unexpected(MakeServerError<mojom::ResendConfirmationEmailError>(
-          CHECK_DEREF(response.status_code),
-          std::move(response.body->error()))));
 }
 
 void StateBase::RemoveRequestHandle(

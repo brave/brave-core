@@ -20,7 +20,7 @@ IN_PROC_BROWSER_TEST_F(BraveSharingHubTest, CopyCommandsOrder) {
   {
     ASSERT_TRUE(
         ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com/")));
-    sharing_hub::SharingHubModel sh_model(browser()->profile());
+    sharing_hub::SharingHubModel sh_model(browser()->GetProfile());
 
     const auto actions = sh_model.GetFirstPartyActionList(
         browser()->tab_strip_model()->GetActiveWebContents());
@@ -31,7 +31,7 @@ IN_PROC_BROWSER_TEST_F(BraveSharingHubTest, CopyCommandsOrder) {
   {
     ASSERT_TRUE(
         ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
-    sharing_hub::SharingHubModel sh_model(browser()->profile());
+    sharing_hub::SharingHubModel sh_model(browser()->GetProfile());
 
     const auto actions = sh_model.GetFirstPartyActionList(
         browser()->tab_strip_model()->GetActiveWebContents());

@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "자동 파쇄";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "검색 데이터 자동 파쇄";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "공격적";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "라인 %2$i에 유효하지 않은 규칙 '%1$@'";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "여기 맞춤 필터를 한 줄씩 추가하세요.";
+"CustomFiltersPlaceholder" = "맞춤 필터 추가";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "맞춤 필터는 %i개 라인 넘게 지원하지 않음";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "도메인 차단";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "맞춤 필터 편집";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "웹사이트에서 내 데이터를 판매 또는 공유하지 않도록 요청하세요. [자세히 알아보기](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "사용하지 않음";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "검색 데이터가 자동으로 조각화되지 않습니다";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "앱을 닫았을 때";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Brave 앱을 닫거나 다시 시작하면 검색 데이터가 자동으로 조각화됩니다";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "사이트 탭이 닫혔을 때";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "사이트에 열린 모든 탭이 닫히면 검색 데이터가 자동으로 조각화됩니다";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "파쇄하면 이 사이트에 열린 모든 탭이 닫히고 모든 사이트 데이터가 삭제됩니다. 번복할 수 없습니다.";

@@ -11,6 +11,7 @@ import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'
+import Loading from './Loading'
 import PublisherCard from '../shared/PublisherCard'
 
 export function SuggestionsCarousel () {
@@ -28,10 +29,20 @@ export function SuggestionsCarousel () {
 }
 
 export function SuggestionsPage () {
-  const { suggestedPublisherIds } = useBraveNews()
+  const { suggestedPublisherIds, updateSuggestedPublisherIds } = useBraveNews()
+  const loading = suggestedPublisherIds.length === 0
+
+  React.useEffect(() => {
+    updateSuggestedPublisherIds()
+  }, [updateSuggestedPublisherIds])
+
   return <CustomizePage title={getLocale(S.BRAVE_NEWS_SUGGESTIONS_TITLE)}>
-    <DiscoverSection>
-      {suggestedPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
-    </DiscoverSection>
+    {loading ? (
+      <Loading />
+    ) : (
+      <DiscoverSection>
+        {suggestedPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
+      </DiscoverSection>
+    )}
   </CustomizePage>
 }

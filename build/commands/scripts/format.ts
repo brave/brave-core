@@ -129,6 +129,12 @@ async function runFormat(options: {
       continueOnFail: true,
       skipLogging,
       stdio: 'pipe',
+      env: {
+        ...cmdOptions.env,
+        // Prevent HotSpot hsperfdata warnings from contaminating
+        // google-java-format stdout.
+        JAVA_TOOL_OPTIONS: '-XX:-UsePerfData',
+      },
     })
 
     const clFormatOutput = formatOutput(clFormatResult)

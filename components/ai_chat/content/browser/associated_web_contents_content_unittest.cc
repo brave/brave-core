@@ -706,17 +706,16 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
   GetContentTools(future.GetCallback());
   auto tools = future.Take();
-  // ScriptTool prefixes names with the sanitized host and path
-  // ("https://www.example.com/" → "www_example_com_") and embeds the host plus
+  // ScriptTool prefixes names with "web_" and the sanitized host
+  // ("https://www.example.com" → "www_example_com") and embeds the host plus
   // the page-provided description in the description so the LLM has the
-  // website-attribution context. The path is included so tools with the same
-  // name on different pages of the same host don't collapse; here the root path
-  // "/" sanitizes to an extra underscore.
+  // website-attribution context. Only the host is used (not the full path) to
+  // keep the name within Bedrock's 64-char tool-name limit.
   ASSERT_EQ(2u, tools.size());
-  EXPECT_EQ(tools[0]->Name(), "www_example_com__search");
+  EXPECT_EQ(tools[0]->Name(), "web_www_example_com_search");
   EXPECT_NE(std::string(tools[0]->Description()).find("Search the page"),
             std::string::npos);
-  EXPECT_EQ(tools[1]->Name(), "www_example_com__summarize");
+  EXPECT_EQ(tools[1]->Name(), "web_www_example_com_summarize");
   EXPECT_NE(std::string(tools[1]->Description()).find("Summarize the article"),
             std::string::npos);
 }

@@ -45,7 +45,7 @@ bool IsNewNavigation(web::NavigationContext* navigation_context) {
       navigation_context->GetPageTransition());
 }
 
-bool IsErrorPage(int http_status_code) {
+bool IsHttpErrorStatusCode(int http_status_code) {
   const int http_status_code_class = http_status_code / 100;
   return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
          http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
@@ -77,12 +77,30 @@ AdsTabHelper::~AdsTabHelper() {
   }
 }
 
-void AdsTabHelper::NotifyTabDidStartPlayingMedia() {
-  ads_service_->NotifyTabDidStartPlayingMedia(tab_id_);
+void AdsTabHelper::NotifyTabDidStartPlayingMedia(int player_id) {
+  if (IsPlayingMediaWithAudio(player_id)) {
+    return;
+  }
+
+  media_players_with_audio_.insert(player_id);
+  if (media_players_with_audio_.size() == 1) {
+    // If this is the first media player that has started playing, notify
+    // that the tab has started playing media.
+    MaybeNotifyTabDidStartPlayingMedia();
+  }
 }
 
-void AdsTabHelper::NotifyTabDidStopPlayingMedia() {
-  ads_service_->NotifyTabDidStopPlayingMedia(tab_id_);
+void AdsTabHelper::NotifyTabDidStopPlayingMedia(int player_id) {
+  if (!IsPlayingMediaWithAudio(player_id)) {
+    return;
+  }
+
+  media_players_with_audio_.erase(player_id);
+  if (media_players_with_audio_.empty()) {
+    // If this is the last media player that has stopped playing, notify that
+    // the tab has stopped playing media.
+    MaybeNotifyTabDidStopPlayingMedia();
+  }
 }
 
 void AdsTabHelper::WasShown(web::WebState* web_state) {
@@ -98,6 +116,11 @@ void AdsTabHelper::DidStartNavigation(
     web::NavigationContext* navigation_context) {
   redirect_chain_.clear();
   http_status_code_.reset();
+  is_same_document_navigation_ = false;
+
+  // All media players from the previous document are torn down and their IDs
+  // become invalid, so player tracking must not carry over to the next one.
+  media_players_with_audio_.clear();
 
   if (web::NavigationManager* navigation_manager =
           web_state->GetNavigationManager()) {
@@ -121,6 +144,14 @@ void AdsTabHelper::DidFinishNavigation(
     return;
   }
 
+  // Computed before the error page check below, so that `has_page_loaded_`
+  // is reset for a new document even if it fails to load, rather than
+  // keeping a stale value from whatever document was previously loaded.
+  is_same_document_navigation_ = navigation_context->IsSameDocument();
+  if (!is_same_document_navigation_) {
+    has_page_loaded_ = false;
+  }
+
   if (net::HttpResponseHeaders* headers =
           navigation_context->GetResponseHeaders()) {
     http_status_code_ = headers->response_code();
@@ -130,14 +161,31 @@ void AdsTabHelper::DidFinishNavigation(
 
   // Notify of tab changes after navigation completes but before notifying that
   // the tab has loaded, so that any listeners can process the tab changes
-  // before the tab is considered loaded.
+  // before the tab is considered loaded. This must also happen before
+  // `MaybeNotifyTabDidFailToLoad()` below, as `TabManager` only knows about a
+  // tab once it has observed a tab change for it, and looks up the tab by id
+  // to include its details in the fail-to-load notification.
   MaybeNotifyTabDidChange();
+
+  if (navigation_context->GetError()) {
+    // Reset `http_status_code_` as the page failed to load, even if response
+    // headers with a non-error status code were received before the network
+    // error occurred.
+    http_status_code_.reset();
+
+    // Notify the tab failed to load, instead of the tab loaded, to prevent an
+    // ad landing from being incorrectly recorded for network error pages.
+    MaybeNotifyTabDidFailToLoad();
+    return;
+  }
 
   MaybeNotifyTabDidLoad();
 
-  if (navigation_context->IsSameDocument()) {
-    // Set `was_restored_` to `false` so that listeners are notified of tab
-    // changes after the tab is restored.
+  // Only reset `was_restored_` once the current document has finished
+  // loading, so that listeners are not notified of tab changes for a
+  // same-document navigation that occurs while the tab is still being
+  // restored.
+  if (is_same_document_navigation_ && has_page_loaded_) {
     was_restored_ = false;
   }
 }
@@ -145,6 +193,8 @@ void AdsTabHelper::DidFinishNavigation(
 void AdsTabHelper::PageLoaded(
     web::WebState* web_state,
     web::PageLoadCompletionStatus load_completion_status) {
+  has_page_loaded_ = true;
+
   MaybeNotifyTabTextContentDidChange();
 
   // Set `was_restored_` to `false` so that listeners are notified of tab
@@ -159,12 +209,12 @@ void AdsTabHelper::WebStateDestroyed(web::WebState* web_state) {
   web_state_ = nullptr;
 }
 
-bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
+bool AdsTabHelper::IsNotificationAdsEnabled() const {
   const PrefService* const prefs =
       ProfileIOS::FromBrowserState(web_state_->GetBrowserState())->GetPrefs();
 
   return prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         prefs->GetBoolean(prefs::kOptedInToNotificationAds);
+         prefs->GetBoolean(prefs::kNotificationsEnabled);
 }
 void AdsTabHelper::MaybeNotifyTabDidChange() {
   if (redirect_chain_.empty()) {
@@ -182,6 +232,22 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
   ads_service_->NotifyTabDidLoad(tab_id_, *http_status_code_);
 }
 
+void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
+  ads_service_->NotifyTabDidFailToLoad(tab_id_);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
+  ads_service_->NotifyTabDidStartPlayingMedia(tab_id_);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia() {
+  ads_service_->NotifyTabDidStopPlayingMedia(tab_id_);
+}
+
+bool AdsTabHelper::IsPlayingMediaWithAudio(int player_id) const {
+  return media_players_with_audio_.contains(player_id);
+}
+
 void AdsTabHelper::OnVisibilityChanged(bool is_visible) {
   const bool last_is_web_contents_visible = is_web_state_visible_;
   is_web_state_visible_ = is_visible;
@@ -193,18 +259,22 @@ void AdsTabHelper::OnVisibilityChanged(bool is_visible) {
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
-  // are still loading, or an error page was displayed. `http_status_code_` can
-  // be `std::nullopt` if the navigation never finishes which can occur if the
-  // user constantly refreshes the page.
-  return !was_restored_ && is_new_navigation_ && !redirect_chain_.empty() &&
-         http_status_code_ && !IsErrorPage(*http_status_code_);
+  // are still loading, was a same-document navigation, or an error page was
+  // displayed. `http_status_code_` can be `std::nullopt` if the navigation
+  // never finishes, which can occur if the user constantly refreshes the page,
+  // or if the committed navigation was a network error page.
+  //
+  // Unlike desktop, `PageLoaded` also fires for same-document navigations, so
+  // this must be checked explicitly here.
+  return !was_restored_ && is_new_navigation_ &&
+         !is_same_document_navigation_ && !redirect_chain_.empty() &&
+         http_status_code_ && !IsHttpErrorStatusCode(*http_status_code_);
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
-  if (!ShouldNotifyTabContentDidChange() ||
-      !UserHasOptedInToNotificationAds()) {
+  if (!ShouldNotifyTabContentDidChange() || !IsNotificationAdsEnabled()) {
     // Only utilized for text classification, which requires the user to have
-    // joined Brave Rewards and opted into notification ads.
+    // joined Brave Rewards and notification ads to be enabled.
     return;
   }
   web::WebFrame* main_web_frame =

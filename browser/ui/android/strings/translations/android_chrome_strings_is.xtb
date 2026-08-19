@@ -17,9 +17,11 @@
 <translation id="1052842760770519282">Sum aðgangsorðanna þinna eru ekki aðgengileg</translation>
 <translation id="1057623954802068161">Fletta efst á síðu</translation>
 <translation id="1066338698580889414">Kynningarblað neðst með ábendingu, opið til fulls</translation>
+<translation id="1067048845568873861">Búið til</translation>
 <translation id="1070689840697074178">Hér geturðu sótt PDF-skrár</translation>
 <translation id="107147699690128016">Ef þú breytir skráarendingunni gæti skráin opnast í öðru forriti og hugsanlega valdið skaða á tækinu.</translation>
 <translation id="1073328695547557412">Ýttu á tákn Brave-linsu</translation>
+<translation id="1075811647922107217">Síðustærð</translation>
 <translation id="1080116354587839789">Laga að breidd</translation>
 <translation id="1086486568852410168">Leita með Brave linsu</translation>
 <translation id="1087799850623149508">Þú getur haldið veffangastikunni neðst inni til að færa hana</translation>
@@ -32,7 +34,6 @@
 <translation id="1108938384783527433">Samstilla feril</translation>
 <translation id="1111673857033749125">Bókamerki vistuð í öðrum tækjum munu birtast hér.</translation>
 <translation id="1123537484474186311"><ph name="TAB_TITLE"/>, mynd-í-mynd-flipi</translation>
-<translation id="1124357650933674597">{NUM_WINDOWS,plural, =1{Endurheimta 1 glugga}one{Endurheimta # glugga}other{Endurheimta # glugga}}</translation>
 <translation id="1126696498560056882">Stjórna reikningum í þessu tæki</translation>
 <translation id="5809126106485463836">Huliðsstilling felur vefskoðun þína fyrir öðrum sem nota tækið þitt</translation>
 <translation id="9171525955914564119">Skráðu þig inn á Brave sem <ph name="EMAIL"/> til að fá aðgang að bókamerkjum og fleiru í öllum tækjunum þínum</translation>
@@ -77,14 +78,12 @@
 <translation id="1269129608791067105">Þú finnur ferilinn þinn hér</translation>
 <translation id="1273937721055267968">Setja <ph name="DOMAIN"/> á bannlista</translation>
 <translation id="1280921956537356716">Kveikja á tilkynningum um ráð</translation>
-<translation id="1283039547216852943">Ýttu til að stækka</translation>
 <translation id="1289129165308566697">Skoðaðu ferilinn þinn í öðrum tækjum</translation>
 <translation id="129553762522093515">Nýlega lokað</translation>
 <translation id="1298077576058087471">Sparaðu allt að 60% af gögnum, lestu fréttir dagsins</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> - Sent úr <ph name="DEVICE_NAME"/></translation>
 <translation id="1310482092992808703">Sameina flipa</translation>
 <translation id="1318262688555255786">Deila tengli á vefsíðuna: <ph name="PAGE_TITLE"/>. Heimild: <ph name="PAGE_URL"/></translation>
-<translation id="1320912611264252795">Möppur vistunar bókamerkja opnaðar á öllum skjánum</translation>
 <translation id="1327257854815634930">Ferill er opinn</translation>
 <translation id="6773423637732432200">Ekki er hægt að uppfæra Brave. Fleiri valkostir.</translation>
 <translation id="3169981355900570544">Flýtilyklar eiginleika Brave</translation>
@@ -119,6 +118,7 @@ Til að skoða fleiri stillingar sem nota gögn til að bæta Brave-upplifunina 
 <translation id="1435593198351412143">Opna PDF-skrár sjálfkrafa</translation>
 <translation id="1437543266176261764">Keyrt í <ph name="APP_NAME"/></translation>
 <translation id="1448440926884431741">Notaðu bókamerki til að flokka vörur sem þú vaktar</translation>
+<translation id="1452651021404174820">Veldu tæki</translation>
 <translation id="1455845192930279203">Viltu samt sækja „<ph name="FILE_NAME"/>“ (<ph name="FILE_SIZE"/>) úr <ph name="DOWNLOAD_DOMAIN"/>?</translation>
 <translation id="1460751212339734034">Sparaðu tíma, sláðu minna inn</translation>
 <translation id="146522654774760805">Aðgangsorð og sjálfvirk útfylling</translation>
@@ -126,6 +126,7 @@ Til að skoða fleiri stillingar sem nota gögn til að bæta Brave-upplifunina 
 <translation id="1477626028522505441">Niðurhal á <ph name="FILE_NAME"/> mistókst vegna vandamála á netþjóni.</translation>
 <translation id="147982357559798527">Breytt</translation>
 <translation id="5970766554644855317">Ekki er víst að hluti af ferlinum þínum birtist hér. Til að sjá allan Brave-ferilinn skaltu opna Brave-feril í heild sinni.</translation>
+<translation id="1483493594462132177">Senda</translation>
 <translation id="1495677929897281669">Aftur á flipa</translation>
 <translation id="1496514951988037011">notandanafn</translation>
 <translation id="1501480321619201731">Eyða hópi</translation>
@@ -183,6 +184,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="1792959175193046959">Þú getur breytt staðsetningu niðurhals hvenær sem er</translation>
 <translation id="1796666869097395659">Minnkaðu flipann til að fara aftur í hann síðar</translation>
 <translation id="7401204338724669842">Ábendingar fyrir Brave</translation>
+<translation id="1803799720926799756">Skráarstærð</translation>
 <translation id="1807246157184219062">Ljóst</translation>
 <translation id="1807709131360304325">Opna í nýjum glugga</translation>
 <translation id="1812027881030482584"><ph name="SITE_ETLD_PLUS_ONE"/> getur ekki haldið áfram að nota <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -261,6 +263,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="2149968176347646218">Tengingin er ekki örugg</translation>
 <translation id="2149973817440762519">Breyta bókamerki</translation>
 <translation id="526235294307144732">Sláðu inn aðgangsorðið þitt til að nota og vista Brave-gögn á Brave-reikningnum þínum</translation>
+<translation id="2164015935042801524">Hægrismelltu hér til að sýna flipa lóðrétt</translation>
 <translation id="2166228530126694506">Útgáfa <ph name="VERSION_NUMBER"/></translation>
 <translation id="2172688499998841696">Slökkt er á lýsingum mynda</translation>
 <translation id="2172905120685242547">Loka glugga?</translation>
@@ -303,6 +306,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="2323763861024343754">Geymsla vefsvæða</translation>
 <translation id="2327445548174191329">Frá <ph name="DEVICE_NAME"/></translation>
 <translation id="2328474416100889417">Allir notendur munu umsvifalaust missa aðgang að flipahópnum „<ph name="GROUP_NAME"/>“ og slökkt verður á öllum boðstenglum</translation>
+<translation id="3096606216245789753">Við kynnum gervigreindarstillingu í Brave</translation>
 <translation id="2330186936255788117">Fleiri bókamerki</translation>
 <translation id="2332515770639153015">Kveikt er á enn öruggari vefskoðun</translation>
 <translation id="233375395665273385">Eyða og skrá út</translation>
@@ -315,6 +319,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="351551888962017708">Fleiri síðum er forhlaðið. Síður kunna að vera forhlaðnar á Brave-þjónum þegar önnur vefsvæði eða forrit biðja um það.</translation>
 <translation id="2366554533468315977">Verðferill þessa valkosts á vefnum</translation>
 <translation id="2367818124433749493">Flýtileiðir forritara</translation>
+<translation id="2369058545741334020">Opna í lesstillingu</translation>
 <translation id="2385605401818128172">Þú getur farið yfir vefsvæði sem senda margar tilkynningar og komið í veg fyrir frekari sendingar</translation>
 <translation id="2386938421315164605">Fela og sýna umfjöllunarefni</translation>
 <translation id="2390510615457643724">Viltu sækja <ph name="FILE_NAME"/> <ph name="FILE_SIZE"/> aftur?</translation>
@@ -325,6 +330,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="2411239243988279592"><ph name="TAB_TITLE"/>, valinn flipi með hljóði</translation>
 <translation id="2413014528833954543">Ekki tókst að athuga aðgangsorð í þessu tæki</translation>
 <translation id="2414886740292270097">Dökkt</translation>
+<translation id="2415037988255164008">Endurheimta glugga?</translation>
 <translation id="2421705177906985956">Engin vefsvæði til að birta eins og er.</translation>
 <translation id="2426805022920575512">Velja annan reikning</translation>
 <translation id="2427025860753516072">{FILE_COUNT,plural, =1{Vídeó, 1 vídeó á lista}one{Vídeó, # vídeó á lista}other{Vídeó, # vídeó á lista}}</translation>
@@ -518,7 +524,6 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="3166827708714933426">Flýtilyklar flipa og glugga</translation>
 <translation id="3167258285411721858">Þú getur óskað eftir snjallvef fyrir <ph name="HOST_NAME"/></translation>
 <translation id="6726598689756214679"><ph name="TAB_TITLE"/>, margvalinn festur huliðsflipi með slökkt á hljóði</translation>
-<translation id="3183941812169784232">Endurheimta alla glugga?</translation>
 <translation id="3187472288455401631">Auglýsingamælingar</translation>
 <translation id="3189635831478931757">Flipahópur: <ph name="GROUP_TITLE"/></translation>
 <translation id="3200536777393523575">Loka núverandi glugga?</translation>
@@ -567,6 +572,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="4114256890962999877">Til að tryggja að þú hafir aðgang að aðgangsorðunum þínum skaltu flytja þau út núna, uppfæra þjónustu Google Play og flytja þau síðan aftur inn í Brave-aðgangsorðastjórnun. <ph name="BEGIN_LINK"/>Sjá ítarlegar leiðbeiningar<ph name="END_LINK"/>.</translation>
 <translation id="3435738964857648380">Öryggi</translation>
 <translation id="3435914367318771664">Bæta flipa við nýjan hóp</translation>
+<translation id="3436118221454753036">Stillingin „Spyrja gervigreind“</translation>
 <translation id="3830890663494219270">Skráðu þig inn á Brave til að fá aðgang að aðgangsorðum og fleiru í öllum tækjunum þínum</translation>
 <translation id="3439276997620616816">Þú finnur nýlega flipa hér</translation>
 <translation id="3443221991560634068">Endurhlaða þessa síðu</translation>
@@ -594,6 +600,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="3524334353996115845">Leyfa <ph name="ORIGIN"/> að staðfesta að þetta sért þú</translation>
 <translation id="3527085408025491307">Mappa</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB tiltæk</translation>
+<translation id="3547933853190131743">Leita með gervigreindarstillingu</translation>
 <translation id="719175600387583059">Þar sem forhlaðnar síður eru dulkóðaðar og vefsvæðið eða forritið sem er tengt við síðurnar er í eigu Brave geta Brave-þjónar ekki móttekið nýjar upplýsingar þegar síðunum er forhlaðið í lokaðri stillingu.</translation>
 <translation id="3549657413697417275">Leita í ferlinum</translation>
 <translation id="3557336313807607643">Bæta við tengiliði</translation>
@@ -617,6 +624,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="871233388178581868">Brave getur athugað aðgangsorðin þín þegar þú vistar þau</translation>
 <translation id="3636940436873918441">Kjörtungumál</translation>
 <translation id="7120697372526128040">Ef þú gleymdir aðgangsorðinu eða vilt breyta þessari stillingu skaltu <ph name="BEGIN_LINK"/>eyða Brave-gögnunum á reikningnum þínum<ph name="END_LINK"/>.</translation>
+<translation id="3649090831059057090"><ph name="WINDOW_TITLE"/> – <ph name="TAB_COUNT"/></translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5399378599142661690">Fara í Brave Home-forritið</translation>
 <translation id="368329460027487650">Útskráð(ur). Opnar valkosti fyrir innskráningu.</translation>
@@ -641,6 +649,8 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="3739899004075612870">Bókamerki bætt við <ph name="PRODUCT_NAME"/></translation>
 <translation id="3740290940447881599">Gakktu úr skugga um að þú treystir þessu vefsvæði</translation>
 <translation id="3740525748616366977">Raddleit er ekki í boði í þessu tæki</translation>
+<translation id="3749289110408117711">Skráarheiti</translation>
+<translation id="3756823472711156529">Endurheimta hóp</translation>
 <translation id="7338686239886724619">Númer sýndarkorts verður notað þegar þú gengur frá kaupum með þessu korti til að vernda raunverulegar upplýsingar þínar. Stjórna í Brave Wallet. <ph name="BEGIN_LINK1"/>Nánar um sýndarkort<ph name="END_LINK1"/></translation>
 <translation id="376561056759077985">Einhver gögn hafa enn ekki verið vistuð</translation>
 <translation id="3770620323585347665">Gefa glugga heiti</translation>
@@ -671,6 +681,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="3870538285500327859"><ph name="TAB_TITLE"/>, valinn mynd-í-mynd-flipi</translation>
 <translation id="3870908470613821006">Allir notendur munu umsvifalaust missa aðgang að flipahópnum „<ph name="GROUP_NAME"/>“ og honum verður eytt úr öllum tækjum</translation>
 <translation id="3873174561423636563"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> mun deila <ph name="FIELDS_STRING"/> með þessu vefsvæði til að geta haldið áfram. Sjá <ph name="BEGIN_LINK1"/>þjónustuskilmála<ph name="END_LINK1"/> vefsvæðisins.</translation>
+<translation id="3882323608730650973">Breytt</translation>
 <translation id="3892148308691398805">Afrita texta</translation>
 <translation id="3893858854379998374">Ef þú vilt bókamerki á reikningnum þínum skaltu eyða ónotuðum bókamerkjum</translation>
 <translation id="3898498281932368596">Setja á bannlista og yfirgefa</translation>
@@ -701,6 +712,7 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="399788104667917863">Festa á tækjastiku</translation>
 <translation id="4000212216660919741">Ónettengt</translation>
 <translation id="4694008025405984126">Sérstilltu og stjórnaðu Brave með auðkenndu atriði</translation>
+<translation id="4002066346123236978">Heiti</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{1 aðgangsorð í hættu á Brave-reikningnum þínum}one{# aðgangsorð í hættu á Brave-reikningnum þínum}other{# aðgangsorð í hættu á Brave-reikningnum þínum}}</translation>
 <translation id="7002462047122704254">Skráðu þig inn á Brave til að fá aðgang að bókamerkjum og fleiru í öllum tækjunum þínum</translation>
 <translation id="4024768890073681126">Foreldri þitt stjórnar vafranum</translation>
@@ -722,7 +734,6 @@ Aðeins einstaklingar sem eru með aðgangsorðið þitt geta lesið dulkóðuð
 <translation id="7268155614575494857">Bættu við notandanafni þínu fyrir þetta vefsvæði til að hjálpa Brave-aðgangsorðastjórnun að vista innskráningarupplýsingarnar þínar</translation>
 <translation id="4095146165863963773">Eyða forritsgögnum?</translation>
 <translation id="4095483462103784441">Búa til nýjan flipahóp</translation>
-<translation id="4096227151372679484">Vistun bókamerkja opnuð á hálfum skjánum</translation>
 <translation id="1523634703470981382">Tilkynning frá Brave-aðgangsorðastjórnun opnuð</translation>
 <translation id="4113030288477039509">Stjórnað af kerfisstjóra</translation>
 <translation id="4116038641877404294">Náðu í síður til að nota þær án nettengingar</translation>
@@ -1103,7 +1114,6 @@ Brave reikningurinn þinn kann að vera með annars konar vefskoðunarferil, svo
 <translation id="569536719314091526">Notaðu hnappinn „Fleiri valkostir“ til að þýða þessa síðu yfir á hvaða tungumál sem er</translation>
 <translation id="2320748512701464301">Brave getur veitt þér vernd gegn öryggisbrotum, hættulegum vefsvæðum og fleira</translation>
 <translation id="5698878456427040674">Kannaðu hvort valinn reikningur er studdur.</translation>
-<translation id="5700415746238689851">Opna Gemini</translation>
 <translation id="5709213329446699338"><ph name="SITE"/> vill tengjast við raðtengi</translation>
 <translation id="5715150588940290235">Eyða vistuðum öryggisnúmerum?</translation>
 <translation id="572328651809341494">Nýlegir flipar</translation>
@@ -1163,7 +1173,6 @@ Brave reikningurinn þinn kann að vera með annars konar vefskoðunarferil, svo
 <translation id="59577092665511740">Veldu reikning.</translation>
 <translation id="5958275228015807058">Þú finnur skrár og síður í Niðurhali</translation>
 <translation id="4262327329851675629">{NUM_REVOKED_PERMISSIONS,plural, =1{Brave kom í veg fyrir að vefsvæði sem þú hefur ekki opnað nýlega sendi þér tilkynningar}one{Brave kom í veg fyrir að vefsvæði sem þú hefur ekki opnað nýlega sendi þér tilkynningar}other{Brave kom í veg fyrir að vefsvæði sem þú hefur ekki opnað nýlega sendi þér tilkynningar}}</translation>
-<translation id="5962718611393537961">Ýttu til að draga saman</translation>
 <translation id="5964869237734432770">Slökkva á myndlýsingum</translation>
 <translation id="5972844218283131174">Afvelja allt</translation>
 <translation id="5975083100439434680">Minnka aðdrátt</translation>
@@ -1275,6 +1284,7 @@ Sum vefsvæði kunna til dæmis að bregðast við beiðninni með því að bir
 <translation id="634208815998129842">Verkstjórn</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}}</translation>
 <translation id="6345878117466430440">Merkja sem lesið</translation>
+<translation id="6350745006329795504">Hafa umsjón með tækjum</translation>
 <translation id="6356893102071098867">Kannaðu hvort þú hafir valið réttan reikning.</translation>
 <translation id="6364438453358674297">Fjarlægja tillögu úr ferlinum?</translation>
 <translation id="806493401838431801">Forhleður oftar síðum sem Brave telur að þú munir opna. Þessi stilling kann að auka gagnanotkun.</translation>
@@ -1332,6 +1342,7 @@ Sum vefsvæði kunna til dæmis að bregðast við beiðninni með því að bir
 <translation id="6556501700899673703">Lexend</translation>
 <translation id="6560414384669816528">Leita með Sogou</translation>
 <translation id="656065428026159829">Sjá meira</translation>
+<translation id="6565781844089373403">Endurheimta glugga</translation>
 <translation id="6565959834589222080">Wi-Fi er notað þegar það er í boði</translation>
 <translation id="657177046675873214">Kveiktu á „Bókamerki“ í stillingunum til að sjá bókamerkin þín í öllum tækjunum þínum</translation>
 <translation id="6573096386450695060">Leyfa alltaf</translation>
@@ -1410,6 +1421,7 @@ Sum vefsvæði kunna til dæmis að bregðast við beiðninni með því að bir
 <translation id="6846298663435243399">Hleður…</translation>
 <translation id="6850409657436465440">Enn er verið að sækja</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> flipum lokað</translation>
+<translation id="6852437757508328589">{NUM_RESULTS,plural, =1{1 niðurstaða fannst}one{# niðurstaða fannst}other{# niðurstöður fundust}}</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{Hljóðskrár, 1 hljóðskrá á lista}one{Hljóðskrár, # hljóðskrá á lista}other{Hljóðskrár, # hljóðskrár á lista}}</translation>
 <translation id="4046835482356054431">Tillögur frá Brave — slökkt</translation>
 <translation id="6864459304226931083">Sækja mynd</translation>
@@ -1446,6 +1458,7 @@ Sum vefsvæði kunna til dæmis að bregðast við beiðninni með því að bir
 <translation id="6937524809504266803">Sérsnið og tenging</translation>
 <translation id="6937876069006524083">Gælunafn (valfrjálst)</translation>
 <translation id="6942665639005891494">Þú getur breytt staðsetningu niðurhals hvenær sem er með því að nota valkostinn í stillingavalmyndinni</translation>
+<translation id="6944854424004126054">Endurheimta glugga</translation>
 <translation id="6945221475159498467">Velja</translation>
 <translation id="6955535239952325894">Slökkt er á þessari stillingu í stýrðum vöfrum</translation>
 <translation id="6963766334940102469">Eyða bókamerkjum</translation>
@@ -1956,12 +1969,14 @@ Til að breyta þessari stillingu skaltu <ph name="BEGIN_LINK"/>eyða Brave-gög
 <translation id="2656327481457116654">Opna í huliðsflipa í Brave</translation>
 <translation id="9010094279589497751">Opnaðu Gemini þegar þú þarft á því að halda</translation>
 <translation id="9012585441087414258">Vernda þig gegn vefsvæðum, niðurhali og viðbótum sem vitað er að eru hættuleg. Ef grunsamleg virkni greinist á síðu eru vefslóðir og hlutar af innihaldi síðna sendir í örugga vefskoðun Brave.</translation>
+<translation id="9014097371980259227">Sum verkfæri hafa verið færð til að auðvelda þér að leita í gervigreindarstillingu</translation>
 <translation id="9019199799064251516">Halda áfram án þess að nota prófíllás bílsins?</translation>
 <translation id="9022774213089566801">Oft skoðað</translation>
 <translation id="9022871169049522985">Vefsvæði og auglýsendur geta mælt árangur auglýsinga sinna</translation>
 <translation id="5687542525349822727">Stilltu Brave sem sjálfgefinn vafra</translation>
 <translation id="9027728231343310283">Afturkalla <ph name="SITE"/></translation>
 <translation id="9035378196785279980">Flytja í\u2026</translation>
+<translation id="904146253922032365">Haltu inni til að sýna flipa lóðrétt</translation>
 <translation id="9042893549633094279">Persónuvernd og öryggi</translation>
 <translation id="1612219807314383628">Leitaðu í Brave í einum grænum</translation>
 <translation id="9050666287014529139">Aðgangsorð</translation>
@@ -1985,6 +2000,7 @@ Til að breyta þessari stillingu skaltu <ph name="BEGIN_LINK"/>eyða Brave-gög
 <translation id="7708077127614889658">Opna í Brave-glugga</translation>
 <translation id="2324185818196590038">Til að fá sem mest sérsniðna upplifun skaltu hafa Brave með í vef- og forritavirkni og tengdum Brave-þjónustum</translation>
 <translation id="9099220545925418560">Byggt á vafraferlinum þínum. Slökkt er á þessari stillingu.</translation>
+<translation id="9099674669267916096">Síðufjöldi</translation>
 <translation id="9100610230175265781">Aðgangsorðs krafist</translation>
 <translation id="9101137867221042551">Stjórnun</translation>
 <translation id="9102803872260866941">Forskoðunarflipi er opinn</translation>
@@ -2030,7 +2046,6 @@ Til að breyta þessari stillingu skaltu <ph name="BEGIN_LINK"/>eyða Brave-gög
 <translation id="939598580284253335">Sláðu inn aðgangsorð</translation>
 <translation id="1888307590966923120"><ph name="TAB_TITLE"/>, festur huliðsflipi með mynd í mynd</translation>
 <translation id="945522503751344254">Senda ábendingu</translation>
-<translation id="949667118776341807">Snúa</translation>
 <translation id="5406914950576900927">Brave getur notast við <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> fyrir leit í Kína. Þú getur breytt þessu í <ph name="BEGIN_LINK"/>stillingunum<ph name="END_LINK"/>.</translation>
 <translation id="961856697154696964">Eyða vefskoðunargögnum</translation>
 <translation id="963246339335003378">Opna verkstjórn</translation>

@@ -20,7 +20,7 @@ public class BraveCachedFlags extends ChromeCachedFlags {
     // List of cached flags for Brave features - safe to access before native is ready
     private static final List<CachedFlag> sBraveFlagsCached =
             List.of(
-                    BraveDynamicColors.getCachedFlag(),
+                    BraveDynamicColors.getCachedDefaultFlag(),
                     BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentEnabled);
     // List of cached feature params for Brave features - safe to access before native is ready
     private static final List<CachedFeatureParam<?>> sBraveFeatureParamsCached =

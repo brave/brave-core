@@ -162,6 +162,17 @@ void AdsClientNotifier::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
                     http_status_code);
 }
 
+void AdsClientNotifier::NotifyTabDidFailToLoad(int32_t tab_id) {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyTabDidFailToLoad,
+                       weak_factory_.GetWeakPtr(), tab_id));
+  }
+
+  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabDidFailToLoad,
+                    tab_id);
+}
+
 void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(

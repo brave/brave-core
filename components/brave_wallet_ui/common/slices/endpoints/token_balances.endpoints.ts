@@ -705,41 +705,12 @@ async function fetchAccountCurrentNativeBalance({
   cardanoWalletService: BraveWallet.CardanoWalletServiceRemote
   polkadotWalletService: BraveWallet.PolkadotWalletServiceRemote
 }): Promise<string> {
-  // LOCALHOST
-  if (
-    token.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-    && accountId.coin !== BraveWallet.CoinType.SOL
-  ) {
-    const { balance, error, errorMessage } = await jsonRpcService.getBalance(
-      accountId.address,
-      accountId.coin,
-      token.chainId,
-    )
-
-    // LOCALHOST will error until a local instance is detected
-    // return a '0' balance until it's detected.
-    if (error !== 0) {
-      console.log(
-        `getBalance (LOCALHOST - ${accountId.coin}) error: ${errorMessage}`,
-      )
-      return Amount.zero().format()
-    }
-
-    return Amount.normalize(balance)
-  }
-
-  // NON-LOCALHOST
   switch (accountId.coin) {
     case BraveWallet.CoinType.SOL: {
-      const { balance, error } = await jsonRpcService.getSolanaBalance(
+      const { balance } = await jsonRpcService.getSolanaBalance(
         accountId.address,
         token.chainId,
       )
-
-      if (token.chainId === BraveWallet.LOCALHOST_CHAIN_ID && error !== 0) {
-        return Amount.zero().format()
-      }
-
       return Amount.normalize(balance.toString())
     }
 
@@ -787,9 +758,9 @@ async function fetchAccountCurrentNativeBalance({
 
       switch (token.zcashTokenType) {
         case BraveWallet.ZCashTokenType.kOrchard:
-          return Amount.normalize(balance.shieldedBalance.toString())
+          return Amount.normalize(balance.orchardBalance.toString())
         case BraveWallet.ZCashTokenType.kIronwood:
-          return '0'
+          return Amount.normalize(balance.ironwoodBalance.toString())
         default:
           return Amount.normalize(balance.transparentBalance.toString())
       }

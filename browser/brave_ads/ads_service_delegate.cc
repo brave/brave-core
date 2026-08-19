@@ -26,6 +26,7 @@
 #include "content/public/browser/page_navigator.h"
 #else
 #include "chrome/browser/fullscreen.h"
+#include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -58,6 +59,14 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
   ServiceTabLauncher::GetInstance()->LaunchTab(
       &*profile_, params, base::BindOnce([](content::WebContents*) {}));
 #else
+  if (browser_shutdown::HasShutdownStarted()) {
+    // The last browser window can close, and `browser_shutdown` can start,
+    // before `AdsServiceImpl::Shutdown()` runs for this profile. Bail out
+    // here rather than creating a new `Browser` and navigating on a profile
+    // that is mid-teardown.
+    return;
+  }
+
   auto* browser = ProfileBrowserCollection::GetForProfile(&*profile_)
                       ->FindTabbedBrowser()
                       ->GetBrowserForMigrationOnly();

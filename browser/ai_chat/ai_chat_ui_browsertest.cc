@@ -115,7 +115,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     https_server_.StartAcceptingConnections();
 
     // Set a smaller window size so we can have test data with more pages.
-    browser()->window()->SetContentsSize(gfx::Size(800, 600));
+    BrowserWindow::FromBrowser(browser())->SetContentsSize(gfx::Size(800, 600));
 
     chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
@@ -150,7 +150,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  PrefService* prefs() { return browser()->profile()->GetPrefs(); }
+  PrefService* prefs() { return browser()->GetProfile()->GetPrefs(); }
 
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -423,7 +423,7 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  PrefService* prefs() { return browser()->profile()->GetPrefs(); }
+  PrefService* prefs() { return browser()->GetProfile()->GetPrefs(); }
 
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();

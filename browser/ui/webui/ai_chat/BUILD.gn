@@ -19,6 +19,8 @@ source_set("ai_chat") {
     "chart_display_ui.h",
     "code_sandbox_ui.cc",
     "code_sandbox_ui.h",
+    "leo_workspace_ui.cc",
+    "leo_workspace_ui.h",
   ]
 
   deps = [
@@ -47,6 +49,7 @@ source_set("ai_chat") {
     "//chrome/browser/ui/webui:favicon_source",
     "//components/favicon/core",
     "//components/favicon_base",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//components/strings:components_strings",
     "//components/user_prefs",
@@ -54,12 +57,14 @@ source_set("ai_chat") {
     "//pdf:buildflags",
     "//printing",
     "//services/data_decoder/public/cpp",
+    "//ui/base",
     "//ui/gfx/codec",
     "//ui/webui",
   ]
 
   if (!is_android) {
     deps += [
+      "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
@@ -98,6 +103,7 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//chrome/browser/favicon",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//pdf:buildflags",

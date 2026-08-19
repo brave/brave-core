@@ -69,7 +69,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     return;
   }
 
-  const std::optional<int> schema_version = dict->FindInt(kSchemaVersionKey);
+  std::optional<int> schema_version = dict->FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     return;
   }

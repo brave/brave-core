@@ -143,11 +143,6 @@ void DetectChromeProfiles(
 
 }  // namespace
 
-// CHROMIUM_SRC_INTERNAL_USE
-#define IDS_IMPORT_FROM_EDGE_OLD IDS_IMPORT_FROM_EDGE
-#undef IDS_IMPORT_FROM_EDGE
-#define IDS_IMPORT_FROM_EDGE IDS_BRAVE_IMPORT_FROM_EDGE
+// IDS_BRAVE_IMPORT_FROM_EDGE (substituted into the upstream source by plaster)
+// is defined in brave/grit/brave_generated_resources.h, included above.
 #include <chrome/browser/importer/importer_list.cc>
-#undef IDS_IMPORT_FROM_EDGE
-#define IDS_IMPORT_FROM_EDGE IDS_IMPORT_FROM_EDGE_OLD
-#undef IDS_IMPORT_FROM_EDGE_OLD

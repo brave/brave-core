@@ -65,7 +65,7 @@
 "importTutorialDetailedProcessTitle" = "רוצה הסבר מפורט על תהליך הייצוא?";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "איך לייצא מתוך Safari";
+"importTutorialScreenTitle" = "איך לייבא מתוך Safari";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "שמירת הקובץ ב**קבצים** ובחירת מיקום שיהיה לך קל למצוא אחר כך.";

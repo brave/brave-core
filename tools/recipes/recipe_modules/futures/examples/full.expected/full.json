@@ -1,0 +1,145 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "0"
+    ],
+    "name": "work 0"
+  },
+  {
+    "cmd": [
+      "echo",
+      "1"
+    ],
+    "name": "work 1"
+  },
+  {
+    "cmd": [
+      "echo",
+      "2"
+    ],
+    "name": "work 2"
+  },
+  {
+    "cmd": [
+      "echo",
+      "w0",
+      "w1",
+      "w2"
+    ],
+    "name": "collected"
+  },
+  {
+    "cmd": [
+      "echo",
+      "0"
+    ],
+    "name": "partial 0"
+  },
+  {
+    "cmd": [
+      "echo",
+      "1"
+    ],
+    "name": "partial 1"
+  },
+  {
+    "cmd": [
+      "echo",
+      "Future-3"
+    ],
+    "name": "first done"
+  },
+  {
+    "cmd": [
+      "echo",
+      "inner",
+      "True"
+    ],
+    "name": "waited"
+  },
+  {
+    "cmd": [
+      "echo",
+      "0"
+    ],
+    "name": "limited 0"
+  },
+  {
+    "cmd": [
+      "echo",
+      "1"
+    ],
+    "name": "limited 1"
+  },
+  {
+    "cmd": [
+      "echo",
+      "2"
+    ],
+    "name": "limited 2"
+  },
+  {
+    "cmd": [
+      "echo",
+      "now"
+    ],
+    "name": "immediate"
+  },
+  {
+    "cmd": [
+      "echo",
+      "later"
+    ],
+    "name": "after immediate"
+  },
+  {
+    "cmd": [
+      "echo",
+      "inherited"
+    ],
+    "cwd": "[WORKSPACE]/outer",
+    "name": "inherits cwd"
+  },
+  {
+    "cmd": [
+      "echo",
+      "scoped"
+    ],
+    "cwd": "[WORKSPACE]/inner",
+    "name": "own cwd"
+  },
+  {
+    "cmd": [
+      "echo",
+      "outer"
+    ],
+    "cwd": "[WORKSPACE]/outer",
+    "name": "parent cwd intact"
+  },
+  {
+    "cmd": [
+      "false"
+    ],
+    "name": "boom",
+    "retcode": 1
+  },
+  {
+    "cmd": [
+      "echo",
+      "CalledProcessError",
+      "meta-value"
+    ],
+    "name": "caught"
+  },
+  {
+    "cmd": [
+      "echo",
+      "True"
+    ],
+    "name": "after cancel"
+  },
+  {
+    "name": "$result"
+  }
+]

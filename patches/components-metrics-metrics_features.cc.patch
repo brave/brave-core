@@ -1,0 +1,16 @@
+diff --git a/components/metrics/metrics_features.cc b/components/metrics/metrics_features.cc
+index de40ce21862501a7a96733b42f2b6f6c54b46639..9bb4d21a1751dc56efcf1c293177bf8d336489c3 100644
+--- a/components/metrics/metrics_features.cc
++++ b/components/metrics/metrics_features.cc
+@@ -10,9 +10,10 @@
+ 
+ namespace metrics::features {
+ 
++// kStructuredMetrics feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kStructuredMetrics,
+              "EnableStructuredMetrics",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kFlushPersistentSystemProfileOnWrite,
+              base::FEATURE_DISABLED_BY_DEFAULT);

@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automatisch schreddern";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Browserdaten automatisch vernichten";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiv";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Ungültige Regel „%1$@“ in Zeile %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Füge hier deine benutzerdefinierten Filter ein, einen pro Zeile.";
+"CustomFiltersPlaceholder" = "Benutzerdefinierte Filter hinzufügen";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Benutzerdefinierte Filter unterstützen nicht mehr als %i Zeilen";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Domain blockiert";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Benutzerdefinierte Filter bearbeiten";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Bitte Websites, deine Daten nicht zu verkaufen oder weiterzugeben. [Mehr erfahren](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nie";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Browserdaten werden niemals automatisch geschreddert";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Bei geschlossener App";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Browserdaten werden automatisch geschreddert, wenn die Brave-App geschlossen/neu gestartet wird";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Registerkarten der Website geschlossen";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Browserdaten werden automatisch geschreddert, wenn alle für eine Website geöffneten Tabs geschlossen werden";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Beim Schreddern werden alle Registerkarten geschlossen und alle Website-Daten gelöscht. Dies kann nicht rückgängig gemacht werden.";

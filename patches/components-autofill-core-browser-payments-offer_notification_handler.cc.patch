@@ -1,0 +1,17 @@
+diff --git a/components/autofill/core/browser/payments/offer_notification_handler.cc b/components/autofill/core/browser/payments/offer_notification_handler.cc
+index 837a8223c26866817d23340d513e2db24865f28a..cc6fc4e729bb60a2bc68d35632dec2479e6d3ea5 100644
+--- a/components/autofill/core/browser/payments/offer_notification_handler.cc
++++ b/components/autofill/core/browser/payments/offer_notification_handler.cc
+@@ -79,8 +79,12 @@ void OfferNotificationHandler::AddShownNotificationIdForTesting(
+ }
+ 
+ bool OfferNotificationHandler::ValidOfferExistsForUrl(const GURL& url) {
++  bool valid_offer_exists = [&]() -> bool {
+   return offer_manager_->IsUrlEligible(url) &&
+          IsOfferValid(offer_manager_->GetOfferForUrl(url));
++  }();
++  return valid_offer_exists &&
++         BraveIsOfferValid(offer_manager_->GetOfferForUrl(url));
+ }
+ 
+ }  // namespace autofill

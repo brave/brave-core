@@ -48,7 +48,7 @@ import 'emptykit.css'
 import { FullScreenWrapper, AlertCenter } from './screens/page-screen.styles'
 
 // components
-import { LockScreen } from '../components/desktop/lock-screen/index'
+import { UnlockWallet } from './screens/unlock_wallet/unlock_wallet'
 import {
   WalletPageLayout, //
 } from '../components/desktop/wallet-page-layout/index'
@@ -97,8 +97,9 @@ export const Container = () => {
 
   // ui selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
-  const initialSessionRoute = getInitialSessionRoute(isPanel)
+  const initialSessionRoute = getInitialSessionRoute(isPanel, isSidePanel)
 
   // state
   const [sessionRoute, setSessionRoute] = React.useState(initialSessionRoute)
@@ -140,7 +141,9 @@ export const Container = () => {
 
     // store the last url before wallet lock
     // so that we can return to that page after unlock
-    if (isPersistableSessionRoute(walletSessionLocation, isPanel)) {
+    if (
+      isPersistableSessionRoute(walletSessionLocation, isPanel, isSidePanel)
+    ) {
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
         walletSessionLocation,
@@ -152,7 +155,11 @@ export const Container = () => {
     // current location.
     if (
       previousLocationRef.current
-      && isPersistableSessionRoute(previousLocationRef.current, isPanel)
+      && isPersistableSessionRoute(
+        previousLocationRef.current,
+        isPanel,
+        isSidePanel,
+      )
     ) {
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.PREVIOUS_LOCATION_ROUTE,
@@ -161,7 +168,9 @@ export const Container = () => {
     }
 
     // Update the ref with current location for next route change
-    if (isPersistableSessionRoute(walletSessionLocation, isPanel)) {
+    if (
+      isPersistableSessionRoute(walletSessionLocation, isPanel, isSidePanel)
+    ) {
       previousLocationRef.current = walletSessionLocation
     }
     // clean recovery phrase if not backing up or onboarding on route change
@@ -172,7 +181,14 @@ export const Container = () => {
     ) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     }
-  }, [walletSessionLocation, pathname, isPanel, mnemonic, dispatch])
+  }, [
+    walletSessionLocation,
+    pathname,
+    isPanel,
+    isSidePanel,
+    mnemonic,
+    dispatch,
+  ])
 
   React.useEffect(() => {
     if (
@@ -231,7 +247,7 @@ export const Container = () => {
             noBorderRadius={true}
             useDarkBackground={isPanel}
           >
-            <LockScreen />
+            <UnlockWallet />
           </WalletPageWrapper>
         </ProtectedRoute>
 
@@ -276,7 +292,7 @@ export const Container = () => {
           requirement={!isWalletLocked && !walletNotYetCreated}
           redirectRoute={defaultRedirect}
         >
-          <UnlockedWalletRoutes sessionRoute={sessionRoute} />
+          <UnlockedWalletRoutes />
         </ProtectedRoute>
 
         <ProtectedRoute

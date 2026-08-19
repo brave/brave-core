@@ -93,7 +93,7 @@ IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
-  EXPECT_TRUE(tor_browser->profile()->IsTor());
+  EXPECT_TRUE(tor_browser->GetProfile()->IsTor());
 
   auto* tor_web_contents =
       tor_browser->tab_strip_model()->GetActiveWebContents();

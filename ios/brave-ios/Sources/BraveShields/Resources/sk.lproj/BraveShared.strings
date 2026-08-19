@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automaticky zničiť";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Automaticky vymazať údaje prehliadania";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresívne";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Neplatné pravidlo `%1$@` v riadku %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Tu môžete pridať vlastné filtre, jeden na riadok.";
+"CustomFiltersPlaceholder" = "Pridať vlastné filtre";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Vlastné filtre nepodporujú viac ako %i riadky/riadkov";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Doména blokovaná";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Upraviť vlastné filtre";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Požiadajte webové stránky, aby nepredávali alebo nezdieľali vaše údaje. [Viac informácií](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nikdy";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Údaje prehliadania sa nikdy neskartujú automaticky";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Zatvoriť aplikáciu";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Údaje prehliadania sa automaticky skartujú, keď sa aplikácia Brave zatvorí / reštartuje";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Karty stránky zatvorené";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Údaje prehliadania sa automaticky skartujú, keď sa zatvoria všetky karty otvorené pre danú lokalitu";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Zničením dôjde k zatvorenie všetkých kariet, a vymazaniu všetkých údajov stránky. Tento krok nemožno zvrátiť.";

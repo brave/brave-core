@@ -54,8 +54,7 @@ void SpeedreaderIconView::UpdateImpl() {
   }
 
   const auto state = GetDistillState();
-  if (!speedreader::DistillStates::IsDistilled(state) &&
-      !speedreader::DistillStates::IsDistillable(state)) {
+  if (!speedreader::IsDistilled(state) && !speedreader::IsDistillable(state)) {
     SetVisible(false);
     return;
   }
@@ -66,7 +65,7 @@ void SpeedreaderIconView::UpdateImpl() {
   }
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    if (speedreader::DistillStates::IsDistilled(state)) {
+    if (speedreader::IsDistilled(state)) {
       const SkColor icon_color_active =
           color_provider->GetColor(kColorSpeedreaderIcon);
       SetIconColor(icon_color_active);
@@ -106,7 +105,7 @@ const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
 
 std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {
   const auto state = GetDistillState();
-  const int id = (speedreader::DistillStates::IsDistilled(state))
+  const int id = (speedreader::IsDistilled(state))
                      ? IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE
                      : IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE;
   return l10n_util::GetStringUTF16(id);

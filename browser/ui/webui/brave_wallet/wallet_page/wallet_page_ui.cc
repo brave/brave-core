@@ -118,6 +118,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", IsMobile());
   source->AddBoolean("isIOS", false);
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
+  source->AddBoolean("isLedgerMojoBridgeEnabled",
+                     IsMojoForHardwareWalletEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -225,6 +227,31 @@ void WalletPageUI::CreatePageHandler(
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
   WalletInteractionDetected(web_ui()->GetWebContents());
+}
+
+void WalletPageUI::BindInterface(
+    mojo::PendingReceiver<mojom::LedgerBridgeService> receiver) {
+  service_receiver_.reset();
+  service_receiver_.Bind(std::move(receiver));
+}
+
+void WalletPageUI::BindLedgerBridge(
+    mojo::PendingRemote<mojom::LedgerBridge> bridge) {
+  ledger_bridge_remote_ = std::move(bridge);
+  MaybeFuseLedgerBridge();
+}
+
+void WalletPageUI::BindLedgerBridge(
+    mojo::PendingReceiver<mojom::LedgerBridge> receiver) {
+  ledger_bridge_receiver_ = std::move(receiver);
+  MaybeFuseLedgerBridge();
+}
+
+void WalletPageUI::MaybeFuseLedgerBridge() {
+  if (ledger_bridge_remote_ && ledger_bridge_receiver_) {
+    mojo::FusePipes(std::move(ledger_bridge_receiver_),
+                    std::move(ledger_bridge_remote_));
+  }
 }
 
 WalletPageUIConfig::WalletPageUIConfig()

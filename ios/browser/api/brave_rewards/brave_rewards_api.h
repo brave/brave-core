@@ -160,6 +160,13 @@ OBJC_EXPORT
 - (void)allContributions:
     (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))completion;
 
+/// Resets the rewards profile, deleting the rewards database and clearing all
+/// rewards preferences. This mirrors the "Reset" option found in the desktop
+/// rewards UI. After a successful reset `balance`, `rewardsParameters` are
+/// set to nil and `initializing`/`initialized` are set to false and you must
+/// initialize the Rewards API again.
+- (void)completeReset:(nullable void (^)(BOOL success))completion;
+
 @property(nonatomic, readonly, copy) NSString* rewardsDatabasePath;
 
 #pragma mark - Preferences

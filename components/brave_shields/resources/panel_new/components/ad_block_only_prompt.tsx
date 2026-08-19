@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 
 import { useShieldsApi } from '../api/shields_api_context'
 import { getString } from './strings'
+import { OpenTabLink } from './open_tab_link'
 import { formatString } from '$web-common/formatString'
 
 import { style } from './ad_block_only_prompt.style'
@@ -65,9 +66,7 @@ function AdBlockOnlyEnablePrompt() {
           ),
           {
             $1: (content) => (
-              <button onClick={() => api.openTab(learnMoreURL)}>
-                {content}
-              </button>
+              <OpenTabLink url={learnMoreURL}>{content}</OpenTabLink>
             ),
           },
         )}

@@ -94,6 +94,10 @@ class BrowserBinary:
       if self.field_trial_config.fake_channel:
         args.append('--fake-variations-channel=' +
                     self.field_trial_config.fake_channel)
+    if self.field_trial_config.mode == FieldTrialsMode.GRIFFIN:
+      # Profiles often carry a high variations_crash_streak (esp. Android),
+      # which forces kNullSeed and ignores the injected Griffin seed.
+      args.append('--disable-variations-safe-mode')
     args.extend(self._browser_type.extra_browser_args)
     return args
 

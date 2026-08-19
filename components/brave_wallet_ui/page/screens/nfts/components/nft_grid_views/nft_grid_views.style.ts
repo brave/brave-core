@@ -1,0 +1,149 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+import { WalletButton, Text } from '../../../../../components/shared/style'
+import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
+import Ipfs from '../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
+
+export const NFTWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  box-sizing: border-box;
+  flex-direction: column;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  margin: 0px;
+  padding-right: 2px;
+  overflow: hidden;
+  &:last-child {
+    margin-right: 0px;
+  }
+  z-index: 0;
+`
+
+export const GridItemWrapper = styled(NFTWrapper)`
+  overflow: visible;
+  min-width: 0;
+  width: 100%;
+`
+
+export const IconWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+`
+
+export const DIVForClickableArea = styled.div`
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+`
+
+export const NFTText = styled(Text)`
+  font-style: normal;
+  margin-top: 6px;
+  max-width: 99%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
+
+export const NFTSymbol = styled(Text)`
+  font-style: normal;
+`
+
+export const PinnedIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  background-image: url(${Ipfs});
+  background-repeat: no-repeat;
+  z-index: 2;
+`
+
+export const VerticalMenu = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: transparent;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 3;
+  border: none;
+  cursor: pointer;
+  background: rgba(102, 109, 137, 0.5);
+  backdrop-filter: blur(27.5px);
+  border-radius: 1000px;
+`
+
+export const MoreButton = styled(WalletButton)`
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 3;
+`
+
+export const MoreIcon = styled(Icon).attrs({
+  name: 'more-vertical',
+})`
+  --leo-icon-size: 22px;
+  color: ${leo.color.text.secondary};
+`
+
+export const JunkMarker = styled.div`
+  font: ${leo.font.xSmall.semibold};
+
+  display: inline-flex;
+  min-height: 20px;
+  padding: 0px ${leo.spacing.s};
+  align-items: center;
+  gap: ${leo.spacing.s};
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  flex-shrink: 0;
+  border-radius: ${leo.radius.s};
+  background-color: ${leo.color.red[20]};
+  color: ${leo.color.red[50]};
+  text-transform: uppercase;
+  z-index: 4;
+`
+
+export const WatchOnlyMarker = styled(JunkMarker)`
+  background-color: ${leo.color.neutral[20]};
+  color: ${leo.color.neutral[60]};
+  left: unset;
+  right: 12px;
+`
+
+export const JunkIcon = styled(Icon).attrs({
+  name: 'warning-triangle-outline',
+})`
+  --leo-icon-size: 14px;
+  color: ${leo.color.systemfeedback.errorIcon};
+`

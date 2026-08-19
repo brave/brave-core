@@ -61,6 +61,15 @@ class BraveTreeTabStripCollectionDelegate
       tabs::TabCollection* root_collection) override;
   const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
       tab_groups::TabGroupId group_id) const override;
+  void PrepareTreeTabNodesForBatchDetach(
+      const std::vector<tabs::TabInterface*>& moving_tabs) override;
+  bool ShouldDetachAsTreeSubtreeRoot(
+      tabs::TabInterface* tab,
+      const std::vector<tabs::TabInterface*>& moving_tabs) override;
+  void WillDetachTreeTabNodeSubtree(
+      tabs::TreeTabNodeTabCollection& subtree_root) override;
+  void DidAttachTreeTabNodeSubtree(
+      tabs::TreeTabNodeTabCollection& subtree_root) override;
 
  private:
   // Tries to add the tab to the same tree as the opener. Returns base::ok(void)

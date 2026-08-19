@@ -14,12 +14,10 @@ import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 export const getNetworkId = ({
   chainId,
-  coin,
 }: {
   chainId: string
   coin: BraveWallet.CoinType
-}): string =>
-  chainId === BraveWallet.LOCALHOST_CHAIN_ID ? `${chainId}-${coin}` : chainId
+}): string => chainId
 
 export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
   selectId: (network: {

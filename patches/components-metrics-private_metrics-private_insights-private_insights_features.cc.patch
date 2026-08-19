@@ -1,0 +1,12 @@
+diff --git a/components/metrics/private_metrics/private_insights/private_insights_features.cc b/components/metrics/private_metrics/private_insights/private_insights_features.cc
+index 3482377283015cfbe84e96c4fb4bed4cb0f91a6c..1143c19affb122b1f7a9a8f1378895feb0d8af05 100644
+--- a/components/metrics/private_metrics/private_insights/private_insights_features.cc
++++ b/components/metrics/private_metrics/private_insights/private_insights_features.cc
+@@ -8,6 +8,7 @@
+ 
+ namespace private_insights {
+ 
++// kPrivateInsightsFeature feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPrivateInsightsFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<base::TimeDelta> kPrivateInsightsUploadInterval{

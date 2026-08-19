@@ -14,11 +14,21 @@
 #include "base/logging.h"
 #include "base/message_loop/message_pump_type.h"
 #include "base/run_loop.h"
+#include "base/strings/utf_ostream_operators.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/threading/thread.h"
+#include "brave/components/brave_vpn/app/v2/agent/browser_registry.h"
 #include "brave/components/brave_vpn/app/v2/agent/shutdown_handlers.h"
+#include "brave/components/brave_vpn/common/v2/agent_utils.h"
+#include "mojo/core/embedder/configuration.h"
+#include "mojo/core/embedder/embedder.h"
+#include "mojo/core/embedder/scoped_ipc_support.h"
 
 namespace brave_vpn::v2 {
+namespace {
+constexpr char kMojoIpcThreadName[] = "MojoIPC";
+}  // namespace
 
 // Unretained is safe: the shutdown handlers may invoke this callback from a
 // background thread, but only while the process (and hence |this|, which
@@ -30,10 +40,14 @@ AgentApp::AgentApp()
 AgentApp::~AgentApp() = default;
 
 int AgentApp::Run() {
-  VLOG(1) << "Hello from the Brave VPN Agent!";
+  const auto server_name = GetAgentServerName();
+  if (!server_name) {
+    return 1;  // Reason already logged. Non-zero so systemd/launchd sees it.
+  }
 
-  base::SingleThreadTaskExecutor main_task_executor(
-      base::MessagePumpType::DEFAULT);
+  VLOG(1) << "Hello from the Brave VPN Agent: server name = " << *server_name;
+
+  base::SingleThreadTaskExecutor main_task_executor(base::MessagePumpType::IO);
   main_runner_ = base::SingleThreadTaskRunner::GetCurrentDefault();
 
   base::RunLoop run_loop;
@@ -45,7 +59,24 @@ int AgentApp::Run() {
   if (!shutdown_handlers_->Install()) {
     VLOG(1) << "Shutdown handlers not installed";
   }
-  run_loop.Run();
+
+  {
+    // Initialize Mojo on a separate thread.
+    base::Thread ipc_thread(kMojoIpcThreadName);
+    CHECK(ipc_thread.StartWithOptions(
+        base::Thread::Options(base::MessagePumpType::IO, 0)));
+
+    mojo::core::Init(mojo::core::Configuration{.is_broker_process = true});
+    mojo::core::ScopedIPCSupport ipc_support(
+        ipc_thread.task_runner(),
+        mojo::core::ScopedIPCSupport::ShutdownPolicy::CLEAN);
+
+    // Initialize the browser registry, which will manage the lifetime of
+    // client browser instances and their associated Mojo connections.
+    BrowserRegistry browser_registry{*server_name};
+
+    run_loop.Run();
+  }
 
   shutdown_handlers_->SignalShutdownComplete();
   return 0;

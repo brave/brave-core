@@ -65,12 +65,36 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   EXPECT_EQ(additional_observer.changed_count, 1);
 }
 
-TEST(AdBlockFiltersProviderManagerTest,
-     OnChangedWaitsForAllProvidersInitialized) {
+class AdBlockFiltersProviderManagerDATCacheTest
+    : public testing::TestWithParam<bool> {
+ protected:
+  void SetUp() override {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeature(
+          brave_shields::features::kAdblockDATCache);
+    } else {
+      feature_list_.InitAndDisableFeature(
+          brave_shields::features::kAdblockDATCache);
+    }
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_P(AdBlockFiltersProviderManagerDATCacheTest,
+       OnChangedWaitsForAllProvidersInitialized) {
+  const bool dat_cache_enabled = GetParam();
   brave_shields::AdBlockFiltersProviderManager m;
 
   FiltersProviderManagerTestObserver observer;
   m.AddObserver(&observer);
+
+  if (dat_cache_enabled) {
+    // Simulate AdBlockService::OnDATLoaded(). It's a startup notification, so
+    // the first OnChanged is suppressed.
+    m.ForceNotifyObserver(observer, true);
+    EXPECT_EQ(observer.changed_count, 0);
+  }
 
   // Register provider1 — it initializes, OnChanged fires, observer notified.
   brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
@@ -91,22 +115,6 @@ TEST(AdBlockFiltersProviderManagerTest,
   provider2.Initialize();
   EXPECT_EQ(observer.changed_count, 2);
 }
-
-class AdBlockFiltersProviderManagerDATCacheTest
-    : public testing::TestWithParam<bool> {
- protected:
-  void SetUp() override {
-    if (GetParam()) {
-      feature_list_.InitAndEnableFeature(
-          brave_shields::features::kAdblockDATCache);
-    } else {
-      feature_list_.InitAndDisableFeature(
-          brave_shields::features::kAdblockDATCache);
-    }
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-};
 
 // Disabled: startup OnChanged notifies observer for each provider init.
 // Enabled: first provider's OnChanged is suppressed; subsequent providers

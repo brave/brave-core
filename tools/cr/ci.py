@@ -16,6 +16,7 @@ import contextlib
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import re
 import time
 import urllib.parse
 
@@ -79,6 +80,18 @@ _WATCH_STATE_STYLE = {
     'UNSTABLE': ('⚠️', 'yellow'),
     'UNKNOWN': ('🤔', 'dim'),
 }
+
+
+def _is_windows_job(url: str) -> bool:
+    """Whether *url* names a job that runs on a Windows agent.
+
+    Matches `windows` as a whole, hyphen-delimited path component -- e.g.
+    `.../job/windows-hermetic-toolchain-build/` (leading) or
+    `.../build-windows-x64/` (infix) both match -- rather than as a bare
+    substring, so a hypothetical job with `windows` embedded in a longer word
+    wouldn't false-positive.
+    """
+    return bool(re.search(r'(?:^|[/-])windows(?:[/-]|$)', url))
 
 
 def _format_duration(millis) -> str:
@@ -281,8 +294,8 @@ class JenkinsCi:
             if payload is not None:
                 # Windows agents unwrap PROPERTIES through cmd, which eats bare
                 # double quotes, so escape them for those jobs only.
-                job_params['PROPERTIES'] = (payload.replace('"', '\\"')
-                                            if '-windows-' in url else payload)
+                job_params['PROPERTIES'] = (payload.replace('"', '\\"') if
+                                            _is_windows_job(url) else payload)
             try:
                 response = session.post(f'{url}buildWithParameters',
                                         params=job_params,

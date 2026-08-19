@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automatické smazání";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Automaticky skartovat data prohlížení";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresivní";
 
@@ -83,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "Neplatné pravidlo „%1$@` na řádku %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Sem přidejte vlastní filtry, a to po jednom na řádek.";
+"CustomFiltersPlaceholder" = "Přidat vlastní filtry";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Vlastní filtry nelze přidat na více než %i řádků.";
@@ -108,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "Doména je blokovaná";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "Upravit vlastní filtry";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Požádejte weby, aby neprodávaly ani nesdílely vaše údaje. [Zjistit více](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
@@ -205,11 +211,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nikdy";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Data prohlížení se nikdy automaticky neskartují";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Zavřít aplikaci";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Data prohlížení se automaticky skartují, když je aplikace Brave zavřena / restartována";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Záložky stránky zavřené";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Data prohlížení se automaticky skartují, když jsou zavřeny všechny karty otevřené na dané stránce";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Smazání zavře všechny záložky a odstraní veškerá data stránky. Toto nelze vzít zpět.";

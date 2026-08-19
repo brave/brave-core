@@ -47,10 +47,16 @@
 "playlistInfoFeaturePointSubtitleTwo" = "הישאר בזרימה: הוסף סרטונים בזמן שאתה גולש, צפה מאוחר יותר.";
 
 /* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "הוספת סרטונים לפלייליסט Brave.";
+
+/* A list of features in Playlist */
 "playlistInfoFeaturePointTitleThree" = "ההשמעה טובה יותר ברשימת השמעה";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointTitleTwo" = "פשוט הקש על הכפתור כדי להוסיף סרטונים לפלייליסט";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "ליצור פלייליסטים עם תוכן שאוהבים. להוסיף מדיה מכל דף.";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "יש ללחוץ על %@ כדי להוסיף את הפריט הראשון שלך";

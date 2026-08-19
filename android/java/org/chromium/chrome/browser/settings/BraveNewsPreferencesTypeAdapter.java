@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -30,6 +29,7 @@ import org.chromium.brave_news.mojom.PublisherType;
 import org.chromium.brave_news.mojom.UserEnabled;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -363,15 +363,21 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                 });
     }
 
+    // Reapply the state list at bind time so its theme attributes use the active theme.
+    @SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
     private void displayFollowButton(
             boolean isFollowing, int textId, NewsPreferencesViewHolder holder) {
+        holder.mBtnText.setSelected(isFollowing);
+        holder.mBtnText.setTextColor(
+                holder.mBtnText
+                        .getContext()
+                        .getColorStateList(R.color.brave_news_settings_follow_button_text_color));
         if (isFollowing) {
             holder.mBtnFollow.setBackgroundResource(R.drawable.brave_news_settings_unfollow_bg);
-            holder.mBtnText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.news_settings_unfollow_color));
+            BraveDynamicColors.applyToOutlinedButtonIfEnabled(holder.mBtnFollow);
         } else {
-            holder.mBtnFollow.setBackgroundResource(R.drawable.blue_48_rounded_bg);
-            holder.mBtnText.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
+            holder.mBtnFollow.setBackgroundResource(R.drawable.themed_button_48_rounded_bg);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(holder.mBtnFollow);
         }
 
         if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.GettingFeed) {

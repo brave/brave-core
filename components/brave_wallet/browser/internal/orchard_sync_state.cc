@@ -11,8 +11,11 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected_macros.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -53,14 +56,24 @@ OrchardSyncState::~OrchardSyncState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
+// static
+std::string OrchardSyncState::ShardTreeKey(
+    OrchardPool pool,
+    const mojom::AccountIdPtr& account_id) {
+  return base::StrCat({account_id->unique_key, ":",
+                       base::NumberToString(static_cast<int>(pool))});
+}
+
 orchard::OrchardShardTree& OrchardSyncState::GetOrCreateShardTree(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id) LIFETIME_BOUND {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (shard_trees_.find(account_id->unique_key) == shard_trees_.end()) {
-    shard_trees_[account_id->unique_key] = orchard::OrchardShardTree::Create(
-        storage_, account_id, OrchardPool::kOrchard);
+  auto key = ShardTreeKey(pool, account_id);
+  if (shard_trees_.find(key) == shard_trees_.end()) {
+    shard_trees_[key] =
+        orchard::OrchardShardTree::Create(storage_, account_id, pool);
   }
-  auto* manager = shard_trees_[account_id->unique_key].get();
+  auto* manager = shard_trees_[key].get();
   CHECK(manager);
   return *manager;
 }
@@ -101,11 +114,19 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
     if (!tx.has_value()) {
       return base::unexpected(tx.error());
     }
-    if (!GetOrCreateShardTree(account_id)
+    if (!GetOrCreateShardTree(OrchardPool::kOrchard, account_id)
              .TruncateToCheckpoint(rewind_block_height)) {
       return base::unexpected(
           OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
-                                "Failed to truncate tree"});
+                                "Failed to truncate orchard tree"});
+    }
+    if (IsZCashIronwoodEnabled()) {
+      if (!GetOrCreateShardTree(OrchardPool::kIronwood, account_id)
+               .TruncateToCheckpoint(rewind_block_height)) {
+        return base::unexpected(
+            OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
+                                  "Failed to truncate ironwood tree"});
+      }
     }
     auto chain_reorg_result = storage_.HandleChainReorg(
         account_id, rewind_block_height, rewind_block_hash);
@@ -119,9 +140,13 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
 
 base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                OrchardStorage::Error>
-OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+OrchardSyncState::GetSpendableNotes(OrchardPool pool,
+                                    const mojom::AccountIdPtr& account_id,
                                     const OrchardAddrRawPart& change_address) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (pool == OrchardPool::kIronwood && !IsZCashIronwoodEnabled()) {
+    return std::nullopt;
+  }
   ASSIGN_OR_RETURN(auto account_meta, storage_.GetAccountMeta(account_id));
   if (!account_meta.has_value()) {
     return base::ok(std::nullopt);
@@ -130,12 +155,11 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
   if (!latest_scanned_block_id) {
     return OrchardSyncState::SpendableNotesBundle();
   }
-  ASSIGN_OR_RETURN(auto notes, storage_.GetSpendableNotes(OrchardPool::kOrchard,
-                                                          account_id));
-  ASSIGN_OR_RETURN(auto anchor, storage_.GetMaxCheckpointedHeight(
-                                    OrchardPool::kOrchard, account_id,
-                                    latest_scanned_block_id.value(),
-                                    kZCashInternalAddressMinConfirmations));
+  ASSIGN_OR_RETURN(auto notes, storage_.GetSpendableNotes(pool, account_id));
+  ASSIGN_OR_RETURN(auto anchor,
+                   storage_.GetMaxCheckpointedHeight(
+                       pool, account_id, latest_scanned_block_id.value(),
+                       kZCashInternalAddressMinConfirmations));
 
   SpendableNotesBundle result;
   result.anchor_block_id = anchor;
@@ -165,9 +189,13 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
-OrchardSyncState::GetNullifiers(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetNullifiers(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetNullifiers(OrchardPool::kOrchard, account_id);
+  if (pool == OrchardPool::kIronwood && !IsZCashIronwoodEnabled()) {
+    return std::vector<OrchardNoteSpend>();
+  }
+  return storage_.GetNullifiers(pool, account_id);
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -180,12 +208,12 @@ OrchardSyncState::ApplyScanResults(
   RETURN_IF_ERROR(existing_notes);
 
   std::vector<OrchardNote> notes_to_add =
-      block_scanner_results.discovered_notes;
+      block_scanner_results.orchard.discovered_notes;
   base::Extend(existing_notes.value(), notes_to_add);
 
   std::vector<OrchardNoteSpend> nf_to_add;
 
-  for (const auto& nf : block_scanner_results.found_spends) {
+  for (const auto& nf : block_scanner_results.orchard.found_spends) {
     if (std::ranges::find_if(existing_notes.value(), [&nf](const auto& v) {
           return v.nullifier == nf.nullifier;
         }) != existing_notes.value().end()) {
@@ -199,9 +227,9 @@ OrchardSyncState::ApplyScanResults(
       return base::unexpected(tx.error());
     }
 
-    if (!GetOrCreateShardTree(account_id)
+    if (!GetOrCreateShardTree(OrchardPool::kOrchard, account_id)
              .ApplyScanResults(
-                 std::move(block_scanner_results.scanned_blocks))) {
+                 std::move(block_scanner_results.orchard.scanned_blocks))) {
       return base::unexpected(
           OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
                                 "Failed to insert commitments"});
@@ -209,12 +237,51 @@ OrchardSyncState::ApplyScanResults(
 
     auto update_notes_result = storage_.UpdateNotes(
         OrchardPool::kOrchard, account_id, notes_to_add, std::move(nf_to_add),
-        block_scanner_results.latest_scanned_block_id,
-        block_scanner_results.latest_scanned_block_hash);
+        block_scanner_results.orchard.latest_scanned_block_id,
+        block_scanner_results.orchard.latest_scanned_block_hash);
 
     if (!update_notes_result.has_value() ||
         update_notes_result.value() != OrchardStorage::Result::kSuccess) {
       return update_notes_result;
+    }
+
+    if (block_scanner_results.ironwood.has_value()) {
+      auto& ironwood = block_scanner_results.ironwood.value();
+
+      auto existing_ironwood_notes =
+          storage_.GetSpendableNotes(OrchardPool::kIronwood, account_id);
+      RETURN_IF_ERROR(existing_ironwood_notes);
+
+      std::vector<OrchardNote> ironwood_notes_to_add =
+          ironwood.discovered_notes;
+      base::Extend(existing_ironwood_notes.value(), ironwood_notes_to_add);
+
+      std::vector<OrchardNoteSpend> ironwood_nf_to_add;
+      for (const auto& nf : ironwood.found_spends) {
+        if (std::ranges::find_if(existing_ironwood_notes.value(),
+                                 [&nf](const auto& v) {
+                                   return v.nullifier == nf.nullifier;
+                                 }) != existing_ironwood_notes.value().end()) {
+          ironwood_nf_to_add.push_back(nf);
+        }
+      }
+
+      if (!GetOrCreateShardTree(OrchardPool::kIronwood, account_id)
+               .ApplyScanResults(std::move(ironwood.scanned_blocks))) {
+        return base::unexpected(
+            OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
+                                  "Failed to insert ironwood commitments"});
+      }
+
+      auto update_ironwood_result = storage_.UpdateNotes(
+          OrchardPool::kIronwood, account_id, ironwood_notes_to_add,
+          std::move(ironwood_nf_to_add), ironwood.latest_scanned_block_id,
+          ironwood.latest_scanned_block_hash);
+
+      if (!update_ironwood_result.has_value() ||
+          update_ironwood_result.value() != OrchardStorage::Result::kSuccess) {
+        return update_ironwood_result;
+      }
     }
 
     return tx->Commit();
@@ -244,11 +311,15 @@ OrchardSyncState::ResetAccountSyncState(
 
 base::expected<std::vector<OrchardInput>, OrchardStorage::Error>
 OrchardSyncState::CalculateWitnessForCheckpoint(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id,
     const std::vector<OrchardInput>& notes,
     uint32_t checkpoint_position) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto& shard_tree = GetOrCreateShardTree(account_id);
+  if (pool == OrchardPool::kIronwood && !IsZCashIronwoodEnabled()) {
+    return std::vector<OrchardInput>();
+  }
+  auto& shard_tree = GetOrCreateShardTree(pool, account_id);
 
   std::vector<OrchardInput> result;
   result.reserve(notes.size());
@@ -267,15 +338,23 @@ OrchardSyncState::CalculateWitnessForCheckpoint(
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardSyncState::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetLatestShardIndex(OrchardPool pool,
+                                      const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetLatestShardIndex(OrchardPool::kOrchard, account_id);
+  if (pool == OrchardPool::kIronwood && !IsZCashIronwoodEnabled()) {
+    return std::nullopt;
+  }
+  return storage_.GetLatestShardIndex(pool, account_id);
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardSyncState::GetMinCheckpointId(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetMinCheckpointId(OrchardPool pool,
+                                     const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.MinCheckpointId(OrchardPool::kOrchard, account_id);
+  if (pool == OrchardPool::kIronwood && !IsZCashIronwoodEnabled()) {
+    return std::nullopt;
+  }
+  return storage_.MinCheckpointId(pool, account_id);
 }
 
 void OrchardSyncState::ResetDatabase() {
@@ -284,10 +363,11 @@ void OrchardSyncState::ResetDatabase() {
 }
 
 void OrchardSyncState::OverrideShardTreeForTesting(  // IN_TEST
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id,
     std::unique_ptr<orchard::OrchardShardTree> shard_tree) {
   CHECK_IS_TEST();
-  shard_trees_[account_id->unique_key] = std::move(shard_tree);
+  shard_trees_[ShardTreeKey(pool, account_id)] = std::move(shard_tree);
 }
 
 OrchardStorage& OrchardSyncState::orchard_storage() {

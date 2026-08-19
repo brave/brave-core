@@ -9,6 +9,8 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -45,9 +47,13 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
           ads_internals_page_pending_remote) override;
   void GetAdsInternals(GetAdsInternalsCallback callback) override;
   void ClearAdsData(brave_ads::ResultCallback callback) override;
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
+  void SetDiagnosticId(const std::string& diagnostic_id) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
                             std::optional<base::DictValue> dict);
+  void OnGetDiagnostics(GetDiagnosticsCallback callback,
+                        std::optional<base::ListValue> diagnostic_entries);
 
   void OnBraveRewardsEnabledPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();

@@ -38,6 +38,7 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
                           const url::Origin& origin,
                           const ::net::SiteForCookies& site_for_cookies,
                           const url::Origin& top_frame_origin,
+                          bool enable_logging_usage,
                           base::OnceCallback<void(bool)> callback) override {}
 
   void AllowEphemeralStorageAccess(

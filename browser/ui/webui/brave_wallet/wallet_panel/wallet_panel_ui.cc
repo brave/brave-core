@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
@@ -106,6 +105,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
 #else
   source->AddBoolean("rewardsFeatureEnabled", false);
 #endif
+  source->AddBoolean("isLedgerMojoBridgeEnabled",
+                     brave_wallet::IsMojoForHardwareWalletEnabled());
   source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
 
   content::URLDataSource::Add(profile,
@@ -118,11 +119,15 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
 
   // TODO(https://github.com/brave/brave-browser/issues/55074) should be set
-  // externally.
-  BrowserWindowInterface* const bwi =
-      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
-  CHECK(bwi);
-  active_web_contents_ = bwi->GetTabStripModel()->GetActiveWebContents();
+  // externally. Keep the existing last-active lookup for the bubble; do not
+  // CHECK — side-panel construction can run when last-active is unset (e.g.
+  // browser tests). CreatePanelHandler already no-ops if this is null. Proper
+  // tab binding for the side panel in a follow-up.
+  if (BrowserWindowInterface* const bwi =
+          GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
+    active_web_contents_ =
+        bwi->GetTabStripModel()->GetActiveWebContents()->GetWeakPtr();
+  }
 }
 
 WalletPanelUI::~WalletPanelUI() = default;
@@ -194,8 +199,13 @@ void WalletPanelUI::CreatePanelHandler(
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
+  content::WebContents* active_web_contents = active_web_contents_.get();
+  if (!active_web_contents) {
+    return;
+  }
+
   panel_handler_ = std::make_unique<WalletPanelHandler>(
-      std::move(panel_receiver), this, active_web_contents_);
+      std::move(panel_receiver), this, active_web_contents);
 
   if (auto* wallet_service =
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
@@ -224,6 +234,31 @@ void WalletPanelUI::CreatePanelHandler(
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
+  }
+}
+
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver) {
+  service_receiver_.reset();
+  service_receiver_.Bind(std::move(receiver));
+}
+
+void WalletPanelUI::BindLedgerBridge(
+    mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge) {
+  ledger_bridge_remote_ = std::move(bridge);
+  MaybeFuseLedgerBridge();
+}
+
+void WalletPanelUI::BindLedgerBridge(
+    mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge> receiver) {
+  ledger_bridge_receiver_ = std::move(receiver);
+  MaybeFuseLedgerBridge();
+}
+
+void WalletPanelUI::MaybeFuseLedgerBridge() {
+  if (ledger_bridge_remote_ && ledger_bridge_receiver_) {
+    mojo::FusePipes(std::move(ledger_bridge_receiver_),
+                    std::move(ledger_bridge_remote_));
   }
 }
 

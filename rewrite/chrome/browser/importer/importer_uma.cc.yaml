@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Handle Brave's extra ImporterType enum values in the UMA switch.
+
+      Brave adds several importer types (Chrome, Edge Chromium, Vivaldi, Opera,
+      Yandex, Whale, Brave). Add explicit no-op cases at the top of the
+      LogImporterUseToMetrics switch so it stays exhaustive without a default,
+      matching Chromium's UNKNOWN bucketing for types it doesn't track.
+    regex:
+      re_pattern: '(void LogImporterUseToMetrics\(.+?switch \(type\) \{\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1    case user_data_importer::TYPE_CHROME:
+            case user_data_importer::TYPE_EDGE_CHROMIUM:
+            case user_data_importer::TYPE_VIVALDI:
+            case user_data_importer::TYPE_OPERA:
+            case user_data_importer::TYPE_YANDEX:
+            case user_data_importer::TYPE_WHALE:
+            case user_data_importer::TYPE_BRAVE:
+              break;

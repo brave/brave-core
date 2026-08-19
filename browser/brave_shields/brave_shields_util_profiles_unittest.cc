@@ -91,7 +91,7 @@ TEST_F(BraveShieldsUtilProfilesTest, SetBraveShieldsEnabled) {
     SetBraveShieldsEnabled(map, value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetBraveShieldsEnabled(map, kTestUrl);
+    return IsBraveShieldsEnabled(map, kTestUrl);
   };
 
   RunTest<bool>(kExpects, std::move(set), std::move(get));

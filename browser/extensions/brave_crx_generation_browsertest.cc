@@ -91,12 +91,12 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
 
   bool InstallExtension(const base::FilePath& crx_path,
                         crx_file::VerifierFormat format) {
-    auto installer = CrxInstaller::CreateSilent(browser()->profile());
+    auto installer = CrxInstaller::CreateSilent(browser()->GetProfile());
     installer->set_allow_silent_install(true);
     installer->set_was_triggered_by_user_download();
     installer->set_creation_flags(Extension::FROM_WEBSTORE);
 
-    InstallCrxFileWaiter waiter(browser()->profile());
+    InstallCrxFileWaiter waiter(browser()->GetProfile());
     installer->InstallCrxFile(CRXFileInfo(crx_path, format));
     return waiter.WaitForInstallation();
   }

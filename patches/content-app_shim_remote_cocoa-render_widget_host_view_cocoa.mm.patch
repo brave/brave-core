@@ -1,8 +1,8 @@
 diff --git a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
-index 7a6e9c409a76a98b2a0436d2e21c0d67cf43988e..c149fdd46d36e46dddabd7f8c75f48e16b4336e2 100644
+index 2e30fbae5a125d4916c8d2cda5ad565c61933da8..a79a88945a42bcd6a57d98612229a440875b06fe 100644
 --- a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
 +++ b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
-@@ -2187,6 +2187,7 @@ static NSWindow* __weak _deferredResignKeyWindow;
+@@ -2275,6 +2275,7 @@ static NSWindow* __weak _deferredResignKeyWindow;
  }
  
  - (id)accessibilityParent {

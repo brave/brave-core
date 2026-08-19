@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kDevToolsAiAssistanceContextSelectionAgent disabled.'
+    set_feature_flag_default_state:
+      feature_name: kDevToolsAiAssistanceContextSelectionAgent
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kDevToolsAiCodeCompletion disabled.'
+    set_feature_flag_default_state:
+      feature_name: kDevToolsAiCodeCompletion
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kDevToolsAiCodeGeneration disabled.'
+    set_feature_flag_default_state:
+      feature_name: kDevToolsAiCodeGeneration
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kDevToolsConsoleInsights disabled outside of Android.
+    regex:
+      pattern:
+        'BASE_FEATURE(kDevToolsConsoleInsights,
+        base::FEATURE_ENABLED_BY_DEFAULT);'
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kDevToolsConsoleInsights, base::FEATURE_ENABLED_BY_DEFAULT);
+        #else
+        BASE_FEATURE(kDevToolsConsoleInsights, base::FEATURE_DISABLED_BY_DEFAULT);
+        #endif
+
+  - description: 'Ship kDevToolsNewPermissionDialog disabled.'
+    set_feature_flag_default_state:
+      feature_name: kDevToolsNewPermissionDialog
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kDevToolsUseGcaApi disabled.'
+    set_feature_flag_default_state:
+      feature_name: kDevToolsUseGcaApi
+      value: base::FEATURE_DISABLED_BY_DEFAULT

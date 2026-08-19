@@ -62,7 +62,7 @@ def main():
 
             {output_dir}
 
-            Ensure you run the correct `npm run build` command prior to building
+            Ensure you run the correct `pnpm run build` command prior to building
             ''')
             raise Exception(err)
     else:
@@ -102,9 +102,9 @@ def PackJavaScript():
 def BuildCore(config, target_arch, target_environment):
     """Generates and builds the BraveCore.framework"""
     cmd_args = [
-        os.path.join(scripts_dir, 'commands.js'), 'build', config,
-        '--target_os', 'ios', '--target_arch', target_arch,
-        '--target_environment', target_environment
+        os.path.join(scripts_dir, 'build.ts'), config, '--target_os', 'ios',
+        '--target_arch', target_arch, '--target_environment',
+        target_environment
     ]
     node.RunNode(cmd_args)
 

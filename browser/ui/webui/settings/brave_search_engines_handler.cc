@@ -23,6 +23,7 @@
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_id.h"
 
 namespace settings {
 
@@ -137,14 +138,13 @@ base::ListValue BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
 void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
     const base::ListValue& args) {
   CHECK_EQ(1U, args.size());
-  int index = args[0].GetInt();
-  if (index < 0 || static_cast<size_t>(index) >=
-                       list_controller_.table_model()->engine_count()) {
+  // Upstream identifies engines by |TemplateURLID| (the "id" property of the
+  // dictionary built by CreateDictionaryForEngine())
+  const TemplateURLID id = args[0].GetInt();
+  const auto* template_url = list_controller_.GetTemplateURL(id);
+  if (!template_url) {
     return;
   }
-
-  const auto* template_url = list_controller_.GetTemplateURL(index);
-  CHECK(template_url);
 
   profile_->GetPrefs()->SetString(
       prefs::kSyncedDefaultPrivateSearchProviderGUID,
