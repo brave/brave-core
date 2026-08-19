@@ -539,8 +539,7 @@ void LogOtherSublayers(HANDLE engine, const GUID& our_sublayer) {
   auto sublayers = UNSAFE_BUFFERS(base::span(entries, count));
   for (const FWPM_SUBLAYER0* entry : sublayers) {
     const FWPM_SUBLAYER0& sublayer = *entry;
-    if (base::byte_span_from_ref(sublayer.subLayerKey) ==
-        base::byte_span_from_ref(our_sublayer)) {
+    if (IsEqualGUID(sublayer.subLayerKey, our_sublayer)) {
       continue;
     }
     VLOG(1) << "Other WFP sublayer present: "
