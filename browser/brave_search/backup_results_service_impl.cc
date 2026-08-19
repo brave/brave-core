@@ -772,6 +772,13 @@ bool BackupResultsServiceImpl::LoadTargetUrl(
   if (!pending_request->web_contents) {
     return false;
   }
+  // Reapply before starting the navigation. Nothing else is in flight to the
+  // renderer at this point, so an update sent here is not dropped and is
+  // acknowledged well before the document for the target URL is created.
+  ApplyWindowAndViewSize(
+      pending_request->web_contents.get(),
+      pending_request->web_contents->GetRenderWidgetHostView());
+
   auto load_url_params =
       content::NavigationController::LoadURLParams(pending_request->target_url);
   load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
