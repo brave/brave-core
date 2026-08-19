@@ -31,8 +31,8 @@ import java.util.Objects;
 public class SponsoredRichMediaWebView {
     private static final String NEW_TAB_TAKEOVER_URL = "chrome://new-tab-takeover";
 
-    private final WebContents mWebContents;
-    private final ThinWebView mWebView;
+    private ThinWebView mWebView;
+    private WebContents mWebContents;
     private String mPlacementId;
     private String mCreativeInstanceId;
 
@@ -79,13 +79,24 @@ public class SponsoredRichMediaWebView {
         mPlacementId = placementId;
         mCreativeInstanceId = creativeInstanceId;
 
+        assert mWebContents != null : "maybeLoadSponsoredRichMedia() was called after destroy";
         mWebContents
                 .getNavigationController()
                 .loadUrl(new LoadUrlParams(getNewTabTakeoverUrl(placementId, creativeInstanceId)));
     }
 
     public View getView() {
+        assert mWebView != null : "getView() was called after destroy";
         return mWebView.getView();
+    }
+
+    public void destroy() {
+        assert mWebContents != null && mWebView != null : "destroy() was called multiple times";
+
+        mWebView.destroy();
+        mWebView = null;
+        mWebContents.destroy();
+        mWebContents = null;
     }
 
     private String getNewTabTakeoverUrl(String placementId, String creativeInstanceId) {

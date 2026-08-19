@@ -738,6 +738,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mBraveNewsController = null;
         }
 
+        maybeResetSponsoredRichMediaBackground();
+
         // Removes preference listener.
         ContextUtils.getAppSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(mPreferenceListener);
@@ -1112,6 +1114,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mBackgroundSponsoredRichMediaView.setVisibility(View.GONE);
         mBackgroundSponsoredRichMediaView.removeAllViews();
+        mSponsoredRichMediaWebView.destroy();
         mSponsoredRichMediaWebView = null;
     }
 
