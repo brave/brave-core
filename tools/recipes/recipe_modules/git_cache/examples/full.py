@@ -18,11 +18,14 @@ def RunSteps(api):
     api.step('cache path', ['echo', api.git_cache.validate()])
 
     api.git_cache.populate(_URL)
-    # Extra refs and commits are fetched beyond the mirror's `refs/heads/*`.
+    # An extra ref and a commit are fetched beyond the mirror's
+    # `refs/heads/*`; asking for `refs/tags/*` is how tags reach a mirror at
+    # all.
     api.git_cache.populate(_URL,
-                           ref='refs/branch-heads/1234',
+                           ref='refs/tags/*',
                            commit='c0ffee' * 6,
-                           step_name='populate at ref')
+                           no_fetch_tags=False,
+                           step_name='populate with tags')
 
     api.step('mirror', ['echo', api.git_cache.mirror_dir(_URL)])
 
@@ -42,8 +45,13 @@ def GenTests(api):
         api.post_process(post_process.StepCommandContains,
                          'git cache populate',
                          ['--reset-fetch-config', '--no-fetch-tags']),
-        api.post_process(post_process.StepCommandContains, 'populate at ref',
-                         ['--ref', 'refs/branch-heads/1234', '--commit']),
+        api.post_process(post_process.StepCommandContains,
+                         'populate with tags',
+                         ['--ref', 'refs/tags/*', '--commit']),
+        # `--no-fetch-tags` is only about tags git would follow on its own, so
+        # asking for them explicitly means dropping it.
+        api.post_process(post_process.StepCommandDoesNotContain,
+                         'populate with tags', ['--no-fetch-tags']),
         api.post_process(post_process.StepCommandContains, 'mirror',
                          [_mirror]),
         api.post_process(post_process.StatusSuccess),

@@ -130,7 +130,10 @@
       "gclient",
       "sync",
       "--force",
-      "-D"
+      "-D",
+      "--nohooks",
+      "--ignore-dep-type=gcs",
+      "--ignore-dep-type=cipd"
     ],
     "cwd": "[WORKSPACE]/b/src",
     "env": {
@@ -141,11 +144,15 @@
   {
     "cmd": [
       "git",
-      "fetch",
-      "--tags",
-      "origin"
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--ref",
+      "refs/tags/*"
     ],
-    "cwd": "[WORKSPACE]/b/src",
     "name": "fetch tags"
   },
   {
