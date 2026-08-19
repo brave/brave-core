@@ -29,6 +29,8 @@ import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.components.browser_ui.settings.SettingsFragment;
+import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url.mojom.Url;
@@ -36,7 +38,8 @@ import org.chromium.url.mojom.Url;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class BraveWalletAddNetworksFragment extends Fragment implements ConnectionErrorHandler {
+public class BraveWalletAddNetworksFragment extends Fragment
+        implements BottomInsetViewProvider, ConnectionErrorHandler, SettingsFragment {
 
     /**
      * Listener implemented by {@link BraveWalletNetworksPreferenceFragment} used to notify the
@@ -87,6 +90,18 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.brave_wallet_add_network, container, false);
+    }
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView;
+    }
+
+    @Override
+    public @AnimationType int getAnimationType() {
+        // Preserve SettingsActivity's legacy fallback until this fragment adopts property
+        // animations.
+        return AnimationType.TWEEN;
     }
 
     @Override
