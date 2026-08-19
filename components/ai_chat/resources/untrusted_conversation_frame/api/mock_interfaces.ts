@@ -76,6 +76,7 @@ export function createMockUntrustedConversationHandler(
     generateQuestions: () => {},
     retryAPIRequest: () => {},
     switchToNonPremiumModel() {},
+    switchToTab: () => {},
 
     // Apply overrides
     ...overrides,
@@ -96,6 +97,8 @@ export function createMockUntrustedUIHandler(
   return {
     // Query methods - return empty/default results
     hasMemory: () => Promise.resolve({ exists: false }),
+    // Null matches a platform without on-device tab search.
+    searchForTabs: () => Promise.resolve({ tabs: null }),
 
     // Action methods - fire and forget stubs
     bindConversationHandler: () => {},
@@ -112,6 +115,7 @@ export function createMockUntrustedUIHandler(
     refreshPremiumSession: () => {},
     openModelSupportUrl: () => {},
     openStorageSupportUrl: () => {},
+    switchToTab: () => {},
 
     // Apply overrides
     ...overrides,

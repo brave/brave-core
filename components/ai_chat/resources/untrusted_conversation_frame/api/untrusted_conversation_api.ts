@@ -56,6 +56,7 @@ type UIHandlerActions = Pick<
   | 'refreshPremiumSession'
   | 'openModelSupportUrl'
   | 'openStorageSupportUrl'
+  | 'switchToTab'
 >
 
 // State that comes from ConversationEntriesState plus additional UI state
@@ -101,6 +102,11 @@ export default function createUntrustedConversationApi(
       ...endpointsFor(uiHandler, {
         hasMemory: {
           response: (result) => result.exists,
+        },
+        // Null when on-device tab search isn't available, which the caller
+        // renders differently to "no tabs matched".
+        searchForTabs: {
+          response: (result) => result.tabs,
         },
       }),
 
