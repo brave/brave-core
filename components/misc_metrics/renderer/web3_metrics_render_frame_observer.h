@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_RENDERER_WEB3_METRICS_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_RENDERER_WEB3_METRICS_RENDER_FRAME_OBSERVER_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
-#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/misc_metrics/common/misc_metrics.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -25,12 +25,19 @@ namespace misc_metrics {
 
 class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  // `is_web3_enabled_callback` reports whether a wallet provider is being
-  // installed into pages. There is nothing to proxy while it returns false, and
-  // the proxy is itself observable, so injection waits on it.
-  Web3MetricsRenderFrameObserver(
-      content::RenderFrame* render_frame,
-      base::RepeatingCallback<bool()> is_web3_enabled_callback);
+  // Reaches embedder state that this component layer can't see.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Whether a wallet provider is being installed into pages. There is nothing
+    // to proxy while this is false, and the proxy is itself observable, so
+    // injection waits on it.
+    virtual bool IsWeb3Enabled() = 0;
+  };
+
+  Web3MetricsRenderFrameObserver(content::RenderFrame* render_frame,
+                                 std::unique_ptr<Delegate> delegate);
   Web3MetricsRenderFrameObserver(const Web3MetricsRenderFrameObserver&) =
       delete;
   Web3MetricsRenderFrameObserver& operator=(
@@ -57,7 +64,7 @@ class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
   mojom::Web3Metrics& GetWeb3Metrics();
 
   GURL url_;
-  base::RepeatingCallback<bool()> is_web3_enabled_callback_;
+  std::unique_ptr<Delegate> delegate_;
   std::string install_proxy_script_;
   mojo::Remote<mojom::Web3Metrics> web3_metrics_;
   base::WeakPtrFactory<Web3MetricsRenderFrameObserver> weak_ptr_factory_{this};
