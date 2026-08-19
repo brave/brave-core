@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include <stddef.h>
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -11,10 +12,12 @@
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ptr_exclusion.h"
 #include "base/stl_util.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "components/country_codes/country_codes.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_switches.h"
@@ -31,6 +34,7 @@
 #include "components/search_engines/testing_search_terms_data.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/search_engines_data/resources/definitions/prepopulated_engines.h"
 
 namespace {
 
@@ -44,9 +48,37 @@ using namespace TemplateURLPrepopulateData;  // NOLINT
 
 constexpr PrepopulatedEngine* const kBraveAddedEngines[] = {};
 
+// Only engines whose upstream definitions we remove from
+// `prepopulated_engines.json` belong here. Engines we merely derive from
+// upstream ones (Startpage, Yandex) keep their upstream definition in
+// `kAllEngines`, and upstream may use the same display name for it.
 constexpr auto kOverriddenEnginesNames =
-    base::MakeFixedFlatSet<std::u16string_view>(
-        {u"DuckDuckGo", u"Qwant", u"Startpage"});
+    base::MakeFixedFlatSet<std::u16string_view>({u"DuckDuckGo", u"Qwant"});
+
+// Every engine we derive from an upstream one with `ModifyEngineParams()` in
+// `brave_prepopulated_engines.cc`, paired with the upstream definition it is
+// derived from and with a country whose list has it. Add an entry when adding
+// such an engine: upstream keeps their definitions in `kAllEngines`, so
+// `OverriddenEngines` above can't tell whether the lists we build serve theirs
+// or ours.
+struct ModifiedUpstreamEngine {
+  country_codes::CountryId country_id;
+  // RAW_PTR_EXCLUSION: #global-scope, and `raw_ptr` is not `constexpr`.
+  RAW_PTR_EXCLUSION const PrepopulatedEngine* brave_engine;
+  RAW_PTR_EXCLUSION const PrepopulatedEngine* upstream_engine;
+};
+
+constexpr ModifiedUpstreamEngine kModifiedUpstreamEngines[] = {
+    // `TemplateURLPrepopulateData::google` is qualified because `google` also
+    // names a namespace pulled in by this test's includes.
+    {country_codes::CountryId("US"), &brave_google,
+     &TemplateURLPrepopulateData::google},
+    {country_codes::CountryId("US"), &brave_bing, &bing},
+    {country_codes::CountryId("US"), &brave_startpage, &startpage},
+    {country_codes::CountryId("US"), &brave_ecosia, &ecosia},
+    {country_codes::CountryId("JP"), &brave_yahoo_jp, &yahoo_jp},
+    {country_codes::CountryId("RU"), &brave_yandex, &yandex_com},
+};
 
 }  // namespace
 
@@ -83,6 +115,27 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
             search_engines_test_environment_.regional_capabilities_service()
                 .GetRegionalPrepopulatedEngines());
     EXPECT_EQ(fallback_t_url_data->prepopulate_id, prepopulate_id);
+  }
+
+  // Checks the engines from `kModifiedUpstreamEngines` that `country_id`'s list
+  // is expected to have.
+  void CheckModifiedUpstreamEnginesForCountry(
+      country_codes::CountryId country_id) {
+    search_engines_test_environment_.pref_service().SetInteger(
+        kCountryIDAtInstall, country_id.Serialize());
+    const auto engines =
+        search_engines_test_environment_.regional_capabilities_service()
+            .GetRegionalPrepopulatedEngines();
+
+    for (const auto& [engine_country_id, brave_engine, upstream_engine] :
+         kModifiedUpstreamEngines) {
+      if (engine_country_id != country_id) {
+        continue;
+      }
+      SCOPED_TRACE(testing::Message() << "engine id " << brave_engine->id);
+      EXPECT_TRUE(std::ranges::contains(engines, brave_engine));
+      EXPECT_FALSE(std::ranges::contains(engines, upstream_engine));
+    }
   }
 
   const base::span<const PrepopulatedEngine* const>
@@ -146,6 +199,22 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
                 TemplateURLPrepopulateData::BRAVE_PREPOPULATED_ENGINES_START);
     }
   }
+}
+
+// Verifies that the engines we derive from upstream ones are the ones served,
+// and that the upstream definitions they are derived from are not. One test per
+// country, because the country is resolved once per service instance.
+TEST_F(BraveTemplateURLPrepopulateDataTest, ModifiedUpstreamEnginesForUSA) {
+  CheckModifiedUpstreamEnginesForCountry(country_codes::CountryId("US"));
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, ModifiedUpstreamEnginesForJapan) {
+  CheckModifiedUpstreamEnginesForCountry(country_codes::CountryId("JP"));
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       ModifiedUpstreamEnginesForRussianFederation) {
+  CheckModifiedUpstreamEnginesForCountry(country_codes::CountryId("RU"));
 }
 
 // Verifies that the set of prepopulate data for each locale
