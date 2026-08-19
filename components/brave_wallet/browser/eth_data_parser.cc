@@ -12,7 +12,6 @@
 #include "base/check_op.h"
 #include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -34,12 +33,6 @@ constexpr char kERC1155SafeTransferFromSelector[] = "0xf242432a";
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
 
-// keccak256("ApprovalForAll(address,address,bool)")
-constexpr char kApprovalForAllTopic[] =
-    "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31";
-// keccak256("Approval(address,address,uint256)")
-constexpr char kApprovalTopic[] =
-    "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
 constexpr uint8_t kSetApprovalForAllSelector[4] = {0xa2, 0x2c, 0xb4, 0x65};
 
 // CowSwap function selectors
@@ -549,37 +542,6 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
 }
 
 }  // namespace
-
-std::vector<AuthorizationFinding> ScanAuthorizations(
-    const std::vector<SimulatedCall>& calls) {
-  std::vector<AuthorizationFinding> findings;
-  for (const auto& call : calls) {
-    if (!call.success) {
-      continue;
-    }
-    for (const auto& log : call.logs) {
-      if (log.topics.empty()) {
-        continue;
-      }
-      AuthorizationFinding::Kind kind;
-      if (base::EqualsCaseInsensitiveASCII(log.topics[0],
-                                           kApprovalForAllTopic)) {
-        kind = AuthorizationFinding::Kind::kApprovalForAll;
-      } else if (base::EqualsCaseInsensitiveASCII(log.topics[0],
-                                                  kApprovalTopic)) {
-        kind = AuthorizationFinding::Kind::kErc20Approval;
-      } else {
-        continue;
-      }
-      if (log.topics.size() < 3) {
-        continue;
-      }
-      findings.push_back(
-          {kind, log.address, log.topics[1], log.topics[2], log.data});
-    }
-  }
-  return findings;
-}
 
 std::vector<std::string> FindSetApprovalForAllOperatorsByByteScan(
     base::span<const uint8_t> data) {

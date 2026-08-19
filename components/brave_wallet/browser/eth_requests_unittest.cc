@@ -121,22 +121,4 @@ TEST(EthRequestUnitTest, GetLogsPayload) {
             R"(000000000aff3454fce5edbc8e2a8697c15331677e6ebccc"]]}]})");
 }
 
-TEST(EthRequestUnitTest, GetSimulateV1Payload) {
-  constexpr char kData[] =
-      "0xa22cb465000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e6446"
-      "0f0000000000000000000000000000000000000000000000000000000000000001";
-  ASSERT_EQ(
-      GetSimulateV1Payload("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-                           "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", kData,
-                           ""),
-      R"({"id":1,"jsonrpc":"2.0","method":"eth_simulateV1","params":)"
-      R"([{"blockStateCalls":[{"calls":[{"data":"0xa22cb465000000)"
-      R"(000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e6446)"
-      R"(0f0000000000000000000000000000000000000000000000000000000000000001",)"
-      R"("from":"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",)"
-      R"("to":"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"}]}],)"
-      R"("traceTransfers":false,"validation":false},"latest"]})"
-      R"()");
-}
-
 }  // namespace brave_wallet::eth

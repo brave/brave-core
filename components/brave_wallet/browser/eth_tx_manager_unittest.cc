@@ -231,11 +231,6 @@ class EthTxManagerUnitTest : public testing::Test {
                     ]
                   }
                 })");
-          } else if (*method == "eth_simulateV1") {
-            url_loader_factory_.AddResponse(
-                request.url.spec(),
-                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
-                "\"status\":\"0x1\",\"logs\":[]}]}]}");
           }
         }));
 
@@ -1512,11 +1507,6 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             }
           )");
-        } else if (*header_value == "eth_simulateV1") {
-          url_loader_factory_.AddResponse(
-              request.url.spec(),
-              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
-              "\"status\":\"0x1\",\"logs\":[]}]}]}");
         }
       }));
 
@@ -1580,11 +1570,6 @@ TEST_F(EthTxManagerUnitTest,
               "result": "0x00000000000009604",
               "id": 1
             })");
-        } else if (*header_value == "eth_simulateV1") {
-          url_loader_factory_.AddResponse(
-              request.url.spec(),
-              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
-              "\"status\":\"0x1\",\"logs\":[]}]}]}");
         }
       }));
 
@@ -1614,9 +1599,11 @@ TEST_F(EthTxManagerUnitTest,
 }
 
 TEST_F(EthTxManagerUnitTest,
-       AddUnapprovedEvmTransactionErc20ApprovalDoesNotSuppressByteScan) {
+       AddUnapprovedEvmTransactionMulticallWrappedSetApprovalForAll) {
   constexpr char kOperator[] = "0x1111111111111111111111111111111111111111";
   // multicall(bytes[]) wrapping one setApprovalForAll(kOperator, true) call.
+  // The wrapper hides the selector from the top-level decode; classification
+  // must come from the read-time byte scan in EthTxMeta::ToTransactionInfo.
   std::vector<uint8_t> multicall_data;
   ASSERT_TRUE(base::HexStringToBytes(
       // multicall(bytes[]) selector
@@ -1637,12 +1624,8 @@ TEST_F(EthTxManagerUnitTest,
       "0000000000000000000000000000000000000000000000000000000000000001",
       &multicall_data));
 
-  // keccak256("Approval(address,address,uint256)")
-  constexpr char kErc20ApprovalTopic[] =
-      "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925";
-
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-      [this, kErc20ApprovalTopic](const network::ResourceRequest& request) {
+      [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
         std::string_view request_string(request.request_body->elements()
                                             ->at(0)
@@ -1651,23 +1634,7 @@ TEST_F(EthTxManagerUnitTest,
         base::DictValue request_value = ParseJsonDict(request_string);
         std::string* method = request_value.FindString("method");
         ASSERT_TRUE(method);
-        if (*method == "eth_simulateV1") {
-          url_loader_factory_.AddResponse(
-              request.url.spec(),
-              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"calls\":[{"
-              "\"status\":\"0x1\",\"logs\":[{\"address\":"
-              "\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"topics\":["
-              "\"" +
-                  std::string(kErc20ApprovalTopic) +
-                  "\","
-                  "\"0x000000000000000000000000be862ad9abfe6f22bcb087716c7d89"
-                  "a26051f74c\","
-                  "\"0x000000000000000000000000111111111111111111111111111111"
-                  "1111111111\"],"
-                  "\"data\":"
-                  "\"0x0000000000000000000000000000000000000000000000000de0b6"
-                  "b3a7640000\"}]}]}]}");
-        } else if (*method == "eth_gasPrice") {
+        if (*method == "eth_gasPrice") {
           url_loader_factory_.AddResponse(
               request.url.spec(),
               "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x1\"}");
