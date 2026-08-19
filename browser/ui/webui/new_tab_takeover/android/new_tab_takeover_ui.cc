@@ -74,7 +74,28 @@ void NewTabTakeoverUI::BindInterface(
   new_tab_takeover_receiver_.Bind(std::move(pending_receiver));
 }
 
+void NewTabTakeoverUI::SetSafeArea(const gfx::RectF& safe_area) {
+  if (safe_area_ == safe_area) {
+    return;
+  }
+  safe_area_.emplace(safe_area);
+
+  if (page_.is_bound()) {
+    page_->SetSafeArea(safe_area);
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
+
+void NewTabTakeoverUI::SetPage(
+    mojo::PendingRemote<new_tab_takeover::mojom::NewTabTakeoverPage> page) {
+  page_.reset();
+  page_.Bind(std::move(page));
+
+  if (safe_area_) {
+    page_->SetSafeArea(*safe_area_);
+  }
+}
 
 void NewTabTakeoverUI::SetSponsoredRichMediaAdEventHandler(
     mojo::PendingReceiver<

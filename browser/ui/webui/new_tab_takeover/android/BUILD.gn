@@ -14,10 +14,12 @@ source_set("new_tab_takeover") {
     "new_tab_takeover_ui.h",
     "new_tab_takeover_ui_config.cc",
     "new_tab_takeover_ui_config.h",
+    "sponsored_rich_media_web_view_android.cc",
   ]
 
   deps = [
     "//base",
+    "//brave/build/android:jni_headers",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/constants",
     "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources",
@@ -40,5 +42,26 @@ source_set("new_tab_takeover") {
     "//brave/components/new_tab_takeover/mojom",
     "//brave/components/ntp_background_images/browser/mojom",
     "//mojo/public/cpp/bindings",
+    "//ui/gfx/geometry",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "new_tab_takeover_ui_unittest.cc" ]
+
+  deps = [
+    ":new_tab_takeover",
+    "//brave/components/new_tab_takeover/mojom",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/browser:test_support",
+    "//chrome/test:test_support",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/gfx/geometry",
   ]
 }
