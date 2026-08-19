@@ -44,7 +44,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-{%- for enum in all_enums %}
+{%- for enum in nullable_enums %}
 {%   include "enum_box_declaration.tmpl" %}
 {% endfor %}
 

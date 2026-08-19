@@ -4,5 +4,5 @@ OBJC_EXPORT
 NS_SWIFT_NAME({{class_prefix}}.{{enum.name}}Box)
 @interface {{box_type}} : NSObject
 - (instancetype)initWithValue:({{enum_type}})value;
-@property (nonatomic, readwrite) {{enum_type}} value;
+@property (nonatomic) {{enum_type}} value;
 @end
