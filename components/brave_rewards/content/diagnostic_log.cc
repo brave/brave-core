@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
 
+#include <array>
 #include <memory>
 #include <utility>
 
@@ -12,10 +13,9 @@
 #include "base/compiler_specific.h"
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
-#include "base/i18n/time_formatting.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {
 
@@ -23,8 +23,23 @@ constexpr int64_t kChunkSize = 1024;
 constexpr size_t kDividerLength = 80;
 
 std::string FormatTime(const base::Time& time) {
-  return base::UnlocalizedTimeFormatWithPattern(
-      time, "MMM dd, YYYY h:mm:ss.S a zzz", icu::TimeZone::getGMT());
+  static constexpr std::array<char[4], 12> kMonths = {
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+  base::Time::Exploded exploded;
+  time.UTCExplode(&exploded);
+
+  int hour12 = exploded.hour % 12;
+  if (hour12 == 0) {
+    hour12 = 12;
+  }
+
+  return absl::StrFormat("%s %02d, %d %d:%02d:%02d.%d %s GMT",
+                         kMonths[exploded.month - 1], exploded.day_of_month,
+                         exploded.year, hour12, exploded.minute,
+                         exploded.second, exploded.millisecond / 100,
+                         exploded.hour < 12 ? "AM" : "PM");
 }
 
 std::string GetLogVerboseLevelName(int verbose_level) {
