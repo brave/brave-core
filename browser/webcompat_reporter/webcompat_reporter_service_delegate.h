@@ -18,6 +18,10 @@
 
 class PrefService;
 
+namespace content {
+class BrowserContext;
+}  // namespace content
+
 namespace brave_shields {
 class AdBlockService;
 }  // namespace brave_shields
@@ -33,7 +37,8 @@ class WebcompatReporterServiceDelegateImpl
       component_updater::ComponentUpdateService* component_update_service,
       brave_shields::AdBlockService* adblock_service,
       HostContentSettingsMap* host_content_settings_map,
-      scoped_refptr<content_settings::CookieSettings> content_settings);
+      scoped_refptr<content_settings::CookieSettings> content_settings,
+      content::BrowserContext* browser_context));
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
   WebcompatReporterServiceDelegateImpl& operator=(
@@ -48,6 +53,9 @@ class WebcompatReporterServiceDelegateImpl
   std::optional<std::string> GetScriptBlockingFlag(
       const std::optional<std::string>& current_url) const override;
   std::optional<std::string> GetAdblockOnlyModeEnabled() const override;
+  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+    std::optional<std::string> GetAdblockExtensionInstalled() const override;
+  #endif  
 
  private:
   const raw_ref<PrefService> local_state_;
@@ -55,6 +63,7 @@ class WebcompatReporterServiceDelegateImpl
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
+  const raw_ptr<content::BrowserContext> context_;
 };
 
 }  // namespace webcompat_reporter

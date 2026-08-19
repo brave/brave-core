@@ -46,6 +46,9 @@ class WebcompatReporterService : public KeyedService,
     virtual std::optional<std::string> GetScriptBlockingFlag(
         const std::optional<std::string>& current_url) const = 0;
     virtual std::optional<std::string> GetAdblockOnlyModeEnabled() const = 0;
+    #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+        virtual std::optional<std::string> GetAdblockExtensionInstalled() const = 0;
+    #endif
   };
 
   WebcompatReporterService(
