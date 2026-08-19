@@ -124,17 +124,15 @@ class GenDispatchTest(unittest.TestCase):
         generated_tmp = tempfile.TemporaryDirectory()
         self.addCleanup(generated_tmp.cleanup)
         _make_generated_output_dir(generated_tmp.name, ['b'])
-        # `_CHROMIUM_SRC_DIR` is faked so an --out-dir under it passes
-        # cmd_gen()'s "must be inside the source root" check without
-        # touching the real checkout.
         fake_src_root = tempfile.TemporaryDirectory()
         self.addCleanup(fake_src_root.cleanup)
-        out_dir = Path(fake_src_root.name) / 'out' / 'b'
+        fake_src_root_path = Path(fake_src_root.name).resolve()
+        out_dir = fake_src_root_path / 'out' / 'b'
 
         original_output_dir = gen_paths.BUILDERS_OUTPUT_DIR
         gen_paths.BUILDERS_OUTPUT_DIR = Path(generated_tmp.name)
         original_src_dir = gen._CHROMIUM_SRC_DIR
-        gen._CHROMIUM_SRC_DIR = Path(fake_src_root.name)
+        gen._CHROMIUM_SRC_DIR = fake_src_root_path
         original_run_gn_gen = gen.BuildDirGenerator.run_gn_gen
         gen.BuildDirGenerator.run_gn_gen = lambda self: 0
         try:

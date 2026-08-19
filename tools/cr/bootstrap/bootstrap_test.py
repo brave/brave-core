@@ -863,7 +863,9 @@ class ResolveCheckoutTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             cwd_checkout = self._make_checkout(Path(tmp))
             checkout = self._resolve_from_cwd(cwd_checkout)
-        self.assertEqual(checkout, cwd_checkout)
+        # `_resolve_checkout()` always resolves the cwd before searching, so
+        # the returned checkout is in resolved (long-path, on Windows) form.
+        self.assertEqual(checkout, cwd_checkout.resolve())
 
     def test_falls_back_to_cwd_when_recorded_checkout_is_stale(self):
         # The recorded value no longer carries our sentinel (e.g. deleted) --
@@ -874,7 +876,9 @@ class ResolveCheckoutTest(unittest.TestCase):
                 Path(tmp) / 'stale' / 'src' / 'brave')
             cwd_checkout = self._make_checkout(Path(tmp) / 'cwd')
             checkout = self._resolve_from_cwd(cwd_checkout)
-        self.assertEqual(checkout, cwd_checkout)
+        # See test_falls_back_to_cwd_when_env_unset: the cwd fallback path
+        # always returns a resolved path.
+        self.assertEqual(checkout, cwd_checkout.resolve())
 
     def test_none_when_neither_resolves(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -921,7 +925,11 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
         if key is None:
             self.skipTest('unsupported host platform')
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+            # `_resolve_checkout()` resolves the cwd before searching, so
+            # `root` is resolved here to match the (possibly long-form, on
+            # Windows) path `main()` will actually record and build paths
+            # from.
+            root = Path(tmp).resolve()
             checkout = self._make_checkout(root)
             node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
             node.parent.mkdir(parents=True, exist_ok=True)

@@ -259,6 +259,7 @@ class WorkspaceTest(unittest.TestCase):
             self.assertEqual(path.brave_core, workspace / 'b/src/brave')
             self.assertEqual(path.out, workspace / 'out')
             self.assertEqual(Path.cwd(), workspace)
+            os.chdir(self._prev_cwd)
 
     def test_workspace_defaults_to_cwd(self):
         path = engine._Engine()._instantiate_module('path', [])
