@@ -186,10 +186,7 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.FIL) {
-    if (
-      chainId === BraveWallet.FILECOIN_MAINNET
-      || chainId === BraveWallet.LOCALHOST_CHAIN_ID
-    ) {
+    if (chainId === BraveWallet.FILECOIN_MAINNET) {
       return BraveWallet.KeyringId.kFilecoin
     }
     if (chainId === BraveWallet.FILECOIN_TESTNET) {

@@ -369,7 +369,6 @@
   <message name="IDS_BRAVE_WALLET_NETWORK_MAIN" desc="Network Main title">Mainnet</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_SEPOLIA" desc="Network Sepolia title">Sepolia</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_LOCALHOST" desc="Network Localhost title">Localhost</message>
   <message name="IDS_BRAVE_WALLET_SELECT_ACCOUNT" desc="Select Account tab title">Select account</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_ACCOUNT" desc="Search Accounts tab search placeholder">Search accounts</message>
   <message name="IDS_BRAVE_WALLET_SELECT_NETWORK" desc="Select Network tab title">Select network</message>

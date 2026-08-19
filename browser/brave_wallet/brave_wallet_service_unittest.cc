@@ -79,6 +79,8 @@ using testing::Eq;
 
 namespace {
 
+constexpr char kLocalhostChainId[] = "0x539";
+
 const char token_list_json[] = R"(
   {
     "0x1": {
@@ -1750,6 +1752,172 @@ TEST_F(BraveWalletServiceUnitTest,
   EXPECT_EQ(native_asset.Clone(), tokens[0]);
 }
 
+TEST_F(BraveWalletServiceUnitTest, MaybeMigrateLocalhostNetworks) {
+  GetPrefs()->SetBoolean(kBraveWalletLocalhostNetworksMigrated, false);
+
+  constexpr char kTestOrigin[] = "https://a.test";
+  auto origin = url::Origin::Create(GURL(kTestOrigin));
+
+  {
+    ScopedDictPrefUpdate selected_networks(GetPrefs(),
+                                           kBraveWalletSelectedNetworks);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::ETH),
+                           kLocalhostChainId);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::SOL),
+                           kLocalhostChainId);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::FIL),
+                           kLocalhostChainId);
+  }
+
+  ScopedDictPrefUpdate selected_networks_per_origin(
+      GetPrefs(), kBraveWalletSelectedNetworksPerOrigin);
+  selected_networks_per_origin
+      ->EnsureDict(GetPrefKeyForCoinType(mojom::CoinType::ETH))
+      ->Set(origin.Serialize(), kLocalhostChainId);
+
+  MigrateObsoleteProfilePrefs(GetPrefs());
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::ETH)),
+            mojom::kSepoliaChainId);
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::SOL)),
+            mojom::kSolanaTestnet);
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::FIL)),
+            mojom::kFilecoinTestnet);
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworksPerOrigin)
+                 .FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH))
+                 ->FindString(origin.Serialize()),
+            mojom::kSepoliaChainId);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletLocalhostNetworksMigrated));
+}
+
+TEST_F(BraveWalletServiceUnitTest, MaybeMigrateLocalhostNetworksRunsOnlyOnce) {
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  ASSERT_TRUE(GetPrefs()->GetBoolean(kBraveWalletLocalhostNetworksMigrated));
+
+  ScopedDictPrefUpdate selected_networks(GetPrefs(),
+                                         kBraveWalletSelectedNetworks);
+  selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::ETH),
+                         kLocalhostChainId);
+
+  MigrateObsoleteProfilePrefs(GetPrefs());
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::ETH)),
+            kLocalhostChainId);
+}
+
+TEST_F(BraveWalletServiceUnitTest, MigrateDeadNetworkDefaultOriginMigrated) {
+  {
+    ScopedDictPrefUpdate selected_networks(GetPrefs(),
+                                           kBraveWalletSelectedNetworks);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::ETH),
+                           kLocalhostChainId);
+  }
+
+  network_manager_->AddHiddenNetwork(mojom::CoinType::ETH, kLocalhostChainId);
+  network_manager_->MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                       mojom::kSepoliaChainId);
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::ETH)),
+            mojom::kSepoliaChainId);
+  EXPECT_THAT(network_manager_->GetHiddenNetworks(mojom::CoinType::ETH),
+              testing::Not(testing::Contains(kLocalhostChainId)));
+}
+
+TEST_F(BraveWalletServiceUnitTest,
+       MigrateDeadNetworkDefaultOriginNotMigratedWhenDifferent) {
+  {
+    ScopedDictPrefUpdate selected_networks(GetPrefs(),
+                                           kBraveWalletSelectedNetworks);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::ETH),
+                           mojom::kMainnetChainId);
+  }
+
+  network_manager_->MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                       mojom::kSepoliaChainId);
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::ETH)),
+            mojom::kMainnetChainId);
+}
+
+TEST_F(BraveWalletServiceUnitTest, MigrateDeadNetworkPerOriginMigrated) {
+  constexpr char kTestOrigin[] = "https://a.test";
+  auto origin = url::Origin::Create(GURL(kTestOrigin));
+  {
+    ScopedDictPrefUpdate selected_networks_per_origin(
+        GetPrefs(), kBraveWalletSelectedNetworksPerOrigin);
+    selected_networks_per_origin
+        ->EnsureDict(GetPrefKeyForCoinType(mojom::CoinType::ETH))
+        ->Set(origin.Serialize(), kLocalhostChainId);
+  }
+
+  network_manager_->MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                       mojom::kSepoliaChainId);
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworksPerOrigin)
+                 .FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH))
+                 ->FindString(origin.Serialize()),
+            mojom::kSepoliaChainId);
+}
+
+TEST_F(BraveWalletServiceUnitTest,
+       MigrateDeadNetworkPerOriginNotMigratedWhenDifferent) {
+  constexpr char kTestOrigin[] = "https://a.test";
+  auto origin = url::Origin::Create(GURL(kTestOrigin));
+  {
+    ScopedDictPrefUpdate selected_networks_per_origin(
+        GetPrefs(), kBraveWalletSelectedNetworksPerOrigin);
+    selected_networks_per_origin
+        ->EnsureDict(GetPrefKeyForCoinType(mojom::CoinType::ETH))
+        ->Set(origin.Serialize(), mojom::kMainnetChainId);
+  }
+
+  network_manager_->MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                       mojom::kSepoliaChainId);
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworksPerOrigin)
+                 .FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH))
+                 ->FindString(origin.Serialize()),
+            mojom::kMainnetChainId);
+}
+
+TEST_F(BraveWalletServiceUnitTest, MigrateDeadNetworkOnlyAffectsRequestedCoin) {
+  {
+    ScopedDictPrefUpdate selected_networks(GetPrefs(),
+                                           kBraveWalletSelectedNetworks);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::ETH),
+                           kLocalhostChainId);
+    selected_networks->Set(GetPrefKeyForCoinType(mojom::CoinType::SOL),
+                           kLocalhostChainId);
+  }
+
+  network_manager_->MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                       mojom::kSepoliaChainId);
+
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::ETH)),
+            mojom::kSepoliaChainId);
+  EXPECT_EQ(*GetPrefs()
+                 ->GetDict(kBraveWalletSelectedNetworks)
+                 .FindString(GetPrefKeyForCoinType(mojom::CoinType::SOL)),
+            kLocalhostChainId);
+}
+
 TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
   json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
 
@@ -1870,17 +2038,19 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "false"}});
 
+  constexpr size_t kDefaultAssetCount = 20u;
+
   json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
 
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
 
   auto assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(23u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount, assets.size());
 
   json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
 
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount + 1, assets.size());
 
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
@@ -1894,14 +2064,14 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
                                  base::DoNothing());
   // TODO(apaymyshev): Maybe we should remove such assets.
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount + 1, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_FALSE(assets.back()->visible);
 
   // Network added again. No duplicate assets.
   json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount + 1, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
 }
@@ -2893,14 +3063,13 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
     auto tx_info = mojom::TransactionInfo::New(
         "tx_meta_id", account->account_id.Clone(), "",
         mojom::TxDataUnion::NewEthTxData(
-            mojom::TxData::New(mojom::kLocalhostChainId, "0x0", "0x1", "0x5208",
+            mojom::TxData::New(mojom::kMainnetChainId, "0x0", "0x1", "0x5208",
                                "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                                "0x0", std::vector<uint8_t>())),
         test_case.status, mojom::TransactionType::ETHSend,
         std::vector<std::string>(), std::vector<std::string>(),
         base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
-        nullptr, mojom::kLocalhostChainId, std::nullopt, false, nullptr,
-        nullptr);
+        nullptr, mojom::kMainnetChainId, std::nullopt, false, nullptr, nullptr);
 
     EXPECT_CALL(*delegate_ptr,
                 DisplayTxNotification(test_case.status, account->name,

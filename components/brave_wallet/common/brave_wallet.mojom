@@ -1532,8 +1532,6 @@ const string kMainnetChainId = "0x1";
 
 const string kSepoliaChainId = "0xaa36a7";
 
-const string kLocalhostChainId = "0x539";
-
 const string kPolygonMainnetChainId = "0x89";
 
 const string kBnbSmartChainMainnetChainId = "0x38";

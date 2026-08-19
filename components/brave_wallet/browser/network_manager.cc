@@ -61,7 +61,6 @@ constexpr auto kEip1559ForKnownChains =
         {mojom::kBnbSmartChainMainnetChainId, false},
         {mojom::kBaseMainnetChainId, true},
         {mojom::kNeonEVMMainnetChainId, false},
-        {mojom::kLocalhostChainId, false},
     });
 
 constexpr auto kChainSubdomains =
@@ -94,10 +93,6 @@ constexpr auto kChainSubdomains =
             {mojom::kPolkadotPaseoAssetHub, "paseo-asset-hub"},
         },
         CaseInsensitiveCompare());
-
-constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
-constexpr char kSolanaLocalhostURL[] = "http://localhost:8899/";
-constexpr char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
 enum class ToLowerCaseReason {
   kGetURLForKnownChainId,
@@ -318,25 +313,6 @@ const mojom::NetworkInfo* GetSepoliaTestNetwork() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetEthLocalhost() {
-  const auto coin = mojom::CoinType::ETH;
-  const auto* chain_id = mojom::kLocalhostChainId;
-
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {chain_id,
-       "Localhost",
-       {kGanacheLocalhostURL},
-       {},
-       0,
-       {GURL(kGanacheLocalhostURL)},
-       "ETH",
-       "Ethereum",
-       18,
-       coin,
-       GetSupportedKeyringsForKnownNetwork(coin, chain_id)});
-  return network_info.get();
-}
-
 const mojom::NetworkInfo* GetFilecoinEthereumMainnet() {
   const auto coin = mojom::CoinType::ETH;
   const auto* chain_id = mojom::kFilecoinEthereumMainnetChainId;
@@ -389,7 +365,6 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetNeonEVMMainnet(),
       GetSepoliaTestNetwork(),
       GetFilecoinEthereumTestnet(),
-      GetEthLocalhost()
       // clang-format on
   });
   return *networks.get();
@@ -452,33 +427,12 @@ const mojom::NetworkInfo* GetSolDevnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetSolLocalhost() {
-  const auto coin = mojom::CoinType::SOL;
-  const auto* chain_id = mojom::kLocalhostChainId;
-
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {chain_id,
-       "Solana Localhost",
-       {"https://explorer.solana.com/"
-        "?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899"},
-       {},
-       0,
-       {GURL(kSolanaLocalhostURL)},
-       "SOL",
-       "Solana",
-       9,
-       coin,
-       GetSupportedKeyringsForKnownNetwork(coin, chain_id)});
-  return network_info.get();
-}
-
 const std::vector<const mojom::NetworkInfo*>& GetKnownSolNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
       GetSolMainnet(),
       GetSolTestnet(),
       GetSolDevnet(),
-      GetSolLocalhost(),
       // clang-format on
   });
   return *networks.get();
@@ -522,31 +476,11 @@ const mojom::NetworkInfo* GetFilTestnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetFilLocalhost() {
-  const auto coin = mojom::CoinType::FIL;
-  const auto* chain_id = mojom::kLocalhostChainId;
-
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {chain_id,
-       "Filecoin Localhost",
-       {kFilecoinLocalhostURL},
-       {},
-       0,
-       {GURL(kFilecoinLocalhostURL)},
-       "FIL",
-       "Filecoin",
-       18,
-       coin,
-       GetSupportedKeyringsForKnownNetwork(coin, chain_id)});
-  return network_info.get();
-}
-
 const std::vector<const mojom::NetworkInfo*>& GetKnownFilNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
       GetFilMainnet(),
       GetFilTestnet(),
-      GetFilLocalhost(),
       // clang-format on
   });
   return *networks.get();
@@ -1450,6 +1384,43 @@ bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,
     }
   }
   return true;
+}
+
+void NetworkManager::MigrateDeadNetwork(mojom::CoinType coin,
+                                        const std::string& chain_id,
+                                        const std::string& fallback_chain_id) {
+  RemoveHiddenNetwork(coin, chain_id);
+
+  // Migrate current chain id for default origin. Read the raw pref value
+  // directly since GetCurrentChainId() falls back to the default chain for
+  // a dead chain_id that's no longer a known chain.
+  const std::string* selected_chain_id =
+      prefs_->GetDict(kBraveWalletSelectedNetworks)
+          .FindString(GetPrefKeyForCoinType(coin));
+  if (selected_chain_id &&
+      base::EqualsCaseInsensitiveASCII(*selected_chain_id, chain_id)) {
+    SetCurrentChainId(coin, std::nullopt, fallback_chain_id);
+  }
+
+  const auto& selected_networks =
+      prefs_->GetDict(kBraveWalletSelectedNetworksPerOrigin);
+  const auto* coin_dict =
+      selected_networks.FindDict(GetPrefKeyForCoinType(coin));
+  if (!coin_dict) {
+    return;
+  }
+
+  for (auto origin : *coin_dict) {
+    const auto* chain_id_each = origin.second.GetIfString();
+    if (!chain_id_each) {
+      continue;
+    }
+
+    if (base::ToLowerASCII(*chain_id_each) == chain_id) {
+      SetCurrentChainId(coin, url::Origin::Create(GURL(origin.first)),
+                        fallback_chain_id);
+    }
+  }
 }
 
 void NetworkManager::SetNetworkURLForTesting(const std::string& chain_id,

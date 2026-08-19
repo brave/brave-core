@@ -244,13 +244,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {
   auto tx_info = mojom::TransactionInfo::New(
       tx_meta_id, account->account_id.Clone(), "",
       mojom::TxDataUnion::NewEthTxData(
-          mojom::TxData::New(mojom::kLocalhostChainId, "0x0", "0x1", "0x5208",
+          mojom::TxData::New(mojom::kMainnetChainId, "0x0", "0x1", "0x5208",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x0", std::vector<uint8_t>())),
       mojom::TransactionStatus::Confirmed, mojom::TransactionType::ETHSend,
       std::vector<std::string>(), std::vector<std::string>(),
       base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
-      nullptr, mojom::kLocalhostChainId, std::nullopt, false, nullptr, nullptr);
+      nullptr, mojom::kMainnetChainId, std::nullopt, false, nullptr, nullptr);
   tx_service()->OnTransactionStatusChanged(std::move(tx_info));
 
   ASSERT_TRUE(base::test::RunUntil(

@@ -41,6 +41,12 @@ using testing::Not;
 
 namespace brave_wallet {
 
+namespace {
+
+constexpr size_t kDefaultAssetCount = 20u;
+
+}
+
 TEST(BraveWalletUtilsUnitTest, EncodeString) {
   std::string output;
   EXPECT_TRUE(EncodeString("one", &output));
@@ -754,7 +760,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
   RegisterProfilePrefs(prefs.registry());
 
   auto assets = GetAllUserAssets(&prefs);
-  EXPECT_EQ(23u, assets.size());
+  EXPECT_EQ(kDefaultAssetCount, assets.size());
   for (auto& asset : assets) {
     EXPECT_NE(asset->name, "");
     if (asset->symbol == "BAT") {
@@ -787,7 +793,7 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount, GetAllUserAssets(&prefs).size());
   EXPECT_EQ(GetAllUserAssets(&prefs)[1],
             GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
                          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "",
@@ -866,7 +872,7 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount, GetAllUserAssets(&prefs).size());
 
   auto asset = GetAllUserAssets(&prefs)[4]->Clone();
   asset->chain_id = "0x98765";
@@ -875,14 +881,14 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
   EnsureNativeTokenForNetwork(
       &prefs, GetTestNetworkInfo1("0x98765", mojom::CoinType::ETH));
 
-  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount + 1, GetAllUserAssets(&prefs).size());
 
   ASSERT_TRUE(AddUserAsset(&prefs, asset->Clone()));
 
   // Address gets checksum format.
   asset->contract_address = "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed";
 
-  EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount + 2, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Contains(Eq(std::ref(asset))));
 
   // Adding same asset again fails.
@@ -890,7 +896,7 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
 
   ASSERT_TRUE(RemoveUserAsset(&prefs, asset));
 
-  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount + 1, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
 
   // SPL token program is set to unsupported for non-SPL tokens.
@@ -930,7 +936,7 @@ TEST(BraveWalletUtilsUnitTest, EnsureNativeTokenForNetwork) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount, GetAllUserAssets(&prefs).size());
 
   auto network_info = GetTestNetworkInfo1("0x98765");
   EnsureNativeTokenForNetwork(&prefs, network_info);
@@ -955,12 +961,12 @@ TEST(BraveWalletUtilsUnitTest, RemoveUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount, GetAllUserAssets(&prefs).size());
 
   auto asset = GetAllUserAssets(&prefs)[4]->Clone();
 
   EXPECT_TRUE(RemoveUserAsset(&prefs, asset));
-  EXPECT_EQ(22u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(kDefaultAssetCount - 1, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
 
   asset->chain_id = "0x98765";

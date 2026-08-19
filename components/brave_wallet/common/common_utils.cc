@@ -151,8 +151,7 @@ bool IsFilecoinAccount(const mojom::AccountIdPtr& account_id) {
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network) {
   if (network == mojom::kFilecoinMainnet) {
     return mojom::KeyringId::kFilecoin;
-  } else if (network == mojom::kFilecoinTestnet ||
-             network == mojom::kLocalhostChainId) {
+  } else if (network == mojom::kFilecoinTestnet) {
     return mojom::KeyringId::kFilecoinTestnet;
   }
   NOTREACHED() << "Unsupported chain id for filecoin " << network;

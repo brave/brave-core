@@ -80,24 +80,6 @@ const mockInitialFilteredOutNetworkKeys = [
       coin: BraveWallet.CoinType.DOT,
     })
     .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.SOL,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.FIL,
-    })
-    .toString(),
 ]
 
 describe('Test parseJSONFromLocalStorage', () => {
