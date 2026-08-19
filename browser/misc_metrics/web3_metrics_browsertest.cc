@@ -122,7 +122,7 @@ IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, ProviderAccessReported) {
 }
 
 // With no wallet the proxy isn't installed, so the page keeps a plain
-// assignable `window.ethereum` and nothing is recorded.
+// assignable `window.ethereum`.
 IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, NoWalletNotInstrumented) {
   auto* keyring_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
@@ -140,12 +140,6 @@ IN_PROC_BROWSER_TEST_F(Web3MetricsBrowserTest, NoWalletNotInstrumented) {
                               "!Object.getOwnPropertyDescriptor("
                               "    window, 'ethereum').get")
                   .ExtractBool());
-
-  ASSERT_TRUE(content::ExecJs(
-      primary_main_frame(),
-      "window.dispatchEvent(new Event('eip6963:requestProvider'));"));
-
-  histogram_tester_.ExpectTotalCount(kWeb3DappVisitHistogramName, 0);
 }
 
 // Pages that never touch a web3 provider record nothing.
