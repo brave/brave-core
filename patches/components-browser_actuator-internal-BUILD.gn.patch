@@ -1,9 +1,9 @@
 diff --git a/components/browser_actuator/internal/BUILD.gn b/components/browser_actuator/internal/BUILD.gn
-index 37acf6403c8674e3688daf596ea006b08709d1e2..1597e4be35682644cc7219eaf87eb84359350a3c 100644
+index 51558237f1f83710bbd2da624b99abc830317325..6de60732d079e8724dd782ecfc8e0d9c4587e378 100644
 --- a/components/browser_actuator/internal/BUILD.gn
 +++ b/components/browser_actuator/internal/BUILD.gn
-@@ -14,6 +14,7 @@ source_set("features") {
-   public_deps = [ "//base" ]
+@@ -22,6 +22,7 @@ source_set("features") {
+   ]
  
    visibility = [ "//components/browser_actuator/*" ]
 +  visibility += [ "//brave/app:unit_tests" ]

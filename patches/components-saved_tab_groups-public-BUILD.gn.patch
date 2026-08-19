@@ -1,5 +1,5 @@
 diff --git a/components/saved_tab_groups/public/BUILD.gn b/components/saved_tab_groups/public/BUILD.gn
-index fed227fdc780a3ee63eca65e58e67f398737cff9..6ee48b7b7ae771723560c843ab867db8ab397f12 100644
+index c37f3419ad70ad0c4844e0c661b53de8c77ec991..aa13470e956467d597d5c60eb0252f02cc98b5a9 100644
 --- a/components/saved_tab_groups/public/BUILD.gn
 +++ b/components/saved_tab_groups/public/BUILD.gn
 @@ -32,7 +32,6 @@ source_set("public") {
@@ -16,5 +16,5 @@ index fed227fdc780a3ee63eca65e58e67f398737cff9..6ee48b7b7ae771723560c843ab867db8
      ":prefs",
 +    "//components/saved_tab_groups/proto",
    ]
-   if (enable_extensions) {
+   if (enable_extensions_core) {
      deps += [ "//extensions/common:common_constants" ]

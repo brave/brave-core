@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
-index db81993c241d8a5a68aac434549ffea0e9f683bc..f277e19cc48b599dc443d13ce4475e8c96b82a3a 100644
+index 3860b6181381b5a3dde01f39c8789242a0caedd6..2c4149fbf58267a8d6442622c5cedcd5e474a5ca 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
-@@ -107,13 +107,20 @@ class HorizontalTabStripRegionViewOld : public TabStripRegionView {
+@@ -106,13 +106,20 @@ class HorizontalTabStripRegionViewOld : public TabStripRegionView {
  
    bool HasLeadingButtons() const;
  
@@ -22,5 +22,5 @@ index db81993c241d8a5a68aac434549ffea0e9f683bc..f277e19cc48b599dc443d13ce4475e8c
 -  void UpdateTabStripMargin();
 +  virtual void UpdateTabStripMargin();
  
-   // Gets called on `Layout` and adjusts the x-axis position of the `view` based
-   // on `offset`. This should only used for views that show before tab strip.
+   void OnUnfocusButtonVisibilityChanged();
+ 

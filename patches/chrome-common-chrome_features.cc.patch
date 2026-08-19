@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f8a014a01 100644
+index b70574e4f6f76adab2bf3b907b5d7cc45cc996b4..c40b12f5246ad55fe7e0681392f82cdfa928aaa8 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
 @@ -197,7 +197,8 @@ bool RemoteActorCredentialSharingEnabled() {
@@ -22,7 +22,7 @@ index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f
  
  // Removes the Window Controls Overlay toggle button from the PWA toolbar
  // and auto-enables WCO when the app developer specifies it in the manifest.
-@@ -390,7 +392,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+@@ -386,7 +388,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
  
  // Controls whether the task icon in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiTaskIcon{
@@ -31,7 +31,7 @@ index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f
  // Controls whether the Actor Overlay in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiOverlay{
      &kGlicActorUi, kGlicActorUiOverlayName, true};
-@@ -1275,7 +1277,8 @@ const base::FeatureParam<bool>
+@@ -1274,7 +1276,8 @@ const base::FeatureParam<bool>
  
  // Enables HTTPS-First Mode in a balanced configuration that doesn't warn on
  // HTTP when HTTPS can't be reasonably expected.
@@ -41,15 +41,15 @@ index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f
  
  // Automatically enables HTTPS-First Mode in a balanced configuration when
  // possible.
-@@ -1332,6 +1335,7 @@ BASE_FEATURE(kIncomingCallNotifications,
+@@ -1331,6 +1334,7 @@ BASE_FEATURE(kIncomingCallNotifications,
  #endif  // BUILDFLAG(IS_WIN)
  
  // Experimental image replacement feature. b/482792874
 +// kIndigo feature state is enforced via plaster rewrite.
  BASE_FEATURE(kIndigo, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIndigoContextualCueingV2, base::FEATURE_DISABLED_BY_DEFAULT);
  
- const base::FeatureParam<bool> kIndigoRequireGlicEnabling{
-@@ -1624,7 +1628,8 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
+@@ -1633,7 +1637,8 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
  // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
  // about an SCT seen in the wild. If it hasn't been seen, then it is considered
  // a security incident and uploaded to Google.
@@ -59,7 +59,7 @@ index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f
  
  // An estimated high bound for the time it takes Google to ingest updates to an
  // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge
-@@ -1728,6 +1733,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1732,6 +1737,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
  // TrustSafetySentimentSurvey
  #if !BUILDFLAG(IS_ANDROID)
  // Enables surveying of users of Trust & Safety features with HaTS.
@@ -67,7 +67,7 @@ index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f
  BASE_FEATURE(kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
  // The minimum and maximum time after a user has interacted with a Trust and
  // Safety they are eligible to be surveyed.
-@@ -1791,7 +1797,8 @@ const base::FeatureParam<base::TimeDelta>
+@@ -1795,7 +1801,8 @@ const base::FeatureParam<base::TimeDelta>
  #if !BUILDFLAG(IS_ANDROID)
  // Enables the second version of the sentiment survey for users of Trust &
  // Safety features, using HaTS.
