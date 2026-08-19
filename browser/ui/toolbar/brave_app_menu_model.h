@@ -21,6 +21,8 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #endif  // defined(TOOLKIT_VIEWS)
 
+class BrowserWindowInterface;
+
 namespace ui {
 class ButtonMenuItemModel;
 }
@@ -28,7 +30,7 @@ class ButtonMenuItemModel;
 class BraveAppMenuModel : public AppMenuModel {
  public:
   BraveAppMenuModel(ui::AcceleratorProvider* provider,
-                    Browser* browser,
+                    BrowserWindowInterface* browser,
                     AppMenuIconController* app_menu_icon_controller = nullptr,
                     AlertMenuItem alert_item = AlertMenuItem::kNone);
   ~BraveAppMenuModel() override;

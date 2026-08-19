@@ -12,13 +12,14 @@
 #include "base/memory/raw_ptr.h"
 #include "ui/menus/simple_menu_model.h"
 
-class Browser;
+class BrowserWindowInterface;
 class PrefService;
 
 class BraveVPNMenuModel : public ui::SimpleMenuModel,
                           public ui::SimpleMenuModel::Delegate {
  public:
-  BraveVPNMenuModel(Browser* browser, PrefService* profile_prefs);
+  BraveVPNMenuModel(BrowserWindowInterface* browser,
+                    PrefService* profile_prefs);
   ~BraveVPNMenuModel() override;
 
   BraveVPNMenuModel(const BraveVPNMenuModel&) = delete;
@@ -43,7 +44,7 @@ class BraveVPNMenuModel : public ui::SimpleMenuModel,
 #endif  // BUILDFLAG(IS_WIN)
   std::optional<bool> tray_icon_enabled_for_testing_;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_
