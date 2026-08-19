@@ -54,6 +54,11 @@ def _is_fully_qualified_ref(ref: str) -> bool:
 class ChromiumCheckoutApi(RecipeApi):
     """Clones, syncs, and validates a Chromium `src/` checkout."""
 
+    @property
+    def chromium_url(self) -> str:
+        """The Chromium repo this module checks out and mirrors."""
+        return CHROMIUM_URL
+
     @contextlib.contextmanager
     def chromium_layout(self):
         """Context manager entered before any Chromium checkout operation.
@@ -90,7 +95,9 @@ class ChromiumCheckoutApi(RecipeApi):
                         *,
                         chromium_src: str | Path | None = None,
                         ref: str | None = None,
-                        depth: int | None = None) -> Path:
+                        depth: int | None = None,
+                        run_hooks: bool = True,
+                        git_deps_only: bool = False) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
 
         Clones a fresh checkout if *chromium_src* is not already a valid
@@ -107,6 +114,9 @@ class ChromiumCheckoutApi(RecipeApi):
                 `checkout_ref`). The shared git-cache mirror is always
                 populated with full history regardless; `None` here checks
                 out full history too.
+            run_hooks: Whether the sync runs the DEPS hooks (the default). See
+                `checkout_ref`.
+            git_deps_only: Sync only the git dependencies. See `checkout_ref`.
 
         Returns:
             The resolved absolute `src/` path.
@@ -119,7 +129,11 @@ class ChromiumCheckoutApi(RecipeApi):
         # clone or operate on an existing checkout.
         self.m.depot_tools.ensure_on_path()
 
-        self.checkout_ref(chromium_src, ref, depth=depth)
+        self.checkout_ref(chromium_src,
+                          ref,
+                          depth=depth,
+                          run_hooks=run_hooks,
+                          git_deps_only=git_deps_only)
         return chromium_src
 
     def has_valid_checkout(self, chromium_src: str | Path) -> bool:
@@ -145,7 +159,9 @@ class ChromiumCheckoutApi(RecipeApi):
                      ref: str | None = None,
                      *,
                      should_clone: bool = True,
-                     depth: int | None = None) -> None:
+                     depth: int | None = None,
+                     run_hooks: bool = True,
+                     git_deps_only: bool = False) -> None:
         """Ensure *chromium_src* is checked out at *ref*.
 
         Args:
@@ -158,6 +174,9 @@ class ChromiumCheckoutApi(RecipeApi):
                 False to require an existing checkout, raising instead of
                 cloning one.
             depth: Optional history depth for this working checkout.
+            run_hooks: Whether the sync runs the DEPS hooks (the default).
+            git_deps_only: Sync only the git dependencies, skipping the CIPD
+                packages and GCS objects DEPS.
 
         If *chromium_src* isn't a valid checkout yet, rather than a plain
         network clone, `git cache populate` fetches into a persistent,
@@ -293,10 +312,7 @@ class ChromiumCheckoutApi(RecipeApi):
             # Already a valid checkout and no `ref` requested: nothing to do.
             return
 
-        # `chromium_src` is now checked out at `ref` -- build hermetically
-        # without a local VS install, unless the caller has already made an
-        # explicit choice about the toolchain.
-        using_hermetic_win_toolchain = (self.m.platform.is_win
+        using_hermetic_win_toolchain = (run_hooks and self.m.platform.is_win
                                         and 'DEPOT_TOOLS_WIN_TOOLCHAIN'
                                         not in self.m.env)
         if using_hermetic_win_toolchain:
@@ -305,8 +321,12 @@ class ChromiumCheckoutApi(RecipeApi):
             # This is used by `gclient runhooks`.
             self._pin_win_toolchain_hash(chromium_src)
 
-        self.m.step('gclient sync', ['gclient', 'sync', '--force', '-D'],
-                    cwd=chromium_src)
+        sync_cmd = ['gclient', 'sync', '--force', '-D']
+        if not run_hooks:
+            sync_cmd.append('--nohooks')
+        if git_deps_only:
+            sync_cmd += ['--ignore-dep-type=gcs', '--ignore-dep-type=cipd']
+        self.m.step('gclient sync', sync_cmd, cwd=chromium_src)
 
     def _pin_win_toolchain_hash(self, chromium_src: Path) -> None:
         """Point `GYP_MSVS_HASH_<hash>` at Brave's republished toolchain.
@@ -334,16 +354,6 @@ class ChromiumCheckoutApi(RecipeApi):
         if info['published_hash']:
             self.m.env.set(f"GYP_MSVS_HASH_{info['toolchain_hash']}",
                            info['published_hash'])
-
-    def fetch_tags(self, chromium_src: str | Path) -> None:
-        """Fetch every tag from origin into the *chromium_src* checkout.
-
-        Args:
-            chromium_src: Path to the Chromium `src/` directory.
-        """
-        chromium_src = self.m.path.abs(chromium_src)
-        self.m.step('fetch tags', ['git', 'fetch', '--tags', 'origin'],
-                    cwd=chromium_src)
 
     def _populate_git_cache(self,
                             url: str,

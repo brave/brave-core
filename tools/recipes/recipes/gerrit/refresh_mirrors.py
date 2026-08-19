@@ -3,16 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Refresh the Gerrit mirrors from a freshly synced git cache.
-
-Runs in two phases:
-
-  1. Clone/sync Chromium at the latest `main`, so the shared git cache fills
-     with the host OS's dependency repos, then fetch all tags into the cache.
-  2. Once that sync finishes, run this recipe's own `refresh_mirrors.py`
-     resource script, publishing every cached repo into Gerrit.
-
-    vpython3 tools/recipes/engine.py gerrit/refresh_mirrors \\
-        --properties '{"gerrit_user": "chromium-mirror-bot"}'
 """
 
 from __future__ import annotations
@@ -37,11 +27,16 @@ PROPERTIES = InputProperties
 
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
-    # Phase 1: sync Chromium so the git cache is populated, then pull all
-    # tags into it (gclient sync fetches with --no-tags).
-    chromium_src = api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref or 'main')
-    api.chromium_checkout.fetch_tags(chromium_src)
+    api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref
+                                          or 'main',
+                                          run_hooks=False,
+                                          git_deps_only=True)
+
+    api.git_cache.populate(api.chromium_checkout.chromium_url,
+                           ref='refs/tags/*',
+                           no_fetch_tags=False,
+                           step_name='fetch tags')
+
     git_cache_path = api.git_cache.validate()
 
     # Phase 2: publish the now-populated cache into Gerrit.
@@ -57,15 +52,16 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
 
 
 def GenTests(api):
-    # Happy path: a fresh checkout (seeded git cache), tags fetched, then the
-    # mirror script run.
     yield api.test(
         'fresh checkout',
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.properties(gerrit_user='chromium-mirror-bot'),
         api.post_process(post_process.MustRun, 'clone from git cache'),
-        api.post_process(post_process.MustRun, 'fetch tags'),
+        api.post_process(post_process.StepCommandContains, 'fetch tags',
+                         ['--ref', 'refs/tags/*']),
+        api.post_process(post_process.StepCommandDoesNotContain, 'fetch tags',
+                         ['--no-fetch-tags']),
         api.post_process(post_process.MustRun, 'refresh gerrit mirrors'),
         api.post_process(post_process.StepCommandContains,
                          'refresh gerrit mirrors',
@@ -77,8 +73,7 @@ def GenTests(api):
                          ['main']),
         api.post_process(post_process.StatusSuccess),
     )
-    # A reused checkout (already valid) is still checked out at the given ref,
-    # rather than only happening on a fresh clone.
+
     yield api.test(
         'reused checkout at explicit ref',
         api.chromium_checkout.with_git_cache(),

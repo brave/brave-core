@@ -48,21 +48,24 @@ class GitCacheApi(RecipeApi):
                  *,
                  ref: str | None = None,
                  commit: str | None = None,
+                 no_fetch_tags: bool = True,
                  step_name: str = 'git cache populate') -> None:
         """Populate (or refresh) the shared bare mirror for *url*.
 
         Args:
             url: The repo to mirror.
-            ref: An additional ref (a plain branch name, or a fully-qualified
-                ref such as `refs/tags/<tag>` or `refs/branch-heads/<n>`) to
-                fetch into the mirror, beyond its default `refs/heads/*`.
+            ref: An additional ref to fetch into the mirror, beyond its
+                default `refs/heads/*`.
             commit: An additional bare commit hash to fetch into the mirror.
+            no_fetch_tags: Skip fetching tags that point at fetched objects.
             step_name: Step name for the `git cache populate` call.
         """
         cmd = [
             'git', 'cache', 'populate', '--cache-dir', self._path, url,
-            '--reset-fetch-config', '--no-fetch-tags'
+            '--reset-fetch-config'
         ]
+        if no_fetch_tags:
+            cmd.append('--no-fetch-tags')
         if ref:
             cmd.extend(['--ref', ref])
         if commit:

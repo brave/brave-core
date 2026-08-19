@@ -28,13 +28,12 @@
       "/b/cache",
       "https://chromium.googlesource.com/chromium/src.git",
       "--reset-fetch-config",
-      "--no-fetch-tags",
       "--ref",
-      "refs/branch-heads/1234",
+      "refs/tags/*",
       "--commit",
       "c0ffeec0ffeec0ffeec0ffeec0ffeec0ffee"
     ],
-    "name": "populate at ref"
+    "name": "populate with tags"
   },
   {
     "cmd": [
