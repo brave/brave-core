@@ -88,11 +88,10 @@ void WalletPanelHandler::Focus() {
 void WalletPanelHandler::IsSolanaAccountConnected(
     const std::string& account,
     IsSolanaAccountConnectedCallback callback) {
-  content::RenderFrameHost* rfh = nullptr;
-  if (!(rfh = active_web_contents_->GetFocusedFrame())) {
-    std::move(callback).Run(false);
-    return;
-  }
+  // Report the connection state of the frame the panel names, not of whichever
+  // frame happens to hold focus. See WalletPanelHandler::RequestPermission for
+  // the rationale.
+  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
 
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(active_web_contents_);
@@ -108,11 +107,12 @@ void WalletPanelHandler::IsSolanaAccountConnected(
 void WalletPanelHandler::RequestPermission(
     brave_wallet::mojom::AccountIdPtr account_id,
     RequestPermissionCallback callback) {
-  content::RenderFrameHost* rfh = nullptr;
-  if (!(rfh = active_web_contents_->GetFocusedFrame())) {
-    std::move(callback).Run(false);
-    return;
-  }
+  // The panel names the primary main frame's origin (see
+  // BraveWalletServiceDelegateImpl::GetActiveOrigin), and so do the connected
+  // accounts list and Disconnect. Grant to that same frame: using the focused
+  // frame would let a cross-origin subframe holding focus receive a durable
+  // permission the user was never shown and cannot revoke from this panel.
+  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
 
   auto request_type =
       brave_wallet::CoinTypeToPermissionRequestType(account_id->coin);
