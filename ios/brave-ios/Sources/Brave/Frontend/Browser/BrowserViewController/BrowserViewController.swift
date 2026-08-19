@@ -2467,10 +2467,12 @@ extension BrowserViewController: WalletTabHelperDelegate {
     WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [coin])
     WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [coin])
     let privateMode = privateBrowsingManager.isPrivateBrowsing
-    if let cryptoStore = CryptoStore.from(
-      ipfsApi: profileController.ipfsAPI,
-      privateMode: privateMode
-    ) {
+    if let cryptoStore = self.walletStore?.cryptoStore
+      ?? CryptoStore.from(
+        ipfsApi: profileController.ipfsAPI,
+        privateMode: privateMode
+      )
+    {
       cryptoStore.rejectAllPendingWebpageRequests()
     }
     updateURLBarWalletButton()
