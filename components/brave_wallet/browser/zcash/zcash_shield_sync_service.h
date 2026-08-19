@@ -120,12 +120,6 @@ class ZCashShieldSyncService {
                            ScanBlocks_IronwoodEnabled);
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
                            ScanBlocks_IronwoodDisabled);
-  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
-                           GetSpendableBalance_IncludesIronwoodNotes);
-  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
-                           GetSpendableBalance_IronwoodDisabled);
-  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
-                           GetSpendableBalance_IronwoodMissingBundle);
 
   void SetOrchardBlockScannerProxyForTesting(
       std::unique_ptr<OrchardBlockScannerProxy> block_scanner);
