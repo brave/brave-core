@@ -140,21 +140,28 @@ class BackupResultsWebContentsObserver
       return;
     }
     // The widget of a speculative frame is not the web contents' current
-    // widget, so it has to be targeted directly. This is the last observer
-    // callback before the renderer is told to commit the document.
-    auto* rwhv = render_frame_host->GetView();
-    backup_results_service_->ApplyWindowAndViewSize(web_contents(), rwhv);
-    backup_results_service_->ApplyPageFocus(web_contents(), rwhv);
+    // widget, so it has to be targeted directly.
+    ApplyWidgetState(render_frame_host->GetView());
+  }
+
+  void ReadyToCommitNavigation(content::NavigationHandle* handle) override {
+    if (!handle->IsInPrimaryMainFrame()) {
+      return;
+    }
+    // Creating the widget for the committing document resets its window rect,
+    // and the widget state is only observable to the document once the renderer
+    // has been told to commit. This is the last point before that happens.
+    ApplyWidgetState(handle->GetRenderFrameHost()->GetView());
   }
 
   void DidFinishNavigation(content::NavigationHandle* controller) override {
     if (!backup_results_service_) {
       return;
     }
-    // Page focus is tracked per widget, so it must be reapplied for the widget
-    // that ended up hosting the document.
-    backup_results_service_->ApplyPageFocus(
-        web_contents(), web_contents()->GetRenderWidgetHostView());
+    // Backstop for widget state that did not survive the commit. This sends
+    // nothing to the renderer if the state applied before the commit is still
+    // in effect.
+    ApplyWidgetState(web_contents()->GetRenderWidgetHostView());
     const auto* response_headers = controller->GetResponseHeaders();
     if (!response_headers) {
       return;
@@ -174,6 +181,17 @@ class BackupResultsWebContentsObserver
 
  private:
   friend class content::WebContentsUserData<BackupResultsWebContentsObserver>;
+
+  void ApplyWidgetState(content::RenderWidgetHostView* rwhv) {
+    if (!backup_results_service_) {
+      return;
+    }
+    if (!rwhv) {
+      rwhv = web_contents()->GetRenderWidgetHostView();
+    }
+    backup_results_service_->ApplyWindowAndViewSize(web_contents(), rwhv);
+    backup_results_service_->ApplyPageFocus(web_contents(), rwhv);
+  }
 
   BackupResultsWebContentsObserver(
       content::WebContents* web_contents,
