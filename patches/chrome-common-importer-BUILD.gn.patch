@@ -1,8 +1,8 @@
 diff --git a/chrome/common/importer/BUILD.gn b/chrome/common/importer/BUILD.gn
-index c719a21360bfb4a7187bbf2aebf3b273d45ff574..6beb853ad16b441a16a14c58874577e2c40fe011 100644
+index bc73d6fe724c9c3ce8a94a06244ba84d6c00335c..a96b5fe271b7fe35213a6ee1567a775ce50c2720 100644
 --- a/chrome/common/importer/BUILD.gn
 +++ b/chrome/common/importer/BUILD.gn
-@@ -117,6 +117,7 @@ source_set("importer") {
+@@ -118,6 +118,7 @@ source_set("importer") {
      "//ui/base",
      "//url",
    ]

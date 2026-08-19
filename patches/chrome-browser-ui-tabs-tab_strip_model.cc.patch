@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 54ac67e058d8aa5a7d7820ea2399c394a8affcd3..a11218e459b3f16cc404b69653aaed48aaedfed6 100644
+index 5807c30e140fb09857b8488e22cf7bc788e18cf2..07c9d7c434569ca3a685caf8e0da83c8b48a0063 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
 @@ -183,7 +183,7 @@ std::unique_ptr<TabGroupModel> TabGroupModelFactory::Create() {
@@ -34,7 +34,7 @@ index 54ac67e058d8aa5a7d7820ea2399c394a8affcd3..a11218e459b3f16cc404b69653aaed48
      // Also, any tab opened at the end of the TabStrip with a "TYPED"
      // transition inherit opener as well. This covers the cases where the user
      // creates a New Tab (e.g. Ctrl+T, or clicks the New Tab button), or types
-@@ -2526,6 +2535,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2549,6 +2558,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
      return;
    }
    switch (command_id) {
@@ -50,7 +50,7 @@ index 54ac67e058d8aa5a7d7820ea2399c394a8affcd3..a11218e459b3f16cc404b69653aaed48
      case CommandNewTabToRight: {
        base::UmaHistogramCounts1000(
            "Tab.ContextMenu.NewTabToRight.SelectedTabsCount",
-@@ -4027,7 +4045,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
+@@ -4050,7 +4068,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
  
  std::pair<std::optional<int>, std::optional<int>>
  TabStripModel::GetAdjacentTabsAfterSelectedMove(
@@ -59,7 +59,7 @@ index 54ac67e058d8aa5a7d7820ea2399c394a8affcd3..a11218e459b3f16cc404b69653aaed48
      int destination_index) {
    const int pinned_tab_count = IndexOfFirstNonPinnedTab();
    const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
-@@ -4500,7 +4518,9 @@ void TabStripModel::InsertTabAtIndexImpl(
+@@ -4523,7 +4541,9 @@ void TabStripModel::InsertTabAtIndexImpl(
    }
  
    tabs::TabInterface* old_active_tab = GetActiveTab();
