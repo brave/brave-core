@@ -216,8 +216,7 @@ void PsstTabWebContentsObserver::DidFinishNavigation(
 
   should_process_current_page_ =
       handle->GetURL().SchemeIsHTTPOrHTTPS() &&
-      handle->GetRestoreType() != content::RestoreType::kRestored &&
-      psst_settings_service_->IsPsstEnabled();
+      handle->GetRestoreType() != content::RestoreType::kRestored;
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
@@ -400,6 +399,13 @@ void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {
   if (new_value) {
     return;
   }
+
+  // Do not interrupt the flow when it is in managed preferences mode (e.g.,
+  // admin or Brave Origin policies)
+  if (psst_settings_service_->IsManagedPreference()) {
+    return;
+  }
+
   CancelInFlightFlow();
 }
 

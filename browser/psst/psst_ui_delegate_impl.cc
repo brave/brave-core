@@ -205,6 +205,12 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
     return;
   }
 
+  // Do not remove the omnibar icon infobar and consent dialog when it is in
+  // managed preferences mode (e.g., admin or Brave Origin policies)
+  if (psst_settings_service_->IsManagedPreference()) {
+    return;
+  }
+
   ui_presenter_->HideInfoBar();
   ui_presenter_->HideConsentDialog();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
