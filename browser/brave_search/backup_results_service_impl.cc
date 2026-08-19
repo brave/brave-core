@@ -74,7 +74,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "ui/gfx/geometry/rect.h"
 #endif
 
 namespace brave_search {
@@ -299,6 +298,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
     brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
         web_contents.get());
 
+#if BUILDFLAG(IS_ANDROID)
     gfx::Size view_size;
     if (!features::kBackupResultsZeroSize.Get()) {
       int stored_width =
@@ -310,7 +310,6 @@ void BackupResultsServiceImpl::FetchBackupResults(
           stored_height > 0 ? stored_height
                             : base::RandIntInclusive(600, 1080));
     }
-#if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
     // Root the view tree in a window so that window.outerWidth/outerHeight
     // report the device window bounds rather than the view bounds.
@@ -324,8 +323,6 @@ void BackupResultsServiceImpl::FetchBackupResults(
     native_view->OnSizeChanged(
         static_cast<int>(view_size.width() * dip_scale),
         static_cast<int>(view_size.height() * dip_scale));
-#else
-    web_contents->Resize(gfx::Rect(view_size));
 #endif
 
     auto web_preferences = web_contents->GetOrCreateWebPreferences();
