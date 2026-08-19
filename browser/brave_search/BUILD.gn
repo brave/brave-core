@@ -39,6 +39,11 @@ source_set("brave_search") {
       "//brave/android/java/org/chromium/chrome/browser/brave_search:jni_headers",
       "//ui/android",
     ]
+  } else {
+    deps += [
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
   }
 }
 

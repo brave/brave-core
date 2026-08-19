@@ -96,7 +96,10 @@ class BackupResultsServiceImpl : public BackupResultsService,
     BackupResultsCallback callback;
 
     bool low_latency_required;
-    std::unique_ptr<content::WebContents> web_contents;
+    // Null while the web contents is owned by a browser tab strip (see the
+    // temporary tab experiment in FetchBackupResults).
+    std::unique_ptr<content::WebContents> owned_web_contents;
+    base::WeakPtr<content::WebContents> web_contents;
     GURL target_url;
 
 #if BUILDFLAG(IS_ANDROID)

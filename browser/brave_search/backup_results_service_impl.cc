@@ -70,6 +70,10 @@
 #include "ui/android/view_android.h"
 #include "ui/android/window_android.h"
 #else
+#include "chrome/browser/ui/browser_window/public/browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "ui/gfx/geometry/rect.h"
 #endif
 
@@ -166,6 +170,51 @@ class BackupResultsWebContentsObserver
 };
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BackupResultsWebContentsObserver);
+
+#if !BUILDFLAG(IS_ANDROID)
+TabStripModel* FindNormalBrowserTabStripModel() {
+  TabStripModel* tab_strip_model = nullptr;
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [&tab_strip_model](BrowserWindowInterface* browser) {
+        if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {
+          return true;
+        }
+        tab_strip_model = browser->GetTabStripModel();
+        return false;
+      });
+  return tab_strip_model;
+}
+
+// Temporary experiment: display the backup results web contents as a
+// foreground tab in an existing non-devtools browser window. Returns ownership
+// back to the caller if no suitable window was found.
+std::unique_ptr<content::WebContents> MaybeAddWebContentsAsTab(
+    std::unique_ptr<content::WebContents> web_contents) {
+  auto* tab_strip_model = FindNormalBrowserTabStripModel();
+  if (!tab_strip_model) {
+    return web_contents;
+  }
+  tab_strip_model->AppendWebContents(std::move(web_contents),
+                                     /*foreground=*/true);
+  return nullptr;
+}
+
+// Reclaims ownership of a web contents previously handed off to a tab strip.
+std::unique_ptr<content::WebContents> ReclaimWebContentsFromTab(
+    content::WebContents* web_contents) {
+  auto* browser =
+      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(web_contents);
+  if (!browser) {
+    return nullptr;
+  }
+  auto* tab_strip_model = browser->GetTabStripModel();
+  const int index = tab_strip_model->GetIndexOfWebContents(web_contents);
+  if (index == TabStripModel::kNoTab) {
+    return nullptr;
+  }
+  return tab_strip_model->DetachWebContentsAtForInsertion(index);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
@@ -298,6 +347,11 @@ void BackupResultsServiceImpl::FetchBackupResults(
       otr_profile, low_latency_required, std::move(callback));
 #if BUILDFLAG(IS_ANDROID)
   request->window_android = window_android;
+#else
+  if (request->owned_web_contents) {
+    request->owned_web_contents =
+        MaybeAddWebContentsAsTab(std::move(request->owned_web_contents));
+  }
 #endif
 
   if (should_render) {
@@ -330,12 +384,22 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
     : headers(std::move(headers)),
       callback(std::move(callback)),
       low_latency_required(low_latency_required),
-      web_contents(std::move(web_contents)),
+      owned_web_contents(std::move(web_contents)),
       original_profile(original_profile),
-      otr_profile(otr_profile) {}
+      otr_profile(otr_profile) {
+  if (owned_web_contents) {
+    this->web_contents = owned_web_contents->GetWeakPtr();
+  }
+}
 
 BackupResultsServiceImpl::PendingRequest::~PendingRequest() {
+#if !BUILDFLAG(IS_ANDROID)
+  if (!owned_web_contents && web_contents) {
+    owned_web_contents = ReclaimWebContentsFromTab(web_contents.get());
+  }
+#endif
   web_contents = nullptr;
+  owned_web_contents = nullptr;
 #if BUILDFLAG(IS_ANDROID)
   if (window_android) {
     auto java_window = window_android->GetJavaObject();
