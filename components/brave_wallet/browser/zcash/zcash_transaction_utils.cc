@@ -242,4 +242,76 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
   return std::nullopt;
 }
 
+// A v6 orchard->ironwood tx splits spends and outputs into two independent
+// orchard-format bundles (legacy_orchard, ironwood), each padded to >=2
+// actions on its own, so the fee is the sum of both bundles' actions.
+base::CheckedNumeric<uint64_t> CalculateZCashOrchardToIronwoodTxFee(
+    const base::StrictNumeric<uint32_t> orchard_input_count,
+    const base::StrictNumeric<uint32_t> ironwood_output_count) {
+  base::CheckedNumeric<uint32_t> legacy_actions_count =
+      GetOrchardActionsCount(orchard_input_count, 0u);
+  base::CheckedNumeric<uint32_t> ironwood_actions_count =
+      GetOrchardActionsCount(0u, ironwood_output_count);
+  base::CheckedNumeric<uint32_t> logical_actions_count =
+      legacy_actions_count + ironwood_actions_count;
+  return base::CheckMul<uint64_t>(
+      kMarginalFee, base::CheckMax(kGraceActionsCount, logical_actions_count));
+}
+
+std::optional<PickOrchardInputsResult> PickZCashOrchardToIronwoodInputs(
+    const std::vector<OrchardNote>& notes,
+    uint64_t amount) {
+  if (notes.empty()) {
+    return std::nullopt;
+  }
+
+  if (amount == kZCashFullAmount) {
+    auto total_inputs_amount = CalculateInputsAmount(notes);
+
+    base::CheckedNumeric<uint64_t> fee = CalculateZCashOrchardToIronwoodTxFee(
+        base::checked_cast<uint32_t>(notes.size()), 1u);
+
+    if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
+      return std::nullopt;
+    }
+    // Check whether total_inputs_amount amount is not less than fee
+    if (!base::CheckSub(total_inputs_amount, fee).IsValid()) {
+      return std::nullopt;
+    }
+    return PickOrchardInputsResult{notes, fee.ValueOrDie(), 0};
+  }
+
+  std::vector<OrchardNote> mutable_notes = notes;
+
+  std::ranges::sort(mutable_notes, [](auto& input1, auto& input2) {
+    return input1.amount < input2.amount;
+  });
+
+  std::vector<OrchardNote> selected_inputs;
+  for (auto& input : mutable_notes) {
+    selected_inputs.push_back(input);
+    auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
+
+    base::CheckedNumeric<uint64_t> fee = CalculateZCashOrchardToIronwoodTxFee(
+        base::checked_cast<uint32_t>(selected_inputs.size()), 2u);
+
+    if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
+      return std::nullopt;
+    }
+
+    auto amount_and_fee = base::CheckAdd<uint64_t>(amount, fee);
+    if (!amount_and_fee.IsValid()) {
+      return std::nullopt;
+    }
+
+    auto change = base::CheckSub(total_inputs_amount, amount_and_fee);
+    if (change.IsValid()) {
+      return PickOrchardInputsResult{std::move(selected_inputs),
+                                     fee.ValueOrDie(), change.ValueOrDie()};
+    }
+  }
+
+  return std::nullopt;
+}
+
 }  // namespace brave_wallet

@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
