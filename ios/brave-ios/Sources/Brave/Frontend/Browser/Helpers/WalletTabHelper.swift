@@ -260,6 +260,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
 
       tabDappStore.latestPendingPermissionRequest = request
       delegate?.showWalletNotification(tab, origin: origin)
+      delegate?.updateURLBarWalletButton()
     }
   }
 
@@ -361,6 +362,8 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
       }
       // show wallet notification
       delegate?.showWalletNotification(tab, origin: origin)
+      // update wallet button in url bar
+      delegate?.updateURLBarWalletButton()
     }
   }
 
