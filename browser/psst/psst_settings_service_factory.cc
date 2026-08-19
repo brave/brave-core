@@ -9,8 +9,8 @@
 
 #include "base/check_deref.h"
 #include "base/no_destructor.h"
+#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
-#include "brave/components/psst/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
@@ -47,8 +47,7 @@ PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
 
-  if (!profile ||
-      !psst::features::IsPsstEnabledForProfile(*profile->GetPrefs())) {
+  if (!profile || !psst::IsPsstEnabledForProfile(*profile->GetPrefs())) {
     return nullptr;
   }
 

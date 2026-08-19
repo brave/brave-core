@@ -129,7 +129,7 @@ void PsstSettingsService::SetPsstWebsiteSettings(
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
-  return features::IsPsstEnabledForProfile(*prefs_);
+  return IsPsstEnabledForProfile(*prefs_);
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
