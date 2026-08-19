@@ -1,0 +1,86 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kCustomizeChromeSidePanelExtensionsCard disabled.'
+    set_feature_flag_default_state:
+      feature_name: kCustomizeChromeSidePanelExtensionsCard
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kCustomizeChromeWallpaperSearch disabled on every platform.
+
+      Upstream's value is itself an #if BUILDFLAG(IS_ANDROID)/#else/#endif
+      block with a full `);` closing each branch.
+      set_feature_flag_default_state's rewrite stops at the first `);` it
+      finds, so it would only replace the Android branch and leave a
+      dangling #else/#endif behind. A regex spanning both branches is used
+      instead to flatten the whole declaration to one unconditional value,
+      matching the lack of a platform guard in the original override.
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kCustomizeChromeWallpaperSearch,\s*#if
+        BUILDFLAG\(IS_ANDROID\)\s*base::FEATURE_DISABLED_BY_DEFAULT\);\s*#else\s*base::FEATURE_ENABLED_BY_DEFAULT\);\s*#endif'
+      replace: |-
+        BASE_FEATURE(kCustomizeChromeWallpaperSearch,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+
+  - description: 'Ship kNtpAlphaBackgroundCollections disabled.'
+    set_feature_flag_default_state:
+      feature_name: kNtpAlphaBackgroundCollections
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kNtpBackgroundImageErrorDetection disabled.'
+    set_feature_flag_default_state:
+      feature_name: kNtpBackgroundImageErrorDetection
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kNtpCalendarModule disabled on every platform.
+
+      Same shape as kCustomizeChromeWallpaperSearch above: the upstream
+      value is an #if/#else/#endif block with `);` inside each branch, so
+      set_feature_flag_default_state cannot be used.
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kNtpCalendarModule,\s*#if
+        BUILDFLAG\(IS_ANDROID\)\s*base::FEATURE_DISABLED_BY_DEFAULT\);\s*#else\s*base::FEATURE_ENABLED_BY_DEFAULT\);\s*#endif'
+      replace: |-
+        BASE_FEATURE(kNtpCalendarModule,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+
+  - description: |-
+      Ship kNtpChromeCartModule disabled on every platform.
+
+      Same shape as kCustomizeChromeWallpaperSearch above.
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kNtpChromeCartModule,\s*#if
+        BUILDFLAG\(IS_ANDROID\)\s*base::FEATURE_DISABLED_BY_DEFAULT\);\s*#else\s*base::FEATURE_ENABLED_BY_DEFAULT\);\s*#endif'
+      replace: |-
+        BASE_FEATURE(kNtpChromeCartModule,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+
+  - description: |-
+      Ship kNtpDriveModule disabled on every platform.
+
+      Same shape as kCustomizeChromeWallpaperSearch above.
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kNtpDriveModule,\s*#if
+        BUILDFLAG\(IS_ANDROID\)\s*base::FEATURE_DISABLED_BY_DEFAULT\);\s*#else\s*base::FEATURE_ENABLED_BY_DEFAULT\);\s*#endif'
+      replace: |-
+        BASE_FEATURE(kNtpDriveModule,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+
+  - description: 'Ship kNtpDriveModuleLink disabled.'
+    set_feature_flag_default_state:
+      feature_name: kNtpDriveModuleLink
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kNtpModulesMaxColumnCount disabled.'
+    set_feature_flag_default_state:
+      feature_name: kNtpModulesMaxColumnCount
+      value: base::FEATURE_DISABLED_BY_DEFAULT

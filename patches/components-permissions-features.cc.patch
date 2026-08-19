@@ -1,0 +1,40 @@
+diff --git a/components/permissions/features.cc b/components/permissions/features.cc
+index f4a1fa6a33d44e215332c39073940efc367036fa..eb857746488ae669720713f193d577b2dfdbcfdb 100644
+--- a/components/permissions/features.cc
++++ b/components/permissions/features.cc
+@@ -34,7 +34,8 @@ BASE_FEATURE(kPermissionElementPromptPositioning,
+ // Enables heuristic auto-grant for permissions.
+ BASE_FEATURE(kPermissionHeuristicAutoGrant, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kPermissionPredictionsV2, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPermissionPredictionsV2 feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPermissionsAIv4, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+@@ -61,7 +62,11 @@ BASE_FEATURE(kPermissionPromiseLifetimeModulationAndroid,
+ // configuring `PermissionAction` does not make sense in that case, since the
+ // user has not yet taken an action. Therefore, that parameter is ignored in
+ // that case.
++#if !BUILDFLAG(IS_ANDROID)
++BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
++#else
+ BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
++#endif
+ 
+ // When enabled, use the value of the `allowlist_urls` FeatureParam as the
+ // list of origins which would be allowed to access browser permission and
+@@ -87,10 +92,12 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
+ // When enabled, blocks condition to exclude auto granted permissions for
+ // storage access exceptions. This will allow RWS permission grants to be
+ // visible in the Embedded content settings page.
++// kShowRelatedWebsiteSetsPermissionGrants feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_ENABLED_BY_DEFAULT);
++// kCpssUseTfliteSignatureRunner feature state is enforced via plaster rewrite.
++BASE_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kGlicActorPermissionsAutoReject, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
