@@ -25,21 +25,6 @@ export function createAppStore(): AppStore {
       name: 'Account name',
       url: 'https://brave.com',
     },
-    adDiagnosticEntries: [
-      {
-        name: 'Device Id',
-        value:
-          'aee1118bb026ae7571069a7a2243f0e560f5a2b45b28f468495ad4034aad577f',
-      },
-      {
-        name: 'Opted into Brave News ads',
-        value: 'true',
-      },
-      {
-        name: 'Catalog ID',
-        value: 'KvJb/azOiqUaVq0Mh1oViRmyflvjhg3rvhSFqpdE96I=',
-      },
-    ],
   })
 
   store.update({
@@ -53,10 +38,6 @@ export function createAppStore(): AppStore {
           case 'pageTitle':
             return 'Rewards internals'
         }
-      },
-
-      setAdDiagnosticId(diagnosticId) {
-        store.update({ adDiagnosticId: diagnosticId })
       },
 
       clearRewardsLog() {

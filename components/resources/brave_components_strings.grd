@@ -688,8 +688,6 @@
       <message name="IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
 
       <!-- WebUI rewards internals resources -->
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID" desc="Ad diagnostic id">Diagnostic Id</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO" desc="Ad diagnostic info">Diagnostic Info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED" desc="Ads not initialized">Ads not initialized, please refresh the page.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH" desc="">Automatically refresh every 5 seconds</message>
@@ -737,7 +735,6 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="On-demand tip">Contribution</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring contribution</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_AD_DIAGNOSTICS" desc="">Ad diagnostics</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS" desc="">Event logs</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO" desc="">General info</message>
