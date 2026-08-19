@@ -917,6 +917,15 @@ void AIChatService::GetConversationShares(
   conversation_share_store_->GetShares(std::move(callback));
 }
 
+void AIChatService::CopyConversationShareLink(const std::string& share_id) {
+  conversation_share_store_->GetShareUrl(
+      share_id, base::BindOnce([](std::optional<GURL> url) {
+        if (url && url->is_valid()) {
+          CopyTextToClipboardAsConfidential(url->spec());
+        }
+      }));
+}
+
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                             mojom::PremiumStatus status,
                                             mojom::PremiumInfoPtr info) {

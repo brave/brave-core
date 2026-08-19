@@ -129,6 +129,14 @@ class AIChatServiceShareConversationTest : public testing::Test {
 
   void TearDown() override { ai_chat_service_.reset(); }
 
+  // The share store replies on this sequence in the order it was asked, so a
+  // completed listing means anything requested of it earlier has finished.
+  void WaitForShareStore() {
+    base::test::TestFuture<std::vector<mojom::ConversationSharePtr>> future;
+    ai_chat_service_->GetConversationShares(future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_directory_;
@@ -272,6 +280,53 @@ TEST_F(AIChatServiceShareConversationTest, RecordsShareSoItCanBeManaged) {
   // be related back to it.
   EXPECT_EQ(shares[0]->conversation_uuid, "conversation-uuid");
   EXPECT_EQ(shares[0]->conversation_title, "Conversation title");
+}
+
+TEST_F(AIChatServiceShareConversationTest, CopiesRecordedShareLinkAgain) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  ui::TestClipboard* clipboard = ui::TestClipboard::CreateForCurrentThread();
+  ai_chat_service_->CopyConversationShareLink("test-share-id");
+  WaitForShareStore();
+
+  base::test::TestFuture<std::u16string> clipboard_future;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste,
+                      /*data_dst=*/std::nullopt,
+                      clipboard_future.GetCallback());
+  std::u16string clipboard_text = clipboard_future.Get();
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+
+  // The recorded link includes the key fragment, so the user can share it with
+  // someone else without re-uploading the conversation.
+  EXPECT_EQ(
+      base::UTF16ToUTF8(clipboard_text),
+      "https://leo-ai.brave.app/sharing/test-share-id#url-safe-key-fragment");
+}
+
+TEST_F(AIChatServiceShareConversationTest, DoesNotCopyLinkForUnknownShare) {
+  ui::TestClipboard* clipboard = ui::TestClipboard::CreateForCurrentThread();
+  ai_chat_service_->CopyConversationShareLink("never-shared");
+  WaitForShareStore();
+
+  base::test::TestFuture<std::u16string> clipboard_future;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste,
+                      /*data_dst=*/std::nullopt,
+                      clipboard_future.GetCallback());
+  std::u16string clipboard_text = clipboard_future.Get();
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+
+  // Nothing is recorded for the share, so there is no link to put anywhere.
+  EXPECT_TRUE(clipboard_text.empty());
 }
 
 }  // namespace ai_chat

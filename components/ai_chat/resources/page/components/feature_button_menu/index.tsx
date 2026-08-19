@@ -23,6 +23,7 @@ import styles from './style.module.scss'
 
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
+  manageSharedConversations: () => void
 }
 
 export default function FeatureMenu(props: Props) {
@@ -193,6 +194,21 @@ export default function FeatureMenu(props: Props) {
             </div>
           </leo-menu-item>
         </>
+      )}
+      {aiChatContext.isConversationShareEnabled && (
+        <leo-menu-item onClick={props.manageSharedConversations}>
+          <div
+            className={classnames(
+              styles.menuItemWithIcon,
+              styles.menuItemMainItem,
+            )}
+          >
+            <Icon name='message-bubble-comments' />
+            <span className={styles.menuText}>
+              {getLocale(S.CHAT_UI_MENU_MANAGE_SHARED_CONVERSATIONS)}
+            </span>
+          </div>
+        </leo-menu-item>
       )}
       {!aiChatContext.isMobile && (
         <leo-menu-item

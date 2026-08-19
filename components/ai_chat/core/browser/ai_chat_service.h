@@ -220,6 +220,7 @@ class AIChatService : public KeyedService,
                          bool copy_to_clipboard,
                          ShareConversationCallback callback) override;
   void GetConversationShares(GetConversationSharesCallback callback) override;
+  void CopyConversationShareLink(const std::string& share_id) override;
   void BindConversation(
       const std::string& uuid,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,

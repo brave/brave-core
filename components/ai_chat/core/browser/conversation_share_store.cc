@@ -135,6 +135,29 @@ void ConversationShareStore::GetShares(GetSharesCallback callback) {
       base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
+void ConversationShareStore::GetShareUrl(const std::string& share_id,
+                                         GetShareUrlCallback callback) {
+  RunWhenReady(base::BindOnce(
+      [](std::string share_id, GetShareUrlCallback callback,
+         ConversationShareStore& store) {
+        std::unique_ptr<store::ConversationSharesProto> records =
+            store.ReadRecords();
+        if (!records) {
+          // Nothing can be found in records which can't be read.
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+        // There is nothing worth copying a link to once the server has deleted
+        // it.
+        DropExpiredRecords(*records);
+        const store::ConversationShareProto* record =
+            FindRecord(*records, share_id);
+        std::move(callback).Run(record ? std::optional<GURL>(record->url())
+                                       : std::nullopt);
+      },
+      share_id, base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
 void ConversationShareStore::OnEncryptorReady(
     scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   encryptor_ = std::move(encryptor);
@@ -207,6 +230,15 @@ ConversationShareStore::ReadRecords() {
     WriteRecords(*records);
   }
   return records;
+}
+
+// static
+const store::ConversationShareProto* ConversationShareStore::FindRecord(
+    const store::ConversationSharesProto& records,
+    const std::string& share_id) {
+  auto it = std::ranges::find(records.shares(), share_id,
+                              &store::ConversationShareProto::share_id);
+  return it == records.shares().end() ? nullptr : &*it;
 }
 
 // static

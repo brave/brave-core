@@ -234,6 +234,32 @@ const SAMPLE_SKILLS: Mojom.Skill[] = [
   },
 ]
 
+// base::Time counts microseconds from the Windows epoch, so shift the JS epoch
+// by the same offset used by mojoTimeToJSDate().
+function jsDateToMojoTime(date: Date) {
+  const epochDeltaInMs = Date.UTC(1970, 0, 1) - Date.UTC(1601, 0, 1)
+  // Convert to BigInt before scaling to microseconds: the result exceeds
+  // Number.MAX_SAFE_INTEGER.
+  return {
+    internalValue: BigInt(date.getTime() + epochDeltaInMs) * BigInt(1000),
+  }
+}
+
+const SAMPLE_CONVERSATION_SHARES: Mojom.ConversationShare[] = [
+  {
+    shareId: 'a1b2c3d4e5f6',
+    conversationUuid: '1',
+    conversationTitle: 'What is the best way to make a cup of tea?',
+    createdTime: jsDateToMojoTime(new Date(Date.now() - 3600000)),
+  },
+  {
+    shareId: 'f6e5d4c3b2a1',
+    conversationUuid: '2',
+    conversationTitle: 'Summarize the latest news about space exploration',
+    createdTime: jsDateToMojoTime(new Date(Date.now() - 3 * 86400000)),
+  },
+]
+
 const SAMPLE_TABS: Mojom.TabData[] = [
   {
     id: 1,
@@ -573,6 +599,8 @@ function StoryContext(
               : Mojom.PremiumStatus.Inactive,
             info: null,
           }),
+        getConversationShares: () =>
+          Promise.resolve({ shares: SAMPLE_CONVERSATION_SHARES }),
       }}
       bookmarksService={{
         getBookmarks: () => Promise.resolve({ bookmarks: SAMPLE_BOOKMARKS }),
