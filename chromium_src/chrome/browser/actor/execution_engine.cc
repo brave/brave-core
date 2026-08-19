@@ -25,16 +25,16 @@ bool IsChromeWebStoreURL(const GURL& url) {
 // Add Brave-specific restrictions before delegating to the origin gating
 // checker. Applied at both the page-action (`SafetyChecksForNextAction`) and
 // navigation (`IsAcceptableNavigationDestination`) entry points for `url`.
-#define BRAVE_MAY_ACT_ON_URL_INTERNAL(callback)                             \
-  if (IsChromeWebStoreURL(url)) {                                           \
-    journal_->Log(                                                          \
-        url, task_->id(), "OriginGatingDecision",                           \
-        JournalDetailsBuilder().AddError("Extension store URL").Build());   \
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(               \
-        FROM_HERE,                                                          \
-        base::BindOnce(callback,                                            \
-                       actor::MayActOnUrlBlockReason::kUrlNotInAllowlist)); \
-    return;                                                                 \
+#define BRAVE_MAY_ACT_ON_URL_INTERNAL(callback)                               \
+  if (IsChromeWebStoreURL(url)) {                                             \
+    journal_->Log(                                                            \
+        url, task_->id(), "OriginGatingDecision",                             \
+        JournalDetailsBuilder().AddError("Extension store URL").Build());     \
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(                 \
+        FROM_HERE,                                                            \
+        base::BindOnce(callback,                                              \
+                       actor::MayActOnUrlBlockReason::kBlockedByStaticList)); \
+    return;                                                                   \
   }
 
 #include <chrome/browser/actor/execution_engine.cc>
