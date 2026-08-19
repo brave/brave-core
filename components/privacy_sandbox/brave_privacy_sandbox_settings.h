@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_PRIVACY_SANDBOX_BRAVE_PRIVACY_SANDBOX_SETTINGS_H_
 #define BRAVE_COMPONENTS_PRIVACY_SANDBOX_BRAVE_PRIVACY_SANDBOX_SETTINGS_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -29,7 +28,6 @@ class BravePrivacySandboxSettings
     : public privacy_sandbox::PrivacySandboxSettings {
  public:
   BravePrivacySandboxSettings(
-      std::unique_ptr<Delegate> delegate,
       HostContentSettingsMap* host_content_settings_map,
       content_settings::CookieSettings* cookie_settings,
       PrefService* pref_service);
@@ -51,11 +49,8 @@ class BravePrivacySandboxSettings
       const url::Origin& accessing_origin,
       std::string* out_debug_message,
       bool* out_block_is_site_setting_specific) const override;
-  bool IsPrivacySandboxRestricted() const override;
-  bool IsPrivacySandboxCurrentlyUnrestricted() const override;
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;
-  void SetDelegateForTesting(std::unique_ptr<Delegate> delegate) override;
 
   bool AreRelatedWebsiteSetsEnabled() const override;
 
@@ -63,7 +58,6 @@ class BravePrivacySandboxSettings
   // Callback to ensure we don't ever enable the Privacy Sandbox.
   void OnPrivacySandboxPrefChanged();
 
-  std::unique_ptr<Delegate> delegate_;
   raw_ptr<PrefService> pref_service_;
   PrefChangeRegistrar user_prefs_registrar_;
 };
