@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -72,6 +73,15 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   auto* side_panel_registry = SidePanelRegistry::From(&tab);
   CHECK(side_panel_registry);
   brave::RegisterContextualSidePanel(side_panel_registry, tab.GetContents());
+
+  // `thumbnail_tab_helper_` is not instantiated because we disable
+  // `kTabHoverCardImages`, however we do want `thumbnail_tab_helper_` to be
+  // a valid instance, so we can switch hover modes via settings.
+  if (!thumbnail_tab_helper_) {
+    thumbnail_tab_helper_ =
+        GetUserDataFactory().CreateInstance<ThumbnailTabHelper>(
+            tab, tab, tab.GetContents());
+  }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {
