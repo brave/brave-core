@@ -103,8 +103,7 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
             DirectFeedResult result;
             result.id = publisher_id;
             result.title = (std::string)data.title;
-            ConvertFeedDataToArticles(result.articles, std::move(data),
-                                      result.id);
+            ConvertFeedDataToArticles(result.articles, data, result.id);
             return result;
           },
           feed_url, std::move(publisher_id), std::move(body_content)),
@@ -114,9 +113,9 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
 }  // namespace
 
 void ConvertFeedDataToArticles(std::vector<mojom::ArticlePtr>& articles,
-                               FeedData data,
+                               const FeedData& data,
                                const std::string& publisher_id) {
-  for (auto entry : data.items) {
+  for (const auto& entry : data.items) {
     auto item = RustFeedItemToArticle(entry, publisher_id);
     if (!item->data->url.SchemeIsHTTPOrHTTPS()) {
       continue;

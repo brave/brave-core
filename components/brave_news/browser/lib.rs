@@ -13,7 +13,6 @@ use regex::Regex;
 #[cxx::bridge(namespace = brave_news)]
 mod ffi {
     pub struct FeedItem {
-        id: String,
         title: String,
         description: String,
         image_url: String,
@@ -22,7 +21,6 @@ mod ffi {
     }
 
     pub struct FeedData {
-        id: String,
         title: String,
         items: Vec<FeedItem>,
     }
@@ -169,7 +167,6 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
             }
         }
         let feed_item = ffi::FeedItem {
-            id: feed_item_data.id,
             title: strip_html(
                 &(if feed_item_data.title.is_some() {
                     feed_item_data.title.unwrap().content

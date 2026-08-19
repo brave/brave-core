@@ -276,7 +276,6 @@ TEST(BraveNewsDirectFeed, ParseFeedRegression) {
 TEST(BraveNewsDirectFeed, ParseToArticle) {
   // Create a feed item which should be valid as a Brave News Article
   FeedItem item;
-  item.id = "1";
   item.published_timestamp = 1672793966;
   item.title = "Title";
   item.description = "Description";
@@ -294,7 +293,6 @@ TEST(BraveNewsDirectFeed, ParseToArticle) {
 TEST(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks) {
   // Create a feed item which should be invalid as a Brave News Article
   FeedItem item;
-  item.id = "1";
   item.published_timestamp = 1672793966;
   item.title = "Title";
   item.description = "Description";
