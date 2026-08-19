@@ -89,7 +89,8 @@ void WalletPanelHandler::IsSolanaAccountConnected(
     const std::string& account,
     IsSolanaAccountConnectedCallback callback) {
   // Report the connection state of the frame the panel names, not of whichever
-  // frame happens to hold focus. See RequestPermission below.
+  // frame happens to hold focus. See WalletPanelHandler::RequestPermission for
+  // the rationale.
   content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
 
   auto* tab_helper =
