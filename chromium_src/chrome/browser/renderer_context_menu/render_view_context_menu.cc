@@ -759,7 +759,9 @@ void RenderViewContextMenu::OnContainerSelected(
     return;
   }
 
-  brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container);
+  brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container,
+                            /*is_link=*/true, params_.frame_origin,
+                            /*started_from_context_menu=*/true);
 }
 
 void RenderViewContextMenu::OnNoContainerSelected() {
@@ -767,7 +769,9 @@ void RenderViewContextMenu::OnNoContainerSelected() {
     return;
   }
 
-  brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url);
+  brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url,
+                                 /*is_link=*/true, params_.frame_origin,
+                                 /*started_from_context_menu=*/true);
 }
 
 void RenderViewContextMenu::OnNewTemporaryContainerSelected() {
@@ -775,7 +779,9 @@ void RenderViewContextMenu::OnNewTemporaryContainerSelected() {
     return;
   }
 
-  brave::CreateTemporaryContainerAndOpenUrl(GetBrowser(), params_.link_url);
+  brave::CreateTemporaryContainerAndOpenUrl(
+      GetBrowser(), params_.link_url, /*is_link=*/true, params_.frame_origin,
+      /*started_from_context_menu=*/true);
 }
 
 base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {
