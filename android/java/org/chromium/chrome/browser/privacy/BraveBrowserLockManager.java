@@ -21,6 +21,7 @@ import org.chromium.base.ApplicationState;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.ThreadUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.incognito.reauth.BraveBrowserLockCoordinator;
@@ -31,7 +32,8 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.ui.modaldialog.DialogDismissalCause;
 
-import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Singleton manager for the browser-wide biometric lock. Its lifetime matches the Application
@@ -60,6 +62,10 @@ import java.lang.ref.WeakReference;
  * prevent content from being visible during that window, a lightweight opaque overlay is attached
  * to each activity's decor view as soon as it starts. When {@link #onNativeInitialized} fires the
  * placeholder overlays are removed and replaced by the real coordinator.
+ *
+ * <p><b>Multi-instance:</b> {@code ChromeTabbedActivity} supports running as multiple concurrent
+ * instances (e.g. desktop-Android multi-window, or {@code FLAG_ACTIVITY_MULTIPLE_TASK}). A lock
+ * must therefore be tracked per-activity rather than as a single manager-wide slot.
  */
 @NullMarked
 // Chromium's wrapper doesn't give us a way to register a listener for changes.
@@ -73,9 +79,21 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
     private boolean mNativeInitializedOnce;
     private boolean mLockArmed;
-    private @Nullable BraveBrowserLockCoordinator mCoordinator;
-    private @Nullable IncognitoReauthManager mIncognitoReauthManager;
-    private @Nullable WeakReference<Activity> mCoordinatorActivity;
+
+    private static class ActiveLock {
+        final BraveBrowserLockCoordinator mCoordinator;
+        final IncognitoReauthManager mReauthManager;
+        boolean mReauthStarted;
+
+        ActiveLock(BraveBrowserLockCoordinator coordinator, IncognitoReauthManager reauthManager) {
+            mCoordinator = coordinator;
+            mReauthManager = reauthManager;
+        }
+    }
+
+    private final Map<Activity, ActiveLock> mActiveLocks = new HashMap<>();
+
+    private boolean mReauthInFlight;
 
     private final ProfileManager.Observer mProfileObserver =
             new ProfileManager.Observer() {
@@ -118,8 +136,16 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
                 @Override
                 public void onActivityDestroyed(Activity activity) {
-                    if (mCoordinatorActivity != null && activity == mCoordinatorActivity.get()) {
-                        hideCoordinatorIfShowing(DialogDismissalCause.ACTIVITY_DESTROYED);
+                    ActiveLock lock = mActiveLocks.remove(activity);
+                    if (lock == null) return;
+
+                    lock.mCoordinator.hide(DialogDismissalCause.ACTIVITY_DESTROYED);
+                    IncognitoReauthManager reauthManager = lock.mReauthManager;
+                    // Must defer to ensure we don't destroy within the object's own usage scope.
+                    ThreadUtils.postOnUiThread(reauthManager::destroy);
+                    if (lock.mReauthStarted) {
+                        mReauthInFlight = false;
+                        maybeStartNextReauth();
                     }
                 }
             };
@@ -149,18 +175,23 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             new IncognitoReauthManager.IncognitoReauthCallback() {
                 @Override
                 public void onIncognitoReauthNotPossible() {
+                    mReauthInFlight = false;
                     mLockArmed = false;
-                    hideCoordinatorIfShowing(DialogDismissalCause.ACTION_ON_DIALOG_NOT_POSSIBLE);
+                    hideAllCoordinators(DialogDismissalCause.ACTION_ON_DIALOG_NOT_POSSIBLE);
                 }
 
                 @Override
                 public void onIncognitoReauthSuccess() {
+                    mReauthInFlight = false;
                     mLockArmed = false;
-                    hideCoordinatorIfShowing(DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
+                    hideAllCoordinators(DialogDismissalCause.POSITIVE_BUTTON_CLICKED);
                 }
 
                 @Override
-                public void onIncognitoReauthFailure() {}
+                public void onIncognitoReauthFailure() {
+                    mReauthInFlight = false;
+                    maybeStartNextReauth();
+                }
             };
 
     public static void initialize(Application application) {
@@ -200,7 +231,6 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 int state = ApplicationStatus.getStateForActivity(activity);
                 if (state == ActivityState.STARTED || state == ActivityState.RESUMED) {
                     showLockIfRequired(activity);
-                    break;
                 }
             }
         }
@@ -242,26 +272,40 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
 
     private void showLockIfRequired(Activity activity) {
         Profile profile = mProfile;
-        if (!mLockArmed || !isBrowserLockEnabled() || mCoordinator != null || profile == null) {
+        if (!mLockArmed
+                || !isBrowserLockEnabled()
+                || mActiveLocks.containsKey(activity)
+                || profile == null) {
             return;
         }
-        mIncognitoReauthManager = new IncognitoReauthManager(activity, profile);
-        mCoordinator = createCoordinator(activity, mIncognitoReauthManager);
-        mCoordinatorActivity = new WeakReference<>(activity);
-        mCoordinator.show();
-        mIncognitoReauthManager.startReauthenticationFlow(mReauthCallback);
+        IncognitoReauthManager reauthManager = new IncognitoReauthManager(activity, profile);
+        BraveBrowserLockCoordinator coordinator = createCoordinator(activity, reauthManager);
+        mActiveLocks.put(activity, new ActiveLock(coordinator, reauthManager));
+        coordinator.show();
+        maybeStartNextReauth();
     }
 
-    private void hideCoordinatorIfShowing(@DialogDismissalCause int cause) {
-        if (mCoordinator != null) {
-            mCoordinator.hide(cause);
-            mCoordinator = null;
-            mCoordinatorActivity = null;
+    private void maybeStartNextReauth() {
+        if (mReauthInFlight) return;
+        for (var entry : mActiveLocks.entrySet()) {
+            ActiveLock lock = entry.getValue();
+            if (!lock.mReauthStarted) {
+                lock.mReauthStarted = true;
+                mReauthInFlight = true;
+                lock.mReauthManager.startReauthenticationFlow(mReauthCallback);
+                return;
+            }
         }
-        if (mIncognitoReauthManager != null) {
-            mIncognitoReauthManager.destroy();
-            mIncognitoReauthManager = null;
+    }
+
+    private void hideAllCoordinators(@DialogDismissalCause int cause) {
+        for (ActiveLock lock : mActiveLocks.values()) {
+            lock.mCoordinator.hide(cause);
+            IncognitoReauthManager reauthManager = lock.mReauthManager;
+            // Must defer since we could be called from within the scope of a living object.
+            ThreadUtils.postOnUiThread(reauthManager::destroy);
         }
+        mActiveLocks.clear();
     }
 
     private void showPreNativeOverlayIfRequired(Activity activity) {
@@ -317,5 +361,20 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     boolean isPreNativeOverlayShownForTesting(Activity activity) {
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         return decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG) != null;
+    }
+
+    @VisibleForTesting
+    boolean isLockShownForTesting(Activity activity) {
+        return mActiveLocks.containsKey(activity);
+    }
+
+    @VisibleForTesting
+    int getActiveLockCountForTesting() {
+        return mActiveLocks.size();
+    }
+
+    @VisibleForTesting
+    boolean isReauthInFlightForTesting() {
+        return mReauthInFlight;
     }
 }
