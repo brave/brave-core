@@ -34,7 +34,9 @@ namespace brave_vpn::v2 {
 namespace {
 constexpr char kTestDomain[] = "vpn.brave.com";
 constexpr char kTestEnvironment[] = "unittest-env";
+#if !BUILDFLAG(IS_ANDROID)
 constexpr char kTestEmail[] = "test@example.com";
+#endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace
 
 class BraveVpnServiceImplTest : public testing::Test {
