@@ -899,13 +899,10 @@
 "Home" = "בית";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "שדרג חיבורים ל-HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "פותח אתרים באמצעות HTTPS בטוח במקום HTTP כשניתן";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "שדרוגי HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "ייבוא נתוני גלישה";

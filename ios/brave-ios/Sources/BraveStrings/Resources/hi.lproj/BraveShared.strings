@@ -899,13 +899,10 @@
 "Home" = "होम";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "कनेक्शन को HTTPS पर अपग्रेड करें";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "जब संभव हो, तब HTTP के बजाय, सुरक्षित HTTPS का इस्तेमाल करके साइटें खोलें।";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS अपग्रेड किया गया";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "ब्राउज़िंग डेटा इंपोर्ट करें";

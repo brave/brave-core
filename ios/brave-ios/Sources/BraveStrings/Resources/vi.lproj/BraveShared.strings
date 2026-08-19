@@ -899,13 +899,10 @@
 "Home" = "Trang chủ";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Nâng cấp các kết nối thành HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Mở các trang web bằng HTTPS thay vì HTTP khi có thể.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Nâng cấp lên HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Nhập dữ liệu duyệt web";

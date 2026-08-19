@@ -155,7 +155,6 @@
 "ForgetMeLabel" = "이 사이트를 닫으면 기록 소거";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "엄격";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "목록 업데이트됨";
@@ -185,10 +184,8 @@
 "ShredSiteDataNow" = "지금 사이트 데이터 파쇄";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "사이트가 비보안임";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "%@ 연결이 비보안임";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "트래커 및 광고 차단";
@@ -200,8 +197,6 @@
 "UpdatingLists" = "목록 업데이트 중";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "연결을 HTTPS로 업그레이드";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "이 사이트가 HTTPS를 지원하지 않아 이 경고가 표시되었습니다.";
 

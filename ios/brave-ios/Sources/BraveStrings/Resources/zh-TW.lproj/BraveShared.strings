@@ -899,13 +899,10 @@
 "Home" = "主畫面";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "將連線升級為 HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "盡量使用安全的 HTTPS 開啟網站，而不要使用 HTTP。";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS 更新";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "匯入瀏覽資料";

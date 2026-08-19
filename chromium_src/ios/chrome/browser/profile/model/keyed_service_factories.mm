@@ -105,6 +105,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   ios::FaviconServiceFactory::GetInstance();
   ios::HistoryServiceFactory::GetInstance();
   ios::HostContentSettingsMapFactory::GetInstance();
+  HttpsUpgradeServiceFactory::GetInstance();
   ios::LocalOrSyncableBookmarkSyncServiceFactory::GetInstance();
   ios::PasswordManagerLogRouterFactory::GetInstance();
   ios::TemplateURLPrepopulateDataResolverFactory::GetInstance();

@@ -899,13 +899,10 @@
 "Home" = "Domov";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Posodobite povezave na HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Odpira spletna mesta z varnim HTTPS namesto HTTP, kadar je to mogoče.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Posodobitve HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Uvozi podatke brskanja";

@@ -899,13 +899,10 @@
 "Home" = "Домашня сторінка";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Оновити під’єднання до HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "За можливості відкривати сайти через безпечний протокол HTTPS замість HTTP.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Оновлення HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Імпорт даних перегляду";
