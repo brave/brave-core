@@ -1337,7 +1337,9 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         self.fake_chromium_src.commit_empty('[cr149] Feature B', self.brave)
         # Start an interactive rebase that stops on an `edit` command.
-        env = {**os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i '1s/^pick/edit/'"}
+        env = {
+            **os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'"
+        }
         subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
                        cwd=self.brave,
                        env=env,

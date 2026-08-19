@@ -1733,7 +1733,7 @@ class LiftOrphanedPlasterTest(LiftTestCase):
         self.assertEqual(run.exit_code, 1)
         self.assert_output_has(
             run, '* Files that cannot be patched anymore (action needed):',
-            f'    ✘ {FOO} (deleted)',
+            f'    ✘ {_native(FOO)} (deleted)',
             '* Plaster failed to fix patches (action needed):',
             f'    ✘ {self.env.brave_path(FOO_PLASTER)} (orphaned)')
 
@@ -1775,8 +1775,8 @@ class LiftOrphanedPlasterTest(LiftTestCase):
             run, 'Plaster file has not been fixed and re-applied: '
             f'{self.env.brave_path(FOO_PLASTER)}',
             'Failed to read the source targeted by '
-            f'{self.env.brave_path(FOO_PLASTER)} from git: {FOO}. The '
-            'upstream file may have been moved or deleted')
+            f'{self.env.brave_path(FOO_PLASTER)} from git: {_native(FOO)}. '
+            'The upstream file may have been moved or deleted')
 
     def test_continue_after_removing_the_orphaned_plaster_and_patch_finishes(
             self):
