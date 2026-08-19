@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/history_embeddings/history_embeddings_service_factory.cc b/chrome/browser/history_embeddings/history_embeddings_service_factory.cc
-index 3b67ca1f8f84484016bfab9f4ed6fe36efc9f3cc..3f940b3a27a85a42b1ae408182281d0a7dc83c01 100644
+index c8e53fb39e126b29e8e0d4d41daa73cf0dcd54af..8016efbd1f3ef636c57d0ddb5c040a2d61e25b99 100644
 --- a/chrome/browser/history_embeddings/history_embeddings_service_factory.cc
 +++ b/chrome/browser/history_embeddings/history_embeddings_service_factory.cc
-@@ -101,7 +101,13 @@ std::unique_ptr<KeyedService> HistoryEmbeddingsServiceFactory::
+@@ -99,7 +99,13 @@ std::unique_ptr<KeyedService> HistoryEmbeddingsServiceFactory::
      return nullptr;
    }
  
@@ -17,8 +17,8 @@ index 3b67ca1f8f84484016bfab9f4ed6fe36efc9f3cc..3f940b3a27a85a42b1ae408182281d0a
        profile,
        HistoryServiceFactory::GetForProfile(profile,
                                             ServiceAccessType::EXPLICIT_ACCESS),
-@@ -171,7 +177,13 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
-     }
+@@ -159,7 +165,13 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
+         std::make_unique<history_embeddings::MockIntentClassifier>();
    }
  
 -  return std::make_unique<history_embeddings::ChromeHistoryEmbeddingsService>(

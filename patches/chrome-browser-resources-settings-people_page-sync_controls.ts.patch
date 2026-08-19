@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index 1e5afaf147008936350b929ba416d992423bee00..ead63e5d272c6bbde6d42db1a07c62291c4843aa 100644
+index 4492517409f4bdf63d89fb841306cf7d2dd1b85d..341b336f20eba9b14d5cfa7354e0b65101bd9dd8 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -145,7 +145,7 @@ export class SettingsSyncControlsElement extends
+@@ -147,7 +147,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      const currentRoute = router.getCurrentRoute();
@@ -10,8 +10,8 @@ index 1e5afaf147008936350b929ba416d992423bee00..ead63e5d272c6bbde6d42db1a07c6229
 +    if (currentRoute === routes.BRAVE_SYNC_SETUP) {
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
-     if (loadTimeData.getBoolean('replaceSyncPromosWithSignInPromos') &&
-@@ -377,6 +377,7 @@ export class SettingsSyncControlsElement extends
+     if (currentRoute === routes.ACCOUNT) {
+@@ -378,6 +378,7 @@ export class SettingsSyncControlsElement extends
  
    protected disableTypeCheckBox_(dataTypeManaged: boolean|undefined|null):
        boolean {
@@ -19,7 +19,7 @@ index 1e5afaf147008936350b929ba416d992423bee00..ead63e5d272c6bbde6d42db1a07c6229
      if (!this.syncStatus) {
        return true;
      }
-@@ -386,7 +387,7 @@ export class SettingsSyncControlsElement extends
+@@ -387,7 +388,7 @@ export class SettingsSyncControlsElement extends
      }
  
      if (this.syncStatus.signedInState === SignedInState.SYNCING) {
