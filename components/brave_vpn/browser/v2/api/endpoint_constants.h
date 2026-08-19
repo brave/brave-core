@@ -18,6 +18,12 @@ inline constexpr char kVerifyPurchaseTokenApi[] =
     "api/v1.1/verify-purchase-token";
 inline constexpr char kCreateSupportTicketApi[] =
     "api/v1.2/partners/support-ticket";
+inline constexpr char kAllServerRegionsApi[] =
+    "api/v1.3/servers/all-server-regions";
+inline constexpr char kTimezonesForRegionsApi[] =
+    "api/v1.1/servers/timezones-for-regions";
+inline constexpr char kHostnamesForRegionApi[] =
+    "api/v1.3/servers/hostnames-for-region";
 
 // Endpoint request JSON keys that can be shared between multiple APIs.
 inline constexpr char kProductTypeKey[] = "product-type";
@@ -33,6 +39,8 @@ inline constexpr char kSupportTicketKey[] = "support-ticket";
 inline constexpr char kPartnerClientIdKey[] = "partner-client-id";
 inline constexpr char kPaymentValidationMethodKey[] =
     "payment-validation-method";
+inline constexpr char kRegionKey[] = "region";
+inline constexpr char kRegionPrecisionKey[] = "region-precision";
 
 // Default payment validation method used by Brave.
 inline constexpr char kValidationMethodDefaultValue[] = "brave-premium";
