@@ -216,7 +216,9 @@ void PsstTabWebContentsObserver::DidFinishNavigation(
 
   should_process_current_page_ =
       handle->GetURL().SchemeIsHTTPOrHTTPS() &&
-      handle->GetRestoreType() != content::RestoreType::kRestored;
+      handle->GetRestoreType() != content::RestoreType::kRestored &&
+      (psst_settings_service_->IsPsstEnabled() ||
+       psst_settings_service_->IsManagedPreference());
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {

@@ -47,7 +47,9 @@ PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
 
-  if (!profile || !psst::IsPsstEnabledForProfile(*profile->GetPrefs())) {
+  if (!profile ||
+      (!psst::IsPsstEnabledForProfile(*profile->GetPrefs()) &&
+       profile->GetPrefs()->IsManagedPreference(psst::prefs::kPsstEnabled))) {
     return nullptr;
   }
 
