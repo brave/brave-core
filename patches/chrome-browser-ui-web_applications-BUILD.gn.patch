@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
-index 9ea7f9666fc66c9b1ad9a477689f991716626198..8d3c44394b2abee8aa6cb1b10b38b269bffefe21 100644
+index 2d72ecc9a7856e1d306964674259e9c7d827cddb..3a768401f988c58ad980af55c958c8ae4e69dcae 100644
 --- a/chrome/browser/ui/web_applications/BUILD.gn
 +++ b/chrome/browser/ui/web_applications/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,10 +10,10 @@ index 9ea7f9666fc66c9b1ad9a477689f991716626198..8d3c44394b2abee8aa6cb1b10b38b269
  import("//build/config/ui.gni")
  import("//extensions/buildflags/buildflags.gni")
  
-@@ -101,6 +102,7 @@ source_set("launch_utils") {
- source_set("impl") {
-   sources = []
-   deps = [ "//chrome/browser/ui/browser_window:create_browser_window" ]
+@@ -104,6 +105,7 @@ source_set("impl") {
+     "//chrome/browser/banners",
+     "//chrome/browser/ui/browser_window:create_browser_window",
+   ]
 +  deps += brave_chrome_browser_ui_web_applications_deps
  
    if (!is_android) {
