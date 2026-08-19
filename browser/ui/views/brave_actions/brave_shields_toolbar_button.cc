@@ -78,8 +78,12 @@ void BraveShieldsToolbarButton::OnControllerStateChanged() {
 }
 
 void BraveShieldsToolbarButton::Update() {
+  auto old_preferred_size = GetPreferredSize();
   controller_->RefreshButtonImages(this);
-  PreferredSizeChanged();
+
+  if (old_preferred_size != GetPreferredSize()) {
+    PreferredSizeChanged();
+  }
 }
 
 views::Widget* BraveShieldsToolbarButton::GetBubbleWidget() {
