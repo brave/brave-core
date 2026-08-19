@@ -190,7 +190,7 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
     mojo::PendingRemote<device::mojom::UsbDeviceManager> device_manager;
     device_manager_.AddReceiver(
         device_manager.InitWithNewPipeAndPassReceiver());
-    UsbChooserContextFactory::GetForProfile(browser()->profile())
+    UsbChooserContextFactory::GetForProfile(browser()->GetProfile())
         ->SetDeviceManagerForTesting(std::move(device_manager));
   }
 
@@ -218,7 +218,8 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void AllowFingerprinting(std::string domain) {
@@ -254,7 +255,7 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   UsbChooserContext* GetChooserContext() {
-    return UsbChooserContextFactory::GetForProfile(browser()->profile());
+    return UsbChooserContextFactory::GetForProfile(browser()->GetProfile());
   }
 
  private:

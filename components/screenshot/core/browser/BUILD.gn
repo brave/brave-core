@@ -9,7 +9,10 @@ static_library("browser") {
     "utils.h",
   ]
 
-  deps = [ "//skia" ]
+  deps = [
+    "//base",
+    "//skia",
+  ]
 }
 
 source_set("unit_tests") {

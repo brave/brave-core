@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Add Brave imports beneath the Settings search package declaration.'
+    regex:
+      re_pattern: '^(package [^;]+;\n)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+        import org.chromium.chrome.browser.theme.BraveDynamicColors;
+        import org.chromium.components.browser_ui.settings.BraveSettingsIconTintUtils;
+
+  - description: |
+      Apply the Dynamic Colors tint to the Settings search icon by wrapping
+      initializeSearchUi. The upstream body is renamed to
+      initializeSearchUi_ChromiumImpl; a thin initializeSearchUi wrapper calls it
+      and then applies the tint. Anchored on the method signature (a stable
+      landmark), not on an interior statement.
+    regex:
+      re_pattern:
+        '(public void )(initializeSearchUi)(\(@Nullable Bundle savedState\) \{)'
+      replace: |-
+        \1\2\3
+                \2_ChromiumImpl(savedState);
+                View searchBox = requireViewById(R.id.search_box);
+                BraveSettingsIconTintUtils.applyIconTint(searchBox.requireViewById(R.id.search_icon), BraveDynamicColors.isDynamicColorsEnabled());
+            }
+
+            private void \2_ChromiumImpl\3

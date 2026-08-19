@@ -1,0 +1,28 @@
+caption: Enable Privacy Settings Tuning Tool
+default: null
+desc: |-
+  Enable Privacy Settings Tuning Tool in Brave.
+
+  Privacy Settings Tuning Tool is a feature that allows Brave to automatically suggest (and adjust) site-specific privacy settings.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Privacy Settings Tuning functionality
+  value: true
+- caption: Disable Privacy Settings Tuning functionality
+  value: false
+- caption: Allow the user to decide
+  value: null
+owners:
+- ssahib@brave.com
+- vstruts@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:147-
+tags: []
+type: main

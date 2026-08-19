@@ -35,7 +35,10 @@ declare module '../page_visibility.js' {
     // </if>
     surveyPanelist?: boolean,
     braveTor?: boolean,
-    emailAliases?: boolean
+    emailAliases?: boolean,
+    // <if expr="enable_psst">
+    psst?: boolean,
+    // </if>
   }
 }
 
@@ -73,6 +76,9 @@ function getPageVisibility () {
       surveyPanelist: false,
       braveTor: false,
       emailAliases: false,
+      // <if expr="enable_psst">
+      psst: false,
+      // </if>
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -87,6 +93,7 @@ function getPageVisibility () {
     // future-proof chromium actually defining something,
     ...chromiumPageVisibility,
     // overrides
+    ai: false,
     people: false,
     defaultBrowser: false,
     onStartup: false,
@@ -118,6 +125,9 @@ function getPageVisibility () {
     // </if>
     // <if expr="enable_email_aliases">
     emailAliases: loadTimeData.getBoolean('isEmailAliasesEnabled'),
+    // </if>
+    // <if expr="enable_psst">
+    psst: loadTimeData.getBoolean('isPsstEnabled'),
     // </if>
     origin: loadTimeData.getBoolean('isBraveOriginPurchased') &&
             !loadTimeData.getBoolean('isBraveOriginBrandedBuild'),

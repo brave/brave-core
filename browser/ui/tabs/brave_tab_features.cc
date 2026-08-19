@@ -40,6 +40,8 @@
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/components/psst/core/common/features.h"
+#include "chrome/browser/browser_process.h"
+#include "components/variations/service/variations_service.h"
 #endif
 
 namespace tabs {
@@ -82,16 +84,19 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
     psst_action_controller_ =
         std::make_unique<page_actions::PsstActionController>(
             tab, *page_action_controller());
+    auto* psst_settings_service =
+        PsstSettingsServiceFactory::GetForProfile(profile);
+    auto* variations_service = g_browser_process->variations_service();
     psst_web_contents_observer_ =
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab, profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
-                PsstSettingsServiceFactory::GetForProfile(profile),
-                profile->GetPrefs(),
+                psst_settings_service, profile->GetPrefs(),
                 std::make_unique<psst::PsstUiDesktopPresenter>(
                     tab.GetContents()->GetWeakPtr(),
                     psst_action_controller_->AsWeakPtr())),
-            profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+            psst_settings_service, variations_service,
+            ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 

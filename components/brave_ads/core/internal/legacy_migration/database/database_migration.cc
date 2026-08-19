@@ -34,19 +34,6 @@ namespace brave_ads::database {
 
 namespace {
 
-void MigrateToV44(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Normally, whether or not the database supports `auto_vacuum` must be
-  // configured before the database file is actually created. However, when not
-  // in write-ahead log mode, the `auto_vacuum` properties of an existing
-  // database may be changed by using the `auto_vacuum` pragmas and then
-  // immediately VACUUMing the database.
-
-  Execute(mojom_db_transaction, "PRAGMA auto_vacuum = FULL;");
-  Vacuum(mojom_db_transaction);
-}
-
 void MigrateToV53(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -91,11 +78,6 @@ void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 44: {
-      MigrateToV44(mojom_db_transaction);
-      break;
-    }
-
     case 53: {
       MigrateToV53(mojom_db_transaction);
       break;
@@ -165,7 +147,7 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
 }  // namespace
 
-void MigrateFromVersion(int from_version, ResultCallback callback) {
+void MigrateFromVersion(int from_version, RunDBTransactionCallback callback) {
   CHECK_LT(from_version, kVersionNumber);
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =

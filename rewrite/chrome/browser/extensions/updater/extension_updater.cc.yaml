@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Skip the startup check when Brave auto-update is disabled.
+
+      Fold the feature check into the first if's condition inside Start(),
+      rather than hoisting it to the top of the function: `alive_ = true`
+      (and the DCHECKs above it) must still run even when the feature is
+      disabled, per BraveExtensionAutoUpdateDisabledNextCheck in
+      extension_updater_unittest.cc.
+    regex:
+      re_pattern: '(ExtensionUpdater::Start\(\) \{.*?if \()([^)]*)(\))'
+      re_flags: [DOTALL]
+      replace: |-
+        \1\2 && base::FeatureList::IsEnabled(
+                extensions::features::kBraveAutoUpdateExtensions)\3
+
+  - description: |
+      Skip individual scheduled update checks when Brave auto-update is
+      disabled.
+    preempt_function_impl:
+      function_name: ExtensionUpdater::NextCheck
+      return_if: |-
+        !base::FeatureList::IsEnabled(
+            extensions::features::kBraveAutoUpdateExtensions)

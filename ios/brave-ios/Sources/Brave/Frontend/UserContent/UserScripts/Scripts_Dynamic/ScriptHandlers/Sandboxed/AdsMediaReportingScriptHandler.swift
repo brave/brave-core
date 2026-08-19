@@ -32,13 +32,14 @@ class AdsMediaReportingScriptHandler: TabContentScript {
       return
     }
 
-    if let isPlaying = body["data"]?["playing"] as? Bool,
+    if let playerId = body["data"]?["playerId"] as? NSNumber,
+      let isPlaying = body["data"]?["playing"] as? Bool,
       let webView = BraveWebView.from(tab: tab)
     {
       if isPlaying {
-        webView.notifyTabDidStartPlayingMedia()
+        webView.notifyTabDidStartPlayingMedia(playerId.intValue)
       } else {
-        webView.notifyTabDidStopPlayingMedia()
+        webView.notifyTabDidStopPlayingMedia(playerId.intValue)
       }
     }
   }

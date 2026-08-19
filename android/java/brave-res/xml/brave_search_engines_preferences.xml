@@ -24,7 +24,7 @@
             android:fragment="org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment"
             android:key="quick_search_engine"
             android:order="3"
-            android:title="@string/quick_search_engines_with_hyphen"/>
+            android:title="@string/quick_search_engines"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="show_autocomplete_in_address_bar"
             android:title="@string/show_autocomplete_in_address_bar"

@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 
 namespace sidebar {
 FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
@@ -34,7 +35,6 @@ class BraveMultiContentsView : public MultiContentsView {
                          std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
   void SetWebPanelContents(content::WebContents* web_contents);
   bool IsWebPanelVisible() const;
@@ -43,6 +43,14 @@ class BraveMultiContentsView : public MultiContentsView {
   void SetWebPanelOnLeft(bool left);
 
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
+
+  // Notifies the multi-contents view that the browser's active content domain
+  // display state has changed.
+  void OnShowActiveContentsDomainChanged();
+
+  // Updates the contents area corner radii for the hosted contents areas, based
+  // on the specified corner radii for the multi-contents view as a whole.
+  void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
 
   // MultiContentsView:
   // Give web panel's ContentsContainerView/ContentsWebView if
@@ -72,7 +80,8 @@ class BraveMultiContentsView : public MultiContentsView {
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
-    return contents_container_views_;
+    return std::vector<ContentsContainerView*>(
+        contents_container_views_.begin(), contents_container_views_.end());
   }
 
   int web_panel_width_ = 0;

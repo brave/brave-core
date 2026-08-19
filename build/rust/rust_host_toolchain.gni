@@ -17,7 +17,7 @@ if (host_os == "mac" && current_toolchain == host_toolchain) {
   import("//build/config/clang/clang.gni")
   import("//build/config/mac/mac_sdk.gni")
 
-  _clang_bin = rebase_path("$clang_base_path/bin")
+  _clang_bin = rebase_path("$clang_base_path/bin", root_build_dir)
 
   assert(host_cpu == "arm64" || host_cpu == "x64")
   if (host_cpu == "arm64") {
@@ -28,18 +28,18 @@ if (host_os == "mac" && current_toolchain == host_toolchain) {
 
   rust_host_inputs += [ "//brave/build/rust/rust_host_linker.py" ]
   rust_host_response_file_contents += [
-    "AR=$_clang_bin/llvm-ar",
+    "AR=abs@$_clang_bin/llvm-ar",
 
     # Route the host link through a wrapper that drives clang with the hermetic
     # `ld64.lld`. This is `_LINKER` rather than a rustflag deliberately: when
     # cargo cross-compiles (e.g. `rust_to_wasm`), only `_LINKER` reaches the
     # host build scripts without leaking into the target link. See the wrapper's
     # module docstring for the full rationale.
-    "CARGO_TARGET_${_rust_host_triple}_LINKER=" +
-        rebase_path("//brave/build/rust/rust_host_linker.py"),
-    "CC=$_clang_bin/clang",
-    "CXX=$_clang_bin/clang++",
+    "CARGO_TARGET_${_rust_host_triple}_LINKER=abs@" +
+        rebase_path("//brave/build/rust/rust_host_linker.py", root_build_dir),
+    "CC=abs@$_clang_bin/clang",
+    "CXX=abs@$_clang_bin/clang++",
     "MACOSX_DEPLOYMENT_TARGET=$mac_deployment_target",
-    "SDKROOT=" + rebase_path(mac_sdk_path),
+    "SDKROOT=abs@" + rebase_path(mac_sdk_path, root_build_dir),
   ]
 }

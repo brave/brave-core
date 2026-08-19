@@ -8,7 +8,7 @@ import { LoadingSkeleton } from '../components/shared/loading-skeleton/index'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import { mockNetwork } from '../common/constants/mocks'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
-import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
+import { NftsEmptyState } from '../page/screens/nfts/components/nfts_empty_state/nfts_empty_state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { NftScreen } from '../nft/components/nft-details/nft-screen'
 import {
@@ -16,7 +16,9 @@ import {
   LayoutCardWrapper,
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { TabOption, Tabs } from '../components/shared/tabs/tabs'
-import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
+import {
+  AutoDiscoveryEmptyState, //
+} from '../page/screens/nfts/components/auto_discovery_empty_state/auto_discovery_empty_state'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
 import { marketGridHeaders } from '../options/market-data-headers'
 import { coinMarketMockData } from './mock-data/mock-coin-market-data'

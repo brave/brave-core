@@ -40,6 +40,7 @@
   std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab) \
       const override;                                               \
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;   \
+  bool ShouldAlwaysShowMiniTabAccent() const override;              \
   bool CanCloseTabViaMiddleButtonClick() const override;            \
   bool CanPaintThrobberToLayer()
 

@@ -117,7 +117,9 @@ def maybe_clean_node_modules(project_dir: str) -> None:
 
 def run_pnpm(argv: Sequence[str]) -> int:
     cmd = translate_to_pnpm(argv)
-    print(f'Redirecting to pnpm: {" ".join(cmd)}', file=sys.stderr)
+    is_silent = '--silent' in argv
+    if not is_silent:
+        print(f'Redirecting to pnpm: {" ".join(cmd)}', file=sys.stderr)
     return subprocess.run(cmd, check=False).returncode
 
 

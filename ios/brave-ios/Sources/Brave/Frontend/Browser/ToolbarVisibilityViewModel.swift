@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Combine
 import Foundation
 import SwiftUI
 import UIKit
@@ -20,26 +21,14 @@ import UIKit
 /// The behaviour of how toolbars collapse expand can be broken down into a few rules based on bar location
 /// and user actions:
 ///
-/// **Top Bar**
-///
-/// 1. If the user drags from the top of the scroll view, the bar will always interactively collapse/expand
-///    to match the top edge of the contents.
-/// 2. If the current toolbar state is collapsed, when the user ends a drag the toolbar can expand if the
-///    direction of their scroll is upwards and meets a distance criteria based on velocity.
-/// 3. If the current toolbar state is expanded, when the user scrolls downwards the toolbars will
-///    interactively collapse until fully transitioned if there is space to do so. When a transition is
-///    complete, the toolbar state is flipped and no further drag will cause interactive expansion.
-/// 4. Tapping the status bar will expand the toolbars if collapsed. In this case of mobile Safari, tapping
-///    the collapsed URL bar also expands the toolbars but this will be up to the UI to handle by setting
-///    ``toolbarState`` itself if some collapsed URL bar UI exists.
-///
-/// **Bottom Bar**
-///
-/// 1. If the user drags, toolbars will always interactively collapse/expand until the ``transitionDistance``
-///    is met, at which point it will immediately collapse/expand. This is true for both scroll directions and
-///    is much simpler than top bar behaviors.
-/// 2. In the case of mobile Safari, tapping the collapsed URL bar will expand the toolbars. This will be up
-///    to the UI to handle by setting ``toolbarState`` itself if some collapsed URL bar UI exists.
+/// - Starting a drag may begin an interactive transition to the opposite toolbar state depending
+///   on direction. If a user scrolls down the page for instance the toolbar will transition to
+///   collapsed and the same is for the oppopsite (scrolling up to expand)
+/// - The interactive transition is based on the starting drag location. If a user scrolls down the
+///   page without lifting their finger and drags back up the toolbar may transition back to the
+///   expanded state.
+/// - If the toolbar state is expanded and they attempt to scroll near the bottom of the page,
+///   toolbar will not interactively collapse.
 @MainActor class ToolbarVisibilityViewModel: ObservableObject {
 
   /// Creates a view model with an estimation of the travel distance.
@@ -111,6 +100,12 @@ import UIKit
   /// When this is set to `nil`, the current scroll view's content height and ``transitionDistance`` will
   /// determine if the toolbar can collapse.
   var minimumCollapsableContentHeight: CGFloat?
+
+  /// A minimum transition distance from the bottom of the page to allow collapsing the toolbar
+  ///
+  /// If this is set to `nil`, ``transitionDistance`` will be used to determine if the toolbar can
+  /// collapse near the bottom edge of the scroll view.
+  var minimumCollapsableTransitionDistance: CGFloat?
 
   /// A snapshot in time for a scrolling container.
   ///
@@ -197,36 +192,22 @@ import UIKit
     }
 
     let ty = pan.yTranslation
-    let normalizedOffset = snapshot.contentOffset.y + snapshot.contentInset.top
-    let isRubberBandingBottomEdge =
-      snapshot.contentOffset.y + snapshot.frameHeight > snapshot.contentHeight
-    // If we're not starting from 0 and are expanded then we actually want to handle it the same way as from
-    // further down the page
-    if normalizedOffset < transitionDistance,
-      normalizedOffset - ty == 0 || toolbarState == .collapsed
-    {
-      // content offset of scroll view: 0 -> transitionDistance is always interactive
-      var progress = max(0.0, min(1.0, normalizedOffset / transitionDistance))
-      if toolbarState == .collapsed {
-        progress = 1 - progress
+    let isDraggingNearBottom =
+      initialSnapshot.map {
+        $0.contentOffset.y + $0.contentInset.top + $0.frameHeight >= $0.contentHeight
+          - (minimumCollapsableTransitionDistance ?? transitionDistance)
+      } ?? false
+    let progress = -ty / transitionDistance
+    if progress > 0, toolbarState == .expanded, !isDraggingNearBottom {
+      interactiveTransitionProgress = max(0, min(1, progress))
+      if interactiveTransitionProgress == 1 {
+        toolbarState = .collapsed
       }
-      interactiveTransitionProgress = progress
-    } else if toolbarState == .expanded {
-      // if expanded: collapsing when scrolling down
-      //   - interactively collapses on the way down and up based on y-translation
-      //   - once it has fully collapsed though scrolling back up does nothing until touch up
-      //   - don't shrink if we're near the bottom and don't have enough space to collapse
-      let startOffset = normalizedOffset + ty
-      if startOffset + snapshot.frameHeight <= snapshot.contentHeight - transitionDistance,
-        !isRubberBandingBottomEdge
-      {
-        let progress = max(0.0, min(1.0, -ty / transitionDistance))
-        interactiveTransitionProgress = progress
+    } else if progress < 0, toolbarState == .collapsed {
+      interactiveTransitionProgress = max(0, min(1, -progress))
+      if interactiveTransitionProgress == 1 {
+        toolbarState = .expanded
       }
-    }
-
-    if interactiveTransitionProgress == 1 {
-      toolbarState.inverse()
     }
   }
 
@@ -254,6 +235,9 @@ import UIKit
     let isRubberBandingBottomEdge =
       initialSnapshot.contentOffset.y + snapshot.frameHeight >= snapshot.contentHeight
       && isScrollingDown
+    let isDraggingNearBottom =
+      projectedOffset + snapshot.frameHeight >= snapshot.contentHeight
+      - (minimumCollapsableTransitionDistance ?? transitionDistance)
     var resolvedState = toolbarState
     switch toolbarState {
     case .collapsed:
@@ -268,7 +252,7 @@ import UIKit
       }
     case .expanded:
       if snapshot.isDecelerating, velocity < 0, abs(projectedOffset) > transitionDistance,
-        !isRubberBandingBottomEdge
+        !isRubberBandingBottomEdge, !isDraggingNearBottom
       {
         resolvedState = .collapsed
       }

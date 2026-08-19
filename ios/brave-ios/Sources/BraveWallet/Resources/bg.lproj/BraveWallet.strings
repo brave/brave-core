@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Преглед в „Активност“";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave ще бъде конфигурираната RPC услуга за Ethereum, която по подразбиране е Chainstack, за да установява имена на .crypto (както и %1$@) домейни, които са в Unstoppable Domains. Brave скрива IP адреса ти. Ако разрешиш това, Chainstack ще види, че някой се опитва да посети тези домейни, но само толкова. Виж <a href=%2$@>%3$@</a> и <a href=%4$@>%5$@</a> на Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "имена на домейни, които са в Unstoppable Domains. Brave скрива IP адреса ти. Ако разрешиш това, Chainstack ще види, че някой се опитва да посети тези домейни, но само толкова. Виж <a href=%1$@>%2$@</a> и <a href=%3$@>%4$@</a> на Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave ще бъде конфигурираната Ethereum RPC услуга, която по подразбиране използва Chainstack, за да установи:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ още";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Активиране на поддръжката на Unstoppable Domains в Brave?";

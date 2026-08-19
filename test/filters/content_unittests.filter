@@ -46,6 +46,8 @@
 -WebUIURLLoaderFactoryTest.RangeRequest/4
 
 # These tests fail because kPrerender2 feature is disabled.
+-AllGroupScalingCombinations/PrerenderHostRegistryStatefulPerGroupTest.CriticalMemoryPressure_SafetyNet/*
+-PrerenderHostRegistryLegacyMemoryControlsTest.*
 -PrerenderHostRegistryTest.*
 -PrerenderHostRegistryTest.*
 -PrerenderHostTest.*

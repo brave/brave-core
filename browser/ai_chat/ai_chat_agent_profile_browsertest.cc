@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -30,7 +31,6 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/profiles/profile_view_utils.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
@@ -64,7 +64,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     // Browser should never launch with the AI Chat profile
     if (browser()) {
-      ASSERT_FALSE(browser()->profile()->IsAIChatAgent());
+      ASSERT_FALSE(browser()->GetProfile()->IsAIChatAgent());
     }
   }
 
@@ -75,9 +75,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     if (should_open_panel) {
       side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
     }
-    auto* side_panel_web_contents =
-        side_panel_coordinator->GetWebContentsForTest(
-            SidePanelEntry::Id::kChatUI);
+    auto* side_panel_web_contents = GetSidePanelWebContents(browser);
     ASSERT_TRUE(side_panel_web_contents);
     auto* web_ui = side_panel_web_contents->GetWebUI();
     ASSERT_TRUE(web_ui);
@@ -112,7 +110,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
     return browser_found;
   }
 
-  Profile* GetProfile() { return browser()->profile(); }
+  Profile* GetProfile() { return browser()->GetProfile(); }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -141,18 +139,18 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   EXPECT_EQ(opened_browser, ai_chat_browser);
 
   // The agent profile should have inherited the opt-in from the source profile.
-  EXPECT_TRUE(HasUserOptedIn(ai_chat_browser->profile()->GetPrefs()));
+  EXPECT_TRUE(HasUserOptedIn(ai_chat_browser->GetProfile()->GetPrefs()));
 
   // Verify the profile is reported as the AI Chat profile, although it is
   // already used in FindAIChatBrowser - that could change and we want to make
   // sure IsAIChatContentAgentProfile is explicitly tested.
-  EXPECT_TRUE(ai_chat_browser->profile()->IsAIChatAgent());
+  EXPECT_TRUE(ai_chat_browser->GetProfile()->IsAIChatAgent());
   // Verify the profile path matches the AI Chat profile path
-  EXPECT_TRUE(ai_chat_browser->profile()->GetPath().BaseName().value() ==
+  EXPECT_TRUE(ai_chat_browser->GetProfile()->GetPath().BaseName().value() ==
               brave::kAIChatAgentProfileDir);
   // Verify the built-in profile title is set as the local user name
   ProfileAttributesEntry* profile_attributes =
-      GetProfileAttributesFromProfile(ai_chat_browser->profile());
+      GetProfileAttributesFromProfile(ai_chat_browser->GetProfile());
   EXPECT_EQ(u"AI browsing", profile_attributes->GetLocalProfileName());
 
   // Verify the AI Chat browser has the side panel opened to Chat UI
@@ -169,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
 
   // Verify content agent tools are available in the agent profile
   auto* agent_ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(ai_chat_browser->profile());
+      AIChatServiceFactory::GetForBrowserContext(ai_chat_browser->GetProfile());
   ASSERT_NE(agent_ai_chat_service, nullptr);
   auto* agent_conversation = agent_ai_chat_service->CreateConversation();
 
@@ -228,11 +226,11 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   Browser* ai_chat_browser = FindAIChatBrowser();
   ASSERT_TRUE(ai_chat_browser);
   EXPECT_EQ(opened_browser, ai_chat_browser);
-  EXPECT_TRUE(ai_chat_browser->profile()->IsAIChatAgent());
+  EXPECT_TRUE(ai_chat_browser->GetProfile()->IsAIChatAgent());
 
   // Since no other profile has opted in, the agent profile should not be opted
   // in either; the user should opt in via the agent profile's own flow.
-  EXPECT_FALSE(HasUserOptedIn(ai_chat_browser->profile()->GetPrefs()));
+  EXPECT_FALSE(HasUserOptedIn(ai_chat_browser->GetProfile()->GetPrefs()));
 }
 
 // Test that multiple calls to OpenBrowserWindowForAIChatAgentProfile work
@@ -309,13 +307,13 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   Browser* agent_browser =
       CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
   ASSERT_TRUE(agent_browser);
-  ASSERT_TRUE(agent_browser->profile()->IsAIChatAgent());
+  ASSERT_TRUE(agent_browser->GetProfile()->IsAIChatAgent());
 
   // The agent profile must have inherited the source profile's enabled AI Chat
   // policy, so the service is available and the side panel can be shown.
-  EXPECT_TRUE(IsAIChatEnabled(agent_browser->profile()->GetPrefs()));
+  EXPECT_TRUE(IsAIChatEnabled(agent_browser->GetProfile()->GetPrefs()));
   EXPECT_NE(
-      AIChatServiceFactory::GetForBrowserContext(agent_browser->profile()),
+      AIChatServiceFactory::GetForBrowserContext(agent_browser->GetProfile()),
       nullptr);
   VerifyAIChatSidePanelShowing(agent_browser);
 }
@@ -355,9 +353,9 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   Browser* agent_browser =
       CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
   ASSERT_TRUE(agent_browser);
-  ASSERT_TRUE(agent_browser->profile()->IsAIChatAgent());
-  ASSERT_EQ(agent_browser->profile()->GetPath(), agent_path);
-  EXPECT_TRUE(IsAIChatEnabled(agent_browser->profile()->GetPrefs()));
+  ASSERT_TRUE(agent_browser->GetProfile()->IsAIChatAgent());
+  ASSERT_EQ(agent_browser->GetProfile()->GetPath(), agent_path);
+  EXPECT_TRUE(IsAIChatEnabled(agent_browser->GetProfile()->GetPrefs()));
   VerifyAIChatSidePanelShowing(agent_browser);
 }
 
@@ -406,9 +404,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
                                  const std::string& selector) {
     // TODO(https://github.com/brave/brave-browser/issues/48165): This would be
     // nicer in an interactive_uitest.
-    auto* side_panel_web_contents =
-        SidePanelCoordinator::From(browser)->GetWebContentsForTest(
-            SidePanelEntry::Id::kChatUI);
+    auto* side_panel_web_contents = GetSidePanelWebContents(browser);
     constexpr char kWaitForAIChatRenderScript[] = R"(
       new Promise((resolve, reject) => {
         const TIMEOUT_SECONDS = 10;
@@ -449,9 +445,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
   }
 
   bool IsElementInSidePanel(Browser* browser, const std::string& selector) {
-    auto* side_panel_web_contents =
-        SidePanelCoordinator::From(browser)->GetWebContentsForTest(
-            SidePanelEntry::Id::kChatUI);
+    auto* side_panel_web_contents = GetSidePanelWebContents(browser);
     auto result = content::EvalJs(
         side_panel_web_contents,
         content::JsReplace("!!document.querySelector($1)", selector));
@@ -460,7 +454,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
 
   void WaitForAIChatRender(Browser* browser) {
     // Wait for initial data to be received and full UI to be rendered.
-    WaitForElementInSidePanel(browser, "[data-testid=\"main\"]");
+    WaitForElementInSidePanel(browser, "[data-testid=\"sidepanel-main\"]");
   }
 
   bool IsAIChatAgentProfileTooltipPresent(Browser* browser) {

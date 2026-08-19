@@ -28,6 +28,9 @@ DOC_PREFIXES = {
     "coding-standards": "CS",
     "coding-standards-memory": "CSM",
     "coding-standards-apis": "CSA",
+    # Rules moved out of build-system.md keep their original BS-* IDs so
+    # existing links resolve; new rules here get CSB-* IDs.
+    "coding-standards-buildflags": "CSB",
     "architecture": "ARCH",
     "build-system": "BS",
     "chromium-src-overrides": "CSRC",

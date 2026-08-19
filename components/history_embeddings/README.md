@@ -5,13 +5,13 @@ previously visited pages whose content is semantically close to the query, even
 when no keyword matches.
 
 Built on top of Chromium's `history_embeddings` + `passage_embeddings`
-components, but Brave swaps the embedder for a local Rust/Candle WASM model
-(EmbeddingGemma) and disables the upstream visibility filter that depends on
-remote classification.
+components, but Brave swaps the embedder for a local **EmbeddingGemma** model
+run natively through LiteRT, and disables the upstream visibility filter that
+depends on remote classification.
 
 This doc is the big-picture overview of the whole feature — upstream + Brave.
-For the Brave embedder's internals (process model, `BindPassageEmbedder` vs
-`LoadModels`, factory init handshake, file lifecycle), see
+For the Brave embedder's internals (the sandboxed utility, the LiteRT runner,
+component model delivery), see
 [`//brave/browser/history_embeddings/README.md`](../../browser/history_embeddings/README.md).
 
 ## Tunable parameters (defaults)
@@ -92,28 +92,24 @@ nav finishes
                   scheduling_embedder.{h,cc}
    │
    ▼
-[Brave]     BravePassageEmbeddingsServiceController::GetEmbeddings()
-            • verifies the EmbeddingGemma component is installed
-            • reads 5 model files (weights, weights_dense1,
-              weights_dense2, tokenizer, config) off disk
-            • hands them to BravePassageEmbeddingsService
+[Brave]     BravePassageEmbeddingsServiceController (base GetEmbeddings)
+            • resolves the EmbeddingGemma model from the component's litert/
+              subdir (set in OnLocalModelsReady)
+            • launches the sandboxed Passage Embeddings utility via
+              LitertServiceLauncher
+            • opens the .tflite + SentencePiece files and sends them via
+              LoadModels
             └─ //brave/browser/history_embeddings/
                   brave_passage_embeddings_service_controller.{h,cc}
    │
    ▼
-[Brave]     BraveBatchPassageEmbedder spins up a background WebContents
-            on a guest OTR profile pointing at chrome-untrusted://local-ai.
-            That page loads the WASM bundle, instantiates Gemma3Embedder,
-            and registers a PassageEmbedderFactory back over mojo.
-            └─ //brave/browser/history_embeddings/
-                  brave_batch_passage_embedder.{h,cc}
-                  brave_passage_embeddings_service.{h,cc}
-   │
-   ▼
-[WASM]      Gemma3Embedder.ComputeEmbedding(passage) → 768-dim vector
-            (Brave runs this one passage at a time, not batched)
-            └─ //brave/components/local_ai/resources/
-                  candle_embedding_gemma/  (Rust + WASM bundle)
+[utility]   PassageEmbedderImpl::BuildExecutionTask (chromium_src override)
+            builds a LitertModelRunner around the loaded .tflite and runs
+            EmbeddingGemma on LiteRT's CompiledModel → 768-dim vector
+            └─ //brave/services/passage_embeddings/
+                  litert_model_runner.{h,cc}
+            └─ //brave/chromium_src/services/passage_embeddings/
+                  passage_embedder_impl.cc
    │
    ▼
 [browser]   HistoryEmbeddingsService::OnPassagesEmbeddingsComputed()
@@ -175,7 +171,7 @@ HistoryEmbeddingsService::Search(query, time_range, count, ...)
    ├─ reject if query has < 2 words
    │
    ▼
-embed the query through the same WASM pipeline as indexing
+embed the query through the same LiteRT pipeline as indexing
 (priority = UserInitiated, jumps the queue)
    └─ //components/passage_embeddings/core/scheduling_embedder.{h,cc}
        → //brave/browser/history_embeddings/
@@ -294,49 +290,48 @@ semantically but contain most of the query words can still surface.
 
 ## How Brave differs from upstream
 
-| Upstream                                                                  | Brave                                                                                                                                                |
-| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TFLite model delivered via OptimizationGuide (server fetch)               | Static Rust/Candle **EmbeddingGemma** model delivered via component updater, run as WASM                                                             |
-| Embedder runs in a sandboxed utility process, talks mojo                  | Embedder runs in a **dedicated renderer process** (background WebContents on a guest OTR profile, shown as "Tool: On-Device AI" in the task manager) |
-| PageContentAnnotationsService filters low-visibility pages out of results | Visibility filter bypassed — `SynthesizePassingVisibilityResults()` returns 1.0 for everything                                                       |
-| `kHistoryEmbeddings` / `kPassageEmbedder` enabled by Finch                | Both DISABLED_BY_DEFAULT; user opts in via `chrome://flags`. brave-variations study tunes word-match params for opt-in users (see above)             |
-| `search_score_threshold` from model metadata, fallback 0.9                | Hardcoded **0.45** in `GetEmbedderMetadata()`                                                                                                        |
-| Answerer uses OptimizationGuide-delivered model                           | Same plumbing, but gated behind the flag                                                                                                             |
+| Upstream                                                                  | Brave                                                                                                                                    |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| TFLite model delivered via OptimizationGuide (server fetch)               | **EmbeddingGemma** `.tflite` delivered via component updater, run natively through LiteRT                                                |
+| Embedder runs in a sandboxed utility process, talks mojo                  | Same sandboxed utility; Brave only swaps the executor inside it (LiteRT `CompiledModel` instead of upstream's TFLite executor)           |
+| PageContentAnnotationsService filters low-visibility pages out of results | Visibility filter bypassed — `SynthesizePassingVisibilityResults()` returns 1.0 for everything                                           |
+| `kHistoryEmbeddings` / `kPassageEmbedder` enabled by Finch                | Both DISABLED_BY_DEFAULT; user opts in via `chrome://flags`. brave-variations study tunes word-match params for opt-in users (see above) |
+| `search_score_threshold` from model metadata, fallback 0.9                | Hardcoded **0.45** in `GetEmbedderMetadata()`                                                                                            |
+| Answerer uses OptimizationGuide-delivered model                           | Same plumbing, but gated behind the flag                                                                                                 |
 
 ### Brave-side code
 
 - [`//brave/browser/history_embeddings/`](../../browser/history_embeddings/README.md)
-  — the local embedder: controller, in-process service, batch embedder driving
-  the WASM renderer. See its README for the full breakdown.
+  — the local embedder: the controller that launches the sandboxed utility and
+  resolves the component model. See its README for the full breakdown.
+- `//brave/services/passage_embeddings/` — `LitertModelRunner`, the LiteRT
+  `CompiledModel` execution engine that runs EmbeddingGemma inside the utility.
 - `//brave/browser/history_embeddings/`
   - `brave_history_embeddings_service.{h,cc}` — subclasses upstream's
     `HistoryEmbeddingsService` to short-circuit the visibility step.
 - `//brave/components/history_embeddings/content/`
   - `brave_history_embeddings_helpers.h` —
     `SynthesizePassingVisibilityResults()`.
-- `//brave/components/local_ai/resources/candle_embedding_gemma/` — Rust crate
-  that builds to WASM. Uses `candle-core`, `candle-nn`, `tokenizers`,
-  `safetensors`.
 - `//brave/chromium_src/`
   - Shims that inject `virtual` and `friend` declarations into upstream headers
     so the Brave singleton can subclass cleanly without patches.
-  - Default-disables both feature flags.
-  - Swaps the keyed service factory to instantiate
+  - Injects `LitertModelRunner` into `PassageEmbedderImpl::BuildExecutionTask`
+    so the utility runs EmbeddingGemma on LiteRT.
+  - Default-disables the upstream feature flags; the brave://history toggle opts
+    in. Swaps the keyed service factory to instantiate
     `BraveHistoryEmbeddingsService`.
 
 ### Process model
 
-- Browser-side controller and the mojo `PassageEmbedder` impl live in the
-  browser process — no extra utility process is launched.
-- Actual model execution runs in a **separate renderer process** hosting a
-  background WebContents on a guest OTR profile, pointed at
-  `chrome-untrusted://local-ai`. That process loads the WASM bundle and runs the
-  Candle/Gemma inference; it shows up in Chrome's task manager as "Tool:
-  On-Device AI".
-- Communication between the browser and that renderer is mojo, same as any other
-  renderer.
-- Sandbox: renderer sandbox + `chrome-untrusted` origin (no extension APIs, no
-  privileged bindings).
+- The controller lives in the browser process and launches the sandboxed
+  **Passage Embeddings utility process**, same as upstream.
+- Model execution runs inside that utility: the chromium_src-overridden
+  `PassageEmbedderImpl::BuildExecutionTask` runs EmbeddingGemma on LiteRT's
+  `CompiledModel` (CPU backend).
+- Communication is the standard `PassageEmbeddingsService` mojo interface; the
+  browser opens the model files and passes them via `LoadModels`.
+- Sandbox: the utility runs in the on-device-model service sandbox — no renderer
+  or `chrome-untrusted` origin is involved.
 
 ---
 
@@ -351,6 +346,6 @@ semantically but contain most of the query words can still surface.
 - 0.45 is the entire gate. Tuning it is the most direct lever for
   precision/recall.
 - Visibility is not a factor in Brave — anything indexed can be returned.
-- The query path uses the **same WASM embedder** as indexing, just at
+- The query path uses the **same LiteRT embedder** as indexing, just at
   `UserInitiated` priority. First search after launch can be slow because the
-  WASM page has to load and the model has to deserialize.
+  utility has to launch and compile the model.

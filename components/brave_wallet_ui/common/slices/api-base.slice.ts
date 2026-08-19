@@ -44,7 +44,6 @@ export function createWalletApiBase() {
       'PriceHistory',
       'PricesHistory',
       'Transactions',
-      'TransactionSimulationsOptIn',
       'UserBlockchainTokens',
       'NftDiscoveryEnabledStatus',
       'BraveRewards-Info',

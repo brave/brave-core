@@ -201,13 +201,13 @@ The check `CheckSettingsChanges` in `src/PRESUBMIT.py` verifies:
 Run locally against specific files:
 
 ```bash
-npm run presubmit -- --files "path/to/MyFragment.java"
+pnpm run presubmit --files "path/to/MyFragment.java"
 ```
 
 Run against multiple files (semicolon-separated):
 
 ```bash
-npm run presubmit -- --files "path/to/File1.java;path/to/File2.java"
+pnpm run presubmit --files "path/to/File1.java;path/to/File2.java"
 ```
 
 ---

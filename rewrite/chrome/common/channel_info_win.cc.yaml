@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Report the channel name in official Brave builds
+
+      Chrome only reports a channel name (beta, dev, ...) for official Google
+      Chrome builds. Brave is never GOOGLE_CHROME_BRANDING, so this is always
+      an empty-string branch unless we use OFFICIAL_BUILD instead, so Brave's
+      official builds report their channel the same way.
+    regex:
+      re_pattern: 'BUILDFLAG\(GOOGLE_CHROME_BRANDING\)'
+      replace: 'defined(OFFICIAL_BUILD)'

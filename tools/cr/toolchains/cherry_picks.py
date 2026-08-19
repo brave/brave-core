@@ -36,12 +36,15 @@ def _check_call(*command,
                 cwd=None,
                 env=None,
                 check=True,
-                capture_output=False):
+                capture_output=False,
+                timeout=None,
+                input=None):  # pylint: disable=redefined-builtin
     """Run *command* as a subprocess, logging the invocation.
 
-    Shared subprocess helper for the toolchain build scripts in this directory
-    (`build_rust_toolchain`, `build_xcode_toolchain`, `ephemeral_xcode`), which
-    all import it rather than carrying their own copy.
+    Shared subprocess helper for every script in this directory that shells
+    out (`build_windows_toolchain`, `build_xcode_toolchain`,
+    `build_rust_toolchain`, `ephemeral_xcode`, `toolchain_publish`), which all
+    import it rather than carrying their own copy.
 
     Logs the full command string at INFO level before executing it.  Stdout
     and stderr are inherited from the parent process (so subprocess output
@@ -59,6 +62,9 @@ def _check_call(*command,
         check: Raise `CalledProcessError` on a non-zero exit when True.
         capture_output: Capture stdout/stderr (as text) instead of inheriting
             the parent's streams.
+        timeout: Optional number of seconds to allow the subprocess to run
+            before it is killed. `None` (the default) waits indefinitely.
+        input: Optional text piped to the subprocess's stdin.
 
     Returns:
         The `subprocess.CompletedProcess` for the invocation.  When
@@ -68,6 +74,8 @@ def _check_call(*command,
     Raises:
         subprocess.CalledProcessError: If `check` is True and the process exits
             with a non-zero return code.
+        subprocess.TimeoutExpired: If `timeout` is given and the process is
+            still running once it elapses.
         RuntimeError: On Windows, if the command cannot be resolved to an
         executable path.
     """
@@ -88,6 +96,8 @@ def _check_call(*command,
                           env=env,
                           check=check,
                           capture_output=capture_output,
+                          timeout=timeout,
+                          input=input,
                           text=True,
                           errors='replace')
 
@@ -98,7 +108,7 @@ def cherry_picks(repo_dir: str | Path,
                  metadata_overrides: dict[str, str] | None = None):
     """Context manager: apply upstream cherry-picks for the build's duration.
 
-    Ensures every commit in *commits* is in *repo_dir*'s history while the build
+    Ensures every commit's changes are present in *repo_dir* while the build
     runs, then restores the original HEAD afterwards. Used to pull in upstream
     fixes the checked-out ref may predate — for example the commit that pins the
     git author/committer metadata `tools/clang/scripts/build.py` stamps onto its
@@ -114,8 +124,8 @@ def cherry_picks(repo_dir: str | Path,
 
     Protocol:
     1. For each commit, fetch it if its object is missing (the ref may have
-       branched before it landed), then skip it if it is already reachable
-       from HEAD.
+       branched before it landed), then skip it if its change is already
+       present in the checkout's tree.
     2. If nothing needs applying, `yield` immediately and leave the checkout
        untouched — there is nothing to clean up.
     3. Otherwise cherry-pick the remaining commits — with `metadata_overrides`
@@ -126,10 +136,13 @@ def cherry_picks(repo_dir: str | Path,
     if metadata_overrides is None:
         metadata_overrides = GIT_METADATA_OVERRIDES
 
-    def _run_git(*args,
-                 check: bool = True,
-                 capture_output: bool = False,
-                 env: dict | None = None) -> subprocess.CompletedProcess:
+    def _run_git(
+        *args,
+        check: bool = True,
+        capture_output: bool = False,
+        env: dict | None = None,
+        input: str | None = None  # pylint: disable=redefined-builtin
+    ) -> subprocess.CompletedProcess:
         """Run `git -C <repo_dir> <args...>` via `_check_call`."""
         return _check_call('git',
                            '-C',
@@ -137,6 +150,7 @@ def cherry_picks(repo_dir: str | Path,
                            *args,
                            check=check,
                            capture_output=capture_output,
+                           input=input,
                            env=env)
 
     to_apply = []
@@ -150,17 +164,17 @@ def cherry_picks(repo_dir: str | Path,
             logging.info('Fetching cherry-pick %s.', commit)
             _run_git('fetch', 'origin', commit)
 
-        # This tests commit *reachability*, not whether the change is still
-        # effectively present. A commit that landed and was later reverted
-        # upstream is still an ancestor, so it is treated as applied and not
-        # re-picked. Acceptable for this curated list of upstream fixes;
-        # revisit if a pick can legitimately be reverted-then-wanted.
-        already_applied = _run_git('merge-base',
-                                   '--is-ancestor',
-                                   commit,
-                                   'HEAD',
+        # Commit-graph ancestry (`merge-base --is-ancestor`) can't be used
+        # reliably with a shallow clone, so check if the change is already
+        # present by attempting to reverse-apply the patch.
+        # If it applies cleanly in reverse, the change is already present.
+        patch = _run_git('show', commit, capture_output=True).stdout
+        already_applied = _run_git('apply',
+                                   '--reverse',
+                                   '--check',
                                    check=False,
-                                   capture_output=True).returncode == 0
+                                   capture_output=True,
+                                   input=patch).returncode == 0
         if already_applied:
             logging.info('Cherry-pick %s already present; skipping.', commit)
         else:

@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
+import org.chromium.brave_wallet.mojom.ZCashTokenType;
 import org.chromium.brave_wallet.mojom.ZecTxData;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -205,7 +206,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
         parsedTransaction.marketPrice = networkSpotPrice;
-        if (zecTxData != null && zecTxData.useShieldedPool) {
+        if (zecTxData != null
+                && (zecTxData.zcashTokenType == ZCashTokenType.ORCHARD
+                        || zecTxData.zcashTokenType == ZCashTokenType.IRONWOOD)) {
             parsedTransaction.mShielded = true;
         }
 

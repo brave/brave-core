@@ -102,6 +102,22 @@ void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
+    // Upload a non-fatal crash report so create/open failures are visible in
+    // Backtrace without crashing the browser.
+    SCOPED_CRASH_KEY_STRING64("BraveAds", "failure_reason",
+                              "Failed to create or open database");
+    SCOPED_CRASH_KEY_NUMBER(
+        "BraveAds", "status_code",
+        static_cast<int>(mojom_db_transaction_result->status_code));
+    if (const auto& sqlite_result =
+            mojom_db_transaction_result->sqlite_result) {
+      SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
+                              sqlite_result->code);
+      SCOPED_CRASH_KEY_STRING1024("BraveAds", "sqlite_diagnostic_info",
+                                  sqlite_result->diagnostic_info);
+    }
+    DUMP_WILL_BE_NOTREACHED();
+
     BLOG(0, "Failed to create or open database");
 
     NotifyFailedToCreateOrOpenDatabase();
@@ -153,8 +169,28 @@ void DatabaseManager::Create(ResultCallback callback) {
                                   std::move(callback)));
 }
 
-void DatabaseManager::CreateCallback(ResultCallback callback, bool success) {
-  if (!success) {
+void DatabaseManager::CreateCallback(
+    ResultCallback callback,
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+  if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
+    // Upload a non-fatal crash report so create failures are visible in
+    // Backtrace without crashing the browser.
+    SCOPED_CRASH_KEY_NUMBER("BraveAds", "to_sqlite_schema_version",
+                            database::kVersionNumber);
+    SCOPED_CRASH_KEY_STRING64("BraveAds", "failure_reason",
+                              "Database creation failed");
+    SCOPED_CRASH_KEY_NUMBER(
+        "BraveAds", "status_code",
+        static_cast<int>(mojom_db_transaction_result->status_code));
+    if (const auto& sqlite_result =
+            mojom_db_transaction_result->sqlite_result) {
+      SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
+                              sqlite_result->code);
+      SCOPED_CRASH_KEY_STRING1024("BraveAds", "sqlite_diagnostic_info",
+                                  sqlite_result->diagnostic_info);
+    }
+    DUMP_WILL_BE_NOTREACHED();
+
     BLOG(0, "Failed to create database for schema version "
                 << database::kVersionNumber);
 
@@ -176,14 +212,33 @@ void DatabaseManager::RazeAndCreate(int from_version, ResultCallback callback) {
   BLOG(1, "Razing database for schema version " << from_version);
 
   database::Raze(base::BindOnce(&DatabaseManager::RazeAndCreateCallback,
-                                weak_factory_.GetWeakPtr(), std::move(callback),
-                                from_version));
+                                weak_factory_.GetWeakPtr(), from_version,
+                                std::move(callback)));
 }
 
-void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
-                                            int from_version,
-                                            bool success) {
-  if (!success) {
+void DatabaseManager::RazeAndCreateCallback(
+    int from_version,
+    ResultCallback callback,
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+  if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
+    // Upload a non-fatal crash report so raze failures are visible in
+    // Backtrace without crashing the browser.
+    SCOPED_CRASH_KEY_NUMBER("BraveAds", "from_sqlite_schema_version",
+                            from_version);
+    SCOPED_CRASH_KEY_STRING64("BraveAds", "failure_reason",
+                              "Database raze failed");
+    SCOPED_CRASH_KEY_NUMBER(
+        "BraveAds", "status_code",
+        static_cast<int>(mojom_db_transaction_result->status_code));
+    if (const auto& sqlite_result =
+            mojom_db_transaction_result->sqlite_result) {
+      SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
+                              sqlite_result->code);
+      SCOPED_CRASH_KEY_STRING1024("BraveAds", "sqlite_diagnostic_info",
+                                  sqlite_result->diagnostic_info);
+    }
+    DUMP_WILL_BE_NOTREACHED();
+
     BLOG(0, "Failed to raze database for schema version " << from_version);
     return std::move(callback).Run(/*success=*/false);
   }
@@ -223,11 +278,14 @@ void DatabaseManager::MaybeMigrate(int from_version, ResultCallback callback) {
                                    std::move(callback)));
 }
 
-void DatabaseManager::MigrateFromVersionCallback(int from_version,
-                                                 ResultCallback callback,
-                                                 bool success) {
+void DatabaseManager::MigrateFromVersionCallback(
+    int from_version,
+    ResultCallback callback,
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   const int to_version = database::kVersionNumber;
 
+  const bool success =
+      database::IsTransactionSuccessful(mojom_db_transaction_result);
   if (!success) {
     // Upload a non-fatal crash report so migration failures are visible in
     // Backtrace without crashing the browser.
@@ -236,6 +294,16 @@ void DatabaseManager::MigrateFromVersionCallback(int from_version,
     SCOPED_CRASH_KEY_NUMBER("BraveAds", "to_sqlite_schema_version", to_version);
     SCOPED_CRASH_KEY_STRING64("BraveAds", "failure_reason",
                               "Database migration failed");
+    SCOPED_CRASH_KEY_NUMBER(
+        "BraveAds", "status_code",
+        static_cast<int>(mojom_db_transaction_result->status_code));
+    if (const auto& sqlite_result =
+            mojom_db_transaction_result->sqlite_result) {
+      SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
+                              sqlite_result->code);
+      SCOPED_CRASH_KEY_STRING1024("BraveAds", "sqlite_diagnostic_info",
+                                  sqlite_result->diagnostic_info);
+    }
     DUMP_WILL_BE_NOTREACHED();
 
     BLOG(0, "Failed to migrate database from schema version "

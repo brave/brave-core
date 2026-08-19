@@ -16,7 +16,7 @@ ShellTemplate: object
 
 def pre_configure():
     FileUtils.GENERATED_FILE_HEADER = FileUtils.GENERATED_FILE_HEADER.replace(
-        "rerun configurator", "run 'npm run sync'")
+        "rerun configurator", "run 'pnpm run sync'")
 
 
 def merge_reproxy_cfg(reproxy_cfg):

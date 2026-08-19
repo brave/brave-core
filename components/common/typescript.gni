@@ -37,7 +37,7 @@ brave_common_web_compile_inputs = [
   "//brave/build/webpack/polyfill.ts",
   "//brave/build/webpack/webpack-ts-transformers.js",
   "//brave/build/webpack/gen-webpack-grd.ts",
-  "//brave/build/webpack/path-map.js",
+  "//brave/build/webpack/path-map.ts",
   "//brave/build/webpack/webpack-plugin-depfile.js",
   "//brave/build/webpack/xhr-compile-async-wasm-plugin.js",
   "//brave/build/webpack/plugins/ifdef-loader.ts",
@@ -215,7 +215,8 @@ template("transpile_web_ui") {
 
     # support multiple entry points and named bundle JS filename
     foreach(entry_point, invoker.entry_points) {
-      args += [ "--entry=" + entry_point[0] + "=" + entry_point[1] ]
+      args += [ "--entry=" + entry_point[0] + "=./" +
+                rebase_path(entry_point[1], "//brave") ]
       inputs += [ entry_point[1] ]
     }
 

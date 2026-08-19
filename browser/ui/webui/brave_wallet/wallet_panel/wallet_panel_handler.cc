@@ -13,8 +13,14 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
 
 // It's safe to bind the active webcontents when panel is created because
 // the panel will not be shared across tabs.
@@ -41,6 +47,26 @@ void WalletPanelHandler::CloseUI() {
   auto embedder = webui_controller_->embedder();
   if (embedder) {
     embedder->CloseUI();
+  }
+}
+
+void WalletPanelHandler::CloseSidePanel() {
+  content::WebContents* web_contents =
+      webui_controller_->web_ui()->GetWebContents();
+  if (!web_contents) {
+    return;
+  }
+
+  BrowserWindowInterface* browser =
+      webui::GetBrowserWindowInterface(web_contents);
+  if (!browser) {
+    return;
+  }
+
+  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  if (side_panel_ui &&
+      side_panel_ui->GetCurrentEntryId() == SidePanelEntryId::kWallet) {
+    side_panel_ui->Close();
   }
 }
 

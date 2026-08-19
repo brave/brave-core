@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_pass_key.h b/chrome/browser/ui/page_action/page_action_pass_key.h
-index 1c5c319b4050d21c313455242d0f9ac0a6a72a8c..74bbe102c4b6bc82e26d38594de11ec7cf20985b 100644
+index ce58aff6558ab43454329283011080b86e9c6080..c3593a8b7d3e7a23398e88de86bbfd3e835d56d2 100644
 --- a/chrome/browser/ui/page_action/page_action_pass_key.h
 +++ b/chrome/browser/ui/page_action/page_action_pass_key.h
-@@ -27,6 +27,7 @@ class PageActionPassKey {
+@@ -28,6 +28,7 @@ class PageActionPassKey {
    static PageActionPassKey PassKeyForTesting() { return PageActionPassKey(); }
  
   private:

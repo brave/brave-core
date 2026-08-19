@@ -37,7 +37,7 @@ void FireEventCallback(ResultCallback callback,
 }
 
 void MaybeCloseAllNotifications() {
-  if (!UserHasOptedInToNotificationAds()) {
+  if (!IsNotificationAdsEnabled()) {
     NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
   }
 }
@@ -79,7 +79,7 @@ void NotificationAdHandler::TriggerEvent(
       << "Should not be called with kServedImpression as this event is handled "
          "when calling TriggerEvent with kViewedImpression";
 
-  if (!UserHasOptedInToNotificationAds()) {
+  if (!IsNotificationAdsEnabled()) {
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -117,7 +117,7 @@ void NotificationAdHandler::OnNotifyDidInitializeAds() {
 }
 
 void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
-  if (DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+  if (DoesMatchNotificationAdsEnabledPrefPath(path)) {
     MaybeCloseAllNotifications();
 
     MaybeServeAtRegularIntervals();

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Consult IsMemoryAllocatorDumpNameInBraveAllowlist (defined in the
+      chromium_src override) first: it reports whether the name is one of
+      Brave's own exceptions, falling through to the upstream check otherwise.
+    preempt_function_impl:
+      function_name: IsMemoryAllocatorDumpNameInAllowlist
+      code: |-
+        if (IsMemoryAllocatorDumpNameInBraveAllowlist(name)) {
+          return true;
+        }

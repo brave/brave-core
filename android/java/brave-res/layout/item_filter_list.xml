@@ -50,6 +50,6 @@
           android:layout_height="1dp"
           app:layout_constraintTop_toBottomOf="@id/description_text"
           android:layout_marginTop="12dp"
-          android:background="@color/filter_divider_color"/>
+          android:background="?attr/colorOutline"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

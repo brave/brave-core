@@ -28,6 +28,15 @@
     "name": "cache"
   },
   {
+    "cmd": [
+      "echo",
+      "[WORKSPACE]/rc/tmp_tmp_1",
+      "[WORKSPACE]/rc/tmp_tmp_2",
+      "[WORKSPACE]/rc/unpacked_tmp_1"
+    ],
+    "name": "temp dirs"
+  },
+  {
     "name": "$result"
   }
 ]

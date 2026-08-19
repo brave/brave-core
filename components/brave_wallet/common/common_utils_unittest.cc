@@ -941,4 +941,21 @@ TEST(CommonUtils, GetNetworkForBitcoinAccount) {
                 mojom::AccountKind::kDerived, 123)));
 }
 
+TEST(CommonUtils, IsSnapsFeatureEnabled) {
+#if BUILDFLAG(ENABLE_SNAPS)
+  {
+    base::test::ScopedFeatureList enabled;
+    enabled.InitAndEnableFeature(features::kBraveWalletSnapsFeature);
+    EXPECT_TRUE(IsSnapsFeatureEnabled());
+  }
+  {
+    base::test::ScopedFeatureList disabled;
+    disabled.InitAndDisableFeature(features::kBraveWalletSnapsFeature);
+    EXPECT_FALSE(IsSnapsFeatureEnabled());
+  }
+#else
+  EXPECT_FALSE(IsSnapsFeatureEnabled());
+#endif
+}
+
 }  // namespace brave_wallet

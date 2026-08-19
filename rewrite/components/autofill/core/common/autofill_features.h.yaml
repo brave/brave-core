@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare kAutofillAiServerModel without a country restriction.
+
+      autofill_features.cc ships this feature as a plain, always-disabled
+      BASE_FEATURE on every platform, so the declaration must match: on
+      Android/iOS DECLARE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION expands to
+      BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS, which is a different
+      type (base::FeatureWithCountryRestriction) than the plain base::Feature
+      defined in the .cc, and the two must agree.
+    regex:
+      pattern: 'DECLARE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(kAutofillAiServerModel);'
+      replace: 'BASE_DECLARE_FEATURE(kAutofillAiServerModel);'

@@ -9,13 +9,18 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.View;
 
+import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceScreen;
+
 import org.chromium.base.Callback;
+import org.chromium.build.annotations.NonNull;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveSettingsPreferenceGroupAdapter;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
 import org.chromium.components.browser_ui.settings.SpinnerPreference;
@@ -25,6 +30,12 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 public class BraveClearBrowsingDataFragment extends ClearBrowsingDataFragment {
     ClearBrowsingDataCheckBoxPreference mClearAIChatDataCheckBoxPreference;
+
+    @Override
+    protected @NonNull PreferenceGroupAdapter onCreateAdapter(
+            @NonNull PreferenceScreen preferenceScreen) {
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen);
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

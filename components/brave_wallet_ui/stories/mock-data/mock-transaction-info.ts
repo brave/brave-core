@@ -474,20 +474,23 @@ export const mockZecSendTransaction: SerializableTransactionInfo = {
         {
           address: mockZecAccount.address,
           value: BigInt(10000000000000),
+          pool: BraveWallet.ZCashTokenType.kTransparent,
         },
       ],
       outputs: [
         {
           address: 'another-zec-address',
           value: BigInt(10000000000000),
+          pool: BraveWallet.ZCashTokenType.kTransparent,
         },
         {
           address: 'another-zec-address',
           value: BigInt(10000000000000),
+          pool: BraveWallet.ZCashTokenType.kTransparent,
         },
       ],
       to: 'another-Zec-address',
-      useShieldedPool: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
       memo: undefined,
       sendingMaxAmount: false,
     },

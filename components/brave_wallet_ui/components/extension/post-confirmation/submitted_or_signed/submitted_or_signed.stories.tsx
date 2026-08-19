@@ -25,7 +25,7 @@ import { TransactionSubmittedOrSigned } from './submitted_or_signed'
 
 // Styled Components
 import { LongWrapper } from '../../../../stories/style'
-import { PanelWrapper } from '../../../../panel/style'
+import { PanelWrapper } from '../../../../panel/panel_wrapper/panel_wrapper'
 
 export const _TransactionSubmittedOrSigned = {
   render: (args: StorybookTransactionArgs) => {
@@ -41,10 +41,7 @@ export const _TransactionSubmittedOrSigned = {
 
     return (
       <WalletPanelStory>
-        <PanelWrapper
-          width={390}
-          height={650}
-        >
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <TransactionSubmittedOrSigned
               onClose={() => alert('Close panel screen clicked.')}

@@ -73,7 +73,8 @@ class BraveFarblingBrowserTest : public InProcessBrowserTest,
   bool IsFarblingTokenResetEnabled() const { return GetParam(); }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   content::WebContents* contents() {
@@ -125,7 +126,7 @@ IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
   EXPECT_NE(plugins_str, "");
   // Write the current plugins list to a file in the profile directory.
   base::ScopedAllowBlockingForTesting allow_blocking;
-  base::FilePath temp_dir = browser()->profile()->GetPath();
+  base::FilePath temp_dir = browser()->GetProfile()->GetPath();
   base::FilePath output_file = temp_dir.AppendASCII(kNavigatorPluginsFilename);
   std::string result = plugins_str.ExtractString();
   base::WriteFile(output_file, result);
@@ -138,7 +139,7 @@ IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
   EXPECT_NE(plugins_str, "");
   // Read the plugins list from a file in the profile directory.
   base::ScopedAllowBlockingForTesting allow_blocking;
-  base::FilePath temp_dir = browser()->profile()->GetPath();
+  base::FilePath temp_dir = browser()->GetProfile()->GetPath();
   base::FilePath input_file = temp_dir.AppendASCII(kNavigatorPluginsFilename);
   std::string previous_value;
   EXPECT_TRUE(base::ReadFileToString(input_file, &previous_value));
@@ -174,8 +175,8 @@ IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
 
 IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
                        CheckBetweenNormalAndIncognitoProfile) {
-  auto* profile1 = browser()->profile();
-  auto* incognito_profile = CreateIncognitoBrowser(profile1)->profile();
+  auto* profile1 = browser()->GetProfile();
+  auto* incognito_profile = CreateIncognitoBrowser(profile1)->GetProfile();
 
   auto* shields_settings_service =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile1);
@@ -208,7 +209,7 @@ IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
-  auto* profile_1 = browser()->profile();
+  auto* profile_1 = browser()->GetProfile();
   ASSERT_TRUE(profile_1);
 
   // Create another profile.

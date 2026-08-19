@@ -1,0 +1,14 @@
+diff --git a/components/autofill/core/browser/studies/autofill_experiments.cc b/components/autofill/core/browser/studies/autofill_experiments.cc
+index 25d323673409585951d7edfb76159ab6f520b532..3397926772dc849189ab6cbb8edd0171747df30d 100644
+--- a/components/autofill/core/browser/studies/autofill_experiments.cc
++++ b/components/autofill/core/browser/studies/autofill_experiments.cc
+@@ -96,6 +96,9 @@ bool IsCreditCardUploadEnabled(
+     const std::string& user_country,
+     AutofillMetrics::PaymentsSigninState signin_state_for_metrics,
+     LogManager* log_manager) {
++  if ((true)) {
++    return false;
++  }
+   if (!sync_service) {
+     // If credit card sync is not active, we're not offering to upload cards.
+     autofill_metrics::LogCardUploadEnabledMetric(

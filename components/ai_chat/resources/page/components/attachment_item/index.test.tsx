@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import {
   AttachmentItem,
   AttachmentPageItem,
@@ -19,6 +19,11 @@ import * as Mojom from '../../../common/mojom'
 Object.defineProperty(URL, 'createObjectURL', {
   writable: true,
   value: jest.fn(() => 'mock-object-url'),
+})
+
+Object.defineProperty(URL, 'revokeObjectURL', {
+  writable: true,
+  value: jest.fn(),
 })
 
 describe('attachment item', () => {
@@ -194,6 +199,8 @@ describe('formatFileSize', () => {
   })
 })
 
+const MOCK_FILE_SIZE = 100
+
 describe('AttachmentUploadItems', () => {
   const createMockFile = (
     filename: string,
@@ -201,8 +208,8 @@ describe('AttachmentUploadItems', () => {
   ): Mojom.UploadedFile => ({
     filename,
     type,
-    data: new ArrayBuffer(100),
-    filesize: BigInt(100),
+    data: new Array(MOCK_FILE_SIZE).fill(0),
+    filesize: MOCK_FILE_SIZE,
     extractedText: undefined,
   })
 
@@ -211,7 +218,12 @@ describe('AttachmentUploadItems', () => {
       createMockFile('photo.jpg', Mojom.UploadedFileType.kImage),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     expect(screen.getByText('photo.jpg')).toBeInTheDocument()
   })
@@ -224,7 +236,12 @@ describe('AttachmentUploadItems', () => {
       ),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     expect(
       screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
@@ -248,7 +265,10 @@ describe('AttachmentUploadItems', () => {
     ]
 
     const { container } = render(
-      <AttachmentUploadItems uploadedFiles={uploadedFiles} />,
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
     )
 
     // Should only find one "CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE" title
@@ -260,6 +280,11 @@ describe('AttachmentUploadItems', () => {
     // Should only have one image rendered
     const images = container.querySelectorAll('img')
     expect(images).toHaveLength(1)
+
+    // Should sum the filesizes
+    const expectedFileSize = 300
+    const subtitle = container.querySelector('[data-key=subtitle]')
+    expect(subtitle).toHaveTextContent(expectedFileSize.toString())
   })
 
   it('renders mixed file types correctly', () => {
@@ -276,7 +301,12 @@ describe('AttachmentUploadItems', () => {
       createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    const { container } = render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     expect(screen.getByText('photo.jpg')).toBeInTheDocument()
     expect(
@@ -289,6 +319,12 @@ describe('AttachmentUploadItems', () => {
       'CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE',
     )
     expect(screenshotTitles).toHaveLength(1)
+
+    const fileSizeElements = container.querySelectorAll('[data-key=subtitle]')
+    expect(fileSizeElements).toHaveLength(3) // photo, screenshot, pdf
+    expect(fileSizeElements[0]).toHaveTextContent('100') // photo
+    expect(fileSizeElements[1]).toHaveTextContent('200') // screenshot
+    expect(fileSizeElements[2]).toHaveTextContent('100') // pdf
   })
 
   it('removes all full page screenshots when screenshot thumbnail remove is clicked', () => {
@@ -314,6 +350,7 @@ describe('AttachmentUploadItems', () => {
       <AttachmentUploadItems
         uploadedFiles={uploadedFiles}
         remove={mockRemove}
+        onPreview={jest.fn()}
       />,
     )
 
@@ -351,6 +388,7 @@ describe('AttachmentUploadItems', () => {
       <AttachmentUploadItems
         uploadedFiles={uploadedFiles}
         remove={mockRemove}
+        onPreview={jest.fn()}
       />,
     )
 
@@ -378,7 +416,12 @@ describe('AttachmentUploadItems', () => {
       ),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={jest.fn()}
+      />,
+    )
 
     // Regular screenshot should show with its original filename
     expect(screen.getByText('regular_screenshot.png')).toBeInTheDocument()
@@ -386,5 +429,51 @@ describe('AttachmentUploadItems', () => {
     expect(
       screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
     ).toBeInTheDocument()
+  })
+
+  it('calls onPreview when an image thumbnail is clicked', () => {
+    const onPreview = jest.fn()
+    const uploadedFiles = [
+      createMockFile('photo.jpg', Mojom.UploadedFileType.kImage),
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
+    ]
+
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={onPreview}
+      />,
+    )
+
+    const previewButtons = screen.getAllByRole('button', {
+      name: 'CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL',
+    })
+    expect(previewButtons).toHaveLength(1)
+
+    fireEvent.click(previewButtons[0])
+    expect(onPreview).toHaveBeenCalledTimes(1)
+    expect(onPreview).toHaveBeenCalledWith(uploadedFiles[0])
+  })
+
+  it('does not render a preview button for pdf or text files', () => {
+    const onPreview = jest.fn()
+    const uploadedFiles = [
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
+      createMockFile('notes.txt', Mojom.UploadedFileType.kText),
+    ]
+
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={onPreview}
+      />,
+    )
+
+    expect(
+      screen.queryByRole('button', {
+        name: 'CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL',
+      }),
+    ).not.toBeInTheDocument()
+    expect(onPreview).not.toHaveBeenCalled()
   })
 })

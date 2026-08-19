@@ -28,6 +28,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "url/url_constants.h"
 
 namespace {
 
@@ -127,17 +128,24 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
   }
 
   void ExpectPreloadWorks() {
+    GURL::Replacements upgrade_to_https;
+    upgrade_to_https.SetSchemeStr(url::kHttpsScheme);
     for (const auto* preloaded_host : {"brave.com", "accounts.google.com"}) {
       GURL url(base::StrCat({"http://", preloaded_host, "/simple.html"}));
       auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
       ASSERT_TRUE(rfh);
-      EXPECT_TRUE(rfh->GetLastCommittedURL().SchemeIsCryptographic());
+      // Compare the whole URL rather than just the scheme: a bare
+      // SchemeIsCryptographic() check can't tell an un-upgraded navigation
+      // apart from one that never committed and left the previous document in
+      // place.
+      EXPECT_EQ(rfh->GetLastCommittedURL(),
+                url.ReplaceComponents(upgrade_to_https));
     }
   }
 
   void NetworkContextAddHSTS(const std::string& host) {
     content::StoragePartition* partition =
-        browser()->profile()->GetDefaultStoragePartition();
+        browser()->GetProfile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
     partition->GetNetworkContext()->AddHSTS(
         host, base::Time::Now() + base::Days(1), false, run_loop.QuitClosure());
@@ -147,7 +155,7 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
   bool NetworkContextIsHSTSActiveForHostWithTopLevelNav(const std::string& host,
                                                         bool is_top_level_nav) {
     content::StoragePartition* partition =
-        browser()->profile()->GetDefaultStoragePartition();
+        browser()->GetProfile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
     bool result = false;
     partition->GetNetworkContext()->IsHSTSActiveForHost(
@@ -176,7 +184,7 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
 
   base::DictValue NetworkContextGetHSTSState(const std::string& host) {
     content::StoragePartition* partition =
-        browser()->profile()->GetDefaultStoragePartition();
+        browser()->GetProfile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
     base::DictValue result;
     partition->GetNetworkContext()->GetHSTSState(
@@ -191,7 +199,7 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
 
   bool NetworkContextDeleteDynamicDataForHost(const std::string& host) {
     content::StoragePartition* partition =
-        browser()->profile()->GetDefaultStoragePartition();
+        browser()->GetProfile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
     bool result = false;
     partition->GetNetworkContext()->DeleteDynamicDataForHost(

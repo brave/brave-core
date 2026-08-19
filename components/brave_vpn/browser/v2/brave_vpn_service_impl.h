@@ -16,17 +16,24 @@
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "build/build_config.h"
 
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
+
 class PrefService;
 
 namespace brave_vpn::v2 {
 
+class BraveVpnApiClient;
 class PurchasedStateManager;
 
 class BraveVpnServiceImpl : public BraveVpnService {
  public:
-  BraveVpnServiceImpl(PrefService* local_prefs,
-                      PrefService* profile_prefs,
-                      GetSkusServiceCallback skus_service_getter);
+  BraveVpnServiceImpl(
+      PrefService* local_prefs,
+      PrefService* profile_prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      GetSkusServiceCallback skus_service_getter);
   ~BraveVpnServiceImpl() override;
 
   BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
@@ -131,6 +138,7 @@ class BraveVpnServiceImpl : public BraveVpnService {
                                std::optional<std::string> description);
 
   const raw_ref<PrefService> profile_prefs_;
+  std::unique_ptr<BraveVpnApiClient> api_client_;
   std::unique_ptr<SkusServiceClient> skus_client_;
   std::unique_ptr<PurchasedStateManager> purchased_state_manager_;
   [[maybe_unused]] mojom::ConnectionState connection_state_;

@@ -128,8 +128,8 @@ public class BraveShieldsContentSettings {
      * Returns true if the per-site shields settings for siteUrl already match the global defaults.
      */
     public static boolean siteMatchesDefaults(Profile profile, String siteUrl) {
-        if (BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(siteUrl, profile)
-                != BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled("", profile)) {
+        if (BraveShieldsContentSettingsJni.get().isBraveShieldsEnabled(siteUrl, profile)
+                != BraveShieldsContentSettingsJni.get().isBraveShieldsEnabled("", profile)) {
             return false;
         }
         if (!BraveShieldsContentSettingsJni.get()
@@ -183,7 +183,7 @@ public class BraveShieldsContentSettings {
      */
     public static void resetSiteToDefaults(Profile profile, String siteUrl) {
         boolean defaultShieldsEnabled =
-                BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled("", profile);
+                BraveShieldsContentSettingsJni.get().isBraveShieldsEnabled("", profile);
         BraveShieldsContentSettingsJni.get()
                 .setBraveShieldsEnabled(defaultShieldsEnabled, siteUrl, profile);
 
@@ -258,7 +258,7 @@ public class BraveShieldsContentSettings {
     public static boolean getShields(Profile profile, String host, String resourceIndentifier) {
         String settings = BLOCK_RESOURCE;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-            return BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(host, profile);
+            return BraveShieldsContentSettingsJni.get().isBraveShieldsEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
@@ -451,18 +451,31 @@ public class BraveShieldsContentSettings {
         void destroy(long nativeBraveShieldsContentSettings);
 
         void setBraveShieldsEnabled(boolean enabled, String url, Profile profile);
-        boolean getBraveShieldsEnabled(String url, Profile profile);
+
+        boolean isBraveShieldsEnabled(String url, Profile profile);
+
         void setAdControlType(String type, String url, Profile profile);
+
         String getAdControlType(String url, Profile profile);
+
         void setCookieControlType(String type, String url, Profile profile);
+
         String getCookieControlType(String url, Profile profile);
+
         void setFingerprintingControlType(String type, String url, Profile profile);
+
         String getFingerprintingControlType(String url, Profile profile);
+
         void setHttpsUpgradeControlType(String type, String url, Profile profile);
+
         String getHttpsUpgradeControlType(String url, Profile profile);
+
         void setNoScriptControlType(String type, String url, Profile profile);
+
         String getNoScriptControlType(String url, Profile profile);
+
         void setForgetFirstPartyStorageEnabled(boolean enabled, String url, Profile profile);
+
         boolean getForgetFirstPartyStorageEnabled(String url, Profile profile);
 
         void setCosmeticFilteringControlType(String type, String url, Profile profile);

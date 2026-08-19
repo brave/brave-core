@@ -236,7 +236,10 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   private saveEnabled_() {
     // Make sure all required fields are filled
-    return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
+    return !!this.label?.trim()
+        && !!this.modelRequestName?.trim()
+        && !!this.endpointUrl?.trim()
+        && !this.isUrlInvalid
   }
 
   private checkEndpointValidity_() {

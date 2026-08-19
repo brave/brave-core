@@ -31,6 +31,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
@@ -80,7 +81,9 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
         if (getActivity() != null) {
             ChromeClickableSpan summaryTextClickableSpan =
                     new ChromeClickableSpan(
-                            getActivity().getColor(R.color.brave_link),
+                            BraveDynamicColors.getTextButtonColor(
+                                    requireContext().getTheme(),
+                                    requireContext().getColor(R.color.brave_link)),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(
                                         getActivity(), BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE);
@@ -97,6 +100,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment {
         }
 
         Button saveBtn = getView().findViewById(R.id.btn_save);
+        BraveDynamicColors.applyToFilledButtonIfEnabled(saveBtn);
         saveBtn.setOnClickListener(
                 view -> {
                     updateCustomFilters();

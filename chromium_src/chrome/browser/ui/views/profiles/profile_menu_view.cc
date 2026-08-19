@@ -17,7 +17,7 @@ ProfileMenuViewBase::IdentitySectionParams BraveAdjustIdentitySectionParams(
   new_params.profile_image = params.profile_image;
   new_params.profile_image_padding = params.profile_image_padding;
   new_params.title = params.title;
-  new_params.has_dotted_ring = params.has_dotted_ring;
+  new_params.avatar_ring = params.avatar_ring;
   return new_params;
 }
 

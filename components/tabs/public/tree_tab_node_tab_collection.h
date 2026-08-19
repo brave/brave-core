@@ -121,6 +121,21 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   std::vector<std::variant<tabs::TabInterface*, TabCollection*>>
   GetTreeNodeChildren();
 
+  // Returns this node together with every descendant TreeTabNodeTabCollection
+  // in its subtree (this node first, then descendants). Used when
+  // transplanting a whole subtree into a different window's TreeTabModel: the
+  // caller re-registers/rebinds each of these nodes.
+  std::vector<TreeTabNodeTabCollection*> GetTreeTabNodeSubtreeRecursive();
+
+  // Rebinds this node's on_create/on_remove/on_move callbacks (i.e. which
+  // TreeTabModel this node registers itself with) to a new model. Does not
+  // recurse; callers use GetTreeTabNodeSubtreeRecursive() to apply this to
+  // every node in a subtree moving to a different window.
+  void RebindTreeTabModelCallbacks(
+      base::RepeatingCallback<void(TreeTabNode&)> on_create,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
+
   // TabCollection:
   void OnReparented(TabCollection* new_parent) override;
   [[nodiscard]] std::unique_ptr<TabCollection> MaybeRemoveCollection(

@@ -99,7 +99,7 @@ base::DictValue GetValueWithTicketInfos(
   // add subscriber credential to the email body.
   std::string body_with_credential =
       body + "\n\nsubscriber-credential: " + subscriber_credential +
-      "\npayment-validation-method: brave-premium";
+      "\npayment-validation-method: brave-premium\ntimezone: " + timezone;
 
   base::TrimWhitespaceASCII(email, base::TRIM_ALL, &email_trimmed);
   base::TrimWhitespaceASCII(subject, base::TRIM_ALL, &subject_trimmed);
@@ -111,7 +111,8 @@ base::DictValue GetValueWithTicketInfos(
   dict.Set(kSupportTicketSubjectKey, subject_trimmed);
   dict.Set(kSupportTicketSupportTicketKey, base::Base64Encode(body_trimmed));
   dict.Set(kSupportTicketPartnerClientIdKey, "com.brave.browser");
-  dict.Set(kSupportTicketTimezoneKey, timezone);
+  dict.Set(kSupportTicketSubscriberCredential, subscriber_credential);
+  dict.Set(kSupportTicketPaymentValidationMethodKey, "brave-premium");
 
   return dict;
 }

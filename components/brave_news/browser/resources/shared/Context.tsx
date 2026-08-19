@@ -36,7 +36,7 @@ interface BraveNewsContext {
   subscribedPublisherIds: string[]
   // Publishers to suggest to the user.
   suggestedPublisherIds: string[]
-  updateSuggestedPublisherIds: () => void
+  updateSuggestedPublisherIds: () => Promise<void>
   isOptInPrefEnabled: boolean | undefined
   isShowOnNTPPrefEnabled: boolean | undefined
   toggleBraveNewsOnNTP: (enabled: boolean) => void
@@ -66,7 +66,7 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   subscribedPublisherIds: [],
   channels: {},
   suggestedPublisherIds: [],
-  updateSuggestedPublisherIds: () => { },
+  updateSuggestedPublisherIds: async () => { },
   isOptInPrefEnabled: undefined,
   isShowOnNTPPrefEnabled: undefined,
   toggleBraveNewsOnNTP: (enabled: boolean) => { },
@@ -116,8 +116,7 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [configuration.isOptedIn, configuration.showOnNTP])
 
   React.useEffect(() => {
-    const handler = (channels: Channels) => setChannels(channels)
-
+    const handler = (next: Channels) => setChannels(next)
     channelsCache.addListener(handler)
     return () => channelsCache.removeListener(handler)
   }, [])
@@ -134,9 +133,9 @@ export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   }, [])
 
   React.useEffect(() => {
-    const handler = (publishers: Publishers) => setPublishers(publishers)
+    const handler = (next: Publishers) => setPublishers(next)
     publishersCache.addListener(handler)
-    return () => { publishersCache.removeListener(handler) }
+    return () => publishersCache.removeListener(handler)
   }, [])
 
   React.useEffect(() => {

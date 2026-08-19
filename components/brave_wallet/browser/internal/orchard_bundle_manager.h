@@ -43,10 +43,14 @@ class OrchardBundleManager {
 
   // Creates instance for shielded outputs only
   // Returns in unauthorized state
+  // Only supports v5 transactions with the Orchard pool. v6 / Ironwood bundles
+  // require a separate creation path.
   static std::unique_ptr<OrchardBundleManager> Create(
       base::span<const uint8_t> tree_state,
       const OrchardSpendsBundle& spends_bundle,
-      const std::vector<OrchardOutput>& orchard_outputs);
+      const std::vector<OrchardOutput>& orchard_outputs,
+      OrchardPool pool,
+      bool is_v6_transaction);
 
   static void OverrideRandomSeedForTesting(size_t seed) {
     random_seed_for_testing_ = seed;

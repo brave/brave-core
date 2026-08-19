@@ -149,6 +149,7 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
+  isSidePanel: boolean
   isMobile: boolean
   isIOS: boolean
 }
@@ -280,7 +281,7 @@ export interface SendBtcTransactionParams extends BaseTransactionParams {
 }
 
 export interface SendZecTransactionParams extends BaseTransactionParams {
-  useShieldedPool: boolean
+  zcashTokenType: BraveWallet.ZCashTokenType
   sendingMaxAmount: boolean
   memo: number[] | undefined
 }
@@ -359,19 +360,6 @@ export type OrderTypes = 'market' | 'limit'
 export interface SlippagePresetObjectType {
   id: number
   slippage: number
-}
-
-export interface ExpirationPresetObjectType {
-  id: number
-  name: string
-  expiration: number
-}
-
-export type AmountPresetTypes = 0 | 0.25 | 0.5 | 0.75 | 1
-
-export interface AmountPresetObjectType {
-  name: string
-  value: AmountPresetTypes
 }
 
 export type TransactionDataType = {
@@ -480,9 +468,6 @@ export enum WalletRoutes {
   // market
   Market = '/crypto/explore/market',
   MarketSub = '/crypto/explore/market/:coingeckoId?',
-
-  // Web3
-  Web3 = '/crypto/explore/web3',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -858,7 +843,6 @@ export type NavIDTypes =
   | 'available_assets'
   | 'bridge'
   | 'explore'
-  | 'web3'
   | 'connections'
 
 export type AccountPageTabs =
@@ -966,11 +950,6 @@ export const BitcoinNetworkLocaleMapping = {
 export const ZCashNetworkLocaleMapping = {
   [BraveWallet.Z_CASH_MAINNET]: 'ZCash Mainnet',
   [BraveWallet.Z_CASH_TESTNET]: 'ZCash Testnet',
-}
-
-export type GasFeeOption = {
-  id: string
-  name: string
 }
 
 export type GasEstimate = {

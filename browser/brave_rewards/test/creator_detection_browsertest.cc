@@ -106,13 +106,13 @@ class CreatorDetectionBrowserTest : public PlatformBrowserTest {
 
   RewardsService& GetRewardsService() {
     auto* rewards_service =
-        RewardsServiceFactory::GetForProfile(browser()->profile());
+        RewardsServiceFactory::GetForProfile(browser()->GetProfile());
     CHECK(rewards_service);
     return *rewards_service;
   }
 
   void EnableRewards() {
-    auto* prefs = browser()->profile()->GetPrefs();
+    auto* prefs = browser()->GetProfile()->GetPrefs();
     prefs->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
     TestFuture<mojom::CreateRewardsWalletResult> future;

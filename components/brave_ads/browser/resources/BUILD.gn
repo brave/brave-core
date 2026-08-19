@@ -9,7 +9,6 @@ import("//brave/components/common/typescript.gni")
 assert(enable_brave_ads)
 
 transpile_web_ui("ads_internals_ui") {
-  output_module = false
   entry_points = [ [
         "ads_internals",
         rebase_path("ads_internals.tsx"),

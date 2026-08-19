@@ -9,8 +9,7 @@ DMG and PKG installers.
 Use the following commands to prepare the build:
 
 ```
-npm install
-npm run init -- --target_os=mac --target_arch=x64
+pnpm run init --target_os=mac --target_arch=x64
 ```
 
 ## Compiling Brave
@@ -18,20 +17,20 @@ npm run init -- --target_os=mac --target_arch=x64
 After the above, you can compile Brave for macOS with the following command:
 
 ```
-npm run build -- --target_os=mac --target_arch=x64
+pnpm run build --target_os=mac --target_arch=x64
 ```
 
 `Static` builds also work:
 
 ```
-npm run build -- Static --target_os=mac --target_arch=x64
+pnpm run build Static --target_os=mac --target_arch=x64
 ```
 
 The current implementation does not yet support dSYM generation and symbol
 stripping, so you need to disable them for `Release` builds:
 
 ```
-npm run build -- Release --target_os=mac --target_arch=x64 \
+pnpm run build Release --target_os=mac --target_arch=x64 \
     --gn enable_dsyms:false --gn enable_stripping:false
 ```
 
@@ -42,12 +41,12 @@ automatically checked out by default. To obtain it, set
 `"checkout_dmg_tool": True` in the `custom_vars` section of the `src/brave`
 solution in your `.gclient` file. Then, execute:
 
-    npm run sync
+    pnpm run sync
 
 Now you can create a DMG via the usual GN target:
 
 ```
-npm run build -- Static --target_os=mac --target_arch=x64 \
+pnpm run build Static --target_os=mac --target_arch=x64 \
     --target=brave/build/mac:create_dmg
 ```
 
@@ -87,7 +86,7 @@ After the above steps, you should be able to create a PKG installer for Brave
 via the command:
 
 ```
-npm run build -- Static --target_os=mac --target_arch=x64 \
+pnpm run build Static --target_os=mac --target_arch=x64 \
     --target=brave/build/mac:create_pkg
 ```
 
@@ -112,7 +111,7 @@ export KEYCHAIN_PATH=/Users/michael/Library/Keychains/signing.keychain-db
 Now you can codesign Brave via:
 
 ```
-npm run build -- Static --target_os=mac --target_arch=x64 \
+pnpm run build Static --target_os=mac --target_arch=x64 \
     --mac_signing_identifier=MyCert --target=brave/build/mac:sign_app
 ```
 

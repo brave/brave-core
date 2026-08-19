@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/logging.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
@@ -29,8 +30,11 @@ PsstUiDelegateImpl::PsstUiDelegateImpl(
   CHECK(psst_settings_service_);
   CHECK(ui_presenter_);
   CHECK(prefs_);
+  psst_settings_service_->AddObserver(this);
 }
-PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
+PsstUiDelegateImpl::~PsstUiDelegateImpl() {
+  psst_settings_service_->RemoveObserver(this);
+}
 
 void PsstUiDelegateImpl::Show(
     url::Origin origin,
@@ -167,7 +171,7 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
     ui_presenter_->ShowConsentDialog();
   } else {
     // Disable PSST if user declined the infobar
-    prefs_->SetBoolean(prefs::kPsstEnabled, false);
+    psst_settings_service_->SetPsstEnabled(false);
   }
 }
 
@@ -184,8 +188,20 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
 }
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
-  prefs_->SetBoolean(prefs::kPsstEnabled, false);
+  psst_settings_service_->SetPsstEnabled(false);
   ui_presenter_->HideInfoBar();
+  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
+                                          base::NullCallback(),
+                                          base::NullCallback());
+}
+
+void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
+  if (new_value) {
+    return;
+  }
+
+  ui_presenter_->HideInfoBar();
+  ui_presenter_->HideConsentDialog();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
                                           base::NullCallback(),
                                           base::NullCallback());

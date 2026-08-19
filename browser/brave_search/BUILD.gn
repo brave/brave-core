@@ -27,6 +27,7 @@ source_set("brave_search") {
     "//chrome/browser/profiles",
     "//components/content_settings/browser",
     "//components/keyed_service/core",
+    "//components/language/core/browser",
     "//components/prefs",
     "//content/public/browser",
     "//services/network/public/cpp",
@@ -34,8 +35,26 @@ source_set("brave_search") {
   ]
 
   if (is_android) {
-    deps += [ "//ui/android" ]
+    deps += [
+      "//brave/android/java/org/chromium/chrome/browser/brave_search:jni_headers",
+      "//ui/android",
+    ]
   }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "backup_results_service_factory_unittest.cc" ]
+
+  deps = [
+    ":brave_search",
+    "//base",
+    "//brave/components/brave_search/browser",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
 }
 
 if (!is_android) {
@@ -64,10 +83,6 @@ if (!is_android) {
       "//net:test_support",
       "//ui/gfx/geometry",
     ]
-
-    if (enable_brave_ads) {
-      deps += [ "//brave/components/brave_ads/core/public:headers" ]
-    }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }

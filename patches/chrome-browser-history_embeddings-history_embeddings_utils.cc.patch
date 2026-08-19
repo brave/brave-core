@@ -1,8 +1,29 @@
 diff --git a/chrome/browser/history_embeddings/history_embeddings_utils.cc b/chrome/browser/history_embeddings/history_embeddings_utils.cc
-index 8198ba0c74bbfb0e68f8334f9592dddccb182c28..d829b6e1448dc9ef7c000dfcad93e7039c2d32fe 100644
+index 8198ba0c74bbfb0e68f8334f9592dddccb182c28..9150b3dce9574c0b292af9f3ac277abbff4ed4ed 100644
 --- a/chrome/browser/history_embeddings/history_embeddings_utils.cc
 +++ b/chrome/browser/history_embeddings/history_embeddings_utils.cc
-@@ -163,10 +163,10 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
+@@ -57,9 +57,11 @@ constexpr auto kEnabledByDefaultForDesktopOnly =
+ #endif
+ 
+ // These are the kill switches for the launched history embeddings features.
+-BASE_FEATURE(kLaunchedHistoryEmbeddings, kEnabledByDefaultForDesktopOnly);
++// kLaunchedHistoryEmbeddings feature state is enforced via plaster rewrite.
++BASE_FEATURE(kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
++  if ((true)) return ComputeHistoryEmbeddingsEnabledForProfile(profile);
+   if (!IsHistoryEmbeddingsFeatureEnabled()) {
+     return false;
+   }
+@@ -94,6 +96,7 @@ bool IsHistoryEmbeddingsAnswersEnabledForProfile(Profile* profile) {
+ }
+ 
+ bool IsHistoryEmbeddingsSettingVisible(Profile* profile) {
++  if ((true)) return false;
+   if (!IsHistoryEmbeddingsFeatureEnabled()) {
+     return false;
+   }
+@@ -163,14 +166,15 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
                ModelExecutionEnterprisePolicyValue::kAllowWithoutLogging);
    if (logging_disabled_by_enterprise) {
      source->AddLocalizedString("historyEmbeddingsDisclaimer",
@@ -15,3 +36,8 @@ index 8198ba0c74bbfb0e68f8334f9592dddccb182c28..d829b6e1448dc9ef7c000dfcad93e703
    }
  }
  
+ bool IsHistoryEmbeddingsFeatureEnabled() {
++  if (ShouldForceHistoryEmbeddingsFeatureDisabled()) return false;
+ #if BUILDFLAG(IS_CHROMEOS)
+   if (!chromeos::features::IsFeatureManagementHistoryEmbeddingEnabled()) {
+     return false;

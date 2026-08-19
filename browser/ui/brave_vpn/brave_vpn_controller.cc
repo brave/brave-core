@@ -24,7 +24,7 @@ void BraveVPNController::ShowBraveVPNBubble(bool show_select) {
 void BraveVPNController::OpenVPNAccountPage(
     brave_vpn::mojom::ManageURLType type) {
   auto* browser = browser_view_->browser();
-  auto* profile = browser->profile();
+  auto* profile = browser->GetProfile();
   auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   const auto url =
       GURL(brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment()));
@@ -32,5 +32,5 @@ void BraveVPNController::OpenVPNAccountPage(
 }
 
 BraveBrowserView* BraveVPNController::GetBraveBrowserView() {
-  return static_cast<BraveBrowserView*>(browser_view_);
+  return BraveBrowserView::From(browser_view_);
 }

@@ -240,7 +240,7 @@ import XCTest
     viewModel.send(
       action: .dragged(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 0))
     )
-    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    XCTAssertNotNil(viewModel.interactiveTransitionProgress)
     XCTAssertEqual(viewModel.toolbarState, .collapsed)
     viewModel.send(
       action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 0))
@@ -264,7 +264,7 @@ import XCTest
     viewModel.send(
       action: .dragged(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 0))
     )
-    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    XCTAssertEqual(viewModel.interactiveTransitionProgress, 0.5)
     XCTAssertEqual(viewModel.toolbarState, .collapsed)
     snapshot.isDecelerating = true
     viewModel.send(
@@ -347,7 +347,7 @@ import XCTest
     viewModel.send(
       action: .dragged(snapshot: snapshot, panData: .init(yTranslation: 0, yVelocity: 0))
     )
-    XCTAssertEqual(viewModel.interactiveTransitionProgress, 0.0)
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
     snapshot.contentOffset.y += 50
     viewModel.send(
       action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0))
@@ -371,6 +371,30 @@ import XCTest
     // Minimum required content offset to collapse is 960 - 480 - 100
     var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
       contentOffset: .init(x: 0, y: 460),
+      contentInset: .zero,
+      contentHeight: 960,
+      frameHeight: 480,
+      isDecelerating: false
+    )
+    viewModel.send(
+      action: .dragged(snapshot: snapshot, panData: .init(yTranslation: 0, yVelocity: 0))
+    )
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    snapshot.contentOffset.y += 50
+    viewModel.send(
+      action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0))
+    )
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+  }
+
+  /// Tests that if you drag near the bottom without enough space determined by
+  /// minimumCollapsableTransitionDistance that it doesn't interactively collapse at all
+  func testExpandedDragNearBottomEdgeWithMinimumDistanceNotEnoughSpaceToCollapse() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
+    viewModel.minimumCollapsableTransitionDistance = 200
+    // Minimum required content offset to collapse is 960 - 480 - 200
+    var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
+      contentOffset: .init(x: 0, y: 360),
       contentInset: .zero,
       contentHeight: 960,
       frameHeight: 480,
@@ -413,6 +437,9 @@ import XCTest
     )
     viewModel.send(
       action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0))
+    )
+    viewModel.send(
+      action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0))
     )
     XCTAssertEqual(viewModel.toolbarState, .expanded)
     // zoomed in 3x then scroll
@@ -488,6 +515,40 @@ import XCTest
     viewModel.send(
       action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0))
     )
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
+  }
+
+  // Tests that you can collpase the bar and then expand it back again by dragging back up in the
+  // same scroll
+  func testCollapseAndExpandInSameDrag() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
+    let snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
+      contentOffset: .zero,
+      contentInset: .zero,
+      contentHeight: 960,
+      frameHeight: 480,
+      isDecelerating: false
+    )
+    viewModel.send(
+      action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0))
+    )
+    XCTAssertEqual(viewModel.interactiveTransitionProgress, 0.5)
+    viewModel.send(
+      action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -100, yVelocity: 0))
+    )
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    XCTAssertEqual(viewModel.toolbarState, .collapsed)
+    viewModel.send(
+      action: .dragged(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 0))
+    )
+    XCTAssertEqual(viewModel.interactiveTransitionProgress, 0.5)
+    viewModel.send(
+      action: .dragged(snapshot: snapshot, panData: .init(yTranslation: 100, yVelocity: 0))
+    )
+    viewModel.send(
+      action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: 100, yVelocity: 0))
+    )
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
     XCTAssertEqual(viewModel.toolbarState, .expanded)
   }
 }

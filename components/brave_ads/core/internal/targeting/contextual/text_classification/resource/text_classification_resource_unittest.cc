@@ -152,14 +152,14 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
+       DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
@@ -169,7 +169,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
   EXPECT_TRUE(resource_->IsLoaded());

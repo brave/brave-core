@@ -10,8 +10,11 @@
 #include <optional>
 #include <set>
 #include <string>
+#include <variant>
 #include <vector>
 
+#include "base/check.h"
+#include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
@@ -98,20 +101,74 @@ class ZCashTransaction {
   using OrchardOutput = ::brave_wallet::OrchardOutput;
   using OrchardInput = ::brave_wallet::OrchardInput;
 
-  struct OrchardPart {
-    OrchardPart();
-    ~OrchardPart();
-    OrchardPart(OrchardPart&& other);
-    OrchardPart(const OrchardPart& other);
-    OrchardPart& operator=(const OrchardPart& other);
-    OrchardPart& operator=(OrchardPart&& other);
-    bool operator==(const OrchardPart& other) const;
+  // A single orchard-format shielded pool serialized as opaque rust bytes.
+  struct ShieldedPool {
+    ShieldedPool();
+    ~ShieldedPool();
+    ShieldedPool(ShieldedPool&& other);
+    ShieldedPool(const ShieldedPool& other);
+    ShieldedPool& operator=(const ShieldedPool& other);
+    ShieldedPool& operator=(ShieldedPool&& other);
+    bool operator==(const ShieldedPool& other) const;
+
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
+
+    base::DictValue ToValue() const;
+    static std::optional<ShieldedPool> FromValue(const base::DictValue& value);
 
     std::vector<OrchardInput> inputs;
     std::vector<OrchardOutput> outputs;
     std::optional<uint32_t> anchor_block_height;
     std::optional<std::array<uint8_t, kZCashDigestSize>> digest;
     std::optional<std::vector<uint8_t>> raw_tx;
+  };
+
+  // v5 transaction shielded data: a single orchard pool.
+  struct V5Part {
+    V5Part();
+    ~V5Part();
+    V5Part(V5Part&& other);
+    V5Part(const V5Part& other);
+    V5Part& operator=(const V5Part& other);
+    V5Part& operator=(V5Part&& other);
+    bool operator==(const V5Part& other) const;
+
+    base::DictValue ToValue() const;
+    static std::optional<V5Part> FromValue(const base::DictValue& value);
+
+    // Reads the legacy top-level v5 JSON (keys: orchard_inputs,
+    // orchard_outputs, anchor_block_height).
+    static std::optional<V5Part> ReadTopLevel(const base::DictValue& tx_dict);
+
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
+
+    ShieldedPool orchard;
+  };
+
+  // v6-only transaction data. A ZCashTransaction is v6 iff its version_part_
+  // holds a V6Part.
+  struct V6Part {
+    V6Part();
+    ~V6Part();
+    V6Part(V6Part&& other);
+    V6Part(const V6Part& other);
+    V6Part& operator=(const V6Part& other);
+    V6Part& operator=(V6Part&& other);
+    bool operator==(const V6Part& other) const;
+
+    base::DictValue ToValue() const;
+    static std::optional<V6Part> FromValue(const base::DictValue& value);
+
+    base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
+    base::CheckedNumeric<uint64_t> TotalOutputsAmount() const;
+
+    ShieldedPool legacy_orchard;  // OrchardPool::kOrchard
+    ShieldedPool ironwood;        // OrchardPool::kIronwood
+
+    // ZIP 231 memo bundle segments. Serialization deferred; kept empty.
+    std::vector<std::array<uint8_t, kOrchardMemoSize>> memo_segments;
   };
 
   ZCashTransaction();
@@ -127,7 +184,7 @@ class ZCashTransaction {
       const base::DictValue& value);
 
   bool IsTransparentPartSigned() const;
-  uint64_t TotalInputsAmount() const;
+  base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
 
   uint8_t sighash_type() const;
 
@@ -146,8 +203,28 @@ class ZCashTransaction {
   const TransparentPart& transparent_part() const { return transparent_part_; }
   TransparentPart& transparent_part() { return transparent_part_; }
 
-  const OrchardPart& orchard_part() const { return orchard_part_; }
-  OrchardPart& orchard_part() { return orchard_part_; }
+  bool is_v5() const { return std::holds_alternative<V5Part>(version_part_); }
+  bool is_v6() const { return std::holds_alternative<V6Part>(version_part_); }
+
+  const V5Part& v5_part() const {
+    CHECK(is_v5());
+    return std::get<V5Part>(version_part_);
+  }
+  V5Part& v5_part() {
+    CHECK(is_v5());
+    return std::get<V5Part>(version_part_);
+  }
+  const V6Part& v6_part() const {
+    CHECK(is_v6());
+    return std::get<V6Part>(version_part_);
+  }
+  V6Part& v6_part() {
+    CHECK(is_v6());
+    return std::get<V6Part>(version_part_);
+  }
+
+  void init_v5_part() { version_part_ = V5Part{}; }
+  void init_v6_part() { version_part_ = V6Part{}; }
 
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
@@ -166,7 +243,7 @@ class ZCashTransaction {
 
  private:
   TransparentPart transparent_part_;
-  OrchardPart orchard_part_;
+  std::variant<std::monostate, V5Part, V6Part> version_part_;
 
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;

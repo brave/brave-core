@@ -24,6 +24,11 @@ namespace brave_vpn::v2 {
 // rewrites the entire dictionary, and so drops the other credential.
 class CredentialStore final {
  public:
+  struct Credential {
+    std::string value;
+    base::Time expiration;
+  };
+
   explicit CredentialStore(PrefService* local_prefs);
   ~CredentialStore();
 
@@ -31,30 +36,22 @@ class CredentialStore final {
   CredentialStore& operator=(const CredentialStore&) = delete;
 
   // Subscriber credential: the ready-to-use credential.
-  bool HasValidSubscriberCredential() const;
-  std::string GetSubscriberCredential() const;
+  std::optional<Credential> GetValidSubscriberCredential() const;
 
   // Replaces the slot with this subscriber credential, dropping any cached
   // SKUS credential.
-  void SetSubscriberCredential(const std::string& credential,
-                               base::Time expiration);
+  void SetSubscriberCredential(const Credential& credential);
 
   // SKUS credential: obtained from the presentation cookie, awaiting exchange
   // for a subscriber credential.
-  bool HasValidSkusCredential() const;
-  std::string GetSkusCredential() const;
+  std::optional<Credential> GetValidSkusCredential() const;
 
   // Replaces the slot with this SKUS credential (dropping any cached subscriber
   // credential) and stamps the last credential expiry.
-  void SetSkusCredential(const std::string& credential, base::Time expiration);
+  void SetSkusCredential(const Credential& credential);
 
   // True if anything at all is cached, valid or not.
   bool HasAnyCredential() const;
-
-  // Expiration of the currently cached subscriber credential, used to drive the
-  // refresh timer. Returns nullopt unless a valid subscriber credential is
-  // present.
-  std::optional<base::Time> GetExpirationTime() const;
 
   // Drops the cached credential only. Delegates to the common utility
   // ClearSubscriberCredential() so other existing callers won't drift.

@@ -51,3 +51,62 @@ IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
   EXPECT_TRUE(views::IsViewClass<BraveShieldsToolbarButton>(shields));
   EXPECT_TRUE(shields->GetVisible());
 }
+
+#if BUILDFLAG(IS_MAC)
+// Flaky on Mac CI
+#define MAYBE_ShieldsButtonNotDuplicatedWhenToolbarReparented \
+  DISABLED_ShieldsButtonNotDuplicatedWhenToolbarReparented
+#else
+#define MAYBE_ShieldsButtonNotDuplicatedWhenToolbarReparented \
+  ShieldsButtonNotDuplicatedWhenToolbarReparented
+#endif
+
+// Regression test for https://github.com/brave/brave-browser/issues/57349:
+// macOS immersive fullscreen reparents the web app toolbar (moving it into a
+// separate overlay widget), which re-triggers
+// WebAppToolbarButtonContainer::AddedToWidget(). In this case, we should not
+// add multiple PWA Shields toolbar buttons to the web app window. Note that
+// we are using the same id for the Shield page action view and toolbar button,
+// so the number of views retrieved by BrowserElementsViews::GetAllViews()
+// should remain 2 (1 for the page action view, 1 for the toolbar button) even
+// after the reparenting.
+IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
+                       MAYBE_ShieldsButtonNotDuplicatedWhenToolbarReparented) {
+  const webapps::AppId app_id = InstallPWA(GetInstallableAppURL());
+  Browser* app_browser = LaunchWebAppBrowser(app_id);
+  ASSERT_TRUE(app_browser);
+
+  auto* elements = BrowserElementsViews::From(app_browser);
+  ASSERT_TRUE(elements);
+  views::View* shields = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    shields = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
+                                /*require_visible=*/true);
+    return shields != nullptr;
+  }));
+  ASSERT_TRUE(views::IsViewClass<BraveShieldsToolbarButton>(shields));
+
+  views::View* container = shields->parent();
+  ASSERT_TRUE(container);
+  views::View* container_parent = container->parent();
+  ASSERT_TRUE(container_parent);
+
+  // 1 for page action view, 1 for toolbar button
+  ASSERT_EQ(2u, elements
+                    ->GetAllViews(BraveShieldsActionView::kShieldsActionIcon,
+                                  /*require_visible=*/false)
+                    .size());
+
+  // Simulate the transient hidden state and the widget reparenting that
+  // immersive fullscreen performs on macOS - which triggers AddedToWidget
+  shields->SetVisible(false);
+  container_parent->RemoveChildView(container);
+  container_parent->AddChildView(container);
+  shields->SetVisible(true);
+
+  // Shouldn't add another action icon.
+  EXPECT_EQ(2u, elements
+                    ->GetAllViews(BraveShieldsActionView::kShieldsActionIcon,
+                                  /*require_visible=*/false)
+                    .size());
+}

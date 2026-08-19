@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.tasks.tab_management;
 
 import android.content.Context;
+import android.view.View.OnClickListener;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
@@ -31,7 +32,8 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
             TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
-            NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
+            NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            OnClickListener newTabButtonClickListener) {
         super(
                 paneId,
                 context,
@@ -42,7 +44,8 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
                 edgeToEdgeSupplier,
                 compositorViewHolderSupplier,
                 tabGroupCreationUiDelegate,
-                xrSpaceModeObservableSupplier);
+                xrSpaceModeObservableSupplier,
+                newTabButtonClickListener);
     }
 
     @Override

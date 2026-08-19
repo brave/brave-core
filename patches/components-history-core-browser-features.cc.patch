@@ -1,0 +1,14 @@
+diff --git a/components/history/core/browser/features.cc b/components/history/core/browser/features.cc
+index 9f33afa77fa1384489881c96979145e39eb82acf..9e108b4b6a532dbf5df6821b42c5fa5d93b0b977 100644
+--- a/components/history/core/browser/features.cc
++++ b/components/history/core/browser/features.cc
+@@ -26,7 +26,8 @@ constexpr int kMaxNumRepeatableQueriesDefaultValue =
+ 
+ // If enabled, the most repeated queries from the user browsing history are
+ // shown in the Most Visited tiles.
+-BASE_FEATURE(kOrganicRepeatableQueries, kOrganicRepeatableQueriesDefaultValue);
++// kOrganicRepeatableQueries feature state is enforced via plaster rewrite.
++BASE_FEATURE(kOrganicRepeatableQueries, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // The maximum number of repeatable queries to show in the Most Visited tiles.
+ const base::FeatureParam<int> kMaxNumRepeatableQueries(

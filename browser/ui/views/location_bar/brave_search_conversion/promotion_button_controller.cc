@@ -82,7 +82,7 @@ PromotionButtonController::PromotionButtonController(
     Browser* browser)
     : button_(button),
       omnibox_view_(omnibox_view),
-      prefs_(*browser->profile()->GetPrefs()),
+      prefs_(*browser->GetProfile()->GetPrefs()),
       browser_(*browser) {
   CHECK(button_ && omnibox_view);
   button_->SetDismissedCallback(base::BindOnce(
@@ -91,7 +91,7 @@ PromotionButtonController::PromotionButtonController(
       &PromotionButtonController::SetDefaultAndLoadBraveSearchWithCurrentInput,
       weak_factory_.GetWeakPtr()));
   template_url_service_ =
-      TemplateURLServiceFactory::GetForProfile(browser_->profile());
+      TemplateURLServiceFactory::GetForProfile(browser_->GetProfile());
   is_brave_search_default_ = IsBraveSearchDefault();
   view_observation_.AddObservation(button_);
   view_observation_.AddObservation(omnibox_view_);
@@ -135,7 +135,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
 
   // In browser test, this happens on x64 macOS release build.
   // https://github.com/brave/brave-browser/issues/51026
-  if (!browser_->window()) {
+  if (!BrowserWindow::FromBrowser(&browser_.get())) {
     return false;
   }
 
@@ -143,7 +143,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   // Promotion button will be shown for current search provider's
   // suggestion entries to make users search with brave search with that
   // suggestion.
-  if (!browser_->window()
+  if (!BrowserWindow::FromBrowser(&browser_.get())
            ->GetLocationBar()
            ->GetOmniboxController()
            ->IsPopupOpen()) {
@@ -151,7 +151,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   }
 
   // Only show promotion for search query. Not url.
-  OmniboxEditModel* edit_model = browser_->window()
+  OmniboxEditModel* edit_model = BrowserWindow::FromBrowser(&browser_.get())
                                      ->GetLocationBar()
                                      ->GetOmniboxController()
                                      ->edit_model();
@@ -232,7 +232,7 @@ void PromotionButtonController::UpdateButtonUI() {
 
   const auto* template_url = template_url_service_->GetDefaultSearchProvider();
   auto* service = ImageFetcherServiceFactory::GetForKey(
-      browser_->profile()->GetProfileKey());
+      browser_->GetProfile()->GetProfileKey());
   CHECK(service);
   auto* fetcher = service->GetImageFetcher(
       image_fetcher::ImageFetcherConfig::kDiskCacheOnly);

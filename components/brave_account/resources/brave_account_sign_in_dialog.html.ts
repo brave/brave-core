@@ -36,18 +36,20 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
             this.isPasswordValid = e.detail.isValid
           }}
         >
-          <div
+          <leo-link
             slot="label-extra"
             class="forgot-password"
             @click=${() => this.fire('forgot-password-button-clicked')}
           >
             $i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL}
-          </div>
+          </leo-link>
         </brave-account-password-input>
       </div>
       <leo-button
         slot="buttons"
-        ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
+        ?isDisabled=${!this.isEmailValid
+        || !this.isPasswordValid
+        || this.isSubmitting}
         @click=${this.onSignInButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL}

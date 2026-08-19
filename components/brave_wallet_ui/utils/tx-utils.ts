@@ -90,6 +90,12 @@ export type CardanoTransactionInfo = TransactionInfo & {
   }
 }
 
+export type PolkadotTransactionInfo = TransactionInfo & {
+  txDataUnion: Omit<TxDataUnionAllUndefined, 'polkadotTxData'> & {
+    polkadotTxData: BraveWallet.PolkadotTxdata
+  }
+}
+
 export interface ParsedTransactionFees {
   gasLimit: string
   gasPrice: string
@@ -247,12 +253,6 @@ export function isZCashTransaction(
   return tx.txDataUnion.zecTxData !== undefined
 }
 
-export function transactionUsesShieldedPool(
-  tx?: Pick<TransactionInfo, 'txDataUnion'>,
-): boolean {
-  return tx?.txDataUnion.zecTxData?.useShieldedPool ?? false
-}
-
 export function isCardanoTransaction(
   tx?: Pick<TransactionInfo, 'txDataUnion'>,
 ): tx is CardanoTransactionInfo {
@@ -298,7 +298,7 @@ export function isEthereumTransaction(
 
 export function isPolkadotTransaction(
   tx?: Pick<TransactionInfo, 'txDataUnion'>,
-) {
+): tx is PolkadotTransactionInfo {
   if (!tx) {
     return false
   }
@@ -528,17 +528,15 @@ export const findTransactionToken = <
     || tx.txDataUnion.btcTxData
     || tx.txDataUnion.zecTxData
   ) {
-    const usesShieldedPool = transactionUsesShieldedPool(tx)
+    const zcashTokenType = tx.txDataUnion.zecTxData?.zcashTokenType
     return tokensList.find(
       (t) =>
         t.contractAddress === ''
         && t.chainId === tx.chainId
         && t.coin === tx.fromAccountId.coin
-        && (usesShieldedPool
-          ? t.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
-            || t.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
-          : t.zcashTokenType === BraveWallet.ZCashTokenType.kNone
-            || t.zcashTokenType === BraveWallet.ZCashTokenType.kTransparent),
+        && (zcashTokenType !== undefined
+          ? t.zcashTokenType === zcashTokenType
+          : t.zcashTokenType === BraveWallet.ZCashTokenType.kNone),
     )
   }
 

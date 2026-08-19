@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+import tempfile
 
 from recipe_api import RecipeApi
 
@@ -27,6 +28,10 @@ class _RealFs:  # pragma: no cover - production filesystem backend.
     def mkdir(self, path: str | Path, *, parents: bool,
               exist_ok: bool) -> None:
         Path(path).mkdir(parents=parents, exist_ok=exist_ok)
+
+    def mkdtemp(self, parent: Path, prefix: str) -> Path:
+        parent.mkdir(parents=True, exist_ok=True)
+        return Path(tempfile.mkdtemp(prefix=f'{prefix}_', dir=parent))
 
     def abs(self, path: str | Path) -> Path:
         return Path(path).expanduser().resolve()
@@ -61,6 +66,14 @@ class _SimFs:
         del parents, exist_ok
         self._test.fs.add_dir(path)
 
+    def mkdtemp(self, parent: Path, prefix: str) -> Path:
+        # Numbered per prefix rather than randomized, so a run that makes
+        # temporary directories still has reproducible expectations.
+        self._test.temp_counter[prefix] += 1
+        path = parent / f'{prefix}_tmp_{self._test.temp_counter[prefix]}'
+        self._test.fs.add_dir(path)
+        return path
+
     def abs(self, path: str | Path) -> Path:
         text = str(path)
         if text.startswith('~'):
@@ -87,8 +100,12 @@ class PathApi(RecipeApi):
 
     @property
     def chromium_src(self) -> Path:
-        """Chromium `src/` checkout: `<workspace>/brave-browser/src`."""
-        return self._workspace / 'brave-browser' / 'src'
+        """Chromium `src/` checkout: `<workspace>/b/src`.
+
+        Named `b` to keep paths short on Windows, as long paths on Windows can
+        cause linking errors for code we have no control over (e.g. LLVM).
+        """
+        return self._workspace / 'b' / 'src'
 
     @property
     def brave_core(self) -> Path:
@@ -99,6 +116,17 @@ class PathApi(RecipeApi):
     def out(self) -> Path:
         """Build output directory: `<workspace>/out`."""
         return self._workspace / 'out'
+
+    @property
+    def cleanup_dir(self) -> Path:
+        """Scratch directory: `<workspace>/rc`.
+
+        Everything under here is disposable -- treat it as empty at the start of
+        a job and gone afterwards. This is where `mkdtemp` puts the directories
+        it makes, so a step that needs somewhere to write throwaway output has a
+        home for it that nothing else has to clean up.
+        """
+        return self._workspace / 'rc'
 
     # Filesystem seams. The real-vs-simulated choice is made once in
     # `initialise()` by picking a backend. The methods below just delegate, so
@@ -134,6 +162,18 @@ class PathApi(RecipeApi):
               exist_ok: bool = True) -> None:
         """Create directory *path* (creating parents by default)."""
         self._fs.mkdir(path, parents=parents, exist_ok=exist_ok)
+
+    def mkdtemp(self, prefix: str = 'tmp') -> Path:
+        """Create a new temporary directory under `cleanup_dir`, and return it.
+
+        Args:
+            prefix: Prepended to the directory's name, to say what it is for.
+
+        In test mode nothing is created on disk and the name is numbered per
+        *prefix* (`<cleanup_dir>/<prefix>_tmp_1`, `_2`, ...) rather than
+        randomized, so expectations stay stable across runs.
+        """
+        return self._fs.mkdtemp(self.cleanup_dir, prefix)
 
     def abs(self, path: str | Path) -> Path:
         """Return an absolute, `~`-expanded, normalized `Path`.

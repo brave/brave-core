@@ -8,7 +8,8 @@ import json
 from pathlib import Path
 import unittest
 
-from test.fake_chromium_repo import FakeChromiumRepo
+from test.fake_chromium_repo import (FakeChromiumRepo, GNRT_VERSION_STAMP,
+                                     L10N_VERSION_STAMP)
 
 
 class FakeChromiumRepoTest(unittest.TestCase):
@@ -412,6 +413,163 @@ class FakeChromiumRepoTest(unittest.TestCase):
             'Delete test_file.txt',
             self.repo._run_git_command(['log', '--oneline'],
                                        self.repo.chromium))
+
+
+class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
+    """The emulation of the `npm run` commands a lift drives.
+
+    These cover the pieces `FakeChromiumRepo` grew for the brockit `lift`
+    tests: syncing the checkout, the l10n and `gnrt` regeneration, and
+    committing the patch files.
+    """
+
+    SOURCE = 'chrome/browser/thing.cc'
+    PATCH = 'patches/chrome-browser-thing.cc.patch'
+
+    def setUp(self):
+        self.repo = FakeChromiumRepo()
+        self.addCleanup(self.repo.cleanup)
+        self.repo.write_and_stage_file(self.SOURCE, 'upstream\nsecond\n',
+                                       self.repo.chromium)
+        self.repo.commit('Add a source', self.repo.chromium)
+        self.repo.add_tag('134.0.7035.0')
+        self.repo.update_brave_version('134.0.7035.0')
+
+    def test_chromium_repos_excludes_brave_and_the_remote(self):
+        self.repo.add_dep('v8')
+        self.repo.create_brave_remote()
+
+        self.assertEqual(self.repo.chromium_repos,
+                         [self.repo.chromium, self.repo.chromium / 'v8'])
+
+    def test_write_file_leaves_the_change_unstaged(self):
+        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
+                             self.repo.chromium)
+
+        self.assertIn(
+            f'M {self.SOURCE}',
+            self.repo._run_git_command(['status', '--porcelain'],
+                                       self.repo.chromium).splitlines())
+
+    def test_commit_patches_commits_the_generated_patch(self):
+        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
+                             self.repo.chromium)
+
+        self.repo.commit_patches('Add patches')
+
+        self.assertEqual(
+            self.repo._run_git_command(['status', '--porcelain'],
+                                       self.repo.brave), '')
+        self.assertIn(
+            'patched',
+            self.repo._run_git_command(['show', f'HEAD:{self.PATCH}'],
+                                       self.repo.brave))
+
+    def test_commit_patches_with_nothing_to_commit_keeps_head(self):
+        head = self.repo._run_git_command(['rev-parse', 'HEAD'],
+                                          self.repo.brave)
+
+        self.assertEqual(self.repo.commit_patches('Nothing here'), head)
+
+    def test_update_patches_removes_stale_patches(self):
+        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
+                             self.repo.chromium)
+        self.repo.commit_patches('Add patches')
+
+        # With the source no longer modified, its patch is stale.
+        self.repo._run_git_command(['checkout', '--', self.SOURCE],
+                                   self.repo.chromium)
+        self.repo.run_update_patches()
+
+        self.assertFalse((self.repo.brave / self.PATCH).exists())
+
+    def test_update_patches_ignores_added_and_deleted_files(self):
+        """Only modified files get patches, as in the real command."""
+        self.repo.write_file('chrome/browser/added.cc', 'new\n',
+                             self.repo.chromium)
+        (self.repo.chromium / self.SOURCE).unlink()
+
+        self.repo.run_update_patches()
+
+        self.assertEqual(list(self.repo.brave_patches.glob('*.patch')), [])
+
+    def test_sync_chromium_resets_and_checks_the_tag_out(self):
+        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
+                             self.repo.chromium)
+        self.repo.commit_patches('Add patches')
+        self.repo.add_tag('135.0.7037.1')
+        self.repo.update_brave_version('135.0.7037.1')
+
+        self.repo.sync_chromium()
+
+        self.assertEqual(self.repo.chromium_version(), '135.0.7037.1')
+        # The patched source was reset by the sync.
+        self.assertEqual((self.repo.chromium / self.SOURCE).read_text(),
+                         'upstream\nsecond\n')
+
+    def test_sync_chromium_takes_an_explicit_version(self):
+        self.repo.add_tag('135.0.7037.1')
+
+        self.repo.sync_chromium('134.0.7035.0')
+
+        self.assertEqual(self.repo.chromium_version(), '134.0.7035.0')
+
+    def test_apply_patches_resets_before_applying(self):
+        """Applying twice in a row is the same as applying once."""
+        self.repo.write_file(self.SOURCE, 'patched\nsecond\n',
+                             self.repo.chromium)
+        self.repo.commit_patches('Add patches')
+
+        self.assertEqual(self.repo.run_apply_patches(), [])
+        self.assertEqual(self.repo.run_apply_patches(), [])
+        self.assertEqual((self.repo.chromium / self.SOURCE).read_text(),
+                         'patched\nsecond\n')
+
+    def test_chromium_rebase_l10n_stamps_the_tracked_files(self):
+        self.repo.write_and_stage_file('app/strings.grd', '<grd/>\n',
+                                       self.repo.brave)
+        self.repo.commit('Add strings', self.repo.brave)
+
+        self.assertEqual(self.repo.run_chromium_rebase_l10n(),
+                         ['app/strings.grd'])
+
+        self.assertEqual(
+            (self.repo.brave / 'app/strings.grd').read_text(),
+            L10N_VERSION_STAMP.format(version='134.0.7035.0') + '\n<grd/>\n')
+
+    def test_chromium_rebase_l10n_restamps_rather_than_piling_up(self):
+        self.repo.write_and_stage_file('app/strings.grd', '<grd/>\n',
+                                       self.repo.brave)
+        self.repo.commit('Add strings', self.repo.brave)
+        self.repo.run_chromium_rebase_l10n()
+        self.repo.add_tag('135.0.7037.1')
+        self.repo.sync_chromium('135.0.7037.1')
+
+        self.repo.run_chromium_rebase_l10n()
+
+        self.assertEqual(
+            (self.repo.brave / 'app/strings.grd').read_text(),
+            L10N_VERSION_STAMP.format(version='135.0.7037.1') + '\n<grd/>\n')
+
+    def test_gnrt_gen_stamps_the_build_files(self):
+        build_gn = 'third_party/rust/crate/BUILD.gn'
+        self.repo.write_and_stage_file(build_gn, '# generated\n',
+                                       self.repo.brave)
+        self.repo.commit('Add gnrt output', self.repo.brave)
+
+        self.assertEqual(self.repo.run_gnrt('vendor'), [])
+        self.assertEqual(self.repo.run_gnrt('gen'), [build_gn])
+
+        self.assertEqual((self.repo.brave / build_gn).read_text(),
+                         GNRT_VERSION_STAMP.format(version='134.0.7035.0') +
+                         '\n# generated\n')
+
+    def test_gnrt_rejects_an_unknown_subcommand(self):
+        with self.assertRaises(ValueError):
+            self.repo.run_gnrt('whatever')
+
+    def test_package_version_reads_the_working_tree(self):
+        self.assertEqual(self.repo.package_version(), '134.0.7035.0')
 
 
 if __name__ == '__main__':

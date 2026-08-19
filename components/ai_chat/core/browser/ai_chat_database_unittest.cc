@@ -25,6 +25,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
@@ -210,10 +211,14 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       last_query->edits = std::vector<mojom::ConversationTurnPtr>{};
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
-          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-          "edited query 1", std::nullopt, std::nullopt, std::nullopt,
-          base::Time::Now() + base::Minutes(121), std::nullopt, std::nullopt,
-          nullptr /* skill */, false, std::nullopt, nullptr));
+          std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+          mojom::ActionType::QUERY, "edited query 1", std::nullopt /* prompt */,
+          std::nullopt /* selected_text */, std::nullopt /* events */,
+          base::Time::Now() + base::Minutes(121), std::nullopt /* edits */,
+          std::nullopt /* uploaded_files */, nullptr /* skill */,
+          false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+          nullptr /* near_verification_status */,
+          std::vector<std::string>{} /* child_thread_uuids */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -227,10 +232,14 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       auto& last_query = result_4->entries.back();
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
-          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-          "edited query 2", std::nullopt, std::nullopt, std::nullopt,
-          base::Time::Now() + base::Minutes(122), std::nullopt, std::nullopt,
-          nullptr /* skill */, false, std::nullopt, nullptr));
+          std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+          mojom::ActionType::QUERY, "edited query 2", std::nullopt /* prompt */,
+          std::nullopt /* selected_text */, std::nullopt /* events */,
+          base::Time::Now() + base::Minutes(122), std::nullopt /* edits */,
+          std::nullopt /* uploaded_files */, nullptr /* skill */,
+          false /* from_brave_search_SERP */, std::nullopt /* model_key */,
+          nullptr /* near_verification_status */,
+          std::vector<std::string>{} /* child_thread_uuids */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -1535,7 +1544,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     EXPECT_EQ(conversation->model_key, conversation_model_key);
 
     // 2. Entry-level model_key persistence
-    const std::string entry_model_key = "chat-basic";
+    const std::string entry_model_key = kChatAutomaticModelKey;
     auto conversation_data = db_->GetConversationData(uuid);
     ASSERT_EQ(conversation_data->entries.size(), 2u);
     EXPECT_FALSE(conversation_data->entries[0]->model_key);

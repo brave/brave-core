@@ -36,9 +36,9 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsNotificationAdUtilTest,
-       NotAllowedToConvertViewedAdEventIfOptedOutOfNotificationAds) {
+       NotAllowedToConvertViewedAdEventIfNotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*use_random_uuids=*/false);
@@ -78,9 +78,9 @@ TEST_F(BraveAdsConversionsNotificationAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsNotificationAdUtilTest,
-       NotAllowedToConvertClickedAdEventIfOptedOutOfNotificationAds) {
+       NotAllowedToConvertClickedAdEventIfNotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::DisableNotificationAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*use_random_uuids=*/false);

@@ -12,14 +12,11 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
-
-namespace gfx {
-class RoundedCornersF;
-}  // namespace gfx
 
 class BraveContentsContainerView :
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -38,6 +35,11 @@ class BraveContentsContainerView :
 
   // true when a tab that wraps this container's web contents is active.
   bool IsActive() const;
+
+  // Sets the corner radii of the region this container occupies. Empty radii
+  // indicate that the contents should not be rounded. Takes effect on the next
+  // border update.
+  void SetContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
 
   // ContentsContainerView:
   void UpdateBorderAndOverlay(bool is_in_split,
@@ -63,10 +65,18 @@ class BraveContentsContainerView :
   // content's own (unbordered) corner radii.
   gfx::RoundedCornersF GetCornerRadius(int border_thickness) const;
 
+  // True when this container should display its domain in the mini toolbar.
+  bool ShouldAlwaysShowDomain() const;
+
+  // True when this container's web contents occupies the entire window.
+  bool IsTabFullscreen() const;
+
   raw_ref<BrowserView> browser_view_;
 
   // true when this view is used for web panel.
   const bool for_web_panel_;
+
+  gfx::RoundedCornersF contents_corner_radii_;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_ = nullptr;

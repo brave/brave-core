@@ -5,6 +5,13 @@
 
 import * as React from 'react'
 
+// Components
+import { ConfirmationPopup } from '../confirmation_popup/confirmation_popup'
+
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // styles
 import { Column } from '../../shared/style'
 import { Backdrop, Background, FloatingCard } from '../shared-panel-styles'
@@ -20,6 +27,12 @@ interface Props {
 }
 
 export const LoadingPanel: React.FC<Props> = ({ message }) => {
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
+
+  if (isSidePanel) {
+    return <ConfirmationPopup isLoading={true} />
+  }
+
   return (
     <Background data-testid='loading-panel'>
       <Backdrop>

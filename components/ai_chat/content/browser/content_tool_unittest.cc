@@ -29,10 +29,9 @@ namespace {
 
 constexpr char kTestUrl[] = "https://example.com/page";
 constexpr char kTestHost[] = "example.com";
-// "example.com/page" (host + path) with non-alnum/underscore characters
-// replaced by '_'. The path is part of the name so tools with the same name on
-// different pages of the same host don't collapse.
-constexpr char kTestHostPathSanitized[] = "example_com_page";
+// "example.com" (host only) with non-alnum/underscore characters replaced
+// by '_'.
+constexpr char kTestHostSanitized[] = "example_com";
 
 blink::mojom::ScriptToolPtr MakeScriptTool(
     const std::string& name,
@@ -134,17 +133,17 @@ class ContentToolTest : public content::RenderViewHostTestHarness {
 TEST_F(ContentToolTest, NamePrefixesHostAndSanitizes) {
   auto mojo_tool = MakeScriptTool("highlight", "Highlight the page");
   ContentTool tool(*mojo_tool, weak_document());
-  // Name format is "{sanitized-host}{sanitized-path}_{tool-name}". The dot in
-  // the host and the slash in the path are replaced with underscores because
-  // tool names only allow alphanumeric characters and underscores.
-  EXPECT_EQ(tool.Name(),
-            std::string(kTestHostPathSanitized) + std::string("_highlight"));
+  // Name format is "web_{sanitized-host}_{tool-name}". The dot in the host is
+  // replaced with an underscore because tool names only allow alphanumeric
+  // characters and underscores.
+  EXPECT_EQ(tool.Name(), "web_" + std::string(kTestHostSanitized) +
+                             std::string("_highlight"));
 }
 
 TEST_F(ContentToolTest, NameSanitizesDisallowedCharactersInToolName) {
   auto mojo_tool = MakeScriptTool("do-thing.now!", "");
   ContentTool tool(*mojo_tool, weak_document());
-  EXPECT_EQ(tool.Name(), std::string(kTestHostPathSanitized) +
+  EXPECT_EQ(tool.Name(), "web_" + std::string(kTestHostSanitized) +
                              std::string("_do_thing_now_"));
 }
 

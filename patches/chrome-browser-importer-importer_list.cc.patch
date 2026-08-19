@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 62546b572bab849b182fed62ad964d5cef136571..a9e7ff0052762cf13a8f7683b87b92da2b5bced0 100644
+index 62546b572bab849b182fed62ad964d5cef136571..f53e90f130948f5dd74895f1d2ea9e73d6c5dfa6 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
+@@ -51,7 +51,7 @@ void DetectEdgeProfiles(
+     return;
+   }
+   user_data_importer::SourceProfile edge;
+-  edge.importer_name = l10n_util::GetStringUTF16(IDS_IMPORT_FROM_EDGE);
++  edge.importer_name = l10n_util::GetStringUTF16(IDS_BRAVE_IMPORT_FROM_EDGE);
+   edge.importer_type = user_data_importer::TYPE_EDGE;
+   edge.services_supported = user_data_importer::FAVORITES;
+   edge.source_path = importer::GetEdgeDataFilePath();
 @@ -171,20 +171,30 @@ std::vector<user_data_importer::SourceProfile> DetectSourceProfilesWorker(
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);

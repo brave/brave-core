@@ -23,11 +23,21 @@ def RunSteps(api):
     api.step('home', ['echo', str(api.path.home())])
     api.step('cache', ['echo', str(api.path.abs('~/cache'))])
 
+    # Temporary directories live under the job's scratch space, and exist for
+    # the rest of the run. Names are numbered per prefix, so two directories
+    # with the same prefix don't collide.
+    first = api.path.mkdtemp()
+    second = api.path.mkdtemp()
+    unpacked = api.path.mkdtemp('unpacked')
+    assert api.path.is_dir(first) and api.path.is_dir(unpacked)
+    assert first.parent == api.path.cleanup_dir, first
+    api.step('temp dirs', ['echo', str(first), str(second), str(unpacked)])
+
 
 def GenTests(api):
     yield api.test(
         'seeded',
-        api.path.files('brave-browser/src/chrome/VERSION'),
+        api.path.files('b/src/chrome/VERSION'),
         api.post_process(post_process.MustRun, 'found version'),
         api.post_process(post_process.MustRun, 'out ready'),
         api.post_process(post_process.StepCommandContains, 'out ready',
@@ -35,6 +45,10 @@ def GenTests(api):
         api.post_process(post_process.StepCommandContains, 'home', ['[HOME]']),
         api.post_process(post_process.StepCommandContains, 'cache',
                          ['[HOME]/cache']),
+        api.post_process(post_process.StepCommandContains, 'temp dirs', [
+            '[WORKSPACE]/rc/tmp_tmp_1', '[WORKSPACE]/rc/tmp_tmp_2',
+            '[WORKSPACE]/rc/unpacked_tmp_1'
+        ]),
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(

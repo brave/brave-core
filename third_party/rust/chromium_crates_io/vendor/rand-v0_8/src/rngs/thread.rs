@@ -57,7 +57,7 @@ const THREAD_RNG_RESEED_THRESHOLD: u64 = 1024 * 64;
 ///
 /// [`ReseedingRng`]: crate::rngs::adapter::ReseedingRng
 /// [`StdRng`]: crate::rngs::StdRng
-#[cfg_attr(doc_cfg, doc(cfg(all(feature = "std", feature = "std_rng"))))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = "std", feature = "std_rng"))))]
 #[derive(Clone, Debug)]
 pub struct ThreadRng {
     // Rc is explicitly !Send and !Sync
@@ -84,7 +84,7 @@ thread_local!(
 /// `ThreadRng::default()` equivalent.
 ///
 /// For more information see [`ThreadRng`].
-#[cfg_attr(doc_cfg, doc(cfg(all(feature = "std", feature = "std_rng"))))]
+#[cfg_attr(docsrs, doc(cfg(all(feature = "std", feature = "std_rng"))))]
 pub fn thread_rng() -> ThreadRng {
     let rng = THREAD_RNG_KEY.with(|t| t.clone());
     ThreadRng { rng }

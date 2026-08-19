@@ -36,7 +36,7 @@ export const InputWrapper = styled(Row)<{
   outline: 1px solid
     ${(p) =>
       p.hasError
-        ? leo.color.systemfeedback.errorVibrant
+        ? 'var(--leo-color-primitive-red-50)'
         : leo.color.divider.subtle};
   transition:
     outline 0.1s ease-in-out,
@@ -50,7 +50,7 @@ export const InputWrapper = styled(Row)<{
     outline: 2px solid
       ${(p) =>
         p.hasError
-          ? leo.color.systemfeedback.errorVibrant
+          ? 'var(--leo-color-primitive-red-50)'
           : leo.color.primary[40]};
   }
 `

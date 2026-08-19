@@ -31,9 +31,8 @@ bool DoesRequireResourceForNewTabPageAds() {
 bool DoesRequireResource() {
   // Require resource only if:
   // - The user has opted into new tab page ads and and joined Brave Rewards.
-  // - User has joined Brave Rewards and opted into notification ads.
-  return DoesRequireResourceForNewTabPageAds() ||
-         UserHasOptedInToNotificationAds();
+  // - The user has joined Brave Rewards and notification ads are enabled.
+  return DoesRequireResourceForNewTabPageAds() || IsNotificationAdsEnabled();
 }
 
 }  // namespace
@@ -223,7 +222,7 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
     UpdateUserSelectedSubdivision();
   } else if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
              DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
-             DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+             DoesMatchNotificationAdsEnabledPrefPath(path)) {
     // This condition should include all the preferences that are present in the
     // `DoesRequireResource` function.
     MaybeInitialize();

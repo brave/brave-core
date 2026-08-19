@@ -29,6 +29,7 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
       amount_(amount) {
+  transaction_.init_v5_part();
   transaction_.set_to(address_to);
   transaction_.set_amount(amount);
 }
@@ -100,9 +101,9 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
 
   base::Extend(transaction_.transparent_part().inputs,
                pick_inputs_result->inputs);
-  auto value = base::CheckSub<uint64_t>(transaction_.TotalInputsAmount(),
-                                        pick_inputs_result->fee,
-                                        pick_inputs_result->change);
+  auto value =
+      base::CheckSub(transaction_.TotalInputsAmount(), pick_inputs_result->fee,
+                     pick_inputs_result->change);
   if (!value.IsValid()) {
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     WorkOnTask();
@@ -176,8 +177,8 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
       ZCashAddressToScriptPubkey(target_output.address, IsTestnet()).value();
 
   auto change_amount =
-      base::CheckSub<uint64_t>(transaction_.TotalInputsAmount(),
-                               transaction_.amount(), transaction_.fee());
+      base::CheckSub(transaction_.TotalInputsAmount(), transaction_.amount(),
+                     transaction_.fee());
   if (!change_amount.IsValid()) {
     return false;
   }

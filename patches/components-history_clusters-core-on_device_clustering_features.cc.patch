@@ -1,0 +1,26 @@
+diff --git a/components/history_clusters/core/on_device_clustering_features.cc b/components/history_clusters/core/on_device_clustering_features.cc
+index 7beac0172076ab3629c6a9afa285bc5a9536e0a2..c4352c0ea7c7e0f383e3d4282ba46b4a56101c32 100644
+--- a/components/history_clusters/core/on_device_clustering_features.cc
++++ b/components/history_clusters/core/on_device_clustering_features.cc
+@@ -14,17 +14,19 @@
+ namespace history_clusters {
+ namespace features {
+ 
++// kOnDeviceClustering feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kOnDeviceClustering,
+              "HistoryClustersOnDeviceClustering",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kOnDeviceClusteringBlocklists,
+              "JourneysOnDeviceClusteringBlocklist",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
++// kOnDeviceClusteringKeywordFiltering feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kOnDeviceClusteringKeywordFiltering,
+              "JourneysKeywordFiltering",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kOnDeviceClusteringVisitRanking,
+              "JourneysOnDeviceClusteringVisitRanking",

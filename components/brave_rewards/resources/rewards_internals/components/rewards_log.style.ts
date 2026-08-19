@@ -53,7 +53,7 @@ export const style = scoped.css`
     background: ${color.systemfeedback.warningBackground};
     padding: 24px;
     border-radius: 8px;
-    border: solid 1px ${color.systemfeedback.warningVibrant};
+    border: solid 1px var(--leo-color-primitive-yellow-80);
     color: ${color.systemfeedback.warningText};
   }
 `

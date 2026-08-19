@@ -10,6 +10,7 @@ import Toggle from '@brave/leo/react/toggle'
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { ClockFormat } from '../../state/new_tab_store'
 import { getString } from '../../lib/strings'
+import { SettingsPanel } from './settings_panel'
 import { formatString } from '$web-common/formatString'
 
 import { style } from './clock_panel.style'
@@ -41,7 +42,10 @@ export function ClockPanel() {
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_CLOCK_SETTINGS_TITLE)}
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -67,6 +71,6 @@ export function ClockPanel() {
           {renderFormatOption(ClockFormat.k24)}
         </DropDown>
       </div>
-    </div>
+    </SettingsPanel>
   )
 }

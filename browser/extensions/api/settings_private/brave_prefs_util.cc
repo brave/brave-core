@@ -16,9 +16,11 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -48,6 +50,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/pref_names.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -80,6 +86,10 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace extensions {
@@ -385,6 +395,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kScrollableHorizontalTabStrip] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kAlwaysUseMiniAccentIcon] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -394,6 +406,17 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if BUILDFLAG(ENABLE_PSST)
   (*s_brave_allowlist)[psst::prefs::kPsstEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  (*s_brave_allowlist)
+      [email_aliases::prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled] =
+          settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  (*s_brave_allowlist)[containers::prefs::kContainersEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

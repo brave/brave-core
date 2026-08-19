@@ -10,7 +10,7 @@ import {
   deterministicOptimization,
   deterministicIdsPlugins,
 } from './deterministic-output.ts'
-import generatePathMap from './path-map.js'
+import { generatePathMap } from './path-map.ts'
 import { provideNodeGlobals, chromePrefixReplacers } from './plugins.ts'
 import { baseResolve } from './resolve.ts'
 import {

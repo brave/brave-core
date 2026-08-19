@@ -15,16 +15,20 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/types/optional_ref.h"
+#include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
+#include "net/base/isolation_info.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/url_request/referrer_policy.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 template <template <typename> class T>
-class BraveRequestHandler;
+class BraveRequestHandlerImpl;
 
 namespace content {
 class BrowserContext;
@@ -82,8 +86,8 @@ class BraveRequestInfo {
   const GURL& tab_url() const;
   void set_tab_url(const GURL& value);
 
-  const GURL& initiator_url() const;
-  void set_initiator_url(const GURL& value);
+  const std::optional<url::Origin>& request_initiator() const;
+  void set_request_initiator(const std::optional<url::Origin>& value);
 
   bool internal_redirect() const;
   void set_internal_redirect(bool value);
@@ -182,12 +186,24 @@ class BraveRequestInfo {
   const std::optional<std::string>& devtools_request_id() const;
   void set_devtools_request_id(const std::optional<std::string>& value);
 
+  // Builds request context using |original_request_initiator| when provided;
+  // otherwise uses |request.request_initiator|, with
+  // |factory_request_initiator| as a worker-factory fallback when neither is
+  // available.
   static std::unique_ptr<brave::BraveRequestInfo> MakeCTX(
       const network::ResourceRequest& request,
       content::GlobalRenderFrameHostToken render_frame_token,
       uint64_t request_identifier,
       content::BrowserContext* browser_context,
-      brave::BraveRequestInfo* old_ctx);
+      brave::BraveRequestInfo* old_ctx,
+      base::optional_ref<const url::Origin> original_request_initiator =
+          std::nullopt,
+      std::optional<content::ContentBrowserClient::URLLoaderFactoryType>
+          url_loader_factory_type = std::nullopt,
+      base::optional_ref<const url::Origin> factory_request_initiator =
+          std::nullopt,
+      base::optional_ref<const net::IsolationInfo> factory_isolation_info =
+          std::nullopt);
 
   base::WeakPtr<BraveRequestInfo> AsWeakPtr() {
     return weak_factory_.GetWeakPtr();
@@ -197,7 +213,7 @@ class BraveRequestInfo {
   // Please don't add any more friends here if it can be avoided.
   // We should also remove the one below.
   template <template <typename> class T>
-  friend class ::BraveRequestHandler;
+  friend class ::BraveRequestHandlerImpl;
 
   GURL* new_url() const;
   void set_new_url(GURL* value);
@@ -206,7 +222,7 @@ class BraveRequestInfo {
   GURL request_url_;
   GURL tab_origin_;
   GURL tab_url_;
-  GURL initiator_url_;
+  std::optional<url::Origin> request_initiator_;
 
   bool internal_redirect_ = false;
   GURL redirect_source_;

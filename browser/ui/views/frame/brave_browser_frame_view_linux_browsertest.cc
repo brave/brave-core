@@ -170,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
       [](Profile* p) {
         ThemeServiceFactory::GetForProfile(p)->UseDefaultTheme();
       },
-      browser()->profile()));
+      browser()->GetProfile()));
 
   // Install the fake getter before UseSystemTheme().  UseSystemTheme()
   // synchronously recreates the initial browser's frame (UpdateFrame()), which
@@ -179,9 +179,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
   // NativeTheme so this path does not crash.  UsingSystemTheme() == true is
   // also required by the factory to create BraveBrowserFrameViewLinuxNative.
   ScopedLinuxUiGetter scoped_getter(&fake_getter);
-  ThemeServiceFactory::GetForProfile(browser()->profile())->UseSystemTheme();
+  ThemeServiceFactory::GetForProfile(browser()->GetProfile())->UseSystemTheme();
 
-  Browser* gtk_browser = CreateBrowser(browser()->profile());
+  Browser* gtk_browser = CreateBrowser(browser()->GetProfile());
   auto* native_frame = views::AsViewClass<BraveBrowserFrameViewLinuxNative>(
       BrowserView::GetBrowserViewForBrowser(gtk_browser)
           ->browser_widget()
@@ -192,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
   // Enable vertical tabs with no title bar.  On Linux
   // kVerticalTabsShowTitleOnWindow defaults to true, so explicitly disable it.
   brave::ToggleVerticalTabStrip(gtk_browser);
-  gtk_browser->profile()->GetPrefs()->SetBoolean(
+  gtk_browser->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow, false);
 
   {
@@ -232,7 +232,7 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(top_container_bg);
 
   // No title by default on linux.
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+  EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow));
   ToggleVerticalTabStrip();
 

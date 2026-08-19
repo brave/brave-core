@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kBookmarkTriggerForPrerender2KillSwitch enabled.'
+    set_feature_flag_default_state:
+      feature_name: kBookmarkTriggerForPrerender2KillSwitch
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kBookmarkTriggerForPrefetch disabled.'
+    set_feature_flag_default_state:
+      feature_name: kBookmarkTriggerForPrefetch
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  # set_feature_flag_default_state's regex stops at the first `);`, but this
+  # BASE_FEATURE closes each #if/#else branch with its own `);` rather than a
+  # single `;` after #endif, so the macro would only rewrite the #if branch
+  # and leave a dangling #else/#endif behind. Collapse the whole conditional
+  # block with a plain regex instead.
+  - description: |-
+      Ship kCertificateTransparencyAskBeforeEnabling enabled.
+
+      Google has asked embedders not to enforce these pins:
+      https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ
+    regex:
+      re_pattern: 'BASE_FEATURE\(kCertificateTransparencyAskBeforeEnabling,.+?#endif[^\n]*\n'
+      replace: |
+        BASE_FEATURE(kCertificateTransparencyAskBeforeEnabling,
+                     base::FEATURE_ENABLED_BY_DEFAULT);
+      re_flags: [DOTALL]
+
+  - description: |-
+      Ship kDestroyProfileOnBrowserClose disabled.
+    regex:
+      re_pattern: 'BASE_FEATURE\(kDestroyProfileOnBrowserClose,.+?#endif[^\n]*\n'
+      replace: |
+        BASE_FEATURE(kDestroyProfileOnBrowserClose,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+      re_flags: [DOTALL]
+
+  - description: 'Ship kNewTabPageTriggerForPrerender2 disabled.'
+    set_feature_flag_default_state:
+      feature_name: kNewTabPageTriggerForPrerender2
+      value: base::FEATURE_DISABLED_BY_DEFAULT

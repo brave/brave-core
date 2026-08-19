@@ -60,6 +60,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/ai_chat/utils.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -170,6 +171,24 @@ constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
 struct AIChatRewriteData : public base::SupportsUserData::Data {
   std::string accumulated_text;
 };
+
+// Opens (or focuses) AI Chat for `conversation` from a context-menu action on
+// `web_contents`. With the global side panel, open the panel directly on this
+// exact conversation (the one the selected text is submitted to). With a
+// per-tab / contextual side panel, open the tab-scoped panel instead - which
+// binds the tab-associated conversation, the same one used here.
+void OpenAIChatForContextMenuConversation(
+    content::WebContents* web_contents,
+    ai_chat::ConversationHandler* conversation) {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (ai_chat::ShouldSidePanelBeGlobal(profile)) {
+    ai_chat::OpenConversationInSidePanel(profile,
+                                         conversation->get_conversation_uuid());
+  } else {
+    ai_chat::OpenAIChatForTab(web_contents);
+  }
+}
 
 bool IsRewriteCommand(int command) {
   static constexpr auto kRewriteCommands = base::MakeFixedFlatSet<int>(
@@ -298,7 +317,7 @@ void OnRewriteSuggestionCompleted(
     }
     conversation->MaybeUnlinkAssociatedContent();
 
-    ai_chat::OpenAIChatForTab(web_contents.get());
+    OpenAIChatForContextMenuConversation(web_contents.get(), conversation);
 
     conversation->AddSubmitSelectedTextError(selected_text, action_type,
                                              result.error().api_error);
@@ -457,7 +476,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
         email_aliases->ShowBubble(
             source_web_contents_, GetRenderFrameHost(),
-            params_.field_renderer_id,
+            params_.field_renderer_id.value(),
             email_aliases::SettingsPageMethod::kContextMenu);
       }
       break;
@@ -558,8 +577,8 @@ void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
     // current state.
     conversation->MaybeUnlinkAssociatedContent();
 
-    // Active the panel.
-    ai_chat::OpenAIChatForTab(embedder_web_contents_);
+    // Open the panel on this conversation.
+    OpenAIChatForContextMenuConversation(embedder_web_contents_, conversation);
     conversation->SubmitSelectedText(selected_text, action_type);
   }
 
@@ -680,8 +699,8 @@ void RenderViewContextMenu::BuildContainersMenu() {
   }
 }
 
-Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
-  return GetBrowser()->GetBrowserForMigrationOnly();
+BrowserWindowInterface* RenderViewContextMenu::GetBrowserToOpenSettings() {
+  return GetBrowser();
 }
 
 float RenderViewContextMenu::GetScaleFactor() {
@@ -722,7 +741,7 @@ void RenderViewContextMenu::AppendDeveloperItems() {
       brave_shields::BraveShieldsTabHelper::FromWebContents(
           source_web_contents_);
   bool add_block_elements = shields_tab_helper &&
-                            shields_tab_helper->GetBraveShieldsEnabled() &&
+                            shields_tab_helper->IsBraveShieldsEnabled() &&
                             shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
   add_block_elements &=
@@ -759,7 +778,9 @@ void RenderViewContextMenu::OnContainerSelected(
     return;
   }
 
-  brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container);
+  brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container,
+                            /*is_link=*/true, params_.frame_origin,
+                            /*started_from_context_menu=*/true);
 }
 
 void RenderViewContextMenu::OnNoContainerSelected() {
@@ -767,7 +788,9 @@ void RenderViewContextMenu::OnNoContainerSelected() {
     return;
   }
 
-  brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url);
+  brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url,
+                                 /*is_link=*/true, params_.frame_origin,
+                                 /*started_from_context_menu=*/true);
 }
 
 void RenderViewContextMenu::OnNewTemporaryContainerSelected() {
@@ -775,7 +798,9 @@ void RenderViewContextMenu::OnNewTemporaryContainerSelected() {
     return;
   }
 
-  brave::CreateTemporaryContainerAndOpenUrl(GetBrowser(), params_.link_url);
+  brave::CreateTemporaryContainerAndOpenUrl(
+      GetBrowser(), params_.link_url, /*is_link=*/true, params_.frame_origin,
+      /*started_from_context_menu=*/true);
 }
 
 base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {

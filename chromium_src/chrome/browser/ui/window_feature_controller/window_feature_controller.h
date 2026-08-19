@@ -10,6 +10,8 @@
 
 #include "build/build_config.h"
 
+class VerticalTabController;
+
 // Immersive mode requires special handling for vertical tabs, including
 // tracking the startup state of vertical tabs mode
 #if BUILDFLAG(IS_MAC)
@@ -18,7 +20,7 @@
   bool UsesImmersiveFullscreenTabbedMode_ChromiumImpl() const; \
                                                                \
  private:                                                      \
-  mutable std::optional<bool> vertical_tabs_on_at_startup_;    \
+  mutable std::optional<bool> disabled_at_startup_;            \
                                                                \
  public:                                                       \
   bool UsesImmersiveFullscreenMode

@@ -144,6 +144,14 @@ const flags_ui::FeatureEntry::FeatureVariation
               brave_shields::features::kBraveShieldsContentSettingsIOS),       \
       },                                                                       \
       {                                                                        \
+          "brave-show-updated-shields-panel",                                  \
+          "Show updated shields panel",                                        \
+          "Shows an updated design for the Brave Shields panel.",              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kShowUpdatedShieldsPanel),              \
+      },                                                                       \
+      {                                                                        \
           "https-by-default",                                                  \
           "Use HTTPS by Default",                                              \
           "Attempt to connect to all websites using HTTPS before falling "     \

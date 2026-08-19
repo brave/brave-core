@@ -15,7 +15,3 @@ message InputProperties {
   string chromium_ref = 2;
 }
 
-message EnvProperties {
-  // Optional git cache directory to speed up the Chromium checkout.
-  string GIT_CACHE = 1;
-}

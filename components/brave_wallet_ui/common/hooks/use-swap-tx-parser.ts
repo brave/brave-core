@@ -13,7 +13,6 @@ import {
 
 // Utils
 import Amount from '../../utils/amount'
-import { transactionUsesShieldedPool } from '../../utils/tx-utils'
 import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../constants/magics'
 
 // Queries
@@ -29,12 +28,9 @@ export const useSwapTransactionParser = <
 >(
   transaction: T,
 ): ParsedSwapInfo => {
-  const usesShieldedPool = transactionUsesShieldedPool(transaction)
-  // If the transaction uses the shielded pool, the token type is kOrchard
-  // (we do not have per-transaction ironwood info here, so default to kOrchard)
-  const zcashTokenType = usesShieldedPool
-    ? BraveWallet.ZCashTokenType.kOrchard
-    : BraveWallet.ZCashTokenType.kNone
+  const zcashTokenType =
+    transaction?.txDataUnion.zecTxData?.zcashTokenType
+    ?? BraveWallet.ZCashTokenType.kNone
 
   const { tokenInfo: sourceToken } = useGetTokenInfo(
     transaction?.swapInfo

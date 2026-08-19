@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/common/algorithm/split_vector_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
@@ -519,78 +518,11 @@ void CreativeNewTabPageAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 48: {
-      MigrateToV48(mojom_db_transaction);
-      break;
-    }
-
-    case 49: {
-      MigrateToV49(mojom_db_transaction);
-      break;
-    }
-
     default: {
       // No migration needed.
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void CreativeNewTabPageAds::MigrateToV48(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Wallpapers table has been deprecated.
-  DropTable(mojom_db_transaction, "creative_new_tab_page_ad_wallpapers");
-
-  // It is safe to recreate the table because it will be repopulated after
-  // downloading the component resource post-migration. However, after this
-  // migration, we should not drop the table as it is needed to maintain
-  // relationships with other tables.
-  DropTable(mojom_db_transaction, "creative_new_tab_page_ads");
-
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE creative_new_tab_page_ads (
-        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-        creative_set_id TEXT NOT NULL,
-        campaign_id TEXT NOT NULL,
-        company_name TEXT NOT NULL,
-        alt TEXT NOT NULL
-      );)");
-}
-
-void CreativeNewTabPageAds::MigrateToV49(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Create a temporary table:
-  //   - with a new `type` column constraint. The default value for existing
-  //     rows is 'image', which will be corrected when the new tab page ads are
-  //     updated.
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE creative_new_tab_page_ads_temp (
-        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-        creative_set_id TEXT NOT NULL,
-        campaign_id TEXT NOT NULL,
-        type TEXT NOT NULL DEFAULT 'image',
-        company_name TEXT NOT NULL,
-        alt TEXT NOT NULL
-      ))");
-
-  // Copy legacy columns to the temporary table, drop the legacy table and
-  // rename the temporary table.
-  const std::vector<std::string> columns = {"creative_instance_id",
-                                            "creative_set_id", "campaign_id",
-                                            "company_name", "alt"};
-
-  CopyTableColumns(mojom_db_transaction, "creative_new_tab_page_ads",
-                   "creative_new_tab_page_ads_temp", columns,
-                   /*should_drop=*/true);
-
-  RenameTable(mojom_db_transaction, "creative_new_tab_page_ads_temp",
-              "creative_new_tab_page_ads");
 }
 
 }  // namespace brave_ads::database::table

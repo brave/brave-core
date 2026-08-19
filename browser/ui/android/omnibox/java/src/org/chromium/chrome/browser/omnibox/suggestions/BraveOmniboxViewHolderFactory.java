@@ -10,17 +10,16 @@ import android.view.View;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.omnibox.brave.R;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionView;
-import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerViewBinder;
 
 /** Brave extension of {@link OmniboxViewHolderFactory} that registers Brave suggestion types. */
 @NullMarked
 public class BraveOmniboxViewHolderFactory extends BraveOmniboxViewHolderFactoryDummySuper {
-    @SuppressWarnings("unchecked")
-    public BraveOmniboxViewHolderFactory() {
-        super();
+    public BraveOmniboxViewHolderFactory(OmniboxResourceProvider resourceProvider) {
+        super(resourceProvider);
 
         registerType(
                 BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER,
@@ -34,6 +33,6 @@ public class BraveOmniboxViewHolderFactory extends BraveOmniboxViewHolderFactory
                 parent ->
                         new BaseSuggestionView<View>(
                                 parent.getContext(), R.layout.omnibox_basic_suggestion),
-                new BaseSuggestionViewBinder<View>(BraveLeoSuggestionViewBinder::bind));
+                new BraveLeoSuggestionViewBinder(resourceProvider));
     }
 }

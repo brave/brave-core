@@ -86,8 +86,8 @@ Once you're set up, there are a few tips we can suggest:
     Fix https://github.com/brave/brave-browser/issues/108
 ````
 
-* Run the tests by running `npm run test brave_unit_tests` and `npm run test brave_browser_tests`
-* JavaScript unit tests can be run from the `src/brave` directory using `npm run test-unit`
+* Run the tests by running `pnpm run test brave_unit_tests` and `pnpm run test brave_browser_tests`
+* JavaScript unit tests can be run from the `src/brave` directory using `pnpm run test-unit`
 
 
 ### Keeping your fork up to sync

@@ -7,6 +7,7 @@ import Flex from '$web-common/Flex'
 import * as React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { getCardColor } from '../customize/colors'
 import { usePublisher, usePublisherFollowed } from './Context'
 import FollowButton from './FollowButton'
@@ -18,8 +19,8 @@ interface CardProps {
 
 const StyledFollowButton = styled(FollowButton)`
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: ${spacing.m};
+  top: ${spacing.m};
 `
 
 const Card = styled('div').attrs<CardProps>(props => ({
@@ -29,9 +30,9 @@ const Card = styled('div').attrs<CardProps>(props => ({
 })) <CardProps>`
   position: relative;
   height: 80px;
-  border-radius: 8px;
+  border-radius: ${radius.m};
   overflow: hidden;
-  box-shadow: 0px 0px 16px 0px #63696E2E;
+  box-shadow: ${effect.elevation['02']};
 
   &[data-feed-card-is-followed=true] {
     &:not(:hover, :has(:focus-visible)) ${StyledFollowButton} {
@@ -51,15 +52,15 @@ const CoverImage = styled('div').attrs<CoverImageProps>(props => ({
 })) <CoverImageProps>`
   position: absolute;
   top: 15%; bottom: 15%; left: 15%; right: 15%;
-  border-radius: 8px;
+  border-radius: ${radius.m};
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
 `
 
 const Name = styled.span`
-  font-size: 14px;
-  font-weight: 600;
+  font: ${font.default.semibold};
+  color: ${color.text.primary};
 `
 
 export default function PublisherCard(props: {
@@ -71,7 +72,7 @@ export default function PublisherCard(props: {
   const backgroundColor = publisher?.backgroundColor || getCardColor(publisher?.feedSource?.url || publisher?.publisherId)
   const coverUrl = publisher?.coverUrl?.url
 
-  return <Flex direction="column" gap={8}>
+  return <Flex direction="column" gap={spacing.m}>
     <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
       {coverUrl && <CoverImage backgroundImage={`//brave-image?url=${encodeURIComponent(coverUrl)}`} />}
       <StyledFollowButton fab size='tiny' following={followed} onClick={() => setFollowed(!followed)} />
@@ -87,7 +88,7 @@ export function DirectPublisherCard(props: {
   title: string
 }) {
   const [loading, setLoading] = useState(false)
-  return <Flex direction="column" gap={8}>
+  return <Flex direction="column" gap={spacing.m}>
     <Card backgroundColor={getCardColor(props.feedUrl)} data-feed-card-is-followed={true}>
       <StyledFollowButton following={false} isDisabled={loading} onClick={async () => {
         setLoading(true)

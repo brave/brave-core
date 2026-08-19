@@ -25,6 +25,15 @@ export const ButtonIcon = styled(Icon)`
   color: ${leo.color.icon.default};
 `
 
+export const SidePanelWrapper = styled(Row)`
+  background-color: ${leo.color.page.background};
+`
+
+export const SidePanelIcon = styled(Icon)`
+  --leo-icon-size: 20px;
+  color: ${leo.color.icon.default};
+`
+
 export const LeftRightContainer = styled(Row)`
   min-width: 35%;
 `

@@ -16,6 +16,7 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 import sys
 import tarfile
 import tempfile
@@ -35,14 +36,50 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _make_tar(members: list[tuple[str, bytes]], compression: str = 'gz'):
+def _make_tar(members: list, compression: str = 'gz'):
+    """A tarball of `(name, content)` pairs and ready-made `TarInfo` members."""
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode=f'w:{compression}') as tar:
-        for name, content in members:
+        for member in members:
+            if isinstance(member, tarfile.TarInfo):
+                tar.addfile(member)
+                continue
+            name, content = member
             info = tarfile.TarInfo(name)
             info.size = len(content)
             tar.addfile(info, io.BytesIO(content))
     return buf.getvalue()
+
+
+def _tar_member(name: str,
+                member_type: bytes,
+                linkname: str = '') -> tarfile.TarInfo:
+    """A non-regular member (symlink, hardlink, device) for `_make_tar`."""
+    info = tarfile.TarInfo(name)
+    info.type = member_type
+    info.linkname = linkname
+    return info
+
+
+def _can_symlink() -> bool:
+    """Whether this runtime can create a symlink at all.
+
+    Windows needs either administrator rights or Developer Mode for that, so it
+    is a property of the machine rather than of the platform -- probe for it
+    (the way CPython's own `test.support.can_symlink` does) so a box that can
+    make symlinks exercises them instead of skipping. `tarfile` quietly falls
+    back to copying a link's target when it cannot create one, so the tests
+    that assert on a symlink need the real thing to be meaningful.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            Path(tmp, 'link').symlink_to(Path(tmp, 'target'))
+        except (OSError, NotImplementedError):
+            return False
+        return True
+
+
+_CAN_SYMLINK = _can_symlink()
 
 
 def _make_zip(members: list[tuple[str, bytes]]):
@@ -53,16 +90,32 @@ def _make_zip(members: list[tuple[str, bytes]]):
     return buf.getvalue()
 
 
+def _make_zip_with_unix_modes(members: list[tuple[str, bytes, int]]):
+    """A zip whose entries carry the given Unix `st_mode` (e.g. `0o100755`
+    for an executable file, `0o120777` for a symlink), packed into the high
+    16 bits of `external_attr` the way `zip`/`unzip` do."""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, 'w') as archive:
+        for name, content, mode in members:
+            info = zipfile.ZipInfo(name)
+            info.external_attr = mode << 16
+            archive.writestr(info, content)
+    return buf.getvalue()
+
+
 @contextlib.contextmanager
 def _simulate_pre_pep706_python():
-    """Make the runtime look like a `tarfile` without the PEP 706 filter.
+    """Make the runtime look like a `tarfile` without the PEP 706 filters.
 
-    Drops `tarfile.data_filter` and makes `extractall` reject the `filter`
-    kwarg, mimicking Python 3.12 predecessors (and pre-backport 3.8-3.11) so a
-    regression to an unconditional `filter='data'` call would fail here.
+    Drops the `data_filter` sentinel the installer probes for and makes
+    `extractall` reject the `filter` kwarg, mimicking Python 3.12 predecessors
+    (and pre-backport 3.8-3.11) so a regression to an unconditional `filter=`
+    call would fail here.
     """
-    had_attr = hasattr(tarfile, 'data_filter')
-    saved_attr = getattr(tarfile, 'data_filter', None)
+    saved = {
+        name: getattr(tarfile, name)
+        for name in ('data_filter', ) if hasattr(tarfile, name)
+    }
     real_extractall = tarfile.TarFile.extractall
 
     def _reject_filter(tar_self, *args, **kwargs):
@@ -71,14 +124,46 @@ def _simulate_pre_pep706_python():
                 "extractall() got an unexpected keyword argument 'filter'")
         return real_extractall(tar_self, *args, **kwargs)
 
-    if had_attr:
-        del tarfile.data_filter
+    for name in saved:
+        delattr(tarfile, name)
     with mock.patch.object(tarfile.TarFile, 'extractall', _reject_filter):
         try:
             yield
         finally:
-            if had_attr:
-                tarfile.data_filter = saved_attr
+            for name, value in saved.items():
+                setattr(tarfile, name, value)
+
+
+@contextlib.contextmanager
+def _simulate_pre_gh107845_data_filter():
+    """Make `filter='data'` behave the way Python 3.10.12's does.
+
+    That first PEP 706 backport resolves a symlink's target against the
+    destination root instead of against the directory holding the link, so an
+    ordinary `bin/corepack -> ../lib/node_modules/...` is rejected as escaping
+    the destination. Upstream fixed it in 3.10.13 (gh-107845), but the bare
+    `python3` our Linux builders run is older than that, so extraction must not
+    depend on the filter being correct.
+    """
+
+    # Both of these exist only on a runtime that has PEP 706 -- exactly what
+    # the tests using this helper skip on -- so they are reached by name: our
+    # linter runs against a `tarfile` that predates the filters and would
+    # otherwise report them as missing members.
+    link_error = getattr(tarfile, 'LinkOutsideDestinationError')
+    named_filters = getattr(tarfile, '_NAMED_FILTERS')
+
+    def _buggy_data_filter(member, dest_path):
+        if (member.issym()
+                or member.islnk()) and not os.path.isabs(member.linkname):
+            dest_path = os.path.realpath(dest_path)
+            target = os.path.realpath(os.path.join(dest_path, member.linkname))
+            if os.path.commonpath([target, dest_path]) != dest_path:
+                raise link_error(member, target)
+        return member
+
+    with mock.patch.dict(named_filters, {'data': _buggy_data_filter}):
+        yield
 
 
 class TarballInstallerTest(unittest.TestCase):
@@ -133,12 +218,146 @@ class TarballInstallerTest(unittest.TestCase):
         self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
         self.assertTrue(installer.is_installed())
 
+    # The shape every Node tarball has: `bin/corepack` is a symlink into the
+    # sibling `lib/` tree, so its target climbs out of `bin/` while staying
+    # inside the destination.
+    _NODE_LIKE_MEMBERS = [
+        ('lib/node_modules/corepack/dist/corepack.js', b'corepack'),
+        _tar_member('bin/corepack', tarfile.SYMTYPE,
+                    '../lib/node_modules/corepack/dist/corepack.js'),
+    ]
+
+    @unittest.skipUnless(_CAN_SYMLINK, 'this machine cannot create symlinks')
+    def test_install_keeps_symlinks_climbing_out_of_their_directory(self):
+        data = _make_tar(self._NODE_LIKE_MEMBERS)
+        installer = self._installer(data)
+        self.assertTrue(installer.install(self._download(data)))
+        link = self.dest / 'bin' / 'corepack'
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(link.read_bytes(), b'corepack')
+
+    @unittest.skipUnless(_CAN_SYMLINK, 'this machine cannot create symlinks')
+    @unittest.skipIf(not hasattr(tarfile, 'data_filter'),
+                     'runtime has no PEP 706 filters to mis-behave')
+    def test_install_does_not_depend_on_the_data_filter(self):
+        """Extraction works even where `filter='data'` wrongly rejects a
+        relative symlink -- the failure our Linux builders hit, since they run
+        `launcher.py` (and so this installer) under a bare Python 3.10.12."""
+        data = _make_tar(self._NODE_LIKE_MEMBERS)
+        installer = self._installer(data)
+        with _simulate_pre_gh107845_data_filter():
+            self.assertTrue(installer.install(self._download(data)))
+        self.assertTrue((self.dest / 'bin' / 'corepack').is_symlink())
+
+    def test_install_rejects_member_outside_the_destination(self):
+        data = _make_tar([('../escape', b'x')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'outside'):
+            installer.install(self._download(data))
+        self.assertFalse(installer.is_installed())
+
+    def test_install_rejects_absolute_member(self):
+        data = _make_tar([('/etc/passwd', b'x')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'absolute path'):
+            installer.install(self._download(data))
+
+    # The two shapes that only escape on Windows. Both are checked lexically,
+    # so they are refused on every platform rather than only where they bite --
+    # a Windows-only escape must not sail through review on a posix bot.
+    def test_install_rejects_member_with_a_windows_separator(self):
+        # A backslash is an ordinary character in a posix member name, so
+        # `..\evil` looks contained here and climbs out on Windows.
+        data = _make_tar([('..\\evil', b'x')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'backslash'):
+            installer.install(self._download(data))
+
+    def test_install_rejects_member_with_a_drive_letter(self):
+        # `C:/evil` is absolute on Windows while looking relative on posix.
+        data = _make_tar([('C:/evil', b'x')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'absolute path'):
+            installer.install(self._download(data))
+
+    def test_install_rejects_symlink_target_with_a_windows_separator(self):
+        data = _make_tar(
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '..\\..\\evil')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'backslash'):
+            installer.install(self._download(data))
+
+    def test_install_rejects_symlink_pointing_outside(self):
+        data = _make_tar(
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '../../../etc/passwd')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'outside'):
+            installer.install(self._download(data))
+
+    def test_install_rejects_absolute_symlink_target(self):
+        data = _make_tar(
+            [_tar_member('bin/evil', tarfile.SYMTYPE, '/etc/passwd')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'absolute path'):
+            installer.install(self._download(data))
+
+    def test_install_rejects_hardlink_pointing_outside(self):
+        data = _make_tar(
+            [_tar_member('bin/evil', tarfile.LNKTYPE, '../../etc/passwd')])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'outside'):
+            installer.install(self._download(data))
+
+    def test_install_rejects_device_member(self):
+        # Extraction is fully-trusted, so a device or FIFO member would
+        # otherwise be created verbatim.
+        data = _make_tar([_tar_member('dev/null', tarfile.CHRTYPE)])
+        installer = self._installer(data)
+        with self.assertRaisesRegex(ValueError, 'device/FIFO'):
+            installer.install(self._download(data))
+
+    def test_install_allows_a_member_starting_with_two_dots(self):
+        # `..stale` is an ordinary name, not a climb out of the destination.
+        data = _make_tar([('..stale', b'x')])
+        installer = self._installer(data)
+        self.assertTrue(installer.install(self._download(data)))
+        self.assertEqual((self.dest / '..stale').read_bytes(), b'x')
+
     def test_install_extracts_zip(self):
         data = _make_zip([('node.exe', b'MZ'), ('LICENSE', b'mpl')])
         installer = self._installer(data, object_name='node.zip')
         self.assertTrue(installer.install(self._download(data)))
         self.assertEqual((self.dest / 'node.exe').read_bytes(), b'MZ')
         self.assertEqual((self.dest / 'LICENSE').read_bytes(), b'mpl')
+
+    @unittest.skipIf(sys.platform == 'win32', 'unzip is not used on Windows')
+    def test_install_extracts_zip_preserves_mode_bits_and_symlinks(self):
+        # `zipfile.extractall` drops the Unix permission bits zip stores in
+        # `external_attr` and writes symlinks out as regular files holding the
+        # link target as text -- exactly what BraveUpdater-*.zip needs kept
+        # (mode-0755 executables plus a `ksadmin` symlink) for the updater
+        # bundle to still run after extraction.
+        data = _make_zip_with_unix_modes([
+            ('bin/tool', b'#!/bin/sh\n', 0o100755),
+            ('bin/link', b'tool', 0o120777),
+        ])
+        installer = self._installer(data, object_name='pkg.zip')
+        self.assertTrue(installer.install(self._download(data)))
+        tool = self.dest / 'bin/tool'
+        link = self.dest / 'bin/link'
+        self.assertTrue(os.access(tool, os.X_OK))
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(os.readlink(link), 'tool')
+
+    def test_install_extracts_zip_creates_missing_nested_dest(self):
+        # `unzip -d` (unlike `zipfile.extractall`) only creates a single
+        # missing directory level, so a `dest_dir` nested under parents that
+        # don't exist yet must be created before `unzip` runs.
+        self.dest = self.root / 'nested' / 'missing' / 'dest'
+        data = _make_zip([('f', b'x')])
+        installer = self._installer(data, object_name='pkg.zip')
+        self.assertTrue(installer.install(self._download(data)))
+        self.assertEqual((self.dest / 'f').read_bytes(), b'x')
 
     def test_install_is_idempotent(self):
         data = _make_tar([('f', b'x')])

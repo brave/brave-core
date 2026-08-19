@@ -35,6 +35,8 @@
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
+#include "brave/ios/browser/brave_wallet/cardano_provider_tab_helper.h"
+#include "brave/ios/browser/brave_wallet/ethereum_provider_tab_helper.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -285,6 +287,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @property(nonatomic, weak) id<RequestBlockingTabHelperBridge>
     requestBlockingTabHelperBridge;
+@property(nonatomic, weak) id<BraveWalletProviderDelegate>
+    walletProviderDelegate;
 @end
 
 @implementation BraveWebView {
@@ -427,6 +431,19 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   brave_shields::ProtectionStatsTabHelper::CreateForWebState(self.webState);
   brave_shields::ProtectionStatsTabHelper::FromWebState(self.webState)
       ->SetBridge(self.protectionStatsHelper);
+
+  brave_wallet::EthereumProviderTabHelper::MaybeCreateForWebState(
+      self.webState);
+  if (auto* tabHelper = brave_wallet::EthereumProviderTabHelper::FromWebState(
+          self.webState)) {
+    tabHelper->SetBridge(self.walletProviderDelegate);
+  }
+
+  brave_wallet::CardanoProviderTabHelper::MaybeCreateForWebState(self.webState);
+  if (auto* tabHelper =
+          brave_wallet::CardanoProviderTabHelper::FromWebState(self.webState)) {
+    tabHelper->SetBridge(self.walletProviderDelegate);
+  }
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 
@@ -618,20 +635,20 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 
 @implementation BraveWebView (AdsNotifier)
 
-- (void)notifyTabDidStartPlayingMedia {
+- (void)notifyTabDidStartPlayingMedia:(NSInteger)playerId {
   auto* adsTabHelper = brave_ads::AdsTabHelper::FromWebState(self.webState);
   if (!adsTabHelper) {
     return;
   }
-  adsTabHelper->NotifyTabDidStartPlayingMedia();
+  adsTabHelper->NotifyTabDidStartPlayingMedia(static_cast<int>(playerId));
 }
 
-- (void)notifyTabDidStopPlayingMedia {
+- (void)notifyTabDidStopPlayingMedia:(NSInteger)playerId {
   auto* adsTabHelper = brave_ads::AdsTabHelper::FromWebState(self.webState);
   if (!adsTabHelper) {
     return;
   }
-  adsTabHelper->NotifyTabDidStopPlayingMedia();
+  adsTabHelper->NotifyTabDidStopPlayingMedia(static_cast<int>(playerId));
 }
 
 @end
@@ -671,6 +688,19 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   brave_wallet::PageHandlerBridgeHolder::CreateForWebState(self.webState);
   brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
       ->SetBridge(bridge);
+}
+
+- (void)setWalletProviderDelegate:
+    (id<BraveWalletProviderDelegate>)walletProviderDelegate {
+  _walletProviderDelegate = walletProviderDelegate;
+  if (auto* tabHelper = brave_wallet::EthereumProviderTabHelper::FromWebState(
+          self.webState)) {
+    tabHelper->SetBridge(_walletProviderDelegate);
+  }
+  if (auto* tabHelper =
+          brave_wallet::CardanoProviderTabHelper::FromWebState(self.webState)) {
+    tabHelper->SetBridge(_walletProviderDelegate);
+  }
 }
 
 @end

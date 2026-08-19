@@ -142,10 +142,6 @@ class LoginInfoViewController: LoginAuthViewController {
       $0.accessibilityIdentifier = Strings.Login.loginInfoDetailsHeaderTitle
       $0.register(CenteredButtonCell.self)
       $0.register(LoginInfoTableViewCell.self)
-      $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
-      $0.tableFooterView = SettingsTableSectionHeaderFooterView(
-        frame: CGRect(width: tableView.bounds.width, height: 1.0)
-      )
       $0.estimatedRowHeight = 44.0
       $0.sectionHeaderTopPadding = 0
     }
@@ -160,11 +156,9 @@ class LoginInfoViewController: LoginAuthViewController {
 
 extension LoginInfoViewController {
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
   {
-    let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
-    headerView.titleLabel.text = Strings.Login.loginInfoDetailsHeaderTitle.uppercased()
-    return headerView
+    return Strings.Login.loginInfoDetailsHeaderTitle
   }
 
   override func tableView(

@@ -67,7 +67,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
-#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -133,7 +133,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 06/2025.
   // Must be called before ChromiumImpl because it's migrating a Chromium pref
   // to Brave pref.
-  brave::welcome_ui::prefs::MigratePrefs(profile_prefs);
+  brave_welcome_page::prefs::MigratePrefs(profile_prefs);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
@@ -277,16 +277,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_account::prefs::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 2026-06
-#if !BUILDFLAG(IS_ANDROID)
-  const auto* deprecated_tab_search_show =
-      profile_prefs->FindPreference(kTabsSearchShow);
-  if (deprecated_tab_search_show &&
-      !deprecated_tab_search_show->IsDefaultValue()) {
-    profile_prefs->SetBoolean(prefs::kTabSearchPinnedToTabstrip,
-                              profile_prefs->GetBoolean(kTabsSearchShow));
-  }
   profile_prefs->ClearPref(kTabsSearchShow);
-#endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

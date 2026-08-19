@@ -40,6 +40,7 @@
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace content {
 class BrowserContext;
@@ -133,6 +134,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     T<brave::BraveRequestInfo> ctx_;
     const raw_ref<BraveProxyingURLLoaderFactory> factory_;
     network::ResourceRequest request_;
+    const std::optional<url::Origin> original_initiator_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
 
@@ -166,8 +168,6 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
 
-    bool request_completed_ = false;
-
     // This stores the parameters to FollowRedirect that came from
     // the client. That way we can combine it with any other changes that
     // extensions made to headers in their callbacks.
@@ -197,6 +197,10 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
       network::URLLoaderFactoryBuilder& factory_builder,
+      content::ContentBrowserClient::URLLoaderFactoryType
+          url_loader_factory_type,
+      const url::Origin& request_initiator,
+      const net::IsolationInfo& isolation_info,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
@@ -211,6 +215,10 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       network::URLLoaderFactoryBuilder& factory_builder,
+      content::ContentBrowserClient::URLLoaderFactoryType
+          url_loader_factory_type,
+      const url::Origin& request_initiator,
+      const net::IsolationInfo& isolation_info,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
   // network::mojom::URLLoaderFactory:
@@ -238,6 +246,10 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
   const raw_ref<BraveRequestHandler<T>> request_handler_;
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const content::GlobalRenderFrameHostToken render_frame_token_;
+  const content::ContentBrowserClient::URLLoaderFactoryType
+      url_loader_factory_type_;
+  const url::Origin request_initiator_;
+  const net::IsolationInfo isolation_info_;
 
   mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;
   mojo::Remote<network::mojom::URLLoaderFactory> target_factory_;

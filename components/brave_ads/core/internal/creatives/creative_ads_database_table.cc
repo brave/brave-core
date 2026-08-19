@@ -13,10 +13,8 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/condition_matchers_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -162,11 +160,6 @@ void CreativeAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 48: {
-      MigrateToV48(mojom_db_transaction);
-      break;
-    }
-
     case 54: {
       MigrateToV54(mojom_db_transaction);
       break;
@@ -180,30 +173,6 @@ void CreativeAds::Migrate(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void CreativeAds::MigrateToV48(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // It is safe to recreate the table because it will be repopulated after
-  // downloading the catalog post-migration. However, after this migration, we
-  // should not drop the table as it will store catalog and non-catalog ad units
-  // and maintain relationships with other tables.
-  DropTable(mojom_db_transaction, "creative_ads");
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE creative_ads (
-        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-        creative_set_id TEXT NOT NULL,
-        per_day INTEGER NOT NULL DEFAULT 0,
-        per_week INTEGER NOT NULL DEFAULT 0,
-        per_month INTEGER NOT NULL DEFAULT 0,
-        total_max INTEGER NOT NULL DEFAULT 0,
-        value DOUBLE NOT NULL DEFAULT 0,
-        split_test_group TEXT,
-        condition_matchers TEXT NOT NULL,
-        target_url TEXT NOT NULL
-      ))");
-}
 
 void CreativeAds::MigrateToV54(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {

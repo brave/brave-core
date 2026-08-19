@@ -33,33 +33,31 @@ public class BraveDynamicColorsTest {
     }
 
     @Test
-    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    public void testIsDynamicColorsAvailable_featureDisabled_returnsFalse() {
-        assertFalse(BraveDynamicColors.isDynamicColorsAvailable());
+    public void testIsDynamicColorsAvailable_androidS_returnsTrue() {
+        assertTrue(BraveDynamicColors.isDynamicColorsAvailable());
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     @Config(sdk = Build.VERSION_CODES.R)
     public void testIsDynamicColorsAvailable_belowAndroidS_returnsFalse() {
         assertFalse(BraveDynamicColors.isDynamicColorsAvailable());
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    public void testIsDynamicColorsAvailable_androidSAndFeatureEnabled_returnsTrue() {
-        assertTrue(BraveDynamicColors.isDynamicColorsAvailable());
-    }
-
-    @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    public void testIsDynamicColorsEnabled_userPreferenceUnset_returnsTrue() {
+    public void testIsDynamicColorsEnabled_defaultEnabled_userPreferenceUnset_returnsTrue() {
         assertTrue(BraveDynamicColors.isDynamicColorsEnabled());
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    public void testIsDynamicColorsEnabled_userPreferenceDisabled_returnsFalse() {
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void testIsDynamicColorsEnabled_defaultDisabled_userPreferenceUnset_returnsFalse() {
+        assertFalse(BraveDynamicColors.isDynamicColorsEnabled());
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void
+            testIsDynamicColorsEnabled_userPreferenceDisabledOverridesDefaultEnabled_returnsFalse() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
 
@@ -68,15 +66,22 @@ public class BraveDynamicColorsTest {
     }
 
     @Test
-    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
-    public void testIsDynamicColorsEnabled_featureDisabled_returnsFalse() {
-        assertFalse(BraveDynamicColors.isDynamicColorsEnabled());
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS_BY_DEFAULT)
+    public void
+            testIsDynamicColorsEnabled_userPreferenceEnabledOverridesDefaultDisabled_returnsTrue() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
+
+        assertTrue(BraveDynamicColors.isDynamicColorsAvailable());
+        assertTrue(BraveDynamicColors.isDynamicColorsEnabled());
     }
 
     @Test
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     @Config(sdk = Build.VERSION_CODES.R)
-    public void testIsDynamicColorsEnabled_belowAndroidS_returnsFalse() {
+    public void testIsDynamicColorsEnabled_userPreferenceEnabledBelowAndroidS_returnsFalse() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
+
         assertFalse(BraveDynamicColors.isDynamicColorsEnabled());
     }
 }

@@ -241,18 +241,10 @@ where
     fn reseed_and_generate(
         &mut self, results: &mut <Self as BlockRngCore>::Results, global_fork_counter: usize,
     ) {
-        #![allow(clippy::if_same_then_else)] // false positive
-        if self.is_forked(global_fork_counter) {
-            info!("Fork detected, reseeding RNG");
-        } else {
-            trace!("Reseeding RNG (periodic reseed)");
-        }
-
         let num_bytes = results.as_ref().len() * size_of::<<R as BlockRngCore>::Item>();
 
         if let Err(e) = self.reseed() {
-            warn!("Reseeding RNG failed: {}", e);
-            let _ = e;
+            panic!("Reseeding RNG failed: {}", e);
         }
         self.fork_counter = global_fork_counter;
 

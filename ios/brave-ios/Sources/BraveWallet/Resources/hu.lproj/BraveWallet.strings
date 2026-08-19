@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Megtekintés az Aktivitásban";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "A Brave a konfigurált Ethereum RPC-szolgáltatás lesz, amely alapértelmezés szerint a Chainstack, az Unstoppable Domainsen található .crypto (valamint %1$@) doménnevek feloldására. A Brave elrejti az Ön IP-címét. Ha engedélyezi ezt, a Chainstack látni fogja, hogy valaki megpróbálja felkeresni ezeket a doméneket, de semmi mást. Lásd a Chainstack <a href=%2$@>%3$@</a> és <a href=%4$@>%5$@</a> dokumentumát.";
+"wallet.udDomainInterstitialPageDescription" = "az Unstoppable Domainsen található doménnevek. A Brave elrejti az Ön IP-címét. Ha engedélyezi ezt, a Chainstack látni fogja, hogy valaki megpróbálja felkeresni ezeket a doméneket, de semmi mást. Lásd: Chainstack <a href=%1$@>%2$@</a> és <a href=%3$@>%4$@</a>.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "A Brave lesz a konfigurált Ethereum RPC-szolgáltatás, amely alapértelmezés szerint a Chainstacket használja a következők feloldására:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ továbbiak";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Engedélyezed az Unstoppable Domains támogatását a Brave-ben?";

@@ -118,22 +118,16 @@ Rand is built with these features enabled by default:
 -   `std_rng` enables inclusion of `StdRng`, `thread_rng` and `random`
     (the latter two *also* require that `std` be enabled)
 
-Optionally, the following dependencies can be enabled:
-
--   `log` enables logging via the `log` crate
-
 Additionally, these features configure Rand:
 
 -   `small_rng` enables inclusion of the `SmallRng` PRNG
 -   `nightly` enables some optimizations requiring nightly Rust
--   `simd_support` (experimental) enables sampling of SIMD values
-    (uniformly random SIMD integers and floats), requiring nightly Rust
 -   `min_const_gen` enables generating random arrays of 
     any size using min-const-generics, requiring Rust ≥ 1.51.
 
 Note that nightly features are not stable and therefore not all library and
 compiler versions will be compatible. This is especially true of Rand's
-experimental `simd_support` feature.
+experimental `simd_support` feature, which was dropped by version 0.8.6 of Rand.
 
 Rand supports limited functionality in `no_std` mode (enabled via
 `default-features = false`). In this case, `OsRng` and `from_entropy` are

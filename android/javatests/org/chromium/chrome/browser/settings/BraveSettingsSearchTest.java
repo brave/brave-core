@@ -45,6 +45,7 @@ import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.customize_menu.MenuItemData;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.R;
@@ -128,7 +129,7 @@ public class BraveSettingsSearchTest {
         // assertSearchResult("Sync");
 
         clearAndTypeIntoSearch("Privacy Report");
-        assertSearchResult("Privacy Report");
+        assertOneOfSearchResultsIs("Privacy Report", "General");
 
         // Disabled — result appears under "Advanced" instead of "General"; see
         // https://github.com/brave/brave-browser/issues/57198
@@ -200,9 +201,9 @@ public class BraveSettingsSearchTest {
         // assertSearchResult("Rate Brave");
 
         // About section
-
-        clearAndTypeIntoSearch("Developer options");
-        assertSearchResult("Developer options");
+        // "Developer options" visibility depends on channel/pref, so it is covered separately by
+        // testDeveloperOptionsSearchable_WhenEnabled and
+        // testDeveloperOptionsNotSearchable_WhenDisabled.
 
         clearAndTypeIntoSearch("About Brave");
         assertSearchResult("About Brave");
@@ -232,6 +233,15 @@ public class BraveSettingsSearchTest {
     @Feature({"Preferences"})
     public void testBraveShieldsAndPrivacySettingsAreSearchable() {
         mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Unstoppable Domains");
+        assertSearchResult("Unstoppable Domains");
+
+        clearAndTypeIntoSearch("Ethereum Name Service");
+        assertSearchResult("Ethereum Name Service");
+
+        clearAndTypeIntoSearch("Solana Name Service");
+        assertSearchResult("Solana Name Service");
 
         // Disabled — see https://github.com/brave/brave-browser/issues/57186
         // typeIntoSearch("Safe Browsing");
@@ -384,8 +394,8 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Private Tab");
         assertSearchResult("Private Tab");
 
-        clearAndTypeIntoSearch("Quick-Search");
-        assertSearchResult("Quick-Search Engines");
+        clearAndTypeIntoSearch("Quick search");
+        assertSearchResult("Quick search engines");
 
         // Sub-section, custom layout — see
         // https://github.com/brave/brave-browser/issues/57189
@@ -416,23 +426,24 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the `Privacy Report` Settings
      * search results.
      */
-    // Disabled: BraveStatsPreferences has no search index provider.
-    // TODO(https://github.com/brave/brave-browser/issues/57183)
-    // @Test
-    // @SmallTest
-    // @Feature({"Preferences"})
-    // public void testPrivacyReportSettingsAreSearchable() {
-    //     mSettingsActivityTestRule.startSettingsActivity();
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testPrivacyReportSettingsAreSearchable() {
+        mSettingsActivityTestRule.startSettingsActivity();
 
-    //     typeIntoSearch("Privacy Report");
-    //     assertSearchResult("Privacy Report", "Privacy Report");
+        // "Privacy Report" matches two result titles: the General-section entry that links to this
+        // screen, and the brave_stats switch inside the screen itself. Scope the assertion to the
+        // "Privacy Report" section so the duplicate title is not ambiguous.
+        typeIntoSearch("Privacy Report");
+        assertOneOfSearchResultsIs("Privacy Report", "Privacy Report");
 
-    //     clearAndTypeIntoSearch("Privacy Report Notification");
-    //     assertSearchResult("Privacy Report Notification");
+        clearAndTypeIntoSearch("Privacy Report Notification");
+        assertSearchResult("Privacy Report Notification");
 
-    //     clearAndTypeIntoSearch("Clear all privacy reports data");
-    //     assertSearchResult("Clear all privacy reports data");
-    // }
+        clearAndTypeIntoSearch("Clear all privacy reports data");
+        assertSearchResult("Clear all privacy reports data");
+    }
 
     /**
      * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
@@ -988,6 +999,10 @@ public class BraveSettingsSearchTest {
     @SmallTest
     @Feature({"Preferences"})
     public void testDeveloperOptionsSettingsAreSearchable() {
+        // Developer options are hidden by default on Beta/Stable channels (they must be unlocked by
+        // tapping the build number). Force them on so the sub-screen is indexed regardless of
+        // channel.
+        DeveloperSettings.setIsEnabledForTests(true);
         mSettingsActivityTestRule.startSettingsActivity();
 
         typeIntoSearch("Tracing");
@@ -1004,6 +1019,36 @@ public class BraveSettingsSearchTest {
 
         clearAndTypeIntoSearch("Show Safe Browsing errors");
         assertSearchResult("Show Safe Browsing errors");
+    }
+
+    /**
+     * Verifies that the main-settings "Developer options" entry is searchable when developer
+     * options are enabled (always the case on Dev/Nightly, and after unlocking on Beta/Stable).
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testDeveloperOptionsSearchable_WhenEnabled() {
+        DeveloperSettings.setIsEnabledForTests(true);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Developer options");
+        assertSearchResult("Developer options");
+    }
+
+    /**
+     * Verifies the counterpart: when developer options are disabled (the default on Beta/Stable),
+     * the "Developer options" entry is not indexed and cannot be found in search.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testDeveloperOptionsNotSearchable_WhenDisabled() {
+        DeveloperSettings.setIsEnabledForTests(false);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Developer options");
+        assertSearchResultEmpty();
     }
 
     /**
@@ -1201,7 +1246,7 @@ public class BraveSettingsSearchTest {
 
             // ...and must NOT navigate to the Search engines screen.
             assertSearchResultDoesNotContain("Standard Tab");
-            assertSearchResultDoesNotContain("Quick-Search Engines");
+            assertSearchResultDoesNotContain("Quick search engines");
         } finally {
             BraveSearchWidgetUtils.setRequestPinAppWidgetForTesting(null);
         }

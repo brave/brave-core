@@ -62,7 +62,7 @@
                     android:lineHeight="26sp"
                     android:fontFamily="sans-serif-medium"
                     android:maxLines="1"
-                    android:ellipsize="end"
+                    android:ellipsize="start"
                     tools:text="example.com"/>
 
                 <TextView

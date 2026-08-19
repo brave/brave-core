@@ -27,9 +27,14 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_account/endpoint_client/test_support.h"
+#include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
+#include "brave/components/brave_vpn/browser/v2/credential_store_test_util.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -44,14 +49,21 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "net/http/http_status_code.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_vpn::v2 {
 namespace {
-constexpr char kTestCredential[] = "test-credential";
+using Credential = CredentialStore::Credential;
+using test::CredentialIs;
+
+constexpr char kTestSkusCredential[] = "test-skus-credential";
+constexpr char kTestSubscriberCredential[] = "test-subscriber-credential";
 constexpr char kNonVpnDomain[] = "talk.brave.com";
 
 // Credential-summary payloads for each terminal branch.
@@ -214,6 +226,44 @@ class StateChangeCollector {
   base::OnceClosure quit_closure_;
 };
 
+class FakeBraveVpnApiClient : public BraveVpnApiClient {
+ public:
+  FakeBraveVpnApiClient(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+      : BraveVpnApiClient(std::move(url_loader_factory)) {}
+  ~FakeBraveVpnApiClient() override = default;
+
+  void GetSubscriberCredentialV12(SubscriberCredentialCallback callback,
+                                  const std::string& skus_credential,
+                                  const std::string& environment) override {
+    ++get_subscriber_credential_calls_;
+    last_skus_credential_ = skus_credential;
+    last_environment_ = environment;
+    pending_callback_ = std::move(callback);
+  }
+
+  int get_subscriber_credential_calls() const {
+    return get_subscriber_credential_calls_;
+  }
+  const std::string& last_skus_credential() const {
+    return last_skus_credential_;
+  }
+  const std::string& last_environment() const { return last_environment_; }
+
+  bool HasPendingExchange() const { return !pending_callback_.is_null(); }
+
+  void ResolveExchange(base::expected<std::string, std::string> result) {
+    ASSERT_FALSE(pending_callback_.is_null());
+    std::move(pending_callback_).Run(std::move(result));
+  }
+
+ private:
+  int get_subscriber_credential_calls_ = 0;
+  std::string last_skus_credential_;
+  std::string last_environment_;
+  SubscriberCredentialCallback pending_callback_;
+};
+
 class FakeSkusServiceClient : public SkusServiceClient {
  public:
   FakeSkusServiceClient()
@@ -267,7 +317,8 @@ class PurchasedStateManagerTest : public testing::Test {
 
   void CreateManager() {
     manager_ = std::make_unique<PurchasedStateManager>(
-        &local_pref_service_, &skus_client_, collector_.GetCallback());
+        &local_pref_service_, &api_client_, &skus_client_,
+        collector_.GetCallback());
   }
 
   // Environment/domain helpers. The "current" environment is whatever the
@@ -310,19 +361,42 @@ class PurchasedStateManagerTest : public testing::Test {
                                                std::move(result));
   }
 
+  void CallOnGetSubscriberCredential(
+      uint64_t sequence,
+      const std::string& domain,
+      const base::Time& expiration_time,
+      base::expected<std::string, std::string> result) {
+    manager_->OnGetSubscriberCredential(sequence, domain, expiration_time,
+                                        std::move(result));
+  }
+
   void SeedSubscriberCredential(base::Time expiration) {
-    credential_store_.SetSubscriberCredential(kTestCredential, expiration);
+    credential_store_.SetSubscriberCredential(
+        {.value = kTestSubscriberCredential, .expiration = expiration});
+  }
+  void SeedSkusCredential(base::Time expiration) {
+    credential_store_.SetSkusCredential(
+        {.value = kTestSkusCredential, .expiration = expiration});
   }
   bool HasAnyStoredCredential() const {
     return credential_store_.HasAnyCredential();
   }
 
+  bool RefreshScheduled() const {
+    return manager_->subscriber_credential_refresh_timer_.IsRunning();
+  }
+  base::TimeDelta RefreshDelay() const {
+    return manager_->subscriber_credential_refresh_timer_.GetCurrentDelay();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple local_pref_service_;
   CredentialStore credential_store_{&local_pref_service_};
   StateChangeCollector collector_;
+  FakeBraveVpnApiClient api_client_{url_loader_factory_.GetSafeWeakWrapper()};
   FakeSkusServiceClient skus_client_;
   std::unique_ptr<PurchasedStateManager> manager_;
 };
@@ -353,9 +427,20 @@ TEST_F(PurchasedStateManagerTest, InitialStateWithValidCredentialIsPurchased) {
   // State is settled synchronously at construction, and the notification is
   // delivered asynchronously.
   EXPECT_TRUE(manager_->IsPurchased());
+  EXPECT_TRUE(RefreshScheduled());
   EXPECT_EQ(skus_client_.credential_summary_calls(), 0);
   collector_.WaitForChangeCount(1);
   EXPECT_EQ(collector_.changes()[0].first, mojom::PurchasedState::PURCHASED);
+}
+
+TEST_F(PurchasedStateManagerTest, InitialStateWithSkusCredentialExchanges) {
+  SeedSkusCredential(base::Time::Now() + base::Days(30));
+  CreateManager();
+
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
+  EXPECT_TRUE(api_client_.HasPendingExchange());
+  EXPECT_EQ(skus_client_.credential_summary_calls(), 0);
+  EXPECT_EQ(loading_environment(), CurrentEnvironment());
 }
 
 TEST_F(PurchasedStateManagerTest, InitialStateClearsStaleCredential) {
@@ -448,6 +533,7 @@ TEST_F(PurchasedStateManagerTest, CachedCredentialFastPathCancelsSilentLoad) {
   EXPECT_TRUE(loading_environment().empty());
   EXPECT_GT(loading_sequence(), silent_sequence);
   EXPECT_TRUE(manager_->IsPurchased());
+  EXPECT_TRUE(RefreshScheduled());
   EXPECT_EQ(skus_client_.credential_summary_calls(), 1);
 }
 
@@ -593,28 +679,111 @@ TEST_F(PurchasedStateManagerTest, LateResponseAfterTimeoutIsDropped) {
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
 
-// An authoritative non-purchased verdict for the current environment drops
-// the cached credential.
-TEST_F(PurchasedStateManagerTest, FinishLoadClearsCredentialsOnNotPurchased) {
+// The exchange succeeds: the subscriber credential is cached with the SKUS
+// credential's expiry, it replaces the SKUS credential in the shared slot, and
+// the load settles PURCHASED.
+TEST_F(PurchasedStateManagerTest, ExchangeSuccessCachesSubscriberAndPurchases) {
   CreateManager();
-  SeedSubscriberCredential(base::Time::Now() - base::Days(1));
-  ASSERT_TRUE(HasAnyStoredCredential());
-  manager_->Load(CurrentDomain());
+  const base::Time expiry = base::Time::Now() + base::Days(30);
+  SeedSkusCredential(expiry);
+  manager_->Load(
+      CurrentDomain());  // Valid SKUS credential -> exchange fast path.
+  ASSERT_TRUE(api_client_.HasPendingExchange());
+  EXPECT_EQ(api_client_.last_skus_credential(), kTestSkusCredential);
+  EXPECT_EQ(api_client_.last_environment(), CurrentEnvironment());
 
-  CallFinishLoad(CurrentEnvironment(), mojom::PurchasedState::NOT_PURCHASED);
-  EXPECT_FALSE(HasAnyStoredCredential());
+  api_client_.ResolveExchange(base::ok(std::string(kTestSubscriberCredential)));
+
+  EXPECT_TRUE(loading_environment().empty());
+  EXPECT_TRUE(manager_->IsPurchased());
+  // Subscriber credential borrows the SKUS credential's expiry.
+  EXPECT_THAT(credential_store_.GetValidSubscriberCredential(),
+              CredentialIs(kTestSubscriberCredential, expiry));
+  EXPECT_FALSE(credential_store_.GetValidSkusCredential()
+                   .has_value());  // Slot replaced.
+  collector_.WaitForChangeCount(2);
+  EXPECT_EQ(collector_.changes()[1].first, mojom::PurchasedState::PURCHASED);
 }
 
-// FAILED is transient, not a verdict: the cached credential survives so the
-// next load can retry with it.
-TEST_F(PurchasedStateManagerTest, FinishLoadPreservesCredentialsOnFailed) {
+// A transient (non-"token no longer valid") exchange error fails the load with
+// a user-facing description but preserves the cached SKUS credential for retry.
+TEST_F(PurchasedStateManagerTest,
+       ExchangeTransientErrorFailsAndPreservesCache) {
   CreateManager();
-  SeedSubscriberCredential(base::Time::Now() - base::Days(1));
-  ASSERT_TRUE(HasAnyStoredCredential());
-  manager_->Load(CurrentDomain());
+  SeedSkusCredential(base::Time::Now() + base::Days(30));
+  manager_->Load(CurrentDomain());  // Valid SKUS credential for the fast path.
+  ASSERT_TRUE(api_client_.HasPendingExchange());
 
-  CallFinishLoad(CurrentEnvironment(), mojom::PurchasedState::FAILED);
-  EXPECT_TRUE(HasAnyStoredCredential());
+  api_client_.ResolveExchange(base::unexpected(std::string("network down")));
+
+  EXPECT_TRUE(loading_environment().empty());
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential()
+                  .has_value());  // Preserved for retry.
+  collector_.WaitForChangeCount(2);
+  EXPECT_EQ(collector_.changes()[1].second,
+            l10n_util::GetStringUTF8(
+                IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED));
+}
+
+// "Token no longer valid" triggers exactly one retry: the stale credential is
+// cleared, a fresh summary is requested under the same cycle, and only a second
+// identical error fails the load as TOKEN_NOT_VALID.
+TEST_F(PurchasedStateManagerTest,
+       ExchangeTokenNoLongerValidRetriesOnceThenFails) {
+  CreateManager();
+  SeedSkusCredential(base::Time::Now() + base::Days(30));
+  manager_->Load(CurrentDomain());  // Valid SKUS credential for the fast path.
+  ASSERT_TRUE(api_client_.HasPendingExchange());
+  ASSERT_EQ(skus_client_.credential_summary_calls(),
+            0);  // Fast path skips summary.
+  const uint64_t sequence = loading_sequence();
+
+  // First failure: token consumed. Clears the credential and re-requests a
+  // summary under the same load - it does NOT finish.
+  api_client_.ResolveExchange(
+      base::unexpected(std::string(kTokenNoLongerValid)));
+  EXPECT_FALSE(HasAnyStoredCredential());
+  EXPECT_EQ(skus_client_.credential_summary_calls(), 1);
+  EXPECT_EQ(loading_environment(), CurrentEnvironment());
+  EXPECT_EQ(loading_sequence(), sequence);
+
+  // Drive the retry chain back to a second exchange.
+  CallOnCredentialSummary(loading_sequence(), CurrentDomain(),
+                          SkusOkResult(kValidSummary));
+  CallOnPrepareCredentialsPresentation(
+      loading_sequence(), CurrentDomain(),
+      SkusOkResult(BuildTestCookie(base::Time::Now() + base::Days(30))));
+  ASSERT_TRUE(api_client_.HasPendingExchange());
+
+  // Second identical failure: budget exhausted.
+  api_client_.ResolveExchange(
+      base::unexpected(std::string(kTokenNoLongerValid)));
+
+  EXPECT_TRUE(loading_environment().empty());
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
+  collector_.WaitForChangeCount(2);
+  EXPECT_EQ(collector_.changes()[1].second,
+            l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));
+}
+
+// A late exchange response for a cycle that already ended via timeout, is
+// dropped by the sequence check and cannot revive a settled state.
+TEST_F(PurchasedStateManagerTest, StaleExchangeResponseIsDropped) {
+  CreateManager();
+  SeedSkusCredential(base::Time::Now() + base::Days(30));
+  manager_->Load(CurrentDomain());  // Valid SKUS credential for the fast path.
+  ASSERT_TRUE(api_client_.HasPendingExchange());
+
+  task_environment_.FastForwardBy(PurchasedStateManager::kLoadTimeout);
+  ASSERT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
+
+  api_client_.ResolveExchange(base::ok(std::string(kTestSubscriberCredential)));
+
+  EXPECT_FALSE(manager_->IsPurchased());
+  EXPECT_FALSE(credential_store_.GetValidSubscriberCredential().has_value());
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
 
 // A silent load's verdict must not clear the current environment's credential
@@ -657,8 +826,7 @@ TEST_F(PurchasedStateManagerTest, UnparseableSummaryFailsLoad) {
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
 
-TEST_F(PurchasedStateManagerTest,
-       EmptySummaryMeansNotPurchasedAndClearsCredentials) {
+TEST_F(PurchasedStateManagerTest, EmptySummaryMeansNotPurchased) {
   CreateManager();
   SeedSubscriberCredential(base::Time::Now() - base::Days(1));
   ASSERT_TRUE(HasAnyStoredCredential());
@@ -668,7 +836,6 @@ TEST_F(PurchasedStateManagerTest,
                           SkusOkResult(""));
 
   EXPECT_TRUE(loading_environment().empty());
-  EXPECT_FALSE(HasAnyStoredCredential());
   collector_.WaitForChangeCount(2);
   EXPECT_EQ(collector_.changes()[1].first,
             mojom::PurchasedState::NOT_PURCHASED);
@@ -745,7 +912,7 @@ TEST_F(PurchasedStateManagerTest, ExpiredCredentialCookieFailsLoad) {
   EXPECT_EQ(
       collector_.changes()[1].second,
       l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_EXPIRED));
-  EXPECT_FALSE(credential_store_.HasValidSkusCredential());
+  EXPECT_FALSE(credential_store_.GetValidSkusCredential().has_value());
 }
 
 TEST_F(PurchasedStateManagerTest, EmptyCredentialCookieValueMeansNotPurchased) {
@@ -777,8 +944,8 @@ TEST_F(PurchasedStateManagerTest, ValidCookieCachesSkusCredential) {
       SkusOkResult(
           BuildTestCookie(base::Time::Now() + base::Days(30), "test%3D")));
 
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_EQ(credential_store_.GetSkusCredential(), "test=");
+  EXPECT_THAT(credential_store_.GetValidSkusCredential(),
+              CredentialIs("test="));
   EXPECT_EQ(manager_->GetCurrentEnvironment(), CurrentEnvironment());
   EXPECT_EQ(loading_sequence(), sequence);
   EXPECT_EQ(loading_environment(), CurrentEnvironment());
@@ -800,7 +967,7 @@ TEST_F(PurchasedStateManagerTest, ValidCookieCommitsEnvironmentSwitch) {
       SkusOkResult(BuildTestCookie(base::Time::Now() + base::Days(30))));
 
   EXPECT_EQ(manager_->GetCurrentEnvironment(), other_env);
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
   // The load is now visible and still in flight for the new environment.
   EXPECT_EQ(loading_environment(), other_env);
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::LOADING);
@@ -903,7 +1070,7 @@ TEST_F(PurchasedStateManagerTest, CommitClearsSessionExpiredDate) {
 #else  // !BUILDFLAG(IS_ANDROID)
 
 // Android has no session-expired routing: an expired summary is an
-// authoritative non-purchased verdict, so the credential store is cleared.
+// authoritative non-purchased verdict.
 TEST_F(PurchasedStateManagerTest, ExpiredSummaryMeansNotPurchased) {
   CreateManager();
   SeedSubscriberCredential(base::Time::Now() - base::Days(1));
@@ -914,10 +1081,76 @@ TEST_F(PurchasedStateManagerTest, ExpiredSummaryMeansNotPurchased) {
 
   EXPECT_TRUE(loading_environment().empty());
   EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::NOT_PURCHASED);
-  EXPECT_FALSE(HasAnyStoredCredential());
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+// Success schedules a refresh, at expiry today; firing it clears the cache and
+// re-resolves from scratch (a full summary round-trip, visible as LOADING).
+TEST_F(PurchasedStateManagerTest, SuccessSchedulesRefreshThatReresolves) {
+  CreateManager();
+  const base::Time expiry = base::Time::Now() + base::Days(30);
+  SeedSkusCredential(expiry);
+  manager_->Load(CurrentDomain());
+
+  api_client_.ResolveExchange(base::ok(std::string(kTestSubscriberCredential)));
+  ASSERT_TRUE(manager_->IsPurchased());
+  EXPECT_TRUE(RefreshScheduled());
+  EXPECT_EQ(RefreshDelay(), expiry - base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Days(30) - base::Seconds(1));
+  EXPECT_TRUE(HasAnyStoredCredential());
+  task_environment_.FastForwardBy(base::Seconds(1));
+  EXPECT_FALSE(HasAnyStoredCredential());
+
+  EXPECT_EQ(skus_client_.credential_summary_calls(), 1);
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::LOADING);
+}
+
+// A transient error during the refresh leaves the user un-purchased with
+// nothing scheduled to recover. This is intended behavior: the refresh can be
+// manually triggered by a user in the UI.
+TEST_F(PurchasedStateManagerTest,
+       RefreshTransientFailureDoesntScheduleRecovery) {
+  CreateManager();
+  SeedSkusCredential(base::Time::Now() + base::Days(30));
+  manager_->Load(CurrentDomain());
+
+  api_client_.ResolveExchange(base::ok(std::string(kTestSubscriberCredential)));
+  ASSERT_TRUE(manager_->IsPurchased());
+
+  task_environment_.FastForwardBy(base::Days(30));
+  CallOnCredentialSummary(loading_sequence(), CurrentDomain(),
+                          SkusTransportError());
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
+  EXPECT_FALSE(RefreshScheduled());
+}
+
+// A load for the new environment makes the refresh yield to it entirely: no
+// clear, no reload, and no re-armed refresh either.
+TEST_F(PurchasedStateManagerTest, RefreshSkippedForEnvironmentLoad) {
+  SeedSubscriberCredential(base::Time::Now() +
+                           PurchasedStateManager::kLoadTimeout / 2);
+  CreateManager();  // PURCHASED + refresh armed at expiry.
+  ASSERT_TRUE(RefreshScheduled());
+
+  // Drop the cached credential so a current-environment Load() resolves through
+  // the async chain instead of the fast path, leaving a load in flight while
+  // the refresh (armed at construction) is still pending.
+  credential_store_.Clear();
+  manager_->Load(CurrentDomain());
+  ASSERT_EQ(loading_environment(), CurrentEnvironment());
+  ASSERT_EQ(skus_client_.credential_summary_calls(), 1);
+  const uint64_t in_flight_sequence = loading_sequence();
+
+  task_environment_.FastForwardBy(PurchasedStateManager::kLoadTimeout / 2);
+
+  // Yielded: the in-flight load is untouched and nothing was re-armed.
+  EXPECT_EQ(loading_environment(), CurrentEnvironment());
+  EXPECT_EQ(loading_sequence(), in_flight_sequence);
+  EXPECT_EQ(skus_client_.credential_summary_calls(), 1);
+  EXPECT_FALSE(RefreshScheduled());
+}
 
 class PurchasedStateManagerWithRealSkusServiceTest
     : public PurchasedStateManagerTest {
@@ -935,9 +1168,9 @@ class PurchasedStateManagerWithRealSkusServiceTest
     ASSERT_TRUE(base::Time::FromString("2023-01-04", &future_mock_time));
     task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
+    url_loader_factory_.SetInterceptor(base::BindRepeating(
+        &PurchasedStateManagerWithRealSkusServiceTest::Interceptor,
+        base::Unretained(this)));
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
   }
@@ -972,16 +1205,43 @@ class PurchasedStateManagerWithRealSkusServiceTest
   void CreateManagerWithEmptySkusState() { CreateRealChain(); }
 
   void CreateRealChain() {
+    real_api_client_ = std::make_unique<BraveVpnApiClient>(
+        url_loader_factory_.GetSafeWeakWrapper());
     real_skus_client_ = std::make_unique<SkusServiceClient>(base::BindRepeating(
         &PurchasedStateManagerWithRealSkusServiceTest::GetSkusService,
         base::Unretained(this)));
     manager_ = std::make_unique<PurchasedStateManager>(
-        &local_pref_service_, real_skus_client_.get(),
+        &local_pref_service_, real_api_client_.get(), real_skus_client_.get(),
         collector_.GetCallback());
   }
 
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
     return skus_service_->MakeRemote();
+  }
+
+  void SetExchangeResponse(
+      endpoints::GetSubscriberCredentialV12::Response response) {
+    exchange_responses_.clear();
+    exchange_responses_.push_back(std::move(response));
+    exchange_response_index_ = 0;
+  }
+
+  // Serve one response per successive intercepted request, in order (one per
+  // exchange attempt). The last entry repeats once the list is exhausted, so a
+  // stray request can't underflow the index.
+  void SetExchangeResponseSequence(
+      std::vector<endpoints::GetSubscriberCredentialV12::Response> responses) {
+    CHECK(!responses.empty());
+    exchange_responses_ = std::move(responses);
+    exchange_response_index_ = 0;
+  }
+
+  void Interceptor(const network::ResourceRequest&) {
+    const size_t i =
+        std::min(exchange_response_index_++, exchange_responses_.size() - 1);
+    brave_account::endpoint_client::MockResponseFor<
+        endpoints::GetSubscriberCredentialV12>(url_loader_factory_,
+                                               exchange_responses_[i]);
   }
 
   void WaitForCommitOrTerminalOutcome(size_t terminal_change_count) {
@@ -1004,11 +1264,27 @@ class PurchasedStateManagerWithRealSkusServiceTest
   }
 
  protected:
+  const endpoints::GetSubscriberCredentialV12::Response
+      kTokenNoLongerValidResponse{
+          .net_error = net::OK,
+          .status_code = net::HTTP_BAD_REQUEST,
+          .body = base::unexpected(endpoints::VpnErrorBody{
+              .error_title = std::string(kTokenNoLongerValid),
+              .error_message = "consumed"})};
+  const endpoints::GetSubscriberCredentialV12::Response
+      kExchangeSuccessResponse{
+          .net_error = net::OK,
+          .status_code = net::HTTP_OK,
+          .body = endpoints::GetSubscriberCredentialSuccessBody{
+              .subscriber_credential = std::string(kTestSubscriberCredential)}};
+
   base::test::ScopedFeatureList scoped_feature_list_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<BraveVpnApiClient> real_api_client_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<SkusServiceClient> real_skus_client_;
+  std::vector<endpoints::GetSubscriberCredentialV12::Response>
+      exchange_responses_{{.net_error = net::OK, .status_code = net::HTTP_OK}};
+  size_t exchange_response_index_ = 0;
 };
 
 // The full chain against the real SKUS: summary JSON parses, the presentation
@@ -1022,11 +1298,13 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
   WaitForCommitOrTerminalOutcome(2);  // LOADING + terminal.
 
   ASSERT_EQ(url_loader_factory_.NumPending(), 0);
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_FALSE(credential_store_.GetSkusCredential().empty());
+  const std::optional<Credential> skus =
+      credential_store_.GetValidSkusCredential();
+  ASSERT_TRUE(skus.has_value());
+  EXPECT_FALSE(skus->value.empty());
   EXPECT_EQ(manager_->GetCurrentEnvironment(), CurrentEnvironment());
-  EXPECT_EQ(loading_environment(), CurrentEnvironment());
-  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::LOADING);
+  EXPECT_TRUE(loading_environment().empty());
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
 }
 
 // PrepareCredentialsPresentation is idempotent within a credential's validity
@@ -1044,8 +1322,10 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
 
   manager_->Load(CurrentDomain());
   WaitForCommitOrTerminalOutcome(2);  // LOADING + terminal.
-  ASSERT_TRUE(credential_store_.HasValidSkusCredential());
-  const std::string first_credential = credential_store_.GetSkusCredential();
+  const std::optional<Credential> first =
+      credential_store_.GetValidSkusCredential();
+  ASSERT_TRUE(first.has_value());
+  const std::string first_credential = first->value;
 
   // Release the in-flight load (FAILED preserves the cache), then clear the
   // store so the next Load() runs the full chain instead of the fast paths.
@@ -1055,8 +1335,8 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
   // Changes so far: LOADING, FAILED, LOADING(new load). The commit's LOADING
   // is value-deduped, so the terminal fallback is change #4.
   WaitForCommitOrTerminalOutcome(4);
-  ASSERT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_EQ(credential_store_.GetSkusCredential(), first_credential);
+  EXPECT_THAT(credential_store_.GetValidSkusCredential(),
+              CredentialIs(first_credential));
 
   base::test::TestFuture<skus::mojom::SkusResultPtr> after;
   skus_service_->CredentialSummary(CurrentDomain(), after.GetCallback());
@@ -1089,15 +1369,80 @@ TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
   const std::string other_env = OtherEnvironment();
   manager_->Load(OtherDomain());
 
-  // The load is silent, so the first (and only) visible change is the
-  // post-commit LOADING for the new current environment.
-  WaitForCommitOrTerminalOutcome(1);
+  // The unstubbed exchange (we stub only the SKUS chain here) fails after the
+  // commit, so a FAILED terminal outcome is expected. However, the commit's
+  // effects outlive the failure: the environment switched and the SKUS
+  // credential is cached.
+  WaitForCommitOrTerminalOutcome(2);  // post-commit LOADING + FAILED.
 
   ASSERT_EQ(url_loader_factory_.NumPending(), 0);
   EXPECT_EQ(manager_->GetCurrentEnvironment(), other_env);
-  EXPECT_TRUE(credential_store_.HasValidSkusCredential());
-  EXPECT_EQ(loading_environment(), other_env);
-  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::LOADING);
+  EXPECT_TRUE(credential_store_.GetValidSkusCredential().has_value());
+  EXPECT_TRUE(loading_environment().empty());
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
+}
+
+// The full chain with a stubbed, successful exchange settles PURCHASED and
+// caches the subscriber credential end to end.
+TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
+       FullChainExchangeSucceedsPurchased) {
+  CreateManager(CurrentEnvironment());
+  SetExchangeResponse(kExchangeSuccessResponse);
+  manager_->Load(CurrentDomain());
+
+  WaitForCommitOrTerminalOutcome(2);  // LOADING + PURCHASED.
+
+  EXPECT_EQ(url_loader_factory_.NumPending(), 0);
+  EXPECT_TRUE(manager_->IsPurchased());
+  EXPECT_THAT(credential_store_.GetValidSubscriberCredential(),
+              CredentialIs(kTestSubscriberCredential));
+  EXPECT_TRUE(loading_environment().empty());
+}
+
+// A "token no longer valid" server error (non-2xx) on every attempt makes the
+// manager retry once against the real SKUS chain, then fail as TOKEN_NOT_VALID
+// on the second identical error.
+TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
+       FullChainTokenNoLongerValidRetriesThenFails) {
+  CreateManager(CurrentEnvironment());
+  SetExchangeResponse(kTokenNoLongerValidResponse);
+  manager_->Load(CurrentDomain());
+
+  // Not WaitForCommitOrTerminalOutcome: the retry rewrites the credential pref
+  // several times (commit, Clear, commit) and its commit-quit would fire
+  // mid-retry, before the second exchange fails. Wait for the terminal
+  // notification instead.
+  collector_.WaitForChangeCount(2);  // LOADING + FAILED (after the retry).
+
+  EXPECT_EQ(url_loader_factory_.NumPending(), 0);
+  EXPECT_EQ(manager_->GetInfo().state, mojom::PurchasedState::FAILED);
+  EXPECT_EQ(manager_->GetInfo().description,
+            l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));
+  EXPECT_TRUE(loading_environment().empty());
+}
+
+// Retry recovery against the real SKUS: the first exchange reports the token
+// consumed, so the manager clears the stale credential and re-runs the full
+// summary+presentation chain; the retried exchange succeeds and the load
+// settles PURCHASED. This is the happy retry path end to end.
+TEST_F(PurchasedStateManagerWithRealSkusServiceTest,
+       FullChainTokenNoLongerValidRetrySucceeds) {
+  CreateManager(CurrentEnvironment());
+  SetExchangeResponseSequence(
+      {kTokenNoLongerValidResponse, kExchangeSuccessResponse});
+  manager_->Load(CurrentDomain());
+
+  // Not WaitForCommitOrTerminalOutcome: the retry rewrites the credential pref
+  // several times (commit, Clear, commit) and its commit-quit would fire
+  // mid-retry, before the second exchange succeeds. Wait for the terminal
+  // notification instead.
+  collector_.WaitForChangeCount(2);  // LOADING + PURCHASED (after the retry).
+
+  EXPECT_EQ(url_loader_factory_.NumPending(), 0);
+  EXPECT_TRUE(manager_->IsPurchased());
+  EXPECT_THAT(credential_store_.GetValidSubscriberCredential(),
+              CredentialIs(kTestSubscriberCredential));
+  EXPECT_TRUE(loading_environment().empty());
 }
 
 }  // namespace brave_vpn::v2

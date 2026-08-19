@@ -634,11 +634,13 @@ void ConversationHandler::SubmitHumanConversationEntry(
   MaybeSwitchModelForSubmission(uploaded_files);
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
-      std::nullopt /* prompt */, std::nullopt /* selected_text */,
-      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_files), nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+      mojom::ActionType::QUERY, input, std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
+      base::Time::Now(), std::nullopt /* edits */, std::move(uploaded_files),
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -754,11 +756,13 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
   }
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
-      std::nullopt /* prompt */, std::nullopt /* selected_text */,
-      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_files), std::move(skill_entry), false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+      mojom::ActionType::QUERY, input, std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
+      base::Time::Now(), std::nullopt /* edits */, std::move(uploaded_files),
+      std::move(skill_entry), false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -809,11 +813,12 @@ void ConversationHandler::ModifyConversation(
 
     auto edited_turn = mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        turn->character_type, turn->action_type, trimmed_input,
-        std::nullopt /* prompt */, std::nullopt /* selected_text */,
-        std::move(events), base::Time::Now(), std::nullopt /* edits */,
-        std::nullopt, nullptr /* skill */, false, turn->model_key,
-        nullptr /* near_verification_status */);
+        std::nullopt /* thread_uuid */, turn->character_type, turn->action_type,
+        trimmed_input, std::nullopt /* prompt */,
+        std::nullopt /* selected_text */, std::move(events), base::Time::Now(),
+        std::nullopt /* edits */, std::nullopt, nullptr /* skill */, false,
+        turn->model_key, nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -851,12 +856,14 @@ void ConversationHandler::ModifyConversation(
   // editable human turns in our current implementation, just use std::nullopt
   // here directly to be more explicit and avoid confusion.
   auto edited_turn = mojom::ConversationTurn::New(
-      base::Uuid::GenerateRandomV4().AsLowercaseString(), turn->character_type,
-      turn->action_type, sanitized_input, std::nullopt /* prompt */,
+      base::Uuid::GenerateRandomV4().AsLowercaseString(),
+      std::nullopt /* thread_uuid */, turn->character_type, turn->action_type,
+      sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
       std::move(skill_entry), false, turn->model_key,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -927,13 +934,15 @@ void ConversationHandler::SubmitSummarizationRequest() {
       << "This conversation request is not associated with content";
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_PAGE,
+      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+      mojom::ActionType::SUMMARIZE_PAGE,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -956,11 +965,13 @@ void ConversationHandler::SubmitSuggestion(
   Suggestion& suggestion = *suggest_it;
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, suggestion.action_type,
-      suggestion.title, suggestion.prompt, std::nullopt /* selected_text */,
-      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+      suggestion.action_type, suggestion.title, suggestion.prompt,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
+      base::Time::Now(), std::nullopt /* edits */, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -1109,10 +1120,12 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
     const std::string& question,
     mojom::ActionType action_type) {
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, action_type, question,
-      std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+      action_type, question, std::nullopt /* prompt */, selected_text,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -1149,10 +1162,12 @@ void ConversationHandler::AddSubmitSelectedTextError(
   }
   const std::string& question = GetActionTypeQuestion(action_type);
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, action_type, question,
-      std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+      action_type, question, std::nullopt /* prompt */, selected_text,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -1332,8 +1347,9 @@ void ConversationHandler::PerformAssistantGeneration() {
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      associated_content_manager_->GetCachedContentsMap(), chat_history_,
-      IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
+      associated_content_manager_->GetCachedContentsMap(),
+      EngineConsumer::ToHistoryView(chat_history_), IsTemporaryChat(),
+      GetTools(), std::nullopt /* preferred_tool_name */,
       conversation_capabilities_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
@@ -1372,11 +1388,12 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     needs_new_entry_ = false;
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
-        std::nullopt /* prompt */, std::nullopt,
-        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, std::nullopt, nullptr /* skill */, false,
-        result.model_key, nullptr /* near_verification_status */);
+        std::nullopt /* thread_uuid */, CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */,
+        std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
+        false, result.model_key, nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */);
     chat_history_.push_back(std::move(entry));
   }
 
@@ -1667,11 +1684,12 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
   for (const auto& entry : *entries) {
     chat_history_.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        CharacterType::HUMAN, mojom::ActionType::QUERY, entry.query,
-        std::nullopt /* prompt */, std::nullopt, std::nullopt,
-        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        true, std::nullopt /* model_key */,
-        nullptr /* near_verification_status */));
+        std::nullopt /* thread_uuid */, CharacterType::HUMAN,
+        mojom::ActionType::QUERY, entry.query, std::nullopt /* prompt */,
+        std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+        std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */));
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1679,11 +1697,12 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         mojom::CompletionEvent::New(entry.summary)));
     chat_history_.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, entry.summary,
-        std::nullopt /* prompt */, std::nullopt, std::move(events),
-        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        true, std::nullopt /* model_key */,
-        nullptr /* near_verification_status */));
+        std::nullopt /* thread_uuid */, CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, entry.summary, std::nullopt /* prompt */,
+        std::nullopt, std::move(events), base::Time::Now(), std::nullopt,
+        std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */,
+        nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */));
     OnConversationEntryAdded(chat_history_.back());
   }
 }
@@ -2120,6 +2139,7 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->is_leo_model = is_leo_model;
   entries_state->all_models = std::move(models_copy);
   entries_state->current_model_key = model.key;
+  entries_state->default_model_key = model_service_->GetDefaultModelKey();
   entries_state->total_tokens = metadata_->total_tokens;
   entries_state->trimmed_tokens = metadata_->trimmed_tokens;
   entries_state->content_used_percentage =

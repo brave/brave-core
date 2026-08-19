@@ -3,67 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/rating_bottomsheet_background">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/askRatingDialogTitle"
-        android:layout_width="wrap_content"
+        style="@style/LargeSemibold"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
         android:text="@string/brave_rating_thanks"
-        android:textColor="@color/brave_rating_title_color"
-        android:textSize="20sp"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/askRatingDialogDescription"
-        android:layout_width="wrap_content"
+        style="@style/DefaultRegular"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
         android:text="@string/leave_a_play_store_rating"
-        android:textColor="@color/brave_rating_sub_title_color"
-        android:textSize="16sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/askRatingDialogTitle" />
 
-    <Button
-        android:id="@+id/rate_not_now_button"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/rate_buttons"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="32dp"
-        android:layout_marginBottom="60dp"
-        android:background="@android:color/transparent"
-        android:text="@string/not_now"
-        android:textAllCaps="false"
-        android:textColor="@color/brave_rating_not_now_text_color"
-        android:textSize="13sp"
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rate_now_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/askRatingDialogDescription" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/rate_now_button"
-        android:layout_width="162dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/brave_rating_rate_now_bg"
-        android:text="@string/rate_now"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rate_not_now_button"
-        app:layout_constraintTop_toTopOf="@+id/rate_not_now_button" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/askRatingDialogDescription">
+
+        <Button
+            android:id="@+id/rate_not_now_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/not_now"
+            android:textAllCaps="false"
+            android:textAppearance="@style/ComponentsButtonDefault"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/rate_now_button"
+            style="@style/LargeFilledButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="@string/rate_now"
+            android:textAllCaps="false"
+            android:textAppearance="@style/ComponentsButtonDefault"
+            android:textColor="?attr/colorOnPrimary" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

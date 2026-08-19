@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Import Brave's tab group sync controller.
+
+      The import is repointed instead of added because leaving the upstream one
+      unreferenced trips the UnusedImports check.
+    regex:
+      re_pattern: |-
+        import org\.chromium\.chrome\.browser\.tab_group_sync\.(TabGroupSyncControllerImpl);
+      replace: |-
+        import org.chromium.chrome.browser.tab_group_sync.Brave\1;
+  - description: |-
+      Instantiate Brave's tab group sync controller.
+
+      BraveTabGroupSyncControllerImpl hides and shows the tab groups synced from
+      the user's other devices along with the "Show synced tab groups" setting,
+      which upstream only consults when a new group arrives from sync.
+    regex:
+      re_pattern: |-
+        new (TabGroupSyncControllerImpl\()
+      replace: |-
+        new Brave\1

@@ -17,7 +17,6 @@
     <color name="onboarding_bg_color">#1E2029</color>
 
     <color name="onboarding_card_bg_color">#1E2029</color>
-    <color name="onboarding_negative_button_color">#A0A5EB</color>
 
     <color name="scan_qr_code_text_color">#F0F2FF</color>
     <color name="scan_qr_code_bg_color">#1E2029</color>
@@ -68,7 +67,6 @@
     <color name="news_time_color">#9CD2D5CF</color>
     <color name="news_settings_title_color">#F0F2FF</color>
     <color name="news_settings_subtitle_color">#C2C4CF</color>
-    <color name="news_settings_divider_color">#1AFFFFFF</color>
     <color name="news_settings_icon_bg_color">#0DFFFFFF</color>
     <color name="news_settings_following_count_color">#D9F0F2FF</color>
     <color name="news_settings_following_count_bg_color">#1AFFFFFF</color>
@@ -82,7 +80,6 @@
     <color name="container_background">#1c1c1d</color>
     <color name="divider_interactive">#7686ec</color>
     <color name="systemfeedback_error_icon">#ff7f72</color>
-    <color name="systemfeedback_error_background">#4d0103</color>
     <color name="systemfeedback_info_text">#78abff</color>
     <color name="systemfeedback_info_icon">#78abff</color>
     <color name="systemfeedback_info_background">#002058</color>
@@ -96,8 +93,6 @@
 
     <color name="filter_title_color">#EDEEF1</color>
     <color name="filter_summary_color">#C2C4CF</color>
-    <color name="filter_divider_color">#2E3038</color>
-    <color name="add_custom_filter_text_input_stroke_color">#2E3038</color>
     <color name="add_custom_filter_text_input_hint_color">#EDEEF1</color>
     <color name="add_custom_filter_edit_text_hint_color">#C2C4CF</color>
     <color name="add_custom_filter_summary_color">#C2C4CF</color>
@@ -139,16 +134,6 @@
     <color name="quick_action_search_and_bookmark_widget_tint">#F0F2FF</color>
     <color name="quick_action_search_and_bookmark_widget_text_color">#CED0DB</color>
 
-    <color name="brave_rate_bg_color">#1E2025</color>
-    <color name="brave_smiley_sad_color">#DC1D3C</color>
-    <color name="brave_smiley_happy_color">#5F5CF1</color>
-    <color name="brave_rating_emoji_bg_color">#121316</color>
-    <color name="brave_rating_title_color">#ECEFF2</color>
-    <color name="brave_rating_sub_title_color">#8C90A1</color>
-    <color name="brave_rating_not_now_text_color">#AAA8F7</color>
-    <color name="brave_rating_rate_now_bg_color">#585C6D</color>
-    <color name="brave_rating_text_input_stroke_color">#2E3039</color>
-    <color name="brave_rating_hint_text_color">#ECEFF2</color>
 
     <color name="bookmark_menu_text_color">#C2C4CF</color>
     <color name="bookmark_menu_bg_color">#2E3039</color>

@@ -30,68 +30,64 @@ public struct BraveVPNEnableSettingsHeaderView: View {
   }
 
   public var body: some View {
-    VStack(spacing: 0) {
-      VStack(spacing: 16) {
-        Text(Strings.VPN.vpnName)
-          .font(.title2).fontWeight(.semibold)
-        Text(Strings.VPN.settingHeaderBody)
-          .font(.subheadline)
-        Button(
-          action: {
-            enableVPNTapped?()
-          },
-          label: {
-            HStack {
-              Text(buttonTitle)
-                .font(.headline)
-                .foregroundColor(Color(.white))
-                .padding()
-                .frame(maxWidth: .infinity)
-            }
-            .background(
-              LinearGradient(
-                gradient:
-                  Gradient(colors: [
-                    Color(UIColor(rgb: 0xFF4000)),
-                    Color(UIColor(rgb: 0xFF1F01)),
-                  ]),
-                startPoint: .init(x: 0.26, y: 0.0),
-                endPoint: .init(x: 0.26, y: 1.0)
-              )
-            )
-          }
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
-        HStack(spacing: 5) {
-          Text(Strings.VPN.poweredBy)
-          Image(sharedName: "vpn_brand")
+    VStack(spacing: 16) {
+      Text(Strings.VPN.vpnName)
+        .font(.title2.weight(.semibold))
+      Text(Strings.VPN.settingHeaderBody)
+        .font(.subheadline)
+      Button {
+        enableVPNTapped?()
+      } label: {
+        Text(buttonTitle)
+          .frame(maxWidth: .infinity)
+      }
+      .controlSize(.extraLarge)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.glassHero)
+        } else {
+          content.buttonStyle(.hero)
         }
       }
-      .padding(.init(top: 30, leading: 24, bottom: 24, trailing: 24))
-      .foregroundColor(.white)
-      .multilineTextAlignment(.center)
-      .background(
-        ZStack(alignment: .top) {
-          Color(braveSystemName: .primitiveBlurple10)
-          Image("enable_vpn_settings_banner_v2", bundle: .module)
-            .scaledToFill()
-        }
-      )
-      .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-      .overlay(alignment: .topTrailing) {
-        Button {
-          dismissHeaderTapped?()
-        } label: {
-          Image(braveSystemName: "leo.close")
-            .font(.headline)
-            .foregroundColor(.white.opacity(0.75))
-            .padding(8)
-        }
-        .background(.ultraThinMaterial, in: Circle())
-        .padding(.top, 10)
-        .padding(.trailing, 12)
+      HStack(spacing: 5) {
+        Text(Strings.VPN.poweredBy)
+        Image(sharedName: "vpn_brand")
       }
+      .accessibilityElement()
+      .accessibilityLabel(Strings.VPN.poweredByGuardianAccessibilityLabel)
     }
-    .padding(.top, 20)
+    .padding(24)
+    .foregroundStyle(.white)
+    .multilineTextAlignment(.center)
+    .overlay(alignment: .topTrailing) {
+      Button {
+        dismissHeaderTapped?()
+      } label: {
+        Label(Strings.close, braveSystemImage: "leo.close")
+          .labelStyle(.iconOnly)
+          .font(.headline)
+          .foregroundStyle(Color.white.opacity(0.25))
+      }
+      .padding(16)
+    }
+    .background(
+      LinearGradient(
+        colors: [
+          Color(braveSystemName: .primitiveNeutral15),
+          Color(braveSystemName: .primitiveNeutral5),
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+      )
+      .shadow(.inner(color: Color(braveSystemName: .primitiveNeutral25), radius: 0, y: 1)),
+      in: .rect(cornerRadius: 24, style: .continuous)
+    )
   }
 }
+
+#if DEBUG
+#Preview {
+  BraveVPNEnableSettingsHeaderView()
+    .padding()
+}
+#endif

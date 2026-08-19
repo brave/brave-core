@@ -157,6 +157,7 @@ source_set("unit_tests") {
     ":test_support",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/brave_rewards/core",
     "//brave/components/ntp_background_images/buildflags",

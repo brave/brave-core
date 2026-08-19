@@ -32,7 +32,7 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
    - takes the first URL (URL_1) and marks it as current;
    - navigates to that URL;
    - returns the progress and applied tasks list to the back-end:
-     `PsstTabWebContentsObserver::OnPolicyScriptResult(int nav_entry_id,base::Value script_result)`</br>
+     `PsstTabWebContentsObserver::OnPolicyScriptResult(base::Value script_result)`</br>
      where after deserialization and validation, we update the flow's status on
      the consent dialog, by calling the UI delegate's method:</br>
      `UpdateTasks(long progress,const std::vector<PolicyTask>& applied_tasks)`</br>
@@ -70,13 +70,12 @@ seconds):
 
 ```
 void PsstTabWebContentsObserver::RunWithTimeout(
-    const int last_committed_entry_id,
     const std::string& script,
     InsertScriptInPageCallback callback) {
   timeout_timer_.Start(
       FROM_HERE, kScriptTimeout,
       base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
-                     weak_factory_.GetWeakPtr(), last_committed_entry_id));
+                     page_weak_factory_.GetWeakPtr()));
   inject_script_callback_.Run(script, std::move(callback));
 }
 
@@ -89,7 +88,7 @@ script result once it executes;
 
 The `PsstTabWebContentsObserver::OnScriptTimeout` is special timeout handler,
 which stops the other script execution result handlers by calling the
-`weak_factory_.InvalidateWeakPtrs();`
+`page_weak_factory_.InvalidateWeakPtrs();`
 
 # PSST CRX Component
 
@@ -98,7 +97,7 @@ Contains set of rules and scripts for small number of very popular sites
 open source (similar to https://github.com/brave/adblock-lists), and shipped
 daily to users.
 
-- Component ID: `lhhcaamjbmbijmjbnnodjaknblkiagon`
+- Component ID: `bchfnigamfmpeanhekjggkphjfobpipo`
 - Component version: `1`
 
 ### Component's folder structure:
@@ -149,16 +148,41 @@ Example:
 ]
 ```
 
+#### Passing parameters to scripts
+
+Both `user.js` and `policy.js` can receive input parameters. Before injecting a
+script, the browser prepends a line that defines them as a property on `window`:
+
+```
+window.__bravePsstParams = { ... };
+<script content>
+```
+
+A `window` property is used instead of a top-level `const`/`let` declaration
+because:
+
+- the same script can be re-injected into the page (e.g. the policy script runs
+  again after each navigation to a task URL) with a different params value each
+  time, and re-declaring a `const`/`let` on repeated injection would throw;
+- the user script and policy script can both be present in the same page at the
+  same time, so they can't each declare a top-level `const params` without
+  colliding.
+
+For backward compatibility, the policy script still supports the old way of
+receiving parameters via a `const params` variable, in addition to
+`window.__bravePsstParams`.
+
 #### user.js
 
 Script which helps to find the user identifier for the currently-logged-in user
-on the current website. We need this in order to apply PSST. The output of user
-script execution is JSON, which contains the following fields: `user_id` -
-contains the identifier of the logged-in user for the current website.
-`site_name` - site's name or description that will be shown on the consent
-dialog. `tasks` - list of objects (url and description pairs) where `url` is the
-URL of the settings page for the website that we propose to change and its
-description.
+on the current website. We need this in order to apply PSST. The user script
+receives `window.__bravePsstParams.countryId`, the user's country code, which
+can be used to tailor the returned tasks per country. The output of user script
+execution is JSON, which contains the following fields: `user_id` - contains the
+identifier of the logged-in user for the current website. `site_name` - site's
+name or description that will be shown on the consent dialog. `tasks` - list of
+objects (url and description pairs) where `url` is the URL of the settings page
+for the website that we propose to change and its description.
 
 Example:
 
@@ -181,20 +205,18 @@ Example:
 The policy script takes as parameter the list of tasks from the user script
 output and saves it to the local storage. When the policy script is executed and
 local storage already contains the tasks list it takes one task and processes
-it. To pass parameter to the policy script we should prepend the script with the
-definition of the params variable, which contains tasks, returned by user
-script:
+it. The parameters are made available on `window.__bravePsstParams`, as
+described in [Passing parameters to scripts](#passing-parameters-to-scripts):
 
 ##### Policy script parameters:
 
 ```
-const params = {
+window.__bravePsstParams = {
    "tasks": [ {
       "description": "Ads Preferences",
       "url": "https://x.com/settings/ads_preferences"
    } ]
-}
-;
+};
 <policy script content>
 ```
 

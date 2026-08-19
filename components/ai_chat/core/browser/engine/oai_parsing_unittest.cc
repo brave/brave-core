@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
@@ -1376,7 +1377,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_NoToolCalls) {
   // Response with delta but no tool_calls key
   constexpr char kResponseJson[] = R"({
     "object": "chat.completion.chunk",
-    "model": "llama-3-8b-instruct",
+    "model": "automatic",
     "choices": [{
       "delta": {
         "content": "Hello"
@@ -1393,7 +1394,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_InvalidFormat) {
   // Response missing choices entirely
   constexpr char kResponseJson[] = R"({
     "object": "chat.completion.chunk",
-    "model": "llama-3-8b-instruct"
+    "model": "automatic"
   })";
 
   auto response = base::test::ParseJsonDict(kResponseJson);
@@ -1405,7 +1406,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolRequest) {
   // Streaming response with function tool call
   constexpr char kResponseJson[] = R"({
     "object": "chat.completion.chunk",
-    "model": "llama-3-8b-instruct",
+    "model": "automatic",
     "choices": [{
       "delta": {
         "tool_calls": [
@@ -1423,7 +1424,8 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolRequest) {
   })";
 
   auto response = base::test::ParseJsonDict(kResponseJson);
-  auto results = ParseToolCallsFromOAIResponse(response, "chat-basic");
+  auto results =
+      ParseToolCallsFromOAIResponse(response, kChatAutomaticModelKey);
 
   ASSERT_EQ(results.size(), 1u);
   ASSERT_TRUE(results[0].event);
@@ -1434,7 +1436,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolRequest) {
           "brave_web_search", "call_123", "{\"query\":\"weather today\"}",
           std::nullopt, std::nullopt, nullptr, false));
   EXPECT_MOJOM_EQ(results[0].event, expected_event);
-  EXPECT_EQ(results[0].model_key, "chat-basic");
+  EXPECT_EQ(results[0].model_key, kChatAutomaticModelKey);
 }
 
 TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
@@ -1455,7 +1457,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
 
     auto response = base::test::ParseJsonDict(absl::StrFormat(R"({
       "object": "chat.completion.chunk",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "choices": [{
         "delta": {
           "tool_calls": [
@@ -1481,7 +1483,8 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
     })",
                                                               query_json));
 
-    auto results = ParseToolCallsFromOAIResponse(response, "chat-basic");
+    auto results =
+        ParseToolCallsFromOAIResponse(response, kChatAutomaticModelKey);
 
     // Expect 3 results: ToolUseEvent, WebSourcesEvent, SearchQueriesEvent
     ASSERT_EQ(results.size(), 3u);
@@ -1501,7 +1504,7 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
             "", "call_123", std::string(), std::move(output), std::nullopt,
             nullptr, true));
     EXPECT_MOJOM_EQ(results[0].event, expected_tool_event);
-    EXPECT_EQ(results[0].model_key, "chat-basic");
+    EXPECT_EQ(results[0].model_key, kChatAutomaticModelKey);
 
     // 2. WebSourcesEvent
     std::vector<mojom::WebSourcePtr> expected_sources;
@@ -1514,14 +1517,14 @@ TEST(OaiParsingTest, ParseToolCallsFromOAIResponse_ToolResult) {
             mojom::WebSourcesEvent::New(std::move(expected_sources),
                                         std::vector<std::string>()));
     EXPECT_MOJOM_EQ(results[1].event, expected_sources_event);
-    EXPECT_EQ(results[1].model_key, "chat-basic");
+    EXPECT_EQ(results[1].model_key, kChatAutomaticModelKey);
 
     // 3. SearchQueriesEvent
     auto expected_queries_event =
         mojom::ConversationEntryEvent::NewSearchQueriesEvent(
             mojom::SearchQueriesEvent::New(expected_queries));
     EXPECT_MOJOM_EQ(results[2].event, expected_queries_event);
-    EXPECT_EQ(results[2].model_key, "chat-basic");
+    EXPECT_EQ(results[2].model_key, kChatAutomaticModelKey);
   }
 }
 

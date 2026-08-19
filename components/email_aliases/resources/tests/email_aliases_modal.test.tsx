@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import {
   EmailAliasModal,
   DeleteAliasModal,
@@ -254,6 +254,81 @@ describe('EmailAliasModal', () => {
     expect(
       screen.getByText(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON),
     ).toBeInTheDocument()
+
+    // Mock the clipboard API
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn(),
+      },
+    })
+
+    // Click copy button
+    const copyButtons = screen.getAllByTestId('copy-toast')
+    fireEvent.click(copyButtons[0])
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'alias-0@bravealias.com',
+    )
+  })
+
+  it('does not show limit reached dialog in editing mode', async () => {
+    const atLimitAliases: Alias[] = Array.from({ length: 5 }, (_, i) => ({
+      email: `alias-${i}@bravealias.com`,
+      note: 'Existing Alias',
+      domains: undefined,
+    }))
+
+    const mockEditAlias: Alias = {
+      email: 'alias-0@bravealias.com',
+      note: 'Existing Alias',
+      domains: ['brave.com'],
+    }
+
+    render(
+      <EmailAliasModal
+        editing={true}
+        editAlias={mockEditAlias}
+        mainEmail={mockEmail}
+        aliases={atLimitAliases}
+        onReturnToMain={mockOnReturnToMain}
+        emailAliasesService={mockEmailAliasesService}
+      />,
+    )
+
+    // Check title
+    expect(
+      screen.getByText(S.SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE),
+    ).toBeInTheDocument()
+
+    // Ensure limit-reached UI is not shown in editing mode
+    expect(
+      screen.queryByText(S.SETTINGS_EMAIL_ALIASES_LIMIT_REACHED_ALERT_TITLE),
+    ).not.toBeInTheDocument()
+    expect(mockEmailAliasesService.generateAlias).not.toHaveBeenCalled()
+
+    // Check that existing alias is displayed
+    expect(screen.getByText(/alias-0@bravealias\.com/)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(
+        S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+      ),
+    ).toHaveValue('Existing Alias')
+
+    // Ensure the save button is enabled
+    const saveButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON,
+    )
+    await waitFor(() => {
+      expect(saveButton).toHaveAttribute('isdisabled', 'false')
+    })
+
+    // Click save button
+    clickLeoButton(saveButton)
+
+    // Check that updateAlias was called
+    await waitFor(() => {
+      expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
+      expect(mockOnReturnToMain).toHaveBeenCalled()
+    })
   })
 
   it('shows loading state while generating alias', async () => {

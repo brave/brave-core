@@ -71,6 +71,8 @@ class PsstUiDesktopPresenter
 
   void ShowConsentDialog() override;
 
+  void HideConsentDialog() override;
+
   bool IsDialogShown() const override;
 
  private:

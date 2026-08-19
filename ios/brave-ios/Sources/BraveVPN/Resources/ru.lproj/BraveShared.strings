@@ -50,7 +50,7 @@
 "vpn.popupCheckboxBlockAds" = "Блокирует нежелательные сетевые подключения";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Блокируй рекламу & трекеров во всех приложениях ";
+"vpn.popupCheckboxBlockAdsAlternate" = "Блокируй рекламу и трекеры во всех приложениях ";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxFast" = "Поддерживает скорость соединения до 100 Мб/с";

@@ -8,9 +8,6 @@
 
 namespace local_ai {
 
-inline constexpr char kUntrustedLocalAIHost[] = "local-ai";
-inline constexpr char kUntrustedLocalAIURL[] = "chrome-untrusted://local-ai/";
-
 // Cross-origin-isolated worker that hosts the onnxruntime-web (ORT-Web)
 // Nemotron 0.6B on-device speech-recognition backend. Kept on its own origin
 // so the COOP/COEP isolation ORT-Web needs for multi-threaded

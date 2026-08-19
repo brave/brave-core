@@ -1,0 +1,39 @@
+diff --git a/components/history_clusters/core/features.cc b/components/history_clusters/core/features.cc
+index 8124cbe075c457e4f132a5a3d481b2addd01681c..a7f92f41285cbc092c7ff363658eb7f84f4e67d2 100644
+--- a/components/history_clusters/core/features.cc
++++ b/components/history_clusters/core/features.cc
+@@ -25,13 +25,16 @@ constexpr auto enabled_by_default_desktop_only =
+ 
+ namespace internal {
+ 
+-BASE_FEATURE(kJourneys, enabled_by_default_desktop_only);
++// kJourneys feature state is enforced via plaster rewrite.
++BASE_FEATURE(kJourneys, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kJourneysImages, base::FEATURE_ENABLED_BY_DEFAULT);
++// kJourneysImages feature state is enforced via plaster rewrite.
++BASE_FEATURE(kJourneysImages, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<bool> kJourneysImagesCover{
+     &kJourneysImages, "JourneysImagesCover", true};
+ 
++// kOmniboxHistoryClusterProvider feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kOmniboxHistoryClusterProvider,
+              "JourneysOmniboxHistoryClusterProvider",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -44,12 +47,14 @@ BASE_FEATURE(kUserVisibleDebug,
+              "JourneysUserVisibleDebug",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kHistoryClustersInternalsPage feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kHistoryClustersVisitDeduping, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kHistoryClustersNavigationContextClustering feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kHistoryClustersNavigationContextClustering,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ }  // namespace internal
+ 

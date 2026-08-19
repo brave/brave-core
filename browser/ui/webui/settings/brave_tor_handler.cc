@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/byte_count.h"
+#include "base/byte_size.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
@@ -70,7 +70,7 @@ constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
       cookies_allowed: NO
     })");
 
-constexpr base::ByteCount kMaxBodySize = base::KiB(256);
+constexpr base::ByteSize kMaxBodySize = base::KiBU(256);
 
 base::Value FetchCaptchaData() {
   base::DictValue data;
@@ -106,6 +106,22 @@ base::Value SolveCaptchaData(const std::string& challenge,
   base::DictValue result;
   result.Set("data", std::move(list));
   return base::Value(std::move(result));
+}
+
+// Return the bridge list if user has chosen to requested one from torproject
+// OR if they provided their own. These are validated (see SetBridgesConfig).
+// Validation skipped if bridges not used OR built-in provider selected.
+base::span<const std::string> GetSubmittedBridges(
+    const tor::BridgesConfig& config) {
+  switch (config.use_bridges) {
+    case tor::BridgesConfig::Usage::kRequest:
+      return config.requested_bridges;
+    case tor::BridgesConfig::Usage::kProvide:
+      return config.provided_bridges;
+    case tor::BridgesConfig::Usage::kNotUsed:
+    case tor::BridgesConfig::Usage::kBuiltIn:
+      return {};
+  }
 }
 
 }  // namespace
@@ -328,13 +344,29 @@ void BraveTorHandler::GetBridgesConfig(const base::ListValue& args) {
   ResolveJavascriptCallback(args[0], bridges_config.ToValue(false));
 }
 
+// Called from brave://settings/privacy when `Apply changes` is clicked.
 void BraveTorHandler::SetBridgesConfig(const base::ListValue& args) {
-  CHECK_EQ(1u, args.size());
-  CHECK(args[0].is_dict());
+  CHECK_EQ(2u, args.size());
+  CHECK(args[1].is_dict());
 
-  const auto bridges_config = tor::BridgesConfig::FromValue(&args[0]);
+  AllowJavascript();
+
+  const auto bridges_config = tor::BridgesConfig::FromValue(&args[1]);
   CHECK(bridges_config);
+
+  // Validate the provided bridges. This could be either the ones requested
+  // from torproject.org or it could be the user-typed one. If the config is
+  // invalid, we can report the error back to settings screen by rejecting the
+  // submission. The pref won't be modified unless validation passes.
+  for (const auto& bridge : GetSubmittedBridges(*bridges_config)) {
+    if (!tor::IsValidBridgeLine(bridge)) {
+      RejectJavascriptCallback(args[0], base::Value(bridge));
+      return;
+    }
+  }
+
   TorProfileServiceFactory::SetTorBridgesConfig(*bridges_config);
+  ResolveJavascriptCallback(args[0], base::Value());
 }
 
 void BraveTorHandler::RequestBridgesCaptcha(const base::ListValue& args) {

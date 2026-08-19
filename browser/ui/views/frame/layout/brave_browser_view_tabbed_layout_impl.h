@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 
 // Provides a specialized layout implementation for Brave tabbed browsers
 // using the new layout architecture (BrowserViewTabbedLayoutImpl).
@@ -101,6 +102,9 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // non-virtual.
   gfx::Insets GetContentsMarginsForTesting() const;
 
+  // Test-only accessor for CalculateContentsCornerRadii(), which is private.
+  gfx::RoundedCornersF CalculateContentsCornerRadiiForTesting() const;
+
   // Populates `layout_data_` with the given window state (and a zero side
   // panel width) so `CalculateSeparatorInfo()` can be exercised without
   // running a full layout pass. Implemented alongside CalculateSeparatorInfo()
@@ -121,6 +125,23 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void UpdateInsetsForVerticalTabStrip();
 
   gfx::Insets GetContentsMargins() const;
+
+  // Whether the contents area reaches the top edge of the window, which happens
+  // when nothing above it (tab strip, toolbar, bookmark bar, infobar, focus
+  // mode title bar) is laid out within the browser view.
+  bool IsContentsAtTopEdge() const;
+
+  // Whether the vertical tab strip / sidebar UI sits beside the contents area
+  // rather than floating above it or being hidden.
+  bool IsVerticalTabStripAtContentsEdge() const;
+  bool IsSidebarAtContentsEdge() const;
+
+  // Returns the corner radii for the contents area, where a corner meeting the
+  // window frame follows the window's corner and a corner meeting other UI
+  // uses the smaller border radius. Empty when the contents should not be
+  // rounded at all.
+  gfx::RoundedCornersF CalculateContentsCornerRadii() const;
+
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;
 

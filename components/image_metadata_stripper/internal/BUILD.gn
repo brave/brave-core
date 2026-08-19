@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("internal") {
+  # Only the public image_metadata_stripper target (and targets in this
+  # BUILD.gn, e.g. future unit tests) may depend on this.
+  visibility = [
+    ":*",
+    "//brave/components/image_metadata_stripper",
+  ]
+
+  sources = [
+    "jpeg_iptc_metadata_stripper.cc",
+    "jpeg_iptc_metadata_stripper.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+if (is_ios) {
+  bundle_data("unit_tests_bundle_data") {
+    testonly = true
+    visibility = [ ":unit_tests" ]
+    sources =
+        [ "//brave/test/data/image_metadata_stripper/fbmd_test_image.jpg" ]
+    outputs = [ "{{bundle_resources_dir}}/" +
+                "{{source_root_relative_dir}}/{{source_file_part}}" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "jpeg_iptc_metadata_stripper_unittest.cc" ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+
+  deps = [
+    ":internal",
+    "//base",
+    "//testing/gtest",
+  ]
+
+  if (is_ios) {
+    deps += [ ":unit_tests_bundle_data" ]
+  }
+}

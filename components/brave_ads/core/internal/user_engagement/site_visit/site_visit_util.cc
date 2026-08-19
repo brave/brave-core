@@ -28,9 +28,9 @@ bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type) {
 
     case mojom::AdType::kNotificationAd: {
       // Only if:
-      // - The user has opted into notification ads. Users cannot opt into
-      //   notification ads without joining Brave Rewards.
-      return UserHasOptedInToNotificationAds();
+      // - Notification ads are enabled. Notification ads cannot be enabled
+      //   without joining Brave Rewards.
+      return IsNotificationAdsEnabled();
     }
 
     case mojom::AdType::kSearchResultAd: {

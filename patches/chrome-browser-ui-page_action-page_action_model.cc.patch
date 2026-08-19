@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.cc b/chrome/browser/ui/page_action/page_action_model.cc
-index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..b219b736bef46a250407cc58c64b91009bb7b640 100644
+index 4e1f80c6259013a18f347676d034fb59aa017354..b4f5f2aa3fc9278c81d10c4cb78d53203dedce5f 100644
 --- a/chrome/browser/ui/page_action/page_action_model.cc
 +++ b/chrome/browser/ui/page_action/page_action_model.cc
 @@ -16,19 +16,19 @@ namespace {
@@ -342,7 +342,7 @@ index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..b219b736bef46a250407cc58c64b9100
      PageActionPassKey,
      bool is_anchored_message_showing) {
    if (is_anchored_message_showing_ == is_anchored_message_showing) {
-@@ -386,42 +386,42 @@ void PageActionModel::SetIsAnchoredMessageShowing(
+@@ -386,46 +386,46 @@ void PageActionModel::SetIsAnchoredMessageShowing(
    NotifyChange(Property::kIsAnchoredMessageShowing);
  }
  
@@ -394,3 +394,17 @@ index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..b219b736bef46a250407cc58c64b9100
    return show_trailing_icon_;
  }
  
+-void PageActionModel::SetOverrideBackgroundColorId(
++void PageActionModel_ChromiumImpl::SetOverrideBackgroundColorId(
+     PageActionPassKey,
+     std::optional<ui::ColorId> override_background_color_id) {
+   if (override_background_color_id_ == override_background_color_id) {
+@@ -435,7 +435,7 @@ void PageActionModel::SetOverrideBackgroundColorId(
+   NotifyChange(Property::kOverrideBackgroundColor);
+ }
+ 
+-std::optional<ui::ColorId> PageActionModel::GetOverrideBackgroundColorId()
++std::optional<ui::ColorId> PageActionModel_ChromiumImpl::GetOverrideBackgroundColorId()
+     const {
+   return override_background_color_id_;
+ }

@@ -5,6 +5,8 @@
 
 #include "brave/components/email_aliases/email_aliases_auth.h"
 
+#include "brave/components/brave_account/mojom/get_service_token.mojom.h"
+
 namespace email_aliases {
 
 EmailAliasesAuth::EmailAliasesAuth(

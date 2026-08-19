@@ -10,13 +10,11 @@
 // base class. Then, we can call this method from the subclass' override.
 #include "ui/gfx/image/image_skia.h"
 
-class TabHoverCardBubbleView;
+namespace views {
+class LabelButton;
+}  // namespace views
 
-#define BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_ \
-  bool HasThumbnailView() const;            \
-                                            \
- protected:                                 \
-  void BraveUpdateCardContent(const HoverCardAnchorTarget* anchor_target);
+class TabHoverCardBubbleView;
 
 #define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #define UpdateCardContent virtual UpdateCardContent
@@ -27,9 +25,10 @@ class TabHoverCardBubbleView;
 #undef SetTargetTabImage
 #undef UpdateCardContent
 #undef TabHoverCardBubbleView
-#undef BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
 
 class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
+  METADATA_HEADER(TabHoverCardBubbleView, TabHoverCardBubbleView_ChromiumImpl)
+
  public:
   using TabHoverCardBubbleView_ChromiumImpl::
       TabHoverCardBubbleView_ChromiumImpl;
@@ -40,6 +39,9 @@ class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
   void UpdateCardContent(const HoverCardAnchorTarget* anchor_target) override;
   void SetTargetTabImage(gfx::ImageSkia preview_image) override;
   void SetPlaceholderImage() override;
+
+  // Accessor used by tests.
+  views::LabelButton* GetContainerLabelForTesting();
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_HOVERCARD_TAB_HOVER_CARD_BUBBLE_VIEW_H_

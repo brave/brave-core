@@ -1,0 +1,13 @@
+diff --git a/components/gcm_driver/gcm_driver.h b/components/gcm_driver/gcm_driver.h
+index f6291390fab30a55dea025535b6c3ba451afb7e6..047cc61a1a53fb21206e64f797d52cd714bd0856 100644
+--- a/components/gcm_driver/gcm_driver.h
++++ b/components/gcm_driver/gcm_driver.h
+@@ -286,6 +286,8 @@ class GCMDriver {
+                                     int interval_ms) = 0;
+   virtual void RemoveHeartbeatInterval(const std::string& scope) = 0;
+ 
++  virtual void SetEnabled(bool enabled) {}
++
+  protected:
+   // Ensures that the GCM service starts (if necessary conditions are met).
+   virtual GCMClient::Result EnsureStarted(GCMClient::StartMode start_mode) = 0;

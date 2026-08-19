@@ -1,0 +1,88 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Append Brave-specific entries to switch statements in TabStripModel::ExecuteContextMenuCommand().
+
+      Avoids enumeration values not handled in switch error.
+    regex:
+      re_pattern: |
+        (void\ TabStripModel::ExecuteContextMenuCommand\(.*switch\s*\(command_id\)\s*\{)
+      re_flags: ['DOTALL']
+      replace: |-
+        \1
+            case CommandRestoreTab:
+            case CommandBookmarkAllTabs:
+            case CommandShowVerticalTabs:
+            case CommandToggleTabMuted:
+            case CommandBringAllTabsToThisWindow:
+            case CommandCloseDuplicateTabs:
+            case CommandOpenInContainer:
+            case CommandRenameTab:
+              NOTREACHED();\n
+
+  - description: |
+      Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
+
+      This avoids a name collision with Brave's `DraggingTabsSession` class.
+    rename_class:
+      class_name: DraggingTabsSession
+      rename: DraggingTabsSessionChromium
+
+  - description: |
+      Set opener_was_set_for_empty_new_tab() flag for new tabs with TYPED transition at last index.
+
+      Avoids creating a nested tree node when a new tab is added via a typed
+      transition at the last index.
+    regex:
+      re_pattern: |
+        (if\ \(ui::PageTransitionTypeIncludingQualifiersIs\(transition,\s*ui::PAGE_TRANSITION_TYPED\)\ &&\s*index\ ==\ count\(\)\)\ {)
+      replace: |
+        \1
+            tab->set_opener_was_set_for_empty_new_tab();
+
+  - description: |
+      Pass `opener` to AddTabRecursive() for tree tab support.
+
+      Stores opener in a local variable before calling AddTabRecursive() since
+      tab_model will be moved.
+
+      Passes nullptr when the new tab is created from an empty new tab, i.e.
+      when opener_was_set_for_empty_new_tab is true.
+    regex:
+      re_pattern: '(contents_data_->AddTabRecursive\(.*?)(\);)'
+      re_flags: ['DOTALL']
+      replace: |
+        auto* opener = tab_model->opener_was_set_for_empty_new_tab() ? nullptr : tab_model->opener();
+          \1, opener\2
+
+  - description: |
+      Let DetachedTabCollection have tabs::TreeTabNodeTabCollection in collection_.
+
+      This extends std::variant for DetachedTabCollection to hold a TreeTabNodeTabCollection.
+    count: 0
+    regex:
+      re_pattern: '(std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,\s*std::unique_ptr<tabs::SplitTabCollection>)(>)'
+      replace: |-
+        \1, std::unique_ptr<tabs::TreeTabNodeTabCollection>\2
+
+  - description: |
+      Before calling DetachTabWithReason() check if the tab should be detached as a tree.
+
+      In case of a tree tab, this ensures that the tree node and its subtree are
+      kept intact when the tab is detached, instead of being removed from the tree.
+    regex:
+      re_pattern: (owned_tabs_and_collections.emplace_back\(DetachTabWithReasonAt\()
+      replace: |-
+        if (tab_interface->GetParentCollection()->type() ==
+                  tabs::TabCollection::Type::TREE_NODE &&
+              contents_data_->ShouldDetachAsTreeSubtreeRoot(GetTabAtIndex(index),
+                                                            tab_interfaces)) {
+                owned_tabs_and_collections.emplace_back(DetachTreeTabNodeForInsertion(
+                    GetTabAtIndex(index), tab_interfaces));
+                continue;
+              }
+              \1

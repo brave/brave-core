@@ -25,7 +25,9 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
+import org.chromium.base.test.util.MinAndroidSdkLevel;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
 /** Test for {@link AppearancePreferences}. */
@@ -95,7 +97,6 @@ public class BraveAppearancePreferencesTest {
 
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
     public void testDynamicColorsPreferenceAvailability() {
         startSettings();
 
@@ -108,6 +109,18 @@ public class BraveAppearancePreferencesTest {
         } else {
             Assert.assertNull(dynamicColorsPreference);
         }
+    }
+
+    @Test
+    @SmallTest
+    @MinAndroidSdkLevel(Build.VERSION_CODES.S)
+    public void testDynamicColorsInitializationDoesNotPersistDefault() {
+        String key = BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED;
+        ChromeSharedPreferences.getInstance().removeKey(key);
+
+        startSettings();
+
+        Assert.assertFalse(ChromeSharedPreferences.getInstance().contains(key));
     }
 
     @Test

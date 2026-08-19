@@ -6,60 +6,46 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_REQUEST_HANDLER_H_
 #define BRAVE_BROWSER_NET_BRAVE_REQUEST_HANDLER_H_
 
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
-
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/url_context.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/completion_once_callback.h"
 
-class PrefChangeRegistrar;
+class GURL;
 
-// Contains different network stack hooks (similar to capabilities of WebRequest
-// API).
+namespace net {
+class HttpRequestHeaders;
+class HttpResponseHeaders;
+}  // namespace net
+
+// Interface for the different network stack hooks (similar to capabilities of
+// the WebRequest API). BraveRequestHandlerImpl is the production impl.
+// This interface exists so consumers such as BraveProxyingURLLoaderFactory can
+// be unit tested with a fake handler, without pulling in adblock or other
+// network-delegate dependencies.
 template <template <typename> class T>
 class BraveRequestHandler {
  public:
-  BraveRequestHandler();
-  BraveRequestHandler(const BraveRequestHandler&) = delete;
-  BraveRequestHandler& operator=(const BraveRequestHandler&) = delete;
-  ~BraveRequestHandler();
+  virtual ~BraveRequestHandler() = default;
 
-  bool IsRequestIdentifierValid(uint64_t request_identifier);
+  virtual int OnBeforeURLRequest(T<brave::BraveRequestInfo> ctx,
+                                 net::CompletionOnceCallback callback,
+                                 GURL* new_url) = 0;
 
-  int OnBeforeURLRequest(T<brave::BraveRequestInfo> ctx,
-                         net::CompletionOnceCallback callback,
-                         GURL* new_url);
+  virtual int OnBeforeStartTransaction(T<brave::BraveRequestInfo> ctx,
+                                       net::CompletionOnceCallback callback,
+                                       net::HttpRequestHeaders* headers) = 0;
 
-  int OnBeforeStartTransaction(T<brave::BraveRequestInfo> ctx,
-                               net::CompletionOnceCallback callback,
-                               net::HttpRequestHeaders* headers);
-  int OnHeadersReceived(
+  virtual int OnHeadersReceived(
       T<brave::BraveRequestInfo> ctx,
       net::CompletionOnceCallback callback,
       const net::HttpResponseHeaders* original_response_headers,
       scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-      GURL* allowed_unsafe_redirect_url);
+      GURL* allowed_unsafe_redirect_url) = 0;
 
-  void OnURLRequestDestroyed(T<brave::BraveRequestInfo> ctx);
-  void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
+  virtual void OnURLRequestDestroyed(T<brave::BraveRequestInfo> ctx) = 0;
 
- private:
-  void SetupCallbacks();
-  void RunNextCallback(T<brave::BraveRequestInfo> ctx);
-
-  std::vector<brave::OnBeforeURLRequestCallback<T>>
-      before_url_request_callbacks_;
-  std::vector<brave::OnBeforeStartTransactionCallback<T>>
-      before_start_transaction_callbacks_;
-  std::vector<brave::OnHeadersReceivedCallback<T>> headers_received_callbacks_;
-
-  std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
-
-  base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
+ protected:
+  BraveRequestHandler() = default;
 };
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_REQUEST_HANDLER_H_

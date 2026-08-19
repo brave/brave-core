@@ -1,0 +1,22 @@
+diff --git a/components/browsing_data/content/browsing_data_helper.cc b/components/browsing_data/content/browsing_data_helper.cc
+index ff585164b9c0cbf90092d427af755418344a1f57..46aee8817bcb8e2d948c8f63753d1ff3c6eb5c2f 100644
+--- a/components/browsing_data/content/browsing_data_helper.cc
++++ b/components/browsing_data/content/browsing_data_helper.cc
+@@ -149,6 +149,7 @@ void RemoveEmbedderCookieData(
+ void RemoveSiteSettingsData(const base::Time& delete_begin,
+                             const base::Time& delete_end,
+                             HostContentSettingsMap* host_content_settings_map) {
++  [&]() -> void {
+   const auto* permission_settings_registry =
+       content_settings::PermissionSettingsRegistry::GetInstance();
+   for (const content_settings::PermissionSettingsInfo* info :
+@@ -207,6 +208,9 @@ void RemoveSiteSettingsData(const base::Time& delete_begin,
+   host_content_settings_map->ClearSettingsForOneTypeWithPredicate(
+       ContentSettingsType::SUSPICIOUS_SITE_WARNING_DATA, delete_begin,
+       delete_end, HostContentSettingsMap::PatternSourcePredicate());
++  }();
++  BraveRemoveSiteSettingsData(delete_begin, delete_end,
++                               host_content_settings_map);
+ }
+ 
+ void RemoveFederatedSiteSettingsData(

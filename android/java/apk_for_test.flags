@@ -408,11 +408,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
--keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone {
-    *** mLocationBarBackgroundColorForNtp;
-    *** mToolbarBackgroundColorForNtp;
-}
-
 -keep class org.chromium.components.permissions.PermissionDialogModelFactory {
     *** getModel(...);
 }
@@ -480,12 +475,12 @@
     *** getAndroidAutofillFrameworkAvailability(...);
 }
 
--keep class org.chromium.chrome.browser.autofill.options.AutofillOptionsFragment {
+-keep class org.chromium.chrome.browser.autofill.settings.options.AutofillOptionsFragment {
     *** createRequiredArgs(...);
     *** onCreate(...);
 }
 
--keep class org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsFragmentBase {
+-keep class org.chromium.chrome.browser.autofill.settings.options.BraveAutofillOptionsFragmentBase {
     *** onCreate(...);
 }
 

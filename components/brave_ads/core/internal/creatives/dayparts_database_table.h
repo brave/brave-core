@@ -17,9 +17,6 @@ class Dayparts final : public TableInterface {
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
-
- private:
-  void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 };
 
 }  // namespace brave_ads::database::table

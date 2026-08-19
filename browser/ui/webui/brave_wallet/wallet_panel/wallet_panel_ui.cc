@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
@@ -106,6 +105,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
 #else
   source->AddBoolean("rewardsFeatureEnabled", false);
 #endif
+  source->AddBoolean("isLedgerMojoBridgeEnabled",
+                     brave_wallet::IsMojoForHardwareWalletEnabled());
   source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
 
   content::URLDataSource::Add(profile,
@@ -233,6 +234,31 @@ void WalletPanelUI::CreatePanelHandler(
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
+  }
+}
+
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver) {
+  service_receiver_.reset();
+  service_receiver_.Bind(std::move(receiver));
+}
+
+void WalletPanelUI::BindLedgerBridge(
+    mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge) {
+  ledger_bridge_remote_ = std::move(bridge);
+  MaybeFuseLedgerBridge();
+}
+
+void WalletPanelUI::BindLedgerBridge(
+    mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge> receiver) {
+  ledger_bridge_receiver_ = std::move(receiver);
+  MaybeFuseLedgerBridge();
+}
+
+void WalletPanelUI::MaybeFuseLedgerBridge() {
+  if (ledger_bridge_remote_ && ledger_bridge_receiver_) {
+    mojo::FusePipes(std::move(ledger_bridge_receiver_),
+                    std::move(ledger_bridge_remote_));
   }
 }
 

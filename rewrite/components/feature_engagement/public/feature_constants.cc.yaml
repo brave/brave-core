@@ -1,0 +1,60 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# These IPH features are only declared upstream on Win/Apple/Linux (and a few
+# other platforms Brave never builds for, e.g. ChromeOS/Fuchsia), so patching
+# their BASE_FEATURE call directly inherits that same guard without needing to
+# repeat it here.
+
+substitutions:
+  - description: 'Ship kIPHAutofillAccountNameEmailSuggestionFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHAutofillAccountNameEmailSuggestionFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHDiscardRingFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHDiscardRingFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHGMCCastStartStopFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHGMCCastStartStopFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHPasswordsManagementBubbleAfterSaveFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHPasswordsManagementBubbleAfterSaveFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHPdfInkSignaturesFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHPdfInkSignaturesFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHReadingListInSidePanelFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHReadingListInSidePanelFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHSideBySidePinnableFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHSideBySidePinnableFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHSideBySideTabSwitchFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHSideBySideTabSwitchFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHTabGroupsSaveV2IntroFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHTabGroupsSaveV2IntroFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIPHVerticalTabstripTutorialFeature disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIPHVerticalTabstripTutorialFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT

@@ -28,14 +28,4 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
 
 }  // namespace
 
-#if BUILDFLAG(ENABLE_TOR)
-#define BRAVE_PROXY_CONFIG_MONITOR \
-  if (profile && profile->IsTor()) \
-    proxy_config_service_ = CreateProxyConfigServiceTor(profile); \
-  else
-#else
-#define BRAVE_PROXY_CONFIG_MONITOR
-#endif
-
 #include <chrome/browser/net/proxy_config_monitor.cc>
-#undef BRAVE_PROXY_CONFIG_MONITOR

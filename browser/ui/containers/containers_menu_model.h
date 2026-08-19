@@ -15,7 +15,7 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "ui/menus/simple_menu_model.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace containers {
 
@@ -40,7 +40,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual void OnNoContainerSelected() = 0;
     virtual void OnNewTemporaryContainerSelected() = 0;
     virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
-    virtual Browser* GetBrowserToOpenSettings() = 0;
+    virtual BrowserWindowInterface* GetBrowserToOpenSettings() = 0;
     virtual float GetScaleFactor() = 0;
   };
 

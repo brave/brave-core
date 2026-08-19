@@ -5,19 +5,26 @@
 
 import * as React from 'react'
 import { act, render, waitFor } from '@testing-library/react'
+import * as Mojom from '../../../common/mojom'
 import MockContext, {
   MockContextRef,
 } from '../../mock_untrusted_conversation_context'
+import { createConversationTurnWithDefaults } from '../../../common/test_data_utils'
 import Conversation from '.'
 
 jest.mock('../conversation_entries', () => ({
   __esModule: true,
-  default: () => null,
+  default: () => <div data-testid='conversation-entries' />,
 }))
 
 jest.mock('../model_intro', () => ({
   __esModule: true,
-  default: () => null,
+  default: ({ modelKey }: { modelKey: string }) => (
+    <div
+      data-testid='model-intro'
+      data-model-key={modelKey}
+    />
+  ),
 }))
 
 jest.mock('./useScrollToBottom', () => ({
@@ -31,6 +38,90 @@ const withSuggestionsState = {
   serviceState: { hasAcceptedAgreement: true },
   conversationEntriesState: { suggestedQuestions: ['Test question'] },
 }
+
+describe('Conversation ModelIntro placement', () => {
+  it('renders top markers before conversation entries', async () => {
+    const mockRef = React.createRef<MockContextRef>()
+    const { getByTestId } = render(
+      <MockContext
+        ref={mockRef}
+        initialState={{
+          conversationEntriesState: {
+            currentModelKey: 'default-model',
+            defaultModelKey: 'default-model',
+          },
+        }}
+      >
+        <Conversation />
+      </MockContext>,
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'test-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(getByTestId('model-intro')).toBeInTheDocument()
+    })
+
+    const modelIntro = getByTestId('model-intro')
+    const conversationEntries = getByTestId('conversation-entries')
+    expect(modelIntro).toHaveAttribute('data-model-key', 'test-model')
+    expect(
+      modelIntro.compareDocumentPosition(conversationEntries)
+        & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+
+  it('keeps top markers after the conversation starts', async () => {
+    const mockRef = React.createRef<MockContextRef>()
+    const { getAllByTestId } = render(
+      <MockContext
+        ref={mockRef}
+        initialState={{
+          conversationEntriesState: {
+            currentModelKey: 'default-model',
+            defaultModelKey: 'default-model',
+          },
+        }}
+      >
+        <Conversation />
+      </MockContext>,
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'test-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(getAllByTestId('model-intro')).toHaveLength(1)
+    })
+
+    await act(async () => {
+      mockRef.current!.api.getConversationHistory.update([
+        createConversationTurnWithDefaults({
+          uuid: 'turn-1',
+          characterType: Mojom.CharacterType.HUMAN,
+          text: 'Hello',
+        }),
+      ])
+    })
+
+    await waitFor(() => {
+      expect(getAllByTestId('model-intro')).toHaveLength(1)
+    })
+    expect(getAllByTestId('model-intro')[0]).toHaveAttribute(
+      'data-model-key',
+      'test-model',
+    )
+  })
+})
 
 describe('Conversation --notices-height CSS variable', () => {
   let resizeObserverCallbacks: ResizeObserverCallback[]

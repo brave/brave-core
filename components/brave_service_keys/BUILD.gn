@@ -7,13 +7,6 @@ import("//brave/build/config.gni")
 import("//build/buildflag_header.gni")
 import("//testing/test.gni")
 
-declare_args() {
-  # TODO(https://github.com/brave/brave-browser/issues/56449): Remove this once
-  # a couple of releases have gone through and we've confirmed the derived value
-  # is correct.
-  brave_services_key_id = ""
-}
-
 if (target_os == "android") {
   _platform = "android"
 } else if (target_os == "ios") {
@@ -37,16 +30,6 @@ if (is_release_channel) {
 }
 
 _brave_services_key_id = "$_platform-$chromium_version_major-$_channel"
-
-# TODO(https://github.com/brave/brave-browser/issues/56449): Remove this once
-# a couple of releases have gone through and we've confirmed the derived value
-# is correct.
-if (is_official_build && brave_services_key_id != "") {
-  assert(
-      brave_services_key_id == _brave_services_key_id,
-      "brave_services_key_id mismatch: env='$brave_services_key_id' " +
-          "derived='$_brave_services_key_id'. Update your .env file to match")
-}
 
 buildflag_header("buildflags") {
   header = "buildflags.h"

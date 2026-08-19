@@ -3,18 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Gate IsHistoryEmbeddingsFeatureEnabled() on the local-state
-// `kBraveLocalAIEnabled` master switch (Brave Origin Settings "Local AI"
-// toggle) so every upstream consumer that reaches the feature through this
-// chokepoint — model component installer, side bar toggle visibility,
-// history embeddings service factory, etc. — folds off when the master
-// switch is off. IsHistoryEmbeddingsEnabledForProfile() is additionally
-// gated on the per-profile `kBraveHistoryEmbeddingsEnabled` pref backing
-// the chrome://history side bar toggle. IsHistoryEmbeddingsSettingVisible()
-// is forced to false so the chrome://settings/ai History Search entry is
-// not surfaced; the per-profile toggle lives on chrome://history.
-#include "base/feature_list.h"
-#include "base/feature_override.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -26,40 +16,28 @@
 #include "brave/components/local_ai/core/pref_names.h"
 #endif
 
-#define IsHistoryEmbeddingsFeatureEnabled \
-  IsHistoryEmbeddingsFeatureEnabled_ChromiumImpl
-#define IsHistoryEmbeddingsEnabledForProfile \
-  IsHistoryEmbeddingsEnabledForProfile_ChromiumImpl
-#define IsHistoryEmbeddingsSettingVisible \
-  IsHistoryEmbeddingsSettingVisible_ChromiumImpl
-
-#include <chrome/browser/history_embeddings/history_embeddings_utils.cc>
-
-#undef IsHistoryEmbeddingsFeatureEnabled
-#undef IsHistoryEmbeddingsEnabledForProfile
-#undef IsHistoryEmbeddingsSettingVisible
-
 namespace history_embeddings {
 
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
+namespace {
 
-bool IsHistoryEmbeddingsFeatureEnabled() {
+// Whether IsHistoryEmbeddingsFeatureEnabled() should short-circuit to false
+// ahead of upstream's own check, per the Brave Origin Settings "Local AI"
+// master switch.
+bool ShouldForceHistoryEmbeddingsFeatureDisabled() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   PrefService* local_state =
       g_browser_process ? g_browser_process->local_state() : nullptr;
-  if (local_state &&
-      !local_state->GetBoolean(local_ai::prefs::kBraveLocalAIEnabled)) {
-    return false;
-  }
-  return IsHistoryEmbeddingsFeatureEnabled_ChromiumImpl();
+  return local_state &&
+         !local_state->GetBoolean(local_ai::prefs::kBraveLocalAIEnabled);
 #else
-  return false;
-#endif
+  return true;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
-bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
+// Replaces IsHistoryEmbeddingsEnabledForProfile()'s upstream body: gates it on
+// the per-profile kBraveHistoryEmbeddingsEnabled pref backing the
+// chrome://history side bar toggle.
+bool ComputeHistoryEmbeddingsEnabledForProfile(Profile* profile) {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   if (!IsHistoryEmbeddingsFeatureEnabled()) {
     return false;
@@ -68,11 +46,25 @@ bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled);
 #else
   return false;
-#endif
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
-bool IsHistoryEmbeddingsSettingVisible(Profile* profile) {
-  return false;
-}
+}  // namespace
+
+}  // namespace history_embeddings
+
+#include <chrome/browser/history_embeddings/history_embeddings_utils.cc>
+
+namespace history_embeddings {
+
+namespace {
+
+// kEnabledByDefaultForDesktopOnly is left unused because we disable
+// `kLaunchedHistoryEmbeddings` with a plaster, so we suppress the unused
+// variable warning with this.
+[[maybe_unused]] constexpr auto& kUnusedEnabledByDefaultForDesktopOnly =
+    kEnabledByDefaultForDesktopOnly;
+
+}  // namespace
 
 }  // namespace history_embeddings

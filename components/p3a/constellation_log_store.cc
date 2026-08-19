@@ -147,7 +147,7 @@ void ConstellationLogStore::StageNextLog() {
           << ", histogram_name = " << staged_entry_key_->histogram_name;
 }
 
-void ConstellationLogStore::DiscardStagedLog(std::string_view reason) {
+void ConstellationLogStore::DiscardStagedLogImpl(std::string_view reason) {
   if (!has_staged_log()) {
     return;
   }

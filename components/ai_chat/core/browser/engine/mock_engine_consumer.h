@@ -30,7 +30,7 @@ class MockEngineConsumer : public EngineConsumer {
   MOCK_METHOD(void,
               GenerateAssistantResponse,
               (PageContentsMap && page_contents,
-               const ConversationHistory& conversation_history,
+               const ConversationHistoryView& conversation_history,
                bool is_temporary_chat,
                const std::vector<base::WeakPtr<Tool>>& tools,
                std::optional<std::string_view> preferred_tool_name,

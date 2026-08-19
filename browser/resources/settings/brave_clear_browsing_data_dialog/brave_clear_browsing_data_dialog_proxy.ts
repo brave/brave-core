@@ -7,7 +7,7 @@
 
  export interface BraveClearBrowsingDataDialogBrowserProxy {
   getBraveRewardsEnabled: () => Promise<boolean>
-  clearBraveAdsData: () => void
+  clearBraveAdsData: () => Promise<boolean>
  }
 
  export class BraveClearBrowsingDataDialogBrowserProxyImpl
@@ -18,7 +18,7 @@
   }
 
   clearBraveAdsData() {
-    chrome.send('clearBraveAdsData')
+    return sendWithPromise<boolean>('clearBraveAdsData')
   }
 
   static getInstance(): BraveClearBrowsingDataDialogBrowserProxyImpl {

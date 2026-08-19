@@ -187,7 +187,8 @@ class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   // Makes use of Cross Site Redirector
@@ -400,7 +401,8 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
   })");
   test_extension_dir.WriteFile(FILE_PATH_LITERAL("empty.html"), "");
 
-  extensions::ChromeTestExtensionLoader extension_loader(browser()->profile());
+  extensions::ChromeTestExtensionLoader extension_loader(
+      browser()->GetProfile());
   scoped_refptr<const extensions::Extension> extension =
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
   const GURL url = extension->ResolveExtensionURL("/empty.html");

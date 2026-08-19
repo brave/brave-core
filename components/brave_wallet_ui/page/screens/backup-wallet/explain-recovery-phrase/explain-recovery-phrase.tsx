@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
-import Button from '@brave/leo/react/button'
 
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
@@ -27,7 +26,7 @@ import { WalletRoutes } from '../../../../constants/types'
 import { SkipWarningDialog } from './skip_warning_dialog'
 
 // style
-import { ContinueButton } from '../../onboarding/onboarding.style'
+import { ContinueButton, SkipButton } from '../../onboarding/onboarding.style'
 import {
   Subtitle,
   BackupInstructions,
@@ -100,12 +99,12 @@ export const RecoveryPhraseExplainer = () => {
           <ContinueButton onClick={onContinue}>
             {getLocale('braveWalletButtonVerifyPhrase')}
           </ContinueButton>
-          <Button
+          <SkipButton
             kind='plain-faint'
             onClick={() => setIsSkipWarningOpen(true)}
           >
             {getLocale('braveWalletButtonSkip')}
-          </Button>
+          </SkipButton>
         </Column>
       </OnboardingContentLayout>
     </>

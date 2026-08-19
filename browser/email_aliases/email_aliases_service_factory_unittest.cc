@@ -135,16 +135,14 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
 }
 #endif
 
-TEST_F(EmailAliasesServiceFactoryTest, SameServiceForRegularAndIncognito) {
+TEST_F(EmailAliasesServiceFactoryTest, RegularAndIncognito) {
   scoped_feature_list_.InitWithFeatures(
       {brave_account::features::BraveAccountFeatureForTesting(),
        features::kEmailAliases},
       {});
 
-  [[maybe_unused]] auto* profile =
-      profile_manager_.CreateTestingProfile("test");
-  [[maybe_unused]] auto* incognito =
-      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  auto* profile = profile_manager_.CreateTestingProfile("test");
+  auto* incognito = profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
   brave_account::BraveAccountServiceFactory::GetInstance()->SetTestingFactory(
       profile, base::BindLambdaForTesting([&](content::BrowserContext* context)
                                               -> std::unique_ptr<KeyedService> {
@@ -155,9 +153,10 @@ TEST_F(EmailAliasesServiceFactoryTest, SameServiceForRegularAndIncognito) {
       }));
   auto* service_regular =
       EmailAliasesServiceFactory::GetServiceForProfile(profile);
+  EXPECT_NE(nullptr, service_regular);
   auto* service_incognito =
       EmailAliasesServiceFactory::GetServiceForProfile(incognito);
-  EXPECT_EQ(service_regular, service_incognito);
+  EXPECT_EQ(nullptr, service_incognito);
 }
 
 }  // namespace email_aliases

@@ -43,9 +43,6 @@ type Props = Pick<
   | 'inputText'
   | 'setInputText'
   | 'submitInputTextToAPI'
-  | 'isCharLimitApproaching'
-  | 'isCharLimitExceeded'
-  | 'inputTextCharCountDisplay'
   | 'isToolsMenuOpen'
   | 'setIsToolsMenuOpen'
   | 'toolUseTaskState'
@@ -70,6 +67,7 @@ type Props = Pick<
   | 'handleSkillClick'
   | 'selectedSkill'
   | 'focusInput'
+  | 'setPreviewUploadedFile'
 >
   & Pick<
     AIChatContext,
@@ -149,6 +147,7 @@ function AttachmentChips(props: {
   isStandalone: boolean
   disassociateContent: (content: Mojom.AssociatedContent) => void
   removeFile: (index: number) => void
+  onPreviewFile: (file: Mojom.UploadedFile) => void
 }) {
   const visibleUploadCount = getVisibleUploadCount(props.pendingMessageFiles)
   const spinnerCount = props.isUploadingFiles ? 1 : 0
@@ -183,6 +182,7 @@ function AttachmentChips(props: {
       <AttachmentUploadItems
         uploadedFiles={props.pendingMessageFiles}
         remove={(index) => props.removeFile(index)}
+        onPreview={props.onPreviewFile}
         chipClassName={chipClassName}
       />
     </div>
@@ -395,6 +395,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
               isStandalone={!!aiChatContext.isStandalone}
               disassociateContent={props.context.disassociateContent}
               removeFile={props.context.removeFile}
+              onPreviewFile={props.context.setPreviewUploadedFile}
             />
           )}
           <Editable
@@ -406,18 +407,6 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
             }}
             onPaste={handleOnPaste}
           />
-          {props.context.isCharLimitApproaching && (
-            <div
-              className={classnames({
-                [styles.counterText]: true,
-                [styles.counterTextVisible]:
-                  props.context.isCharLimitApproaching,
-                [styles.counterTextError]: props.context.isCharLimitExceeded,
-              })}
-            >
-              {props.context.inputTextCharCountDisplay}
-            </div>
-          )}
           <div className={styles.toolsContainer}>
             <div className={styles.tools}>
               <Button

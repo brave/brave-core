@@ -13,6 +13,8 @@ resources outside this repository, go to:
   newer Chromium version.
 - [Patching with `plaster`](plaster.md) A patching engine for semantical
   patching of upstream Chromium.
+- [Plaster Dos and Don'ts](plaster_dos_and_donts.md) Guidance for authoring
+  robust plasters, and for choosing the right rewriter.
 - [WebUI Overriding](webui_overriding.md)
 - [DevTools Frontend Patching](devtools_frontend_patching.md) Managing changes
   to the upstream project.

@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/importer/external_process_importer_host.cc b/chrome/browser/importer/external_process_importer_host.cc
+index 8a1d68e1107749f3b5110da3563f6316f70ce1be..f36585b2608e29478ca47fa12d4d7ed9bfff5aec 100644
+--- a/chrome/browser/importer/external_process_importer_host.cc
++++ b/chrome/browser/importer/external_process_importer_host.cc
+@@ -102,10 +102,10 @@ void ExternalProcessImporterHost::LaunchImportIfReady() {
+   // bridge lives in the external process (see ProfileImportThread).
+   // The ExternalProcessImporterClient created in the next line owns the bridge,
+   // and will delete it.
+-  InProcessImporterBridge* bridge =
+-      new InProcessImporterBridge(writer_.get(),
++  BraveInProcessImporterBridge* bridge =
++      new BraveInProcessImporterBridge(writer_.get(),
+                                   weak_ptr_factory_.GetWeakPtr());
+-  client_ = new ExternalProcessImporterClient(
++  client_ = new BraveExternalProcessImporterClient(
+       weak_ptr_factory_.GetWeakPtr(), source_profile_, items_, bridge);
+   client_->Start();
+ }

@@ -3,7 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, effect, radius, spacing } from '@brave/leo/tokens/css/variables'
+import {
+  color,
+  duration,
+  easing,
+  effect,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 import { wideBreakpoint } from './breakpoints'
 
@@ -44,6 +51,14 @@ export const style = scoped.css`
       }
     }
 
+    .source-icon {
+      filter: grayscale(0);
+      opacity: 1;
+      transition:
+        filter ${duration.l} ${easing.inOut},
+        opacity ${duration.l} ${easing.inOut};
+    }
+
     .brave-icon {
       position: relative;
     }
@@ -59,6 +74,11 @@ export const style = scoped.css`
       background: ${color.container.background};
       box-shadow: ${effect.elevation['01']};
     }
+  }
+
+  &[data-import-status='succeeded'] .source-icon {
+    filter: grayscale(1);
+    opacity: 0.5;
   }
 
   .data-types {

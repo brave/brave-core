@@ -52,6 +52,7 @@ source_set("brave_new_tab_page_refresh") {
   deps = [
     ":mojom",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_stats:first_run_util",
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
@@ -223,6 +224,8 @@ source_set("unit_tests") {
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/browser:test_support",
     "//brave/components/ntp_background_images/common",
+    "//components/history/core/browser",
+    "//components/history/core/test",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

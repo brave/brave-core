@@ -71,6 +71,7 @@ export const defaultConversationState: Mojom.ConversationState & {
 
 const emptyTurn: Mojom.ConversationTurn = {
   uuid: '',
+  threadUuid: undefined,
   text: '',
   characterType: Mojom.CharacterType.HUMAN,
   actionType: Mojom.ActionType.UNSPECIFIED,
@@ -84,6 +85,7 @@ const emptyTurn: Mojom.ConversationTurn = {
   skill: undefined,
   modelKey: '',
   nearVerificationStatus: undefined,
+  childThreadUuids: [],
 }
 
 /**
@@ -233,6 +235,7 @@ export function createMockUIHandler(
         },
       }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
+    getFaviconDataURL: () => Promise.resolve({ dataUrl: null }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
 
     // Action methods - fire and forget stubs

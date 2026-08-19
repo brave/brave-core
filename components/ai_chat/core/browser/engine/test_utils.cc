@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -22,12 +23,13 @@ namespace ai_chat {
 std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
   std::vector<mojom::ConversationTurnPtr> history;
   history.push_back(mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Which show is 'This is the way' from?", std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */,
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Which show is 'This is the way' from?",
+      std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
@@ -42,27 +44,30 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       mojom::CompletionEvent::New("The Mandalorian")));
 
   auto edit = mojom::ConversationTurn::New(
-      "edit-1", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      "The Mandalorian.", std::nullopt /* prompt */,
-      std::nullopt /* selected_text*/, std::move(modified_events),
-      base::Time::Now(), std::nullopt /* edits */,
+      "edit-1", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "The Mandalorian.",
+      std::nullopt /* prompt */, std::nullopt /* selected_text*/,
+      std::move(modified_events), base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      "chat-basic", nullptr /* near_verification_status */);
+      kChatAutomaticModelKey, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      "Mandalorian.", std::nullopt /* prompt */,
+      "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "Mandalorian.", std::nullopt /* prompt */,
       std::nullopt /* selected_text*/, std::move(events), base::Time::Now(),
       std::move(edits), std::nullopt /* uploaded_images */, nullptr /* skill */,
-      false, "chat-basic", nullptr /* near_verification_status */));
+      false, kChatAutomaticModelKey, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
-      "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Is it related to a broader series?", std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */,
+      "turn-3", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Is it related to a broader series?",
+      std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      "chat-basic", nullptr /* near_verification_status */));
+      kChatAutomaticModelKey, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   return history;
 }

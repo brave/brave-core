@@ -36,6 +36,10 @@ ui::ImageModel FakeTabSlotController::GetTabAccentIcon(const Tab* tab) const {
   return ui::ImageModel();
 }
 
+bool FakeTabSlotController::ShouldAlwaysShowMiniTabAccent() const {
+  return false;
+}
+
 int FakeTabSlotController::GetTreeHeight(
     const tree_tab::TreeTabNodeId& id) const {
   return 0;

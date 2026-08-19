@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProtectionStatsTabHelperBridge;
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
+@protocol BraveWalletProviderDelegate;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
                                            WKWebViewConfiguration*);
@@ -145,8 +146,8 @@ CWV_EXPORT
 // AdsReportingScript is converted to a Chromium JavaScriptFeature
 CWV_EXPORT
 @interface BraveWebView (AdsNotifier)
-- (void)notifyTabDidStartPlayingMedia;
-- (void)notifyTabDidStopPlayingMedia;
+- (void)notifyTabDidStartPlayingMedia:(NSInteger)playerId;
+- (void)notifyTabDidStopPlayingMedia:(NSInteger)playerId;
 @end
 
 CWV_EXPORT
@@ -166,10 +167,13 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
-@interface BraveWebView (WalletWebUI)
+@interface BraveWebView (Wallet)
 /// A bridge for handling Brave Wallet WebUI page actions
 @property(nonatomic, weak, nullable) id<WalletPageHandlerBridge>
     walletPageHandler;
+/// A bridge for handling wallet provider actions
+@property(nonatomic, weak, nullable) id<BraveWalletProviderDelegate>
+    walletProviderDelegate;
 @end
 
 CWV_EXPORT

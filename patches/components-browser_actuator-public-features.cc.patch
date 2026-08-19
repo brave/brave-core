@@ -1,0 +1,12 @@
+diff --git a/components/browser_actuator/public/features.cc b/components/browser_actuator/public/features.cc
+index f68f49ebddb904d4f6c677e8cccdff234ea01238..610671c5e47f49e5bb2907595bba6ad25f8caa27 100644
+--- a/components/browser_actuator/public/features.cc
++++ b/components/browser_actuator/public/features.cc
+@@ -6,6 +6,7 @@
+ 
+ namespace browser_actuator {
+ 
++// kBrowserActuator feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<std::string> kBrowserActuatorOAuth2ScopeParam{

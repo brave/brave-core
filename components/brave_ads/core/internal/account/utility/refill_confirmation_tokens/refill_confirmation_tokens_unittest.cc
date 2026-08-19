@@ -169,6 +169,38 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
+       RetryRequestSignedTokensAfterTooManyRequests) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  test::MockTokenGenerator(/*count=*/50);
+
+  const test::URLResponseMap url_responses = {
+      {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
+       {{net::HTTP_TOO_MANY_REQUESTS,
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_TOO_MANY_REQUESTS))},
+        {net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
+      {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
+                                   test::kRequestSignedTokensNonce),
+       {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  const WalletInfo wallet = test::Wallet();
+
+  // Act & Assert
+  const ::testing::InSequence s;
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens);
+  refill_confirmation_tokens_.MaybeRefill(wallet);
+  FastForwardClockToNextPendingTask();
+
+  EXPECT_EQ(50U, ConfirmationTokenCount());
+}
+
+TEST_F(BraveAdsRefillConfirmationTokensTest,
        DoNotRefillConfirmationTokensIfRequestSignedTokensIsMissingNonce) {
   // Arrange
   test::BuildAndSetIssuers();
@@ -190,6 +222,39 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   refill_confirmation_tokens_.MaybeRefill(wallet);
 
   EXPECT_EQ(0U, ConfirmationTokenCount());
+}
+
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       RetryGetSignedTokensAfterTooManyRequests) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  test::MockTokenGenerator(/*count=*/50);
+
+  const test::URLResponseMap url_responses = {
+      {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
+       {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()},
+        {net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
+      {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
+                                   test::kRequestSignedTokensNonce),
+       {{net::HTTP_TOO_MANY_REQUESTS,
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_TOO_MANY_REQUESTS))},
+        {net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  const WalletInfo wallet = test::Wallet();
+
+  // Act & Assert
+  const ::testing::InSequence s;
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens);
+  refill_confirmation_tokens_.MaybeRefill(wallet);
+  FastForwardClockToNextPendingTask();
+
+  EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,

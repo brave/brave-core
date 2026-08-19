@@ -21,7 +21,11 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
   ~SpeedreaderDistilledPageProducer() override;
 
   static std::unique_ptr<SpeedreaderDistilledPageProducer> MaybeCreate(
+      const GURL& request_url,
       base::WeakPtr<SpeedreaderDelegate> speedreader_delegate);
+
+  bool ShouldProcess(const GURL& response_url,
+                     network::mojom::URLResponseHead* response_head) override;
 
   void UpdateResponseHead(
       network::mojom::URLResponseHead* response_head) override;
@@ -32,7 +36,10 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
 
  private:
   explicit SpeedreaderDistilledPageProducer(
+      const GURL& request_url,
       base::WeakPtr<SpeedreaderDelegate> speedreader_delegate);
+
+  GURL request_url_;
   base::WeakPtr<SpeedreaderDelegate> speedreader_delegate_;
 };
 

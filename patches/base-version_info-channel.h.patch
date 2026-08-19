@@ -1,0 +1,12 @@
+diff --git a/base/version_info/channel.h b/base/version_info/channel.h
+index 08c282184408b313d7aaf8f519f7ba983900992a..c5873bc411d51a90a636c2df8046dc13bf724b30 100644
+--- a/base/version_info/channel.h
++++ b/base/version_info/channel.h
+@@ -27,6 +27,7 @@ enum class Channel {
+ // Returns a string equivalent of |channel|, independent of whether the build
+ // is branded or not and without any additional modifiers.
+ constexpr std::string_view GetChannelString(Channel channel) {
++  if (channel == Channel::CANARY) return "nightly";
+   switch (channel) {
+     case Channel::STABLE:
+       return "stable";

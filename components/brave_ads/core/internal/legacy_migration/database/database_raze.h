@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_RAZE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_RAZE_H_
 
-#include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_callback.h"
 
 namespace brave_ads::database {
 
-void Raze(ResultCallback callback);
+void Raze(RunDBTransactionCallback callback);
 
 }  // namespace brave_ads::database
 

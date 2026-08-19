@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/frame/navigator_ua.cc b/third_party/blink/renderer/core/frame/navigator_ua.cc
+index 22483bb57adf790867e081e5d32c1c726e94c3ef..2a4893d064fea9e0f335801223bb61db6b206d46 100644
+--- a/third_party/blink/renderer/core/frame/navigator_ua.cc
++++ b/third_party/blink/renderer/core/frame/navigator_ua.cc
+@@ -15,7 +15,8 @@ NavigatorUAData* NavigatorUA::userAgentData() {
+   NavigatorUAData* ua_data =
+       MakeGarbageCollected<NavigatorUAData>(GetUAExecutionContext());
+ 
+-  UserAgentMetadata metadata = GetUserAgentMetadata();
++  UserAgentMetadata metadata = brave::MaybeHideBraveBrand(
++      GetUAExecutionContext(), GetUserAgentMetadata());
+   ua_data->SetBrandVersionList(metadata.brand_version_list);
+   ua_data->SetMobile(metadata.mobile);
+   ua_data->SetPlatform(String::FromUtf8(metadata.platform),

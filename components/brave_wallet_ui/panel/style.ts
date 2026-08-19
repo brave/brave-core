@@ -3,25 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-
-export const PanelWrapper = styled.div<{
-  isLonger?: boolean
-  width?: number
-  height?: number
-}>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: ${(p) => (p.width ? p.width : 320)}px;
-  height: ${(p) => (p.height ? p.height : p.isLonger ? 540 : 400)}px;
-  background-color: ${leo.color.page.background};
-  /* Cr151+ bubble autosize uses document scrollWidth; clip overflow so
-     absolute/fixed children cannot inflate the panel beyond its set size. */
-  overflow: hidden;
-  contain: layout;
-`
 
 export const SendWrapper = styled.div`
   flex: 1;

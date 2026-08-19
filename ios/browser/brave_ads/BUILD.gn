@@ -51,3 +51,26 @@ optimize_ts("ads_media_reporting_js") {
 
   deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ads_tab_helper_unittest.mm" ]
+
+  deps = [
+    ":brave_ads",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/core/browser/service:test_support",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/core",
+    "//ios/chrome/browser/shared/model/profile/test",
+    "//ios/chrome/test:test_support",
+    "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
+    "//net",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+}

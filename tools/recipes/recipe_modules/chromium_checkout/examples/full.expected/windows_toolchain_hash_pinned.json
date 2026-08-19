@@ -1,0 +1,172 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "git",
+      "log",
+      "-1",
+      "--oneline",
+      "chrome/VERSION"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "check chrome/VERSION"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--no-fetch-tags",
+      "--ref",
+      "main"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate for ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache exists for ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "remote",
+      "set-url",
+      "origin",
+      "/b/cache/chromium.googlesource.com-chromium-src"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "point origin at git cache"
+  },
+  {
+    "cmd": [
+      "git",
+      "remote",
+      "set-url",
+      "--push",
+      "origin",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "restore origin push url"
+  },
+  {
+    "cmd": [
+      "git",
+      "fetch",
+      "origin",
+      "main"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "fetch ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "checkout FETCH_HEAD"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3.bat",
+      "-u",
+      "[RECIPES_ROOT]/recipe_modules/chromium_checkout/resources/win_toolchain_hash.py",
+      "[WORKSPACE]/b/src/build/vs_toolchain.py",
+      "https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws/windows-hermetic-toolchain/",
+      "--json-output",
+      "/path/to/tmp/json"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "resolve win toolchain hash"
+  },
+  {
+    "cmd": [
+      "gclient",
+      "sync",
+      "--force",
+      "-D"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "gclient sync"
+  },
+  {
+    "cmd": [
+      "echo",
+      "https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws/windows-hermetic-toolchain/"
+    ],
+    "name": "win toolchain env"
+  },
+  {
+    "cmd": [
+      "echo",
+      "cafef00dcafe"
+    ],
+    "name": "win toolchain hash env"
+  },
+  {
+    "name": "$result"
+  }
+]

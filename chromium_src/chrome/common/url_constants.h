@@ -338,6 +338,9 @@ inline constexpr char kGlicActivityUrl[] = "https://support.brave.app/";
 inline constexpr char16_t kMyActivityAiModeUrl[] =
     u"https://support.brave.app/";
 
+inline constexpr char16_t kMyActivitySearchServicesAppsUrl[] =
+    u"https://support.brave.app/";
+
 // Help URL for the Omnibox setting.
 inline constexpr char16_t kOmniboxLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
@@ -400,6 +403,10 @@ inline constexpr char16_t kAutofillAiLearnMoreURL[] =
 
 // "Learn more" URL for the autofill show card benefits setting.
 inline constexpr char16_t kCardBenefitsLearnMoreURL[] =
+    u"https://support.brave.app";
+
+// "Learn more" URL for the Gmail OTP filling setting.
+inline constexpr char16_t kGmailOtpFillingLearnMoreURL[] =
     u"https://support.brave.app";
 
 // "Learn more" URL for the performance intervention notification setting.
@@ -676,6 +683,14 @@ inline constexpr char kChromeRootStoreSettingsHelpCenterURL[] =
 // "Learn more" URL for how to save PDF to Google Drive from the PDF viewer.
 inline constexpr char kPdfViewerSaveToDriveHelpCenterURL[] =
     "https://support.brave.app/";
+#endif
+
+#if defined(UNIT_TEST)
+// For
+// chrome/browser/privacy_sandbox/browsing_topics_settings_interactive_uitest.cc
+// only. No UI uses these.
+inline constexpr char kPrivacySandboxManageTopicsURL[] = "";
+inline constexpr char kPrivacySandboxAdTopicsURL[] = "";
 #endif
 
 }  // namespace chrome

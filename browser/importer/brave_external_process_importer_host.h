@@ -6,11 +6,13 @@
 #ifndef BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 #define BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
+#include <cstddef>
 #include <memory>
 #include <string>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/importer/brave_password_importer.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -45,6 +47,18 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   // ExternalProcessImporterHost overrides:
   void NotifyImportEnded() override;
   void LaunchImportIfReady() override;
+
+  // Passwords from another Brave installation are imported in the browser
+  // process (not the utility process) so we can use OSCryptAsync to decrypt
+  // the source's `Login Data`. Supported on macOS and Linux only; see
+  // `BravePasswordImporter`.
+  bool NeedToImportPasswords() const;
+  void OnPasswordsImported(BravePasswordImporter::Result result,
+                           size_t submitted);
+
+  std::unique_ptr<BravePasswordImporter> password_importer_;
+  bool password_import_started_ = false;
+  bool p3a_recorded_ = false;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   bool NeedToImportExtensions() const;

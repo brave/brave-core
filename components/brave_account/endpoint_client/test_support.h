@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/is_response.h"
+#include "brave/components/brave_account/endpoint_client/url_replacements.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
@@ -51,9 +52,12 @@ std::string ToContent(const IsProtobufResponse auto& response) {
 // deserialization yields std::nullopt, matching the observable result
 // that cannot be expressed directly via TestURLLoaderFactory,
 // since it cannot model the absence of a response payload.
+// |url_replacements| must match the request's url_replacements, so the mock is
+// registered against the same URL that Client::Send() will actually request.
 template <IsEndpoint Endpoint>
 void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
-                     const typename Endpoint::Response& response) {
+                     const typename Endpoint::Response& response,
+                     const UrlReplacements& url_replacements = {}) {
   auto head = response.status_code
                   .transform([](auto status_code) {
                     return network::CreateURLResponseHead(
@@ -62,7 +66,8 @@ void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
                   .value_or(network::mojom::URLResponseHead::New());
 
   test_url_loader_factory.AddResponse(
-      Endpoint::URL(), std::move(head), detail::ToContent(response),
+      url_replacements.Apply(Endpoint::URL()), std::move(head),
+      detail::ToContent(response),
       network::URLLoaderCompletionStatus(response.net_error));
 }
 
@@ -70,9 +75,12 @@ void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
 // based on Endpoint::URL() and Endpoint::Request::Method().
 // Intended for use with network::TestURLLoaderFactory interceptors in tests
 // where multiple endpoints share the same URL but differ only by method.
+// |url_replacements| must match the request's url_replacements, so the request
+// is compared against the same URL that Client::Send() will actually request.
 template <IsEndpoint Endpoint>
-bool MatchesEndpoint(const network::ResourceRequest& request) {
-  return request.url == Endpoint::URL() &&
+bool MatchesEndpoint(const network::ResourceRequest& request,
+                     const UrlReplacements& url_replacements = {}) {
+  return request.url == url_replacements.Apply(Endpoint::URL()) &&
          request.method == Endpoint::Request::Method();
 }
 

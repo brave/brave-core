@@ -32,7 +32,7 @@ public class BraveOriginResetPreference extends Preference
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
         TextView titleView = (TextView) holder.findViewById(android.R.id.title);
-        titleView.setTextAppearance(R.style.LargeRegularPrimitiveBlurple40);
+        titleView.setTextAppearance(R.style.LargeRegularDestructiveAction);
     }
 
     @Override

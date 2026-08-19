@@ -140,9 +140,8 @@
   </message>
   <message name="IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT" desc="">
     {ADS_VIEWED, plural,
-      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
-      =1 {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> you've seen this month.}
-      other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> you've seen this month.}
+      =1 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> this month}
+      other {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
     }
   </message>
   <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="" formatter_data="webui=BraveRewards">

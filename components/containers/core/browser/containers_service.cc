@@ -79,6 +79,23 @@ mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer() {
   return container;
 }
 
+mojom::ContainerPtr ContainersService::GetOrCreateTemporaryContainerByName(
+    std::string_view name) {
+  CHECK(!name.empty());
+
+  // Temporary containers are never synced, so only the locally used list is
+  // searched.
+  for (auto& container : GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    if (container->name == name && IsTemporaryContainerId(container->id)) {
+      return std::move(container);
+    }
+  }
+
+  auto container = CreateTemporaryContainer(name);
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
+  return container;
+}
+
 mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
     std::string_view id) const {
   if (auto container = GetContainerFromPrefs(*prefs_, id)) {

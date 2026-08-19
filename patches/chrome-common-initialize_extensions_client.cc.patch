@@ -1,0 +1,13 @@
+diff --git a/chrome/common/initialize_extensions_client.cc b/chrome/common/initialize_extensions_client.cc
+index a2ef646e6822892dc9da083750c7a546d89d24a4..59a7e64257320bffa60a561a032f89c4ec2d12bf 100644
+--- a/chrome/common/initialize_extensions_client.cc
++++ b/chrome/common/initialize_extensions_client.cc
+@@ -65,7 +65,7 @@ CombineAllAvailabilityCheckMaps() {
+ void EnsureExtensionsClientInitialized() {
+   static bool initialized = false;
+ 
+-  static base::NoDestructor<extensions::ChromeExtensionsClient>
++  static base::NoDestructor<extensions::BraveExtensionsClient>
+       extensions_client;
+ 
+   if (!initialized) {

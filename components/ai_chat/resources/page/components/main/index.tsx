@@ -19,6 +19,7 @@ import ConversationsList from '../conversations_list'
 import DeleteConversationModal from '../delete_conversation_modal'
 import { ConversationHeader } from '../header'
 import InputBox, { type InputBoxHandle } from '../input_box'
+import ImageLightbox from '../image_lightbox'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import SkillModal from '../skill_modal/skill_modal'
 import PrivacyMessage from '../privacy_message'
@@ -147,7 +148,9 @@ function Main() {
 
   return (
     <main
-      data-testid='main'
+      data-testid={
+        aiChatContext.isStandalone ? 'standalone-main' : 'sidepanel-main'
+      }
       className={classnames({
         [styles.main]: true,
         [styles.mainPanel]: !aiChatContext.isStandalone,
@@ -245,6 +248,10 @@ function Main() {
         />
       </div>
       <DeleteConversationModal />
+      <ImageLightbox
+        file={conversationContext.previewUploadedFile}
+        onClose={() => conversationContext.setPreviewUploadedFile(null)}
+      />
       <RateMessagePrivacyModal />
       <FeedbackForm />
       {aiChatContext.skillDialog && <SkillModal />}

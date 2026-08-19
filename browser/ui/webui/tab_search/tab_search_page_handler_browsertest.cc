@@ -139,7 +139,7 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(https_server_.Start());
 
     webui_contents_ = content::WebContents::Create(
-        content::WebContents::CreateParams(browser()->profile()));
+        content::WebContents::CreateParams(browser()->GetProfile()));
 
     webui_contents_->GetController().LoadURLWithParams(
         content::NavigationController::LoadURLParams(
@@ -178,7 +178,7 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
         ->page_handler_for_testing();
   }
 
-  Profile* profile1() { return browser()->profile(); }
+  Profile* profile1() { return browser()->GetProfile(); }
 
   void AppendTabWithTitle(Browser* browser,
                           const GURL& url,

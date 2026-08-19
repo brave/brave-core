@@ -50,9 +50,9 @@ void BraveSpellingOptionsSubMenuObserver::InitMenu(
     // In browser tests, the mock menu item doesn't store the submenu_model_
     // pointer and instead flattens the menu into a vector in AddSubmenuItem,
     // which means we need to update the proxy manually.
-    proxy_->RemoveMenuItem(IDC_SPELLCHECK_MENU);
+    proxy_->RemoveMenuItem(kSubMenuPlaceholder);
     proxy_->AddSubMenu(
-        IDC_SPELLCHECK_MENU,
+        kSubMenuPlaceholder,
         l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_SPELLCHECK_MENU),
         &submenu_model_);
   }
@@ -60,7 +60,7 @@ void BraveSpellingOptionsSubMenuObserver::InitMenu(
   // If somehow we ended up with an empty submenu then disable it.
   if (!submenu_model_.GetItemCount())
     proxy_->UpdateMenuItem(
-        IDC_SPELLCHECK_MENU,
+        kSubMenuPlaceholder,
         false,  // enabled
         false,  // hidden
         l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_SPELLCHECK_MENU));

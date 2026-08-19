@@ -162,7 +162,7 @@ struct ManagePasswordsView: View {
           .foregroundStyle(
             Color(
               braveSystemName: selectedGroupIds.isEmpty
-                ? .textDisabled : .systemfeedbackErrorVibrant
+                ? .textDisabled : .systemfeedbackErrorText
             )
           )
           .disabled(selectedGroupIds.isEmpty)

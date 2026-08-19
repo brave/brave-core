@@ -9,16 +9,12 @@ import Button from '@brave/leo/react/button'
 import { useWelcomeApi } from '../api/welcome_api_context'
 import { useStepTransition } from './use_step_transition'
 import { getString } from '../lib/strings'
+import { StepComponentProps } from './step_component_props'
 import { StepHeader } from './step_header'
 
 import { style } from './welcome_step.style'
 
-interface Props {
-  onNext: () => void
-  onBack: () => void
-}
-
-export function WelcomeStep(props: Props) {
+export function WelcomeStep(props: StepComponentProps) {
   const api = useWelcomeApi()
   const browserState = api.useGetDefaultBrowserState().data
 

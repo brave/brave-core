@@ -23,3 +23,45 @@ substitutions:
     regex:
       re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER\b'
       replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+
+  - description: 'Ship kLaunchedHistoryEmbeddings disabled.'
+    set_feature_flag_default_state:
+      feature_name: kLaunchedHistoryEmbeddings
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Gate IsHistoryEmbeddingsFeatureEnabled on the local-state
+      kBraveLocalAIEnabled master switch.
+
+      This function is the chokepoint every upstream consumer reaches the
+      feature through (model component installer, side bar toggle
+      visibility, history embeddings service factory, etc.), so folding it
+      off here folds off every consumer with it, without needing to touch
+      each of them individually. See ShouldForceHistoryEmbeddingsFeatureDisabled
+      in the chromium_src override for the actual check.
+    preempt_function_impl:
+      function_name: IsHistoryEmbeddingsFeatureEnabled
+      return_if: 'ShouldForceHistoryEmbeddingsFeatureDisabled()'
+      return_value: 'false'
+
+  - description: |-
+      Additionally gate IsHistoryEmbeddingsEnabledForProfile on the
+      per-profile kBraveHistoryEmbeddingsEnabled pref backing the
+      chrome://history side bar toggle.
+
+      See ComputeHistoryEmbeddingsEnabledForProfile in the chromium_src
+      override for the actual check.
+    preempt_function_impl:
+      function_name: IsHistoryEmbeddingsEnabledForProfile
+      code: |-
+        if ((true)) return ComputeHistoryEmbeddingsEnabledForProfile(profile);
+
+  - description: |-
+      Force IsHistoryEmbeddingsSettingVisible off.
+
+      The per-profile toggle lives on chrome://history, so the
+      chrome://settings/ai History Search entry is never surfaced.
+    preempt_function_impl:
+      function_name: IsHistoryEmbeddingsSettingVisible
+      code: |-
+        if ((true)) return false;

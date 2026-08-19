@@ -24,6 +24,14 @@ extension Strings {
       comment: "It is used in context: 'Powered by BRAND_NAME'"
     )
 
+    public static let poweredByGuardianAccessibilityLabel = NSLocalizedString(
+      "vpn.poweredByGuardianAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Powered by Guardian",
+      comment: "A VoiceOver label that describes the Guardian VPN image. Guardian is a company name"
+    )
+
     public static let updateActionCellTitle = NSLocalizedString(
       "vpn.updateActionCellTitle",
       tableName: "BraveShared",
@@ -680,7 +688,7 @@ extension Strings {
       "vpn.settingHeaderBody",
       bundle: .module,
       value:
-        "Protect every app with Brave VPN. Protect up to 10 devices with one plan.",
+        "Stream your content, your way. Protect every app on 10 devices with 1 subscription.",
       comment: "VPN Banner Description"
     )
 

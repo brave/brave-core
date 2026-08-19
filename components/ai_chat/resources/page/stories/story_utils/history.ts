@@ -30,6 +30,8 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -124,6 +126,8 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -156,6 +160,8 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
   {
     uuid: undefined,
@@ -203,5 +209,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     skill: undefined,
     modelKey: '1',
     nearVerificationStatus: undefined,
+    threadUuid: undefined,
+    childThreadUuids: [],
   },
 ]

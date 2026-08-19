@@ -50,6 +50,19 @@ export function ImportProfileDetail(props: Props) {
   const showProfileName =
     browserName && profileName && (browserProfiles.get(browserName) ?? 0) > 1
 
+  const onDataTypeRowClick = (
+    event: React.MouseEvent,
+    type: ImportDataType,
+  ) => {
+    if (
+      event.target instanceof Element
+      && event.target.closest('leo-checkbox')
+    ) {
+      return
+    }
+    props.onDataTypeChanged(type, !dataTypes.includes(type))
+  }
+
   return (
     <div data-css-scope={style.scope}>
       <button
@@ -77,7 +90,10 @@ export function ImportProfileDetail(props: Props) {
         <h4>{getString('WELCOME_PAGE_IMPORT_DATA_TYPES_TITLE')}</h4>
         <div className='list'>
           {availableTypes.map((type) => (
-            <div key={type}>
+            <div
+              key={type}
+              onClick={(event) => onDataTypeRowClick(event, type)}
+            >
               <Checkbox
                 checked={dataTypes.includes(type)}
                 onChange={(event) => {

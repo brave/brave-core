@@ -251,7 +251,7 @@ BravePageInfoBubbleView::GetShieldsTabHelper() {
 
 bool BravePageInfoBubbleView::IsShieldsEnabledForWebContents() {
   auto* tab_helper = GetShieldsTabHelper();
-  return tab_helper && tab_helper->GetBraveShieldsEnabled();
+  return tab_helper && tab_helper->IsBraveShieldsEnabled();
 }
 
 bool BravePageInfoBubbleView::IsDisplayingSecurityInfo() {

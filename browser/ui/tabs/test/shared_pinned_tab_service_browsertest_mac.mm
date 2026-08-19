@@ -24,7 +24,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   EXPECT_EQ(browser->tab_strip_model()->SetTabPinned(1, true), 0);
   EXPECT_EQ(browser->tab_strip_model()->active_index(), 0);
 
-  auto* browser_view = static_cast<BrowserView*>(browser->window());
+  auto* browser_view =
+      static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser));
   auto* ns_window =
       browser_view->GetWidget()->GetNativeWindow().GetNativeNSWindow();
 

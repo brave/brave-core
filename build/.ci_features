@@ -12,4 +12,14 @@ cache_dir
 # Supports passing extra GN args to the build via .env file.
 env_gn_args
 
-ai_chat_shared_conversation_lib
+# Supports passing a build config to the storybook commands.
+storybook_build_config
+
+# Automatically build ai_chat_shared_conversation_lib as part of brave:all and
+# support explicitly building brave:ai_chat_shared_conversation_lib GN target.
+ai_chat_shared_conversation_lib_gn_target
+
+# Supports upstream's interactive ui tests building. It might cause OOM in
+# Release Builder when building `brave:all` target, so add 
+# `brave_interactive_ui_tests` as a ci feature
+interactive_ui_tests

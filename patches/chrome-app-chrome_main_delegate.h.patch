@@ -1,0 +1,13 @@
+diff --git a/chrome/app/chrome_main_delegate.h b/chrome/app/chrome_main_delegate.h
+index 56e0b1ab170977139462869cf7fde3e673532926..2719f1bf87f705dd32d71f61193391317d71525c 100644
+--- a/chrome/app/chrome_main_delegate.h
++++ b/chrome/app/chrome_main_delegate.h
+@@ -102,7 +102,7 @@ class ChromeMainDelegate : public content::ContentMainDelegate {
+   std::unique_ptr<ChromeContentUtilityClient> chrome_content_utility_client_;
+   std::unique_ptr<tracing::TracingSamplerProfiler> tracing_sampler_profiler_;
+ 
+-  ChromeContentClient chrome_content_client_;
++  BraveContentClient chrome_content_client_;
+ 
+   memory_system::MemorySystem memory_system_;
+ 

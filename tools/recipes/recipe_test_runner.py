@@ -36,70 +36,24 @@ import time
 from typing import TYPE_CHECKING
 
 import engine
+from engine_types import PerGreenletStateRegistry
 import simulation
-from recipe_test_api import RecipeTestApi, TestData
+from recipe_test_api import TestData
 
 if TYPE_CHECKING:
     import coverage
 
-# -- TEST_API discovery & injection (mirrors engine's DEPS resolution) --------
-
-
-def _find_test_api_class(module, name: str) -> type[RecipeTestApi]:
-    """Return the single `RecipeTestApi` subclass in *module*, if any."""
-    classes = [
-        value for value in vars(module).values()
-        if isinstance(value, type) and issubclass(value, RecipeTestApi)
-        and value is not RecipeTestApi and value.__module__ == module.__name__
-    ]
-    if len(classes) > 1:
-        raise RuntimeError(
-            f"recipe module '{name}' defines {len(classes)} RecipeTestApi "
-            f'subclasses in test_api.py; expected at most one')
-    return classes[0] if classes else RecipeTestApi
-
-
-def _instantiate_test_module(name: str, chain: list[str],
-                             cache: dict[str, RecipeTestApi]) -> RecipeTestApi:
-    """Instantiate a module's TEST_API, wiring its DEPS onto `.m` (cached)."""
-    if name in cache:
-        return cache[name]
-    if name in chain:
-        cycle = ' -> '.join(chain + [name])
-        raise RuntimeError(f'cyclical DEPS detected: {cycle}')
-
-    package = importlib.import_module(f'{engine.MODULES_PKG}.{name}')
-    deps = list(getattr(package, 'DEPS', []))
-
-    test_api_path = (engine.RECIPES_ROOT / engine.MODULES_PKG / name /
-                     'test_api.py')
-    if test_api_path.exists():
-        test_module = importlib.import_module(
-            f'{engine.MODULES_PKG}.{name}.test_api')
-        api_class = _find_test_api_class(test_module, name)
-    else:
-        # Modules without a test_api.py contribute the base api (no helpers).
-        api_class = RecipeTestApi
-
-    inst = api_class(module=name)
-    for dep_name in deps:
-        setattr(inst.m, dep_name,
-                _instantiate_test_module(dep_name, chain + [name], cache))
-    setattr(inst.m, name, inst)
-    cache[name] = inst
-    return inst
-
-
-def _build_root_test_api(deps: list[str]) -> RecipeTestApi:
-    """Build the `api` passed to `GenTests`, with each DEP injected by name."""
-    root = RecipeTestApi(module=None)
-    cache: dict[str, RecipeTestApi] = {}
-    for dep_name in deps:
-        setattr(root, dep_name, _instantiate_test_module(dep_name, [], cache))
-    return root
-
-
 # -- Recipe discovery ---------------------------------------------------------
+
+
+def _is_resource(path: Path) -> bool:
+    """Whether *path* sits under a `<name>.resources/` directory.
+
+    A `.resources` sibling holds standalone scripts a recipe or module shells
+    out to directly (e.g. via `vpython3`) -- ordinary Python files, not
+    recipes/modules themselves, so discovery must not try to import them.
+    """
+    return any(part.endswith('.resources') for part in path.parts)
 
 
 def _iter_recipe_ids() -> list[str]:
@@ -109,7 +63,7 @@ def _iter_recipe_ids() -> list[str]:
 
     recipes_root = root / engine.RECIPES_PKG
     for path in sorted(recipes_root.rglob('*.py')):
-        if path.name == '__init__.py':
+        if path.name == '__init__.py' or _is_resource(path):
             continue
         ids.append(path.relative_to(recipes_root).with_suffix('').as_posix())
 
@@ -120,7 +74,7 @@ def _iter_recipe_ids() -> list[str]:
             if not directory.is_dir():
                 continue
             for path in sorted(directory.rglob('*.py')):
-                if path.name == '__init__.py':
+                if path.name == '__init__.py' or _is_resource(path):
                     continue
                 ids.append(
                     path.relative_to(modules_root).with_suffix('').as_posix())
@@ -212,6 +166,10 @@ def _simulate(
         test_data: TestData) -> tuple[dict[str, dict], simulation.TestContext]:
     """Run one recipe case in a fresh test-mode engine; return (steps, ctx)."""
     ctx = simulation.TestContext.from_test_data(test_data)
+    # The registry holds every `PerGreenletState` ever constructed, and module
+    # instances are per-engine, so without this the previous case's states pile
+    # up and get their setters replayed into this case's greenlets.
+    PerGreenletStateRegistry.clear()
     # A fresh engine per case: module instances are cached per engine, so
     # reusing one would leak state (deployed depot_tools, set env vars, ...).
     eng = engine._Engine(  # pylint: disable=protected-access
@@ -401,7 +359,8 @@ def run_tests(train: bool = False,
     start = time.monotonic()
     seen_all: set[Path] = set()
     for recipe_id, recipe in _testable_recipes():
-        root_api = _build_root_test_api(list(getattr(recipe, 'DEPS', [])))
+        root_api = engine.build_root_test_api(list(getattr(recipe, 'DEPS',
+                                                           [])))
         seen: set[Path] = set()
         for test_data in recipe.GenTests(root_api):
             case_id = f'{recipe_id}.{test_data.name}'

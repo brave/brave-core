@@ -21,16 +21,20 @@
 #include "brave/components/skus/browser/test/fake_skus_service.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2 {
 namespace {
 constexpr char kTestDomain[] = "vpn.brave.com";
 constexpr char kTestEnvironment[] = "unittest-env";
+constexpr char kTestEmail[] = "test@example.com";
 }  // namespace
 
 class BraveVpnServiceImplTest : public testing::Test {
@@ -53,6 +57,7 @@ class BraveVpnServiceImplTest : public testing::Test {
   void CreateService() {
     service_ = std::make_unique<BraveVpnServiceImpl>(
         &local_pref_service_, &profile_pref_service_,
+        url_loader_factory_.GetSafeWeakWrapper(),
         base::BindRepeating(&BraveVpnServiceImplTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -64,6 +69,7 @@ class BraveVpnServiceImplTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
   TestingPrefServiceSimple local_pref_service_;
   sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
+  network::TestURLLoaderFactory url_loader_factory_;
   skus::FakeSkusService fake_skus_service_;
   int skus_bind_count_ = 0;
   // Declared last so it is destroyed before the prefs and the fake SKUS
@@ -107,13 +113,24 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   service_->ReloadPurchasedState();
   service_->LoadPurchasedState(kTestDomain);
   EXPECT_EQ(skus_bind_count_, 0);
-
-  base::test::TestFuture<mojom::PurchasedInfoPtr> future;
-  service_->GetPurchasedState(future.GetCallback());
-  const mojom::PurchasedInfoPtr& info = future.Get();
-  ASSERT_TRUE(info);
-  EXPECT_EQ(info->state, mojom::PurchasedState::NOT_PURCHASED);
-  EXPECT_EQ(info->description, std::nullopt);
+  {
+    base::test::TestFuture<mojom::PurchasedInfoPtr> future;
+    service_->GetPurchasedState(future.GetCallback());
+    const mojom::PurchasedInfoPtr& info = future.Get();
+    ASSERT_TRUE(info);
+    EXPECT_EQ(info->state, mojom::PurchasedState::NOT_PURCHASED);
+    EXPECT_EQ(info->description, std::nullopt);
+  }
+#if !BUILDFLAG(IS_ANDROID)
+  {
+    base::test::TestFuture<bool, std::string> future;
+    service_->CreateSupportTicket(
+        kTestEmail, "subject", "body",
+        future.GetCallback<bool, const std::string&>());
+    EXPECT_FALSE(future.Get<0>());
+    EXPECT_TRUE(future.Get<1>().empty());
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace brave_vpn::v2

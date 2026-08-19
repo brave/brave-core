@@ -71,6 +71,7 @@ class BraveTabStrip : public TabStrip {
   std::optional<TabAccentColors> GetTabAccentColors(
       const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
+  bool ShouldAlwaysShowMiniTabAccent() const override;
   brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
   bool IsHorizontalScrollingEnabled() const override;
 
@@ -116,6 +117,9 @@ class BraveTabStrip : public TabStrip {
   void OnTabMinWidthModePrefChanged();
   void OnScrollableHorizontalTabStripPrefChanged();
   void OnCompactModePrefChanged();
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  void OnAlwaysUseMiniAccentIconPrefChanged();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
@@ -125,6 +129,9 @@ class BraveTabStrip : public TabStrip {
   BooleanPrefMember middle_click_close_tab_enabled_;
   BooleanPrefMember scrollable_horizontal_tab_strip_;
   BooleanPrefMember compact_horizontal_tabs_;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  BooleanPrefMember always_use_mini_accent_icon_;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   IntegerPrefMember tab_min_width_mode_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};

@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rebrand the built-in PDF plugin as Chrome PDF Plugin
+
+      Sites detect the PDF viewer plugin by name; Brave presents the Chrome
+      name here regardless of GOOGLE_CHROME_BRANDING.
+    after_function_impl:
+      function_name: ChromeContentClient::AddPlugins
+      code: |-
+        RenameChromiumPdfPluginToChrome(plugins);

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
@@ -15,6 +16,7 @@ import {
   useRewardsActions,
 } from '../../context/rewards_context'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
+import { SettingsPanel } from './settings_panel'
 
 import { style } from './widgets_panel.style'
 
@@ -34,7 +36,10 @@ export function WidgetsPanel() {
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={getString(S.NEW_TAB_WIDGET_SETTINGS_TITLE)}
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -43,7 +48,10 @@ export function WidgetsPanel() {
           newTabActions.setShowShieldsStats(checked)
         }}
       >
-        <span className='label'>{getString(S.NEW_TAB_SHOW_STATS_LABEL)}</span>
+        <span className='label'>
+          <Icon name='shield-done' />
+          {getString(S.NEW_TAB_SHOW_STATS_LABEL)}
+        </span>
       </Toggle>
       {vpnFeatureEnabled && (
         <Toggle
@@ -55,6 +63,7 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
+            <Icon name='product-vpn' />
             {getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}
           </span>
         </Toggle>
@@ -69,6 +78,7 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
+            <Icon name='product-bat-outline' />
             {getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}
           </span>
         </Toggle>
@@ -83,6 +93,7 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
+            <Icon name='product-brave-talk' />
             {getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}
           </span>
         </Toggle>
@@ -97,10 +108,11 @@ export function WidgetsPanel() {
           }}
         >
           <span className='label'>
+            <Icon name='product-brave-news' />
             {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
           </span>
         </Toggle>
       )}
-    </div>
+    </SettingsPanel>
   )
 }

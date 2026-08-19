@@ -17,23 +17,18 @@
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/gfx/color_utils.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
-
-namespace {
-
-constexpr SkColor kSubscribedLightColor = SkColorSetRGB(76, 84, 210);
-constexpr SkColor kSubscribedDarkColor = SkColorSetRGB(115, 122, 222);
-
-}  // namespace
 
 BraveNewsActionIconView::BraveNewsActionIconView(
     Profile* profile,
@@ -136,12 +131,17 @@ void BraveNewsActionIconView::OnAvailableFeedsChanged(
 }
 
 void BraveNewsActionIconView::OnThemeChanged() {
+  // Must run first: it refreshes the label colors and the icon image that
+  // UpdateIconColor() below depends on.
+  PageActionIconView::OnThemeChanged();
+
   bool subscribed = false;
   if (auto* contents = GetWebContents()) {
-    subscribed = BraveNewsTabHelper::FromWebContents(contents)->IsSubscribed();
+    if (auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents)) {
+      subscribed = tab_helper->IsSubscribed();
+    }
   }
   UpdateIconColor(subscribed);
-  PageActionIconView::OnThemeChanged();
 }
 
 void BraveNewsActionIconView::OnExecuting(
@@ -150,15 +150,19 @@ void BraveNewsActionIconView::OnExecuting(
 }
 
 void BraveNewsActionIconView::UpdateIconColor(bool subscribed) {
-  SkColor icon_color;
-  if (subscribed) {
-    auto is_dark = GetNativeTheme()->preferred_color_scheme() ==
-                   ui::NativeTheme::PreferredColorScheme::kDark;
-    icon_color = is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
-  } else {
-    icon_color = color_utils::DeriveDefaultIconColor(GetCurrentTextColor());
+  const auto* color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
   }
-  SetIconColor(icon_color);
+
+  // Match the color used by every other page action icon in the location bar
+  // (see LocationBarView::OnThemeChanged()), which this view doesn't get for
+  // free because it isn't owned by PageActionIconController.
+  ui::ColorId color_id = kColorOmniboxActionIcon;
+  if (subscribed) {
+    color_id = nala::kColorIconInteractive;
+  }
+  SetIconColor(color_provider->GetColor(color_id));
 }
 
 brave_news::BraveNewsBubbleController* BraveNewsActionIconView::GetController()

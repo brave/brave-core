@@ -1,7 +1,9 @@
 # Claude Code Skills
 
 Claude Code skills are slash commands that automate common development tasks in
-`brave-core`. Skills are defined in `.claude/skills/` and best practices in
+`brave-core`. Skills are defined under `agents/skills/` (the checked-in source
+of truth) and linked into the generated `.claude/skills/` discovery dir by
+`agents/skills/setup.py` on every sync; best practices live in
 `docs/best-practices/`.
 
 ## Available Skills

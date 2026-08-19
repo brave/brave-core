@@ -38,7 +38,7 @@ class TabStripPlacementCoordinatorBrowserTest : public InProcessBrowserTest {
   }
 
   void SetVerticalTabsEnabled(bool enabled) {
-    browser()->profile()->GetPrefs()->SetBoolean(
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
         brave_tabs::kVerticalTabsEnabled, enabled);
     RunScheduledLayouts();
   }
@@ -66,10 +66,10 @@ IN_PROC_BROWSER_TEST_F(TabStripPlacementCoordinatorBrowserTest,
 // BrowserView are left dangling.
 IN_PROC_BROWSER_TEST_F(TabStripPlacementCoordinatorBrowserTest,
                        VerticalTabsTeardownDoesNotDangleTabStrip) {
-  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
-                                               true);
+  browser()->GetProfile()->GetPrefs()->SetBoolean(
+      brave_tabs::kVerticalTabsEnabled, true);
 
-  Browser* second = CreateBrowser(browser()->profile());
+  Browser* second = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(second);
 
   auto* second_view =

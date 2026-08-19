@@ -230,21 +230,18 @@ void ChromeImporter::LoadFaviconData(
       favicon_base::FaviconUsageData usage;
 
       usage.favicon_url = GURL(s.ColumnString(0));
-      if (!usage.favicon_url.is_valid())
-        continue;  // Don't bother importing favicons with invalid URLs.
-
       std::vector<uint8_t> data = s.ColumnBlobAsVector(1);
-      if (data.empty())
-        continue;  // Data definitely invalid.
-
-      auto decoded_data = importer::ReencodeFavicon(base::span(data));
-      if (!decoded_data) {
-        continue;  // Unable to decode.
+      std::optional<std::vector<uint8_t>> decoded_data;
+      // Skip favicons with invalid URLs, empty data, or that fail to decode.
+      // The conditions are nested rather than using `continue` so that every
+      // path still reaches `s.Reset(true)` below; skipping the reset would
+      // trip a DCHECK when `BindInt64()` is called on the next iteration.
+      if (usage.favicon_url.is_valid() && !data.empty() &&
+          (decoded_data = importer::ReencodeFavicon(base::span(data)))) {
+        usage.urls = entry.second;
+        usage.png_data = std::move(decoded_data).value();
+        favicons->push_back(usage);
       }
-
-      usage.urls = entry.second;
-      usage.png_data = std::move(decoded_data).value();
-      favicons->push_back(usage);
     }
     s.Reset(true);
   }

@@ -10,6 +10,7 @@ export const mockUiState: UIState = {
   transactionProviderErrorRegistry: {},
   selectedPendingTransactionId: mockedErc20ApprovalTransaction.id,
   isPanel: false,
+  isSidePanel: false,
   isMobile: false,
   isIOS: false,
 }

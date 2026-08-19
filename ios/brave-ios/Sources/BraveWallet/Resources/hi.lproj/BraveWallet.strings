@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "गतिविधि में देखें";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Unstoppable Domains पर मौजूद .crypto (और %1$@ भी) डोमेन नामों को रिज़ॉल्व करने के लिए Brave कॉन्फ़िगर की गई Ethereum RPC सेवा होगी, जो डिफ़ॉल्ट रूप से Chainstack है। Brave आपका IP address छिपाता है। अगर आप इसे चालू करते हैं, तो Chainstack को दिखाई देगा कि कोई इन डोमेन पर जाने की कोशिश कर रहा है, लेकिन कुछ और नहीं। Chainstack की <a href=%2$@>%3$@</a> और <a href=%4$@>%5$@</a> देखें।";
+"wallet.udDomainInterstitialPageDescription" = "डोमेन नाम जो Unstoppable Domains पर हैं। Brave आपका IP address छिपाता है। अगर आप इसे चालू करते हैं, तो Chainstack को दिखाई देगा कि कोई इन डोमेन पर जाने की कोशिश कर रहा है, लेकिन कुछ और नहीं। Chainstack की <a href=%1$@>%2$@</a> और <a href=%3$@>%4$@</a> देखें।";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave कॉन्फ़िगर की गई Ethereum RPC सेवा होगी जो रिज़ॉल्व करने के लिए डिफ़ॉल्ट रूप से Chainstack पर सेट होती है:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ अधिक";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "क्या हम Brave में Unstoppable डोमेन का समर्थन सक्षम करें?";

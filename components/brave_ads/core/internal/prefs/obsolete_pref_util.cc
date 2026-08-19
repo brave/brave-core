@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -14,6 +15,8 @@ namespace brave_ads {
 
 namespace {
 
+constexpr std::string_view kObsoleteHasMigratedClientStateV7 =
+    "brave.brave_ads.state.has_migrated.client.v7";
 constexpr std::string_view kObsoleteHasMigratedConfirmationStateV8 =
     "brave.brave_ads.state.has_migrated.confirmations.v8";
 constexpr std::string_view kObsoleteHasMigratedStateV2 =
@@ -25,6 +28,9 @@ constexpr std::string_view kObsoleteNotificationAdLastNormalizedCoordinateY =
     "brave.brave_ads.ad_notification.last_normalized_coordinate_y";
 constexpr std::string_view kObsoleteNotificationAdDidFallbackToCustom =
     "brave.brave_ads.ad_notification.did_fallback_to_custom";
+
+constexpr std::string_view kObsoleteOptedInToNotificationAds =
+    "brave.brave_ads.enabled";
 
 constexpr std::string_view kNewTabPageEventCountConstellationDictPref =
     "brave.brave_ads.p3a.ntp_event_count_constellation";
@@ -45,6 +51,12 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
   // Added 04/2026.
   registry->RegisterBooleanPref(kObsoleteHasMigratedConfirmationStateV8, false);
   registry->RegisterBooleanPref(kObsoleteHasMigratedStateV2, false);
+
+  // Added 07/2026.
+  registry->RegisterBooleanPref(kObsoleteHasMigratedClientStateV7, false);
+
+  // Added 08/2026.
+  registry->RegisterBooleanPref(kObsoleteOptedInToNotificationAds, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -56,6 +68,16 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   // Added 04/2026.
   prefs->ClearPref(kObsoleteHasMigratedConfirmationStateV8);
   prefs->ClearPref(kObsoleteHasMigratedStateV2);
+
+  // Added 07/2026.
+  prefs->ClearPref(kObsoleteHasMigratedClientStateV7);
+
+  // Added 08/2026.
+  if (prefs->HasPrefPath(kObsoleteOptedInToNotificationAds)) {
+    prefs->SetBoolean(prefs::kNotificationsEnabled,
+                      prefs->GetBoolean(kObsoleteOptedInToNotificationAds));
+    prefs->ClearPref(kObsoleteOptedInToNotificationAds);
+  }
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

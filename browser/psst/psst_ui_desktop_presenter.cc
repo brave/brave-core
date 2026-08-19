@@ -225,6 +225,14 @@ void PsstUiDesktopPresenter::ShowConsentDialog() {
   dialog_delegate_ = OpenPsstDialog(web_contents_.get());
 }
 
+void PsstUiDesktopPresenter::HideConsentDialog() {
+  if (!dialog_delegate_) {
+    return;
+  }
+
+  dialog_delegate_->CloseDialog();
+}
+
 bool PsstUiDesktopPresenter::IsDialogShown() const {
   if (!dialog_delegate_) {
     return false;

@@ -6,14 +6,19 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -21,6 +26,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 import java.util.List;
 
@@ -32,6 +38,33 @@ import java.util.List;
 public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragment {
     @MonotonicNonNull private List<TwoLineItem> mItems;
     @MonotonicNonNull private TwoLineItemRecyclerViewAdapter mAdapter;
+
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        // In landscape the sheet would otherwise open at its collapsed peek height, showing
+        // only the title. Expand it on show so the details list is visible and scrollable.
+        dialog.setOnShowListener(shownDialog -> expandInLandscape((BottomSheetDialog) shownDialog));
+        return dialog;
+    }
+
+    private void expandInLandscape(BottomSheetDialog bottomSheetDialog) {
+        if (!ConfigurationUtils.isLandscape(requireContext())) {
+            return;
+        }
+        final BottomSheetBehavior<FrameLayout> behavior = bottomSheetDialog.getBehavior();
+        behavior.setSkipCollapsed(true);
+        // Defer expanding by one frame. Expanding synchronously from the show listener can run
+        // before the landscape system-bar insets are dispatched, so BottomSheetBehavior lays the
+        // sheet out edge-to-edge (insetLeft == 0) and its content is clipped under the navigation
+        // bar. By the next frame the insets are applied and the expanded sheet is offset correctly.
+        final View content = getView();
+        if (content != null) {
+            content.post(() -> behavior.setState(BottomSheetBehavior.STATE_EXPANDED));
+        } else {
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override

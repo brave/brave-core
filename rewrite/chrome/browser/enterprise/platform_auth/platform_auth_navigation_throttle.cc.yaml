@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip platform auth (Cloud AP SSO) for container tabs.
+
+      SSO must not run in contained tabs: it would leak the device-account
+      identity between the default profile and containers, with no way for the
+      user to prevent that.
+    preempt_function_impl:
+      function_name: PlatformAuthNavigationThrottle::MaybeCreateAndAdd
+      return_if: brave::ShouldSkipPlatformAuth(registry)

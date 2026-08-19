@@ -6,6 +6,7 @@
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -25,7 +26,9 @@
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -130,6 +133,10 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    // A real ProfileManager: the boot flow observes it and refuses to start a
+    // worker without one.
+    profile_manager_.emplace(TestingBrowserProcess::GetGlobal());
+    ASSERT_TRUE(profile_manager_->SetUp());
     controller_ = OnDeviceSpeechRecognitionController::CreateForTesting(
         base::BindRepeating(
             &OnDeviceSpeechRecognitionControllerTest::CreateFakeBwc,
@@ -287,6 +294,9 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
+  // Optional so that a test can destroy it, which is what fires
+  // `OnProfileManagerDestroying`.
+  std::optional<TestingProfileManager> profile_manager_;
   // The guest OTR profile the fake reports as the worker's home. A non-null
   // profile lets the boot flow proceed.
   TestingProfile otr_profile_;
@@ -401,6 +411,70 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   // real profile-destruction machinery.
   controller_->OnProfileWillBeDestroyed(&otr_profile_);
   EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
+// Browser shutdown destroys the profile manager without necessarily telling the
+// OTR profile first, so the worker has to be released from here too. Destroying
+// the real ProfileManager rather than calling the callback directly is what
+// makes this cover the observation itself, not just the response to it.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       ProfileManagerDestructionTearsDown) {
+  SetInstalled(true);
+  Session s = StartSession();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  profile_manager_.reset();
+  EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
+// Worker creation is asynchronous, so a shutdown can land before it finishes.
+// The teardown invalidates the pending creation callback, so a worker that
+// arrives after it is ignored instead of being taken up in a dying profile.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       ProfileManagerDestructionWhileStartingDropsCreationReply) {
+  SetInstalled(true);
+  capture_created_ = true;
+
+  // Capture the creation reply, leaving the controller in kRendererStarting.
+  Session s = StartSession();
+  ASSERT_FALSE(captured_created_.is_null());
+  auto pending_created = std::move(captured_created_);
+  auto pending_delegate = captured_delegate_;
+
+  profile_manager_.reset();
+
+  raw_ptr<FakeBackgroundWebContents> pending_bwc = nullptr;
+  std::move(pending_created)
+      .Run(MakeFakeBwc(pending_delegate, &pending_bwc), &otr_profile_);
+  EXPECT_EQ(nullptr, pending_bwc);
+}
+
+// Teardown returns the controller to kIdle, so a Start() after shutdown looks
+// like a normal boot. Calling the callback directly leaves a live
+// ProfileManager behind, so only the shutdown flag can stop that boot.
+TEST_F(OnDeviceSpeechRecognitionControllerTest, StartAfterShutdownDoesNotBoot) {
+  SetInstalled(true);
+  Session s1 = StartSession();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  controller_->OnProfileManagerDestroying();
+  ASSERT_EQ(nullptr, last_bwc_.get());
+
+  Session s2 = StartSession();
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  EXPECT_EQ(1, bwc_created_count_);
+}
+
+// A shutdown while no worker is up reaches nobody, so the flag stays unset. A
+// Start() after it must still not boot: no manager, no guest profile.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartWithoutProfileManagerDoesNotBoot) {
+  SetInstalled(true);
+  profile_manager_.reset();
+
+  Session s = StartSession();
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  EXPECT_EQ(0, bwc_created_count_);
 }
 
 // The worker environment comes up but the worker never registers its factory.

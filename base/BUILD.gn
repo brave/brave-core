@@ -25,6 +25,7 @@ source_set("base_unittests") {
     "test/launcher/teamcity_reporter_integration_unittest.cc",
     "test/launcher/teamcity_reporter_unittest.cc",
     "test/launcher/teamcity_service_messages_unittest.cc",
+    "to_string_unittest.cc",
   ]
   deps = [
     "//base",

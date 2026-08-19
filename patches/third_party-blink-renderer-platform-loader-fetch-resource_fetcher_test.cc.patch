@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/platform/loader/fetch/resource_fetcher_test.cc b/third_party/blink/renderer/platform/loader/fetch/resource_fetcher_test.cc
+index 35ff0eeba4903a7fc7431b4bc4c6c5338c1d1275..c5c4aa5286be24c4c445c2a10c2f77d2e89d1720 100644
+--- a/third_party/blink/renderer/platform/loader/fetch/resource_fetcher_test.cc
++++ b/third_party/blink/renderer/platform/loader/fetch/resource_fetcher_test.cc
+@@ -2394,6 +2394,12 @@ TEST_P(TransparentPlaceholderResourceFetcherTest, InspectorNotAttached) {
+ // world) are not reused by requests originating from a different isolated
+ // world. Regression test for crbug.com/461167648.
+ TEST_P(ResourceFetcherTest, CrossWorldExtensionResourceMismatch) {
++  // Explicitly enable `kPreventExtensionResourceFetchAcrossIsolatedWorlds` for
++  // this test since the feature is disabled by default.
++  base::test::ScopedFeatureList scoped_feature_list;
++  scoped_feature_list.InitAndEnableFeature(
++      kPreventExtensionResourceFetchAcrossIsolatedWorlds);
++
+   // Register the scheme to ensure it's recognized as an extension.
+   CommonSchemeRegistry::RegisterURLSchemeAsExtension("chrome-extension");
+ 

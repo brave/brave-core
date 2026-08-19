@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
-index ca950caa15b62ac286b6f58dd2cfd86a2fcb516f..44e406f6777cbe24448874d2dc086fa493cea19d 100644
+index dc6ad27999ad2372b8b91db34b613e696631d79f..1420922e1b42d5013903ff4f16db6936984ba6c7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
-@@ -42,6 +42,7 @@ import org.chromium.build.annotations.NullMarked;
+@@ -38,6 +38,7 @@ import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
  import org.chromium.build.annotations.RequiresNonNull;
  import org.chromium.chrome.R;
@@ -10,7 +10,16 @@ index ca950caa15b62ac286b6f58dd2cfd86a2fcb516f..44e406f6777cbe24448874d2dc086fa4
  import org.chromium.chrome.browser.ActivityTabProvider;
  import org.chromium.chrome.browser.accessibility.PageZoomMenuItemViewBinder;
  import org.chromium.chrome.browser.bookmarks.BookmarkModel;
-@@ -744,7 +745,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+@@ -145,7 +146,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+     protected @Nullable Runnable mReadAloudAppMenuResetter;
+     private boolean mHasReadAloudInserted;
+     protected final @Nullable OpenInAppMenuItemProvider mOpenInAppMenuItemProvider;
+-    private final AppMenuItemTheme mAppMenuItemTheme;
++    protected final AppMenuItemTheme mAppMenuItemTheme;
+ 
+     @VisibleForTesting
+     @IntDef({
+@@ -477,7 +478,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
          //                is not persisted when adding to the homescreen.
          // * If creating shortcuts it not supported by the current home screen.
          return WebappsUtils.isAddToHomeIntentSupported()

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { Meta } from '@storybook/react'
 import * as Mojom from '../../../common/mojom'
-import { InferControlsFromArgs } from '../../../../../../.storybook/utils'
+import { InferControlsFromArgs } from '$storybook/utils'
 import UntrustedMockContext from '../../mock_untrusted_conversation_context'
 import ErrorConnection from './error_connection'
 import ErrorConversationEnd from './error_conversation_end'

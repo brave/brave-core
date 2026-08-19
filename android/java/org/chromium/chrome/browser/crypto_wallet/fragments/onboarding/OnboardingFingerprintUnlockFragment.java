@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.annotation.SuppressLint;
 import android.hardware.biometrics.BiometricPrompt;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
@@ -87,7 +85,6 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
     private void setUpBiometric(@NonNull final String password, @NonNull final Cipher cipher) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {

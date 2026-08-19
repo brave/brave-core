@@ -99,9 +99,16 @@ void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
                                         is_enabled, url, local_state_);
 }
 
-bool BraveShieldsSettingsService::GetBraveShieldsEnabled(const GURL& url) {
-  return brave_shields::GetBraveShieldsEnabled(&*host_content_settings_map_,
-                                               url);
+bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
+  return brave_shields::IsBraveShieldsEnabled(&*host_content_settings_map_,
+                                              url);
+}
+
+bool BraveShieldsSettingsService::IsBraveShieldsManaged(const GURL& url) {
+  content_settings::SettingInfo info;
+  host_content_settings_map_->GetWebsiteSetting(
+      url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
+  return info.source == content_settings::SettingSource::kPolicy;
 }
 
 void BraveShieldsSettingsService::SetDefaultAdBlockMode(

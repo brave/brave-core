@@ -35,9 +35,9 @@
         android:icon="@drawable/ic_browser_group"
         android:title="@string/tab_groups_enable_title" />
     <org.chromium.chrome.browser.settings.BraveTintedIconSwitchPreference
-        android:key="auto_open_synced_tab_groups_switch"
-        android:icon="@drawable/ic_smartphone_laptop"
-        android:title="@string/auto_open_synced_tab_groups_summary"
+        android:key="show_synced_tab_groups_switch"
+        android:icon="@drawable/ic_product_sync"
+        android:title="@string/tab_groups_show_synced_title"
         app:isPreferenceVisible="false" />
     <org.chromium.chrome.browser.settings.BraveTintedIconSwitchPreference
         android:key="tab_groups_bar_switch"

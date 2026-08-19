@@ -86,6 +86,11 @@ bool IsWalletDebugEnabled() {
 #endif
 }
 
+bool IsMojoForHardwareWalletEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kBraveWalletMojoForHardwareWalletFeature);
+}
+
 bool IsAnkrBalancesEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAnkrBalancesFeature);
@@ -99,6 +104,14 @@ bool IsTransactionSimulationsEnabled() {
 bool IsAccountHidingEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAccountHidingFeature);
+}
+
+bool IsSnapsFeatureEnabled() {
+#if BUILDFLAG(ENABLE_SNAPS)
+  return base::FeatureList::IsEnabled(features::kBraveWalletSnapsFeature);
+#else
+  return false;
+#endif
 }
 
 #if BUILDFLAG(IS_IOS)

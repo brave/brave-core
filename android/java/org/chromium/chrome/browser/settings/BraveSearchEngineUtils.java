@@ -108,7 +108,17 @@ public class BraveSearchEngineUtils {
     }
 
     public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
-        BraveSearchEngineAdapter.setDSEPrefs(templateUrl, profile);
+        BraveSearchEngineAdapter.setDSEPrefs(templateUrl.getShortName(), profile);
+    }
+
+    // Private-mode DSE accessors that avoid creating the OTR profile, see
+    // BraveSearchEngineAdapter.setPrivateDSEPrefs().
+    public static void setPrivateDSEPrefs(TemplateUrl templateUrl) {
+        BraveSearchEngineAdapter.setPrivateDSEPrefs(templateUrl.getShortName());
+    }
+
+    public static String getPrivateDSEShortName() {
+        return BraveSearchEngineAdapter.getPrivateDSEShortName();
     }
 
     public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {

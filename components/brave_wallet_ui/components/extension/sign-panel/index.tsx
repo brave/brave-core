@@ -18,7 +18,6 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
 import {
-  useGetIsTxSimulationOptInStatusQuery,
   useGetNetworkQuery,
   useProcessSignMessageRequestMutation,
   useSignMessageHardwareMutation,
@@ -33,9 +32,6 @@ import { SignCowSwapOrder } from './cow_swap_order'
 import {
   EthSignTypedData, //
 } from './common/eth_sign_typed_data'
-import {
-  EvmMessageSimulationNotSupportedSheet, //
-} from '../evm_message_simulation_not_supported_sheet/evm_message_simulation_not_supported_sheet'
 
 // Styled Components
 import {
@@ -98,10 +94,6 @@ export const SignPanel = (props: Props) => {
         }
       : skipToken,
   )
-
-  const { data: simulationOptInStatus } = useGetIsTxSimulationOptInStatusQuery()
-  const isSimulationPermitted =
-    simulationOptInStatus === BraveWallet.BlowfishOptInStatus.kAllowed
 
   // mutations
   const [processSignMessageRequest] = useProcessSignMessageRequestMutation()
@@ -358,8 +350,6 @@ export const SignPanel = (props: Props) => {
           )}
         </>
       )}
-
-      {isSimulationPermitted && <EvmMessageSimulationNotSupportedSheet />}
 
       <SignPanelButtonRow>
         <NavButton

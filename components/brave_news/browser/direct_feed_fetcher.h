@@ -93,7 +93,11 @@ class DirectFeedFetcher {
   // This |publisher_id| will be used for any returned articles.
   // When |initiator_origin| is set, it is used as the request initiator so the
   // request carries a Sec-Fetch-Site header reflecting its relationship to that
-  // origin (e.g. the active tab when the request comes from the toolbar).
+  // origin (e.g. the active tab when the request comes from the toolbar). It
+  // also marks the request as being made on behalf of a web page, which means
+  // the request will fail if |url| resolves to a loopback or local network
+  // address. Leave it unset for feeds the user asked for directly (e.g. added
+  // via the Brave News settings), which are allowed to be local.
   void DownloadFeed(GURL url,
                     std::optional<url::Origin> initiator_origin,
                     std::string publisher_id,

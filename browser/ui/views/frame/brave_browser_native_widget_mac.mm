@@ -92,7 +92,7 @@ bool BraveBrowserNativeWidgetMac::ExecuteCommand(
     // focus) command from 'ctrl + w' (true, as tab was in focus) command.
     if (BrowserView* browser_view = browser_view_.get()) {
       Browser* browser = browser_view->browser();
-      if (browser->profile()->GetPrefs()->GetBoolean(
+      if (browser->GetProfile()->GetPrefs()->GetBoolean(
               brave_tabs::kSharedPinnedTab) &&
           command == IDC_CLOSE_TAB && is_before_first_responder &&
           browser->tab_strip_model()->IsTabPinned(

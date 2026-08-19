@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Instantiate BraveExternalProcessImporterClient.
+
+      Route the import through Brave's client subclass, which adds credit-card
+      import and the Brave importer mojo pipeline.
+    rename_class:
+      class_name: ExternalProcessImporterClient
+      rename: BraveExternalProcessImporterClient
+
+  - description: |-
+      Instantiate BraveInProcessImporterBridge.
+
+      Pair the host with Brave's bridge subclass so the extra data types Brave
+      imports are forwarded to the profile writer.
+    rename_class:
+      class_name: InProcessImporterBridge
+      rename: BraveInProcessImporterBridge

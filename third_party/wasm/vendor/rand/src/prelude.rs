@@ -14,22 +14,21 @@
 //!
 //! ```
 //! use rand::prelude::*;
-//! # let mut r = StdRng::from_rng(&mut rand::rng());
-//! # let _: f32 = r.random();
+//! # let mut r = StdRng::from_rng(thread_rng()).unwrap();
+//! # let _: f32 = r.gen();
 //! ```
 
-#[doc(no_inline)]
-pub use crate::distr::Distribution;
+#[doc(no_inline)] pub use crate::distributions::Distribution;
 #[cfg(feature = "small_rng")]
 #[doc(no_inline)]
 pub use crate::rngs::SmallRng;
 #[cfg(feature = "std_rng")]
+#[doc(no_inline)] pub use crate::rngs::StdRng;
 #[doc(no_inline)]
-pub use crate::rngs::StdRng;
-#[doc(no_inline)]
-#[cfg(feature = "thread_rng")]
+#[cfg(all(feature = "std", feature = "std_rng"))]
 pub use crate::rngs::ThreadRng;
+#[doc(no_inline)] pub use crate::seq::{IteratorRandom, SliceRandom};
 #[doc(no_inline)]
-pub use crate::seq::{IndexedMutRandom, IndexedRandom, IteratorRandom, SliceRandom};
-#[doc(no_inline)]
-pub use crate::{CryptoRng, Rng, RngCore, SeedableRng};
+#[cfg(all(feature = "std", feature = "std_rng"))]
+pub use crate::{random, thread_rng};
+#[doc(no_inline)] pub use crate::{CryptoRng, Rng, RngCore, SeedableRng};

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_
 
+#include <vector>
+
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
@@ -39,6 +41,18 @@ struct PolkadotTransaction {
   std::optional<uint32_t> asset_id() const { return asset_id_; }
   void set_asset_id(uint32_t asset_id) { asset_id_ = asset_id; }
 
+  // The SCALE-encoded blob the sender signs to authorize this transfer. It's
+  // stored while the transaction is still unapproved so the confirmation UI can
+  // show the user what they're about to sign, and refreshed with the payload
+  // that was actually signed once the transaction is approved.
+  const std::vector<uint8_t>& signature_payload() const {
+    return signature_payload_;
+  }
+
+  void set_signature_payload(std::vector<uint8_t> signature_payload) {
+    signature_payload_ = std::move(signature_payload);
+  }
+
   const PolkadotExtrinsicMetadata* extrinsic_metadata() const {
     return extrinsic_metadata_.has_value() ? &extrinsic_metadata_.value()
                                            : nullptr;
@@ -54,6 +68,7 @@ struct PolkadotTransaction {
   uint128_t fee_ = uint128_t{0};
   bool transfer_all_ = false;
   std::optional<uint32_t> asset_id_;
+  std::vector<uint8_t> signature_payload_;
 
   std::optional<PolkadotExtrinsicMetadata> extrinsic_metadata_;
 };

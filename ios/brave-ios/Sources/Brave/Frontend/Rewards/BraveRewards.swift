@@ -57,13 +57,15 @@ public class BraveRewards: PreferencesObserver {
   }
 
   func startRewardsService(_ completion: (() -> Void)?) {
-    if rewardsAPI != nil {
+    if let rewardsAPI, rewardsAPI.isInitialized {
       // Already started
       completion?()
       return
     }
     let storagePath = configuration.storageURL.appendingPathComponent("ledger").path
-    rewardsAPI = BraveRewardsAPI(stateStoragePath: storagePath)
+    if rewardsAPI == nil {
+      rewardsAPI = BraveRewardsAPI(stateStoragePath: storagePath)
+    }
     rewardsAPI?.initializeRewardsService { [weak self] in
       guard let self = self, let rewardsAPI = self.rewardsAPI else { return }
       if self.ads.isEnabled {
