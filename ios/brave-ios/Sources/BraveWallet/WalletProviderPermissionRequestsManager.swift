@@ -80,7 +80,8 @@ public class WalletProviderPermissionRequestsManager {
     return request
   }
 
-  public func hasPendingRequest(for origin: URLOrigin, coinTypes: [BraveWallet.CoinType]) -> Bool {
+  public func hasPendingRequest(for origin: URLOrigin, coinTypes: Set<BraveWallet.CoinType>) -> Bool
+  {
     requests.contains(where: { $0.requestingOrigin == origin && coinTypes.contains($0.coinType) })
   }
 
