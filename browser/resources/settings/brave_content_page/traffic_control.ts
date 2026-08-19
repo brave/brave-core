@@ -30,11 +30,9 @@ import {
   RuleOperationError,
   TrafficRule,
 } from '../traffic_control.mojom-webui.js'
-// <if expr="enable_containers">
 import { skColorToHexColor } from 'chrome://resources/js/color_utils.js'
 import type { Container } from '../containers.mojom-webui.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
-// </if>
 
 import { getCss } from './traffic_control.css.js'
 import { getHtml } from './traffic_control.html.js'
@@ -77,9 +75,7 @@ export class SettingsBraveContentTrafficControlElement extends
     TrafficControlSettingsHandlerBrowserProxy.getInstance()
   accessor enabledPref_: chrome.settingsPrivate.PrefObject<boolean> | undefined
   accessor rulesList_: TrafficRule[] = []
-  // <if expr="enable_containers">
   accessor containersList_: Container[] = []
-  // </if>
   accessor containerMenuOptions_: DropdownMenuOptionList = []
   accessor editingRule_: TrafficRule | undefined
   accessor deletingRule_: TrafficRule | undefined
@@ -100,7 +96,6 @@ export class SettingsBraveContentTrafficControlElement extends
   }
 
   private loadContainers_() {
-    // <if expr="enable_containers">
     const containersProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
     containersProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersUpdated_(containers)
@@ -108,15 +103,12 @@ export class SettingsBraveContentTrafficControlElement extends
     containersProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersUpdated_.bind(this),
     )
-    // </if>
   }
 
-  // <if expr="enable_containers">
   private onContainersUpdated_(containers: Container[]) {
     this.containersList_ = containers
     this.updateContainerMenuOptions_()
   }
-  // </if>
 
   private updateContainerMenuOptions_() {
     const options: DropdownMenuOptionList = [
@@ -127,14 +119,12 @@ export class SettingsBraveContentTrafficControlElement extends
         value: '',
       },
     ]
-    // <if expr="enable_containers">
     options.push(
       ...this.containersList_.map((c) => ({
         name: c.name,
         value: c.id,
       })),
     )
-    // </if>
     this.containerMenuOptions_ = options
   }
 
@@ -158,12 +148,7 @@ export class SettingsBraveContentTrafficControlElement extends
   }
 
   containerIcon_(containerId: string | null): number {
-    // <if expr="enable_containers">
     return this.containerFor_(containerId)?.icon ?? 0
-    // </if>
-    // <if expr="not enable_containers">
-    return 0
-    // </if>
   }
 
   containerName_(containerId: string | null): string {
@@ -176,25 +161,15 @@ export class SettingsBraveContentTrafficControlElement extends
   }
 
   containerBackgroundColor_(containerId: string | null): string {
-    // <if expr="enable_containers">
     const container = this.containerFor_(containerId)
     return container ? skColorToHexColor(container.backgroundColor) : ''
-    // </if>
-    // <if expr="not enable_containers">
-    return ''
-    // </if>
   }
 
   private containerFor_(containerId: string | null) {
-    // <if expr="enable_containers">
     if (!containerId) {
       return undefined
     }
     return this.containersList_.find((c) => c.id === containerId)
-    // </if>
-    // <if expr="not enable_containers">
-    return undefined
-    // </if>
   }
 
   onAddRuleClick_() {
