@@ -40,6 +40,11 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/core/common/policy_types.h"
+#include "components/policy/policy_constants.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -481,6 +486,14 @@ void AcceptContextMenuItem(views::MenuItemView* item) {
   controller->OnWillDispatchKeyEvent(&return_event);
 }
 
+// Closes the active context menu without selecting any item.
+void CloseActiveContextMenu() {
+  views::MenuController* const controller =
+      views::MenuController::GetActiveInstance();
+  ASSERT_TRUE(controller);
+  controller->Cancel(views::MenuController::ExitType::kAll);
+}
+
 }  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
@@ -641,13 +654,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     }));
   }
 
-  // Navigates to `url`, waits for the PSST icon to appear in the location bar,
-  // then clicks it with the specified `event_flags` to open its context menu
-  // and waits for the menu to appear, or opens the consent dialog and waits
-  // for it to appear. For a left-click, the opened consent dialog's WebContents
-  // is returned via `dialog_wc_out` when provided.
-  void NavigateAndClickOnPsstLocationBarIcon(
-      const GURL& url,
+  // Clicks the (already visible) PSST location bar icon with the specified
+  // `event_flags` to open its context menu and waits for the menu to appear,
+  // or opens the consent dialog and waits for it to appear. For a left-click,
+  // the opened consent dialog's WebContents is returned via `dialog_wc_out`
+  // when provided.
+  void ClickOnPsstLocationBarIcon(
       ui::EventFlags event_flags,
       content::WebContents** dialog_wc_out = nullptr) {
     ASSERT_TRUE(event_flags == ui::EF_RIGHT_MOUSE_BUTTON ||
@@ -656,8 +668,6 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     actions::ActionItem* const action =
         actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
     ASSERT_TRUE(action);
-
-    ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
 
     IconLabelBubbleView* const psst_view = GetPsstPageActionView();
     ASSERT_TRUE(psst_view);
@@ -689,6 +699,17 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         *dialog_wc_out = dialog_wc;
       }
     }
+  }
+
+  // Navigates to `url`, waits for the PSST icon to appear in the location bar,
+  // then clicks it. See `ClickOnPsstLocationBarIcon()` for the click behavior.
+  void NavigateAndClickOnPsstLocationBarIcon(
+      const GURL& url,
+      ui::EventFlags event_flags,
+      content::WebContents** dialog_wc_out = nullptr) {
+    ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+    ASSERT_NO_FATAL_FAILURE(
+        ClickOnPsstLocationBarIcon(event_flags, dialog_wc_out));
   }
 
   // Waits for the PSST context menu to close.
@@ -1046,6 +1067,85 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
+}
+
+// Fixture that enables PSST via a mandatory administrator policy, which makes
+// `prefs::kPsstEnabled` a managed preference before the profile is created.
+class PsstEnabledByPolicyBrowserTest
+    : public PsstTabWebContentsObserverBrowserTest {
+ public:
+  PsstEnabledByPolicyBrowserTest() = default;
+  ~PsstEnabledByPolicyBrowserTest() override = default;
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PsstTabWebContentsObserverBrowserTest::SetUpInProcessBrowserTestFixture();
+
+    EXPECT_CALL(policy_provider_, IsInitializationComplete(testing::_))
+        .WillRepeatedly(testing::Return(true));
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(
+        &policy_provider_);
+
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kPsstEnabled, policy::POLICY_LEVEL_MANDATORY,
+                 policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
+                 base::Value(true), nullptr);
+    policy_provider_.UpdateChromePolicy(policies);
+  }
+
+ private:
+  policy::MockConfigurationPolicyProvider policy_provider_;
+};
+
+// When PSST is enabled by administrator policy, `prefs::kPsstEnabled` is
+// managed, so: the context menu only offers "Don't show for this site" (the
+// item that would disable PSST globally is hidden because that's not
+// something the user can override), and closing the infobar via its close
+// button doesn't disable the managed preference.
+IN_PROC_BROWSER_TEST_F(PsstEnabledByPolicyBrowserTest,
+                       ManagedPolicyRestrictsMenuAndSurvivesInfobarClose) {
+  ASSERT_TRUE(GetPrefs()->IsManagedPreference(prefs::kPsstEnabled));
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  infobars::ContentInfoBarManager* const manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+
+  ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+  ASSERT_TRUE(infobar_observer.WaitForInfobarAdded());
+
+  ASSERT_NO_FATAL_FAILURE(
+      ClickOnPsstLocationBarIcon(ui::EF_RIGHT_MOUSE_BUTTON));
+
+  views::MenuItemView* const root = GetActiveContextMenuRoot();
+  ASSERT_TRUE(root);
+  // Only "Don't show for this site" is present; the item that disables PSST
+  // globally is hidden because the preference is managed by policy.
+  EXPECT_TRUE(root->GetMenuItemByID(IDC_PSST_DONT_SHOW_FOR_THIS_SITE));
+  EXPECT_FALSE(root->GetMenuItemByID(IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING));
+
+  ASSERT_NO_FATAL_FAILURE(CloseActiveContextMenu());
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstContextMenuClosed());
+
+  auto* const psst_infobar = GetPsstInfobar(manager);
+  ASSERT_TRUE(psst_infobar);
+  auto* const confirm_delegate =
+      psst_infobar->delegate()->AsConfirmInfoBarDelegate();
+  ASSERT_TRUE(confirm_delegate);
+
+  // Close the infobar via its close ("x") button. Mirrors
+  // InfoBarView::CloseButtonPressed(), which reports the infobar as dismissed
+  // (rather than accepted or explicitly declined) and then removes it.
+  confirm_delegate->InfoBarDismissed();
+  psst_infobar->RemoveSelf();
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+  EXPECT_FALSE(GetPsstInfobar(manager));
+
+  // The managed preference is untouched by the infobar dismissal.
+  EXPECT_TRUE(GetPrefs()->IsManagedPreference(prefs::kPsstEnabled));
+  EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 }  // namespace psst
