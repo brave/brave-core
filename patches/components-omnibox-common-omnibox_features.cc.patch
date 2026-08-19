@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/common/omnibox_features.cc b/components/omnibox/common/omnibox_features.cc
-index 58b2645364d499f5c9e464793f7467f6eceea75c..6f17516507787cbe1857b8671f160f7a74a6a304 100644
+index cd448cb2cf8b0b8b0221b6004c0d41ebd7905794..605db95cd5085f97b00b5fa04029c3284ef1fdc4 100644
 --- a/components/omnibox/common/omnibox_features.cc
 +++ b/components/omnibox/common/omnibox_features.cc
 @@ -169,7 +169,8 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
