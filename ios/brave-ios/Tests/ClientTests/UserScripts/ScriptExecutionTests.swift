@@ -577,6 +577,7 @@ extension UserScriptType.ContentCosmeticSetup {
     tab.browserData = TabBrowserData(tab: tab)
     tab.currentPageData = PageData(mainFrameURL: mainFrameURL)
     let tabHelper = CosmeticFilteringTabHelper(tab: tab)
+    tabHelper.setMainFrameURLForTesting(mainFrameURL)
     tabHelper.cacheSelectors(
       for: mainFrameURL,
       standardSelectors: cachedStandardSelectors,
