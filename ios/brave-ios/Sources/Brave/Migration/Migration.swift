@@ -215,7 +215,6 @@ public class Migration {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
-    Preferences.migrateHTTPSUpgradeLevel()
     Preferences.migrateBackgroundSponsoredImages()
     Preferences.migrateBookmarksButtonInToolbar()
     Preferences.migrateShortcutsButtonOniPad()
@@ -361,12 +360,6 @@ extension Preferences {
       default: true
     )
 
-    /// Websites will be upgraded to HTTPS if a loaded page attempts to use HTTP
-    public static let httpsEverywhere = Option<Bool>(
-      key: "shields.https-everywhere",
-      default: true
-    )
-
     /// Whether sponsored images are included into the background image rotation
     static let backgroundSponsoredImages = Option<Bool>(
       key: "newtabpage.background-sponsored-images",
@@ -465,13 +458,6 @@ extension Preferences {
     /// instead of a simple on/off `Bool` on the domain level
     static let domainAdBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.domain-ad-block-and-tracking-protection-shield-level-completed",
-      default: false
-    )
-
-    /// A more complicated https upgrades preference
-    /// allows a user to select between `standard`, `strict` and `disabled` instead of a simple on/off `Bool`
-    static let httpsUpgradesLivelCompleted = Option<Bool>(
-      key: "migration.https-upgrades-level-completed",
       default: false
     )
 
@@ -578,7 +564,6 @@ extension Preferences {
 
     // Shields
     migrate(key: "braveBlockAdsAndTracking", to: DeprecatedPreferences.blockAdsAndTracking)
-    migrate(key: "braveHttpsEverywhere", to: DeprecatedPreferences.httpsEverywhere)
     migrate(key: "noscript_on", to: Preferences.Shields.blockScripts)
     migrate(key: "fingerprintprotection_on", to: Preferences.Shields.fingerprintingProtection)
     migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
@@ -611,21 +596,6 @@ extension Preferences {
         // We only need to migrate `disabled`. `standard` is the default.
         Preferences.Shields.blockAdsAndTrackingLevel = .disabled
       }
-    }
-
-    Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
-  }
-
-  fileprivate class func migrateHTTPSUpgradeLevel() {
-    // If the feature flag for https by default is off but we've already stored a user pref for it
-    // then assign that enabled level a preference so that if a user toggles HTTPS Everywhere off
-    // and on it will correctly set the underlying upgrade level to the level they had set when
-    // the feature flag was on.
-    guard !Migration.httpsUpgradesLivelCompleted.value else { return }
-
-    // Migrate old tracking protection setting to new BraveShields setting
-    DeprecatedPreferences.httpsEverywhere.migrate { isEnabled in
-      Preferences.Shields.httpsUpgradeLevel = isEnabled ? .standard : .disabled
     }
 
     Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true

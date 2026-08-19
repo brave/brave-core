@@ -899,13 +899,10 @@
 "Home" = "Strona domowa";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Ulepsz połączenia do HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Jeśli to możliwe, otwieraj strony za pomocą bezpiecznego protokołu HTTPS zamiast HTTP";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Aktualizacje HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importuj dane przeglądania";

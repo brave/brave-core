@@ -150,7 +150,6 @@ var package = Package(
         .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
         .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
         .copy("Assets/InterstitialPages/Pages/BlockedDomain.html"),
-        .copy("Assets/InterstitialPages/Pages/HTTPBlocked.html"),
         .copy("Assets/InterstitialPages/Pages/Web3Domain.html"),
         .copy("Assets/InterstitialPages/Images/Info.svg"),
         .copy("Assets/InterstitialPages/Images/warning-triangle-outline.svg"),

@@ -115,15 +115,6 @@ import os
       Preferences.Shields.fingerprintingProtection.value = isBlockFingerprintingEnabled
     }
   }
-  @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
-    didSet {
-      Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
-      HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
-        fromStart: Date.distantPast,
-        end: Date.distantFuture
-      )
-    }
-  }
   @Published var shredLevel: SiteShredLevel {
     didSet {
       if shouldWriteToContentSettings {
@@ -222,7 +213,6 @@ import os
       self.isBlockFingerprintingEnabled = Preferences.Shields.fingerprintingProtection.value
       self.shredLevel = Preferences.Shields.shredLevel
     }
-    self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
     self.isDeAmpEnabled = prefs.boolean(forPath: kDeAmpEnabled)
     self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
     self.isBlockAllCookiesEnabled = prefs.boolean(forPath: kBlockAllCookiesEnabled)
@@ -240,7 +230,6 @@ import os
         id: .history,
         clearable: HistoryClearable(
           historyAPI: braveCore.historyAPI,
-          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false),
           serpMetrics: SerpMetricsServiceFactory.get(profile: braveCore.profile)
         ),
         isEnabled: true

@@ -899,13 +899,10 @@
 "Home" = "Главная страница";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Переведите подключения на HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Использовать для подключения к сайтам защищенный протокол HTTPS, а не HTTP (когда это возможно).";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Смена HTTP на HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Импорт данных просмотра";

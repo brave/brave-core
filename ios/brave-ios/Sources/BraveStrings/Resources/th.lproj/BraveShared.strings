@@ -899,13 +899,10 @@
 "Home" = "หน้าแรก";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "อัปเกรดการเชื่อมต่อเป็น HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "เปิดเว็บไซต์โดยใช้ HTTPS ที่ปลอดภัยแทน HTTP เมื่อสามารถทำได้";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "การอัพเกรด HTTPS ";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "นำเข้าข้อมูลการเรียกดู";

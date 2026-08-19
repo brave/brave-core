@@ -30,7 +30,7 @@ extension BrowserViewController: TabPolicyDecider {
       tab.responses?[responseURL] = response
     }
 
-    // Check if we upgraded to https and if so we need to update the url of frame evaluations
+    // Update frame evaluations when the response URL differs from the request URL.
     if let responseURL = responseURL,
       let pageData = tab.currentPageData,
       tab.currentPageData?.upgradeFrameURL(
@@ -569,96 +569,7 @@ extension BrowserViewController {
       return request
     }
 
-    // HTTPS by Default
-    if shouldUpgradeToHttps(url: requestURL, isPrivate: tab.isPrivate),
-      var urlComponents = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
-    {
-      if let existingUpgradeRequestURL = tab.upgradedHTTPSRequest?.url,
-        existingUpgradeRequestURL == requestURL
-      {
-        // if server redirected https -> http, https load never fails.
-        // `webView(_:decidePolicyFor:preferences:)` will be called before
-        // `webView(_:didReceiveServerRedirectForProvisionalNavigation:)`
-        // so we must prevent upgrade loop.
-        return handleInvalidHTTPSUpgrade(tab: tab, responseURL: requestURL)
-      }
-      // Attempt to upgrade to HTTPS
-      urlComponents.scheme = "https"
-      if let upgradedURL = urlComponents.url {
-        Logger.module.debug(
-          "Upgrading `\(requestURL.absoluteString)` to HTTPS"
-        )
-        tab.upgradedHTTPSRequest = request
-        tab.upgradeHTTPSTimeoutTimer?.invalidate()
-        var modifiedRequest = request
-        modifiedRequest.url = upgradedURL
-
-        tab.upgradeHTTPSTimeoutTimer = Timer.scheduledTimer(
-          withTimeInterval: 3.seconds,
-          repeats: false,
-          block: { [weak tab, weak self] timer in
-            guard let self, let tab else { return }
-            if let url = modifiedRequest.url,
-              let request = handleInvalidHTTPSUpgrade(tab: tab, responseURL: url)
-            {
-              tab.stopLoading()
-              tab.loadRequest(request)
-            }
-          }
-        )
-        return modifiedRequest
-      }
-    }
-
     return nil
-  }
-
-  /// Determines if the given url should be upgraded from http to https.
-  /// Uses Chromium HTTPS upgrade allowlist semantics (not Shields settings).
-  fileprivate func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
-    guard let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
-      url.scheme == "http", let host = url.host
-    else {
-      return false
-    }
-    return !httpUpgradeService.isHttpAllowed(forHost: host)
-  }
-
-  /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
-  /// or show the interstitial page
-  func handleInvalidHTTPSUpgrade(tab: some TabState, responseURL: URL) -> URLRequest? {
-    // Handle invalid upgrade to https
-    guard let originalRequest = tab.upgradedHTTPSRequest,
-      let originalURL = originalRequest.url,
-      responseURL.baseDomain == originalURL.baseDomain
-    else {
-      return nil
-    }
-
-    if Preferences.Shields.httpsUpgradeLevel.isStrict,
-      let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
-    {
-      Logger.module.debug(
-        "Show http blocked interstitial for `\(originalURL.absoluteString)`"
-      )
-
-      let request = PrivilegedRequest(url: url) as URLRequest
-      return request
-    } else {
-      Logger.module.debug(
-        "Revert HTTPS upgrade for `\(originalURL.absoluteString)`"
-      )
-
-      tab.upgradedHTTPSRequest = nil
-      tab.upgradeHTTPSTimeoutTimer?.invalidate()
-      tab.upgradeHTTPSTimeoutTimer = nil
-      if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
-        let host = originalURL.host
-      {
-        httpsUpgradeService.allowHttp(forHost: host)
-      }
-      return originalRequest
-    }
   }
 
   func handleExternalURL(

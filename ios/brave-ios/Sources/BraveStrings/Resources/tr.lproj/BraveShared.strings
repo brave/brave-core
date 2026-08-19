@@ -899,13 +899,10 @@
 "Home" = "Ana Sayfa";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Bağlantıları HTTPS'ye Yükselt";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Mümkün olduğunda siteleri HTTP yerine güvenli HTTPS ile açar.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS Yükseltmeleri";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Tarama Verilerini İçe Aktar";

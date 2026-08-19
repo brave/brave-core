@@ -899,13 +899,10 @@
 "Home" = "ホーム";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPSに接続をアップグレードする";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "可能な場合、HTTPではなく安全なHTTPSでサイトを開く";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS アップグレード";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "閲覧データをインポート";

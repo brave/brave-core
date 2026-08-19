@@ -842,13 +842,10 @@
 "Home" = "Beranda";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Tingkatkan Koneksi ke HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Membuka situs dengan menggunakan HTTPS aman daripada dengan HTTP kapan saja memungkinkan.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Peningkatan HTTPS";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Kontrol Individu";

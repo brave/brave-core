@@ -103,17 +103,3 @@ extension ShieldLevel: Identifiable {
     }
   }
 }
-
-extension HTTPSUpgradeLevel: Identifiable {
-  public var id: String {
-    return rawValue
-  }
-
-  public var localizedTitle: String {
-    switch self {
-    case .strict: return Strings.Shields.httpsUpgradeLevelStrict
-    case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
-    case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
-    }
-  }
-}

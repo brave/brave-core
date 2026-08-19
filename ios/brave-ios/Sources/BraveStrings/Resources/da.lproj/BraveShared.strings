@@ -899,13 +899,10 @@
 "Home" = "Start";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Opgrader forbindelser til HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Åbner websteder, der bruger sikker HTTPS i stedet for HTTP, når det er muligt.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS Opgraderinger";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importér browserdata";

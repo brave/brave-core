@@ -899,13 +899,10 @@
 "Home" = "Hem";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Uppgradera anslutningar till HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Öppnar webbplatser med det säkrare HTTPS i stället för HTTP när så är möjligt.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS-uppgraderingar";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importera surfningsdata";

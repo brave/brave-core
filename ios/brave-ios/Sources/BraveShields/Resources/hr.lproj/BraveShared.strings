@@ -161,7 +161,6 @@
 "ForgetMeLabel" = "Zaboravi me kada zatvorim ovu stranicu";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "Strogo";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Popisi su ažurirani";
@@ -245,10 +244,8 @@
 "shredSiteSelectedTabsConfirmationMessage" = "Uništavanje će zatvoriti odabrane kartice, i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Mrežno mjesto nije sigurno";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "Veza s mjestom %@ nije sigurna";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blokiranje elementa za praćenje i oglasa";
@@ -260,8 +257,6 @@
 "UpdatingLists" = "Popisi se ažuriraju";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Nadogradi veze na HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Prikazuje vam se ovo upozorenje jer se mrežnim mjestom ne podržava HTTPS.";
 

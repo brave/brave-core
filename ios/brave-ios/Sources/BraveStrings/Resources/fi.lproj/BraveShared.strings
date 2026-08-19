@@ -899,13 +899,10 @@
 "Home" = "Etusivu";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Nosta yhteystasoksi HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Avaa sivustot käyttämällä HTTPS:ää HTTP:n sijaan, kun se on mahdollista.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS -päivitykset";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Tuo selaustiedot";

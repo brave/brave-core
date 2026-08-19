@@ -39,8 +39,7 @@ import WebKit
     }
   }
 
-  /// A new list of scripts is returned only if a change is detected in the response (for example an HTTPs upgrade).
-  /// In some cases (like during an https upgrade) the scripts may change on the response. So we need to update the user scripts
+  /// Updates user scripts when a response URL differs from its request URL.
   @MainActor mutating func upgradeFrameURL(
     forResponseURL responseURL: URL,
     isForMainFrame: Bool

@@ -3119,6 +3119,21 @@ extension Strings {
     value: "Persistent Private Browsing",
     comment: "Setting to allow the app to restore private browsing tabs"
   )
+  public static let shieldsDefaults = NSLocalizedString(
+    "ShieldsDefaults",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Shields Global Defaults",
+    comment: "Section title for adbblock, tracking protection, HTTPS-E, and cookies"
+  )
+  public static let shieldsDefaultsFooter = NSLocalizedString(
+    "ShieldsDefaultsFooter",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.",
+    comment: "Section footer for global shields defaults"
+  )
   public static let googleSafeBrowsing = NSLocalizedString(
     "GoogleSafeBrowsing",
     tableName: "BraveShared",
@@ -3351,6 +3366,58 @@ extension Strings {
     bundle: .module,
     value: "Blocking Monitor",
     comment: "title for section showing page blocking statistics"
+  )
+  public static let siteShieldSettings = NSLocalizedString(
+    "SiteShieldSettings",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shields",
+    comment: "Brave panel topmost title"
+  )
+  public static let adsAndTrackers = NSLocalizedString(
+    "AdsAndTrackers",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Ads and Trackers",
+    comment: "individual blocking statistic title"
+  )
+  public static let scriptsBlocked = NSLocalizedString(
+    "ScriptsBlocked",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Scripts Blocked",
+    comment: "individual blocking statistic title"
+  )
+  public static let fingerprintingMethods = NSLocalizedString(
+    "FingerprintingMethods",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Fingerprinting Methods",
+    comment: "individual blocking statistic title"
+  )
+  public static let shieldsOverview = NSLocalizedString(
+    "ShieldsOverview",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Site Shields allow you to control when ads and trackers are blocked for each site that you visit. If you prefer to see ads on a specific site, you can enable them here.",
+    comment: "shields overview message"
+  )
+  public static let shieldsOverviewFooter = NSLocalizedString(
+    "ShieldsOverviewFooter",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Note: Some sites may require scripts to work properly so this shield is turned off by default.",
+    comment: "shields overview footer message"
+  )
+  public static let useRegionalAdblock = NSLocalizedString(
+    "UseRegionalAdblock",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Use regional adblock",
+    comment:
+      "Setting to allow user in non-english locale to use adblock rules specifc to their language"
   )
   public static let newFolderDefaultName = NSLocalizedString(
     "NewFolderDefaultName",

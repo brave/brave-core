@@ -228,7 +228,6 @@ public class AppState {
       (ReaderModeHandler.path, ReaderModeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),
-      (HTTPBlockedHandler.path, HTTPBlockedHandler()),
     ]
 
     responders.forEach { (path, responder) in
