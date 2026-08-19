@@ -71,20 +71,19 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
      CommandLast
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
-@@ -916,7 +924,12 @@ class TabStripModel {
+@@ -916,7 +924,11 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
 +  std::unique_ptr<DetachedTabCollection> DetachTreeTabNodeForInsertion(tabs::TabInterface* subtree_root_tab, const std::vector<tabs::TabInterface*>& moving_tabs);
 +
 +  gfx::Range InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection> tree_node, int index);
-+
   private:
 +  friend class BraveTabStripModel;
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1204,7 +1217,7 @@ class TabStripModel {
+@@ -1204,7 +1216,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).
