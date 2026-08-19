@@ -896,12 +896,15 @@ void ConsumeStartupNotification(Manager& m) {
 
 ```cpp
 // ✅ CORRECT - parameterize, so the test runs for both states and asserts only
-// what actually differs.
+// what actually differs. Initialize in the constructor: it runs before SetUp(),
+// so nothing that reads the flag can be constructed ahead of it.
 class MyCachingTest : public testing::TestWithParam<bool> {
- protected:
-  void SetUp() override {
+ public:
+  MyCachingTest() {
     feature_list_.InitWithFeatureState(features::kMyCache, GetParam());
   }
+
+ private:
   base::test::ScopedFeatureList feature_list_;
 };
 
@@ -918,11 +921,25 @@ INSTANTIATE_TEST_SUITE_P(All, MyCachingTest, testing::Bool(),
 ```
 
 ```cpp
+// ✅ CORRECT - where only one side of the flag is under test, give it a fixture
+// that pins that side. ScopedFeatureList's single-feature constructor pins it
+// in the member initializer list, before the fixture body and SetUp() run.
+// Declare it ahead of any member that reads the flag while being constructed.
+class MyCacheEnabledTest : public testing::Test {
+ private:
+  base::test::ScopedFeatureList feature_list_{features::kMyCache};
+  MyService service_;
+};
+```
+
+```cpp
 // ✅ CORRECT - where parameterizing is impractical (e.g. a TYPED_TEST fixture),
 // at least pin the flag explicitly instead of inheriting the default.
-scoped_feature_list_.InitWithFeatureStates(
-    {{features::kSomeOtherFlag, use_weak_ptr},
-     {features::kMyCache, true}});
+MyTypedTest() {
+  scoped_feature_list_.InitWithFeatureStates(
+      {{features::kSomeOtherFlag, use_weak_ptr},
+       {features::kMyCache, true}});
+}
 ```
 
 Practical notes:
@@ -933,10 +950,13 @@ Practical notes:
 - **Most tests turn out to be flag-independent.** If the expectations are
   identical for both params, that is the proof no helper was needed — keep them
   parameterized anyway so a future default flip can't quietly change coverage.
-- **Ordering:** `ScopedFeatureList` must be initialized _before_ constructing
-  anything that reads the flag in its constructor. If a fixture builds a service
-  in `SetUp()`, the feature list init belongs at the top of `SetUp()`, not the
-  bottom.
+- **Initialize in the fixture constructor, not `SetUp()`.** `ScopedFeatureList`
+  must be initialized _before_ anything that reads the flag is constructed, and
+  the fixture constructor runs before `SetUp()` — so initializing there (or in
+  the member initializer, as above) removes ordering as a question entirely.
+  `GetParam()` is already available in the constructor. Only if the flag state
+  depends on something that does not exist until `SetUp()` should the init live
+  there, and then it belongs at the top of `SetUp()`, not the bottom.
 - **Filtering:** parameterized suites need the instantiation prefix in
   `--gtest_filter` (`All/MyCachingTest.*`). A bare fixture-name filter matches
   nothing and still reports success.
