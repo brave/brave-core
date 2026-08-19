@@ -217,7 +217,8 @@ void DistillPageText(
         base::BindOnce(on_script_executed, std::move(callback)),
         blink::BackForwardCacheAware::kAllow,
         blink::mojom::WantResultOption::kWantResult,
-        blink::mojom::PromiseResultOption::kAwait);
+        blink::mojom::PromiseResultOption::kAwait,
+        /*is_injected_extension_script=*/false);
     return;
   }
 
@@ -255,7 +256,8 @@ void DistillPageTextViaSiteScript(
       base::BindOnce(on_script_executed, std::move(callback)),
       blink::BackForwardCacheAware::kAllow,
       blink::mojom::WantResultOption::kWantResult,
-      blink::mojom::PromiseResultOption::kDoNotWait);
+      blink::mojom::PromiseResultOption::kDoNotWait,
+      /*is_injected_extension_script=*/false);
 }
 
 std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
