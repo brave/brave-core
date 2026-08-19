@@ -83,6 +83,7 @@ import java.util.ArrayList;
 /** Settings fragment that allows to control Sync functionality. */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
         implements View.OnClickListener,
+                BottomInsetViewProvider,
                 QRCodeCameraManager.Callback,
                 QRCodeCameraManager.HostProvider,
                 BraveSyncDevices.DeviceInfoChangedListener,
@@ -331,6 +332,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         mInflater = inflater;
         return mInflater.inflate(R.layout.brave_sync_layout, container, false);
+    }
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView;
     }
 
     @Override

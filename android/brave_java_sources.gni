@@ -332,6 +332,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/SetDefaultBrowserBottomSheetFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BottomInsetViewProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveAccountPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveAccountSectionController.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveDestructivePreference.java",
