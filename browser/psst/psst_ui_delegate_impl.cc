@@ -9,6 +9,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/psst/core/common/constants.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
 
@@ -170,8 +171,11 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
 
     ui_presenter_->ShowConsentDialog();
   } else {
-    // Disable PSST if user declined the infobar
-    psst_settings_service_->SetPsstEnabled(false);
+    if (!psst_settings_service_->IsPsstControlledByBraveOrigin()) {
+      // Disable PSST if user declined the infobar
+      psst_settings_service_->SetPsstEnabled(false);
+    }
+    psst_settings_service_->SetInfobarShowCounter(kMaxPsstInfobarShownCounter);
   }
 }
 

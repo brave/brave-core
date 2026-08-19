@@ -20,8 +20,8 @@ inline constexpr char kPsstInfobarShownCounter[] =
 // written by BraveOrigin and is applied to kPsstEnabled once, when
 // PsstSettingsService is constructed, so a toggle change mid-session doesn't
 // affect the running feature until the browser restarts.
-inline constexpr char kPsstEnabledBraveOrigin[] =
-    "brave.psst.settings.enable_psst_brave_origin";
+// inline constexpr char kPsstEnabledBraveOrigin[] =
+//     "brave.psst.settings.enable_psst_brave_origin";
 }  // namespace prefs
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

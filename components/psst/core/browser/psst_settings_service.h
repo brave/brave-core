@@ -39,7 +39,7 @@ class PsstSettingsService : public KeyedService {
 
   explicit PsstSettingsService(
       HostContentSettingsMap& host_content_settings_map,
-      brave_origin::BraveOriginService* brave_origin_service,
+//      brave_origin::BraveOriginService* brave_origin_service,
       PrefService* prefs);
   ~PsstSettingsService() override;
 
@@ -65,13 +65,16 @@ class PsstSettingsService : public KeyedService {
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);
 
+  bool IsPsstControlledByBraveOrigin() const;
+
+  void SetInfobarShowCounter(int value);
  private:
   void OnPreferenceChanged(const std::string& pref_name);
 
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;  // NOT OWNED
-  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ =
-      nullptr;                            // NOT OWNED
+//   raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ =
+//       nullptr;                            // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
   base::ObserverList<PrefObserver> observers_;
   PrefChangeRegistrar pref_change_registrar_;

@@ -8,9 +8,16 @@
 
 #include "base/feature_list.h"
 
+class PrefService;
+
 namespace psst::features {
 
 BASE_DECLARE_FEATURE(kEnablePsst);
+
+bool IsPsstEnabled();
+
+bool IsPsstEnabledForProfile(PrefService& pref_service);
+
 
 }  // namespace psst::features
 

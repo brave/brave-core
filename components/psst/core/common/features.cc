@@ -5,8 +5,18 @@
 
 #include "brave/components/psst/core/common/features.h"
 
+#include "brave/components/psst/core/browser/pref_names.h"
+
 namespace psst::features {
 
 BASE_FEATURE(kEnablePsst, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsPsstEnabled() {
+  return base::FeatureList::IsEnabled(psst::features::kEnablePsst);
+}
+
+bool IsPsstEnabledForProfile(PrefService& pref_service) {
+  return IsPsstEnabled() && pref_service.GetBoolean(prefs::kPsstEnabled);
+}
 
 }  // namespace psst::features
