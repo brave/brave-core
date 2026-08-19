@@ -18,12 +18,13 @@
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/file_util_icu.h"
-#include "base/i18n/time_formatting.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -176,10 +177,13 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
  * https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc;l=205-222?q=IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME
  */
 base::FilePath GetDefaultFilepathForBookmarkExport() {
-  std::string bookmarks_yyyy_MM_dd = l10n_util::GetStringFUTF8(
-      IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
-      base::UTF8ToUTF16(base::UnlocalizedTimeFormatWithPattern(
-          base::Time::Now(), "yyyy_MM_dd")));
+  base::Time::Exploded exploded;
+  base::Time::Now().LocalExplode(&exploded);
+  std::string bookmarks_yyyy_MM_dd =
+      l10n_util::GetStringFUTF8(IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
+                                base::UTF8ToUTF16(base::StringPrintf(
+                                    "%04d_%02d_%02d", exploded.year,
+                                    exploded.month, exploded.day_of_month)));
 
   base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_yyyy_MM_dd);
   base::FilePath::StringType path_str = path.value();
