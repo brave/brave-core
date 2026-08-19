@@ -15,32 +15,39 @@ export function Diagnostics() {
   const diagnosticId = useAppState((state) => state.diagnosticId)
 
   return (
-    <div className='content-card'>
-      <h4>
-        <span className='title'>Diagnostics</span>
-      </h4>
-      <section className='key-value-list'>
-        {entries.map((entry) => (
-          <div key={entry.name}>
-            <span>{entry.name}</span>
-            <span>{entry.value}</span>
+    <>
+      <div className='content-card'>
+        <h4>
+          <span className='title'>Diagnostics</span>
+        </h4>
+        <section className='key-value-list'>
+          {entries.map((entry) => (
+            <div key={entry.name}>
+              <span>{entry.name}</span>
+              <span>{entry.value}</span>
+            </div>
+          ))}
+        </section>
+      </div>
+
+      <div className='content-card'>
+        <section className='key-value-list'>
+          <div>
+            <span>Diagnostic ID</span>
+            <span>
+              <input
+                value={diagnosticId}
+                maxLength={DIAGNOSTIC_ID_MAX_LENGTH}
+                autoComplete='off'
+                spellCheck={false}
+                onChange={(event) => {
+                  actions.setDiagnosticId(event.target.value)
+                }}
+              />
+            </span>
           </div>
-        ))}
-        <div>
-          <span>Diagnostic ID:</span>
-          <span>
-            <input
-              value={diagnosticId}
-              maxLength={DIAGNOSTIC_ID_MAX_LENGTH}
-              autoComplete='off'
-              spellCheck={false}
-              onChange={(event) => {
-                actions.setDiagnosticId(event.target.value)
-              }}
-            />
-          </span>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   )
 }
