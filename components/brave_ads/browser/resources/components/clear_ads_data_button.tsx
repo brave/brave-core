@@ -47,16 +47,17 @@ export function ClearAdsDataButton() {
       </Button>
       {status &&
         createPortal(
-          <div
+          <Alert
             className='toast'
             data-css-scope={style.scope}
+            type={status}
+            role={status === 'success' ? 'status' : 'alert'}
+            aria-live={status === 'success' ? 'polite' : 'assertive'}
           >
-            <Alert type={status}>
-              {status === 'success'
-                ? 'Ads data cleared.'
-                : 'Failed to clear ads data.'}
-            </Alert>
-          </div>,
+            {status === 'success'
+              ? 'Ads data cleared.'
+              : 'Failed to clear ads data.'}
+          </Alert>,
           document.body,
         )}
     </>
