@@ -11,10 +11,10 @@
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/customize_chrome/side_panel_controller.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_section.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -31,9 +31,8 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
   // Returns the CustomizeChromeTabHelper associated with the tab
   customize_chrome::SidePanelController* GetSidePanelController(
       Browser* browser) {
-    return browser->GetActiveTabInterface()
-        ->GetTabFeatures()
-        ->customize_chrome_side_panel_controller();
+    return customize_chrome::SidePanelController::Get(
+        browser->GetActiveTabInterface()->GetUnownedUserDataHost());
   }
 
   // Returns the WebContents of the side panel that is currently shown in the
