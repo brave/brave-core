@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h
-index 1fbdf3e8d0fb9cfd56fc28729aee6c680c5f0e4b..8e1e402608c7cc500c3ddd2bbf5de8b9860470f7 100644
+index 1a91845e3ee530cf37d16e68ceee8e3fe96f47bd..41415d2d5bd7682464b794d43bf721e9a6f8ff2a 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h
 @@ -48,6 +48,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
@@ -9,8 +9,8 @@ index 1fbdf3e8d0fb9cfd56fc28729aee6c680c5f0e4b..8e1e402608c7cc500c3ddd2bbf5de8b9
 +  friend class BraveBrowserViewTabbedLayoutImpl;
    struct HorizontalLayout;
    struct SeparatorInfo;
-   struct TransientLayoutData;
-@@ -74,7 +75,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
+   struct SidePanelContentAnimation;
+@@ -75,7 +76,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
        const BrowserLayoutParams& params) const;
  
    // Returns the leading margin for the horizontal tab strip region.
@@ -19,12 +19,12 @@ index 1fbdf3e8d0fb9cfd56fc28729aee6c680c5f0e4b..8e1e402608c7cc500c3ddd2bbf5de8b9
        const BrowserLayoutParams& params) const;
  
    // Returns the overlap in DIPs between the vertical tab strip and the content
-@@ -92,7 +93,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
+@@ -93,7 +94,7 @@ class BrowserViewTabbedLayoutImpl : public BrowserViewLayoutImpl {
    HorizontalLayout CalculateHorizontalLayout(BrowserLayoutParams& params) const;
    VerticalTabStripAnimation CalculateVerticalTabStripAnimation();
    int GetCollapsedVerticalTabStripRelativeTop() const;
 -  SeparatorInfo CalculateSeparatorInfo() const;
 +  virtual SeparatorInfo CalculateSeparatorInfo() const;
+   SidePanelContentAnimation CalculateSidePanelContentAnimation() const;
  
    std::unique_ptr<TransientLayoutData> layout_data_;
- 

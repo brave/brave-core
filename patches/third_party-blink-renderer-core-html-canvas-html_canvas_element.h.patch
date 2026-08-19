@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 18d1c5391c0c80886782546c2687f9819a99c7d1..e7bdce13bbd40a063a65fdd18e6c915340bf131d 100644
+index 7fc77904b9534e2316d000df9aa8c412549db6dc..417d6a8bfe447404c4aade6bd061bcfad3e3e99a 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -383,12 +383,21 @@ class CORE_EXPORT HTMLCanvasElement final
- 
-   ElementImage* captureElementImage(Element* element, ExceptionState&);
+@@ -398,12 +398,21 @@ class CORE_EXPORT HTMLCanvasElement final
+     return hit_testable_descendants_;
+   }
  
 +  String toDataURL(ScriptState* script_state, const String& mime_type,
 +                   const ScriptValue& quality_argument,
