@@ -19,10 +19,6 @@
 
 class ToolbarButtonProvider;
 
-namespace psst {
-class PsstSettingsService;
-}  // namespace psst
-
 namespace page_actions {
 
 class PsstActionController : public ui::SimpleMenuModel::Delegate {
@@ -37,7 +33,8 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
 
   PsstActionController(
       tabs::TabInterface& tab,
-      page_actions::PageActionController& page_action_controller);
+      page_actions::PageActionController& page_action_controller,
+      const bool hide_disable_psst_menu_item);
   PsstActionController(const PsstActionController&) = delete;
   PsstActionController& operator=(const PsstActionController&) = delete;
   ~PsstActionController() override;
@@ -66,6 +63,7 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   const raw_ref<tabs::TabInterface> tab_;
   const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
   base::CallbackListSubscription did_activate_subscription_;
+  bool hide_disable_psst_menu_item_;
 
   std::unique_ptr<ui::SimpleMenuModel> psst_menu_model_;
   std::unique_ptr<views::MenuModelAdapter> menu_model_adapter_;
@@ -74,7 +72,6 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   // not owned
   raw_ptr<Delegate> psst_menu_model_delegate_ = nullptr;
   raw_ptr<actions::ActionItem> action_item_for_menu_ = nullptr;
-  raw_ptr<psst::PsstSettingsService> psst_settings_service_ = nullptr;
 
   // Clears if the page action `View` is destroyed while a menu is open
   views::ViewTracker menu_anchor_view_tracker_;

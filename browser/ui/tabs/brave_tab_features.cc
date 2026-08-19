@@ -81,11 +81,13 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
       base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
       page_action_controller()->ActionExists(kActionShowPsstIcon)) {
-    psst_action_controller_ =
-        std::make_unique<page_actions::PsstActionController>(
-            tab, *page_action_controller());
     auto* psst_settings_service =
         PsstSettingsServiceFactory::GetForProfile(profile);
+    psst_action_controller_ =
+        std::make_unique<page_actions::PsstActionController>(
+            tab, *page_action_controller(),
+            psst_settings_service &&
+                psst_settings_service->IsManagedPreference());
     auto* variations_service = g_browser_process->variations_service();
     // `psst_settings_service` can be null when the PSST feature is
     // controlled by admin's or Brave Origin policy: both require a
