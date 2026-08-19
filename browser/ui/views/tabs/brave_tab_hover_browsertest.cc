@@ -26,7 +26,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/animation/animation_test_api.h"
@@ -99,9 +98,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   horizontal_tab_strip_for_testing()->tab_at(0)->SetDataForTesting(data);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data.visible_url, active_tab()->data().visible_url);
-  EXPECT_NE(nullptr,
-            content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
-                contents()));
+  EXPECT_NE(nullptr, ThumbnailTabHelper::From(
+                         browser()->tab_strip_model()->GetTabAtIndex(0)));
 
   browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
@@ -114,9 +112,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   horizontal_tab_strip_for_testing()->tab_at(0)->SetDataForTesting(data);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data.visible_url, active_tab()->data().visible_url);
-  EXPECT_NE(nullptr,
-            content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
-                contents()));
+  EXPECT_NE(nullptr, ThumbnailTabHelper::From(
+                         browser()->tab_strip_model()->GetTabAtIndex(0)));
 
   browser()->GetProfile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
@@ -130,9 +127,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   horizontal_tab_strip_for_testing()->tab_at(0)->SetDataForTesting(data);
   EXPECT_EQ(0, horizontal_tab_strip_for_testing()->GetActiveIndex());
   EXPECT_EQ(data.visible_url, active_tab()->data().visible_url);
-  EXPECT_NE(nullptr,
-            content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
-                contents()));
+  EXPECT_NE(nullptr, ThumbnailTabHelper::From(
+                         browser()->tab_strip_model()->GetTabAtIndex(0)));
 }
 
 // This is based on |TabHoverCardBubbleViewBrowserTest|. Unfortunately, all the
