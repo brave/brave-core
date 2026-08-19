@@ -125,7 +125,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Rewards.NonBraveSearchWalletConnected", {}},
     {"Brave.Rewards.OfferClicks", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.OffersViewed", MetricConfig{.ephemeral = true}},
-    {"Brave.Rewards.SearchResultAdsOptin", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.TipsState.2", {}},
     {"Brave.Rewards.ToolbarButtonTrigger", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.WalletBalance.3", {}},

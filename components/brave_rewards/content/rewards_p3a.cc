@@ -94,14 +94,6 @@ void RecordAdTypesEnabled(PrefService* prefs) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
-void RecordSearchResultAdsOptinChange(PrefService* prefs) {
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  if (prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds)) {
-    UMA_HISTOGRAM_BOOLEAN(kSearchResultAdsOptinHistogramName, true);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-}
-
 void RecordAdsHistoryView() {
   UMA_HISTOGRAM_BOOLEAN(kAdsHistoryViewHistogramName, true);
 }
