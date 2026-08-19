@@ -240,6 +240,7 @@ bool PsstUiDesktopPresenter::IsDialogShown() const {
 }
 
 void PsstUiDesktopPresenter::OnShowConsentDialogSelected() {
+  HideInfoBar();
   ShowConsentDialog();
 }
 
