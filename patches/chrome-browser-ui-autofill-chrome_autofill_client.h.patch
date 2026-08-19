@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
-index 130f6b1e0810250c0a468c4499071d495f5eb5c3..2378ee7f27c8cd71ad67458b7f2ac515c660ef02 100644
+index 28b9402bfcfed6f4d893b8ed5540f196922bbd9a..c6041bd193a3077510f1ffccb866ade84a1da2a2 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.h
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
 @@ -145,8 +145,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
@@ -12,10 +12,10 @@ index 130f6b1e0810250c0a468c4499071d495f5eb5c3..2378ee7f27c8cd71ad67458b7f2ac515
    FieldClassificationModelHandler* GetAutofillFieldClassificationModelHandler()
        final;
    FieldClassificationModelHandler*
-@@ -232,12 +231,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
-       const FieldTypeSet& triggering_field_types) final;
+@@ -233,12 +232,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
    bool IsTabInActorMode() const final;
-   ActorKeyMetricsRecorder* GetActorKeyMetricsRecorder() final;
+   ActorAutofillManager* GetActorAutofillManager() final;
+   int64_t GetNavigationId() const final;
 -  bool IsAutofillEnabled() const final;
 +  bool IsAutofillEnabled() const override;
    bool IsAutofillProfileEnabled() const final;

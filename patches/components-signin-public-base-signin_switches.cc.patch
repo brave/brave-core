@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 775f70052cc7628762560ebaf293df3671fcb900..c298ee9712ff17091f24bb4d3cf9f15f1f4821a1 100644
+index ac7aedfe58d45d64d02416ced5f9f13e1ec90f98..7f15343203e4ad1b39924cd2d476906d18817a09 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -642,8 +642,10 @@ BASE_FEATURE(kFetchAccountInfoOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -653,8 +653,10 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -13,8 +13,8 @@ index 775f70052cc7628762560ebaf293df3671fcb900..c298ee9712ff17091f24bb4d3cf9f15f
 +// kFirstRunDesktopRefresh feature state is enforced via plaster rewrite.
  BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
- BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
-@@ -808,6 +810,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
+ bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
+@@ -828,6 +830,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
               base::FEATURE_ENABLED_BY_DEFAULT);
  #endif
  
@@ -22,7 +22,7 @@ index 775f70052cc7628762560ebaf293df3671fcb900..c298ee9712ff17091f24bb4d3cf9f15f
  BASE_FEATURE(kReadIsSubjectToUniversalOptOutCapability,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -924,13 +927,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -959,13 +962,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  
@@ -35,6 +35,6 @@ index 775f70052cc7628762560ebaf293df3671fcb900..c298ee9712ff17091f24bb4d3cf9f15f
 -#endif
 -);
 +base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kBookmarksMigrateUiChanges, base::FEATURE_ENABLED_BY_DEFAULT);
  
  #if BUILDFLAG(IS_CHROMEOS)
+ BASE_FEATURE(kUndoChromeOsUseConsentLevelSignin,

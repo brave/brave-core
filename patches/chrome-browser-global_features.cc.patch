@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/global_features.cc b/chrome/browser/global_features.cc
-index 0b349d5149d03673f512037a70d17a26831861a1..7bb5998f38ac138ff275b8a334b99f638b17963c 100644
+index c1fab5259d008834996b0c7cf40c3172ef5902c3..61db5af9174fc902c180d24f4f616fa1c25daa7e 100644
 --- a/chrome/browser/global_features.cc
 +++ b/chrome/browser/global_features.cc
-@@ -82,6 +82,7 @@
- #include "chrome/browser/on_device_translation/installer_impl.h"
- #endif  // BUILDFLAG(ENABLE_ON_DEVICE_TRANSLATION)
+@@ -91,6 +91,7 @@
+ #include "chrome/common/request_header_integrity/request_header_integrity_url_loader_throttle.h"  // nogncheck
+ #endif
  
 +GlobalFeatures* CreateBraveGlobalFeatures();
  namespace {
  
  // This is the generic entry point for test code to stub out browser
-@@ -100,7 +101,7 @@ std::unique_ptr<GlobalFeatures> GlobalFeatures::CreateGlobalFeatures() {
+@@ -109,7 +110,7 @@ std::unique_ptr<GlobalFeatures> GlobalFeatures::CreateGlobalFeatures() {
      return GetFactory().Run();
    }
    // Constructor is protected.
