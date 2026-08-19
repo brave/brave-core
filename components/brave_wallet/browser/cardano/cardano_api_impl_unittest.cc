@@ -168,6 +168,10 @@ class CardanoApiImplTest : public testing::Test {
     return brave_wallet_service_.get();
   }
 
+  TestCardanoServiceDelegate* service_delegate() {
+    return service_delegate_.get();
+  }
+
   KeyringService* keyring_service() {
     return brave_wallet_service_->keyring_service();
   }
@@ -515,7 +519,7 @@ TEST_F(CardanoApiImplTest,
 
   // Simulate permission revocation while the request is still queued and
   // trigger the drain manually (the test delegate doesn't observe HCSM).
-  service_delegate_->permission_granted = false;
+  service_delegate()->permission_granted = false;
   brave_wallet_service()->OnWalletContentSettingChanged();
 
   auto& signature = future.Get<0>();
