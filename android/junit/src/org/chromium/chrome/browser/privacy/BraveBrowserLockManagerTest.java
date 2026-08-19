@@ -5,8 +5,11 @@
 
 package org.chromium.chrome.browser.privacy;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -33,6 +36,9 @@ import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = VERSION_CODES.R)
 public class BraveBrowserLockManagerTest {
@@ -49,6 +55,19 @@ public class BraveBrowserLockManagerTest {
         BraveBrowserLockCoordinator createCoordinator(
                 Activity activity, IncognitoReauthManager incognitoReauthManager) {
             return mMockCoordinator;
+        }
+    }
+
+    private final Map<Activity, BraveBrowserLockCoordinator> mCoordinatorsByActivity =
+            new HashMap<>();
+
+    private class MultiInstanceTestManager extends BraveBrowserLockManager {
+        @Override
+        BraveBrowserLockCoordinator createCoordinator(
+                Activity activity, IncognitoReauthManager incognitoReauthManager) {
+            BraveBrowserLockCoordinator coordinator = mock(BraveBrowserLockCoordinator.class);
+            mCoordinatorsByActivity.put(activity, coordinator);
+            return coordinator;
         }
     }
 
@@ -284,5 +303,94 @@ public class BraveBrowserLockManagerTest {
 
         manager.getReauthCallbackForTesting().onIncognitoReauthNotPossible();
         assertFalse(manager.isLockArmedForTesting());
+    }
+
+    @Test
+    public void secondActivityStarted_whileFirstLocked_alsoGetsLocked() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
+
+        MultiInstanceTestManager manager = new MultiInstanceTestManager();
+        manager.onNativeInitialized(mProfile);
+        manager.setLockArmedForTesting(true);
+
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+        manager.onActivityStateChange(secondActivity, ActivityState.STARTED);
+
+        assertTrue(manager.isLockShownForTesting(mActivity));
+        assertTrue(manager.isLockShownForTesting(secondActivity));
+        assertEquals(2, manager.getActiveLockCountForTesting());
+        verify(mCoordinatorsByActivity.get(mActivity)).show();
+        verify(mCoordinatorsByActivity.get(secondActivity)).show();
+    }
+
+    @Test
+    public void secondActivityStarted_whileFirstReauthPending_doesNotStartConcurrentReauth() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
+
+        MultiInstanceTestManager manager = new MultiInstanceTestManager();
+        manager.onNativeInitialized(mProfile);
+        manager.setLockArmedForTesting(true);
+
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+        assertTrue(manager.isReauthInFlightForTesting());
+
+        // The unstubbed mock ReauthenticatorBridge never calls back, so the first attempt stays
+        // pending. The second activity must still get its overlay, but must not trigger a second
+        // concurrent biometric prompt.
+        manager.onActivityStateChange(secondActivity, ActivityState.STARTED);
+
+        assertTrue(manager.isLockShownForTesting(secondActivity));
+        assertTrue(manager.isReauthInFlightForTesting());
+        assertEquals(2, manager.getActiveLockCountForTesting());
+    }
+
+    @Test
+    public void reauthFailure_startsQueuedSecondActivityReauth() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
+
+        MultiInstanceTestManager manager = new MultiInstanceTestManager();
+        manager.onNativeInitialized(mProfile);
+        manager.setLockArmedForTesting(true);
+
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+        manager.onActivityStateChange(secondActivity, ActivityState.STARTED);
+        assertTrue(manager.isReauthInFlightForTesting());
+
+        manager.getReauthCallbackForTesting().onIncognitoReauthFailure();
+
+        // Still armed (failure doesn't unlock), but a new attempt should now be in-flight for
+        // whichever activity hadn't been tried yet.
+        assertTrue(manager.isLockArmedForTesting());
+        assertTrue(manager.isReauthInFlightForTesting());
+        assertEquals(2, manager.getActiveLockCountForTesting());
+    }
+
+    @Test
+    public void reauthSuccess_hidesAllActivityLocks() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
+        Activity secondActivity = Robolectric.buildActivity(Activity.class).create().get();
+
+        MultiInstanceTestManager manager = new MultiInstanceTestManager();
+        manager.onNativeInitialized(mProfile);
+        manager.setLockArmedForTesting(true);
+
+        manager.onActivityStateChange(mActivity, ActivityState.STARTED);
+        manager.onActivityStateChange(secondActivity, ActivityState.STARTED);
+
+        manager.getReauthCallbackForTesting().onIncognitoReauthSuccess();
+
+        assertFalse(manager.isLockArmedForTesting());
+        assertFalse(manager.isLockShownForTesting(mActivity));
+        assertFalse(manager.isLockShownForTesting(secondActivity));
+        assertEquals(0, manager.getActiveLockCountForTesting());
+        verify(mCoordinatorsByActivity.get(mActivity)).hide(anyInt());
+        verify(mCoordinatorsByActivity.get(secondActivity)).hide(anyInt());
     }
 }
