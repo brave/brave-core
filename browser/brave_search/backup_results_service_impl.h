@@ -30,6 +30,7 @@ class PrefService;
 class Profile;
 
 namespace content {
+class RenderWidgetHostView;
 class WebContents;
 }  // namespace content
 
@@ -71,7 +72,12 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   bool HandleWebContentsStartRequest(const content::WebContents* web_contents,
                                      const GURL& url) override;
-  void ApplyWindowAndViewSize(const content::WebContents* web_contents);
+  // `rwhv` is the view that will host the document, which is not necessarily
+  // the web contents' current view during a navigation.
+  void ApplyWindowAndViewSize(const content::WebContents* web_contents,
+                              content::RenderWidgetHostView* rwhv);
+  void ApplyPageFocus(const content::WebContents* web_contents,
+                      content::RenderWidgetHostView* rwhv);
   void HandleWebContentsDidFinishNavigation(
       const content::WebContents* web_contents,
       int response_code);

@@ -44,6 +44,9 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/render_widget_host.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/restore_type.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -70,7 +73,6 @@
 #include "ui/android/view_android.h"
 #include "ui/android/window_android.h"
 #else
-#include "content/public/browser/render_widget_host_view.h"
 #include "ui/gfx/geometry/rect.h"
 #endif
 
@@ -134,19 +136,25 @@ class BackupResultsWebContentsObserver
       public content::WebContentsUserData<BackupResultsWebContentsObserver> {
  public:
   void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override {
-    if (!backup_results_service_) {
+    if (!backup_results_service_ || render_frame_host->GetParent()) {
       return;
     }
-    backup_results_service_->ApplyWindowAndViewSize(web_contents());
+    // The widget of a speculative frame is not the web contents' current
+    // widget, so it has to be targeted directly. This is the last observer
+    // callback before the renderer is told to commit the document.
+    auto* rwhv = render_frame_host->GetView();
+    backup_results_service_->ApplyWindowAndViewSize(web_contents(), rwhv);
+    backup_results_service_->ApplyPageFocus(web_contents(), rwhv);
   }
 
   void DidFinishNavigation(content::NavigationHandle* controller) override {
     if (!backup_results_service_) {
       return;
     }
-    // A navigation may have created a new widget view, which is sized to the
-    // containing window by default.
-    backup_results_service_->ApplyWindowAndViewSize(web_contents());
+    // Page focus is tracked per widget, so it must be reapplied for the widget
+    // that ended up hosting the document.
+    backup_results_service_->ApplyPageFocus(
+        web_contents(), web_contents()->GetRenderWidgetHostView());
     const auto* response_headers = controller->GetResponseHeaders();
     if (!response_headers) {
       return;
@@ -325,6 +333,14 @@ void BackupResultsServiceImpl::FetchBackupResults(
         static_cast<int>(view_size.height() * dip_scale));
 #elif BUILDFLAG(IS_MAC)
     web_contents->Resize(gfx::Rect(view_size));
+    // Sizing the view resets the window rect, so the window rect is set
+    // afterwards. Doing this before the first navigation means the initial
+    // widget state sent to the renderer already carries it, instead of the
+    // document observing a change to it while it is being parsed.
+    if (auto* rwhv = web_contents->GetRenderWidgetHostView();
+        rwhv && !window_bounds.IsEmpty()) {
+      rwhv->SetWindowFrameInScreen(window_bounds);
+    }
 #else
     // The renderer reports the bounds of the topmost window as the window rect,
     // so the containing window is sized separately from the view. The view is
@@ -447,15 +463,12 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
 }
 
 void BackupResultsServiceImpl::ApplyWindowAndViewSize(
-    const content::WebContents* web_contents) {
+    const content::WebContents* web_contents,
+    content::RenderWidgetHostView* rwhv) {
 #if !BUILDFLAG(IS_ANDROID)
   auto pending_request = FindPendingRequest(web_contents);
-  if (pending_request == pending_requests_.end() ||
+  if (pending_request == pending_requests_.end() || !rwhv ||
       pending_request->window_bounds.IsEmpty()) {
-    return;
-  }
-  auto* rwhv = pending_request->web_contents->GetRenderWidgetHostView();
-  if (!rwhv) {
     return;
   }
 #if BUILDFLAG(IS_MAC)
@@ -469,6 +482,19 @@ void BackupResultsServiceImpl::ApplyWindowAndViewSize(
   rwhv->SetSize(pending_request->view_size);
 #endif
 #endif
+}
+
+void BackupResultsServiceImpl::ApplyPageFocus(
+    const content::WebContents* web_contents,
+    content::RenderWidgetHostView* rwhv) {
+  auto pending_request = FindPendingRequest(web_contents);
+  if (pending_request == pending_requests_.end() || !rwhv) {
+    return;
+  }
+  // The web contents is not attached to a browser window, so the view can never
+  // acquire native focus. Set page focus directly so that the page observes
+  // `document.hasFocus() == true`.
+  rwhv->GetRenderWidgetHost()->Focus();
 }
 
 void BackupResultsServiceImpl::HandleWebContentsDidFinishNavigation(
