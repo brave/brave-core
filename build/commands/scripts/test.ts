@@ -22,6 +22,7 @@ import {
   getChromiumTestsSuites,
 } from '../lib/testUtils.js'
 import { isCI, isTeamcity } from '../lib/ciDetect.ts'
+import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
 const deleteFile = (filePath: string) => {
   if (fs.existsSync(filePath)) {
@@ -371,7 +372,8 @@ program
       return
     }
 
+    const passthroughArgs = getPassthroughArgs(command)
     await buildTests(testsToRun, config)
-    await runTests(command.args, { suite, testsToRun }, config, options)
+    await runTests(passthroughArgs, { suite, testsToRun }, config, options)
   })
   .parseAsync()
