@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_container_impl.h b/chrome/browser/ui/views/tabs/tab_container_impl.h
-index a214c7420ba47edc4679a62c6ebc92a277e2df7c..8835dec9f85443300eff930c2a1551807846bb21 100644
+index 41bc5461e70865a9a5ebdc0ce45c5c42fc2ab368..cf00d749ec9d8ea2a348cc804c3b3f9170933370 100644
 --- a/chrome/browser/ui/views/tabs/tab_container_impl.h
 +++ b/chrome/browser/ui/views/tabs/tab_container_impl.h
 @@ -172,6 +172,7 @@ class TabContainerImpl : public TabContainer,
@@ -41,9 +41,9 @@ index a214c7420ba47edc4679a62c6ebc92a277e2df7c..8835dec9f85443300eff930c2a155180
 -  void UpdateClosingModeOnRemovedTab(int model_index, bool was_active);
 +  virtual void UpdateClosingModeOnRemovedTab(int model_index, bool was_active);
  
-   // Perform an animated resize-relayout of the TabContainer immediately.
-   void ResizeLayoutTabs();
-@@ -261,7 +262,7 @@ class TabContainerImpl : public TabContainer,
+   // Returns whether `tab` is visible, accounting for tab group focusing and
+   // collapsed groups.
+@@ -273,7 +274,7 @@ class TabContainerImpl : public TabContainer,
  
    // Returns true if the specified point in TabStrip coords is within the
    // hit-test region of the specified Tab.
@@ -52,7 +52,7 @@ index a214c7420ba47edc4679a62c6ebc92a277e2df7c..8835dec9f85443300eff930c2a155180
  
    // For a given point, finds a tab that is hit by the point. If the point hits
    // an area on which two tabs are overlapping, the tab is selected as follows:
-@@ -275,7 +276,7 @@ class TabContainerImpl : public TabContainer,
+@@ -287,7 +288,7 @@ class TabContainerImpl : public TabContainer,
    // (for example, if currently the strip has the last tab selected, and
    // changing that to the first tab would cause `tab` to be pushed over enough
    // to clip).
