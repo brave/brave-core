@@ -208,15 +208,16 @@ bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
                              : BrowserCommandController::IsCommandEnabled(id);
 }
 
-bool BraveBrowserCommandController::ExecuteCommandWithDispositionImpl(
+bool BraveBrowserCommandController::ExecuteCommandWithDispositionAndContext(
     int id,
     WindowOpenDisposition disposition,
-    base::TimeTicks time_stamp,
-    std::optional<actions::ActionInvocationContext> context) {
+    std::optional<actions::ActionInvocationContext> context,
+    base::TimeTicks time_stamp) {
   return IsBraveCommands(id) || IsBraveOverrideCommands(id)
              ? ExecuteBraveCommandWithDisposition(id, disposition, time_stamp)
-             : BrowserCommandController::ExecuteCommandWithDispositionImpl(
-                   id, disposition, time_stamp, std::move(context));
+             : BrowserCommandController::
+                   ExecuteCommandWithDispositionAndContext(
+                       id, disposition, std::move(context), time_stamp);
 }
 
 void BraveBrowserCommandController::AddCommandObserver(
@@ -614,16 +615,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_NEW_WINDOW:
       // Use chromium's action for non-Tor profiles.
       if (!browser_->GetProfile()->IsTor()) {
-        return BrowserCommandController::ExecuteCommandWithDispositionImpl(
-            id, disposition, time_stamp, std::nullopt);
+        return BrowserCommandController::
+            ExecuteCommandWithDispositionAndContext(id, disposition,
+                                                    std::nullopt, time_stamp);
       }
       NewEmptyWindow(browser_->GetProfile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
       if (!browser_->GetProfile()->IsTor()) {
-        return BrowserCommandController::ExecuteCommandWithDispositionImpl(
-            id, disposition, time_stamp, std::nullopt);
+        return BrowserCommandController::
+            ExecuteCommandWithDispositionAndContext(id, disposition,
+                                                    std::nullopt, time_stamp);
       }
       NewIncognitoWindow(browser_->GetProfile()->GetOriginalProfile());
       break;
