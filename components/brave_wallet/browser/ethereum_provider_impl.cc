@@ -1228,10 +1228,6 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   }
 
   if (addresses.empty()) {
-    if (!wallet_onboarding_shown_) {
-      delegate_->ShowWalletOnboarding(origin);
-      wallet_onboarding_shown_ = true;
-    }
     OnRequestEthereumPermissions(std::move(callback), std::move(id), method,
                                  origin, RequestPermissionsError::kInternal,
                                  std::nullopt);

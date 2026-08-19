@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -549,6 +550,11 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
     brave_wallet::SetDefaultSolanaWallet(
         browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
+    // The provider is only injected once a wallet exists, so create one before
+    // the navigations below.
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
+        brave_wallet::kMnemonicScarePiece, brave_wallet::kTestWalletPassword,
+        false));
     content::SetBrowserClientForTesting(&test_content_browser_client_);
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -643,7 +649,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
-                       AttachEvenIfNoWalletCreated) {
+                       DoNotAttachIfNoWalletCreated) {
   GetKeyringService()->Reset(false);
 
   brave_wallet::SetDefaultSolanaWallet(
@@ -651,16 +657,13 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ReloadAndWaitForLoadStop(browser());
 
-  constexpr char kEvalIsBraveWallet[] = "window.solana.isBraveWallet";
-  EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
-                              kEvalIsBraveWallet)
-                  .ExtractBool());
+  EXPECT_EQ(base::Value(false),
+            content::EvalJs(web_contents(browser()),
+                            "!!window.solana || !!window.braveSolana"));
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
-  GetKeyringService()->CreateWallet("password", base::DoNothing());
-
   brave_wallet::SetDefaultSolanaWallet(
       browser()->GetProfile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);

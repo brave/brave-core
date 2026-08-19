@@ -11,14 +11,6 @@
 
 namespace brave_wallet {
 
-ScopedNewSetupNeededCallbackForTesting::ScopedNewSetupNeededCallbackForTesting(
-    base::OnceCallback<void()> callback)
-    : callback_(std::move(callback)),
-      resetter_(SetNewSetupNeededCallbackForTesting(&callback_)) {}
-
-ScopedNewSetupNeededCallbackForTesting::
-    ~ScopedNewSetupNeededCallbackForTesting() = default;
-
 ScopedAccountCreationCallbackForTesting::
     ScopedAccountCreationCallbackForTesting(
         base::OnceCallback<void(std::string_view)> callback)

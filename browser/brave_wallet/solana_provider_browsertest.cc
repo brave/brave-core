@@ -1591,6 +1591,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, CallViaProxy) {
+  RestoreWallet();
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

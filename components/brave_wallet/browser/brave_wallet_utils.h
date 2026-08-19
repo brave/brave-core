@@ -27,6 +27,11 @@ class CardanoAddress;
 // Returns true if Brave Wallet is allowed (not disabled by policy).
 bool IsAllowed(PrefService* prefs);
 
+// Returns true if the user has created a wallet. Reads the same pref as
+// KeyringService::IsWalletCreatedSync, for callers deciding whether to install
+// the dApp providers where no KeyringService is at hand.
+bool IsWalletCreated(PrefService* prefs);
+
 bool EncodeString(std::string_view input, std::string* output);
 bool EncodeStringArray(base::span<const std::string> input,
                        std::string* output);

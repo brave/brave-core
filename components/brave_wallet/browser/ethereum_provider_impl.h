@@ -359,7 +359,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   EthLogsTracker eth_logs_tracker_;
   bool first_known_accounts_check_ = true;
   const raw_ptr<PrefService> prefs_ = nullptr;
-  bool wallet_onboarding_shown_ = false;
   base::WeakPtrFactory<EthereumProviderImpl> weak_factory_{this};
 };
 

@@ -95,16 +95,16 @@ void SolanaProviderImpl::Connect(std::optional<base::DictValue> arg,
   }
   auto account = keyring_service_->GetSelectedSolanaDappAccount();
   if (!account) {
+    // The provider is only injected once a wallet exists, but the wallet can
+    // still be reset while a page holds one. Don't offer account creation in
+    // that state: it navigates to a page that requires a keyring.
     if (!keyring_service_->IsWalletCreatedSync()) {
-      delegate_->ShowWalletOnboarding(origin_);
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), "");
       return;
     }
 
-    // Prompt users to create a Solana account. If wallet is not setup, users
-    // will be lead to onboarding first.
     if (!account_creation_shown_) {
       delegate_->ShowAccountCreation(mojom::CoinType::SOL, origin_);
       account_creation_shown_ = true;

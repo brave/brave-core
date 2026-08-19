@@ -16,21 +16,6 @@ namespace brave_wallet {
 // These are scope managers to set specific callbacks for certain test-only
 // events.
 
-class ScopedNewSetupNeededCallbackForTesting {
- public:
-  explicit ScopedNewSetupNeededCallbackForTesting(
-      base::OnceCallback<void()> callback);
-  ScopedNewSetupNeededCallbackForTesting(
-      const ScopedNewSetupNeededCallbackForTesting&) = delete;
-  ScopedNewSetupNeededCallbackForTesting& operator=(
-      const ScopedNewSetupNeededCallbackForTesting&) = delete;
-  ~ScopedNewSetupNeededCallbackForTesting();
-
- private:
-  base::OnceCallback<void()> callback_;
-  base::AutoReset<base::OnceCallback<void()>*> resetter_;
-};
-
 class ScopedAccountCreationCallbackForTesting {
  public:
   explicit ScopedAccountCreationCallbackForTesting(

@@ -212,6 +212,10 @@ bool IsAllowed(PrefService* prefs) {
   return !IsDisabledByPolicy(prefs);
 }
 
+bool IsWalletCreated(PrefService* prefs) {
+  return !prefs->GetDict(kBraveWalletKeyrings).empty();
+}
+
 bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
   return url.DomainIs("wallet.brave.com") ||
          url.DomainIs("wallet.bravesoftware.com") ||

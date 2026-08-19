@@ -635,21 +635,28 @@ TEST_F(SolanaProviderImplUnitTest, EagerlyConnect) {
   EXPECT_TRUE(IsConnected());
 }
 
+// The provider isn't injected without a wallet, but one can be reset while a
+// page still holds it. Account creation must not be offered in that state.
+TEST_F(SolanaProviderImplUnitTest, ConnectWithNoWallet) {
+  Navigate(GURL("https://brave.com"));
+
+  base::test::TestFuture<std::string_view> account_creation_callback_future;
+  ScopedAccountCreationCallbackForTesting account_creation_callback(
+      account_creation_callback_future.GetCallback());
+
+  mojom::SolanaProviderError error;
+  std::string error_message;
+  EXPECT_TRUE(Connect(std::nullopt, &error, &error_message).empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
+  EXPECT_FALSE(IsConnected());
+  EXPECT_FALSE(account_creation_callback_future.IsReady());
+}
+
 TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
-  bool onboarding_callback_called = false;
-  ScopedNewSetupNeededCallbackForTesting new_setup_callback(
-      base::BindLambdaForTesting([&]() { onboarding_callback_called = true; }));
   Navigate(GURL("https://brave.com"));
 
   mojom::SolanaProviderError error;
   std::string error_message;
-  // No wallet setup
-  std::string account = Connect(std::nullopt, &error, &error_message);
-  EXPECT_TRUE(account.empty());
-  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
-  EXPECT_FALSE(IsConnected());
-  EXPECT_TRUE(onboarding_callback_called);
-
   base::test::TestFuture<std::string_view> account_creation_callback_future;
   std::optional<ScopedAccountCreationCallbackForTesting>
       account_creation_callback;
@@ -658,7 +665,7 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   // No solana account
   CreateWallet();
   keyring_service_->SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
-  account = Connect(std::nullopt, &error, &error_message);
+  std::string account = Connect(std::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());

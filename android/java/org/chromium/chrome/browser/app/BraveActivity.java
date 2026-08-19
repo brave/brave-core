@@ -849,15 +849,6 @@ public abstract class BraveActivity extends ChromeActivity
                 });
     }
 
-    public void showWalletOnboarding() {
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        layout.showWalletIcon(true);
-        if (!BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
-            return;
-        }
-        layout.showWalletPanel();
-    }
-
     public void walletInteractionDetected(WebContents webContents) {
         Tab tab = getActivityTab();
         if (tab == null

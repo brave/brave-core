@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -168,6 +169,11 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
         browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
+    // These tests drive window.ethereum, which is only injected once a wallet
+    // exists.
+    ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
+        brave_wallet::kMnemonicScarePiece, brave_wallet::kTestWalletPassword,
+        false));
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
@@ -231,6 +237,12 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
     return brave_wallet::BraveWalletServiceFactory::GetInstance()
         ->GetServiceForContext(browser()->GetProfile())
         ->json_rpc_service();
+  }
+
+  brave_wallet::KeyringService* GetKeyringService() {
+    return brave_wallet::BraveWalletServiceFactory::GetInstance()
+        ->GetServiceForContext(browser()->GetProfile())
+        ->keyring_service();
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains() {

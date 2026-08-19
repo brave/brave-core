@@ -146,12 +146,29 @@ EthereumProviderJavaScriptFeature::EthereumProviderJavaScriptFeature(
   pref_change_registrar_.Add(
       kDefaultEthereumWallet,
       base::BindRepeating(
-          &EthereumProviderJavaScriptFeature::OnDefaultEthereumWalletChanged,
+          &EthereumProviderJavaScriptFeature::OnScriptGatingPrefChanged,
           base::Unretained(this)));
+  // Creating or resetting a wallet flips whether the provider is injected.
+  is_wallet_created_ = IsWalletCreated(profile->GetPrefs());
+  pref_change_registrar_.Add(
+      kBraveWalletKeyrings,
+      base::BindRepeating(&EthereumProviderJavaScriptFeature::OnKeyringsChanged,
+                          base::Unretained(this)));
 }
 
 EthereumProviderJavaScriptFeature::~EthereumProviderJavaScriptFeature() =
     default;
+
+void EthereumProviderJavaScriptFeature::OnKeyringsChanged() {
+  // The keyrings pref is also written on every account add, rename and
+  // removal. Only rebuild the scripts when the created state actually changed.
+  bool is_wallet_created = IsWalletCreated(profile_->GetPrefs());
+  if (is_wallet_created == is_wallet_created_) {
+    return;
+  }
+  is_wallet_created_ = is_wallet_created;
+  OnScriptGatingPrefChanged();
+}
 
 // static
 EthereumProviderJavaScriptFeature*
@@ -171,7 +188,7 @@ EthereumProviderJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
-void EthereumProviderJavaScriptFeature::OnDefaultEthereumWalletChanged() {
+void EthereumProviderJavaScriptFeature::OnScriptGatingPrefChanged() {
   // Feature scripts must be explicitly updated after this pref changes.
   web::WKWebViewConfigurationProvider& config_provider =
       web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
@@ -181,9 +198,11 @@ void EthereumProviderJavaScriptFeature::OnDefaultEthereumWalletChanged() {
 std::vector<web::JavaScriptFeature::FeatureScript>
 EthereumProviderJavaScriptFeature::GetScripts() const {
   PrefService* prefs = profile_->GetPrefs();
-  if (!IsAllowed(prefs) || !IsDefaultEthereumWalletBrave(prefs)) {
-    // Dont inject wallet scripts if wallet is not enabled for this profile or
-    // Brave is not set as the default ethereum wallet provider
+  if (!IsAllowed(prefs) || !IsDefaultEthereumWalletBrave(prefs) ||
+      !IsWalletCreated(prefs)) {
+    // Dont inject wallet scripts if wallet is not enabled for this profile,
+    // Brave is not set as the default ethereum wallet provider, or the user
+    // hasn't created a wallet yet
     return {};
   }
   return {

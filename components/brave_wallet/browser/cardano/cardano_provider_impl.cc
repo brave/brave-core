@@ -80,11 +80,9 @@ void CardanoProviderImpl::RequestCardanoPermissions(EnableCallback callback,
               l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
               nullptr));
 
+    // The provider is only injected once a wallet exists, so this is a
+    // defensive case (e.g. the wallet was reset while the page stayed open).
     case PermissionCheckResult::kWalletNotCreated:
-      if (!wallet_page_shown_) {
-        delegate_->ShowWalletOnboarding(origin_);
-        wallet_page_shown_ = true;
-      }
       std::move(callback).Run(
           mojo::NullRemote(),
           mojom::CardanoProviderErrorBundle::New(

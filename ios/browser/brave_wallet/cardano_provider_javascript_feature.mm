@@ -221,8 +221,25 @@ CardanoProviderJavaScriptFeature::CardanoProviderJavaScriptFeature(
   pref_change_registrar_.Add(
       kDefaultCardanoWallet,
       base::BindRepeating(
-          &CardanoProviderJavaScriptFeature::OnDefaultCardanoWalletChanged,
+          &CardanoProviderJavaScriptFeature::OnScriptGatingPrefChanged,
           base::Unretained(this)));
+  // Creating or resetting a wallet flips whether the provider is injected.
+  is_wallet_created_ = IsWalletCreated(profile->GetPrefs());
+  pref_change_registrar_.Add(
+      kBraveWalletKeyrings,
+      base::BindRepeating(&CardanoProviderJavaScriptFeature::OnKeyringsChanged,
+                          base::Unretained(this)));
+}
+
+void CardanoProviderJavaScriptFeature::OnKeyringsChanged() {
+  // The keyrings pref is also written on every account add, rename and
+  // removal. Only rebuild the scripts when the created state actually changed.
+  bool is_wallet_created = IsWalletCreated(profile_->GetPrefs());
+  if (is_wallet_created == is_wallet_created_) {
+    return;
+  }
+  is_wallet_created_ = is_wallet_created;
+  OnScriptGatingPrefChanged();
 }
 
 CardanoProviderJavaScriptFeature::~CardanoProviderJavaScriptFeature() = default;
@@ -244,7 +261,7 @@ CardanoProviderJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
-void CardanoProviderJavaScriptFeature::OnDefaultCardanoWalletChanged() {
+void CardanoProviderJavaScriptFeature::OnScriptGatingPrefChanged() {
   // Feature scripts must be explicitly updated after this pref changes.
   web::WKWebViewConfigurationProvider& config_provider =
       web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
@@ -255,10 +272,10 @@ std::vector<web::JavaScriptFeature::FeatureScript>
 CardanoProviderJavaScriptFeature::GetScripts() const {
   PrefService* prefs = profile_->GetPrefs();
   if (!IsAllowed(prefs) || !IsCardanoDAppSupportEnabled() ||
-      !IsDefaultCardanoWalletBrave(prefs)) {
+      !IsDefaultCardanoWalletBrave(prefs) || !IsWalletCreated(prefs)) {
     // Dont inject the wallet script if wallet is not enabled for this profile,
-    // Cardano dApp support is disabled, or Brave is not set as the default
-    // Cardano wallet provider.
+    // Cardano dApp support is disabled, Brave is not set as the default Cardano
+    // wallet provider, or the user hasn't created a wallet yet.
     return {};
   }
   return {FeatureScript::CreateWithFilename(

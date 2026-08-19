@@ -28,7 +28,8 @@ namespace brave_wallet {
 
 // A JavaScriptFeature that injects the `window.ethereum`/`window.braveEthereum`
 // EIP-1193 provider into web pages so they can communicate with Brave Wallet.
-// The provider is only installed when Brave Wallet is allowed for the profile.
+// The provider is only installed when Brave Wallet is allowed for the profile
+// and the user has created a wallet.
 class EthereumProviderJavaScriptFeature : public web::JavaScriptFeature,
                                           public base::SupportsUserData::Data {
  public:
@@ -50,11 +51,13 @@ class EthereumProviderJavaScriptFeature : public web::JavaScriptFeature,
  private:
   explicit EthereumProviderJavaScriptFeature(ProfileIOS* profile);
 
-  void OnDefaultEthereumWalletChanged();
+  void OnScriptGatingPrefChanged();
+  void OnKeyringsChanged();
 
   web::MessageHandlerToken token_;
   raw_ptr<ProfileIOS> profile_;
   std::string provider_bundle_js_;
+  bool is_wallet_created_ = false;
   PrefChangeRegistrar pref_change_registrar_;
 };
 
