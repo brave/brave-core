@@ -220,7 +220,7 @@ class _SimFs:
     def sep(self) -> str:
         # The single source of truth for the simulated separator, so this
         # always agrees with how a `config_types.Path` renders.
-        return config_types.Path._OS_SEP  # pylint: disable=protected-access
+        return config_types.Path._OS_SEP
 
     @property
     def pathsep(self) -> str:
@@ -294,13 +294,18 @@ class PathApi(RecipeApi):
             # Local import: `simulation` (and the `gevent` it pulls in) is
             # test-only, so keep it off the production import path (matches
             # `step/api.py`'s `_prod_runner_lazy` convention).
-            import simulation  # pylint: disable=import-outside-toplevel
+            import simulation
             self._workspace_token = simulation.WORKSPACE_TOKEN
             self._fs = _SimFs(self._test)
             # Simulated separator, driven by the platform under test -- never
             # the real host's `sys.platform`/`os.sep`.
-            config_types.Path._OS_SEP = (  # pylint: disable=protected-access
-                '\\' if self._test.platform == 'win' else '/')
+            config_types.Path._OS_SEP = ('\\' if self._test.platform == 'win'
+                                         else '/')
+        else:
+            # Every other named path here bypasses `config_types.Path`
+            # entirely in production (see `workspace` below), but
+            # `RecipeApi.resource()` doesn't, so this still needs to be set.
+            config_types.Path._OS_SEP = os.sep  # pragma: no cover - production only
 
     def exists(self, path: str | Path | config_types.Path) -> bool:
         """Whether *path* exists (a file or a directory)."""

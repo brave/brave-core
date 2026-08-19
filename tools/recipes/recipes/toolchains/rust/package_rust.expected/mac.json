@@ -208,7 +208,7 @@
     "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
-      "[RECIPES_ROOT]/recipe_modules/osx_sdk/resources/read_mac_sdk_gni.py",
+      "RECIPE_MODULE[osx_sdk]/resources/read_mac_sdk_gni.py",
       "[WORKSPACE]/b/src/build/config/mac/mac_sdk.gni",
       "--json-output",
       "/path/to/tmp/json"

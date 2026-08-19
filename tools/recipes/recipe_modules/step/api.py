@@ -12,6 +12,7 @@ import logging
 from pathlib import Path
 import subprocess
 
+import config_types
 from engine_types import ResourceCost as _ResourceCost
 from recipe_api import (InputPlaceholder, OutputPlaceholder, Placeholder,
                         RecipeApi)
@@ -194,7 +195,7 @@ class StepApi(RecipeApi):
     def __call__(
         self,
         name: str,
-        cmd: Sequence[str | Path | Placeholder] | None,
+        cmd: Sequence[str | Path | config_types.Path | Placeholder] | None,
         *,
         cwd: str | Path | None = None,
         env: Mapping[str, str] | None = None,
