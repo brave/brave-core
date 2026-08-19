@@ -28,6 +28,7 @@ import bots
 import gen
 import gen_paths
 import lookup
+import validate
 
 
 def _make_generated_output_dir(tmp_dir, builder_names):
@@ -171,6 +172,71 @@ class GenDispatchTest(unittest.TestCase):
         self.assertEqual(ctx.exception.code, 2)
         self.assertIn('a-builder', buf.getvalue())
         self.assertIn('b-builder', buf.getvalue())
+
+
+def _make_valid_builder_dir(tmp_dir, name):
+    """Writes a builder's full, valid set of generated files under
+    `tmp_dir`, unlike `_make_generated_output_dir()`'s `gn-args.json`-only
+    fixture: `validate` reports the other two files as missing otherwise."""
+    builder_dir = Path(tmp_dir) / name
+    builder_dir.mkdir()
+    (builder_dir / 'gn-args.json').write_text(json.dumps(
+        {'gn_args': {
+            'target_os': 'linux',
+            'target_cpu': 'x64',
+        }}),
+                                              encoding='utf-8')
+    (builder_dir / 'sync.json').write_text(json.dumps({
+        'target_os': 'linux',
+        'target_cpu': 'x64',
+        'gclient_overrides': {},
+    }),
+                                           encoding='utf-8')
+    (builder_dir / 'targets.json').write_text(json.dumps({
+        'compile': ['brave:all'],
+        'tests': [],
+    }),
+                                              encoding='utf-8')
+
+
+class ValidateDispatchTest(unittest.TestCase):
+    """`bots.py validate`'s CLI wiring: dispatch to `validate.cmd_validate()`
+    and its success/failure exit codes. See validate_test.py for
+    `validate.py`'s own checks."""
+
+    def test_dispatches_to_validate_cmd(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        _make_valid_builder_dir(tmp.name, 'b')
+
+        original = gen_paths.BUILDERS_OUTPUT_DIR
+        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                ret = bots.main(['validate'])
+        finally:
+            gen_paths.BUILDERS_OUTPUT_DIR = original
+
+        self.assertEqual(ret, 0)
+        self.assertIn('looks ok', buf.getvalue())
+
+    def test_problems_return_1(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        _make_generated_output_dir(tmp.name, ['b'])  # gn-args.json only.
+
+        original = gen_paths.BUILDERS_OUTPUT_DIR
+        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stderr(buf):
+                ret = bots.main(['validate'])
+        finally:
+            gen_paths.BUILDERS_OUTPUT_DIR = original
+
+        self.assertEqual(ret, 1)
+        self.assertIn('missing', buf.getvalue())
 
 
 if __name__ == '__main__':

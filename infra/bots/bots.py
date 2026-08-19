@@ -19,6 +19,7 @@ import gen
 import generated_output
 import lookup
 import snapshot
+import validate
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -28,6 +29,7 @@ def main(argv: list[str] | None = None) -> int:
     snapshot.add_subparser(subparsers)
     lookup.add_subparser(subparsers)
     gen.add_subparser(subparsers)
+    validate.add_subparser(subparsers)
 
     args = parser.parse_args(argv)
     try:
