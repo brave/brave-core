@@ -41,7 +41,10 @@
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/multistep_filter/core/features.h"
 #include "components/network_time/network_time_tracker.h"
+#include "components/ntp_tiles/features.h"
+#include "components/omnibox/browser/aim_eligibility_service_features.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/one_time_tokens/core/common/one_time_token_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/page_info/core/features.h"
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
@@ -225,6 +228,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &kWindows11MicaTitlebar,
 #endif
       &lens::features::kLensOverlay,
+      &lens::features::kLensOverlayOmniboxEntryPoint,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
       &metrics::features::kStructuredMetrics,
@@ -243,14 +247,18 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpChromeCartModule,
       &ntp_features::kNtpDriveModule,
       &ntp_features::kNtpDriveModuleLink,
+      &ntp_tiles::kNtpMostLikelyFaviconsFromServerFeature,
+      &ntp_tiles::kPopularSitesBakedInContentFeature,
       &omnibox::internal::kWebUIOmniboxPopup,
       &omnibox::internal::kWebUIOmniboxAimPopup,
+      &omnibox::kAimEnabled,
       &omnibox::kMlUrlScoring,
 #if BUILDFLAG(IS_ANDROID)
       &omnibox::kOmniboxMobileParityUpdateV2,
 #endif
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
+      &one_time_tokens::features::kGmailOtpRetrievalService,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,

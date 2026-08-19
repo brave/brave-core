@@ -167,6 +167,7 @@ source_set("unit_tests") {
     "//components/metrics/structured:structured_metrics_features",
     "//components/multistep_filter/core:features",
     "//components/network_time",
+    "//components/ntp_tiles",
     "//components/omnibox/browser",
     "//components/one_time_tokens/core/common:features",
     "//components/optimization_guide/core",

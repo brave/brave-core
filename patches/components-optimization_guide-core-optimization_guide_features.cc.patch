@@ -1,0 +1,37 @@
+diff --git a/components/optimization_guide/core/optimization_guide_features.cc b/components/optimization_guide/core/optimization_guide_features.cc
+index 86f9b2221f7797b743b0bfeedb6e8b0978570b00..3ee9831764b31d1193dcb536e61a263bdece9820 100644
+--- a/components/optimization_guide/core/optimization_guide_features.cc
++++ b/components/optimization_guide/core/optimization_guide_features.cc
+@@ -53,7 +53,8 @@ constexpr auto enabled_by_default_mobile_only =
+ 
+ // Enables the syncing of the Optimization Hints component, which provides
+ // hints for what optimizations can be applied on a page load.
+-BASE_FEATURE(kOptimizationHints, base::FEATURE_ENABLED_BY_DEFAULT);
++// kOptimizationHints feature state is enforced via plaster rewrite.
++BASE_FEATURE(kOptimizationHints, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enables the prediction of optimization targets.
+ BASE_FEATURE(kOptimizationTargetPrediction, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -76,9 +77,10 @@ BASE_FEATURE(kOverrideNumThreadsForModelExecution,
+ 
+ // Killswitch for fetching on search results from a remote Optimization Guide
+ // Service.
++// kOptimizationGuideFetchingForSRP feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kOptimizationGuideFetchingForSRP,
+              "OptimizationHintsFetchingSRP",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Kill switch for disabling model quality logging.
+ BASE_FEATURE(kModelQualityLogging, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -91,8 +93,9 @@ BASE_FEATURE(kOptimizationGuidePredictionModelKillswitch,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Whether to enable model execution.
++// kOptimizationGuideModelExecution feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kOptimizationGuideModelExecution,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Whether to use the on device model service in optimization guide.
+ BASE_FEATURE(kOptimizationGuideOnDeviceModel,

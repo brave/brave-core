@@ -1,0 +1,12 @@
+diff --git a/components/metrics/private_metrics/private_metrics_features.cc b/components/metrics/private_metrics/private_metrics_features.cc
+index 6d115bc82b36f16bc956ca478aedc5bdedcc460c..edf80374124c036eab95e4e00a79e4fe7a13e900 100644
+--- a/components/metrics/private_metrics/private_metrics_features.cc
++++ b/components/metrics/private_metrics/private_metrics_features.cc
+@@ -6,6 +6,7 @@
+ 
+ namespace metrics::private_metrics {
+ 
++// kPrivateMetricsFeature feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPrivateMetricsFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPrivateMetricsPuma, base::FEATURE_DISABLED_BY_DEFAULT);
