@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/core/common/features.cc b/components/safe_browsing/core/common/features.cc
-index 13a01c06a849e6f680073f3655d38fc5d9a2227d..7fc6bfc09bd09afc0846c0cd21ef73a48ac0449f 100644
+index e188fa7516a129322bad2fcdd4d3fca38d2c5726..fe946bb285f405c0b198bbac797d810781c99fd6 100644
 --- a/components/safe_browsing/core/common/features.cc
 +++ b/components/safe_browsing/core/common/features.cc
 @@ -41,7 +41,7 @@ BASE_FEATURE(kAdSamplerTriggerFeature,
@@ -11,18 +11,19 @@ index 13a01c06a849e6f680073f3655d38fc5d9a2227d..7fc6bfc09bd09afc0846c0cd21ef73a4
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kAutoRevokeSuspiciousNotification,
-@@ -73,8 +73,8 @@ constexpr base::FeatureParam<std::string> kClientSideDetectionBypassTiersList{
+@@ -73,9 +73,8 @@ constexpr base::FeatureParam<std::string> kClientSideDetectionBypassTiersList{
      &kClientSideDetectionBypassTiers, "ClientSideDetectionBypassTiersList",
      /*default_value=*/""};
  
 -BASE_FEATURE(kClientSideDetectionClipboardCopyApi,
--             base::FEATURE_ENABLED_BY_DEFAULT);
+-#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kClientSideDetectionClipboardCopyApi,
-+             base::FEATURE_DISABLED_BY_DEFAULT);
- constexpr base::FeatureParam<double> kCsdClipboardCopyApiHCAcceptanceRate{
-     &kClientSideDetectionClipboardCopyApi, "HCAcceptanceRate",
-     /*default_value=*/1.0};
-@@ -313,9 +313,9 @@ constexpr base::FeatureParam<double>
++base::FEATURE_DISABLED_BY_DEFAULT);
+ #else
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif
+@@ -341,9 +340,9 @@ constexpr base::FeatureParam<double>
  BASE_FEATURE(kGlobalCacheListForGatingNotificationProtections,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
@@ -34,7 +35,7 @@ index 13a01c06a849e6f680073f3655d38fc5d9a2227d..7fc6bfc09bd09afc0846c0cd21ef73a4
  
  BASE_FEATURE(kGooglePlayProtectReducesWarnings,
               "SafeBrowsingGooglePlayProtectReducesWarnings",
-@@ -404,7 +404,7 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
+@@ -432,7 +431,7 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
  
  BASE_FEATURE(kNoticeQueueForEsb, base::FEATURE_ENABLED_BY_DEFAULT);
  

@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 775f70052cc7628762560ebaf293df3671fcb900..867e2d2b864da55f8634b33e53120adc8b676c3d 100644
+index 61359f6376e3edcbd72252de98e27aaf7bfdb49f..fd3e4e369aa1602c2205c5e37e217e032dbed771 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -642,9 +642,9 @@ BASE_FEATURE(kFetchAccountInfoOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -653,9 +653,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -12,9 +12,9 @@ index 775f70052cc7628762560ebaf293df3671fcb900..867e2d2b864da55f8634b33e53120adc
 -BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
- BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
-              base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -808,7 +808,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
+ bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
+   if (is_in_search_engine_choice_region &&
+@@ -838,7 +838,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
               base::FEATURE_ENABLED_BY_DEFAULT);
  #endif
  
@@ -23,7 +23,7 @@ index 775f70052cc7628762560ebaf293df3671fcb900..867e2d2b864da55f8634b33e53120adc
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kReadSupportsWalletPrivatePassesInAutofillCapability,
-@@ -924,13 +924,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -973,13 +973,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  
@@ -36,6 +36,6 @@ index 775f70052cc7628762560ebaf293df3671fcb900..867e2d2b864da55f8634b33e53120adc
 -);
 +BASE_OVERRIDDEN_FEATURE(kSyncEnableBookmarksInTransportMode,
 +base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kBookmarksMigrateUiChanges, base::FEATURE_ENABLED_BY_DEFAULT);
  
  #if BUILDFLAG(IS_CHROMEOS)
+ BASE_FEATURE(kUndoChromeOsUseConsentLevelSignin,
