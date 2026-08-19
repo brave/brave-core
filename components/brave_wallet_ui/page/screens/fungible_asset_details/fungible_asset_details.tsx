@@ -352,7 +352,7 @@ export const FungibleAssetDetails = () => {
       selectedAssetFromParams && fullAssetBalance
         ? new Amount(fullAssetBalance)
             .divideByDecimals(selectedAssetFromParams.decimals)
-            .formatAsAsset(6, selectedAssetFromParams.symbol)
+            .compactAsAsset(6, selectedAssetFromParams.symbol)
         : '',
     [selectedAssetFromParams, fullAssetBalance],
   )
@@ -362,7 +362,7 @@ export const FungibleAssetDetails = () => {
       selectedAssetFromParams && fullAssetBalance
         ? new Amount(fullAssetBalance)
             .divideByDecimals(selectedAssetFromParams.decimals)
-            .formatAsAsset(8)
+            .compactAsAsset(8)
         : '',
     [selectedAssetFromParams, fullAssetBalance],
   )
@@ -542,7 +542,7 @@ export const FungibleAssetDetails = () => {
               selectedAsset={selectedAssetFromParams}
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={formattedAssetBalance}
-              formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
+              formattedFiatBalance={fullAssetFiatBalance.compactAsFiat(
                 defaultFiat,
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}

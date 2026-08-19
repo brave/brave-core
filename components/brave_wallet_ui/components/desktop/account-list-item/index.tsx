@@ -494,7 +494,7 @@ export const AccountListItem = ({
                       textColor='primary'
                       variant='default.semibold'
                     >
-                      {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
+                      {accountsFiatValue.compactAsFiat(defaultFiatCurrency)}
                     </AccountBalanceText>
                   </>
                 )}

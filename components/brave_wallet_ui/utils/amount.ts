@@ -28,6 +28,14 @@ const abbreviations = {
   trillion: 'T',
 } as const
 
+const SUBSCRIPT_DIGITS = '₀₁₂₃₄₅₆₇₈₉'
+const TINY_COMPACT_LEADING_ZEROS = 4
+const TINY_COMPACT_SIGNIFICANT_DIGITS = 4
+const COMPACT_ABBREVIATION_DECIMALS = 2
+const COMPACT_ABBREVIATION_THRESHOLD = 100_000
+const COMPACT_ASSET_ABBREVIATION_THRESHOLD = 1_000_000_000
+const DUST_FIAT_THRESHOLD = 0.00001
+
 export default class Amount {
   public readonly value?: BigNumber
 
@@ -242,6 +250,126 @@ export default class Amount {
     )
   }
 
+  private static toSubscript(n: number): string {
+    return String(n).replace(/\d/g, (digit) => SUBSCRIPT_DIGITS[Number(digit)])
+  }
+
+  private static resolveCurrency(currency?: string): string | undefined {
+    if (!currency) {
+      return undefined
+    }
+
+    const currencyCode = currency.toUpperCase() as keyof typeof CurrencySymbols
+    return CurrencySymbols[currencyCode] ? currency : undefined
+  }
+
+  private static wrapWithCurrency(
+    formattedNumber: string,
+    currency?: string,
+  ): string {
+    if (!currency) {
+      return formattedNumber
+    }
+
+    const parts = Intl.NumberFormat(navigator.language, {
+      style: 'currency',
+      currency,
+      currencyDisplay: 'narrowSymbol',
+    }).formatToParts(0)
+
+    let result = ''
+    let insertedNumber = false
+    for (const part of parts) {
+      if (
+        part.type === 'integer'
+        || part.type === 'decimal'
+        || part.type === 'fraction'
+        || part.type === 'group'
+        || part.type === 'minusSign'
+        || part.type === 'plusSign'
+      ) {
+        if (!insertedNumber) {
+          result += formattedNumber
+          insertedNumber = true
+        }
+        continue
+      }
+      result += part.value
+    }
+
+    if (!insertedNumber) {
+      result += formattedNumber
+    }
+    return result
+  }
+
+  private formatTinyFiatCompact(currency?: string): string {
+    const compact = this.formatTinyCompact()
+    const wrapped = Amount.wrapWithCurrency(compact, currency)
+    return this.isNegative() ? `-${wrapped}` : wrapped
+  }
+
+  private countLeadingZerosAfterDecimal(): number {
+    if (this.value === undefined || this.value.isNaN() || this.value.isZero()) {
+      return 0
+    }
+
+    const exponent = this.value.absoluteValue().e
+    if (exponent === null || exponent >= 0) {
+      return 0
+    }
+
+    return -exponent - 1
+  }
+
+  private shouldFormatTinyCompact(): boolean {
+    return this.countLeadingZerosAfterDecimal() >= TINY_COMPACT_LEADING_ZEROS
+  }
+
+  private shouldAbbreviate(
+    threshold: number = COMPACT_ABBREVIATION_THRESHOLD,
+  ): boolean {
+    return this.value !== undefined && this.value.absoluteValue().gte(threshold)
+  }
+
+  private isDustFiatAmount(): boolean {
+    if (this.value === undefined || this.value.isNaN() || this.value.isZero()) {
+      return false
+    }
+
+    return this.value.absoluteValue().lt(DUST_FIAT_THRESHOLD)
+  }
+
+  /**
+   * Compact form for tiny asset amounts with a subscript leading-zero count,
+   * e.g. 0.000000000323 becomes 0.0₉323. Also used for tiny spot prices via
+   * formatTinyFiatCompact().
+   */
+  private formatTinyCompact(): string {
+    if (this.value === undefined || this.value.isNaN() || this.value.isZero()) {
+      return ''
+    }
+
+    const abs = this.value.absoluteValue()
+    let leadingZeros = this.countLeadingZerosAfterDecimal()
+    let rounded = abs
+      .times(new BigNumber(10).pow(leadingZeros + 1))
+      .precision(TINY_COMPACT_SIGNIFICANT_DIGITS)
+
+    if (rounded.gte(10)) {
+      leadingZeros -= 1
+      rounded = rounded.div(10)
+    }
+
+    const significand = rounded.toFixed().replace('.', '')
+    let end = significand.length
+    while (end > 0 && significand[end - 1] === '0') {
+      end -= 1
+    }
+    const digits = significand.slice(0, end) || '0'
+    return `0.0${Amount.toSubscript(leadingZeros)}${digits}`
+  }
+
   formatAsAsset(significantDigits?: number, symbol?: string): string {
     const result = this.format(significantDigits, true)
     if (!symbol) {
@@ -272,6 +400,81 @@ export default class Amount {
     return Intl.NumberFormat(navigator.language, options).format(
       new BigNumber(this.format(4)).toNumber(),
     )
+  }
+
+  /**
+   * Compact display formatting for asset amounts. Abbreviates large values
+   * (>= 1,000,000,000), uses subscript notation for tiny values (4+ leading
+   * zeros), and falls back to formatAsAsset for everything else.
+   */
+  compactAsAsset(significantDigits?: number, symbol?: string): string {
+    if (this.value === undefined || this.value.isNaN()) {
+      return ''
+    }
+
+    let result: string
+    if (this.shouldAbbreviate(COMPACT_ASSET_ABBREVIATION_THRESHOLD)) {
+      result = this.abbreviate(COMPACT_ABBREVIATION_DECIMALS)
+    } else if (this.shouldFormatTinyCompact()) {
+      const compact = this.formatTinyCompact()
+      result = this.isNegative() ? `-${compact}` : compact
+    } else {
+      result = this.format(significantDigits, true)
+    }
+
+    if (!symbol) {
+      return result
+    }
+
+    return result === '' ? '' : `${result} ${symbol}`
+  }
+
+  /**
+   * Compact display formatting for fiat amounts. Abbreviates large values
+   * (>= 100,000), shows $0.00 for dust values (< $0.00001), and falls back
+   * to formatAsFiat for everything else.
+   */
+  compactAsFiat(currency?: string, maxDecimals: number = 20): string {
+    if (this.value === undefined || this.value.isNaN()) {
+      return ''
+    }
+
+    const resolvedCurrency = Amount.resolveCurrency(currency)
+
+    if (this.shouldAbbreviate()) {
+      return this.abbreviate(COMPACT_ABBREVIATION_DECIMALS, resolvedCurrency)
+    }
+
+    if (this.isDustFiatAmount()) {
+      return Amount.zero().formatAsFiat(currency, maxDecimals)
+    }
+
+    return this.formatAsFiat(currency, maxDecimals)
+  }
+
+  /**
+   * Compact formatting for token spot prices. Like compactAsFiat but uses
+   * subscript notation for tiny prices instead of rounding dust to $0.00.
+   */
+  compactAsSpotPrice(currency?: string): string {
+    if (this.value === undefined || this.value.isNaN()) {
+      return ''
+    }
+
+    const resolvedCurrency = Amount.resolveCurrency(currency)
+
+    if (this.shouldAbbreviate()) {
+      return this.abbreviate(COMPACT_ABBREVIATION_DECIMALS, resolvedCurrency)
+    }
+
+    if (
+      !this.isZero()
+      && (this.isDustFiatAmount() || this.shouldFormatTinyCompact())
+    ) {
+      return this.formatTinyFiatCompact(resolvedCurrency)
+    }
+
+    return this.formatAsFiat(currency)
   }
 
   toHex(): string {

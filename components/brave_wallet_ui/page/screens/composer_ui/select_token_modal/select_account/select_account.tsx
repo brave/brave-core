@@ -25,10 +25,7 @@ import {
 // Utils
 import Amount from '../../../../../utils/amount'
 import { reduceAddress } from '../../../../../utils/reduce-address'
-import {
-  formatTokenBalanceWithSymbol,
-  getBalance,
-} from '../../../../../utils/balance-utils'
+import { getBalance } from '../../../../../utils/balance-utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -68,8 +65,8 @@ const getFiatBalance = (
     ? new Amount(getBalance(accountId, token, tokenBalancesRegistry))
         .divideByDecimals(token.decimals)
         .times(spotPrice.price)
-        .formatAsFiat(defaultFiatCurrency)
-    : Amount.empty().formatAsFiat(defaultFiatCurrency)
+        .compactAsFiat(defaultFiatCurrency)
+    : Amount.empty().compactAsFiat(defaultFiatCurrency)
 }
 
 interface Props {
@@ -241,11 +238,11 @@ export const SelectAccount = (props: Props) => {
                 isBold={true}
                 textAlign='right'
               >
-                {formatTokenBalanceWithSymbol(
+                {new Amount(
                   getBalance(account.accountId, token, tokenBalancesRegistry),
-                  token.decimals,
-                  token.symbol,
-                )}
+                )
+                  .divideByDecimals(token.decimals)
+                  .compactAsAsset(6, token.symbol)}
               </Text>
               <Text
                 textSize='12px'

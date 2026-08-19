@@ -428,7 +428,7 @@ export const PortfolioOverview = () => {
 
   const formattedFullPortfolioFiatBalance = React.useMemo(() => {
     return !fullPortfolioFiatBalance.isUndefined() && defaultFiat
-      ? fullPortfolioFiatBalance.formatAsFiat(defaultFiat)
+      ? fullPortfolioFiatBalance.compactAsFiat(defaultFiat)
       : ''
   }, [fullPortfolioFiatBalance, defaultFiat])
 
@@ -477,7 +477,7 @@ export const PortfolioOverview = () => {
       return ''
     }
 
-    return difference.formatAsFiat(defaultFiat, 2)
+    return difference.compactAsFiat(defaultFiat, 2)
   }, [defaultFiat, change])
 
   const isPortfolioDown = new Amount(percentageChange).lt(0)
@@ -531,7 +531,7 @@ export const PortfolioOverview = () => {
           value: parseFloat(
             item.fiatAmount.div(fullPortfolioFiatBalance).times(100).format(2),
           ),
-          fiatValue: item.fiatAmount.formatAsFiat(defaultFiat),
+          fiatValue: item.fiatAmount.compactAsFiat(defaultFiat),
         }))
 
       // Add "Other" if there are more than DISTRIBUTION_LIMIT
@@ -541,7 +541,7 @@ export const PortfolioOverview = () => {
           value: parseFloat(
             otherTotal.div(fullPortfolioFiatBalance).times(100).format(2),
           ),
-          fiatValue: otherTotal.formatAsFiat(defaultFiat),
+          fiatValue: otherTotal.compactAsFiat(defaultFiat),
         })
       }
 

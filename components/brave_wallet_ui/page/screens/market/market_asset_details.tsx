@@ -420,7 +420,7 @@ export const MarketAssetDetails = () => {
               selectedAsset={selectedAssetFromParams}
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={undefined}
-              formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
+              formattedFiatBalance={fullAssetFiatBalance.compactAsFiat(
                 defaultFiat,
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}

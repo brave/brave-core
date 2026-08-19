@@ -12,7 +12,6 @@ import { BraveWallet } from '../../../../constants/types'
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
-import { formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { isShieldedToken } from '../../../../utils/asset-utils'
 import {
   useGetDefaultFiatCurrencyQuery,
@@ -125,7 +124,17 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
     }, [token])
 
     // Computed
-    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
+    const formattedFiatBalance = fiatBalance.compactAsFiat(defaultFiatCurrency)
+
+    const formattedTokenBalance = React.useMemo(() => {
+      if (!balance) {
+        return ''
+      }
+
+      return new Amount(balance)
+        .divideByDecimals(token.decimals)
+        .compactAsAsset(6, token.symbol)
+    }, [balance, token.decimals, token.symbol])
 
     const tokenHasBalance = balance && new Amount(balance).gt(0)
 
@@ -225,11 +234,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   textAlign='left'
                   textColor='secondary'
                 >
-                  {formatTokenBalanceWithSymbol(
-                    balance ?? '',
-                    token.decimals,
-                    token.symbol,
-                  )}
+                  {formattedTokenBalance}
                 </TokenBalanceText>
               </NameAndBalanceColumn>
             </LeftSide>

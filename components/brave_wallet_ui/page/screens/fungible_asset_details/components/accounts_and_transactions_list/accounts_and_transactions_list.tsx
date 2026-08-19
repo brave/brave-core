@@ -359,7 +359,7 @@ export const AccountsAndTransactionsList = ({
                               textSize='14px'
                             >
                               {'('
-                                + fullAssetFiatBalance.formatAsFiat(
+                                + fullAssetFiatBalance.compactAsFiat(
                                   defaultFiatCurrency,
                                 )
                                 + ')'}

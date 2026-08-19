@@ -135,7 +135,7 @@ export const PortfolioAssetItem = ({
     ? new Amount(assetBalance).divideByDecimals(token.decimals).format()
     : new Amount(assetBalance)
         .divideByDecimals(token.decimals)
-        .formatAsAsset(6, token.symbol)
+        .compactAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
     if (!spotPrice) {
@@ -147,7 +147,7 @@ export const PortfolioAssetItem = ({
       .times(spotPrice)
   }, [spotPrice, assetBalance, token.decimals])
 
-  const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
+  const formattedFiatBalance = fiatBalance.compactAsFiat(defaultFiatCurrency)
 
   const isLoading = formattedAssetBalance === '' && !isNonFungibleToken
 

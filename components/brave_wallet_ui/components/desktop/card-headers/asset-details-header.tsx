@@ -250,7 +250,7 @@ export const AssetDetailsHeader = (props: Props) => {
             textAlign='right'
           >
             {selectedAssetFiatPrice
-              ? new Amount(selectedAssetFiatPrice.price).formatAsFiat(
+              ? new Amount(selectedAssetFiatPrice.price).compactAsSpotPrice(
                   defaultFiatCurrency,
                 )
               : '0.00'}

@@ -148,7 +148,7 @@ export const SelectAccountItem = (props: Props) => {
     const reducedAmounts = amounts.reduce(function (a, b) {
       return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
     })
-    return new Amount(reducedAmounts).formatAsFiat(defaultFiatCurrency)
+    return new Amount(reducedAmounts).compactAsFiat(defaultFiatCurrency)
   }, [
     tokenListByAccount,
     defaultFiatCurrency,

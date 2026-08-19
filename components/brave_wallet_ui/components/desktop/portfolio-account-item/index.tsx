@@ -103,8 +103,8 @@ export const PortfolioAccountItem = (props: Props) => {
   const formattedAssetBalance: string = React.useMemo(() => {
     return new Amount(assetBalance)
       .divideByDecimals(asset.decimals)
-      .format(6, true)
-  }, [assetBalance, asset.decimals])
+      .compactAsAsset(6, asset.symbol)
+  }, [assetBalance, asset.decimals, asset.symbol])
 
   const tokenPriceRequests = React.useMemo(
     () => getPriceRequestsForTokens([asset]),
@@ -217,7 +217,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 textColor='primary'
                 textAlign='right'
               >
-                {`${formattedAssetBalance} ${asset.symbol}`}
+                {formattedAssetBalance}
               </Text>
               <Text
                 textSize='12px'
@@ -225,7 +225,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 textColor='secondary'
                 textAlign='right'
               >
-                {fiatBalance.formatAsFiat(defaultFiatCurrency)}
+                {fiatBalance.compactAsFiat(defaultFiatCurrency)}
               </Text>
             </WithHideBalancePlaceholder>
           </Column>
