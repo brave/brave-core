@@ -56,20 +56,19 @@ index b51d7b38feb71bc80d249eb006272c0c42011676..8cd0c2cfcf34111877b9f6647ff0f40b
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -890,7 +890,12 @@ class TabStripModel {
+@@ -890,7 +890,11 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
 +  std::unique_ptr<DetachedTabCollection> DetachTreeTabNodeForInsertion(tabs::TabInterface* subtree_root_tab, const std::vector<tabs::TabInterface*>& moving_tabs);
 +
 +  gfx::Range InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection> tree_node, int index);
-+
   private:
 +  friend class BraveTabStripModel;
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1178,7 +1183,7 @@ class TabStripModel {
+@@ -1178,7 +1182,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).
