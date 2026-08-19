@@ -107,8 +107,10 @@ LOG(ERROR) << "[BraveSync] AccountToProfilePasswordMigrator::OnGetPasswordStoreR
         std::get<LoginsResult>(std::move(results_or_error)));
 LOG(ERROR) << "[BraveSync] 001 forms.size()=" << forms.size();
     if (store == account_store_.get()) {
+LOG(ERROR) << "[BraveSync] 002 will run OnAccountLogins for account store";
       OnAccountLogins(std::move(forms));
     } else {
+LOG(ERROR) << "[BraveSync] 003 will run OnProfileLoginsAfterAdd for profile store";
       OnProfileLoginsAfterAdd(std::move(forms));
     }
   }
@@ -141,7 +143,7 @@ LOG(ERROR) << "[BraveSync] 002 account_forms_.size()=" << account_forms_.size();
   }
 
   void OnProfileLoginsAfterAdd(std::vector<PasswordForm> profile_forms) {
-LOG(ERROR) << "[BraveSync] OnGetPasswordStoreResultsOrErrorFrom::OnProfileLoginsAfterAdd 000";
+LOG(ERROR) << "[BraveSync] AccountToProfilePasswordMigrator::OnProfileLoginsAfterAdd 000";
 LOG(ERROR) << "[BraveSync] 001 profile_forms.size()=" << profile_forms.size();
 
     // Step 4 (delete): remove from the account store only the credentials that
@@ -176,11 +178,11 @@ LOG(ERROR) << "[BraveSync] 001 profile_forms.size()=" << profile_forms.size();
 
 void MaybeMigrateAccountPasswordsToProfileStore(Profile* profile) {
 LOG(ERROR) << "[BraveSync] MaybeMigrateAccountPasswordsToProfileStore 000";
-//   if (!base::FeatureList::IsEnabled(
-//           brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore)) {
-// LOG(ERROR) << "[BraveSync] 001 skip-not enabled";
-//     return;
-//   }
+  if (!base::FeatureList::IsEnabled(
+          brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore)) {
+LOG(ERROR) << "[BraveSync] 001 skip-not enabled";
+    return;
+  }
 LOG(ERROR) << "[BraveSync] 002 go on, enabled";
 
   scoped_refptr<PasswordStoreInterface> account_store =
@@ -210,10 +212,10 @@ LOG(ERROR) << "[BraveSync] 004 profile_store="<<profile_store.get();
   // LOG(ERROR) << "[BraveSync] 004 account_store.size()=" << account_store.size();
 
 
-  // // Self-owned; deletes itself when the migration finishes.
-  // (new AccountToProfilePasswordMigrator(std::move(account_store),
-  //                                       std::move(profile_store)))
-  //     ->Start();
+  // Self-owned; deletes itself when the migration finishes.
+  (new AccountToProfilePasswordMigrator(std::move(account_store),
+                                        std::move(profile_store)))
+      ->Start();
 }
 
 }  // namespace brave_password_manager
