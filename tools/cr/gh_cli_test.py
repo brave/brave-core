@@ -55,6 +55,12 @@ class GhCliTest(unittest.TestCase):
             1, ['gh', 'auth', 'status'])
         self.assertFalse(self.gh.is_logged_in())
 
+    def test_is_logged_in_false_when_gh_is_not_installed(self):
+        self.run.side_effect = FileNotFoundError(
+            2, 'No such file or '
+            'directory', 'gh')
+        self.assertFalse(self.gh.is_logged_in())
+
     def test_get_pr_base_branch_returns_remote_tracking_ref(self):
         self.run.return_value = _completed(
             stdout=json.dumps({'baseRefName': 'master'}))

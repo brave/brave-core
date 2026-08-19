@@ -1325,7 +1325,9 @@ class RebaseExecuteTest(unittest.TestCase):
         self._commit_with_file('First feature change')
         self._commit_with_file('Second feature change')
         # Start an interactive rebase that stops on an `edit` command.
-        env = {**os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i '1s/^pick/edit/'"}
+        env = {
+            **os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'"
+        }
         subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
                        cwd=brave,
                        env=env,

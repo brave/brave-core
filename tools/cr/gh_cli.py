@@ -36,10 +36,14 @@ class GhCli:
         return json.loads(self._run(args).stdout.strip())
 
     def is_logged_in(self) -> bool:
-        """Returns True when `gh` is logged in to a github.com account."""
+        """Returns True when `gh` is logged in to a github.com account.
+
+        Also False when `gh` itself isn't installed, so callers can treat
+        GitHub resolution as merely unavailable rather than fatal.
+        """
         try:
             result = self._run(['auth', 'status']).stdout.strip()
-        except subprocess.CalledProcessError:
+        except (subprocess.CalledProcessError, FileNotFoundError):
             return False
         return 'Logged in to github.com account' in result
 

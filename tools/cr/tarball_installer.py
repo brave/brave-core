@@ -244,6 +244,10 @@ class TarballInstaller:
         with tarfile.open(archive_path, mode='r:*') as tar:
             members = tar.getmembers()
             self._check_members(members)
+            if sys.platform == 'win32':
+                for member in members:
+                    if member.issym():
+                        member.linkname = member.linkname.replace('/', '\\')
             if hasattr(tarfile, 'data_filter'):
                 tar.extractall(path=self.dest_dir, filter='fully_trusted')
             else:
