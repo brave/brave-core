@@ -21,15 +21,12 @@
 #include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
+#include "ui/gfx/geometry/size.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
 class PrefService;
 class Profile;
-
-namespace gfx {
-class Size;
-}  // namespace gfx
 
 namespace content {
 class WebContents;
@@ -53,8 +50,12 @@ class BackupResultsServiceImpl : public BackupResultsService,
  public:
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
+  // Records the content view size and the size of the browser window
+  // containing it, so that backup results requests can report plausible
+  // window dimensions to the renderer.
   static void RecordLastViewSize(PrefService* local_state,
-                                 const gfx::Size& size);
+                                 const gfx::Size& view_size,
+                                 const gfx::Size& window_size);
 
   explicit BackupResultsServiceImpl(Profile* profile);
 
@@ -69,6 +70,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   bool HandleWebContentsStartRequest(const content::WebContents* web_contents,
                                      const GURL& url) override;
+  void ApplyWindowAndViewSize(const content::WebContents* web_contents);
   void HandleWebContentsDidFinishNavigation(
       const content::WebContents* web_contents,
       int response_code);
@@ -98,6 +100,8 @@ class BackupResultsServiceImpl : public BackupResultsService,
     bool low_latency_required;
     std::unique_ptr<content::WebContents> web_contents;
     GURL target_url;
+    gfx::Size view_size;
+    gfx::Size window_size;
 
 #if BUILDFLAG(IS_ANDROID)
     // Root window for the `web_contents` view tree.
