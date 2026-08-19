@@ -358,7 +358,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       requestInfo.isUserInitiated,
       let sourceURL = tab.lastCommittedURL,
       BraveSearchManager.isValidURL(sourceURL),  // sourceURL needs to be valid brave search url
-      sourceURL.path == "/search" || sourceURL.path == "/ask",
+      sourceURL.path == "/ask",
       !BraveSearchManager.isValidURL(requestURL),  // don't intercept same-domain nav
       requestURL.isWebPage(includeDataURIs: false)
     else { return false }
