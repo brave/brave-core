@@ -804,6 +804,7 @@ source_set("ui") {
         "views/update_recommended_message_box_mac.h",
         "views/update_recommended_message_box_mac.mm",
       ]
+      deps += [ "//chrome/browser/ui/views:update_recommended_message_box" ]
     }
 
     if (is_win) {
