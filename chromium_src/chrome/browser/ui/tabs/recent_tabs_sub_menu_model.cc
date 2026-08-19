@@ -53,7 +53,7 @@ constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 BraveRecentTabsSubMenuModel::BraveRecentTabsSubMenuModel(
     ui::AcceleratorProvider* accelerator_provider,
-    Browser* browser)
+    BrowserWindowInterface* browser)
     : RecentTabsSubMenuModel(accelerator_provider, browser) {}
 
 BraveRecentTabsSubMenuModel::~BraveRecentTabsSubMenuModel() {}
