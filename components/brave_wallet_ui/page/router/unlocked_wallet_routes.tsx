@@ -43,8 +43,8 @@ import { Banners } from '../../components/desktop/banners/banners'
 import {
   BackupWalletRoutes, //
 } from '../screens/backup-wallet/backup-wallet.routes'
-import { DepositFundsScreen } from '../screens/fund-wallet/deposit-funds'
-import { FundWalletScreen } from '../screens/fund-wallet/fund_wallet_v2'
+import { Deposit } from '../screens/deposit/deposit'
+import { Buy } from '../screens/buy/buy'
 import {
   OnboardingSuccess, //
 } from '../screens/onboarding/onboarding_success/onboarding_success'
@@ -95,11 +95,11 @@ export const UnlockedWalletRoutes = () => {
         </Route>
 
         <Route path={WalletRoutes.FundWalletPageStart}>
-          <FundWalletScreen />
+          <Buy />
         </Route>
 
         <Route path={WalletRoutes.DepositFundsPageStart}>
-          <DepositFundsScreen />
+          <Deposit />
         </Route>
 
         {/* Portfolio */}

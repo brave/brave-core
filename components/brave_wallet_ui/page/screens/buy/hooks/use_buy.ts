@@ -41,7 +41,7 @@ import {
   useAccountFromAddressQuery,
   useAccountsQuery,
 } from '../../../../common/slices/api.slice.extra'
-import { useBuyReceiveAddress } from './useBuyReceiveAddress'
+import { useBuyReceiveAddress } from './use_buy_receive_address'
 
 // Constants
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'

@@ -9,17 +9,17 @@ import * as React from 'react'
 import {
   WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { FundWalletScreen } from './fund_wallet_v2'
+import { Buy } from './buy'
 
-export const _FundWalletScreenV2 = () => {
+export const _Buy = () => {
   return (
     <WalletPageStory>
-      <FundWalletScreen />
+      <Buy />
     </WalletPageStory>
   )
 }
 
 export default {
-  component: FundWalletScreen,
+  component: Buy,
   title: 'Wallet/Desktop/Screens',
 }

@@ -16,7 +16,7 @@ import { WalletRoutes } from '../../../constants/types'
 import { LinkText } from '../../../components/shared/style'
 import {
   BackIcon, //
-} from '../../../page/screens/fund-wallet/components/select_header/select_header.style'
+} from '../../../page/screens/deposit/components/select_header/select_header.style'
 import {
   BackButton,
   DotsWrapper,

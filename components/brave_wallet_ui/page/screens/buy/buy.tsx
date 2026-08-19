@@ -11,7 +11,7 @@ import useMediaQuery from '$web-common/useMediaQuery'
 import { WalletRoutes } from '../../../constants/types'
 
 // Hooks
-import { useBuy } from './hooks/useBuy'
+import { useBuy } from './hooks/use_buy'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -63,11 +63,11 @@ import {
   Dropdown,
   InfoIconWrapper,
   InfoIcon,
-} from './fund_wallet_v2.style'
+} from './buy.style'
 import { Column, Row, Text } from '../../../components/shared/style'
 import { SearchInput } from './components/shared/style'
 
-export const FundWalletScreen = () => {
+export const Buy = () => {
   // State
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = React.useState(false)
   const [isAssetDialogOpen, setIsAssetDialogOpen] = React.useState(false)
