@@ -3,48 +3,26 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Check environment before doing anything.
+import '../lib/checkEnvironment.js'
+
+import { program } from 'commander'
+import * as buildOptions from '../lib/buildOptions.ts'
 import fs from 'fs-extra'
 import path from 'node:path'
-import config from './config.ts'
-import type { Config } from './config.ts'
-import * as Log from './log.ts'
-import util from './util.js'
+import config, { type Config } from '../lib/config.ts'
+import * as Log from '../lib/log.ts'
+import util from '../lib/util.js'
 import assert from 'node:assert'
-import { getAffectedTests } from './affectedTests.js'
+import { getAffectedTests } from '../lib/affectedTests.js'
 import {
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,
   getChromiumTestsSuites,
-} from './testUtils.js'
-import { isCI, isTeamcity } from './ciDetect.ts'
-
-async function test(
-  passthroughArgs: string[],
-  suite: string,
-  buildConfig: string = config.defaultBuildConfig,
-  options: Record<string, any> = {},
-) {
-  config.buildConfig = buildConfig
-  config.update(options)
-
-  if (config.isIOS() && config.targetEnvironment === 'device') {
-    Log.error('Running ios tests on a device is not yet supported')
-    process.exit(1)
-  }
-
-  const testsToRun = options.base
-    ? await getAffectedTests({ ...options, suite })
-    : getTestsToRun(config, suite)
-
-  if (testsToRun.length === 0 && !options.quiet) {
-    console.warn('SKIP: No tests need to run')
-    return
-  }
-
-  await buildTests(testsToRun, config)
-  await runTests(passthroughArgs, { suite, testsToRun }, config, options)
-}
+} from '../lib/testUtils.js'
+import { isCI, isTeamcity } from '../lib/ciDetect.ts'
+import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
 const deleteFile = (filePath: string) => {
   if (fs.existsSync(filePath)) {
@@ -75,7 +53,7 @@ const runTests = async (
   passthroughArgs: string[],
   { suite, testsToRun }: { suite: string; testsToRun: string[] },
   config: Config,
-  options: Record<string, any>,
+  options: buildOptions.TestOptions,
 ) => {
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
@@ -262,6 +240,7 @@ const runTests = async (
           .split(' ')
           .at(-1)
       }
+      assert(xcodeBuildVersion != null)
 
       runArgs.push('--app', getTestBinary(config, testSuite))
       runArgs.push('--runtime-cache-prefix', `${outputDir}/Runtime-ios-`)
@@ -364,4 +343,37 @@ const runChromiumTestLauncherTeamcityReporterIntegrationTests = (
   util.run('python3', [runnerPath], runOptions)
 }
 
-export default test
+program
+  .argument('<suite>', 'test suite to run')
+  .apply(buildOptions.supportBuildConfigArg)
+  .apply(buildOptions.supportBuildDir)
+  .apply(buildOptions.supportTargetConfig)
+  .apply(buildOptions.supportNinjaOptions)
+  .apply(buildOptions.supportTestOptions)
+  .allowUnknownOption(true)
+  .allowExcessArguments(true)
+  .action(async (suite, buildConfig, options, command) => {
+    if (buildConfig) {
+      config.buildConfig = buildConfig
+    }
+    config.update(options)
+
+    if (config.isIOS() && config.targetEnvironment === 'device') {
+      Log.error('Running ios tests on a device is not yet supported')
+      process.exit(1)
+    }
+
+    const testsToRun = options.base
+      ? await getAffectedTests({ ...options, suite })
+      : getTestsToRun(config, suite)
+
+    if (testsToRun.length === 0 && !options.quiet) {
+      console.warn('SKIP: No tests need to run')
+      return
+    }
+
+    const passthroughArgs = getPassthroughArgs(command)
+    await buildTests(testsToRun, config)
+    await runTests(passthroughArgs, { suite, testsToRun }, config, options)
+  })
+  .parseAsync()

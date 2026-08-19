@@ -5,7 +5,7 @@
 
 import { Argument, Command, Option } from 'commander'
 import './commanderApply.ts'
-import { collect, parseBoolean } from './commandsUtils.ts'
+import { collect, parseBoolean, parseInteger } from './commandsUtils.ts'
 
 export function supportBuildConfigArg<
   Args extends any[],
@@ -200,6 +200,63 @@ export function supportExtraNinjaOptions<
   )
 }
 
+export function supportTestOptions<
+  Args extends any[],
+  Opts extends {},
+  GlobalOpts extends {},
+>(command: Command<Args, Opts, GlobalOpts>) {
+  return command
+    .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
+    .option('--vmodule [modules]', 'verbose log from specific modules')
+    .option('--filter <filter>', 'set test filter')
+    .option(
+      '--base [targetCommitRef]',
+      'use this commit/branch/tag as reference for change detection',
+    )
+    .option(
+      '--output_xml',
+      'indicates if test results xml output file(s) should be generated. '
+        + '<suite>.txt file will contain the list of xml files with results. '
+        + 'All output files are generated in the src directory',
+    )
+    .option('--quiet', 'enable quiet mode')
+    .option('--disable_brave_extension', 'disable loading the Brave extension')
+    .option(
+      '--single_process',
+      'uses a single process to run tests to help with debugging',
+    )
+    .option(
+      '--test_launcher_jobs <test_launcher_jobs>',
+      'Number of jobs to launch',
+      parseInteger,
+      4,
+    )
+    .option('--run_disabled_tests', 'run disabled tests')
+    .option(
+      '--manual_android_test_device',
+      'indicates that Android test device is run manually',
+    )
+    .option(
+      '--android_test_emulator_name <emulator_name>',
+      'set name of the Android emulator for tests',
+      'android_33_google_apis_x64',
+    )
+    .option(
+      '--ios_xcode_build_version <build_version>',
+      'xcode build version for ios',
+    )
+    .option(
+      '--ios_simulator_platform <simulator_platform>',
+      'platform to use for ios simulator',
+      'iPhone 17',
+    )
+    .option(
+      '--ios_simulator_version <simulator_version>',
+      'ios version for simulator',
+      '26.2',
+    ) // should match ios_deployment_target
+}
+
 type OptionsOf<
   F extends (command: Command<[], {}, {}>) => Command<any, any, any>,
 > = ReturnType<F> extends Command<any, infer Options, any> ? Options : never
@@ -211,3 +268,4 @@ export type ExtraGnArgsOptions = OptionsOf<typeof supportExtraGnArgs>
 export type GnGenOptions = OptionsOf<typeof supportGnGenOptions>
 export type NinjaOptions = OptionsOf<typeof supportNinjaOptions>
 export type ExtraNinjaOptions = OptionsOf<typeof supportExtraNinjaOptions>
+export type TestOptions = OptionsOf<typeof supportTestOptions>
