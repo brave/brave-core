@@ -144,6 +144,9 @@ AIChatService::AIChatService(
                                               std::string(channel_string))),
       conversation_share_manager_(
           std::make_unique<ConversationShareManager>(url_loader_factory_)),
+      conversation_share_store_(
+          std::make_unique<ConversationShareStore>(profile_prefs,
+                                                   os_crypt_async)),
       credential_manager_(std::move(ai_chat_credential_manager)),
       tool_provider_factories_(std::move(tool_provider_factories)),
       profile_path_(profile_path) {
@@ -857,6 +860,8 @@ void AIChatService::ConversationExists(const std::string& conversation_uuid,
 
 void AIChatService::ShareConversation(const std::string& encrypted_contents,
                                       const std::string& key_fragment,
+                                      const std::string& conversation_uuid,
+                                      const std::string& conversation_title,
                                       bool copy_to_clipboard,
                                       ShareConversationCallback callback) {
   // Only the ciphertext is handed to the share manager (which talks to the
@@ -867,15 +872,18 @@ void AIChatService::ShareConversation(const std::string& encrypted_contents,
       encrypted_contents,
       base::BindOnce(&AIChatService::OnShareConversationComplete,
                      weak_ptr_factory_.GetWeakPtr(), key_fragment,
-                     copy_to_clipboard, std::move(callback)));
+                     conversation_uuid, conversation_title, copy_to_clipboard,
+                     std::move(callback)));
 }
 
 void AIChatService::OnShareConversationComplete(
     const std::string& key_fragment,
+    const std::string& conversation_uuid,
+    const std::string& conversation_title,
     bool copy_to_clipboard,
     ShareConversationCallback callback,
-    const std::optional<GURL>& shared_conversation_viewer_url) {
-  if (!shared_conversation_viewer_url) {
+    const std::optional<ConversationShareResult>& share_result) {
+  if (!share_result) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -885,16 +893,28 @@ void AIChatService::OnShareConversationComplete(
   GURL::Replacements replacements;
   replacements.SetRefStr(key_fragment);
   GURL shared_conversation_url =
-      shared_conversation_viewer_url->ReplaceComponents(replacements);
+      share_result->viewer_url.ReplaceComponents(replacements);
   if (!shared_conversation_url.is_valid()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
+  // Remember the share so the user can find and delete it later. The link
+  // contains the decryption key, which is why the store encrypts what it
+  // writes.
+  conversation_share_store_->AddShare(
+      share_result->share_id, share_result->deletion_id, conversation_uuid,
+      conversation_title, shared_conversation_url);
+
   if (copy_to_clipboard) {
     CopyTextToClipboardAsConfidential(shared_conversation_url.spec());
   }
   std::move(callback).Run(std::move(shared_conversation_url));
+}
+
+void AIChatService::GetConversationShares(
+    GetConversationSharesCallback callback) {
+  conversation_share_store_->GetShares(std::move(callback));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

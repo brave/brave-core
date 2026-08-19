@@ -139,6 +139,11 @@ inline constexpr char kBraveAIChatUserMemories[] =
 inline constexpr char kBraveAIChatSkills[] = "brave.ai_chat.smart_modes";
 inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
     "brave.ai_chat.ollama_fetch_enabled";
+// Record of the conversations the user has shared, so that they can be listed
+// and deleted. OSCrypt-encrypted, then base64-encoded, because it contains the
+// decryption key of each shared conversation.
+inline constexpr char kBraveAIChatConversationShares[] =
+    "brave.ai_chat.conversation_shares";
 // Stores the time at which the remote model list was last successfully fetched
 // and cached to disk. Used for TTL checks without reading the cache file.
 inline constexpr char kRemoteModelsCachedAt[] =

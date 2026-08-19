@@ -22,6 +22,17 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
+// Result of a successful upload to the sharing server.
+struct ConversationShareResult {
+  // The viewer URL, without the decryption key fragment.
+  GURL viewer_url;
+  // Identifies the share within the viewer URL.
+  std::string share_id;
+  // Capability token required to delete the share. Empty if the server didn't
+  // provide one, in which case the share cannot be deleted by this client.
+  std::string deletion_id;
+};
+
 // Uploads client-encrypted conversation contents to the Brave sharing server
 // and builds the shareable viewer URL from the returned share id. The key used
 // to encrypt the contents never reaches this class or the server; the UI keeps
@@ -31,8 +42,7 @@ class ConversationShareManager {
   // std::nullopt indicates the share failed (network error, unexpected
   // response, or an invalid resulting URL).
   using ShareConversationCallback =
-      base::OnceCallback<void(const std::optional<GURL>&)>;
-
+      base::OnceCallback<void(const std::optional<ConversationShareResult>&)>;
   explicit ConversationShareManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ConversationShareManager(const ConversationShareManager&) = delete;

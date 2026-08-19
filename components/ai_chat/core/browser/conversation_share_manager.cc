@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
@@ -105,8 +104,8 @@ void ConversationShareManager::OnShareCompleted(
     return;
   }
 
-  const std::string* share_id =
-      result.value_body().GetDict().FindString("share_id");
+  const base::DictValue& response = result.value_body().GetDict();
+  const std::string* share_id = response.FindString("share_id");
   if (!share_id || share_id->empty()) {
     std::move(callback).Run(std::nullopt);
     return;
@@ -119,7 +118,13 @@ void ConversationShareManager::OnShareCompleted(
     return;
   }
 
-  std::move(callback).Run(std::move(shared_conversation_viewer_url));
+  // A missing deletion id doesn't invalidate the share - the link works, it
+  // just can't be deleted from this client.
+  const std::string* deletion_id = response.FindString("deletion_id");
+  std::move(callback).Run(ConversationShareResult{
+      .viewer_url = std::move(shared_conversation_viewer_url),
+      .share_id = *share_id,
+      .deletion_id = deletion_id ? *deletion_id : std::string()});
 }
 
 }  // namespace ai_chat

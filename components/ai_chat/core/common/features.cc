@@ -249,6 +249,9 @@ const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{
     &kAIChatConversationShare, "viewer_base_url",
     "https://leo-ai.brave.app/shared/"};
 
+const base::FeatureParam<int> kAIChatConversationShareExpiryDays{
+    &kAIChatConversationShare, "expiry_days", 7};
+
 BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace ai_chat::features
