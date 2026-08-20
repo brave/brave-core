@@ -128,7 +128,10 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "//brave/browser/ui/sidebar/sidebar_browsertest.cc" ]
+  sources = [
+    "//brave/browser/ui/sidebar/sidebar_browsertest.cc",
+    "//brave/browser/ui/sidebar/web_panel_browsertest.cc",
+  ]
 
   deps = [
     ":sidebar",
