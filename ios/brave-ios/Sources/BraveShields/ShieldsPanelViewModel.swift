@@ -1,38 +1,38 @@
-// Copyright 2023 The Brave Authors. All rights reserved.
+// Copyright 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveShields
+import Combine
 import Data
 import Foundation
 import Web
 
 @MainActor
-class ShieldsSettingsViewModel: ObservableObject {
+public class ShieldsPanelViewModel: ObservableObject {
   private let tab: any TabState
 
-  @Published var stats: TPPageStats
-  @Published var shieldsEnabled: Bool {
+  @Published public var stats: TrackingProtectionPageStats
+  @Published public var shieldsEnabled: Bool {
     didSet {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setBraveShieldsEnabled(shieldsEnabled, for: tab.visibleURL)
       updateState()
     }
   }
-  @Published var blockAdsAndTrackingLevel: ShieldLevel {
+  @Published public var blockAdsAndTrackingLevel: ShieldLevel {
     didSet {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setShieldLevel(blockAdsAndTrackingLevel, for: tab.visibleURL)
     }
   }
-  @Published var blockScripts: Bool {
+  @Published public var blockScripts: Bool {
     didSet {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setBlockScriptsEnabled(blockScripts, for: tab.visibleURL)
     }
   }
-  @Published var fingerprintProtection: Bool {
+  @Published public var fingerprintProtection: Bool {
     didSet {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setBlockFingerprintingEnabled(
@@ -41,7 +41,7 @@ class ShieldsSettingsViewModel: ObservableObject {
       )
     }
   }
-  @Published var autoShredLevel: SiteShredLevel {
+  @Published public var autoShredLevel: SiteShredLevel {
     didSet {
       guard !isUpdatingState else { return }
       tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tab.visibleURL)
@@ -49,20 +49,24 @@ class ShieldsSettingsViewModel: ObservableObject {
   }
   /// A boolean value indicates to wether to show `Advanced controls`or not inside the shield panel
   /// with a default value true
-  @Published var advancedControlsEnabled: Bool = true
+  @Published public var advancedControlsEnabled: Bool = true
 
-  var isPrivateBrowsing: Bool {
+  public var isPrivateBrowsing: Bool {
     tab.isPrivate
   }
 
-  var visibleURL: URL? {
+  public var visibleURL: URL? {
     tab.visibleURL
   }
 
   /// If we are updating our state values, we don't want to assign to the domain preference.
   private var isUpdatingState: Bool = false
 
-  init(tab: some TabState, isAdvancedControlsEnabled: Bool) {
+  public init(
+    tab: some TabState,
+    stats: some Publisher<TrackingProtectionPageStats, Never>,
+    isAdvancedControlsEnabled: Bool
+  ) {
     self.tab = tab
     self.shieldsEnabled =
       tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
@@ -92,13 +96,10 @@ class ShieldsSettingsViewModel: ObservableObject {
         for: tab.visibleURL,
         considerAllShieldsOption: true
       ) ?? .never
-    self.stats = tab.contentBlocker?.stats ?? .init()
-
-    tab.contentBlocker?.statsDidChange = { [weak self, weak tab] _ in
-      self?.stats = tab?.contentBlocker?.stats ?? .init()
-    }
-
+    self.stats = .init()
     self.advancedControlsEnabled = isAdvancedControlsEnabled
+
+    stats.receive(on: DispatchQueue.main).assign(to: &$stats)
   }
 
   /// Update our properties value without affecting the Domain's value.

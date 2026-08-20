@@ -13,11 +13,11 @@ import Web
 
 /// View for displaying site-specific Shred settings
 struct ShredSiteSettingsView: View {
-  @ObservedObject private var viewModel: ShieldsSettingsViewModel
+  @ObservedObject private var viewModel: ShieldsPanelViewModel
   private let shredSiteDataNow: () -> Void
   @State private var showConfirmation = false
 
-  init(viewModel: ShieldsSettingsViewModel, shredSiteDataNow: @escaping () -> Void) {
+  init(viewModel: ShieldsPanelViewModel, shredSiteDataNow: @escaping () -> Void) {
     self.viewModel = viewModel
     self.shredSiteDataNow = shredSiteDataNow
   }
