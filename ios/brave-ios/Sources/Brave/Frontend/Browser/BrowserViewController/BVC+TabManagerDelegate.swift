@@ -321,10 +321,13 @@ extension BrowserViewController: TabManagerDelegate {
     updateInContentHomePanel(selected?.visibleURL as URL?)
 
     removeWalletNotificationAndClearOrigin()
-    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth, .sol, .ada])
-    WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [
-      .eth, .sol, .ada,
-    ])
+    let dappSupportedCoins = Array(WalletConstants.supportedCoinTypes(.dapps))
+    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(
+      for: dappSupportedCoins
+    )
+    WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(
+      coins: dappSupportedCoins
+    )
     updateURLBarWalletButton()
   }
 

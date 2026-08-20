@@ -251,12 +251,13 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _walletReset: { [weak self] in
-        WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [
-          .eth, .sol, .ada,
-        ])
-        WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [
-          .eth, .sol, .ada,
-        ])
+        let dappSupportedCoins = Array(WalletConstants.supportedCoinTypes(.dapps))
+        WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(
+          for: dappSupportedCoins
+        )
+        WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(
+          coins: dappSupportedCoins
+        )
         self?.rejectAllPendingWebpageRequests()
       },
       _walletCreated: {
