@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index a53220c08468420111254ff77807383b39b4f9f8..1b8c219e81120721562d77153bc14e92908d5abc 100644
+index 322591a3aa40b7729e3421d700f1f7181bdc2d1b..6be1c83d599097cc3525e7edd5bd609f269ffdb1 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,12 @@
@@ -33,7 +33,7 @@ index a53220c08468420111254ff77807383b39b4f9f8..1b8c219e81120721562d77153bc14e92
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/indigo/resources.grd": {
-@@ -726,7 +732,7 @@
+@@ -730,7 +736,7 @@
      "includes": [4730],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -42,7 +42,7 @@ index a53220c08468420111254ff77807383b39b4f9f8..1b8c219e81120721562d77153bc14e92
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -1221,6 +1227,12 @@
+@@ -1225,6 +1231,12 @@
      "META": {"join": 2},
      "messages": [7020],
    },
@@ -55,7 +55,7 @@ index a53220c08468420111254ff77807383b39b4f9f8..1b8c219e81120721562d77153bc14e92
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1744,11 +1756,11 @@
+@@ -1748,11 +1760,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {

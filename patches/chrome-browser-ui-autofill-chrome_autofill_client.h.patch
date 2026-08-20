@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
-index f8eb4edcfd2482f0fd0a0520719690c9bac907ef..516caa282c4274c57bfb997bb3c3839a754d81ef 100644
+index 130f6b1e0810250c0a468c4499071d495f5eb5c3..2378ee7f27c8cd71ad67458b7f2ac515c660ef02 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.h
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
-@@ -142,8 +142,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
+@@ -145,8 +145,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
    scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory() final;
    AutofillCrowdsourcingManager& GetCrowdsourcingManager() final;
    VotesUploader& GetVotesUploader() final;
@@ -12,7 +12,7 @@ index f8eb4edcfd2482f0fd0a0520719690c9bac907ef..516caa282c4274c57bfb997bb3c3839a
    FieldClassificationModelHandler* GetAutofillFieldClassificationModelHandler()
        final;
    FieldClassificationModelHandler*
-@@ -229,12 +228,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
+@@ -232,12 +231,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
        const FieldTypeSet& triggering_field_types) final;
    bool IsTabInActorMode() const final;
    ActorKeyMetricsRecorder* GetActorKeyMetricsRecorder() final;

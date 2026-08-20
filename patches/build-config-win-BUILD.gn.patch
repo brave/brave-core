@@ -1,8 +1,8 @@
 diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
-index 069432bbae2fff5c76785bcbc97ec663e7f04b35..5ee6a877b972d87199fb2d860d4e40f8143b64aa 100644
+index e64ec9e21fc9894bc7c104c47b1dc2af94380418..1290b8537b811c364cb975069b2fafffc9bd81f5 100644
 --- a/build/config/win/BUILD.gn
 +++ b/build/config/win/BUILD.gn
-@@ -177,6 +177,7 @@ config("compiler") {
+@@ -191,6 +191,7 @@ config("compiler") {
      ldflags += [ "/pdbpagesize:16384" ]
    } else {
      ldflags += [ "/pdbpagesize:8192" ]
