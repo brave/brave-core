@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 1317d71ce1812deaf77440e812cdfeb2a963fa65..80bf6aa4e9a96c348329ee6512bdb4e43c36cf8f 100644
+index c2fba47e0d9d961297f0aa8d88276dabfd32f636..4606442e2269767aafc5cf5d1fe8b37cefb232a2 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1730,6 +1730,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 1317d71ce1812deaf77440e812cdfeb2a963fa65..80bf6aa4e9a96c348329ee6512bdb4e4
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2259,6 +2260,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2263,6 +2264,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif  // BUILDFLAG(IS_ANDROID)
  
    registry->RegisterBooleanPref(prefs::kStaticStorageQuotaEnabled, false);
@@ -18,7 +18,7 @@ index 1317d71ce1812deaf77440e812cdfeb2a963fa65..80bf6aa4e9a96c348329ee6512bdb4e4
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -2558,6 +2560,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2562,6 +2564,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
    profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
    profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
@@ -26,7 +26,7 @@ index 1317d71ce1812deaf77440e812cdfeb2a963fa65..80bf6aa4e9a96c348329ee6512bdb4e4
    base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
-@@ -2565,6 +2568,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2569,6 +2572,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
        profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));
