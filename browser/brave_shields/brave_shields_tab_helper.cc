@@ -37,7 +37,6 @@
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 
 using net::AppendQueryParameter;
@@ -74,7 +73,6 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
-  brave_shields_settings_observation_.Observe(&*brave_shields_settings_);
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       brave_shields::prefs::kAdBlockOnlyModeEnabled,
@@ -172,19 +170,23 @@ void BraveShieldsTabHelper::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsTypeSet content_type_set) {
-  if ((content_type_set.ContainsAllTypes() ||
-       content_type_set.GetType() == ContentSettingsType::BRAVE_SHIELDS) &&
-      primary_pattern.Matches(GetCurrentSiteURL())) {
+  if (!primary_pattern.Matches(GetCurrentSiteURL())) {
+    return;
+  }
+
+  if (content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS)) {
     for (Observer& obs : observer_list_) {
       obs.OnShieldsEnabledChanged();
     }
   }
-}
 
-void BraveShieldsTabHelper::OnShieldsSettingsChanged(const GURL& url) {
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          GetCurrentSiteURL(), url,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+  if (content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS) ||
+      content_type_set.Contains(ContentSettingsType::BRAVE_ADS) ||
+      content_type_set.Contains(ContentSettingsType::BRAVE_TRACKERS) ||
+      content_type_set.Contains(
+          ContentSettingsType::BRAVE_COSMETIC_FILTERING) ||
+      content_type_set.Contains(ContentSettingsType::BRAVE_FINGERPRINTING_V2) ||
+      content_type_set.Contains(ContentSettingsType::JAVASCRIPT)) {
     ReloadWebContents();
   }
 }
