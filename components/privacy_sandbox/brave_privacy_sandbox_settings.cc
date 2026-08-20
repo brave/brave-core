@@ -5,8 +5,6 @@
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
 
-#include <string>
-
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -43,23 +41,6 @@ void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
 bool BravePrivacySandboxSettings::IsEventReportingDestinationAttested(
     const url::Origin& destination_origin,
     privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsSharedStorageAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& accessing_origin,
-    std::string* out_debug_message,
-    content::RenderFrameHost* console_frame,
-    bool* out_block_is_site_setting_specific) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& accessing_origin,
-    std::string* out_debug_message,
-    bool* out_block_is_site_setting_specific) const {
   return false;
 }
 
