@@ -117,7 +117,9 @@ TEST_F(BraveShieldsTabHelperUnitTest, ReloadsForRelevantContentSettings) {
   for (ContentSettingsType type :
        {ContentSettingsType::BRAVE_SHIELDS, ContentSettingsType::BRAVE_ADS,
         ContentSettingsType::BRAVE_TRACKERS,
+        ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
         ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingsType::BRAVE_REFERRERS, ContentSettingsType::BRAVE_COOKIES,
         ContentSettingsType::JAVASCRIPT}) {
     host_content_settings_map()->SetContentSettingDefaultScope(
         url, GURL(), type, CONTENT_SETTING_BLOCK);
