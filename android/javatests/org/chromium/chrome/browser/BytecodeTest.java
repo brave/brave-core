@@ -1593,6 +1593,7 @@ public class BytecodeTest {
                         OmniboxChipManager.class,
                         BottomBarHostManager.class,
                         ActionRegistry.class,
+                        OneshotSupplier.class,
                         GlicButtonDelegate.class,
                         boolean.class));
         Assert.assertTrue(

@@ -1764,6 +1764,7 @@
 -All/SearchEnginePreconnectorWithPreconnect2FeatureBrowserTest.*
 -All/SearchEnginePreconnectorWithResetConnectionFailureOnSessionUsedBrowserTest.PreconnectSearchAfterOnCloseWithShortSessionAndUsed/*
 -ChromeAutocompleteProviderClientTest.StartServiceWorker
+-DeviceBoundSessionBrowserTest.OmniboxQueryWithExpiredCookieTriggersRefresh
 -OmniboxSearchAggregator*Test.*
 
 # Marked as consistently failing upstream, see crbug.com/336983096
