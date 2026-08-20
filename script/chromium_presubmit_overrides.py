@@ -41,6 +41,7 @@ def noop_check(*_, **__):
 # Replaces existing PRESUBMIT check. Can be used with globals() scope or a class
 # scope (such as input_api.canned_checks).
 def override_check(scope, name=None, should_exist=True):
+
     def decorator(new_func):
         is_dict_scope = isinstance(scope, dict)
         check_name = name or new_func.__name__
@@ -78,6 +79,7 @@ def override_canned_checks(canned_checks):
     #    which we should ignore.
     @override_check(canned_checks, should_exist=False)
     def GetPylint(original_check, input_api, output_api, **kwargs):
+
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
             src_filter = lambda f: input_api.FilterSourceFile(
                 f, files_to_check=files_to_check, files_to_skip=files_to_skip)
@@ -110,16 +112,17 @@ def apply_generic_check_overrides(scope, config_key, should_exist):
                        should_exist=should_exist)(noop_check)
 
     def force_presubmit_error_wrapper(original_check, input_api, output_api,
-                                      **kwargs):
+                                      *args, **kwargs):
         with override_utils.override_scope_variable(output_api,
                                                     'PresubmitPromptWarning',
                                                     output_api.PresubmitError):
-            return original_check(input_api, output_api, **kwargs)
+            return original_check(input_api, output_api, *args, **kwargs)
 
     for force_error_check in config['checks_to_force_presubmit_errors'][
             config_key]:
-        override_check(scope, name=force_error_check,
-                       should_exist=should_exist)(force_presubmit_error_wrapper)
+        override_check(
+            scope, name=force_error_check,
+            should_exist=should_exist)(force_presubmit_error_wrapper)
 
 
 # Wraps input_api.change.AffectedFiles method to manually filter files available
@@ -228,7 +231,9 @@ def setup_read_file_override(input_api):
 
 # Inlines presubmit file as if it was run from the dir where it's located.
 def inline_presubmit(filename, _globals, _locals):
+
     class State:
+
         def __init__(self, filename):
             self.presubmit_dir = os.path.dirname(
                 brave_chromium_utils.wspath(filename))
