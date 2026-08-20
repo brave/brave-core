@@ -315,7 +315,7 @@ void PasswordUiViewAndroid::HandleImportPasswordsFromCsv(
     const JavaRef<jobject>& error_callback) {
   // Create a PasswordImporter instance
   auto importer = std::make_unique<password_manager::PasswordImporter>(
-      &saved_passwords_presenter_);
+      saved_passwords_presenter_);
 
   // Capture the importer as a raw pointer before moving it into the callback
   password_manager::PasswordImporter* importer_ptr = importer.get();
