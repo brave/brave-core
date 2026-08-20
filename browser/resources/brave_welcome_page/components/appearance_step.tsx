@@ -13,6 +13,7 @@ import { ColorScheme } from '../api/welcome_api'
 import { useWelcomeApi } from '../api/welcome_api_context'
 import { useStepTransition } from './use_step_transition'
 import { getString } from '../lib/strings'
+import { BrowserPreview } from './browser_preview'
 import { StepComponentProps } from './step_component_props'
 import { StepHeader } from './step_header'
 import { ThemeColorSelector } from './theme_color_selector'
@@ -41,6 +42,7 @@ export function AppearanceStep(props: StepComponentProps) {
           <p>{getString('WELCOME_PAGE_APPEARANCE_STEP_TEXT')}</p>
         </div>
         <div className='step-ui'>
+          <BrowserPreview tabOrientation={tabOrientation} />
           <div className='tab-layout'>
             <h4>{getString('WELCOME_PAGE_TAB_LAYOUT_LABEL')}</h4>
             <SegmentedControl

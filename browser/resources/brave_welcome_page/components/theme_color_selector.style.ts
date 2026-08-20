@@ -11,12 +11,15 @@ export const style = scoped.css`
     padding: ${spacing.l} ${spacing['2Xl']} ${spacing.l};
     border-top: solid 1px ${color.material.separator};
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: ${spacing.l};
+    justify-content: space-between;
+    gap: ${spacing.xs};
   }
 
   .color-swatch {
+    /* Swatches always occupy a single row, shrinking below their natural size
+     * rather than wrapping when the row runs out of space. */
+    flex: 0 1 40px;
+    min-width: 0;
     position: relative;
     appearance: none;
     margin: 0;
@@ -67,8 +70,8 @@ export const style = scoped.css`
 
   .theme-color {
     display: block;
-    width: 36px;
-    height: 36px;
+    width: 100%;
+    aspect-ratio: 1;
     border-radius: ${radius.full};
   }
 `
