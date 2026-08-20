@@ -161,7 +161,6 @@
 "ForgetMeLabel" = "M’oublier quand je ferme ce site";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "Strict";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listes mises à jour";
@@ -245,10 +244,8 @@
 "shredSiteSelectedTabsConfirmationMessage" = "La suppression fermera les onglets sélectionnés et effacera toutes les données du site. Cette action est irréversible.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Le site n’est pas sécurisé";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "La connexion à %@ n’est pas sécurisée";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blocage des traqueurs et annonces";
@@ -260,8 +257,6 @@
 "UpdatingLists" = "Mise à jour des listes en cours…";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Mise à niveau des connexions vers HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Vous voyez cet avertissement parce que ce site ne prend pas en charge le protocole HTTPS.";
 

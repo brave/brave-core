@@ -161,7 +161,6 @@
 "ForgetMeLabel" = "Забрави ме, когато затворя този сайт";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "Конкретна";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Актуализирани списъци";
@@ -245,10 +244,8 @@
 "shredSiteSelectedTabsConfirmationMessage" = "При шредирането ще бъдат затворени избраните раздели, и всички данни от сайта ще бъдат изтрити. Това действие не може да бъде отменено.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Сайтът не е защитен";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "Връзката с %@ не е сигурна";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Блокиране на тракери и реклами";
@@ -260,8 +257,6 @@
 "UpdatingLists" = "Списъците се актуализират";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Актуализиране на връзките към HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Виждаш това предупреждение, защото този сайт не поддържа HTTPS.";
 

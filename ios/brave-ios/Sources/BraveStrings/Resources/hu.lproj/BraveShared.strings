@@ -899,13 +899,10 @@
 "Home" = "Főoldal";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Kapcsolatok bővítése HTTPS-re";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Ha lehetséges, a weboldalakat HTTP helyett biztonságos HTTPS használatával nyitja meg.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS frissítések";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Böngészési adatok importálása";

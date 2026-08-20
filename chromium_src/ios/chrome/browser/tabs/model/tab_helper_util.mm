@@ -5,6 +5,7 @@
 
 #import "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
+#include "base/feature_list.h"
 #import "components/omnibox/common/omnibox_features.h"
 #include "ios/chrome/browser/complex_tasks/model/ios_task_tab_helper.h"
 #import "ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.h"
@@ -21,6 +22,19 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
 
   security_interstitials::IOSBlockingPageTabHelper::CreateForWebState(
       web_state);
+
+  ProfileIOS* profile =
+      ProfileIOS::FromBrowserState(web_state->GetBrowserState());
+  HttpsUpgradeService* https_upgrade_service =
+      HttpsUpgradeServiceFactory::GetForProfile(profile);
+  HttpsOnlyModeUpgradeTabHelper::CreateForWebState(
+      web_state, profile->GetPrefs(), https_upgrade_service);
+  HttpsOnlyModeContainer::CreateForWebState(web_state);
+  if ((filter_flags & TabHelperFilter::kPrerender) == TabHelperFilter::kEmpty &&
+      base::FeatureList::IsEnabled(omnibox::kDefaultTypedNavigationsToHttps)) {
+    TypedNavigationUpgradeTabHelper::CreateForWebState(web_state,
+                                                       https_upgrade_service);
+  }
 
   // Create Brave's version instead of Chromes as we replace its usage in
   // ios_captive_portal_blocking_page.mm

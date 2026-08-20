@@ -15,7 +15,6 @@ import {
   AdBlockMode,
   FingerprintMode,
   CookieBlockMode,
-  HttpsUpgradeMode,
   ContentSettingSource,
 } from '../api/panel_browser_api'
 import {
@@ -81,7 +80,6 @@ export default {
           adBlockMode: AdBlockMode.ALLOW,
           fingerprintMode: FingerprintMode.ALLOW_MODE,
           cookieBlockMode: CookieBlockMode.ALLOW,
-          httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
           scriptsBlockedOverrideStatus: {
             status: ContentSetting.DEFAULT,

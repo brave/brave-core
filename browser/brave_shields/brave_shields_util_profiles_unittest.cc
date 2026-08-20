@@ -159,20 +159,6 @@ TEST_F(BraveShieldsUtilProfilesTest, SetFingerprintingControlType) {
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
 }
 
-TEST_F(BraveShieldsUtilProfilesTest, SetHttpsUpgradeControlType) {
-  constexpr std::pair<ControlType, ControlType> kExpects[] = {
-      {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
-
-  auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetHttpsUpgradeControlType(map, value, kTestUrl);
-  };
-  auto get = [this](HostContentSettingsMap* map) {
-    return GetHttpsUpgradeControlType(map, kTestUrl);
-  };
-
-  RunTest<ControlType>(kExpects, std::move(set), std::move(get));
-}
-
 TEST_F(BraveShieldsUtilProfilesTest, SetNoScriptControlType) {
   constexpr std::pair<ControlType, ControlType> kExpects[] = {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {DEFAULT, BLOCK}};

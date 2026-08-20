@@ -26,9 +26,6 @@ export interface DefaultBraveShieldsBrowserProxy {
   getFingerprintingBlockEnabled: () => Promise<boolean>
   setFingerprintingBlockEnabled: (value: boolean) => void
 
-  getHttpsUpgradeControlType: () => Promise<string>
-  setHttpsUpgradeControlType: (value: string) => void
-
   getNoScriptControlType: () => Promise<boolean>
   setNoScriptControlType: (value: boolean) => void
 
@@ -84,14 +81,6 @@ implements DefaultBraveShieldsBrowserProxy {
 
   setFingerprintingBlockEnabled (value: boolean) {
     chrome.send('setFingerprintingBlockEnabled', [value])
-  }
-
-  getHttpsUpgradeControlType () {
-    return sendWithPromise<string>('getHttpsUpgradeControlType')
-  }
-
-  setHttpsUpgradeControlType (value: string) {
-    chrome.send('setHttpsUpgradeControlType', [value])
   }
 
   getNoScriptControlType () {

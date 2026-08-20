@@ -155,7 +155,6 @@
 "ForgetMeLabel" = "Lupakan Saya Ketika Saya Menutup Situs Ini";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "Ketat";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Daftar Diperbarui";
@@ -185,10 +184,8 @@
 "ShredSiteDataNow" = "Musnahkan Data Situs Sekarang";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Situs tidak aman";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "Sambungan ke %@ tidak aman";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Pemblokiran Pelacak & Iklan";
@@ -200,8 +197,6 @@
 "UpdatingLists" = "Memperbarui Daftar";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Tingkatkan Koneksi ke HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Anda melihat peringatan ini karena situs tidak mendukung HTTPS.";
 

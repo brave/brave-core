@@ -161,7 +161,6 @@
 "ForgetMeLabel" = "Glem meg når jeg lukker denne nettsiden";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "Strengt";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listene er oppdatert";
@@ -245,10 +244,8 @@
 "shredSiteSelectedTabsConfirmationMessage" = "Makulering vil lukke de valgte fanene, og slette alle nettsteddataene. Dette kan ikke angres.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Nettstedet er ikke sikkert";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "Tilkoblingen til %@ er ikke sikker";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blokkering av sporing og annonser";
@@ -260,8 +257,6 @@
 "UpdatingLists" = "Oppdaterer lister";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Oppgrader tilkoblinger til HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Du ser denne advarselen fordi dette nettstedet ikke støtter HTTPS.";
 

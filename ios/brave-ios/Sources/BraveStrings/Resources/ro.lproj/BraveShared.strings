@@ -899,13 +899,10 @@
 "Home" = "Pagină de pornire";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Actualizează conexiunile la HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Deschide site-urile utilizând HTTPS securizat în loc de HTTP, atunci când este posibil.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Actualizări la HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importare date de navigare";

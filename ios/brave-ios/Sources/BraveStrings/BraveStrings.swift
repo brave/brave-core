@@ -3134,20 +3134,6 @@ extension Strings {
       "These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.",
     comment: "Section footer for global shields defaults"
   )
-  public static let HTTPSEverywhere = NSLocalizedString(
-    "HTTPSEverywhere",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Upgrade Connections to HTTPS",
-    comment: ""
-  )
-  public static let HTTPSEverywhereDescription = NSLocalizedString(
-    "HTTPSEverywhereDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Opens sites using secure HTTPS instead of HTTP when possible.",
-    comment: ""
-  )
   public static let googleSafeBrowsing = NSLocalizedString(
     "GoogleSafeBrowsing",
     tableName: "BraveShared",
@@ -3454,13 +3440,6 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Ads and Trackers",
-    comment: "individual blocking statistic title"
-  )
-  public static let HTTPSUpgrades = NSLocalizedString(
-    "HTTPSUpgrades",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "HTTPS Upgrades",
     comment: "individual blocking statistic title"
   )
   public static let scriptsBlocked = NSLocalizedString(

@@ -899,13 +899,10 @@
 "Home" = "Halaman Utama";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Naik Taraf Sambungan ke HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Membuka tapak menggunakan HTTPS selamat sebagai ganti HTTP jika boleh.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Naik Taraf HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Import Data Penyemakan Imbas";

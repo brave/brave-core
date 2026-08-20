@@ -104,16 +104,13 @@ class CacheClearable: Clearable {
 // Clears our browsing history, including favicons and thumbnails.
 class HistoryClearable: Clearable {
   let historyAPI: BraveHistoryAPI
-  let httpsUpgradeService: HttpsUpgradeService?
   private let serpMetrics: (any SerpMetrics)?
 
   init(
     historyAPI: BraveHistoryAPI,
-    httpsUpgradeService: HttpsUpgradeService?,
     serpMetrics: (any SerpMetrics)?
   ) {
     self.historyAPI = historyAPI
-    self.httpsUpgradeService = httpsUpgradeService
     self.serpMetrics = serpMetrics
   }
 
@@ -124,7 +121,6 @@ class HistoryClearable: Clearable {
   func clear() async throws {
     return await withCheckedContinuation { continuation in
       self.historyAPI.deleteAll {
-        self.httpsUpgradeService?.clearAllowlist(fromStart: .distantPast, end: .distantFuture)
         self.serpMetrics?.clearHistory()
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
         continuation.resume()

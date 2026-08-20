@@ -899,13 +899,10 @@
 "Home" = "Inicio";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Actualizar las conexiones a HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Abre los sitios web usando el protocolo HTTPS seguro en vez del HTTP siempre que sea posible.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Mejoras de HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importar datos de navegación";
