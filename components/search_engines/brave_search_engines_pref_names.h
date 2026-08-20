@@ -13,6 +13,11 @@ namespace prefs {
 inline constexpr char kAddOpenSearchEngines[] =
     "brave.other_search_engines_enabled";
 
+// ISO 3166-1 alpha-2 country code for Brave Search results.
+// When set, this takes priority over the auto-detected country.
+// Example values: "ZA" (South Africa), "US" (United States), "DE" (Germany).
+inline constexpr char kBraveSearchCountry[] = "brave.search.country";
+
 }  // namespace prefs
 
 #endif  // BRAVE_COMPONENTS_SEARCH_ENGINES_BRAVE_SEARCH_ENGINES_PREF_NAMES_H_
