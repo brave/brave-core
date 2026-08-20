@@ -19,13 +19,6 @@ extension Strings {
       comment: "This shows when you add a widget but have no favorites added in your app"
     )
 
-    public static let favoritesWidgetTitle = NSLocalizedString(
-      "widgets.favoritesWidgetTitle",
-      bundle: widgetBundle,
-      value: "Favorites",
-      comment: "Title for favorites widget on 'add widget' screen."
-    )
-
     public static let favoritesWidgetDescription = NSLocalizedString(
       "widgets.favoritesWidgetDescription",
       bundle: widgetBundle,
