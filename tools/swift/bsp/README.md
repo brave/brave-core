@@ -26,7 +26,6 @@ This does not cover `ios/brave-ios`, which is built by Xcode; use a tool like
       "bspVersion": "2.2.0",
       "languages": ["swift"],
       "argv": [
-        "/usr/bin/python3",
         "/abs/path/to/src/brave/tools/swift/bsp/gn_bsp_server.py",
         "--source-root",
         "/abs/path/to/src",
