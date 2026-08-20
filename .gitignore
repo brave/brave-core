@@ -106,7 +106,6 @@ xcuserdata
 
 # Per-developer configuration for tools/swift/bsp/gn_bsp_server.py
 buildServer.json
-.gn_bsp_config.json
 
 # Claude LLM settings (user-specific, not tracked)
 .claude/settings.local.json

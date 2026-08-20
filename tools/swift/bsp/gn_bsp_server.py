@@ -381,25 +381,6 @@ class BuildServer:
         }
 
 
-def _resolve_out_dir(source_root, out_dir):
-    """Resolves the output directory, honouring a local config override.
-
-    Developers use different GN output directories, so `--out-dir` can be
-    overridden per checkout by an untracked `.gn_bsp_config.json` next to
-    `buildServer.json`:
-
-        { "out_dir": "out/ios_sim" }
-    """
-    config_path = os.path.join(source_root, 'brave', '.gn_bsp_config.json')
-    if os.path.exists(config_path):
-        with open(config_path, encoding='utf8') as stream:
-            configured = json.load(stream).get('out_dir')
-        if configured:
-            _log(f'using out_dir {configured} from {config_path}')
-            out_dir = configured
-    return os.path.realpath(os.path.join(source_root, out_dir))
-
-
 def main(argv):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-root',
@@ -419,7 +400,7 @@ def main(argv):
     args = parser.parse_args(argv)
 
     source_root = os.path.realpath(args.source_root)
-    out_dir = _resolve_out_dir(source_root, args.out_dir)
+    out_dir = os.path.realpath(os.path.join(source_root, args.out_dir))
     workspace_root = os.path.realpath(
         args.workspace_root) if args.workspace_root else os.path.join(
             source_root, 'brave')

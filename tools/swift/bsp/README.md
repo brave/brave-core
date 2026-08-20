@@ -40,13 +40,6 @@ This does not cover `ios/brave-ios`, which is built by Xcode; use a tool like
 3.  Reopen the editor. It launches `gn_bsp_server.py` on its own and asks it for
     compiler arguments whenever a `.swift` file is opened.
 
-To use a different output directory without editing `buildServer.json` (which
-may be shared through other means), create `src/brave/.gn_bsp_config.json`:
-
-```json
-{ "out_dir": "out/ios_sim" }
-```
-
 ## Which targets are exposed
 
 Only targets sources under the workspace root are advertised to sourcekit-lsp,
