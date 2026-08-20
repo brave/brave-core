@@ -22,6 +22,8 @@ source_set("ai_chat") {
     "code_sandbox_ui.h",
     "leo_workspace_ui.cc",
     "leo_workspace_ui.h",
+    "workspace_folder_chooser.cc",
+    "workspace_folder_chooser.h",
   ]
 
   deps = [
@@ -65,6 +67,7 @@ source_set("ai_chat") {
     "//services/data_decoder/public/cpp",
     "//ui/base",
     "//ui/gfx/codec",
+    "//ui/shell_dialogs",
     "//ui/webui",
   ]
 
@@ -123,6 +126,7 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//ui/gfx:test_support",
     "//ui/gfx/codec",
+    "//ui/shell_dialogs",
   ]
 
   sources = [ "ai_chat_ui_page_handler_unittest.cc" ]
