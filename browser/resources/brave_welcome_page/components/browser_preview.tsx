@@ -12,7 +12,7 @@ import { getString } from '../lib/strings'
 import { style } from './browser_preview.style'
 
 const pinnedTabIcons: IconName[] = [
-  'social-github-color',
+  'slack-color',
   'google-calendar-color',
   'gmail-color',
   'social-youtube-color',
@@ -39,7 +39,7 @@ export function BrowserPreview(props: BrowserPreviewProps) {
           {!isVertical && (
             <div className='tab-strip'>
               <div className='pinned-tab'>
-                <Icon name='social-github-color' />
+                <Icon name='slack-color' />
               </div>
               <ActiveTab />
               <div className='toolbar-button new-tab'>

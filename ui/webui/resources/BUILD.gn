@@ -458,6 +458,7 @@ leo_icons_sources = [
   "sidenav-collapse.svg",
   "sidenav-expand.svg",
   "sidepanel-open.svg",
+  "slack-color.svg",
   "slash.svg",
   "smart-proxy-routing.svg",
   "smartphone-desktop-off.svg",
