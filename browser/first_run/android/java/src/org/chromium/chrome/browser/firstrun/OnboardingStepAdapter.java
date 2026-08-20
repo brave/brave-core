@@ -72,7 +72,8 @@ public class OnboardingStepAdapter
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(STEPS[viewType], parent, false);
         return switch (viewType) {
-            case HELP_BRAVE_SEARCH_POSITION -> new HelpBraveSearchViewHolder(view, mWdpLearnMore, mListener);
+            case HELP_BRAVE_SEARCH_POSITION ->
+                    new HelpBraveSearchViewHolder(view, mWdpLearnMore, mListener);
             case BLOCK_INTERRUPTIONS_POSITION -> new BlockInterruptionsViewHolder(view, mListener);
             case MAKE_BRAVE_BETTER_POSITION ->
                     new MakeBraveBetterViewHolder(
@@ -158,7 +159,8 @@ public class OnboardingStepAdapter
 
             mLater = itemView.findViewById(R.id.onboarding_later);
             mLater.setClipToOutline(true);
-            mLater.setOnClickListener(v -> listener.onRequestPageChange(BLOCK_INTERRUPTIONS_POSITION));
+            mLater.setOnClickListener(
+                    v -> listener.onRequestPageChange(BLOCK_INTERRUPTIONS_POSITION));
 
             mSure = itemView.findViewById(R.id.onboarding_sure);
             mSure.setClipToOutline(true);
@@ -184,7 +186,8 @@ public class OnboardingStepAdapter
             super(itemView);
             mContinue = itemView.findViewById(R.id.onboarding_continue);
             mContinue.setClipToOutline(true);
-            mContinue.setOnClickListener(view -> listener.onRequestPageChange(MAKE_BRAVE_BETTER_POSITION));
+            mContinue.setOnClickListener(
+                    view -> listener.onRequestPageChange(MAKE_BRAVE_BETTER_POSITION));
 
             mBlockInterruptions = itemView.findViewById(R.id.onboarding_illustration);
         }
