@@ -27,6 +27,7 @@ test("ios_brave_unit_tests") {
 
     # Unit tests
     ":legacy_unit_tests",
+    ":mojom_objc_generator_unit_tests",
     "//brave/ios/browser/brave_ads:unit_tests",
     "//brave/ios/browser/brave_shields:unit_tests",
     "//brave/ios/browser/brave_shields/cosmetic_filtering:unit_tests",
@@ -47,14 +48,12 @@ source_set("legacy_unit_tests") {
   sources = [
     "certificate_unittest.mm",
     "dictionary_transform_unittest.mm",
-    "mojom_objc_generator_unittest.mm",
     "test_foo.h",
     "test_foo.mm",
     "vector_transform_unittest.mm",
   ]
 
   deps = [
-    ":mojom_objc_generator_test_mojom_objc",
     "//base",
     "//brave/ios/browser/api/net",
     "//net",
@@ -65,6 +64,17 @@ source_set("legacy_unit_tests") {
   frameworks = [
     "Foundation.framework",
     "Security.framework",
+  ]
+}
+
+source_set("mojom_objc_generator_unit_tests") {
+  testonly = true
+
+  sources = [ "mojom_objc_generator_unittest.mm" ]
+
+  deps = [
+    ":mojom_objc_generator_test_mojom_objc",
+    "//testing/gtest",
   ]
 }
 
