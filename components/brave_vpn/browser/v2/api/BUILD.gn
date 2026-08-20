@@ -11,10 +11,12 @@ source_set("api") {
   sources = [
     "brave_vpn_api_client.cc",
     "brave_vpn_api_client.h",
+    "empty_request_body.h",
     "endpoint_constants.h",
     "error_body.h",
     "purchase_endpoints.h",
     "raw_json_response_body.h",
+    "region_endpoints.h",
     "support_endpoints.h",
   ]
 
@@ -37,6 +39,7 @@ source_set("unit_tests") {
   sources = [
     "brave_vpn_api_client_unittest.cc",
     "purchase_endpoints_unittest.cc",
+    "region_endpoints_unittest.cc",
     "support_endpoints_unittest.cc",
   ]
 
