@@ -9,8 +9,6 @@
 #include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/observer_list.h"
-#include "base/observer_list_types.h"
 #include "base/token.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/farbling_prng.h"
@@ -30,11 +28,6 @@ namespace brave_shields {
 
 class BraveShieldsSettingsService : public KeyedService {
  public:
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnShieldsSettingsChanged(const GURL& url) = 0;
-  };
-
   explicit BraveShieldsSettingsService(
       HostContentSettingsMap& host_content_settings_map,
       PrefService* local_state = nullptr,
@@ -98,12 +91,7 @@ class BraveShieldsSettingsService : public KeyedService {
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
-
  private:
-  void NotifySettingsChanged(const GURL& url);
-
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED
   raw_ptr<PrefService> local_state_;    // NOT OWNED
@@ -113,8 +101,6 @@ class BraveShieldsSettingsService : public KeyedService {
   // the service is destoryed. It allows to show different farbled values for a
   // site across browser restarts.
   base::Token profile_level_farbling_entropy_;
-
-  base::ObserverList<Observer> observers_;
 };
 
 }  // namespace brave_shields

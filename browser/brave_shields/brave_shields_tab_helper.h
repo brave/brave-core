@@ -15,7 +15,6 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -37,7 +36,6 @@ class BraveShieldsTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BraveShieldsTabHelper>,
       public content_settings::Observer,
-      public BraveShieldsSettingsService::Observer,
       public favicon::FaviconDriverObserver {
  public:
   BraveShieldsTabHelper(const BraveShieldsTabHelper&) = delete;
@@ -122,9 +120,6 @@ class BraveShieldsTabHelper
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
 
-  // BraveShieldsSettingsService::Observer
-  void OnShieldsSettingsChanged(const GURL& url) override;
-
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
                         NotificationIconType notification_icon_type,
@@ -151,9 +146,6 @@ class BraveShieldsTabHelper
       observation_{this};
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
-  base::ScopedObservation<BraveShieldsSettingsService,
-                          BraveShieldsSettingsService::Observer>
-      brave_shields_settings_observation_{this};
 
   PrefChangeRegistrar local_state_change_registrar_;
   const raw_ptr<ephemeral_storage::EphemeralStorageService>
