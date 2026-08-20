@@ -11,6 +11,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
@@ -30,11 +31,13 @@ class ZCashCompleteTransactionTaskV6 {
  public:
   using ZCashCompleteTransactionTaskV6Callback =
       base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
-  ZCashCompleteTransactionTaskV6(base::PassKey<ZCashWalletService> pass_key,
-                                 ZCashWalletService& zcash_wallet_service,
-                                 ZCashActionContext context,
-                                 KeyringService& keyring_service,
-                                 const ZCashTransaction& transaction);
+  ZCashCompleteTransactionTaskV6(
+      std::variant<base::PassKey<class ZCashCompleteTransactionTaskV6Test>,
+                   base::PassKey<ZCashWalletService>> pass_key,
+      ZCashWalletService& zcash_wallet_service,
+      ZCashActionContext context,
+      KeyringService& keyring_service,
+      const ZCashTransaction& transaction);
   ~ZCashCompleteTransactionTaskV6();
 
   void Start(ZCashCompleteTransactionTaskV6Callback callback);

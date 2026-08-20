@@ -7,6 +7,7 @@
 
 #include <array>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/check.h"
@@ -36,7 +37,8 @@ ZCashCompleteTransactionTaskV6::ApplyOrchardSignatures(
 }
 
 ZCashCompleteTransactionTaskV6::ZCashCompleteTransactionTaskV6(
-    base::PassKey<ZCashWalletService> pass_key,
+    std::variant<base::PassKey<class ZCashCompleteTransactionTaskV6Test>,
+                 base::PassKey<ZCashWalletService>> pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     KeyringService& keyring_service,

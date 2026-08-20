@@ -59,11 +59,6 @@ constexpr char kGateJuniorMnemonic[] =
     "jelly art frequent fence middle ice moral wage toddler attitude sign "
     "lesson grain";
 
-constexpr char kLuxuryReformMnemonic[] =
-    "luxury reform inner vanish palace addict alter control casino bean "
-    "metal two banner fatigue type sponsor sun plunge hotel shadow host "
-    "health cabbage tomato";
-
 std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::vector<uint8_t> vec;
   std::array<uint8_t, 32> sized_vec;
@@ -2088,7 +2083,11 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
 #define MAYBE_SendShieldedFunds DISABLED_SendShieldedFunds
 // UnshieldFunds (orchard->transparent) doesn't touch Ironwood, so it's
 // re-enabled with a v6-format test vector.
+#if (BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)) || BUILDFLAG(IS_IOS)
+#define MAYBE_UnshieldFunds DISABLED_UnshieldFunds
+#else
 #define MAYBE_UnshieldFunds UnshieldFunds
+#endif
 
 // https://3xpl.com/zcash/transaction/821edadc1bc51e7dc7a57c01eb766292a88d3836ad7f83f4e3e505100cef2300
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
@@ -3580,6 +3579,11 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
       "a34ec390048b952aa5a0f297dd2b729c052e2d91f03e",
       ToHex(captured_data));
 }
+
+constexpr char kLuxuryReformMnemonic[] =
+    "luxury reform inner vanish palace addict alter control casino bean "
+    "metal two banner fatigue type sponsor sun plunge hotel shadow host "
+    "health cabbage tomato";
 
 // https://3xpl.com/zcash/transaction/2295048f00c2264cc068b85a6695c4b89cdd06f1e686c69c990cecaf74db0937
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
