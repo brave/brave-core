@@ -55,6 +55,7 @@ source_set("browser_tests") {
 
   deps = [
     ":vertical_tabs",
+    "//base/i18n:test_support",
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
