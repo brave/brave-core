@@ -361,7 +361,8 @@ extension SceneDelegate {
       attributionManager: profileState.attributionManager,
       rewards: profileState.rewards,
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
-      userActivity: sceneState.connectionOptions.userActivities.first
+      userActivity: sceneState.connectionOptions.userActivities.first,
+      downloadBackgroundTaskModel: AppState.shared.downloadBackgroundTaskModel
     )
 
     // Setup Playlist Car-Play
@@ -717,7 +718,8 @@ extension SceneDelegate {
     attributionManager: AttributionManager,
     rewards: Brave.BraveRewards,
     newsFeedDataSource: BraveNews.FeedDataSource,
-    userActivity: NSUserActivity?
+    userActivity: NSUserActivity?,
+    downloadBackgroundTaskModel: DownloadBackgroundTaskScheduler?
   ) -> BrowserViewController {
     let privateBrowsingManager = PrivateBrowsingManager()
 
@@ -787,7 +789,8 @@ extension SceneDelegate {
       rewards: rewards,
       crashedLastSession: crashedLastSession,
       newsFeedDataSource: newsFeedDataSource,
-      privateBrowsingManager: privateBrowsingManager
+      privateBrowsingManager: privateBrowsingManager,
+      downloadBackgroundTaskModel: downloadBackgroundTaskModel
     )
 
     browserViewController.do {
