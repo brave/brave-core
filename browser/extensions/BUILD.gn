@@ -106,6 +106,7 @@ source_set("extensions") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_private_new_tab_ui/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_search/browser",
     "//brave/components/brave_shields/core/common",
