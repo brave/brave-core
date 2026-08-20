@@ -5,11 +5,12 @@
 
 import '../lib/checkEnvironment.js'
 
-import { program } from 'commander'
+import { Command, Option } from 'commander'
+import { parseInteger } from '../lib/commandsUtils.ts'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
 
-program
+const program = new Command()
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
     '--all [mode]',
@@ -20,16 +21,16 @@ program
     '--files <file list>',
     'semicolon-separated list files to run presubmit on',
   )
-  .option(
-    '--verbose [arg]',
-    'pass --verbose 2 for more debugging info',
-    (val) => (val === undefined ? 1 : parseInt(val, 10)),
+  .addOption(
+    new Option('--verbose [arg]', 'pass --verbose 2 for more debugging info')
+      .preset('1')
+      .argParser(parseInteger),
   )
   .option('--fix', 'try to fix found issues automatically')
   .option('--json <output>', 'an output file for a JSON report')
   .action(runPresubmit)
 
-function runPresubmit(options) {
+function runPresubmit(options: ReturnType<typeof program.opts>) {
   if (!options.base) {
     options.base = 'origin/master'
   }
@@ -59,7 +60,7 @@ function runPresubmit(options) {
     args.push('--files', options.files)
   }
   if (options.verbose) {
-    args.push(...Array(options.verbose).fill('--verbose'))
+    args.push(...Array.from({ length: options.verbose }, () => '--verbose'))
   }
   if (options.json) {
     args.push('-j')
