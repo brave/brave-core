@@ -11,7 +11,7 @@ substitutions:
       at the start of the method ensures the toolbar displays correctly, and this refresh call
       is not ignored by upstream's early-exit due to the cached color being unchanged.
     regex:
-      re_pattern: '(private\s+void\s+updateModernLocationBarColor\([^)]*\)\s*\{)'
+      re_pattern: '(private void updateModernLocationBarColor\([^)]*\)\s*\{)'
       replace: |-
         \1
                 BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
