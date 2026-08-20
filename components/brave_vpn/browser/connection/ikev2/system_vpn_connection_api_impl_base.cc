@@ -296,7 +296,7 @@ void SystemVPNConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(
 }
 
 void SystemVPNConnectionAPIImplBase::FetchProfileCredentials() {
-  GetAPIRequest()->GetProfileCredentials(
+  GetAPIRequest()->GetIKEv2ProfileCredentials(
       base::BindOnce(&SystemVPNConnectionAPIImplBase::OnGetProfileCredentials,
                      base::Unretained(this)),
       GetSubscriberCredential(manager_->local_prefs()), GetHostname());

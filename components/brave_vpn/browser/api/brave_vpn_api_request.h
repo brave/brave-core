@@ -39,9 +39,9 @@ class BraveVpnAPIRequest {
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region,
                              const std::string& region_precision);
-  void GetProfileCredentials(ResponseCallback callback,
-                             const std::string& subscriber_credential,
-                             const std::string& hostname);
+  void GetIKEv2ProfileCredentials(ResponseCallback callback,
+                                  const std::string& subscriber_credential,
+                                  const std::string& hostname);
   void GetWireguardProfileCredentials(ResponseCallback callback,
                                       const std::string& subscriber_credential,
                                       const std::string& public_key,

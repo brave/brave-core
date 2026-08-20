@@ -104,7 +104,7 @@ void BraveVpnAPIRequest::GetHostnamesForRegion(
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
-void BraveVpnAPIRequest::GetProfileCredentials(
+void BraveVpnAPIRequest::GetIKEv2ProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,
     const std::string& hostname) {

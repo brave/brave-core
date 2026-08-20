@@ -948,12 +948,12 @@ void BraveVpnServiceImpl::GetHostnamesForRegion(
                                       region_precision);
 }
 
-void BraveVpnServiceImpl::GetProfileCredentials(
+void BraveVpnServiceImpl::GetIKEv2ProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,
     const std::string& hostname) {
-  api_request_->GetProfileCredentials(std::move(callback),
-                                      subscriber_credential, hostname);
+  api_request_->GetIKEv2ProfileCredentials(std::move(callback),
+                                           subscriber_credential, hostname);
 }
 
 void BraveVpnServiceImpl::GetWireguardProfileCredentials(
