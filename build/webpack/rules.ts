@@ -95,6 +95,34 @@ export function tsLoaderRule({
 }
 
 /**
+ * Paths that have opted in to the React Compiler. Add a directory here only
+ * once its components are free of Rules of React violations, since the compiler
+ * silently skips any component it cannot safely memoize.
+ */
+const reactCompilerPaths = [
+  /components[\\/]brave_news[\\/]browser[\\/]resources/,
+]
+
+/**
+ * Runs the React Compiler over the opted-in `reactCompilerPaths`, inserting
+ * automatic memoization into components and hooks.
+ *
+ * This is a `post` loader, so it always runs after ts-loader has type-checked
+ * the source and transpiled it to JS, no matter where this rule sits in the
+ * rules array. That lets a single `tsLoaderRule` keep serving every file — one
+ * shared TypeScript program, one copy of the styled-components transformer —
+ * rather than needing a parallel ts-loader config per opted-in directory.
+ */
+export function reactCompilerRule(): RuleSetRule {
+  return {
+    test: /\.tsx?$/,
+    enforce: 'post',
+    include: reactCompilerPaths,
+    loader: path.join(dirName, 'plugins', 'react-compiler-loader.ts'),
+  }
+}
+
+/**
  * Strips code behind disabled build flags (`#if`/`#endif` style comments).
  *
  * @param buildFlags The parsed contents of brave/build_flags.json.
