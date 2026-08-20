@@ -13,6 +13,7 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -71,6 +72,10 @@ test("brave_components_unittests") {
   if (enable_extensions) {
     deps +=
         [ "//brave/components/extension_malware_blocklist/browser:unit_tests" ]
+  }
+
+  if (enable_traffic_control) {
+    deps += [ "//brave/components/traffic_control/core/browser:unit_tests" ]
   }
 
   if (enable_psst) {

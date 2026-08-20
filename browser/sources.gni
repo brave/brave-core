@@ -513,8 +513,11 @@ if (enable_containers) {
 }
 
 if (enable_traffic_control) {
-  brave_chrome_browser_deps +=
-      [ "//brave/components/traffic_control/core/common" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/traffic_control",
+    "//brave/components/traffic_control/core/browser",
+    "//brave/components/traffic_control/core/common",
+  ]
 }
 
 if (enable_brave_talk) {
