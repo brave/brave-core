@@ -15,9 +15,11 @@
 #include "base/functional/callback.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -149,7 +151,12 @@ void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
       brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
   DCHECK(shields_data_controller);
 
-  if (shields_data_controller->IsBraveShieldsEnabled() &&
+  auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
+  CHECK(shields_settings);
+
+  if (shields_settings->IsBraveShieldsEnabled(
+          shields_data_controller->GetCurrentSiteURL()) &&
       shields_data_controller->GetTotalBlockedCount() > 0 &&
       CanHighlightBraveShields()) {
     ShowBraveHelpBubbleView();

@@ -37,6 +37,7 @@
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 
 using net::AppendQueryParameter;
@@ -73,6 +74,7 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
+  brave_shields_settings_observation_.Observe(&*brave_shields_settings_);
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       brave_shields::prefs::kAdBlockOnlyModeEnabled,
@@ -179,6 +181,16 @@ void BraveShieldsTabHelper::OnContentSettingChanged(
   }
 }
 
+void BraveShieldsTabHelper::OnShieldsSettingsChanged(
+    const std::string& etld_plus_one) {
+  if (net::registry_controlled_domains::GetDomainAndRegistry(
+          GetCurrentSiteURL(),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
+      etld_plus_one) {
+    ReloadWebContents();
+  }
+}
+
 void BraveShieldsTabHelper::OnFaviconUpdated(
     favicon::FaviconDriver* favicon_driver,
     NotificationIconType notification_icon_type,
@@ -266,10 +278,6 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
   return webcompat_features_invoked_;
 }
 
-bool BraveShieldsTabHelper::IsBraveShieldsEnabled() {
-  return brave_shields_settings_->IsBraveShieldsEnabled(GetCurrentSiteURL());
-}
-
 bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {
   return brave_shields::GetAllowElementBlockerInPrivateModeEnabled(
       g_browser_process->local_state());
@@ -287,8 +295,6 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
         brave_shields::prefs::kShieldsDisabledCount,
         prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) + 1);
   }
-
-  ReloadWebContents();
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
@@ -348,14 +354,6 @@ GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {
   return url;
 }
 
-mojom::AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
-  return brave_shields_settings_->GetAdBlockMode(GetCurrentSiteURL());
-}
-
-mojom::FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
-  return brave_shields_settings_->GetFingerprintMode(GetCurrentSiteURL());
-}
-
 mojom::CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   auto cookie_settings = CookieSettingsFactory::GetForProfile(
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
@@ -389,33 +387,6 @@ mojom::HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   } else {
     return mojom::HttpsUpgradeMode::STANDARD_MODE;
   }
-}
-
-bool BraveShieldsTabHelper::GetNoScriptEnabled() {
-  return brave_shields_settings_->IsNoScriptEnabled(GetCurrentSiteURL());
-}
-
-mojom::ContentSettingsOverriddenDataPtr
-BraveShieldsTabHelper::GetJsContentSettingsOverriddenData() {
-  return brave_shields_settings_->GetJsContentSettingOverriddenData(
-      GetCurrentSiteURL());
-}
-
-bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
-  return brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
-      GetCurrentSiteURL());
-}
-
-void BraveShieldsTabHelper::SetAdBlockMode(mojom::AdBlockMode mode) {
-  brave_shields_settings_->SetAdBlockMode(mode, GetCurrentSiteURL());
-
-  ReloadWebContents();
-}
-
-void BraveShieldsTabHelper::SetFingerprintMode(mojom::FingerprintMode mode) {
-  brave_shields_settings_->SetFingerprintMode(mode, GetCurrentSiteURL());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
@@ -458,17 +429,6 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
                                             g_browser_process->local_state());
 
   ReloadWebContents();
-}
-
-void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
-  brave_shields_settings_->SetNoScriptEnabled(is_enabled, GetCurrentSiteURL());
-
-  ReloadWebContents();
-}
-
-void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
-  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
-      is_enabled, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::BlockAllowedScripts(
