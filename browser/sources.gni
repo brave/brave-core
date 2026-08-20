@@ -768,6 +768,7 @@ brave_chrome_browser_public_deps = [
   "//brave/app/vector_icons",
   "//brave/browser:browser_process",
   "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
+  "//brave/browser/resources/tab_strip:tab_strip_resources",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
   "//brave/components/containers/buildflags",
