@@ -209,7 +209,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
-        &local_state_);
+        &local_state_, host_content_settings_map());
     brave_wallet_service_->asset_ratio_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
 

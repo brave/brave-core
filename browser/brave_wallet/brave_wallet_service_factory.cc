@@ -57,7 +57,8 @@ BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
       BraveWalletServiceDelegate::Create(context),
-      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
+      HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
