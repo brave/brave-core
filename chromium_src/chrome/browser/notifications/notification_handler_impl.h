@@ -27,14 +27,15 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     NOTIFICATIONS_MUTED = 10,
     TAILORED_SECURITY = 11,
     DEFAULT_BROWSER_CHANGED = 12,
-    BRAVE_WALLET = 13,
+    EXTENSION_REQUEST = 13,
+    BRAVE_WALLET = 14,
     MAX = BRAVE_WALLET,
   };
 
   static_assert(
       // Make sure we know if the original enum gets changed.
       static_cast<int>(NotificationHandler_ChromiumImpl::Type::MAX) + 1 ==
-      static_cast<int>(Type::DEFAULT_BROWSER_CHANGED));
+      static_cast<int>(Type::EXTENSION_REQUEST));
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NOTIFICATIONS_NOTIFICATION_HANDLER_IMPL_H_
