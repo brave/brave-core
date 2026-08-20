@@ -24,6 +24,12 @@ inline constexpr char kTimezonesForRegionsApi[] =
     "api/v1.1/servers/timezones-for-regions";
 inline constexpr char kHostnamesForRegionApi[] =
     "api/v1.3/servers/hostnames-for-region";
+inline constexpr char kDeviceCredentialsApi[] = "api/v1.4/device-credentials";
+inline constexpr char kDeviceApi[] = "api/v1.4/device";
+
+// Device API suffixes.
+inline constexpr char kVerifyCredentialsSuffix[] = "verify-credentials";
+inline constexpr char kInvalidateCredentialsSuffix[] = "invalidate-credentials";
 
 // Endpoint request JSON keys that can be shared between multiple APIs.
 inline constexpr char kProductTypeKey[] = "product-type";
@@ -41,6 +47,10 @@ inline constexpr char kPaymentValidationMethodKey[] =
     "payment-validation-method";
 inline constexpr char kRegionKey[] = "region";
 inline constexpr char kRegionPrecisionKey[] = "region-precision";
+inline constexpr char kTransportProtocolKey[] = "transport-protocol";
+inline constexpr char kPublicKeyKey[] = "public-key";
+inline constexpr char kMultihopExitRegionKey[] = "multihop-exit-region";
+inline constexpr char kApiAuthTokenKey[] = "api-auth-token";
 
 // Default payment validation method used by Brave.
 inline constexpr char kValidationMethodDefaultValue[] = "brave-premium";

@@ -16,6 +16,7 @@
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/raw_json_response_body.h"
+#include "brave/components/brave_vpn/browser/v2/api/transport_protocol.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -104,6 +105,36 @@ class BraveVpnApiClient {
   virtual void GetHostnamesForRegion(RawJsonCallback callback,
                                      const std::string& region,
                                      const std::string& region_precision);
+
+  // SGW API: GetProfileCredentials.
+  // Registers VPN credentials with the given node for the given transport
+  // protocol. Returns the server's JSON response verbatim.
+  virtual void GetProfileCredentials(
+      RawJsonCallback callback,
+      const std::string& subscriber_credential,
+      endpoints::TransportProtocol transport_protocol,
+      const std::string& public_key,
+      const std::string& multihop_exit_region,
+      const std::string& hostname);
+
+  // SGW API: VerifyCredentials.
+  // Confirms the credential has not been invalidated. Per Guardian, any non-2xx
+  // response should be treated as a hard failure: the credential must not be
+  // reused.
+  virtual void VerifyCredentials(RawJsonCallback callback,
+                                 const std::string& hostname,
+                                 const std::string& client_id,
+                                 const std::string& api_auth_token);
+
+  // SGW API: InvalidateCredentials.
+  // Allows for explicit disabling of VPN credentials to ensure that they cannot
+  // be used ever again. VPN credentials that are no longer going to be used
+  // should always be invalidated.
+  virtual void InvalidateCredentials(RawJsonCallback callback,
+                                     const std::string& hostname,
+                                     const std::string& client_id,
+                                     const std::string& api_auth_token,
+                                     const std::string& subscriber_credential);
 
  private:
   void OnRawJsonResponse(RawJsonCallback callback, RawJsonResponse response);
