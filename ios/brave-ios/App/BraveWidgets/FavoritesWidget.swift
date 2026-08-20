@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStrings
 import BraveWidgetsModels
 import FaviconModels
 import Strings

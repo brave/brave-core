@@ -98,6 +98,7 @@
 		CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAADEFDF26E2707F0020DC4C /* SceneDelegate.swift */; };
 		CAAE653D287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE653C287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift */; };
 		CABDE77F2A55DD1C00A388A4 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDE77E2A55DD1C00A388A4 /* AppState.swift */; };
+		D522706430375C3200BC8DCD /* BraveStrings in Frameworks */ = {isa = PBXBuildFile; productRef = D522706330375C3200BC8DCD /* BraveStrings */; };
 		E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6231C001B90A44F005ABB0D /* libz.tbd */; };
 		E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6231C041B90A472005ABB0D /* libxml2.2.tbd */; };
 		F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21E51A0910F600AAB793 /* AppDelegate.swift */; };
@@ -621,6 +622,7 @@
 			files = (
 				27462BEA29DF39EE00715268 /* OrderedCollections in Frameworks */,
 				27D7FF4A29B7BF030096DD93 /* CodableHelpers in Frameworks */,
+				D522706430375C3200BC8DCD /* BraveStrings in Frameworks */,
 				27FA217B2837F95400FA2C45 /* Strings in Frameworks */,
 				27D5906F29B7BA1000AE9989 /* BraveShared in Frameworks */,
 				27D7FF5529BA69E50096DD93 /* BraveShields in Frameworks */,
@@ -1056,6 +1058,7 @@
 				27D7FF5429BA69E50096DD93 /* BraveShields */,
 				27462BE929DF39EE00715268 /* OrderedCollections */,
 				2787B0692B7ED260004796F8 /* BraveCore */,
+				D522706330375C3200BC8DCD /* BraveStrings */,
 			);
 			productName = BraveWidgetsExtension;
 			productReference = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */;
@@ -4174,6 +4177,10 @@
 		CA986FB3298C1254000C6DD8 /* BraveWidgetsModels */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraveWidgetsModels;
+		};
+		D522706330375C3200BC8DCD /* BraveStrings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveStrings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
