@@ -9,16 +9,15 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/observer_list.h"
-#include "brave/components/traffic_control/core/browser/traffic_control_service_observer.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
 namespace traffic_control {
 
+// Profile-scoped service for Traffic Control. Pref I/O is confined to
+// prefs.{h,cc}; settings UI CRUD goes through TrafficControlSettingsHandler.
 class TrafficControlService : public KeyedService {
  public:
   explicit TrafficControlService(PrefService* prefs);
@@ -27,23 +26,12 @@ class TrafficControlService : public KeyedService {
   TrafficControlService(const TrafficControlService&) = delete;
   TrafficControlService& operator=(const TrafficControlService&) = delete;
 
-  void Shutdown() override;
-
-  void AddObserver(TrafficControlServiceObserver* observer);
-  void RemoveObserver(TrafficControlServiceObserver* observer);
-
   bool IsEnabled() const;
-  void SetEnabled(bool enabled);
 
   std::vector<mojom::TrafficRulePtr> GetRules() const;
 
  private:
-  void OnRulesPrefChanged();
-  void OnEnabledPrefChanged();
-
   raw_ptr<PrefService> prefs_ = nullptr;
-  PrefChangeRegistrar pref_change_registrar_;
-  base::ObserverList<TrafficControlServiceObserver> observers_;
 };
 
 }  // namespace traffic_control

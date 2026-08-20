@@ -40,8 +40,12 @@ std::optional<mojom::RuleOperationError> ValidateRule(
   } else if (rule->id.empty()) {
     return mojom::RuleOperationError::kIdShouldBeSet;
   }
+  if (!rule->condition) {
+    return mojom::RuleOperationError::kInvalidCondition;
+  }
 
-  if (!IsValidUrlFilter(rule->url_filter)) {
+  if (!rule->condition->url_filter.has_value() ||
+      !IsValidUrlFilter(*rule->condition->url_filter)) {
     return mojom::RuleOperationError::kInvalidUrlFilter;
   }
 

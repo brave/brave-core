@@ -5,10 +5,27 @@
 
 #include "brave/components/traffic_control/core/browser/rule_validation.h"
 
+#include <optional>
+#include <string>
+#include <string_view>
+
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace traffic_control {
+
+namespace {
+
+mojom::TrafficRulePtr MakeRule(std::string_view id,
+                               bool enabled,
+                               std::optional<std::string> url_filter,
+                               std::optional<std::string> container_id) {
+  return mojom::TrafficRule::New(std::string(id), enabled,
+                                 mojom::Condition::New(std::move(url_filter)),
+                                 mojom::Target::New(std::move(container_id)));
+}
+
+}  // namespace
 
 TEST(RuleValidationTest, IsValidUrlFilterAcceptsCommonFilters) {
   EXPECT_TRUE(IsValidUrlFilter("example.com"));
@@ -24,36 +41,38 @@ TEST(RuleValidationTest, IsValidUrlFilterRejectsInvalidFilters) {
 }
 
 TEST(RuleValidationTest, ValidateRule) {
-  EXPECT_EQ(ValidateRule(mojom::TrafficRule::New("", true, "example.com",
-                                                 mojom::Target::New("c1")),
+  EXPECT_EQ(ValidateRule(MakeRule("", true, "example.com", "c1"),
                          /*require_empty_id=*/true),
             std::nullopt);
 
-  EXPECT_EQ(ValidateRule(mojom::TrafficRule::New("id", true, "example.com",
-                                                 mojom::Target::New("c1")),
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, "example.com", "c1"),
                          /*require_empty_id=*/true),
             mojom::RuleOperationError::kIdShouldBeEmpty);
 
-  EXPECT_EQ(ValidateRule(mojom::TrafficRule::New("", true, "example.com",
-                                                 mojom::Target::New("c1")),
+  EXPECT_EQ(ValidateRule(MakeRule("", true, "example.com", "c1"),
                          /*require_empty_id=*/false),
             mojom::RuleOperationError::kIdShouldBeSet);
 
-  EXPECT_EQ(ValidateRule(mojom::TrafficRule::New("id", true, "",
-                                                 mojom::Target::New("c1")),
+  auto missing_condition = MakeRule("id", true, "example.com", "c1");
+  missing_condition->condition = nullptr;
+  EXPECT_EQ(ValidateRule(missing_condition, /*require_empty_id=*/false),
+            mojom::RuleOperationError::kInvalidCondition);
+
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, "", "c1"),
                          /*require_empty_id=*/false),
             mojom::RuleOperationError::kInvalidUrlFilter);
 
-  EXPECT_EQ(ValidateRule(mojom::TrafficRule::New("id", true, "example.com",
-                                                 mojom::Target::New("c1")),
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, std::nullopt, "c1"),
+                         /*require_empty_id=*/false),
+            mojom::RuleOperationError::kInvalidUrlFilter);
+
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, "example.com", "c1"),
                          /*require_empty_id=*/false),
             std::nullopt);
 
-  EXPECT_EQ(
-      ValidateRule(mojom::TrafficRule::New("id", true, "example.com",
-                                           mojom::Target::New(std::nullopt)),
-                   /*require_empty_id=*/false),
-      std::nullopt);
+  EXPECT_EQ(ValidateRule(MakeRule("id", true, "example.com", std::nullopt),
+                         /*require_empty_id=*/false),
+            std::nullopt);
 
   EXPECT_EQ(ValidateRule(nullptr, /*require_empty_id=*/true),
             mojom::RuleOperationError::kInvalidTarget);

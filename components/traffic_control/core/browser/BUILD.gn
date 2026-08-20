@@ -12,7 +12,6 @@ static_library("browser") {
     "pref_names.h",
     "prefs_registration.h",
     "traffic_control_service.h",
-    "traffic_control_service_observer.h",
     "traffic_control_settings_handler.h",
   ]
 

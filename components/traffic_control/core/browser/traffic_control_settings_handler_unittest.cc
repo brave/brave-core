@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -23,6 +25,15 @@
 namespace traffic_control {
 
 namespace {
+
+mojom::TrafficRulePtr MakeRule(std::string_view id,
+                               bool enabled,
+                               std::optional<std::string> url_filter,
+                               std::optional<std::string> container_id) {
+  return mojom::TrafficRule::New(std::string(id), enabled,
+                                 mojom::Condition::New(std::move(url_filter)),
+                                 mojom::Target::New(std::move(container_id)));
+}
 
 class MockTrafficControlSettingsObserver
     : public mojom::TrafficControlSettingsUI {
@@ -83,8 +94,7 @@ class TrafficControlSettingsHandlerTest : public testing::Test {
 
 TEST_F(TrafficControlSettingsHandlerTest, AddUpdateRemove) {
   base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
-  auto rule = mojom::TrafficRule::New("", true, "example.com",
-                                      mojom::Target::New("c1"));
+  auto rule = MakeRule("", true, "example.com", "c1");
   handler_->AddRule(rule->Clone(), error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
@@ -95,14 +105,15 @@ TEST_F(TrafficControlSettingsHandlerTest, AddUpdateRemove) {
   EXPECT_FALSE(rules[0]->id.empty());
 
   auto updated = rules[0]->Clone();
-  updated->url_filter = "other.example.com";
+  updated->condition->url_filter = "other.example.com";
   handler_->UpdateRule(updated->Clone(), error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
   handler_->GetRules(future.GetCallback());
   rules = future.Take();
   ASSERT_EQ(1u, rules.size());
-  EXPECT_EQ("other.example.com", rules[0]->url_filter);
+  ASSERT_TRUE(rules[0]->condition->url_filter.has_value());
+  EXPECT_EQ("other.example.com", *rules[0]->condition->url_filter);
 
   handler_->RemoveRule(rules[0]->id, error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
@@ -114,35 +125,36 @@ TEST_F(TrafficControlSettingsHandlerTest, AddUpdateRemove) {
 
 TEST_F(TrafficControlSettingsHandlerTest, AddAppendsInListOrder) {
   base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
-  handler_->AddRule(
-      mojom::TrafficRule::New("", true, "a.com", mojom::Target::New("c1")),
-      error_future.GetCallback());
+  handler_->AddRule(MakeRule("", true, "a.com", "c1"),
+                    error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
-  handler_->AddRule(
-      mojom::TrafficRule::New("", true, "b.com", mojom::Target::New("c2")),
-      error_future.GetCallback());
+  handler_->AddRule(MakeRule("", true, "b.com", "c2"),
+                    error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
   base::test::TestFuture<std::vector<mojom::TrafficRulePtr>> future;
   handler_->GetRules(future.GetCallback());
   auto rules = future.Take();
   ASSERT_EQ(2u, rules.size());
-  EXPECT_EQ("a.com", rules[0]->url_filter);
-  EXPECT_EQ("b.com", rules[1]->url_filter);
+  ASSERT_TRUE(rules[0]->condition->url_filter.has_value());
+  ASSERT_TRUE(rules[1]->condition->url_filter.has_value());
+  EXPECT_EQ("a.com", *rules[0]->condition->url_filter);
+  EXPECT_EQ("b.com", *rules[1]->condition->url_filter);
 }
 
 TEST_F(TrafficControlSettingsHandlerTest, RejectsInvalidUrlFilter) {
   base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
-  handler_->AddRule(
-      mojom::TrafficRule::New("", true, "", mojom::Target::New("c1")),
-      error_future.GetCallback());
+  handler_->AddRule(MakeRule("", true, "", "c1"), error_future.GetCallback());
+  EXPECT_EQ(mojom::RuleOperationError::kInvalidUrlFilter, error_future.Take());
+
+  handler_->AddRule(MakeRule("", true, std::nullopt, "c1"),
+                    error_future.GetCallback());
   EXPECT_EQ(mojom::RuleOperationError::kInvalidUrlFilter, error_future.Take());
 }
 
 TEST_F(TrafficControlSettingsHandlerTest, AcceptsUnsetContainerId) {
   base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
-  handler_->AddRule(mojom::TrafficRule::New("", true, "example.com",
-                                            mojom::Target::New(std::nullopt)),
+  handler_->AddRule(MakeRule("", true, "example.com", std::nullopt),
                     error_future.GetCallback());
   EXPECT_EQ(std::nullopt, error_future.Take());
 
@@ -151,6 +163,20 @@ TEST_F(TrafficControlSettingsHandlerTest, AcceptsUnsetContainerId) {
   auto rules = future.Take();
   ASSERT_EQ(1u, rules.size());
   EXPECT_FALSE(rules[0]->target->container_id.has_value());
+}
+
+TEST_F(TrafficControlSettingsHandlerTest, AcceptsEmptyContainerId) {
+  base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
+  handler_->AddRule(MakeRule("", true, "example.com", std::string()),
+                    error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
+
+  base::test::TestFuture<std::vector<mojom::TrafficRulePtr>> future;
+  handler_->GetRules(future.GetCallback());
+  auto rules = future.Take();
+  ASSERT_EQ(1u, rules.size());
+  ASSERT_TRUE(rules[0]->target->container_id.has_value());
+  EXPECT_TRUE(rules[0]->target->container_id->empty());
 }
 
 }  // namespace traffic_control

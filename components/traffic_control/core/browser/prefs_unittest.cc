@@ -6,6 +6,8 @@
 #include "brave/components/traffic_control/core/browser/prefs.h"
 
 #include <optional>
+#include <string>
+#include <string_view>
 
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
@@ -17,6 +19,19 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace traffic_control {
+
+namespace {
+
+mojom::TrafficRulePtr MakeRule(std::string_view id,
+                               bool enabled,
+                               std::optional<std::string> url_filter,
+                               std::optional<std::string> container_id) {
+  return mojom::TrafficRule::New(std::string(id), enabled,
+                                 mojom::Condition::New(std::move(url_filter)),
+                                 mojom::Target::New(std::move(container_id)));
+}
+
+}  // namespace
 
 class TrafficControlPrefsTest : public testing::Test {
  public:
@@ -32,36 +47,61 @@ class TrafficControlPrefsTest : public testing::Test {
 
 TEST_F(TrafficControlPrefsTest, RoundTrip) {
   std::vector<mojom::TrafficRulePtr> rules;
-  rules.push_back(mojom::TrafficRule::New("id-1", true, "mail.example.com",
-                                          mojom::Target::New("container-1")));
+  rules.push_back(MakeRule("id-1", true, "mail.example.com", "container-1"));
 
   SetRulesToPrefs(rules, prefs_);
   auto loaded = GetRulesFromPrefs(prefs_);
   ASSERT_EQ(1u, loaded.size());
   EXPECT_EQ("id-1", loaded[0]->id);
   EXPECT_TRUE(loaded[0]->enabled);
-  EXPECT_EQ("mail.example.com", loaded[0]->url_filter);
+  ASSERT_TRUE(loaded[0]->condition->url_filter.has_value());
+  EXPECT_EQ("mail.example.com", *loaded[0]->condition->url_filter);
   ASSERT_TRUE(loaded[0]->target->container_id.has_value());
   EXPECT_EQ("container-1", *loaded[0]->target->container_id);
 }
 
-TEST_F(TrafficControlPrefsTest, RoundTripOmitsUnsetContainerId) {
+TEST_F(TrafficControlPrefsTest, RoundTripOmitsUnsetOptionalFields) {
   std::vector<mojom::TrafficRulePtr> rules;
-  rules.push_back(mojom::TrafficRule::New("id-1", true, "example.com",
-                                          mojom::Target::New(std::nullopt)));
+  rules.push_back(MakeRule("id-1", true, std::nullopt, std::nullopt));
 
   SetRulesToPrefs(rules, prefs_);
+  const base::ListValue& stored = prefs_.GetList(prefs::kTrafficControlList);
+  ASSERT_EQ(1u, stored.size());
+  const base::DictValue& dict = stored[0].GetDict();
+  EXPECT_FALSE(dict.FindDict("condition")->contains("url_filter"));
+  EXPECT_FALSE(dict.FindDict("target")->contains("container_id"));
+
   auto loaded = GetRulesFromPrefs(prefs_);
   ASSERT_EQ(1u, loaded.size());
+  EXPECT_FALSE(loaded[0]->condition->url_filter.has_value());
   EXPECT_FALSE(loaded[0]->target->container_id.has_value());
+}
+
+TEST_F(TrafficControlPrefsTest, RoundTripPreservesEmptyContainerId) {
+  // Empty container_id means "open in a non-contained tab" and must round-trip
+  // as an explicit empty string, not as an omitted/unset field.
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(MakeRule("id-1", true, "example.com", std::string()));
+
+  SetRulesToPrefs(rules, prefs_);
+  const base::ListValue& stored = prefs_.GetList(prefs::kTrafficControlList);
+  ASSERT_EQ(1u, stored.size());
+  const base::DictValue* target = stored[0].GetDict().FindDict("target");
+  ASSERT_TRUE(target);
+  const std::string* container_id = target->FindString("container_id");
+  ASSERT_TRUE(container_id);
+  EXPECT_TRUE(container_id->empty());
+
+  auto loaded = GetRulesFromPrefs(prefs_);
+  ASSERT_EQ(1u, loaded.size());
+  ASSERT_TRUE(loaded[0]->target->container_id.has_value());
+  EXPECT_TRUE(loaded[0]->target->container_id->empty());
 }
 
 TEST_F(TrafficControlPrefsTest, FullListReplacePreservesOrder) {
   std::vector<mojom::TrafficRulePtr> rules;
-  rules.push_back(
-      mojom::TrafficRule::New("a", true, "a.com", mojom::Target::New("c1")));
-  rules.push_back(
-      mojom::TrafficRule::New("b", false, "b.com", mojom::Target::New("c2")));
+  rules.push_back(MakeRule("a", true, "a.com", "c1"));
+  rules.push_back(MakeRule("b", false, "b.com", "c2"));
   SetRulesToPrefs(rules, prefs_);
 
   auto loaded = GetRulesFromPrefs(prefs_);
@@ -110,10 +150,10 @@ TEST_F(TrafficControlPrefsTest, GetRulesFromPrefsSkipsMalformedEntries) {
                                 "url_filter", "bad.com")));  // Missing target.
 
   list.Append(base::DictValue()
-                  .Set("id", "missing-url-filter")
+                  .Set("id", "bad-url-filter")
                   .Set("enabled", true)
-                  .Set("condition", base::DictValue())
-                  .Set("target", base::DictValue()));  // Missing url_filter.
+                  .Set("condition", base::DictValue().Set("url_filter", 42))
+                  .Set("target", base::DictValue()));  // Non-string url_filter.
 
   list.Append(
       base::DictValue()
@@ -130,15 +170,28 @@ TEST_F(TrafficControlPrefsTest, GetRulesFromPrefsSkipsMalformedEntries) {
           .Set("condition", base::DictValue().Set("url_filter", "example.com"))
           .Set("target", base::DictValue().Set("container_id", "container-1")));
 
+  // Empty condition/target dicts are valid: optional fields are simply unset.
+  list.Append(base::DictValue()
+                  .Set("id", "valid-empty-optionals")
+                  .Set("enabled", false)
+                  .Set("condition", base::DictValue())
+                  .Set("target", base::DictValue()));
+
   prefs_.SetList(prefs::kTrafficControlList, std::move(list));
 
   auto loaded = GetRulesFromPrefs(prefs_);
-  ASSERT_EQ(1u, loaded.size());
+  ASSERT_EQ(2u, loaded.size());
   EXPECT_EQ("valid-id", loaded[0]->id);
   EXPECT_TRUE(loaded[0]->enabled);
-  EXPECT_EQ("example.com", loaded[0]->url_filter);
+  ASSERT_TRUE(loaded[0]->condition->url_filter.has_value());
+  EXPECT_EQ("example.com", *loaded[0]->condition->url_filter);
   ASSERT_TRUE(loaded[0]->target->container_id.has_value());
   EXPECT_EQ("container-1", *loaded[0]->target->container_id);
+
+  EXPECT_EQ("valid-empty-optionals", loaded[1]->id);
+  EXPECT_FALSE(loaded[1]->enabled);
+  EXPECT_FALSE(loaded[1]->condition->url_filter.has_value());
+  EXPECT_FALSE(loaded[1]->target->container_id.has_value());
 }
 
 }  // namespace traffic_control
