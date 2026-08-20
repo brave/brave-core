@@ -274,6 +274,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
 
+  // Sets |model_key_| directly, without validation.
+  void SetModelKeyForTesting(std::string model_key) {
+    model_key_ = std::move(model_key);
+  }
+
   ToolProvider* GetFirstToolProviderForTesting() {
     if (tool_providers_.empty()) {
       return nullptr;

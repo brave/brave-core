@@ -20,9 +20,11 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -33,6 +35,7 @@
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -420,6 +423,34 @@ TEST_F(ModelServiceTest, GetLeoModelKeyByName_And_GetLeoModelNameByKey) {
   EXPECT_FALSE(key.has_value());
   auto name = GetService()->GetLeoModelNameByKey("nonexistent-key");
   EXPECT_FALSE(name.has_value());
+}
+
+TEST_F(ModelServiceTest,
+       GetEngineForModelFallsBackToConfiguredDefaultForUnknownKey) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat,
+      {{features::kAIModelsDefaultKey.name, kClaudeHaikuModelKey}});
+
+  // APIRequestHelper posts to the thread pool at construction time.
+  base::test::TaskEnvironment task_environment;
+  auto engine = GetService()->GetEngineForModel("this-model-key-does-not-exist",
+                                                /*url_loader_factory=*/nullptr,
+                                                /*credential_manager=*/nullptr);
+  ASSERT_TRUE(engine);
+  EXPECT_EQ(engine->GetModelName(), kClaudeHaikuModelName);
+}
+
+TEST_F(ModelServiceTest,
+       CrashesWhenConfiguredDefaultModelAlsoMissingInGetEngineForModel) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat,
+      {{features::kAIModelsDefaultKey.name, "this-default-does-not-exist"}});
+
+  EXPECT_CHECK_DEATH(GetService()->GetEngineForModel(
+      "this-model-key-does-not-exist", /*url_loader_factory=*/nullptr,
+      /*credential_manager=*/nullptr));
 }
 
 TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
