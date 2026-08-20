@@ -254,6 +254,9 @@
     "META": {"sizes": {"includes": [5]}},
     "includes": [54165],
   },
+  "brave/browser/resources/tab_strip/tab_strip_resources.grd": {
+    "structures": [54170],
+  },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the
   # ids got expanded for the build.
