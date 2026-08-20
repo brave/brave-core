@@ -16,10 +16,7 @@ import {
   Theme,
 } from '../api/welcome_api'
 
-// Mirrors the names, seeds and variants of `kDynamicCustomizeChromeColors` so
-// that the swatch row has the same length here as it does in the browser. The
-// browser derives the remaining tones from each seed with the Material color
-// pipeline, which isn't reachable outside of it, so those are approximations.
+// Mirrors the names, seeds and variants of `kDynamicCustomizeChromeColors`.
 const mockChromeColors: ChromeColor[] = [
   {
     name: 'Blue',

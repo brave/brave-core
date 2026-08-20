@@ -23,8 +23,7 @@ interface BrowserPreviewProps {
 }
 
 // Mock browser chrome that illustrates the selected tab layout. Hidden from
-// assistive technology: it conveys nothing that the adjacent controls don't
-// already announce.
+// assistive technology.
 export function BrowserPreview(props: BrowserPreviewProps) {
   const isVertical = props.tabOrientation === 'vertical'
 
