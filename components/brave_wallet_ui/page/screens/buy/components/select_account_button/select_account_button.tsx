@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../../../constants/types'
 // Hooks
 import {
   useBuyReceiveAddress, //
-} from '../../hooks/useBuyReceiveAddress'
+} from '../../../buy/hooks/use_buy_receive_address'
 
 // Utils
 import { reduceAddress } from '../../../../../utils/reduce-address'
