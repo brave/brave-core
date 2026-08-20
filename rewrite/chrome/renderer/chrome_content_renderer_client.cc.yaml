@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use BraveContentSettingsAgentImpl instead of the upstream agent.
+    regex:
+      pattern: 'new content_settings::ContentSettingsAgentImpl('
+      replace: 'new content_settings::BraveContentSettingsAgentImpl('
+
+  - description: |-
+      Give ~ChromeContentRendererClient() a real body to preempt.
+
+      It is `= default` upstream, and `preempt_function_impl` needs an actual
+      compound statement to insert into.
+    regex:
+      pattern:
+        'ChromeContentRendererClient::~ChromeContentRendererClient() = default;'
+      replace:
+        "ChromeContentRendererClient::~ChromeContentRendererClient() {\n}"
+
+  - description: |-
+      Leak chrome_observer_ instead of crashing on teardown.
+
+      chrome_observer_ (a ChromeRenderThreadObserver) owns several mojo
+      objects (visited_link_reader_, content_settings_manager_,
+      renderer_configuration_receivers_) bound to the render thread's
+      sequence. The only place that ever explicitly destroys a
+      ChromeContentRendererClient via a destructible unique_ptr is the
+      test-only ChromeTestChromeMainDelegate
+      (chrome/test/base/chrome_test_launcher.h); in a real browser process
+      (desktop or Android), the renderer is always torn down by the OS
+      (TerminateCurrentProcessImmediately on desktop, Process.killProcess()
+      or OS reclaim on Android) before this destructor could ever run. So the
+      only way to reach this code at all is --single-process test teardown,
+      where the render thread's sequence may already be gone by the time
+      this runs, tripping
+      mojo::InterfaceEndpointClient::CalledOnValidSequence() on whichever
+      sequence-affine member is destroyed first, and crashing.
+      RenderThreadImpl::ShouldBeDestroyed() already leaks the render thread
+      itself for the exact same reason; leaking chrome_observer_ as a whole
+      here avoids having to track down each sequence-affine member
+      individually, since there is no reachable call site where a clean
+      destruction would be either possible or necessary.
+    preempt_function_impl:
+      function_name: ChromeContentRendererClient::~ChromeContentRendererClient
+      code: |
+        chrome_observer_.release();
