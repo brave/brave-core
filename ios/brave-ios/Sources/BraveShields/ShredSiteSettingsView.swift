@@ -80,31 +80,3 @@ public struct ShredSiteSettingsView: View {
     )
   }
 }
-
-extension SiteShredLevel: Identifiable {
-  public var id: String {
-    return rawValue
-  }
-
-  public var localizedTitle: String {
-    switch self {
-    case .never:
-      return Strings.Shields.shredNever
-    case .whenSiteClosed:
-      return Strings.Shields.shredOnSiteTabsClosed
-    case .appExit:
-      return Strings.Shields.shredOnAppClose
-    }
-  }
-
-  public var localizedDescription: String {
-    switch self {
-    case .never:
-      return Strings.Shields.shredNeverDescription
-    case .whenSiteClosed:
-      return Strings.Shields.shredOnSiteTabsClosedDescription
-    case .appExit:
-      return Strings.Shields.shredOnAppCloseDescription
-    }
-  }
-}

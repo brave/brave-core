@@ -846,6 +846,54 @@ extension Strings.Shields {
   )
 }
 
+// MARK: Shields Panel
+extension Strings.Shields {
+  public static let shieldsUpForSite = NSLocalizedString(
+    "shields.shieldsUpForSite",
+    bundle: .module,
+    value: "Shields is **up** for this site",
+    comment: "A label displayed on Shields panel beside the toggle disabling shields."
+  )
+  public static let shieldsDownForSite = NSLocalizedString(
+    "shields.shieldsDownForSite",
+    bundle: .module,
+    value: "Shields is **down** for this site",
+    comment: "A label displayed on Shields panel beside the toggle enabling shields."
+  )
+  public static let trackersAdsAndMoreBlocked = NSLocalizedString(
+    "shields.trackersAdsAndMoreBlocked",
+    bundle: .module,
+    value: "trackers, ads, and more blocked",
+    comment: "A label displayed on Shields panel beside the number of blocked items."
+  )
+  public static let siteSeemsBroken = NSLocalizedString(
+    "shields.siteSeemsBroken",
+    bundle: .module,
+    value:
+      "If this site seems broken, try toggling Shields off. This may reduce Brave's privacy protections. [Learn more](%@)",
+    comment:
+      "A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL."
+  )
+  public static let shieldsGlobalSettingsButtonTitle = NSLocalizedString(
+    "shields.shieldsGlobalSettings",
+    bundle: .module,
+    value: "Shields Global Settings",
+    comment: "A button title displayed on Shields panel linking to Shields global settings."
+  )
+  public static let siteNotWorkingCorrectly = NSLocalizedString(
+    "shields.siteNotWorkingCorrectly",
+    bundle: .module,
+    value: "Is this site not working correctly with Shields up?",
+    comment: "A footer displayed on Shields panel when shields are down."
+  )
+  public static let reportBrokenSiteButtonTitle = NSLocalizedString(
+    "shields.reportBrokenSiteButtonTitle",
+    bundle: .module,
+    value: "Report",
+    comment: "A button title displayed on Shields panel linking to Webcompat Reporter."
+  )
+}
+
 extension Strings.Shields {
   public static let toggleHint = NSLocalizedString(
     "BraveShieldsToggleHint",
