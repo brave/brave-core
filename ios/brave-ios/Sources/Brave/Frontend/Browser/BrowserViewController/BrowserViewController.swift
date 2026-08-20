@@ -2518,15 +2518,9 @@ extension BrowserViewController: WalletTabHelperDelegate {
     if await cryptoStore.isPendingRequestAvailable() {
       return true
     } else if let selectedTabOrigin = tabManager.selectedTab?.visibleURL?.origin {
-      if WalletProviderAccountCreationRequestManager.shared.hasPendingRequest(
-        for: selectedTabOrigin,
-        coinType: .sol
-      ) {
-        return true
-      }
       return WalletProviderPermissionRequestsManager.shared.hasPendingRequest(
         for: selectedTabOrigin,
-        coinType: .eth
+        coinTypes: [.eth, .sol, .ada]
       )
     }
     return false

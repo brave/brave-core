@@ -185,7 +185,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     Task { @MainActor in
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
 
-      if permissionRequestManager.hasPendingRequest(for: origin, coinType: coinType) {
+      if permissionRequestManager.hasPendingRequest(for: origin, coinTypes: [coinType]) {
         completion(.requestInProgress, nil)
         return
       }
@@ -260,6 +260,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
 
       tabDappStore.latestPendingPermissionRequest = request
       delegate?.showWalletNotification(tab, origin: origin)
+      delegate?.updateURLBarWalletButton()
     }
   }
 
@@ -361,6 +362,8 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
       }
       // show wallet notification
       delegate?.showWalletNotification(tab, origin: origin)
+      // update wallet button in url bar
+      delegate?.updateURLBarWalletButton()
     }
   }
 
@@ -639,7 +642,7 @@ extension WalletTabHelper: BraveWalletKeyringServiceObserver {
       let allAccounts = await keyringService.allAccounts().accounts
       for coin in WalletConstants.supportedCoinTypes(.dapps) {
         let allAccountsForCoin = allAccounts.filter { $0.coin == coin }
-        if permissionRequestManager.hasPendingRequest(for: origin, coinType: coin) {
+        if permissionRequestManager.hasPendingRequest(for: origin, coinTypes: [coin]) {
           let pendingRequests = permissionRequestManager.pendingRequests(
             for: origin,
             coinType: coin
