@@ -169,7 +169,7 @@ export const TokenDetails = (props: Props) => {
                   textColor='primary'
                   isBold={true}
                 >
-                  {new Amount(spotPrice?.price ?? '').formatAsFiat(
+                  {new Amount(spotPrice?.price ?? '').compactAsSpotPrice(
                     defaultFiatCurrency,
                   )}
                 </Text>

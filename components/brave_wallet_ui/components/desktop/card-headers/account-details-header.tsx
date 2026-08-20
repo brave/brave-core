@@ -335,7 +335,7 @@ export const AccountDetailsHeader = (props: Props) => {
                 />
               ) : (
                 <AccountBalanceText>
-                  {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
+                  {accountsFiatValue.compactAsFiat(defaultFiatCurrency)}
                 </AccountBalanceText>
               )}
             </Column>

@@ -491,7 +491,7 @@ export const TokenLists = ({
           balance={
             networksFiatValue.isUndefined()
               ? ''
-              : networksFiatValue.formatAsFiat(defaultFiatCurrency)
+              : networksFiatValue.compactAsFiat(defaultFiatCurrency)
           }
           network={network}
           isDisabled={networksAssets.length === 0}
@@ -573,7 +573,7 @@ export const TokenLists = ({
           balance={
             accountsFiatValue.isUndefined()
               ? ''
-              : accountsFiatValue.formatAsFiat(defaultFiatCurrency)
+              : accountsFiatValue.compactAsFiat(defaultFiatCurrency)
           }
           account={account}
           isDisabled={accountsAssets.length === 0}

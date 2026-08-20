@@ -379,5 +379,78 @@ describe('Amount class', () => {
         expect(new Amount(value).abbreviate(decimals, currency)).toBe(expected)
       },
     )
+
+    it.each([
+      ['0.000000000323', '0.00'],
+      ['0.0000026', '0.00'],
+      ['0.000009', '0.00'],
+      ['0.00026', '0.00026'],
+      ['0.0001', '0.0001'],
+      ['0.00001', '0.00001'],
+      ['0.0000000000000000000003', '0.00'],
+      ['1000', '1,000.00'],
+      ['12345.67890', '12,345.68'],
+      ['99999', '99,999.00'],
+      ['100000', '100.00k'],
+      ['123456789.0', '123.46M'],
+      ['-0.000000000323', '0.00'],
+      ['-1234', '-1,234.00'],
+    ])(
+      'should compact-format fiat amount %s as %s',
+      (value: string, expected: string) => {
+        expect(new Amount(value).compactAsFiat()).toBe(expected)
+      },
+    )
+
+    it.each([
+      ['0.000000000323', 'USD', '$0.00'],
+      ['0.0000026', 'USD', '$0.00'],
+      ['-0.000000000323', 'USD', '$0.00'],
+      ['100', 'USD', '$100.00'],
+      ['1000', 'USD', '$1,000.00'],
+      ['99999', 'USD', '$99,999.00'],
+      ['100000', 'USD', '$100.00k'],
+      ['-1234', 'USD', '-$1,234.00'],
+      ['0.0000000000000000000002564', 'USD', '$0.00'],
+    ])(
+      'should compact-format fiat amount %s with currency %s as %s',
+      (value: string, currency: string, expected: string) => {
+        expect(new Amount(value).compactAsFiat(currency)).toBe(expected)
+      },
+    )
+
+    it.each([
+      ['0.00000000002572', 'USD', '$0.0₁₀2572'],
+      ['0.000000000323', 'USD', '$0.0₉323'],
+      ['0.0000026', 'USD', '$0.0₅26'],
+      ['0.000009', 'USD', '$0.0₅9'],
+      ['100', 'USD', '$100.00'],
+      ['100000', 'USD', '$100.00k'],
+    ])(
+      'should compact-format spot price %s with currency %s as %s',
+      (value: string, currency: string, expected: string) => {
+        expect(new Amount(value).compactAsSpotPrice(currency)).toBe(expected)
+      },
+    )
+
+    it('should truncate dust balances but not spot prices', () => {
+      const amount = new Amount('0.00000000002572')
+      expect(amount.compactAsFiat('USD')).toBe('$0.00')
+      expect(amount.compactAsSpotPrice('USD')).toBe('$0.0₁₀2572')
+    })
+
+    it.each([
+      ['0.000000001', 'TangYuan', '0.0₈1 TangYuan'],
+      ['17120000000', 'BabyDoge', '17.12B BabyDoge'],
+      ['1500', 'USDC', '1,500 USDC'],
+      ['100000', 'USDC', '100,000 USDC'],
+      ['-0.000000000323', 'ETH', '-0.0₉323 ETH'],
+      ['123.456', 'ETH', '123.456 ETH'],
+    ])(
+      'should compact-format asset amount %s %s as %s',
+      (value: string, symbol: string, expected: string) => {
+        expect(new Amount(value).compactAsAsset(6, symbol)).toBe(expected)
+      },
+    )
   })
 })
