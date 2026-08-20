@@ -124,7 +124,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/translate/brave_translate_utils.h",
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
-  "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
 ]
 
 if (enable_brave_wallet) {
