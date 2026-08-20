@@ -218,6 +218,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::structured::kPhoneHubStructuredMetrics,
       &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
+      &net::features::kTLSTrustAnchorIDs,
       &network::features::kBrowsingTopics,
       &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
