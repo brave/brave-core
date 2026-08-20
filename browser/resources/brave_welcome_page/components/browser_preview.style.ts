@@ -5,7 +5,6 @@
 
 import {
   color,
-  effect,
   font,
   radius,
   spacing,
