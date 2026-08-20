@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
 #include <array>
+#include <vector>
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -113,8 +114,17 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   bool IsPolkadotChain(std::string_view chain_id);
 
+  struct FeeEstimate {
+    uint128_t partial_fee = 0;
+    // Store this so we can show it in the transaction details before the user
+    // signs. Note, it's just an estimate because signature payloads include
+    // mortality which requires a relatively recent anchor block to start the
+    // extrinsic from.
+    std::vector<uint8_t> signature_payload;
+  };
+
   using GetFeeEstimateCallback =
-      base::OnceCallback<void(base::expected<uint128_t, std::string>)>;
+      base::OnceCallback<void(base::expected<FeeEstimate, std::string>)>;
 
   void GetFeeEstimate(
       std::string chain_id,
@@ -157,7 +167,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                                 base::expected<PolkadotExtrinsicMetadata,
                                                std::string> extrinsic_metadata);
 
-  void OnEstimatedFee(GetFeeEstimateCallback callback,
+  void OnEstimatedFee(std::vector<uint8_t> signature_payload,
+                      GetFeeEstimateCallback callback,
                       base::expected<uint128_t, std::string> partial_fee);
   void OnGetChainMetadataForAddress(
       std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,

@@ -4,64 +4,39 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { color, font } from '@brave/leo/tokens/css/variables'
-import ProgressRing from '@brave/leo/react/progressRing'
+import Dialog from '@brave/leo/react/dialog'
+import { color } from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
 
+import Loading from './Loading'
+
 const Configure = React.lazy(() => import('./Configure'))
 
-const Dialog = styled.dialog`
-  font: ${font.default.regular};
-  border-radius: 8px;
-  border: none;
-  margin: auto;
-  width: min(100vw, 1049px);
-  height: min(100vh, 712px);
-  z-index: 1000;
-  background: white;
-  overflow: hidden;
-  padding: 0;
-  background-color: ${color.container.background};
-  color:  ${color.text.primary};
-`
-
-const Loading = styled.div`
-  --leo-progressring-size: 50px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+const StyledDialog = styled(Dialog)`
+  --leo-dialog-width: 860px;
+  --leo-dialog-padding: 0;
+  --leo-dialog-background: ${color.container.background};
 `
 
 export default function BraveNewsModal() {
   const { customizePage, setCustomizePage } = useBraveNews()
-  const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>(null)
-
   const shouldRender = !!customizePage
 
-  // Note: There's no attribute for open modal, so we need
-  // to call showModal instead.
-  React.useEffect(() => {
-    if (shouldRender && !dialogRef.current?.open) {
-      dialogRef.current?.showModal?.()
-    } else if (!shouldRender && dialogRef.current?.open) {
-      dialogRef.current?.close?.()
-    }
+  if (!shouldRender) {
+    return null
+  }
 
-    const handleCancel = () => setCustomizePage(null)
-    dialogRef.current?.addEventListener('cancel', handleCancel)
-    return () => {
-      dialogRef.current?.removeEventListener('cancel', handleCancel)
-    }
-  }, [shouldRender, dialogRef])
-
-  // Only render the dialog if it should be shown, since
-  // it is a complex view.
-  return shouldRender ? <Dialog ref={dialogRef as any}>
-    <React.Suspense fallback={<Loading><ProgressRing /></Loading>}>
-      <Configure />
-    </React.Suspense>
-  </Dialog> : null
+  return (
+    <StyledDialog
+      isOpen
+      showClose
+      backdropClickCloses={false}
+      onClose={() => setCustomizePage(null)}
+    >
+      <React.Suspense fallback={<Loading fill />}>
+        <Configure />
+      </React.Suspense>
+    </StyledDialog>
+  )
 }

@@ -48,6 +48,7 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -136,6 +137,10 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/features.h"
 #endif
 
 namespace {
@@ -302,6 +307,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       email_aliases::features::IsEmailAliasesEnabled() &&
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               profile));
+#endif
+#if BUILDFLAG(ENABLE_PSST)
+  html_source->AddBoolean("isPsstEnabled", base::FeatureList::IsEnabled(
+                                               psst::features::kEnablePsst));
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(

@@ -31,6 +31,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
+#include "brave/components/ai_chat/core/browser/conversation_share_store.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -214,8 +215,15 @@ class AIChatService : public KeyedService,
                           ConversationExistsCallback callback) override;
   void ShareConversation(const std::string& encrypted_contents,
                          const std::string& key_fragment,
+                         const std::string& conversation_uuid,
+                         const std::string& conversation_title,
                          bool copy_to_clipboard,
                          ShareConversationCallback callback) override;
+  void GetConversationShares(GetConversationSharesCallback callback) override;
+  void DeleteConversationShare(
+      const std::string& share_id,
+      DeleteConversationShareCallback callback) override;
+  void CopyConversationShareLink(const std::string& share_id) override;
   void BindConversation(
       const std::string& uuid,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
@@ -256,6 +264,11 @@ class AIChatService : public KeyedService,
   void SetConversationShareManagerForTesting(
       std::unique_ptr<ConversationShareManager> share_manager) {
     conversation_share_manager_ = std::move(share_manager);
+  }
+
+  void SetConversationShareStoreForTesting(
+      std::unique_ptr<ConversationShareStore> share_store) {
+    conversation_share_store_ = std::move(share_store);
   }
 
   size_t GetInMemoryConversationCountForTesting();
@@ -306,13 +319,26 @@ class AIChatService : public KeyedService,
       std::optional<std::vector<ClearedAssociatedContentEntry>> cleared);
 
   // Completes ShareConversation once the sharing server has returned the viewer
-  // URL: appends |key_fragment| to build the full shareable link, optionally
-  // copies it to the clipboard as confidential, and returns it via |callback|.
+  // URL: appends |key_fragment| to build the full shareable link, records the
+  // share so the user can manage it later, optionally copies the link to the
+  // clipboard as confidential, and returns it via |callback|.
   void OnShareConversationComplete(
       const std::string& key_fragment,
+      const std::string& conversation_uuid,
+      const std::string& conversation_title,
       bool copy_to_clipboard,
       ShareConversationCallback callback,
-      const std::optional<GURL>& shared_conversation_viewer_url);
+      const std::optional<ConversationShareResult>& share_result);
+
+  // Steps of DeleteConversationShare(): look up the capability token stored
+  // when the share was created, ask the server to delete the share with it,
+  // and forget the local record once the server has.
+  void OnShareDeletionIdRetrieved(const std::string& share_id,
+                                  DeleteConversationShareCallback callback,
+                                  std::optional<std::string> deletion_id);
+  void OnConversationShareDeleted(const std::string& share_id,
+                                  DeleteConversationShareCallback callback,
+                                  bool success);
 
   void MaybeAssociateContent(
       ConversationHandler* conversation,
@@ -387,6 +413,7 @@ class AIChatService : public KeyedService,
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<ConversationShareManager> conversation_share_manager_;
+  std::unique_ptr<ConversationShareStore> conversation_share_store_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   // Factories of ToolProviders from other layers

@@ -45,6 +45,8 @@ export class BraveSettingsClearBrowsingDataDialogElement
   private clearDataBrowserProxy_: BraveClearBrowsingDataDialogBrowserProxy =
     BraveClearBrowsingDataDialogBrowserProxyImpl.getInstance()
 
+  private isClearingBraveAdsData_ = false
+
   constructor() {
     super()
 
@@ -217,9 +219,31 @@ export class BraveSettingsClearBrowsingDataDialogElement
   /**
    * Clears Brave Ads data.
    */
-  private clearBraveAdsData_ = (e: Event) => {
+  private clearBraveAdsData_ = async (e: Event) => {
     e.preventDefault()
-    this.clearDataBrowserProxy_.clearBraveAdsData()
-    this.$.deleteBrowsingDataDialog.close()
+
+    if (this.isClearingBraveAdsData_) {
+      return
+    }
+    this.isClearingBraveAdsData_ = true
+
+    const success = await this.clearDataBrowserProxy_.clearBraveAdsData()
+
+    this.isClearingBraveAdsData_ = false
+
+    this.dispatchEvent(new CustomEvent('browsing-data-deleted', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        deletionConfirmationText: loadTimeData.getString(
+          success
+            ? 'clearBraveAdsDataToastLabel'
+            : 'clearBraveAdsDataErrorToastLabel')
+      }
+    }))
+
+    if (this.$.deleteBrowsingDataDialog.open) {
+      this.$.deleteBrowsingDataDialog.close()
+    }
   }
 }

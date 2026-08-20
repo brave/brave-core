@@ -194,7 +194,7 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/42, kUnknownSpecVersion,
-        /*asset_tx_payment=*/false,
+        /*signed_extensions=*/{2, 7, 8, 9, 10, 11, 12, 13, 19, 16, 20},
         /*has_assets_pallet=*/false,
         /*assets_pallet_index=*/0,
         /*assets_transfer_all_call_index=*/0,
@@ -211,7 +211,7 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/42, kUnknownSpecVersion,
-        /*asset_tx_payment=*/true,
+        /*signed_extensions=*/{2, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18},
         /*has_assets_pallet=*/true,
         /*assets_pallet_index=*/50,
         /*assets_transfer_all_call_index=*/32,
@@ -226,7 +226,8 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, /*spec_version=*/kUnknownSpecVersion,
-        /*asset_tx_payment=*/true,
+        /*signed_extensions=*/
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18},
         /*has_assets_pallet=*/true,
         /*assets_pallet_index=*/50,
         /*assets_transfer_all_call_index=*/32,
@@ -243,7 +244,7 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, kUnknownSpecVersion,
-        /*asset_tx_payment=*/false,
+        /*signed_extensions=*/{7, 8, 9, 10, 11, 12, 13, 19, 15, 16},
         /*has_assets_pallet=*/false,
         /*assets_pallet_index=*/0,
         /*assets_transfer_all_call_index=*/0,
@@ -260,7 +261,7 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, kUnknownSpecVersion,
-        /*asset_tx_payment=*/true,
+        /*signed_extensions=*/{2, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18},
         /*has_assets_pallet=*/true,
         /*assets_pallet_index=*/50,
         /*assets_transfer_all_call_index=*/32,
@@ -317,6 +318,14 @@ void PolkadotMockRpc::RejectExtrinsicSubmission() {
 
 void PolkadotMockRpc::RejectAccountInfoRequest() {
   reject_account_info_request_ = true;
+}
+
+void PolkadotMockRpc::RejectPaymentInfoRequest() {
+  reject_payment_info_request_ = true;
+}
+
+void PolkadotMockRpc::ReturnNullPaymentInfo() {
+  null_payment_info_ = true;
 }
 
 void PolkadotMockRpc::RejectInitialChainHeader() {
@@ -518,6 +527,25 @@ void PolkadotMockRpc::AddGetRuntimeInfo() {
                 "stateVersion":1
               }
             })");
+}
+
+void PolkadotMockRpc::AddGetLatestRuntimeVersion(uint32_t spec_version) {
+  // The metadata provider probes the chain's latest runtime version to decide
+  // whether its cached metadata is still current. Only specVersion and
+  // transactionVersion are consumed.
+  req_res_pairs_.emplace(
+      base::test::ParseJsonDict(
+          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":[]})"),
+      absl::StrFormat(
+          R"({
+            "jsonrpc":"2.0",
+            "id":1,
+            "result":{
+              "specVersion":%u,
+              "transactionVersion":27
+            }
+          })",
+          spec_version));
 }
 
 void PolkadotMockRpc::AddGetGenesisBlockHash() {
@@ -1242,6 +1270,18 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
           EXPECT_NE(extrinsic.find(base::HexEncodeLower(
                         std::vector<uint8_t>(1 + 64, 0x01))),
                     std::string::npos);
+
+          if (reject_payment_info_request_) {
+            url_loader_factory_->AddResponse(req.url.spec(),
+                                             std::string(kRpcErrorResponse));
+            return true;
+          }
+
+          if (null_payment_info_) {
+            url_loader_factory_->AddResponse(req.url.spec(),
+                                             std::string(kNullResultResponse));
+            return true;
+          }
 
           url_loader_factory_->AddResponse(
               req.url.spec(),

@@ -13,7 +13,6 @@
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/webui_config_map.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -28,6 +27,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/browser/ui/webui/ai_chat/chart_display_ui.h"
 #include "brave/browser/ui/webui/ai_chat/code_sandbox_ui.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -49,7 +49,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
 #endif
@@ -78,10 +77,6 @@ void RegisterChromeUntrustedWebUIConfigs() {
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-        std::make_unique<local_ai::UntrustedLocalAIUIConfig>());
-  }
   if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<
@@ -112,6 +107,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
         std::make_unique<ai_chat::ChartDisplayUIConfig>());
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<ai_chat::CodeSandboxUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<ai_chat::LeoWorkspaceUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)

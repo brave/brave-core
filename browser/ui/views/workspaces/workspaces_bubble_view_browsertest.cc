@@ -94,7 +94,7 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
   }
 
   WorkspaceService* GetWorkspaceService() {
-    return WorkspaceServiceFactory::GetForProfile(browser()->profile());
+    return WorkspaceServiceFactory::GetForProfile(browser()->GetProfile());
   }
 
   // Clicks the workspaces button and returns the bubble's contents view, or
@@ -157,7 +157,7 @@ IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest,
   ASSERT_TRUE(GetWorkspacesButton()) << "Workspaces button should exist in a "
                                         "normal window with the feature on";
 
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
   auto* region = GetHorizontalTabStripRegion(incognito_browser);
   ASSERT_TRUE(region);
   EXPECT_EQ(region->workspaces_button_for_testing(), nullptr);

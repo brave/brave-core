@@ -36,8 +36,9 @@ What it does in summary:
      and symlink targets normalized via `os.path.normpath`.
   7. Writes a sibling YAML index next to the archive, recording where the
      toolchain is served, its SHA-256, and the Xcode provenance. Publishing is
-     refused if an index already exists for the toolchain unless
-     `--force-overwrite` is given.
+     refused if an index already exists for the toolchain.
+  8. With `--upload`, publishes the archive and its sibling index to
+     `TOOLCHAIN_BUCKET`.
 
 The output archive is written under `--out-dir` as
 `xcode-hermetic-toolchain-<sdk-version>-<sdk-build>.tar.gz`, where the pair is
@@ -61,7 +62,6 @@ The full download URL is logged at the end of a successful run:
 from __future__ import annotations
 
 import argparse
-import base64
 import gzip
 import logging
 import os
@@ -69,9 +69,6 @@ import re
 import shutil
 import sys
 import tarfile
-import time
-import urllib.error
-import urllib.request
 from pathlib import Path
 
 import yaml
@@ -84,27 +81,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 from ephemeral_xcode import (  # pylint: disable=wrong-import-position
-    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo)
+    EphemeralXcode, MacSdkInfo)
+import gitiles  # pylint: disable=wrong-import-position
+import toolchain_publish  # pylint: disable=wrong-import-position
 from upload import sha256_file  # pylint: disable=wrong-import-position
-
-# Gitiles raw-text endpoint for `build/xcode_binaries.yaml` at a given
-# Chromium tag.
-PKG_DEF_URL_TEMPLATE = (
-    'https://chromium.googlesource.com/chromium/src/+/refs/tags/{tag}'
-    '/build/xcode_binaries.yaml?format=TEXT')
-
-# Gitiles raw-text endpoint for `build/config/mac/mac_sdk.gni` at a given
-# Chromium tag. Provides the macOS SDK version triple that Chromium expects
-# is using.
-MAC_SDK_GNI_URL_TEMPLATE = (
-    'https://chromium.googlesource.com/chromium/src/+/refs/tags/{tag}'
-    '/build/config/mac/mac_sdk.gni?format=TEXT')
-
-# Retry policy for gitiles fetches specifically: gitiles can flake on freshly
-# pushed tags and sometimes takes a while to answer requests about them. Other
-# small fetches (e.g. xcodereleases.com) are stable and are not retried.
-GITILES_FETCH_MAX_ATTEMPTS = 3
-GITILES_FETCH_RETRY_DELAY_SECS = 2
 
 # The base url used by brave to download the toolchain package. This is used in
 # this script only to produce a log line with resulting URL.
@@ -112,90 +92,8 @@ PACKAGE_DOWNLOAD_URL_BASE = (
     'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws/'
     'xcode-hermetic-toolchain/')
 
-# Brave MPL license notice prepended to the generated YAML index, with the
-# current year filled in at write time. YAML treats `#` lines as comments, so
-# the index keeps loading cleanly while carrying the notice.
-INDEX_LICENSE_HEADER_TEMPLATE = (
-    '# Copyright (c) {year} The Brave Authors. All rights reserved.\n'
-    '# This Source Code Form is subject to the terms of the Mozilla Public\n'
-    '# License, v. 2.0. If a copy of the MPL was not distributed with this '
-    'file,\n'
-    '# You can obtain one at https://mozilla.org/MPL/2.0/.\n')
-
-
-def _fetch_gitiles_raw(url: str) -> str:
-    """Fetch *url* (a gitiles `?format=TEXT` link) and decode its body.
-
-    Gitiles' raw-text endpoint returns the requested file as a single
-    base64-encoded blob with no surrounding HTML or headers.
-
-    We attempt to recover a few times if gitlies is feeling temperamental.
-    """
-    for attempt in range(1, GITILES_FETCH_MAX_ATTEMPTS + 1):
-        logging.info('Fetching %s (attempt %d/%d)', url, attempt,
-                     GITILES_FETCH_MAX_ATTEMPTS)
-        is_last_attempt = attempt == GITILES_FETCH_MAX_ATTEMPTS
-        encoded: bytes | None = None
-        try:
-            with urllib.request.urlopen(
-                    url, timeout=HTTP_FETCH_TIMEOUT_SECS) as response:
-                encoded = response.read()
-            return base64.b64decode(encoded).decode('utf-8')
-        except urllib.error.HTTPError as e:
-            # `HTTPError.read()` returns the response body. Let's log it.
-            body = e.read().decode('utf-8', errors='replace')
-            logging.error('HTTP %s on %s; response body:\n%s', e.code, url,
-                          body)
-            if is_last_attempt:
-                raise
-        except (urllib.error.URLError, TimeoutError) as e:
-            # No response body for non-HTTP failures (DNS, connect timeout,
-            # read timeout). Just surface the underlying reason.
-            logging.error('Network error fetching %s: %s', url, e)
-            if is_last_attempt:
-                raise
-        except ValueError as e:
-            # Let's log the raw response whenever there are decoding issues.
-            preview = (encoded or b'').decode('utf-8', errors='replace')
-            logging.error('Decode failed for %s: %s; raw response:\n%s', url,
-                          e, preview)
-            if is_last_attempt:
-                raise
-        time.sleep(GITILES_FETCH_RETRY_DELAY_SECS)
-    # Unreachable: the final attempt's except handlers always re-raise.
-    # Present so every control-flow path honors the `-> str` signature
-    # (pylint inconsistent-return-statements).
-    raise RuntimeError(f'_fetch_gitiles_raw fell through retry loop: {url}')
-
-
-def _brave_core_commit() -> str:
-    """Return the brave-core HEAD commit this script was run from.
-
-    This script lives in brave-core, so its repository HEAD identifies the exact
-    version that produced the archive — recorded in the index for provenance.
-    """
-    return _check_call('git',
-                       'rev-parse',
-                       'HEAD',
-                       cwd=Path(__file__).resolve().parent,
-                       capture_output=True).stdout.strip()
-
-
-def _remote_url_exists(url: str) -> bool:
-    """Return whether *url* already resolves to a published object.
-
-    Treats HTTP 403/404 as "not published" -- the download bucket's CDN
-    sometimes returns 403 where a 404 is expected. Any other HTTP status or a
-    network error propagates, so a transient failure is never mistaken for
-    "absent".
-    """
-    try:
-        with urllib.request.urlopen(url, timeout=HTTP_FETCH_TIMEOUT_SECS):
-            return True
-    except urllib.error.HTTPError as e:
-        if e.code in (403, 404):
-            return False
-        raise
+TOOLCHAIN_BUCKET = 'brave-build-deps-internal'
+TOOLCHAIN_BUCKET_PREFIX = 'xcode-hermetic-toolchain'
 
 
 def _normalize_tar_entry(tarinfo: tarfile.TarInfo) -> tarfile.TarInfo:
@@ -290,15 +188,7 @@ def fetch_published_index(sdk_info: MacSdkInfo) -> dict:
         RuntimeError: if the index cannot be fetched.
     """
     index_url = PACKAGE_DOWNLOAD_URL_BASE + toolchain_index_name(sdk_info)
-    logging.debug('Fetching hermetic Xcode toolchain index %s', index_url)
-    try:
-        with urllib.request.urlopen(
-                index_url, timeout=HTTP_FETCH_TIMEOUT_SECS) as response:
-            return yaml.safe_load(response)
-    except urllib.error.URLError as e:
-        raise RuntimeError(
-            f'Failed to fetch hermetic Xcode toolchain index {index_url}: {e}'
-        ) from e
+    return toolchain_publish.fetch_index(index_url, 'hermetic Xcode toolchain')
 
 
 class ToolchainBuilder:
@@ -328,9 +218,10 @@ class ToolchainBuilder:
        across hosts.
     5. **Index** (`_precheck_publishable` / `_write_index`): Refuses early
        (right after reading the upstream SDK, before any heavy work) if an index
-       is already published, unless `--force-overwrite` is set, then writes a
-       sibling YAML index recording the archive URL, its SHA-256, and the
-       Xcode provenance.
+       is already published, then writes a sibling YAML index recording the
+       archive URL, its SHA-256, and the Xcode provenance.
+    6. **Upload** (`_upload`): With `--upload`, publishes the archive and its
+       sibling index to `TOOLCHAIN_BUCKET`.
     """
 
     def __init__(self, chromium_tag: str, out_dir: Path):
@@ -468,17 +359,17 @@ class ToolchainBuilder:
         `mac_sdk_official_version` and `mac_sdk_official_build_version`
         from these sources, storing them in their corresponding fields.
         """
-        url = MAC_SDK_GNI_URL_TEMPLATE.format(tag=self._chromium_tag)
-        self._upstream_mac_sdk_info = MacSdkInfo.from_gni(
-            _fetch_gitiles_raw(url))
+        text = gitiles.fetch_chromium_file(self._chromium_tag,
+                                           'build/config/mac/mac_sdk.gni')
+        self._upstream_mac_sdk_info = MacSdkInfo.from_gni(text)
         logging.info('Upstream macOS SDK version: %s (build %s)',
                      self._upstream_mac_sdk_info.sdk_version,
                      self._upstream_mac_sdk_info.product_build_version)
 
     def _fetch_pkg_def(self) -> str:
         """Fetch `xcode_binaries.yaml` from gitiles."""
-        return _fetch_gitiles_raw(
-            PKG_DEF_URL_TEMPLATE.format(tag=self._chromium_tag))
+        return gitiles.fetch_chromium_file(self._chromium_tag,
+                                           'build/xcode_binaries.yaml')
 
     def _read_entries(self) -> None:
         """Load the `data:` list from `xcode_binaries.yaml` in document order.
@@ -580,11 +471,10 @@ class ToolchainBuilder:
         difficult to recover from such a mistake.
         """
         index_url = PACKAGE_DOWNLOAD_URL_BASE + self._index_path.name
-        if _remote_url_exists(index_url):
+        if toolchain_publish.remote_url_exists(index_url):
             raise RuntimeError(
                 f'An index already exists at {index_url}; this toolchain has '
-                'already been published. Pass --force-overwrite to rebuild and '
-                'replace it.')
+                'already been published.')
 
     def _write_index(self) -> None:
         """Write the sibling YAML index describing the just-built toolchain.
@@ -606,8 +496,7 @@ class ToolchainBuilder:
           * `brave_core_commit` — brave-core HEAD commit this script ran from.
 
         The "already published" guard lives in `_precheck_publishable`, which
-        `run()` calls early. If we got here, and we are overwriting the previous
-        file, this means clobbering was allowed with `--force-overwrite`.
+        `run()` calls early.
 
         After writing, the index file is read back and printed in the console.
         """
@@ -626,19 +515,17 @@ class ToolchainBuilder:
             'metal_build': self._metal_build,
             'chromium_tag': self._chromium_tag,
         }
-        index['brave_core_commit'] = _brave_core_commit()
-        index_yaml = yaml.safe_dump(index,
-                                    sort_keys=False,
-                                    default_flow_style=False)
-        license_header = INDEX_LICENSE_HEADER_TEMPLATE.format(
-            year=time.gmtime().tm_year)
-        index_path.write_text(f'{license_header}\n{index_yaml}',
-                              encoding='utf-8',
-                              newline='')
-        logging.info('Wrote toolchain index %s:', index_path)
-        print(index_path.read_bytes().decode('utf-8'))
+        index['brave_core_commit'] = toolchain_publish.brave_core_commit()
 
-    def run(self, clear: bool = False, force_overwrite: bool = False) -> None:
+        toolchain_publish.write_index_file(index_path, index)
+
+    def _upload(self) -> None:
+        """Upload the archive and its sibling index to the internal bucket."""
+        toolchain_publish.upload_files(TOOLCHAIN_BUCKET,
+                                       TOOLCHAIN_BUCKET_PREFIX,
+                                       (self._archive_path, self._index_path))
+
+    def run(self, clear: bool = False, upload: bool = False) -> None:
         """Execute the full inspect-stage-read-pack pipeline.
 
         On a successful pack, the transient `self._staged_xcode` working
@@ -649,9 +536,8 @@ class ToolchainBuilder:
             clear: If True, delete every entry under `self._out_dir` at the
                 start of the run so the build produces output into a
                 guaranteed-clean directory.
-            force_overwrite: If True, skips the early "already published"
-                check so an existing index for this toolchain is rebuilt and
-                replaced instead of refused. See `_precheck_publishable`.
+            upload: If True, upload the archive and its sibling index to
+                `TOOLCHAIN_BUCKET` after building (see `_upload`).
 
         Raises:
             FileNotFoundError: If a YAML entry refers to a path that is not
@@ -666,8 +552,7 @@ class ToolchainBuilder:
                 Xcode.app, if `xcodebuild` does not report all of Xcode /
                 Build version / SDKVersion / ProductBuildVersion, if
                 `xcrun --find metal` does not resolve to a `Metal.xctoolchain`,
-                or if a published index already exists for this toolchain and
-                `force_overwrite` was not set.
+                or if a published index already exists for this toolchain.
             urllib.error.HTTPError: If a gitiles fetch fails (typically a
                 bad `--chromium-tag`).
             subprocess.CalledProcessError: If any invoked tool
@@ -679,12 +564,12 @@ class ToolchainBuilder:
             shutil.rmtree(self._out_dir, ignore_errors=True)
         self._out_dir.mkdir(parents=True, exist_ok=True)
         self._load_upstream_mac_sdk_info()
-        if not force_overwrite:
-            self._precheck_publishable()
+        self._precheck_publishable()
         assert self._upstream_mac_sdk_info is not None
         # The deployed Xcode is the active one only inside this block; on exit
         # `deploy()` always reverts the selection with `xcode-select --reset`.
-        with self._xcode.deploy(self._upstream_mac_sdk_info):
+        with self._xcode.deploy(self._upstream_mac_sdk_info,
+                                skip_developer_mode_check=True):
             self._stage_xcode()
             self._add_metal_toolchain()
             self._read_entries()
@@ -694,6 +579,8 @@ class ToolchainBuilder:
         logging.info('Removing staged Xcode at %s', self._staged_xcode)
         shutil.rmtree(self._staged_xcode)
         self._write_index()
+        if upload:
+            self._upload()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -716,10 +603,10 @@ def main(argv: list[str] | None = None) -> int:
         action='store_true',
         help='Makes sure the output directory is empty before building.')
     parser.add_argument(
-        '--force-overwrite',
+        '--upload',
         action='store_true',
-        help='Overwrite the published index for this toolchain instead of '
-        'refusing when one already exists.')
+        help=f'Upload the archive and its sibling index to the internal '
+        f'build-deps bucket ({TOOLCHAIN_BUCKET}) after building.')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Log every archive member at DEBUG level.')
@@ -728,9 +615,8 @@ def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
                         format='%(message)s')
 
-    ToolchainBuilder(args.chromium_tag,
-                     args.out_dir).run(clear=args.clear,
-                                       force_overwrite=args.force_overwrite)
+    ToolchainBuilder(args.chromium_tag, args.out_dir).run(clear=args.clear,
+                                                          upload=args.upload)
     return 0
 
 

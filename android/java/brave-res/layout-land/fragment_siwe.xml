@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
+    android:orientation="vertical"
+    tools:context=".browser.crypto_wallet.fragments.dapps.SiweMessageFragment">
+
+    <TextView
+        android:id="@+id/frag_siwe_tv_title"
+        style="@style/BraveWalletTextViewTitle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/brave_wallet_sign_in_with_brave_wallet"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/frag_siwe_div1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/wallet_edittext_outline_color" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/column_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            tools:ignore="InconsistentLayout" />
+
+        <include
+            android:id="@+id/header_container"
+            layout="@layout/siwe_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/column_divider"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/details_container"
+            layout="@layout/siwe_details"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toEndOf="@id/column_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

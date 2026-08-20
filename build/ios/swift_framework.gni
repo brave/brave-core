@@ -1,0 +1,271 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/apple/arch.gni")
+import("//build/config/apple/mobile_config.gni")
+import("//build/config/apple/swift_source_set.gni")
+import("//build/config/ios/ios_sdk.gni")
+import("//build/config/ios/rules.gni")
+
+assert(current_os == "ios")
+
+# Computes the Swift target triple (without the deployment target version) for
+# the current toolchain. This is the name the Swift compiler looks for when
+# resolving a module inside
+# `<module_name>.framework/Modules/<module_name>.swiftmodule`.
+_archs_mapping_os = archs_mapping[current_os]
+assert(defined(_archs_mapping_os[current_cpu]), "unsupported cpu: $current_cpu")
+_archs_mapping_os_cpu = _archs_mapping_os[current_cpu]
+_swift_module_arch = _archs_mapping_os_cpu.clang_arch
+
+if (target_environment == "simulator") {
+  _swift_module_environment = "-simulator"
+} else if (target_environment == "catalyst") {
+  _swift_module_environment = "-macabi"
+} else {
+  _swift_module_environment = ""
+}
+
+if (target_platform == "iphoneos") {
+  _swift_module_os = "apple-ios"
+} else if (target_platform == "tvos") {
+  _swift_module_os = "apple-tvos"
+} else {
+  assert(false, "unsupported target_platform=$target_platform")
+}
+
+_swift_module_triple =
+    "$_swift_module_arch-$_swift_module_os$_swift_module_environment"
+
+# Builds an iOS framework bundle that exports a Swift module, allowing the
+# framework to be imported from Swift code compiled outside of the GN/ninja
+# build (e.g. from Xcode).
+#
+# The Swift sources are compiled into a module named after the framework and the
+# resulting module artifacts are staged into
+# `<module_name>.framework/Modules/<module_name>.swiftmodule/`, using both the
+# target triple name and the bare architecture name so that any Swift compiler
+# lookup order resolves.
+#
+# Because the emitted `.swiftmodule` is a binary module (no `.swiftinterface`
+# is produced), it can only be consumed by the same Swift compiler version
+# that produced it. The build must therefore use Xcode's toolchain (it does
+# unless `swift_toolchain_path` is overridden) and consumers must use the same
+# Xcode version.
+#
+# Anything the Swift sources import is serialized into the module and must be
+# resolvable by the consumer, unless it is imported with an access level below
+# public (`internal import Foo`). That only hides the dependency when the
+# module is built with library evolution, which this template enables by
+# default. So public API may only reference system modules, other exported
+# frameworks and headers this framework exports via `public_headers`, while
+# anything else (in particular in-tree swift_source_set targets, whose modules
+# do not exist outside of the build) has to be imported internally.
+#
+# Arguments
+#
+#   enable_library_evolution
+#       (optional) boolean, defaults to true. Compiles the module resiliently,
+#       which is what allows `internal import` to keep a dependency out of
+#       what consumers have to resolve. Turning this off means every imported
+#       module has to be resolvable by consumers, or has to be imported with
+#       `@_implementationOnly import`.
+#
+#   sources
+#       list of source files. The `.swift` files are compiled into the exported
+#       module, any other file is handed to ios_framework_bundle as-is.
+#
+#   bridge_header, cxx_import_deps, swiftflags
+#       (optional) forwarded to the target compiling the Swift sources. Note
+#       that a bridging header is not usable by consumers of the framework,
+#       expose Objective-C dependencies as a module instead.
+#
+#   deps, public_deps, configs, public_configs
+#       (optional) applied to both the Swift module and the framework, so a
+#       dependency needed to compile the Swift sources and to link the
+#       framework only has to be listed once.
+#
+# All other arguments are forwarded to ios_framework_bundle.
+template("ios_swift_framework_bundle") {
+  assert(defined(invoker.sources), "sources must be defined for $target_name")
+
+  _swift_sources = filter_include(invoker.sources, [ "*.swift" ])
+  _other_sources = filter_exclude(invoker.sources, [ "*.swift" ])
+  assert(_swift_sources != [],
+         "sources must contain Swift sources for $target_name")
+
+  _target_name = target_name
+  _output_name = target_name
+  if (defined(invoker.output_name)) {
+    _output_name = invoker.output_name
+  }
+
+  _swift_target = "${_target_name}_swift_module"
+  _stage_target = "${_target_name}_swift_module_stage"
+  _bundle_data_target = "${_target_name}_swift_module_bundle_data"
+
+  # Matches the layout used by the `swift` tool: the module artifacts are
+  # written to `{{target_out_dir}}/{{label_name}}/{{module_name}}.*`.
+  _module_dir = "$target_out_dir/$_swift_target"
+  _staging_dir = "$target_gen_dir/$_swift_target/$_output_name.swiftmodule"
+
+  # The `swift` tool does not substitute {{framework_dirs}}, so the framework
+  # search paths that configs contribute (such as the public config of
+  # ios_framework_bundle) never reach swiftc. Propagate the directory that GN
+  # built frameworks are written to via a public config so that both this
+  # module and its consumers can resolve public framework dependencies
+  # serialized into the module.
+  config("${_target_name}_swift_module_framework_config") {
+    swiftflags = [
+      "-F",
+      rebase_path(root_out_dir, root_build_dir),
+    ]
+  }
+
+  swift_source_set(_swift_target) {
+    forward_variables_from(invoker,
+                           [
+                             "bridge_header",
+                             "cxx_import_deps",
+                             "deps",
+                             "public_configs",
+                             "public_deps",
+                             "testonly",
+                           ])
+
+    if (!defined(public_configs)) {
+      public_configs = []
+    }
+    public_configs += [ ":${_target_name}_swift_module_framework_config" ]
+
+    swiftflags = [
+      "-F",
+      rebase_path(root_out_dir, root_build_dir),
+    ]
+
+    # Resilient compilation, which keeps dependencies imported with an access
+    # level below public out of the module's interface, so consumers do not
+    # have to resolve modules that only exist within this build.
+    if (!defined(invoker.enable_library_evolution) ||
+        invoker.enable_library_evolution) {
+      swiftflags += [ "-enable-library-evolution" ]
+    }
+
+    if (defined(invoker.swiftflags)) {
+      swiftflags += invoker.swiftflags
+    }
+
+    visibility = [
+      ":$_stage_target",
+      ":${_target_name}_shared_library",
+
+      # ios_framework_bundle forwards `deps` to the signed bundle as well.
+      ":${_target_name}_signed_bundle",
+    ]
+
+    # Replaces the swift_source_set defaults, which are a subset of the
+    # default_shared_library_configs this template defaults to.
+    configs = []
+    configs = invoker.configs
+
+    # The Swift module name must match the framework name for consumers to be
+    # able to `import $_output_name`.
+    module_name = _output_name
+    sources = _swift_sources
+  }
+
+  # GN does not treat the Swift module artifacts as outputs of the target that
+  # compiles them, so they cannot be listed as `sources`/`inputs` of another
+  # target. Instead pass the module directory as an argument, order the action
+  # with a dependency on the swift_source_set and let the script emit a
+  # depfile listing the files it actually read.
+  action(_stage_target) {
+    forward_variables_from(invoker, [ "testonly" ])
+    visibility = [ ":$_bundle_data_target" ]
+
+    script = "//brave/build/ios/stage_swiftmodule.py"
+    deps = [ ":$_swift_target" ]
+
+    _names = [
+      _swift_module_triple,
+      _swift_module_arch,
+    ]
+
+    outputs = []
+    foreach(_name, _names) {
+      outputs += [
+        "$_staging_dir/$_name.swiftmodule",
+        "$_staging_dir/$_name.swiftdoc",
+        "$_staging_dir/$_name.abi.json",
+      ]
+    }
+
+    depfile = "$_staging_dir/$_swift_module_triple.swiftmodule.d"
+
+    args = [
+      "--module-dir",
+      rebase_path(_module_dir, root_build_dir),
+      "--module-name",
+      _output_name,
+      "--output-dir",
+      rebase_path(_staging_dir, root_build_dir),
+      "--depfile",
+      rebase_path(depfile, root_build_dir),
+      "--depfile-target",
+      rebase_path(outputs[0], root_build_dir),
+    ]
+    foreach(_name, _names) {
+      args += [
+        "--name",
+        _name,
+      ]
+    }
+  }
+
+  bundle_data(_bundle_data_target) {
+    forward_variables_from(invoker, [ "testonly" ])
+    visibility = [ ":${_target_name}_signed_bundle" ]
+
+    sources = get_target_outputs(":$_stage_target")
+    outputs = [ "{{bundle_contents_dir}}/Modules/$_output_name.swiftmodule/{{source_file_part}}" ]
+    public_deps = [ ":$_stage_target" ]
+  }
+
+  ios_framework_bundle(_target_name) {
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "bridge_header",
+                             "cxx_import_deps",
+                             "enable_library_evolution",
+                             "sources",
+                             "swiftflags",
+                             "visibility",
+                           ])
+    forward_variables_from(invoker, [ "visibility" ])
+
+    output_name = _output_name
+    sources = _other_sources
+
+    if (!defined(deps)) {
+      deps = []
+    }
+    deps += [ ":$_swift_target" ]
+
+    if (!defined(bundle_deps)) {
+      bundle_deps = []
+    }
+    bundle_deps += [ ":$_bundle_data_target" ]
+
+    if (!defined(public_configs)) {
+      public_configs = []
+    }
+    public_configs += [ ":${_target_name}_swift_module_framework_config" ]
+  }
+}
+
+set_defaults("ios_swift_framework_bundle") {
+  configs = default_shared_library_configs
+}

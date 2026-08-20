@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "लाइन %2$i पर अमान्य नियम '%1$@'";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "यहाँ अपनी कस्टम फ़ाइलें एक लाइन में एक जोड़ें।";
+"CustomFiltersPlaceholder" = "कस्टम फ़िल्टर जोड़ें";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "कस्टम फ़िल्टर्स %i से ज़्यादा लाइनों को सपोर्ट नहीं करते";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "डोमेन ब्लॉक है";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "कस्टम फ़िल्टर में बदलाव करें";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "वेबसाइटों को अपना डेटा बेचने या शेयर करने से मना करें। [ज़्यादा जानें](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

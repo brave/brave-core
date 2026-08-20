@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use Brave's own endpoint for detecting captive portals.
+
+      Brave replaces the detection URL outright, so the upstream body never
+      needs to run.
+    preempt_function_impl:
+      function_name: CaptivePortalDetector::GetDefaultUrl
+      code: |-
+        if ((true)) return kBraveDefaultURL;

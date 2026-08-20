@@ -64,18 +64,4 @@ GetStoragePartitionConfigToInherit(const NavigateParams& params) {
 
 }  // namespace
 
-#define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateParams(params);
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#define GetSiteInstanceForNewTab(...)   \
-  GetSiteInstanceForNewTab(__VA_ARGS__, \
-                           GetStoragePartitionConfigToInherit(params))
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
 #include <chrome/browser/ui/navigator/browser_navigator.cc>
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#undef GetSiteInstanceForNewTab
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-#undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL

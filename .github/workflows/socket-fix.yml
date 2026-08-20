@@ -35,6 +35,10 @@ jobs:
         with:
           node-version: '24'
 
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 9
+
       - name: Update WDP in DEPS
         if: inputs.wdp_ref != ''
         env:
@@ -54,14 +58,20 @@ jobs:
           grep -q "$LEO_REF" package.json || { echo "::error::Failed to update Leo hash in package.json"; exit 1; }
 
       - name: Install Socket CLI
-        run: npm install -g @socketsecurity/cli
+        run: pnpm add -g @socketsecurity/cli@1.1.156
+
+      - name: Configure GPG
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
+        with:
+          gpg_private_key: ${{ secrets.BRAVE_SUPPORT_ADMIN_GPG_KEY }}
+          passphrase: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
 
       - name: Run Socket Fix
         env:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
-          SOCKET_CLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CI: ''
         run: |
           if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
             echo "::error::GHSA_IDS contains invalid entries. Expected format: GHSA-xxxx-xxxx-xxxx (comma or comma-space separated)"
@@ -72,88 +82,22 @@ jobs:
           socket config set defaultOrg "brave"
           socket fix . "${FLAGS[@]}"
 
-      - name: Open Pull Request
+      - name: Compute branch name
+        id: branch
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+        run: |
+          echo "name=socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)" >> "$GITHUB_OUTPUT"
+
+      - name: Compute PR body
+        id: body
+        env:
+          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           ISSUE_LINK: ${{ inputs.issue_link }}
           WDP_REF: ${{ inputs.wdp_ref }}
           LEO_REF: ${{ inputs.leo_ref }}
         run: |
-          shopt -s inherit_errexit
-          set -eEo pipefail
-
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "::error::No changes produced by socket fix."
-            exit 1
-          fi
-
-          BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
-          HEAD_SHA=$(gh api "/repos/${GITHUB_REPOSITORY}/git/refs/heads/master" -q '.object.sha')
-
-          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$BRANCH" -q .ref > /dev/null 2>&1; then
-            gh api --method PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/$BRANCH" \
-              --field sha="$HEAD_SHA" --field force=true
-          else
-            gh api --method POST /repos/${GITHUB_REPOSITORY}/git/refs \
-              --field ref="refs/heads/$BRANCH" --field sha="$HEAD_SHA"
-          fi
-
-          TREE_JSON="[]"
-          while IFS= read -r -d $'\0' line; do
-            XY="${line:0:2}"
-            FILE="${line:3}"
-            # For rename/copy entries the old path follows as the next NUL entry;
-            # emit a deletion for it so the source path is removed from the tree.
-            if [[ "${XY:0:1}" =~ [RC] ]]; then
-              IFS= read -r -d $'\0' _old_path
-              if [[ "${XY:0:1}" == "R" ]]; then
-                TREE_JSON=$(jq --arg path "$_old_path" \
-                  '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": null}]' \
-                  <<< "$TREE_JSON")
-              fi
-            fi
-            if [[ "${XY:1:1}" == "D" ]]; then
-              TREE_JSON=$(jq --arg path "$FILE" \
-                '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": null}]' \
-                <<< "$TREE_JSON")
-            else
-              MODE=$(git ls-files -s -- "$FILE" | awk 'NR==1 { print $1 }')
-              [[ -z "$MODE" ]] && MODE="100644"
-              if [[ "$MODE" == "120000" ]]; then
-                BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
-                  --field content=@<(printf '%s' "$(readlink -- "$FILE")" | base64 -w 0) \
-                  --field encoding=base64 \
-                  -q .sha)
-              else
-                BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
-                  --field content=@<(base64 -w 0 -- "$FILE") \
-                  --field encoding=base64 \
-                  -q .sha)
-              fi
-              TREE_JSON=$(jq --arg path "$FILE" --arg mode "$MODE" --arg sha "$BLOB_SHA" \
-                '. += [{"path": $path, "mode": $mode, "type": "blob", "sha": $sha}]' \
-                <<< "$TREE_JSON")
-            fi
-          done < <(git status --porcelain=v1 -z)
-
-          BASE_TREE=$(gh api /repos/${GITHUB_REPOSITORY}/git/commits/"$HEAD_SHA" -q .tree.sha)
-
-          NEW_TREE_SHA=$(jq -n \
-            --arg base_tree "$BASE_TREE" \
-            --argjson tree "$TREE_JSON" \
-            '{"base_tree": $base_tree, "tree": $tree}' | \
-            gh api --method POST /repos/${GITHUB_REPOSITORY}/git/trees --input - -q .sha)
-
-          NEW_COMMIT_SHA=$(jq -n \
-            --arg tree "$NEW_TREE_SHA" \
-            --arg parent "$HEAD_SHA" \
-            '{"message": "fix: address security advisories", "tree": $tree, "parents": [$parent]}' | \
-            gh api --method POST /repos/${GITHUB_REPOSITORY}/git/commits --input - -q .sha)
-
-          gh api --method PATCH /repos/${GITHUB_REPOSITORY}/git/refs/heads/"$BRANCH" \
-            --field sha="$NEW_COMMIT_SHA"
-
           BODY="Addresses: $GHSA_IDS"
           IFS=',' read -ra LINKS <<< "$ISSUE_LINK"
           for link in "${LINKS[@]}"; do
@@ -167,13 +111,22 @@ jobs:
             LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
             [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
           fi
-          if ! gh pr list --repo "${GITHUB_REPOSITORY}" --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
-            gh pr create \
-              --repo "${GITHUB_REPOSITORY}" \
-              --title "fix: address security advisories" \
-              --body "$BODY" \
-              --head "$BRANCH" \
-              --base master \
-              --label "CI/skip" \
-              --label "security"
-          fi
+          {
+            echo "body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
+        with:
+          commit-message: 'fix: address security advisories'
+          author: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
+          committer: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
+          branch: ${{ steps.branch.outputs.name }}
+          delete-branch: true
+          base: master
+          title: 'fix: address security advisories'
+          body: ${{ steps.body.outputs.body }}
+          labels: CI/skip,security
+          token: ${{ secrets.SOCKET_FIX_PAT }}

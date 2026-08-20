@@ -14,7 +14,7 @@ from __future__ import annotations
 from recipe_test_api import RecipeTestApi, TestData
 
 # Where the module checks brave-core out (matches `api.path.brave_core`).
-_BRAVE_CORE = 'brave-browser/src/brave'
+_BRAVE_CORE = 'b/src/brave'
 
 
 class BraveCoreCheckoutTestApi(RecipeTestApi):

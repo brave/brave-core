@@ -17,16 +17,13 @@ import { CancelTransaction } from './cancel_transaction'
 
 // Styled Components
 import { LongWrapper } from '../../../../stories/style'
-import { PanelWrapper } from '../../../../panel/style'
+import { PanelWrapper } from '../../../../panel/panel_wrapper/panel_wrapper'
 
 export const _CancelTransaction = {
   render: () => {
     return (
       <WalletPanelStory>
-        <PanelWrapper
-          width={390}
-          height={650}
-        >
+        <PanelWrapper>
           <LongWrapper padding='0px'>
             <CancelTransaction
               onBack={() => alert('Back clicked')}

@@ -1,0 +1,29 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+
+import { StyledWrapper, PriceChange, Arrow } from './asset_price_change.style'
+
+export interface Props {
+  isDown: boolean
+  priceChangePercentage: string
+}
+
+export const AssetPriceChange = (props: Props) => {
+  const { isDown, priceChangePercentage } = props
+
+  return (
+    <StyledWrapper>
+      <Arrow
+        isDown={isDown}
+        name={isDown ? 'arrow-small-down' : 'arrow-small-up'}
+      />
+      <PriceChange textColor={isDown ? 'error' : 'success'}>
+        {priceChangePercentage}
+      </PriceChange>
+    </StyledWrapper>
+  )
+}

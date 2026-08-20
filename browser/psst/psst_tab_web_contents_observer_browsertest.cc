@@ -139,13 +139,15 @@ const WAIT_FOR_PAGE_TIMEOUT = 1000;
 const WAIT_FOR_PAGE_ATTEMPTS_COUNT = 6;
 
 // Use tasks as list of the policy settings tasks to apply
-const PSST_TASKS = params.tasks;
-const PSST_TASKS_LENGTH = params.tasks?.length ?? 0;
+const PSST_TASKS = window.__bravePsstParams.tasks;
+const PSST_TASKS_LENGTH = window.__bravePsstParams.tasks?.length ?? 0;
 
 // Flag which is present only for the first (initial) execution
-const PSST_INITIAL_EXECUTION_FLAG = params.initial_execution ?? false;
+const PSST_INITIAL_EXECUTION_FLAG =
+  window.__bravePsstParams.initial_execution ?? false;
 
-const PSST_CHECK_SETTINGS_LOADED = params.psst_settings_status ?? null;
+const PSST_CHECK_SETTINGS_LOADED =
+  window.__bravePsstParams.psst_settings_status ?? null;
 
 const PSST_LOCALSTORAGE_KEY = 'psst';
 
@@ -622,6 +624,23 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         kActionShowPsstIcon);
   }
 
+  // Navigates to `url` and waits for the PSST icon to appear in the location
+  // bar.
+  void NavigateAndWaitForPsstIconVisible(const GURL& url) {
+    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+    ASSERT_TRUE(psst_view);
+    // The icon starts hidden and only appears as a result of the navigation.
+    ASSERT_FALSE(psst_view->GetVisible());
+
+    ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+
+    // The icon appears once the PSST user script detects a matching rule.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      views::test::RunScheduledLayout(psst_view);
+      return psst_view->GetVisible();
+    }));
+  }
+
   // Navigates to `url`, waits for the PSST icon to appear in the location bar,
   // then clicks it with the specified `event_flags` to open its context menu
   // and waits for the menu to appear, or opens the consent dialog and waits
@@ -633,22 +652,15 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
       content::WebContents** dialog_wc_out = nullptr) {
     ASSERT_TRUE(event_flags == ui::EF_RIGHT_MOUSE_BUTTON ||
                 event_flags == ui::EF_LEFT_MOUSE_BUTTON);
-    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
-    ASSERT_TRUE(psst_view);
-    // The icon starts hidden and only appears as a result of the navigation.
-    ASSERT_FALSE(psst_view->GetVisible());
 
     actions::ActionItem* const action =
         actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
     ASSERT_TRUE(action);
 
-    ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+    ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
 
-    // The icon appears once the PSST user script detects a matching rule.
-    ASSERT_TRUE(base::test::RunUntil([&]() {
-      views::test::RunScheduledLayout(psst_view);
-      return psst_view->GetVisible();
-    }));
+    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+    ASSERT_TRUE(psst_view);
     ASSERT_FALSE(action->GetIsShowingBubble());
 
     // Start observing for the consent dialog's WebContents before clicking, so
@@ -813,9 +825,10 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(confirm_delegate);
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  // Dismissing the infobar disables PSST, which in turn removes the infobar.
   confirm_delegate->InfoBarDismissed();
-  manager->RemoveInfoBar(psst_infobar);
   ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
+  EXPECT_FALSE(GetPsstInfobar(manager));
 
   // Wait for console message only from user script
   ASSERT_TRUE(console_observer.Wait());
@@ -950,6 +963,23 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   // PSST is disabled globally.
   EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+// The PSST icon appears in the location bar after navigating to a matching
+// site, and turning off the PSST pref while the page stays loaded hides the
+// icon.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       LocationBarIconHiddenWhenPsstPrefDisabled) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+
+  // Disabling PSST refreshes the icon state without a navigation.
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, false);
+
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,

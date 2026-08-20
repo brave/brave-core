@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
-#include "chrome/browser/new_tab_page/ntp_pref_names.h"
+#include "chrome/browser/new_tab_page/prefs/ntp_pref_names.h"
 #include "components/ntp_tiles/constants.h"
 #include "components/ntp_tiles/tile_type.h"
 #include "components/prefs/pref_service.h"

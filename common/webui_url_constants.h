@@ -6,10 +6,6 @@
 #ifndef BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
 
-inline constexpr char kAIChatCodeSandboxUIURL[] =
-    "chrome-untrusted://aichat-code-sandbox/";
-inline constexpr char kAIChatCodeSandboxUIHost[] = "aichat-code-sandbox";
-
 inline constexpr char kAIChatChartDisplayUIURL[] =
     "chrome-untrusted://aichat-chart-display/";
 inline constexpr char kAIChatChartDisplayUIHost[] = "aichat-chart-display";

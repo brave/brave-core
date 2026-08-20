@@ -182,6 +182,17 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         mSkip = view.findViewById(R.id.skip);
         mSkip.setOnClickListener(
                 v -> showSkipDialog(mIsOnboarding, 3 - mVerificationStep.getValue()));
+
+        // Restore the word typed before a configuration change. Setting the text
+        // re-runs the text watcher, which recomputes the verify button state.
+        if (mVerificationStep != null) {
+            final String typedWord =
+                    mOnboardingViewModel.getVerificationTypedWord(mVerificationStep.getValue());
+            if (typedWord != null) {
+                mTextInputEditText.setText(typedWord);
+                mTextInputEditText.setSelection(typedWord.length());
+            }
+        }
     }
 
     @Override
@@ -193,6 +204,19 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                 mCheckWord.setText(getString(R.string.enter_word, mWordToMatch.first + 1));
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mVerificationStep == null) {
+            return;
+        }
+        // Capture the typed word so it survives a configuration change such as a rotation. Keyed by
+        // step, as the pager can keep the three verification fragments alive at the same time.
+        final Editable typedWord = mTextInputEditText.getText();
+        mOnboardingViewModel.setVerificationTypedWord(
+                mVerificationStep.getValue(), typedWord == null ? null : typedWord.toString());
     }
 
     private void wordMismatch() {

@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -107,6 +108,13 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void OpenStorageSupportUrl() override {
     OpenURL(GURL(ai_chat::kLeoStorageSupportUrl));
+  }
+
+  void SwitchToTab(int32_t tab_id) override {}
+
+  void SearchForTabs(const std::string& query,
+                     SearchForTabsCallback callback) override {
+    std::move(callback).Run(std::nullopt);
   }
 
   // No current thumbnail tracker need or support on iOS

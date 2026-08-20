@@ -1,0 +1,34 @@
+diff --git a/components/segmentation_platform/public/features.cc b/components/segmentation_platform/public/features.cc
+index afb06922fdb5a0a6ecf5e7805b8d2b821b4d4c21..c5cc58ca896e22e2ca6eb1254a98287c48fda178 100644
+--- a/components/segmentation_platform/public/features.cc
++++ b/components/segmentation_platform/public/features.cc
+@@ -11,9 +11,10 @@
+ 
+ namespace segmentation_platform::features {
+ 
++// kSegmentationPlatformFeature feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kSegmentationPlatformFeature,
+              "SegmentationPlatform",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kSegmentationPlatformUkmEngine,
+ 
+@@ -73,7 +74,8 @@ const base::FeatureParam<bool>
+ BASE_FEATURE(kSegmentationDefaultReportingSegments,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kSegmentationPlatformDeviceTier, base::FEATURE_ENABLED_BY_DEFAULT);
++// kSegmentationPlatformDeviceTier feature state is enforced via plaster rewrite.
++BASE_FEATURE(kSegmentationPlatformDeviceTier, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kSegmentationPlatformTabletProductivityUser,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -106,6 +108,7 @@ BASE_FEATURE(kSegmentationPlatformAndroidHomeModuleRanker,
+ BASE_FEATURE(kSegmentationPlatformAndroidHomeModuleRankerV2,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kSegmentationPlatformTimeDelaySampling feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kSegmentationPlatformTimeDelaySampling,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 

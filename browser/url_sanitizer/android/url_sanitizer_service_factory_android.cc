@@ -6,7 +6,7 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 
 #include "base/android/jni_android.h"
-#include "chrome/android/chrome_jni_headers/UrlSanitizerServiceFactory_jni.h"
+#include "brave/browser/url_sanitizer/android/jni_headers/UrlSanitizerServiceFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 

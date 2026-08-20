@@ -77,7 +77,7 @@ use serde::{Serialize, Deserialize};
 /// [`RngCore`]: crate::RngCore
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde1", derive(Serialize, Deserialize))]
-#[cfg_attr(doc_cfg, doc(cfg(feature = "alloc")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 pub struct WeightedIndex<X: SampleUniform + PartialOrd> {
     cumulative_weights: Vec<X>,
     total_weight: X,
@@ -426,7 +426,7 @@ mod test {
 }
 
 /// Error type returned from `WeightedIndex::new`.
-#[cfg_attr(doc_cfg, doc(cfg(feature = "alloc")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WeightedError {
     /// The provided weight collection contains no items.

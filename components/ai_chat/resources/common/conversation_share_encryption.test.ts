@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { webcrypto } from 'node:crypto'
+import { CompressionStream, DecompressionStream } from 'node:stream/web'
 import { describe, it, expect } from '@jest/globals'
 import { encryptForSharing } from './conversation_share_encryption'
 
@@ -14,6 +15,20 @@ if (!globalThis.crypto?.subtle) {
     value: webcrypto,
     configurable: true,
   })
+}
+
+// Likewise, jsdom does not implement the Compression Streams API which the
+// browser provides natively.
+for (const [name, implementation] of [
+  ['CompressionStream', CompressionStream],
+  ['DecompressionStream', DecompressionStream],
+] as const) {
+  if (!(name in globalThis)) {
+    Object.defineProperty(globalThis, name, {
+      value: implementation,
+      configurable: true,
+    })
+  }
 }
 
 // The following helpers mirror the sharing viewer's decryption routine, which
@@ -35,10 +50,40 @@ function base64urlDecode(base64url: string): Uint8Array {
   return base64Decode(base64 + padding)
 }
 
-async function decryptShare(
+async function gunzip(bytes: Uint8Array): Promise<Uint8Array> {
+  const stream = new DecompressionStream('gzip')
+  const writer = stream.writable.getWriter()
+  writer
+    .write(bytes)
+    .then(() => writer.close())
+    .catch(() => {})
+
+  const chunks: Uint8Array[] = []
+  let length = 0
+  const reader = stream.readable.getReader()
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) {
+      break
+    }
+    chunks.push(value)
+    length += value.length
+  }
+
+  const decompressed = new Uint8Array(length)
+  let offset = 0
+  for (const chunk of chunks) {
+    decompressed.set(chunk, offset)
+    offset += chunk.length
+  }
+  return decompressed
+}
+
+/** Decrypts without decompressing, so tests can inspect the raw payload. */
+async function decryptShareBytes(
   ciphertextB64: string,
   keyFragment: string,
-): Promise<string> {
+): Promise<Uint8Array> {
   const keyBytes = base64urlDecode(keyFragment)
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
@@ -52,13 +97,21 @@ async function decryptShare(
   const iv = blob.slice(0, 12)
   const data = blob.slice(12)
 
-  const plaintext = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv },
-    cryptoKey,
-    data,
+  return new Uint8Array(
+    await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, cryptoKey, data),
   )
+}
 
-  return new TextDecoder().decode(plaintext)
+async function decryptShare(
+  ciphertextB64: string,
+  keyFragment: string,
+): Promise<string> {
+  const payload = await decryptShareBytes(ciphertextB64, keyFragment)
+
+  // The payload is gzipped, which the viewer detects from the magic bytes so
+  // that shares created before compression shipped still load.
+  const isGzipped = payload[0] === 0x1f && payload[1] === 0x8b
+  return new TextDecoder().decode(isGzipped ? await gunzip(payload) : payload)
 }
 
 describe('conversation share encryption', () => {
@@ -94,6 +147,38 @@ describe('conversation share encryption', () => {
     expect(await decryptShare(second.ciphertext, second.keyFragment)).toEqual(
       plaintext,
     )
+  })
+
+  it('gzips the payload, so the viewer detects it by its magic bytes', async () => {
+    const { ciphertext, keyFragment } = await encryptForSharing('content')
+    const payload = await decryptShareBytes(ciphertext, keyFragment)
+
+    expect([payload[0], payload[1]]).toEqual([0x1f, 0x8b])
+  })
+
+  it('compresses the payload before encrypting it', async () => {
+    // Stand in for a real conversation: JSON with a lot of repeated structure.
+    const plaintext = JSON.stringify({
+      version: '1.2.3',
+      data: JSON.stringify({
+        messages: Array.from({ length: 100 }, (_, i) => ({
+          uuid: `message-${i}`,
+          text: 'What is the weather in Santa Barbara?',
+          createdTime: { internalValue: { $bigint: '13427183941458001' } },
+        })),
+      }),
+    })
+
+    const { ciphertext, keyFragment } = await encryptForSharing(plaintext)
+
+    // ciphertext is base64 of iv || encrypted || tag, so undo that 4/3 to
+    // compare payload sizes. Encryption doesn't change the length, so anything
+    // well under the plaintext size can only come from compression.
+    const encryptedBytes = (ciphertext.length * 3) / 4
+    expect(encryptedBytes).toBeLessThan(plaintext.length / 4)
+
+    // ...and it must still round-trip.
+    expect(await decryptShare(ciphertext, keyFragment)).toEqual(plaintext)
   })
 
   it('emits a url-safe key fragment', async () => {

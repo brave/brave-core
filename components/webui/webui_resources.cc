@@ -723,9 +723,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
            }},
           {"rewards-internals",
            {
-               {"adDiagnosticId", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID},
-               {"adDiagnosticInfo",
-                IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO},
                {"adsNotInitialized",
                 IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED},
                {"amount", IDS_BRAVE_REWARDS_INTERNALS_AMOUNT},
@@ -805,8 +802,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"refreshButton", IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON},
                {"retryCount", IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT},
                {"rewardsCountry", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_COUNTRY},
-               {"tabAdDiagnostics",
-                IDS_BRAVE_REWARDS_INTERNALS_TAB_AD_DIAGNOSTICS},
                {"tabGeneralInfo", IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO},
                {"tabLogs", IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS},
                {"tabContributions",

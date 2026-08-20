@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_scan_blocks_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_verify_chain_state_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -40,13 +41,17 @@ base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocksInBackground(
     OrchardFullViewKey full_view_key,
     OrchardTreeState tree_state,
+    std::optional<OrchardTreeState> ironwood_tree_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
   OrchardBlockScanner scanner(full_view_key);
-  return scanner.ScanBlocks(tree_state, std::move(blocks));
+  return scanner.ScanBlocks(
+      tree_state, std::move(blocks),
+      ironwood_tree_state ? &ironwood_tree_state.value() : nullptr);
 }
 
 void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
     OrchardTreeState tree_state,
+    std::optional<OrchardTreeState> ironwood_tree_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks,
     base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                            OrchardBlockScanner::ErrorCode>)>
@@ -54,7 +59,8 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&OrchardBlockScannerProxy::ScanBlocksInBackground,
-                     full_view_key_, std::move(tree_state), std::move(blocks)),
+                     full_view_key_, std::move(tree_state),
+                     std::move(ironwood_tree_state), std::move(blocks)),
       std::move(callback));
 }
 
@@ -240,11 +246,18 @@ void ZCashShieldSyncService::OnScanRangeResult(
   UpdateSpendableNotes(result.value());
 }
 
-uint32_t ZCashShieldSyncService::GetSpendableBalance() {
-  CHECK(spendable_notes_bundle_.has_value());
-  uint32_t balance = 0;
-  for (const auto& note : spendable_notes_bundle_->spendable_notes) {
+base::CheckedNumeric<uint64_t> ZCashShieldSyncService::GetSpendableBalance() {
+  CHECK(orchard_spendable_notes_bundle_.has_value());
+  CHECK(!IsZCashIronwoodEnabled() ||
+        ironwood_spendable_notes_bundle_.has_value());
+  base::CheckedNumeric<uint64_t> balance = 0;
+  for (const auto& note : orchard_spendable_notes_bundle_->spendable_notes) {
     balance += note.amount;
+  }
+  if (ironwood_spendable_notes_bundle_) {
+    for (const auto& note : ironwood_spendable_notes_bundle_->spendable_notes) {
+      balance += note.amount;
+    }
   }
   return balance;
 }
@@ -259,14 +272,15 @@ void ZCashShieldSyncService::UpdateSpendableNotes(
   }
   sync_state()
       .AsyncCall(&OrchardSyncState::GetSpendableNotes)
-      .WithArgs(context_.account_id.Clone(),
+      .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
                 context_.account_internal_addr.value())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
                            weak_ptr_factory_.GetWeakPtr(),
-                           std::move(scan_range_result)));
+                           OrchardPool::kOrchard, scan_range_result));
 }
 
 void ZCashShieldSyncService::OnGetSpendableNotes(
+    OrchardPool pool,
     const ScanRangeResult& scan_range_result,
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
@@ -284,15 +298,36 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
     return;
   }
 
-  spendable_notes_bundle_ = std::move(result.value());
+  if (pool == OrchardPool::kIronwood) {
+    ironwood_spendable_notes_bundle_ = std::move(result.value());
+  } else {
+    orchard_spendable_notes_bundle_ = std::move(result.value());
+  }
+
+  if (pool == OrchardPool::kOrchard && IsZCashIronwoodEnabled()) {
+    sync_state()
+        .AsyncCall(&OrchardSyncState::GetSpendableNotes)
+        .WithArgs(OrchardPool::kIronwood, context_.account_id.Clone(),
+                  context_.account_internal_addr.value())
+        .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             OrchardPool::kIronwood, scan_range_result));
+    return;
+  }
+
   latest_scanned_block_result_ = scan_range_result;
+
+  uint32_t notes_found = orchard_spendable_notes_bundle_->all_notes.size();
+  if (ironwood_spendable_notes_bundle_) {
+    notes_found += ironwood_spendable_notes_bundle_->all_notes.size();
+  }
 
   current_sync_status_ = mojom::ZCashShieldSyncStatus::New(
       latest_scanned_block_result_->start_block,
       latest_scanned_block_result_->end_block,
       latest_scanned_block_result_->total_ranges,
-      latest_scanned_block_result_->ready_ranges,
-      spendable_notes_bundle_->all_notes.size(), GetSpendableBalance());
+      latest_scanned_block_result_->ready_ranges, notes_found,
+      GetSpendableBalance().ValueOrDie());
 
   if (observer_) {
     observer_->OnSyncStatusUpdate(context_.account_id,

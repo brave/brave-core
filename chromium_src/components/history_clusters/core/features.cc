@@ -3,18 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_override.h"
-
 #include <components/history_clusters/core/features.cc>
 
-namespace history_clusters::internal {
+namespace history_clusters {
 
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kHistoryClustersNavigationContextClustering,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-    {kJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kJourneysImages, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kOmniboxHistoryClusterProvider, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
-}  // namespace history_clusters::internal
+namespace {
+
+// enabled_by_default_desktop_only would otherwise trip
+// -Wunused-const-variable now that the plaster above forces kJourneys off
+// regardless of platform; referencing it here keeps the upstream declaration
+// untouched.
+[[maybe_unused]] constexpr auto& kUnusedEnabledByDefaultDesktopOnly =
+    enabled_by_default_desktop_only;
+
+}  // namespace
+
+}  // namespace history_clusters

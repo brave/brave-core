@@ -223,49 +223,6 @@ void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-void MigrateToV36(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE confirmation_queue (
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        transaction_id TEXT NOT NULL,
-        creative_instance_id TEXT NOT NULL,
-        type TEXT NOT NULL,
-        ad_type TEXT NOT NULL,
-        created_at TIMESTAMP NOT NULL,
-        token TEXT,
-        blinded_token TEXT,
-        unblinded_token TEXT,
-        public_key TEXT,
-        signature TEXT,
-        credential_base64url TEXT,
-        user_data TEXT NOT NULL,
-        process_at TIMESTAMP NOT NULL,
-        retry_count INTEGER DEFAULT 0
-      ))");
-
-  // Optimize database query for `GetAll, and `GetNext`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
-                   /*columns=*/{"process_at"});
-}
-
-void MigrateToV38(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // The conversion queue is deprecated since all confirmations are now being
-  // added to the confirmation queue.
-  DropTable(mojom_db_transaction, "conversion_queue");
-}
-
-void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `Delete`, and `Retry`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
-                   /*columns=*/{"transaction_id"});
-}
-
 }  // namespace
 
 ConfirmationQueue::ConfirmationQueue() : batch_size_(kDefaultBatchSize) {}
@@ -478,21 +435,6 @@ void ConfirmationQueue::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 36: {
-      MigrateToV36(mojom_db_transaction);
-      break;
-    }
-
-    case 38: {
-      MigrateToV38(mojom_db_transaction);
-      break;
-    }
-
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
-      break;
-    }
-
     default: {
       // No migration needed.
       break;

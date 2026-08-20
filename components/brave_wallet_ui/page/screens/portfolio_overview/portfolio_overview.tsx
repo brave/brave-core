@@ -81,7 +81,7 @@ import {
   PortfolioOverviewChart, //
 } from './components/portfolio_overview_chart/portfolio_overview_chart'
 import ColumnReveal from '../../../components/shared/animated-reveals/column-reveal'
-import { Nfts } from '../../../components/desktop/views/nfts/components/nfts'
+import { Nfts } from '../nfts/nfts'
 import {
   BuySendSwapDepositNav, //
 } from './components/buy_send_swap_deposit_nav/buy_send_swap_deposit_nav'
@@ -97,7 +97,7 @@ import {
 import {
   PortfolioOverviewHeader, //
 } from '../../../components/desktop/card-headers/portfolio-overview-header'
-import { Banners } from '../../../components/desktop/views/banners/banners'
+import { Banners } from '../../../components/desktop/banners/banners'
 import {
   LastPricesUpdatedTooltip, //
 } from '../../../components/shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
@@ -156,6 +156,7 @@ export const PortfolioOverview = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
   const isMobileOrPanel = isMobile || isPanel
 
   // custom hooks
@@ -640,7 +641,13 @@ export const PortfolioOverview = () => {
       <DefaultPageWrapper>
         <Column
           fullWidth={true}
-          padding={isMobileOrPanel ? '0px' : '20px 20px 0px 20px'}
+          padding={
+            isSidePanel
+              ? '20px 0px 0px 0px'
+              : isMobileOrPanel
+                ? '0px'
+                : '20px 20px 0px 20px'
+          }
         >
           <Banners />
         </Column>

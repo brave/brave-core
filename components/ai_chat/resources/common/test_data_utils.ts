@@ -96,6 +96,7 @@ export function createConversationTurnWithDefaults(
 ): Mojom.ConversationTurn {
   return {
     uuid: '1',
+    threadUuid: undefined,
     prompt: undefined,
     selectedText: undefined,
     events: undefined,
@@ -108,6 +109,7 @@ export function createConversationTurnWithDefaults(
     actionType: Mojom.ActionType.UNSPECIFIED,
     characterType: Mojom.CharacterType.ASSISTANT,
     nearVerificationStatus: undefined,
+    childThreadUuids: [],
     text: '',
 
     ...props,

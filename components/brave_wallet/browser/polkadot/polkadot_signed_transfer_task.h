@@ -194,6 +194,7 @@ struct PolkadotSignedTransferTask {
   std::optional<PolkadotRuntimeVersion> runtime_version_;
 
   std::vector<uint8_t> extrinsic_;
+  std::vector<uint8_t> signature_payload_;
 
   base::WeakPtrFactory<PolkadotSignedTransferTask> weak_ptr_factory_{this};
 };

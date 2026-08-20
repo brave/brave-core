@@ -11,7 +11,7 @@ import { SignPanel } from './index'
 import { BraveWallet, Url } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
-import { PanelWrapper } from '../../../panel/style'
+import { PanelWrapper } from '../../../panel/panel_wrapper/panel_wrapper'
 import { LongWrapper } from '../../../stories/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
@@ -69,7 +69,7 @@ export const _SignPanel = {
   render: () => {
     return (
       <WalletPageStory>
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper>
             <SignPanel
               showWarning={true}
@@ -120,7 +120,7 @@ export const _SignData = {
 
     return (
       <WalletPanelStory>
-        <PanelWrapper isLonger={true}>
+        <PanelWrapper>
           <LongWrapper>
             <SignPanel
               signMessageData={signMessageDataPayload}

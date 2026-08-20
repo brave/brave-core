@@ -1,0 +1,79 @@
+diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
+index 8d33a8d9447f8dfde5dfea6a144d65773f0b00e0..e104ef9b7fca0b838598081be4f646458a0d246f 100644
+--- a/chrome/common/chrome_features.cc
++++ b/chrome/common/chrome_features.cc
+@@ -190,7 +190,8 @@ bool RemoteActorCredentialSharingEnabled() {
+ }
+ 
+ // Controls the enablement of structured metrics on Windows, Linux, and Mac.
+-BASE_FEATURE(kChromeStructuredMetrics, base::FEATURE_ENABLED_BY_DEFAULT);
++// kChromeStructuredMetrics feature state is enforced via plaster rewrite.
++BASE_FEATURE(kChromeStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kDeferSpellcheckInitialization, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+@@ -214,7 +215,8 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
+ );
+ 
+ // Adds a user settings that allows PWAs to be opened with a tab strip.
+-BASE_FEATURE(kDesktopPWAsTabStripSettings, base::FEATURE_DISABLED_BY_DEFAULT);
++// kDesktopPWAsTabStripSettings feature state is enforced via plaster rewrite.
++BASE_FEATURE(kDesktopPWAsTabStripSettings, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // Removes the Window Controls Overlay toggle button from the PWA toolbar
+ // and auto-enables WCO when the app developer specifies it in the manifest.
+@@ -379,7 +381,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+ 
+ // Controls whether the task icon in the actor ui is enabled.
+ const base::FeatureParam<bool> kGlicActorUiTaskIcon{
+-    &kGlicActorUi, kGlicActorUiTaskIconName, true};
++    &kGlicActorUi, kGlicActorUiTaskIconName, false};
+ // Controls whether the Actor Overlay in the actor ui is enabled.
+ const base::FeatureParam<bool> kGlicActorUiOverlay{
+     &kGlicActorUi, kGlicActorUiOverlayName, true};
+@@ -1272,7 +1274,8 @@ const base::FeatureParam<bool>
+ 
+ // Enables HTTPS-First Mode in a balanced configuration that doesn't warn on
+ // HTTP when HTTPS can't be reasonably expected.
+-BASE_FEATURE(kHttpsFirstBalancedMode, base::FEATURE_ENABLED_BY_DEFAULT);
++// kHttpsFirstBalancedMode feature state is enforced via plaster rewrite.
++BASE_FEATURE(kHttpsFirstBalancedMode, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Automatically enables HTTPS-First Mode in a balanced configuration when
+ // possible.
+@@ -1329,6 +1332,7 @@ BASE_FEATURE(kIncomingCallNotifications,
+ #endif  // BUILDFLAG(IS_WIN)
+ 
+ // Experimental image replacement feature. b/482792874
++// kIndigo feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kIndigo, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<bool> kIndigoRequireGlicEnabling{
+@@ -1610,7 +1614,8 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
+ // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
+ // about an SCT seen in the wild. If it hasn't been seen, then it is considered
+ // a security incident and uploaded to Google.
+-BASE_FEATURE(kSCTAuditingHashdance, base::FEATURE_ENABLED_BY_DEFAULT);
++// kSCTAuditingHashdance feature state is enforced via plaster rewrite.
++BASE_FEATURE(kSCTAuditingHashdance, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // An estimated high bound for the time it takes Google to ingest updates to an
+ // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge
+@@ -1702,6 +1707,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
+ // TrustSafetySentimentSurvey
+ #if !BUILDFLAG(IS_ANDROID)
+ // Enables surveying of users of Trust & Safety features with HaTS.
++// kTrustSafetySentimentSurvey feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+ // The minimum and maximum time after a user has interacted with a Trust and
+ // Safety they are eligible to be surveyed.
+@@ -1765,7 +1771,8 @@ const base::FeatureParam<base::TimeDelta>
+ #if !BUILDFLAG(IS_ANDROID)
+ // Enables the second version of the sentiment survey for users of Trust &
+ // Safety features, using HaTS.
+-BASE_FEATURE(kTrustSafetySentimentSurveyV2, base::FEATURE_ENABLED_BY_DEFAULT);
++// kTrustSafetySentimentSurveyV2 feature state is enforced via plaster rewrite.
++BASE_FEATURE(kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT);
+ // The minimum and maximum time after a user has interacted with a Trust and
+ // Safety feature that they are eligible to be surveyed.
+ const base::FeatureParam<base::TimeDelta>

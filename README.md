@@ -80,26 +80,27 @@ Follow the instructions for your platform:
 Once you have the prerequisites installed, you can get the code and initialize
 the build environment.
 
+**Clone the repo.** `brave-core` must be checked out into `./src/brave` within a
+pre-existing project folder:
+
 ```bash
 git clone git@github.com:brave/brave-core.git path-to-your-project-folder/src/brave
 cd path-to-your-project-folder/src/brave
+```
 
-# the Chromium source is downloaded, which has a large history (gigabytes of data)
-# this might take really long to finish depending on internet speed
+**Initialize the build environment.** This step will download the Chromium
+source, which has a large history (10's of gigabytes of data). This might take a
+really long time to finish depending on internet speed.
 
+```bash
+# Most builds:
 pnpm run init
-```
 
-brave-core based android builds should use
-`pnpm run init --target_os=android --target_arch=arm` (or whichever CPU type you
-want to build for) brave-core based iOS builds should use
-`pnpm run init --target_os=ios`
+# Android builds (replace `arm` with whichever CPU type you want to build for):
+pnpm run init --target_os=android --target_arch=arm
 
-You can also set the target_os and target_arch for init and build using:
-
-```
-npm config set target_os android
-npm config set target_arch arm
+# iOS builds:
+pnpm run init --target_os=ios
 ```
 
 Additional config needed to build are documented at
@@ -125,8 +126,7 @@ pnpm run build Release
 ```
 
 brave-core based android builds should use
-`pnpm run build --target_os=android --target_arch=arm` or set the npm config
-variables as specified above for `init`
+`pnpm run build --target_os=android --target_arch=arm`
 
 brave-core based iOS builds should use the Xcode project found in
 `ios/brave-ios/App`. You can open this project directly or run
@@ -158,7 +158,7 @@ memory, it could potentially take a few hours.
 
 To start the build:
 
-`npm start [Release|Component|Static|Debug]`
+`pnpm start [Release|Component|Static|Debug]`
 
 ## Update Brave
 
@@ -173,7 +173,7 @@ commit local changes before running this**
    (e.g. tag or branch)
 2. 🤕 Apply patches
 3. 🔄 Update gclient DEPS dependencies
-4. ⏩ Run hooks (e.g. to perform `npm install` on child projects)
+4. ⏩ Run hooks
 
 | flag                           | Description                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

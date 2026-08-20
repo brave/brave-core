@@ -199,75 +199,14 @@ class ResolveVpython3Test(unittest.TestCase):
 
     def test_resolves_to_a_vpython3_interpreter(self):
         # pylint: disable=protected-access
-        # Whether found on $PATH or via the chromium-bundled fallback, the
+        # Whether found on $PATH or via the vendored depot_tools fallback, the
         # resolved interpreter is always a vpython3 (vpython3.bat on Windows).
+        # shutil.which() mirrors the case of the matched PATHEXT entry (often
+        # ".BAT" on Windows), so compare case-insensitively.
         resolved = launcher._resolve_vpython3(Path('/home/dev/src/brave'))
-        self.assertIn(resolved.name, ('vpython3', 'vpython3.bat'))
+        self.assertIn(resolved.name.lower(), ('vpython3', 'vpython3.bat'))
 
 
-class FindBraveCheckoutTest(unittest.TestCase):
-    """Exercises `launcher.find_brave_checkout`.
-
-    The node/npm shims resolve the checkout from the conventional
-    `<workspace>/src/brave` layout (not git), so a single rule covers being
-    inside the checkout, inside a nested DEPS repo, and above `src/brave`.
-    """
-
-    def _make_workspace(self, root: Path) -> Path:
-        brave = root / 'src' / 'brave'
-        (brave / 'tools' / 'cr' / 'bootstrap').mkdir(parents=True)
-        (brave / 'tools' / 'cr' / 'bootstrap' / 'launcher.py').write_text(
-            '#', encoding='utf-8', newline='')
-        return brave
-
-    def test_resolves_from_inside_the_checkout(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            brave = self._make_workspace(Path(tmp))
-            inside = brave / 'components' / 'foo'
-            inside.mkdir(parents=True)
-            self.assertEqual(
-                launcher.find_brave_checkout(inside).resolve(),
-                brave.resolve())
-
-    def test_resolves_from_nested_deps_repo(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            brave = self._make_workspace(Path(tmp))
-            nested = brave / 'vendor' / 'web-discovery-project' / 'src'
-            nested.mkdir(parents=True)
-            self.assertEqual(
-                launcher.find_brave_checkout(nested).resolve(),
-                brave.resolve())
-
-    def test_resolves_from_above_src_brave(self):
-        # The `npm run init` case: cwd is the workspace root, src/brave a child.
-        with tempfile.TemporaryDirectory() as tmp:
-            brave = self._make_workspace(Path(tmp))
-            workspace = Path(tmp)
-            self.assertEqual(
-                launcher.find_brave_checkout(workspace).resolve(),
-                brave.resolve())
-
-    def test_resolves_from_sibling_chromium_dir(self):
-        # A chromium dir like src/chrome resolves to the sibling src/brave.
-        with tempfile.TemporaryDirectory() as tmp:
-            brave = self._make_workspace(Path(tmp))
-            chrome = Path(tmp) / 'src' / 'chrome'
-            chrome.mkdir(parents=True)
-            self.assertEqual(
-                launcher.find_brave_checkout(chrome).resolve(),
-                brave.resolve())
-
-    def test_none_outside_any_workspace(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            outside = Path(tmp) / 'elsewhere'
-            outside.mkdir()
-            self.assertIsNone(launcher.find_brave_checkout(outside))
-
-    def test_requires_sentinel(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            # A bare src/brave without the bootstrap sentinel is not a checkout.
-            (Path(tmp) / 'src' / 'brave').mkdir(parents=True)
-            self.assertIsNone(launcher.find_brave_checkout(Path(tmp)))
 
 
 class ResolveSystemBinaryTest(unittest.TestCase):
@@ -491,9 +430,7 @@ class ResolveInvocationWrapperFallbackTest(unittest.TestCase):
             checkout = root / 'src' / 'brave'
             invocation = launcher.resolve_invocation('npm', checkout, True)
             self.assertIsNotNone(invocation)
-            self.assertEqual(
-                Path(invocation.argv[0]).resolve(), real.resolve())
-            self.assertIsNone(invocation.path_prepend)
+            self.assertEqual(Path(invocation[0]).resolve(), real.resolve())
 
     def test_npm_fallback_none_when_only_wrapper(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -578,13 +515,7 @@ class ResolveInvocationTest(unittest.TestCase):
             invocation = launcher.resolve_invocation(f'node-{key}',
                                                      self._checkout(root),
                                                      False)
-            self.assertEqual(invocation.argv, [str(node)])
-            # The bare node binary carries its own directory to prepend to
-            # $PATH, so child processes that spawn `node` (e.g. a package's
-            # `prepare` script under npm) hit this binary directly instead of
-            # recursing back through the shim, which would fail outside a
-            # checkout ("no checkout-local binary found and no node on $PATH").
-            self.assertEqual(invocation.path_prepend, node.parent)
+            self.assertEqual(invocation, [str(node)])
 
     def test_npm_runs_through_node_on_path(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -596,9 +527,7 @@ class ResolveInvocationTest(unittest.TestCase):
                                    return_value='/usr/bin/node'):
                 invocation = launcher.resolve_invocation(
                     f'npm-{key}', self._checkout(root), True)
-            self.assertEqual(invocation.argv, ['/usr/bin/node', str(npm_cli)])
-            # npm runs via the node shim on $PATH, so it needs no PATH prepend.
-            self.assertIsNone(invocation.path_prepend)
+            self.assertEqual(invocation, ['/usr/bin/node', str(npm_cli)])
 
     def test_vpython_tool_runs_through_vpython3(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -609,9 +538,8 @@ class ResolveInvocationTest(unittest.TestCase):
                                                      False)
             self.assertIsNotNone(invocation)
             # brockit is launched as: <vpython3> <brockit.py>.
-            self.assertEqual(len(invocation.argv), 2)
-            self.assertTrue(invocation.argv[1].endswith('brockit.py'))
-            self.assertIsNone(invocation.path_prepend)
+            self.assertEqual(len(invocation), 2)
+            self.assertTrue(invocation[1].endswith('brockit.py'))
 
     def test_git_cr_runs_through_vpython3(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -622,9 +550,8 @@ class ResolveInvocationTest(unittest.TestCase):
                                                      False)
             self.assertIsNotNone(invocation)
             # git-cr is launched as: <vpython3> <cmd.py>.
-            self.assertEqual(len(invocation.argv), 2)
-            self.assertTrue(invocation.argv[1].endswith('cmd.py'))
-            self.assertIsNone(invocation.path_prepend)
+            self.assertEqual(len(invocation), 2)
+            self.assertTrue(invocation[1].endswith('cmd.py'))
 
     def test_falls_back_to_system_when_allowed(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -634,9 +561,7 @@ class ResolveInvocationTest(unittest.TestCase):
                                    return_value='/usr/bin/node'):
                 invocation = launcher.resolve_invocation(
                     'node', self._checkout(Path(tmp)), True)
-            self.assertEqual(invocation.argv, ['/usr/bin/node'])
-            # A system-node fallback lives on $PATH already: no prepend.
-            self.assertIsNone(invocation.path_prepend)
+            self.assertEqual(invocation, ['/usr/bin/node'])
 
     def test_none_without_target_and_no_fallback(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -653,14 +578,16 @@ class ResolveInvocationTest(unittest.TestCase):
             launcher.resolve_invocation('bogus', None, True)
 
     def _make_installer(self, checkout: Path) -> None:
-        """Create an empty tarball_installer.py so the bootstrap is attempted."""
+        """Create an empty tarball_installer.py so the bootstrap is
+        attempted."""
         installer = checkout / 'tools' / 'cr' / 'tarball_installer.py'
         installer.parent.mkdir(parents=True, exist_ok=True)
         installer.write_text('', encoding='utf-8', newline='')
 
     def test_bootstraps_missing_node_then_resolves(self):
-        # A missing node target with a known self_update_extra_dep_entry triggers a download
-        # (install_extra_deps.py), after which the vendored node resolves.
+        # A missing node target with a known self_update_extra_dep_entry
+        # triggers a download (install_extra_deps.py), after which the
+        # vendored node resolves.
         with tempfile.TemporaryDirectory() as tmp:
             root, key = Path(tmp), self._key()
             checkout = self._checkout(root)
@@ -685,7 +612,7 @@ class ResolveInvocationTest(unittest.TestCase):
                             f'node-{key}', checkout, False)
             call.assert_called_once()
             self.assertEqual(
-                invocation.argv,
+                invocation,
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_missing_node_falls_back_when_download_deploys_nothing(self):
@@ -711,7 +638,7 @@ class ResolveInvocationTest(unittest.TestCase):
                             invocation = launcher.resolve_invocation(
                                 'node', checkout, True)
             call.assert_called_once()
-            self.assertEqual(invocation.argv, ['/usr/bin/node'])
+            self.assertEqual(invocation, ['/usr/bin/node'])
 
     def test_no_bootstrap_without_installer(self):
         # With no install_extra_deps.py present the bootstrap is a no-op, and
@@ -742,11 +669,12 @@ class ResolveInvocationTest(unittest.TestCase):
                     invocation = launcher.resolve_invocation(
                         'node', checkout, True)
             call.assert_not_called()
-            self.assertEqual(invocation.argv, ['/usr/bin/node'])
+            self.assertEqual(invocation, ['/usr/bin/node'])
 
     def test_vpython_tool_not_bootstrapped(self):
-        # Only node/npm carry an self_update_extra_dep_entry; a missing vpython tool is never
-        # bootstrapped (it ships in the repo, it is not downloaded).
+        # Only node/npm carry an self_update_extra_dep_entry; a missing
+        # vpython tool is never bootstrapped (it ships in the repo, it is
+        # not downloaded).
         with tempfile.TemporaryDirectory() as tmp:
             with mock.patch.object(launcher.subprocess, 'call') as call:
                 launcher.resolve_invocation('brockit',
@@ -783,7 +711,7 @@ class ResolveInvocationTest(unittest.TestCase):
                             f'node-{key}', checkout, False)
             call.assert_called_once()
             self.assertEqual(
-                invocation.argv,
+                invocation,
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_pinned_version_deployed_skips_bootstrap(self):
@@ -804,7 +732,7 @@ class ResolveInvocationTest(unittest.TestCase):
                         f'node-{key}', checkout, False)
             call.assert_not_called()
             self.assertEqual(
-                invocation.argv,
+                invocation,
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_load_extra_deps_reads_checkout_module(self):
@@ -842,125 +770,180 @@ class ResolveInvocationTest(unittest.TestCase):
             self.assertFalse(updater.needs_update())
 
 
-class RunWithPathPrependedTest(unittest.TestCase):
-    """Exercises `launcher._run_with_path_prepended`.
-
-    When a node call resolves to the checkout-local binary, the launcher
-    prepends that binary's directory to `$PATH` while it runs. This is what lets
-    a package's lifecycle script (e.g. `figma-api-exporter`'s `prepare` running
-    `tsc`) find `node` directly under npm, instead of recursing into the shim
-    which then fails with "no checkout-local binary found and no node on $PATH".
+class ResolveCheckoutTest(unittest.TestCase):
+    """Exercises `launcher._resolve_checkout`: env-vs-cwd precedence, and the
+    cwd-upward search for the first ancestor `src/brave` carrying our
+    sentinel (by layout, not git) -- covering being inside the checkout,
+    inside a nested DEPS repo, above `src/brave`, and beside it as a sibling
+    chromium dir.
     """
 
+    ENV_VAR = launcher._CHECKOUT_ENV_VAR
+
     def setUp(self):
-        self._saved_path = os.environ.get('PATH', '')
+        self._saved = os.environ.get(self.ENV_VAR)
+        os.environ.pop(self.ENV_VAR, None)
 
     def tearDown(self):
-        os.environ['PATH'] = self._saved_path
+        if self._saved is None:
+            os.environ.pop(self.ENV_VAR, None)
+        else:
+            os.environ[self.ENV_VAR] = self._saved
 
-    def test_returns_the_callables_result(self):
-        self.assertEqual(
-            launcher._run_with_path_prepended(Path('/ws/node/bin'),
-                                              lambda: 42), 42)
+    def _make_checkout(self, root: Path) -> Path:
+        checkout = root / 'src' / 'brave'
+        sentinel = checkout / 'tools' / 'cr' / 'bootstrap' / 'launcher.py'
+        sentinel.parent.mkdir(parents=True, exist_ok=True)
+        sentinel.write_text('', encoding='utf-8', newline='')
+        return checkout
 
-    def test_prepends_directory_first_while_running(self):
-        os.environ['PATH'] = os.pathsep.join(['/usr/bin', '/bin'])
-        node_dir = Path('/ws/src/brave/third_party/node/node-linux-x64/bin')
-        seen = {}
+    def _resolve_from_cwd(self, start: Path) -> Path | None:
+        with mock.patch.object(launcher.Path, 'cwd', return_value=start):
+            return launcher._resolve_checkout()
 
-        def _run():
-            seen['entries'] = os.environ['PATH'].split(os.pathsep)
-
-        launcher._run_with_path_prepended(node_dir, _run)
-        self.assertEqual(seen['entries'][0], str(node_dir))
-        self.assertEqual(seen['entries'][1:], ['/usr/bin', '/bin'])
-
-    def test_restores_path_after_running(self):
-        original = os.pathsep.join(['/usr/bin', '/bin'])
-        os.environ['PATH'] = original
-        launcher._run_with_path_prepended(Path('/ws/node/bin'), lambda: None)
-        self.assertEqual(os.environ['PATH'], original)
-
-    def test_restores_path_when_callable_raises(self):
-        original = os.pathsep.join(['/usr/bin', '/bin'])
-        os.environ['PATH'] = original
-
-        def _boom():
-            raise RuntimeError('boom')
-
-        with self.assertRaises(RuntimeError):
-            launcher._run_with_path_prepended(Path('/ws/node/bin'), _boom)
-        self.assertEqual(os.environ['PATH'], original)
-
-    def test_none_directory_is_a_no_op(self):
-        original = os.pathsep.join(['/usr/bin', '/bin'])
-        os.environ['PATH'] = original
-        seen = {}
-        launcher._run_with_path_prepended(
-            None, lambda: seen.setdefault('path', os.environ['PATH']))
-        self.assertEqual(seen['path'], original)
-        self.assertEqual(os.environ['PATH'], original)
-
-    def test_does_not_re_add_when_already_present(self):
-        # The idempotency guard: a directory already on $PATH is left untouched,
-        # so nested/repeated invocations don't grow $PATH.
-        node_dir = Path('/ws/node/bin')
-        original = os.pathsep.join([str(node_dir), '/usr/bin'])
-        os.environ['PATH'] = original
-        seen = {}
-        launcher._run_with_path_prepended(
-            node_dir, lambda: seen.setdefault('path', os.environ['PATH']))
-        self.assertEqual(seen['path'], original)
-
-    def test_detects_presence_by_resolved_path(self):
-        # Presence is judged by resolved path, so a non-canonical spelling of an
-        # already-present entry is still recognized and not re-added.
+    def test_resolves_from_inside_the_checkout(self):
         with tempfile.TemporaryDirectory() as tmp:
-            node_dir = Path(tmp) / 'node' / 'bin'
-            node_dir.mkdir(parents=True)
-            noncanonical = node_dir / '..' / 'bin'
-            os.environ['PATH'] = os.pathsep.join([str(node_dir), '/usr/bin'])
-            seen = {}
-            launcher._run_with_path_prepended(
-                noncanonical, lambda: seen.setdefault(
-                    'entries', os.environ['PATH'].split(os.pathsep)))
-            self.assertEqual(seen['entries'].count(str(node_dir)), 1)
-            self.assertNotIn(str(noncanonical), seen['entries'])
+            checkout = self._make_checkout(Path(tmp))
+            inside = checkout / 'components' / 'foo'
+            inside.mkdir(parents=True)
+            self.assertEqual(
+                self._resolve_from_cwd(inside).resolve(), checkout.resolve())
+
+    def test_resolves_from_nested_deps_repo(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = self._make_checkout(Path(tmp))
+            nested = checkout / 'vendor' / 'web-discovery-project' / 'src'
+            nested.mkdir(parents=True)
+            self.assertEqual(
+                self._resolve_from_cwd(nested).resolve(), checkout.resolve())
+
+    def test_resolves_from_above_src_brave(self):
+        # The `npm run init` case: cwd is the workspace root, src/brave a child.
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = self._make_checkout(Path(tmp))
+            self.assertEqual(
+                self._resolve_from_cwd(Path(tmp)).resolve(),
+                checkout.resolve())
+
+    def test_resolves_from_sibling_chromium_dir(self):
+        # A chromium dir like src/chrome resolves to the sibling src/brave.
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = self._make_checkout(Path(tmp))
+            chrome = Path(tmp) / 'src' / 'chrome'
+            chrome.mkdir(parents=True)
+            self.assertEqual(
+                self._resolve_from_cwd(chrome).resolve(), checkout.resolve())
+
+    def test_none_outside_any_workspace(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / 'elsewhere'
+            outside.mkdir()
+            self.assertIsNone(self._resolve_from_cwd(outside))
+
+    def test_requires_sentinel(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            # A bare src/brave without the bootstrap sentinel is not a checkout.
+            (Path(tmp) / 'src' / 'brave').mkdir(parents=True)
+            self.assertIsNone(self._resolve_from_cwd(Path(tmp)))
+
+    def test_prefers_env_over_cwd(self):
+        # A valid recorded checkout wins even when the cwd resolves to a
+        # different one -- it names the checkout that started this chain of
+        # shim invocations, which nested calls must keep resolving to.
+        with tempfile.TemporaryDirectory() as tmp:
+            env_checkout = self._make_checkout(Path(tmp) / 'env')
+            cwd_checkout = self._make_checkout(Path(tmp) / 'cwd')
+            os.environ[self.ENV_VAR] = str(env_checkout)
+            checkout = self._resolve_from_cwd(cwd_checkout)
+        self.assertEqual(checkout, env_checkout)
+
+    def test_falls_back_to_cwd_when_env_unset(self):
+        # No (valid) recorded checkout -- this is the first invocation in the
+        # chain, so resolve from the cwd instead.
+        with tempfile.TemporaryDirectory() as tmp:
+            cwd_checkout = self._make_checkout(Path(tmp))
+            checkout = self._resolve_from_cwd(cwd_checkout)
+        # `_resolve_checkout()` always resolves the cwd before searching, so
+        # the returned checkout is in resolved (long-path, on Windows) form.
+        self.assertEqual(checkout, cwd_checkout.resolve())
+
+    def test_falls_back_to_cwd_when_recorded_checkout_is_stale(self):
+        # The recorded value no longer carries our sentinel (e.g. deleted) --
+        # don't trust it blindly, fall back to the cwd like the env var was
+        # never set.
+        with tempfile.TemporaryDirectory() as tmp:
+            os.environ[self.ENV_VAR] = str(
+                Path(tmp) / 'stale' / 'src' / 'brave')
+            cwd_checkout = self._make_checkout(Path(tmp) / 'cwd')
+            checkout = self._resolve_from_cwd(cwd_checkout)
+        # See test_falls_back_to_cwd_when_env_unset: the cwd fallback path
+        # always returns a resolved path.
+        self.assertEqual(checkout, cwd_checkout.resolve())
+
+    def test_none_when_neither_resolves(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / 'elsewhere'
+            outside.mkdir()
+            self.assertIsNone(self._resolve_from_cwd(outside))
+
+    def test_none_when_env_var_empty(self):
+        os.environ[self.ENV_VAR] = ''
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / 'elsewhere'
+            outside.mkdir()
+            self.assertIsNone(self._resolve_from_cwd(outside))
 
 
-class MainRunsNodeWithPathTest(unittest.TestCase):
-    """End-to-end regression: `main` runs the checkout-local node with its own
-    directory on `$PATH`, so a grandchild `node` (spawned by an npm lifecycle
-    script) resolves the binary directly rather than recursing into the shim.
+class MainPropagatesCheckoutEnvTest(unittest.TestCase):
+    """End-to-end: `main` records the resolved checkout in `$BRAVE_LAUNCHER_
+    CHECKOUT` for the subprocess it launches, so a grandchild shim invocation
+    made from outside any checkout (an npm/pnpm lifecycle script running in a
+    package manager's temp extraction dir, say) still resolves it -- instead of
+    failing with "no checkout-local binary found and no <tool> on $PATH".
     """
 
+    ENV_VAR = launcher._CHECKOUT_ENV_VAR
+
     def setUp(self):
-        self._saved_path = os.environ.get('PATH', '')
+        self._saved = os.environ.get(self.ENV_VAR)
 
     def tearDown(self):
-        os.environ['PATH'] = self._saved_path
+        if self._saved is None:
+            os.environ.pop(self.ENV_VAR, None)
+        else:
+            os.environ[self.ENV_VAR] = self._saved
 
-    def test_node_child_sees_checkout_bin_on_path(self):
+    def _make_checkout(self, root: Path) -> Path:
+        checkout = root / 'src' / 'brave'
+        sentinel = checkout / 'tools' / 'cr' / 'bootstrap' / 'launcher.py'
+        sentinel.parent.mkdir(parents=True, exist_ok=True)
+        sentinel.write_text('', encoding='utf-8', newline='')
+        return checkout
+
+    def test_child_env_carries_the_resolved_checkout(self):
         key = launcher.host_platform_key()
         if key is None:
             self.skipTest('unsupported host platform')
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+            # `_resolve_checkout()` resolves the cwd before searching, so
+            # `root` is resolved here to match the (possibly long-form, on
+            # Windows) path `main()` will actually record and build paths
+            # from.
+            root = Path(tmp).resolve()
+            checkout = self._make_checkout(root)
             node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
             node.parent.mkdir(parents=True, exist_ok=True)
             node.write_text('', encoding='utf-8', newline='')
-            checkout = root / 'src' / 'brave'
 
-            os.environ['PATH'] = '/usr/bin'
+            os.environ.pop(self.ENV_VAR, None)
             seen = {}
 
-            def _capture(argv):
+            def _capture(argv, env=None):
                 seen['argv'] = argv
-                seen['path'] = os.environ['PATH']
+                seen['env'] = env
                 return 0
 
-            with mock.patch.object(launcher,
-                                   '_find_cwd_checkout',
+            with mock.patch.object(launcher.Path, 'cwd',
                                    return_value=checkout):
                 with mock.patch.object(launcher.sys, 'argv',
                                        ['launcher.py', 'node', 'build.js']):
@@ -971,11 +954,193 @@ class MainRunsNodeWithPathTest(unittest.TestCase):
             self.assertEqual(return_code, 0)
             call.assert_called_once()
             self.assertEqual(seen['argv'], [str(node), 'build.js'])
-            # node's own directory lands first on the child's $PATH.
-            self.assertEqual(seen['path'].split(os.pathsep)[0],
-                             str(node.parent))
-            # ...and $PATH is restored once the call returns.
-            self.assertEqual(os.environ['PATH'], '/usr/bin')
+            self.assertEqual(seen['env'][self.ENV_VAR], str(checkout))
+            # The launcher's own environment is left untouched.
+            self.assertNotIn(self.ENV_VAR, os.environ)
+
+    def _capture_written_env_keys(self):
+        """Patches `os.environ.copy` to return a dict recording `__setitem__`
+        calls; returns the dict (populated once `main()` calls `copy()`)."""
+
+        class _RecordingDict(dict):
+
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.written_keys = []
+
+            def __setitem__(self, key_, value):
+                self.written_keys.append(key_)
+                super().__setitem__(key_, value)
+
+        recorded = {}
+
+        def _fake_copy():
+            recorded['env'] = _RecordingDict(os.environ)
+            return recorded['env']
+
+        return recorded, mock.patch.object(launcher.os.environ,
+                                           'copy',
+                                           side_effect=_fake_copy)
+
+    def test_does_not_rewrite_when_already_set(self):
+        # `env` (os.environ.copy()) already carries forward whatever this
+        # process itself inherited, so when the var is already set there is
+        # nothing new to write -- avoid the redundant assignment. Proven via a
+        # dict subclass that records writes.
+        key = launcher.host_platform_key()
+        if key is None:
+            self.skipTest('unsupported host platform')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checkout = self._make_checkout(root)
+            node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
+            node.parent.mkdir(parents=True, exist_ok=True)
+            node.write_text('', encoding='utf-8', newline='')
+            os.environ[self.ENV_VAR] = str(checkout)
+
+            recorded, patch_copy = self._capture_written_env_keys()
+            with patch_copy:
+                with mock.patch.object(launcher.sys, 'argv',
+                                       ['launcher.py', 'node', 'build.js']):
+                    with mock.patch.object(launcher.subprocess,
+                                           'call',
+                                           return_value=0):
+                        return_code = launcher.main()
+            self.assertEqual(return_code, 0)
+            self.assertNotIn(self.ENV_VAR, recorded['env'].written_keys)
+
+    def test_does_not_rewrite_a_non_matching_but_already_set_env_var(self):
+        # Presence is all that matters, not the value -- an already-set var
+        # is left alone even when it names a different checkout than the one
+        # cwd resolves to here (an ancestor's record wins over this process's
+        # own cwd-based resolution for what gets forwarded).
+        key = launcher.host_platform_key()
+        if key is None:
+            self.skipTest('unsupported host platform')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checkout = self._make_checkout(root)
+            node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
+            node.parent.mkdir(parents=True, exist_ok=True)
+            node.write_text('', encoding='utf-8', newline='')
+            os.environ[self.ENV_VAR] = '/some/other/checkout'
+
+            recorded, patch_copy = self._capture_written_env_keys()
+            with patch_copy:
+                with mock.patch.object(launcher.Path,
+                                       'cwd',
+                                       return_value=checkout):
+                    with mock.patch.object(
+                            launcher.sys, 'argv',
+                        ['launcher.py', 'node', 'build.js']):
+                        with mock.patch.object(launcher.subprocess,
+                                               'call',
+                                               return_value=0):
+                            return_code = launcher.main()
+            self.assertEqual(return_code, 0)
+            self.assertNotIn(self.ENV_VAR, recorded['env'].written_keys)
+            self.assertEqual(recorded['env'][self.ENV_VAR],
+                             '/some/other/checkout')
+
+    def test_no_env_var_set_when_no_checkout_resolved(self):
+        # A system-binary fallback outside any checkout has nothing to record.
+        os.environ.pop(self.ENV_VAR, None)
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / 'elsewhere'
+            outside.mkdir()
+            with mock.patch.object(launcher.Path, 'cwd', return_value=outside):
+                with mock.patch.object(launcher.shutil,
+                                       'which',
+                                       return_value='/usr/bin/node'):
+                    seen = {}
+
+                    def _capture(_argv, env=None):
+                        seen['env'] = env
+                        return 0
+
+                    with mock.patch.object(
+                            launcher.sys, 'argv',
+                        ['launcher.py', '--allow-fallback', 'node']):
+                        with mock.patch.object(launcher.subprocess,
+                                               'call',
+                                               side_effect=_capture):
+                            return_code = launcher.main()
+        self.assertEqual(return_code, 0)
+        self.assertNotIn(self.ENV_VAR, seen['env'])
+
+    def test_nested_invocation_outside_checkout_resolves_via_env(self):
+        # The exact regression this guards (brave/brave-browser#56529): a
+        # `pnpm install` lifecycle script for a git-hosted dependency (e.g.
+        # figma-api-exporter) runs from pnpm's own store tmp extraction dir --
+        # nowhere near any checkout by cwd -- but with the checkout env var
+        # inherited from the pnpm invocation that spawned it. Before this fix,
+        # that lifecycle script's `pnpm install` failed with "no
+        # checkout-local binary found and no pnpm on $PATH."
+        key = launcher.host_platform_key()
+        if key is None:
+            self.skipTest('unsupported host platform')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / 'workspace'
+            pnpm_target = root / launcher.SHIM_TARGETS['pnpm'].path
+            pnpm_target.parent.mkdir(parents=True, exist_ok=True)
+            pnpm_target.write_text('', encoding='utf-8', newline='')
+            checkout = root / 'src' / 'brave'
+            sentinel = checkout / 'tools' / 'cr' / 'bootstrap' / 'launcher.py'
+            sentinel.parent.mkdir(parents=True, exist_ok=True)
+            sentinel.write_text('', encoding='utf-8', newline='')
+            os.environ[self.ENV_VAR] = str(checkout)
+
+            # cwd is pnpm's own store tmp dir, e.g.
+            # ~/.local/share/pnpm/store/v11/tmp/_tmp_DAPDJk -- a sibling tree
+            # with no `src/brave` anywhere above it.
+            pnpm_store_tmp = (Path(tmp) / '.local' / 'share' / 'pnpm' /
+                              'store' / 'v11' / 'tmp' / '_tmp_DAPDJk')
+            pnpm_store_tmp.mkdir(parents=True)
+
+            with mock.patch.object(launcher.Path,
+                                   'cwd',
+                                   return_value=pnpm_store_tmp):
+                with mock.patch.object(launcher.shutil,
+                                       'which',
+                                       return_value='/usr/bin/node'):
+                    with mock.patch.object(
+                            launcher.sys, 'argv',
+                        ['launcher.py', '--allow-fallback', 'pnpm']):
+                        with mock.patch.object(launcher.subprocess,
+                                               'call',
+                                               return_value=0) as call:
+                            return_code = launcher.main()
+            self.assertEqual(return_code, 0)
+            call.assert_called_once()
+            args, _ = call.call_args
+            self.assertEqual(args[0], ['/usr/bin/node', str(pnpm_target)])
+
+    def test_reproduces_the_original_failure_without_the_env_var(self):
+        # Contrast case: strip the env var (as if this were the pre-fix
+        # launcher, or the var simply never made it down) and the exact
+        # reported failure comes back -- proving the fix, not a tautology.
+        os.environ.pop(self.ENV_VAR, None)
+        with tempfile.TemporaryDirectory() as tmp:
+            pnpm_store_tmp = (Path(tmp) / '.local' / 'share' / 'pnpm' /
+                              'store' / 'v11' / 'tmp' / '_tmp_DAPDJk')
+            pnpm_store_tmp.mkdir(parents=True)
+
+            with mock.patch.object(launcher.Path,
+                                   'cwd',
+                                   return_value=pnpm_store_tmp):
+                with mock.patch.object(launcher.shutil,
+                                       'which',
+                                       return_value=None):
+                    with mock.patch.object(
+                            launcher.sys, 'argv',
+                        ['launcher.py', '--allow-fallback', 'pnpm']):
+                        with contextlib.redirect_stderr(
+                                io.StringIO()) as stderr:
+                            return_code = launcher.main()
+        self.assertEqual(return_code, 1)
+        self.assertIn(
+            'pnpm: no checkout-local binary found and no pnpm on $PATH.',
+            stderr.getvalue())
 
 
 class MultiRepoSelfUpdaterTest(unittest.TestCase):
@@ -1084,7 +1249,8 @@ class ArgumentForwardingTest(unittest.TestCase):
                          (True, 'node', ['build.js']))
 
     def test_allow_fallback_after_tool_is_forwarded(self):
-        # After TOOL, the identical flag is the tool's — forwarded, not acted on.
+        # After TOOL, the identical flag is the tool's — forwarded, not
+        # acted on.
         self.assertEqual(self._split(['brockit', '--allow-fallback', 'foo']),
                          (False, 'brockit', ['--allow-fallback', 'foo']))
 

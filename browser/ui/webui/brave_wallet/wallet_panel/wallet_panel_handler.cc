@@ -13,8 +13,14 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
 
 // It's safe to bind the active webcontents when panel is created because
 // the panel will not be shared across tabs.
@@ -44,6 +50,26 @@ void WalletPanelHandler::CloseUI() {
   }
 }
 
+void WalletPanelHandler::CloseSidePanel() {
+  content::WebContents* web_contents =
+      webui_controller_->web_ui()->GetWebContents();
+  if (!web_contents) {
+    return;
+  }
+
+  BrowserWindowInterface* browser =
+      webui::GetBrowserWindowInterface(web_contents);
+  if (!browser) {
+    return;
+  }
+
+  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  if (side_panel_ui &&
+      side_panel_ui->GetCurrentEntryId() == SidePanelEntryId::kWallet) {
+    side_panel_ui->Close();
+  }
+}
+
 void WalletPanelHandler::ConnectToSite(
     const std::vector<std::string>& accounts,
     brave_wallet::mojom::PermissionLifetimeOption option) {
@@ -62,11 +88,10 @@ void WalletPanelHandler::Focus() {
 void WalletPanelHandler::IsSolanaAccountConnected(
     const std::string& account,
     IsSolanaAccountConnectedCallback callback) {
-  content::RenderFrameHost* rfh = nullptr;
-  if (!(rfh = active_web_contents_->GetFocusedFrame())) {
-    std::move(callback).Run(false);
-    return;
-  }
+  // Report the connection state of the frame the panel names, not of whichever
+  // frame happens to hold focus. See WalletPanelHandler::RequestPermission for
+  // the rationale.
+  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
 
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(active_web_contents_);
@@ -82,11 +107,12 @@ void WalletPanelHandler::IsSolanaAccountConnected(
 void WalletPanelHandler::RequestPermission(
     brave_wallet::mojom::AccountIdPtr account_id,
     RequestPermissionCallback callback) {
-  content::RenderFrameHost* rfh = nullptr;
-  if (!(rfh = active_web_contents_->GetFocusedFrame())) {
-    std::move(callback).Run(false);
-    return;
-  }
+  // The panel names the primary main frame's origin (see
+  // BraveWalletServiceDelegateImpl::GetActiveOrigin), and so do the connected
+  // accounts list and Disconnect. Grant to that same frame: using the focused
+  // frame would let a cross-origin subframe holding focus receive a durable
+  // permission the user was never shown and cannot revoke from this panel.
+  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
 
   auto request_type =
       brave_wallet::CoinTypeToPermissionRequestType(account_id->coin);

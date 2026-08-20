@@ -50,6 +50,8 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.url.Origin;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -237,7 +239,18 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 imageCreditViewHolder.mSponsoredLogo.setOnClickListener(
                         view -> {
                             if (mWallpaper.getLogoDestinationUrl() != null) {
-                                TabUtils.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
+                                if (mActivity instanceof BraveActivity) {
+                                    // Do a renderer initiated navigation to open links
+                                    // in their app/PWA (if installed).
+                                    LoadUrlParams loadUrlParams =
+                                            new LoadUrlParams(mWallpaper.getLogoDestinationUrl());
+                                    loadUrlParams.setIsRendererInitiated(true);
+                                    loadUrlParams.setHasUserGesture(true);
+                                    loadUrlParams.setInitiatorOrigin(Origin.createOpaqueOrigin());
+                                    ((BraveActivity) mActivity)
+                                            .getActivityTab()
+                                            .loadUrl(loadUrlParams);
+                                }
                                 mNTPBackgroundImagesBridge.wallpaperLogoClicked(mWallpaper);
                             }
                         });

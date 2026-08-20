@@ -77,7 +77,7 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
 
     auto* template_url_service =
-        TemplateURLServiceFactory::GetForProfile(browser()->profile());
+        TemplateURLServiceFactory::GetForProfile(browser()->GetProfile());
     search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
 
     auto* brave_template_url =
@@ -138,7 +138,7 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
     VerifyNetworkAuditLog(net_log_path_, audit_results_path_, allowed_prefixes);
   }
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
  protected:

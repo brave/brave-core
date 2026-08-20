@@ -7,6 +7,7 @@ import config from './config.ts'
 import os from 'node:os'
 import path from 'node:path/posix'
 import fs from 'node:fs'
+import rootDir from './rootDir.cjs'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
@@ -22,10 +23,10 @@ const extraArchitectures = ['arm64', 'x86']
 // This uses environment variables as there is currently no way to pass custom
 // arguments to the |storybook build| cli.
 config.update({
-  target_arch: process.env.TARGET_ARCH,
-  target_os: process.env.TARGET_OS,
-  target_environment: process.env.TARGET_ENVIRONMENT,
-  target: process.env.TARGET,
+  target_arch: /** @type {any} */ (process.env.TARGET_ARCH),
+  target_os: /** @type {any} */ (process.env.TARGET_OS),
+  target_environment: /** @type {any} */ (process.env.TARGET_ENVIRONMENT),
+  target: /** @type {any} */ (process.env.TARGET),
   build_config: process.env.BUILD_CONFIG,
 })
 
@@ -34,16 +35,16 @@ let outputPath = config.outputDir
 function getBuildOutputPathList() {
   if (os.platform() === 'win32') {
     return buildConfigs.flatMap((config) => [
-      path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}`),
+      path.win32.resolve(rootDir, `src\\out\\${config}`),
       ...extraArchitectures.map((arch) =>
-        path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}_${arch}`),
+        path.win32.resolve(rootDir, `src\\out\\${config}_${arch}`),
       ),
     ])
   } else {
     return buildConfigs.flatMap((config) => [
-      path.resolve(__dirname, `../../../../out/${config}`),
+      path.resolve(rootDir, `src/out/${config}`),
       ...extraArchitectures.map((arch) =>
-        path.resolve(__dirname, `../../../../out/${config}_${arch}`),
+        path.resolve(rootDir, `src/out/${config}_${arch}`),
       ),
     ])
   }
@@ -51,8 +52,7 @@ function getBuildOutputPathList() {
 
 if (fs.existsSync(outputPath)) {
   console.log(
-    'Assuming precompiled dependencies can be found at the existing path found from brave-core configuration: '
-      + outputPath,
+    `[guessConfig] Using config-provided build output path: ${outputPath}`,
   )
 } else {
   const outDirectories = getBuildOutputPathList()
@@ -62,10 +62,13 @@ if (fs.existsSync(outputPath)) {
     )
   if (!outDirectories.length || outDirectories[0] === undefined) {
     throw new Error(
-      'Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?',
+      '[guessConfig] Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?',
     )
   }
   outputPath = outDirectories[0]
+  console.log(
+    `[guessConfig] Using most recent build output path: ${outputPath}`,
+  )
 }
 
 const genPath = path.join(outputPath, 'gen')

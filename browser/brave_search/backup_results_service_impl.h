@@ -16,6 +16,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
@@ -38,6 +39,12 @@ namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
+
+#if BUILDFLAG(IS_ANDROID)
+namespace ui {
+class WindowAndroid;
+}  // namespace ui
+#endif
 
 namespace brave_search {
 
@@ -79,6 +86,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
   struct PendingRequest {
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,
                    std::optional<net::HttpRequestHeaders> headers,
+                   Profile* original_profile,
                    Profile* otr_profile,
                    bool low_latency_required,
                    BackupResultsCallback callback);
@@ -91,6 +99,12 @@ class BackupResultsServiceImpl : public BackupResultsService,
     std::unique_ptr<content::WebContents> web_contents;
     GURL target_url;
 
+#if BUILDFLAG(IS_ANDROID)
+    // Root window for the `web_contents` view tree.
+    raw_ptr<ui::WindowAndroid> window_android = nullptr;
+#endif
+
+    raw_ptr<Profile> original_profile;
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
     std::unique_ptr<network::SimpleURLLoader> simple_url_loader;
@@ -126,6 +140,12 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   void SeedNavigationHistory(content::WebContents& web_contents,
                              const GURL& target_url);
+
+  void MaybeConfigureFarblingAndAcceptLanguage(Profile* otr_profile,
+                                               const GURL& url);
+  void MaybeConfigureRendererLanguages(content::WebContents& web_contents);
+  std::string GetLanguageListOverride(
+      const std::string& feature_param_value) const;
 
   net::HttpRequestHeaders GetExtraHeaders(
       const std::optional<net::HttpRequestHeaders>& request_headers);

@@ -51,7 +51,10 @@ source_set("browser_process") {
 source_set("brave_global_features") {
   sources = [ "brave_global_features.h" ]
 
-  public_deps = [ "//chrome/browser:global_features" ]
+  public_deps = [
+    "//chrome/browser:global_features",
+    "//extensions/buildflags",
+  ]
 }
 
 source_set("brave_global_features_impl") {
@@ -59,9 +62,16 @@ source_set("brave_global_features_impl") {
   sources = [ "brave_global_features.cc" ]
 
   deps = [
+    "//base",
     "//brave/browser:brave_global_features",
+    "//brave/components/extension_malware_blocklist/common",
     "//chrome/browser:global_features",
+    "//extensions/buildflags",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//brave/components/extension_malware_blocklist/browser" ]
+  }
 }
 
 source_set("core") {
@@ -74,6 +84,7 @@ source_set("core") {
 
   sources = brave_chrome_browser_sources
   deps = brave_chrome_browser_deps
+  deps += [ "//brave/browser/ui/window_feature_controller:chromium_impl" ]
   public_deps = brave_chrome_browser_public_deps +
                 [ "//chrome/browser:browser_public_dependencies" ]
   allow_circular_includes_from =

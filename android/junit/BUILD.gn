@@ -54,7 +54,9 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.toolbar"
     sources = [
       "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java",
+      "src/org/chromium/chrome/browser/toolbar/BraveToolbarManagerUnitTest.java",
       "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
+      "src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediatorTest.java",
       "src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinatorTest.java",
     ]
 
@@ -64,7 +66,9 @@ if (is_android) {
       "//brave/browser/ui/android/toolbar:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/browser_controls/android:java",
       "//chrome/browser/flags:java",
+      "//chrome/browser/fullscreen/android:java",
       "//chrome/browser/glic:public_java",
       "//chrome/browser/glic/android:jni_headers_java",
       "//chrome/browser/incognito:java",
@@ -72,6 +76,7 @@ if (is_android) {
       "//chrome/browser/settings:java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
+      "//chrome/browser/ui/android/overlay_panel:java",
       "//chrome/browser/ui/android/toolbar:adaptive_features_java",
       "//chrome/browser/ui/android/toolbar:java",
       "//ui/android:ui_no_recycler_view_java",
@@ -127,16 +132,25 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.settings") {
-    sources = [ "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java",
+      "src/org/chromium/chrome/browser/settings/BraveSettingsLauncherImplTest.java",
+      "src/org/chromium/components/browser_ui/settings/BraveSettingsIconTintUtilsTest.java",
+    ]
 
     deps = [
       "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+      "//brave/components/browser_ui/settings/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/safe_browsing/android:java",
     ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.rate") {
-    sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java",
+      "src/org/chromium/chrome/browser/rate/RateUtilsTest.java",
+    ]
 
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
@@ -192,6 +206,18 @@ if (is_android) {
   }
 
   robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.omnibox.geo") {
+    sources = [ "src/org/chromium/chrome/browser/omnibox/geo/BraveGeolocationHeaderUnitTest.java" ]
+
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/ui/android/omnibox:java",
+      "//components/omnibox/common:features_java",
+      "//components/search_engines/android:java",
+    ]
+  }
+
+  robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.autofill") {
     sources = [
       "src/org/chromium/chrome/browser/autofill/BraveAutofillServiceImplUnitTest.java",
@@ -238,21 +264,30 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelFaviconPriorityTest.java",
       "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandlerStatTest.java",
+      "src/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactoryUnitTest.java",
     ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//brave/browser/url_sanitizer/android:java",
+      "//brave/components/url_sanitizer/core/common/mojom:mojom_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.hub") {
     sources = [
+      "src/org/chromium/chrome/browser/hub/BraveDefaultPaneOrderControllerUnitTest.java",
       "src/org/chromium/chrome/browser/hub/BraveHubToolbarViewUnitTest.java",
     ]
 
     deps = [
       "//brave/browser/brave_shields/android:java",
+      "//brave/browser/hub/android:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/hub:java",
       "//chrome/browser/hub/internal:java",
+      "//third_party/android_deps:guava_android_java",
     ]
   }
 
@@ -278,7 +313,10 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.ui.messages.snackbar") {
-    sources = [ "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java",
+      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarViewTest.java",
+    ]
 
     deps = [
       "//chrome/android:chrome_java",
@@ -304,10 +342,7 @@ if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.compositor") {
     resources_package = "org.chromium.chrome"
-    sources = [
-      "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationDataUnitTest.java",
-      "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayoutUnitTest.java",
-    ]
+    sources = [ "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationDataUnitTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
@@ -327,16 +362,30 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.tab_group_sync") {
-    sources = [ "src/org/chromium/chrome/browser/tab_group_sync/BraveTabGroupSyncRemoteObserverUnitTest.java" ]
+    sources = [ "src/org/chromium/chrome/browser/tab_group_sync/BraveSyncedTabGroupHelperUnitTest.java" ]
 
     deps = [
       "//base:base_java",
+      "//brave/browser/tab_group_sync:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/preferences:java",
-      "//chrome/browser/tab_group_sync:java",
+      "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
       "//components/prefs/android:java",
       "//components/saved_tab_groups/public:java",
+    ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.tabmodel") {
+    sources = [ "src/org/chromium/chrome/browser/tabmodel/BraveTabGroupHelperUnitTest.java" ]
+
+    deps = [
+      "//base:base_java",
+      "//chrome/android:chrome_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/tabmodel:java",
+      "//chrome/browser/tabwindow:java",
     ]
   }
 
@@ -345,6 +394,7 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.tasks.tab_management"
     sources = [
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java",
+      "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridItemTouchHelperCallbackTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilitiesUnitTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/BravePinnedTabStripItemContextMenuCoordinatorTest.java",
     ]

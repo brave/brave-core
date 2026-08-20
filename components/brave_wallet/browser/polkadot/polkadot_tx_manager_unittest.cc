@@ -70,17 +70,18 @@ inline constexpr char kExpectedTransferAllExtrinsic[] =
     "04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800";
 
 inline constexpr char kExpectedAssetIdExtrinsic[] =
-    "4902840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
-    "e6302fc131a08e926057efc3a94180c852949056e0dab67f4e8d28b8ddca9e6c6cd8390c53"
-    "1d8fa20eec81ba2749949ef38527138314789677f29cde65cf63815501440000003209cad1"
-    "eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48491"
-    "3";
+    "5d02840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "90bb5bdb9fd592c54b26852a6ccd5071529942fa5656642a84975b765f629658ae187fa7d7"
+    "1bcd27432fc97ee5e03df37aa83c981c2d04a338c8ca45deb3f48900000000005501440000"
+    "003209cad1eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794"
+    "f26a484913";
 
 inline constexpr char kExpectedTransferAllAssetIdExtrinsic[] =
-    "4502840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
-    "4e3a629c15cd6f02e88f302799eb0bb9fe263180cbfebe395f84cce0e341071fd102eba8e0"
-    "c79c65642b35c931b77b9448127e1ea8a0fe55d09a200a2de481845501440000003220cad1"
-    "eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800";
+    "5902840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "5e4cd46bf09b8e6641510dd682561316fc03984243558399530487f8ad44554ff9798b8797"
+    "2769a7f5be6683305650e17ae057020eb483c4247d323ad619238000000000005501440000"
+    "003220cad1eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794"
+    "f26a4800";
 
 class MockTxStateManagerObserver : public TxStateManager::Observer {
  public:
@@ -303,6 +304,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
     EXPECT_EQ(base::HexEncodeLower(
                   polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
               kExpectedExtrinsic);
+    EXPECT_FALSE(polkadot_tx->tx()->signature_payload().empty());
   }
 
   size_t GetStatusTaskCount() {
@@ -621,6 +623,57 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
   ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
   GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
   EXPECT_FALSE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
+}
+
+TEST_F(PolkadotTxManagerUnitTest, SignaturePayloadStoredWhileUnapproved) {
+  // The blob the user would be signing is stored with the unapproved
+  // transaction so the confirmation UI can display it before approval.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto tx_meta_id = SetUpUnapprovedTx(chain_id);
+
+  std::vector<uint8_t> unapproved_payload;
+  {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Unapproved);
+    unapproved_payload = polkadot_tx->tx()->signature_payload();
+    EXPECT_FALSE(unapproved_payload.empty());
+
+    // It's surfaced to the front-end as 0x-prefixed hex.
+    auto tx_info = polkadot_tx->ToTransactionInfo();
+    const auto& tx_data = tx_info->tx_data_union->get_polkadot_tx_data();
+    ASSERT_TRUE(!tx_data.is_null());
+    ASSERT_TRUE(tx_data->signature_payload);
+    EXPECT_EQ(*tx_data->signature_payload,
+              "0x" + base::HexEncodeLower(unapproved_payload));
+  }
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
+
+  auto [success, error, msg] = approved_future.Take();
+  ASSERT_TRUE(success);
+
+  {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    // Note that in production, new blocks can be minted so what was presented
+    // isn't necessarily what the user originally saw. But things like pallet
+    // indices all stay the same.
+    EXPECT_EQ(polkadot_tx->tx()->signature_payload(), unapproved_payload);
+  }
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_AssetId_Confirmed) {

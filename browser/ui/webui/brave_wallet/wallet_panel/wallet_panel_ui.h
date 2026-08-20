@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -31,6 +32,7 @@ class WebContents;
 }  // namespace content
 
 class WalletPanelUI : public TopChromeWebUIController,
+                      public brave_wallet::mojom::LedgerBridgeService,
                       public brave_wallet::mojom::PanelHandlerFactory {
  public:
   explicit WalletPanelUI(content::WebUI* web_ui);
@@ -42,6 +44,14 @@ class WalletPanelUI : public TopChromeWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver);
+
+  // Binds the `LedgerBridgeService` requested by the trusted renderer.
+  void BindInterface(
+      mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
+
+  // Called with `LedgerBridge` coming from untrusted subframe.
+  void BindLedgerBridge(
+      mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
@@ -96,12 +106,25 @@ class WalletPanelUI : public TopChromeWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
           meld_integration_service) override;
 
+  // mojom::LedgerBridgeService:
+  void BindLedgerBridge(mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
+                            receiver) override;
+
+  void MaybeFuseLedgerBridge();
+
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 #endif
   base::WeakPtr<content::WebContents> active_web_contents_;
+
+  mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> ledger_bridge_remote_;
+  mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
+      ledger_bridge_receiver_;
+
+  mojo::Receiver<brave_wallet::mojom::LedgerBridgeService> service_receiver_{
+      this};
 
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};

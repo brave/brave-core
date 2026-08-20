@@ -86,6 +86,11 @@ bool IsWalletDebugEnabled() {
 #endif
 }
 
+bool IsMojoForHardwareWalletEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kBraveWalletMojoForHardwareWalletFeature);
+}
+
 bool IsAnkrBalancesEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAnkrBalancesFeature);
@@ -99,6 +104,14 @@ bool IsTransactionSimulationsEnabled() {
 bool IsAccountHidingEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAccountHidingFeature);
+}
+
+bool IsSnapsFeatureEnabled() {
+#if BUILDFLAG(ENABLE_SNAPS)
+  return base::FeatureList::IsEnabled(features::kBraveWalletSnapsFeature);
+#else
+  return false;
+#endif
 }
 
 #if BUILDFLAG(IS_IOS)
@@ -138,8 +151,7 @@ bool IsFilecoinAccount(const mojom::AccountIdPtr& account_id) {
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network) {
   if (network == mojom::kFilecoinMainnet) {
     return mojom::KeyringId::kFilecoin;
-  } else if (network == mojom::kFilecoinTestnet ||
-             network == mojom::kLocalhostChainId) {
+  } else if (network == mojom::kFilecoinTestnet) {
     return mojom::KeyringId::kFilecoinTestnet;
   }
   NOTREACHED() << "Unsupported chain id for filecoin " << network;

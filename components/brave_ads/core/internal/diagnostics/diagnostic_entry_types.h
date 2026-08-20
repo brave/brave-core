@@ -12,7 +12,7 @@ namespace brave_ads {
 enum class DiagnosticEntryType {
   kDeviceId,
   kOptedInToNewTabPageAds,
-  kOptedInToNotificationAds,
+  kNotificationAdsEnabled,
   kOptedInToSearchResultAds,
   kLanguage,
   kCountry,

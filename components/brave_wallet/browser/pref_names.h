@@ -109,6 +109,10 @@ inline constexpr char kERCOptedIntoCryptoWalletsDeprecated[] =
 inline constexpr char kBraveWalletPingReportedUnlockTimeDeprecated[] =
     "brave.wallet.wallet_report_unlock_time_ping";
 
+// Added 08/2026
+inline constexpr char kBraveWalletLocalhostNetworksMigrated[] =
+    "brave.wallet.localhost_networks_migrated";
+
 // Localstate prefs registration and migration functions.
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);

@@ -8,7 +8,10 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -103,9 +106,17 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     brave_wallet::SetDefaultEthereumWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
+    // The panel is opened by a dApp calling window.ethereum, which is only
+    // injected once a wallet exists.
+    ASSERT_TRUE(brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+                    browser()->GetProfile())
+                    ->keyring_service()
+                    ->RestoreWalletSync(brave_wallet::kMnemonicScarePiece,
+                                        brave_wallet::kTestWalletPassword,
+                                        false));
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 

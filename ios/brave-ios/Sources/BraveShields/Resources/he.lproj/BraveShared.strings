@@ -86,7 +86,7 @@
 "CustomFiltersInvalidRuleError" = "כלל לא חוקי `%1$@` בשורה %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "אפשר להוסיף את המסננים המותאמים אישית שלך כאן, אחד לכל שורה.";
+"CustomFiltersPlaceholder" = "הוספת מסננים מותאמים אישית";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "מסננים מותאמים אישית לא תומכים ביותר מ-%i שורות";
@@ -111,6 +111,9 @@
 
 /* A tab title for the warning page that appears when a page was blocked */
 "DomainBlockedTitle" = "הדומיין חסום";
+
+/* A placeholder when custom filter lists are empty */
+"EditCustomFiltersLabel" = "עריכה של מסננים מותאמים אישית";
 
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "לבקש מאתרי אינטרנט לא למכור או לשתף את הנתונים שלך. [למידע נוסף](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";

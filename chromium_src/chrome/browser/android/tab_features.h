@@ -21,6 +21,9 @@ class TabFeatures {
 
   NewTabPagePreloadPipelineManager* new_tab_page_preload_pipeline_manager();
 
+  enterprise_data_protection::DataProtectionNavigationController*
+  data_protection_controller();
+
  private:
   friend BraveTabFeatures;
   std::unique_ptr<BraveTabFeatures> brave_tab_features_;

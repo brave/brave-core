@@ -42,5 +42,8 @@
     "strictPropertyInitialization": true,
     // Apply stricter rules for optional properties.
     "exactOptionalPropertyTypes": true,
+    // Issue an error if a function parameter type is not compatible with the
+    // function type.
+    "strictFunctionTypes": true,
   },
 }

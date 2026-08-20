@@ -266,8 +266,8 @@ BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
   return webcompat_features_invoked_;
 }
 
-bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
-  return brave_shields_settings_->GetBraveShieldsEnabled(GetCurrentSiteURL());
+bool BraveShieldsTabHelper::IsBraveShieldsEnabled() {
+  return brave_shields_settings_->IsBraveShieldsEnabled(GetCurrentSiteURL());
 }
 
 bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {
@@ -506,15 +506,6 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
   UMA_HISTOGRAM_BOOLEAN(kShieldsAllowScriptOnceHistogramName, true);
   observer->AllowScriptsOnce(origins);
   ReloadWebContents();
-}
-
-bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-
-  return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, &*host_content_settings_map_, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,

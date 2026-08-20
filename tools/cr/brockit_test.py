@@ -6,20 +6,19 @@
 
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import unittest
 from pathlib import Path
 import shutil
 from datetime import datetime
-from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import brockit
 from brockit import ApplyPatchesRecord
 
 from test.fake_chromium_repo import FakeChromiumRepo
+from test.fake_gh import FakeGh, ISSUE_URL, PR_URL
 
 
 class BrockitTest(unittest.TestCase):
@@ -763,9 +762,6 @@ class MarkChangeTaskTest(unittest.TestCase):
             brockit.Drop().execute(change='HEAD')
 
 
-ISSUE_URL = 'https://github.com/brave/brave-browser/issues/4242'
-PR_URL = 'https://github.com/brave/brave-core/pull/123'
-
 # The CI labels every PR opened by `GitHubIssue` must carry. They are stored
 # exactly as the command passes them to `gh` (i.e. wrapped in double quotes).
 REQUIRED_CI_LABELS = [
@@ -779,72 +775,6 @@ REQUIRED_CI_LABELS = [
 def _values_after(cmd: list[str], flag: str) -> list[str]:
     """Returns every argument that immediately follows `flag` in `cmd`."""
     return [cmd[i + 1] for i, arg in enumerate(cmd) if arg == flag]
-
-
-class _FakeGh:
-    """Stand-in for `terminal.run` that answers the `gh` calls `GitHubIssue`
-    makes.
-
-    Every invocation is recorded in `self.calls`, and the canned responses are
-    configured through the constructor so each test can drive a specific code
-    path without touching the network or the real `gh` CLI.
-    """
-
-    def __init__(self,
-                 *,
-                 logged_in: bool = True,
-                 issue_list: list | None = None,
-                 issue_create_url: str = ISSUE_URL,
-                 pr_list: list | None = None,
-                 pr_create_url: str = PR_URL,
-                 pr_create_error: Exception | None = None,
-                 milestones: list | None = None) -> None:
-        self.logged_in = logged_in
-        self.issue_list = issue_list if issue_list is not None else []
-        self.issue_create_url = issue_create_url
-        self.pr_list = pr_list if pr_list is not None else []
-        self.pr_create_url = pr_create_url
-        self.pr_create_error = pr_create_error
-        self.milestones = milestones if milestones is not None else []
-        self.calls: list[list[str]] = []
-
-    def __call__(self, cmd, **kwargs) -> SimpleNamespace:
-        cmd = [str(x) for x in cmd]
-        self.calls.append(cmd)
-        verb = cmd[1:3]
-        if verb == ['auth', 'status']:
-            if not self.logged_in:
-                raise subprocess.CalledProcessError(1, cmd, stderr='no auth')
-            return SimpleNamespace(
-                stdout='Logged in to github.com account fake')
-        if verb == ['issue', 'list']:
-            return SimpleNamespace(stdout=json.dumps(self.issue_list))
-        if verb == ['issue', 'create']:
-            return SimpleNamespace(stdout=f'{self.issue_create_url}\n')
-        if verb == ['issue', 'edit']:
-            return SimpleNamespace(stdout='')
-        if verb == ['pr', 'list']:
-            return SimpleNamespace(stdout=json.dumps(self.pr_list))
-        if verb == ['pr', 'create']:
-            if self.pr_create_error is not None:
-                raise self.pr_create_error
-            return SimpleNamespace(stdout=f'{self.pr_create_url}\n')
-        if cmd[1] == 'api':
-            if cmd[2] == '-X':  # PATCH to set the milestone.
-                return SimpleNamespace(stdout='')
-            return SimpleNamespace(stdout=json.dumps(self.milestones))
-        raise AssertionError(f'Unexpected gh call: {cmd}')
-
-    def call_matching(self, *prefix: str) -> list[str] | None:
-        """Returns the first recorded call whose start matches `prefix`."""
-        prefix = list(prefix)
-        return next((c for c in self.calls if c[:len(prefix)] == prefix), None)
-
-    def pr_create_cmd(self) -> list[str] | None:
-        return self.call_matching('gh', 'pr', 'create')
-
-    def issue_create_cmd(self) -> list[str] | None:
-        return self.call_matching('gh', 'issue', 'create')
 
 
 class GitHubIssueTest(unittest.TestCase):
@@ -865,7 +795,7 @@ class GitHubIssueTest(unittest.TestCase):
         return brockit.GitHubIssue(base_version=brockit.Version(base),
                                    target_version=brockit.Version(target))
 
-    def _patch_gh(self, fake: _FakeGh) -> _FakeGh:
+    def _patch_gh(self, fake: FakeGh) -> FakeGh:
         patcher = patch.object(brockit.terminal, 'run', side_effect=fake)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -917,7 +847,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_lookup_issue_found(self):
         title = 'Upgrade from Chromium 134.0.7035.0 to Chromium 134.0.7037.1'
         gh = self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 1,
                 'title': 'Some other issue',
                 'url': 'u1',
@@ -938,7 +868,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_lookup_issue_not_found_when_title_differs(self):
         # `gh` does fuzzy matching, so an exact-title check is applied locally.
         self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 1,
                 'title': 'A close but different title',
                 'url': 'u1',
@@ -947,7 +877,7 @@ class GitHubIssueTest(unittest.TestCase):
         self.assertIsNone(self._make_issue().lookup_issue('Exact title'))
 
     def test_lookup_issue_empty(self):
-        self._patch_gh(_FakeGh(issue_list=[]))
+        self._patch_gh(FakeGh(issue_list=[]))
         self.assertIsNone(self._make_issue().lookup_issue('Any title'))
 
     ############################################################################
@@ -975,7 +905,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_skips_when_pr_exists(self):
         """An already-open PR for the branch short-circuits creation."""
         self._patch_branch(upstream='origin/master')
-        gh = self._patch_gh(_FakeGh(pr_list=[{'number': 9, 'url': PR_URL}]))
+        gh = self._patch_gh(FakeGh(pr_list=[{'number': 9, 'url': PR_URL}]))
 
         self._make_issue().create_push_request(ISSUE_URL)
 
@@ -983,7 +913,7 @@ class GitHubIssueTest(unittest.TestCase):
 
     def test_create_push_request_minor_on_master(self):
         self._patch_branch(upstream='origin/master', uplift_branch='134.0.x')
-        gh = self._patch_gh(_FakeGh())
+        gh = self._patch_gh(FakeGh())
 
         self._make_issue('134.0.7035.0',
                          '134.0.7037.1').create_push_request(ISSUE_URL)
@@ -1015,7 +945,7 @@ class GitHubIssueTest(unittest.TestCase):
 
     def test_create_push_request_major_is_draft_with_extra_labels(self):
         self._patch_branch(upstream='origin/master', uplift_branch='135.0.x')
-        gh = self._patch_gh(_FakeGh())
+        gh = self._patch_gh(FakeGh())
 
         self._make_issue('134.0.7035.0',
                          '135.0.7037.1').create_push_request(ISSUE_URL)
@@ -1035,7 +965,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_uplift_sets_milestone(self):
         self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
         gh = self._patch_gh(
-            _FakeGh(milestones=[{
+            FakeGh(milestones=[{
                 'number': 77,
                 'title': '1.70.x - Some release'
             }, {
@@ -1066,7 +996,7 @@ class GitHubIssueTest(unittest.TestCase):
 
     def test_create_push_request_uplift_no_milestones_raises(self):
         self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
-        self._patch_gh(_FakeGh(milestones=[]))
+        self._patch_gh(FakeGh(milestones=[]))
 
         with self.assertRaises(brockit.BadOutcomeException):
             self._make_issue().create_push_request(ISSUE_URL)
@@ -1074,7 +1004,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_uplift_milestone_not_found_raises(self):
         self._patch_branch(upstream='origin/1.70.x', uplift_branch='1.70.x')
         self._patch_gh(
-            _FakeGh(milestones=[{
+            FakeGh(milestones=[{
                 'number': 1,
                 'title': '1.69.x - Older release'
             }]))
@@ -1085,7 +1015,7 @@ class GitHubIssueTest(unittest.TestCase):
     def test_create_push_request_pr_creation_failure_raises(self):
         self._patch_branch(upstream='origin/master', uplift_branch='134.0.x')
         self._patch_gh(
-            _FakeGh(pr_create_error=subprocess.CalledProcessError(
+            FakeGh(pr_create_error=subprocess.CalledProcessError(
                 1, ['gh', 'pr', 'create'], stderr='gh blew up')))
 
         with self.assertRaises(brockit.BadOutcomeException):
@@ -1095,7 +1025,7 @@ class GitHubIssueTest(unittest.TestCase):
     #### create_or_update_version_issue
 
     def test_create_or_update_creates_new_issue(self):
-        gh = self._patch_gh(_FakeGh(issue_list=[]))
+        gh = self._patch_gh(FakeGh(issue_list=[]))
 
         with patch.object(brockit.GitHubIssue,
                           'create_push_request') as mock_push:
@@ -1113,7 +1043,7 @@ class GitHubIssueTest(unittest.TestCase):
         mock_push.assert_not_called()
 
     def test_create_or_update_creates_issue_and_pushes_pr(self):
-        self._patch_gh(_FakeGh(issue_list=[]))
+        self._patch_gh(FakeGh(issue_list=[]))
 
         with patch.object(brockit.GitHubIssue,
                           'create_push_request') as mock_push:
@@ -1129,7 +1059,7 @@ class GitHubIssueTest(unittest.TestCase):
             from_version=str(issue.base_version))
         # The existing body already points at the current diff link.
         gh = self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 5,
                 'title': title,
                 'url': ISSUE_URL,
@@ -1149,7 +1079,7 @@ class GitHubIssueTest(unittest.TestCase):
         stale_link = ('https://chromium.googlesource.com/chromium/src/+log/'
                       '111.0.0.0..112.0.0.0')
         gh = self._patch_gh(
-            _FakeGh(issue_list=[{
+            FakeGh(issue_list=[{
                 'number': 5,
                 'title': title,
                 'url': ISSUE_URL,
@@ -1169,13 +1099,13 @@ class GitHubIssueTest(unittest.TestCase):
     #### execute
 
     def test_execute_raises_when_not_logged_in(self):
-        self._patch_gh(_FakeGh(logged_in=False))
+        self._patch_gh(FakeGh(logged_in=False))
 
         with self.assertRaises(brockit.BadOutcomeException):
             self._make_issue().execute()
 
     def test_execute_creates_issue_with_pr_when_logged_in(self):
-        self._patch_gh(_FakeGh(logged_in=True))
+        self._patch_gh(FakeGh(logged_in=True))
 
         with patch.object(brockit.GitHubIssue,
                           'create_or_update_version_issue') as mock_create:
@@ -1186,6 +1116,13 @@ class GitHubIssueTest(unittest.TestCase):
 
 class MergeTest(unittest.TestCase):
     """Tests for the `merge` command."""
+
+    # The Chromium versions `_setup_upstream`/`_setup_remote_without_upstream`
+    # bump `origin/master` and `cr149` to, mirroring the real precondition
+    # that a branch only reaches `merge` once `lift` has already committed its
+    # version bump.
+    _BASE_VERSION = '151.0.7049.1'
+    _TARGET_VERSION = '152.0.7204.1'
 
     def setUp(self):
         self.fake_chromium_src = FakeChromiumRepo()
@@ -1199,19 +1136,22 @@ class MergeTest(unittest.TestCase):
                                                        or self.brave)
 
     def _setup_upstream(self) -> None:
-        """Wires up an `origin/master` upstream for a fresh `cr149` branch.
+        """Wires up an `origin/master` upstream for a fresh `cr149` branch,
+        already bumped from `_BASE_VERSION` to `_TARGET_VERSION`.
         """
         self.fake_chromium_src.create_brave_remote()
         self._git('config',
                   'receive.denyCurrentBranch',
                   'ignore',
                   repo=self.remote)
+        self.fake_chromium_src.update_brave_version(self._BASE_VERSION)
         # The freshly-initialised remote carries its own unrelated "Initial
         # commit" on `master`; force-push so `origin/master` starts from this
         # repo's history and later fast-forwards line up.
         self._git('push', '--force', 'origin', 'HEAD:master')
         self._git('checkout', '-b', 'cr149')
         self._git('branch', '--set-upstream-to=origin/master')
+        self.fake_chromium_src.update_brave_version(self._TARGET_VERSION)
 
     def _advance_upstream(self, relative_path: str, content: str) -> str:
         """Adds a commit to `origin/master` that `cr149` does not have.
@@ -1237,23 +1177,26 @@ class MergeTest(unittest.TestCase):
         self._setup_upstream()
         self._git('checkout', '--detach', 'HEAD')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_raises_without_upstream(self):
         self._git('checkout', '-b', 'no-upstream')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def _setup_remote_without_upstream(self) -> None:
-        """Wires up an `origin/master` remote for a fresh `cr149` branch, but
-        leaves the branch without any upstream set."""
+        """Wires up an `origin/master` remote for a fresh `cr149` branch,
+        already bumped from `_BASE_VERSION` to `_TARGET_VERSION`, but leaves
+        the branch without any upstream set."""
         self.fake_chromium_src.create_brave_remote()
         self._git('config',
                   'receive.denyCurrentBranch',
                   'ignore',
                   repo=self.remote)
+        self.fake_chromium_src.update_brave_version(self._BASE_VERSION)
         self._git('push', '--force', 'origin', 'HEAD:master')
         self._git('checkout', '-b', 'cr149')
+        self.fake_chromium_src.update_brave_version(self._TARGET_VERSION)
 
     def test_merge_with_base_branch_without_upstream(self):
         """`--base-branch` allows merging when no upstream is set."""
@@ -1263,7 +1206,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute(base_branch='origin/master')
+        brockit.Merge.create(base_branch='origin/master').execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1280,7 +1223,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_base_branch_overrides_upstream_tracking_current_branch(
             self):
@@ -1294,7 +1237,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute(base_branch='origin/master')
+        brockit.Merge.create(base_branch='origin/master').execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1310,7 +1253,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute(base_branch='origin/master')
+        brockit.Merge.create(base_branch='origin/master').execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1331,7 +1274,7 @@ class MergeTest(unittest.TestCase):
         gh.is_logged_in.return_value = True
         gh.get_pr_base_branch.return_value = 'origin/master'
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
         gh.get_pr_base_branch.assert_called_once_with('cr149')
@@ -1350,15 +1293,17 @@ class MergeTest(unittest.TestCase):
         gh.is_logged_in.return_value = True
         gh.get_pr_base_branch.return_value = None
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
 
     def test_merge_raises_when_nothing_to_merge(self):
         """A branch already at its upstream has nothing to push."""
         self._setup_upstream()
+        # Fast-forward `origin/master` to `cr149` so the two are identical.
+        self._git('push', 'origin', 'HEAD:master')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_raises_on_dirty_tree(self):
         self._setup_upstream()
@@ -1368,7 +1313,7 @@ class MergeTest(unittest.TestCase):
         # Leave an uncommitted modification behind.
         (self.brave / 'foo.txt').write_text('dirty')
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_rejects_when_merge_in_progress(self):
         """A leftover `MERGE_HEAD` is rejected rather than being concluded."""
@@ -1384,7 +1329,7 @@ class MergeTest(unittest.TestCase):
             brockit.repository.brave.is_valid_git_reference('MERGE_HEAD'))
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
     def test_merge_rejects_when_rebase_in_progress(self):
         """A half-finished rebase blocks the merge until it is concluded."""
@@ -1392,7 +1337,9 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         self.fake_chromium_src.commit_empty('[cr149] Feature B', self.brave)
         # Start an interactive rebase that stops on an `edit` command.
-        env = {**os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i '1s/^pick/edit/'"}
+        env = {
+            **os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'"
+        }
         subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
                        cwd=self.brave,
                        env=env,
@@ -1403,7 +1350,7 @@ class MergeTest(unittest.TestCase):
 
         try:
             with self.assertRaises(brockit.InvalidInputException):
-                brockit.Merge().execute()
+                brockit.Merge.create().execute()
         finally:
             subprocess.run(['git', 'rebase', '--abort'],
                            cwd=self.brave,
@@ -1422,7 +1369,7 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Second branch change', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         # The remote master now points at the branch tip, and no merge commit
         # was created (HEAD is unchanged).
@@ -1437,13 +1384,27 @@ class MergeTest(unittest.TestCase):
         self.fake_chromium_src.commit('Branch change', self.brave)
         self._advance_upstream('upstream.txt', 'upstream')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         head = self._git('rev-parse', 'HEAD')
         # The new HEAD is a merge commit (two parents) and the remote master
         # was fast-forwarded to it.
         self.assertEqual(len(self._git('rev-parse', 'HEAD^@').split()), 2)
         self.assertEqual(self._remote_master(), head)
+
+    def test_merge_diverged_titles_commit_for_chromium_upgrade(self):
+        """The merge commit is titled like the upgrade's GitHub issue/PR,
+        rather than git's generic default message."""
+        # `_setup_upstream` already bumps `cr149` from `_BASE_VERSION` to
+        # `_TARGET_VERSION` over `origin/master`; diverge upstream too, so the
+        # merge produces a merge commit.
+        self._setup_upstream()
+        self._advance_upstream('unrelated.txt', 'upstream change')
+
+        brockit.Merge.create().execute()
+
+        self.assertEqual(self._git('log', '-1', '--format=%s'),
+                         'Upgrade from Chromium 151 to Chromium 152')
 
     def test_merge_conflict_rolls_back_and_fails(self):
         """Merge conflicts roll the merge back and fail without pushing."""
@@ -1455,7 +1416,7 @@ class MergeTest(unittest.TestCase):
         upstream_master = self._advance_upstream('conflict.txt', 'upstream')
 
         with self.assertRaises(brockit.BadOutcomeException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         # The merge was aborted: no leftover merge state, the branch tip is
         # unchanged, and nothing was pushed.
@@ -1474,7 +1435,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         # The branch was never pushed.
         self.assertEqual(self._remote_master(), master_before)
@@ -1488,7 +1449,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), master_before)
 
@@ -1506,7 +1467,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), master_before)
 
@@ -1518,7 +1479,7 @@ class MergeTest(unittest.TestCase):
         master_before = self._remote_master()
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute()
+            brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), master_before)
 
@@ -1574,19 +1535,19 @@ class MergeTest(unittest.TestCase):
                                             self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
 
     def test_merge_allows_canonical_branch(self):
         """A single, correctly-placed pinned commit is merge-ready."""
         self._setup_upstream()
-        self.fake_chromium_src.commit_empty(
-            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1.', self.brave)
+        # `_setup_upstream` already left a single pinned "Update from
+        # Chromium" commit on the branch; add just the feature commit on top.
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         head = self._git('rev-parse', 'HEAD')
 
-        brockit.Merge().execute()
+        brockit.Merge.create().execute()
 
         self.assertEqual(self._remote_master(), head)
 
@@ -1597,7 +1558,7 @@ class MergeTest(unittest.TestCase):
         head_before = self._git('rev-parse', 'HEAD')
         master_before = self._remote_master()
 
-        brockit.Merge().execute(dry_run=True)
+        brockit.Merge.create().execute(dry_run=True)
 
         # HEAD is unchanged (no merge commit) and the remote was not pushed.
         self.assertEqual(self._git('rev-parse', 'HEAD'), head_before)
@@ -1611,7 +1572,7 @@ class MergeTest(unittest.TestCase):
                                             self.brave)
 
         with self.assertRaises(brockit.InvalidInputException):
-            brockit.Merge().execute(dry_run=True)
+            brockit.Merge.create().execute(dry_run=True)
 
 
 if __name__ == '__main__':

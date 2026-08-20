@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java
-index 0a6cbc82f5fafb808156167da027af2c477c6175..5b860c418bbfc7ee8b1423b9b5a8180cd9d1a9da 100644
+index 31521f97a85920e9e4dc3ef1f0dd608745a4cf01..9ce9046b4fe69ae1cb2468664282e14197a2c46b 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java
 @@ -585,7 +585,7 @@ public class TabGridDialogMediator

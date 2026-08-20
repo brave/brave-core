@@ -110,7 +110,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     notification_tester_ = std::make_unique<NotificationDisplayServiceTester>(
-        browser()->profile());
+        browser()->GetProfile());
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -134,17 +134,17 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
   BraveWalletService* wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   TxService* tx_service() { return wallet_service()->tx_service(); }
 
   BraveWalletService* incognito_wallet_service() {
     if (!incognito_browser_) {
-      incognito_browser_ = CreateIncognitoBrowser(browser()->profile());
+      incognito_browser_ = CreateIncognitoBrowser(browser()->GetProfile());
     }
     return brave_wallet::BraveWalletServiceFactory::GetInstance()
-        ->GetServiceForContext(incognito_browser_->profile());
+        ->GetServiceForContext(incognito_browser_->GetProfile());
   }
 
   void CloseIncognitoBrowser() {
@@ -244,13 +244,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {
   auto tx_info = mojom::TransactionInfo::New(
       tx_meta_id, account->account_id.Clone(), "",
       mojom::TxDataUnion::NewEthTxData(
-          mojom::TxData::New(mojom::kLocalhostChainId, "0x0", "0x1", "0x5208",
+          mojom::TxData::New(mojom::kMainnetChainId, "0x0", "0x1", "0x5208",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x0", std::vector<uint8_t>())),
       mojom::TransactionStatus::Confirmed, mojom::TransactionType::ETHSend,
       std::vector<std::string>(), std::vector<std::string>(),
       base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
-      nullptr, mojom::kLocalhostChainId, std::nullopt, false, nullptr, nullptr);
+      nullptr, mojom::kMainnetChainId, std::nullopt, false, nullptr, nullptr);
   tx_service()->OnTransactionStatusChanged(std::move(tx_info));
 
   ASSERT_TRUE(base::test::RunUntil(

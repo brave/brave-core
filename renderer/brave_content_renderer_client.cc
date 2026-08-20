@@ -6,6 +6,7 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -95,6 +96,26 @@ void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
   cb.Run(std::move(key_systems));
 }
 
+class Web3MetricsDelegate
+    : public misc_metrics::Web3MetricsRenderFrameObserver::Delegate {
+ public:
+  ~Web3MetricsDelegate() override = default;
+
+  // Whether any wallet provider object is being installed into pages. The web3
+  // metrics proxy has nothing to observe until one is.
+  bool IsWeb3Enabled() override {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    const auto& dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
+    return dynamic_params.install_window_brave_ethereum_provider ||
+           dynamic_params.install_window_ethereum_provider ||
+           dynamic_params.install_window_brave_cardano_provider ||
+           dynamic_params.brave_use_native_solana_wallet;
+#else
+    return false;
+#endif
+  }
+};
+
 }  // namespace
 
 BraveContentRendererClient::BraveContentRendererClient() = default;
@@ -174,7 +195,8 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure);
   }
 
-  new misc_metrics::Web3MetricsRenderFrameObserver(render_frame);
+  new misc_metrics::Web3MetricsRenderFrameObserver(
+      render_frame, std::make_unique<Web3MetricsDelegate>());
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (IsBraveWalletAvailable()) {

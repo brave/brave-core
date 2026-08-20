@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kAblateSearchProviderWarmup enabled.'
+    set_feature_flag_default_state:
+      feature_name: kAblateSearchProviderWarmup
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kMlUrlScoring disabled.'
+    set_feature_flag_default_state:
+      feature_name: kMlUrlScoring
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kOmniboxMobileParityUpdateV2 disabled on Android only.
+
+      Upstream ships this enabled on every platform, and Brave only means to
+      override the Android default. set_feature_flag_default_state pins the
+      value on every platform, so a plain regex is used instead to keep the
+      override guarded to IS_ANDROID.
+    regex:
+      pattern: 'BASE_FEATURE(kOmniboxMobileParityUpdateV2, ENABLED);'
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        BASE_FEATURE(kOmniboxMobileParityUpdateV2, DISABLED);
+        #else
+        BASE_FEATURE(kOmniboxMobileParityUpdateV2, ENABLED);
+        #endif
+
+  - description: 'Ship kRichAutocompletion disabled.'
+    set_feature_flag_default_state:
+      feature_name: kRichAutocompletion
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kStarterPackExpansion disabled.'
+    set_feature_flag_default_state:
+      feature_name: kStarterPackExpansion
+      value: base::FEATURE_DISABLED_BY_DEFAULT

@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.Onb
 import static org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep.THIRD;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -54,6 +55,10 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
 
     @NonNull private WalletAction mWalletAction;
 
+    // The most recently created terms of use fragment, cached so the host can reach it without
+    // scanning the fragment manager. Points at the live instance while it exists.
+    @Nullable private OnboardingTermsOfUseFragment mTermsOfUseFragment;
+
     public WalletOnboardingPagerAdapter(
             @NonNull final FragmentActivity fragmentActivity,
             final boolean restartSetupAction,
@@ -71,6 +76,30 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         mWalletAction = walletAction;
 
         notifyItemRangeChanged(0, getItemCount());
+    }
+
+    /**
+     * Returns the current wallet action, which determines the onboarding navigation sequence.
+     *
+     * @return the current {@link WalletAction}.
+     */
+    @NonNull
+    public WalletAction getWalletAction() {
+        return mWalletAction;
+    }
+
+    /** Returns whether the init Wallet fragment is shown at the given position. */
+    public boolean isInitWalletFragmentAt(final int position) {
+        return position == 0
+                && (mWalletAction == WalletAction.ONBOARDING
+                        || mWalletAction == WalletAction.PASSWORD_CREATION
+                        || mWalletAction == WalletAction.ONBOARDING_RESTORE);
+    }
+
+    /** Returns the most recently created terms of use fragment, or {@code null} if none exists. */
+    @Nullable
+    public OnboardingTermsOfUseFragment getTermsOfUseFragment() {
+        return mTermsOfUseFragment;
     }
 
     @Override
@@ -117,7 +146,8 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     return new OnboardingInitWalletFragment(
                             mRestartSetupAction, mRestartRestoreAction);
                 } else if (position == 1) {
-                    return OnboardingTermsOfUseFragment.newInstance();
+                    mTermsOfUseFragment = OnboardingTermsOfUseFragment.newInstance();
+                    return mTermsOfUseFragment;
                 } else if (position == 2) {
                     return OnboardingNetworkSelectionFragment.newInstance();
                 } else if (position == 3) {
@@ -150,7 +180,8 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     return new OnboardingInitWalletFragment(
                             mRestartSetupAction, mRestartRestoreAction);
                 } else if (position == 1) {
-                    return OnboardingTermsOfUseFragment.newInstance();
+                    mTermsOfUseFragment = OnboardingTermsOfUseFragment.newInstance();
+                    return mTermsOfUseFragment;
                 } else if (position == 2) {
                     return OnboardingNetworkSelectionFragment.newInstance();
                 } else if (position == 3) {

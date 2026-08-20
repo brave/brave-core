@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Visa i aktivitet";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave kommer att vara den konfigurerade Ethereum RPC-tjänsten, som är Chainstack som standard, för att matcha .crypto-domännamn (och även %1$@) som finns på Unstoppable Domains. Brave döljer din IP-adress. Om du aktiverar detta kommer Chainstack att se att någon försöker besöka dessa domäner men inget annat. Se Chainstacks <a href=%2$@>%3$@</a> och <a href=%4$@>%5$@</a>.";
+"wallet.udDomainInterstitialPageDescription" = "domännamn som finns på Unstoppable Domains. Brave döljer din IP-adress. Om du aktiverar detta kommer Chainstack att se att någon försöker besöka dessa domäner men inget annat. Se Chainstacks <a href=%1$@>%2$@</a> och <a href=%3$@>%4$@</a>.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave kommer att vara den konfigurerade Ethereum RPC-tjänsten som standard är Chainstack för att matcha:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ mer";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Aktivera stöd för ostoppbara domäner i Brave?";

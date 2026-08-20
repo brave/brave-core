@@ -3,9 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/feature.h"
 #include "base/feature_override.h"
 
 #include <extensions/common/extension_features.cc>
+
+namespace extensions_features {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kApiGlicPrivate, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
+
+}  // namespace extensions_features
 
 // Adds Brave's MV2 extension features here so that we don't have to patch
 // upstream GN files with dependencies.

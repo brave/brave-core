@@ -83,10 +83,21 @@ function findMangledFileAndOriginalFile(
   return { mangledPath, originalPath }
 }
 
+// These snapshots have platform-specific differences that we aren't currently
+// able to account for via testing
+const skippedManglers = [
+  'chromium_src/chrome/browser/resources/settings/a11y_page/a11y_page.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/a11y_page/a11y_page_index.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/on_startup_page/on_startup_page.html.ts.lit_mangler.ts',
+  'chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts',
+]
+
 describe('mangled files should have up to date snapshots', () => {
   for (const mangler of walkManglers()) {
     const name = path.relative(root, mangler).replaceAll(path.sep, '/')
-    it(`./${name} should match snapshot`, () => {
+    const testFn = skippedManglers.includes(name) ? it.skip : it
+    testFn(`./${name} should match snapshot`, () => {
       const manglerPath = name
         .replace('.lit_mangler.ts', '')
         .replace(`chromium_src/`, '')

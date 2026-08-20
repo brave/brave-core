@@ -187,10 +187,10 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
     if (features::IsEmailAliasesEnabled()) {
       // Skip the promo as it is tested in
       // BraveBrowserCommandControllerWithEmailAliasesTest.
-      user_prefs::UserPrefs::Get(browser()->profile())
+      user_prefs::UserPrefs::Get(browser()->GetProfile())
           ->SetBoolean(prefs::kPromoShown, true);
 
-      brave_account::BraveAccountServiceFactory::GetFor(browser()->profile())
+      brave_account::BraveAccountServiceFactory::GetFor(browser()->GetProfile())
           ->BindInterface(authentication_.BindNewPipeAndPassReceiver());
     }
   }
@@ -199,23 +199,22 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
     MockLoginResponses(test_url_loader_factory_);
 
     base::test::TestFuture<
-        base::expected<brave_account::mojom::LoginInitializeResultPtr,
+        base::expected<brave_account::mojom::LoginStep1ResultPtr,
                        brave_account::mojom::LoginErrorPtr>>
-        login_init_future;
-    authentication_->LoginInitialize(
-        brave_account::mojom::Service::kEmailAliases, kSuccessEmail,
-        "serialized_ke1", login_init_future.GetCallback());
-    const auto login_init_result = login_init_future.Take();
-    ASSERT_TRUE(login_init_result.has_value());
+        login_step1_future;
+    authentication_->LoginStep1(brave_account::mojom::Service::kEmailAliases,
+                                kSuccessEmail, "serialized_ke1",
+                                login_step1_future.GetCallback());
+    const auto login_step1_result = login_step1_future.Take();
+    ASSERT_TRUE(login_step1_result.has_value());
 
     base::test::TestFuture<
-        base::expected<brave_account::mojom::LoginFinalizeResultPtr,
+        base::expected<brave_account::mojom::LoginStep2ResultPtr,
                        brave_account::mojom::LoginErrorPtr>>
-        login_finalize_future;
-    authentication_->LoginFinalize(
-        login_init_result.value()->encryptedLoginToken, "client_mac",
-        login_finalize_future.GetCallback());
-    ASSERT_TRUE(login_finalize_future.Get().has_value());
+        login_step2_future;
+    authentication_->LoginStep2(login_step1_result.value()->encryptedLoginToken,
+                                "client_mac", login_step2_future.GetCallback());
+    ASSERT_TRUE(login_step2_future.Get().has_value());
 
     ASSERT_TRUE(base::test::RunUntil(
         [this]() { return email_aliases_service()->IsAuthenticated(); }));
@@ -381,7 +380,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   EmailAliasesService* email_aliases_service() {
     return EmailAliasesServiceFactory::GetServiceForProfile(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   void RunContextMenuOn(const std::string& element_id) {

@@ -34,9 +34,7 @@
     android:theme="@style/Theme.Brave.WelcomeOnboarding"/>
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity"
-    android:theme="@style/Theme.Chromium.Activity"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+    android:theme="@style/Theme.Chromium.Activity" />
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity"
     android:theme="@style/Theme.Chromium.Activity"/>
@@ -51,9 +49,7 @@
     android:theme="@style/Theme.Chromium.Activity" />
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity"
-    android:theme="@style/Theme.Chromium.Activity.FakeTranslucent"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+    android:theme="@style/Theme.Chromium.Activity.FakeTranslucent" />
 
 <activity
     android:name="org.chromium.chrome.browser.vpn.split_tunnel.SplitTunnelActivity"
@@ -103,7 +99,7 @@
 
 <activity android:name="org.chromium.chrome.browser.settings.BraveSettingsActivity"
     android:theme="@style/Theme.Chromium.Settings"
-    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode"
     android:label="@string/settings"
     android:exported="false">
 </activity>

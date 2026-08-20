@@ -295,16 +295,12 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   profile_pref_change_registrar_.Add(
-      brave_ads::prefs::kOptedInToNotificationAds,
+      brave_ads::prefs::kNotificationsEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       ntp_background_images::prefs::
           kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      brave_ads::prefs::kOptedInToSearchResultAds,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -324,15 +320,8 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (key == ntp_background_images::prefs::
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
-      key == brave_ads::prefs::kOptedInToNotificationAds ||
-      key == brave_ads::prefs::kOptedInToSearchResultAds) {
+      key == brave_ads::prefs::kNotificationsEnabled) {
     p3a::RecordAdTypesEnabled(prefs_);
-  }
-
-  if (key == brave_ads::prefs::kOptedInToSearchResultAds) {
-    GetExternalWallet(
-        base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
-                       AsWeakPtr(), false, true));
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
@@ -346,7 +335,7 @@ void RewardsServiceImpl::CheckPreferences() {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  if (prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
+  if (prefs_->GetBoolean(brave_ads::prefs::kNotificationsEnabled)) {
     // If the user has enabled Ads, but the "enabled" pref is missing, set the
     // "enabled" pref to true.
     if (!prefs_->GetUserPrefValue(prefs::kEnabled)) {
@@ -360,16 +349,6 @@ void RewardsServiceImpl::CheckPreferences() {
     // utility process.
     StartEngineProcessIfNecessary();
   }
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  // If Rewards is enabled and the user has a linked account, then ensure that
-  // the "search result ads enabled" pref has the appropriate default value.
-  if (prefs_->GetBoolean(prefs::kEnabled) &&
-      !prefs_->GetString(prefs::kExternalWalletType).empty() &&
-      !prefs_->HasPrefPath(brave_ads::prefs::kOptedInToSearchResultAds)) {
-    prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsServiceImpl::StartEngineProcessIfNecessary() {
@@ -466,8 +445,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
         self->prefs_->SetString(prefs::kUserVersion,
                                 prefs::kCurrentUserVersion);
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-        self->prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
-                                 true);
+        self->prefs_->SetBoolean(brave_ads::prefs::kNotificationsEnabled, true);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
       }
 
@@ -1818,7 +1796,7 @@ void RewardsServiceImpl::RecordBackendP3AStats(bool delay_report) {
 
   GetExternalWallet(
       base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
-                     AsWeakPtr(), delay_report, false));
+                     AsWeakPtr(), delay_report));
 }
 
 void RewardsServiceImpl::OnP3ADailyTimer() {
@@ -1830,7 +1808,6 @@ void RewardsServiceImpl::OnP3ADailyTimer() {
 
 void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     bool delay_report,
-    bool search_result_optin_changed,
     mojom::ExternalWalletPtr wallet) {
   if (!Connected()) {
     return;
@@ -1843,9 +1820,7 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     return;
   }
 
-  if (search_result_optin_changed) {
-    p3a::RecordSearchResultAdsOptinChange(prefs_);
-  } else if (delay_report) {
+  if (delay_report) {
     // Use delay to ensure tips are confirmed when counting.
     p3a_tip_report_timer_.Start(
         FROM_HERE, kP3ATipReportDelay,
@@ -1983,11 +1958,6 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
 }
 
 void RewardsServiceImpl::ExternalWalletConnected() {
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  // When the user connects an external wallet, turn off search result ads since
-  // users cannot earn BAT for them yet. The user can turn them on manually.
-  prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   for (auto& observer : observers_) {
     observer.OnExternalWalletConnected();
   }

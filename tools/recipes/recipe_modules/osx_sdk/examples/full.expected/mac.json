@@ -1,0 +1,98 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[osx_sdk]/resources/read_mac_sdk_gni.py",
+      "/b/checkout/src/build/config/mac/mac_sdk.gni",
+      "--json-output",
+      "/path/to/tmp/json"
+    ],
+    "name": "read mac_sdk.gni"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/b/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "list"
+    ],
+    "name": "sparse-checkout list"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "add",
+      "tools/cr/toolchains"
+    ],
+    "name": "sparse-checkout add"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/cr/toolchains/ephemeral_xcode.py",
+      "--sdk-version",
+      "26.5",
+      "--sdk-build",
+      "25F70",
+      "--json-output",
+      "/path/to/tmp/json",
+      "--no-developer-mode-check"
+    ],
+    "name": "install xcode"
+  },
+  {
+    "cmd": [
+      "xcodebuild",
+      "-version"
+    ],
+    "name": "xcodebuild -version"
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/bin/xcode-select",
+      "--reset"
+    ],
+    "name": "reset xcode"
+  },
+  {
+    "name": "$result"
+  }
+]

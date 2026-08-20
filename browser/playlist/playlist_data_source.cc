@@ -11,7 +11,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/byte_count.h"
+#include "base/byte_size.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/heap_array.h"
@@ -42,14 +42,15 @@ namespace {
   CHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) \
       << "This must be called on a background thread."
 
-constexpr base::ByteCount kMediaChunkSize = base::MiB(1);  // 1MB
+constexpr base::ByteSize kMediaChunkSize = base::MiBU(1);  // 1MB
 
 class RefCountedMemMap : public base::RefCountedMemory {
  public:
   explicit RefCountedMemMap(const base::FilePath& path) {
     base::File file = base::File(
         path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-    if (!file.IsValid() || file.GetLength() > base::MiB(100).InBytes()) {
+    if (!file.IsValid() ||
+        file.GetLength() > static_cast<int64_t>(base::MiBU(100).InBytes())) {
       // In order to avoid OOM crash, limits the file size to 100MB.
       return;
     }
@@ -115,8 +116,9 @@ content::URLDataSource::RangeDataResult ReadFileRange(
   int64_t last_byte_position =
       range.HasLastBytePosition()
           ? range.last_byte_position()
-          : first_byte_position + kMediaChunkSize.InBytes() - 1;
-  int64_t read_size = std::min(kMediaChunkSize.InBytes(),
+          : first_byte_position +
+                static_cast<int64_t>(kMediaChunkSize.InBytes()) - 1;
+  int64_t read_size = std::min(static_cast<int64_t>(kMediaChunkSize.InBytes()),
                                last_byte_position - first_byte_position + 1);
   CHECK_GE(read_size, 0);
 

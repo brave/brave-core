@@ -17,7 +17,7 @@ import {
 } from '../../../../../common/slices/api.slice'
 
 // Components
-import CreateAccountTab from '../../../../../components/buy-send-swap/create-account/index'
+import { CreateAccountTab } from '../../create_account/create_account'
 import {
   TokenBalancesRegistry, //
 } from '../../../../../common/slices/entities/token-balance.entity'

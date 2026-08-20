@@ -19,7 +19,7 @@
             android:key="show_sponsored_images"
             android:title="@string/show_sponsored_images" />
 
-        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        <org.chromium.chrome.browser.settings.BraveTextButtonPreference
             android:key="sponsored_images_learn_more"
             android:title="@string/sponsored_images_learn_more" />
 

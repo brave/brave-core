@@ -11,8 +11,6 @@ import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
-import build from '../lib/build.js'
-import buildChromiumRelease from '../lib/buildChromiumRelease.ts'
 import { buildFuzzer, runFuzzer } from '../lib/fuzzer.js'
 import versions from '../lib/versions.js'
 import start from '../lib/start.js'
@@ -21,31 +19,13 @@ import updatePatches from './updatePatches.js'
 import pullL10n from '../lib/pullL10n.js'
 import pushL10n from '../lib/pushL10n.js'
 import chromiumRebaseL10n from '../lib/chromiumRebaseL10n.js'
-import test from '../lib/test.ts'
 import gnCheck from '../lib/gnCheck.js'
 import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
-import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
-
-const collect = (value, accumulator) => {
-  accumulator.push(value)
-  return accumulator
-}
-
-// Use this wrapper function instead of JavaScript's parseInt() with option()
-// when defining integer optional parameters, or the default value might get
-// passed as well into the radix parameter of parseInt(), causing wrong results.
-// https://github.com/brave/brave-browser/issues/13724
-function parseInteger(string) {
-  // As per the spec [1], not passing the optional radix parameter to parseInt()
-  // will make parsing to interpret the string passed as a decimal number unless
-  // it's prefixed with '0' (octal) or '0x' (hexadecimal). We only need decimal
-  // in this particular case so let's be explicit about that.
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
-  return parseInt(string, 10)
-}
+import { parseInteger, parseBoolean } from '../lib/commandsUtils.ts'
+import * as buildOptions from '../lib/buildOptions.ts'
 
 const parsedArgs = program.parseOptions(process.argv)
 
@@ -71,7 +51,7 @@ program
     'target environment (device, catalyst, simulator)',
   )
   .option('--checkdeps_only', 'only run checkdeps')
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(gnCheck)
 
 program
@@ -80,7 +60,7 @@ program
     '--print-patch-failures-in-json',
     'Emits a JSON structure with a list of patch files that failed to apply',
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(applyPatches)
 
 program
@@ -110,7 +90,7 @@ program
       'target environment',
     ).choices(['device', 'catalyst', 'simulator']),
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(async (buildConfig, options) => {
     config.buildConfig = buildConfig || config.defaultBuildConfig
     if (options.target_os === 'host_os') {
@@ -141,135 +121,6 @@ program
     fs.symlinkSync(config.outputDir, currentLink, 'junction')
     await util.generateNinjaFiles()
   })
-
-program
-  .command('build')
-  .option('-C <build_dir>', 'build directory, relative to out/ or absolute')
-  .option(
-    '--android_aab_to_apk',
-    'applies an aab to apk conversion to the output aab',
-  )
-  .option(
-    '--android_override_version_name <android_override_version_name>',
-    'Android version number',
-  )
-  .option('--build_omaha', 'build omaha stub/standalone installer')
-  .option(
-    '--build_sparkle',
-    'Build the Sparkle macOS update framework from source',
-  )
-  .addOption(
-    new Option('--channel <target_channel>', 'target channel to build').choices(
-      ['beta', 'dev', 'nightly', 'release'],
-    ),
-  )
-  .option('--force_gn_gen', 'always run gn gen')
-  .option(
-    '--gn <arg>',
-    'Additional gn args, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .option('--ignore_compile_failure', 'Keep compiling regardless of error')
-  .option('--use_clang_coverage', 'enable coverage for brave source code')
-  .option('--is_asan', 'is asan enabled')
-  .option('--is_ubsan', 'is ubsan enabled')
-  .option(
-    '--last_chrome_installer <last_chrome_installer>',
-    'folder contains previous version uncompressed chrome.7z pack file. This folder should be in out dir.',
-  )
-  .option(
-    '--mac_installer_signing_identifier <id>',
-    'The identifier to use for signing installers',
-  )
-  .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
-  .option(
-    '--mac_signing_keychain <keychain>',
-    'The identifier to use for signing',
-    'login',
-  )
-  .option(
-    '--ninja <opt>',
-    'Additional Ninja command-line options, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .option('--notarize', 'notarize targets that support it with Apple')
-  .option('--offline', 'use offline mode for RBE')
-  .option(
-    '--prepare_only',
-    'Do not build targets, but prepare everything (build redirect_cc, update branding, etc.)',
-  )
-  .option('--skip_signing', 'skip signing binaries')
-  .option('--tag_ap <ap>', 'ap for stub/standalone installer')
-  .option(
-    '--tag_installdataindex <index>',
-    'installdataindex for stub/standalone installer',
-  )
-  .option(
-    '--target <target>',
-    'Comma-separated list of targets to build, instead of the default browser target',
-  )
-  // TODO(https://github.com/brave/brave-browser/issues/51200)
-  // Cleanup target_android_base once cr144 reaches stable channel
-  .option(
-    '--target_android_base <target_android_base>',
-    'Deprecated. Target Android SDK level for apk or aab (classic, modern, mono)',
-    'classic',
-  )
-  .option(
-    '--target_android_output_format <target_android_output_format>',
-    'target Android output format (apk, aab)',
-  )
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option(
-    '--target_environment <target_environment>',
-    'target environment (device, catalyst, simulator)',
-  )
-  .option('--target_os <target_os>', 'target OS')
-  .option('--universal', 'build a universal binary distribution')
-  .option(
-    '--use_remoteexec [arg]',
-    'whether to use RBE for building',
-    JSON.parse,
-  )
-  .option(
-    '--xcode_gen <target>',
-    'Generate an Xcode workspace ("ios" or a list of semi-colon separated label patterns, run `gn help label_pattern` for more info.',
-  )
-  .option(
-    '--pkcs11-provider <provider_config_file>',
-    'PKCS11 provider configuration file path',
-  )
-  .option('--pkcs11-alias <alias>', 'PKCS11 key alias')
-  .addArgument(createBuildConfigArgument())
-  .action(build)
-
-program
-  .command('build_chromium_release')
-  .description(
-    'Produces a chromium release build for performance testing.\n'
-      + 'Uses the same /src directory; all brave patches are reverted.\n'
-      + 'The default build_dir is `chromium_Release(_target_arch)`.\n'
-      + 'Intended for use on CI, use locally with care.',
-  )
-  .option('--force', 'Ignore a warning about non-CI build')
-  .option('-C <build_dir>', 'build config (out/chromium_Release')
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option(
-    '--gn <arg>',
-    'Additional gn args, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .option(
-    '--ninja <opt>',
-    'Additional Ninja command-line options, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .action(buildChromiumRelease)
 
 program
   .command('start')
@@ -318,7 +169,7 @@ program
     '--output_path [pathname]',
     'use the Brave binary located at [pathname]',
   )
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(start.bind(null, parsedArgs.unknown))
 
 program
@@ -366,87 +217,6 @@ program
   )
   .action(updatePatches)
 
-program
-  .command('cibuild')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .action((options) => {
-    build('Release', options)
-  })
-
-program
-  .command('test <suite>')
-  .allowUnknownOption(true)
-  .allowExcessArguments(true)
-  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
-  .option('--vmodule [modules]', 'verbose log from specific modules')
-  .option('--filter <filter>', 'set test filter')
-  .option(
-    '--base [targetCommitRef]',
-    'use this commit/branch/tag as reference for change detection',
-  )
-  .option(
-    '--output_xml',
-    'indicates if test results xml output file(s) should be generated. '
-      + '<suite>.txt file will contain the list of xml files with results. '
-      + 'All output files are generated in the src directory',
-  )
-  .option('--disable_brave_extension', 'disable loading the Brave extension')
-  .option(
-    '--single_process',
-    'uses a single process to run tests to help with debugging',
-  )
-  .option(
-    '--test_launcher_jobs <test_launcher_jobs>',
-    'Number of jobs to launch',
-    parseInteger,
-    4,
-  )
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option(
-    '--target_environment <target_environment>',
-    'target environment (device, catalyst, simulator)',
-  )
-  .option('--run_disabled_tests', 'run disabled tests')
-  .option(
-    '--manual_android_test_device',
-    'indicates that Android test device is run manually',
-  )
-  .option(
-    '--android_test_emulator_name <emulator_name',
-    'set name of the Android emulator for tests',
-    'android_33_google_apis_x64',
-  )
-  .option(
-    '--use_remoteexec [arg]',
-    'whether to use RBE for building',
-    JSON.parse,
-  )
-  .option(
-    '--ios_xcode_build_version <build_version>',
-    'xcode build version for ios',
-  )
-  .option(
-    '--ios_simulator_platform <simulator_platform>',
-    'platform to use for ios simulator',
-    'iPhone 17',
-  )
-  .option(
-    '--ninja <opt>',
-    'Additional Ninja command-line options, in the form <key>:<value>',
-    collect,
-    [],
-  )
-  .option(
-    '--ios_simulator_version <simulator_version>',
-    'ios version for simulator',
-    '26.2',
-  ) // should match ios_deployment_target
-  .option('--offline', 'use offline mode for RBE')
-  .addArgument(createBuildConfigArgument())
-  .action(test.bind(null, parsedArgs.unknown))
-
 program.command('mass_rename').action(util.massRename)
 
 program
@@ -454,7 +224,7 @@ program
   .option(
     '--use_remoteexec [arg]',
     'whether to use RBE for building',
-    JSON.parse,
+    parseBoolean,
   )
   .option('--offline', 'use offline mode for RBE')
   .action(buildFuzzer)
@@ -480,7 +250,7 @@ program
   .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release)')
   .option('--target_arch <target_arch>', 'target architecture')
-  .addArgument(createBuildConfigArgument())
+  .apply(buildOptions.supportBuildConfigArg)
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)

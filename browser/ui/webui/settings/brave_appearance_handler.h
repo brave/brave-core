@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/command_observer.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
@@ -39,9 +40,18 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
   void ShouldShowNewTabDashboardSettings(const base::ListValue& args);
   void GetIsVerticalTabsToggleEnabled(const base::ListValue& args);
 
+  // Compact mode is incompatible with immersive fullscreen (see
+  // WindowFeatureController::UsesImmersiveFullscreenMode()), so the compact
+  // mode toggle is disabled while the browser window is fullscreen.
+  void GetIsCompactModeToggleEnabled(const base::ListValue& args);
+  void OnFullscreenStateChanged();
+  bool IsCompactModeToggleEnabled();
+
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<CommandUpdater> command_updater_ = nullptr;
   PrefChangeRegistrar profile_state_change_registrar_;
+
+  base::CallbackListSubscription fullscreen_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_APPEARANCE_HANDLER_H_

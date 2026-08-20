@@ -79,7 +79,7 @@
                     android:layout_marginStart="16dp"
                     android:textColor="?attr/colorOnSurface"
                     android:maxLines="1"
-                    android:ellipsize="end"
+                    android:ellipsize="start"
                     tools:text="example.com"/>
 
             </LinearLayout>

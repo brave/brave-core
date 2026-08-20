@@ -5,6 +5,10 @@
 
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 
+#include "base/check.h"
+#include "base/functional/bind.h"
+#include "brave/components/psst/core/browser/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace psst {
@@ -38,10 +42,27 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
 }  // namespace
 
 PsstSettingsService::PsstSettingsService(
-    HostContentSettingsMap& host_content_settings_map)
-    : host_content_settings_map_(host_content_settings_map) {}
+    HostContentSettingsMap& host_content_settings_map,
+    PrefService* prefs)
+    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
+  CHECK(prefs_);
+
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      prefs::kPsstEnabled,
+      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+}
 
 PsstSettingsService::~PsstSettingsService() = default;
+
+void PsstSettingsService::AddObserver(PrefObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void PsstSettingsService::RemoveObserver(PrefObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
 
 std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
     const url::Origin& origin,
@@ -103,6 +124,21 @@ void PsstSettingsService::SetPsstWebsiteSettings(
         origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
         base::Value(base::DictValue().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
+  }
+}
+
+bool PsstSettingsService::IsPsstEnabled() const {
+  return prefs_->GetBoolean(prefs::kPsstEnabled);
+}
+
+void PsstSettingsService::SetPsstEnabled(bool enabled) {
+  prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
+}
+
+void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == prefs::kPsstEnabled) {
+    observers_.Notify(&PrefObserver::OnPsstEnableChange, IsPsstEnabled());
+    return;
   }
 }
 

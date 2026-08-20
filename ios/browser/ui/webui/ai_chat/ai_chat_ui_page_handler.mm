@@ -6,14 +6,13 @@
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include "base/apple/foundation_util.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -27,6 +26,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -42,7 +42,12 @@
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/ios/browser/ui/webui/ai_chat/associated_url_content.h"
+#include "brave/ios/browser/ui/webui/ai_chat/image_utils.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/keyed_service/core/service_access_type.h"
+#include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/navigation_manager.h"
@@ -51,11 +56,9 @@
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "net/base/apple/url_conversions.h"
-#include "skia/ext/skia_utils_ios.h"
-#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/gfx/codec/png_codec.h"
+#include "ui/base/webui/web_ui_util.h"
 
 namespace ai_chat {
 
@@ -64,31 +67,21 @@ namespace {
 void DecodeAndScaleImage(
     const std::vector<uint8_t>& file_data,
     base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
-  NSData* ns_data = [NSData dataWithBytes:file_data.data()
-                                   length:file_data.size()];
-  auto encode_image = base::BindOnce(
-      [](NSData* data) -> std::optional<std::vector<uint8_t>> {
-        CGSize target_size = CGSizeMake(1024, 768);
-        UIImage* image = [[UIImage alloc] initWithData:data];
-        if (image.size.width > target_size.width ||
-            image.size.height > target_size.height) {
-          image = [image imageByPreparingThumbnailOfSize:target_size];
-        }
-        if (!image) {
-          return std::nullopt;
-        }
-        NSData* png_data = UIImagePNGRepresentation(image);
-        if (!png_data) {
-          return std::nullopt;
-        }
-        auto png_span = base::apple::NSDataToSpan(png_data);
-        return std::vector<uint8_t>(png_span.begin(), png_span.end());
-      },
-      ns_data);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&DecodeAndScaleImageData, file_data), std::move(callback));
+}
 
-  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
-                                               std::move(encode_image),
-                                               std::move(callback));
+void OnFaviconRawBitmapAvailable(
+    mojom::AIChatUIHandler::GetFaviconDataURLCallback callback,
+    const favicon_base::FaviconRawBitmapResult& result) {
+  if (!result.is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // Favicons are always stored as PNG (see FaviconSource::GetMimeType).
+  std::move(callback).Run(
+      webui::GetPngDataUrl(base::span<const uint8_t>(*result.bitmap_data)));
 }
 
 }  // namespace
@@ -155,12 +148,14 @@ void AIChatUIPageHandler::SubmitVoiceQuery(const std::string& conversation_uuid,
   // Send the query
   conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt /* uuid */, std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       base::SysNSStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -216,6 +211,26 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                 &webui::LocalizedString::name);
   CHECK(iter != webui::kAiChatStrings.end());
   std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
+}
+
+void AIChatUIPageHandler::GetFaviconDataURL(
+    const GURL& page_url,
+    GetFaviconDataURLCallback callback) {
+  favicon::FaviconService* favicon_service =
+      ios::FaviconServiceFactory::GetForProfile(
+          profile_, ServiceAccessType::EXPLICIT_ACCESS);
+  if (!favicon_service) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  favicon_service->GetRawFaviconForPageURL(
+      page_url, {favicon_base::IconType::kFavicon}, kFaviconDataURLSizeInPixels,
+      // Matches what the UI displays, which comes from the local-storage-only
+      // path of FaviconSource (see FaviconSource::StartDataRequest).
+      /*fallback_to_host=*/true,
+      base::BindOnce(&OnFaviconRawBitmapAvailable, std::move(callback)),
+      &favicon_task_tracker_);
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {

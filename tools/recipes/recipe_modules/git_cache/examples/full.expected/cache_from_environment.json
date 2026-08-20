@@ -1,0 +1,60 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "/b/cache"
+    ],
+    "name": "cache path"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--no-fetch-tags"
+    ],
+    "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--ref",
+      "refs/tags/*",
+      "--commit",
+      "c0ffeec0ffeec0ffeec0ffeec0ffeec0ffee"
+    ],
+    "name": "populate with tags"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "git cache exists"
+  },
+  {
+    "cmd": [
+      "echo",
+      "/b/cache/chromium.googlesource.com-chromium-src"
+    ],
+    "name": "mirror"
+  },
+  {
+    "name": "$result"
+  }
+]

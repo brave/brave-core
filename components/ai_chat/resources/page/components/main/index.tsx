@@ -25,6 +25,7 @@ import SkillModal from '../skill_modal/skill_modal'
 import PrivacyMessage from '../privacy_message'
 import FeedbackForm from '../feedback_form'
 import ShareConversationModal from '../share_conversation_modal'
+import SharedConversationsModal from '../shared_conversations_modal'
 import ToolsMenu, {
   ExtendedActionEntry,
   getIsSkill,
@@ -43,6 +44,8 @@ function Main() {
   const [isConversationListOpen, setIsConversationsListOpen] =
     React.useState(false)
   const [isShareDialogOpen, setIsShareDialogOpen] = React.useState(false)
+  const [isSharedConversationsDialogOpen, setIsSharedConversationsDialogOpen] =
+    React.useState(false)
   const { isDragActive, isDragOver } = conversationContext
 
   const showAttachments = !!conversationContext.attachmentsDialog
@@ -148,7 +151,9 @@ function Main() {
 
   return (
     <main
-      data-testid='main'
+      data-testid={
+        aiChatContext.isStandalone ? 'standalone-main' : 'sidepanel-main'
+      }
       className={classnames({
         [styles.main]: true,
         [styles.mainPanel]: !aiChatContext.isStandalone,
@@ -185,6 +190,9 @@ function Main() {
         ref={headerElement}
         setIsConversationsListOpen={setIsConversationsListOpen}
         startSharingConversation={() => setIsShareDialogOpen(true)}
+        manageSharedConversations={() =>
+          setIsSharedConversationsDialogOpen(true)
+        }
       />
       <AlertCenter
         position='top-center'
@@ -210,6 +218,17 @@ function Main() {
         <ShareConversationModal
           isOpen={isShareDialogOpen}
           onClose={() => setIsShareDialogOpen(false)}
+          onManageShares={() => {
+            setIsShareDialogOpen(false)
+            setIsSharedConversationsDialogOpen(true)
+          }}
+        />
+      )}
+      {/* Mounted only while open so the list of shares is fetched fresh each
+      time the dialog is shown. */}
+      {isSharedConversationsDialogOpen && (
+        <SharedConversationsModal
+          onClose={() => setIsSharedConversationsDialogOpen(false)}
         />
       )}
       {showAttachments && (

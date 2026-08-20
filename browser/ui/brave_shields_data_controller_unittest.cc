@@ -349,16 +349,16 @@ TEST_F(BraveShieldsDataControllerTest, SetBraveShieldsEnabledAsDefaultValue) {
                                           nullptr),
             CONTENT_SETTING_ALLOW);
 
-  EXPECT_TRUE(GetShieldsDataController()->GetBraveShieldsEnabled());
+  EXPECT_TRUE(GetShieldsDataController()->IsBraveShieldsEnabled());
   GetShieldsDataController()->SetBraveShieldsEnabled(false);
-  EXPECT_FALSE(GetShieldsDataController()->GetBraveShieldsEnabled());
+  EXPECT_FALSE(GetShieldsDataController()->IsBraveShieldsEnabled());
   EXPECT_FALSE(profile()
                    ->GetPrefs()
                    ->GetDict("profile.content_settings.exceptions.braveShields")
                    .empty());
 
   GetShieldsDataController()->SetBraveShieldsEnabled(true);
-  EXPECT_TRUE(GetShieldsDataController()->GetBraveShieldsEnabled());
+  EXPECT_TRUE(GetShieldsDataController()->IsBraveShieldsEnabled());
   EXPECT_TRUE(profile()
                   ->GetPrefs()
                   ->GetDict("profile.content_settings.exceptions.braveShields")

@@ -257,6 +257,16 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
+                       RecordAskBraveSearchEngineResultsPage) {
+  content::NavigateToURLBlockUntilNavigationsComplete(
+      GetWebContents(),
+      https_server_->GetURL("search.brave.com", "/ask?q=test"),
+      /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
+  EXPECT_EQ(1U,
+            GetSerpMetrics()->GetSearchCountForTesting(SerpMetricType::kBrave));
+}
+
+IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        RecordGoogleSearchEngineResultsPage) {
   content::NavigateToURLBlockUntilNavigationsComplete(
       GetWebContents(),
@@ -787,7 +797,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_TRUE(incognito_browser);
 
   SerpMetricsService* serp_metrics_service =
-      SerpMetricsServiceFactory::GetFor(incognito_browser->profile());
+      SerpMetricsServiceFactory::GetFor(incognito_browser->GetProfile());
   EXPECT_FALSE(serp_metrics_service);
 
   SerpMetricsTabHelper* serp_metrics_tab_helper =
@@ -802,7 +812,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
   ASSERT_TRUE(guest_browser);
 
   SerpMetricsService* serp_metrics_service =
-      SerpMetricsServiceFactory::GetFor(guest_browser->profile());
+      SerpMetricsServiceFactory::GetFor(guest_browser->GetProfile());
   EXPECT_FALSE(serp_metrics_service);
 
   SerpMetricsTabHelper* serp_metrics_tab_helper =

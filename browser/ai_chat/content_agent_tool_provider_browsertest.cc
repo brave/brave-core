@@ -141,14 +141,14 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_https_test_server().Start());
 
     // Create the agent profile
-    auto* profile = browser()->profile();
+    auto* profile = browser()->GetProfile();
     SetUserOptedIn(profile->GetPrefs(), true);
     base::test::TestFuture<Browser*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
         *profile, browser_future.GetCallback());
     Browser* browser = browser_future.Take();
     ASSERT_NE(browser, nullptr);
-    agent_profile_ = browser->profile();
+    agent_profile_ = browser->GetProfile();
     agent_browser_window_ = browser;
 
     // Get the actor service

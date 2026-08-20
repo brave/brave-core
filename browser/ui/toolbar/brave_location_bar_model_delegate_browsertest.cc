@@ -132,7 +132,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateShieldsBrowserTest,
 
   auto* shields_helper = GetShieldsHelper();
   ASSERT_TRUE(shields_helper);
-  EXPECT_TRUE(shields_helper->GetBraveShieldsEnabled());
+  EXPECT_TRUE(shields_helper->IsBraveShieldsEnabled());
 
   const gfx::VectorIcon* icon = delegate_->GetVectorIconOverride();
   EXPECT_EQ(icon, &kLeoShieldDoneIcon);
@@ -146,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateShieldsBrowserTest,
   ASSERT_TRUE(shields_helper);
 
   shields_helper->SetBraveShieldsEnabled(false);
-  EXPECT_FALSE(shields_helper->GetBraveShieldsEnabled());
+  EXPECT_FALSE(shields_helper->IsBraveShieldsEnabled());
 
   const gfx::VectorIcon* icon = delegate_->GetVectorIconOverride();
   EXPECT_EQ(icon, &kLeoShieldDisableFilledIcon);

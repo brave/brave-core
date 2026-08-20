@@ -34,12 +34,16 @@ export class BraveAccountPasswordResetDialogElement extends CrLitElement {
     return {
       email: { type: String },
       isEmailValid: { type: Boolean },
+      isSubmitting: { type: Boolean, state: true },
     }
   }
 
   protected async onResetPasswordButtonClicked() {
+    if (this.isSubmitting) return
+    this.isSubmitting = true
+
     try {
-      await this.browserProxy.authentication.resetPasswordVerifyInit(this.email)
+      await this.browserProxy.authentication.resetPasswordStep1(this.email)
     } catch (e) {
       let error: ResetPasswordError
 
@@ -54,6 +58,8 @@ export class BraveAccountPasswordResetDialogElement extends CrLitElement {
 
       showError({ kind: 'resetPassword', details: error })
     }
+
+    this.isSubmitting = false
   }
 
   private browserProxy: BraveAccountBrowserProxy =
@@ -61,6 +67,7 @@ export class BraveAccountPasswordResetDialogElement extends CrLitElement {
 
   protected accessor email: string = ''
   protected accessor isEmailValid: boolean = false
+  protected accessor isSubmitting: boolean = false
 }
 
 declare global {

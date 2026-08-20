@@ -9,6 +9,7 @@
 #include "brave/browser/brave_search/backup_results_service_impl.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_selections.h"
 
 namespace brave_search {
 
@@ -26,12 +27,8 @@ BackupResultsService* BackupResultsServiceFactory::GetForBrowserContext(
 }
 
 BackupResultsServiceFactory::BackupResultsServiceFactory()
-    : ProfileKeyedServiceFactory(
-          "BackupResultsService",
-          ProfileSelections::Builder()
-              .WithRegular(ProfileSelection::kRedirectedToOriginal)
-              .WithGuest(ProfileSelection::kRedirectedToOriginal)
-              .Build()) {}
+    : ProfileKeyedServiceFactory("BackupResultsService",
+                                 ProfileSelections::BuildForRegularProfile()) {}
 
 BackupResultsServiceFactory::~BackupResultsServiceFactory() = default;
 

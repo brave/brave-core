@@ -1,0 +1,25 @@
+diff --git a/components/privacy_sandbox/privacy_sandbox_features.cc b/components/privacy_sandbox/privacy_sandbox_features.cc
+index 20376547798b8dab8d8dea1242d3b2b33a15cdad..d4a69294164455ddc3f92c66d8a23bee039295fa 100644
+--- a/components/privacy_sandbox/privacy_sandbox_features.cc
++++ b/components/privacy_sandbox/privacy_sandbox_features.cc
+@@ -8,7 +8,8 @@
+ 
+ namespace privacy_sandbox {
+ 
+-BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPrivacySandboxSettings4 feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ const char kPrivacySandboxSettings4ConsentRequiredName[] = "consent-required";
+ const char kPrivacySandboxSettings4NoticeRequiredName[] = "notice-required";
+@@ -57,8 +58,9 @@ const base::FeatureParam<bool> kPrivacySandboxSettings4ShowSampleDataForTesting{
+ 
+ BASE_FEATURE(kDisablePrivacySandboxPrompts, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
++// kEnforcePrivacySandboxAttestations feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kEnforcePrivacySandboxAttestations,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kDefaultAllowPrivacySandboxAttestations,
+              base::FEATURE_DISABLED_BY_DEFAULT);

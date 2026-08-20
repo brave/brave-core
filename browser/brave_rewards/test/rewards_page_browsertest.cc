@@ -60,7 +60,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   }
 
   PrefService& GetPrefs() {
-    auto* prefs = browser()->profile()->GetPrefs();
+    auto* prefs = browser()->GetProfile()->GetPrefs();
     CHECK(prefs);
     return *prefs;
   }
@@ -76,7 +76,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
 
   RewardsServiceImpl& GetRewardsService() {
     auto* rewards_service = static_cast<RewardsServiceImpl*>(
-        RewardsServiceFactory::GetForProfile(browser()->profile()));
+        RewardsServiceFactory::GetForProfile(browser()->GetProfile()));
     CHECK(rewards_service);
     return *rewards_service;
   }

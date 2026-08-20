@@ -3,23 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/environment.h"
+#include "base/files/file_path.h"
+#include "base/nix/xdg_util.h"
+#include "brave/common/brave_channel_info_posix.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/common/chrome_paths_internal.h"
 
-#define GetDefaultUserDataDirectory GetDefaultUserDataDirectory_Disabled
-#include <chrome/common/chrome_paths_linux.cc>
-#undef GetDefaultUserDataDirectory
+namespace {
 
-#include "brave/common/brave_channel_info_posix.h"
-
-namespace chrome {
-
-bool GetDefaultUserDataDirectory(base::FilePath* result) {
+// Brave doesn't use CHROME_CONFIG_HOME or Google Chrome's directory names; it
+// always lives under BraveSoftware, with a channel-specific suffix and a
+// separate name when Brave Origin branded.
+bool BraveGetDefaultUserDataDirectory(base::FilePath* result) {
   auto env = base::Environment::Create();
-  base::FilePath config_dir;
-  std::string chrome_config_home_str;
-  config_dir =
-      GetXDGDirectory(env.get(), kXdgConfigHomeEnvVar, kDotConfigDir);
+  base::FilePath config_dir = base::nix::GetXDGDirectory(
+      env.get(), base::nix::kXdgConfigHomeEnvVar, base::nix::kDotConfigDir);
 
   std::string data_dir_suffix;
   brave::GetChannelImpl(nullptr, &data_dir_suffix);
@@ -32,4 +31,6 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
   return true;
 }
 
-}  // namespace chrome
+}  // namespace
+
+#include <chrome/common/chrome_paths_linux.cc>

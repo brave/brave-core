@@ -42,7 +42,7 @@ void NTPSponsoredSiteImageSource::StartDataRequest(
 
   const base::FilePath request_path =
       base::FilePath::FromUTF8Unsafe(URLToRequestPath(url));
-  const std::optional<base::FilePath> file_path =
+  std::optional<base::FilePath> file_path =
       background_images_service_->MaybeGetSponsoredSiteImageFilePath(
           request_path);
   if (!file_path) {

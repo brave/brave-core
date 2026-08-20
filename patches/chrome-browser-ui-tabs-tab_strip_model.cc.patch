@@ -1,12 +1,72 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index e45f2404bd018694d1e4a06bccfeac3d267cdf49..241bd206c0ff4b8554da6a7e4ec8afb4b857221a 100644
+index 5807c30e140fb09857b8488e22cf7bc788e18cf2..07c9d7c434569ca3a685caf8e0da83c8b48a0063 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
-@@ -1779,6 +1779,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
-     // in the address bar and presses Alt+Enter. This allows for opening a new
-     // Tab to quickly look up something. When this Tab is closed, the old one
-     // is re-activated, not the next-adjacent.
-+    BRAVE_TAB_STRIP_MODEL_ADD_TAB
-     inherit_opener = true;
+@@ -183,7 +183,7 @@ std::unique_ptr<TabGroupModel> TabGroupModelFactory::Create() {
+ 
+ DetachedTabCollection::DetachedTabCollection(
+     std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
+-                 std::unique_ptr<tabs::SplitTabCollection>> collection,
++                 std::unique_ptr<tabs::SplitTabCollection>, std::unique_ptr<tabs::TreeTabNodeTabCollection>> collection,
+     std::optional<int> active_index,
+     bool pinned)
+     : collection_(std::move(collection)),
+@@ -493,6 +493,14 @@ TabStripModel::DetachTabsAndCollectionsForInsertion(
+       owned_tabs_and_collections.emplace_back(
+           DetachSplitTabForInsertion(tab_interface->GetSplit().value()));
+     } else {
++      if (tab_interface->GetParentCollection()->type() ==
++          tabs::TabCollection::Type::TREE_NODE &&
++      contents_data_->ShouldDetachAsTreeSubtreeRoot(GetTabAtIndex(index),
++                                                    tab_interfaces)) {
++        owned_tabs_and_collections.emplace_back(DetachTreeTabNodeForInsertion(
++            GetTabAtIndex(index), tab_interfaces));
++        continue;
++      }
+       owned_tabs_and_collections.emplace_back(DetachTabWithReasonAt(
+           index, TabRemovedReason::kInsertedIntoOtherTabStrip,
+           tabs::TabInterface::DetachReason::kInsertIntoOtherWindow));
+@@ -1780,6 +1788,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+   if (ui::PageTransitionTypeIncludingQualifiersIs(transition,
+                                                   ui::PAGE_TRANSITION_TYPED) &&
+       index == count()) {
++    tab->set_opener_was_set_for_empty_new_tab();
+     // Also, any tab opened at the end of the TabStrip with a "TYPED"
+     // transition inherit opener as well. This covers the cases where the user
+     // creates a New Tab (e.g. Ctrl+T, or clicks the New Tab button), or types
+@@ -2549,6 +2558,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+     return;
    }
-   tabs::TabModel* tab_ptr = tab.get();
+   switch (command_id) {
++    case CommandRestoreTab:
++    case CommandBookmarkAllTabs:
++    case CommandShowVerticalTabs:
++    case CommandToggleTabMuted:
++    case CommandBringAllTabsToThisWindow:
++    case CommandCloseDuplicateTabs:
++    case CommandOpenInContainer:
++    case CommandRenameTab:
++      NOTREACHED();
+     case CommandNewTabToRight: {
+       base::UmaHistogramCounts1000(
+           "Tab.ContextMenu.NewTabToRight.SelectedTabsCount",
+@@ -4050,7 +4068,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
+ 
+ std::pair<std::optional<int>, std::optional<int>>
+ TabStripModel::GetAdjacentTabsAfterSelectedMove(
+-    base::PassKey<DraggingTabsSession>,
++    base::PassKey<DraggingTabsSessionChromium>,
+     int destination_index) {
+   const int pinned_tab_count = IndexOfFirstNonPinnedTab();
+   const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
+@@ -4523,7 +4541,9 @@ void TabStripModel::InsertTabAtIndexImpl(
+   }
+ 
+   tabs::TabInterface* old_active_tab = GetActiveTab();
+-  contents_data_->AddTabRecursive(std::move(tab_model), index, group, pin);
++  auto* opener = tab_model->opener_was_set_for_empty_new_tab() ? nullptr : tab_model->opener();
++  contents_data_->AddTabRecursive(std::move(tab_model), index, group, pin, opener);
++
+   selection_model_.InvalidateListSelectionModel(base::PassKey<TabStripModel>());
+ 
+   // Start computing selection change after updating the indices in

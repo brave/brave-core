@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -52,6 +53,8 @@ public class OnboardingNetworkSelectorGridAdapter
      */
     public interface OnNetworkSelectionListener {
         void selectedNetworks(final int selectedNetworks);
+
+        void onFilteringDone();
     }
 
     public static final int NETWORK_ITEM_VIEW_TYPE = 0;
@@ -106,7 +109,8 @@ public class OnboardingNetworkSelectorGridAdapter
             @NonNull final Context context,
             final boolean showTestNetworks,
             @NonNull final NetworkModel.NetworkLists availableNetworks,
-            @NonNull final OnNetworkSelectionListener listener) {
+            @NonNull final OnNetworkSelectionListener listener,
+            @Nullable final Set<NetworkInfo> initialSelectedNetworks) {
         mContext = context;
 
         mShowTestNetworks = showTestNetworks;
@@ -127,13 +131,20 @@ public class OnboardingNetworkSelectorGridAdapter
         mListener = listener;
 
         mSelectedNetworks = new HashSet<>();
-        // Pre-select primary networks.
-        for (NetworkInfo networkInfo : mPrimaryNetworks) {
-            mSelectedNetworks.add(networkInfo.hashCode());
-        }
-        // Pre-select secondary networks.
-        for (NetworkInfo networkInfo : mSecondaryNetworks) {
-            mSelectedNetworks.add(networkInfo.hashCode());
+        if (initialSelectedNetworks != null) {
+            // Restore a previously captured selection (for example after a configuration change).
+            for (NetworkInfo networkInfo : initialSelectedNetworks) {
+                mSelectedNetworks.add(networkInfo.hashCode());
+            }
+        } else {
+            // Pre-select primary networks.
+            for (NetworkInfo networkInfo : mPrimaryNetworks) {
+                mSelectedNetworks.add(networkInfo.hashCode());
+            }
+            // Pre-select secondary networks.
+            for (NetworkInfo networkInfo : mSecondaryNetworks) {
+                mSelectedNetworks.add(networkInfo.hashCode());
+            }
         }
 
         mFeaturedNetworks = context.getString(R.string.wallet_featured);
@@ -325,6 +336,7 @@ public class OnboardingNetworkSelectorGridAdapter
                                     ? 0
                                     : 1;
                     notifyDataSetChanged();
+                    mListener.onFilteringDone();
                 };
         // Debounce filtering to avoid flickering effect on recycler view items.
         mHandler.postDelayed(mFilteringRunnable, DEBOUNCE_SEARCH_MILLIS);

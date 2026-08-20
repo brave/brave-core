@@ -57,7 +57,6 @@ class ToastShadowView: UIView {
 }
 
 class Toast: UIView {
-  var animationConstraint: Constraint?
   var completionHandler: ((Bool) -> Void)?
 
   weak var viewController: UIViewController?
@@ -117,11 +116,15 @@ class Toast: UIView {
       self.snp.makeConstraints(makeConstraints)
       self.layoutIfNeeded()
 
+      self.toastView.transform = CGAffineTransform(
+        translationX: 0,
+        y: self.bounds.height
+      )
+
       UIView.animate(
         withDuration: SimpleToastUX.toastAnimationDuration,
         animations: {
-          self.animationConstraint?.update(offset: -self.bounds.height)
-          self.layoutIfNeeded()
+          self.toastView.transform = .identity
         },
         completion: { finished in
           self.displayState = .showing
@@ -148,9 +151,13 @@ class Toast: UIView {
 
     UIView.animate(
       withDuration: duration,
+      delay: 0,
+      options: [.beginFromCurrentState],
       animations: {
-        self.animationConstraint?.update(offset: 0)
-        self.layoutIfNeeded()
+        self.toastView.transform = CGAffineTransform(
+          translationX: 0,
+          y: self.bounds.height
+        )
       },
       completion: { finished in
         self.displayState = .dismissed
@@ -179,6 +186,12 @@ class Toast: UIView {
     }
 
     dismiss(false)
+  }
+
+  func setupToastConstraints() {
+    toastView.snp.makeConstraints { make in
+      make.edges.equalTo(self)
+    }
   }
 
   enum State {

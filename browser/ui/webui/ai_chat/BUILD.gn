@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
@@ -19,6 +20,8 @@ source_set("ai_chat") {
     "chart_display_ui.h",
     "code_sandbox_ui.cc",
     "code_sandbox_ui.h",
+    "leo_workspace_ui.cc",
+    "leo_workspace_ui.h",
   ]
 
   deps = [
@@ -35,6 +38,7 @@ source_set("ai_chat") {
     "//brave/components/ai_chat/resources",
     "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//brave/components/constants",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//brave/components/screenshot/core/browser",
@@ -42,11 +46,16 @@ source_set("ai_chat") {
     "//chrome/browser/bookmarks",
     "//chrome/browser/favicon",
     "//chrome/browser/history",
+    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/select_file_policy",
     "//chrome/browser/ui/webui:favicon_source",
     "//components/favicon/core",
     "//components/favicon_base",
+    "//components/history_embeddings/content",
+    "//components/history_embeddings/core",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//components/strings:components_strings",
     "//components/user_prefs",
@@ -54,12 +63,14 @@ source_set("ai_chat") {
     "//pdf:buildflags",
     "//printing",
     "//services/data_decoder/public/cpp",
+    "//ui/base",
     "//ui/gfx/codec",
     "//ui/webui",
   ]
 
   if (!is_android) {
     deps += [
+      "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
@@ -72,6 +83,12 @@ source_set("ai_chat") {
       "//chrome/browser/android:tabs_public",
       "//chrome/browser/ui/android/tab_model",
     ]
+  }
+
+  if (enable_local_ai) {
+    # SearchForTabs ranks the user's open tabs with on-device history
+    # embeddings; open_tab_search is desktop only.
+    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {
@@ -98,6 +115,7 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//chrome/browser/favicon",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//pdf:buildflags",

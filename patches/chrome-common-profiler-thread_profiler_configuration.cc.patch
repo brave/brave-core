@@ -1,0 +1,14 @@
+diff --git a/chrome/common/profiler/thread_profiler_configuration.cc b/chrome/common/profiler/thread_profiler_configuration.cc
+index 32b2639773cc42a29b0bdc235f0b0200de39d750..680d97a04f5cf09d863f32a189ccd63fbdd232f7 100644
+--- a/chrome/common/profiler/thread_profiler_configuration.cc
++++ b/chrome/common/profiler/thread_profiler_configuration.cc
+@@ -88,6 +88,9 @@ bool ThreadProfilerConfiguration::IsProfilerEnabledForCurrentProcess() const {
+ 
+ bool ThreadProfilerConfiguration::IsProfilerEnabledForCurrentProcessAndThread(
+     sampling_profiler::ProfilerThreadType thread) const {
++  if ((true)) {
++    return false;
++  }
+   return IsProfilerEnabledForCurrentProcess() &&
+          platform_configuration_->IsEnabledForThread(
+              GetProfilerProcessType(*base::CommandLine::ForCurrentProcess()),

@@ -56,6 +56,7 @@ type UIHandlerActions = Pick<
   | 'refreshPremiumSession'
   | 'openModelSupportUrl'
   | 'openStorageSupportUrl'
+  | 'switchToTab'
 >
 
 // State that comes from ConversationEntriesState plus additional UI state
@@ -102,6 +103,11 @@ export default function createUntrustedConversationApi(
         hasMemory: {
           response: (result) => result.exists,
         },
+        // Null when on-device tab search isn't available, which the caller
+        // renders differently to "no tabs matched".
+        searchForTabs: {
+          response: (result) => result.tabs,
+        },
       }),
 
       // Conversation data
@@ -120,6 +126,7 @@ export default function createUntrustedConversationApi(
         isLeoModel: true,
         allModels: [],
         currentModelKey: '',
+        defaultModelKey: '',
         contentUsedPercentage: undefined,
         visualContentUsedPercentage: undefined,
         trimmedTokens: BigInt(0),
@@ -132,6 +139,10 @@ export default function createUntrustedConversationApi(
         currentErrorDetails: undefined,
         isTemporary: false,
       }),
+
+      // Duplicate the result of the `associatedContentChanged` event so that
+      // we can optionally provide favicon URLs.
+      associatedContent: state<Mojom.AssociatedContentWithFavicon[]>([]),
 
       // Service state (profile-level) - updated via UntrustedServiceObserver
       serviceState: state<Mojom.ServiceState>({
@@ -216,7 +227,10 @@ export default function createUntrustedConversationApi(
             api.state.update(state)
           },
 
-          associatedContentChanged(content) {},
+          associatedContentChanged(content) {
+            // Provide to our wrapper
+            api.associatedContent.update(content)
+          },
         },
         (observer) => {
           conversationObserver = observer

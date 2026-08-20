@@ -1,0 +1,34 @@
+diff --git a/components/lens/lens_features.cc b/components/lens/lens_features.cc
+index 22005a4f5926d6075be8fb581392db94dba0bab9..28757a034918205950deb9af33a1d123a3a4b03f 100644
+--- a/components/lens/lens_features.cc
++++ b/components/lens/lens_features.cc
+@@ -16,17 +16,14 @@
+ 
+ namespace lens::features {
+ 
+-BASE_FEATURE(kLensStandalone, base::FEATURE_ENABLED_BY_DEFAULT);
++// kLensStandalone feature state is enforced via plaster rewrite.
++BASE_FEATURE(kLensStandalone, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kShowContextualTasksMenuIcon, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kLensOverlay feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kLensOverlay,
+-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kLensOverlayAndroid, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+@@ -65,6 +62,7 @@ BASE_FEATURE(kLensSearchSidePanelNewFeedback,
+ // kLensOverlay so that the omnibox entry point can be disabled without a
+ // dependency on the rest of the Lens Overlay features. This means if can be
+ // experimented with independently.
++// kLensOverlayOmniboxEntryPoint feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kLensOverlayOmniboxEntryPoint, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kLensOverlayUploadChunking, base::FEATURE_ENABLED_BY_DEFAULT);

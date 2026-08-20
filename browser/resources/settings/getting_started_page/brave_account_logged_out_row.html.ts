@@ -83,8 +83,13 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                      .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE)}
           </div>
           <div class="description">
-            ${this.i18n(
-                BraveAccountSettingsStrings.BRAVE_ACCOUNT_DESCRIPTION)}
+            <localized-link
+                .localizedString=${this.i18nAdvanced(
+                  BraveAccountSettingsStrings
+                       .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION,
+                  {tags: ['a']})}
+                .linkUrl=${this.i18n('braveAccountLearnMoreURL')}>
+            </localized-link>
           </div>
         </div>
         <leo-button kind="filled"

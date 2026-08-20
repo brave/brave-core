@@ -50,8 +50,6 @@ class CreativeNotificationAds final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
-
   int batch_size_;
 
   Campaigns campaigns_database_table_;

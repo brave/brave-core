@@ -251,6 +251,15 @@ struct DBTransactionInfo {
   bool should_vacuum = false;
 };
 
+// Reflects sql::Database::GetErrorCode/GetDiagnosticInfo. `code` may be
+// SQLITE_OK if the failure wasn't actually a SQLite call, which itself rules
+// out a SQLite-level cause. Never contains row data or bound parameter values,
+// so it's safe to attach to crash reports.
+struct DBSqliteResultInfo {
+  int32 code;
+  string diagnostic_info;
+};
+
 struct DBTransactionResultInfo {
   enum StatusCode {
     kSuccess,  // No error.
@@ -266,6 +275,10 @@ struct DBTransactionResultInfo {
   StatusCode status_code;
 
   DBRowsUnion? rows_union;
+
+  // Set whenever `status_code` is not `kSuccess`, reflecting the last SQLite
+  // result at the point of failure.
+  DBSqliteResultInfo? sqlite_result;
 };
 
 enum DBBindColumnType {

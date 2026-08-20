@@ -12,6 +12,7 @@ import { useSearchState, useSearchActions } from '../../context/search_context'
 import { useNewTabState } from '../../context/new_tab_context'
 import { getString } from '../../lib/strings'
 import { EngineIcon } from '../search/engine_icon'
+import { SettingsPanel } from './settings_panel'
 import { Link } from '../common/link'
 
 import { style } from './search_panel.style'
@@ -26,7 +27,14 @@ export function SearchPanel() {
   const aiChatInputEnabled = useNewTabState((s) => s.aiChatInputEnabled)
 
   return (
-    <div data-css-scope={style.scope}>
+    <SettingsPanel
+      cssScope={style.scope}
+      title={
+        aiChatInputEnabled
+          ? getString(S.NEW_TAB_SEARCH_AND_CHAT_SETTINGS_TITLE)
+          : getString(S.NEW_TAB_SEARCH_SETTINGS_TITLE)
+      }
+    >
       <Toggle
         className='toggle-row'
         size='small'
@@ -36,6 +44,7 @@ export function SearchPanel() {
         }}
       >
         <span className='label'>
+          <Icon name='search' />
           {getString(S.NEW_TAB_SHOW_SEARCH_BOX_LABEL)}
         </span>
       </Toggle>
@@ -49,6 +58,7 @@ export function SearchPanel() {
           }}
         >
           <span className='label'>
+            <Icon name='product-brave-leo' />
             {getString(S.NEW_TAB_SHOW_CHAT_INPUT_LABEL)}
           </span>
         </Toggle>
@@ -81,6 +91,6 @@ export function SearchPanel() {
           </div>
         </div>
       )}
-    </div>
+    </SettingsPanel>
   )
 }

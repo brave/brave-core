@@ -10,7 +10,6 @@ import SwiftUI
 
 struct NewTabPageSettingsView: View {
   var isSponsoredBackgroundsSupported: Bool
-  var shouldShowSponsoredImagesAndVideosSetting: Bool
   var linkTapped: ((URLRequest) -> Void)?
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
@@ -28,7 +27,6 @@ struct NewTabPageSettingsView: View {
         if backgroundImages.value, isSponsoredBackgroundsSupported {
           NavigationLink {
             BackgroundMediaTypePicker(
-              shouldShowSponsoredImagesAndVideosSetting: shouldShowSponsoredImagesAndVideosSetting,
               selection: Binding(
                 get: { Preferences.NewTabPage.backgroundMediaType },
                 set: { Preferences.NewTabPage.backgroundMediaType = $0 }
@@ -48,12 +46,6 @@ struct NewTabPageSettingsView: View {
                 Text(Strings.NTP.settingsDefaultImagesOnly)
               case .sponsoredImages:
                 Text(Strings.NTP.settingsSponsoredImagesSelection)
-              case .sponsoredImagesAndVideos:
-                Text(
-                  shouldShowSponsoredImagesAndVideosSetting
-                    ? Strings.NTP.settingsSponsoredImagesAndVideosSelection
-                    : Strings.NTP.settingsSponsoredImagesSelection
-                )
               }
             } label: {
               Text(Strings.NTP.settingsBackgroundImageSubMenu)
@@ -76,7 +68,6 @@ struct NewTabPageSettingsView: View {
   }
 
   private struct BackgroundMediaTypePicker: View {
-    var shouldShowSponsoredImagesAndVideosSetting: Bool
     @Binding var selection: BackgroundMediaType
 
     @Environment(\.dismiss) private var dismiss
@@ -87,16 +78,8 @@ struct NewTabPageSettingsView: View {
           Picker("", selection: $selection) {
             Text(Strings.NTP.settingsDefaultImagesOnly)
               .tag(BackgroundMediaType.defaultImages)
-            if shouldShowSponsoredImagesAndVideosSetting {
-              Text(Strings.NTP.settingsSponsoredImagesSelection)
-                .tag(BackgroundMediaType.sponsoredImages)
-            }
-            Text(
-              shouldShowSponsoredImagesAndVideosSetting
-                ? Strings.NTP.settingsSponsoredImagesAndVideosSelection
-                : Strings.NTP.settingsSponsoredImagesSelection
-            )
-            .tag(BackgroundMediaType.sponsoredImagesAndVideos)
+            Text(Strings.NTP.settingsSponsoredImagesSelection)
+              .tag(BackgroundMediaType.sponsoredImages)
           }
           .pickerStyle(.inline)
           .labelsHidden()
@@ -125,8 +108,6 @@ class NTPTableViewController: UIHostingController<NewTabPageSettingsView> {
     super.init(
       rootView: .init(
         isSponsoredBackgroundsSupported: rewards != nil,
-        shouldShowSponsoredImagesAndVideosSetting:
-          rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true,
         linkTapped: linkTapped
       )
     )

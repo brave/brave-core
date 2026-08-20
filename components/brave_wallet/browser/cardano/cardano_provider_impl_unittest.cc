@@ -51,7 +51,6 @@ class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
   MOCK_METHOD0(ShowWalletBackup, void());
   MOCK_METHOD0(UnlockWallet, void());
   MOCK_METHOD0(WalletInteractionDetected, void());
-  MOCK_METHOD1(ShowWalletOnboarding, void(const url::Origin&));
   MOCK_METHOD2(ShowAccountCreation,
                void(mojom::CoinType type, const url::Origin& origin));
   MOCK_METHOD4(RequestPermissions,
@@ -372,9 +371,10 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
   main_run_loop.Run();
 }
 
-TEST_F(CardanoProviderImplUnitTest, OnBoarding) {
+// The provider isn't injected without a wallet, but the request must still fail
+// cleanly if one is reset while a page holds a provider.
+TEST_F(CardanoProviderImplUnitTest, NoWallet) {
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
-  EXPECT_CALL(*delegate(), ShowWalletOnboarding(testing::_)).Times(1);
   EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
   base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,

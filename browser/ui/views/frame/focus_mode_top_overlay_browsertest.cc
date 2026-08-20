@@ -13,6 +13,8 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -40,6 +42,7 @@
 #include "ui/views/border.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
 class FocusModeTopOverlayBrowserTest : public InProcessBrowserTest {
@@ -72,6 +75,10 @@ class FocusModeTopOverlayBrowserTest : public InProcessBrowserTest {
   BraveBrowserView* browser_view() {
     return BraveBrowserView::From(
         BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  BraveToolbarView* toolbar() {
+    return views::AsViewClass<BraveToolbarView>(browser_view()->toolbar());
   }
 
   FocusModeController* focus_mode_controller() {
@@ -274,7 +281,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
                        ToolbarBorderTracksOverlayActivation) {
   // The caption-button border only applies with vertical tabs enabled and the
   // window title hidden.
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
 
@@ -346,5 +353,34 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   ASSERT_TRUE(location_bar);
   EXPECT_TRUE(overlay->Contains(location_bar));
   EXPECT_TRUE(location_bar->IsDrawn());
+  EXPECT_EQ(overlay->bounds().y(), 0);
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       ToolbarButtonBubbleRevealsOverlay) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+
+  ASSERT_TRUE(toolbar());
+  auto* bookmark_button = toolbar()->bookmark_button();
+  ASSERT_TRUE(bookmark_button);
+  ASSERT_TRUE(bookmark_button->GetVisible());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_TRUE(overlay->active());
+  ASSERT_TRUE(WaitForOverlayHidden());
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [this]() { return chrome::CanBookmarkCurrentTab(browser()); }));
+  chrome::BookmarkCurrentTab(browser());
+  toolbar()->ShowBookmarkBubble(active_web_contents()->GetLastCommittedURL(),
+                                /*already_bookmarked=*/true);
+
+  ASSERT_TRUE(WaitForOverlayRevealed());
+
+  EXPECT_TRUE(overlay->Contains(bookmark_button));
+  EXPECT_TRUE(bookmark_button->IsDrawn());
   EXPECT_EQ(overlay->bounds().y(), 0);
 }

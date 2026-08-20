@@ -25,12 +25,6 @@ import NavButton from '../buttons/nav-button/index'
 import PanelTab from '../panel-tab/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
-import {
-  TxWarningBanner, //
-} from '../confirm-transaction-panel/common/tx_warnings'
-import {
-  TransactionSimulationNotSupportedSheet, //
-} from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
 import { TransactionQueueSteps } from '../../../components/extension/confirm-transaction-panel/common/queue'
 
 // Styled Components
@@ -56,7 +50,7 @@ import {
 
 import { DetailColumn } from '../transaction-box/style'
 import { Tooltip } from '../../shared/tooltip/index'
-import { Column, Text } from '../../shared/style'
+import { Text } from '../../shared/style'
 
 interface Props {
   selectedRequest: BraveWallet.SignSolTransactionsRequest
@@ -66,8 +60,6 @@ interface Props {
   signingAccount: BraveWallet.AccountInfo
   queueLength: number
   queueNumber: number
-  retrySimulation?: () => void
-  showSimulationNotSupportedMessage?: boolean
 }
 
 // TODO: broken article link
@@ -88,8 +80,6 @@ export const SignSolanaTxsPanel = ({
   queueNextSignTransaction,
   queueNumber,
   signingAccount,
-  retrySimulation,
-  showSimulationNotSupportedMessage,
 }: Props) => {
   // custom hooks
   const orb = useAccountOrb(signingAccount)
@@ -98,8 +88,6 @@ export const SignSolanaTxsPanel = ({
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
     SignDataSteps.SignRisk,
   )
-  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
-    React.useState(false)
 
   // methods
   const onAcceptSigningRisks = React.useCallback(() => {
@@ -205,42 +193,26 @@ export const SignSolanaTxsPanel = ({
           </MessageBox>
         </>
       )}
-      <Column
-        fullWidth
-        gap={'8px'}
-      >
-        {retrySimulation && !isSimulationWarningDismissed && (
-          <TxWarningBanner
-            onDismiss={() => setIsSimulationWarningDismissed(true)}
-            retrySimulation={retrySimulation}
-          />
-        )}
-        <SignPanelButtonRow>
-          <NavButton
-            buttonType='secondary'
-            text={getLocale('braveWalletButtonCancel')}
-            onSubmit={onCancelSign}
-            disabled={isSigningDisabled}
-          />
-          <NavButton
-            buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
-            text={
-              signStep === SignDataSteps.SignData
-                ? getLocale('braveWalletSignTransactionButton')
-                : getLocale('braveWalletButtonContinue')
-            }
-            onSubmit={
-              signStep === SignDataSteps.SignRisk
-                ? onAcceptSigningRisks
-                : onSign
-            }
-            disabled={isSigningDisabled}
-          />
-        </SignPanelButtonRow>
-      </Column>
-      {showSimulationNotSupportedMessage && (
-        <TransactionSimulationNotSupportedSheet />
-      )}
+      <SignPanelButtonRow>
+        <NavButton
+          buttonType='secondary'
+          text={getLocale('braveWalletButtonCancel')}
+          onSubmit={onCancelSign}
+          disabled={isSigningDisabled}
+        />
+        <NavButton
+          buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
+          text={
+            signStep === SignDataSteps.SignData
+              ? getLocale('braveWalletSignTransactionButton')
+              : getLocale('braveWalletButtonContinue')
+          }
+          onSubmit={
+            signStep === SignDataSteps.SignRisk ? onAcceptSigningRisks : onSign
+          }
+          disabled={isSigningDisabled}
+        />
+      </SignPanelButtonRow>
     </StyledWrapper>
   )
 }

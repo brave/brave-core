@@ -96,10 +96,10 @@ class AIChatConversationTaskBrowserTest
     // Create the agent profile
     base::test::TestFuture<Browser*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
-        *browser()->profile(), browser_future.GetCallback());
+        *browser()->GetProfile(), browser_future.GetCallback());
     Browser* agent_browser = browser_future.Take();
     ASSERT_NE(agent_browser, nullptr);
-    agent_profile_ = agent_browser->profile();
+    agent_profile_ = agent_browser->GetProfile();
     agent_browser_window_ = agent_browser;
 
     actor::InitActionBlocklist(agent_profile_);

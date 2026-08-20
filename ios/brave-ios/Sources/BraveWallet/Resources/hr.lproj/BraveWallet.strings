@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Prikaži u aktivnosti";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "U pregledniku Brave upotrebljavat će se konfigurirana RPC usluga za Ethereum, koja je po zadanome Chainstack, za rješavanje naziva domena .crypto (i %1$@) koje se nalaze na platformi Unstoppable Domains. Preglednikom Brave skriva se vaša adresa IP. Ako to omogućite, putem platforme Chainstack moguće je vidjeti da netko pokušava posjetiti te domene, ali ništa više. Pogledajte <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> platforme Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "nazivi domena koji se nalaze na platformi Unstoppable Domains. Preglednikom Brave skriva se vaša adresa IP. Ako to omogućite, putem platforme Chainstack moguće je vidjeti da netko pokušava posjetiti te domene, ali ništa više. Pogledajte <a href=%1$@>%2$@</a> i <a href=%3$@>%4$@</a> platforme Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave će biti konfigurirana usluga Ethereum RPC koja se zadano temelji na platformi Chainstack za rješavanje:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ više";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Omogući podršku za nezaustavljive domene u pregledniku Brave?";

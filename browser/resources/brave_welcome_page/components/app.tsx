@@ -5,17 +5,40 @@
 
 import * as React from 'react'
 
-import { useStepList } from './use_step_list'
+import { OnboardingPhase } from '../api/welcome_api'
+import { useWelcomeApi } from '../api/welcome_api_context'
+import { Step, useStepList } from './use_step_list'
 import { whenStepRendered } from './use_step_transition'
 import { WelcomeStep } from './welcome_step'
 import { ImportStep } from './import_step'
 import { AppearanceStep } from './appearance_step'
+import { FeaturesStep } from './features_step'
+import { MetricsStep } from './metrics_step'
 
 import { style } from './app.style'
 
+// The onboarding phase reached by viewing each step. Steps that have no
+// corresponding phase are not reported.
+const stepPhases: Record<Step, OnboardingPhase | null> = {
+  welcome: OnboardingPhase.kWelcome,
+  import: OnboardingPhase.kImport,
+  appearance: null,
+  features: null,
+  metrics: OnboardingPhase.kMetrics,
+}
+
 export function App() {
+  const api = useWelcomeApi()
   const [stepIndex, setStepIndex] = React.useState(0)
   const steps = useStepList()
+  const currentStep = steps[stepIndex] ?? 'welcome'
+
+  React.useEffect(() => {
+    const phase = stepPhases[currentStep]
+    if (phase !== null) {
+      api.setOnboardingPhase([phase])
+    }
+  }, [api, currentStep])
 
   if (steps.length === 0) {
     return (
@@ -25,8 +48,6 @@ export function App() {
     )
   }
 
-  const currentStep = steps[stepIndex] ?? 'welcome'
-
   function startStepTransition(dir: 'forward' | 'backward') {
     const index =
       dir === 'forward'
@@ -34,6 +55,12 @@ export function App() {
         : Math.max(0, stepIndex - 1)
 
     if (index === stepIndex) {
+      if (dir === 'forward') {
+        api.setOnboardingPhase([OnboardingPhase.kFinished])
+        api.getWelcomeCompleteURL.fetch().then((url) => {
+          window.open(url, '_self', 'noopener')
+        })
+      }
       return
     }
 
@@ -55,12 +82,15 @@ export function App() {
   }
 
   function renderStep() {
+    const isLastStep = stepIndex >= steps.length - 1
+
     switch (currentStep) {
       case 'welcome':
         return (
           <WelcomeStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
       case 'import':
@@ -68,6 +98,7 @@ export function App() {
           <ImportStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
       case 'appearance':
@@ -75,6 +106,23 @@ export function App() {
           <AppearanceStep
             onNext={stepForward}
             onBack={stepBack}
+            isLastStep={isLastStep}
+          />
+        )
+      case 'features':
+        return (
+          <FeaturesStep
+            onNext={stepForward}
+            onBack={stepBack}
+            isLastStep={isLastStep}
+          />
+        )
+      case 'metrics':
+        return (
+          <MetricsStep
+            onNext={stepForward}
+            onBack={stepBack}
+            isLastStep={isLastStep}
           />
         )
     }

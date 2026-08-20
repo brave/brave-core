@@ -106,122 +106,6 @@ void GetCallback(
   std::move(callback).Run(/*success=*/true, ad_events);
 }
 
-void MigrateToV35(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  DropTableIndex(mojom_db_transaction, "ad_events_created_at_index");
-
-  // Optimize database query for `GetUnexpired`.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"created_at"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"type", "created_at"});
-}
-
-void MigrateToV41(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Remove non-clicked search result ad events for users who have not joined
-  // Brave Rewards.
-  if (!UserHasJoinedBraveRewards()) {
-    Execute(mojom_db_transaction, R"(
-        DELETE FROM
-          ad_events
-        WHERE
-          type == 'search_result_ad'
-          AND confirmation_type != 'click')");
-  }
-}
-
-void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  DropTableIndex(mojom_db_transaction, "ad_events_type_creative_set_id_index");
-
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"type"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"confirmation_type"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"creative_set_id"});
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"placement_id"});
-}
-
-void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Delete legacy ad events with an undefined `placement_id`, `campaign_id`,
-  // `creative_set_id`, or `creative_instance_id`.
-  Execute(mojom_db_transaction, R"(
-      DELETE FROM
-        ad_events
-      WHERE
-        COALESCE(placement_id, '') = ''
-        OR COALESCE(campaign_id, '') = ''
-        OR COALESCE(creative_set_id, '') = ''
-        OR COALESCE(creative_instance_id, '') = ''
-        OR created_at IS NULL)");
-
-  // Create a temporary table:
-  //   - with a new `target_url` column with a default value of
-  //     'https://brave.com/brave-ads/'.
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE ad_events_temp (
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        placement_id TEXT NOT NULL,
-        type TEXT,
-        confirmation_type TEXT,
-        campaign_id TEXT NOT NULL,
-        creative_set_id TEXT NOT NULL,
-        creative_instance_id TEXT NOT NULL,
-        advertiser_id TEXT,
-        segment TEXT,
-        target_url TEXT NOT NULL DEFAULT 'https://brave.com/brave-ads/',
-        created_at TIMESTAMP NOT NULL
-      ))");
-
-  // Copy legacy columns to the temporary table, drop the legacy table and
-  // rename the temporary table.
-  const std::vector<std::string> columns = {
-      "placement_id",      "type",
-      "confirmation_type", "campaign_id",
-      "creative_set_id",   "creative_instance_id",
-      "advertiser_id",     "segment",
-      "created_at"};
-
-  CopyTableColumns(mojom_db_transaction, "ad_events", "ad_events_temp", columns,
-                   /*should_drop=*/true);
-
-  RenameTable(mojom_db_transaction, "ad_events_temp", "ad_events");
-
-  // Optimize database query for `GetUnexpired`, and `PurgeExpired` from
-  // schema 35.
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"created_at"});
-
-  // Optimize database query for `GetUnexpired`, and `PurgeExpired` from
-  // schema 43.
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"creative_set_id"});
-
-  // Optimize database query for `GetUnexpired`, and `PurgeOrphaned` from
-  // schema 43.
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"type"});
-
-  // Optimize database query for `PurgeOrphaned`, and `PurgeAllOrphaned` from
-  // schema 43.
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"confirmation_type"});
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"placement_id"});
-
-  // Optimize database query for `IsFirstTime` from schema 50.
-  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"campaign_id", "confirmation_type"});
-}
-
 std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
                            const AdEventList& ad_events) {
   CHECK(mojom_db_action);
@@ -256,18 +140,6 @@ void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
   mojom_db_action->sql = BuildInsertSql(mojom_db_action, ad_events);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-void MigrateToV51(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Optimize database query for `GetVirtualPrefs` from schema 51.
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"creative_set_id", "confirmation_type"});
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"creative_instance_id", "confirmation_type"});
-  CreateTableIndex(mojom_db_transaction, "ad_events",
-                   /*columns=*/{"advertiser_id", "confirmation_type"});
 }
 
 }  // namespace
@@ -781,31 +653,6 @@ void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(mojom_db_transaction);
-      break;
-    }
-
-    case 41: {
-      MigrateToV41(mojom_db_transaction);
-      break;
-    }
-
-    case 43: {
-      MigrateToV43(mojom_db_transaction);
-      break;
-    }
-
-    case 50: {
-      MigrateToV50(mojom_db_transaction);
-      break;
-    }
-
-    case 51: {
-      MigrateToV51(mojom_db_transaction);
-      break;
-    }
-
     default: {
       // No migration needed.
       break;

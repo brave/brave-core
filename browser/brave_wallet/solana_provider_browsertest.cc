@@ -38,10 +38,12 @@
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_utils.h"
 #include "mojo/public/cpp/bindings/binder_map.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
@@ -378,8 +380,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
   ~SolanaProviderTest() override = default;
 
   void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     brave_wallet::SetDefaultSolanaWallet(
-        browser()->profile()->GetPrefs(),
+        browser()->GetProfile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
 
     browser_content_client_ = std::make_unique<TestContentBrowserClient>();
@@ -406,6 +409,27 @@ class SolanaProviderTest : public InProcessBrowserTest {
       *g_provider_solana_web3_script =
           LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST);
     }
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+
+    ASSERT_TRUE(https_server_for_rpc_.InitializeAndListen());
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP solana-mainnet.wallet.brave.com " +
+            https_server_for_rpc_.host_port_pair().ToString());
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -502,36 +526,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void StartRPCServer(
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
-    https_server_for_rpc()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_for_rpc()->RegisterRequestHandler(callback);
-    ASSERT_TRUE(https_server_for_rpc()->Start());
-
-    // Update rpc url for kLocalhostChainId
-    mojom::NetworkInfoPtr chain;
-    json_rpc_service()->SetNetwork(mojom::kLocalhostChainId,
-                                   mojom::CoinType::SOL, std::nullopt);
-    base::RunLoop run_loop;
-    json_rpc_service()->GetNetwork(
-        mojom::CoinType::SOL, std::nullopt,
-        base::BindLambdaForTesting([&](mojom::NetworkInfoPtr info) {
-          chain = info.Clone();
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    base::RunLoop run_loop1;
-    chain->rpc_endpoints =
-        std::vector<GURL>({https_server_for_rpc()->base_url()});
-    json_rpc_service()->AddChain(
-        std::move(chain),
-        base::BindLambdaForTesting([&](const std::string& chain_id,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          ASSERT_EQ(chain_id, mojom::kLocalhostChainId);
-          ASSERT_EQ(error, mojom::ProviderError::kSuccess);
-          ASSERT_TRUE(error_message.empty());
-          run_loop1.Quit();
-        }));
-    run_loop1.Run();
+    https_server_for_rpc()->StartAcceptingConnections();
   }
 
   content::WebContents* web_contents() {
@@ -547,7 +543,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   BraveWalletService* brave_wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   KeyringService* keyring_service() {
@@ -568,7 +564,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   HostContentSettingsMap* host_content_settings_map() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(
+        browser()->GetProfile());
   }
 
   void ReloadAndWaitForLoadStop(Browser* browser) {
@@ -620,7 +617,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service()->GetAllTransactionInfo(
-        mojom::CoinType::SOL, mojom::kLocalhostChainId, account_id.Clone(),
+        mojom::CoinType::SOL, mojom::kSolanaMainnet, account_id.Clone(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -633,7 +630,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void ApproveTransaction(const std::string& tx_meta_id) {
     base::RunLoop run_loop;
     tx_service()->ApproveTransaction(
-        mojom::CoinType::SOL, mojom::kLocalhostChainId, tx_meta_id,
+        mojom::CoinType::SOL, mojom::kSolanaMainnet, tx_meta_id,
         base::BindLambdaForTesting([&](bool success,
                                        mojom::ProviderErrorUnionPtr error_union,
                                        const std::string& error_message) {
@@ -651,7 +648,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     auto observer = CreateObserver();
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        mojom::CoinType::SOL, mojom::kLocalhostChainId, tx_meta_id,
+        mojom::CoinType::SOL, mojom::kSolanaMainnet, tx_meta_id,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           observer->WaitForRejectedStatus();
@@ -823,6 +820,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   TestTxServiceObserver observer_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectRequestInProgress) {
@@ -1593,6 +1591,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, CallViaProxy) {
+  RestoreWallet();
   GURL url =
       https_server_for_files()->GetURL("a.test", "/solana_provider.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

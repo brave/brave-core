@@ -23,10 +23,6 @@ enum class DistillationResult : int {
   kFail,
 };
 
-namespace DistillStates {
-
-using None = std::monostate;
-
 struct DistillReverting;
 
 struct ViewOriginal {
@@ -71,28 +67,24 @@ struct DistillReverting : ViewOriginal {
   DistillReverting(const Distilled& state, Reason reason);
 };
 
-using State = std::variant<DistillStates::None,
-                           DistillStates::ViewOriginal,
-                           DistillStates::Distilling,
-                           DistillStates::Distilled,
-                           DistillStates::DistillReverting>;
+using DistillState = std::variant<std::monostate,
+                                  ViewOriginal,
+                                  Distilling,
+                                  Distilled,
+                                  DistillReverting>;
 
-bool IsViewOriginal(const State& state);
-bool IsDistilling(const State& state);
-bool IsDistilled(const State& state);
-bool IsDistillReverting(const State& state);
+bool IsViewOriginal(const DistillState& state);
+bool IsDistilling(const DistillState& state);
+bool IsDistilled(const DistillState& state);
+bool IsDistillReverting(const DistillState& state);
 
-bool IsNotDistillable(const State& state);
-bool IsDistillable(const State& state);
-bool IsDistilledAutomatically(const State& state);
+bool IsNotDistillable(const DistillState& state);
+bool IsDistillable(const DistillState& state);
+bool IsDistilledAutomatically(const DistillState& state);
 
 // Performs the transition from |state| to |desired|, returns true if transition
 // requires page reload.
-bool Transit(State& state, const State& desired);
-
-}  // namespace DistillStates
-
-using DistillState = DistillStates::State;
+bool Transit(DistillState& state, const DistillState& desired);
 
 using DistillationResultCallback =
     base::OnceCallback<void(DistillationResult result,

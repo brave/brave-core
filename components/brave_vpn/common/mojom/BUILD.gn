@@ -27,3 +27,9 @@ mojom("mojom") {
     "//url/mojom:url_mojom_gurl",
   ]
 }
+
+mojom("agent") {
+  sources = [ "browser_agent.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}

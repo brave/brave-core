@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/features.cc b/chrome/browser/ui/tabs/features.cc
+index 198d0de3b05be63060a3a7dd0b7f61c7d6ae377e..be490a96bd3da80204c5355750e8376fc69bc1da 100644
+--- a/chrome/browser/ui/tabs/features.cc
++++ b/chrome/browser/ui/tabs/features.cc
+@@ -28,13 +28,9 @@ BASE_FEATURE(kTabSearchCjkWordBoundary, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kVerticalTabs, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kVerticalTabsLaunch feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kVerticalTabsLaunch,
+-#if BUILDFLAG(IS_CHROMEOS)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kVerticalTabsToggleInTabContextMenu,
+                    &kVerticalTabsLaunch,

@@ -19,13 +19,15 @@ android_library("java") {
 
 android_library("options_java") {
   sources = [
-    "java/src/org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentBase.java",
-    "java/src/org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsSearchIndex.java",
+    "java/src/org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentBase.java",
+    "java/src/org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsSearchIndex.java",
   ]
 
   deps = [
     ":options_java_resources",
     "//brave/browser/android/preferences:pref_names_java",
+    "//brave/browser/ui/android/theme:dynamic_colors_java",
+    "//brave/components/browser_ui/settings/android:java",
     "//build/android:build_java",
     "//chrome/browser/autofill/android:java",
     "//chrome/browser/profiles/android:java",

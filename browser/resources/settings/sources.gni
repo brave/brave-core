@@ -74,24 +74,18 @@ brave_settings_web_component_files = [
 
 brave_settings_ts_files = [
   "ad_block_only_mode_page/ad_block_only_mode_mixin.ts",
-  "br/a11y_page.ts",
-  "br/a11y_page_index.ts",
   "br/all_sites.ts",
   "br/about_page.ts",
   "br/autofill_page.ts",
-  "br/appearance_page.ts",
-  "br/appearance_page_index.ts",
   "br/basic_page.ts",
   "br/clear_browsing_data_dialog.ts",
   "br/clear_browsing_data_time_picker.ts",
   "br/config.ts",
   "br/cookies_page.ts",
-  "br/default_browser_page.ts",
   "br/edit_dictionary_page.ts",
   "br/import_data_dialog.ts",
   "br/index.ts",
   "br/memory_page.ts",
-  "br/on_startup_page.ts",
   "br/page_visibility.ts",
   "br/passwords_section.ts",
   "br/payments_section.ts",
@@ -118,7 +112,6 @@ brave_settings_ts_files = [
   "br/site_details.ts",
   "br/site_list_entry.ts",
   "br/site_list.ts",
-  "br/system_page.ts",
   "br/add_site_dialog.ts",
   "br/site_settings_page.ts",
   "br/sync_account_control.ts",
@@ -225,7 +218,10 @@ brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account_row.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/get_service_token.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/login.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/register.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/resend_verification_email.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/mojom/brave_origin_settings.mojom-webui.ts",
 
@@ -298,7 +294,8 @@ if (enable_speedreader) {
 }
 
 if (enable_email_aliases) {
-  brave_settings_ts_files += [ "email_aliases_page/email_aliases_page.ts" ]
+  brave_settings_web_component_files +=
+      [ "email_aliases_page/email_aliases_page.ts" ]
 }
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's

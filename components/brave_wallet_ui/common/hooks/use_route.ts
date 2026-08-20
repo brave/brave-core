@@ -18,17 +18,18 @@ export const useRoute = () => {
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
   // Methods
   const openOrPushRoute = React.useCallback(
     (route: string) => {
-      if (isPanel) {
+      if (isPanel && !isSidePanel) {
         openWalletRouteTab(route)
         return
       }
       history.push(route)
     },
-    [history, isPanel],
+    [history, isPanel, isSidePanel],
   )
   return { openOrPushRoute }
 }

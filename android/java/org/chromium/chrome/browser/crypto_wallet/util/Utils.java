@@ -809,27 +809,11 @@ public class Utils {
             default:
                 logo = -1;
         }
-        // Local host chain is not unique per network
-        if (logo == -1 && chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-            switch (coin) {
-                case CoinType.SOL:
-                    logo = R.drawable.ic_sol_color;
-                    break;
-                case CoinType.ETH:
-                    logo = R.drawable.ic_eth_color;
-                    break;
-                case CoinType.FIL:
-                    logo = R.drawable.ic_filecoin_color;
-                    break;
-                default: // Do nothing
-            }
-        }
         return logo;
     }
 
     public static String getNetworkIconName(final NetworkInfo network) {
         final String chainId = network.chainId;
-        final int coin = network.coin;
 
         String logo;
         switch (chainId) {
@@ -885,21 +869,6 @@ public class Utils {
                 break;
             default:
                 logo = "";
-        }
-        // Local host chain is not unique per network
-        if (logo.isEmpty() && chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-            switch (coin) {
-                case CoinType.SOL:
-                    logo = "sol.png";
-                    break;
-                case CoinType.ETH:
-                    logo = "eth.png";
-                    break;
-                case CoinType.FIL:
-                    logo = "fil.png";
-                    break;
-                default: // Do nothing
-            }
         }
         return logo;
     }

@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/common/algorithm/split_vector_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
@@ -358,41 +357,11 @@ void CreativeNotificationAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 48: {
-      MigrateToV48(mojom_db_transaction);
-      break;
-    }
-
     default: {
       // No migration needed.
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void CreativeNotificationAds::MigrateToV48(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
-
-  // Embeddings are deprecated.
-  DropTable(mojom_db_transaction, "embeddings");
-  DropTable(mojom_db_transaction, "text_embedding_html_events");
-
-  // It is safe to recreate the table because it will be repopulated after
-  // downloading the catalog post-migration. However, after this migration, we
-  // should not drop the table as it will store catalog and non-catalog ad units
-  // and maintain relationships with other tables.
-  DropTable(mojom_db_transaction, "creative_ad_notifications");
-  Execute(mojom_db_transaction, R"(
-      CREATE TABLE creative_ad_notifications (
-        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-        creative_set_id TEXT NOT NULL,
-        campaign_id TEXT NOT NULL,
-        title TEXT NOT NULL,
-        body TEXT NOT NULL
-      ))");
 }
 
 }  // namespace brave_ads::database::table

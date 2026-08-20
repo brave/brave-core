@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
@@ -86,6 +87,15 @@ ConfirmationQueueItemInfo ConfirmationQueueItemFromMojomRow(
   }
 
   confirmation_queue_item.retry_count = ColumnInt(mojom_db_row, 13);
+
+  // Confirmations queued before RFC support was added use the legacy
+  // derivation. Recover them from the stored credentials so such
+  // confirmations still verify and redeem.
+  if (confirmation_queue_item.confirmation.reward &&
+      !IsValid(confirmation_queue_item.confirmation)) {
+    confirmation_queue_item.confirmation.reward->unblinded_token =
+        cbr::UnblindedToken(unblinded_token, /*rfc=*/false);
+  }
 
   return confirmation_queue_item;
 }

@@ -5,17 +5,13 @@
 
 #include "brave/components/psst/core/browser/pref_names.h"
 
-#include "base/feature_list.h"
-#include "brave/components/psst/core/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace psst {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
-    registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
-    registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
-  }
+  registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
+  registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
 }
 
 }  // namespace psst

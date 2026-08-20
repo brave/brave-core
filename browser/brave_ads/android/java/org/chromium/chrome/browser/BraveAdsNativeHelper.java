@@ -16,14 +16,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 public class BraveAdsNativeHelper {
     private BraveAdsNativeHelper() {}
 
-    public static boolean nativeIsOptedInToNotificationAds(Profile profile) {
-        return BraveAdsNativeHelperJni.get().isOptedInToNotificationAds(profile);
-    }
-
-    public static void nativeSetOptedInToNotificationAds(Profile profile, boolean optedIn) {
-        BraveAdsNativeHelperJni.get().setOptedInToNotificationAds(profile, optedIn);
-    }
-
     public static boolean nativeIsSupportedRegion(Profile profile) {
         return BraveAdsNativeHelperJni.get().isSupportedRegion(profile);
     }
@@ -47,10 +39,6 @@ public class BraveAdsNativeHelper {
 
     @NativeMethods
     interface Natives {
-        boolean isOptedInToNotificationAds(Profile profile);
-
-        void setOptedInToNotificationAds(Profile profile, boolean optedIn);
-
         boolean isSupportedRegion(Profile profile);
 
         void clearData(Profile profile);

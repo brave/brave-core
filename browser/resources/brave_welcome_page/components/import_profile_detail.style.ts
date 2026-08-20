@@ -38,7 +38,12 @@ export const style = scoped.css`
   }
 
   .data-types {
+    .list > * {
+      cursor: pointer;
+    }
+
     leo-checkbox {
+      --leo-checkbox-size: 24px;
       width: 100%;
     }
   }

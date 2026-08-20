@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
+index 05e8b374645574a44425641dda249d22bdd8b8c2..733ed0de67520ba2aeb5f1858b423c79718cbc4b 100644
+--- a/chrome/browser/ui/ui_features.cc
++++ b/chrome/browser/ui/ui_features.cc
+@@ -106,7 +106,8 @@ bool IsWebuiRefresh2026Enabled() {
+ BASE_FEATURE(kDseIntegrity, base::FEATURE_ENABLED_BY_DEFAULT);
+ // Enables the feature to remove the last confirmation dialog when relaunching
+ // to update Chrome.
+-BASE_FEATURE(kFewerUpdateConfirmations, base::FEATURE_ENABLED_BY_DEFAULT);
++// kFewerUpdateConfirmations feature state is enforced via plaster rewrite.
++BASE_FEATURE(kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kLegacySearchIntegrityCheck, base::FEATURE_DISABLED_BY_DEFAULT);
+ #endif
+@@ -124,7 +125,8 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_DISABLED_BY_DEFAULT);
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+ // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
+ // isn't the default already.
+-BASE_FEATURE(kPdfInfoBar, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPdfInfoBar feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPdfInfoBar, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kSeparateDefaultAndPinPrompt, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(int,
+@@ -246,13 +248,9 @@ bool IsTabGroupHoverCardsEnabled() {
+ 
+ // Enables preview images in tab-hover cards.
+ // https://crbug.com/41439486
++// kTabHoverCardImages feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kTabHoverCardImages,
+-#if BUILDFLAG(IS_MAC)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kTabStripNewTabButtonFlickerFix, base::FEATURE_ENABLED_BY_DEFAULT);
+ 

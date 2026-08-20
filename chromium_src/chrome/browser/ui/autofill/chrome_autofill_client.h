@@ -8,26 +8,7 @@
 
 #include "components/autofill/content/browser/content_autofill_client.h"
 
-// Note, the _Unused methods below can retain "final" because the base class
-// override for components/autofill/content/browser/content_autofill_client.h
-// declares them specifically for this purpose.
-
-#define GetAutofillOptimizationGuideDecider             \
-  GetAutofillOptimizationGuideDecider() const override; \
-  AutofillOptimizationGuideDecider* GetAutofillOptimizationGuideDecider_Unused
-
-#define IsAutofillEnabled             \
-  IsAutofillEnabled() const override; \
-  bool IsAutofillEnabled_Unused
-
-#define IsAutocompleteEnabled             \
-  IsAutocompleteEnabled() const override; \
-  bool IsAutocompleteEnabled_Unused
-
 #include <chrome/browser/ui/autofill/chrome_autofill_client.h>  // IWYU pragma: export
-#undef IsAutocompleteEnabled
-#undef IsAutofillEnabled
-#undef GetAutofillOptimizationGuideDecider
 
 namespace autofill {
 

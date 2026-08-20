@@ -93,8 +93,8 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::WriteFile(*image_path_out, *encoded_png));
   }
 
-  Profile* profile() { return browser()->profile(); }
-  const Profile* profile() const { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
+  const Profile* profile() const { return browser()->GetProfile(); }
 
   CustomBackgroundFileManager& custom_file_manager() { return *file_manager_; }
 

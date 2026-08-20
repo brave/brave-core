@@ -155,6 +155,6 @@ struct OnboardingStepView: View {
 
 #if DEBUG
 #Preview {
-  OnboardingStepView(step: .p3aOptIn)
+  OnboardingStepView(step: .metricsOptIn)
 }
 #endif

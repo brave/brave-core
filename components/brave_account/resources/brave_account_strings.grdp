@@ -151,7 +151,7 @@
     Forgot your password?
   </message>
   <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION" desc="Description for the dialog where the user can reset their Brave Account password" formatter_data="webui=BraveAccount">
-    Confirm your Brave account email and you'll then receive a link to reset your password. The link will only be valid for 30 minutes.
+    Confirm your Brave account email and you'll then receive a code to reset your password. The code will only be valid for 15 minutes.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" desc="Label for the button that submits the 'Forgot Password' dialog" formatter_data="webui=BraveAccount">
     Reset your password
@@ -205,12 +205,6 @@
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS" desc="Error message shown when too many email verifications have been requested and the user must wait before trying again" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Email verification limit exceeded. Please wait 30 minutes before trying again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE" desc="" formatter_data="webui=BraveAccount">
-    Verification code expired. Start the registration process again.
-  </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="" formatter_data="webui=BraveAccount">
-    Too many incorrect codes were entered. Start the registration process again.
-  </message>
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="Error message shown when the entered email verification code is incorrect" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Wrong code, please try again.
   </message>
@@ -220,26 +214,27 @@
   <message name="IDS_BRAVE_ACCOUNT_ACCOUNT_DOES_NOT_EXIST" desc="Error message shown when no account exists for the entered email address" formatter_data="webui=BraveAccount">
     No account found for this email address.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_FAILED_TO_SEND_EMAIL_DUE_TO_INVALID_FORMAT" desc="Error message shown when the email could not be sent because the email address format is invalid" formatter_data="webui=BraveAccount">
-    Invalid email address.
-  </message>
   <message name="IDS_BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL" desc="Error message shown when the daily verification limit has been reached for this email address" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Too many verification attempts for this email address. Try again in 24 hours.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED" desc="Error message shown during password reset when the email is already verified, indicating an internal error" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Internal error. Close the dialog, cancel the verification, and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE" desc="Error message shown during password reset when the verification could not be found or the ID/code is invalid" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
-    Verification code expired. Start the password change process again.
-  </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown during password reset when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
-    Too many incorrect codes were entered. Start the password change process again.
-  </message>
 
   <!-- Common: -->
-  <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount,BraveAccountSettings">
-    A Brave account will allow you to easily access Brave services.
-  </message>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+      A Brave account lets you create and manage your email aliases.
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account, shown in the Get started settings page. Ends with a link to a support article." formatter_data="webui=BraveAccountSettings">
+      A Brave account lets you create and manage your email aliases. <ph name="BEGIN_LINK">&lt;a&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+  </if>
+  <if expr="is_android or is_ios">
+    <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+      A Brave account will allow you to easily access Brave services.
+    </message>
+  </if>
   <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" desc="Label for the back button" formatter_data="webui=BraveAccount">
     Go back
   </message>
@@ -276,6 +271,9 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     Email already verified.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+    You entered too many incorrect codes. Cancel the verification and try again.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED" desc="Error message shown in an alert when the verification token has expired" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
     The verification code has expired. Cancel the verification and try again.

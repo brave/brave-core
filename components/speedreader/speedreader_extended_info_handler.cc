@@ -45,9 +45,9 @@ void SpeedreaderExtendedInfoHandler::PersistMode(
     DistillState state) {
   DCHECK(entry);
   std::unique_ptr<SpeedreaderNavigationData> data;
-  if (DistillStates::IsDistilledAutomatically(state)) {
+  if (IsDistilledAutomatically(state)) {
     data = std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilled);
-  } else if (DistillStates::IsDistilled(state)) {
+  } else if (IsDistilled(state)) {
     data =
         std::make_unique<SpeedreaderNavigationData>(kPageSavedDistilledManual);
   }
@@ -66,13 +66,11 @@ DistillState SpeedreaderExtendedInfoHandler::GetCachedMode(
     return {};
   }
   if (data->value == kPageSavedDistilled) {
-    return DistillStates::Distilled(
-        DistillStates::Distilled::Reason::kAutomatic,
-        DistillationResult::kSuccess);
+    return Distilled(Distilled::Reason::kAutomatic,
+                     DistillationResult::kSuccess);
   }
 
-  return DistillStates::Distilled(DistillStates::Distilled::Reason::kManual,
-                                  DistillationResult::kSuccess);
+  return Distilled(Distilled::Reason::kManual, DistillationResult::kSuccess);
 }
 
 // static

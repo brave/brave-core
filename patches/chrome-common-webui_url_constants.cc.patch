@@ -1,0 +1,23 @@
+diff --git a/chrome/common/webui_url_constants.cc b/chrome/common/webui_url_constants.cc
+index 3aaa4aaa4b1def46ca009531bb9efb4add8478f3..90e83622cff7c5e91d13eaccf65727022d1bf9ba 100644
+--- a/chrome/common/webui_url_constants.cc
++++ b/chrome/common/webui_url_constants.cc
+@@ -287,6 +287,18 @@ base::span<const base::cstring_view> ChromeURLHosts() {
+ #if !BUILDFLAG(IS_ANDROID)
+       kChromeUIWebuiBrowserHost,
+ #endif  // !BUILDFLAG(IS_ANDROID)
++      kAdblockHost,
++      kAdblockInternalsHost,
++      kRewardsPageHost,
++      kRewardsInternalsHost,
++      kWelcomeHost,
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++      kWalletPageHost,
++#endif
++      kTorInternalsHost,
++      kSkusInternalsHost,
++      kAdsInternalsHost,
++      kNewTabTakeoverHost,
+   });
+ 
+   return base::span(kChromeURLHosts);

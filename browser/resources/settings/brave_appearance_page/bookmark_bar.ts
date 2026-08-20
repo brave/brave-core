@@ -6,7 +6,8 @@
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
+import {PrefService} from '/shared/settings/prefs2/pref_service.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from '../i18n_setup.js';
@@ -14,8 +15,8 @@ import {loadTimeData} from '../i18n_setup.js';
 import {getTemplate} from './bookmark_bar.html.js'
 
 const SettingsBraveAppearanceBookmarkBarElementBase =
-  PrefsMixin(I18nMixin(PolymerElement)) as {
-    new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
+  PrefServiceObserverMixin(I18nMixin(PolymerElement)) as {
+    new (): PolymerElement & I18nMixinInterface & PrefServiceObserverMixinInterface
   }
 
 enum BookmarkBarState {
@@ -75,7 +76,12 @@ export class SettingsBraveAppearanceBookmarkBarElement
             }
           ];
         }
-      }
+      },
+
+      // Mirrored from the global PrefService. `bookmarkBarStatePref_` above
+      // is a synthetic pref derived from these two real ones.
+      showOnAllTabsPref_: Object,
+      alwaysShowOnNtpPref_: Object,
     }
   }
 
@@ -84,41 +90,43 @@ export class SettingsBraveAppearanceBookmarkBarElement
   declare private bookmarkBarShowOptions_ :
       Array<{value: BookmarkBarState, name: string}>
   private bookmarkBarShowEnabledLabel_: string
+  declare private showOnAllTabsPref_:
+      chrome.settingsPrivate.PrefObject<boolean>|undefined
+  declare private alwaysShowOnNtpPref_:
+      chrome.settingsPrivate.PrefObject<boolean>|undefined
 
   static get observers() {
     return [
-      'onPrefsChanged_(prefs.bookmark_bar.show_on_all_tabs.value,' +
-      ' prefs.brave.always_show_bookmark_bar_on_ntp.value)'
+      'onPrefsChanged_(showOnAllTabsPref_.value, alwaysShowOnNtpPref_.value)'
     ]
   }
 
-  override ready() {
-    super.ready()
-    window.addEventListener('load', this.onLoad_.bind(this));
-  }
-
-  private onLoad_() {
-    this.setControlValueFromPrefs()
+  override connectedCallback() {
+    super.connectedCallback()
+    this.mirrorPrefs({
+      [kShowOnAllTabsPrefName]: 'showOnAllTabsPref_',
+      [kAlwaysShowBookmarBarPrefName]: 'alwaysShowOnNtpPref_',
+    })
   }
 
   private getBookmarkBarStateFromPrefs(): BookmarkBarState {
-    if (this.getPref(kShowOnAllTabsPrefName).value)
+    if (this.showOnAllTabsPref_?.value)
       return BookmarkBarState.ALWAYS
 
-    if (this.getPref(kAlwaysShowBookmarBarPrefName).value)
+    if (this.alwaysShowOnNtpPref_?.value)
       return BookmarkBarState.NTP
     return BookmarkBarState.NONE
   }
 
   private saveBookmarkBarStateToPrefs(state: BookmarkBarState) {
     if (state === BookmarkBarState.ALWAYS) {
-      this.setPrefValue(kShowOnAllTabsPrefName, true)
+      PrefService.getInstance().setPrefValue(kShowOnAllTabsPrefName, true)
     } else if (state === BookmarkBarState.NTP) {
-      this.setPrefValue(kShowOnAllTabsPrefName, false)
-      this.setPrefValue(kAlwaysShowBookmarBarPrefName, true)
+      PrefService.getInstance().setPrefValue(kShowOnAllTabsPrefName, false)
+      PrefService.getInstance().setPrefValue(kAlwaysShowBookmarBarPrefName, true)
     } else {
-      this.setPrefValue(kShowOnAllTabsPrefName, false)
-      this.setPrefValue(kAlwaysShowBookmarBarPrefName, false)
+      PrefService.getInstance().setPrefValue(kShowOnAllTabsPrefName, false)
+      PrefService.getInstance().setPrefValue(kAlwaysShowBookmarBarPrefName, false)
     }
   }
   private setControlValueFromPrefs() {

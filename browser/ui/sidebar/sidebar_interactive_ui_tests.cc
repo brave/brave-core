@@ -83,7 +83,7 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   SimulateSidebarItemClickAt(wallet_item_index);
   EXPECT_EQ(0, tab_model()->active_index());
 
-  auto* browser2 = CreateBrowser(browser()->profile());
+  auto* browser2 = CreateBrowser(browser()->GetProfile());
   ui_test_utils::WaitUntilBrowserBecomeActive(browser2);
 
   // |browser2| doesn't have any wallet tab. So, clicking the wallet sidebar
@@ -97,7 +97,7 @@ IN_PROC_BROWSER_TEST_F(SidebarInteractiveUITest, IterateBuiltInWebTypeTest) {
   browser2_controller->ActivateItemAt(browser2_wallet_item_index.value());
   activation_waiter.WaitForActivation();
 
-  EXPECT_TRUE(browser()->window()->IsActive());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsActive());
   EXPECT_EQ(0, tab_model()->active_index());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

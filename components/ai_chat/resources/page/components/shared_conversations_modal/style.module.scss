@@ -1,0 +1,101 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.dialog {
+  --leo-dialog-padding: var(--leo-spacing-2xl);
+  --leo-dialog-width: 480px;
+}
+
+.title {
+  font: var(--leo-font-heading-h3);
+  color: var(--leo-color-text-primary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--leo-spacing-2xl);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  // Long lists shouldn't push the dialog past the viewport.
+  max-height: 320px;
+  overflow-y: auto;
+  // The dialog is a grid whose column can't be narrower than its content's
+  // min-content width, and a nowrap share title's min-content width is the
+  // whole title. Without this the title widens the dialog (which scrolls
+  // horizontally) instead of ellipsizing. `min-width: 0` below can't do this:
+  // it removes the floor on a flex item's size, it doesn't cap what the item
+  // contributes to an ancestor's intrinsic width.
+  contain: inline-size;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.share {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-xl);
+  border: 1px solid var(--leo-color-divider-subtle);
+}
+
+.shareDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xs);
+  // Allows the title to ellipsize rather than widen the row.
+  min-width: 0;
+  flex: 1;
+}
+
+.shareTitle {
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shareMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--leo-spacing-s);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.shareId {
+  // De-emphasized: only useful for matching a record with a link that has
+  // already been sent to someone.
+  color: var(--leo-color-text-tertiary);
+  word-break: break-all;
+}
+
+.shareActions {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}

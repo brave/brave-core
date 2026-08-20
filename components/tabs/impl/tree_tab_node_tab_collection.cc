@@ -347,6 +347,22 @@ TreeTabNodeTabCollection::GetTreeNodeChildren() {
   return children;
 }
 
+std::vector<TreeTabNodeTabCollection*>
+TreeTabNodeTabCollection::GetTreeTabNodeSubtreeRecursive() {
+  std::vector<TreeTabNodeTabCollection*> nodes = {this};
+  CollectTreeNodesRecursively(*this, nodes);
+  return nodes;
+}
+
+void TreeTabNodeTabCollection::RebindTreeTabModelCallbacks(
+    base::RepeatingCallback<void(TreeTabNode&)> on_create,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move) {
+  on_create_ = std::move(on_create);
+  on_remove_ = std::move(on_remove);
+  on_move_ = std::move(on_move);
+}
+
 std::unique_ptr<TabCollection> TreeTabNodeTabCollection::MaybeRemoveCollection(
     TabCollection* collection) {
   const bool clear_current_value =

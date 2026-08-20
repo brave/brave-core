@@ -63,7 +63,7 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
 
     // Create and start the Rewards service
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
+        brave_rewards::RewardsServiceFactory::GetForProfile(GetProfile()));
     base::RunLoop run_loop;
     rewards_service_->StartProcessForTesting(run_loop.QuitClosure());
     run_loop.Run();
@@ -125,7 +125,7 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
     return pref_service->GetBoolean("brave.rewards.enabled");
   }
 
-  Profile* profile() { return browser()->profile(); }
+  Profile* profile() { return browser()->GetProfile(); }
 
  private:
   raw_ptr<brave_rewards::RewardsServiceImpl, DanglingUntriaged>

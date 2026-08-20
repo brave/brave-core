@@ -235,11 +235,13 @@ export const PortfolioAssetItem = ({
                       <LoadingSkeleton
                         width={assetNameSkeletonWidth}
                         height={18}
+                        inline={true}
                       />
                       <Spacer />
                       <LoadingSkeleton
                         width={assetNetworkSkeletonWidth}
                         height={18}
+                        inline={true}
                       />
                     </>
                   ) : (
@@ -291,6 +293,7 @@ export const PortfolioAssetItem = ({
                       <LoadingSkeleton
                         width={60}
                         height={18}
+                        inline={true}
                       />
                       <Spacer />
                     </>
@@ -309,6 +312,7 @@ export const PortfolioAssetItem = ({
                         <LoadingSkeleton
                           width={60}
                           height={18}
+                          inline={true}
                         />
                       )}
                     </>

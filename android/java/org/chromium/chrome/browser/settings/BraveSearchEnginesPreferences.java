@@ -25,6 +25,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.incognito.IncognitoUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -38,8 +39,8 @@ import org.chromium.components.web_discovery.WebDiscoveryPrefs;
 
 public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
-    private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
-    private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
+    /* package */ static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
+    /* package */ static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
 
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
@@ -63,6 +64,10 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.brave_search_engines));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_search_engines_preferences);
+        if (!IncognitoUtils.isIncognitoModeEnabled(getProfile())) {
+            // Private mode is disabled by policy, so there is no private DSE to configure.
+            removePreferenceIfPresent(PREF_PRIVATE_SEARCH_ENGINE);
+        }
     }
 
     @Override
@@ -162,9 +167,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         searchEnginePreference = findPreference(PREF_PRIVATE_SEARCH_ENGINE);
         if (searchEnginePreference != null) {
             searchEnginePreference.setEnabled(true);
-            searchEnginePreference.setSummary(
-                    BraveSearchEngineUtils.getDSEShortName(
-                            getProfile().getPrimaryOtrProfile(/* createIfNeeded= */ true), true));
+            searchEnginePreference.setSummary(BraveSearchEngineUtils.getPrivateDSEShortName());
         }
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
@@ -253,13 +256,15 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                             frag,
                             PREF_STANDARD_SEARCH_ENGINE,
                             BraveSearchEngineUtils.getDSEShortName(profile, false));
-                    updateIndexSummaryForKey(
-                            indexData,
-                            frag,
-                            PREF_PRIVATE_SEARCH_ENGINE,
-                            BraveSearchEngineUtils.getDSEShortName(
-                                    profile.getPrimaryOtrProfile(/* createIfNeeded= */ true),
-                                    true));
+                    if (IncognitoUtils.isIncognitoModeEnabled(profile)) {
+                        updateIndexSummaryForKey(
+                                indexData,
+                                frag,
+                                PREF_PRIVATE_SEARCH_ENGINE,
+                                BraveSearchEngineUtils.getPrivateDSEShortName());
+                    } else {
+                        indexData.removeEntryForKey(frag, PREF_PRIVATE_SEARCH_ENGINE);
+                    }
 
                     if (!BraveConfig.WEB_DISCOVERY_ENABLED
                             || UserPrefs.get(profile)

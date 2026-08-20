@@ -3,10 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Resolve, deploy, and select the Xcode that ships a target macOS SDK.
+
+To install a particular xcode version, provide the SDK version and build number:
+
+```sh
+vpython3 ephemeral_xcode.py --sdk-version 26.5 --sdk-build 25F70 \
+    --json-output result.json
+```
+
 """
 
 from __future__ import annotations
 
+import argparse
 import dataclasses
 import hashlib
 import json
@@ -59,6 +68,43 @@ XCODE_ARCHIVE_BUCKET_URL = (
 # by build number as `xcode_<build>.app`.
 XCODE_APPS_DIR = Path('/Applications')
 
+# Bounds on individual xcode-select/xcodebuild steps that are documented
+# (crbug.com/1420480, mac_toolchain's `installXcode`) to hang rather than fail
+# outright on a freshly-expanded or corrupted Xcode. A hang here should fail
+# this step, not hang the whole build indefinitely.
+GATEKEEPER_SCAN_TIMEOUT_SECS = 300
+LICENSE_ACCEPT_TIMEOUT_SECS = 60
+RUN_FIRST_LAUNCH_TIMEOUT_SECS = 120
+
+
+def _check_developer_mode(*, warn_only: bool = False) -> None:
+    """Fail fast with a clear message if Developer Mode is disabled.
+
+    Without it, later `xcodebuild`/`xcode-select` steps fail with an obscure
+    error instead of this actionable one.
+
+    Args:
+        warn_only: Log a warning instead of raising when Developer Mode is
+            disabled.
+    """
+    output = _check_call('/usr/sbin/DevToolsSecurity',
+                         '-status',
+                         capture_output=True).stdout
+    if 'Developer mode is currently enabled.' not in output:
+        message = ('Developer mode is currently disabled! Please use `sudo '
+                   '/usr/sbin/DevToolsSecurity -enable` to enable.')
+        if warn_only:
+            logging.warning(message)
+        else:
+            raise RuntimeError(message)
+
+
+def _macos_major_version() -> int:
+    """The running host's major macOS version, e.g. `14` for `14.6.1`."""
+    version = _check_call('sw_vers', '-productVersion',
+                          capture_output=True).stdout.strip()
+    return int(version.split('.')[0])
+
 
 def _fetch_xcode_releases() -> Any:
     """Fetch and parse the xcodereleases.com release catalog as JSON.
@@ -108,6 +154,16 @@ def _sha1_of_file(path: Path) -> str:
         for chunk in iter(lambda: file.read(XIP_IO_CHUNK_BYTES), b''):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _version_sort_key(version: str) -> tuple[int, ...]:
+    """Parse a marketing version string like `26.5` into a sortable tuple.
+
+    Numeric comparison, not the build-number string's own (lexicographic and
+    thus chronologically unreliable -- e.g. `'17F42' > '17F113'` as strings,
+    even though 17F42 is the older build).
+    """
+    return tuple(int(part) for part in version.split('.') if part.isdigit())
 
 
 @dataclasses.dataclass(frozen=True)
@@ -213,7 +269,12 @@ class EphemeralXcode:
         return self._release
 
     @contextmanager
-    def deploy(self, mac_sdk_info: MacSdkInfo) -> Iterator[EphemeralXcode]:
+    def deploy(
+            self,
+            mac_sdk_info: MacSdkInfo,
+            *,
+            skip_developer_mode_check: bool = False
+    ) -> Iterator[EphemeralXcode]:
         """Resolve, install, and select the Xcode for an SDK pin, then reset.
 
         A context manager. Resolves the released Xcode that ships
@@ -226,16 +287,53 @@ class EphemeralXcode:
         Args:
             mac_sdk_info: The macOS SDK version/build the deployed Xcode must
                 ship (typically Chromium's `mac_sdk.gni` pin).
+            skip_developer_mode_check: Warn instead of raising when the
+                `DevToolsSecurity -status` check finds Developer Mode
+                disabled.
 
         Yields:
             This `EphemeralXcode`, with `app`/`release` populated.
         """
         self._resolve_release(mac_sdk_info)
         app_path = self._install()
-        with self._select(app_path):
+        with self._select(app_path,
+                          skip_developer_mode_check=skip_developer_mode_check):
             self._locate_app()
             self._verify_versions(mac_sdk_info)
             yield self
+
+    def install_and_select(self,
+                           mac_sdk_info: MacSdkInfo,
+                           *,
+                           skip_developer_mode_check: bool = False) -> Path:
+        """Resolve, install, and select the Xcode for an SDK pin; no revert.
+
+        Unlike `deploy()`, this leaves the resolved Xcode selected once it
+        returns. The caller is responsible for eventually reverting it
+        (`reset()`, or directly `sudo xcode-select --reset`) once done with
+        it.
+
+        Args:
+            mac_sdk_info: The macOS SDK version/build the deployed Xcode must
+                ship (typically Chromium's `mac_sdk.gni` pin).
+            skip_developer_mode_check: Warn instead of raising when the
+                `DevToolsSecurity -status` check finds Developer Mode
+                disabled.
+
+        Returns:
+            The absolute path to the selected `Xcode.app`.
+        """
+        self._resolve_release(mac_sdk_info)
+        app_path = self._install()
+        self._switch(app_path,
+                     skip_developer_mode_check=skip_developer_mode_check)
+        self._locate_app()
+        self._verify_versions(mac_sdk_info)
+        return app_path
+
+    def reset(self) -> None:
+        """Revert `xcode-select` back to the default installation."""
+        _check_call('sudo', '/usr/bin/xcode-select', '--reset')
 
     def _resolve_release(self, mac_sdk_info: MacSdkInfo) -> None:
         """Map a macOS SDK build to a released Xcode `.xip`.
@@ -260,7 +358,9 @@ class EphemeralXcode:
             # (`{'rc': N}`), GM seeds, etc. all lack it and are skipped.
             if not (version.get('release') or {}).get('release'):
                 continue
-            macos_sdks = entry['sdks']['macOS']
+            # Xcode releases from before the catalog tracked bundled SDKs at
+            # all (Xcode 2.x-6.x) have no `sdks` key whatsoever.
+            macos_sdks = (entry.get('sdks') or {}).get('macOS') or []
             if not any(sdk.get('build') == target_build for sdk in macos_sdks):
                 continue
             url = ((entry.get('links') or {}).get('download') or {}).get('url')
@@ -283,10 +383,15 @@ class EphemeralXcode:
                 f'No released Xcode on {XCODE_RELEASES_API_URL} bundles macOS '
                 f'SDK build {target_build}')
         if len(chosen) > 1:
-            names = ', '.join(c.xip_filename for c in chosen)
-            raise RuntimeError(
-                'Ambiguous Xcode release: multiple released archives bundle '
-                f'macOS SDK build {target_build}: {names}')
+            # Apple sometimes ships a point release (e.g. 26.6) that bundles
+            # the exact same SDK build as its predecessor (26.5) without
+            # bumping it. Conservatively prefer the oldest release as that is
+            # the one used to bundle the hermetic toolchain originally.
+            chosen.sort(key=lambda c: _version_sort_key(c.version))
+            logging.info(
+                'Multiple released Xcode versions bundle macOS SDK build %s '
+                '(%s); using the oldest, %s.', target_build,
+                ', '.join(c.xip_filename for c in chosen), chosen[0].version)
         self._release = chosen[0]
         logging.info('Resolved Xcode %s (build %s) -> %s (sha1 %s)',
                      self._release.version, self._release.build,
@@ -402,27 +507,55 @@ class EphemeralXcode:
             f'Could not download a verified Xcode archive. Tried {urls}'
         ) from last_error
 
+    def _switch(self,
+                app_path: Path,
+                *,
+                skip_developer_mode_check: bool = False) -> None:
+        """Make *app_path* the active Xcode until something else selects/resets.
+
+        Switches the developer dir with `sudo xcode-select -s`:
+        """
+        _check_developer_mode(warn_only=skip_developer_mode_check)
+
+        _check_call('sudo', '/usr/bin/xcode-select', '-s', str(app_path))
+
+        if _macos_major_version() >= 14:
+            _check_call('/usr/bin/gktool',
+                        'scan',
+                        str(app_path),
+                        timeout=GATEKEEPER_SCAN_TIMEOUT_SECS)
+
+        _check_call('sudo',
+                    '/usr/bin/xcodebuild',
+                    '-license',
+                    'accept',
+                    timeout=LICENSE_ACCEPT_TIMEOUT_SECS)
+        _check_call('sudo',
+                    '/usr/bin/xcodebuild',
+                    '-runFirstLaunch',
+                    timeout=RUN_FIRST_LAUNCH_TIMEOUT_SECS)
+
+        _check_call('pkill', '-f', '/ibtoold($| )', check=False)
+
+        _check_call('xcrun', 'simctl', 'list')
+
     @contextmanager
-    def _select(self, app_path: Path) -> Iterator[None]:
+    def _select(self,
+                app_path: Path,
+                *,
+                skip_developer_mode_check: bool = False) -> Iterator[None]:
         """Make *app_path* the active Xcode for the duration of the context.
 
-        Switches the developer dir with `sudo xcode-select -s`, and runs
-        `xcodebuild -runFirstLaunch` so the freshly expanded Xcode finishes its
-        one-time setup. On exit always reverts back to the default installation
-        with `sudo xcode-select --reset`, so the machine is never left pointing
-        at this ephemeral Xcode.
+        On exit always reverts back to the default installation via
+        `reset()`, so the machine is never left pointing at this ephemeral
+        Xcode.
         """
-        _check_call('sudo', '/usr/bin/xcode-select', '-s', str(app_path))
-        _check_call('sudo', '/usr/bin/xcodebuild', '-license', 'accept')
-        _check_call('sudo', '/usr/bin/xcodebuild', '-runFirstLaunch')
-
-        # This is to avoid issues caused by mixed usage of different Xcode
-        # versions on one machine.
-        _check_call('xcrun', 'simctl', 'list')
+        self._switch(app_path,
+                     skip_developer_mode_check=skip_developer_mode_check)
         try:
             yield
         finally:
-            _check_call('sudo', '/usr/bin/xcode-select', '--reset')
+            self.reset()
 
     def _locate_app(self) -> None:
         """Resolve the local Xcode.app from the system developer dir.
@@ -507,3 +640,64 @@ class EphemeralXcode:
         logging.info('Local macOS SDK: %s (build %s)',
                      local_mac_sdk_info.sdk_version,
                      local_mac_sdk_info.product_build_version)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Parse CLI arguments and install/select the pinned Xcode.
+
+    Writes a JSON object describing the selected Xcode to `--json-output`:
+    `app`, `xcode_version`, `xcode_build`, `sdk_version`, `sdk_build_version`.
+    Leaves the Xcode selected; the caller is responsible for eventually
+    reverting it (e.g. `sudo xcode-select --reset`).
+    """
+    parser = argparse.ArgumentParser(
+        description='Resolve, install, and select the Xcode that ships a '
+        'target macOS SDK.')
+    parser.add_argument(
+        '--sdk-version',
+        required=True,
+        help='macOS SDK version Chromium pins (`mac_sdk_official_version` in '
+        'mac_sdk.gni), e.g. `26.5`.')
+    parser.add_argument(
+        '--sdk-build',
+        required=True,
+        help='macOS SDK product build version Chromium pins '
+        '(`mac_sdk_official_build_version` in mac_sdk.gni), e.g. `25F70`.')
+    parser.add_argument(
+        '--json-output',
+        required=True,
+        type=argparse.FileType('w'),
+        help='Write the resolved/selected Xcode info as JSON here.')
+    parser.add_argument('--verbose',
+                        action='store_true',
+                        help='Log every step at DEBUG level.')
+    parser.add_argument(
+        '--no-developer-mode-check',
+        action='store_true',
+        help='Warn instead of raising when the `DevToolsSecurity -status` '
+        'check finds Developer Mode disabled')
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
+                        format='%(message)s')
+
+    mac_sdk_info = MacSdkInfo(sdk_version=args.sdk_version,
+                              product_build_version=args.sdk_build)
+    xcode = EphemeralXcode()
+    app_path = xcode.install_and_select(
+        mac_sdk_info, skip_developer_mode_check=args.no_developer_mode_check)
+
+    with args.json_output as f:
+        json.dump(
+            {
+                'app': str(app_path),
+                'xcode_version': xcode.release.version,
+                'xcode_build': xcode.release.build,
+                'sdk_version': mac_sdk_info.sdk_version,
+                'sdk_build_version': mac_sdk_info.product_build_version,
+            }, f)
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

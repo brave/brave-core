@@ -27,8 +27,10 @@
 namespace misc_metrics {
 
 Web3MetricsRenderFrameObserver::Web3MetricsRenderFrameObserver(
-    content::RenderFrame* render_frame)
+    content::RenderFrame* render_frame,
+    std::unique_ptr<Delegate> delegate)
     : RenderFrameObserver(render_frame),
+      delegate_(std::move(delegate)),
       install_proxy_script_(base::StrCat(
           {"(",
            ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
@@ -54,6 +56,10 @@ bool Web3MetricsRenderFrameObserver::IsPageValid() {
 }
 
 bool Web3MetricsRenderFrameObserver::CanInjectProxy() {
+  if (!delegate_->IsWeb3Enabled()) {
+    return false;
+  }
+
   if (!IsPageValid()) {
     return false;
   }

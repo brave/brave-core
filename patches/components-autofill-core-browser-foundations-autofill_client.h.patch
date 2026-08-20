@@ -1,0 +1,17 @@
+diff --git a/components/autofill/core/browser/foundations/autofill_client.h b/components/autofill/core/browser/foundations/autofill_client.h
+index 7d1c32124bc0cb2cd859d3e14eb2cd70c3184cf2..7257ea11b66b32bf4e0b5d9f40798ceda6b30495 100644
+--- a/components/autofill/core/browser/foundations/autofill_client.h
++++ b/components/autofill/core/browser/foundations/autofill_client.h
+@@ -908,6 +908,12 @@ class AutofillClient {
+   // Returns whether the client uses platform-native autofill rather than
+   // Chrome's built-in autofill UI/logic.
+   virtual bool UsesPlatformAutofill() const = 0;
++  virtual void BraveAddSuggestions(
++      const PasswordFormClassification& form_classification,
++      const FormFieldData& field,
++      std::vector<Suggestion>& chromium_suggestions);
++  virtual bool BraveHandleSuggestion(const Suggestion& suggestion,
++                                      const autofill::FieldGlobalId& field);
+ };
+ 
+ }  // namespace autofill

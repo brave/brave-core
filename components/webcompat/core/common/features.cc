@@ -13,6 +13,6 @@ namespace webcompat::features {
 // a remote list to control site-specific exceptions to Brave features
 // when required for web compatibility.
 BASE_FEATURE(kBraveWebcompatExceptionsService,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace webcompat::features

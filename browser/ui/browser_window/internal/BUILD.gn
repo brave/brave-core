@@ -46,7 +46,7 @@ source_set("internal") {
   }
 
   if (toolkit_views) {
-    deps += [ "//brave/browser/ui/sidebar:sidebar_impl" ]
+    deps += [ "//brave/browser/ui/sidebar" ]
   }
 
   if (!is_android) {

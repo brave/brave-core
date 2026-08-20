@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/install_prompt_data.cc b/extensions/browser/install_prompt_data.cc
+index d99ed06b10c9c92969b72fe79719e9e4169afca7..06866a95cb736a3abc597d69fc7f1d628259d732 100644
+--- a/extensions/browser/install_prompt_data.cc
++++ b/extensions/browser/install_prompt_data.cc
+@@ -75,7 +75,7 @@ std::u16string InstallPromptData::GetDialogTitle() const {
+   int id = -1;
+   switch (type_) {
+     case INSTALL_PROMPT:
+-      id = IDS_EXTENSION_INSTALL_PROMPT_TITLE;
++      id = IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE;
+       break;
+     case RE_ENABLE_PROMPT:
+       id = IDS_EXTENSION_RE_ENABLE_PROMPT_TITLE;

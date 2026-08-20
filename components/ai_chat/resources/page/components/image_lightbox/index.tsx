@@ -195,7 +195,14 @@ export default function ImageLightbox(props: Props) {
           </div>
           <div className={styles.footer}>
             <div className={styles.info}>
-              <span className={styles.title}>{title}</span>
+              <div className={styles.forEllipsis}>
+                <span
+                  className={styles.title}
+                  title={title}
+                >
+                  {title}
+                </span>
+              </div>
               <span className={styles.subtitle}>{filesize}</span>
             </div>
             <div className={styles.actions}>

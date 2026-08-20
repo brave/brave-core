@@ -551,9 +551,9 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
-    NotifyTabTextContentDidChangeForRewardsUserOptedInToNotificationAds) {
+    NotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsEnabled) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
   base::RunLoop run_loop;
   EXPECT_CALL(
@@ -578,9 +578,9 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
-    DoNotNotifyTabTextContentDidChangeForNonRewardsUserAndOptedOutOfNotificationAds) {
+    DoNotNotifyTabTextContentDidChangeForNonRewardsUserWithNotificationAdsDisabled) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, false);
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   NavigateToRelativeURL(kMultiPageApplicationWebpage,
@@ -589,9 +589,9 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
-    DoNotNotifyTabTextContentDidChangeForRewardsUserOptedOutOfNotificationAds) {
+    DoNotNotifyTabTextContentDidChangeForRewardsUserWithNotificationAdsDisabled) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, false);
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   NavigateToRelativeURL(kMultiPageApplicationWebpage,
@@ -601,7 +601,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotNotifyTabTextContentDidChangeIfTabWasRestored) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
   base::RunLoop run_loop;
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange)
@@ -633,7 +633,7 @@ IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
     DoNotNotifyTabTextContentDidChangeForPreviouslyCommittedNavigation) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
   base::RunLoop run_loop;
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange)
@@ -655,7 +655,7 @@ IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
     DoNotNotifyTabTextContentDidChangeForHttpClientErrorResponsePage) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
@@ -665,7 +665,7 @@ IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
     DoNotNotifyTabTextContentDidChangeForHttpServerErrorResponsePage) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
@@ -675,7 +675,7 @@ IN_PROC_BROWSER_TEST_F(
     BraveAdsTabHelperTest,
     DoNotNotifyTabTextContentDidChangeForSameDocumentNavigation) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
 
   base::RunLoop run_loop;
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange)

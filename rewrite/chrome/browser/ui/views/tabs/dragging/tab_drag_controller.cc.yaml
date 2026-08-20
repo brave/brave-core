@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Call InsertDetachedTreeTabNodeAt() in AttachToNewContext().
+
+      In case of the detached collection is a tree tab node collection, we
+      should call InsertDetachedTreeTabNodeAt(). This inserts the code ahead of
+      other if statements that checks the collection type.
+    regex:
+      re_pattern: |
+        (if \(std::holds_alternative<std::unique_ptr<tabs::TabGroupTabCollection>>\()
+      replace: |-
+        if (std::holds_alternative<
+                      std::unique_ptr<tabs::TreeTabNodeTabCollection>>(
+                      detached_tab_collection->get()->collection_)) {
+                collection_indices =
+                    attached_context_->GetTabStripModel()->InsertDetachedTreeTabNodeAt(
+                        std::move(*detached_tab_collection), index);
+              } else \1\n

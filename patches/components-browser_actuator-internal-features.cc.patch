@@ -1,0 +1,15 @@
+diff --git a/components/browser_actuator/internal/features.cc b/components/browser_actuator/internal/features.cc
+index c96742b4266e2610cfb12b08f4e7abfe60fd947a..1c7a694e2484a1cf9c19b325677e01b6d7b700c3 100644
+--- a/components/browser_actuator/internal/features.cc
++++ b/components/browser_actuator/internal/features.cc
+@@ -6,8 +6,9 @@
+ 
+ namespace browser_actuator {
+ 
++// kBrowserActuatorProtoStreamTransport feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE_PARAM(base::TimeDelta,
+                    kProtoStreamBaseReconnectionTime,

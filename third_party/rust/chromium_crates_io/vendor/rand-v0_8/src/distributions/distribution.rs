@@ -159,8 +159,8 @@ where
 {
 }
 
-#[cfg(features = "nightly")]
-impl<D, R, T> iter::TrustedLen for DistIter<D, R, T>
+#[cfg(feature = "nightly")]
+unsafe impl<D, R, T> iter::TrustedLen for DistIter<D, R, T>
 where
     D: Distribution<T>,
     R: Rng,

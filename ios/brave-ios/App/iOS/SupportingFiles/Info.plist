@@ -45,6 +45,8 @@
 	<string>$(brave_version_build)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>KSChannelID</key>
+	<string>$(brave_channel)</string>
 	<key>KSApplicationGroup</key>
 	<string>$(BRAVE_GROUP_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>

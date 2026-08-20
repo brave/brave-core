@@ -17,29 +17,38 @@ assert(toolkit_views)
 source_set("sidebar") {
   sources = [
     "sidebar.h",
+    "sidebar_controller.h",
     "sidebar_model.h",
+    "sidebar_service_factory.h",
+    "sidebar_tab_helper.h",
+    "sidebar_utils.h",
+    "sidebar_web_panel_controller.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_talk/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//components/history/core/browser",
+    "//components/keyed_service/content",
+    "//ui/base",
+    "//ui/views",
   ]
 }
 
 source_set("sidebar_impl") {
   sources = [
     "sidebar_controller.cc",
-    "sidebar_controller.h",
     "sidebar_model.cc",
     "sidebar_service_factory.cc",
-    "sidebar_service_factory.h",
     "sidebar_tab_helper.cc",
-    "sidebar_tab_helper.h",
     "sidebar_utils.cc",
-    "sidebar_utils.h",
     "sidebar_web_panel_controller.cc",
-    "sidebar_web_panel_controller.h",
   ]
 
   public_deps = [ "//brave/components/sidebar/browser" ]

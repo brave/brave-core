@@ -1,0 +1,14 @@
+diff --git a/components/passage_embeddings/core/passage_embeddings_features.cc b/components/passage_embeddings/core/passage_embeddings_features.cc
+index 9c55b13cc751451198f2a6a754eee6ed6bc91ac1..47ea851fe385877e3209028c8415083b31f9b2a1 100644
+--- a/components/passage_embeddings/core/passage_embeddings_features.cc
++++ b/components/passage_embeddings/core/passage_embeddings_features.cc
+@@ -21,7 +21,8 @@ constexpr auto enabled_by_default_desktop_only =
+ 
+ }  // namespace
+ 
+-BASE_FEATURE(kPassageEmbedder, enabled_by_default_desktop_only);
++// kPassageEmbedder feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPassageEmbedder, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPDFEmbeddingsGeneration, enabled_by_default_desktop_only);
+ 

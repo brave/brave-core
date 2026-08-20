@@ -19,7 +19,6 @@ import UIKit
 class NewTabPageBackground: PreferencesObserver {
   /// The source of new tab page backgrounds
   private let dataSource: NTPDataSource
-  private let rewards: BraveRewards
   /// The current background image & possibly sponsor
   private(set) var currentBackground: NTPWallpaper? {
     didSet {
@@ -33,10 +32,6 @@ class NewTabPageBackground: PreferencesObserver {
   var backgroundImage: UIImage? {
     currentBackground?.backgroundImage
   }
-  /// The background video URL if available
-  var backgroundVideoPath: URL? {
-    currentBackground?.backgroundVideoPath
-  }
   /// The sponsors logo if available
   var sponsorLogoImage: UIImage? {
     currentBackground?.logoImage
@@ -45,9 +40,8 @@ class NewTabPageBackground: PreferencesObserver {
   /// while the New Tab Page is active
   var changed: (() -> Void)?
   /// Create a background holder given a source of all NTP background images
-  init(dataSource: NTPDataSource, rewards: BraveRewards) {
+  init(dataSource: NTPDataSource) {
     self.dataSource = dataSource
-    self.rewards = rewards
     dataSource.newBackground { [weak self] background in
       self?.currentBackground = background
     }
@@ -87,18 +81,13 @@ class NewTabPageBackground: PreferencesObserver {
     enum Answer: Int, CaseIterable {
       case disabled = 0
       case images = 1
-      case imagesAndVideos = 2
     }
 
     var answer = Answer.disabled
     if Preferences.NewTabPage.backgroundImages.value
       && Preferences.NewTabPage.backgroundMediaType.isSponsored
     {
-      answer =
-        Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
-          && rewards.ads.shouldShowSponsoredImagesAndVideosSetting()
-        ? .imagesAndVideos
-        : .images
+      answer = .images
     }
 
     UmaHistogramEnumeration("Brave.NTP.SponsoredMediaType", sample: answer)

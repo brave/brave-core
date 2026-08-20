@@ -174,9 +174,7 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
 
     _rewardsClient = std::make_unique<RewardsClientIOS>(self);
 
-    _rewardsEngine.BindRemote<brave_rewards::internal::RewardsEngine>(
-        _rewardsClient->MakeRemote(),
-        [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()]);
+    [self bindEngine];
 
     _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
         base::FilePath(base::SysNSStringToUTF8([self rewardsDatabasePath])));
@@ -185,6 +183,12 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
         base::FilePath(base::SysNSStringToUTF8([self creatorPrefixStorePath])));
   }
   return self;
+}
+
+- (void)bindEngine {
+  _rewardsEngine.BindRemote<brave_rewards::internal::RewardsEngine>(
+      _rewardsClient->MakeRemote(),
+      [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()]);
 }
 
 - (void)dealloc {
@@ -775,6 +779,57 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
   if (verboseLevel <= vlog_level) {
     logging::LogMessage(file.c_str(), line, -verboseLevel).stream() << message;
   }
+}
+
+#pragma mark - Reset
+
+- (void)completeReset:(nullable void (^)(BOOL success))completion {
+  [self postSelfTask:^(BraveRewardsAPI* selfPtr) {
+    [selfPtr completeResetInternal:completion];
+  }];
+}
+
+- (void)completeResetInternal:(nullable void (^)(BOOL success))completion {
+  auto __weak weakSelf = self;
+  auto callback = base::BindOnce(^(brave_rewards::mojom::Result result) {
+    auto strongSelf = weakSelf;
+    if (!strongSelf) {
+      if (completion) {
+        completion(NO);
+      }
+      return;
+    }
+    // Ensure engine is shutdown before resetting
+    if (result == brave_rewards::mojom::Result::OK) {
+      // Clear all rewards preferences, matching the desktop behavior of
+      // `RewardsServiceImpl::CompleteReset`.
+      strongSelf.profilePrefService->ClearPrefsWithPrefixSilently(
+          "brave.rewards");
+
+      // Delete the rewards database and creator prefix store.
+      [strongSelf resetRewardsDatabase];
+
+      strongSelf.rewardsParameters = nil;
+      strongSelf.balance = nil;
+
+      // Rebind the engine to a fresh instance and reinitialize it so the
+      // service remains usable after the reset. The engine's
+      // `AssociatedReceiver` can only be bound once, so the client must be
+      // recreated as well.
+      strongSelf->_rewardsEngine.reset();
+      strongSelf->_rewardsClient =
+          std::make_unique<RewardsClientIOS>(strongSelf);
+      [strongSelf bindEngine];
+      strongSelf.initialized = NO;
+      strongSelf.initializing = NO;
+    }
+
+    if (completion) {
+      completion(result == brave_rewards::mojom::Result::OK);
+    }
+  });
+
+  _rewardsEngine->Shutdown(std::move(callback));
 }
 
 #pragma mark - Publisher Database

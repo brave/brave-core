@@ -181,7 +181,13 @@ extension BrowserViewController: TabDelegate {
 
     let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self, weak tab] in
       guard let tab else { return nil }
-      return LinkPreviewViewController(url: url, for: tab, browserController: self)
+      return LinkPreviewViewController(
+        url: url,
+        for: tab,
+        policyDecider: self,
+        tabDelegate: self,
+        downloadDelegate: self
+      )
     }
 
     let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
@@ -357,15 +363,9 @@ extension BrowserViewController: TabDelegate {
     _ tab: some TabState,
     shouldBlockUniversalLinksForRequest request: URLRequest
   ) -> Bool {
-    func isYouTubeLoad() -> Bool {
-      guard let domain = request.mainDocumentURL?.baseDomain else {
-        return false
-      }
-      let domainsWithUniversalLinks: Set<String> = ["youtube.com", "youtu.be"]
-      return domainsWithUniversalLinks.contains(domain)
-    }
+    let isYouTubeLoad = request.mainDocumentURL?.isYouTubeURL ?? false
     if tab.isPrivate || !Preferences.General.followUniversalLinks.value
-      || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad())
+      || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad)
     {
       return true
     }

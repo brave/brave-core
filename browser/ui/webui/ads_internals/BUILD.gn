@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+
 source_set("ads_internals") {
   sources = [
     "ads_internals_ui.cc",
@@ -10,6 +12,7 @@ source_set("ads_internals") {
   ]
 
   deps = [
+    "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser/resources:generated_resources",
     "//brave/components/brave_ads/core",
@@ -18,12 +21,51 @@ source_set("ads_internals") {
     "//chrome/browser/profiles:profile",
   ]
 
+  if (enable_brave_rewards) {
+    sources += [
+      "ads_internals_logs_handler.cc",
+      "ads_internals_logs_handler.h",
+    ]
+
+    deps += [
+      "//brave/browser/brave_rewards",
+      "//brave/components/brave_rewards/content",
+      "//brave/components/brave_rewards/core:features",
+      "//chrome/browser:flags",
+      "//chrome/browser/lifetime",
+      "//components/webui/flags",
+    ]
+  }
+
   public_deps = [
     "//base",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
   ]
+}
+
+if (enable_brave_rewards) {
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "ads_internals_logs_handler_unittest.cc" ]
+
+    deps = [
+      ":ads_internals",
+      "//base/test:test_support",
+      "//brave/components/brave_ads/browser:test_support",
+      "//brave/components/brave_rewards/core:features",
+      "//brave/components/brave_rewards/core/buildflags",
+      "//brave/components/services/bat_ads/public/interfaces",
+      "//components/prefs:test_support",
+      "//components/webui/flags",
+      "//mojo/public/cpp/bindings",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
 }

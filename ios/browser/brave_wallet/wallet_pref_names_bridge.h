@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT NSString* const kDefaultEthereumWallet;
 OBJC_EXPORT NSString* const kDefaultSolanaWallet;
 OBJC_EXPORT NSString* const kDefaultCardanoWallet;
+// Non-empty once the user has created a wallet.
+OBJC_EXPORT NSString* const kBraveWalletKeyrings;
 
 NS_ASSUME_NONNULL_END
 

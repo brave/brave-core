@@ -20,6 +20,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -146,7 +147,8 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       if (block_type == kAds) {
         prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
       } else if (block_type == kHTTPUpgradableResources) {
-        prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
+        prefs->SetUint64(kHttpsUpgradesStat,
+                         prefs->GetUint64(kHttpsUpgradesStat) + 1);
       } else if (block_type == kJavaScript) {
         prefs->SetUint64(kJavascriptBlocked,
                          prefs->GetUint64(kJavascriptBlocked) + 1);
@@ -220,7 +222,7 @@ void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
     const std::u16string& details) {
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -233,7 +235,7 @@ void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
     ContentSettingsType webcompat_settings_type) {
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -245,7 +247,7 @@ void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
 void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
     const std::u16string& details) {
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -259,7 +261,7 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
   registry->RegisterUint64Pref(kAdsBlocked, 0);
   registry->RegisterUint64Pref(kTrackersBlocked, 0);
   registry->RegisterUint64Pref(kJavascriptBlocked, 0);
-  registry->RegisterUint64Pref(kHttpsUpgrades, 0);
+  registry->RegisterUint64Pref(kHttpsUpgradesStat, 0);
   registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
 }
 
@@ -359,7 +361,8 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url)));
+      IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url),
+      brave_user_agent::ShouldHideBraveBrand(primary_url)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(

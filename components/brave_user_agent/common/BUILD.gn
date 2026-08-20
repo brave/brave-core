@@ -8,6 +8,7 @@ component("common") {
   defines = [ "IS_BRAVE_USER_AGENT_COMMON_IMPL" ]
 
   sources = [
+    "brand_names.h",
     "features.cc",
     "features.h",
   ]

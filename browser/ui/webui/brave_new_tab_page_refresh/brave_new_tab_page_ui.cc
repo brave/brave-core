@@ -28,6 +28,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -40,6 +41,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
@@ -47,7 +49,6 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "chrome/browser/history/history_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -107,7 +108,9 @@ void BraveNewTabPageUI::BindInterface(
       g_brave_browser_process->ntp_background_images_service(),
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile));
   auto sponsored_sites_facade = std::make_unique<SponsoredSitesFacade>(
-      *prefs, g_brave_browser_process->ntp_background_images_service());
+      *prefs, g_brave_browser_process->ntp_background_images_service(),
+      *HistoryServiceFactory::GetForProfile(
+          profile, ServiceAccessType::EXPLICIT_ACCESS));
   auto top_sites_facade = std::make_unique<TopSitesFacade>(
       ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
 
@@ -226,7 +229,9 @@ BraveNewTabPageUI::GetContextualSessionHandle() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
-  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+      g_browser_process->local_state(),
+      brave_stats::IsFirstRun(g_browser_process->local_state())));
   auto* profile = Profile::FromWebUI(web_ui());
   if (!ai_chat::AIChatServiceFactory::GetForBrowserContext(profile)) {
     return;
@@ -237,7 +242,9 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
-  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+      g_browser_process->local_state(),
+      brave_stats::IsFirstRun(g_browser_process->local_state())));
   auto* profile = Profile::FromWebUI(web_ui());
   auto* service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
   if (!service) {
@@ -248,7 +255,9 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> pending_receiver) {
-  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+      g_browser_process->local_state(),
+      brave_stats::IsFirstRun(g_browser_process->local_state())));
   auto* profile = Profile::FromWebUI(web_ui());
   auto* service =
       ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile);
@@ -261,7 +270,9 @@ void BraveNewTabPageUI::BindInterface(
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
         pending_receiver) {
-  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+      g_browser_process->local_state(),
+      brave_stats::IsFirstRun(g_browser_process->local_state())));
   auto* profile = Profile::FromWebUI(web_ui());
   bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
       BookmarkModelFactory::GetForBrowserContext(profile),
@@ -270,7 +281,9 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
-  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled(
+      g_browser_process->local_state(),
+      brave_stats::IsFirstRun(g_browser_process->local_state())));
   auto* profile = Profile::FromWebUI(web_ui());
   history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
       std::move(pending_receiver),

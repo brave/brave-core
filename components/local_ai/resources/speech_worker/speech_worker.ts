@@ -16,7 +16,6 @@ import {
   SpeechRecognitionFactoryInterface,
   SpeechRecognitionFactoryReceiver,
 } from 'gen/brave/components/local_ai/core/on_device_speech_recognition.mojom.m.js'
-import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom-webui.js'
 import {
   AsrStreamInputInterface,
   AsrStreamInputPendingReceiver,
@@ -27,28 +26,9 @@ import {
 } from 'gen/services/on_device_model/public/mojom/on_device_model.mojom.m.js'
 
 import { installTrustedTypesPolicy } from './ort_env'
-import {
-  NemotronStreamSession,
-  OrtNemotronModel,
-  parseTokens,
-} from './nemotron_recognizer'
+import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
-// BigBuffer is a mojo union: either inlined bytes or a shared-memory
-// handle the renderer maps in.
-function readBigBuffer(buffer: BigBuffer, name: string): Uint8Array {
-  if (buffer.bytes) {
-    return new Uint8Array(buffer.bytes)
-  }
-  if (buffer.sharedMemory) {
-    const { buffer: mapped, result } =
-      buffer.sharedMemory.bufferHandle.mapBuffer(0, buffer.sharedMemory.size)
-    if (result !== Mojo.RESULT_OK) {
-      throw new Error(`Failed to map ${name} shared buffer`)
-    }
-    return new Uint8Array(mapped)
-  }
-  throw new Error(`Invalid ${name} BigBuffer`)
-}
+import { parseTokens, readBigBuffer } from './utils'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
@@ -64,14 +44,21 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
     responder: AsrStreamResponderRemote,
     onClose: () => void,
   ) {
+    const onResult = (text: string, isFinal: boolean) => {
+      // Empty transcript means nothing was recognized. Send an empty
+      // vector rather than a bogus [FINAL] "" (still ends the session).
+      responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
+    }
+
+    // AsrStreamResponder carries results only, so a closed pipe is how the
+    // engine learns inference was aborted and ends the recognition in error.
+    const onError = () => responder.$.close()
+
     this.session = new NemotronStreamSession(
       model,
       sampleRateHz,
-      (text, isFinal) => {
-        // Empty transcript means nothing was recognized. Send an empty
-        // vector rather than a bogus [FINAL] "" (still ends the session).
-        responder.onResponse(text ? [{ transcript: text, isFinal }] : [])
-      },
+      onResult,
+      onError,
     )
     this.receiver = new AsrStreamInputReceiver(this)
     this.receiver.$.bindHandle(pending.handle)
@@ -127,15 +114,25 @@ class SpeechRecognitionFactoryImpl
   ) {
     if (!this.model) {
       console.error('[speech-worker] createAsrStream before init')
+      responder.$.close()
       return
     }
-    const adapter = new AsrStreamInputAdapter(
-      this.model,
-      options.sampleRateHz,
-      stream,
-      responder,
-      () => this.streams.delete(adapter),
-    )
+
+    let adapter: AsrStreamInputAdapter
+    try {
+      adapter = new AsrStreamInputAdapter(
+        this.model,
+        options.sampleRateHz,
+        stream,
+        responder,
+        () => this.streams.delete(adapter),
+      )
+    } catch (error) {
+      console.error('[speech-worker] createAsrStream failed:', error)
+      responder.$.close()
+      return
+    }
+
     this.streams.add(adapter)
   }
 }

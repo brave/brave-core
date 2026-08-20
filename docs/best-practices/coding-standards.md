@@ -361,6 +361,20 @@ time, with no knowledge of the PR or change history.** Do not add comments that
 reference removed code, prior behavior, or the change itself. Comments are part
 of the codebase, not a changelog.
 
+This also covers comments that **justify a design decision the finished code
+already makes self-evident** — including the development process _within the
+same PR_. If password import lived in `BraveImportDataHandler` in one commit and
+moved to `BraveExternalProcessImporterHost` in a later commit, a reader of the
+final diff does not need a comment narrating that migration. A comment
+explaining _why the code is structured this way instead of some other way_ only
+makes sense to someone who knows about the "other way" that was considered or
+abandoned — a reader seeing the code fresh does not. These often creep in when
+an author (or AI assistant) reasons through a refactor across commits and leaves
+that reasoning behind. If the final code stands on its own, the justification is
+noise; delete it. Keep a comment only when it explains a genuinely non-obvious
+constraint the code cannot express itself (e.g. an ordering requirement, a
+workaround for an upstream bug).
+
 ```cpp
 // ❌ WRONG - references removed code / change history
 // Removed the old caching logic that was causing race conditions.
@@ -370,6 +384,16 @@ of the codebase, not a changelog.
 // ❌ WRONG - describes what was removed rather than what exists
 // The timeout parameter was removed since it's no longer needed.
 int ProcessRequest(const GURL& url);
+
+// ❌ WRONG - justifies the structure against an abandoned alternative;
+// the reader doesn't need to know password import used to live elsewhere.
+// Password import is handled by BraveExternalProcessImporterHost in the
+// browser process, alongside the utility-process import, so it participates
+// in the same import lifecycle.
+StartPasswordImport();
+
+// ✅ CORRECT - the call site is self-explanatory; no comment needed
+StartPasswordImport();
 
 // ✅ CORRECT - describes the code as it is now
 // Processes the request synchronously. Returns the HTTP status code.

@@ -69,6 +69,18 @@ export default function createAIChatApi(
           prefetchWithArgs: [],
           placeholderData: [] as Mojom.Skill[],
         },
+        // Not prefetched - only the shared conversations dialog needs this, and
+        // it fetches when it opens.
+        getConversationShares: {
+          response: (result) => result.shares,
+          placeholderData: [] as Mojom.ConversationShare[],
+        },
+        deleteConversationShare: {
+          mutationResponse: (result) => result.success,
+          onSuccess: () => {
+            api.getConversationShares.invalidate()
+          },
+        },
         getPremiumStatus: {
           response: (result) => ({
             /**
@@ -106,6 +118,9 @@ export default function createAIChatApi(
         },
         getPluralString: {
           response: (result) => result.pluralString,
+        },
+        getFaviconDataURL: {
+          response: (result) => result.dataUrl,
         },
       }),
 
@@ -196,6 +211,10 @@ export default function createAIChatApi(
           onNewDefaultConversation(contentId: number) {},
 
           onChildFrameBound(parentPagePendingReceiver) {},
+
+          onDisplayModeChanged(isStandalone) {
+            api.isStandalone.update(isStandalone)
+          },
         },
         async (observer) => {
           chatUIObserver = observer

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
-index c6bfbd94c7242659f34bc7d31ceddf8b0d619d0a..949a355ee184c5a4e2f91bb41e3f9770523206fb 100644
+index cb729d6b2cacda53d3954122e67a2f53148366dc..3d788d9a010d15ebc9fc51b2885f6762dbefabb9 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
-@@ -96,6 +96,7 @@ export class PowerBookmarksListHeaderElement extends CrLitElement {
+@@ -97,6 +97,7 @@ export class PowerBookmarksListHeaderElement extends CrLitElement {
        label: loadTimeData.getString('sortReverseAlphabetically'),
        lowerLabel: loadTimeData.getString('sortReverseAlphabetically'),
      },
 +    { sortOrder: SortOrder.kCustom, label: loadTimeData.getString('sortCustom'), lowerLabel: loadTimeData.getString('sortCustomLower'), },
    ];
-   private bookmarksService_: PowerBookmarksService =
-       PowerBookmarksService.getInstance();
+   protected accessor webuiRoundedIconsEnabled_: boolean =
+       loadTimeData.getBoolean('webuiRoundedIconsEnabled');

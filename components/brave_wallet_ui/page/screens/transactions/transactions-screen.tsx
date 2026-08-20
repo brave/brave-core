@@ -63,7 +63,7 @@ import {
   LoadingSkeletonStyleProps,
   Skeleton,
 } from '../../../components/shared/loading-skeleton/styles'
-import { EmptyTransactionsIcon } from './transaction-screen.styles'
+import { EmptyTransactionsIcon } from '../page-screen.styles'
 
 const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
   width: '100%',

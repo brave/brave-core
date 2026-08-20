@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
+#include <algorithm>
 #include <array>
 #include <string>
 #include <string_view>
@@ -17,19 +18,24 @@
 #include "base/numerics/safe_math.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -123,7 +129,7 @@ class ModelServiceTestWithDifferentPremiumModel : public ModelServiceTest {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         features::kAIChat,
         {
-            {features::kAIModelsDefaultKey.name, "chat-basic"},
+            {features::kAIModelsDefaultKey.name, kChatAutomaticModelKey},
             {features::kAIModelsPremiumDefaultKey.name, "claude-3-sonnet"},
         });
   }
@@ -138,8 +144,8 @@ class ModelServiceTestWithSamePremiumModel : public ModelServiceTest {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         features::kAIChat,
         {
-            {features::kAIModelsDefaultKey.name, "chat-basic"},
-            {features::kAIModelsPremiumDefaultKey.name, "chat-basic"},
+            {features::kAIModelsDefaultKey.name, kChatAutomaticModelKey},
+            {features::kAIModelsPremiumDefaultKey.name, kChatAutomaticModelKey},
         });
     ModelServiceTest::SetUp();
   }
@@ -186,9 +192,9 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel) {
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-basic", "claude-3-sonnet"))
+              OnDefaultModelChanged(kChatAutomaticModelKey, "claude-3-sonnet"))
       .Times(1);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "claude-3-sonnet");
@@ -197,9 +203,9 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel_UserModified) {
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
-  EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-basic", "chat-claude-haiku"))
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
+                                                "chat-claude-haiku"))
       .Times(1);
   GetService()->SetDefaultModelKey("chat-claude-haiku");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
@@ -211,10 +217,10 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
 
 TEST_F(ModelServiceTestWithSamePremiumModel,
        MigrateToPremiumDefaultModel_None) {
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -266,10 +272,10 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
 }
 
 TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
-  GetService()->SetDefaultModelKey("chat-basic");
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
-  EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-basic", "chat-claude-haiku"))
+  GetService()->SetDefaultModelKey(kChatAutomaticModelKey);
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
+                                                "chat-claude-haiku"))
       .Times(1);
   GetService()->SetDefaultModelKey("chat-claude-haiku");
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
@@ -277,12 +283,12 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
 }
 
 TEST_F(ModelServiceTest, ChangeDefaultModelKey_IncorrectKey) {
-  GetService()->SetDefaultModelKey("chat-basic");
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  GetService()->SetDefaultModelKey(kChatAutomaticModelKey);
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->SetDefaultModelKey("bad-key");
   // Default model key should not change if the key is invalid.
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -417,6 +423,34 @@ TEST_F(ModelServiceTest, GetLeoModelKeyByName_And_GetLeoModelNameByKey) {
   EXPECT_FALSE(key.has_value());
   auto name = GetService()->GetLeoModelNameByKey("nonexistent-key");
   EXPECT_FALSE(name.has_value());
+}
+
+TEST_F(ModelServiceTest,
+       GetEngineForModelFallsBackToConfiguredDefaultForUnknownKey) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat,
+      {{features::kAIModelsDefaultKey.name, kClaudeHaikuModelKey}});
+
+  // APIRequestHelper posts to the thread pool at construction time.
+  base::test::TaskEnvironment task_environment;
+  auto engine = GetService()->GetEngineForModel("this-model-key-does-not-exist",
+                                                /*url_loader_factory=*/nullptr,
+                                                /*credential_manager=*/nullptr);
+  ASSERT_TRUE(engine);
+  EXPECT_EQ(engine->GetModelName(), kClaudeHaikuModelName);
+}
+
+TEST_F(ModelServiceTest,
+       CrashesWhenConfiguredDefaultModelAlsoMissingInGetEngineForModel) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat,
+      {{features::kAIModelsDefaultKey.name, "this-default-does-not-exist"}});
+
+  EXPECT_CHECK_DEATH(GetService()->GetEngineForModel(
+      "this-model-key-does-not-exist", /*url_loader_factory=*/nullptr,
+      /*credential_manager=*/nullptr));
 }
 
 TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
@@ -575,6 +609,21 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   // Default model should be reset to the platform default
   EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), expected_default);
+}
+
+TEST_F(ModelServiceTest, LeoModelsHaveWebUIStrings) {
+  for (const auto& model : GetService()->GetModels()) {
+    if (!model->options->is_leo_model_options()) {
+      continue;
+    }
+    std::string key = base::ToUpperASCII(model->key);
+    base::ReplaceChars(key, "-", "_", &key);
+    const std::string intro = "CHAT_UI_INTRO_MESSAGE_" + key;
+    EXPECT_NE(std::ranges::find(webui::kAiChatStrings, intro,
+                                &webui::LocalizedString::name),
+              webui::kAiChatStrings.end())
+        << intro << " missing for model key " << model->key;
+  }
 }
 
 TEST_F(ModelServiceTest, GetCustomModels) {

@@ -24,6 +24,16 @@
         <item name="android:background">@drawable/rounded_top_corners</item>
     </style>
 
+    <!-- Material 3 sheet theme for the rating prompts. Unlike AppBottomSheetDialogTheme this is a
+         ThemeOverlay rather than a full theme, so the host activity's attributes - including the
+         dynamic color overlay - resolve through it. The default Widget.Material3.BottomSheet.Modal
+         paints the container with ?attr/colorSurfaceContainerLow, so the sheets do not carry their
+         own background. -->
+    <style name="RatingBottomSheetDialogTheme"
+           parent="ThemeOverlay.Material3.DayNight.BottomSheetDialog">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
     <style name="AppSetDefaultBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalSetDefaultStyle</item>
@@ -152,7 +162,7 @@
 
     <!-- Buttons for Brave Sync -->
     <style name="BraveSyncButton">
-        <item name="android:textColor">@color/schemes_on_primary</item>
+        <item name="android:textColor">?attr/globalFilledButtonTextColor</item>
         <item name="android:background">@drawable/brave_sync_btn</item>
         <item name="android:layout_marginStart">15dp</item>
         <item name="android:layout_marginEnd">15dp</item>
@@ -167,7 +177,7 @@
     </style>
 
     <style name="BraveSyncButtonTransparent">
-        <item name="android:textColor">@color/brave_sync_btn_transparent_text_color</item>
+        <item name="android:textColor">?attr/globalTextButtonTextColor</item>
         <item name="android:background">@drawable/brave_sync_btn_transparent</item>
         <item name="android:layout_marginStart">15dp</item>
         <item name="android:layout_marginEnd">15dp</item>
@@ -178,6 +188,7 @@
 
     <style name="BraveSyncBottomButton">
         <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:textColor">?attr/globalTextButtonTextColor</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -428,8 +439,28 @@
         <item name="fontWeight">400</item>
     </style>
 
-    <style name="LargeRegularPrimitiveBlurple40" parent="LargeRegular">>
-        <item name="android:textColor">@color/primitive_blurple_40</item>
+    <style name="LargeRegularDestructiveAction" parent="LargeRegular">
+        <item name="android:textColor">@color/systemfeedback_error_text</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.Tertiary"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">@color/text_tertiary</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.TextButton"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">?attr/globalTextButtonTextColor</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.DestructiveAction"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">@color/systemfeedback_error_text</item>
+    </style>
+
+    <style name="TextAppearance.Brave.PreferenceTitle.WalletDestructiveAction"
+           parent="TextAppearance.TextLarge.Primary">
+        <item name="android:textColor">@color/wallet_error_text_color</item>
     </style>
 
     <style name="LargeSemibold">

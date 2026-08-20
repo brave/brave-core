@@ -59,7 +59,7 @@ void SidebarBrowserTest::SetUpOnMainThread() {
 void SidebarBrowserTest::PreRunTestOnMainThread() {
   InProcessBrowserTest::PreRunTestOnMainThread();
 
-  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
   // Enable sidebar explicitely because sidebar option is different based on
   // channel.
   service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowAlways);
@@ -67,7 +67,7 @@ void SidebarBrowserTest::PreRunTestOnMainThread() {
   // Start test with visible toolbar button.
   // It's hidden by default in origin build.
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(kShowSidePanelButton, true);
 #endif
 }
@@ -218,7 +218,7 @@ void SidebarBrowserTest::VerifyTargetDragIndicatorIndexCalc(
 }
 
 size_t SidebarBrowserTest::GetDefaultItemCount() const {
-  return SidebarServiceFactory::GetForProfile(browser()->profile())
+  return SidebarServiceFactory::GetForProfile(browser()->GetProfile())
       ->GetDefaultSidebarItemsCountForTesting();
 }
 

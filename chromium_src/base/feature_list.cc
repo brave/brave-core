@@ -17,6 +17,14 @@
 #include "base/no_destructor.h"
 
 namespace base {
+
+static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
+                             const std::reference_wrapper<const Feature>& rhs) {
+  // Compare internal pointers directly, because there must only ever be one
+  // struct instance for a given feature name.
+  return &lhs.get() < &rhs.get();
+}
+
 namespace internal {
 namespace {
 
@@ -52,6 +60,28 @@ const DefaultStateOverrides& GetDefaultStateOverrides() {
   return *kDefaultStateOverrides;
 }
 
+bool IsFeatureOverridden(std::string_view feature_name) {
+  const auto& default_state_overrides = internal::GetDefaultStateOverrides();
+  for (const auto& default_state_override : default_state_overrides) {
+    const Feature& feature = default_state_override.first.get();
+    if (feature.name == feature_name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+std::optional<bool> GetStateIfOverridden(const Feature& feature) {
+  const auto& default_state_overrides = internal::GetDefaultStateOverrides();
+  const auto default_state_override_it = default_state_overrides.find(feature);
+  if (default_state_override_it != default_state_overrides.end()) {
+    return default_state_override_it->second ==
+           FeatureState::FEATURE_ENABLED_BY_DEFAULT;
+  }
+
+  return std::nullopt;
+}
+
 }  // namespace
 
 FeatureDefaultStateOverrider::FeatureDefaultStateOverrider(
@@ -81,45 +111,6 @@ FeatureDefaultStateOverrider::FeatureDefaultStateOverrider(
 
 }  // namespace internal
 
-// Custom comparator to use std::reference_wrapper as a key in a map/set.
-static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
-                             const std::reference_wrapper<const Feature>& rhs) {
-  // Compare internal pointers directly, because there must only ever be one
-  // struct instance for a given feature name.
-  return &lhs.get() < &rhs.get();
-}
-
-bool FeatureList::IsFeatureOverridden(std::string_view feature_name) const {
-  if (FeatureList::IsFeatureOverridden_ChromiumImpl(feature_name)) {
-    return true;
-  }
-
-  const auto& default_state_overrides = internal::GetDefaultStateOverrides();
-  for (const auto& default_state_override : default_state_overrides) {
-    const Feature& feature = default_state_override.first.get();
-    if (feature.name == feature_name) {
-      return true;
-    }
-  }
-  return false;
-}
-
-std::optional<bool> FeatureList::GetStateIfOverridden(const Feature& feature) {
-  auto state = GetStateIfOverridden_ChromiumImpl(feature);
-  if (state.has_value()) {
-    return state;
-  }
-
-  const auto& default_state_overrides = internal::GetDefaultStateOverrides();
-  const auto default_state_override_it = default_state_overrides.find(feature);
-  if (default_state_override_it != default_state_overrides.end()) {
-    return default_state_override_it->second ==
-           FeatureState::FEATURE_ENABLED_BY_DEFAULT;
-  }
-
-  return std::nullopt;
-}
-
 // static
 FeatureState FeatureList::GetCompileTimeFeatureState(const Feature& feature) {
   const auto& default_state_overrides = internal::GetDefaultStateOverrides();
@@ -131,14 +122,4 @@ FeatureState FeatureList::GetCompileTimeFeatureState(const Feature& feature) {
 
 }  // namespace base
 
-// This replaces |default_state| compare blocks with a modified one that
-// includes the compile time override check.
-#define default_state name&& GetCompileTimeFeatureState(feature)
-#define IsFeatureOverridden IsFeatureOverridden_ChromiumImpl
-#define GetStateIfOverridden GetStateIfOverridden_ChromiumImpl
-
 #include <base/feature_list.cc>
-
-#undef GetStateIfOverridden
-#undef IsFeatureOverridden
-#undef default_state

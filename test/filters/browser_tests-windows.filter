@@ -31,6 +31,7 @@
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
 -AutomationApiTest.*
+-DownloadExtensionBubbleEnabledTest.SetUiOptionsBeforeDownloadStart
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 
 # Flaky Chromium test - resize event fires during print preview due to Brave UI
@@ -62,6 +63,9 @@
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -UpdateMetricsProviderBrowserTest.RunInBackground
+
+# Flaky on CI
+-GlicDragAndDropPolicyTest.testWebToGlicDragDlpBlocked
 
 # These tests fail on CI but passes locally
 -AppMenuBrowserTest.*
@@ -109,11 +113,15 @@
 # screen dimension values returned to web content.
 -ScreenDetailsTest.FullscreenSize
 
-# https://github.com/brave/brave-browser/issues/53717
 # Flaky upstream test. ManifestSilentUpdateCommand queues a background
-# GetData() task whose FinishAndStartNextTask cleanup may still be pending when
-# HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
-# No Brave modifications to installable manager code path.
+# InstallableManager::GetData() task whose FinishAndStartNextTask cleanup may
+# still be pending when the test asserts !task_queue_.HasCurrent(). No Brave
+# modifications to the installable manager code path. Upstream (LUCI Analysis,
+# 60 day lookback): 0.8% overall, win-rel 101/54507 (0.19%). The full
+# mechanism, the per-builder numbers and the reason this is filtered
+# per-platform rather than everywhere are written up once in
+# browser_tests-linux.filter; do not duplicate them here.
+# https://github.com/brave/brave-browser/issues/53717
 -InstallableManagerBrowserTest.CheckWebapp
 
 # Chromium test: intermittent browser startup timeout on Windows CI.
@@ -145,6 +153,9 @@
 # https://github.com/brave/brave-browser/issues/55112
 -AutofillProgressDialogViewsBrowserTest.CloseBrowserWhileDialogShowing/3
 
+# Known upstream flake: 11.9% flake rate over 30 days per LUCI Analysis.
+-IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/PDFPluginDisabledTest.*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -158,7 +169,6 @@
 -CRLSetInterceptionBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
--ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
 -ContentAnalysisDialogPlainTests.*
 -CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.*
 -DisallowCurrentProfile_CredProviderUsedDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*

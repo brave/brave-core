@@ -111,7 +111,6 @@ export default defineConfig([
   },
 
   globalIgnores([
-    '.storybook/*',
     'browser/*',
     'ui/webui/resources/*',
     '**/*.d.ts',
@@ -130,6 +129,9 @@ export default defineConfig([
     'ios/brave-ios/Sources/AIChat/Components/Markdown/CodeHighlight/Scripts/highlight.min.js',
     'components/brave_wallet/resources/solana_web3_script.js',
     'test/data/ephemeral-storage/static/js/libs/js.cookie.min.js',
+
+    // Intentionally redefines/undefined browser globals.
+    'components/ai_chat/resources/code_sandbox/interface_removal.js',
   ]),
 
   {

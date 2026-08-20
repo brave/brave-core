@@ -1,0 +1,16 @@
+diff --git a/chrome/app/chrome_main.cc b/chrome/app/chrome_main.cc
+index f3c06b9e10d09d2c93e44f1f7597e4323b52b538..cfc66e79f6527fabea76a099d69819d33e31a603 100644
+--- a/chrome/app/chrome_main.cc
++++ b/chrome/app/chrome_main.cc
+@@ -161,9 +161,9 @@ int ChromeMain(int argc, const char** argv) {
+       base::TimeTicks::FromInternalValue(exe_entry_point_ticks),
+       base::TimeTicks::FromInternalValue(preread_begin_ticks),
+       base::TimeTicks::FromInternalValue(preread_end_ticks)};
+-  ChromeMainDelegate chrome_main_delegate(timestamps);
++  BraveMainDelegate chrome_main_delegate(timestamps);
+ #else  // BUILDFLAG(IS_WIN)
+-  ChromeMainDelegate chrome_main_delegate(
++  BraveMainDelegate chrome_main_delegate(
+       {.exe_entry_point_ticks = base::TimeTicks::Now()});
+ #endif
+   content::ContentMainParams params(&chrome_main_delegate);

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// AIChatService::ShareConversation tests. These live in their own file (built
+// AIChatService conversation sharing tests. These live in their own file (built
 // only when use_blink is true) because verifying the clipboard copy requires
 // ui::TestClipboard, which the clipboard test support target only builds when
 // use_blink is true (so it is unavailable on non-blink builds such as iOS). The
@@ -13,6 +13,8 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
@@ -55,9 +57,9 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
 };
 
-// Returns a fixed viewer URL without any network access, so tests can exercise
-// AIChatService's post-upload handling (appending the key fragment and copying
-// to the clipboard) without hitting the sharing server.
+// Returns a fixed share result without any network access, so tests can
+// exercise AIChatService's post-upload handling (appending the key fragment and
+// copying to the clipboard) without hitting the sharing server.
 class FakeConversationShareManager : public ConversationShareManager {
  public:
   FakeConversationShareManager() : ConversationShareManager(nullptr) {}
@@ -66,14 +68,30 @@ class FakeConversationShareManager : public ConversationShareManager {
   void ShareConversation(const std::string& encrypted_contents,
                          ShareConversationCallback callback) override {
     last_encrypted_contents = encrypted_contents;
-    std::move(callback).Run(viewer_url);
+    std::move(callback).Run(share_result);
   }
 
-  // The URL the fake server "returns" (without the decryption key fragment).
-  std::optional<GURL> viewer_url;
+  void DeleteShare(const std::string& deletion_id,
+                   DeleteShareCallback callback) override {
+    last_deletion_id = deletion_id;
+    std::move(callback).Run(delete_succeeds);
+  }
+
+  // What the fake server "returns" (the viewer URL has no decryption key
+  // fragment).
+  std::optional<ConversationShareResult> share_result;
+  bool delete_succeeds = true;
   // Captures what was uploaded, to assert the key fragment never reaches here.
   std::string last_encrypted_contents;
+  std::string last_deletion_id;
 };
+
+ConversationShareResult MakeShareResult() {
+  return ConversationShareResult{
+      .viewer_url = GURL("https://leo-ai.brave.app/sharing/test-share-id"),
+      .share_id = "test-share-id",
+      .deletion_id = "test-deletion-id"};
+}
 
 }  // namespace
 
@@ -119,6 +137,14 @@ class AIChatServiceShareConversationTest : public testing::Test {
 
   void TearDown() override { ai_chat_service_.reset(); }
 
+  // The share store replies on this sequence in the order it was asked, so a
+  // completed listing means anything requested of it earlier has finished.
+  void WaitForShareStore() {
+    base::test::TestFuture<std::vector<mojom::ConversationSharePtr>> future;
+    ai_chat_service_->GetConversationShares(future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_directory_;
@@ -134,15 +160,15 @@ class AIChatServiceShareConversationTest : public testing::Test {
 
 TEST_F(AIChatServiceShareConversationTest, ReturnsFullUrlWithKeyFragment) {
   auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
-  fake_share_manager->viewer_url =
-      GURL("https://leo-ai.brave.app/sharing/test-share-id");
+  fake_share_manager->share_result = MakeShareResult();
   auto* fake_share_manager_ptr = fake_share_manager.get();
   ai_chat_service_->SetConversationShareManagerForTesting(
       std::move(fake_share_manager));
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/false, future.GetCallback());
 
   const std::optional<GURL>& result = future.Get();
@@ -159,14 +185,15 @@ TEST_F(AIChatServiceShareConversationTest, ReturnsFullUrlWithKeyFragment) {
 
 TEST_F(AIChatServiceShareConversationTest, ReturnsNulloptWhenSharingFails) {
   auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
-  // A null viewer URL simulates a failed upload (network error, bad response).
-  fake_share_manager->viewer_url = std::nullopt;
+  // A null result simulates a failed upload (network error, bad response).
+  fake_share_manager->share_result = std::nullopt;
   ai_chat_service_->SetConversationShareManagerForTesting(
       std::move(fake_share_manager));
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/true, future.GetCallback());
 
   EXPECT_FALSE(future.Get().has_value());
@@ -175,8 +202,7 @@ TEST_F(AIChatServiceShareConversationTest, ReturnsNulloptWhenSharingFails) {
 TEST_F(AIChatServiceShareConversationTest,
        CopiesFullLinkToClipboardWhenRequested) {
   auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
-  fake_share_manager->viewer_url =
-      GURL("https://leo-ai.brave.app/sharing/test-share-id");
+  fake_share_manager->share_result = MakeShareResult();
   ai_chat_service_->SetConversationShareManagerForTesting(
       std::move(fake_share_manager));
 
@@ -184,7 +210,8 @@ TEST_F(AIChatServiceShareConversationTest,
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/true, future.GetCallback());
   std::optional<GURL> result = future.Get();
 
@@ -210,8 +237,7 @@ TEST_F(AIChatServiceShareConversationTest,
 TEST_F(AIChatServiceShareConversationTest,
        DoesNotCopyToClipboardWhenNotRequested) {
   auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
-  fake_share_manager->viewer_url =
-      GURL("https://leo-ai.brave.app/sharing/test-share-id");
+  fake_share_manager->share_result = MakeShareResult();
   ai_chat_service_->SetConversationShareManagerForTesting(
       std::move(fake_share_manager));
 
@@ -219,7 +245,8 @@ TEST_F(AIChatServiceShareConversationTest,
 
   base::test::TestFuture<const std::optional<GURL>&> future;
   ai_chat_service_->ShareConversation(
-      "ciphertext-blob", "url-safe-key-fragment",
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
       /*copy_to_clipboard=*/false, future.GetCallback());
   std::optional<GURL> result = future.Get();
 
@@ -235,6 +262,149 @@ TEST_F(AIChatServiceShareConversationTest,
   // caller does not request it.
   ASSERT_TRUE(result.has_value());
   EXPECT_TRUE(clipboard_text.empty());
+}
+
+TEST_F(AIChatServiceShareConversationTest, RecordsShareSoItCanBeManaged) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  base::test::TestFuture<std::vector<mojom::ConversationSharePtr>>
+      shares_future;
+  ai_chat_service_->GetConversationShares(shares_future.GetCallback());
+  const std::vector<mojom::ConversationSharePtr>& shares = shares_future.Get();
+
+  ASSERT_EQ(shares.size(), 1u);
+  EXPECT_EQ(shares[0]->share_id, "test-share-id");
+  // The conversation the share was made from is recorded too, so the share can
+  // be related back to it.
+  EXPECT_EQ(shares[0]->conversation_uuid, "conversation-uuid");
+  EXPECT_EQ(shares[0]->conversation_title, "Conversation title");
+}
+
+TEST_F(AIChatServiceShareConversationTest, CopiesRecordedShareLinkAgain) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  ui::TestClipboard* clipboard = ui::TestClipboard::CreateForCurrentThread();
+  ai_chat_service_->CopyConversationShareLink("test-share-id");
+  WaitForShareStore();
+
+  base::test::TestFuture<std::u16string> clipboard_future;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste,
+                      /*data_dst=*/std::nullopt,
+                      clipboard_future.GetCallback());
+  std::u16string clipboard_text = clipboard_future.Get();
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+
+  // The recorded link includes the key fragment, so the user can share it with
+  // someone else without re-uploading the conversation.
+  EXPECT_EQ(
+      base::UTF16ToUTF8(clipboard_text),
+      "https://leo-ai.brave.app/sharing/test-share-id#url-safe-key-fragment");
+}
+
+TEST_F(AIChatServiceShareConversationTest, DoesNotCopyLinkForUnknownShare) {
+  ui::TestClipboard* clipboard = ui::TestClipboard::CreateForCurrentThread();
+  ai_chat_service_->CopyConversationShareLink("never-shared");
+  WaitForShareStore();
+
+  base::test::TestFuture<std::u16string> clipboard_future;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste,
+                      /*data_dst=*/std::nullopt,
+                      clipboard_future.GetCallback());
+  std::u16string clipboard_text = clipboard_future.Get();
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+
+  // Nothing is recorded for the share, so there is no link to put anywhere.
+  EXPECT_TRUE(clipboard_text.empty());
+}
+
+TEST_F(AIChatServiceShareConversationTest, DeleteConversationShareForgetsIt) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  auto* fake_share_manager_ptr = fake_share_manager.get();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  base::test::TestFuture<bool> delete_future;
+  ai_chat_service_->DeleteConversationShare("test-share-id",
+                                            delete_future.GetCallback());
+  EXPECT_TRUE(delete_future.Get());
+  // The server is authorized with the deletion id it handed out, not the share
+  // id from the link.
+  EXPECT_EQ(fake_share_manager_ptr->last_deletion_id, "test-deletion-id");
+
+  base::test::TestFuture<std::vector<mojom::ConversationSharePtr>>
+      shares_future;
+  ai_chat_service_->GetConversationShares(shares_future.GetCallback());
+  EXPECT_TRUE(shares_future.Get().empty());
+}
+
+TEST_F(AIChatServiceShareConversationTest, KeepsRecordWhenServerDeleteFails) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->share_result = MakeShareResult();
+  fake_share_manager->delete_succeeds = false;
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<const std::optional<GURL>&> share_future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment", "conversation-uuid",
+      "Conversation title",
+      /*copy_to_clipboard=*/false, share_future.GetCallback());
+  ASSERT_TRUE(share_future.Get().has_value());
+
+  base::test::TestFuture<bool> delete_future;
+  ai_chat_service_->DeleteConversationShare("test-share-id",
+                                            delete_future.GetCallback());
+  EXPECT_FALSE(delete_future.Get());
+
+  // The share still exists on the server, so the user keeps a way to retry.
+  base::test::TestFuture<std::vector<mojom::ConversationSharePtr>>
+      shares_future;
+  ai_chat_service_->GetConversationShares(shares_future.GetCallback());
+  EXPECT_EQ(shares_future.Get().size(), 1u);
+}
+
+TEST_F(AIChatServiceShareConversationTest, DeleteUnknownShareSucceeds) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  auto* fake_share_manager_ptr = fake_share_manager.get();
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  base::test::TestFuture<bool> delete_future;
+  ai_chat_service_->DeleteConversationShare("never-shared",
+                                            delete_future.GetCallback());
+
+  // Nothing is known about the share, so there is nothing to ask the server to
+  // delete and nothing for the user to retry.
+  EXPECT_TRUE(delete_future.Get());
+  EXPECT_TRUE(fake_share_manager_ptr->last_deletion_id.empty());
 }
 
 }  // namespace ai_chat

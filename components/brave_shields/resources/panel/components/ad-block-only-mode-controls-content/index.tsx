@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
-import Icon, { setIconBasePath } from '@brave/leo/react/icon'
+import Icon from '@brave/leo/react/icon'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
 import { GlobalSettings } from "../advanced-controls-content"
@@ -18,8 +18,6 @@ import {
   HeaderDescription,
 } from './style'
 import styles from '../alerts.module.scss'
-
-setIconBasePath('chrome://resources/brave-icons')
 
 const onSettingsClick = () => {
   chrome.tabs.create({ url: 'chrome://settings/shields', active: true })

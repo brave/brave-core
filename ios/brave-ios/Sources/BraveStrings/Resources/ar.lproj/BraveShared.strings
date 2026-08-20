@@ -1537,7 +1537,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "التشغيل التلقائي";
 
-/* Auto Download turn Off Option */
+/* Auto Cache turn Off Option */
 "playlist.playlistAutoSaveOptionOff" = "إيقاف";
 
 /* Auto Save turn On Option */
@@ -1546,10 +1546,10 @@
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi فقط";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "يمكن أن تؤدي إضافة ملفات الفيديو والصوت للاستخدام في وضع عدم الاتصال إلى استخدام مساحة تخزين كبيرة على جهازك بالإضافة إلى استخدام بياناتك الخلوية";
+/* Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "قد يستهلك تخزين ملفات الفيديو والصوت مؤقتًا بيانات الشبكة الخلوية ومساحة التخزين على جهازك";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+/* Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "بمجرد فتح محتوى في قائمة التشغيل، سيحتفظ هذا الخيار بعناصر قائمة التشغيل المفتوحة على جهازك حتى تتمكن من تشغيلها دون اتصال بالإنترنت.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
@@ -1559,7 +1559,7 @@
 "playlist.playlistDiskSpaceAddAnywayButtonTitle" = "إضافة على أي حال";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "جهازك منخفض على المساحة. قد تفشل إضافة هذا الفيديو إلى قائمة التشغيل أو تؤثر على التنزيلات الأخرى.";
+"playlist.playlistDiskSpaceWarningMessage" = "جهازك منخفض على المساحة. قد تفشل إضافة هذا الفيديو إلى قائمة التشغيل أو تؤثر على مقاطع الفيديو الأخرى المخزنة مؤقتًا.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "التخزين ممتلئ تقريبًا";
@@ -1570,14 +1570,17 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "تمكين الضغط لفترة طويلة";
 
+/* Text for Playlist Data Toggle for clearing the cache in settings */
+"playlist.playlistOfflineDataToggleOption" = "بيانات قائمة التشغيل";
+
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "تغيير";
 
-/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+/* The title for the alert that shows up when removing all playlist data. */
 "playList.playlistResetAlertTitle" = "إعادة الضبط";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
-"playlist.playlistResetPlaylistOptionFooterText" = "سيؤدي هذا الخيار إلى إزالة جميع مقاطع الفيديو من قائمة التشغيل بالإضافة إلى التخزين في وضع عدم الاتصال.";
+"playlist.playlistResetPlaylistOptionFooterText" = "سيؤدي هذا الخيار إلى إزالة جميع بيانات قائمة التشغيل.";
 
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "قائمة التشغيل";
@@ -1588,7 +1591,7 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "تذكر موضع إعادة التشغيل للملف";
 
-/* Title for removing offline mode storage */
+/* Title for removing cached media from the playlist */
 "playList.removeActionButtonTitle" = "احذف";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
@@ -1608,9 +1611,6 @@
 
 /* The title for the toast that shows up on a page containing a playlist item */
 "playList.toastAddToPlaylistTitle" = "إضافة إلى قائمة التشغيل";
-
-/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "عرض في قائمة التشغيل لدى Brave";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "تراجع";
@@ -3162,6 +3162,12 @@
 
 /* The title of the toggle for user to turn on auto-open keyboard when creating a new tab. */
 "tabs.settings.autoOpenKeyboardTitle" = "فتح تلقائي للوحة المفاتيح";
+
+/* The description of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeDescription" = "افتح الروابط من Ask Brave وBrave Search في علامات تبويب المعاينة";
+
+/* The title of the toggle for user to turn on open link in quick view mode. */
+"tabs.settings.openLinkInQuickViewModeTitle" = "تمكين علامات تبويب المعاينة السريعة";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "حافظ على علامات تبويب التصفح الخاص مفتوحة عند إغلاق التطبيق، مما يضمن استمرار جلسات التصفح الخاصة بسلاسة.";

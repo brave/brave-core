@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import ast
 from dataclasses import dataclass
 import os
 import re
@@ -18,9 +17,11 @@ import requests
 from ci import JenkinsCi
 from exceptions import BadOutcomeException, InvalidInputException
 from git_status import GitStatus
+import install_extra_deps
 import repository
 from terminal import terminal
-from toolchains import build_rust_toolchain, build_xcode_toolchain
+from toolchains import (build_rust_toolchain, build_windows_toolchain,
+                        build_xcode_toolchain)
 from versioning import Version
 
 # ---------------------------------------------------------------------------
@@ -53,13 +54,18 @@ TOOLCHAINS = {
             'keys': ('SDK_VERSION', 'TOOLCHAIN_HASH'),
         },
         'ci': {
-            'build_param': 'CHROMIUM_TAG',
             'jobs': ('https://ci.brave.com/view/toolchains/job/'
                      'windows-hermetic-toolchain-build/', ),
+            'properties': ('chromium_ref', ),
         },
-        'advice': ('Contact DevOps regarding the new WinSDK for the hermetic '
-                   'toolchain. Update `env.GYP_MSVS_HASH_*` in '
-                   'build/commands/lib/config.js with correct hashes.'),
+        'repin': {
+            'script': 'build/commands/lib/config.ts',
+        },
+        'advice': ('Generate the new toolchain in '
+                   'https://ci.brave.com/view/toolchains/ (or via '
+                   '`brockit.py gen-windows-toolchain`), then call '
+                   '`brockit.py update-windows-toolchain --to=<chromium-ref>` '
+                   'to repin it.'),
     },
     'xcode': {
         'label': 'macOS SDK',
@@ -69,9 +75,9 @@ TOOLCHAINS = {
                      'mac_sdk_official_build_version'),
         },
         'ci': {
-            'build_param': 'CHROMIUM_TAG',
             'jobs': ('https://ci.brave.com/view/toolchains/job/'
                      'xcode-hermetic-toolchain-build/', ),
+            'properties': ('chromium_tag', ),
         },
         'repin': {
             'script': 'build/mac/download_hermetic_xcode.py',
@@ -168,7 +174,8 @@ class ToolchainSpec:
 
     # Repin particulars (absent for toolchains with no automated repin):
     #   installer            -- Brave file whose pin the Rust `repin` rewrites.
-    #   script               -- Brave file whose pin the Xcode `repin` rewrites.
+    #   script               -- Brave file whose pin the Xcode/Windows `repin`
+    #                           rewrites.
     #   upstream_min_os_file -- Chromium file the Xcode `repin` mirrors the
     #                           `MAC_MINIMUM_OS_VERSION` block from.
     installer: str | None = None
@@ -409,10 +416,11 @@ class Toolchain:
                             provided: dict) -> dict | None:
         """Builds the `PROPERTIES` payload, checking every field is provided.
 
-        `chromium_ref` (when the toolchain declares it) defaults to the
-        triggered version; all other declared fields must come from `provided`.
-        Raises if a toolchain that takes no properties is given any, or if the
-        supplied fields don't match exactly what the toolchain declares.
+        `chromium_ref`/`chromium_tag` (whichever the toolchain declares)
+        defaults to the triggered version; all other declared fields must come
+        from `provided`. Raises if a toolchain that takes no properties is
+        given any, or if the supplied fields don't match exactly what the
+        toolchain declares.
         """
         if self.spec.properties is None:
             if provided:
@@ -423,6 +431,8 @@ class Toolchain:
         payload = dict(provided)
         if 'chromium_ref' in self.spec.properties:
             payload.setdefault('chromium_ref', str(version))
+        if 'chromium_tag' in self.spec.properties:
+            payload.setdefault('chromium_tag', str(version))
         if set(payload) != set(self.spec.properties):
             raise InvalidInputException(
                 f'The {self.spec.label} toolchain requires the properties '
@@ -446,9 +456,18 @@ class Toolchain:
 
     # -- repin (in-tree pin + commit), overridden where applicable ----------
 
-    def repin(self, version: Version, culprit: str | None = None) -> None:
-        """Repins the in-tree pin to the published toolchain and commits it."""
-        del version, culprit
+    def repin(self,
+              version: Version,
+              culprit: str | None = None,
+              **kwargs) -> None:
+        """Repins the in-tree pin to the published toolchain and commits it.
+
+        `**kwargs` absorbs toolchain-specific repin arguments (e.g. Rust's
+        `brave_subrevision`) so callers that dispatch generically across
+        toolchains (see `_RepinToolchainTask` in brockit.py) can forward them
+        uniformly.
+        """
+        del version, culprit, kwargs
         raise InvalidInputException(
             f'The {self.spec.label} toolchain has no automated repin.')
 
@@ -515,25 +534,12 @@ class RustToolchain(Toolchain):
                     watch=True,
                     brave_subrevision=self._FIRST_BRAVE_SUBREVISION):
                 return False
-            self.repin(target, culprit)
+            self.repin(target,
+                       culprit,
+                       brave_subrevision=self._FIRST_BRAVE_SUBREVISION)
         except (InvalidInputException, BadOutcomeException):
             return False
         return True
-
-    @staticmethod
-    def _load_extra_deps(source: str) -> tuple[ast.Assign, dict]:
-        """Return the `extra_deps = {...}` assignment node and its dict value.
-
-        The value is read with `ast.literal_eval`, so the file is parsed as
-        data rather than imported.
-        """
-        for node in ast.parse(source).body:
-            if (isinstance(node, ast.Assign) and len(node.targets) == 1
-                    and isinstance(node.targets[0], ast.Name)
-                    and node.targets[0].id == 'extra_deps'):
-                return node, ast.literal_eval(node.value)
-        raise InvalidInputException(
-            'No extra_deps assignment found in the EXTRA_DEPS file.')
 
     @staticmethod
     def _upstream_stem(text: str) -> str:
@@ -562,7 +568,7 @@ class RustToolchain(Toolchain):
                 f'{read("CLANG_REVISION", quoted)}')
 
     @staticmethod
-    def _commit_title(new_entry: dict) -> str:
+    def _commit_title(objects: list[dict]) -> str:
         """Build a commit subject naming the exact toolchain build being pinned.
 
         We build the title to show the new toolchain's relevant details, being
@@ -570,13 +576,13 @@ class RustToolchain(Toolchain):
         trailing `sub` is the upstream rust sub revision (RUST_SUB_REVISION),
         not Brave's respin counter. The result is something like this:
 
-          Rust/WASM toolchain (4c4205163abc-5, llvmorg-23-init-10931-g20b6ec77, sub 5)
+          Rust/WASM toolchain (4c4205163abc-5, llvmorg-23-init-10931-g20b6ec77,
+          sub 5)
 
-        The values in the title are extracted from the tarball's name.
+        The values in the title are extracted from the first object's tarball
+        name.
         """
-        object_name = next(iter(
-            new_entry.values()))['objects'][0]['object_name']
-        name = object_name.removesuffix('.tar.xz')
+        name = objects[0]['object_name'].removesuffix('.tar.xz')
         match = re.search(
             r'rust-toolchain-(?P<rust>[0-9a-f]+)-(?P<sub>\d+)-'
             r'(?P<clang>llvmorg-.+)-(?P<brave>\d+)$', name)
@@ -585,8 +591,25 @@ class RustToolchain(Toolchain):
         return (f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
                 f'{match["clang"]}, sub {match["sub"]})')
 
-    def repin(self, version: Version, culprit: str | None = None) -> None:
-        """Repins the Rust/WASM `EXTRA_DEPS` entry and commits it."""
+    # `brave_subrevision` is required here (unlike the base's `**kwargs`
+    # catch-all) since this toolchain has no side index to auto-discover it
+    # from; see the base `repin`'s docstring.
+    # pylint: disable=arguments-differ
+    def repin(self,
+              version: Version,
+              culprit: str | None = None,
+              *,
+              brave_subrevision: int) -> None:
+        """Repins the Rust/WASM `EXTRA_DEPS` entry and commits it.
+
+        `brave_subrevision` must name the exact respin already published for
+        this Chromium tag's Rust+Clang revision (e.g. `1` for a fresh
+        Chromium-version bump, or whatever `gen-rust-toolchain
+        --brave-subrevision` last built) -- there is no side index to
+        auto-discover it from; every platform's object is read straight from
+        its sibling index (see
+        `build_rust_toolchain.rust_toolchain_extra_dep`).
+        """
         self._require_no_staged_files()
 
         ref = str(version)
@@ -595,34 +618,32 @@ class RustToolchain(Toolchain):
         upstream_stem = self._upstream_stem(revision_text)
 
         try:
-            new_entry = build_rust_toolchain.rust_toolchain_extra_dep(
-                upstream_stem)
+            extra_dep = build_rust_toolchain.rust_toolchain_extra_dep(
+                upstream_stem, brave_subrevision)
         except RuntimeError as e:
             raise BadOutcomeException(str(e)) from e
+        objects = extra_dep[
+            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH]['objects']
 
         installer = self.spec.installer
         path = repository.brave.root / installer
-        source = path.read_bytes().decode('utf-8')
-        node, extra_deps = self._load_extra_deps(source)
+        revision = install_extra_deps.format_setdep_revision(
+            build_rust_toolchain.RUST_TOOLCHAIN_DEP_PATH, objects)
 
-        # Replace the rust-toolchain entry (in place, preserving key order),
-        # then re-render the whole extra_deps assignment.
-        extra_deps.update(new_entry)
-        rendered = f'extra_deps = {_render_py_literal(extra_deps)}\n'
-        lines = source.splitlines(keepends=True)
-        new_source = (''.join(lines[:node.lineno - 1]) + rendered +
-                      ''.join(lines[node.end_lineno:]))
+        before = path.read_bytes()
+        try:
+            install_extra_deps.setdep([revision], extra_deps_file=path)
+        except ValueError as e:
+            raise InvalidInputException(str(e)) from e
 
-        if new_source == source:
+        if path.read_bytes() == before:
             terminal.log_task(
                 f'{installer} is already up to date; nothing to commit.')
             return
 
-        path.write_text(new_source, encoding='utf-8', newline='')
-
         commit_hash = self.find_culprit(ref, culprit)
         repository.brave.run_git('add', installer)
-        repository.brave.git_commit(self._commit_title(new_entry),
+        repository.brave.git_commit(self._commit_title(objects),
                                     env={
                                         **os.environ,
                                         'tags': 'toolchain',
@@ -728,6 +749,9 @@ class XcodeToolchain(Toolchain):
         script_path.write_text(content, encoding='utf-8', newline='')
         return True
 
+    # This toolchain takes no extra repin arguments, unlike the base's
+    # `**kwargs` catch-all; see the base `repin`'s docstring.
+    # pylint: disable=arguments-differ
     def repin(self, version: Version, culprit: str | None = None) -> None:
         """Repins `download_hermetic_xcode.py` and commits it."""
         self._require_no_staged_files()
@@ -768,44 +792,93 @@ class XcodeToolchain(Toolchain):
 class WindowsToolchain(Toolchain):
     """The hermetic Windows SDK / VS toolchain.
 
-    Detection and CI triggering are fully data-driven via the base class; the
-    in-tree pin lives in a Brave build script that has no automated repin, so
-    `repin` falls back to the base class's "not automated" error.
+    We rely on gclient's toolchain override with a
+    `env.GYP_MSVS_HASH_<TOOLCHAIN_HASH> = '<hash>'` entry in
+    `build/commands/lib/config.ts`.
     """
+
+    _GYP_MSVS_HASH_RE = re.compile(r"env\.GYP_MSVS_HASH_\w+ = '[^']*'")
 
     def __init__(self) -> None:
         super().__init__(
             ToolchainSpec.from_entry('windows', TOOLCHAINS['windows']))
 
+    def recover(self, target: Version, culprit: str) -> bool:
+        """Trigger the Windows toolchain job, watch it, and repin on success.
+        """
+        try:
+            if not self.trigger(target, watch=True):
+                return False
+            self.repin(target, culprit)
+        except (InvalidInputException, BadOutcomeException):
+            return False
+        return True
 
-def _render_py_literal(value: object, indent: int = 0) -> str:
-    """Render a str/bool/dict/list literal as multi-line Python source.
+    def _rewrite_config_ts(self, sdk_info: build_windows_toolchain.WinSdkInfo,
+                           index: dict) -> bool:
+        """Pins the `GYP_MSVS_HASH_<hash>` override in `config.ts`.
 
-    Used to re-render the `extra_deps` assignment when repinning. Matches the
-    committed `EXTRA_DEPS` file's layout (4-space indent steps, single-quoted
-    strings, trailing commas) so a repin is a minimal diff.
-    """
-    pad = ' ' * indent
-    child = ' ' * (indent + 4)
-    if isinstance(value, dict):
-        if not value:
-            return '{}'
-        items = ''.join(f'{child}{_render_py_literal(key)}: '
-                        f'{_render_py_literal(val, indent + 4)},\n'
-                        for key, val in value.items())
-        return f'{{\n{items}{pad}}}'
-    if isinstance(value, list):
-        if not value:
-            return '[]'
-        items = ''.join(f'{child}{_render_py_literal(item, indent + 4)},\n'
-                        for item in value)
-        return f'[\n{items}{pad}]'
-    if isinstance(value, bool):
-        return 'True' if value else 'False'
-    if isinstance(value, str):
-        # Single-quoted to match the file. Values here never contain a single
-        # quote or backslash; fall back to repr only defensively.
-        if "'" in value or '\\' in value:
-            return repr(value)
-        return f"'{value}'"
-    return repr(value)
+        Returns True if the on-disk file actually changed, False when it was
+        already pinned to these exact values (so the caller can skip
+        committing).
+        """
+        script_path = repository.brave.root / self.spec.script
+        original = script_path.read_bytes().decode('utf-8')
+        replacement = (f"env.GYP_MSVS_HASH_{sdk_info.toolchain_hash} = "
+                       f"'{index['hash']}'")
+        content, count = self._GYP_MSVS_HASH_RE.subn(replacement,
+                                                     original,
+                                                     count=1)
+        if count == 0:
+            raise InvalidInputException(
+                'Could not find a `env.GYP_MSVS_HASH_<hash> = \'<hash>\'` '
+                f'override to rewrite in {self.spec.script}.')
+        if content == original:
+            return False
+
+        script_path.write_text(content, encoding='utf-8', newline='')
+        return True
+
+    # This toolchain takes no extra repin arguments, unlike the base's
+    # `**kwargs` catch-all; see the base `repin`'s docstring.
+    # pylint: disable=arguments-differ
+    def repin(self, version: Version, culprit: str | None = None) -> None:
+        """Repins `build/commands/lib/config.ts`'s `GYP_MSVS_HASH_*` override.
+
+        Reads the `SDK_VERSION`/`TOOLCHAIN_HASH`/packaged-VS pins from
+        Chromium's `build/vs_toolchain.py` at `version`, downloads the
+        matching published toolchain index, and rewrites the `GYP_MSVS_HASH_*`
+        override.
+        """
+        self._require_no_staged_files()
+
+        ref = str(version)
+        vs_toolchain_py = repository.chromium.read_file(self.spec.files[0],
+                                                        commit=ref)
+        try:
+            sdk_info = (build_windows_toolchain.WinSdkInfo.
+                        from_vs_toolchain_py(vs_toolchain_py))
+        except RuntimeError as e:
+            raise BadOutcomeException(str(e)) from e
+
+        try:
+            index = build_windows_toolchain.fetch_published_index(sdk_info)
+        except RuntimeError as e:
+            raise BadOutcomeException(str(e)) from e
+
+        if not self._rewrite_config_ts(sdk_info, index):
+            raise InvalidInputException(
+                f'{self.spec.script} is already pinned to these values; '
+                'nothing to commit.')
+
+        commit_hash = self.find_culprit(ref, culprit)
+        title = (f'Switch to Windows SDK {sdk_info.sdk_version_in_comment} '
+                 f'({index["installed_vs_display_name"]} '
+                 f'{index["installed_vs_version"]})')
+        repository.brave.run_git('add', self.spec.script)
+        repository.brave.git_commit(title,
+                                    env={
+                                        **os.environ,
+                                        'tags': 'toolchain',
+                                        'culprit': commit_hash,
+                                    })

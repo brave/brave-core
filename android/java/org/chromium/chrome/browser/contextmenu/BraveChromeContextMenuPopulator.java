@@ -18,7 +18,6 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDeleg
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
-import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -66,18 +65,13 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator 
         if (itemId != R.id.contextmenu_copy_clean_link) {
             return super.onItemSelected(itemId);
         }
-        UrlSanitizerService urlSanitizerService =
-                UrlSanitizerServiceFactory.getInstance()
-                        .getUrlSanitizerAndroidService(getProfile(), null);
-        if (urlSanitizerService != null) {
-            urlSanitizerService.sanitizeUrl(
-                    mParams.getUnfilteredLinkUrl().getSpec(),
-                    result -> {
-                        mItemDelegate.onSaveToClipboard(
-                                result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
-                        urlSanitizerService.close();
-                    });
-        }
+        UrlSanitizerServiceFactory.getInstance()
+                .sanitizeUrl(
+                        getProfile(),
+                        mParams.getUnfilteredLinkUrl().getSpec(),
+                        result ->
+                                mItemDelegate.onSaveToClipboard(
+                                        result, ContextMenuItemDelegate.ClipboardType.LINK_URL));
 
         return true;
     }

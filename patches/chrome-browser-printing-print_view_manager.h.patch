@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/printing/print_view_manager.h b/chrome/browser/printing/print_view_manager.h
+index 324f2d4002545fd624505995043cdad2b08b800b..bb410bea421f2de64bd4ad75d4062d55e58e0653 100644
+--- a/chrome/browser/printing/print_view_manager.h
++++ b/chrome/browser/printing/print_view_manager.h
+@@ -96,6 +96,10 @@ class PrintViewManager : public PrintViewManagerBase,
+   // Sets the target object for BindPrintManagerHost() for tests.
+   static void SetReceiverImplForTesting(PrintManager* impl);
+ 
++  void SetPrintPreviewRenderFrameHostForExtraction(
++      content::RenderFrameHost* rfh);
++  void ClearPrintPreviewRenderFrameHostForExtraction();
++
+  protected:
+   explicit PrintViewManager(content::WebContents* web_contents);
+ 

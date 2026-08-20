@@ -13,17 +13,13 @@ import {
 import { PanelSelectors } from '../../../../panel/selectors'
 
 // Types
-import { BraveWallet } from '../../../../constants/types'
 import { ParsedTransaction } from '../../../../utils/tx-utils'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
-import {
-  translateSimulationWarning, //
-} from '../../../../utils/tx-simulation-utils'
 
 // components
-import { TransactionWarnings } from './tx_warnings'
+import { TransactionWarnings, TransactionWarning } from './tx_warnings'
 
 // Styled components
 import { Row } from '../../../shared/style'
@@ -35,7 +31,6 @@ import {
 } from './pending_tx_actions_footer.style'
 
 interface Props {
-  blowfishWarnings?: BraveWallet.BlowfishWarning[]
   setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
   isWarningCollapsed?: boolean
   isConfirmButtonDisabled: boolean
@@ -53,12 +48,11 @@ interface Props {
   isUnshieldingFunds?: boolean
 }
 
-type Warning = Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
+type Warning = TransactionWarning
 
 export function PendingTransactionActionsFooter({
   isWarningCollapsed,
   setIsWarningCollapsed,
-  blowfishWarnings,
   isConfirmButtonDisabled,
   rejectAllTransactions,
   transactionDetails,
@@ -98,13 +92,6 @@ export function PendingTransactionActionsFooter({
 
   // memos
   const warnings: Warning[] = React.useMemo(() => {
-    if (blowfishWarnings?.length) {
-      return blowfishWarnings.map((w) => ({
-        message: translateSimulationWarning(w),
-        severity: w.severity,
-      }))
-    }
-
     return [
       transactionDetails?.contractAddressError,
       transactionDetails?.sameAddressError,
@@ -120,15 +107,10 @@ export function PendingTransactionActionsFooter({
       .map(
         (warning): Warning => ({
           message: warning,
-          severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+          severity: 'warning',
         }),
       )
-  }, [
-    transactionDetails,
-    blowfishWarnings,
-    insufficientFundsForGasError,
-    insufficientFundsError,
-  ])
+  }, [transactionDetails, insufficientFundsForGasError, insufficientFundsError])
 
   const hasWarnings = Boolean(warnings.length)
 
@@ -178,9 +160,6 @@ export function PendingTransactionActionsFooter({
     isUnshieldingFunds,
   ])
 
-  // computed
-  const displayIssuesAsRisks = Boolean(blowfishWarnings?.length)
-
   // effects
   React.useEffect(() => {
     // This will update the transactionConfirmed state back to false
@@ -195,7 +174,7 @@ export function PendingTransactionActionsFooter({
     <FooterContainer>
       {!isWarningDismissed && (
         <TransactionWarnings
-          classifyAs={displayIssuesAsRisks ? 'risks' : 'issues'}
+          classifyAs='issues'
           warnings={warnings}
           isWarningCollapsed={isWarningCollapsed ?? true}
           setIsWarningCollapsed={setIsWarningCollapsed}

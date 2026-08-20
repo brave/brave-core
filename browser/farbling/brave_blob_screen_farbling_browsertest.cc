@@ -87,7 +87,7 @@ class BraveBlobScreenFarblingBrowserTest
   void AllowFingerprinting(bool allow) {
     fingerprinting_allowed_ = allow;
     brave_shields::SetFingerprintingControlType(
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile()),
+        HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile()),
         allow ? ControlType::ALLOW : ControlType::DEFAULT, blob_test_url_);
   }
 

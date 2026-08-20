@@ -29,8 +29,8 @@ void OptOutOfNewTabPageAds() {
                              false);
 }
 
-void OptOutOfNotificationAds() {
-  SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds, false);
+void DisableNotificationAds() {
+  SetProfileBooleanPrefValue(prefs::kNotificationsEnabled, false);
 }
 
 void SetMaximumNotificationAdsPerHour(int max_ads_per_hour) {
@@ -44,7 +44,7 @@ void OptOutOfSearchResultAds() {
 
 void OptOutOfAllAds() {
   OptOutOfNewTabPageAds();
-  OptOutOfNotificationAds();
+  DisableNotificationAds();
   OptOutOfSearchResultAds();
 }
 

@@ -1,0 +1,53 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
+import { WalletButton } from '../../../../../components/shared/style'
+import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import Plus from '../../../../../assets/svg-icons/plus-icon.svg'
+
+export const Header = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+`
+
+export const Button = styled(WalletButton)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  width: 16px;
+  height: 16px;
+  padding: 0px;
+`
+
+export const BackIcon = styled(CaratStrongLeftIcon)`
+  width: 16px;
+  height: 16px;
+  color: ${leo.color.text.secondary};
+`
+
+export const HeaderSpacing = styled.div`
+  width: 16px;
+  height: 16px;
+`
+
+export const PlusIcon = styled.div`
+  width: 15px;
+  height: 15px;
+  background: url(${Plus});
+  color: ${leo.color.text.secondary};
+`

@@ -1,0 +1,29 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pull in the variable list for the Brave additions to
+      `blink_modules_sources("peerconnection")`.
+
+      Inserted at the top of the file, before the upstream modules.gni import.
+    regex:
+      re_pattern: '(# found in the LICENSE file\.\n\n)'
+      replace: |
+        \1import("//brave/components/ai_chat/sources.gni")  # Brave
+
+  - description: |
+      Append Brave deps to `blink_modules_sources("peerconnection")` so the
+      renderer-safe AI Chat constants target is available to the override in
+      `brave/chromium_src/.../peerconnection/rtc_peer_connection.cc`.
+
+      Extended immediately after the initial `deps = [ ... ]` assignment so
+      the brave entries are part of `deps` before any use.
+    regex:
+      re_pattern: '(blink_modules_sources\("peerconnection"\).*?\bdeps\s*=\s*\[.*?\])'
+      re_flags: [DOTALL]
+      replace:
+        '\1\n  deps +=
+        brave_blink_renderer_modules_peerconnection_ai_chat_deps  # Brave'

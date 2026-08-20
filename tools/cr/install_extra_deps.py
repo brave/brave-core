@@ -68,17 +68,30 @@ def _select_object(objects: list[dict],
     return matches[0]
 
 
-# Object keys `setdep` rewrites
-_SETDEP_OBJECT_KEYS = ('object_name', 'sha256sum', 'size_bytes')
+# The optional per-object overlay-base key our own EXTRA_DEPS schema adds on
+# top of upstream's GCS-dep object schema (see the module docstring).
+# `gclient_eval.SetGCS` only knows about upstream's own keys (`object_name`,
+# `sha256sum`, `size_bytes`, `generation`), so `setdep` rewrites this one
+# itself, the same way SetGCS rewrites its own.
+_OVERLAYED_ON_KEY = 'overlayed_on'
+
+# Object keys `setdep` can rewrite: the plain GCS-object triple, always
+# required, plus the optional overlay base.
+_SETDEP_REQUIRED_KEYS = ('object_name', 'sha256sum', 'size_bytes')
+_SETDEP_OBJECT_KEYS = _SETDEP_REQUIRED_KEYS + (_OVERLAYED_ON_KEY, )
 
 
 def _parse_object_spec(spec: str) -> dict[str, str]:
-    """Parse one `object_name,sha256sum,size_bytes` triple from a setdep arg."""
+    """Parse one `object_name,sha256sum,size_bytes[,overlayed_on]` setdep arg.
+    """
     fields = [field.strip() for field in spec.split(',')]
-    if len(fields) != len(_SETDEP_OBJECT_KEYS) or not all(fields):
+    if (len(fields)
+            not in (len(_SETDEP_REQUIRED_KEYS), len(_SETDEP_OBJECT_KEYS))
+            or not all(fields)):
         raise ValueError(
-            f'Object {spec!r} must be `{",".join(_SETDEP_OBJECT_KEYS)}` (all '
-            f'fields required).')
+            f'Object {spec!r} must be `{",".join(_SETDEP_REQUIRED_KEYS)}`, '
+            f'optionally followed by `{_OVERLAYED_ON_KEY}` (no field may be '
+            f'empty).')
     obj = dict(zip(_SETDEP_OBJECT_KEYS, fields))
     if not obj['size_bytes'].isdigit():
         raise ValueError(f'size_bytes must be a non-negative integer, got '
@@ -86,8 +99,24 @@ def _parse_object_spec(spec: str) -> dict[str, str]:
     return obj
 
 
-def _load_editable_extra_deps() -> gclient_eval._NodeDict:
-    """Parse the EXTRA_DEPS file into gclient's token-aware, editable form.
+def format_setdep_revision(path: str, objects: list[dict]) -> str:
+    """Build one `setdep`/`-r` argument from `path`'s current EXTRA_DEPS.
+
+    Renders each object as `object_name,sha256sum,size_bytes`, plus
+    `overlayed_on` when the object has one, joined with `?` in order -- the
+    inverse of `_parse_object_spec`.
+    """
+
+    def render(obj: dict) -> str:
+        keys = (_SETDEP_OBJECT_KEYS
+                if _OVERLAYED_ON_KEY in obj else _SETDEP_REQUIRED_KEYS)
+        return ','.join(str(obj[key]) for key in keys)
+
+    return f'{path}@' + '?'.join(render(obj) for obj in objects)
+
+
+def _load_editable_extra_deps(extra_deps_file: Path) -> gclient_eval._NodeDict:
+    """Parse `extra_deps_file` into gclient's token-aware, editable form.
 
     We drive the tokeniser, capturing every comment, blank line, and quote
     style.
@@ -96,8 +125,8 @@ def _load_editable_extra_deps() -> gclient_eval._NodeDict:
     `deps` mapping, so the table is also exposed under `deps` (sharing the very
     same nodes and tokens) to drive that machinery unchanged.
     """
-    content = EXTRA_DEPS_FILE.read_text(encoding='utf-8')
-    filename = str(EXTRA_DEPS_FILE)
+    content = extra_deps_file.read_text(encoding='utf-8')
+    filename = str(extra_deps_file)
 
     # pylint: disable=protected-access
     tokens = {
@@ -122,35 +151,62 @@ def _load_editable_extra_deps() -> gclient_eval._NodeDict:
     return scope
 
 
-def setdep(revisions: list[str]) -> None:
+def _set_objects(scope: gclient_eval._NodeDict, path: str,
+                 new_objects: list[dict[str, str]]) -> None:
+    """Rewrite one EXTRA_DEPS entry's objects in place, in `scope`'s tokens.
+
+    Delegates `object_name`/`sha256sum`/`size_bytes` to `gclient_eval.SetGCS`,
+    which also enforces the object-count match, then separately rewrites
+    `overlayed_on` for the objects that specify it, since `SetGCS` only knows
+    about upstream's own GCS-dep keys.
+    """
+    gclient_eval.SetGCS(scope, path, new_objects)
+
+    tokens = scope.tokens
+    objects_node = scope['deps'][path].GetNode('objects')
+    for index, object_node in enumerate(objects_node.elts):
+        overlayed_on = new_objects[index].get(_OVERLAYED_ON_KEY)
+        if overlayed_on is None:
+            continue
+        for key, value in zip(object_node.keys, object_node.values):
+            if key.value == _OVERLAYED_ON_KEY:
+                # pylint: disable-next=protected-access
+                gclient_eval._UpdateAstString(tokens, value, overlayed_on)
+                break
+        else:
+            raise ValueError(f'Object {index} of {path!r} has no '
+                             f'{_OVERLAYED_ON_KEY!r} key to update.')
+
+
+def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
     """Repin one or more EXTRA_DEPS entries in place, preserving formatting.
 
     Each `revisions` element is a `DEP@object[?object...]` string (as
     `gclient setdep -r` takes), where every object is an
-    `object_name,sha256sum,size_bytes` triple. The number of objects must match
-    the entry's current object count, and their order is preserved.
+    `object_name,sha256sum,size_bytes` triple, optionally followed by
+    `overlayed_on`. The number of objects must match the entry's current
+    object count, and their order is preserved.
     """
-    scope = _load_editable_extra_deps()
+    extra_deps_file = extra_deps_file or EXTRA_DEPS_FILE
+    scope = _load_editable_extra_deps(extra_deps_file)
     for revision in revisions:
         path, separator, objects_spec = revision.partition('@')
         if not separator or not path or not objects_spec:
             raise ValueError(
                 f'Revision {revision!r} must be of the form `DEP@object,...`.')
-        if path not in EXTRA_DEPS:
+        if path not in scope['extra_deps']:
             raise ValueError(f'Unknown EXTRA_DEPS entry {path!r}. Known '
-                             f'entries: {sorted(EXTRA_DEPS)}.')
+                             f'entries: {sorted(scope["extra_deps"])}.')
         new_objects = [
             _parse_object_spec(obj) for obj in objects_spec.split('?')
         ]
-        # `SetGCS` rewrites the matching string tokens in place, and raises if
-        # the object count does not match the entry's current count.
-        gclient_eval.SetGCS(scope, path, new_objects)
+        _set_objects(scope, path, new_objects)
         _LOG.info('Repinned %s', path)
 
     # `RenderDEPSFile` untokenizes the (now-mutated) tokens back to source, so
     # everything the edit did not touch is byte-for-byte preserved. `newline=''`
     # keeps the file's `\n` line endings intact on every platform.
-    EXTRA_DEPS_FILE.write_text(gclient_eval.RenderDEPSFile(scope),
+    extra_deps_file.write_text(gclient_eval.RenderDEPSFile(scope),
                                encoding='utf-8',
                                newline='')
 
@@ -334,12 +390,13 @@ def main() -> int:
         action='append',
         dest='revisions',
         required=True,
-        metavar='DEP@object_name,sha256sum,size_bytes[?...]',
+        metavar='DEP@object_name,sha256sum,size_bytes[,overlayed_on][?...]',
         help='Repin the EXTRA_DEPS entry DEP to the given object(s). Each '
-        'object is an `object_name,sha256sum,size_bytes` triple; join multiple '
-        'objects with `?`, in the entry\'s existing order. The object count '
-        'must match the entry\'s current count. May be repeated to repin '
-        'several entries in one invocation.')
+        'object is an `object_name,sha256sum,size_bytes` triple, optionally '
+        'followed by `overlayed_on`. Join multiple objects with `?`, in the '
+        'entry\'s existing order. The object count must match the entry\'s '
+        'current count. May be repeated to repin several entries in one '
+        'invocation.')
 
     args = parser.parse_args()
 

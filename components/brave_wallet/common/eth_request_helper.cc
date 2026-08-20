@@ -476,8 +476,12 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
   mojom::EthSignTypedDataPtr result = mojom::EthSignTypedData::New();
   result->address_param = *address_str;
 
-  auto type_hash = base::HexEncode(helper->GetTypeHash(*primary_type));
-  if (type_hash == kCowSwapTypeHash) {
+  auto type_hash = helper->GetTypeHash(*primary_type);
+  if (!type_hash) {
+    return nullptr;
+  }
+  auto type_hash_hex = base::HexEncode(*type_hash);
+  if (type_hash_hex == kCowSwapTypeHash) {
     result->meta = ParseCowSwapOrder(*message);
   } else {
     result->meta = nullptr;

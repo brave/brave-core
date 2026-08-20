@@ -39,6 +39,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
@@ -52,6 +53,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -516,7 +518,7 @@ TEST_P(AIChatServiceUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce([&resolve](
                     PageContentsMap page_contents,
-                    const std::vector<mojom::ConversationTurnPtr>& history,
+                    const EngineConsumer::ConversationHistoryView& history,
                     bool is_temporary_chat,
                     const std::vector<base::WeakPtr<Tool>>& tools,
                     std::optional<std::string_view> preferred_tool_name,
@@ -1539,6 +1541,21 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(1);
   DisconnectConversationClient(client2.get());
   testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GetDefaultAIEngineFallsBackToConfiguredDefaultWhenStale) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat,
+      {{features::kAIModelsDefaultKey.name, kClaudeHaikuModelKey}});
+
+  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
+      "this-model-key-does-not-exist");
+
+  auto engine = ai_chat_service_->GetDefaultAIEngine();
+  ASSERT_TRUE(engine);
+  EXPECT_EQ(engine->GetModelName(), kClaudeHaikuModelName);
 }
 
 TEST_P(AIChatServiceUnitTest,

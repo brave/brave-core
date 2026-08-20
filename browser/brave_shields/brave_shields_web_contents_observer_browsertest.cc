@@ -81,7 +81,7 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(embedded_test_server()->Start());
     content_settings_ =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+        HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
 
     // We can't simply create a new BraveShieldsWebContentsObserver for the same
     // WebContents, as that class will instatiate a RenderFrameHostReceiverSet

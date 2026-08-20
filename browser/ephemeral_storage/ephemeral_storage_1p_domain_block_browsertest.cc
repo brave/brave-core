@@ -196,7 +196,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorage1pDomainBlockBrowserTest,
                        FirstPartyEphemeralIsNotEnabledIfCookiesStored) {
-  ASSERT_TRUE(content::SetCookie(browser()->profile(), a_site_simple_url_,
+  ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), a_site_simple_url_,
                                  "from=a.com;SameSite=None;Secure"));
 
   NavigateToBlockedDomainAndExpectNotEphemeral();

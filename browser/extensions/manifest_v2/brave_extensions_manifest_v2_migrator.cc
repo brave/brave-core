@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 
 #include <algorithm>
+#include <string_view>
 #include <utility>
 
 #include "base/files/file_enumerator.h"
@@ -25,13 +26,26 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_factory.h"
 #include "extensions/browser/extension_util.h"
+#include "extensions/browser/permissions/permissions_updater.h"
+#include "extensions/browser/pref_names.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/extension.h"
 #include "extensions/common/extension_features.h"
+#include "extensions/common/manifest_constants.h"
+#include "extensions/common/permissions/permission_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
 
 constexpr char kVersion[] = "version";
+
+// User-facing keys under extensions.settings.<id> that should follow the user
+// from a WebStore-hosted MV2 extension to its Brave-hosted replacement.
+constexpr std::string_view kBrowserLevelPrefKeys[] = {
+    "runtime_granted_permissions", "active_permissions",
+    "withholding_permissions",     "incognito",
+    "newAllowFileAccess",
+};
 
 constexpr base::FilePath::CharType kExtensionMV2BackupDir[] =
     FILE_PATH_LITERAL("MV2Backup");
@@ -181,6 +195,33 @@ bool MoveExtensionSettings(const extensions::ExtensionId& source_extension_id,
   return !error;
 }
 
+// Returns true if the extension installed under `extension_id` is a Manifest V2
+// extension.
+// The migration is triggered by the extension being installed rather than by it
+// being disabled with DISABLE_UNSUPPORTED_MANIFEST_VERSION, and the latter used
+// to be the only thing guaranteeing that the extension actually was MV2. A
+// known WebStore-hosted id may well refer to an up-to-date MV3 build of the
+// same extension, which is fully supported and must not be replaced with the
+// older Brave-hosted MV2 one.
+bool IsInstalledManifestV2Extension(
+    Profile* profile,
+    const extensions::ExtensionId& extension_id) {
+  if (const auto* extension =
+          extensions::ExtensionRegistry::Get(profile)->GetInstalledExtension(
+              extension_id)) {
+    return extension->manifest_version() == 2;
+  }
+
+  // The registry is still empty while the migrator is being created during
+  // profile initialization, so fall back to the manifest stored in prefs.
+  const auto extension_info =
+      extensions::ExtensionPrefs::Get(profile)->GetInstalledExtensionInfo(
+          extension_id);
+  return extension_info && extension_info->extension_manifest &&
+         extension_info->extension_manifest->FindInt(
+             extensions::manifest_keys::kManifestVersion) == 2;
+}
+
 base::Version BackupExtensionSettingsOnFileThread(
     const extensions::ExtensionId& webstore_extension_id,
     const base::Version& version,
@@ -257,10 +298,11 @@ ExtensionsManifestV2Migrator::ExtensionsManifestV2Migrator(Profile* profile)
   // Since cr151 Brave re-allows MV2 extensions, Chromium no longer disables
   // known WebStore-hosted MV2 extensions with
   // DISABLE_UNSUPPORTED_MANIFEST_VERSION. Detect any that are already installed
-  // by presence and start their migration. Extensions installed while running
-  // are handled in OnExtensionInstalled(), and any that still get disabled for
-  // the unsupported-manifest reason are handled in
-  // OnExtensionDisableReasonsChanged().
+  // by presence and start their migration. The manifest version is checked
+  // separately in MaybeBackupWebStoreExtension(), since presence alone doesn't
+  // tell an MV2 build from an MV3 one. Extensions installed while running are
+  // handled in OnExtensionInstalled(), and any that still get disabled for the
+  // unsupported-manifest reason are handled in
   for (const auto webstore_extension : kWebStoreHosted) {
     const extensions::ExtensionId webstore_extension_id(
         webstore_extension.first);
@@ -305,7 +347,7 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
-  if (is_updates) {
+  if (is_updates || extension->manifest_version() >= 3) {
     return;
   }
 
@@ -325,6 +367,13 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
 
   extensions::ExtensionRegistrar::Get(profile_)->DisableExtension(
       extension->id(), {extensions::disable_reason::DISABLE_RELOAD});
+
+  // Transfer browser-level prefs (permissions, pin, etc.).
+  if (const auto webstore_extension_id =
+          GetWebStoreHostedExtensionId(extension->id())) {
+    CopyBrowserLevelSettings(*webstore_extension_id, extension->id());
+  }
+
   extensions::GetExtensionFileTaskRunner()->PostTaskAndReply(
       FROM_HERE,
       base::BindOnce(&ImportExtensionSettingsOnFileThread, extension->id(),
@@ -337,6 +386,11 @@ void ExtensionsManifestV2Migrator::MaybeBackupWebStoreExtension(
     const extensions::ExtensionId& webstore_extension_id) {
   if (!features::IsSettingsBackupEnabled() ||
       !IsKnownWebStoreHostedExtension(webstore_extension_id)) {
+    return;
+  }
+
+  // Only MV2 builds get replaced by their Brave-hosted equivalents.
+  if (!IsInstalledManifestV2Extension(profile_, webstore_extension_id)) {
     return;
   }
 
@@ -400,6 +454,10 @@ void ExtensionsManifestV2Migrator::OnSettingsImported(
   extensions::ExtensionRegistrar::Get(profile_)
       ->RemoveDisableReasonAndMaybeEnable(
           brave_hosted_extension_id,
+          extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION);
+  extensions::ExtensionRegistrar::Get(profile_)
+      ->RemoveDisableReasonAndMaybeEnable(
+          brave_hosted_extension_id,
           extensions::disable_reason::DISABLE_RELOAD);
 }
 
@@ -430,6 +488,57 @@ void ExtensionsManifestV2Migrator::OnSilentInstall(
           extensions::UninstallReason::UNINSTALL_REASON_INTERNAL_MANAGEMENT,
           nullptr);
     }
+  }
+}
+
+void ExtensionsManifestV2Migrator::CopyBrowserLevelSettings(
+    const extensions::ExtensionId& webstore_extension_id,
+    const extensions::ExtensionId& brave_hosted_extension_id) {
+  CHECK(IsKnownWebStoreHostedExtension(webstore_extension_id));
+  CHECK(IsKnownBraveHostedExtension(brave_hosted_extension_id));
+
+  auto* prefs = extensions::ExtensionPrefs::Get(profile_);
+  const base::DictValue* source_prefs =
+      prefs->pref_service()
+          ->GetDict(extensions::pref_names::kExtensions)
+          .FindDict(webstore_extension_id);
+  if (!source_prefs) {
+    return;
+  }
+
+  for (const std::string_view key : kBrowserLevelPrefKeys) {
+    if (const base::Value* value = source_prefs->Find(key)) {
+      prefs->UpdateExtensionPref(brave_hosted_extension_id, key,
+                                 value->Clone());
+    }
+  }
+
+  extensions::ExtensionIdList pinned = prefs->GetPinnedExtensions();
+  auto webstore_pin = std::ranges::find(pinned, webstore_extension_id);
+  if (webstore_pin != pinned.end()) {
+    // Pin if web store ext is pinned.
+    *webstore_pin = brave_hosted_extension_id;
+    prefs->SetPinnedExtensions(pinned);
+  }
+
+  if (prefs->HasDisableReason(
+          webstore_extension_id,
+          extensions::disable_reason::DISABLE_USER_ACTION)) {
+    prefs->AddDisableReasons(brave_hosted_extension_id,
+                             {extensions::disable_reason::DISABLE_USER_ACTION});
+  }
+
+  if (const auto granted_permissions =
+          prefs->GetGrantedPermissions(webstore_extension_id)) {
+    prefs->AddGrantedPermissions(brave_hosted_extension_id,
+                                 *granted_permissions);
+  }
+
+  if (const extensions::Extension* brave_extension =
+          extensions::ExtensionRegistry::Get(profile_)->GetInstalledExtension(
+              brave_hosted_extension_id)) {
+    extensions::PermissionsUpdater(profile_).InitializePermissions(
+        brave_extension);
   }
 }
 

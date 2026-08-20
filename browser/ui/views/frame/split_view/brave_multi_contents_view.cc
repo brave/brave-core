@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/i18n/rtl.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,7 +21,45 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/widget/widget.h"
+
+namespace {
+
+// Returns |corner_radii| with the corners that meet the split divider replaced
+// by the smaller border radius.
+gfx::RoundedCornersF GetSplitContentsCornerRadii(
+    const gfx::RoundedCornersF& corner_radii,
+    bool is_first,
+    bool is_last) {
+  if (corner_radii.IsEmpty()) {
+    return corner_radii;
+  }
+
+  // In RTL, the first split view is on the right and the last is on the left.
+  // Swap directions before setting the visual right and left radii.
+  if (base::i18n::IsRTL()) {
+    is_last = std::exchange(is_first, is_last);
+  }
+
+  const float adjacent_edge_radius =
+      views::LayoutProvider::Get()->GetCornerRadiusMetric(
+          views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+
+  gfx::RoundedCornersF split_radii = corner_radii;
+  if (!is_first) {
+    split_radii.set_upper_left(adjacent_edge_radius);
+    split_radii.set_lower_left(adjacent_edge_radius);
+  }
+  if (!is_last) {
+    split_radii.set_upper_right(adjacent_edge_radius);
+    split_radii.set_lower_right(adjacent_edge_radius);
+  }
+
+  return split_radii;
+}
+
+}  // namespace
 
 // static
 BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
@@ -79,6 +118,35 @@ void BraveMultiContentsView::SetWebPanelWidth(int width) {
 void BraveMultiContentsView::SetWebPanelOnLeft(bool left) {
   web_panel_on_left_ = left;
   InvalidateLayout();
+}
+
+void BraveMultiContentsView::OnShowActiveContentsDomainChanged() {
+  UpdateContentsBorderAndOverlay();
+}
+
+void BraveMultiContentsView::UpdateContentsCornerRadii(
+    const gfx::RoundedCornersF& corner_radii) {
+  if (contents_container_view_for_web_panel_) {
+    contents_container_view_for_web_panel_->SetContentsCornerRadii(
+        corner_radii);
+  }
+
+  const bool is_in_split = IsInSplitView();
+  const size_t view_count = contents_container_views_.size();
+  for (size_t i = 0; i < view_count; ++i) {
+    auto* container_view =
+        BraveContentsContainerView::From(contents_container_views_[i]);
+    if (is_in_split) {
+      const bool is_first = i == 0;
+      const bool is_last = i == view_count - 1;
+      container_view->SetContentsCornerRadii(
+          GetSplitContentsCornerRadii(corner_radii, is_first, is_last));
+    } else {
+      container_view->SetContentsCornerRadii(corner_radii);
+    }
+  }
+
+  UpdateContentsBorderAndOverlay();
 }
 
 views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
@@ -157,7 +225,8 @@ void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
       /*is_in_split*/ false, /*is_active*/ true,
       /*is_highlighted*/ false);
 
-  for (auto* contents_container_view : contents_container_views_) {
+  for (ContentsContainerView* contents_container_view :
+       contents_container_views_) {
     contents_container_view->UpdateBorderAndOverlay(IsInSplitView(),
                                                     /*is_active*/ false,
                                                     /*is_highlighted*/ false);
@@ -215,10 +284,6 @@ int BraveMultiContentsView::GetWebPanelWidth() const {
   }
 
   return web_panel_width_;
-}
-
-void BraveMultiContentsView::UpdateCornerRadius() {
-  UpdateContentsBorderAndOverlay();
 }
 
 ContentsContainerView* BraveMultiContentsView::GetActiveContentsContainerView()

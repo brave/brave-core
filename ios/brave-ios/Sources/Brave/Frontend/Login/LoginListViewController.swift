@@ -108,10 +108,6 @@ class LoginListViewController: LoginAuthViewController {
       $0.rightBarButtonItem?.isEnabled = !self.dataSource.credentialList.isEmpty
     }
     definesPresentationContext = true
-
-    tableView.tableFooterView = SettingsTableSectionHeaderFooterView(
-      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
-    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -134,7 +130,6 @@ class LoginListViewController: LoginAuthViewController {
     tableView.do {
       $0.accessibilityIdentifier = Strings.Login.loginListNavigationTitle
       $0.allowsSelectionDuringEditing = true
-      $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.saveLoginsRowIdentifier)
       $0.register(LoginListTableViewCell.self)
       $0.sectionHeaderTopPadding = 0
@@ -242,12 +237,10 @@ extension LoginListViewController {
     return UITableViewCell()
   }
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
   {
-    let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
-
-    let savedLoginHeaderText = Strings.Login.loginListSavedLoginsHeaderTitle.uppercased()
-    let neverSavedHeaderText = Strings.Login.loginListNeverSavedHeaderTitle.uppercased()
+    let savedLoginHeaderText = Strings.Login.loginListSavedLoginsHeaderTitle
+    let neverSavedHeaderText = Strings.Login.loginListNeverSavedHeaderTitle
 
     var titleHeaderText = ""
 
@@ -273,9 +266,7 @@ extension LoginListViewController {
       }
     }
 
-    headerView.titleLabel.text = titleHeaderText
-
-    return headerView
+    return titleHeaderText
   }
 
   override func tableView(

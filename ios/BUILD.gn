@@ -130,7 +130,10 @@ brave_core_public_headers = [
   "//ui/base/l10n/l10n_util_mac_bridge.h",
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom.objc.h",
   "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom.objc.h",
+  "$root_gen_dir/brave/components/brave_account/mojom/get_service_token.mojom.objc.h",
+  "$root_gen_dir/brave/components/brave_account/mojom/login.mojom.objc.h",
   "$root_gen_dir/brave/components/brave_account/mojom/register.mojom.objc.h",
+  "$root_gen_dir/brave/components/brave_account/mojom/resend_verification_email.mojom.objc.h",
   "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom.objc.h",
   "$root_gen_dir/components/grit/brave_components_swift_strings.h",
   "//brave/ios/browser/web/logins/logins_tab_helper_bridge.h",
@@ -143,6 +146,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/web/de_amp/de_amp_pref_names_bridge.h",
   "//brave/ios/browser/global_privacy_control/gpc_pref_names_bridge.h",
   "//brave/ios/browser/shared/prefs/shared_pref_names_bridge.h",
+  "//brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper_bridge.h",
+  "//brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_args.h",
   "//brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h",
 ]
 

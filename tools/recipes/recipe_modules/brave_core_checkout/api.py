@@ -11,6 +11,7 @@ import contextlib
 import logging
 from pathlib import Path, PurePosixPath
 
+import config_types
 from recipe_api import RecipeApi
 
 # Default SSH remote for the brave-core repository.
@@ -83,7 +84,7 @@ class BraveCoreCheckoutApi(RecipeApi):
         """
         if dest is None:
             dest = self.m.path.brave_core
-        single = isinstance(paths, (str, Path))
+        single = isinstance(paths, (str, Path, config_types.Path))
         rel_paths = [str(paths)] if single else [str(p) for p in paths]
         if not rel_paths:
             raise ValueError('deploy() requires at least one path')
@@ -159,8 +160,8 @@ class BraveCoreCheckoutApi(RecipeApi):
             'sparse-checkout list',
             ['git', '-C', str(dest), 'sparse-checkout', 'list'],
             check=False,
-            capture_output=True)
-        if result.returncode != 0 or not result.stdout:
+            stdout=self.m.raw_io.output_text())
+        if result.retcode != 0 or not result.stdout:
             return set()
         return {
             line.strip()

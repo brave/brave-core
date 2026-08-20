@@ -13,13 +13,13 @@ extension BrowserViewController {
   // MARK: Actions
 
   @objc private func reloadTabKeyCommand() {
-    if let tab = tabManager.selectedTab, favoritesController == nil {
+    if let tab = tabManager.selectedTab, searchContainer == nil {
       tab.reload()
     }
   }
 
   @objc private func goBackKeyCommand() {
-    if let tab = tabManager.selectedTab, tab.canGoBack, favoritesController == nil {
+    if let tab = tabManager.selectedTab, tab.canGoBack, searchContainer == nil {
       tab.goBack()
       tab.browserData?.resetExternalAlertProperties()
     }
@@ -33,13 +33,13 @@ extension BrowserViewController {
   }
 
   @objc private func findInPageKeyCommand() {
-    if let tab = tabManager.selectedTab, favoritesController == nil {
+    if let tab = tabManager.selectedTab, searchContainer == nil {
       tab.presentFindInteraction()
     }
   }
 
   @objc private func selectLocationBarKeyCommand() {
-    if favoritesController == nil {
+    if searchContainer == nil {
       toolbarVisibilityViewModel.toolbarState = .expanded
       topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
@@ -174,11 +174,7 @@ extension BrowserViewController {
   }
 
   @objc private func moveURLCompletionKeyCommand(sender: UIKeyCommand) {
-    guard let searchController = self.searchController else {
-      return
-    }
-
-    searchController.handleKeyCommands(sender: sender)
+    searchContainer?.handleSearchKeyCommands(sender: sender)
   }
 
   @objc private func toggleBraveTalkMuteCommand() {
@@ -488,7 +484,7 @@ extension BrowserViewController {
     tabNavigationKeyCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
     additionalPriorityCommandKeys.forEach { $0.wantsPriorityOverSystemBehavior = true }
 
-    if topToolbar.inOverlayMode {
+    if isSearchContainerVisible {
       keyCommandList.append(contentsOf: searchLocationCommands)
     }
 

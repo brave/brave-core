@@ -157,7 +157,7 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
 
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     PrefService* prefs,
     bool exclude_memory,
     uint32_t remaining_length,
@@ -444,7 +444,7 @@ std::vector<OAIMessage> BuildOAIMessages(
     } else {
       oai_message.content.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
-              EngineConsumer::GetPromptForEntry(message))));
+              EngineConsumer::GetPromptForEntry(*message))));
     }
 
     // Add the assistant message first
@@ -625,7 +625,7 @@ BuildOAIGenerateConversationTitleMessages(
                                   !assistant_turn->text.empty();
   std::string title_text = use_assistant_text
                                ? assistant_turn->text
-                               : EngineConsumer::GetPromptForEntry(first_turn);
+                               : EngineConsumer::GetPromptForEntry(*first_turn);
 
   // Withdraw the request entirely if we have nothing to summarize. Sending an
   // empty title block wastes a server round-trip and cannot produce a useful

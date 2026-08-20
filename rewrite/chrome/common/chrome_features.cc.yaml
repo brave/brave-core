@@ -1,0 +1,52 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Disable the Glic actor UI task icon by default
+
+      It includes google-specific branding and causes a crash when interacted
+      with. Brave will make its own version, or fix the Chromium version and
+      remove this override.
+    regex:
+      re_pattern:
+        '(const base::FeatureParam<bool> kGlicActorUiTaskIcon\{\s*&kGlicActorUi,
+        kGlicActorUiTaskIconName, )true(\};)'
+      replace: '\1false\2'
+
+  - description: 'Ship kChromeStructuredMetrics disabled.'
+    set_feature_flag_default_state:
+      feature_name: kChromeStructuredMetrics
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kDesktopPWAsTabStripSettings enabled.'
+    set_feature_flag_default_state:
+      feature_name: kDesktopPWAsTabStripSettings
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kHttpsFirstBalancedMode disabled.'
+    set_feature_flag_default_state:
+      feature_name: kHttpsFirstBalancedMode
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kIndigo disabled.'
+    set_feature_flag_default_state:
+      feature_name: kIndigo
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kSCTAuditingHashdance disabled.'
+    set_feature_flag_default_state:
+      feature_name: kSCTAuditingHashdance
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kTrustSafetySentimentSurvey disabled.'
+    set_feature_flag_default_state:
+      feature_name: kTrustSafetySentimentSurvey
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kTrustSafetySentimentSurveyV2 disabled.'
+    set_feature_flag_default_state:
+      feature_name: kTrustSafetySentimentSurveyV2
+      value: base::FEATURE_DISABLED_BY_DEFAULT

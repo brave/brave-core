@@ -1,0 +1,81 @@
+diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
+index 8809342d7c15f63021d8235180b14536dc3e114e..1ef3c8fa8902c1c55bb69c48adeaad744b00906c 100644
+--- a/components/search/ntp_features.cc
++++ b/components/search/ntp_features.cc
+@@ -24,17 +24,14 @@ BASE_FEATURE(kConfirmSuggestionRemovals,
+ 
+ // If enabled, shows an extension card within the Customize Chrome Side
+ // Panel for access to the Chrome Web Store extensions.
++// kCustomizeChromeSidePanelExtensionsCard feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kCustomizeChromeSidePanelExtensionsCard,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, shows wallpaper search within the Customize Chrome Side Panel.
+ // This is a kill switch. Keep indefinitely.
+ BASE_FEATURE(kCustomizeChromeWallpaperSearch,
+-#if BUILDFLAG(IS_ANDROID)
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#endif
+ 
+ // If enabled, shows entry point on Customize Chrome Side Panel's Appearance
+ // page for Wallpaper Search.";
+@@ -75,28 +72,22 @@ BASE_FEATURE(kRealboxCr23Theming,
+ 
+ // If enabled, alpha NTP backgrounds will show in Customize Chrome.
+ // This is a development switch. Keep indefinitely.
++// kNtpAlphaBackgroundCollections feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, NTP background image links will be checked for HTTP status
+ // errors."
++// kNtpBackgroundImageErrorDetection feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kNtpBackgroundImageErrorDetection,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, calendar module will be shown.
+ BASE_FEATURE(kNtpCalendarModule,
+-#if BUILDFLAG(IS_ANDROID)
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#endif
+ 
+ // If enabled, chrome cart module will be shown.
+ BASE_FEATURE(kNtpChromeCartModule,
+-#if BUILDFLAG(IS_ANDROID)
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#endif
+ 
+ // If enabled, customization of Chrome will be promoted on the NTP.
+ BASE_FEATURE(kNtpCustomizeChromeAutoOpen, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -119,17 +110,14 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+ // If enabled, Google Drive module will be shown.
+ // This is a kill switch. Keep indefinitely.
+ BASE_FEATURE(kNtpDriveModule,
+-#if BUILDFLAG(IS_ANDROID)
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#endif
+ 
+ // If enabled, the NTP Drive module does not require sync.
+ BASE_FEATURE(kNtpDriveModuleHistorySyncRequirement,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // If enabled, the NTP Drive Module will link to the Drive page.
++// kNtpDriveModuleLink feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kNtpDriveModuleLink, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, segmentation data will be collected to decide whether or not to
+@@ -162,6 +150,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Dummy feature to set param "NtpModulesMaxColumnCountParam".
+ // This is used for an emergency Finch param. Keep indefinitely.
++// kNtpModulesMaxColumnCount feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"

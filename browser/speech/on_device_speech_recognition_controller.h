@@ -19,6 +19,7 @@
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -26,6 +27,8 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
+
+class ProfileManager;
 
 namespace base {
 template <typename T>
@@ -49,7 +52,8 @@ class OnDeviceSpeechRecognitionController
     : public local_ai::mojom::SpeechRecognitionFactoryHost,
       public local_ai::mojom::AsrSession,
       public local_ai::BackgroundWebContents::Delegate,
-      public ProfileObserver {
+      public ProfileObserver,
+      public ProfileManagerObserver {
  public:
   // Creates the BackgroundWebContents that hosts the worker. Production binds
   // this to local_ai::CreateBackgroundWebContents; tests inject a fake so the
@@ -103,6 +107,14 @@ class OnDeviceSpeechRecognitionController
   // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
+  // ProfileManagerObserver:
+  // Browser shutdown destroys the profiles without necessarily telling the OTR
+  // one first, so tear down here as well. This runs at the top of
+  // `~ProfileManager`, before any profile is destroyed, which is the last point
+  // at which the worker's WebContents can be released while its BrowserContext
+  // is still alive.
+  void OnProfileManagerDestroying() override;
+
  private:
   friend base::NoDestructor<OnDeviceSpeechRecognitionController>;
 
@@ -155,10 +167,17 @@ class OnDeviceSpeechRecognitionController
 
   State state_ = State::kIdle;
 
+  // Set once the profile manager is gone. TearDown() returns state_ to kIdle,
+  // so this is what keeps a later Start() from booting a worker that has no
+  // profile manager to build a guest profile from.
+  bool shutting_down_ = false;
+
   // The guest profile's primary OTR profile, which hosts the worker's
   // BackgroundWebContents and is the profile we observe for destruction.
   raw_ptr<Profile> otr_profile_ = nullptr;
   base::ScopedObservation<Profile, ProfileObserver> profile_observation_{this};
+  base::ScopedObservation<ProfileManager, ProfileManagerObserver>
+      profile_manager_observation_{this};
 
   std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents_;
 

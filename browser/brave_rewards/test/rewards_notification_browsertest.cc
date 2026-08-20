@@ -58,7 +58,7 @@ class RewardsNotificationBrowserTest
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
-    auto* profile = browser()->profile();
+    auto* profile = browser()->GetProfile();
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile));
 

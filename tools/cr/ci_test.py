@@ -203,14 +203,18 @@ class TriggerTest(unittest.TestCase):
 
     def test_properties_escaped_only_for_windows_jobs(self):
         """Windows jobs escape every quote; other jobs keep the JSON as-is."""
-        win = ('https://ci.brave.com/view/toolchains/job/'
-               'brave-browser-rust-toolchain-aux-build-windows-x64/')
+        win_infix = ('https://ci.brave.com/view/toolchains/job/'
+                     'brave-browser-rust-toolchain-aux-build-windows-x64/')
+        # The hermetic Windows toolchain job's own naming: `windows` leads the
+        # job name rather than appearing as an infix.
+        win_leading = ('https://ci.brave.com/view/toolchains/job/'
+                       'windows-hermetic-toolchain-build/')
         linux = ('https://ci.brave.com/view/toolchains/job/'
                  'brave-browser-rust-toolchain-aux-build-linux-x64/')
         session = self._make_session()
         with patch('ci.requests.Session', return_value=session):
             ci.JenkinsCi('alice', 'secret-token').trigger(
-                (win, linux),
+                (win_infix, win_leading, linux),
                 params={'CHROMIUM_TAG': '150.0.7850.1'},
                 properties={'k': 'v'})
 
@@ -218,7 +222,9 @@ class TriggerTest(unittest.TestCase):
             call.args[0]: call.kwargs['params']['PROPERTIES']
             for call in session.post.call_args_list
         }
-        self.assertEqual(by_url[f'{win}buildWithParameters'],
+        self.assertEqual(by_url[f'{win_infix}buildWithParameters'],
+                         '{\\"k\\": \\"v\\"}')
+        self.assertEqual(by_url[f'{win_leading}buildWithParameters'],
                          '{\\"k\\": \\"v\\"}')
         self.assertEqual(by_url[f'{linux}buildWithParameters'], '{"k": "v"}')
 

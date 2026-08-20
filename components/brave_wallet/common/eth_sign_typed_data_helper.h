@@ -39,7 +39,8 @@ class EthSignTypedDataHelper {
   void SetTypes(base::DictValue types);
   void SetVersion(Version version);
 
-  Eip712HashArray GetTypeHash(const std::string_view primary_type_name) const;
+  std::optional<EthSignTypedDataHelper::Eip712HashArray> GetTypeHash(
+      const std::string_view primary_type_name) const;
   std::optional<std::pair<Eip712HashArray, base::DictValue>> HashStruct(
       const std::string_view primary_type_name,
       const base::DictValue& data) const;
@@ -60,16 +61,20 @@ class EthSignTypedDataHelper {
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
                            InvalidEncodeTypes);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesPrimaryTypeSortedFirst);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesFixedAndNestedArrayDependencies);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesWithCyclicDependencies);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           EncodeTypesIgnoresNonListDependency);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeField);
 
   explicit EthSignTypedDataHelper(base::DictValue types, Version version);
 
-  void FindAllDependencyTypes(
-      base::flat_map<std::string, base::Value>* known_types,
-      const std::string_view anchor_type_name) const;
-  std::string EncodeType(const base::Value& type,
-                         const std::string_view type_name) const;
-  std::string EncodeTypes(const std::string_view primary_type_name) const;
+  std::optional<std::string> EncodeTypes(
+      const std::string_view primary_type_name) const;
 
   std::optional<Eip712HashArray> EncodeField(const std::string_view type_string,
                                              const base::Value& value) const;

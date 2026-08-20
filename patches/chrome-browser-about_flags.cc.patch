@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index f477aa7fa23fdf04a23894117bcc727c0d924c90..bc8cb0e2bda2ff6eac84bfc5fe7c02473d34583b 100644
+index ffdecc12e44c6b584a41a6df2a4dc2647b5f8ec6..ed868f5bdf15ae46132cf0ee15e776f3e6b14c69 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4726,6 +4726,7 @@ const FeatureEntry::FeatureVariation kToolbarGlowUpVariations[] = {
+@@ -4864,6 +4864,7 @@ const FeatureEntry::FeatureVariation kDictationVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

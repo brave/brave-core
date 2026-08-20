@@ -25,7 +25,6 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -1377,27 +1376,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoPermission) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionNotNewSetup) {
-  bool new_setup_callback_called = false;
-  ScopedNewSetupNeededCallbackForTesting new_setup_callback(
-      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
-  CreateWallet();
-  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
-  auto address_0 = base::ToLowerASCII(account_0->address);
-
-  GURL url("https://brave.com");
-  Navigate(url);
-
-  AddEthereumPermission(account_0->account_id);
-  base::RunLoop run_loop;
-  EXPECT_THAT(RequestEthereumPermissions(), ElementsAre(address_0));
-  // Make sure even with a delay the new setup callback is not called.
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_FALSE(new_setup_callback_called);
-}
-
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
-  bool new_setup_callback_called = false;
   bool permission_callback_called = false;
   CreateWallet();
   GetAccountUtils().EnsureEthAccount(0);
@@ -1409,9 +1388,6 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
   // setting (no permission prompt is shown).
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_ETHEREUM, CONTENT_SETTING_BLOCK);
-
-  ScopedNewSetupNeededCallbackForTesting new_setup_callback(
-      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
 
   provider()->RequestEthereumPermissions(
       base::BindLambdaForTesting(
@@ -1428,17 +1404,14 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoPermission) {
       base::Value(), "", GetOrigin());
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(permission_callback_called);
-  EXPECT_FALSE(new_setup_callback_called);
 }
 
+// The provider isn't injected without a wallet, but the request must still fail
+// cleanly if one is reset while a page holds a provider.
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  bool new_setup_callback_called = false;
-  std::optional<ScopedNewSetupNeededCallbackForTesting> new_setup_callback;
-  new_setup_callback.emplace(
-      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   base::RunLoop run_loop;
   provider()->RequestEthereumPermissions(
       base::BindLambdaForTesting(
@@ -1453,27 +1426,6 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
           }),
       base::Value(), "", GetOrigin());
   run_loop.Run();
-  EXPECT_TRUE(new_setup_callback_called);
-
-  // Setup is called at most once
-  new_setup_callback_called = false;
-  new_setup_callback.emplace(
-      base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
-  base::RunLoop run_loop2;
-  provider()->RequestEthereumPermissions(
-      base::BindLambdaForTesting(
-          [&](mojom::EthereumProviderResponsePtr response) {
-            mojom::ProviderError error = mojom::ProviderError::kUnknown;
-            std::string error_message;
-            GetErrorCodeMessage(std::move(response->formed_response), &error,
-                                &error_message);
-            EXPECT_NE(error, mojom::ProviderError::kSuccess);
-            EXPECT_FALSE(error_message.empty());
-            run_loop2.Quit();
-          }),
-      base::Value(), "", GetOrigin());
-  run_loop2.Run();
-  EXPECT_FALSE(new_setup_callback_called);
 }
 
 TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsWithAccounts) {
@@ -2070,7 +2022,7 @@ TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
 
   // SetNetwork for other origin will be ignored.
   EXPECT_CALL(*observer_, ChainChangedEvent(testing::_)).Times(0);
-  SetNetwork(mojom::kLocalhostChainId,
+  SetNetwork(mojom::kBnbSmartChainMainnetChainId,
              url::Origin::Create(GURL("https://a.com")));
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));

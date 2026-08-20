@@ -81,6 +81,7 @@ RegisterStyleOverride(
 
       .cr-nav-menu-item:hover {
         background: transparent !important;
+        --iron-icon-fill-color: var(--leo-color-icon-interactive);
       }
 
       .cr-nav-menu-item[selected] {

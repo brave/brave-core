@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Also patch the GPU sandbox's module file name, gated on
+      kModuleFileNamePatch.
+    regex:
+      re_pattern: '(config->AddDllToUnload\(L"cmsetac\.dll"\);)'
+      replace: |-
+        \1
+            config->SetShouldPatchModuleFileName(base::FeatureList::IsEnabled(
+                sandbox::policy::features::kModuleFileNamePatch));

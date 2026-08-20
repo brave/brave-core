@@ -1,0 +1,32 @@
+diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
+index c6e8f8b1cdac43d3804716d857ef3117b697ee5c..3fdaa6ec717e0bd94ad2949f56815f39788c062b 100644
+--- a/components/signin/public/base/signin_switches.cc
++++ b/components/signin/public/base/signin_switches.cc
+@@ -562,8 +562,10 @@ BASE_FEATURE(kFetchAccountInfoOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+ #if BUILDFLAG(IS_WIN)
+-BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_ENABLED_BY_DEFAULT);
++// kFirstRunDesktopRefresh feature state is enforced via plaster rewrite.
++BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
+ #else
++// kFirstRunDesktopRefresh feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
+ #endif
+ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
+@@ -830,13 +832,9 @@ BASE_FEATURE(kSupportForcedSigninPolicy, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
++// kSyncEnableBookmarksInTransportMode feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kSyncEnableBookmarksInTransportMode,
+-#if BUILDFLAG(IS_CHROMEOS)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kBookmarksMigrateUiChanges, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ #if BUILDFLAG(IS_CHROMEOS)

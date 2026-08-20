@@ -1105,50 +1105,22 @@ void BraveWalletService::MigrateAsCustomNetwork(
   prefs->SetBoolean(pref_key, true);
 }
 
-// Migrate dead network to fallback network.
-void BraveWalletService::MigrateDeadNetwork(
-    PrefService* prefs,
-    const std::string& chain_id,
-    const std::string& fallback_chain_id,
-    std::string_view pref_key) {
-  if (prefs->GetBoolean(pref_key)) {
+void BraveWalletService::MaybeMigrateLocalhostNetworks(PrefService* prefs) {
+  constexpr char kLocalhostChainId[] = "0x539";
+
+  if (prefs->GetBoolean(kBraveWalletLocalhostNetworksMigrated)) {
     return;
   }
 
   NetworkManager network_manager(prefs);
+  network_manager.MigrateDeadNetwork(mojom::CoinType::ETH, kLocalhostChainId,
+                                     mojom::kSepoliaChainId);
+  network_manager.MigrateDeadNetwork(mojom::CoinType::SOL, kLocalhostChainId,
+                                     mojom::kSolanaTestnet);
+  network_manager.MigrateDeadNetwork(mojom::CoinType::FIL, kLocalhostChainId,
+                                     mojom::kFilecoinTestnet);
 
-  // Migrate current chain id for default origin
-  if (network_manager.GetCurrentChainId(mojom::CoinType::ETH, std::nullopt) ==
-      chain_id) {
-    network_manager.SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
-                                      fallback_chain_id);
-  }
-
-  // Migrate current chain id for all origins
-  const auto& selected_networks =
-      prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
-
-  const auto* coin_dict =
-      selected_networks.FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH));
-  if (!coin_dict) {
-    prefs->SetBoolean(pref_key, true);
-    return;
-  }
-
-  for (auto origin : *coin_dict) {
-    const auto* chain_id_each = origin.second.GetIfString();
-    if (!chain_id_each) {
-      continue;
-    }
-
-    if (base::ToLowerASCII(*chain_id_each) == chain_id) {
-      network_manager.SetCurrentChainId(mojom::CoinType::ETH,
-                                        url::Origin::Create(GURL(origin.first)),
-                                        fallback_chain_id);
-    }
-  }
-
-  prefs->SetBoolean(pref_key, true);
+  prefs->SetBoolean(kBraveWalletLocalhostNetworksMigrated, true);
 }
 
 BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {

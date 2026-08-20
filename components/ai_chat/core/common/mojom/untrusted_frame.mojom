@@ -6,6 +6,7 @@
 module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/common.mojom";
+import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "url/mojom/url.mojom";
 
 // Interfaces for communication between the untrusted content frame and both
@@ -138,6 +139,16 @@ interface UntrustedUIHandler {
 
   // Open AI Chat customization settings page
   OpenAIChatCustomizationSettings();
+
+  // Semantically searches the user's open tabs by page content, on device.
+  // Null where on-device tab search is unavailable (non-desktop); empty when
+  // no open tab matched. `TabData::title` falls back to the URL's host when
+  // the tab has no title.
+  SearchForTabs(string query) => (array<TabData>? tabs);
+
+  // Activate the open tab with the given handle. Used by the cards rendered
+  // for the `tabSearch` markdown directive.
+  SwitchToTab(int32 tab_id);
 
   // Registers a tab to receive thumbnail updates for. Also immediately requests
   // the current thumbnail.

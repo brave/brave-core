@@ -73,7 +73,15 @@ export const EmailAliasesManagePage = ({
   )
 }
 
-export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
+export type EmailAliasesMountOptions = {
+  onLoggedInChange: (loggedIn: boolean) => void
+}
+
+export const mount = (
+  signInElem: HTMLElement,
+  manageElem: HTMLElement,
+  options: EmailAliasesMountOptions,
+) => {
   setIconBasePath('//resources/brave-icons')
 
   const emailAliasesService = EmailAliasesService.getRemote()
@@ -94,7 +102,7 @@ export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
       target={signInElem.getRootNode() as ShadowRoot}
       shouldForwardProp={shouldForwardProp}
     >
-      <SignInPage />
+      <SignInPage onLoggedInChange={options.onLoggedInChange} />
     </StyleSheetManager>,
   )
 

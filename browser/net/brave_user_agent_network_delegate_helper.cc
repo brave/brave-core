@@ -42,20 +42,13 @@ int OnBeforeStartTransaction_UserAgentWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     T<BraveRequestInfo> ctx) {
-  if (ctx) {
-    auto* exceptions =
-        brave_user_agent::BraveUserAgentExceptions::GetInstance();
-    if (exceptions) {
-      bool show_brave = exceptions->CanShowBrave(ctx->tab_origin());
-      if (!show_brave) {
-        if (ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA)) {
-          ctx->mutable_modified_headers().insert(kHeaderSecCHUA);
-        }
-        if (ReplaceBraveWithGoogleChromeInHeader(
-                headers, kHeaderSecCHUAFullVersionList)) {
-          ctx->mutable_modified_headers().insert(kHeaderSecCHUAFullVersionList);
-        }
-      }
+  if (ctx && brave_user_agent::ShouldHideBraveBrand(ctx->tab_origin())) {
+    if (ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA)) {
+      ctx->mutable_modified_headers().insert(kHeaderSecCHUA);
+    }
+    if (ReplaceBraveWithGoogleChromeInHeader(headers,
+                                             kHeaderSecCHUAFullVersionList)) {
+      ctx->mutable_modified_headers().insert(kHeaderSecCHUAFullVersionList);
     }
   }
   return net::OK;

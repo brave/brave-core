@@ -323,7 +323,9 @@ class RepositoryTest(unittest.TestCase):
         self.assertFalse(repository.chromium.is_rebase_in_progress())
 
         # Start an interactive rebase that stops on an `edit` command.
-        env = {**os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i '1s/^pick/edit/'"}
+        env = {
+            **os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'"
+        }
         subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
                        cwd=chromium,
                        env=env,

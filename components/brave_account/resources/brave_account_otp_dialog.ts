@@ -16,8 +16,6 @@ import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
   LoggedInVerificationIntent,
   LoggedOutVerificationIntent,
-  ResendConfirmationEmailClientErrorCode,
-  ResendConfirmationEmailError,
   VerificationIntent,
   VerificationIntentFieldTags,
   whichVerificationIntent,
@@ -30,6 +28,10 @@ import {
   RegisterClientErrorCode,
   RegisterError,
 } from './register.mojom-webui.js'
+import {
+  ResendVerificationEmailClientErrorCode,
+  ResendVerificationEmailError,
+} from './resend_verification_email.mojom-webui.js'
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
@@ -91,7 +93,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmRegistrationCode() {
     try {
-      await this.browserProxy.authentication.registerVerifyComplete(this.code)
+      await this.browserProxy.authentication.registerStep3(this.code)
     } catch (e) {
       let error: RegisterError
 
@@ -110,9 +112,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmResetPasswordCode() {
     try {
-      await this.browserProxy.authentication.resetPasswordVerifyComplete(
-        this.code,
-      )
+      await this.browserProxy.authentication.resetPasswordStep2(this.code)
     } catch (e) {
       let error: ResetPasswordError
 
@@ -131,9 +131,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
   private async confirmChangePasswordCode() {
     try {
-      await this.browserProxy.authentication.changePasswordVerifyComplete(
-        this.code,
-      )
+      await this.browserProxy.authentication.changePasswordStep2(this.code)
     } catch (e) {
       let error: ChangePasswordError
 
@@ -154,7 +152,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
-    let error: ResendConfirmationEmailError | undefined
+    let error: ResendVerificationEmailError | undefined
 
     try {
       await this.browserProxy.authentication.resendVerificationEmail(
@@ -162,12 +160,12 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
       )
     } catch (e) {
       if (e && typeof e === 'object') {
-        error = e as ResendConfirmationEmailError
+        error = e as ResendVerificationEmailError
       } else {
         console.error('Unexpected error:', e)
         error = {
           clientError: {
-            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+            errorCode: ResendVerificationEmailClientErrorCode.kUnexpected,
           },
         }
       }
@@ -175,7 +173,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
 
     if (error) {
       showError(
-        { kind: 'resendConfirmationEmail', details: error },
+        { kind: 'resendVerificationEmail', details: error },
         BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE,
       )
     } else {

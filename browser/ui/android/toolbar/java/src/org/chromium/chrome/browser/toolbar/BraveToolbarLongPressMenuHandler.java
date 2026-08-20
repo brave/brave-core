@@ -12,6 +12,9 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
+import org.chromium.components.browser_ui.widget.ListItemBuilder;
+import org.chromium.ui.base.Clipboard;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -19,11 +22,13 @@ import org.chromium.ui.widget.ViewRectProvider;
 import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /** Brave's extension for the handler for the toolbar long press menu. */
 @NullMarked
 public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandler {
+    private final MonotonicObservableSupplier<Profile> mProfileSupplier;
     private final Supplier<@Nullable GURL> mUrlSupplier;
 
     public BraveToolbarLongPressMenuHandler(
@@ -35,6 +40,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
             WindowAndroid windowAndroid,
             Supplier<@Nullable GURL> urlSupplier,
             Supplier<ViewRectProvider> urlBarViewRectProviderSupplier,
+            Predicate<GURL> isSendTabToSelfAvailable,
             Runnable onSendTabToSelfClicked) {
         super(
                 context,
@@ -45,8 +51,10 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
                 windowAndroid,
                 urlSupplier,
                 urlBarViewRectProviderSupplier,
+                isSendTabToSelfAvailable,
                 onSendTabToSelfClicked);
 
+        mProfileSupplier = profileSupplier;
         mUrlSupplier = urlSupplier;
     }
 
@@ -54,8 +62,9 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
     ModelList buildMenuItems(boolean onTop) {
         ModelList itemList = super.buildMenuItems(onTop);
 
-        // Remove the "Copy link" item from menu when there is nothing to copy.
-        if (mUrlSupplier == null || mUrlSupplier.get() == null) {
+        @Nullable GURL url = mUrlSupplier == null ? null : mUrlSupplier.get();
+        // Remove the "Copy link" item from the menu when there is nothing to copy.
+        if (url == null) {
             for (int i = 0; i < itemList.size(); i++) {
                 int itemID = itemList.get(i).model.get(ListMenuItemProperties.MENU_ITEM_ID);
                 if (itemID == MenuItemType.COPY_LINK) {
@@ -63,7 +72,38 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
                     break;
                 }
             }
+            return itemList;
         }
+
+        itemList.add(
+                2,
+                new ListItemBuilder()
+                        .withTitleRes(R.string.contextmenu_copy_clean_link)
+                        .withMenuId(R.id.contextmenu_copy_clean_link)
+                        .build());
         return itemList;
+    }
+
+    @Override
+    void handleMenuClick(int id) {
+        if (id == R.id.contextmenu_copy_clean_link) {
+            handleCopyCleanLink();
+            return;
+        }
+        super.handleMenuClick(id);
+    }
+
+    private void handleCopyCleanLink() {
+        @Nullable Profile profile = mProfileSupplier.get();
+        @Nullable GURL url = mUrlSupplier.get();
+        if (profile == null || url == null) {
+            return;
+        }
+
+        UrlSanitizerServiceFactory.getInstance()
+                .sanitizeUrl(
+                        profile,
+                        url.getSpec(),
+                        result -> Clipboard.getInstance().copyUrlToClipboard(new GURL(result)));
     }
 }

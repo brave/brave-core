@@ -76,7 +76,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
       : SimpleMenuModel(this),
         browser_(browser),
         service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
-            browser_->profile())) {
+            browser_->GetProfile())) {
     CHECK(service_);
     Observe(service_);
     Build(service_->IsPurchased());
@@ -179,7 +179,7 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
                              // already shows a panel on click
       browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
-          browser_->profile())) {
+          browser_->GetProfile())) {
   CHECK(service_);
   UpdateButtonState();
   Observe(service_);

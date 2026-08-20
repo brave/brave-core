@@ -183,8 +183,6 @@ source_set("browser_tests") {
   sources = [ "brave_tab_menu_browsertest.cc" ]
 
   deps = [
-    ":tab_menu",
-    ":tab_model",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui",
@@ -201,6 +199,13 @@ source_set("browser_tests") {
     deps += [
       "//brave/components/containers/core/browser:test_support",
       "//brave/components/containers/core/common:features",
+    ]
+  }
+
+  if (!is_android) {
+    deps += [
+      ":tab_menu",
+      ":tab_model",
     ]
   }
 }

@@ -94,6 +94,8 @@ void BraveImportDataHandler::StartImportImpl(
     import_observers_.erase(source_profile.source_path);
   }
 
+  import_did_succeed_ = false;
+
   FireWebUIListener("import-data-status-changed", base::Value("inProgress"));
 
   // Using weak pointers because it destroys itself when finshed.

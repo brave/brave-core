@@ -5,13 +5,43 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
-import("//tools/grit/preprocess_if_expr.gni")
 
 assert(enable_ai_chat)
 
-group("lib") {
+node_action("shared_conversation_lib") {
+  script = "//brave/node_modules/webpack/bin/webpack.js"
+
+  depfile = "$target_gen_dir/$target_name.d"
+  output_dir = "$root_gen_dir/ai-chat-shared-conversation-lib"
+  render_conversation_js = "$output_dir/render_conversation.js"
+
   deps = [
     "//brave/components/ai_chat/core/common/mojom:mojom_js",
+    "//brave/components/common:preprocess_package_json",
     "//brave/components/resources:strings",
+    "//brave/ui/webui/resources:icons_copy",
+    "//mojo/public/js:bindings",
+    "//mojo/public/js:resources",
+  ]
+
+  inputs = brave_common_web_compile_inputs
+  inputs += [
+    "render_conversation.tsx",
+    "webpack.config.ts",
+  ]
+
+  outputs = [ render_conversation_js ]
+
+  args = [
+    "--disable-interpret",
+    "--config=" + rebase_path("webpack.config.ts", root_build_dir),
+    "--mode=production",
+    "--env",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    "--env",
+    "depfile_path=" + rebase_path(depfile, root_build_dir),
+    "--env",
+    "depfile_source_name=" +
+        rebase_path(render_conversation_js, root_build_dir),
   ]
 }

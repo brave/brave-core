@@ -8,17 +8,19 @@
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 
-#define GetExtraInfobarOffset()                                         \
-  GetExtraInfobarOffset() const override;                               \
-  bool ShouldShowVerticalTabs() const override;                         \
-  bool ShouldShowWindowTitleForVerticalTabs() const override;           \
-  bool IsVerticalTabOnRight() const override;                           \
-  bool ShouldUseBraveWebViewRoundedCornersForContents() const override; \
-  int GetRoundedCornersWebViewMargin() const override;                  \
-  bool IsBookmarkBarOnByPref() const override;                          \
-  bool IsContentTypeSidePanelVisible() const override;                  \
-  bool IsFullscreenForBrowser() const override;                         \
-  bool IsFullscreenForTab() const override;                             \
+#define GetExtraInfobarOffset()                                            \
+  GetExtraInfobarOffset() const override;                                  \
+  bool ShouldShowVerticalTabs() const override;                            \
+  bool ShouldShowWindowTitleForVerticalTabs() const override;              \
+  bool IsVerticalTabOnRight() const override;                              \
+  bool ShouldUseBraveWebViewRoundedCornersForContents() const override;    \
+  int GetRoundedCornersWebViewMargin() const override;                     \
+  bool IsBookmarkBarOnByPref() const override;                             \
+  bool IsContentTypeSidePanelVisible() const override;                     \
+  bool IsFullscreenForBrowser() const override;                            \
+  bool IsFullscreenForTab() const override;                                \
+  void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii) \
+      override;                                                            \
   bool IsFullscreen()
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h>  // IWYU pragma: export

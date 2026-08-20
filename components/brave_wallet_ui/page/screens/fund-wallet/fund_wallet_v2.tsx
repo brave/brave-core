@@ -33,6 +33,9 @@ import {
   PanelActionHeader, //
 } from '../../../components/desktop/card-headers/panel-action-header'
 import {
+  DefaultPanelHeader, //
+} from '../../../components/desktop/card-headers/default-panel-header'
+import {
   SelectAssetButton, //
 } from './components/select_asset_button/select_asset_button'
 import {
@@ -112,6 +115,7 @@ export const FundWalletScreen = () => {
   // Redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
   const isMobileOrPanel = isMobile || isPanel
 
   // Computed
@@ -131,10 +135,16 @@ export const FundWalletScreen = () => {
     <>
       <WalletPageWrapper
         wrapContentInBox={true}
-        hideNav={isMobileOrPanel}
+        useCardInPanel={true}
+        hideNav={!isSidePanel && isMobileOrPanel}
         hideHeader={isMobileOrPanel}
         cardHeader={
-          isMobileOrPanel ? (
+          isSidePanel ? (
+            <DefaultPanelHeader
+              expandRoute={WalletRoutes.FundWalletPageStart}
+              title={pageTitle}
+            />
+          ) : isMobileOrPanel ? (
             <PanelActionHeader
               title={pageTitle}
               expandRoute={WalletRoutes.FundWalletPageStart}

@@ -2177,7 +2177,13 @@
 "wallet.txStatusViewInActivity" = "Xem trong Hoạt động";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave sẽ là dịch vụ RPC Ethereum đã cấu hình, mặc định là Chainstack, để phân giải các tên miền .crypto (và cả %1$@) có trên Unstoppable Domains. Brave ẩn địa chỉ IP của bạn. Nếu bạn bật tính năng này, Chainstack sẽ thấy rằng có người đang cố truy cập các miền này nhưng không thấy gì khác. Tham khảo <a href=%2$@>%3$@</a> và <a href=%4$@>%5$@</a> của Chainstack.";
+"wallet.udDomainInterstitialPageDescription" = "tên miền có trên Unstoppable Domains. Brave ẩn địa chỉ IP của bạn. Nếu bạn bật tính năng này, Chainstack sẽ thấy rằng có người đang cố truy cập các miền này và không thấy gì khác. Tham khảo <a href=%1$@>%2$@</a> và <a href=%3$@>%4$@</a> của Chainstack.";
+
+/* The intro displayed below `udDomainInterstitialPageTitle`. */
+"wallet.udDomainInterstitialPageIntro" = "Brave sẽ là dịch vụ Ethereum RPC được cấu hình, mặc định là Chainstack để phân giải:";
+
+/* The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve. */
+"wallet.udDomainInterstitialPageMore" = "+ thêm";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Bật hỗ trợ Unstoppable Domains trong Brave?";

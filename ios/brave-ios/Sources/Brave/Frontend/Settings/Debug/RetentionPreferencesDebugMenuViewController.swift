@@ -14,6 +14,7 @@ import SwiftUI
 struct RetentionPreferencesDebugMenuView: View {
   private let p3aUtilities: BraveP3AUtils
   private let attributionManager: AttributionManager
+  private let localState: PrefService
 
   @State private var isOnboardingPresented: Bool = false
 
@@ -27,10 +28,12 @@ struct RetentionPreferencesDebugMenuView: View {
 
   init(
     p3aUtilities: BraveP3AUtils,
-    attributionManager: AttributionManager
+    attributionManager: AttributionManager,
+    localState: PrefService
   ) {
     self.p3aUtilities = p3aUtilities
     self.attributionManager = attributionManager
+    self.localState = localState
   }
 
   var body: some View {
@@ -42,7 +45,8 @@ struct RetentionPreferencesDebugMenuView: View {
         .fullScreenCover(isPresented: $isOnboardingPresented) {
           OnboardingRepresentable(
             p3aUtilities: p3aUtilities,
-            attributionManager: attributionManager
+            attributionManager: attributionManager,
+            localState: localState
           )
         }
       }
@@ -102,19 +106,20 @@ extension Bool? {
 private struct OnboardingRepresentable: UIViewControllerRepresentable {
   var p3aUtilities: BraveP3AUtils
   var attributionManager: AttributionManager
+  var localState: PrefService
 
   func makeUIViewController(context: Context) -> OnboardingController {
     let env = OnboardingEnvironment(
       p3aUtils: p3aUtilities,
-      attributionManager: attributionManager
+      attributionManager: attributionManager,
+      localState: localState
     )
-    var steps: [any OnboardingStep] = [.defaultBrowsing]
-    if AddToDockEligibility.isEligible {
-      steps.append(.addToDock)
-    }
-    steps.append(.blockInterruptions)
-    if !p3aUtilities.isP3APreferenceManaged {
-      steps.append(.p3aOptIn)
+    var steps: [any OnboardingStep] = [.defaultBrowsing, .addToDock, .blockInterruptions]
+
+    if !p3aUtilities.isP3APreferenceManaged
+      || !localState.isManagedPreference(forPath: kMetricsReportingEnabled)
+    {
+      steps.append(.metricsOptIn)
     }
     return OnboardingController(environment: env, steps: steps)
   }
@@ -126,11 +131,16 @@ class RetentionPreferencesDebugMenuViewController: UIHostingController<
   RetentionPreferencesDebugMenuView
 >
 {
-  init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
+  init(
+    p3aUtilities: BraveP3AUtils,
+    attributionManager: AttributionManager,
+    localState: PrefService
+  ) {
     super.init(
       rootView: RetentionPreferencesDebugMenuView(
         p3aUtilities: p3aUtilities,
-        attributionManager: attributionManager
+        attributionManager: attributionManager,
+        localState: localState
       )
     )
   }

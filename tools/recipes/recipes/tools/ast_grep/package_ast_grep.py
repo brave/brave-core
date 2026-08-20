@@ -8,8 +8,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import post_process
-from PB.recipes.brave.tools.ast_grep.package_ast_grep import (EnvProperties,
-                                                              InputProperties)
+from PB.recipes.brave.tools.ast_grep.package_ast_grep import InputProperties
 
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
@@ -19,14 +18,11 @@ DEPS = [
 ]
 
 PROPERTIES = InputProperties
-ENV_PROPERTIES = EnvProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties,
-             env_properties: EnvProperties) -> None:
+def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref,
-                                          git_cache=env_properties.GIT_CACHE
-                                          or None)
+                                          depth=1)
 
     brave_root = api.brave_core_checkout.deploy([
         'third_party/ast-grep',
@@ -48,10 +44,11 @@ def GenTests(api):
     yield api.test(
         'linux',
         api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.git_cache_populated(),
         api.brave_core_checkout.deployed('third_party/ast-grep',
                                          'tools/cr/toolchains'),
         api.properties(chromium_ref='151.0.7917.1'),
-        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.MustRun, 'package ast-grep'),
         api.post_process(post_process.StatusSuccess),
     )

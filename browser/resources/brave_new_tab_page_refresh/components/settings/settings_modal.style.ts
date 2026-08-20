@@ -3,89 +3,65 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, effect } from '@brave/leo/tokens/css/variables'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
   & {
-    --leo-dialog-width: 720px;
+    --leo-dialog-width: 860px;
     --leo-dialog-padding: 0;
     --leo-dialog-background: ${color.container.background};
 
     height: 0;
   }
 
-  h3 {
-    padding: 24px;
-    border-bottom: solid 1px ${color.divider.subtle};
-  }
-
   .panel-body {
     display: flex;
+    max-height: calc(100vh - ${spacing['4Xl']});
   }
 
   nav {
-    flex: 0 0 220px;
+    flex: 0 0 228px;
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing['2Xl']};
+    padding: ${spacing['2Xl']} 0;
     white-space: nowrap;
-    margin-top: 24px;
+  }
+
+  h4 {
+    color: ${color.text.primary};
+    padding: 0 ${spacing['2Xl']};
   }
 
   section {
     flex: 1 1 auto;
-    padding: 16px;
-    height: 400px;
+    min-height: 0;
+    padding: ${spacing.m} ${spacing.m} ${spacing.m} 0;
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
-    background: ${color.page.background};
+    display: flex;
+    flex-direction: column;
+
+    .panel-body[data-resizing] & {
+      overflow: hidden;
+    }
 
     > * {
-      background: ${color.container.background};
-      box-shadow: ${effect.elevation['01']};
-      border-radius: 8px;
-    }
-  }
-`
-
-style.passthrough.css`
-  .selected-marker {
-    --leo-icon-color: #fff;
-    --leo-icon-size: 24px;
-
-    position: absolute;
-    inset-block-start: 10px;
-    inset-inline-end: 10px;
-    background: ${color.icon.interactive};
-    border-radius: 50%;
-    padding: 6px;
-  }
-
-
-  .control-row,
-  .toggle-row {
-    padding: 24px;
-    border-bottom: solid 1px ${color.divider.subtle};
-
-    &:last-child {
-      border-bottom: none;
+      flex-grow: 1;
+      padding: ${spacing['4Xl']};
+      border-radius: ${radius.xl};
+      background: ${color.page.background};
     }
   }
 
-  .control-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .label .subtext {
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
 
-    label {
-      flex: 1 1 auto;
-    }
-  }
-
-  .toggle-row {
-    --leo-toggle-label-flex-direction: row-reverse;
-
-    .label {
-      flex: 1 1 auto;
+    a {
+      color: inherit;
     }
   }
 `

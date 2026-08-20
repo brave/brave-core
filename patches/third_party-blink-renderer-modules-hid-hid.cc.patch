@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/hid/hid.cc b/third_party/blink/renderer/modules/hid/hid.cc
-index 414af298253821cfeb5e5ab7a13a4fd5294b6e48..e5fa853bfc6921462fdc4fc078d21a1656a15f91 100644
+index 6e75205329f611aac17a44dcc22676cd1d8ca544..8adf59d53211a6de1b64842923e63339a2dae660 100644
 --- a/third_party/blink/renderer/modules/hid/hid.cc
 +++ b/third_party/blink/renderer/modules/hid/hid.cc
-@@ -229,7 +229,7 @@ ScriptPromise<IDLSequence<HIDDevice>> HID::requestDevice(
+@@ -316,7 +316,7 @@ ScriptPromise<IDLSequence<HIDDevice>> HID::requestDevice(
      return ScriptPromise<IDLSequence<HIDDevice>>();
    }
  

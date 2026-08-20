@@ -1,0 +1,99 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "Hello World"
+    ],
+    "name": "echo"
+  },
+  {
+    "cmd": [
+      "cat"
+    ],
+    "name": "cat",
+    "stdin": "hello"
+  },
+  {
+    "cmd": [
+      "cat",
+      "hello \ud83d\udca9"
+    ],
+    "name": "cat file"
+  },
+  {
+    "cmd": [
+      "cat"
+    ],
+    "name": "cat bytes",
+    "stdin": "\ufffdhello"
+  },
+  {
+    "cmd": [
+      "cat",
+      "text",
+      "bytes"
+    ],
+    "name": "cat coerced"
+  },
+  {
+    "cmd": [
+      "echo",
+      "huh"
+    ],
+    "name": "automock"
+  },
+  {
+    "cmd": [
+      "sh",
+      "-c",
+      "echo fail 1>&2"
+    ],
+    "name": "automock stderr"
+  },
+  {
+    "cmd": [
+      "write",
+      "/path/to/tmp/txt"
+    ],
+    "name": "write file"
+  },
+  {
+    "cmd": [
+      "write",
+      "/path/to/tmp/",
+      "/path/to/tmp/"
+    ],
+    "name": "write two"
+  },
+  {
+    "cmd": [
+      "write",
+      "[WORKSPACE]/leaked.txt"
+    ],
+    "name": "leak output"
+  },
+  {
+    "cmd": [
+      "write",
+      "[WORKSPACE]/leaked.txt"
+    ],
+    "name": "leak nothing"
+  },
+  {
+    "cmd": [
+      "dump_files",
+      "[WORKSPACE]/rc/tmp_tmp_1"
+    ],
+    "name": "dump files"
+  },
+  {
+    "cmd": [
+      "dump_files",
+      "[WORKSPACE]/out/dumped"
+    ],
+    "name": "dump files to a known place"
+  },
+  {
+    "name": "$result"
+  }
+]

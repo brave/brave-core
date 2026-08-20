@@ -5,20 +5,53 @@
 
 #include "brave/components/omnibox/browser/brave_search_suggestion_parser.h"
 
+#include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/omnibox/browser/search_suggestion_parser.h"
+#include "components/strings/grit/components_strings.h"
 #include "third_party/omnibox_proto/navigational_intent.pb.h"
+#include "ui/base/device_form_factor.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace omnibox {
+
+namespace {
+
+// Returns the suggestion's vertical, or an empty view when absent. `type` is
+// only sent when the request asks for `rich_verticals`.
+std::string_view GetVerticalType(const base::DictValue& suggestion) {
+  const std::string* type = suggestion.FindString("type");
+  return type ? *type : std::string_view();
+}
+
+// `answer` is a JSON number for arithmetic, but a string for results like unit
+// conversions.
+std::optional<std::u16string> GetAnswer(const base::DictValue& suggestion) {
+  if (auto* answer = suggestion.FindString("answer")) {
+    return base::UTF8ToUTF16(*answer);
+  }
+  if (auto answer = suggestion.FindDouble("answer")) {
+    return base::NumberToString16(*answer);
+  }
+  return std::nullopt;
+}
+
+}  // namespace
 
 bool ParseSuggestResults(const base::ListValue& root_list,
                          const AutocompleteInput& input,
                          bool is_keyword_result,
                          SearchSuggestionParser::Results* results) {
-  // Example output of rich suggestion
+  // `rich=true` allows for additional information for each suggestion. For
+  // example, a description or image.
+  //
+  // Example suggestion output with `rich=true`
   // 1) Type "hel"
   // [
   //     "hel",
@@ -45,6 +78,24 @@ bool ParseSuggestResults(const base::ListValue& root_list,
   //         },
   //     ]
   // ]
+
+  // `rich_verticals` additionally adds a "type" field to every suggestion plus
+  // vertical-specific fields.
+  //
+  // Example suggestion output with `rich_verticals=true`
+  // [
+  //    "5-2",
+  //    [
+  //        {
+  //            "type": "calculator",
+  //            "is_entity": false,
+  //            "q": "5-2",
+  //            "expression": "5-2",
+  //            "answer": 3
+  //        },
+  //    ]
+  // ]
+
   const std::u16string input_text = input.IsZeroSuggest() ? u"" : input.text();
 
   // 1st element: query.
@@ -80,10 +131,14 @@ bool ParseSuggestResults(const base::ListValue& root_list,
         AutocompleteMatchType::SEARCH_SUGGEST;
     omnibox::SuggestType suggest_type = omnibox::TYPE_QUERY;
     omnibox::EntityInfo entity_info;
-    if (auto is_entity = suggestion_dict.FindBool("is_entity");
-        is_entity.value_or(false)) {
+    if (suggestion_dict.FindBool("is_entity").value_or(false)) {
+      // Entities are flagged by `is_entity`, not by `type`.
       suggest_type = omnibox::TYPE_ENTITY;
       match_type = AutocompleteMatchType::SEARCH_SUGGEST_ENTITY;
+    } else if (GetVerticalType(suggestion_dict) == "calculator") {
+      // Verticals we don't handle stay plain query suggestions.
+      suggest_type = omnibox::TYPE_CALCULATOR;
+      match_type = AutocompleteMatchType::CALCULATOR;
     }
 
     if (auto* name = suggestion_dict.FindString("name")) {
@@ -106,11 +161,38 @@ bool ParseSuggestResults(const base::ListValue& root_list,
       entity_info.set_annotation(*description);
     }
 
-    const auto search_query_in_utf16 = base::UTF8ToUTF16(*search_query);
+    std::u16string suggestion_text;
+    std::u16string match_contents;
+    if (suggest_type == omnibox::TYPE_CALCULATOR) {
+      auto answer = GetAnswer(suggestion_dict);
+      if (!answer || answer->empty()) {
+        continue;
+      }
+      // An annotation becomes the match description, which restores the
+      // separator the desktop match cell suppresses for CALCULATOR -- the row
+      // would read "<answer> - <description>".
+      annotation.clear();
+      // The suggestion is the answer, so accepting the match searches the text
+      // the user typed. See BaseSearchProvider::CreateSearchSuggestion.
+      suggestion_text = std::move(*answer);
+      match_contents = suggestion_text;
+      if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_DESKTOP) {
+        // Desktop shows "<expression> = <answer>" on one line, as upstream
+        // does.
+        const auto* expression = suggestion_dict.FindString("expression");
+        match_contents = l10n_util::GetStringFUTF16(
+            IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE,
+            base::UTF8ToUTF16(expression ? *expression : *search_query),
+            suggestion_text);
+      }
+    } else {
+      suggestion_text = base::UTF8ToUTF16(*search_query);
+      match_contents = suggestion_text;
+    }
+
     auto result = SearchSuggestionParser::SuggestResult(
-        search_query_in_utf16, match_type, suggest_type,
-        /*subtypes*/ {},
-        /*match_contents*/ search_query_in_utf16,
+        suggestion_text, match_type, suggest_type,
+        /*subtypes*/ {}, match_contents,
         /*match_contents_prefix*/ {},
         /*annotation*/ annotation, std::move(entity_info),
         /*deletion_url*/ {}, is_keyword_result, omnibox::NAV_INTENT_NONE,

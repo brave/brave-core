@@ -21,6 +21,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
@@ -61,7 +63,7 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        setStyle(STYLE_NORMAL, R.style.RatingBottomSheetDialogTheme);
     }
 
     @Override
@@ -89,11 +91,21 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
             mReviewManager = ReviewManagerFactory.create(mContext);
         }
 
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
+        // Inflate against the dialog rather than the fragment so the sheet theme applies to the
+        // content; the layout resolves its colors from theme attributes.
+        final View view =
+                LayoutInflater.from(dialog.getContext())
+                        .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
         clickRateNowButton(view);
         clickNotNowButton(view);
         dialog.setContentView(view);
+
+        // Expand straight away: the default peek height is derived from the parent's width, so in
+        // landscape it leaves only a sliver of the sheet on screen.
+        BottomSheetBehavior<?> behavior = ((BottomSheetDialog) dialog).getBehavior();
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        behavior.setSkipCollapsed(true);
+        behavior.setMaxWidth(getResources().getDimensionPixelSize(R.dimen.bottom_sheet_max_width));
     }
 
     /**

@@ -1,0 +1,16 @@
+diff --git a/components/private_ai/features.cc b/components/private_ai/features.cc
+index 23a6613594abb721a2a81bdb0d1c445a59cf02c8..04f239b26945064ec6be90a5314ee4f9da1691da 100644
+--- a/components/private_ai/features.cc
++++ b/components/private_ai/features.cc
+@@ -9,7 +9,11 @@
+ 
+ namespace private_ai {
+ 
++#if BUILDFLAG(IS_ANDROID)
+ BASE_FEATURE(kPrivateAi, base::FEATURE_ENABLED_BY_DEFAULT);
++#else
++BASE_FEATURE(kPrivateAi, base::FEATURE_DISABLED_BY_DEFAULT);
++#endif
+ 
+ BASE_FEATURE(kPrivateAiServerAttestation, base::FEATURE_ENABLED_BY_DEFAULT);
+ 

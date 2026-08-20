@@ -28,7 +28,9 @@ void BraveSearchFallbackHost::SetBackupProviderForTest(
 
 BraveSearchFallbackHost::BraveSearchFallbackHost(
     brave_search::BackupResultsService* backup_results_service)
-    : backup_results_service_(backup_results_service->GetWeakPtr()),
+    : backup_results_service_(backup_results_service
+                                  ? backup_results_service->GetWeakPtr()
+                                  : nullptr),
       weak_factory_(this) {}
 
 BraveSearchFallbackHost::~BraveSearchFallbackHost() = default;

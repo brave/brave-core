@@ -32,6 +32,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -183,6 +184,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         mAddSearchEngineButton = (Button) rootView.findViewById(R.id.add_search_engine_button);
         if (mAddSearchEngineButton != null) {
             mAddSearchEngineButton.setEnabled(mIsEditMode);
+            BraveDynamicColors.applyToFilledButtonIfEnabled(mAddSearchEngineButton);
         }
 
         handleClickListeners();

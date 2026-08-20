@@ -115,9 +115,9 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
                  policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
                  base::Value(value), nullptr);
     provider_.UpdateChromePolicy(policies);
-    EXPECT_EQ(
-        brave_vpn::IsBraveVPNDisabledByPolicy(browser()->profile()->GetPrefs()),
-        value);
+    EXPECT_EQ(brave_vpn::IsBraveVPNDisabledByPolicy(
+                  browser()->GetProfile()->GetPrefs()),
+              value);
   }
 #endif
 
@@ -128,7 +128,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_MACHINE,
                  policy::POLICY_SOURCE_PLATFORM, base::Value(!value), nullptr);
     provider_.UpdateChromePolicy(policies);
-    EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()),
+    EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->GetProfile()->GetPrefs()),
               !value);
   }
 #endif
@@ -233,10 +233,9 @@ class BraveToolbarViewTest_AIChatDisabled : public BraveToolbarViewTest {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_VPNEnabled, VPNButtonVisibility) {
-  auto* browser_view = static_cast<BraveBrowserView*>(
-      BrowserView::GetBrowserViewForBrowser(browser()));
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser());
   auto* toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // Button is visible by default.
   EXPECT_TRUE(prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton));
@@ -264,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_VPNEnabled, VPNButtonVisibility) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonOpenTargetTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // Load in sidebar is default.
   EXPECT_FALSE(prefs->GetBoolean(
@@ -305,7 +304,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonVisibility) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // Button is visible by default.
   EXPECT_TRUE(prefs->GetBoolean(ai_chat::prefs::kBraveAIChatShowToolbarButton));
@@ -328,7 +327,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonVisibility_PrivateProfile) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
   EXPECT_EQ(false, is_ai_chat_button_shown(incognito_browser));
 }
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
@@ -442,22 +441,22 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, SplitTabsToolbarButtonTest) {
 // Test private/tor window's profile avatar text when multiple windows
 // are opened.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonTextWithOTRTest) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
   auto* private_avatar_button = GetAvatarToolbarButton(incognito_browser);
   private_avatar_button->UpdateText();
   EXPECT_EQ(std::u16string(), private_avatar_button->GetText());
 
-  chrome::OpenEmptyWindow(incognito_browser->profile());
+  chrome::OpenEmptyWindow(incognito_browser->GetProfile());
   EXPECT_EQ(u"2", private_avatar_button->GetText());
 
 #if BUILDFLAG(ENABLE_TOR)
   auto* tor_browser =
-      TorProfileManager::SwitchToTorProfile(browser()->profile());
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   auto* tor_avatar_button = GetAvatarToolbarButton(tor_browser);
   EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL),
             tor_avatar_button->GetText());
 
-  chrome::OpenEmptyWindow(tor_browser->profile());
+  chrome::OpenEmptyWindow(tor_browser->GetProfile());
   EXPECT_EQ(l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT, u"2"),
             tor_avatar_button->GetText());
 #endif
@@ -492,7 +491,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ProfileAttributesStorage& storage =
       profile_manager->GetProfileAttributesStorage();
-  base::FilePath current_profile_path = browser()->profile()->GetPath();
+  base::FilePath current_profile_path = browser()->GetProfile()->GetPath();
   base::FilePath new_path = profile_manager->GenerateNextProfileDirectoryPath();
   Profile& new_profile =
       profiles::testing::CreateProfileSync(profile_manager, new_path);
@@ -536,7 +535,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
 // Check no crash when clicking private window's avatar button.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ClickAvatarButtonTest) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
   auto* avatar_button = static_cast<AvatarToolbarButton*>(
       BrowserView::GetBrowserViewForBrowser(incognito_browser)
           ->toolbar_button_provider()
@@ -547,7 +546,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ClickAvatarButtonTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        BookmarkButtonCanBeToggledWithPref) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // By default, the button should be shown.
   EXPECT_TRUE(prefs->GetBoolean(kShowBookmarksButton));
@@ -565,9 +564,9 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        WalletButtonCanBeToggledWithPrefInPrivateTabs) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
-  auto* incognito_prefs = incognito_browser->profile()->GetPrefs();
-  auto* normal_prefs = browser()->profile()->GetPrefs();
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
+  auto* incognito_prefs = incognito_browser->GetProfile()->GetPrefs();
+  auto* normal_prefs = browser()->GetProfile()->GetPrefs();
 
   // By default, the button in normal window should be shown.
   EXPECT_TRUE(is_wallet_button_shown(browser()));
@@ -605,7 +604,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        VerticalTabToggleButtonVisibility) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* button = toolbar_view_->vertical_tab_toggle_button();
   ASSERT_TRUE(button);
 
@@ -624,7 +623,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        VerticalTabTogglePlacementRespectsTabsOnRight) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
@@ -678,7 +677,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
   ASSERT_TRUE(base::i18n::IsRTL())
       << "--force-ui-direction=rtl should make IsRTL() true";
 
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
   // In RTL, the strip placed by kVerticalTabsOnRight=false is physically on
@@ -757,7 +756,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        ToolbarPaddingMatchesFrameLayoutParams) {
   auto* browser_widget =
       BrowserView::GetBrowserViewForBrowser(browser())->browser_widget();
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
 
   // Default: vertical tabs disabled — no border.
   EXPECT_FALSE(toolbar_view_->GetBorder())
@@ -814,7 +813,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 // The workspaces button is visible only while vertical tabs are active.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
                        WorkspacesButtonVisibilityTracksVerticalTabs) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* button = toolbar_view_->workspaces_button_for_testing();
   ASSERT_TRUE(button);
 
@@ -838,7 +837,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
 // ordering invariant can be verified in each state.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
                        WorkspacesButtonAlwaysImmediatelyAfterToggle) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* toggle = toolbar_view_->vertical_tab_toggle_button();
   auto* workspaces = toolbar_view_->workspaces_button_for_testing();
   ASSERT_TRUE(toggle);
@@ -895,7 +894,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
 // The workspaces button is not created for private browsing windows.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
                        WorkspacesButtonAbsentInPrivateBrowsing) {
-  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->GetProfile());
   auto* incognito_view =
       BrowserView::GetBrowserViewForBrowser(incognito_browser);
   auto* incognito_toolbar =

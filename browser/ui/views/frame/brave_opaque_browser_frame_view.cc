@@ -38,7 +38,7 @@ BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
   auto* browser = browser_view->browser();
   DCHECK(browser);
   frame_graphic_ =
-      std::make_unique<BraveWindowFrameGraphic>(browser->profile());
+      std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
   if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
     focus_mode_observation_.Observe(controller);

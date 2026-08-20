@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/extensions/api/cookies/cookies_api.cc b/chrome/browser/extensions/api/cookies/cookies_api.cc
+index b605d8520b10243c1e22bc427c5a6a5d5a38b122..7d19ed7fe9f48f4f5583a2b0ae8b76a70ff26edc 100644
+--- a/chrome/browser/extensions/api/cookies/cookies_api.cc
++++ b/chrome/browser/extensions/api/cookies/cookies_api.cc
+@@ -147,6 +147,7 @@ CookiesEventRouter::~CookiesEventRouter() = default;
+ 
+ void CookiesEventRouter::OnCookieChange(bool otr,
+                                         const net::CookieChangeInfo& change) {
++  if (otr && !profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)) return;
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+   // There is no way to represent non-serializable
+   // partition keys in JS so return to prevent a crash.
+@@ -215,6 +216,7 @@ void CookiesEventRouter::OnCookieChange(bool otr,
+ }
+ 
+ void CookiesEventRouter::OnOffTheRecordProfileCreated(Profile* off_the_record) {
++  if (off_the_record->IsTor()) return;
+   // When an off-the-record spinoff of |profile_| is created, start listening
+   // for cookie changes there. The OTR receiver should never be bound, since
+   // there wasn't previously an OTR profile.

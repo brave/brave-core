@@ -43,24 +43,7 @@ export const parseJSONFromLocalStorage = <T = any>(
 }
 
 export const makeInitialFilteredOutNetworkKeys = () => {
-  const localHostNetworkKeys = [
-    getNetworkId({
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH,
-    }),
-    getNetworkId({
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.SOL,
-    }),
-    getNetworkId({
-      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.FIL,
-    }),
-  ]
-
-  const testNetworkKeys = SupportedTestNetworks.filter(
-    (chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID,
-  ).map((chainId) => {
+  const testNetworkKeys = SupportedTestNetworks.map((chainId) => {
     if (
       chainId === BraveWallet.SOLANA_DEVNET
       || chainId === BraveWallet.SOLANA_TESTNET
@@ -81,7 +64,7 @@ export const makeInitialFilteredOutNetworkKeys = () => {
       coin: BraveWallet.CoinType.ETH,
     })
   })
-  return [...testNetworkKeys, ...localHostNetworkKeys]
+  return [...testNetworkKeys]
 }
 
 export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {

@@ -7,16 +7,19 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
-import { getLocale } from '$web-common/locale'
+import { formatLocale, getLocale } from '$web-common/locale'
 import { serializeConversationForSharing } from '../../../common/conversation_serialization'
 import { encryptForSharing } from '../../../common/conversation_share_encryption'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
+import { createSharedConversationPayload } from './create_shared_conversation_payload'
 import styles from './style.module.scss'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
+  // Closes this dialog and opens the dialog listing every share the user has.
+  onManageShares: () => void
 }
 
 export default function ShareConversationModal(props: Props) {
@@ -59,7 +62,11 @@ export default function ShareConversationModal(props: Props) {
       // to the returned viewer URL as a fragment, so the shared link is only
       // usable by whoever the user shares it with.
       const json = serializeConversationForSharing(
-        conversationContext.api.getConversationHistory.current(),
+        await createSharedConversationPayload(
+          conversationContext,
+          aiChatContext,
+          conversationTitle,
+        ),
       )
       const { ciphertext, keyFragment } = await encryptForSharing(json)
       // The browser process combines the key fragment with the server's viewer
@@ -71,12 +78,17 @@ export default function ShareConversationModal(props: Props) {
         await aiChatContext.api.service.shareConversation(
           ciphertext,
           keyFragment,
+          conversationUuid,
+          conversationTitle,
           /*copyToClipboard=*/ true,
         )
       // A null result means sharing failed and nothing was copied, so leave the
       // button in its initial state to allow retrying.
       if (sharedConversationUrl) {
         setIsCopied(true)
+        // The browser has recorded the new share, so anything showing the list
+        // of shares needs to fetch it again.
+        aiChatContext.api.getConversationShares.invalidate()
       }
     } finally {
       setIsGenerating(false)
@@ -102,6 +114,22 @@ export default function ShareConversationModal(props: Props) {
         )}
         <div className={styles.description}>
           {getLocale(S.CHAT_UI_SHARE_CONVERSATION_DIALOG_DESCRIPTION)}
+        </div>
+        <div className={styles.manageShares}>
+          {formatLocale(
+            S.CHAT_UI_SHARE_CONVERSATION_DIALOG_MANAGE_SHARES_LINK,
+            {
+              $1: (content) => (
+                <button
+                  key={content}
+                  className={styles.manageSharesLink}
+                  onClick={props.onManageShares}
+                >
+                  {content}
+                </button>
+              ),
+            },
+          )}
         </div>
       </div>
       <div slot='actions'>

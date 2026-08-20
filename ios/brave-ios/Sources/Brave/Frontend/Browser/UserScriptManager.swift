@@ -106,6 +106,9 @@ class UserScriptManager {
   private var walletSolanaWeb3Script: WKUserScript?
   private var walletSolanaWalletStandardScript: WKUserScript?
 
+  /// Whether or not a wallet is created and web3 provider scripts should be injected into the page
+  var isWalletCreated: Bool = false
+
   enum ScriptType: String, CaseIterable {
     case faviconFetcher
     case cookieBlocking
@@ -367,14 +370,19 @@ class UserScriptManager {
       // Inject WALLET specific scripts
 
       // A default wallet other than `none` means the Brave Wallet provider
-      // should be injected to communicate with web3.
+      // should be injected to communicate with web3. Nothing is injected until
+      // the user has created a wallet: an empty keyring can't serve a dApp, but
+      // the provider is still observable by page scripts.
       let prefs = tab.profile.prefs
       let isEthProviderEnabled =
-        prefs.integer(forPath: kDefaultEthereumWallet) != BraveWallet.DefaultWallet.none.rawValue
+        isWalletCreated
+        && prefs.integer(forPath: kDefaultEthereumWallet) != BraveWallet.DefaultWallet.none.rawValue
       let isSolProviderEnabled =
-        prefs.integer(forPath: kDefaultSolanaWallet) != BraveWallet.DefaultWallet.none.rawValue
+        isWalletCreated
+        && prefs.integer(forPath: kDefaultSolanaWallet) != BraveWallet.DefaultWallet.none.rawValue
       let isCardanoProviderEnabled =
-        prefs.integer(forPath: kDefaultCardanoWallet) != BraveWallet.DefaultWallet.none.rawValue
+        isWalletCreated
+        && prefs.integer(forPath: kDefaultCardanoWallet) != BraveWallet.DefaultWallet.none.rawValue
 
       if !tab.isPrivate,
         isEthProviderEnabled,
@@ -412,6 +420,7 @@ class UserScriptManager {
       }
 
       if !tab.isPrivate,
+        isSolProviderEnabled,
         let walletStandardScript = Preferences.UserScript.solanaProvider.value
           ? self.walletSolanaWalletStandardScript : nil
       {

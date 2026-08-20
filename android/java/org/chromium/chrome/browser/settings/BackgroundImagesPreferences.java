@@ -7,8 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -32,7 +30,6 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
@@ -63,7 +60,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mShowSponsoredImagesPref;
     private ChromeSwitchPreference mShowBraveStatsPref;
     private ChromeSwitchPreference mShowTopSitesPref;
-    private ChromeBasePreference mLearnMorePreference;
+    private BraveTextButtonPreference mLearnMorePreference;
     private BraveRadioButtonGroupOpeningScreenPreference mOpeningScreenPref;
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -104,19 +101,10 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
         mLearnMorePreference =
-                (ChromeBasePreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
+                (BraveTextButtonPreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
         if (mLearnMorePreference != null && rewardsDisabledByPolicy) {
             mLearnMorePreference.setVisible(false);
         } else if (mLearnMorePreference != null) {
-            SpannableString spannableString =
-                    new SpannableString(
-                            getContext().getString(R.string.sponsored_images_learn_more));
-            spannableString.setSpan(
-                    new ForegroundColorSpan(getContext().getColor(R.color.brave_link)),
-                    0,
-                    spannableString.length(),
-                    0);
-            mLearnMorePreference.setTitle(spannableString);
             mLearnMorePreference.setOnPreferenceClickListener(
                     preference -> {
                         try {

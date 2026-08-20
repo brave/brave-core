@@ -36,6 +36,10 @@ CWV_EXPORT
 // Web view's obscured insets.
 @property(nonatomic) UIEdgeInsets obscuredInsets;
 
+/// Sets the web view's min and max viewport insets
+- (void)setMinimumViewportInset:(UIEdgeInsets)minInset
+           maximumViewportInset:(UIEdgeInsets)maxInset;
+
 /// The user agent type currently used on the page (e.g. mobile/desktop)
 - (CWVUserAgentType)currentItemUserAgentType;
 

@@ -227,7 +227,7 @@ export function TopSites() {
               onClick={() => setShowSponsoredMenu(false)}
             >
               <Icon name='help-outline' />
-              {getString(S.NEW_TAB_WHAT_IS_A_SPONSORED_SITE_LABEL)}
+              {getString(S.NEW_TAB_WHAT_ARE_SPONSORED_SITES_LABEL)}
             </Link>
           </div>
         </Popover>

@@ -100,10 +100,13 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
       consider_separator_bounds = false;
     }
 
+    // Tabs in a group are indented from the left, but still extend to the same
+    // right edge as tabs outside of a group.
     rect.set_x(
         kMarginForVerticalTabContainers +
         (tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup : 0));
-    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
+    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() -
+                   kMarginForVerticalTabContainers);
 
     if (int level = iter->state().nesting_info().level) {
       // In case of a tab has nesting level, we need to adjust the x position
@@ -271,9 +274,10 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
       }
 
       if (view->group().has_value()) {
-        // In case it's a tab in a group, set left padding
+        // In case it's a tab in a group, set left padding only, matching the
+        // static vertical layout.
         x = BraveTabGroupHeader::kPaddingForGroup;
-        width -= x * 2;
+        width -= x;
       }
     }
 

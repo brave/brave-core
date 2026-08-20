@@ -7,8 +7,10 @@
 
 #include "base/base64.h"
 #include "base/containers/map_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_search/backup_results_service_impl.h"
@@ -76,7 +78,7 @@ constexpr char kTestFinalHtml[] =
 
 }  // namespace
 
-class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
+class BackupResultsServiceBrowserTestBase : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -87,12 +89,12 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->RegisterRequestHandler(
-        base::BindRepeating(&BackupResultsServiceBrowserTest::HandleRequest,
+        base::BindRepeating(&BackupResultsServiceBrowserTestBase::HandleRequest,
                             base::Unretained(this)));
 
     ASSERT_TRUE(https_server_->Start());
-    backup_results_service_ =
-        BackupResultsServiceFactory::GetForBrowserContext(browser()->profile());
+    backup_results_service_ = BackupResultsServiceFactory::GetForBrowserContext(
+        browser()->GetProfile());
   }
 
   void TearDownOnMainThread() override { backup_results_service_ = nullptr; }
@@ -106,6 +108,9 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
 
     auto url = request.GetURL();
     request_paths_.emplace_back(url.path());
+    if (!first_request_url_) {
+      first_request_url_ = url;
+    }
     if (auto* v = base::FindOrNull(request.headers, kTestCustomHeaderName)) {
       last_custom_header_ = *v;
     }
@@ -149,10 +154,34 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
 
   std::optional<std::string> last_custom_header_;
   std::optional<std::string> last_user_agent_;
+  std::optional<GURL> first_request_url_;
   std::vector<std::string> request_paths_;
 };
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
+class BackupResultsServiceBrowserTest
+    : public BackupResultsServiceBrowserTestBase,
+      public testing::WithParamInterface<
+          std::tuple<bool, bool, int, std::string, std::string>> {
+ public:
+  BackupResultsServiceBrowserTest() {
+    auto [zero_size, history_seed, farbling, languages_header,
+          renderer_languages] = GetParam();
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBackupResults,
+          {{features::kBackupResultsZeroSize.name,
+            zero_size ? "true" : "false"},
+           {features::kBackupResultsHistorySeed.name,
+            history_seed ? "true" : "false"},
+           {features::kBackupResultsFarbling.name,
+            base::NumberToString(farbling)},
+           {features::kBackupResultsLanguagesHeader.name, languages_header},
+           {features::kBackupResultsRendererLanguages.name,
+            renderer_languages}}}},
+        {});
+  }
+};
+
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
   {
@@ -199,7 +228,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidDomain) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, InvalidDomain) {
   base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.invalid", kTestInitPath);
 
@@ -215,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidDomain) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidRedirect) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, InvalidRedirect) {
   redirect_to_invalid_domain_ = true;
 
   base::RunLoop run_loop;
@@ -234,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidRedirect) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, CookieHeader) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, CookieHeader) {
   base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
 
@@ -262,7 +291,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, CookieHeader) {
 }
 
 class BackupResultsServiceFullRenderBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceFullRenderBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
@@ -292,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceFullRenderBrowserTest, FullRender) {
 }
 
 class BackupResultsServiceDisabledBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceDisabledBrowserTest() {
     scoped_feature_list_.InitAndDisableFeature(features::kBackupResults);
@@ -317,7 +346,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceDisabledBrowserTest,
 }
 
 class BackupResultsServiceFeatureHeadersBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceFeatureHeadersBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
@@ -375,7 +404,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceFeatureHeadersBrowserTest,
 }
 
 class BackupResultsServiceUAOverrideBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceUAOverrideBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
@@ -404,7 +433,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceUAOverrideBrowserTest, WebContents) {
 }
 
 class BackupResultsServiceUAOverrideWithMetadataBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceUAOverrideWithMetadataBrowserTest() {
     blink::UserAgentMetadata ua_metadata;
@@ -449,7 +478,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceUAOverrideWithMetadataBrowserTest,
 }
 
 class BackupResultsServiceDailyLimitBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceDailyLimitBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
@@ -521,7 +550,7 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceDailyLimitBrowserTest,
 }
 
 // Verifies that the default param value (-1) does not impose any daily limit.
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
+IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
   GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
   net::HttpRequestHeaders headers;
   headers.SetHeader(net::HttpRequestHeaders::kCookie, "testcookie=value");
@@ -543,13 +572,13 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
 }
 
 class BackupResultsServiceLoadAfterRestoreBrowserTest
-    : public BackupResultsServiceBrowserTest {
+    : public BackupResultsServiceBrowserTestBase {
  public:
   BackupResultsServiceLoadAfterRestoreBrowserTest() {
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{features::kBackupResults,
           {{features::kBackupResultsLoadAfterRestore.name, "true"}}}},
-        {});
+        {features::kBackupResultsFullRender});
   }
 };
 
@@ -578,5 +607,61 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceLoadAfterRestoreBrowserTest,
     run_loop.Run();
   }
 }
+
+class BackupResultsServiceCleanUrlBrowserTest
+    : public BackupResultsServiceBrowserTestBase {
+ public:
+  BackupResultsServiceCleanUrlBrowserTest() {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBackupResults,
+          {{features::kBackupResultsCleanUrl.name, "true"}}}},
+        {});
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BackupResultsServiceCleanUrlBrowserTest, CleanUrl) {
+  // Query params other than "q", along with the fragment, should be stripped
+  // from the requested URL. The escaped "q" value should be left as-is.
+  {
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(
+        https_server_->GetURL("google.ca",
+                              "/test?hl=en&q=caf%C3%A9+%26+bar%3F&gl=us#frag"),
+        std::nullopt, future.GetCallback());
+
+    EXPECT_TRUE(future.Take().has_value());
+    EXPECT_EQ(first_request_url_,
+              https_server_->GetURL("/test?q=caf%C3%A9+%26+bar%3F"));
+    EXPECT_EQ(request_paths_,
+              (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
+  }
+
+  first_request_url_.reset();
+  request_paths_.clear();
+
+  // A URL without a "q" param should fail without hitting the network.
+  {
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(
+        https_server_->GetURL("google.ca", "/test?hl=en"), std::nullopt,
+        future.GetCallback());
+
+    EXPECT_FALSE(future.Take().has_value());
+    EXPECT_FALSE(first_request_url_.has_value());
+    EXPECT_TRUE(request_paths_.empty());
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BackupResultsServiceBrowserTest,
+    testing::Values(
+        // zero_size, history_seed, farbling, languages_header,
+        // renderer_languages
+        std::make_tuple(true, false, -1, "primary_single", "primary_multiple"),
+        std::make_tuple(true, false, -1, "en-US,fr", "original"),
+        std::make_tuple(false, true, 0, "", "")));
 
 }  // namespace brave_search

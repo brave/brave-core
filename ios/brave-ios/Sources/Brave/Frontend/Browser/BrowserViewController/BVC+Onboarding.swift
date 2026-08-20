@@ -28,7 +28,7 @@ extension BrowserViewController {
     Preferences.AppState.shouldDeferPromotedPurchase.value = false
     iapObserver.savedPayment = nil
 
-    if !topToolbar.inOverlayMode,
+    if !isSearchContainerVisible,
       topToolbar.currentURL == nil,
       Preferences.DebugFlag.skipNTPCallouts != true
     {
@@ -64,8 +64,8 @@ extension BrowserViewController {
     }
 
     // If a controller is already presented (such as menu), do not show onboarding
-    // It also includes the case for overlay mode and tabtray opened
-    guard presentedViewController == nil, !topToolbar.inOverlayMode, !isTabTrayActive else {
+    // It also includes the case for search visibility and tabtray opened
+    guard presentedViewController == nil, !isSearchContainerVisible, !isTabTrayActive else {
       return
     }
 
@@ -228,21 +228,21 @@ extension BrowserViewController {
     // Check if user is already default before showing onboarding
     let isDefault = defaultBrowserHelper.status == .defaulted
 
-    var steps: [any OnboardingStep] =
-      AddToDockEligibility.isEligible
-      ? [.addToDock, .blockInterruptions]
-      : [.blockInterruptions]
+    var steps: [any OnboardingStep] = [.addToDock, .blockInterruptions]
     if !isDefault {
       steps.insert(.defaultBrowsing, at: 0)
     }
-    if !braveCore.p3aUtils.isP3APreferenceManaged {
-      steps.append(.p3aOptIn)
+    if !braveCore.p3aUtils.isP3APreferenceManaged
+      || !braveCore.localState.isManagedPreference(forPath: kMetricsReportingEnabled)
+    {
+      steps.append(.metricsOptIn)
     }
 
     let controller = OnboardingController(
       environment: .init(
         p3aUtils: braveCore.p3aUtils,
-        attributionManager: attributionManager
+        attributionManager: attributionManager,
+        localState: braveCore.localState
       ),
       steps: steps,
       onCompletion: {

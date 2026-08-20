@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("misc_metrics") {
@@ -185,7 +186,12 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "web3_metrics_browsertest.cc" ]
+  sources = []
+
+  # The web3 proxy is only injected alongside a wallet provider.
+  if (enable_brave_wallet) {
+    sources += [ "web3_metrics_browsertest.cc" ]
+  }
 
   if (!is_android) {
     sources += [ "vertical_tab_metrics_browsertest.cc" ]
@@ -206,6 +212,14 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:test_support",
+    ]
+  }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

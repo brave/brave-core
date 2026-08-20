@@ -20,13 +20,14 @@
         android:key="change_password"
         android:order="2"
         android:title="@string/settings_brave_account_change_password_button_label"
-        app:title_text_color="@color/schemes_primary"/>
+        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="sign_out"
         android:order="3"
         android:icon="@drawable/ic_outside"
         android:title="@string/settings_brave_account_log_out_button_label"
-        app:title_text_color="@color/schemes_primary"/>
+        app:iconTint="?attr/globalTextButtonTextColor"
+        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="almost_there"
         android:order="4"
@@ -34,17 +35,17 @@
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="enter_verification_code"
         android:order="5"
-        app:title_text_color="@color/schemes_primary"/>
+        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="resend_confirmation_email"
         android:order="6"
         android:title="@string/settings_brave_account_resend_confirmation_email_button_label"
-        app:title_text_color="@color/schemes_primary"
+        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"
         android:summary="@string/settings_brave_account_verification_row_description_3"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="cancel_verification"
         android:order="7"
-        app:title_text_color="@color/systemfeedback_error_text"/>
+        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.DestructiveAction"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="get_started"
         android:order="8"

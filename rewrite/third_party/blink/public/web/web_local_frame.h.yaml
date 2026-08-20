@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Declare WebLocalFrame::SetOriginForClearWindowNameCheck
+
+      Brave adds this pure virtual to seed the origin used by the
+      clear-window-name check.
+    add_to_public:
+      class_name: WebLocalFrame
+      code:
+        'virtual void SetOriginForClearWindowNameCheck(const url::Origin&) = 0;'

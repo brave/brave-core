@@ -57,7 +57,10 @@ import java.util.List;
 import java.util.Map;
 
 public class BraveNewsPreferencesDetails extends BravePreferenceFragment
-        implements BraveNewsPreferencesListener, ConnectionErrorHandler, SearchViewProvider {
+        implements BraveNewsPreferencesListener,
+                ConnectionErrorHandler,
+                SearchViewProvider,
+                BottomInsetViewProvider {
     private RecyclerView mRecyclerView;
 
     private BraveNewsPreferencesTypeAdapter mAdapter;
@@ -73,6 +76,11 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.brave_news_settings_details, container, false);
+    }
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView.findViewById(R.id.recyclerview);
     }
 
     @Override

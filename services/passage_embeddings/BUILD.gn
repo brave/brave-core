@@ -1,0 +1,73 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+# Implements the hook the chromium_src passage_embedder_impl.cc override
+# forward-declares.
+source_set("chromium_impl") {
+  deps = [
+    "//base",
+    "//services/passage_embeddings",
+  ]
+
+  # The override calls the hook unconditionally, so a definition is always
+  # linked in. Selecting the source here (rather than guarding the LiteRT
+  # include with a buildflag) keeps the include set matching the deps in every
+  # configuration, which is what gn check verifies.
+  if (enable_local_ai) {
+    sources = [ "litert_executor.cc" ]
+    deps += [ ":litert_model_runner" ]
+  } else {
+    sources = [ "litert_executor_stub.cc" ]
+  }
+}
+
+# Runs EmbeddingGemma through LiteRT's CompiledModel on the CPU. Knows nothing
+# about //services/passage_embeddings; :chromium_impl adapts it to upstream's
+# PassageEmbedderExecutor interface.
+source_set("litert_model_runner") {
+  sources = [
+    "litert_model_runner.cc",
+    "litert_model_runner.h",
+  ]
+
+  # Exposed as public_deps because the public header includes litert's
+  # CompiledModel/Environment (whose internal includes need litert's config).
+  public_deps = [
+    "//base",
+    "//third_party/litert",
+  ]
+
+  deps = [
+    # No source here includes TFLite, but LiteRT is built with
+    # use_litert_tflite=false, so its runtime links TFLite's op resolver and C
+    # API from here. Matches upstream's other LiteRT consumers
+    # (//services/webnn).
+    "//third_party/tflite",
+    "//third_party/tflite:tflite_builtin_op_resolver",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "litert_model_runner_unittest.cc" ]
+
+  # Reaching Init()/Run() needs real models. LiteRT's test data has small ones
+  # covering each shape the runner cares about: int32 input with float output
+  # (scatter_nd), float input (l2_norm) and multi-input (atan2).
+  _testdata = "//third_party/litert/src/litert/test/testdata"
+  data = [
+    "$_testdata/simple_atan2_op.tflite",
+    "$_testdata/simple_l2_norm.tflite",
+    "$_testdata/simple_scatter_nd_op.tflite",
+  ]
+
+  deps = [
+    ":litert_model_runner",
+    "//base",
+    "//testing/gtest",
+  ]
+}

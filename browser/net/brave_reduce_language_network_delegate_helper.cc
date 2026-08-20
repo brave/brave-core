@@ -28,6 +28,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -101,7 +102,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   DCHECK(content_settings);
   GURL origin_url(ctx->tab_origin());
   if (origin_url.is_empty()) {
-    origin_url = ctx->initiator_url();
+    origin_url = ctx->request_initiator().value_or(url::Origin()).GetURL();
   }
   if (origin_url.is_empty()) {
     return net::OK;

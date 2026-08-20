@@ -31,8 +31,8 @@ class RegionalCapabilitiesServiceBrowserTest : public InProcessBrowserTest {
 // the device (`country_codes::GetCurrentCountryID()`) rather than from
 // the variations service on all desktop platforms.
 IN_PROC_BROWSER_TEST_F(RegionalCapabilitiesServiceBrowserTest, GetCountryId) {
-  auto& service = CHECK_DEREF(
-      RegionalCapabilitiesServiceFactory::GetForProfile(browser()->profile()));
+  auto& service = CHECK_DEREF(RegionalCapabilitiesServiceFactory::GetForProfile(
+      browser()->GetProfile()));
 
   country_codes::CountryId expected_country_id =
       country_codes::GetCurrentCountryID();

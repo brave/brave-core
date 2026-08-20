@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Core `path` module: engine-provided, workspace-relative job paths."""
 
-DEPS = []
+DEPS = ['context']

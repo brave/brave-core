@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`env` module: mockable access to environment variables and PATH lookup."""
 
-DEPS = []
+DEPS = ['path']

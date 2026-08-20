@@ -1,0 +1,40 @@
+diff --git a/content/browser/file_system_access/file_system_access_handle_base.cc b/content/browser/file_system_access/file_system_access_handle_base.cc
+index 4aeb55d93e362d6d007fb4e62dab605d90dbe469..64b5a361d366589f80ab9795996334930dcbbc74 100644
+--- a/content/browser/file_system_access/file_system_access_handle_base.cc
++++ b/content/browser/file_system_access/file_system_access_handle_base.cc
+@@ -288,6 +288,11 @@ void FileSystemAccessHandleBase::DoMove(
+     const std::string& new_entry_name,
+     bool has_transient_user_activation,
+     base::OnceCallback<void(blink::mojom::FileSystemAccessErrorPtr)> callback) {
++  if (url().type() != storage::FileSystemType::kFileSystemTypeTemporary) {
++    std::move(callback).Run(file_system_access_error::FromStatus(
++        blink::mojom::FileSystemAccessStatus::kNotSupportedError));
++    return;
++  }
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   DCHECK_EQ(GetEffectiveWritePermissionStatus(),
+             blink::mojom::PermissionStatus::GRANTED);
+@@ -391,6 +396,11 @@ void FileSystemAccessHandleBase::DoRename(
+     const std::string& new_entry_name,
+     bool has_transient_user_activation,
+     base::OnceCallback<void(blink::mojom::FileSystemAccessErrorPtr)> callback) {
++  if (url().type() != storage::FileSystemType::kFileSystemTypeTemporary) {
++    std::move(callback).Run(file_system_access_error::FromStatus(
++        blink::mojom::FileSystemAccessStatus::kNotSupportedError));
++    return;
++  }
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   // To get this far, we must have write access to the entry being moved.
+   DCHECK_EQ(GetEffectiveWritePermissionStatus(),
+@@ -480,6 +490,11 @@ void FileSystemAccessHandleBase::DidResolveTokenToMove(
+   storage::FileSystemURL dest_url;
+   blink::mojom::FileSystemAccessErrorPtr error =
+       dir_handle->GetChildURL(new_entry_name, &dest_url);
++  if (dest_url.type() != storage::FileSystemType::kFileSystemTypeTemporary) {
++    std::move(callback).Run(file_system_access_error::FromStatus(
++        blink::mojom::FileSystemAccessStatus::kNotSupportedError));
++    return;
++  }
+   if (error != file_system_access_error::Ok()) {
+     std::move(callback).Run(std::move(error));
+     return;

@@ -126,8 +126,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private @Nullable FetchWallpaperWorkerTask mWorkerTask;
     private boolean mIsFromBottomSheet;
-    // Whether to show sponsored image on NTP based on experiment variant
-    private boolean mShouldShowSponsoredImage;
     private @Nullable NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
     private @Nullable Tab mTab;
@@ -165,10 +163,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        // Default to show sponsored image on NTP
-        // This will be overridden in onAttachedToWindow if the experiment variant is D
-        mShouldShowSponsoredImage = true;
     }
 
     protected void updateTileGridPlaceholderVisibility() {
@@ -236,7 +230,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        mShouldShowSponsoredImage = shouldShowSponsoredImage();
         if (mSponsoredTab == null) {
             initilizeSponsoredTab();
         }
@@ -446,7 +439,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                     ChromeSharedPreferences.getInstance()
                                             .writeInt(
                                                     BravePreferenceKeys
-                                                                    .BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                                    .BRAVE_RECYCLERVIEW_OFFSET_POSITION // presubmit: ignore-long-line
                                                             + tabId,
                                                     verticalOffset);
 
@@ -613,7 +606,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                                     ChromeSharedPreferences.getInstance()
                                                             .readInt(
                                                                     BravePreferenceKeys
-                                                                                    .BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                                                    .BRAVE_RECYCLERVIEW_OFFSET_POSITION // presubmit: ignore-long-line
                                                                             + tab.getId(),
                                                                     0);
 
@@ -1165,22 +1158,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         observer.addOnGlobalLayoutListener(mBgImageViewOnGlobalLayoutListener);
     }
 
-    // Determine if the sponsored image should be shown on NTP based on experiment variant
-    private boolean shouldShowSponsoredImage() {
-        if (!BraveFreshNtpHelper.isEnabled()) {
-            return true;
-        }
-        boolean shouldShowSnackbar =
-                ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
-        String variant = BraveFreshNtpHelper.getVariant();
-        return variant == null || !variant.equals("D") || !shouldShowSnackbar;
-    }
-
     private void getAndShowNTPImage() {
         assertNonNull(mSponsoredTab);
         mSponsoredTab.getNTPImage(
-                mShouldShowSponsoredImage,
+                /* allowSponsoredImage= */ true,
                 ntpImage -> {
                     if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
                         return;
@@ -1193,7 +1174,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void initilizeSponsoredTab() {
         if (TabAttributes.from(getTab()).get(String.valueOf(getTab().getId())) == null) {
             SponsoredTab sponsoredTab =
-                    new SponsoredTab(mNTPBackgroundImagesBridge, mShouldShowSponsoredImage);
+                    new SponsoredTab(mNTPBackgroundImagesBridge, /* allowSponsoredImage= */ true);
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
         mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));
@@ -1268,19 +1249,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     /**
-     * Shows the recent tabs snackbar if variant B, C, or D is active, and either OPTION_NEW_TAB or
+     * Shows the recent tabs snackbar if variant B is active, and either OPTION_NEW_TAB or
      * OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For OPTION_NEW_TAB_AFTER_INACTIVITY, only shows
      * when app was returned from background after inactivity threshold.
      */
     private void maybeShowRecentTabsDialog() {
-        // Check if feature is enabled and variant is B, C, or D
-        if (!BraveFreshNtpHelper.isEnabled()) {
-            return;
-        }
-
-        String variant = BraveFreshNtpHelper.getVariant();
-        if (variant == null
-                || (!variant.equals("B") && !variant.equals("C") && !variant.equals("D"))) {
+        if (!BraveFreshNtpHelper.isEnabled() || !BraveFreshNtpHelper.getVariant().equals("B")) {
             return;
         }
 

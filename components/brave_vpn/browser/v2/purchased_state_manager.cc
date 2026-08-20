@@ -15,13 +15,15 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
-#include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
 #include "brave/components/brave_vpn/browser/v2/credential_summary.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -39,9 +41,11 @@ namespace brave_vpn::v2 {
 
 PurchasedStateManager::PurchasedStateManager(
     PrefService* local_prefs,
+    BraveVpnApiClient* api_client,
     SkusServiceClient* skus_client,
     PurchasedStateChangedCallback callback)
     : local_prefs_(CHECK_DEREF(local_prefs)),
+      api_client_(CHECK_DEREF(api_client)),
       skus_client_(CHECK_DEREF(skus_client)),
       purchased_state_changed_callback_(std::move(callback)),
       credential_store_(std::make_unique<CredentialStore>(local_prefs)) {
@@ -74,33 +78,31 @@ void PurchasedStateManager::Load(const std::string& domain) {
   // environment must authorize with SKUS from scratch.
   const std::string current_environment = GetCurrentEnvironment();
   if (current_environment == request_environment) {
-    if (credential_store_->HasValidSubscriberCredential()) {
+    if (std::optional<CredentialStore::Credential> cached_credential =
+            credential_store_->GetValidSubscriberCredential()) {
       // Already purchased. Serving from cache settles the visible state
       // immediately, so any in-flight load for another environment is cancelled
       // rather than left to finish against a state that just changed under it.
       VLOG(2) << "Already have valid subscriber credential, scheduling refresh";
       CancelPendingLoad();
-      ScheduleSubscriberCredentialRefresh();
+      ScheduleSubscriberCredentialRefresh(cached_credential->expiration);
       SetPurchasedState(request_environment, mojom::PurchasedState::PURCHASED);
       return;
     }
-
-    if (credential_store_->HasValidSkusCredential()) {
+    if (std::optional<CredentialStore::Credential> cached_credential =
+            credential_store_->GetValidSkusCredential()) {
       // Previous attempt to exchange the skus credential for a subscriber
       // credential failed. Try again with the cached skus credential.
       VLOG(2) << "Trying to exchange cached skus credential for subscriber "
                  "credential";
       BeginLoad(request_environment);
 
-      // TODO(https://github.com/brave/brave-browser/issues/54600)
-      // The API request class is intentionally not wired up yet. Once it is,
-      // this will call GetSubscriberCredentialV12, binding the current loading
-      // sequence into the callback.
-      // NOTE: exchange failures must settle as FAILED, not NOT_PURCHASED (v1
-      // Android uses NOT_PURCHASED). FinishLoad() clears the credential store
-      // on NOT_PURCHASED, which would destroy the cached SKUS credential that
-      // the exchange-retry fast path depends on.
-      NOTIMPLEMENTED();
+      // Exchange the cached SKUS credential for a subscriber credential.
+      api_client_->GetSubscriberCredentialV12(
+          base::BindOnce(&PurchasedStateManager::OnGetSubscriberCredential,
+                         weak_factory_.GetWeakPtr(), loading_sequence_, domain,
+                         cached_credential->expiration),
+          cached_credential->value, loading_environment_);
       return;
     }
   }
@@ -124,6 +126,12 @@ bool PurchasedStateManager::IsPurchased() const {
 
 std::string PurchasedStateManager::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
+}
+
+std::optional<std::string> PurchasedStateManager::GetSubscriberCredential()
+    const {
+  return credential_store_->GetValidSubscriberCredential().transform(
+      [](const CredentialStore::Credential& data) { return data.value; });
 }
 
 void PurchasedStateManager::SetPurchasedState(
@@ -155,29 +163,21 @@ void PurchasedStateManager::SetPurchasedState(
 }
 
 void PurchasedStateManager::CheckInitialState() {
-  if (credential_store_->HasValidSubscriberCredential()) {
-    // Have a valid subscriber credential, so we are purchased. Schedule a
-    // refresh of the credential before it expires.
-    VLOG(2) << "Have valid subscriber credential, scheduling refresh";
-    ScheduleSubscriberCredentialRefresh();
-    SetPurchasedState(GetCurrentEnvironment(),
-                      mojom::PurchasedState::PURCHASED);
-  } else if (credential_store_->HasValidSkusCredential()) {
-    // There is a cached SKUS credential - exchange it for a subscriber
-    // credential upfront.
-    VLOG(2) << "Reloading purchased state due to cached SKUS credential";
-    Reload();
-  } else {
-    // A stored subscriber credential may have been invalidated while we were
-    // not running. Always clear whatever is cached; if something stale was
-    // present, reload the state.
-    const bool has_stale_credential = credential_store_->HasAnyCredential();
-    credential_store_->Clear();
-    if (has_stale_credential) {
-      VLOG(2) << "Reloading purchased state due to stale credential";
-      Reload();
-    }
+  // A stored subscriber credential might have been invalidated while we were
+  // not running. If nothing (even stale) is present, don't attempt to load
+  // the state.
+  if (!credential_store_->HasAnyCredential()) {
+    return;
   }
+  // Always clear cached stale credentials.
+  if (!credential_store_->GetValidSubscriberCredential() &&
+      !credential_store_->GetValidSkusCredential()) {
+    credential_store_->Clear();
+  }
+
+  // Load the state for the current environment; it will set the right purchased
+  // state, taking fast paths wherever possible.
+  Reload();
 }
 
 void PurchasedStateManager::BeginLoad(std::string env) {
@@ -210,16 +210,6 @@ void PurchasedStateManager::FinishLoad(std::string env,
   loading_environment_.clear();
   load_timeout_timer_.Stop();
   SetPurchasedState(env, state, std::move(description));
-
-  // If we know that we're not purchased for the current environment, clear any
-  // cached credentials. This prevents stale credentials from being used in
-  // future loads.
-  if (env == GetCurrentEnvironment() &&
-      (state == mojom::PurchasedState::NOT_PURCHASED ||
-       state == mojom::PurchasedState::SESSION_EXPIRED ||
-       state == mojom::PurchasedState::OUT_OF_CREDENTIALS)) {
-    credential_store_->Clear();
-  }
 
   // A silent (non-current-environment) load ended without committing. If it
   // previously cancelled a visible load, the visible state may be stranded at
@@ -375,7 +365,10 @@ void PurchasedStateManager::OnPrepareCredentialsPresentation(
   }
 
   // Update the cached skus credential and its expiration time.
-  credential_store_->SetSkusCredential(credential, time);
+  credential_store_->SetSkusCredential({
+      .value = credential,
+      .expiration = time,
+  });
 
   // We have successfully authorized with a new environment, now loading state
   // becomes visible.
@@ -389,15 +382,68 @@ void PurchasedStateManager::OnPrepareCredentialsPresentation(
   local_prefs_->SetTime(prefs::kBraveVPNSessionExpiredDate, {});
 #endif
 
-  // TODO(https://github.com/brave/brave-browser/issues/54600)
-  // The API request class is intentionally not wired up yet. Once it is,
-  // this will call GetSubscriberCredentialV12, binding the current loading
-  // sequence into the callback.
-  // NOTE: exchange failures must settle as FAILED, not NOT_PURCHASED (v1
-  // Android uses NOT_PURCHASED). FinishLoad() clears the credential store on
-  // NOT_PURCHASED, which would destroy the cached SKUS credential that the
-  // exchange-retry fast path depends on.
-  NOTIMPLEMENTED();
+  // Exchange the cached SKUS credential for a subscriber credential.
+  api_client_->GetSubscriberCredentialV12(
+      base::BindOnce(&PurchasedStateManager::OnGetSubscriberCredential,
+                     weak_factory_.GetWeakPtr(), loading_sequence_, domain,
+                     time),
+      credential, loading_environment_);
+}
+
+void PurchasedStateManager::OnGetSubscriberCredential(
+    uint64_t sequence,
+    const std::string& domain,
+    const base::Time& expiration_time,
+    base::expected<std::string, std::string> result) {
+  if (sequence != loading_sequence_) {
+    VLOG(2) << __func__ << ": Ignoring response of a stale load";
+    return;
+  }
+
+  if (!result.has_value()) {
+    VLOG(1) << __func__ << ": Failed to get subscriber credential ("
+            << result.error() << ")";
+
+    const bool token_no_longer_valid =
+        result.error() == ::brave_vpn::kTokenNoLongerValid;
+
+    // "Token no longer valid" means the credential was already consumed. Make
+    // one more attempt with a fresh SKUS credential (two attempts total).
+    if (token_no_longer_valid) {
+      if (!credential_store_->IsExchangeRetried()) {
+        VLOG(2) << __func__
+                << "Token no longer valid, retrying with fresh SKUS credential";
+        // Set the retried flag before re-requesting so a synchronous callback
+        // won't loop forever.
+        credential_store_->SetExchangeRetried(true);
+        // As we request a new credential, clear the cached value.
+        credential_store_->Clear();
+        RequestCredentialSummary(domain);
+      } else {
+        // The retry also came back invalid: the token is definitively no good.
+        VLOG(2) << __func__ << ": Token no longer valid after retry";
+        FinishLoad(
+            loading_environment_, mojom::PurchasedState::FAILED,
+            l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));
+      }
+    } else {
+      // Otherwise it's a transient vendor/network error. The cached credential
+      // will eventually expire and a new one will be fetched.
+      VLOG(2) << __func__ << ": Transient error, will retry later";
+      FinishLoad(loading_environment_, mojom::PurchasedState::FAILED,
+                 l10n_util::GetStringUTF8(
+                     IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED));
+    }
+    return;
+  }
+
+  // Got a valid subscriber credential.
+  credential_store_->SetSubscriberCredential({
+      .value = result.value(),
+      .expiration = expiration_time,
+  });
+  ScheduleSubscriberCredentialRefresh(expiration_time);
+  FinishLoad(loading_environment_, mojom::PurchasedState::PURCHASED);
 }
 
 void PurchasedStateManager::RunPurchasedStateCallback(
@@ -406,8 +452,36 @@ void PurchasedStateManager::RunPurchasedStateCallback(
   purchased_state_changed_callback_.Run(state, std::move(description));
 }
 
-void PurchasedStateManager::ScheduleSubscriberCredentialRefresh() {
-  NOTIMPLEMENTED();
+void PurchasedStateManager::ScheduleSubscriberCredentialRefresh(
+    const base::Time& expiration_time) {
+  // We're scheduling a refresh at expiration, not earlier, because subscriber
+  // credential itself outlives SKUS expiry, so the refresh happens before the
+  // credential actually dies.
+  const base::TimeDelta delta = expiration_time - base::Time::Now();
+  VLOG(2) << "Schedule subscriber credential refresh after " << delta;
+  subscriber_credential_refresh_timer_.Start(
+      FROM_HERE, delta,
+      base::BindOnce(&PurchasedStateManager::RefreshSubscriberCredential,
+                     base::Unretained(this)));
+}
+
+void PurchasedStateManager::RefreshSubscriberCredential() {
+  VLOG(2) << "Refreshing subscriber credential...";
+
+  if (!loading_environment_.empty()) {
+    // A load for the CURRENT environment already owns resolution of the visible
+    // state: it reschedules the refresh on success, and on failure leaves none
+    // intentionally (recovery is manual). A silent load for ANOTHER environment
+    // does not touch the current environment, so it cannot settle the refresh -
+    // but the failure is fairly soft: we end up in a stale state that fixes
+    // itself on the next UI interaction.
+    VLOG(2) << "Load in flight, skipping refresh";
+    return;
+  }
+
+  // Clear the cached credential to get a new subscriber credential.
+  credential_store_->Clear();
+  Reload();
 }
 
 #if !BUILDFLAG(IS_ANDROID)
