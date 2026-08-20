@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_browsertest_base.h"
@@ -14,10 +16,12 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "chrome/test/interaction/interactive_browser_test.h"
@@ -51,6 +55,22 @@ class SidebarWebPanelInteractiveUITest
                                base::Unretained(browser()->tab_strip_model()))),
                  WaitForState(kActiveTabIndexObserver, index),
                  StopObservingState(kActiveTabIndexObserver));
+  }
+
+  // Call delegate code path directly as sending click event makes this test
+  // flaky on macOS CI.
+  auto ActivatePane([[maybe_unused]] std::string_view view_id,
+                    [[maybe_unused]] views::View* target_view,
+                    content::WebContents* target_contents) {
+#if BUILDFLAG(IS_MAC)
+    return Steps(Do([this, target_contents]() {
+      GetBraveMultiContentsView()->delegate_for_testing()->WebContentsFocused(
+          target_contents);
+    }));
+#else
+    return Steps(NameView(view_id, target_view), MoveMouseTo(view_id),
+                 ClickMouse());
+#endif
   }
 
  private:
@@ -97,15 +117,20 @@ IN_PROC_BROWSER_TEST_F(SidebarWebPanelInteractiveUITest,
   constexpr char kWebPanelContentsViewId[] = "WebPanelContentsView";
   constexpr char kNormalTabContentsViewId[] = "NormalTabView";
 
+  content::WebContents* web_panel_contents =
+      browser()->tab_strip_model()->GetWebContentsAt(0);
+  content::WebContents* normal_tab_contents =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+
   RunTestSequence(
-      NameView(kWebPanelContentsViewId, web_panel_contents_view),
-      MoveMouseTo(kWebPanelContentsViewId), ClickMouse(),
+      ActivatePane(kWebPanelContentsViewId, web_panel_contents_view,
+                   web_panel_contents),
       WaitForActiveTabChange(0), Check([this]() {
         return GetBraveMultiContentsView()->is_web_panel_active_for_testing();
       }),
 
-      NameView(kNormalTabContentsViewId, normal_tab_contents_view),
-      MoveMouseTo(kNormalTabContentsViewId), ClickMouse(),
+      ActivatePane(kNormalTabContentsViewId, normal_tab_contents_view,
+                   normal_tab_contents),
       WaitForActiveTabChange(1), Check([this]() {
         return !GetBraveMultiContentsView()->is_web_panel_active_for_testing();
       }));
