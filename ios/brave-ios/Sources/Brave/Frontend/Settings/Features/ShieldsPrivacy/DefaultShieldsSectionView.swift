@@ -47,7 +47,7 @@ struct DefaultShieldsSectionView: View {
         }
       } else {
         ToggleView(
-          title: Strings.Shields.httpsEverywhere,
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
           subtitle: Strings.Shields.httpsEverywhereDescription,
           toggle: Binding(
             get: {

@@ -432,6 +432,39 @@ extension Strings.Shields {
     value: "Shred Data",
     comment: "A button title when confirming to shred website data"
   )
+
+  public static let shredRowTitle = NSLocalizedString(
+    "shields.shredRowTitle",
+    bundle: .module,
+    value: "Shred",
+    comment: "A row title that appears in the Shields & Privacy settings."
+  )
+  public static let shredRowDescription = NSLocalizedString(
+    "shields.shredRowDescription",
+    bundle: .module,
+    value: "Update Auto Shred and adjust what data is shred.",
+    comment: "A row description that appears in the Shields & Privacy settings."
+  )
+  public static let shredSettingsViewTitle = NSLocalizedString(
+    "shields.shredSettingsViewTitle",
+    bundle: .module,
+    value: "Shred",
+    comment: "A title for the Shred settings screen, within Shields & Privacy settings."
+  )
+  public static let shredHistoryRowTitle = NSLocalizedString(
+    "shields.shredHistoryRowTitle",
+    bundle: .module,
+    value: "Shred Removes History",
+    comment:
+      "A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings."
+  )
+  public static let shredHistoryRowDescription = NSLocalizedString(
+    "shields.shredHistoryRowDescription",
+    bundle: .module,
+    value: "If Shred should remove history items.",
+    comment:
+      "A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings."
+  )
 }
 
 // MARK: - Blocked Page
@@ -735,12 +768,6 @@ extension Strings.Shields {
     value: "You are seeing this warning because this site does not support HTTPS.",
     comment: "A description shown an a page where the http page was blocked"
   )
-  public static let httpsEverywhere = NSLocalizedString(
-    "httpsEverywhere",
-    bundle: .module,
-    value: "Upgrade Connections to HTTPS",
-    comment: ""
-  )
   public static let httpsEverywhereDescription = NSLocalizedString(
     "httpsEverywhereDescription",
     bundle: .module,
@@ -816,43 +843,6 @@ extension Strings.Shields {
     value: "Enable support for bypassing top-level redirect tracking URLs",
     comment:
       "This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing)."
-  )
-}
-
-// MARK: Shred
-
-extension Strings.Shields {
-  public static let shredRowTitle = NSLocalizedString(
-    "shields.shredRowTitle",
-    bundle: .module,
-    value: "Shred",
-    comment: "A row title that appears in the Shields & Privacy settings."
-  )
-  public static let shredRowDescription = NSLocalizedString(
-    "shields.shredRowDescription",
-    bundle: .module,
-    value: "Update Auto Shred and adjust what data is shred.",
-    comment: "A row description that appears in the Shields & Privacy settings."
-  )
-  public static let shredSettingsViewTitle = NSLocalizedString(
-    "shields.shredSettingsViewTitle",
-    bundle: .module,
-    value: "Shred",
-    comment: "A title for the Shred settings screen, within Shields & Privacy settings."
-  )
-  public static let shredHistoryRowTitle = NSLocalizedString(
-    "shields.shredHistoryRowTitle",
-    bundle: .module,
-    value: "Shred Removes History",
-    comment:
-      "A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings."
-  )
-  public static let shredHistoryRowDescription = NSLocalizedString(
-    "shields.shredHistoryRowDescription",
-    bundle: .module,
-    value: "If Shred should remove history items.",
-    comment:
-      "A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings."
   )
 }
 
