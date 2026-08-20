@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
+import {
+  InputMethod,
+  SuggestInventory,
+} from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
@@ -221,6 +224,7 @@ export function createSearchStore() {
         SuggestInventory.kDefault,
         query.length === 0,
         /*keyword*/ '',
+        InputMethod.kKeyboard,
       )
     },
 
