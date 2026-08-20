@@ -1,0 +1,17 @@
+diff --git a/pdf/pdf_features.cc b/pdf/pdf_features.cc
+index 09fefccc23c48a5a5c846b57981e31b6cebde14f..553c5c18d1bb0e7ec0b447c70d7e701bd0a6f975 100644
+--- a/pdf/pdf_features.cc
++++ b/pdf/pdf_features.cc
+@@ -82,9 +82,11 @@ const base::FeatureParam<bool> kPdfInk2TextAnnotations{
+ 
+ #if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
+ // Saves the PDF file to Google Drive.
+-BASE_FEATURE(kPdfSaveToDrive, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPdfSaveToDrive feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPdfSaveToDrive, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enables the survey for saving PDF to Google Drive.
++// kPdfSaveToDriveSurvey feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPdfSaveToDriveSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+ // The consumer survey trigger ID.
+ const base::FeatureParam<std::string> kPdfSaveToDriveSurveyConsumerTriggerId{

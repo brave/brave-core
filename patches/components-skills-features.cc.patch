@@ -1,0 +1,20 @@
+diff --git a/components/skills/features.cc b/components/skills/features.cc
+index dea663bb90d3712d170fbd4e48d07b894441f48e..be6c8a9605e1044e8eaaebc0984650241887868f 100644
+--- a/components/skills/features.cc
++++ b/components/skills/features.cc
+@@ -7,13 +7,9 @@
+ 
+ namespace features {
+ 
++// kSkillsEnabled feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kSkillsEnabled,
+-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS)
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#endif
+-);
++base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsMetricsProviderEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsRefinementEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsAutocomplete, base::FEATURE_DISABLED_BY_DEFAULT);

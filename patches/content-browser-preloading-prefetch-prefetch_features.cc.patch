@@ -1,0 +1,24 @@
+diff --git a/content/browser/preloading/prefetch/prefetch_features.cc b/content/browser/preloading/prefetch/prefetch_features.cc
+index 1cfeb92957f22aabae580b807c00ba958b3bfaf9..31253be75acbf0cf113bcaebee0984e7a2ea02f0 100644
+--- a/content/browser/preloading/prefetch/prefetch_features.cc
++++ b/content/browser/preloading/prefetch/prefetch_features.cc
+@@ -21,7 +21,8 @@ BASE_FEATURE(kPrefetchUseContentRefactor, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kPrefetchNIKScope, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kPrefetchClientHints, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPrefetchClientHints feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPrefetchClientHints, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ constexpr base::FeatureParam<PrefetchClientHintsCrossSiteBehavior>::Option
+     kPrefetchClientHintsCrossSiteBehaviorOptions[] = {
+@@ -48,7 +49,8 @@ BASE_FEATURE(kPrefetchNetworkPriorityForEmbedders,
+ BASE_FEATURE(kPrefetchBumpNetworkPriorityAfterBeingServed,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kPrefetchServiceWorker, base::FEATURE_ENABLED_BY_DEFAULT);
++// kPrefetchServiceWorker feature state is enforced via plaster rewrite.
++BASE_FEATURE(kPrefetchServiceWorker, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ bool IsPrefetchServiceWorkerEnabled(content::BrowserContext* browser_context) {
+   return base::FeatureList::IsEnabled(kPrefetchServiceWorker) &&

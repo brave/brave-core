@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare kSyncAutofillValuableMetadata as a plain feature.
+
+      Using `BASE_DECLARE_FEATURE` unconditionally as the existing macro can
+      expand in incompatible ways with our patching in the .cc file.
+    regex:
+      pattern: 'DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);'
+      replace: 'BASE_DECLARE_FEATURE(kSyncAutofillValuableMetadata);'
