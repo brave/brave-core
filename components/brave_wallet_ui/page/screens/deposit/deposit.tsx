@@ -29,8 +29,8 @@ import {
   tokenNameToNftCollectionName,
 } from '../../../utils/asset-utils'
 import {
-  makeDepositFundsAccountRoute,
-  makeDepositFundsRoute,
+  makeDepositAccountRoute,
+  makeDepositRoute,
 } from '../../../utils/routes-utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 
@@ -152,7 +152,7 @@ export const Deposit = () => {
   return (
     <Switch>
       <Route
-        path={WalletRoutes.DepositFundsAccountPage}
+        path={WalletRoutes.DepositAccountPage}
         exact
       >
         <WalletPageWrapper
@@ -162,13 +162,13 @@ export const Deposit = () => {
           cardHeader={
             isSidePanel ? (
               <DefaultPanelHeader
-                expandRoute={WalletRoutes.DepositFundsPage}
+                expandRoute={WalletRoutes.DepositPage}
                 title={getLocale('braveWalletDepositCryptoButton')}
               />
             ) : isMobileOrPanel ? (
               <PanelActionHeader
                 title={getLocale('braveWalletDepositCryptoButton')}
-                expandRoute={WalletRoutes.DepositFundsPage}
+                expandRoute={WalletRoutes.DepositPage}
                 onBack={history.goBack}
               />
             ) : (
@@ -184,7 +184,7 @@ export const Deposit = () => {
         </WalletPageWrapper>
       </Route>
 
-      <Route path={WalletRoutes.DepositFundsPage}>
+      <Route path={WalletRoutes.DepositPage}>
         <WalletPageWrapper
           hideNav={!isSidePanel && isMobileOrPanel}
           wrapContentInBox={true}
@@ -193,13 +193,13 @@ export const Deposit = () => {
           cardHeader={
             isSidePanel ? (
               <DefaultPanelHeader
-                expandRoute={WalletRoutes.DepositFundsPage}
+                expandRoute={WalletRoutes.DepositPage}
                 title={getLocale('braveWalletDepositCryptoButton')}
               />
             ) : isMobileOrPanel ? (
               <PanelActionHeader
                 title={getLocale('braveWalletDepositCryptoButton')}
-                expandRoute={WalletRoutes.DepositFundsPage}
+                expandRoute={WalletRoutes.DepositPage}
               />
             ) : (
               <PageTitleHeader
@@ -212,7 +212,7 @@ export const Deposit = () => {
         </WalletPageWrapper>
       </Route>
 
-      <Redirect to={WalletRoutes.DepositFundsPage} />
+      <Redirect to={WalletRoutes.DepositPage} />
     </Switch>
   )
 }
@@ -405,7 +405,7 @@ function AssetSelection() {
 
     // save latest form values in router history
     history.replace(
-      makeDepositFundsRoute(selectedDepositAssetId, {
+      makeDepositRoute(selectedDepositAssetId, {
         // save latest search-box value (if it matches selection name or symbol)
         searchText:
           searchValue
@@ -426,7 +426,7 @@ function AssetSelection() {
       }),
     )
 
-    history.push(makeDepositFundsAccountRoute(selectedDepositAssetId))
+    history.push(makeDepositAccountRoute(selectedDepositAssetId))
   }, [
     selectedDepositAssetId,
     searchValue,
@@ -444,7 +444,7 @@ function AssetSelection() {
         <BuyAssetOptionItem
           key={assetId}
           token={asset}
-          onClick={() => history.push(makeDepositFundsRoute(assetId))}
+          onClick={() => history.push(makeDepositRoute(assetId))}
           ref={ref}
         />
       )
@@ -707,7 +707,7 @@ function DepositAccount() {
 
   // render
   if (!selectedDepositAssetId) {
-    return <Redirect to={WalletRoutes.DepositFundsPageStart} />
+    return <Redirect to={WalletRoutes.DepositPageStart} />
   }
 
   /* Creates wallet Account if needed for deposit */
@@ -718,7 +718,7 @@ function DepositAccount() {
         onCreated={setSelectedAccount}
         onCancel={() => {
           resetCopyState()
-          history.push(WalletRoutes.DepositFundsPage)
+          history.push(WalletRoutes.DepositPage)
         }}
       />
     )
@@ -766,7 +766,7 @@ function DepositAccount() {
         >
           {isSidePanel && (
             <BackButton
-              onClick={() => history.push(WalletRoutes.DepositFundsPageStart)}
+              onClick={() => history.push(WalletRoutes.DepositPageStart)}
             >
               <BackIcon name='carat-left' />
             </BackButton>

@@ -129,7 +129,7 @@ export const Container = () => {
   const handleDeclinePartnerConsent = () => {
     setShowPartnerConsentModal(false)
     // Not able to use history.goBack() in this instance
-    // since users could manually navigate to brave://wallet/crypto/fund-wallet
+    // since users could manually navigate to brave://wallet/crypto/buy
     // in a new tab and there would be no history to go back to.
     history.push(WalletRoutes.Portfolio)
   }
@@ -193,7 +193,7 @@ export const Container = () => {
   React.useEffect(() => {
     if (
       !acceptedPartnerConsentTerms
-      && pathname.includes(WalletRoutes.FundWalletPageStart)
+      && pathname.includes(WalletRoutes.BuyPageStart)
       && !walletNotYetCreated
     ) {
       setShowPartnerConsentModal(true)

@@ -19,10 +19,7 @@ import { ParsedTransaction } from '../../../utils/tx-utils'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { makeNetworkAsset } from '../../../options/asset-options'
-import {
-  makeFundWalletRoute,
-  openWalletRouteTab,
-} from '../../../utils/routes-utils'
+import { makeBuyRoute, openWalletRouteTab } from '../../../utils/routes-utils'
 
 // Styled Components
 import { Wrapper, ErrorText } from './confirmation_error.style'
@@ -70,7 +67,7 @@ export const ConfirmationError = (props: Props) => {
   // Methods
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openWalletRouteTab(makeFundWalletRoute(foundMeldBuyToken, account))
+      openWalletRouteTab(makeBuyRoute(foundMeldBuyToken, account))
     }
   }, [foundMeldBuyToken, account])
 

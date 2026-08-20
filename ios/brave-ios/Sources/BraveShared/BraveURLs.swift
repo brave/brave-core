@@ -125,10 +125,10 @@ extension URL {
 
     public enum Wallet {
       public static let home = URL(string: "brave://wallet/crypto/portfolio/assets")!
-      public static let buy = URL(string: "brave://wallet/crypto/fund-wallet")!
+      public static let buy = URL(string: "brave://wallet/crypto/buy")!
       public static let send = URL(string: "brave://wallet/send")!
       public static let swap = URL(string: "brave://wallet/swap")!
-      public static let deposit = URL(string: "brave://wallet/crypto/deposit-funds")!
+      public static let deposit = URL(string: "brave://wallet/crypto/deposit")!
       public static let activity = URL(string: "brave://wallet/crypto/portfolio/activity")!
     }
     public static let wallet = Wallet.self

@@ -42,7 +42,7 @@ import {
 import { filterNetworksForAccount } from '../../../utils/network-utils'
 import {
   makeAccountRoute,
-  makeFundWalletRoute,
+  makeBuyRoute,
   makePortfolioAssetRoute,
   openTab,
 } from '../../../utils/routes-utils'
@@ -630,10 +630,10 @@ export const AccountDetails = () => {
 
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken, selectedAccount))
+      openOrPushRoute(makeBuyRoute(foundMeldBuyToken, selectedAccount))
       return
     }
-    openOrPushRoute(WalletRoutes.FundWalletPageStart)
+    openOrPushRoute(WalletRoutes.BuyPageStart)
   }, [foundMeldBuyToken, openOrPushRoute, selectedAccount])
 
   if (!selectedAccount) {

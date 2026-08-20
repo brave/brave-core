@@ -54,7 +54,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     id: 'buy',
     name: 'braveWalletBuy',
     icon: 'coins-alt1',
-    route: WalletRoutes.FundWalletPageStart,
+    route: WalletRoutes.BuyPageStart,
   },
   {
     id: 'send',
@@ -73,7 +73,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',
     icon: 'money-bag-coins',
-    route: WalletRoutes.DepositFundsPageStart,
+    route: WalletRoutes.DepositPageStart,
   },
 ]
 
@@ -82,7 +82,7 @@ export const BuySendSwapDepositIOSOptions: NavOption[] = [
     id: 'buy',
     name: 'braveWalletBuy',
     icon: 'coins-alt1',
-    route: WalletRoutes.FundWalletPageStart,
+    route: WalletRoutes.BuyPageStart,
   },
   {
     id: 'send',
@@ -100,7 +100,7 @@ export const BuySendSwapDepositIOSOptions: NavOption[] = [
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',
     icon: 'money-bag-coins',
-    route: WalletRoutes.DepositFundsPageStart,
+    route: WalletRoutes.DepositPageStart,
   },
 ]
 

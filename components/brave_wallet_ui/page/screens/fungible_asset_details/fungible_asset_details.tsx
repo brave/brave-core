@@ -46,8 +46,8 @@ import {
 import { getLocale } from '../../../../common/locale'
 import { isRewardsAssetId } from '../../../utils/rewards_utils'
 import {
-  makeDepositFundsRoute,
-  makeFundWalletRoute,
+  makeDepositRoute,
+  makeBuyRoute,
   makeSendRoute,
   makeSwapOrBridgeRoute,
 } from '../../../utils/routes-utils'
@@ -407,15 +407,13 @@ export const FungibleAssetDetails = () => {
 
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken))
+      openOrPushRoute(makeBuyRoute(foundMeldBuyToken))
     }
   }, [openOrPushRoute, foundMeldBuyToken])
 
   const onClickDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
-      openOrPushRoute(
-        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams)),
-      )
+      openOrPushRoute(makeDepositRoute(getAssetIdKey(selectedAssetFromParams)))
     }
   }, [openOrPushRoute, selectedAssetFromParams])
 

@@ -44,7 +44,7 @@ export const EmptyTokenListState = (props: Props) => {
       onDepositOverride()
       return
     }
-    openOrPushRoute(WalletRoutes.DepositFundsPageStart)
+    openOrPushRoute(WalletRoutes.DepositPageStart)
   }, [onDepositOverride, openOrPushRoute])
 
   const onBuy = React.useCallback(() => {
@@ -52,7 +52,7 @@ export const EmptyTokenListState = (props: Props) => {
       onBuyOverride()
       return
     }
-    openOrPushRoute(WalletRoutes.FundWalletPageStart)
+    openOrPushRoute(WalletRoutes.BuyPageStart)
   }, [onBuyOverride, openOrPushRoute])
 
   return (

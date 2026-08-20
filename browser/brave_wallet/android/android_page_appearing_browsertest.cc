@@ -390,9 +390,9 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/deposit-funds");
+  const GURL expected_url = GURL("chrome://wallet/crypto/deposit");
   for (auto scheme : GetWebUISchemes()) {
-    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "ReactDOM.render is no longer supported in React 18"};
@@ -401,9 +401,9 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestMeldPageAppearing) {
-  const GURL expected_url = GURL("chrome://wallet/crypto/fund-wallet");
+  const GURL expected_url = GURL("chrome://wallet/crypto/buy");
   for (auto scheme : GetWebUISchemes()) {
-    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
+    GURL url = GURL(base::StrCat({scheme, "wallet/crypto/buy"}));
     const std::vector<std::string> ignore_patterns = {
         "An internal error has occurred",
         "TypeError: Cannot read properties of undefined (reading 'forEach')",

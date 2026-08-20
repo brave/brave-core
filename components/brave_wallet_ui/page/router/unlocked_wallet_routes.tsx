@@ -94,11 +94,11 @@ export const UnlockedWalletRoutes = () => {
           </WalletPageLayout>
         </Route>
 
-        <Route path={WalletRoutes.FundWalletPageStart}>
+        <Route path={WalletRoutes.BuyPageStart}>
           <Buy />
         </Route>
 
-        <Route path={WalletRoutes.DepositFundsPageStart}>
+        <Route path={WalletRoutes.DepositPageStart}>
           <Deposit />
         </Route>
 
@@ -209,6 +209,15 @@ export const UnlockedWalletRoutes = () => {
           exact={true}
         >
           <Redirect to={WalletRoutes.Market} />
+        </Route>
+
+        {/* Deprecated routes, kept for redirecting to the new routes */}
+        <Route path={WalletRoutes.BuyPageDeprecated}>
+          <Redirect to={WalletRoutes.BuyPageStart} />
+        </Route>
+
+        <Route path={WalletRoutes.DepositPageDeprecated}>
+          <Redirect to={WalletRoutes.DepositPageStart} />
         </Route>
 
         <Route path='*'>

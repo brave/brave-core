@@ -38,8 +38,8 @@ import { useRoute } from '../../../common/hooks/use_route'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
-  makeDepositFundsRoute,
-  makeFundWalletRoute,
+  makeDepositRoute,
+  makeBuyRoute,
   makeSendRoute,
   makeSwapOrBridgeRoute,
 } from '../../../utils/routes-utils'
@@ -144,7 +144,7 @@ export const AssetItemMenu = (props: Props) => {
   // Methods
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken, account))
+      openOrPushRoute(makeBuyRoute(foundMeldBuyToken, account))
     }
   }, [foundMeldBuyToken, openOrPushRoute, account])
 
@@ -166,7 +166,7 @@ export const AssetItemMenu = (props: Props) => {
   )
 
   const onClickDeposit = React.useCallback(() => {
-    openOrPushRoute(makeDepositFundsRoute(getAssetIdKey(asset)))
+    openOrPushRoute(makeDepositRoute(getAssetIdKey(asset)))
   }, [asset, openOrPushRoute])
 
   const onClickSell = React.useCallback(() => {
