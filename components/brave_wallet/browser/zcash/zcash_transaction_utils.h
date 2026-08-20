@@ -75,7 +75,7 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
     uint64_t amount,
     ZCashTargetOutputType output_type,
-    bool orchard_cross_address_disabled = false);
+    bool orchard_cross_address_disabled);
 
 }  // namespace brave_wallet
 
