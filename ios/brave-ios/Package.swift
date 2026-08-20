@@ -65,10 +65,6 @@ var package = Package(
     .package(url: "https://github.com/SDWebImage/SDWebImage", exact: "5.10.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
-    .package(
-      url: "https://github.com/brave/PanModal",
-      revision: "e67e9eff53c05f19b41bbb2ca7d27ff5859a586c"
-    ),
     .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
     .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "0.1.3"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
@@ -292,7 +288,6 @@ var package = Package(
       dependencies: [
         "Strings",
         "DesignSystem",
-        "PanModal",
         "SDWebImage",
         "SnapKit",
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
@@ -365,7 +360,6 @@ var package = Package(
         "DesignSystem",
         "Favicon",
         "Strings",
-        "PanModal",
         "SDWebImageSwiftUI",
         "SnapKit",
         "Then",
