@@ -53,7 +53,7 @@ import {
   getMeldTokensChainId,
   getMeldTokensCoinType,
 } from '../../../../utils/meld_utils'
-import { makeFundWalletRoute } from '../../../../utils/routes-utils'
+import { makeBuyRoute } from '../../../../utils/routes-utils'
 import {
   getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
@@ -485,7 +485,7 @@ export const useBuy = () => {
       }
       setShowCreateAccount(false)
       setPendingSelectedToken(undefined)
-      history.replace(makeFundWalletRoute(asset, accountToUse))
+      history.replace(makeBuyRoute(asset, accountToUse))
       setQuotes([])
       setHasQuoteError(false)
       setAmountError(undefined)
@@ -500,7 +500,7 @@ export const useBuy = () => {
 
   const onSelectAccount = useCallback(
     (account: BraveWallet.AccountInfo) => {
-      history.replace(makeFundWalletRoute(selectedMeldAsset, account))
+      history.replace(makeBuyRoute(selectedMeldAsset, account))
     },
     [selectedMeldAsset, history],
   )
@@ -572,7 +572,7 @@ export const useBuy = () => {
 
   const onCloseCreateAccount = useCallback(() => {
     if (!pendingSelectedToken) {
-      history.push(WalletRoutes.FundWalletPageStart)
+      history.push(WalletRoutes.BuyPageStart)
     }
     setShowCreateAccount(false)
   }, [pendingSelectedToken, history])

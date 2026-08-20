@@ -141,13 +141,13 @@ export const Buy = () => {
         cardHeader={
           isSidePanel ? (
             <DefaultPanelHeader
-              expandRoute={WalletRoutes.FundWalletPageStart}
+              expandRoute={WalletRoutes.BuyPageStart}
               title={pageTitle}
             />
           ) : isMobileOrPanel ? (
             <PanelActionHeader
               title={pageTitle}
-              expandRoute={WalletRoutes.FundWalletPageStart}
+              expandRoute={WalletRoutes.BuyPageStart}
             />
           ) : (
             <PageTitleHeader title={pageTitle} />

@@ -32,11 +32,11 @@ export const GettingStarted = () => {
 
   // Methods
   const onClickBuyCrypto = () => {
-    openOrPushRoute(WalletRoutes.FundWalletPageStart)
+    openOrPushRoute(WalletRoutes.BuyPageStart)
   }
 
   const onClickDepositCrypto = () => {
-    openOrPushRoute(WalletRoutes.DepositFundsPageStart)
+    openOrPushRoute(WalletRoutes.DepositPageStart)
   }
 
   return (

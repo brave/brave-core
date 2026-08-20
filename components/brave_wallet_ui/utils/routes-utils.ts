@@ -64,19 +64,19 @@ export function isPersistableSessionRoute(
      */
     || route.includes(WalletRoutes.Backup)
     /**
-     * Insure that the Deposit Funds route is an exact match.
+     * Insure that the Deposit route is an exact match.
      */
-    || routePath === WalletRoutes.DepositFundsPageStart
+    || routePath === WalletRoutes.DepositPageStart
     /**
      * or allow if it includes a trailing slash which is followed
      * by a currencyCode query param.
      */
-    || route.includes(WalletRoutes.DepositFundsPageStart + '/')
+    || route.includes(WalletRoutes.DepositPageStart + '/')
     /**
-     * Fund wallet route uses a query param to determine the asset
+     * Buy route uses a query param to determine the asset
      * and can not be exact matched.
      */
-    || route.includes(WalletRoutes.FundWalletPageStart)
+    || route.includes(WalletRoutes.BuyPageStart)
     /**
      * Insure that the Portfolio Assets route is an exact match.
      */
@@ -202,7 +202,7 @@ export const makeAccountTransactionRoute = (
   )
 }
 
-export const makeFundWalletRoute = (
+export const makeBuyRoute = (
   asset: Pick<MeldCryptoCurrency, 'chainId' | 'currencyCode'>,
   account?: BraveWallet.AccountInfo,
 ) => {
@@ -217,10 +217,10 @@ export const makeFundWalletRoute = (
       : baseQueryParams,
   )
 
-  return `${WalletRoutes.FundWalletPageStart}?${params.toString()}`
+  return `${WalletRoutes.BuyPageStart}?${params.toString()}`
 }
 
-export const makeDepositFundsRoute = (
+export const makeDepositRoute = (
   assetId: string,
   options?: {
     searchText?: string
@@ -240,17 +240,17 @@ export const makeDepositFundsRoute = (
       params.append('coinType', options.coinType)
     }
 
-    return `${WalletRoutes.DepositFundsPage.replace(
+    return `${WalletRoutes.DepositPage.replace(
       ':assetId?',
       assetId,
     )}?${params.toString()}`
   }
 
-  return WalletRoutes.DepositFundsPage.replace(':assetId?', assetId)
+  return WalletRoutes.DepositPage.replace(':assetId?', assetId)
 }
 
-export const makeDepositFundsAccountRoute = (assetId: string) => {
-  return WalletRoutes.DepositFundsAccountPage.replace(':assetId', assetId)
+export const makeDepositAccountRoute = (assetId: string) => {
+  return WalletRoutes.DepositAccountPage.replace(':assetId', assetId)
 }
 
 export const makeSendRoute = (

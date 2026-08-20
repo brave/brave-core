@@ -38,10 +38,7 @@ import {
   UpdateDepositableAssetsMessage,
   UpdateIframeHeightMessage,
 } from '../../../market/market-ui-messages'
-import {
-  makeDepositFundsRoute,
-  makeFundWalletRoute,
-} from '../../../utils/routes-utils'
+import { makeDepositRoute, makeBuyRoute } from '../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 import { getAssetSymbol } from '../../../utils/meld_utils'
 
@@ -93,7 +90,7 @@ export const MarketView = () => {
             (t) => getAssetSymbol(t) === symbolLower,
           )
           if (foundMeldTokens) {
-            openOrPushRoute(makeFundWalletRoute(foundMeldTokens[0]))
+            openOrPushRoute(makeBuyRoute(foundMeldTokens[0]))
           }
           break
         }
@@ -107,7 +104,7 @@ export const MarketView = () => {
 
           if (foundTokens.length === 1) {
             openOrPushRoute(
-              makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
+              makeDepositRoute(getAssetIdKey(foundTokens[0]), {
                 searchText: symbolLower,
               }),
             )
@@ -116,7 +113,7 @@ export const MarketView = () => {
 
           if (foundTokens.length > 1) {
             openOrPushRoute(
-              makeDepositFundsRoute('', {
+              makeDepositRoute('', {
                 searchText: symbolLower,
               }),
             )

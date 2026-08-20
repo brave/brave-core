@@ -453,13 +453,15 @@ export enum WalletRoutes {
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 
-  // fund wallet page
-  FundWalletPageStart = '/crypto/fund-wallet',
+  // buy
+  BuyPageStart = '/crypto/buy',
+  BuyPageDeprecated = '/crypto/fund-wallet',
 
-  // deposit funds
-  DepositFundsPageStart = '/crypto/deposit-funds',
-  DepositFundsPage = '/crypto/deposit-funds/:assetId?',
-  DepositFundsAccountPage = '/crypto/deposit-funds/:assetId/account',
+  // deposit
+  DepositPageStart = '/crypto/deposit',
+  DepositPage = '/crypto/deposit/:assetId?',
+  DepositAccountPage = '/crypto/deposit/:assetId/account',
+  DepositPageDeprecated = '/crypto/deposit-funds',
 
   // explore
   Explore = '/crypto/explore',
