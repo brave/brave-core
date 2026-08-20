@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -55,7 +56,6 @@ import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImp
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
@@ -90,9 +90,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
     private static final float BRAVE_SPLASH_SCALE_ANIMATION = 0.4f;
+    // Bottom 16.8% of the drawable is transparent.
+    private static final float BRAVE_SPLASH_BOTTOM_TRANSPARENT_RATIO = 0.168f;
     private static final int BRAVE_SPLASH_ANIMATION_DURATION_MS = 600;
 
-    private boolean mIsTablet;
     private boolean mSplashAnimationFinished;
     private int mRestoredPageIndex;
 
@@ -252,12 +253,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     @Override
-    protected void performPreInflationStartup() {
-        super.performPreInflationStartup();
-        mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
-    }
-
-    @Override
     public void triggerLayoutInflation() {
         super.triggerLayoutInflation();
         setContentView(R.layout.activity_welcome_onboarding);
@@ -282,9 +277,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         mOnboardingPager.setAdapter(mStepAdapter);
 
         mBraveSplash = findViewById(R.id.brave_splash);
+        // Only the wide layout (tablets in any orientation and phones in landscape) declares the
+        // splash container, and it is what tells the two splash treatments apart.
         mBraveSplashContainer = findViewById(R.id.brave_splash_container);
-        assert !mIsTablet || mBraveSplashContainer != null
-                : "R.id.brave_splash_container must be declared on tablet layout.";
 
         checkReferral();
         if (PackageUtils.isFirstInstall(this)) {
@@ -320,6 +315,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (mSplashAnimationFinished) {
             if (mBraveSplashContainer != null) {
                 mBraveSplashContainer.setVisibility(View.GONE);
+            } else {
+                // The logo stays on screen in this layout, so put it straight into its
+                // post-animation state instead of replaying the animation.
+                restoreBraveSplashEndState();
             }
             mOnboardingPager.setCurrentItem(mRestoredPageIndex, false);
             mOnboardingPager.setVisibility(View.VISIBLE);
@@ -362,7 +361,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         if (isActivityFinishingOrDestroyed()) {
                             return;
                         }
-                        if (mIsTablet) {
+                        if (mBraveSplashContainer != null) {
                             fadeBraveSplashContainer();
                         } else {
                             animateBraveSplash(vectorDrawable);
@@ -438,6 +437,64 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         animator.start();
     }
 
+    /** Moves the pager anchor right below the visible bottom of the shrunken logo. */
+    private void updateSplashGuideline() {
+        final View parent = (View) mBraveSplash.getParent();
+        final int splashHeight = mBraveSplash.getHeight();
+        // Splash visual bottom in parent coordinates (center pivot scaling).
+        final float splashBottomPx =
+                mBraveSplash.getBottom()
+                        + mBraveSplash.getTranslationY()
+                        - splashHeight * (1f - mBraveSplash.getScaleY()) / 2f;
+        // Discard the transparent band the drawable paints below the logo, so the guideline
+        // lands on the visible logo bottom.
+        final float logoBottomPx =
+                splashBottomPx
+                        - splashHeight
+                                * mBraveSplash.getScaleY()
+                                * BRAVE_SPLASH_BOTTOM_TRANSPARENT_RATIO;
+
+        ConstraintLayout.LayoutParams guidelineLayoutParams =
+                (ConstraintLayout.LayoutParams) mSplashGuideline.getLayoutParams();
+        // guideBegin is relative to the padded content box, while logoBottomPx already
+        // includes the parent top padding.
+        guidelineLayoutParams.guideBegin = Math.round(logoBottomPx) - parent.getPaddingTop();
+        mSplashGuideline.setLayoutParams(guidelineLayoutParams);
+    }
+
+    /**
+     * Applies the state {@link #animateBraveSplash} ends on, without animating. Used after a
+     * configuration change, where the splash must not play again but the logo has to stay put.
+     */
+    private void restoreBraveSplashEndState() {
+        mBraveSplash
+                .getViewTreeObserver()
+                .addOnPreDrawListener(
+                        new ViewTreeObserver.OnPreDrawListener() {
+                            @Override
+                            public boolean onPreDraw() {
+                                mBraveSplash.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                                final View parent = (View) mBraveSplash.getParent();
+                                final int splashHeight = mBraveSplash.getHeight();
+                                // Compensate because shrinking around center moves the top edge
+                                // down.
+                                final float compensation =
+                                        (splashHeight * (1f - BRAVE_SPLASH_SCALE_ANIMATION)) / 2f;
+
+                                mBraveSplash.setTranslationY(
+                                        parent.getPaddingTop()
+                                                - mBraveSplash.getTop()
+                                                - compensation);
+                                mBraveSplash.setScaleX(BRAVE_SPLASH_SCALE_ANIMATION);
+                                mBraveSplash.setScaleY(BRAVE_SPLASH_SCALE_ANIMATION);
+                                mBraveSplash.setAlpha(1f);
+                                updateSplashGuideline();
+                                return false;
+                            }
+                        });
+    }
+
     private void animateBraveSplash(final AnimatedVectorDrawable vectorDrawable) {
         vectorDrawable.clearAnimationCallbacks();
 
@@ -463,20 +520,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
                             @Override
                             public void onAnimationEnd(@NonNull Animator animation) {
-                                // Splash visual bottom in parent coordinates (center pivot
-                                // scaling).
-                                final float splashBottomPx =
-                                        mBraveSplash.getBottom()
-                                                + mBraveSplash.getTranslationY()
-                                                - splashHeight
-                                                        * (1f - mBraveSplash.getScaleY())
-                                                        / 2f;
-
-                                ConstraintLayout.LayoutParams guidelineLayoutParams =
-                                        (ConstraintLayout.LayoutParams)
-                                                mSplashGuideline.getLayoutParams();
-                                guidelineLayoutParams.guideBegin = Math.round(splashBottomPx);
-                                mSplashGuideline.setLayoutParams(guidelineLayoutParams);
+                                updateSplashGuideline();
                                 showPagerAfterSplash();
                             }
 
