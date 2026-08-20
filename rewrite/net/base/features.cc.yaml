@@ -14,3 +14,8 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kPartitionConnectionsByNetworkIsolationKey
       value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kTLSTrustAnchorIDs disabled.'
+    set_feature_flag_default_state:
+      feature_name: kTLSTrustAnchorIDs
+      value: base::FEATURE_DISABLED_BY_DEFAULT
