@@ -157,7 +157,7 @@ std::string EmailAliasesService::GetAuthEmail() const {
 }
 
 void EmailAliasesService::OnAuthChanged() {
-  if (IsAuthenticated()) {
+  if (IsAuthenticated() && ShouldShowPromo()) {
     MarkPromoShown();
   }
   RefreshAliases();
