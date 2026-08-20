@@ -47,16 +47,11 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
           EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL
         ),
       },
-      showEmailAliasesSettings_: {
-        type: Boolean,
-        value: false,
-      },
     };
   }
 
   declare pageTitle_: string;
   declare autofillSuggestionToggleLabel_: string;
-  declare showEmailAliasesSettings_: boolean;
 
   override ready() {
     super.ready();
@@ -64,11 +59,7 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
     customElements.whenDefined('settings-brave-account-row').then(() => {
       const bundlePath = '/email_aliases.bundle.js'
       import(bundlePath).then(({mount}) => {
-        mount(this.$.signInRoot, this.$.manageSection, {
-          onLoggedInChange: (loggedIn: boolean) => {
-            this.showEmailAliasesSettings_ = loggedIn;
-          },
-        });
+        mount(this.$.signInRoot, this.$.manageSection, {});
       });
     });
 
