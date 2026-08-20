@@ -20,7 +20,7 @@ export const style = scoped.css`
     height: 255px;
     padding: 32px;
     border-radius: ${radius.xl};
-    background: ${color.primitive.neutral['40']};
+    background: ${color.primitive.neutral['80']};
     overflow: hidden;
 
     @media (prefers-color-scheme: dark) {
@@ -166,7 +166,6 @@ export const style = scoped.css`
     margin: 0 ${spacing.s} ${spacing.s};
     border-radius: ${radius.m};
     background: ${color.desktopbrowser.omnibar.backgroundDesktop};
-    box-shadow: ${effect.elevation['01']};
   }
 
   &.horizontal {
