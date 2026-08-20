@@ -50,8 +50,7 @@ struct ReaderModeUtils {
       )
       .replacingOccurrences(
         of: "%READER-DIRECTION%",
-        with: readabilityResult.direction.javaScriptEscapedString?.unquotedIfNecessary
-          ?? readabilityResult.direction.htmlEntityEncodedString
+        with: readabilityResult.direction.htmlEntityEncodedString
       )
       .replacingOccurrences(of: "%READER-MESSAGE%", with: "")
 
@@ -60,9 +59,7 @@ struct ReaderModeUtils {
         of: "%READER-ORIGINAL-PAGE-META-TAGS%",
         with: readabilityResult.cspMetaTags
           .map {
-            let content =
-              $0.javaScriptEscapedString?.unquotedIfNecessary ?? $0.htmlEntityEncodedString
-            return "<meta http-equiv=\"Content-Security-Policy\" content=\"\(content)\">"
+            "<meta http-equiv=\"Content-Security-Policy\" content=\"\($0.htmlEntityEncodedString)\">"
           }
           .joined(separator: "\n")
       )
