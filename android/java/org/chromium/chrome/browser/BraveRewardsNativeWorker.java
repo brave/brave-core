@@ -741,7 +741,9 @@ public class BraveRewardsNativeWorker {
         void destroy(long nativeBraveRewardsNativeWorker);
 
         boolean isSupported(long nativeBraveRewardsNativeWorker);
+
         boolean isSupportedSkipRegionCheck(long nativeBraveRewardsNativeWorker);
+
         boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
 
         boolean shouldShowSelfCustodyInvite(long nativeBraveRewardsNativeWorker);
