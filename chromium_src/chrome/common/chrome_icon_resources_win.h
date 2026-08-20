@@ -50,6 +50,9 @@ enum {
   // The Brave Developer incognito icon.
   kIncognitoIndex = 2,
 #endif
+
+  // Brave has no dedicated isolated mode icon; reuse the incognito icon.
+  kIsolatedIndex = kIncognitoIndex,
 };
 
 }  // namespace icon_resources
