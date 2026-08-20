@@ -788,15 +788,7 @@ extension QuickViewController: ReaderModeBarViewDelegate {
       toolbarViewModel.collapseProgress = 0
     }
     toolbarSafeAreaBottomConstraint?.constant = restoredOffset
-
-    let animator = UIViewPropertyAnimator(
-      duration: 0.2,
-      curve: UIView.AnimationCurve.easeIn
-    ) {
-      self.view.layoutIfNeeded()
-    }
-    animator.addCompletion { _ in self.toolbarVisibilityViewModel.isEnabled = true }
-    animator.startAnimation()
+    toolbarVisibilityViewModel.isEnabled = true
   }
 }
 
