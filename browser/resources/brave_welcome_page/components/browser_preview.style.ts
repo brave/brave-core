@@ -19,12 +19,8 @@ export const style = scoped.css`
     height: 255px;
     padding: 32px;
     border-radius: ${radius.xl};
-    background: ${color.primitive.neutral['80']};
+    background: ${color.material.regular};
     overflow: hidden;
-
-    @media (prefers-color-scheme: dark) {
-      background: ${color.primitive.neutral['5']};
-    }
   }
 
   .chrome {
