@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -520,7 +521,9 @@ TEST_F(CardanoApiImplTest,
   // Simulate permission revocation while the request is still queued and
   // trigger the drain manually (the test delegate doesn't observe HCSM).
   service_delegate()->permission_granted = false;
-  brave_wallet_service()->OnWalletContentSettingChanged();
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsType::BRAVE_CARDANO);
 
   auto& signature = future.Get<0>();
   auto& error = future.Get<1>();

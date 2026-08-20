@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -42,6 +43,7 @@ namespace network {
 class SharedURLLoaderFactory;
 }
 
+class HostContentSettingsMap;
 class PrefService;
 
 namespace brave_wallet {
@@ -65,7 +67,8 @@ class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public KeyringServiceObserverBase,
                            public TxServiceObserverBase,
-                           public BraveWalletServiceDelegate::Observer {
+                           public BraveWalletServiceDelegate::Observer,
+                           public content_settings::Observer {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using SignMessageRequestCallback =
@@ -86,7 +89,8 @@ class BraveWalletService : public KeyedService,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
       PrefService* profile_prefs,
-      PrefService* local_state);
+      PrefService* local_state,
+      HostContentSettingsMap* host_content_settings_map = nullptr);
 
   ~BraveWalletService() override;
 
@@ -293,7 +297,11 @@ class BraveWalletService : public KeyedService,
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
-  void OnWalletContentSettingChanged();
+  // content_settings::Observer:
+  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
+                               const ContentSettingsPattern& secondary_pattern,
+                               ContentSettingsType content_type) override;
+
   void DrainSignMessageRequestsWithoutPermission();
   void DrainSignSolTransactionsRequestsWithoutPermission();
   void DrainSignCardanoTransactionRequestsWithoutPermission();
@@ -513,6 +521,7 @@ class BraveWalletService : public KeyedService,
   mojo::Receiver<brave_wallet::mojom::TxServiceObserver>
       tx_service_observer_receiver_{this};
   PrefChangeRegistrar pref_change_registrar_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
 };
 

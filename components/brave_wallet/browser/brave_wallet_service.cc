@@ -44,6 +44,8 @@
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -239,7 +241,8 @@ BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* profile_prefs,
-    PrefService* local_state)
+    PrefService* local_state,
+    HostContentSettingsMap* host_content_settings_map)
     : profile_prefs_(profile_prefs),
       delegate_(std::move(delegate)),
       network_manager_(std::make_unique<NetworkManager>(profile_prefs)),
@@ -262,6 +265,7 @@ BraveWalletService::BraveWalletService(
       simulation_service_(
           std::make_unique<SimulationService>(url_loader_factory, this)),
       ipfs_service_(std::make_unique<BraveWalletIpfsService>(profile_prefs)),
+      host_content_settings_map_(host_content_settings_map),
       weak_ptr_factory_(this) {
   CHECK(delegate_);
   keyring_service_->SetDelegate(delegate_.get());
@@ -311,9 +315,9 @@ BraveWalletService::BraveWalletService(
       *simple_hash_client_, profile_prefs);
 
   delegate_->AddObserver(this);
-  delegate_->SetContentSettingChangedCallback(
-      base::BindRepeating(&BraveWalletService::OnWalletContentSettingChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
+  if (host_content_settings_map_) {
+    host_content_settings_map_->AddObserver(this);
+  }
 
   keyring_service_->SetAutolockEnabled(delegate_->IsAutolockEnabled());
   keyring_service_->set_wallet_reset_cb(base::BindRepeating(
@@ -367,7 +371,11 @@ BraveWalletService::BraveWalletService(
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
 
-BraveWalletService::~BraveWalletService() = default;
+BraveWalletService::~BraveWalletService() {
+  if (host_content_settings_map_) {
+    host_content_settings_map_->RemoveObserver(this);
+  }
+}
 
 // For unit tests
 void BraveWalletService::RemovePrefListenersForTests() {
@@ -1319,7 +1327,15 @@ void BraveWalletService::OnActiveOriginChanged(
   }
 }
 
-void BraveWalletService::OnWalletContentSettingChanged() {
+void BraveWalletService::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type) {
+  if (content_type != ContentSettingsType::BRAVE_ETHEREUM &&
+      content_type != ContentSettingsType::BRAVE_SOLANA &&
+      content_type != ContentSettingsType::BRAVE_CARDANO) {
+    return;
+  }
   tx_service_->RejectUnapprovedTransactionsWithoutPermission();
   DrainSignMessageRequestsWithoutPermission();
   DrainSignSolTransactionsRequestsWithoutPermission();

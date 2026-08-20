@@ -39,6 +39,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -953,7 +954,9 @@ TEST_F(SolanaProviderImplUnitTest,
   // drain manually (the test delegate doesn't observe HCSM).
   ResetSolanaPermission(added_account->account_id);
   service_delegate_->permission_granted = false;
-  brave_wallet_service()->OnWalletContentSettingChanged();
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsType::BRAVE_SOLANA);
   run_loop.Run();
 
   EXPECT_TRUE(signature.empty());
