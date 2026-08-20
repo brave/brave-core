@@ -29,6 +29,7 @@
 
 namespace ai_chat {
 class AIChatFullPageLinkObserver;
+class AIChatRemoteModelsVisibilityObserver;
 class AIChatUIPageHandlerBrowserTest;
 class BookmarksPageHandler;
 }  // namespace ai_chat
@@ -80,6 +81,13 @@ class AIChatUI : public ui::MojoWebUIController {
   // a new tab. Only created when `kAIChatMoveFullPageToSidePanel` is enabled,
   // so the feature stays inert while it is off.
   std::unique_ptr<ai_chat::AIChatFullPageLinkObserver> full_page_link_observer_;
+
+  // Forwards this WebUI's `WebContents` visibility to `ModelService` so it
+  // knows when to fetch/refresh the remote model list. Always created;
+  // `ModelService` itself no-ops the resulting calls when
+  // `kAIChatRemoteModelsConfig` is disabled.
+  std::unique_ptr<ai_chat::AIChatRemoteModelsVisibilityObserver>
+      remote_models_visibility_observer_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;
