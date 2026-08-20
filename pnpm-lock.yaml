@@ -40,8 +40,8 @@ importers:
         specifier: github:brave/leo-sf-symbols#d6c826a443dd10bc02e2349812fe3f9727460e0d
         version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d
       '@brave/wallet-standard-brave':
-        specifier: 0.0.16
-        version: 0.0.16(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
+        specifier: 0.0.17
+        version: 0.0.17(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
       '@dnd-kit/core':
         specifier: 6.3.1
         version: 6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -685,11 +685,11 @@ packages:
       styled-components: 6.4.3
 
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d}
+    resolution: {gitHosted: true, integrity: sha512-1OaBt4sIgP1VmFuIKAsWdUHQQxh4lK3J2zgBoTiIwxbtG+enMIAhkdkCcrrVGey2SXI0Y19BvV0UKRnfq8mCQg==, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d}
     version: 1.0.103
 
   '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a}
+    resolution: {gitHosted: true, integrity: sha512-nK93PUqi0kdzvcwEiho5mpdFraR9uOJYBWrcG0qJIwKsGxJszpVbIhLqHECA4O8BrqaX39WVrJXDu/ZwC6D+rw==, tarball: https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a}
     version: 0.0.1
     hasBin: true
     peerDependencies:
@@ -704,8 +704,8 @@ packages:
       typescript:
         optional: true
 
-  '@brave/wallet-standard-brave@0.0.16':
-    resolution: {integrity: sha512-RcifUneOjiYZSwSAcj5y3DKIHK895bimxXogmRUpQD6b0zOZzIDIkz74HxPfrKaSEO/nflBpWb1qR7NBPXkX8w==}
+  '@brave/wallet-standard-brave@0.0.17':
+    resolution: {integrity: sha512-sxeQyaBsx8MQ1PksgkN/IVI8rS5AGCHN0kuFXMGykw0/wmXF8Rq1R4B+Tjw+taEruJ37ZBfASqjtwBhiZw7EEg==}
     engines: {node: '>=16'}
 
   '@chainsafe/filsnap-types@2.1.3':
@@ -1997,6 +1997,9 @@ packages:
 
   '@solana/web3.js@1.98.2':
     resolution: {integrity: sha512-BqVwEG+TaG2yCkBMbD3C4hdpustR4FpuUFRPUmqRZYYlPI9Hg4XMWxHWOWRzHE9Lkc9NDjzXFX7lDXSgzC7R1A==}
+
+  '@solana/web3.js@1.98.4':
+    resolution: {integrity: sha512-vv9lfnvjUsRiq//+j5pBdXig0IQdtzA0BRZ3bXEP4KaIyF1CcaydWqgyzQgfZMNIsWNWmG+AUHwPy4AHOD6gpw==}
 
   '@sovpro/delimited-stream@1.1.0':
     resolution: {integrity: sha512-kQpk267uxB19X3X2T1mvNMjyvIEonpNSHrMlK5ZaBU6aZxw7wPbpgKJOjHN3+/GPVpXgAV9soVT2oyHpLkLtyw==}
@@ -8334,10 +8337,10 @@ snapshots:
       - tsx
       - yaml
 
-  '@brave/wallet-standard-brave@0.0.16(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)':
+  '@brave/wallet-standard-brave@0.0.17(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@solana/wallet-standard-features': 1.4.0
-      '@solana/web3.js': 1.98.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
+      '@solana/web3.js': 1.98.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
       '@wallet-standard/base': 1.1.1
       '@wallet-standard/features': 1.1.1
       bs58: 6.0.0
@@ -10033,6 +10036,29 @@ snapshots:
       '@wallet-standard/features': 1.1.1
 
   '@solana/web3.js@1.98.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)':
+    dependencies:
+      '@babel/runtime': 7.29.7
+      '@noble/curves': 1.9.7
+      '@noble/hashes': 1.8.0
+      '@solana/buffer-layout': 4.0.1
+      '@solana/codecs-numbers': 2.3.0(typescript@5.9.3)
+      agentkeepalive: 4.6.0
+      bn.js: 5.2.5
+      borsh: 0.7.0
+      bs58: 4.0.1
+      buffer: 6.0.3
+      fast-stable-stringify: 1.0.0
+      jayson: 4.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+      node-fetch: 2.7.0
+      rpc-websockets: 9.3.9
+      superstruct: 2.0.2
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - typescript
+      - utf-8-validate
+
+  '@solana/web3.js@1.98.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@noble/curves': 1.9.7
