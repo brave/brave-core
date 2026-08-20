@@ -18,7 +18,7 @@ export const style = scoped.css`
   .color-swatch {
     /* Swatches always occupy a single row, shrinking below their natural size
      * rather than wrapping when the row runs out of space. */
-    flex: 0 1 40px;
+    flex: 0 1 38px;
     min-width: 0;
     position: relative;
     appearance: none;
@@ -29,7 +29,7 @@ export const style = scoped.css`
     background: none;
     cursor: pointer;
     outline: solid 2px transparent;
-    outline-offset: 2px;
+    outline-offset: 1px;
     transition: outline-color 0.12s ease-in-out;
 
     .checkmark {
