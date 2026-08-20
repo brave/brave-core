@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 source_set("brave_search") {
   sources = [
@@ -39,6 +40,10 @@ source_set("brave_search") {
       "//brave/android/java/org/chromium/chrome/browser/brave_search:jni_headers",
       "//ui/android",
     ]
+  }
+
+  if (use_aura) {
+    deps += [ "//ui/aura" ]
   }
 }
 

@@ -28,6 +28,7 @@ class PrefService;
 class Profile;
 
 namespace gfx {
+class Rect;
 class Size;
 }  // namespace gfx
 
@@ -56,6 +57,11 @@ class BackupResultsServiceImpl : public BackupResultsService,
   static void RecordLastViewSize(PrefService* local_state,
                                  const gfx::Size& size);
 
+  // Records the browser window screen bounds, so that backup results requests
+  // can report realistic window.outerWidth/outerHeight/screenX/screenY values.
+  static void RecordLastWindowBounds(PrefService* local_state,
+                                     const gfx::Rect& bounds);
+
   explicit BackupResultsServiceImpl(Profile* profile);
 
   ~BackupResultsServiceImpl() override;
@@ -83,6 +89,10 @@ class BackupResultsServiceImpl : public BackupResultsService,
   void Shutdown() override;
 
  private:
+#if defined(USE_AURA)
+  class ContentAreaSizeDelegate;
+#endif
+
   struct PendingRequest {
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,
                    std::optional<net::HttpRequestHeaders> headers,
@@ -98,6 +108,12 @@ class BackupResultsServiceImpl : public BackupResultsService,
     bool low_latency_required;
     std::unique_ptr<content::WebContents> web_contents;
     GURL target_url;
+
+#if defined(USE_AURA)
+    // Pins the content area size while the emulated browser window bounds are
+    // applied to the `web_contents` native view. Must outlive `web_contents`.
+    std::unique_ptr<ContentAreaSizeDelegate> content_area_size_delegate;
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
     // Root window for the `web_contents` view tree.

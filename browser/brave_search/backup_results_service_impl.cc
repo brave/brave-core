@@ -44,9 +44,11 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/restore_type.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "net/base/url_util.h"
@@ -61,6 +63,7 @@
 #include "third_party/blink/public/common/renderer_preferences/renderer_preferences.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -69,8 +72,10 @@
 #include "brave/android/java/org/chromium/chrome/browser/brave_search/jni_headers/BackupResultsWindowFactory_jni.h"
 #include "ui/android/view_android.h"
 #include "ui/android/window_android.h"
-#else
-#include "ui/gfx/geometry/rect.h"
+#endif
+
+#if defined(USE_AURA)
+#include "ui/aura/window.h"
 #endif
 
 namespace brave_search {
@@ -169,6 +174,28 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BackupResultsWebContentsObserver);
 
 }  // namespace
 
+#if defined(USE_AURA)
+// The emulated browser window bounds are applied to the WebContents native
+// view, which would otherwise dictate the size of every main frame
+// RenderWidgetHostView created for the WebContents. This delegate pins that
+// size to the content area instead, so that window.innerWidth/innerHeight stay
+// smaller than window.outerWidth/outerHeight across navigations.
+class BackupResultsServiceImpl::ContentAreaSizeDelegate
+    : public content::WebContentsDelegate {
+ public:
+  explicit ContentAreaSizeDelegate(const gfx::Size& view_size)
+      : view_size_(view_size) {}
+  ~ContentAreaSizeDelegate() override = default;
+
+  gfx::Size GetSizeForNewRenderView(content::WebContents* web_contents) final {
+    return view_size_;
+  }
+
+ private:
+  const gfx::Size view_size_;
+};
+#endif  // defined(USE_AURA)
+
 BackupResultsServiceImpl::BackupResultsServiceImpl(Profile* profile)
     : profile_(profile),
       local_state_(g_browser_process->local_state()),
@@ -182,6 +209,10 @@ void BackupResultsServiceImpl::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(prefs::kBackupResultsLastViewWidth, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsLastViewHeight, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowX, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowY, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowWidth, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastWindowHeight, 0);
   registry->RegisterIntegerPref(prefs::kBackupResultsDailyRequestCount, 0);
   registry->RegisterTimePref(prefs::kBackupResultsDailyRequestWindowStart, {});
   BackupResultsMetrics::RegisterPrefs(registry);
@@ -195,6 +226,19 @@ void BackupResultsServiceImpl::RecordLastViewSize(PrefService* local_state,
   }
   local_state->SetInteger(prefs::kBackupResultsLastViewWidth, size.width());
   local_state->SetInteger(prefs::kBackupResultsLastViewHeight, size.height());
+}
+
+// static
+void BackupResultsServiceImpl::RecordLastWindowBounds(PrefService* local_state,
+                                                      const gfx::Rect& bounds) {
+  if (bounds.IsEmpty()) {
+    return;
+  }
+  local_state->SetInteger(prefs::kBackupResultsLastWindowX, bounds.x());
+  local_state->SetInteger(prefs::kBackupResultsLastWindowY, bounds.y());
+  local_state->SetInteger(prefs::kBackupResultsLastWindowWidth, bounds.width());
+  local_state->SetInteger(prefs::kBackupResultsLastWindowHeight,
+                          bounds.height());
 }
 
 void BackupResultsServiceImpl::FetchBackupResults(
@@ -238,6 +282,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
   std::unique_ptr<content::WebContents> web_contents;
 #if BUILDFLAG(IS_ANDROID)
   ui::WindowAndroid* window_android = nullptr;
+#elif defined(USE_AURA)
+  std::unique_ptr<ContentAreaSizeDelegate> content_area_size_delegate;
 #endif
 
   if (should_render) {
@@ -275,6 +321,31 @@ void BackupResultsServiceImpl::FetchBackupResults(
     native_view->OnSizeChanged(
         static_cast<int>(view_size.width() * dip_scale),
         static_cast<int>(view_size.height() * dip_scale));
+#elif defined(USE_AURA)
+    const gfx::Rect window_bounds(
+        local_state_->GetInteger(prefs::kBackupResultsLastWindowX),
+        local_state_->GetInteger(prefs::kBackupResultsLastWindowY),
+        local_state_->GetInteger(prefs::kBackupResultsLastWindowWidth),
+        local_state_->GetInteger(prefs::kBackupResultsLastWindowHeight));
+    if (view_size.IsEmpty() || window_bounds.width() < view_size.width() ||
+        window_bounds.height() < view_size.height()) {
+      web_contents->Resize(gfx::Rect(view_size));
+    } else {
+      // The WebContents native view is the top level window of the view tree,
+      // so give it the browser window bounds in order for
+      // window.outerWidth/outerHeight and window.screenX/screenY to report the
+      // browser window rather than the content area. The delegate keeps the
+      // content area at `view_size` for every main frame view that gets created
+      // afterwards, and the explicit resize below covers the view that already
+      // exists.
+      content_area_size_delegate =
+          std::make_unique<ContentAreaSizeDelegate>(view_size);
+      web_contents->SetDelegate(content_area_size_delegate.get());
+      web_contents->GetNativeView()->SetBounds(window_bounds);
+      if (auto* view = web_contents->GetRenderWidgetHostView()) {
+        view->SetSize(view_size);
+      }
+    }
 #else
     web_contents->Resize(gfx::Rect(view_size));
 #endif
@@ -298,6 +369,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
       otr_profile, low_latency_required, std::move(callback));
 #if BUILDFLAG(IS_ANDROID)
   request->window_android = window_android;
+#elif defined(USE_AURA)
+  request->content_area_size_delegate = std::move(content_area_size_delegate);
 #endif
 
   if (should_render) {

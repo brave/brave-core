@@ -25,7 +25,9 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/restore_type.h"
+#include "ui/base/base_window.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/gfx/geometry/rect.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_session_state.h"
@@ -79,6 +81,15 @@ void PageMetricsTabHelper::DidFinishNavigation(
   } else {
     brave_search::BackupResultsServiceImpl::RecordLastViewSize(
         g_browser_process->local_state(), web_contents()->GetSize());
+#if !BUILDFLAG(IS_ANDROID)
+    auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
+    auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
+    auto* window = browser_window ? browser_window->GetWindow() : nullptr;
+    if (window) {
+      brave_search::BackupResultsServiceImpl::RecordLastWindowBounds(
+          g_browser_process->local_state(), window->GetBounds());
+    }
+#endif  // !BUILDFLAG(IS_ANDROID)
   }
 
   bool is_reload = false;
