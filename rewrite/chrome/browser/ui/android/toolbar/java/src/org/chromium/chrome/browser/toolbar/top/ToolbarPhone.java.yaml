@@ -25,6 +25,19 @@ substitutions:
         \1
                 if (!BraveToolbarLayout.class.cast(this).isLocationBarValid(mLocationBar)) return;
   - description: |
+      Require omnibox focus for the DSE icon focus-animation offset.
+
+      Upstream moves focus to a 1px thief view inside the location bar when an
+      omnibox session ends, so the View#hasFocus() this is called with stays
+      true once unfocused and the offset that makes room for the DSE icon is
+      never undone. Brave keeps the real omnibox visible on the NTP, where that
+      leaves the status icon shifted out of the location bar background.
+    regex:
+      re_pattern: '(int\s+getLocationBarOffsetForFocusAnimation\([^)]*\)\s*\{)'
+      replace: |-
+        \1
+                if (!urlHasFocus()) return 0;
+  - description: |
       Draw Brave's toolbar animation overlay with the Chromium toolbar buttons.
 
       Place the overlay before the tab-switcher button in the toolbar's custom draw pass.
