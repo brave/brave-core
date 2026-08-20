@@ -32,6 +32,7 @@
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -95,6 +96,10 @@ constexpr char16_t kBraveReleaseTagPrefix[] =
 #if BUILDFLAG(ENABLE_CONTAINERS)
 constexpr char16_t kContainersLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/39077103885325";
+#endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+constexpr char16_t kTrafficControlLearnMoreURL[] =
+    u"https://support.brave.app/";
 #endif
 constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
@@ -1212,6 +1217,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddLocalizedStrings(webui::kContainersStrings);
   html_source->AddString("containersLearnMoreURL", kContainersLearnMoreURL);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  html_source->AddLocalizedStrings(webui::kTrafficControlStrings);
+  html_source->AddString("trafficControlLearnMoreURL",
+                         kTrafficControlLearnMoreURL);
+#endif  // BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
   html_source->AddString(
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,

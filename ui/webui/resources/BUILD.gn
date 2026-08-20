@@ -487,6 +487,7 @@ leo_icons_sources = [
   "themes.svg",
   "thumb-down.svg",
   "thumb-up.svg",
+  "traffic-control.svg",
   "trash.svg",
   "trezor-color.svg",
   "tune.svg",
