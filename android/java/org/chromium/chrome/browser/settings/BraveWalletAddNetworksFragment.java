@@ -9,6 +9,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,8 +32,10 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.components.browser_ui.settings.SettingsFragment;
 import org.chromium.components.browser_ui.settings.SettingsFragment.AnimationType;
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.ViewUtils;
 import org.chromium.url.mojom.Url;
 
 import java.net.MalformedURLException;
@@ -67,6 +70,8 @@ public class BraveWalletAddNetworksFragment extends Fragment
     private EditText mBlockExplorerUrls;
     private TextView mSubmitError;
     private AppCompatButton mButtonSubmit;
+    @Nullable private View mRootView;
+    @Nullable private View.OnLayoutChangeListener mRotationLayoutListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +113,7 @@ public class BraveWalletAddNetworksFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mRootView = view;
         mChainIdEditText = view.findViewById(R.id.chain_id);
         mChainName = view.findViewById(R.id.chain_name);
         mChainCurrencyName = view.findViewById(R.id.chain_currency_name);
@@ -140,6 +146,85 @@ public class BraveWalletAddNetworksFragment extends Fragment
                         }
                     });
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        correctLayoutAfterRotation();
+    }
+
+    /**
+     * The Settings host applies a ViewResizer to this standalone fragment. During a rotation, the
+     * resizer can use the root's old measured width and leave the visible layout clipped. Wait for
+     * the root to receive its new size, then apply the correction after the resizer finishes its
+     * layout.
+     */
+    private void correctLayoutAfterRotation() {
+        View rootView = mRootView;
+        if (rootView == null) {
+            return;
+        }
+        if (mRotationLayoutListener != null) {
+            rootView.removeOnLayoutChangeListener(mRotationLayoutListener);
+        }
+        mRotationLayoutListener =
+                (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                    boolean sizeChanged =
+                            (right - left) != (oldRight - oldLeft)
+                                    || (bottom - top) != (oldBottom - oldTop);
+                    if (!sizeChanged) {
+                        return;
+                    }
+                    v.removeOnLayoutChangeListener(mRotationLayoutListener);
+                    mRotationLayoutListener = null;
+                    v.post(this::applyLayoutCorrection);
+                };
+        rootView.addOnLayoutChangeListener(mRotationLayoutListener);
+    }
+
+    private void applyLayoutCorrection() {
+        if (!isAdded() || isDetached()) {
+            return;
+        }
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
+        View rootView = mRootView;
+        if (rootView == null) {
+            return;
+        }
+
+        int padding =
+                getResources().getDimensionPixelSize(R.dimen.settings_single_column_layout_margin);
+        int screenWidthDp = getResources().getConfiguration().screenWidthDp;
+        if (screenWidthDp >= UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP) {
+            int minWidePadding =
+                    getResources().getDimensionPixelSize(R.dimen.settings_wide_display_min_padding);
+            int excessWidthDp = screenWidthDp - UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP;
+            int paddingPx =
+                    Math.round((excessWidthDp / 2.f) * getResources().getDisplayMetrics().density);
+            padding = Math.max(minWidePadding, paddingPx);
+        }
+        rootView.setPaddingRelative(
+                padding, rootView.getPaddingTop(), padding, rootView.getPaddingBottom());
+        ViewUtils.requestLayout(rootView, "BraveWalletAddNetworksFragment.applyLayoutCorrection");
+        if (rootView instanceof ViewGroup rootViewGroup && rootViewGroup.getChildCount() > 0) {
+            ViewUtils.requestLayout(
+                    rootViewGroup.getChildAt(0),
+                    "BraveWalletAddNetworksFragment.remeasureFormAfterRotation");
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mRotationLayoutListener != null && mRootView != null) {
+            mRootView.removeOnLayoutChangeListener(mRotationLayoutListener);
+        }
+        mRotationLayoutListener = null;
+        mRootView = null;
+        super.onDestroyView();
     }
 
     @Override
