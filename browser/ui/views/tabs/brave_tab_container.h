@@ -298,6 +298,10 @@ class BraveTabContainer : public TabContainerImpl,
   bool ShouldShowVerticalTabs() const;
   bool IsPinned(const Tab* tab) const;
 
+  // Returns true while this container's profile is having its session
+  // restored.
+  bool IsSessionRestoreInProgress() const;
+
   // Called when the tree tabs enabled state changes.
   void OnTreeTabsEnabledChanged();
 
