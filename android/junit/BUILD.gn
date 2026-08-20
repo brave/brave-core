@@ -173,11 +173,19 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
       "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
     ]
 
     deps = [
+      "//brave/browser/android/preferences:pref_names_java",
       "//brave/browser/ntp_customization:java",
+      "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/tab:java",
+      "//chrome/browser/ui/messages/android:java",
+      "//components/user_prefs/android:java",
+      "//content/public/android:content_java",
+      "//ui/android:ui_java",
     ]
   }
 
