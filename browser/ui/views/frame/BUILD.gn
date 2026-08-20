@@ -164,4 +164,8 @@ source_set("browser_tests") {
       "//chrome/browser/ui/views/frame",
     ]
   }
+
+  if (is_mac) {
+    deps += [ "//chrome/browser/ui:fullscreen_util_mac" ]
+  }
 }
