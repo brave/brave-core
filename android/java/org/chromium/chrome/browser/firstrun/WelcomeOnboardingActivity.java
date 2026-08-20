@@ -87,6 +87,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     private static final String KEY_SPLASH_ANIMATION_FINISHED =
             "WelcomeOnboardingActivity.SplashAnimationFinished";
     private static final String KEY_PAGE_INDEX = "WelcomeOnboardingActivity.PageIndex";
+    private static final String KEY_CRASH_REPORTING_CHECKED =
+            "WelcomeOnboardingActivity.CrashReportingChecked";
+    private static final String KEY_P3A_CHECKED = "WelcomeOnboardingActivity.P3aChecked";
 
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
     private static final float BRAVE_SPLASH_SCALE_ANIMATION = 0.4f;
@@ -108,6 +111,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private boolean mIsP3aManaged;
     private boolean mIsCrashReportingManaged;
+    private boolean mHasRestoredState;
+    private boolean mCrashReportingChecked;
+    private boolean mP3aChecked;
 
     private void checkReferral() {
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
@@ -300,15 +306,19 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         .isUsageAndCrashReportingPermittedByPolicy();
 
         if (!mIsCrashReportingManaged) {
-            final boolean isCrashReporting = getCrashReportingPreference();
-            mStepAdapter.setCrashReportingChecked(isCrashReporting);
+            if (!mHasRestoredState) {
+                mCrashReportingChecked = getCrashReportingPreference();
+            }
+            mStepAdapter.setCrashReportingChecked(mCrashReportingChecked);
         } else {
             mStepAdapter.setCrashReportingManaged(true);
         }
 
         if (!mIsP3aManaged) {
-            final boolean isP3aEnabled = getP3aPreference();
-            mStepAdapter.setP3aChecked(isP3aEnabled);
+            if (!mHasRestoredState) {
+                mP3aChecked = getP3aPreference();
+            }
+            mStepAdapter.setP3aChecked(mP3aChecked);
         } else {
             mStepAdapter.setP3aManaged(true);
         }
@@ -332,6 +342,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_SPLASH_ANIMATION_FINISHED, mSplashAnimationFinished);
         outState.putInt(KEY_PAGE_INDEX, mOnboardingPager.getCurrentItem());
+        outState.putBoolean(KEY_CRASH_REPORTING_CHECKED, mCrashReportingChecked);
+        outState.putBoolean(KEY_P3A_CHECKED, mP3aChecked);
     }
 
     @Override
@@ -342,6 +354,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         }
         mSplashAnimationFinished = state.getBoolean(KEY_SPLASH_ANIMATION_FINISHED, false);
         mRestoredPageIndex = state.getInt(KEY_PAGE_INDEX, 0);
+        mCrashReportingChecked = state.getBoolean(KEY_CRASH_REPORTING_CHECKED);
+        mP3aChecked = state.getBoolean(KEY_P3A_CHECKED);
+        mHasRestoredState = true;
     }
 
     private void playAnimatedVectorDrawable() {
@@ -575,11 +590,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     @Override
     public void onCrashReportingPreferenceChanged(final boolean enabled) {
+        mCrashReportingChecked = enabled;
         setMetricsReportingConsent(enabled, false);
     }
 
     @Override
     public void onP3aPreferenceChanged(final boolean enabled) {
+        mP3aChecked = enabled;
         setP3aConsent(enabled);
     }
 }
