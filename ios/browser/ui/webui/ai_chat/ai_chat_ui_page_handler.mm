@@ -233,6 +233,15 @@ void AIChatUIPageHandler::GetFaviconDataURL(
       &favicon_task_tracker_);
 }
 
+void AIChatUIPageHandler::ShowWorkspaceFolderPicker(
+    const std::string& conversation_uuid,
+    ShowWorkspaceFolderPickerCallback callback) {
+  // The workspace tools operate on a local folder chosen with a native
+  // directory picker, which iOS doesn't offer.
+  NOTIMPLEMENTED();
+  std::move(callback).Run(std::nullopt);
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
   id<AIChatUIHandlerBridge> bridge =
       UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();

@@ -73,6 +73,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                        GetPluralStringCallback callback) override;
   void GetFaviconDataURL(const GURL& page_url,
                          GetFaviconDataURLCallback callback) override;
+  void ShowWorkspaceFolderPicker(
+      const std::string& conversation_uuid,
+      ShowWorkspaceFolderPickerCallback callback) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
