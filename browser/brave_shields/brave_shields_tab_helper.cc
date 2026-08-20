@@ -180,13 +180,12 @@ void BraveShieldsTabHelper::OnContentSettingChanged(
     }
   }
 
-  if (content_type_set.Contains(ContentSettingsType::BRAVE_SHIELDS) ||
-      content_type_set.Contains(ContentSettingsType::BRAVE_ADS) ||
-      content_type_set.Contains(ContentSettingsType::BRAVE_TRACKERS) ||
-      content_type_set.Contains(
-          ContentSettingsType::BRAVE_COSMETIC_FILTERING) ||
-      content_type_set.Contains(ContentSettingsType::BRAVE_FINGERPRINTING_V2) ||
-      content_type_set.Contains(ContentSettingsType::JAVASCRIPT)) {
+  if (content_type_set.ContainsAllTypes() ||
+      (content_type_set.GetType() >=
+           ContentSettingsType::BRAVE_SHIELDS_PANEL_START &&
+       content_type_set.GetType() <=
+           ContentSettingsType::BRAVE_SHIELDS_PANEL_END) ||
+      content_type_set.GetType() == ContentSettingsType::JAVASCRIPT) {
     ReloadWebContents();
   }
 }
