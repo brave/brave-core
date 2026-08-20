@@ -21,7 +21,8 @@ bool WebClient::ShouldBlockUniversalLinks(web::WebState* web_state,
   return false;
 }
 
-bool WebClient::IsGlobalPrivacyControlEnabled(web::WebState* web_state) {
+bool WebClient::IsGlobalPrivacyControlEnabled(
+    web::BrowserState* browser_state) {
   return false;
 }
 

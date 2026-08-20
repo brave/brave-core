@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
@@ -311,8 +312,13 @@ NSString* BraveWebClient::GetUserAgentForRequest(
   return nil;
 }
 
-bool BraveWebClient::IsGlobalPrivacyControlEnabled(web::WebState* webState) {
-  auto* profile = ProfileIOS::FromBrowserState(webState->GetBrowserState());
+bool BraveWebClient::IsGlobalPrivacyControlEnabled(
+    web::BrowserState* browser_state) {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kWebKitGlobalPrivacyControl)) {
+    return false;
+  }
+  auto* profile = ProfileIOS::FromBrowserState(browser_state);
   if (!profile) {
     return false;
   }

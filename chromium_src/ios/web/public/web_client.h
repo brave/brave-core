@@ -34,7 +34,8 @@ class WebState;
                                            NSURLRequest* request);             \
   virtual bool ShouldBlockUniversalLinks(web::WebState* web_state,             \
                                          NSURLRequest* request);               \
-  virtual bool IsGlobalPrivacyControlEnabled(web::WebState* web_state);        \
+  virtual bool IsGlobalPrivacyControlEnabled(                                  \
+      web::BrowserState* browser_state);                                       \
   virtual void DidResetConfiguration(web::BrowserState* browser_state,         \
                                      WKWebViewConfiguration* configuration);   \
   virtual bool IsBrowserLockdownModeEnabled
