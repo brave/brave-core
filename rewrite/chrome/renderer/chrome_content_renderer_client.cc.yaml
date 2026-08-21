@@ -11,6 +11,13 @@ substitutions:
       replace: 'new content_settings::BraveContentSettingsAgentImpl('
 
   - description: |-
+      Prevents unnecessary js console logs spam.
+    regex:
+      pattern:
+        'new dom_distiller::DistillabilityAgent(render_frame, DCHECK_IS_ON())'
+      replace: 'new dom_distiller::DistillabilityAgent(render_frame, false)'
+
+  - description: |-
       Give ~ChromeContentRendererClient() a real body to preempt.
 
       It is `= default` upstream, and `preempt_function_impl` needs an actual
