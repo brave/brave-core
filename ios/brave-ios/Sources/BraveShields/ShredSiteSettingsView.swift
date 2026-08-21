@@ -1,9 +1,9 @@
-// Copyright 2023 The Brave Authors. All rights reserved.
+// Copyright 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveShields
+import BraveStrings
 import BraveUI
 import Data
 import Preferences
@@ -12,17 +12,17 @@ import SwiftUI
 import Web
 
 /// View for displaying site-specific Shred settings
-struct ShredSiteSettingsView: View {
-  @ObservedObject private var viewModel: ShieldsSettingsViewModel
+public struct ShredSiteSettingsView: View {
+  @ObservedObject private var viewModel: ShieldsPanelViewModel
   private let shredSiteDataNow: () -> Void
   @State private var showConfirmation = false
 
-  init(viewModel: ShieldsSettingsViewModel, shredSiteDataNow: @escaping () -> Void) {
+  public init(viewModel: ShieldsPanelViewModel, shredSiteDataNow: @escaping () -> Void) {
     self.viewModel = viewModel
     self.shredSiteDataNow = shredSiteDataNow
   }
 
-  var body: some View {
+  public var body: some View {
     Form {
       Section {
         FormPicker(selection: $viewModel.autoShredLevel) {
@@ -86,7 +86,7 @@ extension SiteShredLevel: Identifiable {
     return rawValue
   }
 
-  var localizedTitle: String {
+  public var localizedTitle: String {
     switch self {
     case .never:
       return Strings.Shields.shredNever
@@ -97,7 +97,7 @@ extension SiteShredLevel: Identifiable {
     }
   }
 
-  var localizedDescription: String {
+  public var localizedDescription: String {
     switch self {
     case .never:
       return Strings.Shields.shredNeverDescription
