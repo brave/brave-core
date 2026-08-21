@@ -3196,11 +3196,6 @@ extension BrowserViewController {
 }
 
 extension BrowserViewController {
-  private func openAIChatURL(_ url: URL) {
-    let forcedPrivate = self.privateBrowsingManager.isPrivateBrowsing
-    self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
-  }
-
   func openBraveLeo(with query: String? = nil) {
     if !AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs) {
       let alert = UIAlertController(
@@ -3226,48 +3221,27 @@ extension BrowserViewController {
       return
     }
 
-    if FeatureList.kAIChatWebUIEnabled.enabled {
-      if let query,
-        let conversationURL = AIChatUtils.openLeoURL(
-          withQuerySubmitted: query,
-          profile: profileController.profile
-        )
-      {
-        tabManager.addTabAndSelect(URLRequest(url: conversationURL), isPrivate: false)
-      } else {
-        let tab = tabManager.addTab(
-          URLRequest(url: .webUI.aiChat),
-          // Ensure we don't start loading the WebUI until we assign the selected tab
-          zombie: true,
-          isPrivate: false
-        )
-        if let selectedTab = tabManager.selectedTab, let url = selectedTab.lastCommittedURL,
-          url.isWebPage(includeDataURIs: false)
-        {
-          tab.aiChatWebUIHelper?.associatedTab = selectedTab
-        }
-        tabManager.selectTab(tab)
-      }
-      return
-    }
-
-    let webDelegate = (query == nil) ? tabManager.selectedTab?.leoTabHelper : nil
-
-    let model = AIChatViewModel(
-      braveCore: profileController,
-      webDelegate: webDelegate,
-      braveTalkScript: self.braveTalkJitsiCoordinator,
-      querySubmited: query
-    )
-
-    let chatController = UIHostingController(
-      rootView: AIChatView(
-        model: model,
-        speechRecognizer: speechRecognizer,
-        openURL: openAIChatURL
+    if let query,
+      let conversationURL = AIChatUtils.openLeoURL(
+        withQuerySubmitted: query,
+        profile: profileController.profile
       )
-    )
-    present(chatController, animated: true)
+    {
+      tabManager.addTabAndSelect(URLRequest(url: conversationURL), isPrivate: false)
+    } else {
+      let tab = tabManager.addTab(
+        URLRequest(url: .webUI.aiChat),
+        // Ensure we don't start loading the WebUI until we assign the selected tab
+        zombie: true,
+        isPrivate: false
+      )
+      if let selectedTab = tabManager.selectedTab, let url = selectedTab.lastCommittedURL,
+        url.isWebPage(includeDataURIs: false)
+      {
+        tab.aiChatWebUIHelper?.associatedTab = selectedTab
+      }
+      tabManager.selectTab(tab)
+    }
   }
 }
 
