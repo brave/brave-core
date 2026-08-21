@@ -219,6 +219,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE},
 #if BUILDFLAG(ENABLE_PSST)
       {"bravePsstToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_PSST_TOGGLE_TITLE},
+      {"bravePsstToggleSubLabel", IDS_SETTINGS_PSST_SUB_LABEL},
 #endif
       {"braveOriginWebDiscoveryProjectToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},

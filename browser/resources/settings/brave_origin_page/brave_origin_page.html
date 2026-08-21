@@ -205,11 +205,14 @@
   </if>
 
   <if expr="enable_psst">
-    <origin-toggle-button id="togglePsstButton"
-        policy-key="PsstEnabled"
-        label="$i18n{bravePsstToggleTitle}"
-        icon="psst">
-    </origin-toggle-button> 
+    <template is="dom-if" if="[[isPsstEnabled_]]">
+      <origin-toggle-button id="togglePsstButton"
+          policy-key="PsstEnabled"
+          label="$i18n{bravePsstToggleTitle}"
+          sub-label="$i18n{bravePsstToggleSubLabel}"
+          icon="psst">
+      </origin-toggle-button> 
+    </template>
   </if>
 
   <if expr="enable_web_discovery">
