@@ -6,13 +6,19 @@
 #include "brave/components/traffic_control/core/browser/traffic_control_service.h"
 
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/traffic_control/core/browser/pref_names.h"
+#include "brave/components/traffic_control/core/browser/prefs.h"
 #include "brave/components/traffic_control/core/browser/prefs_registration.h"
 #include "brave/components/traffic_control/core/common/features.h"
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace traffic_control {
 
@@ -34,6 +40,42 @@ TEST_F(TrafficControlServiceTest, EnabledPref) {
   EXPECT_FALSE(service_->IsEnabled());
   prefs_.SetBoolean(prefs::kTrafficControlEnabled, true);
   EXPECT_TRUE(service_->IsEnabled());
+}
+
+TEST_F(TrafficControlServiceTest, FindMatchingRuleRequiresEnabledPref) {
+  auto rule =
+      mojom::TrafficRule::New("r1", true, mojom::Condition::New("example.com"),
+                              mojom::Target::New(std::string("c1"), false));
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(std::move(rule));
+  SetRulesToPrefs(rules, prefs_);
+
+  EXPECT_FALSE(service_->FindMatchingRule(GURL("https://example.com/")));
+
+  prefs_.SetBoolean(prefs::kTrafficControlEnabled, true);
+  auto match = service_->FindMatchingRule(GURL("https://example.com/"));
+  ASSERT_TRUE(match);
+  EXPECT_EQ("r1", match->id);
+}
+
+TEST_F(TrafficControlServiceTest, PrefChangeRebuildsMatcher) {
+  prefs_.SetBoolean(prefs::kTrafficControlEnabled, true);
+
+  auto rule =
+      mojom::TrafficRule::New("r1", true, mojom::Condition::New("example.com"),
+                              mojom::Target::New(std::string("c1"), false));
+  std::vector<mojom::TrafficRulePtr> rules;
+  rules.push_back(std::move(rule));
+  SetRulesToPrefs(rules, prefs_);
+  EXPECT_TRUE(service_->FindMatchingRule(GURL("https://example.com/")));
+
+  rules.clear();
+  rules.push_back(
+      mojom::TrafficRule::New("r2", true, mojom::Condition::New("other.com"),
+                              mojom::Target::New(std::string("c2"), false)));
+  SetRulesToPrefs(rules, prefs_);
+  EXPECT_FALSE(service_->FindMatchingRule(GURL("https://example.com/")));
+  EXPECT_TRUE(service_->FindMatchingRule(GURL("https://other.com/")));
 }
 
 }  // namespace traffic_control

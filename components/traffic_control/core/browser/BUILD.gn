@@ -23,6 +23,8 @@ static_library("browser") {
     "rule_validation.h",
     "traffic_control_service.cc",
     "traffic_control_settings_handler.cc",
+    "traffic_rule_matcher.cc",
+    "traffic_rule_matcher.h",
   ]
 
   friend = [ ":unit_tests" ]
@@ -38,6 +40,7 @@ static_library("browser") {
     "//components/url_matcher",
     "//components/user_prefs",
     "//mojo/public/cpp/bindings",
+    "//url",
   ]
 }
 
@@ -48,6 +51,7 @@ source_set("unit_tests") {
     "rule_validation_unittest.cc",
     "traffic_control_service_unittest.cc",
     "traffic_control_settings_handler_unittest.cc",
+    "traffic_rule_matcher_unittest.cc",
   ]
 
   deps = [
@@ -58,5 +62,6 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//mojo/public/cpp/bindings",
     "//testing/gtest",
+    "//url",
   ]
 }
