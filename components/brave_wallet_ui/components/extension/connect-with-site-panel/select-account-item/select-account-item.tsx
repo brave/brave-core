@@ -43,7 +43,6 @@ import {
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworksQuery,
-  useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery,
 } from '../../../../common/slices/api.slice'
@@ -69,7 +68,6 @@ export const SelectAccountItem = (props: Props) => {
 
   // Queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: networks = [] } = useGetNetworksQuery()
   const { userVisibleFungibleTokens } = useGetUserTokensRegistryQuery(
     undefined,
@@ -85,17 +83,6 @@ export const SelectAccountItem = (props: Props) => {
   const orb = useAccountOrb(account)
 
   const tokenListByAccount = React.useMemo(() => {
-    if (
-      selectedNetwork?.coin
-      && selectedNetwork?.chainId
-      && SupportedTestNetworks.includes(selectedNetwork.chainId)
-    ) {
-      return userVisibleFungibleTokens.filter(
-        (token) =>
-          token.chainId === selectedNetwork.chainId
-          && token.coin === selectedNetwork.coin,
-      )
-    }
     const chainList = networks
       .filter(
         (network) =>
@@ -106,13 +93,7 @@ export const SelectAccountItem = (props: Props) => {
     return userVisibleFungibleTokens.filter((token) =>
       chainList.includes(token.chainId),
     )
-  }, [
-    userVisibleFungibleTokens,
-    networks,
-    account,
-    selectedNetwork?.coin,
-    selectedNetwork?.chainId,
-  ])
+  }, [userVisibleFungibleTokens, networks, account])
 
   const tokenPriceRequests = React.useMemo(
     () => getPriceRequestsForTokens(tokenListByAccount),

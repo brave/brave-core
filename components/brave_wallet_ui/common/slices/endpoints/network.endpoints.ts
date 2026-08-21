@@ -126,28 +126,6 @@ export const networkEndpoints = ({
       },
       invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
     }),
-    getSelectedChain: query<BraveWallet.NetworkInfo | null, void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const { data: api } = baseQuery(undefined)
-          const { network } = await api.braveWalletService //
-            .getNetworkForSelectedAccountOnActiveOrigin()
-          return {
-            data: network,
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            `Unable to fetch the currently selected chain`,
-            error,
-          )
-        }
-      },
-      providesTags: (res, err) =>
-        err
-          ? ['UNKNOWN_ERROR']
-          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
-    }),
     getNetworkForAccountOnActiveOrigin: query<
       BraveWallet.NetworkInfo | null,
       {
