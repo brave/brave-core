@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/ios/swift_framework.gni")
 import("//build/config/ios/rules.gni")
 
 nala_icons = [
@@ -268,35 +269,18 @@ action("make_symbols_asset_catalog") {
                        "//brave/node_modules/@brave/leo-sf-symbols/symbols")
 }
 
-nala_assets_public_headers = [ "public/nala_bundle.h" ]
-
-action("nala_assets_umbrella_header") {
-  script = "//build/config/ios/generate_umbrella_header.py"
-
-  full_header_path = target_gen_dir + "/NalaAssets.h"
-  outputs = [ full_header_path ]
-
-  args = [
-    "--output-path",
-    rebase_path(full_header_path, root_build_dir),
-  ]
-
-  args += rebase_path(nala_assets_public_headers, root_build_dir)
-}
-
 # Swift Package Manager cannot import a `.bundle` unfortunately so we have to
 # create a framework bundle instead
-ios_framework_bundle("nala_assets_framework") {
+ios_swift_framework_bundle("nala_assets_framework") {
   output_name = "NalaAssets"
   output_dir = root_out_dir
   info_plist = "Info.plist"
-  deps = [
-    ":nala_assets",
-    ":nala_assets_umbrella_header",
+  deps = [ ":nala_assets" ]
+  sources = [
+    "//brave/node_modules/@brave/leo/tokens/ios-swift/ColorSetAccessors.swift",
+    "//brave/node_modules/@brave/leo/tokens/ios-swift/Gradients.swift",
+    "nala_bundle.swift",
   ]
-  public_headers = get_target_outputs(":nala_assets_umbrella_header")
-  public_headers += nala_assets_public_headers
-  sources = [ "internal/nala_bundle.m" ] + nala_assets_public_headers
   frameworks = [ "Foundation.framework" ]
 }
 
