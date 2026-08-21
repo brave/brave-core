@@ -27,7 +27,10 @@ static_library("browser") {
     "traffic_rule_matcher.h",
   ]
 
-  friend = [ ":unit_tests" ]
+  friend = [
+    ":unit_tests",
+    "//brave/browser/traffic_control:browser_tests",
+  ]
 
   public_deps = [ "//brave/components/traffic_control/core/mojom" ]
 

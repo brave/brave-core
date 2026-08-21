@@ -1237,7 +1237,8 @@ void OpenUrlInContainer(BrowserWindowInterface* bwi,
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       bwi->GetProfile(), containers::kContainersStoragePartitionDomain,
       container->id, bwi->GetProfile()->IsOffTheRecord());
-
+  // Explicit container UI must not be overridden by Traffic Control rules.
+  params.preserve_container_destination = true;
   Navigate(&params);
 }
 
@@ -1270,6 +1271,8 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
+  // Explicit "open without container" must not be overridden by rules.
+  params.preserve_container_destination = true;
   Navigate(&params);
 }
 
