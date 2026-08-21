@@ -16,6 +16,13 @@ export interface SponsoredRichMediaBackgroundInfo {
   targetUrl: string
 }
 
+export interface SafeArea {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 interface StatusProps {
   richMediaHasLoaded: boolean
 }
@@ -24,6 +31,10 @@ interface Props extends StatusProps {
   sponsoredRichMediaBackgroundInfo: SponsoredRichMediaBackgroundInfo
   onEventReported: (name: BraveAds.NewTabPageAdEventType) => void
   onLoaded: () => void
+
+  // A rectangle that is empty of content and can be used to display
+  // interactive elements.
+  safeArea?: SafeArea
 }
 
 const iframeAllow = `
@@ -43,8 +54,9 @@ const iframeAllow = `
   usb 'none'
 `.trim().replace(/\n/g, '')
 
-const SponsoredRichMediaBackgroundIframe = styled('iframe') <StatusProps>`
-  opacity: ${p => p.richMediaHasLoaded ? 1 : 0};
+const SponsoredRichMediaBackgroundIframe =
+  styled('iframe') <{ $richMediaHasLoaded: boolean }>`
+  opacity: ${p => p.$richMediaHasLoaded ? 1 : 0};
   position: fixed;
   top: 0;
   left: 0;
@@ -82,14 +94,17 @@ function getEventType(event: MessageEvent): BraveAds.NewTabPageAdEventType | und
   return eventMap[event.data.value]
 }
 
+function getRichMediaOrigin(): string {
+  return new URL(loadTimeData.getString('ntpNewTabTakeoverRichMediaUrl')).origin
+}
+
 export function SponsoredRichMediaBackground(props: Props) {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
-  const { sponsoredRichMediaBackgroundInfo } = props
+  const { sponsoredRichMediaBackgroundInfo, safeArea } = props
 
   React.useEffect(() => {
     try {
-      const ntpNewTabTakeoverRichMediaUrlOrigin =
-        new URL(loadTimeData.getString('ntpNewTabTakeoverRichMediaUrl')).origin
+      const ntpNewTabTakeoverRichMediaUrlOrigin = getRichMediaOrigin()
 
       const listener = (event: MessageEvent) => {
         if (event.origin !== ntpNewTabTakeoverRichMediaUrlOrigin) {
@@ -121,10 +136,29 @@ export function SponsoredRichMediaBackground(props: Props) {
     }
   }, [props.onEventReported])
 
+  React.useEffect(() => {
+    if (!safeArea || !props.richMediaHasLoaded) {
+      return
+    }
+
+    const contentWindow = iframeRef.current?.contentWindow
+    if (!contentWindow) {
+      return
+    }
+
+    try {
+      contentWindow.postMessage(
+        { type: 'richMediaSafeRect', value: safeArea },
+        getRichMediaOrigin())
+    } catch (e) {
+      console.error('Error posting sponsored rich media safe area')
+    }
+  }, [safeArea, props.richMediaHasLoaded])
+
   return (
     <SponsoredRichMediaBackgroundIframe
       ref={iframeRef}
-      richMediaHasLoaded={props.richMediaHasLoaded}
+      $richMediaHasLoaded={props.richMediaHasLoaded}
       allow={iframeAllow}
       src={sponsoredRichMediaBackgroundInfo.url}
       sandbox='allow-scripts allow-same-origin'
