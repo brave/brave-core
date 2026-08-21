@@ -1,4 +1,4 @@
-//! Parsing functions and collections for handling with multiple filter rules.
+//! Parsing functions and collections for handling multiple filter rules.
 
 use std::convert::TryFrom;
 
@@ -410,7 +410,7 @@ impl Default for FilterFormat {
 pub enum FilterType {
     /// A network filter, used for changing the behavior of network requests
     Network,
-    /// A network filter, used for changing the behavior of fetched pages
+    /// A cosmetic filter, used for changing the behavior of fetched pages
     Cosmetic,
     /// Something else that isn't supported
     NotSupported,

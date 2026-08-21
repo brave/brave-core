@@ -8,9 +8,9 @@ use serde::{Deserialize, Serialize};
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 
+use adblock::Engine;
 use adblock::request::Request;
 use adblock::resources::Resource;
-use adblock::Engine;
 
 #[path = "../tests/test_utils.rs"]
 mod test_utils;
@@ -80,41 +80,49 @@ impl MemoryTracker {
 
 unsafe impl GlobalAlloc for MemoryTracker {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        let ret = self.internal.alloc(layout);
-        if !ret.is_null() && !self.frozen.load(Ordering::SeqCst) {
-            self.allocations_count.fetch_add(1, Ordering::SeqCst);
-            self.allocated.fetch_add(layout.size(), Ordering::SeqCst);
-            self.update_max_allocated(self.current_usage());
+        unsafe {
+            let ret = self.internal.alloc(layout);
+            if !ret.is_null() && !self.frozen.load(Ordering::SeqCst) {
+                self.allocations_count.fetch_add(1, Ordering::SeqCst);
+                self.allocated.fetch_add(layout.size(), Ordering::SeqCst);
+                self.update_max_allocated(self.current_usage());
+            }
+            ret
         }
-        ret
     }
 
     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-        self.internal.dealloc(ptr, layout);
-        if !self.frozen.load(Ordering::SeqCst) {
-            self.allocated.fetch_sub(layout.size(), Ordering::SeqCst);
+        unsafe {
+            self.internal.dealloc(ptr, layout);
+            if !self.frozen.load(Ordering::SeqCst) {
+                self.allocated.fetch_sub(layout.size(), Ordering::SeqCst);
+            }
         }
     }
 
     unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
-        let ret = self.internal.realloc(ptr, layout, new_size);
-        if !ret.is_null() && !self.frozen.load(Ordering::SeqCst) {
-            self.allocations_count.fetch_add(1, Ordering::SeqCst);
-            self.allocated.fetch_sub(layout.size(), Ordering::SeqCst);
-            self.allocated.fetch_add(new_size, Ordering::SeqCst);
-            self.update_max_allocated(self.current_usage());
+        unsafe {
+            let ret = self.internal.realloc(ptr, layout, new_size);
+            if !ret.is_null() && !self.frozen.load(Ordering::SeqCst) {
+                self.allocations_count.fetch_add(1, Ordering::SeqCst);
+                self.allocated.fetch_sub(layout.size(), Ordering::SeqCst);
+                self.allocated.fetch_add(new_size, Ordering::SeqCst);
+                self.update_max_allocated(self.current_usage());
+            }
+            ret
         }
-        ret
     }
 
     unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-        let ret = self.internal.alloc_zeroed(layout);
-        if !ret.is_null() && !self.frozen.load(Ordering::SeqCst) {
-            self.allocations_count.fetch_add(1, Ordering::SeqCst);
-            self.allocated.fetch_add(layout.size(), Ordering::SeqCst);
-            self.update_max_allocated(self.current_usage());
+        unsafe {
+            let ret = self.internal.alloc_zeroed(layout);
+            if !ret.is_null() && !self.frozen.load(Ordering::SeqCst) {
+                self.allocations_count.fetch_add(1, Ordering::SeqCst);
+                self.allocated.fetch_add(layout.size(), Ordering::SeqCst);
+                self.update_max_allocated(self.current_usage());
+            }
+            ret
         }
-        ret
     }
 }
 

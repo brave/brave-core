@@ -14,7 +14,7 @@ use crate::filters::network::NetworkFilterMaskHelper;
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapBuilder;
 use crate::flatbuffers::containers::flat_serialize::{FlatBuilder, FlatSerialize};
 use crate::optimizer;
-use crate::utils::{to_short_hash, Hash, ShortHash};
+use crate::utils::{Hash, ShortHash, to_short_hash};
 
 use super::flat::fb;
 
@@ -51,7 +51,8 @@ impl Default for NetworkFilterDebugData {
 }
 
 struct NetworkFilterListBuilder<'a, 'f> {
-    flat_map_builder: FlatMultiMapBuilder<ShortHash, NetworkFilterFlatEntry<'a>>,
+    filter_map_builder: FlatMultiMapBuilder<ShortHash, NetworkFilterFlatEntry<'a>>,
+    opt_domains_map_builder: FlatMultiMapBuilder<ShortHash, NetworkFilterFlatEntry<'a>>,
     token_frequencies: TokenSelector,
     filters_to_optimize: HashMap<ShortHash, Vec<NetworkFilter<'f>>>,
     tokens_buffer: TokensBuffer,
@@ -83,6 +84,26 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>>
         });
 
         let opt_not_domains = network_filter.opt_not_domains.as_ref().map(|v| {
+            let mut o: Vec<u32> = v
+                .iter()
+                .map(|x| builder.get_or_insert_unique_domain_hash(x))
+                .collect();
+            o.sort_unstable();
+            o.dedup();
+            FlatSerialize::serialize(o, builder)
+        });
+
+        let opt_to_domains = network_filter.opt_to_domains.as_ref().map(|v| {
+            let mut o: Vec<u32> = v
+                .iter()
+                .map(|x| builder.get_or_insert_unique_domain_hash(x))
+                .collect();
+            o.sort_unstable();
+            o.dedup();
+            FlatSerialize::serialize(o, builder)
+        });
+
+        let opt_not_to_domains = network_filter.opt_not_to_domains.as_ref().map(|v| {
             let mut o: Vec<u32> = v
                 .iter()
                 .map(|x| builder.get_or_insert_unique_domain_hash(x))
@@ -135,6 +156,8 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>>
                 modifier_option,
                 opt_domains,
                 opt_not_domains,
+                opt_to_domains,
+                opt_not_to_domains,
                 hostname,
                 tag,
                 raw_line,
@@ -148,7 +171,8 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>>
 impl<'a, 'f> NetworkFilterListBuilder<'a, 'f> {
     fn new(optimize: bool) -> Self {
         Self {
-            flat_map_builder: FlatMultiMapBuilder::with_capacity(1024),
+            filter_map_builder: FlatMultiMapBuilder::with_capacity(1024),
+            opt_domains_map_builder: FlatMultiMapBuilder::with_capacity(256),
             token_frequencies: TokenSelector::new(1024),
             filters_to_optimize: HashMap::new(),
             tokens_buffer: TokensBuffer::default(),
@@ -165,26 +189,6 @@ impl<'a, 'f> NetworkFilterListBuilder<'a, 'f> {
         let multi_tokens = network_filter.get_tokens(&mut self.tokens_buffer);
         let id = network_filter.get_id();
 
-        // Resolve token(s) and record frequencies up-front so the
-        // serialized/optimizable branches share no token logic.
-        let single_token: Hash;
-        let tokens: &[Hash] = match multi_tokens {
-            FilterTokens::Empty => {
-                // No tokens, add to fallback bucket (token 0)
-                &[0]
-            }
-            FilterTokens::OptDomains => {
-                // tokens_buffer has been populated by get_tokens
-                self.tokens_buffer.as_slice()
-            }
-            FilterTokens::Other => {
-                single_token = self
-                    .token_frequencies
-                    .select_least_used_token(self.tokens_buffer.as_slice());
-                std::slice::from_ref(&single_token)
-            }
-        };
-
         if !self.optimize
             || !optimizer::is_filter_optimizable_by_patterns(&network_filter)
             || multi_tokens != FilterTokens::Empty
@@ -192,20 +196,36 @@ impl<'a, 'f> NetworkFilterListBuilder<'a, 'f> {
             // Serialize now (even if it matches to a bad filter later);
             // Although store the id for later bad-filter pruning.
             let filter = FlatSerialize::serialize((network_filter, debug_data), builder);
-            for &token in tokens {
-                self.token_frequencies.record_usage(token);
-                self.flat_map_builder
-                    .insert(to_short_hash(token), NetworkFilterFlatEntry { filter, id });
+            match multi_tokens {
+                FilterTokens::Empty => {
+                    self.token_frequencies.record_usage(0);
+                    self.filter_map_builder
+                        .insert(0, NetworkFilterFlatEntry { filter, id });
+                }
+                FilterTokens::Other => {
+                    let token = self
+                        .token_frequencies
+                        .select_least_used_token(self.tokens_buffer.as_slice());
+                    self.token_frequencies.record_usage(token);
+                    self.filter_map_builder
+                        .insert(to_short_hash(token), NetworkFilterFlatEntry { filter, id });
+                }
+                FilterTokens::OptDomains => {
+                    for token in &self.tokens_buffer {
+                        self.opt_domains_map_builder
+                            .insert(to_short_hash(*token), NetworkFilterFlatEntry { filter, id });
+                    }
+                }
             }
         } else {
-            // Defer serialization to the optimizer
-            for &token in tokens {
-                self.token_frequencies.record_usage(token);
-                self.filters_to_optimize
-                    .entry(to_short_hash(token))
-                    .or_default()
-                    .push(network_filter.clone());
-            }
+            // Defer serialization to the optimizer (pattern map only).
+            assert_eq!(multi_tokens, FilterTokens::Empty);
+
+            self.token_frequencies.record_usage(0);
+            self.filters_to_optimize
+                .entry(0)
+                .or_default()
+                .push(network_filter.clone());
         }
     }
 }
@@ -234,6 +254,12 @@ impl<'a, 'f> NetworkRulesBuilder<'a, 'f> {
         if filter.is_badfilter() {
             // Note: `get_id()` doesn't include BAD_FILTER bit.
             self.bad_filter_ids.insert(filter.get_id());
+            return;
+        }
+
+        // For now, filters with $to options are parsed but ignored
+        // to preserve existing matching behavior.
+        if filter.has_to_option() {
             return;
         }
 
@@ -315,7 +341,7 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkRulesBuilder<'a
                         let filter =
                             FlatSerialize::serialize((filter, Default::default()), builder);
                         rule_list
-                            .flat_map_builder
+                            .filter_map_builder
                             .insert(token, NetworkFilterFlatEntry { filter, id });
                     }
                 }
@@ -323,16 +349,24 @@ impl<'a, 'f> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkRulesBuilder<'a
 
             // Prune already-serialized entries that were cancelled by a $badfilter.
             rule_list
-                .flat_map_builder
+                .filter_map_builder
+                .retain_by_value(|entry| !value.bad_filter_ids.contains(&entry.id));
+            rule_list
+                .opt_domains_map_builder
                 .retain_by_value(|entry| !value.bad_filter_ids.contains(&entry.id));
 
-            let flat_filter_map = FlatMultiMapBuilder::finish(rule_list.flat_map_builder, builder);
+            let flat_filter_map =
+                FlatMultiMapBuilder::finish(rule_list.filter_map_builder, builder);
+            let flat_opt_domains_map =
+                FlatMultiMapBuilder::finish(rule_list.opt_domains_map_builder, builder);
 
             serialized_lists.push(fb::NetworkFilterList::create(
                 builder.raw_builder(),
                 &fb::NetworkFilterListArgs {
                     filter_map_index: Some(flat_filter_map.keys),
                     filter_map_values: Some(flat_filter_map.values),
+                    opt_domains_map_index: Some(flat_opt_domains_map.keys),
+                    opt_domains_map_values: Some(flat_opt_domains_map.values),
                 },
             ));
         }

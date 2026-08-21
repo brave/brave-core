@@ -5,8 +5,8 @@
 use crate::filters::network::{NetworkFilterMask, NetworkFilterMaskHelper};
 
 use regex::{
-    bytes::Regex as BytesRegex, bytes::RegexBuilder as BytesRegexBuilder,
-    bytes::RegexSet as BytesRegexSet, bytes::RegexSetBuilder as BytesRegexSetBuilder, Regex,
+    Regex, bytes::Regex as BytesRegex, bytes::RegexBuilder as BytesRegexBuilder,
+    bytes::RegexSet as BytesRegexSet, bytes::RegexSetBuilder as BytesRegexSetBuilder,
 };
 use std::sync::LazyLock;
 

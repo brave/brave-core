@@ -1,5 +1,5 @@
-use adblock::lists::FilterSet;
 use adblock::Engine;
+use adblock::lists::FilterSet;
 use criterion::*;
 
 #[path = "../tests/test_utils.rs"]

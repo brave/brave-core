@@ -1,6 +1,6 @@
 //! Token selector for optimizing filter storage by choosing least-used tokens
 
-use crate::utils::{to_short_hash, Hash, ShortHash};
+use crate::utils::{Hash, ShortHash, to_short_hash};
 use std::collections::HashMap;
 use std::hash::BuildHasherDefault;
 

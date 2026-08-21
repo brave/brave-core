@@ -61,12 +61,12 @@ cargo_crate("lib") {
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2021"
+  edition = "2024"
   cargo_pkg_authors = "Anton Lazarev <alazarev@brave.com>, Andrius Aucinas"
   cargo_pkg_name = "adblock"
   cargo_pkg_description = "Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching."
   cargo_pkg_repository = "https://github.com/brave/adblock-rust/"
-  cargo_pkg_version = "0.13.0"
+  cargo_pkg_version = "0.13.3"
 
   allow_unsafe = true
 
@@ -82,7 +82,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/percent_encoding/v2:lib",
     "//brave/third_party/rust/precomputed_hash/v0_1:lib",
     "//brave/third_party/rust/regex/v1:lib",
-    "//brave/third_party/rust/rustc_hash/v1:lib",
+    "//brave/third_party/rust/rustc_hash/v2:lib",
     "//brave/third_party/rust/seahash/v4:lib",
     "//brave/third_party/rust/selectors/v0_32:lib",
     "//brave/third_party/rust/serde/v1:lib",

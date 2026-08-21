@@ -14,7 +14,7 @@ use crate::flatbuffers::containers::hash_map::HashMapBuilder;
 use crate::flatbuffers::containers::hash_set::HashSetBuilder;
 
 use crate::flatbuffers::containers::flat_serialize::{
-    serialize_vec_opt, FlatBuilder, FlatSerialize,
+    FlatBuilder, FlatSerialize, serialize_vec_opt,
 };
 
 use crate::utils::Hash;
