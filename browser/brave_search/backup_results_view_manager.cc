@@ -16,7 +16,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/jni_android.h"
 #include "base/android/scoped_java_ref.h"
-#include "brave/android/java/org/chromium/chrome/browser/brave_search/jni_headers/BackupResultsWindowFactory_jni.h"
+#include "brave/build/android/jni_headers/BackupResultsWindowFactory_jni.h"
 #include "ui/android/view_android.h"
 #include "ui/android/window_android.h"
 #elif defined(USE_AURA)
@@ -45,7 +45,7 @@ gfx::Size GetViewSize(PrefService* local_state) {
       stored_height > 0 ? stored_height : base::RandIntInclusive(600, 1080));
 }
 
-#if defined(USE_AURA)
+#if BUILDFLAG(IS_MAC) || defined(USE_AURA)
 gfx::Rect GetWindowBounds(PrefService* local_state,
                           const gfx::Size& view_size) {
   // A zero-sized view must not be paired with a non-zero window.
@@ -70,6 +70,9 @@ BackupResultsViewManager::BackupResultsViewManager(
     PrefService* local_state,
     content::WebContents* web_contents) {
   const gfx::Size view_size = GetViewSize(local_state);
+#if BUILDFLAG(IS_MAC) || defined(USE_AURA)
+  const gfx::Rect window_bounds = GetWindowBounds(local_state, view_size);
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
   auto* native_view = web_contents->GetNativeView();
@@ -82,9 +85,10 @@ BackupResultsViewManager::BackupResultsViewManager(
   const float dip_scale = native_view->GetDipScale();
   native_view->OnSizeChanged(static_cast<int>(view_size.width() * dip_scale),
                              static_cast<int>(view_size.height() * dip_scale));
+#elif BUILDFLAG(IS_MAC)
+  window_ =
+      BackupResultsWindowMac::Create(web_contents, window_bounds, view_size);
 #elif defined(USE_AURA)
-  const gfx::Rect window_bounds = GetWindowBounds(local_state, view_size);
-
   window_ =
       std::make_unique<aura::Window>(this, aura::client::WINDOW_TYPE_CONTROL);
   window_->Init(ui::LAYER_NOT_DRAWN);
