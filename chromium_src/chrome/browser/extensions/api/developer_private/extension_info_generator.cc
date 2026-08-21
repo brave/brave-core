@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/extensions/api/developer_private.h"
+#include "extensions/browser/extensions_browser_client.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_features.h"
 #include "extensions/common/manifest_handlers/incognito_info.h"
@@ -30,10 +30,9 @@ void ProcessKnownMV2Extensions(
 
 #define BRAVE_CREATE_EXTENSION_INFO_HELPER                                  \
   info.is_split_mode = IncognitoInfo::IsSplitMode(&extension);              \
-  if (auto* brave_malware_blocklist = extension_malware_blocklist::         \
-          ExtensionMalwareBlocklist::GetInstance();                         \
-      info.blocklist_text.has_value() && brave_malware_blocklist &&         \
-      brave_malware_blocklist->IsMalware(extension.id())) {                 \
+  if (info.blocklist_text.has_value() &&                                    \
+      ExtensionsBrowserClient::Get()->IsOnBraveMalwareExtensionList(        \
+          extension.id())) {                                                \
     info.blocklist_text =                                                   \
         l10n_util::GetStringUTF8(IDS_BRAVE_EXTENSIONS_BLOCKLISTED_MALWARE); \
   }
