@@ -83,4 +83,4 @@ substitutions:
       re_pattern:
         '("<\(SHARED_INTERMEDIATE_DIR\)/ui/webui/resources/webui_resources\.grd":
         \{\n    "META": \{"sizes": \{"includes": \[)1100(\]\}\},)'
-      replace: '\g<1>1373\g<2>'
+      replace: '\g<1>1379\g<2>'
