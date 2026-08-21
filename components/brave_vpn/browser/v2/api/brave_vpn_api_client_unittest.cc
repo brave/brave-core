@@ -395,9 +395,9 @@ TEST_P(BraveVpnApiClientGetProfileCredentialsTest, MapsResponseToResult) {
   MockResponseFor<endpoints::GetProfileCredentials>(
       url_loader_factory_, test_case.response, url_replacements);
   EXPECT_EQ(CallClientApi(&BraveVpnApiClient::GetProfileCredentials,
-                          kTestSubscriberCredential,
-                          endpoints::TransportProtocol::kIKEv2, kTestPublicKey,
-                          kTestMultihopExitRegion, kTestHostname),
+                          kTestHostname, kTestSubscriberCredential,
+                          endpoints::TransportProtocol::kWireguard,
+                          kTestPublicKey, kTestMultihopExitRegion),
             test_case.expected);
 }
 

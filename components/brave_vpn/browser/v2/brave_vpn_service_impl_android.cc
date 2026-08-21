@@ -64,9 +64,9 @@ void BraveVpnServiceImpl::GetIKEv2ProfileCredentials(
     return;
   }
   api_client_->GetProfileCredentials(
-      base::BindOnce(&RunResponseCallback, std::move(callback)),
-      subscriber_credential, endpoints::TransportProtocol::kIKEv2, {}, {},
-      hostname);
+      base::BindOnce(&RunResponseCallback, std::move(callback)), hostname,
+      subscriber_credential, endpoints::TransportProtocol::kIKEv2, std::nullopt,
+      std::nullopt);
 }
 
 void BraveVpnServiceImpl::GetWireguardProfileCredentials(
@@ -79,9 +79,9 @@ void BraveVpnServiceImpl::GetWireguardProfileCredentials(
     return;
   }
   api_client_->GetProfileCredentials(
-      base::BindOnce(&RunResponseCallback, std::move(callback)),
+      base::BindOnce(&RunResponseCallback, std::move(callback)), hostname,
       subscriber_credential, endpoints::TransportProtocol::kWireguard,
-      public_key, {}, hostname);
+      public_key, std::nullopt);
 }
 
 void BraveVpnServiceImpl::VerifyCredentials(

@@ -271,15 +271,20 @@ void BraveVpnApiClient::GetHostnamesForRegion(
 
 void BraveVpnApiClient::GetProfileCredentials(
     RawJsonCallback callback,
+    const std::string& hostname,
     const std::string& subscriber_credential,
     endpoints::TransportProtocol transport_protocol,
-    const std::string& public_key,
-    const std::string& multihop_exit_region,
-    const std::string& hostname) {
+    const std::optional<std::string>& public_key,
+    const std::optional<std::string>& multihop_exit_region) {
+  CHECK_EQ(public_key.has_value(),
+           transport_protocol == endpoints::TransportProtocol::kWireguard)
+      << "public key must be set if and only if transport protocol is "
+         "WireGuard";
+
   auto request = MakeRequest<GetProfileCredentials::Request>();
   request.body.subscriber_credential = subscriber_credential;
   request.body.transport_protocol = transport_protocol;
-  request.body.public_key = public_key;
+  request.body.public_key = public_key.value_or("");
   request.body.multihop_exit_region = multihop_exit_region;
   request.url_replacements.SetHost(hostname);
 
@@ -298,7 +303,7 @@ void BraveVpnApiClient::VerifyCredentials(RawJsonCallback callback,
   request.url_replacements.SetHost(hostname);
   request.url_replacements.SetPath(
       base::StrCat({VerifyCredentials::URL().path(), "/", client_id, "/",
-                    endpoints::kVerifyCredentialsSuffix}));
+                    endpoints::kDeviceApiVerifyCredentialsSuffix}));
 
   Client<endpoints::VerifyCredentials>::Send(
       url_loader_factory_, std::move(request),
@@ -318,7 +323,7 @@ void BraveVpnApiClient::InvalidateCredentials(
   request.url_replacements.SetHost(hostname);
   request.url_replacements.SetPath(
       base::StrCat({InvalidateCredentials::URL().path(), "/", client_id, "/",
-                    endpoints::kInvalidateCredentialsSuffix}));
+                    endpoints::kDeviceApiInvalidateCredentialsSuffix}));
 
   Client<endpoints::InvalidateCredentials>::Send(
       url_loader_factory_, std::move(request),

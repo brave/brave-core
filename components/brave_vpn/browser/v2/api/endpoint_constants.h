@@ -24,12 +24,17 @@ inline constexpr char kTimezonesForRegionsApi[] =
     "api/v1.1/servers/timezones-for-regions";
 inline constexpr char kHostnamesForRegionApi[] =
     "api/v1.3/servers/hostnames-for-region";
+
+// "Device" is Guardian's term for a VPN credential/connection instance, not a
+// physical device - interchangeable with "client" in Guardian's own docs. These
+// two constants along with suffixes cover registering, verifying, and
+// invalidating those credentials.
 inline constexpr char kDeviceCredentialsApi[] = "api/v1.4/device-credentials";
 inline constexpr char kDeviceApi[] = "api/v1.4/device";
-
-// Device API suffixes.
-inline constexpr char kVerifyCredentialsSuffix[] = "verify-credentials";
-inline constexpr char kInvalidateCredentialsSuffix[] = "invalidate-credentials";
+inline constexpr char kDeviceApiVerifyCredentialsSuffix[] =
+    "verify-credentials";
+inline constexpr char kDeviceApiInvalidateCredentialsSuffix[] =
+    "invalidate-credentials";
 
 // Endpoint request JSON keys that can be shared between multiple APIs.
 inline constexpr char kProductTypeKey[] = "product-type";

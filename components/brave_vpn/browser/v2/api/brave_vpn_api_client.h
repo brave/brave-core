@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_API_BRAVE_VPN_API_CLIENT_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_API_BRAVE_VPN_API_CLIENT_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
@@ -111,11 +112,11 @@ class BraveVpnApiClient {
   // protocol. Returns the server's JSON response verbatim.
   virtual void GetProfileCredentials(
       RawJsonCallback callback,
+      const std::string& hostname,
       const std::string& subscriber_credential,
       endpoints::TransportProtocol transport_protocol,
-      const std::string& public_key,
-      const std::string& multihop_exit_region,
-      const std::string& hostname);
+      const std::optional<std::string>& public_key,
+      const std::optional<std::string>& multihop_exit_region);
 
   // SGW API: VerifyCredentials.
   // Confirms the credential has not been invalidated. Per Guardian, any non-2xx

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_API_DEVICE_ENDPOINTS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_API_DEVICE_ENDPOINTS_H_
 
+#include <optional>
 #include <string>
 
 #include "base/strings/strcat.h"
@@ -35,12 +36,12 @@ inline constexpr char kHeaderGrdApiAuthToken[] = "grd-api-auth-token";
 
 // GetProfileCredentials API registers VPN credentials with an SGW node.
 // |public_key| is only required and sent for WireGuard protocol.
-// |multihop_exit_region| is optional and omitted when empty.
+// |multihop_exit_region| is optional and omitted when not set.
 struct GetProfileCredentialsRequestBody {
   std::string subscriber_credential;
   TransportProtocol transport_protocol = TransportProtocol::kIKEv2;
   std::string public_key;
-  std::string multihop_exit_region;
+  std::optional<std::string> multihop_exit_region;
 
   base::DictValue ToValue() const {
     base::DictValue dict;
@@ -50,8 +51,8 @@ struct GetProfileCredentialsRequestBody {
     if (transport_protocol == TransportProtocol::kWireguard) {
       dict.Set(kPublicKeyKey, public_key);
     }
-    if (!multihop_exit_region.empty()) {
-      dict.Set(kMultihopExitRegionKey, multihop_exit_region);
+    if (multihop_exit_region.has_value()) {
+      dict.Set(kMultihopExitRegionKey, multihop_exit_region.value());
     }
     return dict;
   }
