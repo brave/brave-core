@@ -352,9 +352,16 @@ class PatchinfoBuilder:
         # We pin the attibutes when creating a diff (`plaster_gitattributes`),
         # and ignore the system gitattributes (`GIT_ATTR_NOSYSTEM`), so the
         # output is deterministic across platforms and git versions.
+        #
+        # We also pin the diff algorithm, since a user's `.gitconfig` may
+        # select a different one (e.g. `histogram`) than git's own default,
+        # which would produce different hunks for the same change and fail
+        # presubmit in CI.
         content = repository.chromium.run_git(
             '-c',
             f'core.attributesFile={PLASTER_GITATTRIBUTES_PATH}',
+            '-c',
+            'diff.algorithm=histogram',
             'diff',
             '--src-prefix=a/',
             '--dst-prefix=b/',

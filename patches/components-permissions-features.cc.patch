@@ -17,9 +17,9 @@ index f4a1fa6a33d44e215332c39073940efc367036fa..eb857746488ae669720713f193d577b2
  // user has not yet taken an action. Therefore, that parameter is ignored in
  // that case.
 +#if !BUILDFLAG(IS_ANDROID)
-+BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
-+#else
  BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
++#else
++BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
 +#endif
  
  // When enabled, use the value of the `allowlist_urls` FeatureParam as the

@@ -5,17 +5,29 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
+import rootDir from './rootDir.cjs'
 import util from './util.js'
 
 const desiredReplacementSeparator = '-'
 const patchExtension = '.patch'
+
+// A shared git attributes file used by plaster to make the patch output
+// reproducible across machines.
+const PLASTER_GITATTRIBUTES_PATH = path.join(
+  rootDir,
+  'src',
+  'brave',
+  'tools',
+  'cr',
+  'plaster_gitattributes',
+)
 
 /**
  * Gets a list of modified files in a git repo
  * @param {string} gitRepoPath The repository to get modified files from
  * @param {(file: string) => boolean} [filter] Filter function for file paths to include or exclude (all included by default)
  * @param {string[]} [onlyFiles] If not empty, only modified paths for these files will be considered.
- * @returns {Promise<string[]>} List of modified file paths
+ * @returns {Promise<{paths: string[], binaryPaths: Set<string>}>}
  */
 async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
   const onlyFilesSet = new Set(onlyFiles)
@@ -23,18 +35,30 @@ async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
     'diff',
     '--ignore-submodules',
     '--diff-filter=M',
-    '--name-only',
+    '--numstat',
     '--ignore-space-at-eol',
   ]
   const cmdOutput = await util.runAsync('git', modifiedDiffArgs, {
     cwd: gitRepoPath,
     verbose: false,
   })
-  return cmdOutput
+  // `--numstat` has two formats: "-\t-\t<path>" for a binary file, and
+  // "<added>\t<removed>\t<path>" otherwise. We store the binary paths in its
+  // own set, so we skip them for output reproducibility.
+  const binaryPaths = new Set()
+  const paths = cmdOutput
     .split('\n')
     .filter((s) => s)
+    .map((line) => {
+      const [added, removed, filePath] = line.split('\t')
+      if (added === '-' && removed === '-') {
+        binaryPaths.add(filePath)
+      }
+      return filePath
+    })
     .filter((s) => (onlyFilesSet.size ? onlyFilesSet.has(s) : true))
     .filter(filter ?? (() => true))
+  return { paths, binaryPaths }
 }
 
 /**
@@ -49,6 +73,9 @@ async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
  * @param {string} patchDirPath Directory to write .patch files to
  * @param {(file: string) => boolean} [plasterPathFilter] Returns true if a repo
  *   path's patch is owned by a plaster file
+ * @param {Set<string>} [binaryPaths] Repo-relative paths, that are binary
+ * files, which we do not want to use the plaster attributes for
+ * reproducibility.
  * @returns {Promise<{patchFilenames: string[], outdatedPlasterPaths: string[]}>}
  *   `outdatedPlasterPaths` lists the repo-relative paths of plaster-managed
  *   sources whose patch is different.
@@ -58,6 +85,7 @@ async function writePatchFiles(
   gitRepoPath,
   patchDirPath,
   plasterPathFilter,
+  binaryPaths = new Set(),
 ) {
   // replacing forward slashes and adding the patch extension to get nice filenames
   // since git on Windows doesn't use backslashes, this is sufficient
@@ -92,7 +120,16 @@ async function writePatchFiles(
     const patchFilePath = path.join(patchDirPath, patchFilename)
     const isPlasterManaged = plasterPathFilter?.(old) ?? false
 
+    // Pinning the diff algorithm so we get the same output across machines.
+    const gitConfigArgs = ['-c', 'diff.algorithm=histogram']
+    if (!binaryPaths.has(old)) {
+      gitConfigArgs.push(
+        '-c',
+        `core.attributesFile=${PLASTER_GITATTRIBUTES_PATH}`,
+      )
+    }
     const singleDiffArgs = [
+      ...gitConfigArgs,
       'diff',
       '--src-prefix=a/',
       '--dst-prefix=b/',
@@ -104,6 +141,7 @@ async function writePatchFiles(
     const patchContents = await util.runAsync('git', singleDiffArgs, {
       cwd: gitRepoPath,
       verbose: false,
+      env: { ...process.env, GIT_ATTR_NOSYSTEM: '1' },
     })
 
     if (isPlasterManaged) {
@@ -207,7 +245,7 @@ async function updatePatches(
   keepPatchFilenames = [],
   plasterPathFilter,
 ) {
-  const modifiedPaths = await getModifiedPaths(
+  const { paths: modifiedPaths, binaryPaths } = await getModifiedPaths(
     gitRepoPath,
     repoPathFilter,
     onlyFiles,
@@ -217,6 +255,7 @@ async function updatePatches(
     gitRepoPath,
     patchDirPath,
     plasterPathFilter,
+    binaryPaths,
   )
   // We only remove stale patch files if we're updating everything.
   if (onlyFiles && onlyFiles.length === 0) {
