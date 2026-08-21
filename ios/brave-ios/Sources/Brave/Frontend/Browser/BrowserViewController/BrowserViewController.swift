@@ -679,7 +679,7 @@ public class BrowserViewController: UIViewController {
   }
 
   @available(iOS 26.0, *)
-  private func updateWebViewObscuredInsets() {
+  func updateWebViewObscuredInsets() {
     guard let webViewProxy = tabManager.selectedTab?.webViewProxy else { return }
 
     collapsedURLBarView.layoutIfNeeded()
