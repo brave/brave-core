@@ -70,6 +70,14 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     uint64_t amount,
     ZCashTargetOutputType output_type);
 
+base::CheckedNumeric<uint64_t> CalculateZCashOrchardToIronwoodTxFee(
+    const base::StrictNumeric<uint32_t> orchard_input_count,
+    const base::StrictNumeric<uint32_t> ironwood_output_count);
+
+std::optional<PickOrchardInputsResult> PickZCashOrchardToIronwoodInputs(
+    const std::vector<OrchardNote>& notes,
+    uint64_t amount);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TRANSACTION_UTILS_H_
