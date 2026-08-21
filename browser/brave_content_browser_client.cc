@@ -250,6 +250,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 #if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/browser/traffic_control/traffic_control_navigation_throttle.h"
+#include "brave/browser/traffic_control/traffic_control_service_factory.h"
 #include "brave/components/traffic_control/core/common/features.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #endif
@@ -1468,6 +1470,15 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   debounce::DebounceNavigationThrottle::MaybeCreateAndAdd(
       registry,
       debounce::DebounceServiceFactory::GetForBrowserContext(context));
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  if (base::FeatureList::IsEnabled(
+          traffic_control::features::kTrafficControl)) {
+    traffic_control::TrafficControlNavigationThrottle::MaybeCreateAndAdd(
+        registry, TrafficControlServiceFactory::GetForProfile(
+                      Profile::FromBrowserContext(context)));
+  }
+#endif
 
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
