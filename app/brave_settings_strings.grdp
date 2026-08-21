@@ -328,6 +328,12 @@
   <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS" desc="The label for New Tab Page shows customization">
     New tab page shows
   </message>
+  <message name="IDS_SETTINGS_NEW_TAB_PRIVATE_WINDOW_SEARCH_BOX" desc="The label for the toggle that shows or hides the search box on the private and Tor new tab page">
+    Show search box on the private window new tab page
+  </message>
+  <message name="IDS_SETTINGS_NEW_TAB_PRIVATE_WINDOW_SEARCH_BOX_DESC" desc="The description for the toggle that shows or hides the search box on the private and Tor new tab page">
+    Display the Brave Search box on the new tab page in private and Tor windows
+  </message>
   <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_PAGE_SHOWS_DASHBOARD" desc="The label for dashboard option">
     Dashboard
   </message>

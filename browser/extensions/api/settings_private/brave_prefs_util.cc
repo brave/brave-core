@@ -9,6 +9,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -221,6 +222,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowsOptions] =
       settings_api::PrefType::kNumber;
+#if !BUILDFLAG(IS_ANDROID)
+  (*s_brave_allowlist)
+      [brave_private_new_tab::prefs::kBraveShowSearchBoxOnPrivateNewTab] =
+          settings_api::PrefType::kBoolean;
+#endif
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   // Web discovery prefs
   (*s_brave_allowlist)[kWebDiscoveryEnabled] = settings_api::PrefType::kBoolean;
