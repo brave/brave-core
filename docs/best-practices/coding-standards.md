@@ -664,7 +664,12 @@ void RewardsService::SavePendingContribution(...) {
 
 **When a method's implementation is completely different on a platform, split it
 into a separate file** like `my_class_android.cc` rather than filling the main
-file with `#if defined(OS_ANDROID)` blocks.
+file with `#if BUILDFLAG(IS_ANDROID)` blocks.
+
+**Always use the `build/build_config.h` macros (`BUILDFLAG(IS_ANDROID)`,
+`BUILDFLAG(IS_WIN)`, etc.) for platform checks — never raw compiler macros**
+(`defined(OS_ANDROID)`, `WIN32`, `__APPLE__`). See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ---
 
@@ -677,7 +682,7 @@ feature-dependent, not platform-dependent.**
 
 ```cpp
 // ❌ WRONG - platform check for feature behavior
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Don't show notifications
 #endif
 
