@@ -642,6 +642,7 @@
 -AppMenuBrowserTest.InvokeUi_main_profile_signed_in
 -AppMenuModelBookmarkLimitExceededSignedInNonSyncingTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_SignedInNonSyncing
 -AppMenuModelBookmarkLimitExceededSyncingTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_Syncing
+-AppMenuModelTest.ProfileSyncOnTest
 -AuthenticatorDialogTest.InvokeUi*
 -AvatarToolbarButtonGradientRingBrowserTest.*
 -AvatarToolbarButtonPasskeyUnlockErrorBrowserTest.*
@@ -2508,6 +2509,14 @@
 # Theis test fails because the three dots menu icon in Brave is replaced with
 # hamburger icon (kBrowserToolsChromeRefreshOldIcon vs kLeoMoreVerticalIcon)
 -ExtensionsMenuMainPageViewBrowserTest.PinnedExtensions
+
+# These tests are disabled because we don't show the default browser prompt item
+# in the Hamburger menu
+-AppMenuModelTest.DefaultBrowserPrompt
+
+# This test fails because we insert our own bookmarks submenu into the app menu
+# model
+-AppMenuModelTest.ModelHasIcons
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*

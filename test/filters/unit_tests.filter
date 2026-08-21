@@ -305,7 +305,6 @@
 -ActorTaskListBubbleTest.*
 -All/DiceResponseHandlerParamTest.Signin*/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
--AppMenuModelTest.ProfileSyncOnTest
 -AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
@@ -441,10 +440,6 @@
 # These tests are flaky both for us and upstream.
 # https://github.com/brave/brave-browser/issues/56768
 -FullStreamUIPolicyTest.*
-
-# This test fails because we insert our own bookmarks submenu into the app menu
-# model
--AppMenuModelTest.ModelHasIcons
 
 # This test fails because we use our own preferences for showing the bookmarks
 # bar
@@ -595,7 +590,6 @@
 
 # These tests are disabled because we don't show the default browser prompt item
 # in the Hamburger menu
--AppMenuModelTest.DefaultBrowserPrompt
 -DefaultBrowserPromptManagerTest.AppMenuItemHiddenOnPromptAccept
 -DefaultBrowserPromptManagerTest.AppMenuItemPersistsOnPromptDismissed
 -DefaultBrowserPromptManagerTest.ShowsAppMenuItem
