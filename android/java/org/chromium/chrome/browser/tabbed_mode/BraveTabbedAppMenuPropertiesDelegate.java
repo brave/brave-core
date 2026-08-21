@@ -453,50 +453,33 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             Integer itemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
             if (itemId == null) continue;
 
-            if (itemId == R.id.new_tab_menu_id) {
+            if (itemId == R.id.all_bookmarks_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
                         AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.ic_window_tab_new));
-            } else if (itemId == R.id.new_incognito_tab_menu_id) {
-                item.model.set(
-                        AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.brave_menu_new_private_tab));
-            } else if (itemId == R.id.new_tab_group_menu_id
-                    || itemId == R.id.add_to_group_menu_id) {
-                item.model.set(
-                        AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mBraveContext, R.drawable.browser_group));
-            } else if (itemId == R.id.all_bookmarks_menu_id) {
-                item.model.set(
-                        AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.brave_menu_bookmarks));
+                                mBraveContext, R.drawable.ic_product_bookmarks));
             } else if (itemId == R.id.recent_tabs_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
                         AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.brave_menu_recent_tabs));
+                                mBraveContext, R.drawable.ic_browser_mobile_tabs));
             } else if (itemId == R.id.open_history_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.brave_menu_history));
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_history));
             } else if (itemId == R.id.downloads_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.brave_menu_downloads));
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_download));
             } else if (itemId == R.id.preferences_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(
-                                mBraveContext, R.drawable.brave_menu_settings));
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_settings));
             } else if (itemId == R.id.download_page_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_download));
+                        AppCompatResources.getDrawable(
+                                mBraveContext, R.drawable.ic_arrow_circle_down));
             }
         }
     }
@@ -1120,7 +1103,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         mAppMenuItemTheme,
                         R.id.set_default_browser,
                         R.string.menu_set_default_browser,
-                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_set_as_default : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_set_as_default : 0,
                         isMenuIconAtStart()));
     }
 
@@ -1147,7 +1130,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         mAppMenuItemTheme,
                         R.id.exit_id,
                         R.string.menu_exit,
-                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_exit : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_outside : 0,
                         isMenuIconAtStart()));
     }
 
@@ -1159,7 +1142,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         mAppMenuItemTheme,
                         R.id.brave_rewards_id,
                         R.string.menu_brave_rewards,
-                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_rewards : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_bat_outline : 0,
                         isMenuIconAtStart()));
     }
 
@@ -1183,7 +1166,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         mAppMenuItemTheme,
                         R.id.brave_playlist_id,
                         R.string.brave_playlist,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_open_playlist : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_playlist : 0,
                         isMenuIconAtStart()));
     }
 
@@ -1195,7 +1178,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         mAppMenuItemTheme,
                         R.id.add_to_playlist_id,
                         R.string.playlist_add_to_playlist,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_baseline_add_24 : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_playlist_add : 0,
                         isMenuIconAtStart()));
     }
 
@@ -1231,7 +1214,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         mAppMenuItemTheme,
                         R.id.brave_shred_id,
                         R.string.brave_menu_shred_text,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_brave_shred : 0,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_shred_data : 0,
                         isMenuIconAtStart()));
     }
 
@@ -1292,7 +1275,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         R.id.info_menu_id,
                         R.string.share,
                         R.string.share,
-                        R.drawable.share_icon);
+                        R.drawable.ic_share_white_24dp);
         shareButton.set(
                 AppMenuItemProperties.ENABLED,
                 (currentTab != null && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())));

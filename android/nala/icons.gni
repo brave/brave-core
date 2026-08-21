@@ -5,6 +5,12 @@
 
 # Overrides: map a Nala source drawable to a Chromium drawable name.
 # Add new entries here to override additional Chromium icons.
+#
+# The Nala source replaces the upstream drawable verbatim, which drops
+# upstream's `android:tint="?attr/colorControlNormal"` and leaves the Nala
+# `@color/icon_default` fill in its place. Only override icons whose call sites
+# apply their own tint: an untinted usage renders that static fill instead of
+# the theme colour, so it stops following dynamic colours.
 nala_icon_overrides = [
   {
     # Override Chromium's star icon in the bookmark bar with Brave's bookmark
@@ -49,6 +55,182 @@ nala_icon_overrides = [
     # Override Chromium's microphone icon (omnibox voice search, widgets, etc.).
     source = "ic_microphone.xml"
     dest = "ic_mic_white_24dp.xml"
+  },
+  {
+    # Override Chromium's home icon (app menu Home item, toolbar home button).
+    source = "ic_browser_home.xml"
+    dest = "ic_home_24dp.xml"
+  },
+  {
+    # Override Chromium's filled bookmark star, drawn when the page is
+    # bookmarked (app menu icon row and bookmark entries, tablet toolbar).
+    source = "ic_bookmark_added.xml"
+    dest = "ic_star_filled_24dp.xml"
+  },
+  {
+    # Override Chromium's incognito icon, reached through the ic_incognito
+    # alias (app menu private window entries, incognito tab favicon).
+    source = "ic_product_private_window.xml"
+    dest = "ic_incognito_24dp.xml"
+  },
+  {
+    # Override Chromium's reload icon, reached through the btn_toolbar_reload
+    # alias (app menu icon row footer, tablet toolbar).
+    source = "ic_browser_refresh.xml"
+    dest = "ic_refresh_24dp.xml"
+  },
+  {
+    # Override Chromium's pin icon (tab card menu, pinned tab strip, NTP tile
+    # badge). The copy this replaces shrank the glyph to 20dp inside the 24dp
+    # box; the Nala source restores 24dp, matching the unpin icon below.
+    source = "ic_pin.xml"
+    dest = "ic_keep_24dp.xml"
+  },
+  {
+    # Override Chromium's unpin icon (tab card menu, tab list editor).
+    source = "ic_pin_disable.xml"
+    dest = "ic_keep_off_24dp.xml"
+  },
+  {
+    # Override Chromium's Add to group and New tab group entries.
+    source = "ic_widget_generic.xml"
+    dest = "ic_widgets.xml"
+  },
+  {
+    # Override Chromium's Close all tabs (tab switcher menu).
+    source = "ic_close.xml"
+    dest = "ic_close_all_tabs.xml"
+  },
+  {
+    # Override Chromium's Dark mode (app menu).
+    source = "ic_theme_dark.xml"
+    dest = "ic_brightness_medium_24dp.xml"
+  },
+  {
+    # Override Chromium's Unbookmarked star (app menu icon row, bookmark
+    # entries).
+    source = "ic_browser_bookmark_normal.xml"
+    dest = "ic_star_24dp.xml"
+  },
+  {
+    # Override Chromium's Open with (app menu).
+    source = "ic_launch.xml"
+    dest = "ic_open_in_new.xml"
+  },
+  {
+    # Override Chromium's delete icon, reached through the
+    # material_ic_delete_24dp alias (Delete browsing data, bookmarks toolbar).
+    source = "ic_trash.xml"
+    dest = "ic_delete_24dp.xml"
+  },
+]
+
+# Overrides for drawables under //chrome/android/java/res, which
+# //chrome/android:chrome_app_java_resources owns. It sets resource_overlay on
+# its own sources, so it beats every overlay it depends on, including the one
+# nala_icon_overrides feeds. These entries are shipped by a separate overlay
+# target that depends on it instead (see android/nala/BUILD.gn).
+#
+# Set `mirror = true` to emit the source horizontally mirrored, for upstream
+# icons that ship a separate `_rtl` drawable behind a values-ldrtl alias.
+nala_chrome_app_icon_overrides = [
+  {
+    # Override Chromium's new tab icon (app menu New tab, and New private tab
+    # when incognito opens as a window). Shipping the Leo plus under its own
+    # name is not an option: com_brave_playlist_java is a resource overlay that
+    # already defines ic_plus_add at 36dp and wins the merge.
+    source = "ic_plus_add.xml"
+    dest = "ic_add_box_rounded_corner.xml"
+  },
+  {
+    # Override Chromium's back arrow (app menu icon row, tablet toolbar; also
+    # the RTL forward arrow through the values-ldrtl btn_forward alias).
+    source = "ic_arrow_left.xml"
+    dest = "arrow_back_24px.xml"
+  },
+  {
+    # Override Chromium's forward arrow (tablet toolbar, app menu icon row
+    # footer; also the RTL back arrow through the values-ldrtl btn_back alias).
+    source = "ic_arrow_right.xml"
+    dest = "arrow_forward_24px.xml"
+  },
+  {
+    # The RTL half of the reload icon, selected by the values-ldrtl
+    # btn_toolbar_reload alias. The LTR half is in nala_icon_overrides, since
+    # components/browser_ui owns it.
+    source = "ic_browser_refresh.xml"
+    dest = "ic_refresh_24dp_rtl.xml"
+    mirror = true
+  },
+  {
+    # Override Chromium's New window (app menu).
+    source = "ic_window_tab_new.xml"
+    dest = "ic_new_window.xml"
+  },
+  {
+    # Override Chromium's Move to other window (app menu).
+    source = "ic_group_move_new_window.xml"
+    dest = "ic_open_in_browser.xml"
+  },
+  {
+    # Override Chromium's Manage all windows (app menu).
+    source = "ic_windows_open.xml"
+    dest = "ic_select_window.xml"
+  },
+  {
+    # Override Chromium's Print (app menu).
+    source = "ic_print.xml"
+    dest = "sharing_print.xml"
+  },
+  {
+    # Override Chromium's Track price (app menu).
+    source = "ic_notification_add.xml"
+    dest = "price_tracking_disabled.xml"
+  },
+  {
+    # Override Chromium's Stop tracking price (app menu).
+    source = "ic_notification_off.xml"
+    dest = "price_tracking_enabled_filled.xml"
+  },
+  {
+    # Override Chromium's Read aloud and Listen to feed (app menu).
+    source = "ic_play_circle.xml"
+    dest = "ic_play_circle.xml"
+  },
+  {
+    # Override Chromium's Reader mode (app menu).
+    source = "ic_product_speedreader.xml"
+    dest = "ic_mobile_friendly_24dp.xml"
+  },
+  {
+    # Override Chromium's Open web app (app menu).
+    source = "ic_phone_call_out.xml"
+    dest = "ic_open_webapk.xml"
+  },
+  {
+    # Override Chromium's Image descriptions (app menu).
+    source = "ic_image.xml"
+    dest = "ic_image_descriptions.xml"
+  },
+  {
+    # Override Chromium's Select tabs (tab switcher menu).
+    source = "ic_check_circle_outline.xml"
+    dest = "ic_select_check_box_24dp.xml"
+  },
+  {
+    # Override Chromium's Find in page (app menu).
+    source = "ic_search.xml"
+    dest = "ic_find_in_page.xml"
+  },
+  {
+    # Override Chromium's Translate (app menu).
+    source = "ic_product_translate.xml"
+    dest = "ic_translate.xml"
+  },
+  {
+    # Override Chromium's Install and create shortcut (app menu).
+    source = "ic_phone_call_in.xml"
+    dest = "ic_add_to_home_screen.xml"
   },
 ]
 
@@ -101,31 +283,66 @@ nala_icon_raster_overrides = [
   },
 ]
 
+# Raster overrides for drawables under //chrome/android/java/res, shipped by the
+# same overlay target as nala_chrome_app_icon_overrides. Same rules as
+# nala_icon_raster_overrides: every density bucket the upstream icon defines has
+# to be covered, or the unoverridden PNG still wins on matching devices.
+nala_chrome_app_icon_raster_overrides = [
+  {
+    # Screenshot / paint preview entry in the app menu.
+    source = "ic_camera.xml"
+    dest = "ic_photo_camera"
+    densities = [
+      "mdpi",
+      "hdpi",
+      "xhdpi",
+      "xxhdpi",
+      "xxxhdpi",
+    ]
+  },
+  {
+    # Download button in the app menu icon row.
+    source = "ic_download.xml"
+    dest = "ic_file_download_white_24dp"
+    densities = [
+      "mdpi",
+      "hdpi",
+      "xhdpi",
+      "xxhdpi",
+      "xxxhdpi",
+    ]
+  },
+]
+
 # Please keep this list sorted alphabetically.
 nala_icons = [
   "ic_accessibility.xml",
   "ic_antenna.xml",
   "ic_appearance.xml",
+  "ic_arrow_circle_down.xml",
   "ic_arrow_left.xml",
   "ic_arrow_small_down.xml",
   "ic_arrow_small_right.xml",
   "ic_arrow_undo.xml",
   "ic_arrow_up_and_down.xml",
-  "ic_bar_chart_search.xml",
+  "ic_autofill.xml",
   "ic_bar_chart.xml",
+  "ic_bar_chart_search.xml",
+  "ic_brave_icon_search.xml",
   "ic_browser_customizable_shortcut.xml",
   "ic_browser_group.xml",
   "ic_browser_home.xml",
   "ic_browser_mobile_bottom_tab_groups.xml",
   "ic_browser_mobile_bottom_toolbar.xml",
+  "ic_browser_mobile_tabs.xml",
   "ic_browser_mobile_tabs_bottom.xml",
   "ic_browser_mobile_tabs_top.xml",
-  "ic_browser_mobile_tabs.xml",
   "ic_check_normal.xml",
+  "ic_checkbox_checked.xml",
+  "ic_checkbox_unchecked.xml",
   "ic_close.xml",
   "ic_code.xml",
   "ic_credit_card.xml",
-  "ic_brave_icon_search.xml",
   "ic_disable_outline.xml",
   "ic_download.xml",
   "ic_edit_pencil.xml",
@@ -133,37 +350,40 @@ nala_icons = [
   "ic_face_happy.xml",
   "ic_face_sad.xml",
   "ic_grid04.xml",
+  "ic_history.xml",
   "ic_idea.xml",
-  "ic_media_player.xml",
-  "ic_message_bubble_comments.xml",
-  "ic_microphone.xml",
   "ic_info_outline.xml",
-  "ic_checkbox_checked.xml",
-  "ic_checkbox_unchecked.xml",
   "ic_key.xml",
   "ic_launch.xml",
   "ic_link_normal.xml",
-  "ic_autofill.xml",
   "ic_location_on.xml",
-  "ic_star_circle.xml",
+  "ic_media_player.xml",
+  "ic_message_bubble_comments.xml",
+  "ic_microphone.xml",
   "ic_notification.xml",
   "ic_outside.xml",
   "ic_product_bat_outline.xml",
+  "ic_product_bookmarks.xml",
   "ic_product_brave_leo.xml",
   "ic_product_brave_news.xml",
-  "ic_product_origin.xml",
-  "ic_product_private_window.xml",
   "ic_product_brave_wallet.xml",
+  "ic_product_origin.xml",
+  "ic_product_playlist.xml",
+  "ic_product_playlist_add.xml",
+  "ic_product_private_window.xml",
   "ic_product_sync.xml",
   "ic_product_translate.xml",
   "ic_product_vpn.xml",
   "ic_search.xml",
+  "ic_set_as_default.xml",
+  "ic_settings.xml",
   "ic_share.xml",
-  "ic_shred_data.xml",
   "ic_shield_done.xml",
+  "ic_shred_data.xml",
   "ic_social_brave_carved_favicon_fullheight.xml",
   "ic_social_brave_outline_favicon_fullheight.xml",
   "ic_social_brave_release_favicon_fullheight_color.xml",
+  "ic_star_circle.xml",
   "ic_theme_dark.xml",
   "ic_themes.xml",
   "ic_trash.xml",
