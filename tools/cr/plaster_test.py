@@ -6,6 +6,7 @@
 
 import unittest
 from pathlib import Path
+from unittest import mock
 import argparse
 import contextlib
 import copy
@@ -17,6 +18,7 @@ import os
 import time
 
 import plaster
+import repository
 
 from test.fake_chromium_repo import FakeChromiumRepo
 
@@ -152,6 +154,55 @@ class PlasterTest(unittest.TestCase):
         self.assertNotEqual(mtime_after, mtime_changed)
         self.assertEqual(temp_file.read_text(), 'bar')
         temp_file.unlink()
+
+    def test_save_patch_pins_diff_algorithm_and_attributes(self):
+        """save_patch_if_changed must pin the diff algorithm and attributes.
+
+        Regression test: a user's own `.gitconfig` (`diff.algorithm`) or
+        gitattributes could otherwise make the same substitution produce
+        different patch bytes than what CI generates, failing presubmit.
+        """
+        test_file_chromium = Path('chrome/common/pin_test.cc')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Initial content for Chromium file.\n',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add pin_test.cc',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          substitutions:
+            - description: Simple test substitution
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Plaster'
+        ''')
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with mock.patch.object(
+                repository.Repository,
+                'run_git',
+                autospec=True,
+                side_effect=repository.Repository.run_git) as run_git_mock:
+            plaster_file.apply()
+
+        # `autospec` includes the bound `self` as the first positional arg.
+        diff_calls = [
+            call for call in run_git_mock.call_args_list
+            if 'diff' in call.args[1:]
+        ]
+        self.assertEqual(len(diff_calls), 1)
+        diff_args = diff_calls[0].args[1:]
+        pinned_options = set(zip(diff_args, diff_args[1:]))
+        self.assertIn(('-c', 'diff.algorithm=default'), pinned_options)
+        self.assertIn(
+            ('-c',
+             f'core.attributesFile={plaster.PLASTER_GITATTRIBUTES_PATH}'),
+            pinned_options)
+        self.assertEqual(
+            diff_calls[0].kwargs.get('env', {}).get('GIT_ATTR_NOSYSTEM'), '1')
 
     def test_checksum_hashes_raw_bytes_without_newline_normalization(self):
         # The checksum must be over the file's raw bytes so it matches
