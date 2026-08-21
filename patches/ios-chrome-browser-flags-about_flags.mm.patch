@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 77383ef4e0ef36066fe22a21c0c9d16a3bbcd572..27ff4a3ca0e662c71d3ba39d88ea058afe024eae 100644
+index ab73e7b9ed5a6821e1fe5140316ef4a572c4f4da..3864d6816270c4762401f63dfd3178d17800c301 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1411,6 +1411,7 @@ const FeatureEntry::FeatureVariation kNewTabPageRedesignVariations[] = {
+@@ -1449,6 +1449,7 @@ const FeatureEntry::FeatureVariation kNewTabPageRedesignVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({

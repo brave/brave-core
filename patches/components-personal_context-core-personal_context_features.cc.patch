@@ -1,5 +1,5 @@
 diff --git a/components/personal_context/core/personal_context_features.cc b/components/personal_context/core/personal_context_features.cc
-index 607b4a9b21ba0992e2bbbe0d1cd6bb841e1b956a..f8e747bb5eb6832bd2221e7086c7189263c03f01 100644
+index 991c36a38c600619d70fdd2d91d3bfaff72123ad..09e4254c1c6e6f08e0b3521a3bf5dfec976d1604 100644
 --- a/components/personal_context/core/personal_context_features.cc
 +++ b/components/personal_context/core/personal_context_features.cc
 @@ -8,7 +8,8 @@

@@ -1,5 +1,5 @@
 diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
-index 5ff48eb1caf567e7adaa95d22fccda4cb15a8aa6..d4ee70fe6297445487a8b01ba1e0bec64d8f5377 100644
+index 7f499d8972e857b09e7e45336fa1da759d76695e..ecec3933a4f88647d2dd845ef18ff5f0d2bd22e8 100644
 --- a/scripts/build/typescript/typescript.gni
 +++ b/scripts/build/typescript/typescript.gni
 @@ -222,6 +222,7 @@ template("ts_library") {

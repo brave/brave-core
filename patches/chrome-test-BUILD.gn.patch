@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index f9d522dd1035d498acc5bded5cfd13e1073ab521..5bf6e1dc863f2111660cd04ac70d2b3e3d538dc8 100644
+index 7aeb9fc229bdfa8b6ceaf59163c5396c49b3c4c1..adee660009fd641f42bb48fd950257e63deae8dc 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -507,6 +507,7 @@ static_library("test_support") {
@@ -10,7 +10,7 @@ index f9d522dd1035d498acc5bded5cfd13e1073ab521..5bf6e1dc863f2111660cd04ac70d2b3e
    data = []
    data_deps = []
  
-@@ -5825,6 +5826,7 @@ test("unit_tests") {
+@@ -5857,6 +5858,7 @@ test("unit_tests") {
      "//ui/webui",
      "//v8",
    ]
@@ -18,7 +18,7 @@ index f9d522dd1035d498acc5bded5cfd13e1073ab521..5bf6e1dc863f2111660cd04ac70d2b3e
  
    if (enable_devtools_frontend) {
      deps += [ "//chrome/browser/ui/webui/devtools:unit_tests" ]
-@@ -8805,6 +8807,7 @@ if (!is_android && !is_chromeos_device) {
+@@ -8827,6 +8829,7 @@ if (!is_android && !is_chromeos_device) {
        "//ui/views",
        "//ui/web_dialogs:test_support",
      ]

@@ -1,8 +1,8 @@
 diff --git a/content/browser/hid/hid_service.cc b/content/browser/hid/hid_service.cc
-index 05ddfb8a7e3a60bd136a4dee790bb0de98206ea4..44172da1c7d04e2fdd5a4ff7fa86653f55993c00 100644
+index 3d8584e5fabe95d65b0beb3955f3b3e2e0aac8bc..3053e179b4e3c6d93d289714af2a141de17b5def 100644
 --- a/content/browser/hid/hid_service.cc
 +++ b/content/browser/hid/hid_service.cc
-@@ -422,11 +422,13 @@ void HidService::RequestDevice(
+@@ -436,11 +436,13 @@ void HidService::RequestDevice(
      RequestDeviceCallback callback) {
    HidDelegate* delegate = GetContentClient()->browser()->GetHidDelegate();
    if (!render_frame_host_ ||

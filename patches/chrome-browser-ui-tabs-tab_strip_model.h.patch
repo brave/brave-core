@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b32530babe 100644
+index e256187d80cdb0cc0241adfe7c5c6fee057b4390..9ae08d5ccf33199c4fe43d7f289453d1e65e69e1 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -45,7 +45,7 @@
+@@ -46,7 +46,7 @@
  #error This file should only be included on desktop.
  #endif
  
@@ -11,7 +11,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
  class Profile;
  class TabGroupModel;
  class TabStripModelDelegate;
-@@ -92,7 +92,7 @@ class TabGroupModelFactory {
+@@ -93,7 +93,7 @@ class TabGroupModelFactory {
  struct DetachedTabCollection {
    DetachedTabCollection(
        std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -20,7 +20,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
        std::optional<int> active_index,
        bool pinned_);
    DetachedTabCollection(const DetachedTabCollection&) = delete;
-@@ -100,7 +100,7 @@ struct DetachedTabCollection {
+@@ -101,7 +101,7 @@ struct DetachedTabCollection {
    ~DetachedTabCollection();
    DetachedTabCollection(DetachedTabCollection&&);
    std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -29,7 +29,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
        collection_;
    // Store the index of tab that was active in the detached group.
    std::optional<int> active_index_;
-@@ -214,7 +214,7 @@ class TabStripModel {
+@@ -219,7 +219,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  
@@ -38,7 +38,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
  
    // Retrieves the TabStripModelDelegate associated with this TabStripModel.
    TabStripModelDelegate* delegate() const { return delegate_; }
-@@ -360,7 +360,7 @@ class TabStripModel {
+@@ -365,7 +365,7 @@ class TabStripModel {
    // Detaches the WebContents at the specified index and immediately deletes it.
    void DetachAndDeleteWebContentsAt(int index);
  
@@ -47,7 +47,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
                             std::unique_ptr<DetachedTabCollection>>>
    DetachTabsAndCollectionsForInsertion(const std::vector<int>& tab_indices);
  
-@@ -625,7 +625,7 @@ class TabStripModel {
+@@ -632,7 +632,7 @@ class TabStripModel {
    // returns the index of the tabs in the current model that would end up being
    // the adjacent tabs of the selected unpinned tabs post move operation.
    std::pair<std::optional<int>, std::optional<int>>
@@ -56,7 +56,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -791,6 +791,14 @@ class TabStripModel {
+@@ -800,6 +800,14 @@ class TabStripModel {
      CommandGlicCreateNewChat,
      CommandGlicSwitchToRecentConversation,
      CommandGlicUnshare,
@@ -71,7 +71,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
      CommandLast
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
-@@ -916,7 +924,12 @@ class TabStripModel {
+@@ -925,7 +933,12 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
@@ -84,7 +84,7 @@ index eb02a95efe49df7b96d89eb395ed518293ce6bbc..7cad2eda832fa89cd1a83867c0f9c2b3
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1204,7 +1217,7 @@ class TabStripModel {
+@@ -1213,7 +1226,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

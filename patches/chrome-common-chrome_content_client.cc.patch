@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
-index 5df291a12226596061c7f461fb2a7e2b2a2f2d6c..a7818b73161489966df14e2397d1dab18b7c0cce 100644
+index 6124c56d82f9da023689e7eb019ef05fb25b99d7..df0016f6d99faf1988439425cc376e51d02828be 100644
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
 @@ -122,6 +122,7 @@ void ChromeContentClient::SetGpuInfo(const gpu::GPUInfo& gpu_info) {

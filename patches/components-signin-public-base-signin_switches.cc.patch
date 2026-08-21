@@ -1,5 +1,5 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 775f70052cc7628762560ebaf293df3671fcb900..7b5002653b966018ad31241b740c4f21446b8bed 100644
+index ec48b455ef33b6987d40d6824d0c4d15987b2c78..f3e6d9b39b4dc0a415b36d82fd0656dee6f5d0b7 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
 @@ -642,8 +642,10 @@ BASE_FEATURE(kFetchAccountInfoOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -14,7 +14,7 @@ index 775f70052cc7628762560ebaf293df3671fcb900..7b5002653b966018ad31241b740c4f21
  BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
  BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
-@@ -924,13 +926,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -926,13 +928,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  
