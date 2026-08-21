@@ -1,12 +1,12 @@
 diff --git a/extensions/browser/blocklist.cc b/extensions/browser/blocklist.cc
-index 59f0cf7d1c6403aacd3ff031b2f07a7b77ba64c8..9a211d25f6055f4cdc40b94c9d13223168ba2c25 100644
+index 7dae85306825cc55e6b31ed2e32b3befbcbb502d..b294479fc37c25332e1851a233d580f93e1834ef 100644
 --- a/extensions/browser/blocklist.cc
 +++ b/extensions/browser/blocklist.cc
-@@ -168,6 +168,7 @@ void Blocklist::GetBlocklistedIDs(const std::set<ExtensionId>& ids,
+@@ -191,6 +191,7 @@ Blocklist::~Blocklist() = default;
+ 
+ void Blocklist::GetBlocklistedIDs(const std::set<ExtensionId>& ids,
                                    GetBlocklistedIDsCallback callback) {
++  callback = base::BindOnce(&MergeBraveMalwareIDs, ids, std::move(callback));
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
  
-+  BRAVE_GET_BLOCKLISTED_IDS
    if (ids.empty() || !GetDatabaseManager().get()) {
-     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-         FROM_HERE, base::BindOnce(std::move(callback), BlocklistStateMap()));

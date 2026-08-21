@@ -11,15 +11,12 @@
 
 namespace extensions {
 
-BraveExtensionService::BraveExtensionService(ExtensionSystem* extension_system)
+BraveExtensionService::BraveExtensionService(
+    ExtensionSystem* extension_system,
+    extension_malware_blocklist::ExtensionMalwareBlocklist* blocklist)
     : extension_system_(extension_system) {
-  if (auto* blocklist = extension_malware_blocklist::ExtensionMalwareBlocklist::
-          GetInstance()) {
+  if (blocklist) {
     observation_.Observe(blocklist);
-    // If the list already loaded before this profile came up, catch up now.
-    if (blocklist->is_ready()) {
-      OnMalwareListUpdated();
-    }
   }
 }
 

@@ -7,7 +7,9 @@
 
 #include <memory>
 
+#include "brave/browser/brave_global_features.h"
 #include "brave/browser/extensions/brave_extension_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/chrome_extension_system_factory.h"
 #include "extensions/browser/extension_system.h"
 
@@ -37,12 +39,15 @@ BraveExtensionServiceFactory::~BraveExtensionServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveExtensionServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<BraveExtensionService>(ExtensionSystem::Get(context));
+  return std::make_unique<BraveExtensionService>(
+      ExtensionSystem::Get(context),
+      BraveGlobalFeatures::FromGlobalFeatures(g_browser_process->GetFeatures())
+          ->extension_malware_blocklist());
 }
 
 bool BraveExtensionServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  // Eagerly created so the observer is live and can catch up on an
-  // already-loaded list without anything else touching this service.
+  // Nothing else fetches this service, so it must be created eagerly for the
+  // observer to be live when the list loads.
   return true;
 }
 

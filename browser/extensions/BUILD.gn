@@ -100,6 +100,7 @@ source_set("extensions") {
     ":brave_prefs_util_impl",
     ":resources",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:brave_global_features",
     "//brave/browser:browser_process",
     "//brave/browser/brave_search",
     "//brave/browser/component_updater",

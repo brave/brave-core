@@ -5,6 +5,9 @@
 
 #include "extensions/browser/blocklist.h"
 
+#include <set>
+#include <utility>
+
 #include "extensions/browser/extensions_browser_client.h"
 #include "extensions/common/extension_id.h"
 
@@ -15,12 +18,14 @@ namespace {
 // BLOCKLISTED_MALWARE in the resolved state map. These IDs come from a Brave
 // component, so they never enter the upstream `blocklisted_ids` set and thus
 // never reach GetBlocklistStateForIDs / BlocklistStateFetcher.
-void MergeBraveMalwareIDs(std::set<ExtensionId> brave_malware_ids,
+void MergeBraveMalwareIDs(std::set<ExtensionId> ids,
                           Blocklist::GetBlocklistedIDsCallback callback,
                           const Blocklist::BlocklistStateMap& state_map) {
   Blocklist::BlocklistStateMap result = state_map;
-  for (const auto& id : brave_malware_ids) {
-    result[id] = BLOCKLISTED_MALWARE;
+  for (const auto& id : ids) {
+    if (ExtensionsBrowserClient::Get()->IsOnBraveMalwareExtensionList(id)) {
+      result[id] = BLOCKLISTED_MALWARE;
+    }
   }
   std::move(callback).Run(result);
 }
@@ -28,24 +33,4 @@ void MergeBraveMalwareIDs(std::set<ExtensionId> brave_malware_ids,
 }  // namespace
 }  // namespace extensions
 
-// Injected at the top of Blocklist::GetBlocklistedIDs. Computes which of the
-// queried `ids` are on Brave's local malware list and wraps `callback` so those
-// IDs are forced to BLOCKLISTED_MALWARE in the final map. Wrapping before the
-// early-return path means it also applies when no upstream DB manager is
-// present.
-#define BRAVE_GET_BLOCKLISTED_IDS                                              \
-  {                                                                            \
-    std::set<ExtensionId> brave_malware_ids;                                   \
-    for (const auto& id : ids) {                                               \
-      if (ExtensionsBrowserClient::Get()->IsOnBraveMalwareExtensionList(id)) { \
-        brave_malware_ids.insert(id);                                          \
-      }                                                                        \
-    }                                                                          \
-    callback =                                                                 \
-        base::BindOnce(&MergeBraveMalwareIDs, std::move(brave_malware_ids),    \
-                       std::move(callback));                                   \
-  }
-
 #include <extensions/browser/blocklist.cc>
-
-#undef BRAVE_GET_BLOCKLISTED_IDS

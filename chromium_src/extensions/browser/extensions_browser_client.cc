@@ -7,8 +7,8 @@
 
 namespace extensions {
 
-// Default implementation for the virtual added via
-// BRAVE_EXTENSIONS_BROWSER_CLIENT_H. Overridden by
+// Default implementation for the virtual added by
+// rewrite/extensions/browser/extensions_browser_client.h.yaml. Overridden by
 // BraveExtensionsBrowserClientImpl to consult Brave's local malware list.
 bool ExtensionsBrowserClient::IsOnBraveMalwareExtensionList(
     const ExtensionId& extension_id) const {

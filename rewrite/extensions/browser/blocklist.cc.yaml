@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Resolve Brave's malicious-extension list as BLOCKLISTED_MALWARE.
+
+      Brave distributes its own malware list via a component, so those IDs never
+      enter the upstream `blocklisted_ids` set and never reach the state fetcher.
+      Wrapping `callback` ahead of the whole body means the verdicts also apply
+      on the early-return path taken when there is no database manager.
+    preempt_function_impl:
+      function_name: Blocklist::GetBlocklistedIDs
+      code: |-
+        callback = base::BindOnce(&MergeBraveMalwareIDs, ids, std::move(callback));

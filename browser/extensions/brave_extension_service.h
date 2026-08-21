@@ -24,7 +24,10 @@ class BraveExtensionService
     : public KeyedService,
       public extension_malware_blocklist::ExtensionMalwareBlocklist::Observer {
  public:
-  explicit BraveExtensionService(ExtensionSystem* extension_system);
+  // `blocklist` is null when the malware blocklist feature is disabled.
+  BraveExtensionService(
+      ExtensionSystem* extension_system,
+      extension_malware_blocklist::ExtensionMalwareBlocklist* blocklist);
   BraveExtensionService(const BraveExtensionService&) = delete;
   BraveExtensionService& operator=(const BraveExtensionService&) = delete;
   ~BraveExtensionService() override;
