@@ -29,7 +29,6 @@ std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
     OrchardPool pool,
     bool is_v6_transaction) {
   CHECK(pool == OrchardPool::kOrchard);
-  CHECK(!is_v6_transaction);
   CHECK(!orchard_outputs.empty() || !spends_bundle.inputs.empty());
   auto bundle = orchard::OrchardUnauthorizedBundle::Create(
       tree_state, spends_bundle, orchard_outputs, random_seed_for_testing_,

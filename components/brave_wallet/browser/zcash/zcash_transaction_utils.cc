@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 
 #include <algorithm>
+#include <iterator>
 #include <utility>
 
 #include "base/numerics/checked_math.h"
@@ -34,12 +35,28 @@ base::CheckedNumeric<uint64_t> CalculateInputsAmount(
   return total_value;
 }
 
-// https://github.com/zcash/orchard/blob/9d89b504c52dc69064ca431e8311a4cd1c279b44/src/builder.rs#L93-L94
+// https://github.com/zcash/orchard/blob/9d89b504c52dc69064ca431e8311a4cd1c279b44/src/builder.rs#L120-L148
+// When cross-address transfers are disabled (the legacy Orchard pool inside a
+// v6 tx, post-NU6.3), a spend and an output never share an action — each is
+// padded with a fabricated zero-valued counterpart — so the actual action
+// count is `spends + outputs`, not `max(spends, outputs)`. Undercounting here
+// underpays the ZIP-317 fee and gets the tx rejected as "unpaid actions".
 base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
     const base::StrictNumeric<uint32_t> orchard_input_notes,
-    const base::StrictNumeric<uint32_t> orchard_output_notes) {
+    const base::StrictNumeric<uint32_t> orchard_output_notes,
+    bool cross_address_disabled) {
   if (orchard_input_notes == 0u && orchard_output_notes == 0u) {
     return 0u;
+  }
+
+  if (cross_address_disabled) {
+    base::CheckedNumeric<uint32_t> requested_actions =
+        base::CheckAdd<uint32_t>(orchard_input_notes, orchard_output_notes);
+    if (!requested_actions.IsValid()) {
+      return requested_actions;
+    }
+    return base::CheckMax<uint32_t>(requested_actions.ValueOrDie(),
+                                    kMinOrchardActionsCountForFee);
   }
 
   return base::CheckMax<uint32_t>(orchard_input_notes, orchard_output_notes,
@@ -61,7 +78,8 @@ base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
 base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     const base::StrictNumeric<uint32_t> transparent_input_count,
     const base::StrictNumeric<uint32_t> orchard_input_count,
-    ZCashTargetOutputType output_type) {
+    ZCashTargetOutputType output_type,
+    bool orchard_cross_address_disabled) {
   // Mixed inputs are not supported.
   CHECK((transparent_input_count != 0) ^ (orchard_input_count != 0));
 
@@ -84,7 +102,8 @@ base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
   }
 
   base::CheckedNumeric<uint32_t> orchard_actions_count = GetOrchardActionsCount(
-      orchard_input_count, orchard_output_count.ValueOrDie());
+      orchard_input_count, orchard_output_count.ValueOrDie(),
+      orchard_cross_address_disabled);
   // https://github.com/zcash/librustzcash/blob/8eb78dfae38ca1c91a108a86a4a3b5505766c3f6/zcash_primitives/src/transaction/fees/zip317.rs#L188
   base::CheckedNumeric<uint32_t> logical_actions_count =
       base::CheckMax<uint32_t>(transparent_input_count,
@@ -188,7 +207,8 @@ PickOrchardInputsResult::PickOrchardInputsResult(
 std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
     uint64_t amount,
-    ZCashTargetOutputType output_type) {
+    ZCashTargetOutputType output_type,
+    bool orchard_cross_address_disabled) {
   if (notes.empty()) {
     return std::nullopt;
   }
@@ -196,8 +216,9 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
   if (amount == kZCashFullAmount) {
     auto total_inputs_amount = CalculateInputsAmount(notes);
 
-    base::CheckedNumeric<uint64_t> fee = CalculateZCashTxFee(
-        0u, base::checked_cast<uint32_t>(notes.size()), output_type);
+    base::CheckedNumeric<uint64_t> fee =
+        CalculateZCashTxFee(0u, base::checked_cast<uint32_t>(notes.size()),
+                            output_type, orchard_cross_address_disabled);
 
     if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
       return std::nullopt;
@@ -209,7 +230,9 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     return PickOrchardInputsResult{notes, fee.ValueOrDie(), 0};
   }
 
-  std::vector<OrchardNote> mutable_notes = notes;
+  std::vector<OrchardNote> mutable_notes;
+  std::ranges::copy_if(notes, std::back_inserter(mutable_notes),
+                       [](auto& note) { return note.amount != 0; });
 
   std::ranges::sort(mutable_notes, [](auto& input1, auto& input2) {
     return input1.amount < input2.amount;
@@ -221,7 +244,8 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
 
     base::CheckedNumeric<uint64_t> fee = CalculateZCashTxFee(
-        0u, base::checked_cast<uint32_t>(selected_inputs.size()), output_type);
+        0u, base::checked_cast<uint32_t>(selected_inputs.size()), output_type,
+        orchard_cross_address_disabled);
 
     if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
       return std::nullopt;
