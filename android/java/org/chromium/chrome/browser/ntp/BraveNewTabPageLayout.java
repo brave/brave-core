@@ -1084,10 +1084,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 && getTab() != null
                 && mNewTabTakeoverInfobar == null) {
             mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            if (getTab().getWebContents() != null) {
-                mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
-                        mActivity, getTab().getWebContents());
-            }
+            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(mActivity, getTab());
         }
     }
 

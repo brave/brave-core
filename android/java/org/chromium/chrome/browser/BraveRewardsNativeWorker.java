@@ -10,6 +10,7 @@ package org.chromium.chrome.browser;
 import android.os.Handler;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
@@ -731,12 +732,18 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    // Public so that tests outside this package can mock the rewards natives.
+    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     @NativeMethods
-    interface Natives {
+    public interface Natives {
         void init(BraveRewardsNativeWorker caller);
+
         void destroy(long nativeBraveRewardsNativeWorker);
+
         boolean isSupported(long nativeBraveRewardsNativeWorker);
+
         boolean isSupportedSkipRegionCheck(long nativeBraveRewardsNativeWorker);
+
         boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
 
         boolean shouldShowSelfCustodyInvite(long nativeBraveRewardsNativeWorker);
