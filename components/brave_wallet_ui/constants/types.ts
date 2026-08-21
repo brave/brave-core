@@ -512,12 +512,16 @@ export enum WalletRoutes {
   AddAssetModal = '/crypto/portfolio/add-asset',
 
   // swap
-  Swap = '/swap',
+  Swap = '/crypto/swap',
+  SwapDeprecated = '/swap',
 
   // send
-  Send = '/send',
+  Send = '/crypto/send',
+  SendDeprecated = '/send',
 
-  Bridge = '/bridge',
+  // bridge
+  Bridge = '/crypto/bridge',
+  BridgeDeprecated = '/bridge',
 
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',

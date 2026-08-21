@@ -56,6 +56,8 @@ import { MarketView } from '../screens/market/market'
 import { MarketAssetDetails } from '../screens/market/market_asset_details'
 import { AccountsOverview } from '../screens/accounts_overview/accounts_overview'
 import { AccountDetails } from '../screens/account_details/account_details'
+import { Swap } from '../screens/swap/swap'
+import { SendScreen } from '../screens/send/send_screen/send_screen'
 
 export const UnlockedWalletRoutes = () => {
   // Selectors
@@ -100,6 +102,27 @@ export const UnlockedWalletRoutes = () => {
 
         <Route path={WalletRoutes.DepositPageStart}>
           <Deposit />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Swap}
+          exact={true}
+        >
+          <Swap key='swap' />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Bridge}
+          exact={true}
+        >
+          <Swap key='bridge' />
+        </Route>
+
+        <Route
+          path={WalletRoutes.Send}
+          exact={true}
+        >
+          <SendScreen key='send' />
         </Route>
 
         {/* Portfolio */}
