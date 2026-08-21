@@ -65,7 +65,7 @@ substitutions:
       re_pattern:
         '("<\(SHARED_INTERMEDIATE_DIR\)/chrome/browser/resources/settings/resources\.grd":
         \{\n    "META": \{"sizes": \{"includes": \[)700(\],\}\},)'
-      replace: '\g<1>890\g<2>'
+      replace: '\g<1>900\g<2>'
 
   - description: |-
       Grow the reserved id range for webui_code_cache_resources.grd, since
