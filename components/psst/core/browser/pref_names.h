@@ -20,7 +20,7 @@ inline constexpr char kPsstInfobarShownCounter[] =
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-bool IsPsstEnabledForProfile(PrefService& pref_service);
+bool IsPsstEnabledForProfile(const PrefService& pref_service);
 
 }  // namespace psst
 
