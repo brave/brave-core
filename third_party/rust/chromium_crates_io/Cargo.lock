@@ -2073,7 +2073,7 @@ dependencies = [
 
 [[package]]
 name = "smallvec"
-version = "1.10.0"
+version = "1.15.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
