@@ -9,6 +9,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.lenient;
 
+import android.content.res.Configuration;
+
 import androidx.test.filters.SmallTest;
 
 import org.junit.Rule;
@@ -109,5 +111,30 @@ public final class BraveToolbarManagerUnitTest {
         assertTrue(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
                         /* suppressedByUpstream= */ true, mTab, /* isOmniboxFocused= */ false));
+    }
+
+    @Test
+    @SmallTest
+    public void testBottomControlsVisibleOnlyForUnfocusedPortraitOmnibox() {
+        assertTrue(
+                BraveToolbarManager.shouldShowBraveBottomControls(
+                        /* isBottomControlsEnabled= */ true,
+                        Configuration.ORIENTATION_PORTRAIT,
+                        /* isOmniboxFocused= */ false));
+        assertFalse(
+                BraveToolbarManager.shouldShowBraveBottomControls(
+                        /* isBottomControlsEnabled= */ true,
+                        Configuration.ORIENTATION_PORTRAIT,
+                        /* isOmniboxFocused= */ true));
+        assertFalse(
+                BraveToolbarManager.shouldShowBraveBottomControls(
+                        /* isBottomControlsEnabled= */ true,
+                        Configuration.ORIENTATION_LANDSCAPE,
+                        /* isOmniboxFocused= */ false));
+        assertFalse(
+                BraveToolbarManager.shouldShowBraveBottomControls(
+                        /* isBottomControlsEnabled= */ false,
+                        Configuration.ORIENTATION_PORTRAIT,
+                        /* isOmniboxFocused= */ false));
     }
 }
