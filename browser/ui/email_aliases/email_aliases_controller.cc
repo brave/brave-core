@@ -285,7 +285,6 @@ void EmailAliasesController::ShowPromoBubble(content::WebContents* initiator) {
 
 void EmailAliasesController::OnPromoBubbleClosed(const std::string&) {
   OnBubbleClosed({});
-  email_aliases_service_->MarkPromoShown();
   ShowSingletonTabOverwritingNTP(browser_view_->browser(),
                                  GURL(kEmailAliasesSettingsURL));
 }
