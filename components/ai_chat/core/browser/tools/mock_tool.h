@@ -68,6 +68,16 @@ class MockTool : public Tool {
               (const mojom::ToolUseEvent& tool_use),
               (const, override));
 
+  MOCK_METHOD(std::optional<std::string>,
+              GetPermissionChallengeDescription,
+              (const mojom::ToolUseEvent& tool_use),
+              (const, override));
+
+  MOCK_METHOD(void,
+              UserPermissionGranted,
+              (const std::string& tool_use_id),
+              (override));
+
   MOCK_METHOD(void,
               UseTool,
               (const std::string& input_json, UseToolCallback callback),

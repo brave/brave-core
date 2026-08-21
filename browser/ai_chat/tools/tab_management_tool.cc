@@ -547,7 +547,7 @@ TabManagementTool::RequiresUserInteractionBeforeHandling(
     return false;
   }
 
-  return mojom::PermissionChallenge::New(std::nullopt, *plan);
+  return mojom::PermissionChallenge::New(std::nullopt, *plan, std::nullopt);
 }
 
 void TabManagementTool::UserPermissionGranted(const std::string& tool_use_id) {

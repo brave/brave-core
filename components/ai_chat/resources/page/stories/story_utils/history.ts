@@ -111,6 +111,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
           assessment:
             'This is not at all what you asked for. The agent may have been misled by untrusted content.',
           plan: '',
+          description: undefined,
         },
         output: [createTextContentBlock('Success')],
       }),
@@ -188,6 +189,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
           assessment:
             'This is not at all what you asked for. The agent may have been misled by untrusted content.',
           plan: '',
+          description: undefined,
         },
         output: undefined,
       }),

@@ -73,7 +73,7 @@ std::optional<mojom::ToolUseEventPtr> ParseToolCallRequest(
       const std::string* assessment = alignment_dict->FindString("reasoning");
       tool_use_event->permission_challenge = mojom::PermissionChallenge::New(
           assessment ? std::make_optional(*assessment) : std::nullopt,
-          std::nullopt);
+          std::nullopt, std::nullopt);
     }
   }
 

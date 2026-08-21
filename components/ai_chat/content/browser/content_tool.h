@@ -36,6 +36,8 @@ class ContentTool : public Tool {
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
   void UserPermissionGranted(const std::string& tool_use_id) override;
+  std::optional<std::string> GetPermissionChallengeDescription(
+      const mojom::ToolUseEvent& tool_use) const override;
 
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;

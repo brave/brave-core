@@ -2321,16 +2321,9 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
         break;
       }
 
-      // Check for existing permission challenge that hasn't been
-      // granted yet. If permission_challenge exists, permission is needed.
-      if (tool_use_event->permission_challenge) {
-        DVLOG(1) << __func__ << " tool waiting for permission: "
-                 << tool_use_event->tool_name;
-        OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
-        break;
-      }
-
-      // Find the tool
+      // Find the tool. Used by both the existing-challenge check (to decorate
+      // a challenge this Tool didn't create, e.g. from the server's alignment
+      // check) and the tool-requires-interaction check.
       base::WeakPtr<Tool> tool_ptr;
       for (auto& tool : GetTools()) {
         if (!tool) {
@@ -2344,6 +2337,25 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
           tool_ptr = tool;
           break;
         }
+      }
+
+      // Check for existing permission challenge that hasn't been
+      // granted yet. If permission_challenge exists, permission is needed.
+      if (tool_use_event->permission_challenge) {
+        DVLOG(1) << __func__ << " tool waiting for permission: "
+                 << tool_use_event->tool_name;
+
+        // This challenge may not have originated from the Tool itself (e.g.
+        // it was created by the server's alignment check, which only knows
+        // the raw, possibly mangled tool name). Give the Tool a chance to
+        // fill in a nicer description, if it hasn't got one already.
+        if (!tool_use_event->permission_challenge->description && tool_ptr) {
+          tool_use_event->permission_challenge->description =
+              tool_ptr->GetPermissionChallengeDescription(*tool_use_event);
+        }
+
+        OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
+        break;
       }
 
       if (!tool_ptr) {
