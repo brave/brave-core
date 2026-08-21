@@ -37,12 +37,25 @@ NS_SWIFT_NAME(MostVisitedSitesObserver)
 
 @end
 
+/// A token representing one active observation of a `MostVisitedSitesBridge`.
+/// Retain this for as long as updates are wanted; releasing it (or calling
+/// `invalidate`) stops the observation.
+NS_SWIFT_NAME(MostVisitedSitesSubscription)
+@protocol MostVisitedSitesSubscription
+
+/// Stops the observation early. Also happens automatically when this object
+/// is deallocated.
+- (void)unsubscribe;
+
+@end
+
 /// The list of most visited sites, ranked by frecency.
 /// Wraps `ntp_tiles::MostVisitedSites`.
 NS_SWIFT_NAME(MostVisitedSites)
 @protocol MostVisitedSitesBridge
 
-/// Starts producing tiles and delivering them to `observer`.
+/// Starts producing tiles and delivering them to `observer`. May be called
+/// any number of times; each call produces an independent observation.
 ///
 /// Only history-backed tiles are surfaced (`ntp_tiles::TileSource::TOP_SITES`,
 /// ranked by frecency).
@@ -50,9 +63,9 @@ NS_SWIFT_NAME(MostVisitedSites)
 /// `observer` is held weakly and receives the initial set of tiles
 /// May only be called once;
 /// `maxNumSites` is the max number of the returning tiles.
-- (void)startTopSitesOnlyWithObserver:
-            (id<MostVisitedSitesObserverBridge>)observer
-                          maxNumSites:(NSUInteger)maxNumSites
+- (id<MostVisitedSitesSubscription>)
+    startTopSitesOnlyWithObserver:(id<MostVisitedSitesObserverBridge>)observer
+                      maxNumSites:(NSUInteger)maxNumSites
     NS_SWIFT_NAME(startTopSitesOnly(observer:maxNumSites:));
 
 /// Requests an asynchronous refresh. The observer is notified only if the set
