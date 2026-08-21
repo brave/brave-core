@@ -1402,6 +1402,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/profiles/brave_profile_menu_view_browsertest.cc",
       "//brave/browser/ui/views/toolbar/brave_app_menu_browsertest.cc",
       "//brave/browser/ui/views/toolbar/brave_toolbar_view_browsertest.cc",
+      "//brave/browser/ui/views/toolbar/screenshot_preview_dialog_browsertest.cc",
     ]
     deps += [
       "//brave/browser/ui/darker_theme:browser_tests",
@@ -1418,6 +1419,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/permissions:browser_tests",
       "//brave/browser/ui/views/split_view:browser_tests",
       "//brave/browser/ui/views/tabs:browser_tests",
+      "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces:browser_tests",
       "//brave/components/containers/buildflags",
       "//brave/components/sidebar/browser",
