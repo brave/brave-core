@@ -565,6 +565,14 @@ public class BraveToolbarManager extends ToolbarManager
         HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
     }
 
+    @Override
+    public void onUrlFocusChange(boolean hasFocus) {
+        super.onUrlFocusChange(hasFocus);
+        if (isToolbarPhone()) {
+            updateBraveBottomControlsVisibility(hasFocus);
+        }
+    }
+
     private void recordNewTabClick() {
         if (!mIncognitoStateProvider.isIncognitoSelected()) {
             if (mActivity instanceof BraveActivity) {
@@ -583,9 +591,7 @@ public class BraveToolbarManager extends ToolbarManager
         if (mTabGroupUiBottomControlsCoordinatorSupplier != null
                 && mTabGroupUiBottomControlsCoordinatorSupplier.get() != null
                 && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
-            boolean isBraveBottomControlsVisible =
-                    mCurrentOrientation != Configuration.ORIENTATION_LANDSCAPE;
-            setBraveBottomControlsVisible(isBraveBottomControlsVisible);
+            updateBraveBottomControlsVisibility();
         }
 
         if (mActivity instanceof FullScreenCustomTabActivity) {
@@ -674,11 +680,24 @@ public class BraveToolbarManager extends ToolbarManager
     }
 
     private void updateBraveBottomControlsVisibility() {
+        updateBraveBottomControlsVisibility(mOmniboxFocusStateSupplier.get());
+    }
+
+    private void updateBraveBottomControlsVisibility(boolean isOmniboxFocused) {
         boolean isBraveBottomControlsVisible =
-                BottomToolbarConfiguration.isBraveBottomControlsEnabled()
-                        && mActivity.getResources().getConfiguration().orientation
-                                != Configuration.ORIENTATION_LANDSCAPE;
+                shouldShowBraveBottomControls(
+                        BottomToolbarConfiguration.isBraveBottomControlsEnabled(),
+                        mActivity.getResources().getConfiguration().orientation,
+                        isOmniboxFocused);
         setBraveBottomControlsVisible(isBraveBottomControlsVisible);
+    }
+
+    @VisibleForTesting
+    static boolean shouldShowBraveBottomControls(
+            boolean isBottomControlsEnabled, int orientation, boolean isOmniboxFocused) {
+        return isBottomControlsEnabled
+                && orientation != Configuration.ORIENTATION_LANDSCAPE
+                && !isOmniboxFocused;
     }
 
     private boolean isToolbarPhone() {
