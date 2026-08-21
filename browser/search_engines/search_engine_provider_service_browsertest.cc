@@ -403,7 +403,7 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
           regional_capabilities::RegionalCapabilitiesServiceFactory::
               GetForProfile(profile)
                   ->GetRegionalPrepopulatedEngines(),
-          kTestExtensionPrepopulatedId);
+          /*regional_variants=*/{}, kTestExtensionPrepopulatedId);
   CHECK(prepopulated);
   // Values below do not exist in extension manifest and are taken from
   // prepopulated engine with prepopulated_id set in extension manifest.
