@@ -45,6 +45,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/features.h"
 #endif
 
@@ -133,7 +134,8 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean(
       "isPsstFeatureEnabled",
 #if BUILDFLAG(ENABLE_PSST)
-      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
+          !profile->GetPrefs()->IsManagedPreference(psst::prefs::kPsstEnabled));
 #else
       false);
 #endif
