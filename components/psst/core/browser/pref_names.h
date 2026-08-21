@@ -20,6 +20,8 @@ inline constexpr char kPsstInfobarShownCounter[] =
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+bool IsPsstEnabledForProfile(PrefService& pref_service);
+
 }  // namespace psst
 
 #endif  // BRAVE_COMPONENTS_PSST_CORE_BROWSER_PREF_NAMES_H_
