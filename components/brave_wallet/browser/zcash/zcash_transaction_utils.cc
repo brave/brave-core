@@ -44,7 +44,7 @@ base::CheckedNumeric<uint64_t> CalculateInputsAmount(
 base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
     const base::StrictNumeric<uint32_t> orchard_input_notes,
     const base::StrictNumeric<uint32_t> orchard_output_notes,
-    bool cross_address_disabled = false) {
+    bool cross_address_disabled) {
   if (orchard_input_notes == 0u && orchard_output_notes == 0u) {
     return 0u;
   }
