@@ -16,7 +16,6 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
@@ -28,6 +27,7 @@ class PrefService;
 class Profile;
 
 namespace gfx {
+class Rect;
 class Size;
 }  // namespace gfx
 
@@ -40,21 +40,18 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
-#if BUILDFLAG(IS_ANDROID)
-namespace ui {
-class WindowAndroid;
-}  // namespace ui
-#endif
-
 namespace brave_search {
+
+class BackupResultsViewManager;
 
 class BackupResultsServiceImpl : public BackupResultsService,
                                  public ProfileObserver {
  public:
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
-  static void RecordLastViewSize(PrefService* local_state,
-                                 const gfx::Size& size);
+  static void RecordLastViewGeometry(PrefService* local_state,
+                                     const gfx::Size& view_size,
+                                     const gfx::Rect& window_bounds_in_screen);
 
   explicit BackupResultsServiceImpl(Profile* profile);
 
@@ -96,13 +93,10 @@ class BackupResultsServiceImpl : public BackupResultsService,
     BackupResultsCallback callback;
 
     bool low_latency_required;
+
+    std::unique_ptr<BackupResultsViewManager> view_manager;
     std::unique_ptr<content::WebContents> web_contents;
     GURL target_url;
-
-#if BUILDFLAG(IS_ANDROID)
-    // Root window for the `web_contents` view tree.
-    raw_ptr<ui::WindowAndroid> window_android = nullptr;
-#endif
 
     raw_ptr<Profile> original_profile;
     raw_ptr<Profile> otr_profile;

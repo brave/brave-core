@@ -26,6 +26,14 @@ inline constexpr char kBackupResultsLastViewWidth[] =
     "brave.search.backup_results.last_view_width";
 inline constexpr char kBackupResultsLastViewHeight[] =
     "brave.search.backup_results.last_view_height";
+inline constexpr char kBackupResultsLastWindowX[] =
+    "brave.search.backup_results.last_window_x";
+inline constexpr char kBackupResultsLastWindowY[] =
+    "brave.search.backup_results.last_window_y";
+inline constexpr char kBackupResultsLastWindowWidth[] =
+    "brave.search.backup_results.last_window_width";
+inline constexpr char kBackupResultsLastWindowHeight[] =
+    "brave.search.backup_results.last_window_height";
 
 inline constexpr char kBackupResultsTotalQueryCount[] =
     "brave.search.backup_results.total_query_count";
