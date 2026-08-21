@@ -56,7 +56,6 @@ var package = Package(
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
-    .plugin(name: "LeoAssetsPlugin", targets: ["LeoAssetsPlugin"]),
   ],
   dependencies: [
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
@@ -311,8 +310,7 @@ var package = Package(
     ),
     .target(
       name: "DesignSystem",
-      dependencies: ["Then", "NalaAssets"],
-      plugins: ["LeoAssetsPlugin"]
+      dependencies: ["Then", "NalaAssets"]
     ),
     .binaryTarget(name: "NalaAssets", path: "../../../out/ios_current_link/NalaAssets.xcframework"),
     .binaryTarget(
@@ -621,10 +619,6 @@ var package = Package(
     .testTarget(name: "BrowserMenuTests", dependencies: ["BrowserMenu"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
-    .plugin(
-      name: "LeoAssetsPlugin",
-      capability: .buildTool()
-    ),
     .executableTarget(name: "LeoAssetCatalogGenerator"),
     .target(
       name: "BraveTalk",
