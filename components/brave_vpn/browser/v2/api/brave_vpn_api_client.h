@@ -137,6 +137,33 @@ class BraveVpnApiClient {
                                      const std::string& api_auth_token,
                                      const std::string& subscriber_credential);
 
+  // SGW API: GetAvailableMultihopExitRegions.
+  // Returns the current multihop exit region and the destinations available
+  // to choose from, as the server's JSON response verbatim.
+  virtual void GetAvailableMultihopExitRegions(
+      RawJsonCallback callback,
+      const std::string& hostname,
+      const std::string& client_id,
+      const std::string& api_auth_token);
+
+  // SGW API: SetMultihopExitRegion.
+  // Configures the multihop egress destination |multihop_exit_region|, which
+  // must be non-empty and must not be Guardian's wire sentinel for "disabled".
+  // Violating either crashes rather than returning an error. Use
+  // ClearMultihopExitRegion() instead to disable multihop.
+  virtual void SetMultihopExitRegion(RawJsonCallback callback,
+                                     const std::string& hostname,
+                                     const std::string& client_id,
+                                     const std::string& api_auth_token,
+                                     const std::string& multihop_exit_region);
+
+  // SGW API: ClearMultihopExitRegion.
+  // Disables multihop by clearing the egress destination.
+  virtual void ClearMultihopExitRegion(RawJsonCallback callback,
+                                       const std::string& hostname,
+                                       const std::string& client_id,
+                                       const std::string& api_auth_token);
+
  private:
   void OnRawJsonResponse(RawJsonCallback callback, RawJsonResponse response);
   void OnGetSubscriberCredentialResponse(
@@ -145,6 +172,12 @@ class BraveVpnApiClient {
   void OnVerifyPurchaseTokenResponse(
       VerifyPurchaseTokenCallback callback,
       endpoints::VerifyPurchaseToken::Response response);
+
+  void DoSetMultihopExitRegion(RawJsonCallback callback,
+                               const std::string& hostname,
+                               const std::string& client_id,
+                               const std::string& api_auth_token,
+                               const std::string& multihop_exit_region);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<BraveVpnApiClient> weak_factory_{this};

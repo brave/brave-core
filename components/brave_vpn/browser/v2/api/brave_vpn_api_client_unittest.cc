@@ -6,11 +6,14 @@
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
 #include "base/containers/extend.h"
 #include "base/functional/callback.h"
+#include "base/json/json_reader.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
@@ -63,8 +66,7 @@ constexpr char kTestSuccessJson[] = R"({"receipt":"valid"})";
 constexpr char kTestErrorJson[] = R"({"error":"invalid"})";
 }  // namespace
 
-template <typename TestCase>
-class BraveVpnApiClientTest : public testing::TestWithParam<TestCase> {
+class BraveVpnApiClientTestBase : public testing::Test {
  public:
   // Fires a client API method and blocks until its callback runs, returning the
   // result the callback was invoked with. Works for any method shaped like
@@ -86,6 +88,10 @@ class BraveVpnApiClientTest : public testing::TestWithParam<TestCase> {
   network::TestURLLoaderFactory url_loader_factory_;
   BraveVpnApiClient client_{url_loader_factory_.GetSafeWeakWrapper()};
 };
+
+template <typename TestCase>
+class BraveVpnApiClientTest : public BraveVpnApiClientTestBase,
+                              public testing::WithParamInterface<TestCase> {};
 
 // The two "unrecoverable response" cases are identical for every endpoint.
 template <typename TestCase>
@@ -470,5 +476,144 @@ INSTANTIATE_TEST_SUITE_P(
         WithCommonUnrecoverableCases<InvalidateCredentialsTestCase>(
             WithCommonRawJsonCases<InvalidateCredentialsTestCase>({}))),
     [](const auto& info) { return info.param.test_name; });
+
+struct GetAvailableMultihopExitRegionsTestCase {
+  std::string test_name;
+  endpoints::GetAvailableMultihopExitRegions::Response response;
+  base::expected<std::string, std::string> expected;
+};
+
+using BraveVpnApiClientGetAvailableMultihopExitRegionsTest =
+    BraveVpnApiClientTest<GetAvailableMultihopExitRegionsTestCase>;
+
+TEST_P(BraveVpnApiClientGetAvailableMultihopExitRegionsTest,
+       MapsResponseToResult) {
+  const auto& test_case = GetParam();
+  brave_account::endpoint_client::UrlReplacements url_replacements;
+  url_replacements.SetHost(kTestHostname);
+  url_replacements.SetPath(
+      base::StrCat({endpoints::GetAvailableMultihopExitRegions::URL().path(),
+                    "/", kTestClientId, "/config/multihop"}));
+  MockResponseFor<endpoints::GetAvailableMultihopExitRegions>(
+      url_loader_factory_, test_case.response, url_replacements);
+  EXPECT_EQ(CallClientApi(&BraveVpnApiClient::GetAvailableMultihopExitRegions,
+                          kTestHostname, kTestClientId, kTestApiAuthToken),
+            test_case.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveVpnApiClientTests,
+    BraveVpnApiClientGetAvailableMultihopExitRegionsTest,
+    testing::ValuesIn(
+        WithCommonUnrecoverableCases<GetAvailableMultihopExitRegionsTestCase>(
+            WithCommonRawJsonCases<GetAvailableMultihopExitRegionsTestCase>(
+                {}))),
+    [](const auto& info) { return info.param.test_name; });
+
+struct SetMultihopExitRegionTestCase {
+  std::string test_name;
+  endpoints::SetMultihopExitRegion::Response response;
+  base::expected<std::string, std::string> expected;
+};
+
+using BraveVpnApiClientSetMultihopExitRegionTest =
+    BraveVpnApiClientTest<SetMultihopExitRegionTestCase>;
+
+TEST_P(BraveVpnApiClientSetMultihopExitRegionTest, MapsResponseToResult) {
+  const auto& test_case = GetParam();
+  brave_account::endpoint_client::UrlReplacements url_replacements;
+  url_replacements.SetHost(kTestHostname);
+  url_replacements.SetPath(
+      base::StrCat({endpoints::SetMultihopExitRegion::URL().path(), "/",
+                    kTestClientId, "/config/multihop"}));
+  MockResponseFor<endpoints::SetMultihopExitRegion>(
+      url_loader_factory_, test_case.response, url_replacements);
+  EXPECT_EQ(
+      CallClientApi(&BraveVpnApiClient::SetMultihopExitRegion, kTestHostname,
+                    kTestClientId, kTestApiAuthToken, kTestMultihopExitRegion),
+      test_case.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveVpnApiClientTests,
+    BraveVpnApiClientSetMultihopExitRegionTest,
+    testing::ValuesIn(
+        WithCommonUnrecoverableCases<SetMultihopExitRegionTestCase>(
+            WithCommonRawJsonCases<SetMultihopExitRegionTestCase>({}))),
+    [](const auto& info) { return info.param.test_name; });
+
+struct ClearMultihopExitRegionTestCase {
+  std::string test_name;
+  endpoints::SetMultihopExitRegion::Response response;
+  base::expected<std::string, std::string> expected;
+};
+
+using BraveVpnApiClientClearMultihopExitRegionTest =
+    BraveVpnApiClientTest<ClearMultihopExitRegionTestCase>;
+
+TEST_P(BraveVpnApiClientClearMultihopExitRegionTest, MapsResponseToResult) {
+  const auto& test_case = GetParam();
+  brave_account::endpoint_client::UrlReplacements url_replacements;
+  url_replacements.SetHost(kTestHostname);
+  url_replacements.SetPath(
+      base::StrCat({endpoints::SetMultihopExitRegion::URL().path(), "/",
+                    kTestClientId, "/config/multihop"}));
+  MockResponseFor<endpoints::SetMultihopExitRegion>(
+      url_loader_factory_, test_case.response, url_replacements);
+  EXPECT_EQ(CallClientApi(&BraveVpnApiClient::ClearMultihopExitRegion,
+                          kTestHostname, kTestClientId, kTestApiAuthToken),
+            test_case.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveVpnApiClientTests,
+    BraveVpnApiClientClearMultihopExitRegionTest,
+    testing::ValuesIn(
+        WithCommonUnrecoverableCases<ClearMultihopExitRegionTestCase>(
+            WithCommonRawJsonCases<ClearMultihopExitRegionTestCase>({}))),
+    [](const auto& info) { return info.param.test_name; });
+
+// Verifies request construction independent of the response, unlike
+// BraveVpnApiClientTest<> parameterized suites, which verify response-to-result
+// mapping independent of the request.
+class BraveVpnApiClientRequestBodyTest : public BraveVpnApiClientTestBase {};
+
+TEST_F(BraveVpnApiClientRequestBodyTest,
+       ClearMultihopExitRegionSendsDisabledSentinel) {
+  brave_account::endpoint_client::UrlReplacements url_replacements;
+  url_replacements.SetHost(kTestHostname);
+  url_replacements.SetPath(
+      base::StrCat({endpoints::SetMultihopExitRegion::URL().path(), "/",
+                    kTestClientId, "/config/multihop"}));
+
+  std::optional<std::string> sent_body;
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        if (request.request_body) {
+          const auto& elements = *request.request_body->elements();
+          ASSERT_EQ(elements.size(), 1u);
+          sent_body = std::string(
+              elements[0].As<network::DataElementBytes>().AsStringPiece());
+        }
+      }));
+
+  // The mocked response's content is irrelevant.
+  MockResponseFor<endpoints::SetMultihopExitRegion>(
+      url_loader_factory_,
+      endpoints::SetMultihopExitRegion::Response{
+          .net_error = net::OK,
+          .status_code = net::HTTP_OK,
+          .body = base::ok(endpoints::RawJsonResponseBody{.json = "{}"})},
+      url_replacements);
+
+  std::ignore = CallClientApi(&BraveVpnApiClient::ClearMultihopExitRegion,
+                              kTestHostname, kTestClientId, kTestApiAuthToken);
+
+  ASSERT_TRUE(sent_body.has_value());
+  const auto parsed =
+      base::JSONReader::ReadDict(*sent_body, base::JSON_PARSE_RFC);
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed->FindString("multihop-exit-region"), "disabled");
+}
 
 }  // namespace brave_vpn::v2

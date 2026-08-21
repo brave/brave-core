@@ -35,6 +35,7 @@ inline constexpr char kDeviceApiVerifyCredentialsSuffix[] =
     "verify-credentials";
 inline constexpr char kDeviceApiInvalidateCredentialsSuffix[] =
     "invalidate-credentials";
+inline constexpr char kDeviceApiConfigMultihopSuffix[] = "config/multihop";
 
 // Endpoint request JSON keys that can be shared between multiple APIs.
 inline constexpr char kProductTypeKey[] = "product-type";
@@ -59,6 +60,10 @@ inline constexpr char kApiAuthTokenKey[] = "api-auth-token";
 
 // Default payment validation method used by Brave.
 inline constexpr char kValidationMethodDefaultValue[] = "brave-premium";
+
+// Value that disables multihop when sent as SetMultihopExitRegion's
+// "multihop-exit-region".
+inline constexpr char kMultihopDisabledValue[] = "disabled";
 
 }  // namespace brave_vpn::v2::endpoints
 

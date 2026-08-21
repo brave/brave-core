@@ -112,6 +112,48 @@ struct InvalidateCredentials {
   }
 };
 
+// GetAvailableMultihopExitRegions API returns the currently configured multihop
+// exit region and the destinations available to choose from (identified by a
+// client-id path segment and an api auth token). Response is forwarded
+// verbatim.
+struct GetAvailableMultihopExitRegions {
+  using Request = brave_account::endpoint_client::GET<EmptyRequestBody>;
+  using Response = brave_account::endpoint_client::Response<RawJsonResponseBody,
+                                                            VpnErrorBody>;
+
+  static GURL URL() {
+    return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                              kDeviceHostPlaceholder}))
+        .Resolve(kDeviceApi);
+  }
+};
+
+// SetMultihopExitRegion API configures the multihop egress destination
+// (identified by a client-id path segment and an api auth token).
+struct SetMultihopExitRegionRequestBody {
+  std::string api_auth_token;
+  std::string multihop_exit_region;
+
+  base::DictValue ToValue() const {
+    return base::DictValue()
+        .Set(kApiAuthTokenKey, api_auth_token)
+        .Set(kMultihopExitRegionKey, multihop_exit_region);
+  }
+};
+
+struct SetMultihopExitRegion {
+  using Request =
+      brave_account::endpoint_client::POST<SetMultihopExitRegionRequestBody>;
+  using Response = brave_account::endpoint_client::Response<RawJsonResponseBody,
+                                                            VpnErrorBody>;
+
+  static GURL URL() {
+    return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                              kDeviceHostPlaceholder}))
+        .Resolve(kDeviceApi);
+  }
+};
+
 }  // namespace brave_vpn::v2::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_API_DEVICE_ENDPOINTS_H_
