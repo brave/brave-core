@@ -54,7 +54,7 @@ void BraveVpnServiceImpl::GetHostnamesForRegion(
       region_precision);
 }
 
-void BraveVpnServiceImpl::GetProfileCredentials(
+void BraveVpnServiceImpl::GetIKEv2ProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,
     const std::string& hostname) {

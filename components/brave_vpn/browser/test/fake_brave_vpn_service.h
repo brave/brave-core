@@ -76,9 +76,9 @@ class FakeBraveVpnService : public BraveVpnService {
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region,
                              const std::string& region_precision) override {}
-  void GetProfileCredentials(ResponseCallback callback,
-                             const std::string& subscriber_credential,
-                             const std::string& hostname) override {}
+  void GetIKEv2ProfileCredentials(ResponseCallback callback,
+                                  const std::string& subscriber_credential,
+                                  const std::string& hostname) override {}
   void GetWireguardProfileCredentials(ResponseCallback callback,
                                       const std::string& subscriber_credential,
                                       const std::string& public_key,
