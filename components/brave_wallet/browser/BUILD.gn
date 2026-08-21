@@ -890,6 +890,7 @@ source_set("unit_tests") {
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/mojom",
     "//components/component_updater:test_support",
+    "//components/content_settings/core/browser",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

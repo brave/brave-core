@@ -764,10 +764,6 @@ void TxService::RejectUnapprovedTransactionsWithoutPermission() {
         continue;
       }
       auto origin = url::Origin::Create(GURL(tx->origin_info->origin_spec));
-      if (origin.scheme() != url::kHttpScheme &&
-          origin.scheme() != url::kHttpsScheme) {
-        continue;
-      }
       if (HasOriginPermission(origin, tx->from_account_id)) {
         continue;
       }

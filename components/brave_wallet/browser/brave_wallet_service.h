@@ -186,6 +186,8 @@ class BraveWalletService : public KeyedService,
       const std::vector<mojom::AccountIdPtr>& accounts);
   bool HasPermissionSync(const url::Origin& origin,
                          const mojom::AccountIdPtr& account);
+  bool HasPermissionForPendingRequest(const url::Origin& origin,
+                                      const mojom::AccountIdPtr& account_id);
   void HasPermission(std::vector<mojom::AccountIdPtr> accounts,
                      HasPermissionCallback callback) override;
   void ResetPermission(mojom::AccountIdPtr account_id,

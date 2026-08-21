@@ -55,6 +55,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "url/url_constants.h"
 
 namespace brave_wallet {
 
@@ -304,10 +305,11 @@ BraveWalletService::BraveWalletService(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
       profile_prefs, CreateTxStorage(*delegate_),
-      base::BindRepeating(static_cast<bool (BraveWalletService::*)(
-                              const url::Origin&, const mojom::AccountIdPtr&)>(
-                              &BraveWalletService::HasPermissionSync),
-                          base::Unretained(this)));
+      base::BindRepeating(
+          static_cast<bool (BraveWalletService::*)(const url::Origin&,
+                                                   const mojom::AccountIdPtr&)>(
+              &BraveWalletService::HasPermissionForPendingRequest),
+          base::Unretained(this)));
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
@@ -1012,6 +1014,16 @@ bool BraveWalletService::HasPermissionSync(const url::Origin& origin,
   return true;
 }
 
+bool BraveWalletService::HasPermissionForPendingRequest(
+    const url::Origin& origin,
+    const mojom::AccountIdPtr& account_id) {
+  if (origin.scheme() != url::kHttpScheme &&
+      origin.scheme() != url::kHttpsScheme) {
+    return true;
+  }
+  return HasPermissionSync(origin, account_id);
+}
+
 void BraveWalletService::HasPermission(
     std::vector<mojom::AccountIdPtr> accounts,
     HasPermissionCallback callback) {
@@ -1320,7 +1332,7 @@ void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
        it != sign_message_requests_.end();) {
     auto origin =
         url::Origin::Create(GURL(it->request->origin_info->origin_spec));
-    if (HasPermissionSync(origin, it->request->account_id)) {
+    if (HasPermissionForPendingRequest(origin, it->request->account_id)) {
       ++it;
       continue;
     }
@@ -1341,7 +1353,7 @@ void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
   while (req_it != sign_sol_transactions_requests_.end()) {
     auto origin =
         url::Origin::Create(GURL((*req_it)->origin_info->origin_spec));
-    if (HasPermissionSync(origin, (*req_it)->from_account_id)) {
+    if (HasPermissionForPendingRequest(origin, (*req_it)->from_account_id)) {
       ++req_it;
       ++cb_it;
       continue;
@@ -1363,7 +1375,7 @@ void BraveWalletService::
   while (req_it != sign_cardano_transaction_requests_.end()) {
     auto origin =
         url::Origin::Create(GURL((*req_it)->origin_info->origin_spec));
-    if (HasPermissionSync(origin, (*req_it)->account_id)) {
+    if (HasPermissionForPendingRequest(origin, (*req_it)->account_id)) {
       ++req_it;
       ++cb_it;
       continue;

@@ -23,6 +23,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
@@ -1703,6 +1704,107 @@ TEST_F(EthereumProviderImplUnitTest,
   }
   EXPECT_TRUE(
       brave_wallet_service()->GetPendingSignMessageRequestsSync().empty());
+}
+
+TEST_F(EthereumProviderImplUnitTest,
+       SignMessage_NonWebOriginPermissionRevoked_RequestKept) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  Navigate(GURL("https://brave.com"));
+  AddEthereumPermission(account_0->account_id);
+
+  auto request = mojom::SignMessageRequest::New(
+      MakeOriginInfo(url::Origin::Create(GURL("chrome://wallet"))), 0,
+      account_0->account_id.Clone(),
+      mojom::SignDataUnion::NewEthStandardSignData(
+          mojom::EthStandardSignData::New("0xAB")),
+      mojom::CoinType::ETH, mojom::kMainnetChainId);
+  bool callback_called = false;
+  brave_wallet_service()->AddSignMessageRequest(
+      std::move(request),
+      base::BindLambdaForTesting([&](bool approved,
+                                     mojom::EthereumSignatureBytesPtr signature,
+                                     const std::optional<std::string>& error) {
+        callback_called = true;
+      }));
+  ASSERT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
+            1u);
+
+  ResetEthereumPermission(account_0->account_id);
+
+  EXPECT_FALSE(callback_called);
+  EXPECT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
+            1u);
+}
+
+TEST_F(EthereumProviderImplUnitTest,
+       PanelEvmTransaction_SitePermissionRevoked_TxKept) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  Navigate(GURL("https://brave.com"));
+  AddEthereumPermission(account_0->account_id);
+
+  auto params = mojom::NewEvmTransactionParams::New(
+      mojom::kMainnetChainId, account_0->account_id.Clone(),
+      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x1", "0x5208",
+      std::vector<uint8_t>(), nullptr);
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string_view request_string(request.request_body->elements()
+                                            ->at(0)
+                                            .As<network::DataElementBytes>()
+                                            .AsStringPiece());
+        base::DictValue request_value = ParseJsonDict(request_string);
+        std::string* method = request_value.FindString("method");
+        ASSERT_TRUE(method);
+        if (*method == "eth_gasPrice") {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+              "\"0x17fcf18321\"}");
+        } else if (*method == "eth_feeHistory") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+              {
+                "jsonrpc":"2.0",
+                "id":1,
+                "result": {
+                  "baseFeePerGas": [
+                    "0x24beaded75",
+                    "0x80D839776"
+                  ],
+                  "gasUsedRatio": [
+                    0.9054214892490816
+                  ],
+                  "oldestBlock": "0xd6b1b0",
+                  "reward": [
+                    [
+                      "0x3B9ACA00",
+                      "0x77359400",
+                      "0xB2D05E00"
+                    ]
+                  ]
+                }
+              })");
+        }
+      }));
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  tx_service()->AddUnapprovedEvmTransaction(std::move(params),
+                                            add_tx_future.GetCallback());
+  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
+  auto tx_info =
+      tx_service()->GetTransactionInfoSync(mojom::CoinType::ETH, tx_meta_id);
+  ASSERT_TRUE(tx_info);
+  ASSERT_EQ(tx_info->tx_status, mojom::TransactionStatus::Unapproved);
+
+  ResetEthereumPermission(account_0->account_id);
+
+  tx_info =
+      tx_service()->GetTransactionInfoSync(mojom::CoinType::ETH, tx_meta_id);
+  ASSERT_TRUE(tx_info);
+  EXPECT_EQ(tx_info->tx_status, mojom::TransactionStatus::Unapproved);
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
