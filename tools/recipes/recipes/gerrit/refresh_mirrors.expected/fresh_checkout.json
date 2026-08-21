@@ -41,6 +41,21 @@
     "cmd": [
       "git",
       "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
       "populate",
       "--cache-dir",
       "/b/cache",
@@ -54,6 +69,21 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (after)"
   },
   {
     "cmd": [
@@ -173,6 +203,40 @@
     "cmd": [
       "git",
       "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "fetch tags exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "name": "fetch tags disable gc.auto (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "name": "fetch tags disable maintenance.gc.enabled (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
       "populate",
       "--cache-dir",
       "/b/cache",
@@ -182,6 +246,18 @@
       "refs/tags/*"
     ],
     "name": "fetch tags"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "fetch tags exists (after)"
   },
   {
     "cmd": [

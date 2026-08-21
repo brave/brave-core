@@ -38,6 +38,18 @@ def GenTests(api):
         'cache from environment',
         api.env.set('GIT_CACHE_PATH', '/b/cache'),
         api.path.dirs('/b/cache'),
+        # The first populate() call's mirror already exists *before* it
+        # runs (as it would on any second-or-later run in production) --
+        # this is the case that matters: auto-gc must be disabled ahead of
+        # that call's own `git fetch`, not after it, since that fetch is
+        # exactly what can trigger the OOM-prone auto-maintenance.
+        api.step_data('git cache populate exists (before)',
+                      stdout=api.raw_io.output_text(f'{_mirror}\n')),
+        # The second populate() call's mirror doesn't exist yet going in
+        # (unseeded "before" check, so empty stdout) but does by the time
+        # that call returns -- simulating a call that bootstraps it fresh.
+        api.step_data('populate with tags exists (after)',
+                      stdout=api.raw_io.output_text(f'{_mirror}\n')),
         api.step_data('git cache exists',
                       stdout=api.raw_io.output_text(f'{_mirror}\n')),
         api.post_process(post_process.StepCommandContains, 'cache path',
@@ -54,6 +66,27 @@ def GenTests(api):
                          'populate with tags', ['--no-fetch-tags']),
         api.post_process(post_process.StepCommandContains, 'mirror',
                          [_mirror]),
+        # The already-existing mirror gets auto-gc disabled *before* its
+        # fetch, not just after -- otherwise a fetch that hangs or gets
+        # OOM-killed would mean the disable step downstream never runs.
+        api.post_process(post_process.StepCommandContains,
+                         'git cache populate disable gc.auto (before)',
+                         ['--git-dir', _mirror, 'config', 'gc.auto', '0']),
+        api.post_process(
+            post_process.StepCommandContains,
+            'git cache populate disable maintenance.gc.enabled (before)', [
+                '--git-dir', _mirror, 'config', 'maintenance.gc.enabled',
+                'false'
+            ]),
+        # Nothing to configure before the first fetch of a mirror that
+        # doesn't exist yet...
+        api.post_process(post_process.DoesNotRun,
+                         'populate with tags disable gc.auto (before)'),
+        # ...but it exists once that call bootstraps it, so the *next* use
+        # of this mirror is still protected.
+        api.post_process(post_process.StepCommandContains,
+                         'populate with tags disable gc.auto (after)',
+                         ['--git-dir', _mirror, 'config', 'gc.auto', '0']),
         api.post_process(post_process.StatusSuccess),
     )
     # No cache at all is a hard error rather than an uncached run.

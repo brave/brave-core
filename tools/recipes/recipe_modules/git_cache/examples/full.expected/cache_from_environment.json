@@ -10,6 +10,40 @@
     "cmd": [
       "git",
       "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "name": "git cache populate disable gc.auto (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "name": "git cache populate disable maintenance.gc.enabled (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
       "populate",
       "--cache-dir",
       "/b/cache",
@@ -18,6 +52,30 @@
       "--no-fetch-tags"
     ],
     "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "git cache populate exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "populate with tags exists (before)"
   },
   {
     "cmd": [
@@ -34,6 +92,40 @@
       "c0ffeec0ffeec0ffeec0ffeec0ffeec0ffee"
     ],
     "name": "populate with tags"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "populate with tags exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "name": "populate with tags disable gc.auto (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "--git-dir",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "name": "populate with tags disable maintenance.gc.enabled (after)"
   },
   {
     "cmd": [

@@ -15,7 +15,9 @@ from PB.recipes.brave.gerrit.refresh_mirrors import InputProperties
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
-DEPS = ['path', 'step', 'chromium_checkout', 'depot_tools', 'git_cache']
+DEPS = [
+    'path', 'step', 'chromium_checkout', 'depot_tools', 'git_cache', 'raw_io'
+]
 
 PROPERTIES = InputProperties
 
@@ -51,11 +53,26 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.properties(gerrit_user='chromium-mirror-bot'),
+        # The mirror already exists *before* tags are fetched, so git's own
+        # auto-gc gets disabled on it ahead of that fetch -- the one that
+        # OOM'd in production by triggering an automatic geometric repack
+        # (see git_cache module's `_disable_auto_gc`). Disabling it only
+        # after the fetch would be too late: if this fetch is the one that
+        # hangs or gets OOM-killed, `git cache populate` never returns and a
+        # downstream config write never runs either.
+        api.step_data(
+            'fetch tags exists (before)',
+            stdout=api.raw_io.output_text('/b/cache/chromium.googlesource'
+                                          '.com-chromium-src\n')),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.StepCommandContains, 'fetch tags',
                          ['--ref', 'refs/tags/*']),
         api.post_process(post_process.StepCommandDoesNotContain, 'fetch tags',
                          ['--no-fetch-tags']),
+        api.post_process(post_process.MustRun,
+                         'fetch tags disable gc.auto (before)'),
+        api.post_process(post_process.MustRun,
+                         'fetch tags disable maintenance.gc.enabled (before)'),
         api.post_process(post_process.MustRun, 'refresh gerrit mirrors'),
         api.post_process(post_process.StepCommandContains,
                          'refresh gerrit mirrors',

@@ -38,7 +38,7 @@ import sys
 # brave-core remote + branch the engine code is fetched from. SSH, matching the
 # `brave_core_checkout` recipe module.
 REPO_URL = 'git@github.com:brave/brave-core.git'
-BRAVE_CORE_REF = 'master'
+BRAVE_CORE_REF = 'recipes+disable-gc-for-git-cache'
 
 # The relative path to the recipes engine in the bootstrapped checkout for it.
 RECIPES_PATH = 'tools/recipes'

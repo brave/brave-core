@@ -60,6 +60,16 @@ class GitCacheApi(RecipeApi):
             no_fetch_tags: Skip fetching tags that point at fetched objects.
             step_name: Step name for the `git cache populate` call.
         """
+        # Disabled *before* `git cache populate` runs, not just after: the
+        # failure this guards against is `git fetch` (run internally by
+        # `git cache populate`, below) triggering git's own auto-maintenance
+        # and getting OOM-killed or hanging for hours. If that's what this
+        # very call is about to do, `git cache populate` never returns, and a
+        # config write placed only after it would never run either -- so an
+        # already-existing mirror needs the guard in place *before* its next
+        # fetch, not applied retroactively once that fetch is done.
+        self._disable_auto_gc(url, step_name, 'before')
+
         cmd = [
             'git', 'cache', 'populate', '--cache-dir', self._path, url,
             '--reset-fetch-config'
@@ -71,6 +81,48 @@ class GitCacheApi(RecipeApi):
         if commit:
             cmd.extend(['--commit', commit])
         self.m.step(step_name, cmd)
+
+        # Also applied afterwards, for the one case the check above can't
+        # cover: this call is the one that bootstraps or freshly initialises
+        # the mirror, so it didn't exist yet when checked above. It does now,
+        # so at least the *next* populate() call is protected.
+        self._disable_auto_gc(url, step_name, 'after')
+
+    def _disable_auto_gc(self, url: str, step_name: str, when: str) -> None:
+        """Stop git's own automatic gc from ever running against this mirror.
+
+        A `git fetch` into the mirror can trigger git's built-in auto-gc,
+        which on recent git versions performs an incremental "geometric
+        repack" once the mirror accumulates a handful of pack files. On a
+        repo the size of chromium/src that repack is memory-hungry enough to
+        get OOM-killed on every fetch, turning a routine `populate()` into an
+        hours-long, ultimately fatal step. depot_tools' own
+        `gc.autoDetach`/`gc.autoPackLimit=0` (set inside `git cache
+        populate` itself) don't cover this newer maintenance path, so it's
+        disabled here directly instead.
+
+        A no-op when the mirror doesn't exist yet: a freshly-created mirror
+        won't have accumulated enough packs to hit this on its own first
+        fetch, and the config set here takes effect from its next one.
+
+        Args:
+            when: Distinguishes the pre- and post-populate call sites in step
+                names (`populate()` runs this twice per call).
+        """
+        result = self.m.step(f'{step_name} exists ({when})', [
+            'git', 'cache', 'exists', '--quiet', '--cache-dir', self._path,
+            url
+        ],
+                             stdout=self.m.raw_io.output_text(),
+                             check=False)
+        mirror_dir = result.stdout.strip()
+        if not mirror_dir:
+            return
+        for key, value in (('gc.auto', '0'),
+                           ('maintenance.gc.enabled', 'false')):
+            self.m.step(f'{step_name} disable {key} ({when})', [
+                'git', '--git-dir', mirror_dir, 'config', key, value
+            ])
 
     def mirror_dir(self,
                    url: str,
