@@ -211,6 +211,9 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="not is_android">
+        <message name="IDS_APP_MENU_INCOGNITO" desc="Label for the Private block button in the main App Menu">
+          Private
+        </message>
         <if expr="not use_titlecase">
           <if expr="is_win or is_macosx or is_linux">
           </if>
