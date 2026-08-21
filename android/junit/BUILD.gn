@@ -173,6 +173,7 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
       "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
     ]
 
     deps = [
@@ -186,6 +187,15 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/suggestions/BraveSuggestionsConfigTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.suggestions.mostvisited") {
+    sources = [ "src/org/chromium/chrome/browser/suggestions/mostvisited/BraveMostVisitedSitesTest.java" ]
+    deps = [
+      "//brave/browser/ntp_customization:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.tasks") {

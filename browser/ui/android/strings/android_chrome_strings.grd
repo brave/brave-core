@@ -5519,10 +5519,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
 
       <!-- Edit Shortcut (also Add Shortcut) -->
       <message name="IDS_EDIT_SHORTCUT_TITLE_ADD" desc="The title for Custom Links Edit Shortcut dialog (on the NTP) when adding a new shortcut.">
-        Add shortcut
+        Add favorite
       </message>
       <message name="IDS_EDIT_SHORTCUT_TITLE_EDIT" desc="The title for Custom Links Edit Shortcut dialog (on the NTP) when editing an existing shortcut.">
-        Edit shortcut
+        Edit favorite
       </message>
       <message name="IDS_EDIT_SHORTCUT_HINT_NAME" desc="The hint text for Custom Links Edit Shortcut dialog name input.">
         Name
@@ -7906,6 +7906,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <!-- Graceful Shutdown strings -->
       <message name="IDS_GRACEFUL_SHUTDOWN_TITLE" desc="Title of the notification shown when Brave is finishing shutting down.">
         Finishing shut down
+      </message>
+
+      <!-- NTP top-sites long-press menu -->
+      <message name="IDS_BRAVE_NTP_ADD_SITE" desc="Menu item to manually add a site shortcut to the NTP top-sites widget.">
+        Add site
+      </message>
+      <message name="IDS_BRAVE_NTP_SHOW_FREQUENTLY_VISITED" desc="Menu item to switch the NTP top-sites widget to show frequently visited sites from browser history.">
+        Show frequently visited
+      </message>
+      <message name="IDS_BRAVE_NTP_SHOW_SHORTCUTS" desc="Menu item to switch the NTP top-sites widget to show pinned shortcuts (favorites).">
+        Show shortcuts
+      </message>
+      <message name="IDS_BRAVE_NTP_HIDE_WIDGET" desc="Menu item to hide the NTP top-sites widget entirely.">
+        Hide widget
       </message>
     </messages>
   </release>

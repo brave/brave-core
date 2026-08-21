@@ -1,0 +1,14 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsDependencyFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsDependencyFactory.java
+index affa65d69b2d2e7848d14620a35bad27f8e16172..81e0b0c5e35d6a4dc3447bc1f1220545dc09e4aa 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsDependencyFactory.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsDependencyFactory.java
+@@ -37,7 +37,8 @@ public class SuggestionsDependencyFactory {
+     }
+ 
+     public MostVisitedSites createMostVisitedSites(Profile profile) {
+-        return new MostVisitedSitesBridge(profile);
++        return new org.chromium.chrome.browser.suggestions.mostvisited.BraveMostVisitedSites(
++                profile);
+     }
+ 
+     public LargeIconBridge createLargeIconBridge(Profile profile) {
