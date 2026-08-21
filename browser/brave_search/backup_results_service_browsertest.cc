@@ -31,6 +31,7 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 
 namespace brave_search {
@@ -205,8 +206,9 @@ IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
     run_loop.Run();
   }
 
-  BackupResultsServiceImpl::RecordLastViewSize(g_browser_process->local_state(),
-                                               gfx::Size(1280, 720));
+  BackupResultsServiceImpl::RecordLastViewGeometry(
+      g_browser_process->local_state(), gfx::Size(1280, 720),
+      gfx::Rect(100, 50, 1280, 800));
   request_paths_.clear();
 
   {
