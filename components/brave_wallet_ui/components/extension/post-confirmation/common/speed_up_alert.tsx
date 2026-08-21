@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // Actions
-import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
+import { UIActions } from '../../../../common/slices/ui.slice'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -47,7 +47,7 @@ export const SpeedUpAlert = (props: Props) => {
       chainId: transaction.chainId,
       transactionId: transaction.id,
     })
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
+    dispatch(UIActions.setSelectedTransactionId(undefined))
   }
 
   return (

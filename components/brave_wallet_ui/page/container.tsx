@@ -68,6 +68,9 @@ import {
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 import { Connections } from '../components/extension/connections/connections'
 import { PageNotFound } from './screens/page_not_found/page_not_found'
+import {
+  DesktopTransactionConfirmation, //
+} from './components/desktop_transaction_confirmation/desktop_transaction_confirmation'
 
 export const Container = () => {
   // routing — persist search + hash so e.g. (Buy, Send, Swap and Bridge) query params survive lock/unlock
@@ -96,6 +99,7 @@ export const Container = () => {
   // ui selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   const initialSessionRoute = getInitialSessionRoute(isPanel, isSidePanel)
 
@@ -333,6 +337,7 @@ export const Container = () => {
         onClose={handleDeclinePartnerConsent}
         onContinue={handleAcceptPartnerConsent}
       />
+      {!isWalletLocked && !isMobile && <DesktopTransactionConfirmation />}
     </>
   )
 }

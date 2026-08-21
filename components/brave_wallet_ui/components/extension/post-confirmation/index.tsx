@@ -13,7 +13,6 @@ import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { BraveWallet, TransactionInfoLookup } from '../../../constants/types'
 
 // Utils
-import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { makeTransactionDetailsRoute } from '../../../utils/routes-utils'
 
 // Hooks
@@ -21,9 +20,12 @@ import { useGetTransactionQuery } from '../../../common/slices/api.slice'
 import {
   useGate3SwapStatus, //
 } from '../../../page/screens/swap/hooks/useGate3SwapStatus'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Actions
 import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions'
+import { UIActions } from '../../../common/slices/ui.slice'
 
 // Components
 import {
@@ -65,25 +67,24 @@ export function TransactionStatus({ transactionLookup }: Props) {
 
   // redux
   const dispatch = useAppDispatch()
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
 
   // methods
   const onClickViewInActivity = React.useCallback(() => {
     if (!tx?.id) {
       return
     }
-    dispatch(
-      WalletPanelActions.setSelectedTransactionId({
-        chainId: tx.chainId,
-        coin: getCoinFromTxDataUnion(tx.txDataUnion),
-        id: tx.id,
-      }),
-    )
-    dispatch(WalletPanelActions.navigateToMain())
+    // Dismiss post-confirm UI. Activity details come from the route hash, not
+    // selectedTransactionId (that was for the old panel transactionDetails view).
+    dispatch(UIActions.setSelectedTransactionId(undefined))
+    if (isPanel && !isSidePanel) {
+      dispatch(WalletPanelActions.navigateToMain())
+    }
     history.push(makeTransactionDetailsRoute(tx.id))
-  }, [dispatch, history, tx])
+  }, [dispatch, history, isPanel, isSidePanel, tx])
 
-  const onClose = () =>
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
+  const onClose = () => dispatch(UIActions.setSelectedTransactionId(undefined))
 
   // render
   if (!tx) {
