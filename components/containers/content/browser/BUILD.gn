@@ -16,6 +16,8 @@ component("browser") {
   sources = [
     "containers_web_contents_user_data.cc",
     "containers_web_contents_user_data.h",
+    "preserve_container_destination.cc",
+    "preserve_container_destination.h",
     "session_utils.cc",
     "session_utils.h",
     "storage_partition_utils.cc",
