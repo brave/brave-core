@@ -924,7 +924,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   auto* controller = browser()->GetFeatures().email_aliases_controller();
   ASSERT_NE(nullptr, controller->GetBubbleForTesting());
 
-  // Closing the promo should record it as shown and navigate to settings.
+  // Closing navigates to settings.
   controller->CloseBubble();
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
@@ -933,5 +933,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
                ->GetActiveWebContents()
                ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
   }));
+
+  // Continue to show the promo until the first login
+  EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      email_aliases::prefs::kPromoShown));
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
