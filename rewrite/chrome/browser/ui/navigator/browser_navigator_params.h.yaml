@@ -5,10 +5,18 @@
 
 substitutions:
   - description: |
-      Add `storage_partition_config` to NavigateParams for Brave's container support.
+      Add fields to NavigateParams for Brave's Containers support.
+
+      `storage_partition_config` carries the target container partition.
+      `preserve_container_destination` marks explicit open-in / without /
+      temporary UI so Traffic Control does not override it.
     regex:
       re_pattern: '(struct NavigateParams\ {\n)'
       replace: |-
         \1#if BUILDFLAG(ENABLE_CONTAINERS)
           std::optional<content::StoragePartitionConfig> storage_partition_config;
+
+          // True if the navigation's container destination was chosen by explicit
+          // open-in/without container.
+          bool preserve_container_destination = false;
         #endif\n

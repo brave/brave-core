@@ -9,13 +9,65 @@ assert(enable_traffic_control)
 
 source_set("traffic_control") {
   sources = [
+    "traffic_control_apply.cc",
+    "traffic_control_apply.h",
+    "traffic_control_navigation_throttle.cc",
+    "traffic_control_navigation_throttle.h",
     "traffic_control_service_factory.cc",
     "traffic_control_service_factory.h",
+    "traffic_control_tab_utils.cc",
+    "traffic_control_tab_utils.h",
   ]
 
   deps = [
+    "//base",
+    "//brave/browser/containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/mojom",
     "//brave/components/traffic_control/core/browser",
     "//brave/components/traffic_control/core/common",
+    "//brave/components/traffic_control/core/mojom",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
+    "//chrome/browser/ui/tabs:tab_enums",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/webui/ntp",
+    "//chrome/common",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//net",
+    "//ui/base",
+    "//url",
   ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "traffic_control_browsertest.cc" ]
+
+  deps = [
+    ":traffic_control",
+    "//brave/browser/containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/browser:test_support",
+    "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/mojom",
+    "//brave/components/traffic_control/core/browser",
+    "//brave/components/traffic_control/core/common",
+    "//brave/components/traffic_control/core/mojom",
+    "//chrome/browser",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//ui/base",
+    "//url",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
