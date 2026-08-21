@@ -116,6 +116,7 @@ function ToolEventContent(
         isInteractive={props.isEntryActive}
         toolUseEvent={toolUseEvent}
         toolLabel={content.toolLabel!}
+        toolInput={input}
       />
     )
     content.toolLabel = null

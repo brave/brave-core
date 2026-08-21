@@ -270,4 +270,102 @@ describe('ToolEvent', () => {
     fireEvent.click(denyButton)
     expect(mockProcessPermissionChallenge).not.toHaveBeenCalled()
   })
+
+  describe('permission challenge tool arguments', () => {
+    function renderPermissionChallenge(argumentsJson: string) {
+      return render(
+        <MockContext>
+          <ToolEvent
+            toolUseEvent={{
+              toolName: Mojom.NAVIGATE_TOOL_NAME,
+              id: '123',
+              argumentsJson,
+              output: undefined,
+              permissionChallenge: {
+                assessment: undefined,
+                plan: undefined,
+                description: undefined,
+              },
+            }}
+            isEntryActive={true}
+          />
+        </MockContext>,
+      )
+    }
+
+    it('should hide the tool arguments until requested', () => {
+      renderPermissionChallenge('{"website_url": "https://www.example.com"}')
+
+      expect(
+        screen.getByText(S.CHAT_UI_PERMISSION_CHALLENGE_SHOW_ARGUMENTS_BUTTON),
+      ).toBeInTheDocument()
+      expect(screen.queryByTestId('tool-arguments')).not.toBeInTheDocument()
+    })
+
+    it('should show the tool arguments on click', () => {
+      renderPermissionChallenge('{"website_url": "https://www.example.com"}')
+
+      fireEvent.click(screen.getByTestId('tool-arguments-toggle'))
+
+      // The code block splits the text across syntax-highlighted elements, so
+      // assert on the rendered text content rather than a single text node.
+      const args = screen.getByTestId('tool-arguments')
+      expect(args).toHaveTextContent('website_url')
+      expect(args).toHaveTextContent('https://www.example.com')
+      expect(
+        screen.getByText(S.CHAT_UI_PERMISSION_CHALLENGE_HIDE_ARGUMENTS_BUTTON),
+      ).toBeInTheDocument()
+    })
+
+    it('should hide the tool arguments again on click', () => {
+      renderPermissionChallenge('{"website_url": "https://www.example.com"}')
+
+      const toggle = screen.getByTestId('tool-arguments-toggle')
+      fireEvent.click(toggle)
+      expect(screen.getByTestId('tool-arguments')).toBeInTheDocument()
+
+      fireEvent.click(toggle)
+      expect(screen.queryByTestId('tool-arguments')).not.toBeInTheDocument()
+    })
+
+    it('should show all arguments, including nested ones', () => {
+      renderPermissionChallenge(
+        '{"action": "group", "options": {"collapse": true}}',
+      )
+
+      fireEvent.click(screen.getByTestId('tool-arguments-toggle'))
+
+      const args = screen.getByTestId('tool-arguments')
+      expect(args).toHaveTextContent('action')
+      expect(args).toHaveTextContent('group')
+      expect(args).toHaveTextContent('options')
+      expect(args).toHaveTextContent('collapse')
+    })
+
+    it('should show unparseable arguments verbatim', () => {
+      renderPermissionChallenge('2 invalid 2 json')
+
+      fireEvent.click(screen.getByTestId('tool-arguments-toggle'))
+
+      expect(screen.getByTestId('tool-arguments')).toHaveTextContent(
+        '2 invalid 2 json',
+      )
+    })
+
+    it('should not offer to show arguments when there are none', () => {
+      renderPermissionChallenge('')
+
+      expect(
+        screen.queryByTestId('tool-arguments-toggle'),
+      ).not.toBeInTheDocument()
+    })
+
+    it('should not offer to show arguments for an empty argument object', () => {
+      renderPermissionChallenge('{}')
+
+      expect(
+        screen.queryByTestId('tool-arguments-toggle'),
+      ).not.toBeInTheDocument()
+    })
+  })
 })

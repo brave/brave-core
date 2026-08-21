@@ -16,6 +16,7 @@ type CustomArgs = {
   hasPlan: boolean
   hasImplications: boolean
   isWebTool: boolean
+  argumentsJson: string
 }
 
 const args: CustomArgs = {
@@ -24,10 +25,25 @@ const args: CustomArgs = {
   hasPlan: false,
   hasImplications: true,
   isWebTool: false,
+  argumentsJson: JSON.stringify({
+    action: 'group',
+    group_title: 'Recipes',
+    tab_ids: [12, 13, 14],
+    options: { collapse: true, color: 'blue' },
+  }),
 }
 
 export const _ToolPermissionChallenge = {
   render: (args: CustomArgs) => {
+    // Mirrors what tool_event.tsx does before rendering this component: the
+    // arguments are parsed from LLM output, so parsing can fail.
+    let toolInput: any = null
+    try {
+      toolInput = JSON.parse(args.argumentsJson)
+    } catch (e) {
+      toolInput = null
+    }
+
     const toolUseEvent: Mojom.ToolUseEvent = {
       toolName: args.isWebTool
         ? 'web_example_com_get_stock_price'
@@ -35,7 +51,7 @@ export const _ToolPermissionChallenge = {
           ? Mojom.TAB_MANAGEMENT_TOOL_NAME
           : Mojom.CODE_EXECUTION_TOOL_NAME,
       id: 'toolId',
-      argumentsJson: 'toolArguments',
+      argumentsJson: args.argumentsJson,
       output: undefined,
       isServerResult: false,
       artifacts: undefined,
@@ -56,6 +72,7 @@ export const _ToolPermissionChallenge = {
         <ToolPermissionChallenge
           isInteractive={args.isInteractive}
           toolUseEvent={toolUseEvent}
+          toolInput={toolInput}
           toolLabel={
             args.hasPlan
               ? 'Managing your tabs'
