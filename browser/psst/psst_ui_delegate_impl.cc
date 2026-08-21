@@ -8,6 +8,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/psst/core/common/constants.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
 
@@ -176,8 +177,12 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
 
     ui_presenter_->ShowConsentDialog();
   } else {
-    // Disable PSST if user declined the infobar
-    psst_settings_service_->SetPsstEnabled(false);
+    if (!psst_settings_service_->IsManagedPreference()) {
+      // Disable PSST if user declined the infobar and PSST is not managed by
+      // policy
+      psst_settings_service_->SetPsstEnabled(false);
+    }
+    psst_settings_service_->SetInfobarShowCounter(kMaxPsstInfobarShownCounter);
   }
 }
 
@@ -203,6 +208,12 @@ void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
 
 void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
   if (new_value) {
+    return;
+  }
+
+  // Do not remove the omnibar icon infobar and consent dialog when it is in
+  // managed preferences mode (e.g., admin or Brave Origin policies)
+  if (psst_settings_service_->IsManagedPreference()) {
     return;
   }
 

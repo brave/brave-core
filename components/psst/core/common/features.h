@@ -12,6 +12,8 @@ namespace psst::features {
 
 BASE_DECLARE_FEATURE(kEnablePsst);
 
+bool IsPsstEnabled();
+
 }  // namespace psst::features
 
 #endif  // BRAVE_COMPONENTS_PSST_CORE_COMMON_FEATURES_H_

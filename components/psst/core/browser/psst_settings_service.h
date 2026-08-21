@@ -59,6 +59,10 @@ class PsstSettingsService : public KeyedService {
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);
 
+  bool IsManagedPreference() const;
+
+  void SetInfobarShowCounter(int value);
+
  private:
   void OnPreferenceChanged(const std::string& pref_name);
 
