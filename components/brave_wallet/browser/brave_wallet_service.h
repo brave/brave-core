@@ -59,7 +59,8 @@ class SwapService;
 class MeldIntegrationService;
 class SimulationService;
 class BraveWalletIpfsService;
-struct PendingSignMessageRequest;
+template <typename Request, typename Callback>
+struct PendingRequest;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
 
@@ -212,7 +213,7 @@ class BraveWalletService : public KeyedService,
       GetPendingSignSolTransactionsRequestsCallback callback) override;
   void GetPendingSignCardanoTransactionRequests(
       GetPendingSignCardanoTransactionRequestsCallback callback) override;
-  const base::circular_deque<mojom::SignCardanoTransactionRequestPtr>&
+  std::vector<mojom::SignCardanoTransactionRequestPtr>
   GetPendingSignCardanoTransactionRequestsSync() const;
 
   void NotifySignSolTransactionsRequestProcessed(
@@ -304,6 +305,18 @@ class BraveWalletService : public KeyedService,
   void DrainSignMessageRequestsWithoutPermission();
   void DrainSignSolTransactionsRequestsWithoutPermission();
   void DrainSignCardanoTransactionRequestsWithoutPermission();
+
+  // Moves pending requests whose origin no longer has wallet permission out
+  // of |pending_requests| before running their callbacks, so that re-entrant
+  // mutation from a callback cannot invalidate iteration. |get_account_id|
+  // returns the account a pending request is bound to, and |drain_callback|
+  // rejects a drained request's callback as if the user declined it.
+  template <typename PendingDeque,
+            typename GetAccountId,
+            typename DrainCallback>
+  void DrainPendingRequestsWithoutPermission(PendingDeque& pending_requests,
+                                             GetAccountId get_account_id,
+                                             DrainCallback drain_callback);
 
   // KeyringServiceObserverBase:
   void WalletRestored() override;
@@ -473,17 +486,21 @@ class BraveWalletService : public KeyedService,
   int sign_sol_transactions_id_ = 0;
   int sign_cardano_transactions_id_ = 0;
 
+  using PendingSignMessageRequest =
+      PendingRequest<mojom::SignMessageRequestPtr, SignMessageRequestCallback>;
+  using PendingSignSolTransactionsRequest =
+      PendingRequest<mojom::SignSolTransactionsRequestPtr,
+                     SignSolTransactionsRequestCallback>;
+  using PendingSignCardanoTransactionRequest =
+      PendingRequest<mojom::SignCardanoTransactionRequestPtr,
+                     SignCardanoTransactionRequestCallback>;
+
   base::circular_deque<PendingSignMessageRequest> sign_message_requests_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
-  base::circular_deque<mojom::SignSolTransactionsRequestPtr>
+  base::circular_deque<PendingSignSolTransactionsRequest>
       sign_sol_transactions_requests_;
-  base::circular_deque<SignSolTransactionsRequestCallback>
-      sign_sol_transactions_callbacks_;
-
-  base::circular_deque<mojom::SignCardanoTransactionRequestPtr>
+  base::circular_deque<PendingSignCardanoTransactionRequest>
       sign_cardano_transaction_requests_;
-  base::circular_deque<SignCardanoTransactionRequestCallback>
-      sign_cardano_transaction_callbacks_;
 
   base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
       add_suggest_token_callbacks_;

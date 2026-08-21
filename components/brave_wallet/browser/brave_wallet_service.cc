@@ -217,26 +217,14 @@ struct PendingGetEncryptPublicKeyRequest {
   base::Value encryption_public_key_id;
 };
 
-struct PendingSignMessageRequest {
-  PendingSignMessageRequest();
-  PendingSignMessageRequest(
-      mojom::SignMessageRequestPtr request,
-      BraveWalletService::SignMessageRequestCallback callback);
-  ~PendingSignMessageRequest();
-  PendingSignMessageRequest(PendingSignMessageRequest&& other);
+template <typename Request, typename Callback>
+struct PendingRequest {
+  PendingRequest(Request request, Callback callback)
+      : request(std::move(request)), callback(std::move(callback)) {}
 
-  mojom::SignMessageRequestPtr request;
-  BraveWalletService::SignMessageRequestCallback callback;
+  Request request;
+  Callback callback;
 };
-
-PendingSignMessageRequest::PendingSignMessageRequest() = default;
-PendingSignMessageRequest::PendingSignMessageRequest(
-    mojom::SignMessageRequestPtr request,
-    BraveWalletService::SignMessageRequestCallback callback)
-    : request(std::move(request)), callback(std::move(callback)) {}
-PendingSignMessageRequest::~PendingSignMessageRequest() = default;
-PendingSignMessageRequest::PendingSignMessageRequest(
-    PendingSignMessageRequest&& other) = default;
 
 BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -1236,8 +1224,8 @@ void BraveWalletService::GetPendingSignSolTransactionsRequests(
     return;
   }
 
-  for (const auto& request : sign_sol_transactions_requests_) {
-    requests.push_back(request.Clone());
+  for (const auto& pending : sign_sol_transactions_requests_) {
+    requests.push_back(pending.request.Clone());
   }
 
   std::move(callback).Run(std::move(requests));
@@ -1251,16 +1239,20 @@ void BraveWalletService::GetPendingSignCardanoTransactionRequests(
     return;
   }
 
-  for (const auto& request : sign_cardano_transaction_requests_) {
-    requests.push_back(request.Clone());
+  for (const auto& pending : sign_cardano_transaction_requests_) {
+    requests.push_back(pending.request.Clone());
   }
 
   std::move(callback).Run(std::move(requests));
 }
 
-const base::circular_deque<mojom::SignCardanoTransactionRequestPtr>&
+std::vector<mojom::SignCardanoTransactionRequestPtr>
 BraveWalletService::GetPendingSignCardanoTransactionRequestsSync() const {
-  return sign_cardano_transaction_requests_;
+  std::vector<mojom::SignCardanoTransactionRequestPtr> requests;
+  for (const auto& pending : sign_cardano_transaction_requests_) {
+    requests.push_back(pending.request.Clone());
+  }
+  return requests;
 }
 
 void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
@@ -1269,14 +1261,13 @@ void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
     std::vector<mojom::SolanaSignaturePtr> hw_signatures,
     const std::optional<std::string>& error) {
   if (sign_sol_transactions_requests_.empty() ||
-      sign_sol_transactions_requests_.front()->id != id) {
+      sign_sol_transactions_requests_.front().request->id != id) {
     return;
   }
-  auto callback = std::move(sign_sol_transactions_callbacks_.front());
+  auto pending = std::move(sign_sol_transactions_requests_.front());
   sign_sol_transactions_requests_.pop_front();
-  sign_sol_transactions_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, std::move(hw_signatures), error);
+  std::move(pending.callback).Run(approved, std::move(hw_signatures), error);
 }
 
 void BraveWalletService::NotifySignCardanoTransactionRequestProcessed(
@@ -1284,14 +1275,13 @@ void BraveWalletService::NotifySignCardanoTransactionRequestProcessed(
     int id,
     const std::optional<std::string>& error) {
   if (sign_cardano_transaction_requests_.empty() ||
-      sign_cardano_transaction_requests_.front()->id != id) {
+      sign_cardano_transaction_requests_.front().request->id != id) {
     return;
   }
-  auto callback = std::move(sign_cardano_transaction_callbacks_.front());
+  auto pending = std::move(sign_cardano_transaction_requests_.front());
   sign_cardano_transaction_requests_.pop_front();
-  sign_cardano_transaction_callbacks_.pop_front();
 
-  std::move(callback).Run(approved, error);
+  std::move(pending.callback).Run(approved, error);
 }
 
 void BraveWalletService::AddObserver(
@@ -1326,67 +1316,61 @@ void BraveWalletService::OnContentSettingChanged(
   DrainSignCardanoTransactionRequestsWithoutPermission();
 }
 
-void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
-  std::vector<PendingSignMessageRequest> to_drain;
-  for (auto it = sign_message_requests_.begin();
-       it != sign_message_requests_.end();) {
+template <typename PendingDeque, typename GetAccountId, typename DrainCallback>
+void BraveWalletService::DrainPendingRequestsWithoutPermission(
+    PendingDeque& pending_requests,
+    GetAccountId get_account_id,
+    DrainCallback drain_callback) {
+  std::vector<typename PendingDeque::value_type> to_drain;
+  for (auto it = pending_requests.begin(); it != pending_requests.end();) {
     auto origin =
         url::Origin::Create(GURL(it->request->origin_info->origin_spec));
-    if (HasPermissionForPendingRequest(origin, it->request->account_id)) {
+    if (HasPermissionForPendingRequest(origin, get_account_id(*it))) {
       ++it;
       continue;
     }
     to_drain.push_back(std::move(*it));
-    it = sign_message_requests_.erase(it);
+    it = pending_requests.erase(it);
   }
   // approved=false so the provider rejects the request as if the user
   // declined it.
-  for (auto& request : to_drain) {
-    std::move(request.callback).Run(false, nullptr, std::nullopt);
+  for (auto& drained : to_drain) {
+    drain_callback(std::move(drained.callback));
   }
 }
 
+void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
+  DrainPendingRequestsWithoutPermission(
+      sign_message_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->account_id;
+      },
+      [](SignMessageRequestCallback callback) {
+        std::move(callback).Run(false, nullptr, std::nullopt);
+      });
+}
+
 void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
-  std::vector<SignSolTransactionsRequestCallback> to_drain;
-  auto req_it = sign_sol_transactions_requests_.begin();
-  auto cb_it = sign_sol_transactions_callbacks_.begin();
-  while (req_it != sign_sol_transactions_requests_.end()) {
-    auto origin =
-        url::Origin::Create(GURL((*req_it)->origin_info->origin_spec));
-    if (HasPermissionForPendingRequest(origin, (*req_it)->from_account_id)) {
-      ++req_it;
-      ++cb_it;
-      continue;
-    }
-    to_drain.push_back(std::move(*cb_it));
-    req_it = sign_sol_transactions_requests_.erase(req_it);
-    cb_it = sign_sol_transactions_callbacks_.erase(cb_it);
-  }
-  for (auto& callback : to_drain) {
-    std::move(callback).Run(false, {}, std::nullopt);
-  }
+  DrainPendingRequestsWithoutPermission(
+      sign_sol_transactions_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->from_account_id;
+      },
+      [](SignSolTransactionsRequestCallback callback) {
+        std::move(callback).Run(false, {}, std::nullopt);
+      });
 }
 
 void BraveWalletService::
     DrainSignCardanoTransactionRequestsWithoutPermission() {
-  std::vector<SignCardanoTransactionRequestCallback> to_drain;
-  auto req_it = sign_cardano_transaction_requests_.begin();
-  auto cb_it = sign_cardano_transaction_callbacks_.begin();
-  while (req_it != sign_cardano_transaction_requests_.end()) {
-    auto origin =
-        url::Origin::Create(GURL((*req_it)->origin_info->origin_spec));
-    if (HasPermissionForPendingRequest(origin, (*req_it)->account_id)) {
-      ++req_it;
-      ++cb_it;
-      continue;
-    }
-    to_drain.push_back(std::move(*cb_it));
-    req_it = sign_cardano_transaction_requests_.erase(req_it);
-    cb_it = sign_cardano_transaction_callbacks_.erase(cb_it);
-  }
-  for (auto& callback : to_drain) {
-    std::move(callback).Run(false, std::nullopt);
-  }
+  DrainPendingRequestsWithoutPermission(
+      sign_cardano_transaction_requests_,
+      [](const auto& pending) -> const mojom::AccountIdPtr& {
+        return pending.request->account_id;
+      },
+      [](SignCardanoTransactionRequestCallback callback) {
+        std::move(callback).Run(false, std::nullopt);
+      });
 }
 
 void BraveWalletService::WalletRestored() {
@@ -1502,8 +1486,8 @@ void BraveWalletService::AddSignSolTransactionsRequest(
   if (request->id < 0) {
     request->id = sign_sol_transactions_id_++;
   }
-  sign_sol_transactions_requests_.push_back(std::move(request));
-  sign_sol_transactions_callbacks_.push_back(std::move(callback));
+  sign_sol_transactions_requests_.emplace_back(std::move(request),
+                                               std::move(callback));
   if (sign_sol_txs_request_added_cb_for_testing_) {
     std::move(sign_sol_txs_request_added_cb_for_testing_).Run();
   }
@@ -1515,17 +1499,17 @@ void BraveWalletService::AddSignCardanoTransactionRequest(
   if (request->id < 0) {
     request->id = sign_cardano_transactions_id_++;
   }
-  sign_cardano_transaction_requests_.push_back(std::move(request));
-  sign_cardano_transaction_callbacks_.push_back(std::move(callback));
+  sign_cardano_transaction_requests_.emplace_back(std::move(request),
+                                                  std::move(callback));
 
   sign_transaction_added_callback_list_for_testing_.Notify();
 }
 
 mojom::SignSolTransactionsRequestPtr
 BraveWalletService::GetPendingSignSolTransactionsRequest(int32_t id) {
-  for (auto& request : sign_sol_transactions_requests_) {
-    if (request->id == id) {
-      return request.Clone();
+  for (auto& pending : sign_sol_transactions_requests_) {
+    if (pending.request->id == id) {
+      return pending.request.Clone();
     }
   }
 
@@ -2010,10 +1994,10 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
 
 void BraveWalletService::CancelAllSignSolTransactionsCallbacks() {
   while (!sign_sol_transactions_requests_.empty()) {
-    auto callback = std::move(sign_sol_transactions_callbacks_.front());
+    auto pending = std::move(sign_sol_transactions_requests_.front());
     sign_sol_transactions_requests_.pop_front();
-    sign_sol_transactions_callbacks_.pop_front();
-    std::move(callback).Run(false, {}, std::nullopt);
+
+    std::move(pending.callback).Run(false, {}, std::nullopt);
   }
 }
 
