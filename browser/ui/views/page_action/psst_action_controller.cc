@@ -64,12 +64,14 @@ namespace page_actions {
 
 PsstActionController::PsstActionController(
     tabs::TabInterface& tab,
-    page_actions::PageActionController& page_action_controller)
+    page_actions::PageActionController& page_action_controller,
+    bool hide_disable_psst_menu_item)
     : tab_(tab),
       page_action_controller_(
           static_cast<page_actions::PageActionControllerImpl&>(
-              page_action_controller)) {
-  CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+              page_action_controller)),
+      hide_disable_psst_menu_item_(hide_disable_psst_menu_item) {
+  CHECK(psst::features::IsPsstEnabled());
 }
 
 PsstActionController::~PsstActionController() = default;
@@ -165,9 +167,16 @@ void PsstActionController::BuildMenuItems() {
   psst_menu_model_->AddItem(
       IDC_PSST_DONT_SHOW_FOR_THIS_SITE,
       l10n_util::GetStringUTF16(IDS_IDC_PSST_DONT_SHOW_FOR_THIS_SITE));
-  psst_menu_model_->AddItem(
-      IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING,
-      l10n_util::GetStringUTF16(IDS_IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING));
+
+  // If Brave preferences are under management, disabling the PSST feature via
+  // the omnibar icon's menu is ineffective, as it must be controlled by the
+  // Brave Origin feature toggle or administrator's policy
+  if (!hide_disable_psst_menu_item_) {
+    psst_menu_model_->AddItem(
+        IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING,
+        l10n_util::GetStringUTF16(
+            IDS_IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING));
+  }
 }
 
 void PsstActionController::UpdatePageAction() {

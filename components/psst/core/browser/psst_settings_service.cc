@@ -128,11 +128,19 @@ void PsstSettingsService::SetPsstWebsiteSettings(
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
-  return prefs_->GetBoolean(prefs::kPsstEnabled);
+  return IsPsstEnabledForProfile(*prefs_);
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
+}
+
+bool PsstSettingsService::IsManagedPreference() const {
+  return prefs_->IsManagedPreference(prefs::kPsstEnabled);
+}
+
+void PsstSettingsService::SetInfobarShowCounter(int value) {
+  prefs_->SetInteger(prefs::kPsstInfobarShownCounter, value);
 }
 
 void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
