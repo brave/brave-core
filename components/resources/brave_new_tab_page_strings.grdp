@@ -133,8 +133,8 @@
     Refresh on every new tab
   </message>
 
-  <message name="IDS_NEW_TAB_REMOVE_SPONSORED_SITES_LABEL" desc="Label for button that disables sponsored sites" formatter_data="webui=BraveNewTabPage">
-    Remove sponsored sites
+  <message name="IDS_NEW_TAB_REMOVE_SPONSORED_SITES_LABEL" desc="Label for button that disables new tab page ads" formatter_data="webui=BraveNewTabPage">
+    Remove new tab page ads
   </message>
 
   <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="Label for button that removes a top site" formatter_data="webui=BraveNewTabPage">
@@ -261,8 +261,8 @@
     Show new tab page ads
   </message>
 
-  <message name="IDS_NEW_TAB_SHOW_SPONSORED_SITES_LABEL" desc="Label for control that toggles sponsored site visibility in top sites" formatter_data="webui=BraveNewTabPage">
-    Show sponsored sites
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_SITES_LABEL" desc="Label for control that toggles new tab page ad visibility in top sites" formatter_data="webui=BraveNewTabPage">
+    Show new tab page ads
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP" formatter_data="webui=BraveNewTabPage">
@@ -289,8 +289,8 @@
     Sponsored sites help keep Brave free. If you use <ph name="SITE_NAME">$1<ex>Amazon</ex></ph>, you're supporting Brave's mission. Disable them anytime. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">/$2</ph>.
   </message>
 
-  <message name="IDS_NEW_TAB_SPONSORED_SITES_DESCRIPTION" desc="Description shown below the toggle that controls sponsored site visibility in top sites, explaining what sponsored sites are." formatter_data="webui=BraveNewTabPage">
-    Sponsored sites help keep Brave free. If you use them, you're supporting Brave's mission. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.
+  <message name="IDS_NEW_TAB_SPONSORED_SITES_DESCRIPTION" desc="Description shown below the toggle that controls new tab page ad visibility in top sites, explaining what new tab page ads are." formatter_data="webui=BraveNewTabPage">
+    New tab page ads help keep Brave free. If you use them, you're supporting Brave's mission. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.
   </message>
 
   <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat" formatter_data="webui=BraveNewTabPage">
