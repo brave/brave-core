@@ -64,7 +64,7 @@ interface Props {
   account: BraveWallet.AccountInfo
   asset: BraveWallet.BlockchainToken
   assetBalance: string
-  selectedNetwork?: BraveWallet.NetworkInfo | null
+  assetNetwork?: BraveWallet.NetworkInfo | null
   hideBalances?: boolean
   isSellSupported: boolean
   showSellModal: () => void
@@ -75,7 +75,7 @@ export const PortfolioAccountItem = (props: Props) => {
     asset,
     assetBalance,
     account,
-    selectedNetwork,
+    assetNetwork,
     hideBalances,
     isSellSupported,
     showSellModal,
@@ -85,7 +85,7 @@ export const PortfolioAccountItem = (props: Props) => {
   const history = useHistory()
 
   // Hooks
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const onClickViewOnBlockExplorer = useExplorer(assetNetwork)
 
   // State
   const [showDepositModal, setShowDepositModal] = React.useState<boolean>(false)
