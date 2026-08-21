@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 source_set("brave_search") {
   sources = [
@@ -13,6 +14,8 @@ source_set("brave_search") {
     "backup_results_service_factory.h",
     "backup_results_service_impl.cc",
     "backup_results_service_impl.h",
+    "backup_results_view_manager.cc",
+    "backup_results_view_manager.h",
   ]
 
   deps = [
@@ -31,6 +34,7 @@ source_set("brave_search") {
     "//components/prefs",
     "//content/public/browser",
     "//services/network/public/cpp",
+    "//ui/compositor",
     "//ui/gfx/geometry",
   ]
 
@@ -38,6 +42,20 @@ source_set("brave_search") {
     deps += [
       "//brave/android/java/org/chromium/chrome/browser/brave_search:jni_headers",
       "//ui/android",
+    ]
+  } else if (is_mac) {
+    sources += [
+      "backup_results_window_mac.h",
+      "backup_results_window_mac.mm",
+    ]
+
+    deps += [ "//ui/gfx" ]
+
+    frameworks = [ "AppKit.framework" ]
+  } else if (use_aura) {
+    deps += [
+      "//ui/aura",
+      "//ui/base",
     ]
   }
 }
