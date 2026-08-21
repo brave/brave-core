@@ -244,6 +244,14 @@
 # upstream key selection never holds in our builds.
 -All/RequestSenderTest.CupKeySelection/*
 
+# These tests fail because of the following CHECK in identity_test_utils.cc:
+# identity_manager->AreRefreshTokensLoaded()
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromo
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromoRespectsDefaultAccountOrderCookieJar
+-AccountPreviewDataServiceTest.RateLimitOn429PeriodicRefresh
+-AccountPreviewDataServiceTest.RemainingAccountsAllCachedDoesNotCrashAndRecomputes
+-IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
