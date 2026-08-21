@@ -6,8 +6,10 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 
 #include "base/types/to_address.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/tabs/public/tab_interface.h"
@@ -37,7 +39,10 @@ void BraveMultiContentsViewDelegateImpl::WebContentsFocused(
   // its contents area is clicked/focused. Likewise, it never reactivates
   // the normal tab that gets clicked back into after the panel became
   // active. Activate directly in both cases.
-  if (sidebar::IsWebPanelRelatedFocusChange(base::to_address(bwi_), contents)) {
+  if (sidebar::IsWebPanelFeatureEnabled() &&
+      sidebar::IsWebPanelRelatedFocusChange(
+          bwi_->GetFeatures().sidebar_controller()->GetWebPanelController(),
+          model, contents)) {
     if (tabs::TabInterface* tab =
             tabs::TabInterface::MaybeGetFromContents(contents);
         tab && model->GetActiveTab() != tab) {

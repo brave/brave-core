@@ -162,22 +162,11 @@ bool IsWebPanelFeatureEnabled() {
   return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
 }
 
-bool IsWebPanelRelatedFocusChange(BrowserWindowInterface* browser,
-                                  content::WebContents* focused_contents) {
-  if (!IsWebPanelFeatureEnabled()) {
-    return false;
-  }
-
-  auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
-  if (!sidebar_controller) {
-    return false;
-  }
-
-  auto* web_panel_controller = sidebar_controller->GetWebPanelController();
-  if (!web_panel_controller) {
-    return false;
-  }
-
+bool IsWebPanelRelatedFocusChange(
+    SidebarWebPanelController* web_panel_controller,
+    TabStripModel* tab_strip_model,
+    content::WebContents* focused_contents) {
+  CHECK(web_panel_controller);
   const content::WebContents* panel_contents =
       web_panel_controller->panel_contents();
   if (!panel_contents) {
@@ -188,8 +177,7 @@ bool IsWebPanelRelatedFocusChange(BrowserWindowInterface* browser,
     return true;
   }
 
-  return browser->tab_strip_model()->GetActiveTab()->GetContents() ==
-         panel_contents;
+  return tab_strip_model->GetActiveTab()->GetContents() == panel_contents;
 }
 
 SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
