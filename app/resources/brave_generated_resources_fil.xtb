@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Higit pa…</translation>
 <translation id="71316462802471551">Mga Email Alias</translation>
-<translation id="209130971304928953">I-save ang mga Tab bilang Workspace…</translation>
-<translation id="877984331511007834">Buksan ang Workspace…</translation>
-<translation id="1310182651927031327">I-save ang mga tab bilang workspace…</translation>
-<translation id="3588277741646479444">Buksan ang workspace…</translation>
+<translation id="8350985546648269694">I-save ang Kasalukuyang Windows at mga Tab bilang Space</translation>
+<translation id="5327248766486351172">Pangalan</translation>
+<translation id="6379791766023874417">Ilagay ang Pangalan ng Iyong Space</translation>
+<translation id="9174724474418499472">Aking Space</translation>
+<translation id="5317780077021120954">I-save</translation>
+<translation id="7658239707568436148">Kanselahin</translation>
+<translation id="196342407904926436">Mga Opsyon ng Space</translation>
+<translation id="2806407377752719586">I-delete ang Space</translation>
+<translation id="1844931500883490339">Sigurado ka bang gusto mong i-delete ang Space na ito? Permanenteng aalisin ang na-save na Space. Hindi na maa-undo ang pagkilos na ito.</translation>
+<translation id="8261506727792406068">I-delete</translation>
+<translation id="8428213095426709021">Mga Setting</translation>
+<translation id="1212321046099128987">Walang Space na Nagawa</translation>
+<translation id="3524567389166933243">Gumawa ng Iyong Unang Space sa Pamamagitan ng Pag-click sa Save Button sa Ibaba.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Mga Tab}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> (na) Windows</translation>
+<translation id="1680377529024357662">I-save ang kasalukuyang windows at mga tab bilang space</translation>
+<translation id="5561829325295347472">Ilagay ang pangalan ng iyong space</translation>
+<translation id="2028520494010039812">Mga opsyon ng space</translation>
+<translation id="1580775521202322063">I-delete ang space</translation>
+<translation id="3004759399777164093">Sigurado ka bang gusto mong i-delete ang space na ito? Permanenteng aalisin ang na-save na space. Hindi na maa-undo ang pagkilos na ito.</translation>
+<translation id="7563692436589408797">Walang space na nagawa</translation>
+<translation id="3945077125173636695">Gumawa ng iyong unang space sa pamamagitan ng pag-click sa Save button sa ibaba.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 tab} other {# mga tab}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> (na) windows</translation>
+<translation id="3326655241685890930">Mga Space</translation>
 <translation id="1990886731975529483">I-install at paganahin ang Google Widevine</translation>
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="4900351245762303149">I-install ang Google Widevine</translation>
@@ -37,7 +58,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Na-block sa page na ito ang pag-autoplay</translation>
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Patuloy na i-block ang pag-autoplay</translation>
-<translation id="3477357195688115718">Hindi sinusuri ng Brave ang mga extension para sa usaping seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
+<translation id="2201935460386712655">Hindi sinusuri ng Brave ang mga extension para sa usaping seguridad at kaligtasan. I-install ang "<ph name="EXTENSION_NAME"/>" lang kung pinagkakatiwalaan mo ang developer.</translation>
 <translation id="2928844661231356557">Kapag nagbigay ng access sa Bluetooth device, magagawa ng site na basahin ang nakakatukoy at posibleng sensitibong impormasyon tungkol sa iyo. Sa mga pinagkakatiwalaang site mo lang ipa-access ang mga Bluetooth device. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Mga Tor window</translation>
 <translation id="7965178729203412357">Bagong Pagkakakilanlan ng Tor</translation>
@@ -63,7 +84,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">I-manage ang mga filter</translation>
 <translation id="3108584651298176909">Ipakita ang mga tuntunin</translation>
 <translation id="5156986655891520787">Itago ang mga tuntunin</translation>
-<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buksan gamit ang .onion na address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">I-force Paste</translation>
@@ -91,6 +111,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Kunan ng screenshot</translation>
 <translation id="3114478090884951591">Nakikitang lugar</translation>
 <translation id="2026367923222947564">Buong pahina</translation>
+<translation id="4218885227032158909">Napiling lugar</translation>
 <translation id="4928988318462976765">Store ng Mga Web Extension</translation>
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
 <translation id="3161744659507801211">Babala: Hindi mapipigilan ng Brave ang mga extension sa pag-record ng iyong history ng pag-browse.</translation>
@@ -289,14 +310,12 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Ilipat ang Media</translation>
 <translation id="4418985925423678811">Bagong Playlist</translation>
 <translation id="385051799172605136">Bumalik</translation>
-<translation id="5317780077021120954">I-save</translation>
 <translation id="7930125899031086027">Gawin at ilipat</translation>
 <translation id="2860159216666546928">Pumili ng folder na paglilipatan ng media na ito</translation>
 <translation id="9130105487623071247">Pangalan ng playlist</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> item ang napili</translation>
 <translation id="3596306474342941843">I-delete ang playlist</translation>
 <translation id="7110726588168439924">Sigurado ka bang gusto mong i-delete ang playlist na ito at lahat ng content nito? Hindi na maa-undo ang pagkilos na ito.</translation>
-<translation id="8261506727792406068">I-delete</translation>
 <translation id="8152485753254079984">Bagong playlist</translation>
 <translation id="5397019762993984652">Magdagdag mula sa iyong folder na I-play sa Ibang Pagkakataon</translation>
 <translation id="7525067979554623046">Gumawa</translation>
@@ -393,7 +412,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">I-edit ang container</translation>
 <translation id="7900511996284443779">I-delete ang container</translation>
 <translation id="2738687336989232152">Sigurado ka bang gusto mong i-delete ang container na <ph name="CONTAINER_NAME"/>? Aalisin nito ang lahat ng data na nauugnay sa container na iyon.</translation>
-<translation id="5327248766486351172">Pangalan</translation>
 <translation id="104766043551382253">Icon</translation>
 <translation id="5431318178759467895">Kulay</translation>
 <translation id="4328541188421002379">Pangalanan ang container mo tulad ng Trabaho o Personal</translation>
@@ -547,6 +565,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">I-customize ang iyong browser habang sinusuportahan pa rin ang Brave</translation>
 <translation id="123297831435065577">Ang Brave Origin ay isang paid na bersyon ng browser para sa mga gumagamit na hindi kailangan ng lahat ng features na sumusuporta sa Brave bilang isang negosyo, ngunit nais pa rin ang privacy na nag-aalok lamang ang Brave. Ang mga Origin users ay patuloy na makikinabang mula sa aming industry-leading privacy, adblock, at speed (sa pamamagitan ng Shields), pati na rin ang regular na software updates, Chromium patches, at security at privacy improvements.</translation>
 <translation id="7984508421152399880">Bumili na ngayon</translation>
+<translation id="1882724423074862793">Ibalik ang pagbili</translation>
 <translation id="5567412479632285879">Naka-disable ang Mga Reward ng Brave</translation>
 <translation id="413570371620795359">Buksan ang panel ng Mga Reward para i-enable at magsimula</translation>
 <translation id="1051600834033686945">Buksan ang mga setting ng mga kumpletong Reward ng Brave</translation>
@@ -583,6 +602,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Kusang ipadala ang mga ulat ng diagnostic</translation>
 <translation id="8868426106596092089">Tulungang mapabuti ang estabilidad ng produkto ng Brave sa pamamagitan ng kusang pagpapadala ng mga diagnostik na ulat kapag nagkaroon ng problema o tumigil ang Brave Browser</translation>
 <translation id="4891600875049212418">Maging pribado kapag bumibisita sa mga sensitibong site</translation>
+<translation id="1022603984240541480">Ipakita ang notification ng pag-tune ng mga setting ng Privacy sa mga compatible na site</translation>
+<translation id="3528176629974273019">Nagbibigay-daan sa Brave na awtomatikong magmungkahi (at mag-adjust) ng mga privacy setting na partikular sa site.</translation>
 <translation id="509873765238158442">I-block ang Microsoft Recall</translation>
 <translation id="4763421121695677716">I-block ang feature ng Recall sa awtomatikong pagkuha ng mga screenshot ng anumang nakabukas na mga tab ng Brave sa mga computer ng Microsoft Windows.</translation>
 <translation id="1968895725257436430">Koleksyon ng data</translation>
@@ -738,6 +759,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Ilapat ang mga pagbabago</translation>
 <translation id="2128143836897950793">Mag-click sa 'Humiling ng Bagong Bridge...' para makakuha ng mga bridge</translation>
 <translation id="3314921753580327793">I-type ang adress:port (isa kada linya)</translation>
+<translation id="7002083631026466886">Hindi magagamit ng Tor ang bridge na ito. Suriin ito laban sa bridge na ibinigay sa iyo, pagkatapos ay subukang muli:</translation>
 <translation id="3755189300481406891">Humiling ng Bridge</translation>
 <translation id="6924425739431382319">Kinokontak ang BridgeDB. Maghintay lang.</translation>
 <translation id="811745063252080651">Lutasin ang CAPTCHA para humiling ng bridge.</translation>
@@ -915,7 +937,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">I-clear ang paghahanap</translation>
 <translation id="5126255551970171328">Maghanap ng memorya</translation>
 <translation id="7402116145895962069">I-sync ang iyong mga lokal na modelo sa Ollama</translation>
-<translation id="4835154437390745810">Pinamamahalaan ng Ollama</translation>
 <translation id="5985516785067818307">Panelist ng Survey</translation>
 <translation id="8347743943525229984">Payagan ang mga survey ng Brave</translation>
 <translation id="3204080538332044581">Binibigyang-daan ang Brave na magpakita ng mga link sa mga pribadong survey sa page ng bagong tab. Tinutulungan kami ng mga survey na bumuo ng mas magagandang feature at sukatin ang pagiging epektibo ng mga ad campaign na nakabatay sa browser. <ph name="BEGIN_LINK"/>Alamin pa<ph name="END_LINK"/></translation>

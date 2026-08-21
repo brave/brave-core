@@ -16,15 +16,13 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8522292744959221145">To check if your passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK"/>sign in to Brave<ph name="END_LINK"/>.</translation>
 <translation id="2627788872035182013">Click the Brave menu</translation>
 <translation id="1157985233335035034">Recent languages</translation>
-<translation id="7813580490378477695"><ph name="PARTNER_NAME"/> has added an extension that may change the way that Brave works.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1184145431117212167">Installation failed because your version of Windows is not supported.</translation>
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="987734326276404793">Get price tracking alerts with Brave on your phone</translation>
 <translation id="1203500561924088507">Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="1232234696885483911">When you open Image Search, the page title, URL and content, including PDFs, will be sent to the server automatically. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. To change this, go to 'Your account in Brave'.</translation>
+<translation id="583633806828413086">Show Gemini in Brave in Mac menu bar</translation>
 <translation id="1631493536097460865">To select part of the screen in Gemini in Brave, use keyboard shortcut.</translation>
 <translation id="8799570501820813406">While this tab was inactive, memory was freed up to keep Brave fast. You can choose to always exclude this site from being inactive.</translation>
 <translation id="8767381092474532098">Brave blocked this download because the file is dangerous</translation>
@@ -37,14 +35,12 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
  Bluetooth devices. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="7562683844189283122">Sign in to Brave on your phone</translation>
 <translation id="1330562121671411446">Detect language</translation>
-<translation id="6204677860546245308">Use Brave recommended browser settings</translation>
 <translation id="108284536240904209">Also delete data from Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Pinned! You can access image search again from the new button on the toolbar</translation>
 <translation id="1356661055722410047">New! You can translate both text and images on your screen</translation>
 <translation id="1383876407941801731">Search</translation>
 <translation id="3535301204632475895">Use the Brave app to keep browsing on the go</translation>
 <translation id="7009295044271335553">&amp;Manage Brave profiles</translation>
-<translation id="1404026649028693342">Always show AI Mode</translation>
 <translation id="141901961143729572">Share your thoughts</translation>
 <translation id="3880714039086599943">To share your window, allow screen recording for Brave in System Settings.</translation>
 <translation id="1586284627848250203">Get help with Brave for testing</translation>
@@ -53,14 +49,13 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5147525139567260139">Share a Brave tab</translation>
 <translation id="721261350616678948">Sign in to Brave</translation>
 <translation id="1547469039832541117">Ends the highlighted task.</translation>
-<translation id="1530633922026945685">Brave needs permission to access your camera to create a 3D map of your surroundings</translation>
 <translation id="51545890371361355">Pin Brave</translation>
 <translation id="6570689355868013775">Brave's safety tools</translation>
 <translation id="1902837727299679178">Brave wants to delete your Password Manager data. Type in your Windows password to allow this.</translation>
 <translation id="1655849915812740665">Get the best of Brave with the Brave app on your phone</translation>
 <translation id="4449148723378534338">Review key privacy and security controls in Brave</translation>
 <translation id="1640672724030957280">Downloading ...</translation>
-<translation id="1680687534629375545">Ask image search about this page</translation>
+<translation id="1665602916345474427">Signed in as <ph name="USER_NAME"/>, <ph name="USER_EMAIL"/>, membership. Open the account menu</translation>
 <translation id="509363484780540563">You can use Brave any time that you click links in messages, documents and other apps. It will also be pinned to your taskbar.</translation>
 <translation id="1709772298389099340">Provides elevated privileges for <ph name="BROWSER_NAME"/>.</translation>
 <translation id="8004287232784878841">Brave will soon delete browsing data</translation>
@@ -74,7 +69,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4529028207655448215">Brave is trying to <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="7362761326208547489">Next time you open Brave on your <ph name="DEVICE_TYPE"/>, you'll see a prompt to use Brave Password Manager.</translation>
 <translation id="1838374766361614909">Clear search</translation>
-<translation id="3643631442346149414">To secure your work on Brave, your organisation will be able to view or manage certain information</translation>
 <translation id="3541642064306182066">To delete browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK"/>sign out of Brave<ph name="END_LINK"/>.</translation>
 <translation id="5679816001365584346">Download Brave on your phone to open or create new tab groups on the go.</translation>
 <translation id="4559627161887338743">You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail and more. If you want to add an account for someone else, like a family member, add a new person to your <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
@@ -82,7 +76,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1880677175115548835">Select text</translation>
 <translation id="4528406859989804913">You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords and other settings will become permanently tied to <ph name="USER_NAME"/>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave conserves battery power by limiting background activity and visual effects, such as smooth scrolling and video frame rates. <ph name="BEGIN_LINK"/>Learn more about Energy Saver<ph name="END_LINK"/></translation>
-<translation id="1898804291554630487">Ask about this page</translation>
 <translation id="8643267611122541711">Brave updater service</translation>
 <translation id="1649714546770135458">By turning this off, you can sign in to Brave sites such as Gmail, without signing in to Brave</translation>
 <translation id="189297655255130768">Brave is unresponsive. Relaunch now?</translation>
@@ -100,7 +93,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5499149312981370855">Choose whether to include Brave history for more personalised experiences in Brave services</translation>
 <translation id="5152523902653128156">Built into Brave to help you create, save and autofill strong passwords. Add the shortcut for easy access.</translation>
 <translation id="6959434860418352144">Click the Customise Brave button on the new tab page to give Brave a new look</translation>
-<translation id="2066690553719545730">Always show AI Mode</translation>
 <translation id="2472891440303445472">Brave blocked this download because the file is deceptive and may make unexpected changes to your device</translation>
 <translation id="2054358978145431867">You'll see a prompt to try <ph name="FEATURE_NAME"/> next time you open Brave iOS.</translation>
 <translation id="2726948994393234543">Your passwords and other Brave data that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.</translation>
@@ -127,7 +119,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8984404842684436004">{NUM_TABS,plural, =1{Brave recommends pausing the tab that's slowing your browser}other{Brave recommends pausing the tabs that are slowing your browser}}</translation>
 <translation id="2307973900865360088">Keep in Dock</translation>
 <translation id="7810992039564280750">Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.</translation>
-<translation id="9095263438435683933">To send a number from here to your Android phone, sign in to Brave on both devices.</translation>
 <translation id="2356070529366658676">Ask</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="6485997157403727556">The extension '<ph name="EXTENSION_NAME"/>' wants you to sign in to Brave</translation>
@@ -177,7 +168,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2846251086934905009">Install error: The installer did not complete. The installation has been aborted.</translation>
 <translation id="777113543093865885">Remove from Brave...</translation>
 <translation id="5265419033369521352">Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in</translation>
-<translation id="2885378588091291677">Task Manager</translation>
+<translation id="2885378588091291677">Task manager</translation>
 <translation id="2176825726964012531">About &amp;Brave</translation>
 <translation id="2915996080311180594">Restart later</translation>
 <translation id="2481553173340651149">Your data is encrypted with your passphrase. Enter it to use and save Brave data in your Brave sync chain.</translation>
@@ -212,9 +203,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5949068186379578553">To share your screen, allow screen recording for Brave in System Settings</translation>
 <translation id="4805806622840861220">Relaunch Brave</translation>
 <translation id="3161522574479303604">All languages</translation>
-<translation id="3225882094369124157">Another program on your computer added a theme that may change the way Brave works.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Customise your new Brave profile</translation>
 <translation id="2430807206104224491">You can keep chatting with AI Mode without switching tabs. To get started, sign in to Brave. You'll also get your passwords and more on all your devices.</translation>
 <translation id="4805865169608137960">To remove your Brave sync chain from Brave, sign out of Brave in the Settings page</translation>
@@ -230,7 +218,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8652321858775514885">You'll be signed out of most sites when you close all Brave windows, except your Brave sync chain if you're signed in to Brave. To let sites remember you, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">top-right corner of search area: right <ph name="RIGHT"/>%, top <ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Brave data in your account</translation>
-<translation id="3369405342922656244">Search this page with image search</translation>
 <translation id="6610330853796830621">Use your passwords with Brave on your phone</translation>
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Switch to existing Brave profile?</translation>
@@ -249,7 +236,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3597003331831379823">Failed to run setup with elevated privileges. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="4167284810587724062">Sign in to Brave</translation>
 <translation id="3066805437003400520">This person's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
-<translation id="7029305463989165490">To send a number from <ph name="ORIGIN"/> to your Android phone, sign in to Brave on both devices.</translation>
 <translation id="3667616615096815454">Unable to install, the application is unknown to the server.</translation>
 <translation id="1128485277465085828">Use your <ph name="BEGIN_LINK"/>own passphrase<ph name="END_LINK"/> to encrypt all the Brave data in your Brave sync chain. Payment methods and addresses from Google Pay won't be encrypted. Browsing history from Brave won't sync.</translation>
 <translation id="1807774211756215222">Open link in new Brave &amp;tab</translation>
@@ -265,6 +251,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 
           **Suggest questions:** Generate a bulleted list of 3–5 thought-provoking questions a user could ask to better understand the screenshot. These questions should include at least one that is specifically about a visual object, its design or its placement.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="1118754729376002185">Brave needs local network permission for this site</translation>
 <translation id="3885770153807205175">Language picker</translation>
 <translation id="6315734375101223238">Customise and control Brave. Something needs your attention – click for details.</translation>
 <translation id="7130675370997202556">Click your name to open Brave and start browsing.</translation>
@@ -289,9 +276,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="6056473803837713617">Help make Brave better by reporting the <ph name="BEGIN_LINK"/>current settings<ph name="END_LINK"/></translation>
 <translation id="4050175100176540509">Important security improvements and new features are available in the latest version.</translation>
 <translation id="4055805654398742145">P&amp;assword Manager</translation>
-<translation id="6654312501894761082">Another program on your computer added an extension that may change the way Brave works.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Your organisation closes Brave automatically when it isn't used for one minute. Browsing data is deleted. This could include history, autofill and downloads.}other{Your organisation closes Brave automatically when it isn't used for # minutes. Browsing data is deleted. This could include history, autofill and downloads.}}</translation>
 <translation id="5794951150713244901">Go to the About Brave page</translation>
 <translation id="10925962326134232">Customise Brave to give your browser a new look</translation>
@@ -343,6 +327,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2182657378556811785">Nearly up to date! Relaunch Brave to finish updating.</translation>
 <translation id="6311668361877328515">Speeds up sites with Brave's V8 engine but makes Brave slightly less resistant to attacks</translation>
 <translation id="7402642357351265733">If you also share Brave usage reports, those reports include the URLs that you visit</translation>
+<translation id="4673710618874938871">Signed in as <ph name="USER_NAME"/>, membership. Open the account menu</translation>
 <translation id="8142245354207161805">The profile appears to be in use by another Brave process (<ph name="PROCESS_ID"/>) on another computer (<ph name="HOST_NAME"/>). Brave has locked the profile so that it doesn't get corrupted. If you are sure that no other processes are using this profile, you can unlock the profile and relaunch Brave.</translation>
 <translation id="4680828127924988555">Cancel installation</translation>
 <translation id="2014343159590733363">Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out. If you sign out now, this data will be deleted.</translation>
@@ -375,7 +360,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="758175943316138760">Pick up right where you left off with Brave on iOS.</translation>
 <translation id="6234515504547364178">Sign out of Brave</translation>
 <translation id="5234764350956374838">Dismiss</translation>
-<translation id="5254739261293693943">Ask about this video</translation>
 <translation id="7690383309583926074">Get the Brave app to save passwords on the go</translation>
 <translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
 <translation id="5286907366254680517">Detected</translation>
@@ -400,7 +384,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave recommends pausing the tab that's slowing your browser}other{Brave recommends pausing the tabs that are slowing your browser}}</translation>
 <translation id="894936507076470937">Brave may not function correctly because it is no longer supported on this Linux distribution</translation>
 <translation id="2596557398669145729">Brave blocked this download because the file can harm your personal and social network accounts</translation>
-<translation id="696826782632239602">Brave needs access to your location to share your location with this site</translation>
 <translation id="1744365871163268756">Please wait while Brave installs the latest system updates.</translation>
 <translation id="3861679447659630159">Brave is trying to edit passwords. Type your Windows password to allow this.</translation>
 <translation id="8535558155562097643">Seamlessly work with your favourite apps like Google Drive and YouTube on the go with Brave.</translation>
@@ -425,6 +408,7 @@ If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="1834213228893578875">Brave frees up memory from inactive tabs. This gives active tabs and other apps more computer resources and keeps Brave fast. Your inactive tabs automatically become active again when you go back to them. <ph name="BEGIN_LINK"/>Learn more about Memory Saver<ph name="END_LINK"/></translation>
 <translation id="899523323751802352">If you forgot your passphrase or want to change this setting, <ph name="SETTINGS_LINK"/> the Brave data in your account</translation>
 <translation id="82926023981336111">Customise and control Brave. Set Brave as your default.</translation>
+<translation id="5660546041996455312">Keep your passwords, bookmarks and history perfectly synced across devices by setting Brave as your default browser.</translation>
 <translation id="5809516625706423866">Unable to connect to the Internet. HTTP 401 Unauthorised. Please check your proxy configuration.</translation>
 <translation id="95980832839683236">Speeds up sites with Brave's V8 engine but makes Brave slightly less resistant to attacks. This setting is off.</translation>
 <translation id="1224606669200461217">To use and save Brave data in your Brave sync chain, update Brave</translation>
@@ -442,7 +426,6 @@ If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="5768962901674164501">To get this bookmark and more on all your devices, sign in to Brave</translation>
 <translation id="5101892358689285100">Make Brave yours</translation>
 <translation id="5960071705175224773">Your settings were changed by an unknown app</translation>
-<translation id="5968400720580217226">AI Mode</translation>
 <translation id="5977420883993828287">Pinned! Use contextual tasks again from the toolbar</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Your organisation closes Brave automatically when it isn't used for one minute.}other{Your organisation closes Brave automatically when it isn't used for # minutes.}}</translation>
 <translation id="3598551856834560515">Update Brave to start sync</translation>
@@ -467,12 +450,8 @@ If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="6685697979743742605">This file may be dangerous<ph name="LINE_BREAK"/>Brave can check this download for you if you provide the password. Info about the file gets sent to Google Safe Browsing, but the file content and password stay on your device.</translation>
 <translation id="6182736845697986886">Installation failed because of an update server internal error.</translation>
 <translation id="4368341489795135329">Make sure that you are signed in to Brave on your <ph name="TARGET_DEVICE_NAME"/> and then try sending again.</translation>
-<translation id="3038354906709778538">Another program on your computer added an app that may change the way Brave works.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="8320964054148936490">This computer already has a more recent version of Brave. If the software is not working, please uninstall Brave and try again.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave will relaunch now}=1{Brave will relaunch in 1 second}other{Brave will relaunch in # seconds}}</translation>
-<translation id="6239161312595354541">Ask image search about this video</translation>
 <translation id="5980269616827212166">Brave needs storage access permission to download files</translation>
 <translation id="7651600795135059130">Checks URLs with a list of unsafe sites stored in Brave</translation>
 <translation id="5019879183386042809">Make Brave the default browser</translation>
@@ -563,13 +542,11 @@ Some features may be unavailable. Please specify a different profile directory o
             • Reset Brave shortcuts
             <ph name="LINE_BREAKS"/>
             Bookmarks, history and saved passwords won't be affected.</translation>
-<translation id="6934579572334859869">Ask image search about this image</translation>
 <translation id="5529781826378237601">You reached Brave's limit of <ph name="BOOKMARK_LIMIT"/> bookmarks, so some of your bookmarks haven't been saved in your Brave sync chain yet.
 
 New bookmarks can't be saved in your account until you delete some. If you sign out now, unsaved bookmarks will be deleted.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="3453763134178591239">Chrome OS terms</translation>
-<translation id="3335606533094650083">Brave needs permission to access your microphone for this site</translation>
 <translation id="6643520655691573653">Enter your passphrase to use and save Brave data in your account, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7011190694940573312">Installation failed because this version of the operating system is not supported.</translation>
 <translation id="7024536598735240744">Unpack error: <ph name="UNPACK_ERROR"/>.</translation>
@@ -585,6 +562,7 @@ New bookmarks can't be saved in your account until you delete some. If you sign 
 <translation id="2332301637111071062">Your organisation deletes Brave data when it isn't used for <ph name="TIMEOUT_DURATION"/>. This could include history, autofill and downloads.</translation>
 <translation id="1008530050039597147">Brave needs camera permission for this site</translation>
 <translation id="1197672524850678392">Couldn't launch Brave. Try again.</translation>
+<translation id="5020151688261063547">Ask anything, right where you are, with Gemini in Brave</translation>
 <translation id="3625983487600668413">Keep Brave in your Dock to get to it quickly at any time</translation>
 <translation id="5755581833598928580">Use Brave any time that you click links in messages, documents and other apps</translation>
 <translation id="7216228761061470870">When you use image search on desktop, the page title, URL and content, including PDFs, are sent to the server</translation>
@@ -605,6 +583,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="7352651011704765696">Something went wrong</translation>
 <translation id="6085660187823915017">To get future Brave updates, you'll need macOS 13 or later. This computer is using macOS 12.</translation>
 <translation id="2865744782251083875">You haven't visited recently. Brave removed <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>.</translation>
+<translation id="3871306442916198768">Show Gemini in Brave in system tray</translation>
 <translation id="4104934885375476361">Brave is now your default browser</translation>
 <translation id="7951152294775418909">Continue where you left off: Brave restores your tabs every time you restart. To turn this off, go to</translation>
 <translation id="3191314862567596053">Import passwords to Brave</translation>
@@ -613,7 +592,6 @@ Brave is unable to recover your settings.</translation>
 3. Click <ph name="BUTTON_3"/> in the Windows notification to pin Brave to your taskbar for quick access</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="7450541714075000668">Text copied</translation>
-<translation id="2034072705932785495">Brave needs permission to access your camera for this site</translation>
 <translation id="7129342855140808694">To use your microphone, give Brave access in <ph name="BEGIN_LINK"/>system settings<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 7.</translation>
 <translation id="3962395975456095331">Relaunch Brave?</translation>
@@ -640,6 +618,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="4784414698887946907">This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">The installer couldn't create a temporary directory. Please check for free disk space and permission to install software.</translation>
 <translation id="8543787950557226450">Reset to default Brave</translation>
+<translation id="4859382825808018797">To secure your work on Brave, your organisation will be able to view or manage certain information when you're signed in to Brave.</translation>
 <translation id="4976450819672499783">Set Brave as default and pin it to taskbar</translation>
 <translation id="1978509466033734608">Make Brave faster</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -653,7 +632,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="7872446069773932638">Downloading… <ph name="SECONDS"/> second(s) remaining</translation>
 <translation id="5545136190679883344">If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK"/>delete the Brave data in your account<ph name="END_LINK"/></translation>
 <translation id="9044562649276955255">Quickly open Gemini in Brave whenever you need it</translation>
-<translation id="7877212753140190672">Ask about this image</translation>
 <translation id="5687542525349822727">Set Brave as your default</translation>
 <translation id="6396151137840491551">Brave upgrades insecure connections to HTTPS automatically when possible</translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
@@ -735,7 +713,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="1419543648228375718">Sign in to Brave?</translation>
 <translation id="8747073452963259673">bottom-left corner of search area: left <ph name="LEFT"/>%, bottom <ph name="BOTTOM"/>%</translation>
 <translation id="878572486461146056">Install error: Your network administrator has applied a Group Policy that prevents installation: <ph name="INSTALL_ERROR"/></translation>
-<translation id="4831743161813926460">Brave needs permission to access your camera and microphone for this site</translation>
 <translation id="8813277370772331957">Remind me later</translation>
 <translation id="1588296410638341457">Share this document with Gemini in Brave to get a quick overview and ask follow-up questions</translation>
 <translation id="64216977793816291">Sign in to Brave?</translation>

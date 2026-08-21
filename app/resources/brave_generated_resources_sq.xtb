@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Më tepër...</translation>
 <translation id="71316462802471551">Adresat Maskuese</translation>
-<translation id="209130971304928953">Ruaj skedat si hapësirë pune…</translation>
-<translation id="877984331511007834">Hap hapësirën e punës…</translation>
-<translation id="1310182651927031327">Ruaj skedat si hapësirë pune…</translation>
-<translation id="3588277741646479444">Hap hapësirën e punës…</translation>
+<translation id="8350985546648269694">Ruaji dritaret dhe skedat aktuale si Hapësirë</translation>
+<translation id="5327248766486351172">Emri</translation>
+<translation id="6379791766023874417">Futni Emrin e Hapësirës Suaj</translation>
+<translation id="9174724474418499472">Hapësira Ime</translation>
+<translation id="5317780077021120954">Ruaje</translation>
+<translation id="7658239707568436148">Anuloje</translation>
+<translation id="196342407904926436">Opsionet e Hapësirës</translation>
+<translation id="2806407377752719586">Fshije Hapësirën</translation>
+<translation id="1844931500883490339">Je i sigurt që do të fshish këtë Hapësirë? Hapësira e ruajtur do të hiqet përgjithmonë. Ky veprim nuk mund të zhbëhet.</translation>
+<translation id="8261506727792406068">Fshije</translation>
+<translation id="8428213095426709021">Konfigurime</translation>
+<translation id="1212321046099128987">S’ka Hapësira të Krijuara</translation>
+<translation id="3524567389166933243">Krijoni Hapësirën Tuaj të Parë Duke Klikuar Butonin Ruaj Më Poshtë.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 skedë} other {# skeda}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Dritare</translation>
+<translation id="1680377529024357662">Ruaji dritaret dhe skedat aktuale si hapësirë</translation>
+<translation id="5561829325295347472">Futni emrin e hapësirës suaj</translation>
+<translation id="2028520494010039812">Opsionet e hapësirës</translation>
+<translation id="1580775521202322063">Fshije hapësirën</translation>
+<translation id="3004759399777164093">Je i sigurt që do të fshish këtë hapësirë? Hapësira e ruajtur do të hiqet përgjithmonë. Ky veprim nuk mund të zhbëhet.</translation>
+<translation id="7563692436589408797">S’ka hapësira të krijuara</translation>
+<translation id="3945077125173636695">Krijoni hapësirën tuaj të parë duke klikuar butonin Ruaj më poshtë.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 skedë} other {# skeda}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> dritare</translation>
+<translation id="3326655241685890930">Hapësira</translation>
 <translation id="1990886731975529483">Instalo dhe hap Google Widevine</translation>
 <translation id="8926389886865778422">Mos pyet sërish</translation>
 <translation id="4900351245762303149">Instalo Google Widevine</translation>
@@ -37,7 +58,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Vetëluajtja qe bllokuar në këtë faqe</translation>
 <translation id="4988333904713528597">Lejo përherë vetëluajtje te <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Vazhdo të bllokosh vetëluajtjen</translation>
-<translation id="3477357195688115718">Brave-i nuk shqyrton zgjerimet për siguri dhe parrezikshmëri. Instaloni këtë zgjerim vetëm nëse i besoni zhvilluesit.</translation>
+<translation id="2201935460386712655">Brave-i nuk shqyrton zgjerimet për siguri dhe parrezikshmëri. Instaloni "<ph name="EXTENSION_NAME"/>" vetëm nëse i besoni zhvilluesit.</translation>
 <translation id="2928844661231356557">Dhënia e qasjes në një pajisje Bluetooth do të lejojë sajtin të lexojë informacione identifikuese dhe potencialisht të ndjeshme rreth jush. Lejoni qasjen në pajisje Bluetooth vetëm për sajtet që u besoni. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Dritaret Tor</translation>
 <translation id="7965178729203412357">Identitet i Ri Tor</translation>
@@ -63,7 +84,6 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Menaxho filtrat</translation>
 <translation id="3108584651298176909">Trego rregullat</translation>
 <translation id="5156986655891520787">Fsheh rregullat</translation>
-<translation id="7658239707568436148">Anuloje</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Hap duke përdorur adresën .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Ngjit me Forcë</translation>
@@ -91,6 +111,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Kapni screenshot</translation>
 <translation id="3114478090884951591">Zona e dukshme</translation>
 <translation id="2026367923222947564">Faqja e plotë</translation>
+<translation id="4218885227032158909">Zona e zgjedhur</translation>
 <translation id="4928988318462976765">Shitore Zgjerimesh Web</translation>
 <translation id="9181207987584064303">Shiheni te Shitorja e Zgjerimeve Web</translation>
 <translation id="3161744659507801211">Paralajmërim: Brave nuk mund të parandalojë zgjerimet të regjistrojnë historikun tuaj të shfletimit.</translation>
@@ -289,14 +310,12 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Zhvendos Mediat</translation>
 <translation id="4418985925423678811">Listë e Re</translation>
 <translation id="385051799172605136">Mbrapsht</translation>
-<translation id="5317780077021120954">Ruaje</translation>
 <translation id="7930125899031086027">Krijo dhe zhvendos</translation>
 <translation id="2860159216666546928">Zgjidh një dosje për të zhvendosur këto media</translation>
 <translation id="9130105487623071247">Emri i Listës</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> njësi të përzgjedhura</translation>
 <translation id="3596306474342941843">Fshi listën</translation>
 <translation id="7110726588168439924">Je i sigurtë që do të fshish këtë listë dhe gjithë përmbajtjen e saj? Ky veprim nuk mund të zhbëhet.</translation>
-<translation id="8261506727792406068">Fshije</translation>
 <translation id="8152485753254079984">Listë e re</translation>
 <translation id="5397019762993984652">Shto nga dosja "Luaj më vonë"</translation>
 <translation id="7525067979554623046">Krijo</translation>
@@ -393,7 +412,6 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Modifiko kontejnerin</translation>
 <translation id="7900511996284443779">Hiq kontejnerin</translation>
 <translation id="2738687336989232152">Je i sigurtë që dëshiron ta fshish kontejnerin <ph name="CONTAINER_NAME"/>? Kjo do të heqë të gjithë të dhënat e lidhura me të.</translation>
-<translation id="5327248766486351172">Emri</translation>
 <translation id="104766043551382253">Ikonë</translation>
 <translation id="5431318178759467895">Ngjyrë</translation>
 <translation id="4328541188421002379">Jepi emër kontejnerit tënd si Puna ose Personale</translation>
@@ -547,6 +565,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Përshtatni shfletuesin tuaj duke mbështetur gjithashtu Brave</translation>
 <translation id="123297831435065577">Brave Origin është një version i paguar i shfletuesit për përdoruesit që nuk kanë nevojë për të gjitha veçoritë që mbështesin Brave si një biznes, por ende dëshirojnë privatësinë që vetëm Brave ofron. Përdoruesit e Origin do të vazhdojnë të përfitojnë nga privatësia jonë e paparë në industri, adblock, dhe shpejtësia (përmes Mburojave), si dhe përditësimet e rregullta të softuerit, rregullimet e Chromium, dhe përmirësimet e sigurisë dhe privatësisë.</translation>
 <translation id="7984508421152399880">Blej tani</translation>
+<translation id="1882724423074862793">Rivendos blerjen</translation>
 <translation id="5567412479632285879">Shpërblimet Brave është ç'aktivizuar</translation>
 <translation id="413570371620795359">Hapni panelin e Shpërblimeve për ta aktivizuar dhe për të filluar</translation>
 <translation id="1051600834033686945">Hapni cilësimet e plota të Shpërblimeve Brave</translation>
@@ -583,6 +602,8 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Dërgo automatikisht raporte diagnostikimi</translation>
 <translation id="8868426106596092089">Ndihmoni për të përmirësuar qëndrueshmërinë e produktit të Brave-it duke dërguar automatikisht raporte diagnostike kur Shfletuesi Brave prishet apo ngrin</translation>
 <translation id="4891600875049212418">Kalo Off-The-Record kur viziton sajtet e ndjeshme</translation>
+<translation id="1022603984240541480">Shfaq njoftimin e rregullimit të cilësimeve të Privatësisë në sajte të përputhshme</translation>
+<translation id="3528176629974273019">Lejon Brave-in të sugjerojë (dhe rregullojë) automatikisht cilësime privatësie specifike për sajtin.</translation>
 <translation id="509873765238158442">Blloko Microsoft Recall</translation>
 <translation id="4763421121695677716">Blloko funksionin Recall në kompjuterët me Microsoft Windows nga marrja automatikisht e fotografive të ndonjë skede të hapur Brave.</translation>
 <translation id="1968895725257436430">Mbledhja e të dhënave</translation>
@@ -737,6 +758,7 @@ A jeni i sigurt që doni ta bëni këtë?</translation>
 <translation id="4425607417590286548">Zbato ndryshimet</translation>
 <translation id="2128143836897950793">Kliko mbi 'Kërko një Urë të Re...' për të marrë ura</translation>
 <translation id="3314921753580327793">Shkruaj adresën:port (një për linjë)</translation>
+<translation id="7002083631026466886">Tor nuk mund ta përdorë këtë urë. Kontrollojeni kundrejt urës që ju është dhënë, pastaj provoni sërish:</translation>
 <translation id="3755189300481406891">Kërko Urë</translation>
 <translation id="6924425739431382319">Po kontaktohet BridgeDB. Ju lutemi prisni.</translation>
 <translation id="811745063252080651">Zgjidh CAPTCHA-n për të kërkuar një urë.</translation>
@@ -914,7 +936,6 @@ A jeni i sigurt që doni ta bëni këtë?</translation>
 <translation id="1838374766361614909">Pastro kërkimin</translation>
 <translation id="5126255551970171328">Kërko për një kujtesë</translation>
 <translation id="7402116145895962069">Sinkronizo modelet lokale të Ollama</translation>
-<translation id="4835154437390745810">Menaxhuar nga Ollama</translation>
 <translation id="5985516785067818307">Ankestues Panelist</translation>
 <translation id="8347743943525229984">Lejo ankeset e Brave</translation>
 <translation id="3204080538332044581">Lejon që Brave të tregojë lidhje për ankestet private në faqen e re skedave. Ankestet na ndihmojnë të ndërtojmë veçori më të mira dhe të matim efektivitetin e fushatave reklamuese me bazë në shfletues. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>

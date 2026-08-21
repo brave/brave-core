@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">మరింత...</translation>
 <translation id="71316462802471551">ఇమెయిల్ అలియాసెస్</translation>
-<translation id="209130971304928953">ట్యాబ్‌లను వర్క్‌స్పేస్‌గా సేవ్ చేయండి…</translation>
-<translation id="877984331511007834">వర్క్‌స్పేస్‌ను తెరవండి…</translation>
-<translation id="1310182651927031327">ట్యాబ్‌లను వర్క్‌స్పేస్‌గా సేవ్ చేయండి…</translation>
-<translation id="3588277741646479444">వర్క్‌స్పేస్ తెరవండి…</translation>
+<translation id="8350985546648269694">ప్రస్తుత విండోలు మరియు ట్యాబ్‌లను స్పేస్‌గా సేవ్ చేయండి</translation>
+<translation id="5327248766486351172">పేరు</translation>
+<translation id="6379791766023874417">మీ స్పేస్ పేరును పొందుపరచండి</translation>
+<translation id="9174724474418499472">నా స్పేస్</translation>
+<translation id="5317780077021120954">సేవ్ చేయి</translation>
+<translation id="7658239707568436148">రద్దు చేయి</translation>
+<translation id="196342407904926436">స్పేస్ ఎంపికలు</translation>
+<translation id="2806407377752719586">స్పేస్‌ను తొలగించండి</translation>
+<translation id="1844931500883490339">మీరు ఈ స్పేస్‌ను తొలగించాలనుకుంటున్నారా? సేవ్ చేసిన స్పేస్ శాశ్వతంగా తీసివేయబడుతుంది. ఈ చర్యను రద్దు చేయలేరు.</translation>
+<translation id="8261506727792406068">తొలగించు</translation>
+<translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
+<translation id="1212321046099128987">ఎలాంటి స్పేస్‌లు సృష్టించబడలేదు</translation>
+<translation id="3524567389166933243">కింద ఉన్న సేవ్ బటన్‌ను క్లిక్ చేయడం ద్వారా మీ మొదటి స్పేస్‌ను సృష్టించండి.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 ట్యాబ్} other {# ట్యాబ్‌లు}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> విండోలు</translation>
+<translation id="1680377529024357662">ప్రస్తుత విండోలు మరియు ట్యాబ్‌లను స్పేస్‌గా సేవ్ చేయండి</translation>
+<translation id="5561829325295347472">మీ స్పేస్ పేరును పొందుపరచండి</translation>
+<translation id="2028520494010039812">స్పేస్ ఎంపికలు</translation>
+<translation id="1580775521202322063">స్పేస్‌ను తొలగించండి</translation>
+<translation id="3004759399777164093">మీరు ఈ స్పేస్‌ను తొలగించాలనుకుంటున్నారా? సేవ్ చేసిన స్పేస్ శాశ్వతంగా తీసివేయబడుతుంది. ఈ చర్యను రద్దు చేయలేరు.</translation>
+<translation id="7563692436589408797">ఎలాంటి స్పేస్‌లు సృష్టించబడలేదు</translation>
+<translation id="3945077125173636695">కింద ఉన్న సేవ్ బటన్‌ను క్లిక్ చేయడం ద్వారా మీ మొదటి స్పేస్‌ను సృష్టించండి.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 ట్యాబ్} other {# ట్యాబ్‌లు}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> విండోలు</translation>
+<translation id="3326655241685890930">స్పేస్‌లు</translation>
 <translation id="1990886731975529483">Google Widevineని ఇన్‌స్టాల్ చేసి రన్ చేయి</translation>
 <translation id="8926389886865778422">మళ్ళి అడగవద్దు</translation>
 <translation id="4900351245762303149">Google Widevineని ఇన్‌స్టాల్ చేయి</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">ఈ పేజీలో ఆటోప్లే నిరోధించబడింది</translation>
 <translation id="4988333904713528597">ఎల్లప్పుడూ ఆటోప్లేను అన్‌బ్లాక్ చేయండి <ph name="HOST"/></translation>
 <translation id="4150684676757176434">అటోప్లేను నిరోధించడాన్ని కొనసాగించు</translation>
-<translation id="3477357195688115718">Brave పొడిగింపులను సెక్యూరిటీ మరియు సేఫ్టీ కోసం సమీక్షంచదు. డెవలపర్‌పై నమ్మకం ఉంటేనే ఈ పొడిగింపును ఇన్‌స్టాల్ చేయండి.</translation>
+<translation id="2201935460386712655">Brave పొడిగింపులను సెక్యూరిటీ మరియు సేఫ్టీ కోసం సమీక్షించదు. "<ph name="EXTENSION_NAME"/>"ను డెవలపర్‌పై నమ్మకం ఉంటేనే ఇన్‌స్టాల్ చేయండి.</translation>
 <translation id="2928844661231356557">బ్లూటూత్ పరికరాన్ని అనుమతించడం ద్వారా సైట్ మీకు సంబంధించిన గుర్తింపు మరియు సాధ్యమయ్యే సున్నితమైన సమాచారాన్ని చదవగలదు. మీరు విశ్వసించే సైట్‌లకు మాత్రమే బ్లూటూత్ పరికరాలను యాక్సెస్ చేయడానికి అనుమతించండి. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor విండోస్</translation>
 <translation id="7965178729203412357">కొత్త Tor ఐడెంటిటీ</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">ఫిల్టర్ లను నిర్వహించు</translation>
 <translation id="3108584651298176909">రూల్స్ చూపించు</translation>
 <translation id="5156986655891520787">రూల్స్ దాచు</translation>
-<translation id="7658239707568436148">రద్దు చేయి</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">ఒని యోన్ చిరునామాని ఉపయోగించండి: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">బలవంతంగా పేస్ట్ చేయండి</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">స్క్రీన్‌షాట్ క్యాప్చర్ చేయండి</translation>
 <translation id="3114478090884951591">కనిపించే ప్రాంతం</translation>
 <translation id="2026367923222947564">పూర్తి పేజీ</translation>
+<translation id="4218885227032158909">ఎంచుకున్న ప్రాంతం</translation>
 <translation id="4928988318462976765">వెబ్ ఎక్స్టెన్షన్స్ స్టోర్</translation>
 <translation id="9181207987584064303">వెబ్ ఎక్స్టెన్షన్స్ స్టోర్ లో వీక్షించండి</translation>
 <translation id="3161744659507801211">హెచ్చరిక: Brave పొడిగింపులు మీ బ్రౌజింగ్ చరిత్రను రికార్డు చేయడాన్ని నివారించలేరు.</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">మీడియాను తరలించండి</translation>
 <translation id="4418985925423678811">కొత్త ప్లేలిస్ట్</translation>
 <translation id="385051799172605136">వెనుకకు</translation>
-<translation id="5317780077021120954">సేవ్ చేయి</translation>
 <translation id="7930125899031086027">సృష్టించు మరియు తరలించు</translation>
 <translation id="2860159216666546928">ఈ మీడియాను తరలించేందుకు ఫోల్డర్ ఎంచుకోండి</translation>
 <translation id="9130105487623071247">ప్లేలిస్ట్ పేర</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> ఐటమ్లు ఎంచుకోబడ్డాయి</translation>
 <translation id="3596306474342941843">ప్లేలిస్ట్‌ను తొలగించండి</translation>
 <translation id="7110726588168439924">ఈ ప్లేలిస్ట్ మరియు దాని అన్ని కంటెంట్‌లను తొలగించాలనుకుంటున్నారా? ఈ చర్యను తిరిగిాంగలదు.</translation>
-<translation id="8261506727792406068">తొలగించు</translation>
 <translation id="8152485753254079984">కొత్త ప్లేలిస్ట్</translation>
 <translation id="5397019762993984652">మీ Play Later ఫోల్డర్ నుండి చేర్చండి</translation>
 <translation id="7525067979554623046">సృష్టించు</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">కంటైనర్‌ని సవరించండి</translation>
 <translation id="7900511996284443779">కంటైనర్‌ని తొలగించండి</translation>
 <translation id="2738687336989232152">మీరు కంటైనర్ తొలగించాలనుకుంటున్నారా<ph name="CONTAINER_NAME"/>? దీని‌లోదేహిత సమాచారం అంతా రిమూవ్ అవుతుంది.</translation>
-<translation id="5327248766486351172">పేరు</translation>
 <translation id="104766043551382253">ఐకాన్</translation>
 <translation id="5431318178759467895">రంగు</translation>
 <translation id="4328541188421002379">మీ కంటైనర్‌కు పని లేదా వ్యక్తిగత వంటి పేరు ఇవ్వండి</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">Brave కు మద్దతు అందిస్తూ మీ browser ను అనుకూలీకరించండి</translation>
 <translation id="123297831435065577">Brave Origin అనేది బ్రౌజర్ యొక్క ఒక పేయిడ్ వర్షన్, ఇది Brave ను వ్యాపారంగా సపోర్ట్ చేసే అన్ని ఫీచర్‌లు అవసరం లేని యూజర్‌ల కోసం, కానీ ఇప్పటికీ Brave మాత్రమే అందించే గోప్యతను కోరుకుంటారు. Origin యూజర్‌లు మన ఇండస్ట్రీ-లీడింగ్ గోప్యత, adblock, మరియు స్పీడ్ (Shields ద్వారా), అలాగే రెగులర్ సాఫ్ట్‌వేర్ అప్‌డేట్‌లు, Chromium పాచెస్, మరియు సెక్యూరిటీ మరియు గోప్యత ఇమ్‌ప్రూవ్‌మెంట్‌ల నుండి ప్రయోజనం పొందటాన్ని కొనసాగిస్తారు.</translation>
 <translation id="7984508421152399880">ఇప్పుడు కొనండి</translation>
+<translation id="1882724423074862793">ఖరీదును పునరుద్ధరించండి</translation>
 <translation id="5567412479632285879">Brave Rewards నిలిపివేయబడింది</translation>
 <translation id="413570371620795359">ప్రారంభించడానికి రివార్డ్స్ ప్యానెల్ తెరవండి</translation>
 <translation id="1051600834033686945">ముఖ్య Brave Rewards సెట్టింగ్‌లను తెరవండి</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">నిబంధికా నివేదికలను ఆటోమేటిక్ గా పంపండి</translation>
 <translation id="8868426106596092089">Brave బ్రౌజర్ ఫ్రీజ్ అవ్వబడినప్పుడు, డయాగ్నస్టిక్ రిపోర్టులని ఆటోమాటిక్గా పంపించడానికి హెల్ప్ ఇంప్రూవ్ చెయ్యండి. పాస్‌వర్డ్ హాంగ్స్ తో సర్వీస్ క్వాలిటీని పెంచండి.</translation>
 <translation id="4891600875049212418">సంకేతాలను సందర్శించినప్పుడు గోప్యతా రికార్డులోకి వెళ్ళండి</translation>
+<translation id="1022603984240541480">అనుకూల సైట్‌లలో గోప్యతా సెట్టింగ్‌ల ట్యూనింగ్ నోటిఫికేషన్‌ను చూపించండి</translation>
+<translation id="3528176629974273019">Brave సైట్-నిర్దిష్ట గోప్యతా సెట్టింగ్‌లను స్వయంచాలకంగా సూచించడానికి (మరియు సర్దుబాటు చేయడానికి) అనుమతిస్తుంది.</translation>
 <translation id="509873765238158442">Microsoft Recall ని నిరోధించండి</translation>
 <translation id="4763421121695677716">Microsoft Windows కంప్యూటర్‌లపై మైక్రోసాఫ్ట్ రీకాల్ ఫీచర్‌ను ఎందుకింత తేలికగా బ్లాకింగ్ చేయవచ్చు.</translation>
 <translation id="1968895725257436430">డేటా సేకరణ</translation>
@@ -737,6 +758,7 @@
 <translation id="4425607417590286548">మార్పులను అన్వయించండి</translation>
 <translation id="2128143836897950793">బ్రిడ్జ్ లను పొందుటకు 'కొత్త బ్రిడ్జ్‌ను రిక్వెస్ట్ చేయి...' బటన్ పై క్లిక్ చేయండి</translation>
 <translation id="3314921753580327793">Type address:port (కొత్త లైనుకు ఒకటి చొప్పున)</translation>
+<translation id="7002083631026466886">Tor ఈ బ్రిడ్జ్‌ను ఉపయోగించలేదు. మీకు ఇచ్చిన బ్రిడ్జ్‌తో దీన్ని సరిచూసుకోండి, ఆపై మళ్లీ ప్రయత్నించండి:</translation>
 <translation id="3755189300481406891">రిక్వెస్ట్ బ్రిడ్జ్</translation>
 <translation id="6924425739431382319">BridgeDBతో సంప్రదిస్తున్నాం. దయచేసి వేచి ఉండండి.</translation>
 <translation id="811745063252080651">బ్రిడ్జ్ ను రిక్వెస్ట్ చేయడానికి CAPTCHA ను పరిష్కరించండి.</translation>
@@ -914,7 +936,6 @@
 <translation id="1838374766361614909">శోధనను క్లియర్ చేయి</translation>
 <translation id="5126255551970171328">మెమొరీ కోసం శోధించు</translation>
 <translation id="7402116145895962069">మీ Ollama స్థానిక మోడళ్లను సమకాలీకరించండి</translation>
-<translation id="4835154437390745810">Ollama ద్వారా నిర్వహించబడుతోంది</translation>
 <translation id="5985516785067818307">సర్వే ప్యానలిస్ట్</translation>
 <translation id="8347743943525229984">Brave సర్వేలను అనుమతించండి</translation>
 <translation id="3204080538332044581">కొత్త ట్యాబ్ పేజీలో ప్రైవేట్ సర్వేలకు లింకులను చూపించడానికి Brave కి అనుమతిస్తుంది. సర్వేలు మాకు ఉత్తమ ఫీచర్లను రూపొందించడంలో మరియు బ్రౌజర్-ఆధారిత ప్రకటనల ప్రచారాల ప్రభావాన్ని కొలవడంలో సహాయపడతాయి. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>

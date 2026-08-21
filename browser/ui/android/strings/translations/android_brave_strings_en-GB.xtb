@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Clear browsing data</translation>
 <translation id="1690924763769415936">Background play</translation>
 <translation id="6332924730165919598">Closing all tabs closes Brave</translation>
+<translation id="2557725907027944082">Groups</translation>
 <translation id="8308305244351876417">Allows audio to play when you switch to another tab in Brave or another app, or your device screen is off.</translation>
 <translation id="49147335255967913">Open YouTube links in Brave</translation>
 <translation id="4150201353443180367">Display</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Learn more about Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Allow (relaunch now)</translation>
 <translation id="2433507940547922241">Appearance</translation>
+<translation id="316542773973815724">Navigation</translation>
 <translation id="9040069796107003510">Brave Rewards icon</translation>
 <translation id="6333347122924254968">Show Brave Rewards icon in address bar</translation>
-<translation id="1215433243238902715">Enable bottom navigation toolbar</translation>
+<translation id="4393974575368329991">Bottom navigation toolbar</translation>
+<translation id="1834226716203076292">Show a bottom bar for quick access to home, bookmarks, and search</translation>
 <translation id="1422686363939271829">This setting is disabled when the bottom address bar position is selected</translation>
 <translation id="6587448235155023666">Your changes will take effect the next time you relaunch Brave</translation>
 <translation id="8701563696941209024">RELAUNCH NOW</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Send anonymous diagnostic reports if you experience a crash or freeze.</translation>
 <translation id="4780647518983772446">Share private and anonymous product insights about what Brave features are being used.</translation>
 <translation id="5109496672133133896">Private product insights</translation>
-<translation id="3545804467215833536">Tap to view Brave Shields</translation>
-<translation id="1724327820822194498">See all the bad stuff Brave blocked, on every page, with Shields.</translation>
+<translation id="4340039903315468568">See all the bad stuff Brave blocked on every page with Shields. Tap to view</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; trackers blocked</translation>
 <translation id="8281886186245836920">Skip</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -443,6 +445,7 @@ Are you sure you want to do this?</translation>
 <translation id="7141438739990875547">Bitcoin networks</translation>
 <translation id="9055546041146396417">If this site appears broken, try Shields down.</translation>
 <translation id="7898672232170410330">Block element</translation>
+<translation id="7205939464631857223">Clear all blocked elements</translation>
 <translation id="7961015016161918242">Never</translation>
 <translation id="3200744626782631683">Browsing data is never shredded automatically</translation>
 <translation id="1991004083507807299">Site tab closed</translation>
@@ -505,7 +508,10 @@ Are you sure you want to do this?</translation>
 <translation id="3980704343258720102">Clears all browsing data</translation>
 <translation id="8089997572759938512">Resets your privacy reports to zero</translation>
 <translation id="2718046830255553131">Privacy reports data has been cleared.</translation>
-<translation id="8376263745431603066">Enable "Night Mode" (Experimental)</translation>
+<translation id="3623948252408240879">Night Mode</translation>
+<translation id="1257950165130031194">Force dark mode for web content</translation>
+<translation id="8710601165725654801">Dynamic colours</translation>
+<translation id="7865194971711852999">App theme matches wallpaper colours</translation>
 <translation id="1383876407941801731">Search</translation>
 <translation id="13296465911709339">Your text has been copied to the clipboard.</translation>
 <translation id="2735834606413553397">Public address has been copied to the clipboard.</translation>
@@ -725,7 +731,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4979796155378508955">Transaction may not be propagated to the network if custom nonce value is non-sequential or has other errors.</translation>
 <translation id="750843150060816463">Gas Price (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limit</translation>
-<translation id="6389441740143786465">Disable sharing hub</translation>
+<translation id="1784950057929740513">Sharing Hub</translation>
 <translation id="473775607612524610">Update</translation>
 <translation id="479795390141144417">Account update failed.</translation>
 <translation id="8084782383392198011">Account name can't be empty.</translation>
@@ -800,8 +806,12 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1060221736464994328">Allow this site to switch the network?</translation>
 <translation id="2478788592457735063">This will switch the network to a previously added network.</translation>
 <translation id="8756686998207163764">Switch network</translation>
+<translation id="8905793906896555159">Enable tab groups</translation>
+<translation id="7632160823264702523">Tab groups bar</translation>
+<translation id="2477807195394450274">Show a bottom bar for quick access to tabs in the currently open tab group</translation>
+<translation id="8374720587111523381">Open links in current tab group</translation>
 <translation id="5324095733417835490">Only open links in current tab group</translation>
-<translation id="2620277345862119868">Automatically opens all links in the current tab group</translation>
+<translation id="1227658541937938697">Automatically open all links in the current tab group</translation>
 <translation id="5242300593039211344">Lock Wallet</translation>
 <translation id="1108298724135935307">Connected sites</translation>
 <translation id="4255623233927788178">View on block explorer</translation>
@@ -1080,7 +1090,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6393423486818299209">Use your current service provider or Wikimedia DNS</translation>
 <translation id="3401384982562827787">Use your current service provider or Cloudflare</translation>
 <translation id="8812367543786936496">If your current service provider is insecure, Brave uses a secure alternative DNS provider</translation>
-<translation id="1381108437654541567">Enable multiple windows</translation>
+<translation id="750538469281113679">Multiple windows</translation>
 <translation id="6167344249617630304">Open up to 5 windows at a time and move tabs from one window to another</translation>
 <translation id="1063948063403254568">Multiple windows detected</translation>
 <translation id="4661882208707630158">Please merge tabs to another Brave window or close other Brave windows, before disabling the multiple-windows feature.</translation>

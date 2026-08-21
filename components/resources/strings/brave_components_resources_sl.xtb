@@ -525,7 +525,10 @@
     }</translation>
 <translation id="3264975266761862670">Ste pripravljeni, da začnete služiti?</translation>
 <translation id="2784412028126205842">Povežite račun za izplačilo</translation>
-<translation id="1789518312567918588">{ADS_VIEWED, plural, =0 {Ta mesec ste videli <ph name="COUNT_BEGIN"/> # oglasov<ph name="COUNT_END"/>} =1 {Lahko bi prejeli plačilo za <ph name="COUNT_BEGIN"/> # oglas,<ph name="COUNT_END"/> ki ste ga videli ta mesec.} two {Lahko bi prejeli plačilo za <ph name="COUNT_BEGIN"/> # oglasa,<ph name="COUNT_END"/> ki ste ju videli ta mesec.} few {Lahko bi prejeli plačilo za <ph name="COUNT_BEGIN"/> # oglase,<ph name="COUNT_END"/> ki ste si jih ogledali ta mesec.} other {Lahko bi prejeli plačilo za <ph name="COUNT_BEGIN"/> # oglasov,<ph name="COUNT_END"/> ki ste jih videli ta mesec.}}</translation>
+<translation id="4083788716319248418">{ADS_VIEWED, plural,
+      =1 {Ta mesec ste si ogledali <ph name="COUNT_BEGIN"/> # oglas<ph name="COUNT_END"/>}
+      other {Ta mesec ste si ogledali <ph name="COUNT_BEGIN"/> # oglasov<ph name="COUNT_END"/>}
+    }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural, =0 {Ta mesec ste si ogledali <ph name="COUNT_BEGIN"/> # oglasov<ph name="COUNT_END"/>} =1 {Ta mesec ste zaslužili za ogled <ph name="COUNT_BEGIN"/> # oglasa<ph name="COUNT_END"/>} two {Ta mesec ste zaslužili za ogled <ph name="COUNT_BEGIN"/> # oglasov<ph name="COUNT_END"/>} few {Ta mesec ste zaslužili za ogled <ph name="COUNT_BEGIN"/> # oglasov<ph name="COUNT_END"/>} other {Ta mesec ste zaslužili za ogled <ph name="COUNT_BEGIN"/> # oglasov<ph name="COUNT_END"/>}}</translation>
 <translation id="6067959437127691361">Uporaba storitve Brave Rewards pomaga podpirati ustvarjalce vsebine in vam omogoča, da zaslužite žetone BAT.</translation>
 <translation id="2359808026110333948">Naprej</translation>
@@ -1132,6 +1135,7 @@
 <translation id="793994607260936590">prvi</translation>
 <translation id="4709524402122994378">transakcije</translation>
 <translation id="4591079278963448049">Povezani račun žetonov še ne obstaja. Za njegovo vzpostavitev in financiranje bo porabljen majhen znesek SOL.</translation>
+<translation id="1468846486094099016">Ocenjeni podatki podpisa</translation>
 <translation id="3240773103344793224">Zahtevana sprememba lastništva računa</translation>
 <translation id="8041423758956015568">Ta transakcija bo lastništvo računa prenesla na nov program. To dejanje je nepreklicno in lahko povzroči izgubo sredstev.</translation>
 <translation id="1426320910664514906">Omejitev plina</translation>
@@ -1605,6 +1609,13 @@
 <translation id="5333225216561354793">Od vas zahtevamo, da potrdite spodaj navedene elemente</translation>
 <translation id="4284971227128011550">Razumem, da je to denarnica s samostojnim skrbništvom in da sem samo jaz odgovoren/a za vsa povezana sredstva, premoženja ali račune ter za ustrezno ukrepanje za zavarovanje, zaščito in varnostno kopiranje svoje denarnice. Razumem, da Brave ne more dostopati do moje denarnice ali razveljaviti transakcij v mojem imenu in da je moja besedna zveza za obnovitev EDINI način za ponovno pridobitev dostopa v primeru izgubljenega gesla, ukradene naprave ali podobnih okoliščin.</translation>
 <translation id="3604445540387095708">Prebral sem in se strinjam s <ph name="LINK_BEFORE"/>Pogoji uporabe<ph name="LINK_AFTER"/></translation>
+<translation id="7298195798382681320">Priporočeno</translation>
+<translation id="5261730884092815272">12 besed</translation>
+<translation id="4937679440025366600">24 besed</translation>
+<translation id="7875799385764282380">Močna varnost in hitrejši zapis. Uporablja ga večina denarnic.</translation>
+<translation id="8157829085295816223">Največja varnostna meja. Primerno za uporabo v drugih denarnicah (ki morda zahtevajo 24-besedno frazo).</translation>
+<translation id="4357180991717571915">Izberite dolžino svoje fraze za obnovitev dostopa</translation>
+<translation id="8997001537838391693">Vaša fraza za obnovitev dostopa obnovi dostop do denarnice, če pozabite geslo ali izgubite napravo. Shranili jo boste v naslednjih korakih.</translation>
 <translation id="1422451606553326863">Kupite kripto</translation>
 <translation id="3887541341068007345">Preverjanje za razširitev denarnice ...</translation>
 <translation id="8407091560429310499">Izberite sredstvo</translation>
@@ -1849,6 +1860,8 @@
 <translation id="7716113567047550378">Ne zapirajte tega okna, dokler se sinhronizacija ne konča.</translation>
 <translation id="5123590959308755060">Nadaljujte z uporabo denarnice v novem zavihku</translation>
 <translation id="4594014034647546191">Blok za rojstni dan zaščitenega računa</translation>
+<translation id="2242190818083876475">Ponastavi rojstni dan računa</translation>
+<translation id="5080237867196215050">Ponastavitev rojstnega dneva računa bo zahtevala popolno ponovno sinhronizacijo. Vnesite nov blok za rojstni dan in kliknite »Ponastavi rojstni dan računa« za nadaljevanje.</translation>
 <translation id="6666784075827260119">Rojstni dan računa mora biti večji od <ph name="BLOCK_NUMBER"/></translation>
 <translation id="3102477628835823956">Rojstni dan računa mora biti manjši od <ph name="BLOCK_NUMBER"/></translation>
 <translation id="6850229669854962550"><ph name="BLOCKS"/> blokov zadaj</translation>
@@ -1995,6 +2008,10 @@
 <translation id="7948579849190819732">Trenutnem zavihku</translation>
 <translation id="7056969230130642253">Ste že na tekočem</translation>
 <translation id="7292242212818928219">Na voljo je nova vsebina. Ali želite ponovno naložiti?</translation>
+<translation id="6007028324976222777">Uvozi iz OPML</translation>
+<translation id="8871004282386501355">Izvozi v OPML</translation>
+<translation id="481478016164478903">Dodanih <ph name="PUBLISHER_COUNT"/> založnikov, <ph name="FEED_COUNT"/> neposrednih virov in <ph name="CHANNEL_COUNT"/> kanalov. Preskočenih <ph name="SKIPPED_COUNT"/> že dodanih.</translation>
+<translation id="5537748547202815718">Te datoteke ni bilo mogoče uvoziti. Prepričajte se, da je veljavna datoteka OPML.</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">Naprej</translation>
 <translation id="1272079795634619415">Ustavi</translation>
@@ -2002,6 +2019,8 @@
 <translation id="7211681214230730336">Znova naloži in počisti predpomnilnik</translation>
 <translation id="1779766957982586368">Zapri okno</translation>
 <translation id="5210365745912300556">Zapri zavihek</translation>
+<translation id="8852436503814917529">Preklopi na naslednji zavihek</translation>
+<translation id="1543046737011894871">Preklopi na prejšnji zavihek</translation>
 <translation id="2291643155573394834">Naslednji zavihek</translation>
 <translation id="7748528009589593815">Prejšnji zavihek</translation>
 <translation id="3738690686686515962">Izberite zavihek 0</translation>
@@ -2019,7 +2038,6 @@
 <translation id="4841735924729216702">Meni okna</translation>
 <translation id="3649256019230929621">Pomanjšaj okno</translation>
 <translation id="906458777597946297">Povečaj okno</translation>
-<translation id="2082612610620888017">Prikaži vsa okna</translation>
 <translation id="1111843722790053332">Odpri v oknu PWA</translation>
 <translation id="907981618023904259">Nastavitve spletne aplikacije</translation>
 <translation id="4138336125382947023">Informacije o spletni aplikaciji</translation>
@@ -2078,7 +2096,6 @@
 <translation id="7012611213801651252">Prikaži meni z avatarji</translation>
 <translation id="6263048902976129908">Preklop orodij za razvijalce</translation>
 <translation id="1386786836007298307">Preklopi celozaslonsko orodno vrstico</translation>
-<translation id="461433814913785913">Prilagodi vrstico na dotik</translation>
 <translation id="4722786500079380710">Preklopi dogodke Javascript Apple</translation>
 <translation id="5825969867518399495">Namesti PWA</translation>
 <translation id="7888244262238732644">Pokaži stran za upravljanje</translation>
@@ -2118,7 +2135,11 @@
 <translation id="6332027154313182926">Preklopi Brave VPN</translation>
 <translation id="6539014233195996894">Preklopi zvok zavihka</translation>
 <translation id="2682865834956428001">Preklopi položaj stranske vrstice</translation>
-<translation id="6105745639559695088">Preklopi stransko vrstico</translation>
+<translation id="7095235686444800565">Preklopi trenutno stransko ploščo</translation>
+<translation id="6330741325040551950">Preklopi stransko ploščo zaznamkov</translation>
+<translation id="1973174482432326058">Preklopi stransko ploščo bralnega seznama</translation>
+<translation id="14910687022901840">Preklopi stransko ploščo seznama predvajanja</translation>
+<translation id="3195191401552731345">Preklopi stransko ploščo Brave Novic</translation>
 <translation id="3488252265135539275">Preklopi navpične zavihke</translation>
 <translation id="7134064542341959603">Preklopi naslov okna z navpičnimi zavihki</translation>
 <translation id="3067105725259639716">Konfiguriraj Brave Novice</translation>
@@ -2131,6 +2152,7 @@
 <translation id="134184943774258988">Preklopi vidnost gumba Vsi zaznamki</translation>
 <translation id="2158862020143233462">Preklopi ščite</translation>
 <translation id="3010280727642018218">Preklopi Javascript</translation>
+<translation id="8324318899000695659">Blokiraj elemente</translation>
 <translation id="188822869499214197">Pokaži oblaček seznama predvajanja</translation>
 <translation id="3202536111478033084">Združi zavihke glede na trenutni izvor</translation>
 <translation id="6002210667729577411">Premakni skupino v novo okno</translation>
@@ -2243,23 +2265,21 @@
 <translation id="7905602379229309187">Končna točka je trenutno preobremenjena. Prosimo, poskusite znova pozneje.</translation>
 <translation id="8151638057146502721">Konfiguracija spletne strani</translation>
 <translation id="999273441077650169">Model se dinamično spreminja, da uporabi najboljšega za določen opravek.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="1238020084128916796">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Llama 3.1 8B, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost za številne primere uporabe. Llama gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me Qwen VL 30B, model, ki ga je ustvaril Alibaba Cloud z visoko zmogljivostjo in uporabo za veliko število primerov uporabe. Qwen gostuje v Braveu prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GLM-5, model, ki ga je ustvaril Zhipu AI za visoko zmogljivost in široko uporabnost. GLM-5 gostuje v NEAR prek njihove preverljivo varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Zdravo, sem Leo. Sem AI-pomočnik podjetja Brave. Delujem na podlagi modela GLM-5.1, ki ga je razvilo podjetje Zhipu AI z namenom, da je zmogljiv in primeren za številne primere uporabe. GLM-5.1 gostuje na platformi NEAR prek lastne, preverljivo zasebne in varne infrastrukture.<ph name="LINK_BEFORE"/>Več informacij<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Živjo, sem Leo. Sem AI pomočnik podjetja Brave. Poganja me Claude Instant, model podjetja Anthropic, namenjen pogovoru in obdelavi besedil. Claude Instant gostuje neposredno pri Brave na naši varni infrastrukturi.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Haiku – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Haiku gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Sonnet – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Sonnet gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="6277330815126859513">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Llama 4 Maverick, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost za številne primere uporabe. Llama 4 Maverick gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="5833148755396048122">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GPT OSS 20B, model, ki ga je ustvaril OpenAI za zmogljivost in uporabnost za številne primere uporabe. GPT OSS 20B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="5414593137581221307">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GPT OSS 120B, model, ki ga je ustvaril OpenAI za zmogljivost in uporabnost za številne primere uporabe. GPT OSS 120B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="3399141352144059821">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Grok 4.3, model, ki ga je ustvaril xAI za zmogljivost in uporabnost za številne primere uporabe. Grok 4.3 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="8868813509973985458">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GPT 5.4, model, ki ga je ustvaril OpenAI za zmogljivost in uporabnost za številne primere uporabe. GPT 5.4 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Mistral Large, model, ki ga je ustvaril Mistral za zmogljivost in uporabnost za številne primere uporabe. Mistral Large gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Qwen 3 235B, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3 235B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Deepseek V3.2, model, ki ga je ustvaril Deepseek za zmogljivost in uporabnost za številne primere uporabe. Deepseek V3.2 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="3767678495358551728">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Qwen 3 Coder 480B, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3 Coder 480B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Opus – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Opus gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GLM-4-7-Flash, model, ki ga je ustvaril Zhipu AI za zmogljivost in uporabnost za številne primere uporabe. GLM-4-7-Flash gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Kimi K2.5, model, ki ga je ustvarilo podjetje Moonshot AI za zmogljivost in uporabnost za številne primere uporabe. Kimi K2.5 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="3484076625906498634">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Nemotron Nano 3 30B, model, ki ga je ustvaril NVIDIA za zmogljivost in uporabnost za številne primere uporabe. Nemotron Nano 3 30B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Brave Ocelot, model, ki ga je ustvaril Brave za povzemanje spletnih strani. Brave Ocelot gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokalno</translation>
@@ -2279,20 +2299,15 @@
 <translation id="5543505256451301851">Poskusite 7 dni brezplačno</translation>
 <translation id="849535826888024304">Dosežena je omejitev stopnje odziva</translation>
 <translation id="2252128900328632803">Dosegli ste omejitev za stopnjo Leo. Naročite se na stopnjo Premium in tako odklenite višjo stopnjo odzivnosti, ali pa čez nekaj časa poskusite znova.</translation>
-<translation id="4173478269537830374">Raziščite različne AI modele</translation>
-<translation id="3245401959451976966">Odkrijte svojo ustvarjalnost</translation>
-<translation id="4165928407303989823">Držite se teme</translation>
-<translation id="2389665228467129817">Klepetajte dlje časa</translation>
+<translation id="8746303650199962589">Dostopajte do najsodobnejših LLM-jev iz Anthropic, OpenAI, DeepSeek in drugih</translation>
+<translation id="4366237751405135351">Poiščite modele za specifične naloge za kodiranje, ustvarjanje vsebine in več</translation>
+<translation id="7494418589245805538">Pridobite višje cenovne omejitve za vaše pogovore</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /mesec</translation>
 <translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /leto</translation>
-<translation id="1028627582482425924">Eno leto</translation>
-<translation id="36366199652730057">Najboljša vrednost</translation>
+<translation id="4955814292505481804">Letno</translation>
+<translation id="7724435637185902140">Prihranite ~17 %</translation>
 <translation id="5151923271944811339">Preklopi na brezplačni model</translation>
 <translation id="5474757891469990756">Z aplikacijo Premium sprostite vse Leove moči:</translation>
-<translation id="3453542753968940696">Prednostni dostop do zmogljivih modelov z različnimi spretnostmi.</translation>
-<translation id="5031778211368112461">Modeli za dostop, ki so primernejši za ustvarjalne naloge in ustvarjanje vsebine.</translation>
-<translation id="298783097210745222">Pridobite natančnejše odgovore za bolj poglobljene pogovore.</translation>
-<translation id="4314705522985583059">Pridobite višje cenovne omejitve za daljše pogovore.</translation>
 <translation id="1068954060985569277">Seja vašega računa Brave je potekla. Obiščite stran svojega računa, da jo osvežite, nato pa se vrnite za uporabo premium funkcij.</translation>
 <translation id="94736968936709953">Povratne informacije so bile uspešno poslane</translation>
 <translation id="9109355817507033196">Odgovor ni bil všeč</translation>
@@ -2342,6 +2357,10 @@
 <translation id="8742658901413346500">Ta pogovor je dolg in Leo lahko kmalu začne pozabljati stvari. Če preklopite na premium model, lahko zagotovite daljše pogovore ali pa počistite klepet, da ga ponastavite.</translation>
 <translation id="6495402307502950726">Počisti pogovor</translation>
 <translation id="903201991022343217">Začni nov pogovor</translation>
+<translation id="8742207701089910775">Deli ta pogovor</translation>
+<translation id="4014016095804982975">Vaš pogovor bo naložen šifriran in ga je mogoče dešifrirati samo z ustvarjeno povezavo. Brave ne bo mogel videti vašega pogovora. Samo vi in ljudje, s katerimi delite to povezavo, lahko dešifrirate vaš deljeni pogovor. Vsi deljeni pogovori bodo potekli po 7 dneh.</translation>
+<translation id="1390174375123434798">Ustvari povezavo</translation>
+<translation id="8904787158537906492">Povezava kopirana v odložišče</translation>
 <translation id="8171760814579050200">Preimenuj pogovor</translation>
 <translation id="402386227879573975">Kopiraj celoten pogovor</translation>
 <translation id="5397794290049113714">Vi</translation>
@@ -2385,13 +2404,13 @@
 <translation id="7821251979960635244">Ko začnete pogovor, se tukaj prikaže zgodovina vaših pogovorov.</translation>
 <translation id="887511360213807449">Zgodovina je onemogočena</translation>
 <translation id="5380979378058584412">Če si želite ogledati prejšnje pogovore z Leom, morate omogočiti zgodovino pogovorov.</translation>
-<translation id="7348809809749151120">Hitro • Iskanje</translation>
 <translation id="3185367320601718531">Pogovor in ustvarjanje besedila</translation>
 <translation id="2793458212460902934">Hitro • Iskanje • Orodja</translation>
 <translation id="8506027496671575183">Iskanje • Vizija • Orodja</translation>
 <translation id="3184606955650139158">Hitro • Iskanje • Vizija</translation>
 <translation id="7465032796278724624">Z jamstvom zasebnosti z NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamično spreminja, da uporabi najboljšega za določen opravek</translation>
+<translation id="7348809809749151120">Hitro • Iskanje</translation>
 <translation id="3213834013136637671">Iskanje • Vizija</translation>
 <translation id="5276681919620506371">Iskanje • Orodja</translation>
 <translation id="7434375176361995333">Povzetki • Hitro</translation>
@@ -2522,6 +2541,7 @@
 <translation id="3486480638399578250">Ohranite svoj osebni e-poštni naslov zaseben</translation>
 <translation id="7765422154906712751">Ustvarite unikatne, naključne naslove, ki so presumerjeni na vaš e-poštni naslov Brave in jih lahko kadarkoli izbrišete. Tako vaš dejanski e-poštni naslov ne bo razkrit ali uporabljen s strani oglaševalcev.</translation>
 <translation id="71316462802471551">E-poštni vzdevki</translation>
+<translation id="7901376755618482277">Pokaži namig »Nov vzdevek« na poljih za e-pošto</translation>
 <translation id="6002159997868894136">Kliknite za kopiranje vzdevka</translation>
 <translation id="8105770564756958406">Uporablja <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Ustvarite do 5 brezplačnih e-poštnih vzdevkov za zaščito vašega pravega e-poštnega naslova.</translation>
@@ -2567,6 +2587,10 @@
 <translation id="367191282389216837">Nepravilen odziv storitve Email Aliases</translation>
 <translation id="7203490731644771170">Napaka storitve e-poštnih imen: <ph name="ERROR"/></translation>
 <translation id="8767862600155091621">Napaka: Alias ni na voljo</translation>
+<translation id="1706715315466634757">e-poštni vzdevki</translation>
+<translation id="7087933122203937032">Ustvarite unikatne, naključne naslove, ki so presumerjeni na vaš e-poštni naslov Brave in jih lahko kadarkoli izbrišete. Tako vaš dejanski e-poštni naslov ne bo razkrit ali uporabljen s strani oglaševalcev.</translation>
+<translation id="8057865981284642090">Za uporabo E-poštnih vzdevkov morate biti prijavljeni v svoj račun Brave. Začnite s klikom na spodnji gumb.</translation>
+<translation id="4472575034687746823">Kako začeti</translation>
 <translation id="8370801182970639038">Samodejno (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Omogočeni iskalniki</translation>
 <translation id="8285901519864208412">Skrij kartico Nagrade</translation>
@@ -2645,7 +2669,6 @@
 <translation id="9204041448536398473">Splošne nastavitve zaščite</translation>
 <translation id="2108334320919763866">Splošne privzete nastavitve</translation>
 <translation id="1896472873031845605">Splošne nastavitve</translation>
-<translation id="8324318899000695659">Blokiraj elemente</translation>
 <translation id="7205939464631857223">Počisti vse blokirane elemente</translation>
 <translation id="3440043456924990296">Nastavitve, ki jih upravlja organizacija</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
@@ -2746,6 +2769,21 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="6764845498618413165">Izvedi več.</translation>
 <translation id="7818938154803162778">Seveda, pomagal bom</translation>
 <translation id="7207456302801184289">Dobrodošli v Brave</translation>
+<translation id="5341040774109629148">Pripravite se na najboljšo izkušnjo brskanja</translation>
+<translation id="6124979241984215095">Doživite splet, ne da bi vas kdo opazoval. Brave vas samodejno ščiti pred sledilci, oglasi in prepoznavanjem prstnih odtisov.</translation>
+<translation id="8722651357687610395">Privzeto nastavite Brave</translation>
+<translation id="6385063238068436833">Začni iz nič</translation>
+<translation id="2601678491007820794">Uvozite vse iz svojega starega brskalnika in naredite prehod brezhiben.</translation>
+<translation id="5291297136536006359">To lahko storite tudi pozneje v Braveovih nastavitvah.</translation>
+<translation id="701087249209337256">Prinesite s seboj vsebino svojega starega brskalnika</translation>
+<translation id="7463724872882590240">Izberite svoj prejšnji brskalnik</translation>
+<translation id="6091623542030502746">Kaj želite uvoziti?</translation>
+<translation id="4740018245743691625">Rezultati uvoza</translation>
+<translation id="5418312173593538711">Uvažanje vaše vsebine</translation>
+<translation id="6865313869410766144">Podatki obrazcev za samodejno izpolnjevanje</translation>
+<translation id="6786747875388722282">Razširitve</translation>
+<translation id="5869522115854928033">Shranjena gesla</translation>
+<translation id="4692623383562244444">Iskalniki</translation>
 <translation id="4988030440045495002">Izjemno temna tema</translation>
 <translation id="2422927186524098759">Stranska vrstica</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2755,6 +2793,7 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="2478076885740497414">Namesti aplikacijo</translation>
 <translation id="8293206222192510085">Dodaj zaznamek</translation>
 <translation id="7758460733045216901">Plošča z zaznamki</translation>
+<translation id="9124418807119853058">Preklopni gumb za navpične zavihke</translation>
 <translation id="958268166261124668">Brave VPN: povezan</translation>
 <translation id="6021669293402055982">Brave VPN: povezava prekinjena</translation>
 <translation id="3541307549916475335">Uporabniški vmesnik plošče Brave VPN</translation>
@@ -2913,7 +2952,7 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="9033485352495162741">Potrditev je uspela. Zdaj vnesite želeno novo geslo:</translation>
 <translation id="1293857704520741614">Prijavite se v svoj račun</translation>
 <translation id="118617366439356381">Ste pozabili geslo?</translation>
-<translation id="5183159033908953146">Potrdite e-poštni naslov svojega računa Brave in prejeli boste povezavo za ponastavitev gesla. Povezava bo veljavna le 30 minut.</translation>
+<translation id="5636406393070713097">Potrdite e-poštni naslov svojega računa Brave in nato boste prejeli kodo za ponastavitev gesla. Koda bo veljavna le 15 minut.</translation>
 <translation id="3674472551471103443">Ponastavite geslo</translation>
 <translation id="2755539422340788311">Potrdite svoj e-poštni naslov</translation>
 <translation id="6641436078676327508">Prejeli ste e-poštno sporočilo s kratko kodo. Vnesite jo tukaj za nadaljevanje.</translation>
@@ -2930,16 +2969,13 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="7144067487084094749">Za ta e-poštni naslov že obstaja račun. Poskusite se prijaviti namesto ustvarjanja računa.</translation>
 <translation id="5288951359968156008">Domena tega e-poštnega naslova ni podprta. Uporabite drug e-poštni naslov.</translation>
 <translation id="7625678607509255072">Presežena je omejitev preverjanja e-pošte. Počakajte 30 minut, preden poskusite znova.</translation>
-<translation id="9121175588136821850">Potrditvena koda je potekla. Ponovno začnite postopek registracije.</translation>
-<translation id="8439543211004394821">Vnesenih je bilo preveč napačnih kod. Ponovno začnite postopek registracije.</translation>
 <translation id="3229986152760633988">Napačna koda, poskusite znova.</translation>
 <translation id="818783632689113711">Za ta e-poštni naslov je bil že zahtevan račun. Preverite svojo e-pošto ali poskusite ponovno čez 30 minut.</translation>
 <translation id="4776810543245166572">Za ta e-poštni naslov ni bilo mogoče najti računa.</translation>
-<translation id="7090885444036935209">Neveljaven e-poštni naslov.</translation>
 <translation id="1542836798393843657">Preveč poskusov preverjanja za ta e-poštni naslov. Poskusite znova čez 24 ur.</translation>
 <translation id="7572012011062736429">Notranja napaka. Zaprite pogovorno okno, prekličite potrditev in poskusite znova.</translation>
-<translation id="2477280119520811719">Potrditvena koda je potekla. Ponovno začnite postopek spremembe gesla.</translation>
-<translation id="7103280722523884198">Vnesenih je bilo preveč napačnih kod. Ponovno začnite postopek spremembe gesla.</translation>
+<translation id="7502408214945538786">Račun Brave vam omogoča ustvarjanje in upravljanje vaših e-poštnih vzdevkov.</translation>
+<translation id="237081360011331787">Račun Brave vam omogoča ustvarjanje in upravljanje vaših e-poštnih vzdevkov. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="4178004989875422946">Račun Brave vam bo omogočil enostaven dostop do storitev Brave.</translation>
 <translation id="4902897635127068510">Ali ste morda mislili na <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock je vklopljen</translation>
@@ -2948,6 +2984,7 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="2112559299194052697">Ponovno pošiljanje ni mogoče</translation>
 <translation id="7932611814134267012">Poslanih je bilo že preveč potrditvenih e-poštnih sporočil. Preverite mapo z neželeno pošto.</translation>
 <translation id="1364223093800750401">E-poštni naslov je že potrjen.</translation>
+<translation id="1054874027734589261">Vnesli ste preveč nepravilnih kod. Prekličite potrditev in poskusite znova.</translation>
 <translation id="1353061468772282268">Potrditvena koda je potekla. Prekličite potrditev in poskusite znova.</translation>
 <translation id="3353844160742960162">Prilagoditev nastavitev zasebnosti</translation>
 <translation id="528205534230423181">To spletno mesto ponuja nastavitve zasebnosti, ki jih Brave lahko samodejno prilagodi za vas. Tukaj je naše priporočilo:</translation>

@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Mer</translation>
 <translation id="71316462802471551">E-post alias</translation>
-<translation id="209130971304928953">Spara flikar som arbetsyta …</translation>
-<translation id="877984331511007834">Öppna arbetsyta …</translation>
-<translation id="1310182651927031327">Spara flikar som arbetsyta…</translation>
-<translation id="3588277741646479444">Öppna arbetsyta…</translation>
+<translation id="8350985546648269694">Spara aktuella fönster och flikar som utrymme</translation>
+<translation id="5327248766486351172">Namn</translation>
+<translation id="6379791766023874417">Ange namnet på ditt utrymme</translation>
+<translation id="9174724474418499472">Mitt utrymme</translation>
+<translation id="5317780077021120954">Spara</translation>
+<translation id="7658239707568436148">Avbryt</translation>
+<translation id="196342407904926436">Utrymmesalternativ</translation>
+<translation id="2806407377752719586">Radera utrymme</translation>
+<translation id="1844931500883490339">Är du säker på att du vill ta bort det här utrymmet? Det sparade utrymmet kommer att tas bort permanent. Den här åtgärden kan inte ångras.</translation>
+<translation id="8261506727792406068">Radera</translation>
+<translation id="8428213095426709021">Inställningar</translation>
+<translation id="1212321046099128987">Inga utrymmen skapade</translation>
+<translation id="3524567389166933243">Skapa ditt första utrymme genom att klicka på spara-knappen nedan.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 flik} other {# flikar}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> fönster</translation>
+<translation id="1680377529024357662">Spara aktuella fönster och flikar som utrymme</translation>
+<translation id="5561829325295347472">Ange namnet på ditt utrymme</translation>
+<translation id="2028520494010039812">Utrymmesalternativ</translation>
+<translation id="1580775521202322063">Radera utrymme</translation>
+<translation id="3004759399777164093">Är du säker på att du vill ta bort det här utrymmet? Det sparade utrymmet kommer att tas bort permanent. Den här åtgärden kan inte ångras.</translation>
+<translation id="7563692436589408797">Inga utrymmen skapade</translation>
+<translation id="3945077125173636695">Skapa ditt första utrymme genom att klicka på spara-knappen nedan.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 flik} other {# flikar}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> fönster</translation>
+<translation id="3326655241685890930">Utrymmen</translation>
 <translation id="1990886731975529483">Installera och kör Google Wildwine</translation>
 <translation id="8926389886865778422">Fråga inte igen.</translation>
 <translation id="4900351245762303149">Installera Google Widevine</translation>
@@ -37,7 +58,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
-<translation id="3477357195688115718">Brave granskar inte tillägg med avseende på säkerhet och trygghet. Installera det här tillägget endast om du litar på utvecklaren.</translation>
+<translation id="2201935460386712655">Brave granskar inte tillägg med avseende på säkerhet och trygghet. Installera "<ph name="EXTENSION_NAME"/>" endast om du litar på utvecklaren.</translation>
 <translation id="2928844661231356557">Genom att bevilja åtkomst till en Bluetooth-enhet kan webbplatsen läsa identifierande och potentiellt känslig information om dig. Tillåt endast webbplatser du litar på att komma åt Bluetooth-enheter. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor windows</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -63,7 +84,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Hantera filter</translation>
 <translation id="3108584651298176909">Visa regler</translation>
 <translation id="5156986655891520787">Dölj regler</translation>
-<translation id="7658239707568436148">Avbryt</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Öppna med hjälp av .onion-adress: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tvinga inklistring</translation>
@@ -91,6 +111,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Fånga skärmdump</translation>
 <translation id="3114478090884951591">Synligt område</translation>
 <translation id="2026367923222947564">Hela sidan</translation>
+<translation id="4218885227032158909">Valt område</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Visa i Web Extensions Store</translation>
 <translation id="3161744659507801211">Varning: Brave kan inte förhindra tillägg från att spela in din sökhistorik.</translation>
@@ -289,14 +310,12 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Flytta media</translation>
 <translation id="4418985925423678811">Ny spellista</translation>
 <translation id="385051799172605136">Bakåt</translation>
-<translation id="5317780077021120954">Spara</translation>
 <translation id="7930125899031086027">Skapa och flytta</translation>
 <translation id="2860159216666546928">Välj en mapp som du vill flytta media till</translation>
 <translation id="9130105487623071247">Spellistans namn</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> objekt valda</translation>
 <translation id="3596306474342941843">Ta bort spellista</translation>
 <translation id="7110726588168439924">Är du säker på att du vill ta bort den här spellistan och allt dess innehåll? Den här åtgärden kan inte ångras.</translation>
-<translation id="8261506727792406068">Radera</translation>
 <translation id="8152485753254079984">Ny spellista</translation>
 <translation id="5397019762993984652">Lägg till från mappen Spela upp senare</translation>
 <translation id="7525067979554623046">Skapa</translation>
@@ -393,7 +412,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Redigera behållare</translation>
 <translation id="7900511996284443779">Ta bort behållare</translation>
 <translation id="2738687336989232152">Är du säker på att du vill ta bort behållaren <ph name="CONTAINER_NAME"/>? Detta kommer att ta bort all data som är associerad med den.</translation>
-<translation id="5327248766486351172">Namn</translation>
 <translation id="104766043551382253">Ikon</translation>
 <translation id="5431318178759467895">Färg</translation>
 <translation id="4328541188421002379">Ge din container ett namn, t.ex. Arbete eller Privat</translation>
@@ -547,6 +565,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Anpassa din webbläsare samtidigt som du stöder Brave</translation>
 <translation id="123297831435065577">Brave Origin är en betald version av webbläsaren för användare som inte behöver alla funktioner som stöder Brave som en verksamhet, men som fortfarande vill ha den sekretess som bara Brave erbjuder. Origin-användare kommer att fortsätta att dra nytta av vår branschledande sekretess, annonsblockering och hastighet (via Skydd), samt regelbundna programuppdateringar, Chromium-patchar och säkerhets- och sekretessförbättringar.</translation>
 <translation id="7984508421152399880">Köp nu</translation>
+<translation id="1882724423074862793">Återställ köp</translation>
 <translation id="5567412479632285879">Brave Rewards är inaktiverat</translation>
 <translation id="413570371620795359">Öppna Rewards-panelen för att aktivera och komma igång</translation>
 <translation id="1051600834033686945">Öppna inställningar för Brave Rewards</translation>
@@ -583,6 +602,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Skicka diagnostikrapporter automatiskt</translation>
 <translation id="8868426106596092089">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser</translation>
 <translation id="4891600875049212418">Gå Off-The-Record när du besöker känsliga webbplatser</translation>
+<translation id="1022603984240541480">Visa avisering om finjustering av sekretessinställningar på kompatibla webbplatser</translation>
+<translation id="3528176629974273019">Låter Brave automatiskt föreslå (och justera) webbplatsspecifika sekretessinställningar.</translation>
 <translation id="509873765238158442">Blockera Microsofts återkallelse</translation>
 <translation id="4763421121695677716">Blockera återkallningsfunktionen på Microsoft Windows-datorer från att automatiskt ta skärmdumpar av öppna Brave-flikar.</translation>
 <translation id="1968895725257436430">Insamling av data</translation>
@@ -738,6 +759,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="4425607417590286548">Applicera förändringar</translation>
 <translation id="2128143836897950793">Klicka på ”Begär en ny bro ...” för att få broar</translation>
 <translation id="3314921753580327793">Skriv adress:port (en per rad)</translation>
+<translation id="7002083631026466886">Tor kan inte använda den här bryggan. Kontrollera den mot bryggan du fick och försök sedan igen:</translation>
 <translation id="3755189300481406891">Begär Bridge</translation>
 <translation id="6924425739431382319">Kontakta BridgeDB. Vänta.</translation>
 <translation id="811745063252080651">Lös CAPTCHA för att begära en bro.</translation>
@@ -915,7 +937,6 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="1838374766361614909">Rensa sökningar</translation>
 <translation id="5126255551970171328">Sök efter ett minne</translation>
 <translation id="7402116145895962069">Synkronisera dina lokala modeller från Ollama</translation>
-<translation id="4835154437390745810">Hanteras av Ollama</translation>
 <translation id="5985516785067818307">Undersökningspanel</translation>
 <translation id="8347743943525229984">Tillåt Brave-undersökningar</translation>
 <translation id="3204080538332044581">Tillåter Brave att visa länkar till privata undersökningar i den nya fliken. Undersökningar hjälper oss att bygga bättre funktioner och mäta effektiviteten i webbläsarbaserade annonskampanjer. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>

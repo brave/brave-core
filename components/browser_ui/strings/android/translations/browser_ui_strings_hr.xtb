@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Zahtijevaj prikaz na mobilnom uređaju</translation>
 <translation id="2870560284913253234">Web lokacija</translation>
 <translation id="2874939134665556319">Prethodna pjesma</translation>
+<translation id="258271431472168668">Brave – zadano</translation>
 <translation id="2891975107962658722">Blokiraj web-lokaciju kako ne bi spremala podatke na uređaju</translation>
 <translation id="2903493209154104877">Adrese</translation>
+<translation id="2903764741244499151">Web-lokacije mogu automatski pokrenuti sliku u slici. To će vam omogućiti da nastavite gledati videozapis, a istovremeno oslobodite zaslon za druge zadatke.</translation>
 <translation id="2918484639460781603">Idite na postavke</translation>
 <translation id="2932883381142163287">Prijavi zloupotrebu</translation>
 <translation id="2939338015096024043">Kad je ta postavka uključena, web-lokacije mogu tražiti dopuštenje za praćenje položaja kamere i podatke o vašoj okolini. Kad je ta postavka isključena, web-lokacije ne mogu pratiti položaj kamere niti saznati više o vašoj okolini.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Promijeni zaporke</translation>
 <translation id="3797520601150691162">Ne primjenjuj tamnu temu za određenu web-lokaciju</translation>
 <translation id="3803367742635802571">Web-lokacije koje posjećujete mogu prestati funkcionirati kao što je predviđeno</translation>
-<translation id="8338457030135232378">Boje u Braveu</translation>
 <translation id="381841723434055211">Telefonski brojevi</translation>
 <translation id="3823453485268218808">Font Mono</translation>
 <translation id="3826050100957962900">Prijava putem treće strane</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Izađi iz cijelog zaslona</translation>
 <translation id="640163077447496506">Istječe danas</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Zbirke tema</translation>
 <translation id="6439114592976064011">Onemogući web-lokacijama da koriste uređaj i podatke virtualne stvarnosti</translation>
 <translation id="6447842834002726250">Kolačići</translation>
 <translation id="6452138246455930388">Sniženje cijene na otvorenoj kartici, s <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Napredna zaštita kontrolira sljedeće postavke Bravea:</translation>
 <translation id="7423098979219808738">Prvo pitaj</translation>
 <translation id="7423538860840206698">Blokirano je čitanje međuspremnika</translation>
 <translation id="7425915948813553151">Tamna tema za web-lokacije</translation>
+<translation id="2044383478723007273">Boje u Braveu</translation>
 <translation id="746412105358554870">Optimizacija i sigurnost JavaScripta</translation>
 <translation id="7478658909253570368">Ne dopuštaj web-lokacijama povezivanje sa serijski spojenim priključcima</translation>
 <translation id="7488573225650545859">Sakrij kartice pregleda na popisu aplikacija</translation>
@@ -671,7 +672,6 @@ Napredna zaštita kontrolira sljedeće postavke Bravea:</translation>
 <translation id="802154636333426148">Preuzimanje nije uspjelo</translation>
 <translation id="8033047164036749181">Pretplatite se na obavijesti s ove web-lokacije</translation>
 <translation id="8051193500142930381">Značajke kojima je potrebna kamera neće raditi</translation>
-<translation id="2495032782748793764">Brave – zadano</translation>
 <translation id="8067883171444229417">Reproduciraj videozapis</translation>
 <translation id="8068648041423924542">Ne može se odabrati certifikat.</translation>
 <translation id="8077120325605624147">Svaka web-lokacija koju posjetite može vam prikazati bilo koji oglas</translation>
@@ -686,7 +686,6 @@ Napredna zaštita kontrolira sljedeće postavke Bravea:</translation>
 <translation id="8163152278172770963">Ne dopuštaj web-lokacijama automatski unos slike u slici</translation>
 <translation id="8168435359814927499">Sadržaj</translation>
 <translation id="818487310457576362">Povucite od bočne strane zaslona da biste zatvorili prikaz na cijelom zaslonu.</translation>
-<translation id="8186479265534291036">Web-lokacija ne funkcionira? Blokirani su kolačići treće strane</translation>
 <translation id="8197286292360124385">Odobreno je dopuštenje <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Nastavi</translation>
 <translation id="8211406090763984747">Veza je sigurna</translation>
@@ -757,7 +756,6 @@ Napredna zaštita kontrolira sljedeće postavke Bravea:</translation>
 <translation id="8805385115381080995">Pregledavanje je brže jer je manja vjerojatnost da će web-lokacija tražiti da potvrdite da ste stvarna osoba</translation>
 <translation id="881644524232657178">Kad je ta postavka uključena, web-lokacije mogu upotrebljavati senzore kretanja i svjetlosne senzore uređaja. Kad je ta postavka isključena, web-lokacije ne mogu upotrebljavati senzore.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Pokušajte privremeno dopustiti kolačiće trećih strana, što znači da će biti manje zaštite pregledavanja, ali će značajke web-lokacije vjerojatnije funkcionirati prema očekivanjima.</translation>
 <translation id="7532165358672313130">Tijekom vašeg daljnjeg pregledavanja web-lokacije mogu provjeriti u Braveu i od prethodne web-lokacije koju ste posjetili dobiti potvrdu da ste vjerojatno stvarna osoba</translation>
 <translation id="8899807382908246773">Ometajući oglasi</translation>
 <translation id="8903921497873541725">Povećaj</translation>
@@ -783,7 +781,6 @@ Napredna zaštita kontrolira sljedeće postavke Bravea:</translation>
 <translation id="913657688200966289">Uključite dopuštenja za aplikaciju <ph name="APP_NAME"/> u <ph name="BEGIN_LINK"/>Androidovim postavkama<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Obavijesti su dopuštene</translation>
 <translation id="9138217887606523162">Trenutačno je zumiranje <ph name="ZOOM_LEVEL"/>%%</translation>
-<translation id="915112772806845021">Web-lokacije upotrebljavaju tu značajku za automatski pristup slici u slici. To će vam omogućiti da nastavite gledati videozapis, a istovremeno oslobodite zaslon za druge zadatke.</translation>
 <translation id="7359422048569205930">Dopustite Braveu da prikazuje vaše nedavne kartice na popisu aplikacija i u rezultatima pretraživanja na uređaju. To uvijek možete isključiti u postavkama Bravea.</translation>
 <translation id="9162462602695099906">Ova je stranica opasna</translation>
 <translation id="9182556968660520230">Ne dopuštaj web-lokacijama reproduciranje zaštićenog sadržaja</translation>

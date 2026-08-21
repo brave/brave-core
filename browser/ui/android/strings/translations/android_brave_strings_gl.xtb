@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Borrar datos de navegación</translation>
 <translation id="1690924763769415936">Reprodución en segundo plano</translation>
 <translation id="6332924730165919598">Cando se peche Brave, péchanse todas as lapelas</translation>
+<translation id="2557725907027944082">Grupos</translation>
 <translation id="8308305244351876417">Permite que o audio se reproduza cando cambias de separador en Brave, cando cambias de aplicación ou cando a pantalla do dispositivo está apagada.</translation>
 <translation id="49147335255967913">Abrir ligazóns de YouTube en Brave</translation>
 <translation id="4150201353443180367">Pantalla</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Máis información acerca de Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Permitir (reiniciar agora)</translation>
 <translation id="2433507940547922241">Aparencia</translation>
+<translation id="316542773973815724">Navegación</translation>
 <translation id="9040069796107003510">Icona de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
-<translation id="1215433243238902715">Activar a barra de navegación inferior</translation>
+<translation id="4393974575368329991">Barra de navegación inferior</translation>
+<translation id="1834226716203076292">Mostra unha barra inferior para acceder rapidamente ao inicio, aos marcadores e á busca</translation>
 <translation id="1422686363939271829">Esta opción queda desactivada cando se activa a barra de navegación inferior</translation>
 <translation id="6587448235155023666">Os teus cambios entrarán en vigor a próxima vez que volvas a iniciar Brave</translation>
 <translation id="8701563696941209024">Relanzar agora</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Envía informes de diagnóstico anónimos se tes algún fallo ou bloqueo.</translation>
 <translation id="4780647518983772446">Comparte de xeito privado e anónimo a túa opinión sobre as funcionalidades de Brave que se están a usar.</translation>
 <translation id="5109496672133133896">Información privada do produto</translation>
-<translation id="3545804467215833536">Preme para ver Escudos de Brave</translation>
-<translation id="1724327820822194498">Mira todos os elementos non desexados que Brave bloqueou en cada páxina con Escudos.</translation>
+<translation id="4340039903315468568">Mira todos os elementos non desexados que Brave bloqueou en cada páxina con Escudos. Toca para ver</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncios e rastreadores bloqueados</translation>
 <translation id="8281886186245836920">Omitir</translation>
 <translation id="5806601733251372221">Escudos Brave</translation>
@@ -440,6 +442,7 @@ Seguro que queres facelo?</translation>
 <translation id="7141438739990875547">Redes de Bitcoin</translation>
 <translation id="9055546041146396417">Se este sitio aparece roto, proba Shields.</translation>
 <translation id="7898672232170410330">Bloquear elemento</translation>
+<translation id="7205939464631857223">Baleirar todos os elementos bloqueados</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="3200744626782631683">Os datos de navegación nunca se eliminan automaticamente.</translation>
 <translation id="1991004083507807299">Separador do sitio pechado</translation>
@@ -502,7 +505,10 @@ Seguro que queres facelo?</translation>
 <translation id="3980704343258720102">Borra todos os datos de navegación</translation>
 <translation id="8089997572759938512">Restablece o teu número de informes de privacidade a cero</translation>
 <translation id="2718046830255553131">Borráronse os datos dos informes de privacidade.</translation>
-<translation id="8376263745431603066">Activar o "modo nocturno" (experimental)</translation>
+<translation id="3623948252408240879">Modo nocturno</translation>
+<translation id="1257950165130031194">Forzar o modo escuro no contido web</translation>
+<translation id="8710601165725654801">Cores dinámicas</translation>
+<translation id="7865194971711852999">O tema da aplicación coincide coas cores do fondo de pantalla</translation>
 <translation id="1383876407941801731">Buscar</translation>
 <translation id="13296465911709339">Copiouse o teu texto no portapapeis.</translation>
 <translation id="2735834606413553397">O enderezo público copiouse no portapapeis.</translation>
@@ -721,7 +727,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="4979796155378508955">É posible que a transacción non se propague á rede se o valor de nonce personalizado non é secuencial ou contén outros erros.</translation>
 <translation id="750843150060816463">Prezo do gas (Gwei)</translation>
 <translation id="1426320910664514906">Límite de gas</translation>
-<translation id="6389441740143786465">Desactivar menú para compartir</translation>
+<translation id="1784950057929740513">Centro de intercambio</translation>
 <translation id="473775607612524610">Actualizar</translation>
 <translation id="479795390141144417">Non se puido actualizar a conta.</translation>
 <translation id="8084782383392198011">O nome da conta non pode quedar baleiro.</translation>
@@ -796,8 +802,12 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1060221736464994328">Permitir que este sitio cambie a rede?</translation>
 <translation id="2478788592457735063">Isto cambiará a rede por outra engadida con anterioridade.</translation>
 <translation id="8756686998207163764">Cambiar rede</translation>
+<translation id="8905793906896555159">Activar os grupos de separadores</translation>
+<translation id="7632160823264702523">Barra dos grupos de separadores</translation>
+<translation id="2477807195394450274">Mostra unha barra inferior para acceder rapidamente aos separadores do grupo de separadores aberto</translation>
+<translation id="8374720587111523381">Abrir as ligazóns no grupo de separadores actual</translation>
 <translation id="5324095733417835490">Abrir só as ligazóns do grupo de separadores actual</translation>
-<translation id="2620277345862119868">Abre automaticamente todas as ligazóns do grupo de separadores actual</translation>
+<translation id="1227658541937938697">Abre automaticamente todas as ligazóns do grupo de separadores actual</translation>
 <translation id="5242300593039211344">Bloquear carteira</translation>
 <translation id="1108298724135935307">Sitios conectados</translation>
 <translation id="4255623233927788178">Ver no explorador de bloques</translation>
@@ -1076,7 +1086,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6393423486818299209">Usar o teu provedor de servizo actual ou Wikimedia DNS</translation>
 <translation id="3401384982562827787">Usar o teu provedor de servizo actual ou Cloudflare</translation>
 <translation id="8812367543786936496">Se o teu provedor de servizos actual non é seguro, Brave usa un provedor DNS alternativo seguro</translation>
-<translation id="1381108437654541567">Activar varias ventás</translation>
+<translation id="750538469281113679">Varias ventás</translation>
 <translation id="6167344249617630304">Abre ata 5 ventás á vez e move as pestanas dunha ventá a outra</translation>
 <translation id="1063948063403254568">Detectáronse varias ventás</translation>
 <translation id="4661882208707630158">Combina as pestanas noutra ventá de Brave ou pecha outras ventás de Brave antes de desactivar a función de varias ventás.</translation>

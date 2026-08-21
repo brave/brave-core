@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Limpar dados de navegação</translation>
 <translation id="1690924763769415936">Reproduzir em segundo plano</translation>
 <translation id="6332924730165919598">Fechando todas as abas você fechará o Brave</translation>
+<translation id="2557725907027944082">Grupos</translation>
 <translation id="8308305244351876417">Permite que o áudio seja reproduzido quando você alterna para outra guia no Brave ou outro aplicativo ou a tela do dispositivo está desligada.</translation>
 <translation id="49147335255967913">Abrir links do YouTube no Brave</translation>
 <translation id="4150201353443180367">Exibição</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Saiba mais sobre o Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Permitir (reiniciar agora)</translation>
 <translation id="2433507940547922241">Aparência</translation>
+<translation id="316542773973815724">Navegação</translation>
 <translation id="9040069796107003510">Ícone do Recompensas Brave</translation>
 <translation id="6333347122924254968">Mostrar ícone das Recompensas Brave na barra de endereço</translation>
-<translation id="1215433243238902715">Ativar a barra de ferramentas de navegação inferior</translation>
+<translation id="4393974575368329991">Barra de ferramentas de navegação inferior</translation>
+<translation id="1834226716203076292">Exibir uma barra inferior para acesso rápido à página inicial, favoritos e pesquisa</translation>
 <translation id="1422686363939271829">Essa configuração é desativada quando a posição da barra de endereço inferior é selecionada</translation>
 <translation id="6587448235155023666">Suas alterações terão efeito na próxima vez que você rodar o Brave</translation>
 <translation id="8701563696941209024">RODANDO NOVAMENTE AGORA</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Envie relatórios de diagnóstico anônimos em caso de falha ou congelamento.</translation>
 <translation id="4780647518983772446">Compartilhe insights de produtos privados e anônimos sobre quais recursos do Brave estão sendo usados.</translation>
 <translation id="5109496672133133896">Insights privados do produto</translation>
-<translation id="3545804467215833536">Toque para ver as Proteções do Brave</translation>
-<translation id="1724327820822194498">Veja todo o conteúdo indesejado bloqueado pelo Brave, em todas as páginas, com as Proteções.</translation>
+<translation id="4340039903315468568">Veja todo o conteúdo indesejado bloqueado pelo Brave em todas as páginas com as Proteções. Toque para visualizar</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anúncios e rastreadores bloqueados</translation>
 <translation id="8281886186245836920">Pular</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -440,6 +442,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="7141438739990875547">Redes Bitcoin</translation>
 <translation id="9055546041146396417">Se o site parecer não estar funcionando, tente desativar o Shields.</translation>
 <translation id="7898672232170410330">Bloquear elemento</translation>
+<translation id="7205939464631857223">Limpar todos os elementos bloqueados</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="3200744626782631683">Os dados de navegação nunca são eliminados automaticamente</translation>
 <translation id="1991004083507807299">Abas do site fechadas</translation>
@@ -502,7 +505,10 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="3980704343258720102">Limpa todos os dados de navegação</translation>
 <translation id="8089997572759938512">Redefine seus relatórios de privacidade para zero</translation>
 <translation id="2718046830255553131">Os dados dos relatórios de privacidade foram limpos.</translation>
-<translation id="8376263745431603066">Ativar "modo noturno" (experimental)</translation>
+<translation id="3623948252408240879">Modo noturno</translation>
+<translation id="1257950165130031194">Forçar o modo escuro para o conteúdo da web</translation>
+<translation id="8710601165725654801">Cores dinâmicas</translation>
+<translation id="7865194971711852999">O tema do aplicativo combina com as cores do papel de parede</translation>
 <translation id="1383876407941801731">Pesquisar</translation>
 <translation id="13296465911709339">O seu texto foi copiado para a área de transferência.</translation>
 <translation id="2735834606413553397">O endereço público foi copiado para a área de transferência.</translation>
@@ -722,7 +728,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="4979796155378508955">A transação poderá não ser propagada à rede se o valor de nonce personalizado não for sequencial ou tiver outros erros.</translation>
 <translation id="750843150060816463">Preço do gás (Gwei)</translation>
 <translation id="1426320910664514906">Limite de Gás</translation>
-<translation id="6389441740143786465">Desativar barra de compartilhamento</translation>
+<translation id="1784950057929740513">Central de compartilhamento</translation>
 <translation id="473775607612524610">Atualizar</translation>
 <translation id="479795390141144417">Houve uma falha ao atualizar a conta.</translation>
 <translation id="8084782383392198011">O nome da conta não pode ficar em branco.</translation>
@@ -797,8 +803,12 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1060221736464994328">Permitir que este site altere a rede?</translation>
 <translation id="2478788592457735063">Essa ação alterará a rede para uma rede adicionada anteriormente.</translation>
 <translation id="8756686998207163764">Alterar rede</translation>
+<translation id="8905793906896555159">Ativar grupos de guias</translation>
+<translation id="7632160823264702523">Barra de grupos de guias</translation>
+<translation id="2477807195394450274">Exibir uma barra inferior para acesso rápido às guias no grupo de guias atualmente aberto</translation>
+<translation id="8374720587111523381">Abrir links no grupo de guias atual</translation>
 <translation id="5324095733417835490">Abrir links apenas no grupo de abas atual</translation>
-<translation id="2620277345862119868">Abre automaticamente todos os links no grupo de abas atual</translation>
+<translation id="1227658541937938697">Abrir automaticamente todos os links no grupo de guias atual</translation>
 <translation id="5242300593039211344">Bloquear carteira</translation>
 <translation id="1108298724135935307">Sites conectados</translation>
 <translation id="4255623233927788178">Ver no Block Explorer</translation>
@@ -1077,7 +1087,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6393423486818299209">Use seu provedor de serviços atual ou DNS da Wikimedia</translation>
 <translation id="3401384982562827787">Use seu provedor de serviços atual ou Cloudflare</translation>
 <translation id="8812367543786936496">Se o seu provedor de serviços atual for inseguro, o Brave usa um provedor DNS alternativo seguro</translation>
-<translation id="1381108437654541567">Habilitar várias janelas</translation>
+<translation id="750538469281113679">Várias janelas</translation>
 <translation id="6167344249617630304">Abra até 5 janelas por vez e mova as guias de uma janela para outra</translation>
 <translation id="1063948063403254568">Várias janelas detectadas</translation>
 <translation id="4661882208707630158">Combine as guias em outra janela do Brave ou feche outras janelas do Brave antes de desativar o recurso de janelas múltiplas.</translation>

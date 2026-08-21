@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">詳細…</translation>
 <translation id="71316462802471551">メールエイリアス</translation>
-<translation id="209130971304928953">タブをワークスペースとして保存…</translation>
-<translation id="877984331511007834">ワークスペースを開く…</translation>
-<translation id="1310182651927031327">タブをワークスペースとして保存…</translation>
-<translation id="3588277741646479444">ワークスペースを開く…</translation>
+<translation id="8350985546648269694">現在のウィンドウとタブをスペースとして保存</translation>
+<translation id="5327248766486351172">名前</translation>
+<translation id="6379791766023874417">スペース名を入力</translation>
+<translation id="9174724474418499472">マイスペース</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="7658239707568436148">キャンセル</translation>
+<translation id="196342407904926436">スペースのオプション</translation>
+<translation id="2806407377752719586">スペースを削除</translation>
+<translation id="1844931500883490339">このスペースを削除しますか？保存されたスペースは完全に削除されます。この操作は元に戻せません。</translation>
+<translation id="8261506727792406068">削除</translation>
+<translation id="8428213095426709021">設定</translation>
+<translation id="1212321046099128987">スペースが作成されていません</translation>
+<translation id="3524567389166933243">下の保存ボタンをクリックして最初のスペースを作成しましょう。</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1個のタブ} other {#個のタブ}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> 個のウィンドウ</translation>
+<translation id="1680377529024357662">現在のウィンドウとタブをスペースとして保存</translation>
+<translation id="5561829325295347472">スペース名を入力</translation>
+<translation id="2028520494010039812">スペースのオプション</translation>
+<translation id="1580775521202322063">スペースを削除</translation>
+<translation id="3004759399777164093">このスペースを削除しますか？保存されたスペースは完全に削除されます。この操作は元に戻せません。</translation>
+<translation id="7563692436589408797">スペースが作成されていません</translation>
+<translation id="3945077125173636695">下の保存ボタンをクリックして最初のスペースを作成しましょう。</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1個のタブ} other {#個のタブ}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> 個のウィンドウ</translation>
+<translation id="3326655241685890930">スペース</translation>
 <translation id="1990886731975529483">Google Widevineをインストールして実行</translation>
 <translation id="8926389886865778422">再表示させない</translation>
 <translation id="4900351245762303149">Google Widevineをインストール</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
-<translation id="3477357195688115718">Braveではセキュリティおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
+<translation id="2201935460386712655">Braveではセキュリティおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、「<ph name="EXTENSION_NAME"/>」をインストールしてください。</translation>
 <translation id="2928844661231356557">Bluetoothデバイスへのアクセスを許可すると、サイトがあなたに関する識別情報や潜在的な機密情報を読み取ることができるようになります。Bluetoothデバイスへのアクセスは、信頼できるサイトのみに許可してください。<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Torウィンドウ</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">フィルターを管理</translation>
 <translation id="3108584651298176909">ルールを表示</translation>
 <translation id="5156986655891520787">ルールを非表示</translation>
-<translation id="7658239707568436148">キャンセル</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onionアドレスで開く: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制的に貼り付け</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">スクリーンショットをキャプチャ</translation>
 <translation id="3114478090884951591">表示領域</translation>
 <translation id="2026367923222947564">ページ全体</translation>
+<translation id="4218885227032158909">選択された範囲</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">メディアを移動</translation>
 <translation id="4418985925423678811">新しいプレイリスト</translation>
 <translation id="385051799172605136">戻る</translation>
-<translation id="5317780077021120954">保存</translation>
 <translation id="7930125899031086027">作成して移動</translation>
 <translation id="2860159216666546928">このメディアを移動するフォルダを選択</translation>
 <translation id="9130105487623071247">プレイリスト名</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/>個のアイテムが選択されています</translation>
 <translation id="3596306474342941843">プレイリストを削除する</translation>
 <translation id="7110726588168439924">このプレイリストとすべてのコンテンツを削除しますか？この操作は元に戻せません。</translation>
-<translation id="8261506727792406068">削除</translation>
 <translation id="8152485753254079984">新しいプレイリスト</translation>
 <translation id="5397019762993984652">「後で再生」フォルダから追加</translation>
 <translation id="7525067979554623046">Create</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">コンテナを編集</translation>
 <translation id="7900511996284443779">コンテナを削除</translation>
 <translation id="2738687336989232152">コンテナ <ph name="CONTAINER_NAME"/>を削除してもよろしいですか？ これにより、すべての関連データが削除されます。</translation>
-<translation id="5327248766486351172">名前</translation>
 <translation id="104766043551382253">アイコン</translation>
 <translation id="5431318178759467895">色</translation>
 <translation id="4328541188421002379">「仕事」「個人」など、コンテナに名前を付けてください</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">ブレイブをサポートしながらブラウザをカスタマイズ</translation>
 <translation id="123297831435065577">Brave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けの有料版ブラウザです。Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。</translation>
 <translation id="7984508421152399880">今すぐ購入</translation>
+<translation id="1882724423074862793">購入を復元</translation>
 <translation id="5567412479632285879">Brave Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="1051600834033686945">Braveリワードの設定を開く</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="8868426106596092089">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
+<translation id="1022603984240541480">対応サイトでプライバシー設定チューニングの通知を表示</translation>
+<translation id="3528176629974273019">Braveがサイト固有のプライバシー設定を自動的に提案（および調整）できるようにします。</translation>
 <translation id="509873765238158442">Microsoft Recallをブロック</translation>
 <translation id="4763421121695677716">Microsoft Windowsコンピュータのリコール機能をブロックして、開いているBraveタブのスクリーンショットを自動的に撮影できないようにします。</translation>
 <translation id="1968895725257436430">データコレクション</translation>
@@ -738,6 +759,7 @@
 <translation id="4425607417590286548">変更を適用する</translation>
 <translation id="2128143836897950793">「新しいブリッジをリクエストする...」をクリックして、ブリッジを取得します</translation>
 <translation id="3314921753580327793">アドレス:ポートを入力 (1行に1つ)</translation>
+<translation id="7002083631026466886">Torはこのブリッジを使用できません。提供されたブリッジと照合してから、もう一度お試しください:</translation>
 <translation id="3755189300481406891">リクエストブリッジ</translation>
 <translation id="6924425739431382319">BridgeDBに問い合わせています。しばらくお待ちください。</translation>
 <translation id="811745063252080651">CAPTCHAを解いて、ブリッジをリクエストしてください。</translation>
@@ -916,7 +938,6 @@
 <translation id="1838374766361614909">検索を消去</translation>
 <translation id="5126255551970171328">メモリを検索</translation>
 <translation id="7402116145895962069">Ollamaローカルモデルを同期する</translation>
-<translation id="4835154437390745810">Ollamaにより管理されています</translation>
 <translation id="5985516785067818307">調査パネリスト</translation>
 <translation id="8347743943525229984">Braveアンケートを許可</translation>
 <translation id="3204080538332044581">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>

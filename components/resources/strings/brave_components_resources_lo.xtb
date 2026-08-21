@@ -522,7 +522,7 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,=1 {ໃນເດືອນນີ້, ເຈົ້າໄດ້ເຂົ້າຊົມຜູ້ສ້າງ 1 ລາຍທີ່ຮັບການສະໜັບສະໜູນໂດຍ Brave Rewards}other {ໃນເດືອນນີ້, ເຈົ້າໄດ້ເຂົ້າຊົມຜູ້ສ້າງ # ລາຍທີ່ຮັບການສະໜັບສະໜູນໂດຍ Brave Rewards}}</translation>
 <translation id="3264975266761862670">ພ້ອມເລີ່ມຮັບລາຍໄດ້ແລ້ວຫຼືບໍ່?</translation>
 <translation id="2784412028126205842">ເອົາບັນຊີກົນການເຮັດທຸລະກຳ</translation>
-<translation id="1789518312567918588">{ADS_VIEWED, plural, =0 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} =1 {ເຈົ້າສາມາດຮັບຄ່າຕອບແທນໄດ້ຈາກ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ທີ່ເຈົ້າໄດ້ເຫັນໃນເດືອນນີ້.} other {ເຈົ້າສາມາດຮັບຄ່າຕອບແທນໄດ້ຈາກ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ທີ່ເຈົ້າໄດ້ເຫັນໃນເດືອນນີ້.}}</translation>
+<translation id="4083788716319248418">{ADS_VIEWED, plural, =1 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} other {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້}}</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural, =0 {ເຈົ້າໄດ້ເຫັນ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} =1 {ເຈົ້າກໍາລັງຮັບລາງວັນສໍາລັບການເບິ່ງ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້} other {ເຈົ້າກໍາລັງຮັບລາງວັນສໍາລັບການເບິ່ງ <ph name="COUNT_BEGIN"/> # ໂຄສະນາ<ph name="COUNT_END"/> ໃນເດືອນນີ້}}</translation>
 <translation id="6067959437127691361">ການໃຊ້ Brave Rewards ຊ່າວາລາຍເນື້ອໃນ, ແລະເວັດ BAT.</translation>
 <translation id="2359808026110333948">ດຳເນີນການຕໍ່</translation>
@@ -1124,6 +1124,7 @@
 <translation id="793994607260936590">ທຸລະກໍາທີ່ເຄີາເພາະຫຼາວເທນາເກີາ</translation>
 <translation id="4709524402122994378">ທົ່ວລາຍການ</translation>
 <translation id="4591079278963448049">ບໍ່ມີບັນຊີໂທເຄັບເຍີເນຣີຍວາສານອີງຍັນຂ້ອງ. ກໍາມະຈໍານຍໜເสົດນະ້ແລມະສານຄ່າ.</translation>
+<translation id="1468846486094099016">ການປະເມີນ Signature Payload</translation>
 <translation id="3240773103344793224">ການເປື່ອນແປງໃໝ່ສິດຂອງບັນຊີ</translation>
 <translation id="8041423758956015568">ທີ່ນຸເທັກຊາບເຊັນນີ້ຈະປ່ຽນແປງສິດໃຫ້ກັບລາຍການໃໝ່. ການດຳເນີນການນີ້ບໍ່ສາມາດກັບຄືນແລະອາດງ່າກໍາເນີນສ້າງຄ່າສູນເພື່ອເງິນໃນບັຍບັຍລຸ່ນເທິງ.</translation>
 <translation id="1426320910664514906">ກາສໄລ່າຄ່າ</translation>
@@ -1586,6 +1587,13 @@
 <translation id="5333225216561354793">ພວກເຮົາຕ້ອງການທີ່ຈະໃຫ້ທ່ານຮັບຮູ້ລາຍການດ້ານລຸ່ມນີ້</translation>
 <translation id="4284971227128011550">ຂ້ອຍເຂົ້າໃຈວ່ານີ້ແມ່ນກະເປົາຂອງຕົວຂ້ອຍເອງ, ແລະຕ່າງກັນຂ້ອຍພຽງແຕ່ບໍ່ຮັບຜິດຊອບໃນບັນຊີລັງງວດເຮົາທັງໝົດ, ແລະຂ້ອຍມີຄວາມຮັບຜິດຊອບທີ່ຈະຮັບ, ປ້ອງກັນ, ແລະສຳຮອງກກະເປົາຂອງຂ້ອຍ. ຂ້ອຍເຂົ້າໃຈວ່າ Brave ບໍ່ສາມາດເຂົ້າເຖິງກະເປົາຂອງຂ້ອຍຫຼືໄລຂໍຄືນຂໍ້ມູນໃຫ້ຂ້ອຍ, ແລະປະໂຫຍກການຟື້ນຟູຂອງຂ້ອຍເປັນວິທີດຽວທີ່ຂ້ອຍສາມາດກັບໄປໃນກໍລະນີຂອງລະຫັດຜ່ານທີ່ສູນຫາຍ, ອຸປະກອນທີ່ສູນຫາຍ, ຫຼືກໍລະນີອື່ນໆທີ່ຄູ່ຄ້າ.</translation>
 <translation id="3604445540387095708">ຂ້ອຍໄດ້ອ່ານແລະເຫັນດີໂດຍສະເາລະເຖິງ <ph name="LINK_BEFORE"/>ເງື່ອນໄຂໃຊ້ງານ<ph name="LINK_AFTER"/>.</translation>
+<translation id="7298195798382681320">ແນະນຳ</translation>
+<translation id="5261730884092815272">12 ຄຳ</translation>
+<translation id="4937679440025366600">24 ຄຳ</translation>
+<translation id="7875799385764282380">ຄວາມປອດໄພທີ່ແຂງແກ່ນ ແລະ ຂຽນລົງໄດ້ໄວກວ່າ. ໃຊ້ໂດຍ wallet ສ່ວນໃຫຍ່.</translation>
+<translation id="8157829085295816223">ຂອບເຂດຄວາມປອດໄພສູງສຸດ. ດີສຳລັບການໃຊ້ໃນ wallet ອື່ນ (ຊຶ່ງອາດຕ້ອງການວະລີ 24 ຄຳ).</translation>
+<translation id="4357180991717571915">ເລືອກຄວາມຍາວຂອງ recovery phrase ຂອງທ່ານ</translation>
+<translation id="8997001537838391693">Recovery phrase ຂອງທ່ານກູ້ຄືນການເຂົ້າເຖິງ wallet ຖ້າທ່ານລືມ password ຫຼືເສຍ device. ທ່ານຈະບັນທຶກມັນໃນຂັ້ນຕອນຕໍ່ໄປ.</translation>
 <translation id="1422451606553326863">ຊື້ຄຣິບໂຕ</translation>
 <translation id="3887541341068007345">ກຳລັງກວດສອບສະໄອເວື້ນກະເປົາ...</translation>
 <translation id="8407091560429310499">ເລືອກບັນຊີ</translation>
@@ -1827,6 +1835,8 @@
 <translation id="7716113567047550378">Please don’t close this window until sync finishes.</translation>
 <translation id="5123590959308755060">Continue using wallet in a new tab</translation>
 <translation id="4594014034647546191">ຊອກຢູ່ເວລານີ້</translation>
+<translation id="2242190818083876475">ຣີເຊັດວັນເກີດຂອງ account</translation>
+<translation id="5080237867196215050">ການຣີເຊັດວັນເກີດຂອງ account ຂອງທ່ານຈະຕ້ອງການ resync ເຕັມ. ໃສ່ block ວັນເກີດໃໝ່ ແລ້ວກົດ "ຣີເຊັດວັນເກີດຂອງ account" ເພື່ອສືບຕໍ່.</translation>
 <translation id="6666784075827260119">ວັນເດືອນປີເກີດຂອງບັນຊີຕ້ອງຫຼາຍກວ່າ <ph name="BLOCK_NUMBER"/></translation>
 <translation id="3102477628835823956">ບຊັອນໂຂງເໝາະຫຫາ: <ph name="BLOCK_NUMBER"/></translation>
 <translation id="6850229669854962550"><ph name="BLOCKS"/> ຈຳນວນທີ່</translation>
@@ -1973,6 +1983,10 @@
 <translation id="7948579849190819732">ແທັບປະຈຸບັນ</translation>
 <translation id="7056969230130642253">ທ່ານໄດ້ຄວາມຕື່ມແລ້ວ</translation>
 <translation id="7292242212818928219">ເນື້ອໃນໃໝ່ມີແລ້ວ ຟຣີເຊີ?</translation>
+<translation id="6007028324976222777">ນຳເຂົ້າຈາກ OPML</translation>
+<translation id="8871004282386501355">ສົ່ງອອກໄປ OPML</translation>
+<translation id="481478016164478903">ເພີ່ມ <ph name="PUBLISHER_COUNT"/> publishers, <ph name="FEED_COUNT"/> direct feeds ແລະ <ph name="CHANNEL_COUNT"/> channels. ຂ້າມ <ph name="SKIPPED_COUNT"/> ທີ່ເພີ່ມແລ້ວ.</translation>
+<translation id="5537748547202815718">ບໍ່ສາມາດນຳເຂົ້າໄຟລ໌ນັ້ນໄດ້. ໃຫ້ແນ່ໃຈວ່າມັນເປັນໄຟລ໌ OPML ທີ່ຖືກຕ້ອງ.</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">ໄປຂ້າງໜ້າ</translation>
 <translation id="1272079795634619415">ຢຸດ</translation>
@@ -1980,6 +1994,8 @@
 <translation id="7211681214230730336">ຟຣີເຊີໂດຍການລ້າງແຄັດເຊ</translation>
 <translation id="1779766957982586368">ປິດໜ້າຕ່າງ</translation>
 <translation id="5210365745912300556">ປິດແທັບ</translation>
+<translation id="8852436503814917529">ວົນໄປແທັບຖັດໄປ</translation>
+<translation id="1543046737011894871">ວົນໄປແທັບກ່ອນໜ້າ</translation>
 <translation id="2291643155573394834">ແທັບຖັດໄປ</translation>
 <translation id="7748528009589593815">ແທັບກ່ອນຫນ້າ</translation>
 <translation id="3738690686686515962">ເລືອກແທັບ 0</translation>
@@ -1997,7 +2013,6 @@
 <translation id="4841735924729216702">ເມນູໜ້າຕ່າງ</translation>
 <translation id="3649256019230929621">ຍ່ອຍຫນ້າຕ່າງ</translation>
 <translation id="906458777597946297">ຂະຫຍາຍຫນ້າຕ່າງ</translation>
-<translation id="2082612610620888017">ສະແດງຫນ້າຕ່າງທັງໝົດ</translation>
 <translation id="1111843722790053332">ເປີດໃນ PWA ໜ້າຕ່າງ</translation>
 <translation id="907981618023904259">ຕັ້ງຄ່າເວັບແອັບ</translation>
 <translation id="4138336125382947023">ຂໍ້ມູນເວັບແອັບ</translation>
@@ -2056,7 +2071,6 @@
 <translation id="7012611213801651252">ສະແດງເມນູ Avatar</translation>
 <translation id="6263048902976129908">ພັດທະນາເຄື່ອງມືສະຫວ່າງ</translation>
 <translation id="1386786836007298307">ສວຍກໍາແນບເດັ່ນສຸດລວງນີ້</translation>
-<translation id="461433814913785913">ປຸງແຕ່ງແຖບເກ່ນສັມຜັນ</translation>
 <translation id="4722786500079380710">ຕິດຕັ້ງ PWA</translation>
 <translation id="5825969867518399495">ສະແດງຫນ້າການບໍລິຫານ</translation>
 <translation id="7888244262238732644">ສະແດງ URLs ເຕັມመາດຕະຖານ</translation>
@@ -2096,7 +2110,11 @@
 <translation id="6332027154313182926">ປ່ຽນ Brave VPN</translation>
 <translation id="6539014233195996894">ປ່ຽນປິດການສົ່ງສ້າງແທັບ</translation>
 <translation id="2682865834956428001">ປ່ຽນຕຳແໜ່ງ Sidebar</translation>
-<translation id="6105745639559695088">ປ່ຽນ Sidebar</translation>
+<translation id="7095235686444800565">ເປີດ/ປິດ side panel ປັດຈຸບັນ</translation>
+<translation id="6330741325040551950">ເປີດ/ປິດ side panel ບຸກມາກ</translation>
+<translation id="1973174482432326058">ເປີດ/ປິດ side panel Reading List</translation>
+<translation id="14910687022901840">ເປີດ/ປິດ side panel Playlist</translation>
+<translation id="3195191401552731345">ເປີດ/ປິດ side panel Brave News</translation>
 <translation id="3488252265135539275">ປ່ຽນແຖບຕັ້ງແດວ</translation>
 <translation id="7134064542341959603">ປ່ຽນຊື່ຫມ່າຍໂຫລ່</translation>
 <translation id="3067105725259639716">ຕັ້ງຄ່າ Brave News</translation>
@@ -2109,6 +2127,7 @@
 <translation id="134184943774258988">ປ່ຽນວາງປຸ່ມ Bookmark ທັ້ງໝົດ</translation>
 <translation id="2158862020143233462">ປ່ຽນ Shields</translation>
 <translation id="3010280727642018218">ປ່ຽນ JavaScript</translation>
+<translation id="8324318899000695659">ປິດໜ້າເນື້ອຫາ</translation>
 <translation id="188822869499214197">ສະແດງ Playlist Bubble</translation>
 <translation id="3202536111478033084">ແຍກແຖັບຂອງຍຸກຍັດນີ້</translation>
 <translation id="6002210667729577411">ຍ້າຍກຸ່ມໄປທີ່ໜ້າໃໝ່</translation>
@@ -2221,23 +2240,21 @@
 <translation id="7905602379229309187">ຂະນະນີ້ທາງເດືອນກຳລັງເຕີມແຕ່. ກະລຸນາລອງໃໝ່ພາຍຫຼັງ.</translation>
 <translation id="8151638057146502721">Configure</translation>
 <translation id="999273441077650169">ແບບລຸ່ນປ່ຽນແປງເພື່ອໃຊ້ລຸ່ນທີ່ດີທີ່ສຸດສໍາຫຼັບວຽກງານ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="1238020084128916796">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Llama 3.1 8B, ນາມິໄບໂດ້ສ້າງໂດຍ Meta ເພື່ອໃຫ້ມີຄວາມເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Llama ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Qwen VL 30B, ໂມເດລທີ່ສ້າງໂດຍ Alibaba Cloud ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Qwen ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງເຮົາເອງ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GLM-5, ໂມເດລທີ່ສ້າງໂດຍ Zhipu AI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. GLM-5 ໄດ້ຖືກໂຮສໂດຍ NEAR ຜ່ານໂຄງສ້າງຄວາມປອດໄພທີ່ສາມາດກວດສອບໄດ້ຂອງພວກເຂົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GLM-5.1, ໂມເດລທີ່ສ້າງໂດຍ Zhipu AI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. GLM-5.1 ໄດ້ຖືກໂຮສໂດຍ NEAR ຜ່ານໂຄງສ້າງຄວາມປອດໄພທີ່ສາມາດກວດສອບໄດ້ຂອງພວກເຂົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">ສະບາຍດີ, ຂ້ອຍຄື Leo. ຂ້ອຍແມ່ນຜູ້ຊ່ວຍ AI ໂດຍ Brave. ຂ້ອຍຂັບເຄື່ອນດ້ວຍ Claude Instant, ຮູບແບບທີ່ Anthropic ສ້າງຂຶ້ນເພື່ອຮັບມືກັບວຽກງານການສົນທະນາແລະແປຂໍ້ຄວາມ. Claude Instant ແມ່ນໂຮສໂດຍ Brave ຜ່ານອິນຟຣາສະເຕຣັກເຊີຂອງພວກເຮົາເອງ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Haiku, ນາມິໄບໂດຍ Anthropic ເພື່ອເປັນພິທີການມືນຣືທີ່ແລະລຸງນີ້ສ່ອງອັກຮີກຳມານອາການແລະການດຳລັດຄວາມ. Claude Haiku ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Sonnet, ນາມິໄບໂດຍ Anthropic ເພື່ອເປັນພິທີການມືນຣືທີ່ແລະລຸງນີ້ສ່ອງອັກຮີກຳມານອາການແລະການດຳລັດຄວາມ. Claude Sonnet ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="6277330815126859513">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Llama 4 Maverick, ນາມິໄບໂດຍ Meta ເພື່ອໃຫ້ມີຄວາມເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Llama 4 Maverick ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="5833148755396048122">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GPT OSS 20B, ນາມິໄບໂດຍ OpenAI ເພື່ອໃຫ້ເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. GPT OSS 20B ຖືກຖືໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="5414593137581221307">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GPT OSS 120B, ນາມິໄບໂດຍ OpenAI ເພື່ອໃຫ້ເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. GPT OSS 120B ຖືກຖືໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="3399141352144059821">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Grok 4.3, ໂມເດລທີ່ສ້າງໂດຍ xAI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Grok 4.3 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="8868813509973985458">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GPT 5.4, ໂມເດລທີ່ສ້າງໂດຍ OpenAI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. GPT 5.4 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Mistral Large, ນາມິໄບໂດຍ Mistral ເພື່ອໃຫ້ເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Mistral Large ຖືກຖືໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Qwen 3 235B, ນາມິໄບໂດຍ Alibaba Cloud ເພື່ອໃຫ້ເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Qwen 3 235B ຖືກຖືໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Deepseek V3.2, ໂມເດລທີ່ສ້າງໂດຍ Deepseek ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Deepseek V3.2 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="3767678495358551728">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Qwen 3 Coder 480B, ນາມິໄບໂດຍ Alibaba Cloud ເພື່ອໃຫ້ເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Qwen 3 Coder 480B ຖືກຖືໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Opus, ທີ່ຖືກພັດທະນາໂດຍ Anthropic ເພື່ອຂັບເຄື່ອນພາລະກິດການສົນທະນາແລະການແປຂໍ້ຄວາມ. Claude Opus ໄດ້ຮັບການໂຮສໂດຍ Brave ໂດຍຜ່ານໂຄງຮ່າງທີ່ປອດໄພຂອງຕົນເອງ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GLM-4-7-Flash, ໂມເດລທີ່ສ້າງໂດຍ Zhipu AI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. GLM-4-7-Flash ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Kimi K2.5, ໂມເດລທີ່ສ້າງໂດຍ Moonshot AI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Kimi K2.5 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="3484076625906498634">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Nemotron Nano 3 30B, ໂມເດລທີ່ສ້າງໂດຍ NVIDIA ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Nemotron Nano 3 30B ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Brave Ocelot, ໂມເດລທີ່ສ້າງໂດຍ Brave ເພື່ອສະຫຼຸບຫນ້າເວບ. Brave Ocelot ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">ທ້ອງຖິ່ນ</translation>
@@ -2257,20 +2274,15 @@
 <translation id="5543505256451301851">ລອງ 7 ວັນຟຣີ</translation>
 <translation id="849535826888024304">ຄວາມໄວຕອບສອບເໝົາໝາຍ</translation>
 <translation id="2252128900328632803">ທ່ານບໍ່ສາມາດເອົາໄດ້ນີ້ຕາມປະເພທາວາລະໄຂ. ເທື່ອຊື້ຄລິກເພື່ອເກີດpremium, ຫຼືລອງເວລາໃໝ່.</translation>
-<translation id="4173478269537830374">ສຳຫຼວດໂມເດວ AI ຫຼາກຫຼາຍຮູບແບບ</translation>
-<translation id="3245401959451976966">ປົດລັອກພະລັງຄວາມຄິດສ້າງສັນຂອງທ່ານ</translation>
-<translation id="4165928407303989823">ໂຟກັດກັບຫົວຂໍ້ສົນທະນາ</translation>
-<translation id="2389665228467129817">ແຊັດໄດ້ຕໍ່ເນື່ອງດົນນານຂຶ້ນ</translation>
+<translation id="8746303650199962589">ເຂົ້າເຖິງ LLM ທີ່ທັນສະໄໝທີ່ສຸດຈາກ Anthropic, OpenAI, DeepSeek, ແລະ ອື່ນໆ</translation>
+<translation id="4366237751405135351">ຄົ້ນຫາໂມເດລສະເພາະງານສຳລັບການ coding, ການສ້າງເນື້ອຫາ, ແລະ ອື່ນໆ</translation>
+<translation id="7494418589245805538">ເພີ່ມຂີດຈຳກັດຈຳນວນສຳລັບການສົນທະນາຂອງທ່ານ</translation>
 <translation id="8556044455877152001">$ <ph name="PRICE_VALUE"/> ຕໍ່ເດືອນ (USD)</translation>
 <translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> ຕໍ່ປີ</translation>
-<translation id="1028627582482425924">ໜຶ່ງປີ</translation>
-<translation id="36366199652730057">ຄຸ້ມຄ່າທີ່ສຸດ</translation>
+<translation id="4955814292505481804">ລາຍປີ</translation>
+<translation id="7724435637185902140">ປະຢັດ ~17%</translation>
 <translation id="5151923271944811339">ປ່ຽນແປງເປັນແບບຟຣີ</translation>
 <translation id="5474757891469990756">ໃຊ້ງານຄຸນສົມບັດ Leo ໄດ້ເຕັມປະສິດທິພາບເມື່ອສະໝັກ Premium:</translation>
-<translation id="3453542753968940696">ເຂົ້າເຖິງໂມເດວປະສິດທິພາບສູງສຸດຫຼາກຫຼາຍປະເພດໄດ້ກ່ອນໃຜ.</translation>
-<translation id="5031778211368112461">ໃຊ້ງານໂມເດວທີ່ອອກແບບມາເພື່ອການສ້າງສັນ ແລະ ການຜະລິດເນື້ອຫາໂດຍສະເພາະ.</translation>
-<translation id="298783097210745222">ຮັບຄຳຕອບທີ່ແມ່ນຍຳຍິ່ງຂຶ້ນສຳລັບບົດສົນທະນາທີ່ຊັບຊ້ອນຫຼາຍຂຶ້ນ.</translation>
-<translation id="4314705522985583059">ເພີ່ມຂີດຈຳກັດຈຳນວນຂໍ້ຄວາມໃນການສົນທະນາໃຫ້ຫຼາຍຂຶ້ນ.</translation>
 <translation id="1068954060985569277">ການເຊື່ອມໂດຍແຜນທີ່ໃຊ້ບໍ່ຖືກຕ້ອງ. ການແກ້ໄຂການແຜນເຮົາອີຂຶ້ນເສີບແລ້ວແມ່ນສຳ້.</translation>
 <translation id="94736968936709953">ການໃຫ້ຄືນຂໍ້ສັ່ງໄດ້ສຳເລັດແລ້ວ</translation>
 <translation id="9109355817507033196">ຄຳຕອບບໍ່ຖືກນຳໃຊ້</translation>
@@ -2320,6 +2332,10 @@
 <translation id="8742658901413346500">ການສົນທະນານີ້ມີລາຍລະອຽດຍາວ ແລະ Leo ອາດຈະເລີ່ມລືມສິ່ງຕ່າງໆໃນໄມ່ຊ້າ. ທ່ານສາມາດໄດ້ຮັບການສົນທະນາທີ່ຍາວຂຶ້ນໂດຍການປ່ຽນໄປໃຊ້ແບບອັບເກຣດຫຼືທ່ານສາມາດລ້າງການສົນທະນາເພື່ອຮີເຟຣດອກຊັນນັ້ນໃໝ່.</translation>
 <translation id="6495402307502950726">ລ້າງການສົນທະນາ</translation>
 <translation id="903201991022343217">ເລີ່ມການສົນທະນາໃໝ່</translation>
+<translation id="8742207701089910775">ແບ່ງປັນການສົນທະນານີ້</translation>
+<translation id="4014016095804982975">ການສົນທະນາຂອງທ່ານຈະຖືກອັບໂຫລດແບບເຂົ້າລະຫັດ ແລະ ສາມາດ decrypt ໄດ້ດ້ວຍ link ທີ່ສ້າງຂຶ້ນເທົ່ານັ້ນ. Brave ຈະບໍ່ສາມາດເບິ່ງການສົນທະນາຂອງທ່ານໄດ້. ພຽງແຕ່ທ່ານ ແລະ ຄົນທີ່ທ່ານແບ່ງປັນ link ນີ້ນຳເທົ່ານັ້ນທີ່ສາມາດ decrypt ການສົນທະນາທີ່ແບ່ງປັນຂອງທ່ານໄດ້. ການສົນທະນາທີ່ແບ່ງປັນທັງໝົດຈະໝົດອາຍຸຫຼັງຈາກ 7 ວັນ.</translation>
+<translation id="1390174375123434798">ສ້າງ link</translation>
+<translation id="8904787158537906492">ຄັດລອກ link ໄປທີ່ clipboard ແລ້ວ</translation>
 <translation id="8171760814579050200">ປ່ຽນຊື່ການສົນທະນາ</translation>
 <translation id="402386227879573975">ສໍາເລັດການສົນທະນາທັງໝົດ</translation>
 <translation id="5397794290049113714">ທ່ານ</translation>
@@ -2363,13 +2379,13 @@
 <translation id="7821251979960635244">Your conversation history will appear here once you start a conversation.</translation>
 <translation id="887511360213807449">History is disabled</translation>
 <translation id="5380979378058584412">In order to view your previous conversations with Leo, you need to enable conversation history.</translation>
-<translation id="7348809809749151120">ໄວ • ຊອກຫາ</translation>
 <translation id="3185367320601718531">ການສົນທະນາ ແລະການສ້າງຂໍ້ຄວາມ</translation>
 <translation id="2793458212460902934">ໄວ • ຊອກຫາ • ເຄື່ອງມື</translation>
 <translation id="8506027496671575183">ຊອກຫາ • ການເຫັນເປັນຮູບ • ເຄື່ອງມື</translation>
 <translation id="3184606955650139158">ໄວ • ຊອກຫາ • ວິຊັນ</translation>
 <translation id="7465032796278724624">ເປັນຄວາມລັບ ກັບ NEAR AI TEE</translation>
 <translation id="8782867266498869301">ແບບລຸ່ນປ່ຽນແປງເພື່ອໃຊ້ລຸ່ນທີ່ດີທີ່ສຸດສໍາຫຼັບວຽກງານ</translation>
+<translation id="7348809809749151120">ໄວ • ຊອກຫາ</translation>
 <translation id="3213834013136637671">ຊອກຫາ • ການເຫັນເປັນຮູບ</translation>
 <translation id="5276681919620506371">ຊອກຫາ • ເຄື່ອງມື</translation>
 <translation id="7434375176361995333">ສະຫຼຸບ • ໄວ</translation>
@@ -2500,6 +2516,7 @@
 <translation id="3486480638399578250">ເກັບທີ່ຢູ່ແທ້ຕົວຕົນຂອງທ່ານໃຫ້ແມ້ນ</translation>
 <translation id="7765422154906712751">ສ້າງທີ່ຢູ່ສຸມເໝາະທີ່ສຸມເໝາະທີ່ແນມາຫາອີເມລບັນຊີ Brave ແລະສາມາດຖືກລົບໄດ້ຕອເມລົດຕອໆມາ. ເລັກທີຢູ່ຂອງທ່ານແທ້ຈະບໍ່ຖືກໃຫຍ່ຊເຫນິນຫຼືນໍາໃຊ້ໂດຍພນຂາຍຂອງ.</translation>
 <translation id="71316462802471551">ເມລ໌ຂອງທ່ Background</translation>
+<translation id="7901376755618482277">ສະແດງຄຳໃບ້ "New Alias" ໃນຊ່ອງອີເມວ</translation>
 <translation id="6002159997868894136">ຄລິກເພື່ອຄັດລອກ aliases</translation>
 <translation id="8105770564756958406">ໃຊ້ໂດຍ <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">ສ້າງອີເມວອະລີຍໄດ້ເຖິງ 5 ອີເມວຟໍາລໍາເພື່ອປ້ອງກັນທີ່ຢູ່ອີເມວຈິງຂອງທ່ານ.</translation>
@@ -2545,6 +2562,10 @@
 <translation id="367191282389216837">ການຕອບກັບທີ່ບໍ່ຖືກຕ້ອງຈາກການບໍລິການ Email Aliases</translation>
 <translation id="7203490731644771170">ຂໍ້ຜິດພາດຈາກການບໍລິການ Email Aliases: <ph name="ERROR"/></translation>
 <translation id="8767862600155091621">ຄວາມຜິດພາດ: Alias ບໍ່ພ້ອມໃຊ້</translation>
+<translation id="1706715315466634757">ອີເມວອະລາການ</translation>
+<translation id="7087933122203937032">ສ້າງທີ່ຢູ່ທີ່ບໍ່ຊ້ຳ, ແບບສຸ່ມທີ່ສົ່ງຕໍ່ໄປຫາອີເມວບັນຊີ Brave ຂອງທ່ານ ແລະ ສາມາດລົບໄດ້ທຸກເວລາ. ຮັກສາທີ່ຢູ່ອີເມວຈິງຂອງທ່ານບໍ່ໃຫ້ຖືກເປີດເຜີຍ ຫຼື ຖືກໃຊ້ໂດຍນັກໂຄສະນາ.</translation>
+<translation id="8057865981284642090">ເພື່ອໃຊ້ Email aliases, ທ່ານຕ້ອງເຂົ້າສູ່ລະບົບບັນຊີ Brave ຂອງທ່ານ. ເລີ່ມຕົ້ນໂດຍການກົດປຸ່ມຂ້າງລຸ່ມ.</translation>
+<translation id="4472575034687746823">ເລີ່ມຕົ້ນໃຊ້ງານ</translation>
 <translation id="8370801182970639038">ໂດຍອັດຕະໂນມັດ (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">ເຄື່ອງມືຄົ້ນຫາທີ່ເປີດໃຊ້ແລ້ວ</translation>
 <translation id="8285901519864208412">ເຊື່ອງບັດລາງວັນໄວ້ເດີ</translation>
@@ -2623,7 +2644,6 @@
 <translation id="9204041448536398473">ການຕັ້ງຄ່າ Shield ແບບໂລກ</translation>
 <translation id="2108334320919763866">ຄ່າເລີ່ມຕົ້ນແບບໂລກ</translation>
 <translation id="1896472873031845605">ການຕັ້ງຄ່າທົ່ວໄປ</translation>
-<translation id="8324318899000695659">ປິດໜ້າເນື້ອຫາ</translation>
 <translation id="7205939464631857223">ລ້າງທຸກອັນທີ່ຖືກບລ໋ອກ</translation>
 <translation id="3440043456924990296">ການຕັ້ງຄ່າທີ່ຈັດການໂດຍອົງການ</translation>
 <translation id="7053983685419859001">ປິດ</translation>
@@ -2724,6 +2744,21 @@
 <translation id="6764845498618413165">ເບິ່ງຂໍ້ມູນເພີ່ມເຕີມ.</translation>
 <translation id="7818938154803162778">ໄດ້ເລີຍ, ຂ້ອຍຍິນດີຊ່ວຍ.</translation>
 <translation id="7207456302801184289">ຍິນດີຕອນຮັບສູ່ Brave</translation>
+<translation id="5341040774109629148">ກຽມພ້ອມສຳລັບປະສົບການການທ່ອງເວັບທີ່ດີທີ່ສຸດ</translation>
+<translation id="6124979241984215095">ສຳຜັດປະສົບການເວັບໂດຍບໍ່ຖືກຕິດຕາມ. Brave ປົກປ້ອງທ່ານຈາກ trackers, ໂຄສະນາ, ແລະ fingerprinting, ທັງໝົດແບບອັດຕະໂນມັດ.</translation>
+<translation id="8722651357687610395">ຕັ້ງ Brave ເປັນເລີ່ມ ເບຣເຊີໆ ໄດ້</translation>
+<translation id="6385063238068436833">ເລີ່ມຈາກຕົ້ນ</translation>
+<translation id="2601678491007820794">ນຳເຂົ້າທຸກຢ່າງຈາກ browser ເກົ່າຂອງທ່ານ ແລະ ເຮັດໃຫ້ການປ່ຽນຜ່ານລຽບງ່າຍ.</translation>
+<translation id="5291297136536006359">ທ່ານຍັງສາມາດເຮັດສິ່ງນີ້ໄດ້ພາຍຫຼັງໃນການຕັ້ງຄ່າຂອງ Brave.</translation>
+<translation id="701087249209337256">ນຳເນື້ອຫາ browser ເກົ່າຂອງທ່ານມາດ້ວຍ</translation>
+<translation id="7463724872882590240">ເລືອກ browser ກ່ອນໜ້າຂອງທ່ານ</translation>
+<translation id="6091623542030502746">ທ່ານຕ້ອງການນຳເຂົ້າຫຍັງ?</translation>
+<translation id="4740018245743691625">ຜົນການນຳເຂົ້າ</translation>
+<translation id="5418312173593538711">ກຳລັງນຳເຂົ້າເນື້ອຫາຂອງທ່ານ</translation>
+<translation id="6865313869410766144">ຂໍ້ມູນ autofill form</translation>
+<translation id="6786747875388722282">Extensions</translation>
+<translation id="5869522115854928033">password ທີ່ບັນທຶກໄວ້</translation>
+<translation id="4692623383562244444">ເຄື່ອງມືຄົ້ນຫາ</translation>
 <translation id="4988030440045495002">ຕີມສີຄືນສີມືດ</translation>
 <translation id="2422927186524098759">ບາເວນດ້ານ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2733,6 +2768,7 @@
 <translation id="2478076885740497414">ຕິດຕັ້ງແອັບ</translation>
 <translation id="8293206222192510085">ເພີ່ມບຸກມາກ</translation>
 <translation id="7758460733045216901">ປຸ່ມບັນດາບາດ</translation>
+<translation id="9124418807119853058">ປຸ່ມສະຫຼັບ vertical tabs</translation>
 <translation id="958268166261124668">Brave VPN: ເຊື່ອມໂດຍສຳເລັດ</translation>
 <translation id="6021669293402055982">Brave VPN: ບໍ່ເຊື່ອມ</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -2886,7 +2922,7 @@
 <translation id="9033485352495162741">ການຢືນຢັນສຳເລັດ. ຕອນນີ້ໃສ່ລະຫັດຜ່ານໃໝ່ທີ່ທ່ານຕ້ອງການ:</translation>
 <translation id="1293857704520741614">ເຂົ້າສູ່ລະບົບບັນຊີຂອງທ່ານ</translation>
 <translation id="118617366439356381">ລືມລະຫັດຜ່ານຂອງທ່ານບໍ?</translation>
-<translation id="5183159033908953146">ຢືນຢັນອີເມວບັນຊີ Brave ຂອງທ່ານ ແລະທ່ານຈະໄດ້ຮັບລິ້ງເພື່ອຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ. ລິ້ງຈະໃຊ້ໄດ້ພຽງ 30 ນາທີເທົ່ານັ້ນ.</translation>
+<translation id="5636406393070713097">ຢືນຢັນອີເມວບັນຊີ Brave ຂອງທ່ານ ແລະທ່ານຈະໄດ້ຮັບລະຫັດເພື່ອຣີເຊັດ password ຂອງທ່ານ. ລະຫັດຈະໃຊ້ໄດ້ພຽງ 15 ນາທີເທົ່ານັ້ນ.</translation>
 <translation id="3674472551471103443">ຣີເຊັດລະຫັດຜ່ານຂອງທ່ານ</translation>
 <translation id="2755539422340788311">ຢືນຢັນອີເມວຂອງທ່ານ</translation>
 <translation id="6641436078676327508">ທ່ານຄວນໄດ້ຮັບອີເມວທີ່ມີລະຫັດສັ້ນ. ກະລຸນາໃສ່ມັນຢູ່ບ່ອນນີ້ເພື່ອດຳເນີນຕໍ່.</translation>
@@ -2903,16 +2939,13 @@
 <translation id="7144067487084094749">ບັນຊີສຳລັບທີ່ຢູ່ອີເມວນີ້ມີຢູ່ແລ້ວ. ລອງເຂົ້າສູ່ລະບົບແທນທີ່ຈະສ້າງບັນຊີໃໝ່.</translation>
 <translation id="5288951359968156008">ໂດເມນຂອງທີ່ຢູ່ອີເມວນີ້ບໍ່ໄດ້ຮັບການຮອງຮັບ. ກະລຸນາໃຊ້ທີ່ຢູ່ອີເມວທີ່ແຕກຕ່າງ.</translation>
 <translation id="7625678607509255072">ເກີນຂີດຈຳກັດການຢືນຢັນອີເມວ. ກະລຸນາລໍຖ້າ 30 ນາທີກ່ອນທີ່ຈະລອງໃໝ່.</translation>
-<translation id="9121175588136821850">ລະຫັດຢືນຢັນໝົດອາຍຸແລ້ວ. ເລີ່ມຂັ້ນຕອນການລົງທະບຽນໃໝ່ອີກຄັ້ງ.</translation>
-<translation id="8439543211004394821">ໃສ່ລະຫັດທີ່ບໍ່ຖືກຕ້ອງຫຼາຍຄັ້ງເກີນໄປ. ເລີ່ມຂັ້ນຕອນການລົງທະບຽນໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="3229986152760633988">ລະຫັດຜິດ, ກະລຸນາລອງໃໝ່.</translation>
 <translation id="818783632689113711">account ໄດ້ຖືກຮ້ອງຂໍແລ້ວສຳລັບທີ່ຢູ່ email ນີ້. ກະລຸນາກວດສອບ email ຂອງທ່ານ ຫຼືລອງໃໝ່ໃນ 30 ນາທີ.</translation>
 <translation id="4776810543245166572">ບໍ່ພົບບັນຊີສຳລັບທີ່ຢູ່ອີເມວນີ້.</translation>
-<translation id="7090885444036935209">ທີ່ຢູ່ອີເມວບໍ່ຖືກຕ້ອງ.</translation>
 <translation id="1542836798393843657">ພະຍາຍາມຢືນຢັນຫຼາຍຄັ້ງເກີນໄປສຳລັບທີ່ຢູ່ອີເມວນີ້. ລອງໃໝ່ອີກຄັ້ງໃນ 24 ຊົ່ວໂມງ.</translation>
 <translation id="7572012011062736429">ຂໍ້ຜິດພາດພາຍໃນ. ປິດກ່ອງໂຕ້ຕອບ, ຍົກເລີກການຢືນຢັນ, ແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
-<translation id="2477280119520811719">ລະຫັດຢືນຢັນໝົດອາຍຸແລ້ວ. ເລີ່ມຂັ້ນຕອນການປ່ຽນລະຫັດຜ່ານໃໝ່ອີກຄັ້ງ.</translation>
-<translation id="7103280722523884198">ໃສ່ລະຫັດທີ່ບໍ່ຖືກຕ້ອງຫຼາຍຄັ້ງເກີນໄປ. ເລີ່ມຂັ້ນຕອນການປ່ຽນລະຫັດຜ່ານໃໝ່ອີກຄັ້ງ.</translation>
+<translation id="7502408214945538786">ບັນຊີ Brave ຊ່ວຍໃຫ້ທ່ານສ້າງ ແລະ ຈັດການ email aliases ຂອງທ່ານ.</translation>
+<translation id="237081360011331787">ບັນຊີ Brave ຊ່ວຍໃຫ້ທ່ານສ້າງ ແລະ ຈັດການ email aliases ຂອງທ່ານ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="4178004989875422946">ບັນຊີ Brave ຈະຊ່ວຍໃຫ້ທ່ານສາມາດເຂົ້າເຖິງບໍລິການຂອງ Brave ໄດ້ງ່າຍ.</translation>
 <translation id="4902897635127068510">ທ່ານໝາຍເຖິງ <ph name="SUGGESTION"/> ບໍ?</translation>
 <translation id="8314772463905284467">Caps Lock ເປີດຢູ່</translation>
@@ -2921,6 +2954,7 @@
 <translation id="2112559299194052697">ບໍ່ສາມາດສົ່ງໃໝ່ໄດ້</translation>
 <translation id="7932611814134267012">ໄດ້ສົ່ງອີເມວຢືນຢັນຫຼາຍຄັ້ງເກີນໄປແລ້ວ. ກະລຸນາກວດກາໂຟນເດີສະແປມຂອງທ່ານ.</translation>
 <translation id="1364223093800750401">ອີເມວໄດ້ຮັບການຢືນຢັນແລ້ວ.</translation>
+<translation id="1054874027734589261">ທ່ານໃສ່ລະຫັດຜິດຫຼາຍເກີນໄປ. ຍົກເລີກການຢືນຢັນ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="1353061468772282268">ລະຫັດຢືນຢັນໝົດອາຍຸແລ້ວ. ຍົກເລີກການຢືນຢັນ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
 <translation id="3353844160742960162">ການປັບແຕ່ງການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="528205534230423181">ເວັບໄຊທ໌ນີ້ມີການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວທີ່ Brave ສາມາດປັບໃຫ້ທ່ານໂດຍອັດຕະໂນມັດ. ນີ້ແມ່ນສິ່ງທີ່ພວກເຮົາແນະນຳ:</translation>

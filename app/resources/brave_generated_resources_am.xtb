@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">የበለጠ…</translation>
 <translation id="71316462802471551">ኢሜል ዳሰሳዎች</translation>
-<translation id="209130971304928953">ትሮችን እንደ የስራ ቦታ አስቀምጥ…</translation>
-<translation id="877984331511007834">የስራ ቦታ ክፈት…</translation>
-<translation id="1310182651927031327">ትሮችን እንደ የስራ ቦታ አስቀምጥ…</translation>
-<translation id="3588277741646479444">የስራ ቦታ ክፈት…</translation>
+<translation id="8350985546648269694">የአሁኑን መስኮቶች እና ትሮች እንደ ስፔስ አስቀምጥ</translation>
+<translation id="5327248766486351172">ስም</translation>
+<translation id="6379791766023874417">የስፔስ ስምዎን ያስገቡ</translation>
+<translation id="9174724474418499472">የእኔ ስፔስ</translation>
+<translation id="5317780077021120954">አስቀምጥ</translation>
+<translation id="7658239707568436148">ሰርዝ</translation>
+<translation id="196342407904926436">የስፔስ አማራጮች</translation>
+<translation id="2806407377752719586">ስፔስ ሰርዝ</translation>
+<translation id="1844931500883490339">እርግጠኛ ነዎት ይህን ስፔስ መሰረዝ ይፈልጋሉ? የተቀመጠው ስፔስ ለዘለቄታው ይወገዳል። ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
+<translation id="8261506727792406068">ሰርዝ</translation>
+<translation id="8428213095426709021">ቅንብሮች</translation>
+<translation id="1212321046099128987">ምንም ስፔሶች አልተፈጠሩም</translation>
+<translation id="3524567389166933243">ከታች የሚገኘውን የአስቀምጥ አዝራር ጠቅ በማድረግ የመጀመሪያ ስፔስዎን ይፍጠሩ።</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 ትር} one {# ትሮች} other {# ትሮች}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> መስኮቶች</translation>
+<translation id="1680377529024357662">የአሁኑን መስኮቶች እና ትሮች እንደ ስፔስ አስቀምጥ</translation>
+<translation id="5561829325295347472">የስፔስ ስምዎን ያስገቡ</translation>
+<translation id="2028520494010039812">የስፔስ አማራጮች</translation>
+<translation id="1580775521202322063">ስፔስ ሰርዝ</translation>
+<translation id="3004759399777164093">እርግጠኛ ነዎት ይህን ስፔስ መሰረዝ ይፈልጋሉ? የተቀመጠው ስፔስ ለዘለቄታው ይወገዳል። ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
+<translation id="7563692436589408797">ምንም ስፔሶች አልተፈጠሩም</translation>
+<translation id="3945077125173636695">ከታች የሚገኘውን የአስቀምጥ አዝራር ጠቅ በማድረግ የመጀመሪያ ስፔስዎን ይፍጠሩ።</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 ትር} one {# ትሮች} other {# ትሮች}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> መስኮቶች</translation>
+<translation id="3326655241685890930">ስፔሶች</translation>
 <translation id="1990886731975529483">Google Widevine ን ይጫኑት እና ይክፈቱ</translation>
 <translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
 <translation id="4900351245762303149">Google Widevine ን ይጫኑት</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">በዚህ ገፅ ላይ አውቶፕለይ ይከላከሉ</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> ላይ በራስ መጫወቱን ሁልግዜም ይፍቀዱ;</translation>
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
-<translation id="3477357195688115718">Brave ለጥበቃ እና ለደህንነት ቅጥያዎችን አይገመግምም። አበልጻጊውን የሚያምኑ ከሆነ ብቻ ይህንን ቅጥያ ይጫኑ።</translation>
+<translation id="2201935460386712655">Brave ለጥበቃ እና ለደህንነት ቅጥያዎችን አይገመግምም። "<ph name="EXTENSION_NAME"/>"ን አበልጻጊውን የሚያምኑ ከሆነ ብቻ ይጫኑ።</translation>
 <translation id="2928844661231356557">የብሉቱዝ መሣሪያን ማግኘት መስጠቱ ጣቢያው እርስዎን የሚለይ እና ሚስጥራዊነት ያለው መረጃ እንዲያነብ ያስችለዋል። የሚያምኗቸው ጣቢያዎች ብቻ የብሉቱዝ መሣሪያዎችን እንዲደርሱ ፍቀድላቸው። <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">የቶር መስኮቶች</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">ማጣሪያዎችን ያስተዳድሩ</translation>
 <translation id="3108584651298176909">መምሪያዎችን አሳይ</translation>
 <translation id="5156986655891520787">መምሪያዎችን ደብቅ</translation>
-<translation id="7658239707568436148">ሰርዝ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">በ የ using .onion አድራሻ እንዲከፈት: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">በግድ ለጥፍ</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">ቅጽበታዊ የገጽ እይታን ያንሱ</translation>
 <translation id="3114478090884951591">የሚታይ ቦታ</translation>
 <translation id="2026367923222947564">ሙሉ ገጽ</translation>
+<translation id="4218885227032158909">የተመረጠ ቦታ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="3161744659507801211">ማስጠንቀቂያ፡ Brave ቅጥያዎች የእርስዎን የአሰሳ ታሪክ እንዳይመዘግቡ ሊያግድ አይችልም።</translation>
@@ -292,14 +313,12 @@
 <translation id="55252794453047936">ሚዲያን አንቀሳቅስ</translation>
 <translation id="4418985925423678811">አዲስ የአጫዋች ዝርዝር</translation>
 <translation id="385051799172605136">ተመለስ</translation>
-<translation id="5317780077021120954">አስቀምጥ</translation>
 <translation id="7930125899031086027">ፍጠር እና አንቀሳቅስ</translation>
 <translation id="2860159216666546928">ይህን ሚዲያ ወደሚከተለው ለማንቀሳቀስ አቃፊ ይምረጡ</translation>
 <translation id="9130105487623071247">የአጫዋች ዝርዝር ስም</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> ንጥሎች ተመርጠዋል</translation>
 <translation id="3596306474342941843">የአጫዋች ዝርዝር ሰርዝ</translation>
 <translation id="7110726588168439924">እርግጠኛ ነዎት ይህን አጫዋች ዝርዝር እና ሁሉንም ይዘቶቹን መሰረዝ ይፈልጋሉ? ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
-<translation id="8261506727792406068">ሰርዝ</translation>
 <translation id="8152485753254079984">አዲስ የአጫዋች ዝርዝር</translation>
 <translation id="5397019762993984652">ከPlay Later አቃፊ ያክሉ</translation>
 <translation id="7525067979554623046">ፍጠር</translation>
@@ -396,7 +415,6 @@
 <translation id="8900907990448657776">መያዣን ያርትዑ</translation>
 <translation id="7900511996284443779">መያዣን ይሰረዙ</translation>
 <translation id="2738687336989232152">ኮንቴይነርን መሰረዝ እንደሚፈልጉ እርግጠኛ ነዎት <ph name="CONTAINER_NAME"/>? ይህ ከእሱ ጋር የተያያዘውን ሁሉንም ውሂብ ያስወግዳል።</translation>
-<translation id="5327248766486351172">ስም</translation>
 <translation id="104766043551382253">አዶ</translation>
 <translation id="5431318178759467895">ቀለም</translation>
 <translation id="4328541188421002379">ስም ይሰጡ እንደ ሥራ ወይም የግል</translation>
@@ -550,6 +568,7 @@
 <translation id="2587535830241068901">አሳሳቢነትን ሳትጣስም Brave አሳልፍ</translation>
 <translation id="123297831435065577">Brave Origin የ browser ክፍያ ሰሪ የተደረገ ስሪት ነው ሁሉንም ለ Brave እንደ ንግድ ድጋፍ ሰጪ ባህሪያት ላልፈለጉ ግን Brave ብቻ የሚሰጠውን ግላዊነት ለሚፈልጉ ተጠቃሚዎች። Origin ተጠቃሚዎች ከኢንዱስትሪ መሪ ግላዊነታችን፣ adblock፣ እና ፍጥነት (በ Shields በኩል) እንዲሁም መደበኛ የሶፍትዌር ዝመናዎች፣ Chromium ጥገናዎች፣ እና ደህንነት እና ግላዊነት ማሻሻያዎች መጠቀማቸውን ይቀጥላሉ።</translation>
 <translation id="7984508421152399880">አሁን ግዛ</translation>
+<translation id="1882724423074862793">ግዥን መልስ</translation>
 <translation id="5567412479632285879">የ Brave Rewards ታግዷል</translation>
 <translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
 <translation id="1051600834033686945">ሙሉ የ Brave Rewards ቅንብሮችን ይክፈቱ</translation>
@@ -586,6 +605,8 @@
 <translation id="933652931229970927">የምርመራ ሪፖርቶችን በራስ-ሰር ላክ</translation>
 <translation id="8868426106596092089">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="4891600875049212418">ሚስጥራዊነት ያላቸው ድህረ ገጾችን ሲጎበኙ ከቅጂ-ውጭ በሆነ ሁነታ ይጠቀሙ</translation>
+<translation id="1022603984240541480">በተኳኋኝ ጣቢያዎች ላይ የግላዊነት ቅንብሮች ማስተካከያ ማሳወቂያ አሳይ</translation>
+<translation id="3528176629974273019">Brave በራስ-ሰር ለጣቢያ-ተኮር የግላዊነት ቅንብሮችን እንዲጠቁም (እና እንዲያስተካክል) ይፈቅዳል።</translation>
 <translation id="509873765238158442">የMicrosoft Recallን አግድ</translation>
 <translation id="4763421121695677716">የMicrosoft Windows ኮምፒዩተሮች ላይ ባሉ ሆም ትሮቷችን የእይታ እቃዎች ቶሎ ያጠናቀቃል</translation>
 <translation id="1968895725257436430">ውሂብ ማከማቸት</translation>
@@ -738,6 +759,7 @@
 <translation id="4425607417590286548">ለውጦችን ተግብር</translation>
 <translation id="2128143836897950793">ድልድዮችን ለማግኘት 'አዲስ ድልድይ ጠይቅ…' የሚለው ላይ ጠቅ ያድርጉ</translation>
 <translation id="3314921753580327793">አድራሻ ይተይቡ: ፖርት (በአንድ መስመር አንድ)</translation>
+<translation id="7002083631026466886">Tor ይህንን ድልድይ መጠቀም አይችልም። ከተሰጠዎት ድልድይ ጋር ያረጋግጡት፣ ከዚያም እንደገና ይሞክሩ፦</translation>
 <translation id="3755189300481406891">ድልድይ ጠይቅ</translation>
 <translation id="6924425739431382319">BridgeDBን በማነጋገር ላይ። እባክዎን ይጠብቁ።</translation>
 <translation id="811745063252080651">ድልድይ ለመጠየቅ CAPTCHA ን ይፍቱ።</translation>
@@ -915,7 +937,6 @@
 <translation id="1838374766361614909">ፍለጋን አጽዳ</translation>
 <translation id="5126255551970171328">አእምሮ ለማፈላለጊያ ይፈልጉ</translation>
 <translation id="7402116145895962069">የእርስዎን የOllama አካባቢ ሞዴሎች ያመሳሰሉ</translation>
-<translation id="4835154437390745810">በOllama የሚተቆጠፉ</translation>
 <translation id="5985516785067818307">የእብሪት መራጭ</translation>
 <translation id="8347743943525229984">ብረትን እንዲያስለቅሉ ያስችለዋል</translation>
 <translation id="3204080538332044581">ብረት እቃዎችን በአዲስ ትር ማስገባት ተወሳኺነት ሰጠናል። ትኩስ መረጃዎችን እና የተረጋገጡ ሴፋቶቾችን እንዲሁም የአሳምአጃ ተግባሮችን በቅርብ እንዲፈቱ ይጠቀሙ። <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>

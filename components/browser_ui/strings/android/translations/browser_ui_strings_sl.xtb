@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Zahtevanje pogleda za mobilno napravo</translation>
 <translation id="2870560284913253234">Spletno mesto</translation>
 <translation id="2874939134665556319">Prejšnja skladba</translation>
+<translation id="258271431472168668">Privzeto za Brave</translation>
 <translation id="2891975107962658722">Blokiranje spletnim mestom shranjevanje podatkov v napravi.</translation>
 <translation id="2903493209154104877">Naslovi</translation>
+<translation id="2903764741244499151">Spletna mesta lahko samodejno preklopijo v način slike v sliki. Tako lahko še naprej gledate videoposnetek, na zaslonu pa izvajate druga opravila.</translation>
 <translation id="2918484639460781603">Pojdi v nastavitve</translation>
 <translation id="2932883381142163287">Prijavite zlorabo</translation>
 <translation id="2939338015096024043">Če je ta možnost vklopljena, spletna mesta lahko zahtevajo spremljanje položaja kamere in pridobivanje informacij o vaši okolici. Če je ta možnost izklopljena, spletna mesta ne smejo spremljati položaja kamere ali pridobivati informacij o vaši okolici.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Spremeni gesla</translation>
 <translation id="3797520601150691162">Brez uporabe temne teme za določeno spletno mesto</translation>
 <translation id="3803367742635802571">Obiskana spletna mesta bodo morda nehala delovati, kot je predvideno</translation>
-<translation id="8338457030135232378">Barve za Brave</translation>
 <translation id="381841723434055211">Telefonske številke</translation>
 <translation id="3823453485268218808">Pisava Mono</translation>
 <translation id="3826050100957962900">Prijava prek zunanjih ponudnikov</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Izhod iz celozaslonskega načina</translation>
 <translation id="640163077447496506">Poteče danes</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Tematske zbirke</translation>
 <translation id="6439114592976064011">Spletnim mestom prepreči spremljanje naprave in podatkov za navidezno resničnost</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="6452138246455930388">Znižanje cene na odprtem zavihku s cene <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:</translation>
 <translation id="7423098979219808738">Najprej vprašaj</translation>
 <translation id="7423538860840206698">Blokirano branje vsebine odložišča</translation>
 <translation id="7425915948813553151">Temna tema za spletna mesta</translation>
+<translation id="2044383478723007273">Barve za Brave</translation>
 <translation id="746412105358554870">Optimizacija in varnost za JavaScript</translation>
 <translation id="7478658909253570368">Spletnim mestom ni dovoljeno povezovanje s serijskimi vrati.</translation>
 <translation id="7488573225650545859">Skrij Ogled zavihkov na seznamu aplikacij</translation>
@@ -671,7 +672,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:</translation>
 <translation id="802154636333426148">Prenos ni uspel</translation>
 <translation id="8033047164036749181">Naročite se na obvestila tega spletnega mesta</translation>
 <translation id="8051193500142930381">Funkcije, ki potrebujejo kamero, ne bodo delovale</translation>
-<translation id="2495032782748793764">Privzeto za Brave</translation>
 <translation id="8067883171444229417">Predvajanje videa</translation>
 <translation id="8068648041423924542">Izbira potrdila ni mogoča</translation>
 <translation id="8077120325605624147">Vsa spletna mesta, ki jih obiščete, vam lahko prikazujejo kateri koli oglas.</translation>
@@ -686,7 +686,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:</translation>
 <translation id="8163152278172770963">Spletnim mestom ni dovoljeno samodejno preklapljanje v način slike v sliki</translation>
 <translation id="8168435359814927499">Vsebina</translation>
 <translation id="818487310457576362">Povlecite z roba zaslona, če želite zapreti celozaslonski način.</translation>
-<translation id="8186479265534291036">Ali spletno mesto ne deluje? Piškotki tretjih oseb so blokirani.</translation>
 <translation id="8197286292360124385">Dovoljeno: <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Nadaljuj</translation>
 <translation id="8211406090763984747">Povezava je varna</translation>
@@ -757,7 +756,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:</translation>
 <translation id="8805385115381080995">Brskanje je hitrejše, ker je manj verjetno, da vas bo spletno mesto pozvalo, da potrdite, da ste resnična oseba.</translation>
 <translation id="881644524232657178">Če je ta možnost vklopljena, spletna mesta lahko uporabljajo tipala gibanja in svetlobe naprave. Če je ta možnost izklopljena, spletna mesta ne smejo uporabljati tipal.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Poskusite začasno omogočiti piškotke tretjih oseb, kar pomeni manj zaščite brskanja, vendar je bolj verjetno, da bodo funkcije spletnega mesta delovale po pričakovanjih.</translation>
 <translation id="7532165358672313130">Med brskanjem se lahko spletna mesta obrnejo na Brave in pri prejšnjem spletnem mestu, ki ste ga obiskali, potrdijo, da ste verjetno resnična oseba.</translation>
 <translation id="8899807382908246773">Vsiljivi oglasi</translation>
 <translation id="8903921497873541725">Povečaj</translation>
@@ -783,7 +781,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:</translation>
 <translation id="913657688200966289">V <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/> vklopite dovoljenja za aplikacijo <ph name="APP_NAME"/>.</translation>
 <translation id="9138037198177304356">Obvestila so dovoljena</translation>
 <translation id="9138217887606523162">Trenutna povečava/pomanjšava je <ph name="ZOOM_LEVEL"/> %%.</translation>
-<translation id="915112772806845021">Spletna mesta s to funkcijo samodejno preklopijo na način slike v sliki. Tako lahko še naprej gledate videoposnetek, na zaslonu pa izvajate druga opravila.</translation>
 <translation id="7359422048569205930">Brave naj prikaže vaše nedavne zavihke na seznamu aplikacij in v rezultatih iskanja naprave. To lahko kadar koli izklopite v nastavitvah Chroma.</translation>
 <translation id="9162462602695099906">Ta stran je nevarna.</translation>
 <translation id="9182556968660520230">Spletnim mestom ni dovoljeno predvajanje zaščitene vsebine.</translation>

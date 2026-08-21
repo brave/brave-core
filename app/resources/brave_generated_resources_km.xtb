@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">ច្រើនទៀត</translation>
 <translation id="71316462802471551">Email Aliases</translation>
-<translation id="209130971304928953">រក្សាទុកផ្ទាំងជាកន្លែងធ្វើការ…</translation>
-<translation id="877984331511007834">បើកកន្លែងធ្វើការ…</translation>
-<translation id="1310182651927031327">រក្សាទុកផ្ទាំងជាកន្លែងធ្វើការ…</translation>
-<translation id="3588277741646479444">បើកកន្លែងធ្វើការ…</translation>
+<translation id="8350985546648269694">រក្សាទុក Windows និងផ្ទាំងបច្ចុប្បន្នជាកន្លែងទំនេរ</translation>
+<translation id="5327248766486351172">ឈ្មោះ</translation>
+<translation id="6379791766023874417">បញ្ចូលឈ្មោះអវកាសរបស់អ្នក</translation>
+<translation id="9174724474418499472">អវកាសរបស់ខ្ញុំ</translation>
+<translation id="5317780077021120954">រក្សាទុក</translation>
+<translation id="7658239707568436148">បដិសេធ</translation>
+<translation id="196342407904926436">ជម្រើសអវកាស</translation>
+<translation id="2806407377752719586">លុបអវកាស</translation>
+<translation id="1844931500883490339">តើអ្នកប្រាកដថាចង់លុបអវកាសនេះមែនទេ? អវកាសដែលបានរក្សាទុកនឹងត្រូវលុបចេញជាអចិន្ត្រៃយ៍។ សកម្មភាពនេះមិនអាចត្រលប់វិញបានទេ។</translation>
+<translation id="8261506727792406068">លុប</translation>
+<translation id="8428213095426709021">ការកំណត់</translation>
+<translation id="1212321046099128987">មិនមានអវកាសដែលបានបង្កើតទេ</translation>
+<translation id="3524567389166933243">បង្កើតអវកាសដំបូងរបស់អ្នកដោយចុចប៊ូតុងរក្សាទុកខាងក្រោម។</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {ផ្ទាំង 1} other {# ផ្ទាំង}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> វិនដូ</translation>
+<translation id="1680377529024357662">រក្សាទុកវិនដូ និងផ្ទាំងបច្ចុប្បន្នជាអវកាស</translation>
+<translation id="5561829325295347472">បញ្ចូលឈ្មោះអវកាសរបស់អ្នក</translation>
+<translation id="2028520494010039812">ជម្រើសអវកាស</translation>
+<translation id="1580775521202322063">លុបអវកាស</translation>
+<translation id="3004759399777164093">តើអ្នកប្រាកដថាចង់លុបអវកាសនេះមែនទេ? អវកាសដែលបានរក្សាទុកនឹងត្រូវលុបចេញជាអចិន្ត្រៃយ៍។ សកម្មភាពនេះមិនអាចត្រលប់វិញបានទេ។</translation>
+<translation id="7563692436589408797">មិនមានអវកាសដែលបានបង្កើតទេ</translation>
+<translation id="3945077125173636695">បង្កើតអវកាសដំបូងរបស់អ្នកដោយចុចប៊ូតុងរក្សាទុកខាងក្រោម។</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {ផ្ទាំង 1} other {# ផ្ទាំង}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> វិនដូ</translation>
+<translation id="3326655241685890930">អវកាស</translation>
 <translation id="1990886731975529483">ដំឡើង និងដំណើរការ Google Widevine</translation>
 <translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
 <translation id="4900351245762303149">ដំឡើង Google Widevine</translation>
@@ -37,7 +58,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Autoplay ត្រូវបានបិទនៅលើទំព័រនេះ</translation>
 <translation id="4988333904713528597">អនុញ្ញាតអោយ Autoplay នៅលើ <ph name="HOST"/></translation>
 <translation id="4150684676757176434">បន្តបិទ Autoplay</translation>
-<translation id="3477357195688115718">Brave មិនធ្វើការ​ពិនិត្យ​ extension សម្រាប់​សុវត្ថិភាព និង ឥត​ការងារ​ដែល​បាន​បំពេញ​ដោយ​ម្ចាស់​បាន​ទើបតែ​ភ្ជាប់​មាន confidence ។</translation>
+<translation id="2201935460386712655">Brave មិនត្រួតពិនិត្យផ្នែកបន្ថែមសម្រាប់សុវត្ថិភាព និងសុវត្ថិភាពទេ។ ដំឡើង "<ph name="EXTENSION_NAME"/>" លុះត្រាតែអ្នកទុកចិត្តលើអ្នកអភិវឌ្ឍន៍។</translation>
 <translation id="2928844661231356557">ដោយផ្តល់ Zugriffទៅឧបករណ៍ Bluetooth នេះ អ្នកនឹង​អនុញ្ញាត site ដើម្បី​អានព័ត៌មាន ស្វ័យសម្គាល់ និងពិតជា​សំខាន់​អំពី​អ្នក។ អត់ត្រឹម​តែ​បណ្តាញ​ជាអ្វី​ដែល​មើល​ជា​គេហទំព័រ​តែ​អ្នក​ជឿ​ចិត្ត។ <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">វីនដូ Tor</translation>
 <translation id="7965178729203412357">ជា​វត្តមាន​ថ្មី​របស់ Tor</translation>
@@ -63,7 +84,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">គ្រប់គ្រងតម្រង</translation>
 <translation id="3108584651298176909">បង្ហាញច្បាប់</translation>
 <translation id="5156986655891520787">លាក់ច្បាប់</translation>
-<translation id="7658239707568436148">បដិសេធ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">បើក​ដោយប្រើអាសយដ្ឋាន .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">ដាក់ដោរដោយបង្ខំ</translation>
@@ -91,6 +111,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">ចាប់យករូបភាពអេក្រង់</translation>
 <translation id="3114478090884951591">តំបន់ដែលមើលឃើញ</translation>
 <translation id="2026367923222947564">ទំព័រពេញ</translation>
+<translation id="4218885227032158909">តំបន់ដែលបានជ្រើស</translation>
 <translation id="4928988318462976765">ហាងសម្ព័ន្ធស៊ុមឯកទេសអ៊ីនធើណែតទីកន្លែងមួយ</translation>
 <translation id="9181207987584064303">មើលនៅ ហាងសម្ព័ន្ធស៊ុមឯកទេសអ៊ីនធើណែតទីកន្លែងមួយ</translation>
 <translation id="3161744659507801211">ដោយសូមប្រកាស៖ Brave មិនអាចរារាំងការផ្ដើមការសម្រុងសែហ្វអុររបស់អ្នកពីការកំណត់ប្រវត្តិចំនាយរបស់អ្នកបានទេ។</translation>
@@ -288,14 +309,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">ផ្លាស់ប្តូរប្រព័ន្ធព័ត៌នាមេឌា</translation>
 <translation id="4418985925423678811">បញ្ជីចាក់ថ្មី</translation>
 <translation id="385051799172605136">ថយក្រោយ</translation>
-<translation id="5317780077021120954">រក្សាទុក</translation>
 <translation id="7930125899031086027">បង្កើតនិងផ្លាស់ប្តូរ</translation>
 <translation id="2860159216666546928">ជ្រើសរើសថតឯកសារដើម្បីផ្លាស់ប្តូរប្រព័ន្ធព័ត៌នាមេឌានេះទៅ</translation>
 <translation id="9130105487623071247">បញ្ជីចាក់ឈ្មោះ</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> ឯកសារត្រូវបានជ្រើសរើស</translation>
 <translation id="3596306474342941843">លុបបញ្ជីចាក់</translation>
 <translation id="7110726588168439924">តើអ្នកប្រាកដថាចង់លុប បញ្ជីចាក់នេះ និងមាតិកាទាំងអស់របស់វាមែនទេ? សកម្មភាពនេះមិនអាចត្រលប់វិញបានទេ។</translation>
-<translation id="8261506727792406068">លុប</translation>
 <translation id="8152485753254079984">បញ្ជីចាក់ថ្មី</translation>
 <translation id="5397019762993984652">បន្ថែមពីថត Play Later របស់អ្នក</translation>
 <translation id="7525067979554623046">បង្កើត</translation>
@@ -392,7 +411,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">កែ​កុងតឺន័រ</translation>
 <translation id="7900511996284443779">លុប​កុងតឺន័រ</translation>
 <translation id="2738687336989232152">តើ​អ្នក​ប្រាកដ​ជា​ចង់​លុប​កុងតឺន័រ <ph name="CONTAINER_NAME"/>? នេះ​នឹង​យក​ទិន្នន័យ​ទាំងអស់​ដែល​ទាក់ទង​នឹង​វា​ចេញ។</translation>
-<translation id="5327248766486351172">ឈ្មោះ</translation>
 <translation id="104766043551382253">រូបតំណាង</translation>
 <translation id="5431318178759467895">ពណ៌</translation>
 <translation id="4328541188421002379">ផ្តល់​ឈ្មោះ​សម្រាប់​កុងតឺន័រ​របស់​អ្នក​ដូចជា ការងារ ឬ​ផ្ទាល់ខ្លួន</translation>
@@ -546,6 +564,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">ប្ដូរមើលកម្មវិធីរុករករបស់អ្នកខណៈពេលដែលនៅតែគាំទ្រ Brave</translation>
 <translation id="123297831435065577">Brave Origin គឺ​ជា​កំណែ​បង់​ប្រាក់​នៃ​កម្មវិធី​រុករក​សម្រាប់​អ្នកប្រើ​ដែល​មិន​ត្រូវ​ការ​លក្ខណៈ​ពិសេស​ទាំងអស់​ដែល​គាំទ្រ Brave ជា​អាជីវកម្ម ប៉ុន្តែ​នៅតែ​ចង់​បាន​ឯកជនភាព​ដែល​មាន​តែ Brave ប៉ុណ្ណោះ​ផ្ដល់​ឲ្យ។ អ្នកប្រើ Origin នឹង​បន្ត​ទទួល​ប្រយោជន៍​ពី​ឯកជនភាព​ឈានមុខ​ក្នុង​ឧស្សាហកម្ម កម្មវិធី​ទប់​ស្កាត់​ការ​ផ្សាយ​ពាណិជ្ជកម្ម និង​ល្បឿន​របស់​យើង (តាមរយៈ ខែលការពារ) ព្រមទាំង​ការ​ធ្វើ​បច្ចុប្បន្នភាព​សូហ្វវែរ​ជា​ទៀងទាត់ បំណះ Chromium និង​ការ​កែលម្អ​សុវត្ថិភាព និង​ឯកជនភាព។</translation>
 <translation id="7984508421152399880">ទិញឥឡូវនេះ</translation>
+<translation id="1882724423074862793">ស្តារការទិញ</translation>
 <translation id="5567412479632285879">រង្វាន់ Brave បានបិទ</translation>
 <translation id="413570371620795359">បើកផ្ទាំងរង្វាន់ ដើម្បីបើកដំណើរការនិងចាប់ផ្តើម</translation>
 <translation id="1051600834033686945">បើកការកំណត់​រង្វាន់ Brave ពេញលេញ</translation>
@@ -582,6 +601,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">ផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ</translation>
 <translation id="8868426106596092089">ជួយកែលម្អស្ថិរភាពផលិតផលរបស់ Brave ដោយផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ នៅពេលដែលកម្មវិធីរុករក Brave គាំង ឬបង្កក។</translation>
 <translation id="4891600875049212418">ទៅ Off-The-Record នៅពេលចូលទៅគេហទំព័រដែលមានន័យសំខាន់</translation>
+<translation id="1022603984240541480">បង្ហាញការជូនដំណឹងកែសម្រួលការកំណត់ឯកជនភាពនៅលើគេហទំព័រដែលឆបគ្នា</translation>
+<translation id="3528176629974273019">អនុញ្ញាតឱ្យ Brave ស្នើ (និងកែសម្រួល) ការកំណត់ឯកជនភាពជាក់លាក់តាមគេហទំព័រដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="509873765238158442">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញ Microsoft</translation>
 <translation id="4763421121695677716">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញនៅលើកុំព្យូទ័រ Microsoft Windows ពីការថតអេក្រង់ដោយស្វ័យប្រវត្តិនៃផ្ទាំង Brave ដែលបើកណាមួយ។</translation>
 <translation id="1968895725257436430">ការប្រមូលទិន្នន័យ</translation>
@@ -734,6 +755,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">អនុវត្តការផ្លាស់ប្តូរ</translation>
 <translation id="2128143836897950793">ចុចលើ 'ស្នើរសុំស្ពានថ្មី...' ដើម្បីទទួលបានស្ពាន</translation>
 <translation id="3314921753580327793">វាយអាសយដ្ឋាន:កំពង់ផែ (មួយបន្ទាត់នីមួយ)</translation>
+<translation id="7002083631026466886">Tor មិនអាចប្រើ bridge នេះបានទេ។ ពិនិត្យវាធៀបនឹង bridge ដែលអ្នកទទួលបាន បន្ទាប់មកសាកល្បងម្តងទៀត៖</translation>
 <translation id="3755189300481406891">ស្នើរសុំស្ពាន</translation>
 <translation id="6924425739431382319">ទាក់ទង BridgeDB. សូមរង់ចាំ.</translation>
 <translation id="811745063252080651">ដោះស្រាយ CAPTCHA ដើម្បីស្នើរសុំស្ពាន។</translation>
@@ -911,7 +933,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">ជម្រះការស្វែងរក</translation>
 <translation id="5126255551970171328">ស្វែងរកសំណួរ</translation>
 <translation id="7402116145895962069">ធ្វើសមកាលកម្មម៉ូឌែលក្នុងម៉ាស៊ីនរបស់អ្នកប្រើ Ollama</translation>
-<translation id="4835154437390745810">ស្ថិតក្រោមការគ្រប់គ្រង​របស់ Ollama</translation>
 <translation id="5985516785067818307">អ្នកវិភាគការស្ទង់មតិ</translation>
 <translation id="8347743943525229984">អនុញ្ញាតឱ្យមានការស្ទង់មតិ Brave</translation>
 <translation id="3204080538332044581">អនុញ្ញាតឱ្យ Brave បង្ហាញតំណទៅកាន់ការស្ទង់មតិឯកជននៅក្នុងទំព័រផ្ទាំងថ្មី។ ការស្ទង់មតិជួយយើងបង្កើតមុខងារកាន់តែប្រសើរ និងវាស់ស្ទង់ប្រសិទ្ធភាពនៃយុទ្ធនាការផ្សាយពាណិជ្ជកម្មផ្អែកលើកម្មវិធីរុករក។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>

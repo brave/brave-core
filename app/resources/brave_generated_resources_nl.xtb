@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Meer</translation>
 <translation id="71316462802471551">E-mailaliassen</translation>
-<translation id="209130971304928953">Tabbladen opslaan als werkruimte…</translation>
-<translation id="877984331511007834">Werkruimte openen…</translation>
-<translation id="1310182651927031327">Tabbladen opslaan als werkruimte…</translation>
-<translation id="3588277741646479444">Werkruimte openen…</translation>
+<translation id="8350985546648269694">Huidige Windows en tabbladen opslaan als Space</translation>
+<translation id="5327248766486351172">Naam</translation>
+<translation id="6379791766023874417">Voer de naam van uw Space in</translation>
+<translation id="9174724474418499472">Mijn Space</translation>
+<translation id="5317780077021120954">Save</translation>
+<translation id="7658239707568436148">Annuleren</translation>
+<translation id="196342407904926436">Space-opties</translation>
+<translation id="2806407377752719586">Space verwijderen</translation>
+<translation id="1844931500883490339">Weet u zeker dat u deze Space wilt verwijderen? De opgeslagen Space wordt permanent verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
+<translation id="8261506727792406068">Verwijder</translation>
+<translation id="8428213095426709021">Instellingen</translation>
+<translation id="1212321046099128987">Geen Spaces aangemaakt</translation>
+<translation id="3524567389166933243">Maak uw eerste Space aan door op de knop Opslaan hieronder te klikken.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 tabblad} other {# tabbladen}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> vensters</translation>
+<translation id="1680377529024357662">Huidige vensters en tabbladen opslaan als space</translation>
+<translation id="5561829325295347472">Voer de naam van uw space in</translation>
+<translation id="2028520494010039812">Space-opties</translation>
+<translation id="1580775521202322063">Space verwijderen</translation>
+<translation id="3004759399777164093">Weet u zeker dat u deze space wilt verwijderen? De opgeslagen space wordt permanent verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
+<translation id="7563692436589408797">Geen spaces aangemaakt</translation>
+<translation id="3945077125173636695">Maak uw eerste space aan door op de knop Opslaan hieronder te klikken.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 tabblad} other {# tabbladen}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> vensters</translation>
+<translation id="3326655241685890930">Spaces</translation>
 <translation id="1990886731975529483">Google Widevine installeren en uitvoeren</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="4900351245762303149">Google Widevine installeren</translation>
@@ -37,7 +58,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
 <translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Blijf automatisch afspelen blokkeren</translation>
-<translation id="3477357195688115718">Brave controleert extensies niet op veiligheid. Installeer deze extensie alleen als u de ontwikkelaar vertrouwt.</translation>
+<translation id="2201935460386712655">Brave controleert extensies niet op veiligheid. Installeer "<ph name="EXTENSION_NAME"/>" alleen als u de ontwikkelaar vertrouwt.</translation>
 <translation id="2928844661231356557">Wanneer u een bluetooth-apparaat toegang geeft, kan de site identificerende en potentieel gevoelige informatie over u lezen. Geef alleen sites die u vertrouwt toegang tot bluetooth-apparaten. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor-venster</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
@@ -63,7 +84,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3211174446914979436">Filters beheren</translation>
 <translation id="3108584651298176909">Regels tonen</translation>
 <translation id="5156986655891520787">Regels verbergen</translation>
-<translation id="7658239707568436148">Annuleren</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Open met .onion-adres: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forceer plakken</translation>
@@ -91,6 +111,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="191886777375280620">Schermafbeelding vastleggen</translation>
 <translation id="3114478090884951591">Zichtbaar gebied</translation>
 <translation id="2026367923222947564">Volledige pagina</translation>
+<translation id="4218885227032158909">Geselecteerd gebied</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
 <translation id="3161744659507801211">Waarschuwing: Brave kan niet voorkomen dat extensies uw browsergeschiedenis opslaan.</translation>
@@ -289,14 +310,12 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="55252794453047936">Media verplaatsen</translation>
 <translation id="4418985925423678811">Nieuwe playlist</translation>
 <translation id="385051799172605136">Terug</translation>
-<translation id="5317780077021120954">Save</translation>
 <translation id="7930125899031086027">Maken en verplaatsen</translation>
 <translation id="2860159216666546928">Selecteer een map om dit mediabestand naar te verplaatsen</translation>
 <translation id="9130105487623071247">Naam van playlist</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> items geselecteerd</translation>
 <translation id="3596306474342941843">Playlist verwijderen</translation>
 <translation id="7110726588168439924">Weet u zeker dat u deze playlist inclusief alle inhoud wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.</translation>
-<translation id="8261506727792406068">Verwijder</translation>
 <translation id="8152485753254079984">Nieuwe playlist</translation>
 <translation id="5397019762993984652">Toevoegen van uw Later afspelen-map</translation>
 <translation id="7525067979554623046">Maken</translation>
@@ -393,7 +412,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8900907990448657776">Container bewerken</translation>
 <translation id="7900511996284443779">Container verwijderen</translation>
 <translation id="2738687336989232152">Weet je zeker dat je de container <ph name="CONTAINER_NAME"/> wilt verwijderen? Hiermee verwijder je alle bijbehorende gegevens.</translation>
-<translation id="5327248766486351172">Naam</translation>
 <translation id="104766043551382253">Pictogram</translation>
 <translation id="5431318178759467895">Kleur</translation>
 <translation id="4328541188421002379">Geef je container een naam zoals Werk of Persoonlijk</translation>
@@ -547,6 +565,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2587535830241068901">Pas uw browser aan terwijl u Brave blijft ondersteunen</translation>
 <translation id="123297831435065577">Brave Origin is een betaalde versie van de browser voor gebruikers die niet alle functies nodig hebben die Brave als bedrijf ondersteunen, maar nog steeds de privacy willen die alleen Brave biedt. Origin-gebruikers blijven profiteren van onze toonaangevende privacy, adblocking en snelheid (via Shields), evenals regelmatige software-updates, Chromium-patches en verbeteringen op het gebied van beveiliging en privacy.</translation>
 <translation id="7984508421152399880">Nu kopen</translation>
+<translation id="1882724423074862793">Aankoop herstellen</translation>
 <translation id="5567412479632285879">Brave-beloningen is uitgeschakeld</translation>
 <translation id="413570371620795359">Open het venster Beloningen om in te schakelen en aan de slag te gaan</translation>
 <translation id="1051600834033686945">Alle instellingen van Brave Beloningen openen</translation>
@@ -583,6 +602,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="933652931229970927">Diagnostische rapporten automatisch verzenden</translation>
 <translation id="8868426106596092089">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te versturen wanneer de Brave-browser crasht of vastloopt</translation>
 <translation id="4891600875049212418">Ga off the record wanneer u gevoelige sites bezoekt</translation>
+<translation id="1022603984240541480">Meldingen voor het afstemmen van privacy-instellingen tonen op compatibele sites</translation>
+<translation id="3528176629974273019">Hiermee kan Brave automatisch site-specifieke privacy-instellingen voorstellen (en aanpassen).</translation>
 <translation id="509873765238158442">Microsoft Recall blokkeren</translation>
 <translation id="4763421121695677716">Blokkeer de Recall-functie op Microsoft Windows-computers en belet dat er automatisch screenshots van geopende Brave-tabbladen worden gemaakt.</translation>
 <translation id="1968895725257436430">Gegevensverzameling</translation>
@@ -738,6 +759,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="4425607417590286548">Wijzigingen toepassen</translation>
 <translation id="2128143836897950793">Klik op 'Een nieuwe brug aanvragen...' om bruggen te krijgen</translation>
 <translation id="3314921753580327793">Typ adres:poort (één per regel)</translation>
+<translation id="7002083631026466886">Tor kan deze bridge niet gebruiken. Vergelijk deze met de bridge die u hebt gekregen en probeer het opnieuw:</translation>
 <translation id="3755189300481406891">Brug aanvragen</translation>
 <translation id="6924425739431382319">Contact opnemen met BridgeDB. Even geduld alstublieft.</translation>
 <translation id="811745063252080651">Los de CAPTCHA op om een brug aan te vragen.</translation>
@@ -915,7 +937,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="1838374766361614909">Wis zoekopdracht</translation>
 <translation id="5126255551970171328">Zoek een geheugen</translation>
 <translation id="7402116145895962069">Synchroniseer je lokale Ollama-modellen</translation>
-<translation id="4835154437390745810">Beheerd door Ollama</translation>
 <translation id="5985516785067818307">Enquêtes</translation>
 <translation id="8347743943525229984">Brave-enquêtes toestaan</translation>
 <translation id="3204080538332044581">Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
