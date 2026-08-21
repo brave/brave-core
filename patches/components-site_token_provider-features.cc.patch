@@ -1,0 +1,12 @@
+diff --git a/components/site_token_provider/features.cc b/components/site_token_provider/features.cc
+index 5230b30ec79f48cbea3b86c1be6d7c7c7b7e4845..1d22dc148df1754150edb3873476e3db495f1961 100644
+--- a/components/site_token_provider/features.cc
++++ b/components/site_token_provider/features.cc
+@@ -7,6 +7,7 @@
+ namespace site_token_provider::features {
+ 
+ // Enables the registration and creation of the SiteTokenProvider component.
++// kSiteTokenProviderEnabled feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kSiteTokenProviderEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // The OAuth2 scope used to request site tokens. Configured via Finch.
