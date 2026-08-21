@@ -92,7 +92,6 @@ brave_settings_ts_files = [
   "br/payments_section.ts",
   "br/people_page.ts",
   "br/performance_page.ts",
-  "br/personalization_options.ts",
   "br/printing_page.ts",
   "br/privacy_page.ts",
   "br/privacy_page_index.ts",

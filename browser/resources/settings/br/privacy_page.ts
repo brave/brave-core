@@ -6,6 +6,10 @@
 import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
+// Registers <settings-brave-personalization-options>, which is inserted into
+// the template below.
+import '../brave_privacy_page/brave_personalization_options.js'
+
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
     const section = templateContent.querySelector('settings-section')

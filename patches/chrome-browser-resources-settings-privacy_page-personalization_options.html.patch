@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index f4968fb7c8f1463279e9284551b02d5c8eb03081..69da1c093015f158a35e5bad8697233d1072169f 100644
+index f4968fb7c8f1463279e9284551b02d5c8eb03081..b88c9b63c35f466bdd5e69e14e5880972188e748 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -5,6 +5,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
@@ -18,19 +18,19 @@ index f4968fb7c8f1463279e9284551b02d5c8eb03081..69da1c093015f158a35e5bad8697233d
  <if expr="_google_chrome">
  <if expr="is_chromeos">
      <!-- Ash Browser settings show a link to the OS settings instead. -->
-@@ -58,6 +60,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -58,6 +60,8 @@ import {RestartType} from '../relaunch_mixin_lit.js';
        </cr-link-row>
      ` : ''}
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
++<if expr="_google_chrome">
  <if expr="not is_chromeos">
      ${!this.shouldUseMetricsConsentRestructure_ ? html`
        <div class="cr-row hr">
-@@ -87,13 +90,14 @@ import {RestartType} from '../relaunch_mixin_lit.js';
-       </div>
+@@ -88,12 +92,14 @@ import {RestartType} from '../relaunch_mixin_lit.js';
      ` : ''}
  </if><!-- not chromeos -->
--</if><!-- _google_chrome -->
+ </if><!-- _google_chrome -->
 +<if expr="_google_chrome">
      <settings-toggle-button id="urlCollectionToggle"
          class="hr"
@@ -42,7 +42,23 @@ index f4968fb7c8f1463279e9284551b02d5c8eb03081..69da1c093015f158a35e5bad8697233d
  <if expr="_google_chrome">
  <if expr="not is_chromeos">
      <settings-toggle-button id="spellCheckControl"
-@@ -149,6 +153,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -118,6 +124,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+     </cr-link-row>
+ </if><!-- chromeos -->
+ </if><!-- _google_chrome -->
++<if expr="_google_chrome">
+     ${this.showSearchSuggestToggle_() ? html`
+       <settings-toggle-button id="searchSuggestToggle"
+           class="hr"
+@@ -126,6 +133,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+           sub-label="$i18n{searchSuggestPrefDesc}">
+       </settings-toggle-button>
+     ` : ''}
++</if><!-- _google_chrome -->
+ 
+     <!-- This toggle is only shown for users with the appropriate enterprise
+         policy enabled. The state is not changeable by the user, so when shown,
+@@ -149,6 +157,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
        </settings-toggle-button>
      ` : ''}
  
@@ -50,7 +66,7 @@ index f4968fb7c8f1463279e9284551b02d5c8eb03081..69da1c093015f158a35e5bad8697233d
      ${this.showSignoutDialog_ ? html`
        <settings-signout-dialog .syncStatus="${this.syncStatus}"
            @close="${this.onSignoutDialogClose_}">
-@@ -169,3 +174,4 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -169,3 +178,4 @@ import {RestartType} from '../relaunch_mixin_lit.js';
        <div>$i18n{chromeSigninChoiceToast}</div>
      </cr-toast>
  </if>
