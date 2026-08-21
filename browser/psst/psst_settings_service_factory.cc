@@ -9,6 +9,7 @@
 
 #include "base/check_deref.h"
 #include "base/no_destructor.h"
+#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,6 +46,13 @@ std::unique_ptr<KeyedService>
 PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
+
+  if (!profile ||
+      (!psst::IsPsstEnabledForProfile(*profile->GetPrefs()) &&
+       profile->GetPrefs()->IsManagedPreference(psst::prefs::kPsstEnabled))) {
+    return nullptr;
+  }
+
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   return std::make_unique<psst::PsstSettingsService>(CHECK_DEREF(map),
                                                      profile->GetPrefs());
