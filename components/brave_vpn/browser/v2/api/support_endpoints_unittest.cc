@@ -30,19 +30,18 @@ TEST(SupportEndpointsTest, CreateSupportTicketRequestBodyToValue) {
   // The encoded ticket body embeds credential, validation method, and
   // timezone as text lines, in addition to the separate JSON fields above.
   const std::string expected_encoded_body = base::Base64Encode(base::StrCat(
-      {kTestBody, "\n\n", kSubscriberCredentialKey, ": ",
-       kTestSubscriberCredential, "\n", kPaymentValidationMethodKey, ": ",
-       kValidationMethodDefaultValue, "\n", kTimezoneMetadataKey, ": ",
+      {kTestBody, "\n\nsubscriber-credential: ", kTestSubscriberCredential,
+       "\npayment-validation-method: brave-premium\ntimezone: ",
        kTestTimezone}));
 
   EXPECT_EQ(body.ToValue(),
             base::DictValue()
-                .Set(kEmailKey, kTestEmail)
-                .Set(kSubjectKey, kTestSubject)
-                .Set(kSupportTicketKey, expected_encoded_body)
-                .Set(kPartnerClientIdKey, kPartnerClientIdValue)
-                .Set(kPaymentValidationMethodKey, kValidationMethodDefaultValue)
-                .Set(kSubscriberCredentialKey, kTestSubscriberCredential));
+                .Set("email", kTestEmail)
+                .Set("subject", kTestSubject)
+                .Set("support-ticket", expected_encoded_body)
+                .Set("partner-client-id", "com.brave.browser")
+                .Set("payment-validation-method", "brave-premium")
+                .Set("subscriber-credential", kTestSubscriberCredential));
 }
 
 }  // namespace brave_vpn::v2::endpoints
