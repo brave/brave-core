@@ -18,13 +18,27 @@ class BrowserWindowInterface;
 class GURL;
 class PrefService;
 class Profile;
+class SidebarWebPanelController;
+class TabStripModel;
 enum class SidePanelEntryId;
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace sidebar {
 
 bool CanUseSidebar(Browser* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
 bool IsWebPanelFeatureEnabled();
+
+// True if `focused_contents`'s focus event is web-panel-related: either its own
+// contents area was clicked/focused, or focus is moving from the panel back
+// to a normal tab.
+bool IsWebPanelRelatedFocusChange(
+    SidebarWebPanelController* web_panel_conteroller,
+    TabStripModel* tab_strip_model,
+    content::WebContents* focused_contents);
 
 // Exported for testing.
 bool HiddenDefaultSidebarItemsContains(SidebarService* service,

@@ -18,6 +18,7 @@ source_set("split_view") {
   ]
 
   deps = [
+    "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:tab_model",
     "//brave/browser/ui/views/frame",
     "//brave/components/vector_icons",

@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
@@ -159,6 +160,24 @@ bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
 
 bool IsWebPanelFeatureEnabled() {
   return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
+}
+
+bool IsWebPanelRelatedFocusChange(
+    SidebarWebPanelController* web_panel_controller,
+    TabStripModel* tab_strip_model,
+    content::WebContents* focused_contents) {
+  CHECK(web_panel_controller);
+  const content::WebContents* panel_contents =
+      web_panel_controller->panel_contents();
+  if (!panel_contents) {
+    return false;
+  }
+
+  if (panel_contents == focused_contents) {
+    return true;
+  }
+
+  return tab_strip_model->GetActiveTab()->GetContents() == panel_contents;
 }
 
 SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {

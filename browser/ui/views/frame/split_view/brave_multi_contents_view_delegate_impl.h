@@ -8,7 +8,7 @@
 
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 
-class TabStripModel;
+class BrowserWindowInterface;
 
 class BraveMultiContentsViewDelegateImpl
     : public MultiContentsViewDelegateImpl {
@@ -21,7 +21,7 @@ class BraveMultiContentsViewDelegateImpl
   void ResizeWebContents(double ratio, bool done_resizing) override;
 
  private:
-  const raw_ref<TabStripModel> tab_strip_model_;
+  const raw_ref<BrowserWindowInterface> bwi_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_DELEGATE_IMPL_H_

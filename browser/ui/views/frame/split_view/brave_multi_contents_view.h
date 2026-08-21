@@ -43,6 +43,8 @@ class BraveMultiContentsView : public MultiContentsView {
   void SetWebPanelOnLeft(bool left);
 
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
+  bool is_web_panel_active_for_testing() const { return is_web_panel_active_; }
+  views::View* GetWebPanelContentsViewForTesting() const;
 
   // Notifies the multi-contents view that the browser's active content domain
   // display state has changed.
