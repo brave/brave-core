@@ -25,13 +25,13 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
       const GURL& url) override;
 };
 
-// Hidden, headless Untrusted WebUI that will host the Leo "workspace" tools.
-// One instance is created per conversation and served at
-// chrome-untrusted://leo-workspace/<guid>, with a locked-down CSP that only
-// permits its own first-party bundle. This page has no visible UI.
-//
-// At this stage the page only serves a placeholder document. The file tools
-// bundle and the FileSystemDirectoryHandle plumbing are added separately.
+// Hidden, headless Untrusted WebUI that hosts the Leo "workspace" tools. The
+// page receives a FileSystemDirectoryHandle (delivered by the browser via
+// launchQueue) for a user-picked folder, implements the file tools in
+// JavaScript against it, and registers them with Leo via WebMCP
+// (navigator.modelContext). One instance is created per conversation and served
+// at chrome-untrusted://leo-workspace/<guid>; it runs with a locked-down CSP
+// that only permits its own first-party bundle. This page has no visible UI.
 class LeoWorkspaceUI : public ui::UntrustedWebUIController {
  public:
   explicit LeoWorkspaceUI(content::WebUI* web_ui);
