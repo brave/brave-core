@@ -151,22 +151,26 @@ std::optional<std::string> ContentTool::GetPermissionChallengeDescription(
     const mojom::ToolUseEvent& tool_use) const {
   // Provide a human-readable, markdown-formatted description naming the
   // site-registered tool and the site's origin, instead of the mangled
-  // model-facing tool name. The tool name is site-controlled, so strip its
-  // whitespace and escape it to prevent the site injecting markdown into the
-  // prompt.
+  // model-facing tool name. Both the tool name and the site are
+  // site-controlled, so each goes through EscapeMarkdown() to stop the site
+  // injecting markdown into the prompt.
   content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid();
   if (!rfh) {
     return std::nullopt;
   }
   const url::Origin& origin = rfh->GetLastCommittedOrigin();
-  // An opaque origin (e.g. a data: URL, or a document sandboxed via CSP) has
-  // no serialization to fall back on, so the full URL is used instead - and
-  // unlike an origin's serialization (scheme://host:port), a URL's
-  // path/query is site-controlled and can legally contain markdown
-  // metacharacters, so it must be escaped just like the tool name to
-  // prevent the site injecting formatting or a link into the prompt.
+  // Tools are only attached to http(s) documents, so an opaque origin here is
+  // a document sandboxed via CSP: the origin has no serialization, but the
+  // committed URL still carries the real host, which is what the user needs to
+  // see. Both are escaped like the tool name, so no path can skip escaping.
   const std::string site_display = EscapeMarkdown(
       origin.opaque() ? rfh->GetLastCommittedURL().host() : origin.Serialize());
+  // Schemes with no host (data:, about:, blob:) should never reach here. If one
+  // does, omit the description rather than prompt the user to authorise a tool
+  // on an empty site - the caller still raises the challenge, just unnamed.
+  if (site_display.empty()) {
+    return std::nullopt;
+  }
   return l10n_util::GetStringFUTF8(
       IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_SUMMARY,
       base::UTF8ToUTF16(EscapeMarkdown(internal_tool_name_)),
