@@ -113,21 +113,33 @@ public class OnboardingStepAdapter
     }
 
     public void setCrashReportingChecked(final boolean checked) {
+        if (mCrashReportingChecked == checked) {
+            return;
+        }
         mCrashReportingChecked = checked;
         notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public void setCrashReportingManaged(final boolean managed) {
+        if (mCrashReportingManaged == managed) {
+            return;
+        }
         mCrashReportingManaged = managed;
         notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public void setP3aChecked(final boolean checked) {
+        if (mP3aChecked == checked) {
+            return;
+        }
         mP3aChecked = checked;
         notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
 
     public void setP3aManaged(final boolean managed) {
+        if (mP3aManaged == managed) {
+            return;
+        }
         mP3aManaged = managed;
         notifyItemChanged(MAKE_BRAVE_BETTER_POSITION);
     }
