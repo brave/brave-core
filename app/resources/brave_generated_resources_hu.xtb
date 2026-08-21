@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="8275068909952022340">Bővebben…</translation>
 <translation id="71316462802471551">Alternatív e-mail-címek</translation>
-<translation id="209130971304928953">Lapok mentése munkaterületként…</translation>
-<translation id="877984331511007834">Munkaterület megnyitása…</translation>
-<translation id="1310182651927031327">Lapok mentése munkaterületként…</translation>
-<translation id="3588277741646479444">Munkaterület megnyitása…</translation>
+<translation id="8350985546648269694">Aktuális ablakok és lapok mentése térként</translation>
+<translation id="5327248766486351172">Név</translation>
+<translation id="6379791766023874417">Adja meg a tér nevét</translation>
+<translation id="9174724474418499472">Saját tér</translation>
+<translation id="5317780077021120954">Mentés</translation>
+<translation id="7658239707568436148">Elvetés</translation>
+<translation id="196342407904926436">Tér beállításai</translation>
+<translation id="2806407377752719586">Tér törlése</translation>
+<translation id="1844931500883490339">Biztosan törli ezt a teret? A mentett tér véglegesen eltávolításra kerül. Ezt a műveletet nem lehet visszavonni.</translation>
+<translation id="8261506727792406068">Törlés</translation>
+<translation id="8428213095426709021">Beállítások</translation>
+<translation id="1212321046099128987">Nincs létrehozott tér</translation>
+<translation id="3524567389166933243">Hozza létre az első terét az alábbi Mentés gombra kattintva.</translation>
+<translation id="6632569090444863135">{TAB_COUNT,plural, =1{1 lap}other{# lap}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> ablak</translation>
+<translation id="1680377529024357662">Aktuális ablakok és lapok mentése térként</translation>
+<translation id="5561829325295347472">Adja meg a tér nevét</translation>
+<translation id="2028520494010039812">Tér beállításai</translation>
+<translation id="1580775521202322063">Tér törlése</translation>
+<translation id="3004759399777164093">Biztosan törli ezt a teret? A mentett tér véglegesen eltávolításra kerül. Ezt a műveletet nem lehet visszavonni.</translation>
+<translation id="7563692436589408797">Nincs létrehozott tér</translation>
+<translation id="3945077125173636695">Hozza létre az első terét az alábbi Mentés gombra kattintva.</translation>
+<translation id="4731210674738654452">{TAB_COUNT,plural, =1{1 lap}other{# lap}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> ablak</translation>
+<translation id="3326655241685890930">Terek</translation>
 <translation id="1990886731975529483">Google Widevine telepítése és futtatása</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="4900351245762303149">Google Widevine telepítése</translation>
@@ -37,7 +58,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
-<translation id="3477357195688115718">A Brave nem vizsgálja felül a biztonsági kiterjesztéseket. Csak akkor telepítse ezt a kiterjesztést, ha megbízik a fejlesztőben.</translation>
+<translation id="2201935460386712655">A Brave nem vizsgálja felül a biztonsági kiterjesztéseket. Csak akkor telepítse a következőt: "<ph name="EXTENSION_NAME"/>", ha megbízik a fejlesztőben.</translation>
 <translation id="2928844661231356557">Ha hozzáférést ad egy Bluetooth-eszköznek, lehetővé teszi, hogy a webhely adott esetben Önre vonatkozó, azonosításra alkalmas és esetlegesen érzékeny jellegű információkat olvasson be. Csak olyan webhelyek számára engedélyezze a Bluetooth-hozzáférést, amelyekben megbízik. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor-ablakok</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
@@ -63,7 +84,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3211174446914979436">Szűrők kezelése</translation>
 <translation id="3108584651298176909">Szabályok megjelenítése</translation>
 <translation id="5156986655891520787">Szabályok elrejtése</translation>
-<translation id="7658239707568436148">Elvetés</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Megnyitás .onion cím használatával: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Kényszerített beillesztés</translation>
@@ -91,6 +111,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="191886777375280620">Képernyőkép rögzítése</translation>
 <translation id="3114478090884951591">Látható terület</translation>
 <translation id="2026367923222947564">Teljes oldal</translation>
+<translation id="4218885227032158909">Kiválasztott terület</translation>
 <translation id="4928988318462976765">Webes Kiterjesztések Áruháza</translation>
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
 <translation id="3161744659507801211">Figyelem: a Brave nem tudja megelőzni, hogy a bővítmények rögzítsék böngészési előzményeidet.</translation>
@@ -289,14 +310,12 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="55252794453047936">Média áthelyezése</translation>
 <translation id="4418985925423678811">Új lejátszási lista</translation>
 <translation id="385051799172605136">Vissza</translation>
-<translation id="5317780077021120954">Mentés</translation>
 <translation id="7930125899031086027">Létrehozás és áthelyezés</translation>
 <translation id="2860159216666546928">Válassza ki a mappát, amelybe áthelyezi ezt a médiát</translation>
 <translation id="9130105487623071247">Lejátszási lista neve</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> tétel kiválasztva</translation>
 <translation id="3596306474342941843">Lejátszási lista törlése</translation>
 <translation id="7110726588168439924">Biztosan törli ezt a lejátszási listát és annak teljes tartalmát? Ezt a műveletet nem lehet visszavonni.</translation>
-<translation id="8261506727792406068">Törlés</translation>
 <translation id="8152485753254079984">Új lejátszási lista</translation>
 <translation id="5397019762993984652">Hozzáadás a Lejátszás később mappából</translation>
 <translation id="7525067979554623046">Létrehozás</translation>
@@ -393,7 +412,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8900907990448657776">Konténerlap szerkesztése</translation>
 <translation id="7900511996284443779">Konténerlap törlése</translation>
 <translation id="2738687336989232152">Biztos, hogy törölni szeretné a konténerlapot <ph name="CONTAINER_NAME"/>? Ezzel minden hozzá tartozó adatot törölni fog.</translation>
-<translation id="5327248766486351172">Név</translation>
 <translation id="104766043551382253">Ikon</translation>
 <translation id="5431318178759467895">Szín</translation>
 <translation id="4328541188421002379">Adjon a konténerlapnak egy nevet, például Munka vagy Személyes</translation>
@@ -547,6 +565,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2587535830241068901">Testreszabhatja böngészőjét, miközben támogatja a Brave-ot</translation>
 <translation id="123297831435065577">A Brave Origin a böngésző fizetett verziója azoknak a felhasználóknak, akik nem igényelnek minden olyan funkciót, amely a Brave-t üzletként támogatja, de továbbra is a Brave által kínált adatvédelmet szeretnék. Az Origin felhasználói továbbra is élvezhetik az iparágban vezető adatvédelmet, a hirdetésblokkolást és a sebességet (a Shields segítségével), valamint a rendszeres szoftverfrissítéseket, a Chromium javításokat, valamint a biztonsági és adatvédelmi fejlesztéseket.</translation>
 <translation id="7984508421152399880">Vásárlás most</translation>
+<translation id="1882724423074862793">Vásárlás visszaállítása</translation>
 <translation id="5567412479632285879">A Brave jutalmak le vannak tiltva</translation>
 <translation id="413570371620795359">Az engedélyezéshez és indításhoz nyissa meg a Jutalmak panelt</translation>
 <translation id="1051600834033686945">A Brave jutalmak összes beállításának megnyitása</translation>
@@ -583,6 +602,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="933652931229970927">Diagnosztikai jelentések automatikus elküldése</translation>
 <translation id="8868426106596092089">Segítsen fejleszteni a Brave termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén</translation>
 <translation id="4891600875049212418">Böngésszen rejtett módban a bizalmas oldalak felkeresésekor</translation>
+<translation id="1022603984240541480">Adatvédelmi beállítások finomhangolási értesítésének megjelenítése kompatibilis oldalakon</translation>
+<translation id="3528176629974273019">Lehetővé teszi, hogy a Brave automatikusan javasoljon (és beállítson) oldalspecifikus adatvédelmi beállításokat.</translation>
 <translation id="509873765238158442">A Microsoft Recall blokkolása</translation>
 <translation id="4763421121695677716">Megakadályozza, hogy a Microsoft Windows Recall funkció automatikusan képernyőképeket készítsen a megnyitott Brave lapokról.</translation>
 <translation id="1968895725257436430">Adatgyűjtés</translation>
@@ -738,6 +759,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="4425607417590286548">Módosítások elfogadása</translation>
 <translation id="2128143836897950793">Kattintson az „Új híd kérése...” gombra a hidak lekéréséhez</translation>
 <translation id="3314921753580327793">Írjon be „cím:port” karakterláncot (soronként egyet)</translation>
+<translation id="7002083631026466886">A Tor nem tudja használni ezt a hidat. Ellenőrizze a kapott híddal, majd próbálja újra:</translation>
 <translation id="3755189300481406891">Híd kérése</translation>
 <translation id="6924425739431382319">Kapcsolatfelvétel a BridgeDB-vel. Kérjük, várjon.</translation>
 <translation id="811745063252080651">Híd kéréséhez oldja meg a CAPTCHA-t.</translation>
@@ -917,7 +939,6 @@ Valamennyi kérés egy anonim proxy szerveren keresztül kerül továbbításra,
 <translation id="1838374766361614909">Keresett kifejezés törlése</translation>
 <translation id="5126255551970171328">Memória keresése</translation>
 <translation id="7402116145895962069">Szinkronizálja az Ollama helyi modelljeit</translation>
-<translation id="4835154437390745810">Kezelve: Ollama</translation>
 <translation id="5985516785067818307">Kérdőívkitöltő</translation>
 <translation id="8347743943525229984">Brave felmérések engedélyezése</translation>
 <translation id="3204080538332044581">Engedélyezi, hogy a Brave az új lap oldalon privát kérdőívekre mutató hivatkozásokat jelenítsen meg. Ezek a kérdőívek segítenek jobb funkciókat fejleszteni, és mérni a böngészőalapú hirdetési kampányok hatékonyságát. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>

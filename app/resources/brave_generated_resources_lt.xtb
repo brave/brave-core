@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">„Leo“ DI</translation>
 <translation id="8275068909952022340">Daugiau…</translation>
 <translation id="71316462802471551">El. pašto slapyvardžiai</translation>
-<translation id="209130971304928953">Įrašyti korteles kaip darbo sritį…</translation>
-<translation id="877984331511007834">Atverti darbo sritį…</translation>
-<translation id="1310182651927031327">Įrašyti korteles kaip darbo sritį…</translation>
-<translation id="3588277741646479444">Atverti darbo sritį…</translation>
+<translation id="8350985546648269694">Išsaugoti dabartinius langus ir korteles kaip erdvę</translation>
+<translation id="5327248766486351172">Pavadinimas</translation>
+<translation id="6379791766023874417">Įveskite erdvės pavadinimą</translation>
+<translation id="9174724474418499472">Mano erdvė</translation>
+<translation id="5317780077021120954">Išsaugoti</translation>
+<translation id="7658239707568436148">Atšaukti</translation>
+<translation id="196342407904926436">Erdvės parinktys</translation>
+<translation id="2806407377752719586">Ištrinti erdvę</translation>
+<translation id="1844931500883490339">Ar tikrai norite ištrinti šią erdvę? Išsaugota erdvė bus visam laikui pašalinta. Šio veiksmo atšaukti negalima.</translation>
+<translation id="8261506727792406068">Ištrinti</translation>
+<translation id="8428213095426709021">Nustatymai</translation>
+<translation id="1212321046099128987">Nesukurta jokių erdvių</translation>
+<translation id="3524567389166933243">Sukurkite pirmąją erdvę spustelėdami išsaugojimo mygtuką žemiau.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 skirtukas} one {# skirtukas} few {# skirtukai} many {# skirtuko} other {# skirtukų}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> langai</translation>
+<translation id="1680377529024357662">Išsaugoti dabartinius langus ir korteles kaip erdvę</translation>
+<translation id="5561829325295347472">Įveskite erdvės pavadinimą</translation>
+<translation id="2028520494010039812">Erdvės parinktys</translation>
+<translation id="1580775521202322063">Ištrinti erdvę</translation>
+<translation id="3004759399777164093">Ar tikrai norite ištrinti šią erdvę? Išsaugota erdvė bus visam laikui pašalinta. Šio veiksmo atšaukti negalima.</translation>
+<translation id="7563692436589408797">Nesukurta jokių erdvių</translation>
+<translation id="3945077125173636695">Sukurkite pirmąją erdvę spustelėdami išsaugojimo mygtuką žemiau.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 skirtukas} one {# skirtukas} few {# skirtukai} many {# skirtuko} other {# skirtukų}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> langai</translation>
+<translation id="3326655241685890930">Erdvės</translation>
 <translation id="1990886731975529483">Įdiekite ir paleiskite „Google Widevine“</translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="4900351245762303149">Įdiekite „Google Widevine“</translation>
@@ -37,7 +58,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
-<translation id="3477357195688115718">„Brave“ netikrina šio plėtinio saugumo. Šį plėtinį įdiekite tik jei pasitikite jo kūrėju.</translation>
+<translation id="2201935460386712655">„Brave“ netikrina plėtinių saugumo. „<ph name="EXTENSION_NAME"/>“ įdiekite tik jei pasitikite jo kūrėju.</translation>
 <translation id="2928844661231356557">Prieigos prie „Bluetooth“ įrenginio suteikimas svetainei leis nuskaityti identifikuojančią ir galimai neskelbtiną informaciją apie jus. Pasiekti „Bluetooth“ įrenginius leiskite tik svetainėms, kuriomis pasitikite. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">„Tor“ langai</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
@@ -63,7 +84,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3211174446914979436">Tvarkyti filtrus</translation>
 <translation id="3108584651298176909">Rodyti taisykles</translation>
 <translation id="5156986655891520787">Paslėpti taisykles</translation>
-<translation id="7658239707568436148">Atšaukti</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atidaryti naudojant .onion adresą: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Įdėti priverstinai</translation>
@@ -91,6 +111,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="191886777375280620">Užfiksuoti ekrano kopiją</translation>
 <translation id="3114478090884951591">Matoma sritis</translation>
 <translation id="2026367923222947564">Visas puslapis</translation>
+<translation id="4218885227032158909">Pasirinkta sritis</translation>
 <translation id="4928988318462976765">Plėtinių parduotuvė</translation>
 <translation id="9181207987584064303">Žiūrėti plėtinių parduotuvėje</translation>
 <translation id="3161744659507801211">Įspėjimas: „Brave“ negali uždrausti plėtiniams įrašyti naršymo istorijos.</translation>
@@ -289,14 +310,12 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="55252794453047936">Perkelti mediją</translation>
 <translation id="4418985925423678811">Naujas grojaraštis</translation>
 <translation id="385051799172605136">Grįžti</translation>
-<translation id="5317780077021120954">Išsaugoti</translation>
 <translation id="7930125899031086027">Sukurti ir perkelti</translation>
 <translation id="2860159216666546928">Pasirinkite aplanką į kurį norite perkelti šią mediją</translation>
 <translation id="9130105487623071247">Grojaraščio pavadinimas</translation>
 <translation id="1857042171340443373">Pasirinkta elementų:<ph name="NUM_ITEMS"/></translation>
 <translation id="3596306474342941843">Naikinti grojaraštį</translation>
 <translation id="7110726588168439924">Ar tikrai norite ištrinti šį grojaraštį ir visą jo turinį? Šio veiksmo atšaukti negalima.</translation>
-<translation id="8261506727792406068">Ištrinti</translation>
 <translation id="8152485753254079984">Naujas grojaraštis</translation>
 <translation id="5397019762993984652">Įtraukti iš „Leisti vėliau“ aplanko</translation>
 <translation id="7525067979554623046">Sukurti</translation>
@@ -393,7 +412,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8900907990448657776">Redaguoti konteinerį</translation>
 <translation id="7900511996284443779">Ištrinti konteinerį</translation>
 <translation id="2738687336989232152">Ar tikrai norite ištrinti konteinerį <ph name="CONTAINER_NAME"/>? Taip bus pašalinti visi su juo susiję duomenys.</translation>
-<translation id="5327248766486351172">Pavadinimas</translation>
 <translation id="104766043551382253">Piktograma</translation>
 <translation id="5431318178759467895">Spalva</translation>
 <translation id="4328541188421002379">Suteikti konteineriui pavadinimą, pvz., „Darbas“ arba „Asmeninis“</translation>
@@ -547,6 +565,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2587535830241068901">Pritaikykite savo naršyklę, bet kartu palaikykite "Brave</translation>
 <translation id="123297831435065577">Brave Origin yra mokama naršyklės versija naudotojams, kuriems nereikalingos visos funkcijos, palaikančios Brave kaip verslą, tačiau kurie vis dar nori privatumo, kurį siūlo tik Brave. Origin naudotojai toliau turės prieigą prie mūsų pirmaujančio privatumo, reklamos blokavimo ir greičio (per Shields), taip pat reguliarius programinės įrangos atnaujinimus, Chromium pataisas bei saugą ir privatumą gerinančius patobulinimus.</translation>
 <translation id="7984508421152399880">Pirkti dabar</translation>
+<translation id="1882724423074862793">Atkurti pirkimą</translation>
 <translation id="5567412479632285879">„Brave Rewards“ išjungta</translation>
 <translation id="413570371620795359">Atverkite skyrių „Rewards“, kad įjungtumėte ir pradėtumėte naudoti</translation>
 <translation id="1051600834033686945">Atverti pilnas „Brave“ apdovanojimų nuostatas</translation>
@@ -583,6 +602,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="933652931229970927">Automatiškai siųsti diagnostikos ataskaitas</translation>
 <translation id="8868426106596092089">Padėkite tobulinti „Brave“ produktų stabilumą, automatiškai siųsdami diagnostikos ataskaitas, kai „Brave“ naršyklė užstringa</translation>
 <translation id="4891600875049212418">Naršyti išnykstančiuoju režimu lankant jautrias svetaines</translation>
+<translation id="1022603984240541480">Suderinamose svetainėse rodyti privatumo nustatymų derinimo pranešimą</translation>
+<translation id="3528176629974273019">Leidžia „Brave“ automatiškai siūlyti (ir koreguoti) konkrečioms svetainėms skirtus privatumo nustatymus.</translation>
 <translation id="509873765238158442">Blokuoti „Microsoft Recall“</translation>
 <translation id="4763421121695677716">Blokuoti „Microsoft Windows“ kompiuteriuose naudojamą „Recall“ funkciją, kad automatiškai nebūtų daromos bet kokių atidarytų „Brave“ kortelių ekrano kopijos.</translation>
 <translation id="1968895725257436430">Duomenų rinkimas</translation>
@@ -738,6 +759,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="4425607417590286548">Taikyti pakeitimus</translation>
 <translation id="2128143836897950793">Norėdami gauti tiltų, spustelėkite „Prašyti naujo tilto...“</translation>
 <translation id="3314921753580327793">Įveskite adresas:prievadas (po vieną eilutėje)</translation>
+<translation id="7002083631026466886">„Tor“ negali naudoti šio tilto. Palyginkite jį su gautu tiltu ir bandykite dar kartą:</translation>
 <translation id="3755189300481406891">Prašyti tilto</translation>
 <translation id="6924425739431382319">Susisiekiama su BridgeDB. Palaukite.</translation>
 <translation id="811745063252080651">Išspręskite CAPTCHA, kad paprašytumėte tilto.</translation>
@@ -915,7 +937,6 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="1838374766361614909">Išvalyti paiešką</translation>
 <translation id="5126255551970171328">Ieškoti atmintyje</translation>
 <translation id="7402116145895962069">Sinchronizuoti savo vietinius Ollama modelius</translation>
-<translation id="4835154437390745810">Tvarko Ollama</translation>
 <translation id="5985516785067818307">Apklausos dalyvis</translation>
 <translation id="8347743943525229984">Leisti „Brave“ apklausas</translation>
 <translation id="3204080538332044581">Leidžia „Brave“ rodyti nuorodas į konfidencialias apklausas naujos kortelės puslapyje. Apklausos padeda mums sukurti geresnes funkcijas ir įvertinti naršyklės reklamos kampanijų efektyvumą.<ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>

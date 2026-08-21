@@ -16,15 +16,13 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8522292744959221145"><ph name="BEGIN_LINK"/>Meld by Brave aan<ph name="END_LINK"/> om te kyk of jou wagwoorde teen dataskendings en ander sekuriteitkwessies beveilig word.</translation>
 <translation id="2627788872035182013">Klik die Brave-kieslys</translation>
 <translation id="1157985233335035034">Onlangse tale</translation>
-<translation id="7813580490378477695"><ph name="PARTNER_NAME"/> het ’n uitbreiding bygevoeg wat dalk kan verander hoe Brave werk.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1184145431117212167">Installering het misluk omdat jou weergawe van Windows nie gesteun word nie.</translation>
 <translation id="8541922081612557424">Meer oor Brave</translation>
 <translation id="987734326276404793">Kry waarskuwings oor prysnasporing met Brave op jou foon</translation>
 <translation id="1203500561924088507">Dankie dat jy geïnstalleer het. Jy moet jou blaaier herbegin voordat jy <ph name="BUNDLE_NAME"/> gebruik.</translation>
 <translation id="1232234696885483911">Wanneer jy Prentsoektog oopmaak, sal die bladsytitel, URL en inhoud, insluitend PDF’s, outomaties na die bediener toe gestuur word. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Terwyl jy aangemeld is, kan jy jou wagwoorde en meer uit jou Brave-rekening in Brave gebruik. Gaan na “Jou rekening in Brave” toe om dit te verander.</translation>
+<translation id="583633806828413086">Wys Gemini in Brave in die Mac-kieslysbalk</translation>
 <translation id="1631493536097460865">Gebruik kortpadsleutel om ’n deel van die skerm in Gemini in Brave te kies.</translation>
 <translation id="8799570501820813406">Geheue is beskikbaar gemaak terwyl hierdie oortjie onaktief was om Brave vinnig te hou. Jy kan kies om hierdie werf altyd daarvan uit te sluit om onaktief te wees.</translation>
 <translation id="8767381092474532098">Brave het hierdie aflaai geblokkeer omdat die lêer gevaarlik is</translation>
@@ -37,14 +35,12 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
  Bluetooth-toestelle te verken. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="7562683844189283122">Meld aan by Brave op jou foon</translation>
 <translation id="1330562121671411446">Bespeur taal</translation>
-<translation id="6204677860546245308">Gebruik Brave se aanbevole blaaierinstellings</translation>
 <translation id="108284536240904209">Vee ook data uit Brave uit (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Vasgespeld! Jy kan weer toegang tot Prentsoektog kry vanaf die nuwe knoppie op die nutsbalk</translation>
 <translation id="1356661055722410047">Nuut! Jy kan sowel teks as prente op jou skerm vertaal</translation>
 <translation id="1383876407941801731">Soek</translation>
 <translation id="3535301204632475895">Gebruik die Brave-app om aan te hou blaai terwyl jy aan die beweeg is</translation>
 <translation id="7009295044271335553">&amp;Bestuur Brave-profiele</translation>
-<translation id="1404026649028693342">Wys altyd KI-modus</translation>
 <translation id="141901961143729572">Deel jou gedagtes</translation>
 <translation id="3880714039086599943">Om jou venster te deel, moet jy skermopname vir Brave in Stelselinstellings toelaat.</translation>
 <translation id="1586284627848250203">Kry hulp met Brave-toetsweergawe</translation>
@@ -53,14 +49,13 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5147525139567260139">Deel 'n Brave-oortjie</translation>
 <translation id="721261350616678948">Meld by Brave aan</translation>
 <translation id="1547469039832541117">Beëindig die gemerkte taak.</translation>
-<translation id="1530633922026945685">Brave moet toestemming hê om toegang te kry tot jou kamera om 'n 3D-kaart van jou omgewing te skep</translation>
 <translation id="51545890371361355">Speld Brave vas</translation>
 <translation id="6570689355868013775">Brave se veiligheidnutsgoed</translation>
 <translation id="1902837727299679178">Brave wil jou Wagwoordbestuurder-data uitvee. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
 <translation id="1655849915812740665">Kry die beste van Brave met die Brave-app op jou foon</translation>
 <translation id="4449148723378534338">Gaan belangrike privaatheid- en sekuriteitkontroles in Brave na</translation>
 <translation id="1640672724030957280">Laai tans af …</translation>
-<translation id="1680687534629375545">Vra Prentsoektog oor hierdie bladsy</translation>
+<translation id="1665602916345474427">Aangemeld as <ph name="USER_NAME"/>, <ph name="USER_EMAIL"/>, lidmaatskap. Maak die rekeningkieslys oop</translation>
 <translation id="509363484780540563">Jy kan Brave enige tyd gebruik wanneer jy op skakels in boodskappe, dokumente en ander apps klik. Dit sal ook op jou taakbalk vasgespeld word.</translation>
 <translation id="1709772298389099340">Verskaf verhoogde voorregte vir <ph name="BROWSER_NAME"/>.</translation>
 <translation id="8004287232784878841">Brave gaan blaaierdata binnekort uitvee</translation>
@@ -74,7 +69,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="4529028207655448215">Brave probeer tans om <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="7362761326208547489">Jy sal ’n porboodskap sien om Brave Wagwoordbestuurder te gebruik wanneer jy volgende keer Brave op jou <ph name="DEVICE_TYPE"/> oopmaak.</translation>
 <translation id="1838374766361614909">Vee soektog uit</translation>
-<translation id="3643631442346149414">Jou organisasie sal sekere inligting kan bekyk of bestuur om jou werk op Brave te beveilig</translation>
 <translation id="3541642064306182066"><ph name="BEGIN_LINK"/>Meld by Brave af<ph name="END_LINK"/> om blaaierdata net van hierdie toestel af uit te vee terwyl jy dit in jou Brave-rekening hou.</translation>
 <translation id="5679816001365584346">Laai Brave op jou foon af om nuwe oortjiegroepe oop te maak of te skep terwyl jy aan die beweeg is.</translation>
 <translation id="4559627161887338743">Jy kan jou aangemelde Brave-rekeninge bestuur. Jou Brave-rekeninge word gebruik vir Brave-blaaier, Play Winkel, Gmail en meer. As jy 'n rekening vir iemand anders, soos 'n gesinslid, wil byvoeg, kan jy 'n nuwe persoon eerder by jou <ph name="DEVICE_TYPE"/> voeg. <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
@@ -82,7 +76,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="1880677175115548835">Kies teks</translation>
 <translation id="4528406859989804913">Jy meld tans met 'n bestuurde rekening aan en gee sy administrateur beheer oor jou Brave-profiel. Jou Brave-data, soos jou programme, boekmerke, geskiedenis, wagwoorde en ander instellings sal permanent aan <ph name="USER_NAME"/> gekoppel word. Jy sal hierdie data via die Brave-rekening se kontroleskerm kan uitvee, maar jy sal nie hierdie data met 'n ander rekening kan assosieer nie. Jy het die opsie om 'n nuwe profiel te skep om jou bestaande Brave-data apart te hou. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave bespaar batterykrag deur agtergrondaktiwiteit en visuele effekte, soos gladde rollees en videoraamtempo’s, te beperk. <ph name="BEGIN_LINK"/>Kry meer inligting oor Energiebespaarder<ph name="END_LINK"/></translation>
-<translation id="1898804291554630487">Vra oor hierdie bladsy</translation>
 <translation id="8643267611122541711">Brave-opdateerderdiens</translation>
 <translation id="1649714546770135458">Deur dit af te skakel, kan jy by Brave-werwe soos Gmail aanmeld sonder om by Brave aan te meld</translation>
 <translation id="189297655255130768">Brave reageer nie. Herbegin nou?</translation>
@@ -100,7 +93,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5499149312981370855">Kies of jy Brave-geskiedenis wil insluit vir meer gepersonaliseerde ervarings in Brave-dienste</translation>
 <translation id="5152523902653128156">Ingebou in Brave om jou te help om sterk wagwoorde te skep, te stoor en te outovul. Voeg die kortpad by vir maklike toegang.</translation>
 <translation id="6959434860418352144">Klik die Pasmaak Brave-knoppie op die Nuwe Oortjie-bladsy om vir Brave ’n nuwe voorkoms te gee</translation>
-<translation id="2066690553719545730">Wys altyd KI-modus</translation>
 <translation id="2472891440303445472">Brave het hierdie aflaai geblokkeer omdat die lêer misleidend is en onverwagte veranderinge aan jou toestel kan maak</translation>
 <translation id="2054358978145431867">Jy sal ’n porboodskap sien om <ph name="FEATURE_NAME"/> te probeer wanneer jy volgende keer Brave iOS oopmaak.</translation>
 <translation id="2726948994393234543">Jou wagwoorde en ander Brave-data wat jy in jou Brave-rekening gestoor het, sal van hierdie toestel verwyder word. Meld weer aan as jy hulle weer in Brave wil gebruik.</translation>
@@ -127,7 +119,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8984404842684436004">{NUM_TABS,plural, =1{Brave beveel aan dat jy die oortjie wat jou blaaier stadig maak, onderbreek}other{Brave beveel aan dat jy die oortjies wat jou blaaier stadig maak, onderbreek}}</translation>
 <translation id="2307973900865360088">Hou gedok</translation>
 <translation id="7810992039564280750">Vergelyk URL'e met 'n lys onveilige werwe wat in Brave geberg is. As 'n werf probeer om jou wagwoord te steel, of wanneer jy 'n skadelike lêer aflaai, sal Brave dalk ook URL'e, insluitend stukkies bladsyinhoud, na Veiligblaai toe stuur.</translation>
-<translation id="9095263438435683933">Meld op albei toestelle by Brave aan om 'n nommer van hier af na jou Android-foon te stuur.</translation>
 <translation id="2356070529366658676">Vra</translation>
 <translation id="2359808026110333948">Gaan voort</translation>
 <translation id="6485997157403727556">Die uitbreiding “<ph name="EXTENSION_NAME"/>” wil hê dat jy by Brave moet aanmeld</translation>
@@ -212,9 +203,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5949068186379578553">Om jou skerm te deel, moet jy skermopname vir Brave in Stelselinstellings toelaat.</translation>
 <translation id="4805806622840861220">Herbegin Brave</translation>
 <translation id="3161522574479303604">Alle tale</translation>
-<translation id="3225882094369124157">’n Ander program op jou rekenaar het ’n tema bygevoeg wat dalk kan verander hoe Brave werk.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Pasmaak jou nuwe Brave-profiel</translation>
 <translation id="2430807206104224491">Jy kan aanhou om met KI-modus te klets sonder om oortjies te wissel. Meld aan by Brave om te begin. Jy sal ook jou wagwoorde en meer op al jou toestelle kry.</translation>
 <translation id="4805865169608137960">Meld in die Instellings-bladsy by Brave af om jou Brave-rekening uit Brave te verwyder</translation>
@@ -230,7 +218,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8652321858775514885">Jy sal by die meeste werwe afgemeld word wanneer jy alle Brave-vensters toemaak, behalwe jou Brave-rekening as jy by Brave aangemeld is. Om werwe toe te laat om jou te onthou, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">boonste regterhoek van soekgebied: regs <ph name="RIGHT"/>%, bo <ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Brave-data in jou rekening</translation>
-<translation id="3369405342922656244">Soek hierdie bladsy met Prentsoektog</translation>
 <translation id="6610330853796830621">Gebruik jou wagwoorde met Brave op jou foon</translation>
 <translation id="2645435784669275700">Brave-bedryfstelsel</translation>
 <translation id="2297290224191497273">Skakel oor na bestaande Brave-profiel?</translation>
@@ -249,7 +236,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="3597003331831379823">Kon nie opstelling met verhoogde voorregte laat loop nie. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="4167284810587724062">Meld by Brave aan</translation>
 <translation id="3066805437003400520">Hierdie persoon se blaaierdata sal van hierdie toestel af uitgevee word. Meld as <ph name="USER_EMAIL"/> by Brave aan om die data te herwin.</translation>
-<translation id="7029305463989165490">Meld op albei toestelle by Brave aan om 'n nommer van <ph name="ORIGIN"/> af na jou Android-foon te stuur.</translation>
 <translation id="3667616615096815454">Kan nie installeer nie, die app is onbekend aan die bediener.</translation>
 <translation id="1128485277465085828">Gebruik jou eie <ph name="BEGIN_LINK"/>wagfrase<ph name="END_LINK"/> om al die Brave-data in jou Brave-rekening te enkripteer. Betaalmetodes en adresse van Google Pay af sal nie geënkripteer word nie. Blaaigeskiedenis van Brave af sal nie sinkroniseer nie.</translation>
 <translation id="1807774211756215222">Maak skakel in 'n nuwe Brave-oortjie oop</translation>
@@ -265,6 +251,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 
           **Stel vrae voor:** Genereer ’n koeëlpuntlys met 3-5 besinningswaardige vrae wat ’n gebruiker kan vra om die skermskoot beter te verstaan. Hierdie vrae moet ten minste een vraag wat spesifiek oor ’n visuele objek, sy ontwerp of sy plasing gaan, insluit.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
+<translation id="1118754729376002185">Brave het plaaslikenetwerktoestemming vir hierdie werf nodig</translation>
 <translation id="3885770153807205175">Taalkieser</translation>
 <translation id="6315734375101223238">Pasmaak en beheer Brave. Iets verg jou aandag – klik vir besonderhede.</translation>
 <translation id="7130675370997202556">Klik jou naam om Brave oop te maak en te begin blaai.</translation>
@@ -289,9 +276,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="6056473803837713617">Help om Brave te verbeter deur die <ph name="BEGIN_LINK"/>huidige instellings<ph name="END_LINK"/> aan te gee</translation>
 <translation id="4050175100176540509">Belangrike sekuriteitverbeterings en nuwe kenmerke is in die jongste weergawe beskikbaar.</translation>
 <translation id="4055805654398742145">W&amp;agwoordbestuurder</translation>
-<translation id="6654312501894761082">’n Ander program op jou rekenaar het ’n uitbreiding bygevoeg wat dalk kan verander hoe Brave werk.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Jou organisasie maak Brave outomaties toe nadat dit 1 minuut lank nie gebruik is nie. Blaaierdata word uitgevee. Dit kan geskiedenis, outovul en aflaaie insluit.}other{Jou organisasie maak Brave outomaties toe nadat dit # minute lank nie gebruik is nie. Blaaierdata word uitgevee. Dit kan geskiedenis, outovul en aflaaie insluit.}}</translation>
 <translation id="5794951150713244901">Gaan na Meer oor Brave-bladsy</translation>
 <translation id="10925962326134232">Pasmaak Brave om vir jou blaaier ’n nuwe voorkoms te gee</translation>
@@ -343,6 +327,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="2182657378556811785">Amper op datum! Herbegin Brave om opdatering te voltooi.</translation>
 <translation id="6311668361877328515">Maak werwe met Brave se V8-enjin vinniger, maar maak Brave effens minder bestand teen aanvalle</translation>
 <translation id="7402642357351265733">As jy ook Brave-gebruiksverslae deel, sluit daardie verslae die URL'e in wat jy besoek</translation>
+<translation id="4673710618874938871">Aangemeld as <ph name="USER_NAME"/>, lidmaatskap. Maak die rekeningkieslys oop</translation>
 <translation id="8142245354207161805">Dit lyk of die profiel deur 'n ander Brave-proses (<ph name="PROCESS_ID"/>) op 'n ander rekenaar (<ph name="HOST_NAME"/>) gebruik word. Brave het jou profiel gesluit sodat dit nie gekorrupteer word nie. As jy seker is dat geen ander prosesse hierdie profiel gebruik nie, kan jy die profiel ontsluit en Brave herbegin.</translation>
 <translation id="4680828127924988555">Kanselleer installering</translation>
 <translation id="2014343159590733363">Sommige van jou Brave-data is nog nie in jou Brave-rekening gestoor nie. Probeer om ’n paar minute te wag voordat jy afmeld. As jy nou afmeld, sal hierdie data uitgevee word.</translation>
@@ -375,7 +360,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="758175943316138760">Gaan weer aan net waar jy opgehou het met Brave op iOS.</translation>
 <translation id="6234515504547364178">Meld af uit Brave</translation>
 <translation id="5234764350956374838">Verwerp</translation>
-<translation id="5254739261293693943">Vra oor hierdie video</translation>
 <translation id="7690383309583926074">Kry die Brave-app om wagwoorde te stoor terwyl jy aan die beweeg is</translation>
 <translation id="8586264863973514035">Herbegin Brave om jou veranderinge toe te pas</translation>
 <translation id="5286907366254680517">Bespeur</translation>
@@ -400,7 +384,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave beveel aan dat jy die oortjie wat jou blaaier stadig maak, onderbreek}other{Brave beveel aan dat jy die oortjies wat jou blaaier stadig maak, onderbreek}}</translation>
 <translation id="894936507076470937">Brave sal dalk nie reg werk nie omdat dit nie meer in hierdie Linux-uitreiking gesteun word nie</translation>
 <translation id="2596557398669145729">Brave het hierdie aflaai geblokkeer omdat die lêer jou persoonlike en sosialenetwerkrekeninge kan beskadig</translation>
-<translation id="696826782632239602">Brave het toegang tot jou ligging nodig om jou ligging met hierdie werf te deel</translation>
 <translation id="1744365871163268756">Wag terwyl Brave die jongste stelselopdaterings installeer.</translation>
 <translation id="3861679447659630159">Brave probeer tans om wagwoorde te wysig. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
 <translation id="8535558155562097643">Werk moeiteloos met jou gunstelingapps soos Google Drive en YouTube met Brave terwyl jy aan die beweeg is.</translation>
@@ -425,6 +408,7 @@ Probeer om optimering toe te laat as hierdie bladsy nie werk soos verwag nie.</t
 <translation id="1834213228893578875">Brave maak geheue uit onaktiewe oortjies beskikbaar. Dit gee aktiewe oortjies en ander apps meer rekenaarhulpbronne en hou Brave vinnig. Jou onaktiewe oortjies word outomaties weer aktief wanneer jy na hulle toe teruggaan. <ph name="BEGIN_LINK"/>Kry meer inligting oor Geheuebespaarder<ph name="END_LINK"/></translation>
 <translation id="899523323751802352"><ph name="SETTINGS_LINK"/> die Brave-data in jou rekening indien jy jou wagfrase vergeet het of hierdie instelling wil verander</translation>
 <translation id="82926023981336111">Pasmaak en beheer Brave. Stel Brave as jou verstek.</translation>
+<translation id="5660546041996455312">Hou jou wagwoorde, boekmerke en geskiedenis perfek gesinkroniseer op alle toestelle deur Brave as jou verstekblaaier te stel.</translation>
 <translation id="5809516625706423866">Kon nie aan die internet koppel nie. HTTP 401 ongemagtig. Gaan asseblief jou proxy-opstelling na.</translation>
 <translation id="95980832839683236">Maak werwe vinniger met Brave se V8-enjin, maar maak Brave effens minder bestand teen aanvalle. Hierdie instelling is af.</translation>
 <translation id="1224606669200461217">Dateer Brave op om Brave-data in jou Brave-rekening te gebruik en te stoor</translation>
@@ -442,7 +426,6 @@ Probeer om optimering toe te laat as hierdie bladsy nie werk soos verwag nie.</t
 <translation id="5768962901674164501">Meld aan by Brave om hierdie boekmerk en meer op al jou toestelle te kry</translation>
 <translation id="5101892358689285100">Maak Brave joune</translation>
 <translation id="5960071705175224773">Jou instellings is deur ’n onbekende app verander</translation>
-<translation id="5968400720580217226">KI-modus</translation>
 <translation id="5977420883993828287">Vasgespeld! Gebruik weer Kontekstuele Take vanaf die nutsbalk</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Jou organisasie maak Brave outomaties toe nadat dit 1 minuut lank nie gebruik is nie.}other{Jou organisasie maak Brave outomaties toe nadat dit # minute lank nie gebruik is nie.}}</translation>
 <translation id="3598551856834560515">Dateer Brave op om sinkronisering te begin</translation>
@@ -467,12 +450,8 @@ Probeer om optimering toe te laat as hierdie bladsy nie werk soos verwag nie.</t
 <translation id="6685697979743742605">Hierdie lêer kan gevaarlik wees<ph name="LINE_BREAK"/>Brave kan hierdie aflaai vir jou nagaan as jy die wagwoord verskaf. Inligting oor die lêer word na Brave Veiligblaai gestuur, maar die lêerinhoud en wagwoord bly op jou toestel.</translation>
 <translation id="6182736845697986886">Installering het misluk as gevolg van ’n interne opdateringbedienerfout.</translation>
 <translation id="4368341489795135329">Maak seker dat jy by Brave aangemeld is op jou <ph name="TARGET_DEVICE_NAME"/> en probeer dan weer stuur.</translation>
-<translation id="3038354906709778538">’n Ander program op jou rekenaar het ’n app bygevoeg wat dalk kan verander hoe Brave werk.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="8320964054148936490">Hierdie rekenaar het reeds 'n meer onlangse weergawe van Brave. As die sagteware nie werk nie, deïnstalleer Brave en probeer weer.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave sal nou herbegin}=1{Brave sal oor 1 sekonde herbegin}other{Brave sal oor # sekondes herbegin}}</translation>
-<translation id="6239161312595354541">Vra Prentsoektog oor hierdie video</translation>
 <translation id="5980269616827212166">Brave het bergingtoegangtoestemming nodig om lêers af te laai</translation>
 <translation id="7651600795135059130">Vergelyk URL'e met 'n lys onveilige werwe wat in Brave geberg word</translation>
 <translation id="5019879183386042809">Maak Brave die verstekblaaier</translation>
@@ -563,13 +542,11 @@ Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielg
             • Brave-kortpaaie terugstel
             <ph name="LINE_BREAKS"/>
             Boekmerke, geskiedenis en gestoorde wagwoorde sal nie geraak word nie.</translation>
-<translation id="6934579572334859869">Vra Prentsoektog oor hierdie prent</translation>
 <translation id="5529781826378237601">Jy het Brave se limiet van <ph name="BOOKMARK_LIMIT"/> boekmerke bereik, en daarom is sommige van jou boekmerke nog nie in jou Brave-rekening gestoor nie.
 
 Nuwe boekmerke kan nie in jou rekening gestoor word totdat jy sommige uitvee nie. As jy nou afmeld, sal ongestoorde boekmerke uitgevee word.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="3453763134178591239">Brave-bedryfstel se bepalings</translation>
-<translation id="3335606533094650083">Brave het toestemming nodig om toegang te kry tot jou mikrofoon vir hierdie werf</translation>
 <translation id="6643520655691573653">Voer jou wagfrase in om Brave-data in jou rekening, <ph name="ACCOUNT_EMAIL"/>, te gebruik en te stoor</translation>
 <translation id="7011190694940573312">Installering het misluk omdat hierdie weergawe van die bedryfstelsel nie gesteun word nie.</translation>
 <translation id="7024536598735240744">Uitpakfout: <ph name="UNPACK_ERROR"/>.</translation>
@@ -585,6 +562,7 @@ Nuwe boekmerke kan nie in jou rekening gestoor word totdat jy sommige uitvee nie
 <translation id="2332301637111071062">Jou organisasie vee Brave-data uit wanneer dit <ph name="TIMEOUT_DURATION"/> lank nie gebruik is nie. Dit kan geskiedenis, outovul en aflaaie insluit.</translation>
 <translation id="1008530050039597147">Brave het kameratoestemming vir hierdie werf nodig</translation>
 <translation id="1197672524850678392">Kon nie Brave begin nie. Probeer weer.</translation>
+<translation id="5020151688261063547">Vra enigiets, net waar jy is, met Gemini in Brave</translation>
 <translation id="3625983487600668413">Hou Brave in jou dok om enige tyd vinnig daarby uit te kom</translation>
 <translation id="5755581833598928580">Gebruik Brave enige tyd wanneer jy op skakels in boodskappe, dokumente en ander apps klik</translation>
 <translation id="7216228761061470870">Wanneer jy Prentsoektog gebruik, word die bladsytitel, URL en inhoud, insluitend PDF’s, na die bediener toe gestuur</translation>
@@ -605,6 +583,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="7352651011704765696">Iets het verkeerd geloop</translation>
 <translation id="6085660187823915017">Jy het macOS 13 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik macOS 12.</translation>
 <translation id="2865744782251083875">Jy het nie onlangs die webwerf besoek nie. Brave het <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> verwyder.</translation>
+<translation id="3871306442916198768">Wys Gemini in Brave in die stelsellaai</translation>
 <translation id="4104934885375476361">Brave is nou jou verstekblaaier</translation>
 <translation id="7951152294775418909">Gaan voort waar jy opgehou het: Brave stel elke keer as jy herbegin, jou oortjies terug. Om dit af te skakel, gaan na</translation>
 <translation id="3191314862567596053">Voer wagwoorde na Brave in</translation>
@@ -613,7 +592,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 3. Klik <ph name="BUTTON_3"/> in die Windows-kennisgewing om Brave vir kitstoegang op jou taakbalk vas te speld</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="7450541714075000668">Teks gekopieer</translation>
-<translation id="2034072705932785495">Brave het toestemming nodig om toegang te kry tot jou kamera vir hierdie werf</translation>
 <translation id="7129342855140808694">Jy moet vir Brave toegang in <ph name="BEGIN_LINK"/>stelselinstellings<ph name="END_LINK"/> gee om jou mikrofoon te gebruik</translation>
 <translation id="5296583608321648908">Jy het Windows 10 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik Windows 7.</translation>
 <translation id="3962395975456095331">Herbegin Brave?</translation>
@@ -640,6 +618,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="4784414698887946907">Dit sal jou blaaierdata op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="7747138024166251722">Die installeerder kon nie 'n tydelike gids skep nie. Gaan asseblief na vir beskikbare skyfspasie en toestemming om sagteware te installeer.</translation>
 <translation id="8543787950557226450">Stel terug na verstek-Brave</translation>
+<translation id="4859382825808018797">Jou organisasie sal sekere inligting kan bekyk of bestuur om jou werk op Brave te beveilig wanneer jy by Brave aangemeld is.</translation>
 <translation id="4976450819672499783">Stel Brave as verstek en speld dit aan taakbalk vas</translation>
 <translation id="1978509466033734608">Maak Brave vinniger</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
@@ -653,7 +632,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="7872446069773932638">Laai tans af … <ph name="SECONDS"/> sekonde(s) oor.</translation>
 <translation id="5545136190679883344"><ph name="BEGIN_LINK"/>Vee die Brave-data in jou rekening uit<ph name="END_LINK"/> indien jy jou wagfrase vergeet het of hierdie instelling wil verander.</translation>
 <translation id="9044562649276955255">Maak Gemini vinnig in Brave oop wanneer jy dit ook al nodig het</translation>
-<translation id="7877212753140190672">Vra oor hierdie prent</translation>
 <translation id="5687542525349822727">Stel Brave as jou verstek.</translation>
 <translation id="6396151137840491551">Brave gradeer onveilige verbindings aan HTTPS outomaties op, wanneer moontlik</translation>
 <translation id="2925193881330501265">Jy was as <ph name="USER_EMAIL_ADDRESS"/> by Brave aangemeld. Gebruik asseblief dieselfde rekening om weer aan te meld.</translation>
@@ -735,7 +713,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="1419543648228375718">Meld by Brave aan?</translation>
 <translation id="8747073452963259673">onderste linkerhoek van soekgebied: links <ph name="LEFT"/>%, onder <ph name="BOTTOM"/>%</translation>
 <translation id="878572486461146056">Installeerfout: Jou netwerkadmin het ’n groepbeleid toegepas wat installasie verhinder: <ph name="INSTALL_ERROR"/></translation>
-<translation id="4831743161813926460">Brave het toestemming nodig om toegang te kry tot jou kamera en mikrofoon vir hierdie werf</translation>
 <translation id="8813277370772331957">Herinner my later</translation>
 <translation id="1588296410638341457">Deel hierdie dokument met Gemini in Brave om ’n vinnige oorsig te kry en opvolgvrae te vra</translation>
 <translation id="64216977793816291">Meld aan by Brave?</translation>

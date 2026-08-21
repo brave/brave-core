@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">Неактивні об’єкти не накопичуватимуться</translation>
 <translation id="1329584516321524826">Щойно оновлено</translation>
 <translation id="1340839264183302272">Вийти з групи</translation>
+<translation id="1386966479075994683">Розгорнути вкладки</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Розгорнути спільну групу "<ph name="TITLE_OF_GROUP"/>" з <ph name="TABS_COUNT_ONE"/> вкладкою; колір: <ph name="COLOR_NAME"/>; мітка: <ph name="CARD_LABEL"/>.}one{Розгорнути спільну групу "<ph name="TITLE_OF_GROUP"/>" з <ph name="TABS_COUNT_MANY"/> вкладкою; колір: <ph name="COLOR_NAME"/>; мітка: <ph name="CARD_LABEL"/>.}few{Розгорнути спільну групу "<ph name="TITLE_OF_GROUP"/>" з <ph name="TABS_COUNT_MANY"/> вкладками; колір: <ph name="COLOR_NAME"/>; мітка: <ph name="CARD_LABEL"/>.}many{Розгорнути спільну групу "<ph name="TITLE_OF_GROUP"/>" з <ph name="TABS_COUNT_MANY"/> вкладками; колір: <ph name="COLOR_NAME"/>; мітка: <ph name="CARD_LABEL"/>.}other{Розгорнути спільну групу "<ph name="TITLE_OF_GROUP"/>" з <ph name="TABS_COUNT_MANY"/> вкладки; колір: <ph name="COLOR_NAME"/>; мітка: <ph name="CARD_LABEL"/>.}}</translation>
 <translation id="1486715732399361704">Тут можна переглянути всі групи вкладок</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Створено <ph name="NUM_MINS_ONE"/> хвилину тому}one{Створено <ph name="NUM_MINS_MANY"/> хвилину тому}few{Створено <ph name="NUM_MINS_MANY"/> хвилини тому}many{Створено <ph name="NUM_MINS_MANY"/> хвилин тому}other{Створено <ph name="NUM_MINS_MANY"/> хвилини тому}}</translation>
@@ -44,6 +45,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Розгрупувати вкладку}one{Розгрупувати вкладки}few{Розгрупувати вкладки}many{Розгрупувати вкладки}other{Розгрупувати вкладки}}</translation>
 <translation id="2271452184061378400">Тут зберігаються групи вкладок</translation>
 <translation id="2277224997687551299">Змінити назву групи</translation>
+<translation id="2289567621059034186">Нова вкладка нижче</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Зробити закладку для вкладки}one{Зробити закладки для вкладок}few{Зробити закладки для вкладок}many{Зробити закладки для вкладок}other{Зробити закладки для вкладок}}</translation>
 <translation id="2359808026110333948">Продовжити</translation>
 <translation id="2371084566192454134">Вкладки й групи вкладок</translation>
@@ -78,6 +80,7 @@
 <translation id="3152596030350326139">Показувати вкладки горизонтально</translation>
 <translation id="31806439105337256">Показувати вкладки вертикально</translation>
 <translation id="3194464645767632461">оцінка</translation>
+<translation id="3228962656492373217">Закрити вкладки нижче</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Додати <ph name="TABS_COUNT_ONE"/> вкладку в групу}one{Додати <ph name="TABS_COUNT_MANY"/> вкладку в групу}few{Додати <ph name="TABS_COUNT_MANY"/> вкладки в групу}many{Додати <ph name="TABS_COUNT_MANY"/> вкладок у групу}other{Додати <ph name="TABS_COUNT_MANY"/> вкладки в групу}}</translation>
 <translation id="3328308545011660196">Підказка: схоже, ви відкрили кілька пов'язаних вкладок (<ph name="NUMBER_OF_TABS"/>). Додати їх у групу?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{Через 1 день без активності}one{Через <ph name="DAY_COUNT_MANY"/> день без активності}few{Через <ph name="DAY_COUNT_MANY"/> дні без активності}many{Через <ph name="DAY_COUNT_MANY"/> днів без активності}other{Через <ph name="DAY_COUNT_MANY"/> дня без активності}}</translation>
@@ -124,7 +127,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Перемістити вкладки в нове вікно}one{Перемістити вкладки в інше вікно}few{Перемістити вкладки в інше вікно}many{Перемістити вкладки в інше вікно}other{Перемістити вкладки в інше вікно}}</translation>
 <translation id="5073204694187207510">Сховати повноекранну сітку</translation>
 <translation id="5076161749301278626">Показати відгуки про магазин?</translation>
+<translation id="5093447877601682598">Надіслати відгук про панель вкладок</translation>
 <translation id="5161254044473106830">Введіть назву</translation>
+<translation id="5204584298075822291">Згорнути вкладки</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave автоматично закриває неактивні вкладки й групи вкладок через <ph name="AUTO_DELETE_DELAY_ONE"/> місяць. За потреби ви можете це змінити в налаштуваннях.}one{Brave автоматично закриває неактивні вкладки й групи вкладок через <ph name="AUTO_DELETE_DELAY_MANY"/> місяць. За потреби ви можете це змінити в налаштуваннях.}few{Brave автоматично закриває неактивні вкладки й групи вкладок через <ph name="AUTO_DELETE_DELAY_MANY"/> місяці. За потреби ви можете це змінити в налаштуваннях.}many{Brave автоматично закриває неактивні вкладки й групи вкладок через <ph name="AUTO_DELETE_DELAY_MANY"/> місяців. За потреби ви можете це змінити в налаштуваннях.}other{Brave автоматично закриває неактивні вкладки й групи вкладок через <ph name="AUTO_DELETE_DELAY_MANY"/> місяця. За потреби ви можете це змінити в налаштуваннях.}}</translation>
 <translation id="5254233580564156835">Використання пам’яті: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Остання вкладка</translation>

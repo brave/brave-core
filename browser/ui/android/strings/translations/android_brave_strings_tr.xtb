@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Tarama verilerini temizle</translation>
 <translation id="1690924763769415936">Arka planda oynat</translation>
 <translation id="6332924730165919598">Tüm sekmelerin kapatılması, Brave'i kapatır</translation>
+<translation id="2557725907027944082">Gruplar</translation>
 <translation id="8308305244351876417">Brave'de veya başka bir uygulamada sekme değiştirirken ya da cihaz ekranınız kapalıyken sesin çalmasına izin verir.</translation>
 <translation id="49147335255967913">YouTube bağlantılarını Brave'de aç</translation>
 <translation id="4150201353443180367">Ekran</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevine hakkında daha fazla bilgi edinin<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">İzin Ver (Şimdi Yeniden Çalıştır)</translation>
 <translation id="2433507940547922241">Görünüm</translation>
+<translation id="316542773973815724">Gezinme</translation>
 <translation id="9040069796107003510">Brave Ödülleri simgesi</translation>
 <translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
-<translation id="1215433243238902715">Alt gezinme araç çubuğunu etkinleştir</translation>
+<translation id="4393974575368329991">Alt gezinme araç çubuğu</translation>
+<translation id="1834226716203076292">Ana sayfa, yer imleri ve aramaya hızlı erişim için bir alt çubuk göster</translation>
 <translation id="1422686363939271829">Alt adres çubuğu konumu seçildiğinde bu ayar devre dışı bırakılır</translation>
 <translation id="6587448235155023666">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
 <translation id="8701563696941209024">ŞİMDİ YENİDEN BAŞLAT</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Kilitlenme veya çökme yaşarsanız anonim tanı raporu gönderin.</translation>
 <translation id="4780647518983772446">Brave özellikleri hangi kullanıcılarının kullandığına dair gizli ve anonim ürün içgörülerini paylaşın.</translation>
 <translation id="5109496672133133896">Özel ürün içgörüleri</translation>
-<translation id="3545804467215833536">Brave Kalkanlarını görmek için dokunun</translation>
-<translation id="1724327820822194498">Brave'in Kalkanlar ile her sayfada engellediği zararlı şeyleri görün.</translation>
+<translation id="4340039903315468568">Shields ile Brave'in her sayfada engellediği tüm zararlı içerikleri görün. Görüntülemek için dokunun</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklam &amp; izleyicisi engellendi</translation>
 <translation id="8281886186245836920">Atla</translation>
 <translation id="5806601733251372221">Brave Kalkanları</translation>
@@ -441,6 +443,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7141438739990875547">Bitcoin ağları</translation>
 <translation id="9055546041146396417">Bu site bozuk görüntülenirse, Shileds'ı kapatmayı deneyin.</translation>
 <translation id="7898672232170410330">Öğeyi engelle</translation>
+<translation id="7205939464631857223">Engellenen tüm öğeleri temizle</translation>
 <translation id="7961015016161918242">Hiçbir Zaman</translation>
 <translation id="3200744626782631683">Tarama verileri hiçbir zaman otomatik olarak silinmez</translation>
 <translation id="1991004083507807299">Site Sekmeleri Kapatıldığında</translation>
@@ -503,7 +506,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3980704343258720102">Tüm tarama verilerini temizler</translation>
 <translation id="8089997572759938512">Gizlilik raporlarınızı sıfırlayın</translation>
 <translation id="2718046830255553131">Gizlilik raporları verileri silindi.</translation>
-<translation id="8376263745431603066">"Gece Modu"nu etkinleştir (Deneysel)</translation>
+<translation id="3623948252408240879">Gece Modu</translation>
+<translation id="1257950165130031194">Web içeriği için koyu modu zorla</translation>
+<translation id="8710601165725654801">Dinamik renkler</translation>
+<translation id="7865194971711852999">Uygulama teması duvar kağıdı renkleriyle eşleşir</translation>
 <translation id="1383876407941801731">Ara</translation>
 <translation id="13296465911709339">Metnin panoya kopyalandı.</translation>
 <translation id="2735834606413553397">Halka açık adres panoya kopyalandı.</translation>
@@ -723,7 +729,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4979796155378508955">Özel nonce değeri sıralı değilse veya başka hatalar mevcutsa işlem ağa yayılmayabilir.</translation>
 <translation id="750843150060816463">GAS Fiyatı (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limiti</translation>
-<translation id="6389441740143786465">Paylaşım Merkezini Devre Dışı Bırak</translation>
+<translation id="1784950057929740513">Paylaşım Merkezi</translation>
 <translation id="473775607612524610">Güncelle</translation>
 <translation id="479795390141144417">Hesap güncellemesi başarısız.</translation>
 <translation id="8084782383392198011">Hesap adı boş bırakılamaz.</translation>
@@ -798,8 +804,12 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1060221736464994328">Bu sitenin ağı değiştirmesine izin verilsin mi?</translation>
 <translation id="2478788592457735063">Bu, ağı daha önce eklenmiş bir ağa çevirir.</translation>
 <translation id="8756686998207163764">Ağı değiştir</translation>
+<translation id="8905793906896555159">Sekme gruplarını etkinleştir</translation>
+<translation id="7632160823264702523">Sekme grupları çubuğu</translation>
+<translation id="2477807195394450274">Şu anda açık olan sekme grubundaki sekmelere hızlı erişim için bir alt çubuk göster</translation>
+<translation id="8374720587111523381">Bağlantıları mevcut sekme grubunda aç</translation>
 <translation id="5324095733417835490">Bağlantıları yalnızca mevcut sekme grubunda aç</translation>
-<translation id="2620277345862119868">Tüm bağlantıları otomatik olarak mevcut sekme grubunda açar</translation>
+<translation id="1227658541937938697">Tüm bağlantıları otomatik olarak mevcut sekme grubunda aç</translation>
 <translation id="5242300593039211344">Cüzdanı Kilitle</translation>
 <translation id="1108298724135935307">Bağlı siteler</translation>
 <translation id="4255623233927788178">Blok gezgininde görüntüleyin</translation>
@@ -1078,7 +1088,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6393423486818299209">Mevcut hizmet sağlayıcınızı veya Wikimedia DNS'yi kullanın</translation>
 <translation id="3401384982562827787">Mevcut hizmet sağlayıcınızı veya Cloudflare'yi kullanın</translation>
 <translation id="8812367543786936496">Mevcut hizmet sağlayıcınız güvenli dğeilse Brave güvenli bir alternatif DNS sağlayıcı kullanır</translation>
-<translation id="1381108437654541567">Birden fazla pencereyi etkinleştir</translation>
+<translation id="750538469281113679">Birden fazla pencere</translation>
 <translation id="6167344249617630304">Bir seferde 5'e varan pencere açın ve sekmeleri bir pencereden diğerine taşıyın</translation>
 <translation id="1063948063403254568">Birden fazla pencere tespit edildi</translation>
 <translation id="4661882208707630158">Birden fazla pencere özelliğini devre dışı bırakmadan önce lütfen sekmeleri başka bir Brave penceresinde birleştirin veya diğer Brave pencerelerini kapatın.</translation>

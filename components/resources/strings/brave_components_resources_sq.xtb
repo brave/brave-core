@@ -525,11 +525,7 @@
     }</translation>
 <translation id="3264975266761862670">Gati për të fituar?</translation>
 <translation id="2784412028126205842">Lidhni një llogari pagese</translation>
-<translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {Keni parë <ph name="COUNT_BEGIN"/> # Reklama<ph name="COUNT_END"/> këtë muaj}
-      =1 {Mund të jeni duke fituar para për <ph name="COUNT_BEGIN"/> # Reklamën<ph name="COUNT_END"/> që keni parë këtë muaj.}
-      other {Mund të jeni duke fituar para për <ph name="COUNT_BEGIN"/> # Reklamat<ph name="COUNT_END"/> që keni parë këtë muaj.}
-    }</translation>
+<translation id="4083788716319248418">{ADS_VIEWED, plural, =1 {Ke parë <ph name="COUNT_BEGIN"/> # Reklamë<ph name="COUNT_END"/> këtë muaj} other {Ke parë <ph name="COUNT_BEGIN"/> # Reklama<ph name="COUNT_END"/> këtë muaj}}</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural, =0 {Ke parë <ph name="COUNT_BEGIN"/> # Reklama<ph name="COUNT_END"/> këtë muaj} =1 {Po fiton duke parë <ph name="COUNT_BEGIN"/> # Reklamë<ph name="COUNT_END"/> këtë muaj} other {Po fiton duke parë <ph name="COUNT_BEGIN"/> # Reklama<ph name="COUNT_END"/> këtë muaj}}</translation>
 <translation id="6067959437127691361">Përdorimi i Shpërblimeve Brave ndihmon në mbështetjen e krijuesve të përmbajtjeve dhe ju lejon të fitoni BAT.</translation>
 <translation id="2359808026110333948">Vazhdo</translation>
@@ -1128,6 +1124,7 @@
 <translation id="793994607260936590">e parë</translation>
 <translation id="4709524402122994378">transaksione</translation>
 <translation id="4591079278963448049">Llogaria e lidhur e tokenëve ende nuk ekziston. Një sasi e vogël SOL do të shpenzohet për ta krijuar dhe financuar atë.</translation>
+<translation id="1468846486094099016">Ngarkesa e Vlerësuar e Nënshkrimit</translation>
 <translation id="3240773103344793224">Kërkesë për ndryshim të pronësisë së llogarisë</translation>
 <translation id="8041423758956015568">Kjo transaksion do të riatriboj pronësinë e llogarisë një programi të ri. Ky veprim është i pakthyeshëm dhe mund të sjellë humbjen e fondeve.</translation>
 <translation id="1426320910664514906">Kufiri i Gazit</translation>
@@ -1597,6 +1594,13 @@
 <translation id="5333225216561354793">Ne kërkojmë që të pranoni artikujt më poshtë</translation>
 <translation id="4284971227128011550">Unë e kuptoj që ky është një portofol me vetë-ruajtje dhe se unë jam përgjegjës i vetëm për çdo fond, pasuri, ose llogari të lidhur, dhe për marrjen e çdo veprimi të përshtatshëm për të siguruar, mbrojtur dhe kopjo mua portofolin. Unë e kuptoj se Brave nuk mund të qaset në portofolin tim ose të kthyer transaksionet në emrin tim, dhe që fraza ime e rimarrjes është E VETMJA mënyrë për të rifituar qasjen në rast të një fjalëkalimi të humbur, pajisje të vjedhur, ose rast të ngjashëm.</translation>
 <translation id="3604445540387095708">Kam lexuar dhe pranoj <ph name="LINK_BEFORE"/>Kushtet e përdorimit<ph name="LINK_AFTER"/>.</translation>
+<translation id="7298195798382681320">Rekomanduar</translation>
+<translation id="5261730884092815272">12 fjalë</translation>
+<translation id="4937679440025366600">24 fjalë</translation>
+<translation id="7875799385764282380">Siguri e fortë dhe më e shpejtë për t'u shkruar. Përdoret nga shumica e wallet-eve.</translation>
+<translation id="8157829085295816223">Marzhi maksimal i sigurisë. E mirë për përdorim në wallet-e të tjera (të cilat mund të kërkojnë një frazë me 24 fjalë).</translation>
+<translation id="4357180991717571915">Zgjidh gjatësinë e frazës tënde të rikuperimit</translation>
+<translation id="8997001537838391693">Fraza jote e rikuperimit rikthen aksesin te wallet-i nëse harron fjalëkalimin ose humbet pajisjen. Do ta ruash në hapat vijues.</translation>
 <translation id="1422451606553326863">Bli kripto</translation>
 <translation id="3887541341068007345">Duke kontrolluar për zgjatjet e instaluara të portofolit...</translation>
 <translation id="8407091560429310499">Zgjidh një pasuri</translation>
@@ -1838,6 +1842,8 @@
 <translation id="7716113567047550378">Ju lutem mos e mbyllni këtë dritare derisa të përfundojë sinkronizimi.</translation>
 <translation id="5123590959308755060">Vazhdo të përdorni portofolin në një skedë të re</translation>
 <translation id="4594014034647546191">Blloku i ditëlindjes së llogarisë Shielded</translation>
+<translation id="2242190818083876475">Rivendos ditëlindjen e llogarisë</translation>
+<translation id="5080237867196215050">Rivendosja e ditëlindjes së llogarisë tënde do të kërkojë një risinkronizim të plotë. Fut një bllok të ri ditëlindjeje dhe kliko "Rivendos ditëlindjen e llogarisë" për të vazhduar.</translation>
 <translation id="6666784075827260119">Ditëlindja e llogarisë duhet të jetë më e madhe se <ph name="BLOCK_NUMBER"/></translation>
 <translation id="3102477628835823956">Ditëlindja e llogarisë duhet të jetë më e vogël se <ph name="BLOCK_NUMBER"/></translation>
 <translation id="6850229669854962550"><ph name="BLOCKS"/> blloqe prapa</translation>
@@ -1984,6 +1990,10 @@
 <translation id="7948579849190819732">Skedë Aktual</translation>
 <translation id="7056969230130642253">Keni përfunduar gjithçka</translation>
 <translation id="7292242212818928219">Përmbajtje e re në dispozicion. Rifresko?</translation>
+<translation id="6007028324976222777">Importo nga OPML</translation>
+<translation id="8871004282386501355">Eksporto në OPML</translation>
+<translation id="481478016164478903">Shtoi <ph name="PUBLISHER_COUNT"/> botues, <ph name="FEED_COUNT"/> feed të drejtpërdrejtë dhe <ph name="CHANNEL_COUNT"/> kanale. Anashkaloi <ph name="SKIPPED_COUNT"/> të shtuar tashmë.</translation>
+<translation id="5537748547202815718">Ai skedar nuk u importua dot. Sigurohu që është një skedar OPML i vlefshëm.</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">Përpara</translation>
 <translation id="1272079795634619415">Ndalo</translation>
@@ -1991,6 +2001,8 @@
 <translation id="7211681214230730336">Ringarko duke pastruar memorie përkohshme</translation>
 <translation id="1779766957982586368">Mbyll dritaren</translation>
 <translation id="5210365745912300556">Mbyll skedën</translation>
+<translation id="8852436503814917529">Kalo te skeda tjetër</translation>
+<translation id="1543046737011894871">Kalo te skeda e mëparshme</translation>
 <translation id="2291643155573394834">Skeda tjetër</translation>
 <translation id="7748528009589593815">Skeda e mëparshme</translation>
 <translation id="3738690686686515962">Zgjidh skedën 0</translation>
@@ -2008,7 +2020,6 @@
 <translation id="4841735924729216702">Menyja e dritares</translation>
 <translation id="3649256019230929621">Minimizo dritaren</translation>
 <translation id="906458777597946297">Maximizo dritaren</translation>
-<translation id="2082612610620888017">Shfaq të gjitha dritaret</translation>
 <translation id="1111843722790053332">Hapni në dritare PWA</translation>
 <translation id="907981618023904259">Cilësimet e aplikacionit të internetit</translation>
 <translation id="4138336125382947023">Informacioni i aplikacionit të internetit</translation>
@@ -2067,7 +2078,6 @@
 <translation id="7012611213801651252">Shfaq menynë e avatarit</translation>
 <translation id="6263048902976129908">Ndryshimi i veglave të dev</translation>
 <translation id="1386786836007298307">Ndrysho shiritin e veglave në ekran të plotë</translation>
-<translation id="461433814913785913">Përshtatni shiritin e prekjeve</translation>
 <translation id="4722786500079380710">Ndrysho ngjarjet e Apple JavaScript</translation>
 <translation id="5825969867518399495">Instalo PWA</translation>
 <translation id="7888244262238732644">Shfaq faqen e menaxhimit</translation>
@@ -2107,7 +2117,11 @@
 <translation id="6332027154313182926">Ndrysho VPN Brave</translation>
 <translation id="6539014233195996894">Ndrysho heshtjen e skedës</translation>
 <translation id="2682865834956428001">Ndrysho pozicionin e panelit anësor</translation>
-<translation id="6105745639559695088">Ndrysho panelin anësor</translation>
+<translation id="7095235686444800565">Aktivizo/çaktivizo panelin anësor aktual</translation>
+<translation id="6330741325040551950">Aktivizo/çaktivizo panelin anësor të Shënimeve</translation>
+<translation id="1973174482432326058">Aktivizo/çaktivizo panelin anësor të Listës së Leximit</translation>
+<translation id="14910687022901840">Aktivizo/çaktivizo panelin anësor të Listës</translation>
+<translation id="3195191401552731345">Aktivizo/çaktivizo panelin anësor të Lajmeve Brave</translation>
 <translation id="3488252265135539275">Ndrysho skedat vertikale</translation>
 <translation id="7134064542341959603">Ndrysho titullin e dritares së skedave vertikale</translation>
 <translation id="3067105725259639716">Konfiguro Lajme Brave</translation>
@@ -2120,6 +2134,7 @@
 <translation id="134184943774258988">Ndiz/Fik butonin 'Të gjitha faqeshënuesit'</translation>
 <translation id="2158862020143233462">Ndiz/Fik mburojat</translation>
 <translation id="3010280727642018218">Ndiz/Fik JavaScript</translation>
+<translation id="8324318899000695659">Blloko elementet</translation>
 <translation id="188822869499214197">Shfaq flluskën e listës</translation>
 <translation id="3202536111478033084">Grupo skedat në origjinën aktuale</translation>
 <translation id="6002210667729577411">Zhvendose grupin në një dritare të re</translation>
@@ -2232,23 +2247,21 @@
 <translation id="7905602379229309187">Pika e fundit është aktualisht e ngarkuar. Ju lutem provoni përsëri më vonë.</translation>
 <translation id="8151638057146502721">Konfiguroje</translation>
 <translation id="999273441077650169">Modeli ndryshon në mënyrë dinamike për të përdorur më të mirin për detyrën. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="1238020084128916796">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Llama 3.1 8B, një model i krijuar nga Meta për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Llama është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen VL 30B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-5, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-5 është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-5.1, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-5.1 është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Përshëndetje, unë jam Leo. Unë jam një asistent AI i Brave. Kam fuqi nga Claude Instant, një model i krijuar nga Anthropic për të kryer detyra bisedore dhe përpunimi teksti. Claude Instant ofrohet nga Brave përmes infrastrukturës sonë të sigurt.<ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Haiku, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Haiku është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Sonnet, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Sonnet është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="6277330815126859513">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Llama 4 Maverick, një model i krijuar nga Meta për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Llama 4 Maverick është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="5833148755396048122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT OSS 20B, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT OSS 20B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="5414593137581221307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT OSS 120B, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT OSS 120B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="3399141352144059821">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Grok 4.3, një model i krijuar nga xAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Grok 4.3 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="8868813509973985458">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.4, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT 5.4 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Mistral Large, një model i krijuar nga Mistral për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Mistral Large është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3 235B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3 235B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Deepseek V3.2, një model i krijuar nga Deepseek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Deepseek V3.2 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3767678495358551728">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3 Coder 480B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3 Coder 480B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Opus, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Opus është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-4-7-Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-4-7-Flash është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Kimi K2.5, një model i krijuar nga Moonshot AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Kimi K2.5 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="3484076625906498634">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Nemotron Nano 3 30B, një model i krijuar nga NVIDIA për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Nemotron Nano 3 30B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Brave Ocelot, një model i krijuar nga Brave për të përmbledhur faqet e internetit. Brave Ocelot është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
@@ -2268,20 +2281,15 @@
 <translation id="5543505256451301851">Provo 7 ditë falas</translation>
 <translation id="849535826888024304">Kufiri i shpejtësisë së përgjigjes arritur</translation>
 <translation id="2252128900328632803">Keni arritur kufirin e shpejtësisë për Leo. Zhbllokoni një shpejtësi më të madhe përgjigjeje duke u abonuar në Premium ose provoni përsëri shpejt.</translation>
-<translation id="4173478269537830374">Zbulo modele të ndryshme IA</translation>
-<translation id="3245401959451976966">Zhblloko krijimtarinë</translation>
-<translation id="4165928407303989823">Qëndro në temë</translation>
-<translation id="2389665228467129817">Bisedo më gjatë</translation>
+<translation id="8746303650199962589">Akseso LLM-të më të fundit nga Anthropic, OpenAI, DeepSeek dhe më shumë</translation>
+<translation id="4366237751405135351">Gjej modele specifike për detyra për kodim, gjenerim përmbajtjeje dhe më tej</translation>
+<translation id="7494418589245805538">Përfito kufij më të lartë për bisedat e tua</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /në muaj</translation>
 <translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /vit</translation>
-<translation id="1028627582482425924">Një vit</translation>
-<translation id="36366199652730057">Vlera më e mirë</translation>
+<translation id="4955814292505481804">Vjetor</translation>
+<translation id="7724435637185902140">Kurse ~17%</translation>
 <translation id="5151923271944811339">Kalo në modelin falas</translation>
 <translation id="5474757891469990756">Çliroje fuqinë e plotë të Leo me Premium:</translation>
-<translation id="3453542753968940696">Qasje me përparësi në modele të fuqishme me aftësi të ndryshme.</translation>
-<translation id="5031778211368112461">Qasje në modele më të përshtatshme për detyra krijuese dhe gjenerim përmbajtjeje.</translation>
-<translation id="298783097210745222">Merr përgjigje më të sakta për biseda me më shumë nuanca.</translation>
-<translation id="4314705522985583059">Përfito kufij më të lartë për biseda më të gjata.</translation>
 <translation id="1068954060985569277">Seanca e llogarisë tënde në Brave ka skaduar. Ju lutemi vizitoni faqen tuaj të llogarisë për të rifreskuar, pastaj kthehuni për të përdorur veçoritë premium.</translation>
 <translation id="94736968936709953">Komentet u dërguan me sukses</translation>
 <translation id="9109355817507033196">Përgjigja nuk pëlqehet</translation>
@@ -2331,6 +2339,10 @@
 <translation id="8742658901413346500">Kjo bisedë është e gjatë dhe Leo mund të nisë të harrojë gjërat së shpejti. Ju mund të merrni biseda më të gjata duke kaluar në një model premium, ose mund të fshini bisedën për ta rivendosur.</translation>
 <translation id="6495402307502950726">Fshij bisedën</translation>
 <translation id="903201991022343217">Filloni një bisedë të re</translation>
+<translation id="8742207701089910775">Shpërndaje këtë bisedë</translation>
+<translation id="4014016095804982975">Biseda jote do të ngarkohet e enkriptuar dhe mund të dekriptohet vetëm me lidhjen e gjeneruar. Brave nuk do të jetë në gjendje ta shohë bisedën tënde. Vetëm ti dhe personat me të cilët e ndan këtë lidhje mund të dekriptojnë bisedën tënde të ndarë. Të gjitha bisedat e ndara do të skadojnë pas 7 ditësh.</translation>
+<translation id="1390174375123434798">Gjenero lidhjen</translation>
+<translation id="8904787158537906492">Lidhja u kopjua në kujtesën e fragmenteve</translation>
 <translation id="8171760814579050200">Kontribuo me të dhëna anonime kërkimi dhe shfletimi për të përrmirësuar Kërkimin Brave me Projektin e Zbulimit të Internetit. Është tërësisht me burim të hapur.</translation>
 <translation id="402386227879573975">Kopjo të gjithë bisedën</translation>
 <translation id="5397794290049113714">Ti</translation>
@@ -2374,13 +2386,13 @@
 <translation id="7821251979960635244">Historia e bisedës tënde do të shfaqet këtu pasi të filloni një bisedë.</translation>
 <translation id="887511360213807449">Historia është ç'aktivizuar</translation>
 <translation id="5380979378058584412">Për të parë bisedat e mëparshme me Leo, duhet të aktivizoni historikun e bisedave.</translation>
-<translation id="7348809809749151120">I shpejtë • Kërkim</translation>
 <translation id="3185367320601718531">Bisedë dhe gjenerim tekstesh</translation>
 <translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
 <translation id="8506027496671575183">Kërkim • Vision • Mjete</translation>
 <translation id="3184606955650139158">I shpejtë • Kërkim • Vision</translation>
 <translation id="7465032796278724624">Verifikuar si Privat nga NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modeli ndryshon dinamikisht për të përdorur më të mirën për detyrën</translation>
+<translation id="7348809809749151120">I shpejtë • Kërkim</translation>
 <translation id="3213834013136637671">Kërkim • Vision</translation>
 <translation id="5276681919620506371">Kërkim • Mjete</translation>
 <translation id="7434375176361995333">Përmbledhje • I shpejtë</translation>
@@ -2511,6 +2523,7 @@
 <translation id="3486480638399578250">Mbaje private adresën tënde personale të email-it</translation>
 <translation id="7765422154906712751">Krijo adresa unike dhe të rastësishme që dërgojnë te email-i yt i llogarisë Brave dhe mund të fshihen në çdo kohë. Mbaje adresën tënde aktuale të email-it nga zbulimi ose përdorimi nga reklamuesit.</translation>
 <translation id="71316462802471551">Adresat Maskuese</translation>
+<translation id="7901376755618482277">Shfaq udhëzimin "Alias i Ri" në fushat e email-it</translation>
 <translation id="6002159997868894136">Kliko për të kopjuar pseudonimin</translation>
 <translation id="8105770564756958406">Përdorur nga <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Krijo deri në 5 pseudonime falas të email-it për të mbrojtur adresën tënde të vërtetë të email-it.</translation>
@@ -2556,6 +2569,10 @@
 <translation id="367191282389216837">Përgjigje e pavlefshme nga shërbimi i Aliaseve të Email-it</translation>
 <translation id="7203490731644771170">Gabim nga shërbimi i Aliaseve të Email-it: <ph name="ERROR"/></translation>
 <translation id="8767862600155091621">Gabim: Alias nuk është i disponueshëm</translation>
+<translation id="1706715315466634757">Pseudonimet e email-it</translation>
+<translation id="7087933122203937032">Krijo adresa unike dhe të rastësishme që dërgojnë te email-i yt i llogarisë Brave dhe mund të fshihen në çdo kohë. Mbaje adresën tënde aktuale të email-it nga zbulimi ose përdorimi nga reklamuesit.</translation>
+<translation id="8057865981284642090">Për të përdorur aliaset e Email-it, duhet të jesh i identifikuar në llogarinë tënde Brave. Fillo duke klikuar butonin më poshtë.</translation>
+<translation id="4472575034687746823">Fillojani</translation>
 <translation id="8370801182970639038">Automatike (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motorët e kërkimit të aktivizuar</translation>
 <translation id="8285901519864208412">Fshi kartën e Shpërblimeve</translation>
@@ -2634,7 +2651,6 @@
 <translation id="9204041448536398473">Cilësimet globale të Mburojës</translation>
 <translation id="2108334320919763866">Paracaktimet globale</translation>
 <translation id="1896472873031845605">Cilësimet globale</translation>
-<translation id="8324318899000695659">Blloko elementet</translation>
 <translation id="7205939464631857223">Hiq të gjitha elementet e bllokuara</translation>
 <translation id="3440043456924990296">Cilësimet e menaxhuara nga organizata</translation>
 <translation id="7053983685419859001">Bllokoje</translation>
@@ -2735,6 +2751,21 @@
 <translation id="6764845498618413165">Mësoni Më Tepër.</translation>
 <translation id="7818938154803162778">Do t'ju ndihmoj, sigurisht</translation>
 <translation id="7207456302801184289">Mirë se vini në Brave</translation>
+<translation id="5341040774109629148">Përgatitu për përvojën më të mirë të shfletimit</translation>
+<translation id="6124979241984215095">Përjeto internetin pa u vëzhguar. Brave të mbron nga gjurmuesit, reklamat dhe fingerprinting, të gjitha automatikisht.</translation>
+<translation id="8722651357687610395">Zgjidh Brave si të paracaktuar</translation>
+<translation id="6385063238068436833">Fillo nga e para</translation>
+<translation id="2601678491007820794">Importo gjithçka nga shfletuesi yt i vjetër dhe bëje kalimin pa probleme.</translation>
+<translation id="5291297136536006359">Këtë mund ta bësh edhe më vonë te cilësimet e Brave.</translation>
+<translation id="701087249209337256">Sill me vete përmbajtjen e shfletuesit tënd të vjetër</translation>
+<translation id="7463724872882590240">Zgjidh shfletuesin tënd të mëparshëm</translation>
+<translation id="6091623542030502746">Çfarë dëshiron të importosh?</translation>
+<translation id="4740018245743691625">Rezultatet e importit</translation>
+<translation id="5418312173593538711">Duke importuar përmbajtjen tënde</translation>
+<translation id="6865313869410766144">Vetëfut të dhëna formulari</translation>
+<translation id="6786747875388722282">Zgjerime</translation>
+<translation id="5869522115854928033">Fjalëkalimet e ruajtura</translation>
+<translation id="4692623383562244444">Motorët e kërkimit</translation>
 <translation id="4988030440045495002">Temë shumë e errët</translation>
 <translation id="2422927186524098759">Paneli Anësor</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2744,6 +2775,7 @@
 <translation id="2478076885740497414">Instalo aplikacionin</translation>
 <translation id="8293206222192510085">Shto faqeruajtës</translation>
 <translation id="7758460733045216901">Paneli i Faqeruejtësve</translation>
+<translation id="9124418807119853058">Butoni i aktivizimit/çaktivizimit të skedave vertikale</translation>
 <translation id="958268166261124668">VPN Brave: I lidhur</translation>
 <translation id="6021669293402055982">VPN Brave: I lidhur</translation>
 <translation id="3541307549916475335">Paneli VPN Brave</translation>
@@ -2906,7 +2938,7 @@ Le të ju lidhim!</translation>
 <translation id="9033485352495162741">Konfirmimi u krye me sukses. Tani fut fjalëkalimin tënd të ri të dëshiruar:</translation>
 <translation id="1293857704520741614">Futu në llogarinë tënde</translation>
 <translation id="118617366439356381">Harrove fjalëkalimin?</translation>
-<translation id="5183159033908953146">Konfirmo emailin e llogarisë tënde Brave dhe më pas do të marrësh një lidhje për të rivendosur fjalëkalimin. Lidhja do të jetë e vlefshme vetëm për 30 minuta.</translation>
+<translation id="5636406393070713097">Konfirmo emailin e llogarisë tënde Brave dhe më pas do të marrësh një kod për të rivendosur fjalëkalimin. Kodi do të jetë i vlefshëm vetëm për 15 minuta.</translation>
 <translation id="3674472551471103443">Rivendos fjalëkalimin tënd</translation>
 <translation id="2755539422340788311">Verifiko emailin tënd</translation>
 <translation id="6641436078676327508">Duhet të kesh marrë një email me një kod të shkurtër. Të lutemi futeni këtu për të vazhduar.</translation>
@@ -2923,16 +2955,13 @@ Le të ju lidhim!</translation>
 <translation id="7144067487084094749">Ekziston tashmë një llogari për këtë adresë email. Provo të futesh në vend që të krijosh një llogari.</translation>
 <translation id="5288951359968156008">Domain-i i kësaj adrese email nuk mbështetet. Të lutemi përdor një adresë tjetër email.</translation>
 <translation id="7625678607509255072">Është tejkaluar kufiri i verifikimit me email. Të lutemi prit 30 minuta para se të provosh sërish.</translation>
-<translation id="9121175588136821850">Kodi i verifikimit skadoi. Fillo sërish procesin e regjistrimit.</translation>
-<translation id="8439543211004394821">U futën shumë kode të pasakta. Fillo sërish procesin e regjistrimit.</translation>
 <translation id="3229986152760633988">Kod i gabuar, të lutemi provo sërish.</translation>
 <translation id="818783632689113711">Një llogari është kërkuar tashmë për këtë adresë email-i. Ju lutemi kontrolloni email-in tuaj ose provoni përsëri pas 30 minutash.</translation>
 <translation id="4776810543245166572">Nuk u gjet asnjë llogari për këtë adresë email.</translation>
-<translation id="7090885444036935209">Adresa email e pavlefshme.</translation>
 <translation id="1542836798393843657">Shumë përpjekje verifikimi për këtë adresë email. Provo sërish pas 24 orësh.</translation>
 <translation id="7572012011062736429">Gabim i brendshëm. Mbylle dialogun, anulo verifikimin dhe provo sërish.</translation>
-<translation id="2477280119520811719">Kodi i verifikimit skadoi. Fillo sërish procesin e ndryshimit të fjalëkalimit.</translation>
-<translation id="7103280722523884198">U futën shumë kode të pasakta. Fillo sërish procesin e ndryshimit të fjalëkalimit.</translation>
+<translation id="7502408214945538786">Një llogari Brave të lejon të krijosh dhe menaxhosh aliaset e tua të email-it.</translation>
+<translation id="237081360011331787">Një llogari Brave të lejon të krijosh dhe menaxhosh aliaset e tua të email-it. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
 <translation id="4178004989875422946">Një llogari Brave do të të lejojë të hysh lehtësisht në shërbimet Brave.</translation>
 <translation id="4902897635127068510">A keni menduar <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock është i ndezur</translation>
@@ -2941,6 +2970,7 @@ Le të ju lidhim!</translation>
 <translation id="2112559299194052697">Nuk mund të ridërgohet</translation>
 <translation id="7932611814134267012">Janë dërguar tashmë shumë email verifikimi. Të lutemi kontrollo dosjen e postës së padëshiruar.</translation>
 <translation id="1364223093800750401">Emaili është verifikuar tashmë.</translation>
+<translation id="1054874027734589261">Ke futur shumë kode të pasakta. Anulo verifikimin dhe provo sërish.</translation>
 <translation id="1353061468772282268">Kodi i verifikimit ka skaduar. Anulo verifikimin dhe provo sërish.</translation>
 <translation id="3353844160742960162">Përshtatja e Cilësimeve të Privatësisë</translation>
 <translation id="528205534230423181">Ky website ofron cilësime privatësie që Brave mund t'i përshtatë automatikisht për ty. Ja çfarë rekomandojmë:</translation>

@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo IA</translation>
 <translation id="8275068909952022340">Mai multe…</translation>
 <translation id="71316462802471551">Nume alternative pentru email</translation>
-<translation id="209130971304928953">Salvează filele ca spațiu de lucru…</translation>
-<translation id="877984331511007834">Deschide spațiul de lucru…</translation>
-<translation id="1310182651927031327">Salvează filele ca spațiu de lucru…</translation>
-<translation id="3588277741646479444">Deschide spațiul de lucru…</translation>
+<translation id="8350985546648269694">Salvați ferestrele și filele curente ca spațiu</translation>
+<translation id="5327248766486351172">Nume</translation>
+<translation id="6379791766023874417">Introdu numele spațiului</translation>
+<translation id="9174724474418499472">Spațiul meu</translation>
+<translation id="5317780077021120954">Salvează</translation>
+<translation id="7658239707568436148">Anulează</translation>
+<translation id="196342407904926436">Opțiuni spațiu</translation>
+<translation id="2806407377752719586">Șterge spațiul</translation>
+<translation id="1844931500883490339">Sigur doriți să ștergeți acest spațiu? Spațiul salvat va fi eliminat definitiv. Această acțiune nu poate fi anulată.</translation>
+<translation id="8261506727792406068">Șterge</translation>
+<translation id="8428213095426709021">Setări</translation>
+<translation id="1212321046099128987">Niciun spațiu creat</translation>
+<translation id="3524567389166933243">Creați primul spațiu apăsând butonul Salvează de mai jos.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 filă} few {# file} other {# de file}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> ferestre</translation>
+<translation id="1680377529024357662">Salvează ferestrele și filele curente ca spațiu</translation>
+<translation id="5561829325295347472">Introdu numele spațiului</translation>
+<translation id="2028520494010039812">Opțiuni spațiu</translation>
+<translation id="1580775521202322063">Șterge spațiul</translation>
+<translation id="3004759399777164093">Sigur doriți să ștergeți acest spațiu? Spațiul salvat va fi eliminat definitiv. Această acțiune nu poate fi anulată.</translation>
+<translation id="7563692436589408797">Niciun spațiu creat</translation>
+<translation id="3945077125173636695">Creați primul spațiu apăsând butonul Salvează de mai jos.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 filă} few {# file} other {# de file}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> ferestre</translation>
+<translation id="3326655241685890930">Spații</translation>
 <translation id="1990886731975529483">Instalați și rulați Google Widevine</translation>
 <translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="4900351245762303149">Instalați Google Widevine</translation>
@@ -37,7 +58,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
-<translation id="3477357195688115718">Brave nu evaluează extensiile din punct de vedere al securității și siguranței. Instalați această extensie doar dacă aveți încredere în dezvoltator.</translation>
+<translation id="2201935460386712655">Brave nu evaluează extensiile din punct de vedere al securității și siguranței. Instalați „<ph name="EXTENSION_NAME"/>” doar dacă aveți încredere în dezvoltator.</translation>
 <translation id="2928844661231356557">Permiterea accesului unui dispozitiv Bluetooth va permite site-ului să citească informații de identificare sau potențial sensibile despre dvs. Permiteți doar site-urilor de încredere să vă acceseze dispozitivele Bluetooth.<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Ferestre Tor</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
@@ -63,7 +84,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3211174446914979436">Gestionează filtrele</translation>
 <translation id="3108584651298176909">Afișează regulile</translation>
 <translation id="5156986655891520787">Ascunde regulile</translation>
-<translation id="7658239707568436148">Anulează</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Deschide folosind adresa .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forțează lipire</translation>
@@ -91,6 +111,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="191886777375280620">Capturați ecranul</translation>
 <translation id="3114478090884951591">Zonă vizibilă</translation>
 <translation id="2026367923222947564">Pagină întreagă</translation>
+<translation id="4218885227032158909">Zonă selectată</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="3161744659507801211">Atenție: Brave nu poate împiedica extensiile să îți înregistreze istoricul de navigare.</translation>
@@ -289,14 +310,12 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="55252794453047936">Transferă fișierul media</translation>
 <translation id="4418985925423678811">Listă de redare nouă</translation>
 <translation id="385051799172605136">Înapoi</translation>
-<translation id="5317780077021120954">Salvează</translation>
 <translation id="7930125899031086027">Creați și transferați</translation>
 <translation id="2860159216666546928">Selectați un dosar în care să trasnferați acest fișier media</translation>
 <translation id="9130105487623071247">Denumirea listei de redare</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> elemente selectate</translation>
 <translation id="3596306474342941843">Ștergeți lista de redare</translation>
 <translation id="7110726588168439924">Sigur doriți să ștergeți această listă de redare alături de întregul conținut? Această acțiune nu poate fi anulată.</translation>
-<translation id="8261506727792406068">Șterge</translation>
 <translation id="8152485753254079984">Listă de redare nouă</translation>
 <translation id="5397019762993984652">Adăugați din dosarul de Redări ulterioare</translation>
 <translation id="7525067979554623046">Creați</translation>
@@ -393,7 +412,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8900907990448657776">Editează containerul</translation>
 <translation id="7900511996284443779">Șterge containerul</translation>
 <translation id="2738687336989232152">Ești sigur că vrei să ștergi containerul <ph name="CONTAINER_NAME"/>? Acest lucru va elimina toate datele asociate cu acesta.</translation>
-<translation id="5327248766486351172">Nume</translation>
 <translation id="104766043551382253">Pictogramă</translation>
 <translation id="5431318178759467895">Culoare</translation>
 <translation id="4328541188421002379">Denumește containerul, spre exemplu Muncă sau Personal</translation>
@@ -547,6 +565,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2587535830241068901">Personalizați-vă browserul în timp ce susțineți Brave</translation>
 <translation id="123297831435065577">Brave Origin este o versiune plătită a browserului pentru utilizatorii care nu au nevoie de toate funcțiile care susțin Brave ca business, dar care doresc totuși confidențialitatea pe care doar Brave o oferă. Utilizatorii Origin vor continua să beneficieze de confidențialitate de top din industrie, blocare de reclame și viteză (prin Shields), precum și actualizări regulate ale software-ului, patch-uri Chromium și îmbunătățiri de securitate și confidențialitate.</translation>
 <translation id="7984508421152399880">Cumpără acum</translation>
+<translation id="1882724423074862793">Restaurați achiziția</translation>
 <translation id="5567412479632285879">Opțiunea Recompense Brave este dezactivată</translation>
 <translation id="413570371620795359">Accesați panoul Brave Rewards, pentru a activa opțiunea și a începe utilizarea</translation>
 <translation id="1051600834033686945">Deschideți setările integrale Recompense Brave</translation>
@@ -583,6 +602,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="933652931229970927">Trimiteți automat rapoarte de diagnosticare</translation>
 <translation id="8868426106596092089">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează</translation>
 <translation id="4891600875049212418">Activați modul Off-The-Record când accesați site-uri sensibile</translation>
+<translation id="1022603984240541480">Afișează notificarea de reglare a setărilor de confidențialitate pe site-urile compatibile</translation>
+<translation id="3528176629974273019">Permite Brave să sugereze automat (și să ajusteze) setările de confidențialitate specifice site-ului.</translation>
 <translation id="509873765238158442">Blochează Microsoft Recall</translation>
 <translation id="4763421121695677716">Blochează funcția Recall pe computerele Microsoft Windows să facă capturi de ecran ale oricăror file deschise de Brave.</translation>
 <translation id="1968895725257436430">Colectare date</translation>
@@ -738,6 +759,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4425607417590286548">Aplicare modificări</translation>
 <translation id="2128143836897950793">Faceți clic pe „Solicitați o punte nouă...” pentru a obține punți</translation>
 <translation id="3314921753580327793">Tip adresă:port (câte unul pe linie)</translation>
+<translation id="7002083631026466886">Tor nu poate folosi acest bridge. Comparați-l cu bridge-ul care v-a fost oferit, apoi încercați din nou:</translation>
 <translation id="3755189300481406891">Solicitare punte</translation>
 <translation id="6924425739431382319">Se contactează BridgeDB. Așteptați.</translation>
 <translation id="811745063252080651">Rezolvați CAPTCHA pentru a solicita o punte.</translation>
@@ -915,7 +937,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1838374766361614909">Șterge căutarea</translation>
 <translation id="5126255551970171328">Caută în memorii</translation>
 <translation id="7402116145895962069">Sync modelele tale locale Ollama</translation>
-<translation id="4835154437390745810">Administrat de Ollama</translation>
 <translation id="5985516785067818307">Participant la sondaj</translation>
 <translation id="8347743943525229984">Permite sondaje Brave</translation>
 <translation id="3204080538332044581">Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>

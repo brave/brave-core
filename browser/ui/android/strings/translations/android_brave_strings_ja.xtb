@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">閲覧履歴データの削除</translation>
 <translation id="1690924763769415936">バックグラウンド再生</translation>
 <translation id="6332924730165919598">すべてのタブが閉じられた際に、Braveも閉じる</translation>
+<translation id="2557725907027944082">グループ</translation>
 <translation id="8308305244351876417">Braveの他のタブや他のアプリに切り替えたり、デバイスの画面がオフの状態でもオーディオを再生できるようにします。</translation>
 <translation id="49147335255967913">BraveでYouTubeリンクを開く</translation>
 <translation id="4150201353443180367">表示</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevineについてさらに詳しく<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">許可 (今すぐ再起動)</translation>
 <translation id="2433507940547922241">デザイン</translation>
+<translation id="316542773973815724">ナビゲーション</translation>
 <translation id="9040069796107003510">Braveリワードアイコン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
-<translation id="1215433243238902715">下部ナビゲーションツールバーを有効にする</translation>
+<translation id="4393974575368329991">下部ナビゲーションツールバー</translation>
+<translation id="1834226716203076292">ホーム、ブックマーク、検索にすばやくアクセスするための下部バーを表示</translation>
 <translation id="1422686363939271829">この設定は、アドレスバーの位置が下部に配置されている場合は無効になります。</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
 <translation id="8701563696941209024">今すぐ再起動</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">クラッシュやフリーズが発生した場合、匿名の診断レポートを送信してください。</translation>
 <translation id="4780647518983772446">Braveのどの機能が使用されているかについて、非公開かつ匿名で製品インサイトを共有してください。</translation>
 <translation id="5109496672133133896">プライベート製品インサイト</translation>
-<translation id="3545804467215833536">タップしてBraveシールドを表示</translation>
-<translation id="1724327820822194498">シールドを使うと、Braveでブロックされたすべてのアイテムを確認できます。</translation>
+<translation id="4340039903315468568">BraveのShieldsによりあらゆるページでブロックされたすべての不要なアイテムを確認。タップして表示</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> 個の広告 &amp; トラッカーをブロックしました</translation>
 <translation id="8281886186245836920">スキップ</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -443,6 +445,7 @@
 <translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
 <translation id="7898672232170410330">要素を指定してブロック</translation>
+<translation id="7205939464631857223">ブロックされた要素をすべて消去</translation>
 <translation id="7961015016161918242">使用しない</translation>
 <translation id="3200744626782631683">閲覧データは決して自動的に破棄されることはありません</translation>
 <translation id="1991004083507807299">サイトタブの終了時</translation>
@@ -505,7 +508,10 @@
 <translation id="3980704343258720102">すべての閲覧データを削除</translation>
 <translation id="8089997572759938512">プライバシーレポートをゼロにリセット</translation>
 <translation id="2718046830255553131">プライバシーレポートのデータが消去されました。</translation>
-<translation id="8376263745431603066">「ナイトモード」を有効にする（実験的）</translation>
+<translation id="3623948252408240879">ナイトモード</translation>
+<translation id="1257950165130031194">ウェブコンテンツにダークモードを強制適用</translation>
+<translation id="8710601165725654801">ダイナミックカラー</translation>
+<translation id="7865194971711852999">アプリのテーマが壁紙の色と一致します</translation>
 <translation id="1383876407941801731">検索</translation>
 <translation id="13296465911709339">テキストがクリップボードにコピーされました。</translation>
 <translation id="2735834606413553397">パブリックアドレスをクリップボードにコピーしました。</translation>
@@ -725,7 +731,7 @@
 <translation id="4979796155378508955">カスタムノンス値が非シーケンシャルである場合、またはその他のエラーがある場合は、トランザクションがネットワークに伝搬されないことがあります。</translation>
 <translation id="750843150060816463">ガス価格 (Gwei)</translation>
 <translation id="1426320910664514906">Gasリミット</translation>
-<translation id="6389441740143786465">共有ハブを無効にする</translation>
+<translation id="1784950057929740513">共有ハブ</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">アカウントの更新に失敗しました。</translation>
 <translation id="8084782383392198011">アカウント名を空にすることはできません。</translation>
@@ -800,8 +806,12 @@
 <translation id="1060221736464994328">このサイトのネットワーク切り替えを許可しますか？</translation>
 <translation id="2478788592457735063">この操作を行うと、現在のネットワークを以前に追加されたネットワークに切り替えます。</translation>
 <translation id="8756686998207163764">ネットワークを切り替え</translation>
+<translation id="8905793906896555159">タブグループを有効にする</translation>
+<translation id="7632160823264702523">タブグループバー</translation>
+<translation id="2477807195394450274">現在開いているタブグループ内のタブにすばやくアクセスするための下部バーを表示</translation>
+<translation id="8374720587111523381">現在のタブグループでリンクを開く</translation>
 <translation id="5324095733417835490">現在のタブグループでのみリンクを開く</translation>
-<translation id="2620277345862119868">現在のタブグループ内のすべてのリンクを自動的に開く</translation>
+<translation id="1227658541937938697">現在のタブグループ内のすべてのリンクを自動的に開く</translation>
 <translation id="5242300593039211344">ウォレットをロックする</translation>
 <translation id="1108298724135935307">接続したサイト</translation>
 <translation id="4255623233927788178">ブロックエクスプローラーで表示</translation>
@@ -1081,7 +1091,7 @@
 <translation id="6393423486818299209">現在のサービスプロバイダまたはWikimedia DNSを使用</translation>
 <translation id="3401384982562827787">現在のサービスプロバイダまたはCloudflareを使用</translation>
 <translation id="8812367543786936496">現在のサービスプロバイダが安全でない場合、Braveは安全な代替DNSプロバイダを使用します</translation>
-<translation id="1381108437654541567">複数ウィンドウを有効にする</translation>
+<translation id="750538469281113679">複数ウィンドウ</translation>
 <translation id="6167344249617630304">一度に最大5つのウィンドウを開き、1つのウィンドウから別のウィンドウへタブを移動できます</translation>
 <translation id="1063948063403254568">複数のウィンドウを検知しました</translation>
 <translation id="4661882208707630158">複数ウィンドウ機能を無効にする前に、タブを他のBraveウィンドウにマージするか、他のBraveウィンドウを閉じてください。</translation>

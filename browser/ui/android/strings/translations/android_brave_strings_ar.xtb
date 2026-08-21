@@ -203,6 +203,7 @@
 <translation id="8026334261755873520">محو بيانات التصفُّح</translation>
 <translation id="1690924763769415936">تشغيل في الخلفية</translation>
 <translation id="6332924730165919598">يؤدي إغلاق جميع علامات التبويب إلى إغلاق Brave</translation>
+<translation id="2557725907027944082">المجموعات</translation>
 <translation id="8308305244351876417">يسمح بتشغيل الصوت عند التبديل إلى علامة تبويب أخرى في Brave أو تطبيق آخر أو عند إيقاف تشغيل شاشة جهازك.</translation>
 <translation id="49147335255967913">فتح روابط YouTube في متصفح Brave</translation>
 <translation id="4150201353443180367">عرض</translation>
@@ -213,9 +214,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>لمعرفة المزيد عن Widevine <ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">السماح (إعادة التشغيل الآن)</translation>
 <translation id="2433507940547922241">المظهر</translation>
+<translation id="316542773973815724">التنقل</translation>
 <translation id="9040069796107003510">أيقونة المكافآت الخاصة بموقع (Brave (Brave Rewards</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
-<translation id="1215433243238902715">تمكين شريط أدوات التنقل السفلي</translation>
+<translation id="4393974575368329991">شريط أدوات التنقل السفلي</translation>
+<translation id="1834226716203076292">إظهار شريط سفلي للوصول السريع إلى الصفحة الرئيسية والإشارات المرجعية والبحث</translation>
 <translation id="1422686363939271829">يتم تعطيل هذا الإعداد عند تحديد موضع شريط العنوان السفلي</translation>
 <translation id="6587448235155023666">ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل متصفح Brave</translation>
 <translation id="8701563696941209024">إعادة بدء التشغيل الآن</translation>
@@ -235,8 +238,7 @@
 <translation id="6188781052835527980">أرسل تقارير التشخيص المجهولة إذا واجهت حالة عطل أو توقف.</translation>
 <translation id="4780647518983772446">شارك نتائج تحليلات المنتج الخاصة والمجهولة حول ميزات Brave التي يتم استخدامها.</translation>
 <translation id="5109496672133133896">نتائج تحليلات المنتج الخاصة</translation>
-<translation id="3545804467215833536">انقر لعرض Brave Shields</translation>
-<translation id="1724327820822194498">شاهد كل الأشياء السيئةالتي تم حظرها بواسطة Brave، في كل صفحة، باستخدام Shields.</translation>
+<translation id="4340039903315468568">شاهد كل الأشياء السيئة التي حظرها Brave في كل صفحة باستخدام Shields. اضغط للعرض</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> إعلانات &amp;تم حظر أجهزة التعقب</translation>
 <translation id="8281886186245836920">تخطّي</translation>
 <translation id="5806601733251372221">دروع Brave</translation>
@@ -440,6 +442,7 @@
 <translation id="7141438739990875547">شبكات بيتكوين</translation>
 <translation id="9055546041146396417">إذا كان هذا الموقع يبدو معطلاً فجرّب إيقاف تشغيل Shields.</translation>
 <translation id="7898672232170410330">عنصر الحظر</translation>
+<translation id="7205939464631857223">مسح جميع العناصر المحجوبة</translation>
 <translation id="7961015016161918242">مطلقًا</translation>
 <translation id="3200744626782631683">لا يتم إتلاف بيانات التصفح تلقائيًا أبدًا</translation>
 <translation id="1991004083507807299">تم إغلاق علامات تبويب الموقع</translation>
@@ -502,7 +505,10 @@
 <translation id="3980704343258720102">مسح جميع بيانات التصفح</translation>
 <translation id="8089997572759938512">يعيد تعيين تقارير الخصوصية الخاصة بك إلى الصفر</translation>
 <translation id="2718046830255553131">تم مسح بيانات تقارير الخصوصية.</translation>
-<translation id="8376263745431603066">تمكين "الوضع الليلي" (تجريبي)</translation>
+<translation id="3623948252408240879">الوضع الليلي</translation>
+<translation id="1257950165130031194">فرض الوضع الداكن لمحتوى الويب</translation>
+<translation id="8710601165725654801">الألوان الديناميكية</translation>
+<translation id="7865194971711852999">يتطابق مظهر التطبيق مع ألوان الخلفية</translation>
 <translation id="1383876407941801731">بحث</translation>
 <translation id="13296465911709339">تم نسخ النص الخاص بك إلى الحافظة.</translation>
 <translation id="2735834606413553397">تم نسخ العنوان العام إلى الحافظة.</translation>
@@ -722,7 +728,7 @@
 <translation id="4979796155378508955">لا يجوز نشر المعاملة في الشبكة إذا كانت قيمة الرقم الخاص المخصص غير متسلسلة أو بها أخطاء أخرى.</translation>
 <translation id="750843150060816463">سعر عملة جاس (Gwei)</translation>
 <translation id="1426320910664514906">الحد الأقصى لوحدات جاس</translation>
-<translation id="6389441740143786465">تعطيل مركز المشاركة</translation>
+<translation id="1784950057929740513">مركز المشاركة</translation>
 <translation id="473775607612524610">تحديث</translation>
 <translation id="479795390141144417">تعذّر تحديث الحساب</translation>
 <translation id="8084782383392198011">لا يجوز أن يكون اسم الحساب فارغًا.</translation>
@@ -797,8 +803,12 @@
 <translation id="1060221736464994328">هل تسمح لهذا الموقع بتبديل الشبكة؟</translation>
 <translation id="2478788592457735063">سيؤدي هذا إلى تحويل الشبكة إلى شبكة مضافة مسبقًا.</translation>
 <translation id="8756686998207163764">قم بتبديل الشبكة</translation>
+<translation id="8905793906896555159">تمكين مجموعات علامات التبويب</translation>
+<translation id="7632160823264702523">شريط مجموعات علامات التبويب</translation>
+<translation id="2477807195394450274">إظهار شريط سفلي للوصول السريع إلى علامات التبويب في مجموعة علامات التبويب المفتوحة حاليًا</translation>
+<translation id="8374720587111523381">فتح الروابط في مجموعة علامات التبويب الحالية</translation>
 <translation id="5324095733417835490">فتح الروابط الموجودة في مجموعة علامات التبويب الحالية فقط</translation>
-<translation id="2620277345862119868">يفتح تلقائيًا جميع الروابط الموجودة في مجموعة علامات التبويب الحالية</translation>
+<translation id="1227658541937938697">فتح جميع الروابط تلقائيًا في مجموعة علامات التبويب الحالية</translation>
 <translation id="5242300593039211344">قفل المحفظة</translation>
 <translation id="1108298724135935307">المواقع المتصلة</translation>
 <translation id="4255623233927788178">عرض مستكشف الحظر</translation>
@@ -1078,7 +1088,7 @@ Leo AI في المستقبل وستقوم أيضًا بمحو سجل الدرد�
 <translation id="6393423486818299209">استخدم مزود الخدمة الحالي أو Wikimedia DNS</translation>
 <translation id="3401384982562827787">استخدم مزود الخدمة الحالي أو Cloudflare</translation>
 <translation id="8812367543786936496">إذا كان مزود الخدمة الحالي الخاص بك غير آمن، فمتصفح Brave يستخدم مزود DNS بديل آمن</translation>
-<translation id="1381108437654541567">تمكين خاصية النوافذ المتعددة</translation>
+<translation id="750538469281113679">النوافذ المتعددة</translation>
 <translation id="6167344249617630304">يمكنك فتح حتى 5 نوافذ في الوقت نفسه، وكذلك نقل علامات التبويب من نافذة إلى أخرى</translation>
 <translation id="1063948063403254568">تم اكتشاف عدة نوافذ</translation>
 <translation id="4661882208707630158">يرجى دمج علامات التبويب في نافذة Brave أخرى، أو إغلاق النوافذ الأخرى الخاصة بـ Brave، قبل تعطيل ميزة النوافذ المتعددة.</translation>

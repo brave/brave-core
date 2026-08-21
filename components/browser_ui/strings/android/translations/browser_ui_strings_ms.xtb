@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Minta paparan mudah alih</translation>
 <translation id="2870560284913253234">Tapak</translation>
 <translation id="2874939134665556319">Lagu sebelumnya</translation>
+<translation id="258271431472168668">Lalai Brave</translation>
 <translation id="2891975107962658722">Sekat laman daripada menyimpan data pada peranti anda</translation>
 <translation id="2903493209154104877">Alamat</translation>
+<translation id="2903764741244499151">Laman boleh memasukkan gambar dalam gambar secara automatik. Perkara ini membolehkan anda meneruskan tontonan video sambil mengekalkan skrin anda untuk tugasan lain.</translation>
 <translation id="2918484639460781603">Pergi ke tetapan</translation>
 <translation id="2932883381142163287">Laporkan penyalahgunaan</translation>
 <translation id="2939338015096024043">Apabila dihidupkan, laman dapat meminta untuk menjejaki kedudukan kamera anda dan mengetahui tentang persekitaran anda. Apabila dimatikan, laman tidak dapat menjejaki kedudukan kamera anda dan mengetahui tentang persekitaran anda.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Tukar kata laluan</translation>
 <translation id="3797520601150691162">Jangan gunakan tema gelap untuk laman tertentu</translation>
 <translation id="3803367742635802571">Laman yang anda lawati mungkin berhenti berfungsi seperti yang direka</translation>
-<translation id="8338457030135232378">Warna Brave</translation>
 <translation id="381841723434055211">Nombor telefon</translation>
 <translation id="3823453485268218808">Fon Mono</translation>
 <translation id="3826050100957962900">Log masuk pihak ketiga</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Keluar daripada skrin penuh</translation>
 <translation id="640163077447496506">Tamat tempoh hari ini</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Koleksi Tema</translation>
 <translation id="6439114592976064011">Sekat tapak daripada menggunakan peranti dan data realiti maya anda</translation>
 <translation id="6447842834002726250">Kuki</translation>
 <translation id="6452138246455930388">Penurunan harga pada tab terbuka anda, daripada <ph name="OLD_PRICE"/> kepada <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="7423098979219808738">Tanya dahulu</translation>
 <translation id="7423538860840206698">Disekat daripada membaca papan keratan</translation>
 <translation id="7425915948813553151">Tema gelap untuk laman</translation>
+<translation id="2044383478723007273">Warna Brave</translation>
 <translation id="746412105358554870">Pengoptimuman &amp; keselamatan JavaScript</translation>
 <translation id="7478658909253570368">Jangan benarkan laman menyambung kepada port bersiri</translation>
 <translation id="7488573225650545859">Sembunyikan Lihat tab dalam senarai apl anda</translation>
@@ -671,7 +672,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="802154636333426148">Muat turun gagal</translation>
 <translation id="8033047164036749181">Langgan untuk mendapatkan pemberitahuan daripada laman ini</translation>
 <translation id="8051193500142930381">Ciri yang memerlukan kamera tidak akan berfungsi</translation>
-<translation id="2495032782748793764">Lalai Brave</translation>
 <translation id="8067883171444229417">Mainkan video</translation>
 <translation id="8068648041423924542">Tidak dapat memilih sijil.</translation>
 <translation id="8077120325605624147">Mana-mana laman yang anda lawati boleh memaparkan sebarang iklan kepada anda</translation>
@@ -686,7 +686,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="8163152278172770963">Jangan membenarkan laman untuk memasukkan gambar dalam gambar secara automatik</translation>
 <translation id="8168435359814927499">Kandungan</translation>
 <translation id="818487310457576362">Seret daripada bahagian sisi skrin untuk keluar daripada skrin penuh.</translation>
-<translation id="8186479265534291036">Laman tidak berfungsi? Kuki pihak ketiga disekat</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> dibenarkan</translation>
 <translation id="8200772114523450471">Sambung semula</translation>
 <translation id="8211406090763984747">Sambungan selamat</translation>
@@ -757,7 +756,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="8805385115381080995">Penyemakan imbas akan menjadi lebih pantas kerana laman kurang berkemungkinan untuk meminta anda mengesahkan anda orang sebenar</translation>
 <translation id="881644524232657178">Apabila dihidupkan, laman boleh menggunakan penderia gerakan dan cahaya peranti anda. Apabila dimatikan, laman tidak dapat menggunakan penderia.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Cuba berikan kebenaran sementara untuk kuki pihak ketiga yang boleh mengurangkan perlindungan penyemakan imbas tetapi ciri laman lebih berkemungkinan untuk berfungsi seperti yang dijangka.</translation>
 <translation id="7532165358672313130">Sementara anda terus menyemak imbas, laman boleh menyemak dengan Brave dan membuat pengesahan dengan laman yang telah anda lawati sebelum ini bahawa anda berkemungkinan merupakan orang yang sebenar</translation>
 <translation id="8899807382908246773">Iklan mengganggu</translation>
 <translation id="8903921497873541725">Zum masuk</translation>
@@ -783,7 +781,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="913657688200966289">Hidupkan kebenaran untuk <ph name="APP_NAME"/> dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Pemberitahuan dibenarkan</translation>
 <translation id="9138217887606523162">Zum semasa ialah <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Laman menggunakan ciri ini untuk memasukkan gambar dalam gambar secara automatik. Perkara ini membolehkan anda meneruskan tontonan video sambil mengekalkan skrin anda untuk tugasan lain.</translation>
 <translation id="7359422048569205930">Benarkan Brave memaparkan tab terbaharu anda dalam senarai apl dan hasil carian peranti anda. Anda boleh mematikan ciri ini dalam tetapan Brave pada bila-bila masa.</translation>
 <translation id="9162462602695099906">Halaman ini berbahaya</translation>
 <translation id="9182556968660520230">Jangan benarkan laman memainkan kandungan yang dilindungi</translation>

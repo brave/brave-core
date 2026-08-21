@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">තවත්…</translation>
 <translation id="71316462802471551">ඊමේල් කෙටි නම්</translation>
-<translation id="209130971304928953">ටැබ ක්‍රියාකාරී ස්ථානයක් ලෙස සුරකින්න…</translation>
-<translation id="877984331511007834">ක්‍රියාකාරී ස්ථානයක් විවෘත කරන්න…</translation>
-<translation id="1310182651927031327">ටැබ වැඩබිමක් ලෙස සුරකින්න…</translation>
-<translation id="3588277741646479444">වැඩබිම අරින්න…</translation>
+<translation id="8350985546648269694">වත්මන් වින්ඩෝ සහ ටැබ් Space ලෙස සුරකින්න</translation>
+<translation id="5327248766486351172">නම</translation>
+<translation id="6379791766023874417">ඔබේ අවකාශයේ නම ලියන්න</translation>
+<translation id="9174724474418499472">මාගේ අවකාශය</translation>
+<translation id="5317780077021120954">සුරකින්න</translation>
+<translation id="7658239707568436148">අවලංගු</translation>
+<translation id="196342407904926436">අවකාශ විකල්ප</translation>
+<translation id="2806407377752719586">අවකාශය මකන්න</translation>
+<translation id="1844931500883490339">ඔබට මෙම අවකාශය මැකීමට වුවමනා ද? සුරැකි අවකාශය ස්ථිරව ඉවත් කරනු ලැබේ. මෙම ක්‍රියාමාර්ගය අප්‍රතිවර්ත්‍යයි.</translation>
+<translation id="8261506727792406068">මකන්න</translation>
+<translation id="8428213095426709021">සැකසුම්</translation>
+<translation id="1212321046099128987">අවකාශ නිර්මාණය කර නැත</translation>
+<translation id="3524567389166933243">පහත සුරකින්න බොත්තම ක්ලික් කිරීමෙන් ඔබේ පළමු අවකාශය නිර්මාණය කරන්න.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {ටැබ් 1ක්} one {ටැබ් #ක්} other {ටැබ් #ක්}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> කවුළු</translation>
+<translation id="1680377529024357662">වත්මන් කවුළු සහ ටැබ් අවකාශයක් ලෙස සුරකින්න</translation>
+<translation id="5561829325295347472">ඔබේ අවකාශයේ නම ලියන්න</translation>
+<translation id="2028520494010039812">අවකාශ විකල්ප</translation>
+<translation id="1580775521202322063">අවකාශය මකන්න</translation>
+<translation id="3004759399777164093">ඔබට මෙම අවකාශය මැකීමට වුවමනා ද? සුරැකි අවකාශය ස්ථිරව ඉවත් කරනු ලැබේ. මෙම ක්‍රියාමාර්ගය අප්‍රතිවර්ත්‍යයි.</translation>
+<translation id="7563692436589408797">අවකාශ නිර්මාණය කර නැත</translation>
+<translation id="3945077125173636695">පහත සුරකින්න බොත්තම ක්ලික් කිරීමෙන් ඔබේ පළමු අවකාශය නිර්මාණය කරන්න.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {ටැබ් 1ක්} one {ටැබ් #ක්} other {ටැබ් #ක්}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> කවුළු</translation>
+<translation id="3326655241685890930">අවකාශ</translation>
 <translation id="1990886731975529483">ගූගල් වයිඩ්වයින් ස්ථාපනය කර ධාවනය කරන්න</translation>
 <translation id="8926389886865778422">නැවත අසන්න එපා</translation>
 <translation id="4900351245762303149">ගූගල් වයිඩ්වයින් ස්ථාපනය කරන්න</translation>
@@ -36,7 +57,7 @@
 <translation id="3218385319396786393">මෙම පිටුවෙන් ස්වයං වාදනය අවහිරයි</translation>
 <translation id="4988333904713528597">සැමවිට <ph name="HOST"/> වෙත ස්වයං වාදනයට ඉඩ දෙන්න</translation>
 <translation id="4150684676757176434">ස්වයං වාදනය දිගටම අවහිර කරන්න</translation>
-<translation id="3477357195688115718">ආරක්ෂාව සහ ප්‍රවේශම සඳහා Brave දිගු සමාලෝචනය නොකරයි. ඔබට සංවර්ධකයා විශ්වාස නම් පමණක් මෙම දිගුව ස්ථාපනය කරන්න.</translation>
+<translation id="2201935460386712655">ආරක්ෂාව සහ ප්‍රවේශම සඳහා Brave දිගු සමාලෝචනය නොකරයි. ඔබට සංවර්ධකයා විශ්වාස නම් පමණක් "<ph name="EXTENSION_NAME"/>" ස්ථාපනය කරන්න.</translation>
 <translation id="2928844661231356557">බ්ලූටූත් උපාංගයකට ප්‍රවේශය දීමෙන් ඔබ අඩවියට ඔබගේ අනන්‍යතාවය සහ සංවේදී විය හැකි තොරතුරු කියවීමට ඉඩ ලබා දේ. බ්ලූටූත් උපාංග වෙත ප්‍රවේශයට ඔබ විශ්වාස කරන අඩවි වලට පමණක් ඉඩ දෙන්න. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">ටෝර් කවුළු</translation>
 <translation id="7965178729203412357">නව ටෝර් අනන්‍යතාවය</translation>
@@ -62,7 +83,6 @@
 <translation id="3211174446914979436">පෙරහන් කළමනාකරණය</translation>
 <translation id="3108584651298176909">නීති පෙන්වන්න</translation>
 <translation id="5156986655891520787">නීති සඟවන්න</translation>
-<translation id="7658239707568436148">අවලංගු</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion ලිපිනය භාවිතයෙන් අරින්න: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">බලෙන් අලවන්න</translation>
@@ -90,6 +110,7 @@
 <translation id="191886777375280620">තිරසේයාව ග්‍රහණය කරන්න</translation>
 <translation id="3114478090884951591">පෙනෙන ප්‍රදේශය</translation>
 <translation id="2026367923222947564">සම්පූර්ණ පිටුව</translation>
+<translation id="4218885227032158909">තේරූ ප්‍රදේශය</translation>
 <translation id="4928988318462976765">වියමන දිගු ගබඩාව</translation>
 <translation id="9181207987584064303">වියමන දිගු ගබඩාවේ බලන්න</translation>
 <translation id="3161744659507801211">අවවාදයයි: Brave මගින් දිගු ඔබගේ පිරික්සුම් ඉතිහාසය පටිගතය වැළැක්වීමට නොහැකිය.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">මාධ්‍ය ගෙනයන්න</translation>
 <translation id="4418985925423678811">නව වාදන ලැයිස්තුව</translation>
 <translation id="385051799172605136">ආපසු</translation>
-<translation id="5317780077021120954">සුරකින්න</translation>
 <translation id="7930125899031086027">සාදා ගෙනයන්න</translation>
 <translation id="2860159216666546928">මෙම මාධ්‍යය ගෙනයාමට බහාලුමක් තෝරන්න</translation>
 <translation id="9130105487623071247">වාදන ලැයිස්තුවේ නම</translation>
 <translation id="1857042171340443373">අථක <ph name="NUM_ITEMS"/> ක් තෝරා ඇත</translation>
 <translation id="3596306474342941843">වාදන ලැයිස්තුව මකන්න</translation>
 <translation id="7110726588168439924">ඔබට මෙම වාදන ලැයිස්තුව සහ එහි සියලුම අන්තර්ගත මැකීමට වුවමනා ද? මෙම ක්‍රියාමාර්ගය අප්‍රතිවර්ත්‍යයි.</translation>
-<translation id="8261506727792406068">මකන්න</translation>
 <translation id="8152485753254079984">නව වාදන ලැයිස්තුව</translation>
 <translation id="5397019762993984652">පසුව වාදනය බහාලුමෙන් එක් කරන්න</translation>
 <translation id="7525067979554623046">සාදන්න</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">අඩංගුව සංස්කරණය කරන්න</translation>
 <translation id="7900511996284443779">අඩංගුව මකන්න</translation>
 <translation id="2738687336989232152">අඩංගුව <ph name="CONTAINER_NAME"/> මකීමට ඔබට විශ්වාසද? මෙයින් එයට අදාළ සියලුම දත්ත ඉවත් කරනු ඇත.</translation>
-<translation id="5327248766486351172">නම</translation>
 <translation id="104766043551382253">නිලය</translation>
 <translation id="5431318178759467895">වර්ණය</translation>
 <translation id="4328541188421002379">ඔබගේ අඩංගුවට වැඩ/පෞද්ගලික ලෙස නමක් දිය හැක</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">Brave එකට සහාය විය හැකි අතර ඔබේ ගවේශකය අභිරුචි ගන්වන්න</translation>
 <translation id="123297831435065577">Brave Origin යනු බ්‍රේව්ට ව්‍යාපාරයක් ලෙස සහාය වන සියලුම විශේෂාංග අවශ්‍ය නොවන, නමුත් බ්‍රේව් පමණක් ලබා දෙන පෞද්ගලිකත්වය තවමත් අවශ්‍ය වන පරිශීලකයින් සඳහා වන බ්‍රවුසරයේ ගෙවුම් සංස්කරණයකි. Origin පරිශීලකයින් අපගේ කර්මාන්ත-ප්‍රමුඛ පෞද්ගලිකත්වය, ප්‍රචාරණ අවහිර කිරීම සහ වේගය (Shields හරහා), මෙන්ම නිතිපතා මෘදුකාංග යාවත්කාලීන, Chromium පැච්, සහ ආරක්ෂණ සහ පෞද්ගලිකත්ව වැඩිදියුණු කිරීම් වලින් දිගටම ප්‍රතිලාභ ලබනු ඇත.</translation>
 <translation id="7984508421152399880">දැන ගිණුම්කරණය කරන්න</translation>
+<translation id="1882724423074862793">මිලදී ගැනීම ප්‍රතිෂ්ඨාපනය කරන්න</translation>
 <translation id="5567412479632285879">Brave පාරිතෝෂික අබල කර ඇත</translation>
 <translation id="413570371620795359">සබල කර පටන් ගැනීමට පාරිතෝෂික මඬල අරින්න</translation>
 <translation id="1051600834033686945">සමස්ත Brave පාරිතෝෂික සැකසුම් අරින්න</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">ස්වයංක්‍රීයව නිර්ණ වාර්තා යවන්න</translation>
 <translation id="8868426106596092089">බ්‍රේව් අතිරික්සුව බිඳ වැටුනු විට හෝ හිර වූ විට ස්වයංක්‍රියව නිදොස්කරණ වාර්තා යැවීමෙන් බ්‍රේව් නිෂ්පාදන ස්ථායිතාව වැඩිදියුණුවට උදව් කරන්න</translation>
 <translation id="4891600875049212418">සංවේදී අඩවි වලට පිවිසීමේදී වාර්තාගත නොවන ස්ථානයට යන්න</translation>
+<translation id="1022603984240541480">අනුකූල අඩවිවල පෞද්ගලිකත්ව සැකසුම් සුසර කිරීමේ දැනුම්දීම පෙන්වන්න</translation>
+<translation id="3528176629974273019">අඩවියට විශේෂිත පෞද්ගලිකත්ව සැකසුම් ස්වයංක්‍රීයව යෝජනා කිරීමට (සහ සකසන්නට) Brave හට ඉඩ දෙයි.</translation>
 <translation id="509873765238158442">Microsoft Recall අවහිර කරන්න</translation>
 <translation id="4763421121695677716">Brave පටිත්තවලට ඔට්ටු ගත කීර්ති ඇණවුමක් ගෙන පටිත්තවලගේ ස්ක්‍රීන්ෂොට්ස් ස්වයංක්‍රීයව ගන්නා Microsoft Windows පටිත්ත සිසු විශේෂාංගය ලාභදායක කරන්නේ නැත.</translation>
 <translation id="1968895725257436430">දත්ත එකතුව</translation>
@@ -736,6 +757,7 @@
 <translation id="4425607417590286548">වෙනස්කම් යොදන්න</translation>
 <translation id="2128143836897950793">පාලම් ගැනීමට 'නව පාලමක් ඉල්ලන්න...' මත ඔබන්න</translation>
 <translation id="3314921753580327793">ලිපිනය:තොට ලියන්න (පේළියකට එකක්)</translation>
+<translation id="7002083631026466886">Tor හට මෙම පාලම භාවිතා කළ නොහැක. ඔබට ලබා දුන් පාලමට එය පරීක්ෂා කර, නැවත උත්සාහ කරන්න:</translation>
 <translation id="3755189300481406891">පාලමක් ඉල්ලන්න</translation>
 <translation id="6924425739431382319">BridgeDB වෙත සබැඳෙමින්. රැඳී සිටින්න.</translation>
 <translation id="811745063252080651">පාලමක් ඉල්ලීමට අභියෝගය විසඳන්න.</translation>
@@ -913,7 +935,6 @@
 <translation id="1838374766361614909">සෙවීම හිස් කරන්න</translation>
 <translation id="5126255551970171328">මතකයක් සොයන්න</translation>
 <translation id="7402116145895962069">ඔබගේ Ollama ප්‍රාදේශීය ආදර්ශ සමමුහුර්ත කරන්න</translation>
-<translation id="4835154437390745810">Ollama මගින් කළමනාකරණය වේ</translation>
 <translation id="5985516785067818307">Survey Panelist</translation>
 <translation id="8347743943525229984">Brave සමීක්ෂණ අවසර දෙන්න</translation>
 <translation id="3204080538332044581">Brave පටිත්තයේ පෞද්ගලික සමීක්ෂණ සඳහා සම්බන්ධ කිරීම් පෙන්වීමට අවසර දෙන්න. සමීක්ෂණ අපට වෙබ් භාවිතය සහ බ්‍රවුසිං අඩ් කැම්පේන් සඳහා පරිපූර්ණ විශේෂාංග ගොඩනැඟීමට සහ ප්‍රමාණන කිරීමට සහාය ලබා දෙයි. <ph name="BEGIN_LINK"/>වැඩිදුර ඉගෙන ගන්න<ph name="END_LINK"/></translation>

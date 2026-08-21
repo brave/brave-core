@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">ເພີ່ມເຕີມ...</translation>
 <translation id="71316462802471551">ເມລ໌ຂອງທ່ Background</translation>
-<translation id="209130971304928953">ບັນທຶກແທັບເປັນພື້ນທີ່ເຮັດວຽກ…</translation>
-<translation id="877984331511007834">ເປີດພື້ນທີ່ເຮັດວຽກ…</translation>
-<translation id="1310182651927031327">ບັນທຶກແຖບເປັນພື້ນທີ່ເຮັດວຽກ…</translation>
-<translation id="3588277741646479444">ເປີດພື້ນທີ່ເຮັດວຽກ…</translation>
+<translation id="8350985546648269694">ບັນທຶກ Windows ແລະ ແຖບປັດຈຸບັນເປັນ Space</translation>
+<translation id="5327248766486351172">ຊື່</translation>
+<translation id="6379791766023874417">ໃສ່ຊື່ Space ຂອງທ່ານ</translation>
+<translation id="9174724474418499472">Space ຂອງຂ້ອຍ</translation>
+<translation id="5317780077021120954">ບັນທຶກ</translation>
+<translation id="7658239707568436148">ຍົກເລີກ</translation>
+<translation id="196342407904926436">ຕົວເລືອກ Space</translation>
+<translation id="2806407377752719586">ລຶບ Space</translation>
+<translation id="1844931500883490339">ທ່ານແນ່ໃຈບໍທີ່ຕ້ອງການລຶບ Space ນີ້? Space ທີ່ບັນທຶກໄວ້ຈະຖືກລຶບອອກຢ່າງຖາວອນ. ການກະທຳນີ້ບໍ່ສາມາດຖອນຄືນໄດ້.</translation>
+<translation id="8261506727792406068">ລຶບ</translation>
+<translation id="8428213095426709021">ຕັ້ງຄ່າ</translation>
+<translation id="1212321046099128987">ບໍ່ໄດ້ສ້າງ Spaces</translation>
+<translation id="3524567389166933243">ສ້າງ Space ທຳອິດຂອງທ່ານໂດຍການຄລິກປຸ່ມບັນທຶກຂ້າງລຸ່ມນີ້.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 ແຖບ} other {# ແຖບ}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Windows</translation>
+<translation id="1680377529024357662">ບັນທຶກ windows ແລະ ແຖບປັດຈຸບັນເປັນ space</translation>
+<translation id="5561829325295347472">ໃສ່ຊື່ space ຂອງທ່ານ</translation>
+<translation id="2028520494010039812">ຕົວເລືອກ space</translation>
+<translation id="1580775521202322063">ລຶບ space</translation>
+<translation id="3004759399777164093">ທ່ານແນ່ໃຈບໍທີ່ຕ້ອງການລຶບ space ນີ້? space ທີ່ບັນທຶກໄວ້ຈະຖືກລຶບອອກຢ່າງຖາວອນ. ການກະທຳນີ້ບໍ່ສາມາດຖອນຄືນໄດ້.</translation>
+<translation id="7563692436589408797">ບໍ່ໄດ້ສ້າງ spaces</translation>
+<translation id="3945077125173636695">ສ້າງ space ທຳອິດຂອງທ່ານໂດຍການຄລິກປຸ່ມບັນທຶກຂ້າງລຸ່ມນີ້.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 ແຖບ} other {# ແຖບ}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> windows</translation>
+<translation id="3326655241685890930">Spaces</translation>
 <translation id="1990886731975529483">ຕິດຕັ້ງ ແລະ ເອີ້ນໃຊ້ Google Widevine</translation>
 <translation id="8926389886865778422">ບໍ່ຈຳເປັນຕ້ອງຖາມອີກ</translation>
 <translation id="4900351245762303149">ຕິດຕັ້ງ Google Widevine</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">ການເລັ່ນອັກຕະໂລມົນຖືກບລັອກໃນໜ້ານີ້</translation>
 <translation id="4988333904713528597">ອນຸຍາດໃຫ້ເລັ່ນອັກຕະໂລມົນເບື້ອງ <ph name="HOST"/></translation>
 <translation id="4150684676757176434">ຕໍ່ໄປບລັອກການເລັ່ນອັກຕະໂລມົນ</translation>
-<translation id="3477357195688115718">Brave ບໍ່ຈາກວດການເຕີມຂອງ extension ເພື່ອຄວາມປອດໄພແລະຄວາມມັ່ນຄົງ. ຕິດຕັ້ງ extension ແຕ່ຖ້າເຈົ້າເຊື່ອໃຈ developer.</translation>
+<translation id="2201935460386712655">Brave ບໍ່ຈາກວດການເຕີມຂອງ extensions ເພື່ອຄວາມປອດໄພແລະຄວາມມັ່ນຄົງ. ຕິດຕັ້ງ "<ph name="EXTENSION_NAME"/>" ແຕ່ຖ້າເຈົ້າເຊື່ອໃຈ developer.</translation>
 <translation id="2928844661231356557">ການອະນຸຍາດໃຫ້ເອື້ອມເຖິງອຸປະກອນ Bluetooth ຈະໃຫ້ເວັບໄຊອ່ານຂໍ້ມູນຈຳກັດກົດແລະອາດຈະເປັນຂໍ້ມູນສ່ວນບຸກຄົນຂອງເຈົ້າ. ອະນຸຍາດໃຫ້ເວັບໄຊທີ່ເຈົ້າເຊື່ອໃຈເອື້ອມເຖິງອຸປະກອນ Bluetooth ທີ່ <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">ໜ້າຕ່າງ Tor</translation>
 <translation id="7965178729203412357">ບຸມປະຈຳກັນນີ້ Tor</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">ຈຸດປະກອບການຈັດການ</translation>
 <translation id="3108584651298176909">ເສຽດໄ່ລການສຸດ</translation>
 <translation id="5156986655891520787">ສຸ່ງສຸດມ່ອຟຸກາໄລຍະ</translation>
-<translation id="7658239707568436148">ຍົກເລີກ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">ເປີດໃຊ້ທີ່ .onion address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">ວາງโครງການ</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">ຈັບພາບໜ້າຈໍ</translation>
 <translation id="3114478090884951591">ພື້ນທີ່ທີ່ມອງເຫັນໄດ້</translation>
 <translation id="2026367923222947564">ໜ້າເຕັມ</translation>
+<translation id="4218885227032158909">ພື້ນທີ່ທີ່ເລືອກ</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ເບິ່ງໃນ Web Extensions Store</translation>
 <translation id="3161744659507801211">ຄໍ່າເຕືອນ: Brave ບໍ່່າສາມາດປ້ອງກັນ Extension ຈາກການບັນທຶກປະຫວັດແມ່ນໄດ້ທ່າພິເສດ.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">ຍ້າຍສື່ພາບ/ສຽງ</translation>
 <translation id="4418985925423678811">ສ້າງລາຍການເພງໃໝ່</translation>
 <translation id="385051799172605136">ກັບຄືນ</translation>
-<translation id="5317780077021120954">ບັນທຶກ</translation>
 <translation id="7930125899031086027">ສ້າງແລະຍ້າຍ</translation>
 <translation id="2860159216666546928">ເລືອກໂປຣເມທີ່ຈະຍ້າຍສື່ພາບ/ສຽງໄປ</translation>
 <translation id="9130105487623071247">ຊື່ລາຍການເພງ</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> ລາຍການທີ່ໄດ້ເລືອກ</translation>
 <translation id="3596306474342941843">ລຶບລາຍການເພງ</translation>
 <translation id="7110726588168439924">ທ່ານແນ່ໃຈບໍທີ່ຕ້ອງການລຶບລາຍການເພງນີ້ແລະຫມົດເນື້ອຫາຂອງມັນ? ການກະທຳນີ້ບໍ່ສາມາດຖອນຄືນໄດ້.</translation>
-<translation id="8261506727792406068">ລຶບ</translation>
 <translation id="8152485753254079984">ລາຍການເພງໃໝ່</translation>
 <translation id="5397019762993984652">ເພີ່ມຈາກໂປຣເມຂອງທ່ານໃນເວລາທີ່ຫັນຫລັງ</translation>
 <translation id="7525067979554623046">ສ້າງ</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">ແກ້ໄຂເອນເນອຍ</translation>
 <translation id="7900511996284443779">ລົບເອນເນອຍ</translation>
 <translation id="2738687336989232152">ເຈົ້າມັ້ນໃຈບໍ່ວ່າເຈົ້າຕ້ອງການລົບເອນເຊຶນ <ph name="CONTAINER_NAME"/>? ການນີ້ເຈຸ້າຈະລຶ້ບຂໍ້ມູນທັງໝົດທີ່ໄວກັບບັນເຕີນ.</translation>
-<translation id="5327248766486351172">ຊື່</translation>
 <translation id="104766043551382253">ໄອໂຕ້ນ</translation>
 <translation id="5431318178759467895">ສີ</translation>
 <translation id="4328541188421002379">ໃຫ້ເອີ້ນຊື່ຊອກເດິນຄ້າດການເປີດໂຊໂບງເເລະບແບບບຸກຕົງ</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">ປັບແຕ່ງ browser ຂອງທ່ານໂດຍຍັງຄົງສະໜັບສະໜູນ Brave</translation>
 <translation id="123297831435065577">Brave Origin ແມ່ນເວີຊັນແບບເສຍຄ່າຂອງ ບຣາວເຊີ ສຳລັບຜູ້ໃຊ້ທີ່ບໍ່ຕ້ອງການຄຸນສົມບັດທັງໝົດທີ່ສະໜັບສະໜຸນ Brave ເປັນທຸລະກິດ, ແຕ່ຍັງຕ້ອງການຄວາມເປັນສ່ວນຕົວທີ່ Brave ເທົ່ານັ້ນສະເໜີໃຫ້. ຜູ້ໃຊ້ Origin ຈະສືບຕໍ່ໄດ້ຮັບຜົນປະໂຫຍດຈາກຄວາມເປັນສ່ວນຕົວອັນດັບໜຶ່ງຂອງພວກເຮົາ, adblock, ແລະ ຄວາມໄວ (ຜ່ານ Shields), ພ້ອມທັງການອັບເດດຊອບແວເປັນປະຈໍາ, ແພັດ Chromium, ແລະ ການປັບປຸງຄວາມປອດໄພ ແລະ ຄວາມເປັນສ່ວນຕົວ.</translation>
 <translation id="7984508421152399880">ຊື້​ໃນ​ປະ​ຈຸ​ບັນ</translation>
+<translation id="1882724423074862793">ກູ້ຄືນການຊື້</translation>
 <translation id="5567412479632285879">Brave Rewards ໄດ້ຖືກປິດ</translation>
 <translation id="413570371620795359">ເປີດລາງວັນສະແດງເພື່ອເປີດໃຊ້ງານແລະເລີ່ມຕົ້ນ</translation>
 <translation id="1051600834033686945">ເປີດການຕັ້ງຄ່າ Brave Rewards ເຕັມຮູບແບບ</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">ສົ່ງລາຍງານວິນິດໄສໂດຍອັດຕະໂນມັດ</translation>
 <translation id="8868426106596092089">ຊ່ວຍປະເສີດຄວາມເສີຍຫາຍໂຄງຄືອງຂອງ Brave ໂດຍການສົ່ງລາຍງານວິສັດຕອບນົວ່າຂອງບຣາວເມືອ Brave Browser ເປັນໜ້້ອງສາຍ ຫຼືຄ້າງ</translation>
 <translation id="4891600875049212418">ເຂົ້າເລືອກ Off-The-Record ເມື່ອໄປເທິງເວັບໄຊທ໌ທີ່ມີຄວາມອ່ອນໄຫວ</translation>
+<translation id="1022603984240541480">ສະແດງການແຈ້ງເຕືອນການປັບການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວໃນ sites ທີ່ເຂົ້າກັນໄດ້</translation>
+<translation id="3528176629974273019">ອະນຸຍາດໃຫ້ Brave ແນະນຳ (ແລະ ປັບ) ການຕັ້ງຄ່າຄວາມເປັນສ່ວນຕົວສະເພາະ site ໂດຍອັດຕະໂນມັດ.</translation>
 <translation id="509873765238158442">ບລັອກ Microsoft Recall</translation>
 <translation id="4763421121695677716">ບລັອກຄຸນສົມບັດ Recall ບນຄອມພິວເຕີ Microsoft Windows ຕໍ່າບັບເຊັນເລີຂ້າມຫາບາບີ</translation>
 <translation id="1968895725257436430">ການເກັບຂໍ້ມູນ</translation>
@@ -732,6 +753,7 @@
 <translation id="4425607417590286548">ປຸ່ມປໍດ</translation>
 <translation id="2128143836897950793">ບາດ 'ຂໍ Bridge ແບບໃໝ່...' ເພື່ອໄດ້ Bridges</translation>
 <translation id="3314921753580327793">ປີ້ນທີຢູ່:port (ຖືກແຕ່ລະບັນດານແບບສາມາດຂຽນໃນແຖວດຽວ)</translation>
+<translation id="7002083631026466886">Tor ບໍ່ສາມາດໃຊ້ bridge ນີ້ໄດ້. ກວດເບິ່ງມັນກັບ bridge ທີ່ທ່ານໄດ້ຮັບ, ຈາກນັ້ນລອງໃໝ່ອີກຄັ້ງ:</translation>
 <translation id="3755189300481406891">ເລືອກ Bridge</translation>
 <translation id="6924425739431382319">ກຳລັງຕິດຕໍ່ BridgeDB. ກະລຸນາລໍຖ້າ.</translation>
 <translation id="811745063252080651">ແກ້ໄຂ CAPTCHA ເພື່ອຂໍ Bridge.</translation>
@@ -909,7 +931,6 @@
 <translation id="1838374766361614909">ລ້າງການຄົ້ນຫາ</translation>
 <translation id="5126255551970171328">ຄົ້ນຫາຂໍ້ມູນຄວາມຈໍາ</translation>
 <translation id="7402116145895962069">ຊິງໂມເດລໃນຄອມພິວເຕີຂອງ Ollama ຂອງທ່ານ</translation>
-<translation id="4835154437390745810">ບໍ່ສາມາດແກ້ໄຂ (Managed) ໂດຍ Ollama</translation>
 <translation id="5985516785067818307">ຜູ້ຮ່ວມກອງສຳພາດ</translation>
 <translation id="8347743943525229984">ອະນຸຍາດການສໍານັນການສຳພາດ Brave</translation>
 <translation id="3204080538332044581">ອະນຸຍາດໃຫ້ Brave ສະແດງລິ້ງໄປຫາແບບສຳຫຼວດສ່ວນຕົວໃນໜ້າແຖບໃໝ່. ແບບສຳຫຼວດຊ່ວຍໃຫ້ພວກເຮົາສ້າງຄຸນສົມບັດທີ່ດີຂຶ້ນ ແລະ ວັດແທກປະສິດທິພາບຂອງແຄມເປນໂຄສະນາທີ່ອີງໃສ່ໂປຣແກຣມທ່ອງເວັບ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
