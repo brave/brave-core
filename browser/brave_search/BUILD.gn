@@ -43,6 +43,15 @@ source_set("brave_search") {
       "//brave/android/java/org/chromium/chrome/browser/brave_search:jni_headers",
       "//ui/android",
     ]
+  } else if (is_mac) {
+    sources += [
+      "backup_results_window_mac.h",
+      "backup_results_window_mac.mm",
+    ]
+
+    deps += [ "//ui/gfx" ]
+
+    frameworks = [ "AppKit.framework" ]
   } else if (use_aura) {
     deps += [
       "//ui/aura",
