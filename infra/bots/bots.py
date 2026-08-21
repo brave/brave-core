@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import sys
 
+import describe
 import gen
 import generated_output
 import lookup
@@ -30,6 +31,7 @@ def main(argv: list[str] | None = None) -> int:
     lookup.add_subparser(subparsers)
     gen.add_subparser(subparsers)
     validate.add_subparser(subparsers)
+    describe.add_subparser(subparsers)
 
     args = parser.parse_args(argv)
     try:

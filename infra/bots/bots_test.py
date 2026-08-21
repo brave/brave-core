@@ -25,6 +25,7 @@ sys.path.insert(
                  'config'))
 
 import bots
+import describe
 import gen
 import gen_paths
 import lookup
@@ -237,6 +238,61 @@ class ValidateDispatchTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertIn('missing', buf.getvalue())
+
+
+class DescribeDispatchTest(unittest.TestCase):
+    """`bots.py describe`'s CLI wiring: dispatch to `describe.cmd_describe()`,
+    for one builder and for every builder. See describe_test.py for
+    `describe.py`'s own logic."""
+
+    def test_dispatches_to_describe_cmd_for_one_builder(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        _make_generated_output_dir(tmp.name, ['b'])
+
+        original = gen_paths.BUILDERS_OUTPUT_DIR
+        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                ret = bots.main(['describe', 'b', '--json'])
+        finally:
+            gen_paths.BUILDERS_OUTPUT_DIR = original
+
+        self.assertEqual(ret, 0)
+        self.assertEqual(json.loads(buf.getvalue()),
+                         {'b': {
+                             'gn_args': {
+                                 'gn_args': {
+                                     'is_asan': True
+                                 }
+                             }
+                         }})
+
+    def test_omitting_builder_describes_everything(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        _make_generated_output_dir(tmp.name, ['a-builder', 'b-builder'])
+
+        original = gen_paths.BUILDERS_OUTPUT_DIR
+        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                ret = bots.main(['describe', '--json'])
+        finally:
+            gen_paths.BUILDERS_OUTPUT_DIR = original
+
+        self.assertEqual(ret, 0)
+        self.assertEqual(set(json.loads(buf.getvalue())),
+                         {'a-builder', 'b-builder'})
+
+    def test_unknown_builder_returns_1(self):
+        buf = io.StringIO()
+        with contextlib.redirect_stderr(buf):
+            ret = bots.main(['describe', 'does-not-exist', '--json'])
+        self.assertEqual(ret, 1)
+        self.assertIn('does-not-exist', buf.getvalue())
 
 
 if __name__ == '__main__':
