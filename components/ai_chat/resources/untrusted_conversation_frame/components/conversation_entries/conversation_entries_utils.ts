@@ -256,6 +256,53 @@ export const normalizeCitationSpacing = (text: string): string =>
   })
 
 /**
+ * Rewrites LaTeX-style math delimiters into the `$$` form that remark-math
+ * recognizes:
+ * - `\[ … \]` on a line of its own becomes a `$$` fence (display math).
+ * - `\( … \)`, and `\[ … \]` that sits inline within a line, become `$$…$$`.
+ *
+ * `$$` is used for inline math rather than `$…$` because single-dollar text
+ * math is deliberately disabled (see MATH_REMARK_OPTIONS) so that prose about
+ * prices — "costs $5 and $10" — isn't silently rendered as math. Normalizing
+ * to `$$` keeps `\(…\)` working without reintroducing that ambiguity.
+ *
+ * This has to run on the raw string rather than as a remark plugin: CommonMark
+ * treats `\(` and `\[` as character escapes and drops the backslash, so by the
+ * time a plugin sees the tree the delimiters are indistinguishable from
+ * ordinary parens and brackets. Code blocks and inline code are skipped so
+ * LaTeX or regex samples are preserved verbatim.
+ *
+ * Both patterns require their closing delimiter, so a half-streamed expression
+ * is left alone until it completes rather than flickering as broken math.
+ */
+export const normalizeMathDelimiters = (text: string): string =>
+  applyOutsideCodeBlocks(text, (segment) => {
+    const toInline = (tex: string) => `$$${tex.replace(/\s+/g, ' ').trim()}$$`
+
+    // A display fence needs surrounding blank lines to be parsed as flow math,
+    // but injecting those inside a paragraph, list item or table cell would
+    // break that block apart. So only use the fence when the expression
+    // already occupies its own line.
+    const replaceDisplay = (
+      match: string,
+      tex: string,
+      offset: number,
+    ): string => {
+      const isAtLineStart = /(?:^|\n)[ \t]*$/.test(segment.slice(0, offset))
+      const isAtLineEnd = /^[ \t]*(?:\n|$)/.test(
+        segment.slice(offset + match.length),
+      )
+      return isAtLineStart && isAtLineEnd
+        ? `\n\n$$\n${tex.trim()}\n$$\n\n`
+        : toInline(tex)
+    }
+
+    return segment
+      .replace(/\\\[([\s\S]+?)\\\]/g, replaceDisplay)
+      .replace(/\\\(([\s\S]+?)\\\)/g, (_match, tex: string) => toInline(tex))
+  })
+
+/**
  * Returns the source offset of the `[` character for every GFM task-list
  * checkbox in `text`, in document order. Task list items inside `<think>`
  * reasoning blocks are excluded so the order matches what the markdown

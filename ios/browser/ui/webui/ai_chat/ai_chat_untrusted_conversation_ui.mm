@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
@@ -245,6 +246,9 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddBoolean("isMobile", true);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
+  source->AddBoolean(
+      "isMathRenderingEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatMathRendering));
 
   // If the feature is not enabled then don't add the origin to the CSP.
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {

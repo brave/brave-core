@@ -770,6 +770,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "conversation\" menu option.",                                       \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatExportJSON),            \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-math-rendering",                                      \
+          "Brave AI Chat Math Rendering",                                      \
+          "Renders LaTeX expressions in assistant responses as typeset math.", \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMathRendering),         \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
