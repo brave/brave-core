@@ -14,15 +14,13 @@
 <translation id="8522292744959221145">Untuk menyemak sama ada kata laluan anda selamat daripada pelanggaran data dan isu keselamatan lain, <ph name="BEGIN_LINK"/>log masuk ke Brave<ph name="END_LINK"/>.</translation>
 <translation id="2627788872035182013">Klik menu Brave</translation>
 <translation id="1157985233335035034">Bahasa baru-baru ini</translation>
-<translation id="7813580490378477695"><ph name="PARTNER_NAME"/> telah menambahkan sambungan yang boleh mengubah cara Brave berfungsi.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1184145431117212167">Pemasangan gagal kerana versi Windows anda tidak disokong.</translation>
 <translation id="8541922081612557424">Mengenai Brave</translation>
 <translation id="987734326276404793">Dapatkan makluman penjejakan harga dengan Brave pada telefon anda</translation>
 <translation id="1203500561924088507">Terima kasih kerana memasang. Anda perlu memulakan semula penyemak imbas anda sebelum menggunakan <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="1232234696885483911">Apabila anda membuka Carian Imej, tajuk halaman, URL dan kandungan, termasuk PDF, akan dihantar kepada pelayan secara automatik. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Semasa anda log masuk, anda boleh menggunakan kata laluan anda dan pelbagai lagi daripada Brave sync chain anda dalam Brave. Untuk menukar tetapan ini, akses “Akaun anda dalam Brave”.</translation>
+<translation id="583633806828413086">Tunjukkan Gemini dalam Brave dalam bar menu Mac</translation>
 <translation id="1631493536097460865">Untuk memilih sebahagian daripada skrin dalam Gemini dalam Brave, gunakan pintasan papan kekunci.</translation>
 <translation id="8799570501820813406">Semasa tab ini tidak aktif, memori dikosongkan untuk mengekalkan kepantasan Brave. Anda boleh memilih untuk sentiasa mengecualikan laman ini daripada menjadi tidak aktif.</translation>
 <translation id="8767381092474532098">Brave menyekat muat turun ini kerana fail ini berbahaya</translation>
@@ -35,14 +33,12 @@
 peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="7562683844189283122">Log masuk ke Brave pada telefon anda</translation>
 <translation id="1330562121671411446">Kesan bahasa</translation>
-<translation id="6204677860546245308">Gunakan tetapan penyemak imbas yang disyorkan oleh Brave</translation>
 <translation id="108284536240904209">Padamkan juga data daripada Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Disematkan! Anda boleh mengakses Carian Imej lagi daripada butang baharu pada bar alat</translation>
 <translation id="1356661055722410047">Baharu! Anda boleh menterjemahkan teks dan imej pada skrin anda</translation>
 <translation id="1383876407941801731">Carian</translation>
 <translation id="3535301204632475895">Gunakan apl Brave untuk terus menyemak imbas semasa dalam perjalanan</translation>
 <translation id="7009295044271335553">&amp;Urus Profil Brave</translation>
-<translation id="1404026649028693342">Sentiasa paparkan AI Mode</translation>
 <translation id="141901961143729572">Kongsi pendapat anda</translation>
 <translation id="3880714039086599943">Untuk berkongsi tetingkap anda, benarkan rakaman skrin untuk Brave dalam Tetapan Sistem.</translation>
 <translation id="1586284627848250203">Dapatkan bantuan tentang Brave for Testing</translation>
@@ -51,14 +47,13 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="5147525139567260139">Kongsi tab Brave</translation>
 <translation id="721261350616678948">Log masuk ke Brave</translation>
 <translation id="1547469039832541117">Tamatkan tugasan yang diserlahkan.</translation>
-<translation id="1530633922026945685">Brave memerlukan kebenaran untuk mengakses kamera anda untuk membuat peta 3D persekitaran anda</translation>
 <translation id="51545890371361355">Sematkan Brave</translation>
 <translation id="6570689355868013775">Alatan keselamatan Brave</translation>
 <translation id="1902837727299679178">Brave mahu memadamkan data Password Manager anda. Taip kata laluan Windows anda untuk membenarkan tindakan ini.</translation>
 <translation id="1655849915812740665">Manfaatkan Brave sepenuhnya dengan apl Brave pada telefon anda</translation>
 <translation id="4449148723378534338">Semak privasi dan kawalan keselamatan utama dalam Brave</translation>
 <translation id="1640672724030957280">Memuat turun...</translation>
-<translation id="1680687534629375545">Tanya Carian Imej tentang halaman ini</translation>
+<translation id="1665602916345474427">Dilog masuk sebagai <ph name="USER_NAME"/>, <ph name="USER_EMAIL"/>, keahlian. Buka menu akaun</translation>
 <translation id="509363484780540563">Anda boleh menggunakan Brave pada bila-bila masa anda mengklik pautan dalam mesej, dokumen dan apl lain. Apl juga akan disematkan pada bar tugas anda.</translation>
 <translation id="1709772298389099340">Menyediakan keistimewaan dipertingkat untuk <ph name="BROWSER_NAME"/>.</translation>
 <translation id="8004287232784878841">Brave akan memadamkan data semakan imbas sebentar lagi</translation>
@@ -72,7 +67,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="4529028207655448215">Brave cuba <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="7362761326208547489">Apabila anda membuka Brave pada <ph name="DEVICE_TYPE"/> anda selepas ini, anda akan melihat gesaan untuk menggunakan Brave Password Manager.</translation>
 <translation id="1838374766361614909">Kosongkan carian</translation>
-<translation id="3643631442346149414">Untuk melindungi kerja anda pada Brave, organisasi anda akan dapat melihat atau mengurus maklumat tertentu</translation>
 <translation id="3541642064306182066">Untuk memadamkan data semakan imbas daripada peranti ini dan menyimpan data semakan imbas tersebut dalam Brave sync chain anda, <ph name="BEGIN_LINK"/>log keluar dari Brave<ph name="END_LINK"/>.</translation>
 <translation id="5679816001365584346">Muat turun Brave pada telefon anda untuk membuka atau membuat kumpulan tab baharu semasa dalam perjalanan.</translation>
 <translation id="4559627161887338743">Anda boleh mengurus Brave sync chain anda yang dilog masuk. Brave sync chain anda digunakan untuk penyemak imbas Brave, Play Store, Gmail dan pelbagai lagi. Jika anda ingin menambah akaun untuk orang lain, seperti ahli keluarga, tambahkan sahaja orang baharu pada <ph name="DEVICE_TYPE"/> anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
@@ -80,7 +74,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="1880677175115548835">Pilih teks</translation>
 <translation id="4528406859989804913">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Brave sync chain, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. Anda boleh memilih untuk membuat profil baharu untuk mengasingkan data Brave anda yang sedia ada. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave menjimatkan kuasa bateri dengan mengehadkan aktiviti latar dan kesan visual, seperti penatalan lancar dan kadar bingkai video. <ph name="BEGIN_LINK"/>Ketahui Penjimat Tenaga dengan lebih lanjut<ph name="END_LINK"/></translation>
-<translation id="1898804291554630487">Tanya tentang halaman ini</translation>
 <translation id="8643267611122541711">Perkhidmatan Pengemas Kini Brave</translation>
 <translation id="1649714546770135458">Dengan mematikan pilihan ini, anda boleh mengelog masuk ke tapak Brave seperti Gmail tanpa perlu mengelog masuk ke Brave</translation>
 <translation id="189297655255130768">Brave tidak responsif. Lancarkan semula sekarang?</translation>
@@ -98,7 +91,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="5499149312981370855">Pilih sama ada untuk memasukkan sejarah Brave untuk mendapatkan pengalaman yang lebih diperibadikan dalam Perkhidmatan Brave</translation>
 <translation id="5152523902653128156">Dibina dalam Brave untuk membantu anda membuat, menyimpan dan menggunakan autolengkap kata laluan kukuh. Tambahkan pintasan untuk akses mudah.</translation>
 <translation id="6959434860418352144">Klik butang Sesuaikan Brave pada Halaman Tab Baharu untuk memberikan rupa baharu kepada Brave</translation>
-<translation id="2066690553719545730">Sentiasa Paparkan AI Mode</translation>
 <translation id="2472891440303445472">Brave menyekat muat turun ini kerana fail mengelirukan dan mungkin membuat perubahan tidak dijangka pada peranti anda</translation>
 <translation id="2054358978145431867">Anda akan melihat gesaan untuk mencuba <ph name="FEATURE_NAME"/> apabila anda membuka Brave iOS selepas ini.</translation>
 <translation id="2726948994393234543">Kata laluan anda dan data Brave lain yang anda simpan dalam Brave sync chain anda akan dialih keluar daripada peranti ini. Untuk menggunakan maklumat itu semula dalam Brave, log masuk semula.</translation>
@@ -125,7 +117,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="8984404842684436004">{NUM_TABS,plural, =1{Brave mengesyorkan penjedaan tab yang memperlahankan penyemak imbas anda}other{Brave mengesyorkan penjedaan tab yang memperlahankan penyemak imbas anda}}</translation>
 <translation id="2307973900865360088">Kekalkan dalam Dok</translation>
 <translation id="7810992039564280750">Semak URL melalui perbandingan dengan senarai laman tidak selamat yang disimpan dalam Brave. Jika laman cuba mencuri kata laluan anda atau apabila anda memuat turun fail yang berbahaya, Brave juga mungkin menghantar URL, termasuk sedikit kandungan halaman, kepada Penyemakan Imbas Selamat.</translation>
-<translation id="9095263438435683933">Untuk menghantar nombor dari sini ke telefon Android anda, log masuk ke Brave pada kedua-dua peranti.</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="2359808026110333948">Teruskan</translation>
 <translation id="6485997157403727556">Sambungan "<ph name="EXTENSION_NAME"/>" mahu anda log masuk ke Brave</translation>
@@ -210,9 +201,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="5949068186379578553">Untuk berkongsi skrin anda, benarkan rakaman skrin untuk Brave dalam Tetapan Sistem</translation>
 <translation id="4805806622840861220">Lancarkan Semula Brave</translation>
 <translation id="3161522574479303604">Semua bahasa</translation>
-<translation id="3225882094369124157">Program lain pada komputer anda telah menambahkan tema yang boleh mengubah cara Brave berfungsi.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Sesuaikan profil Brave baharu anda</translation>
 <translation id="2430807206104224491">Anda boleh terus bersembang dengan AI Mode tanpa menukar tab. Untuk bermula, log masuk ke Brave. Anda juga akan mendapat kata laluan anda dan pelbagai lagi pada semua peranti anda.</translation>
 <translation id="4805865169608137960">Untuk mengalih keluar Brave sync chain anda daripada Brave, log keluar dari Brave dalam halaman Tetapan</translation>
@@ -228,7 +216,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="8652321858775514885">Anda akan dilog keluar daripada kebanyakan laman apabila anda menutup semua tetingkap Brave, kecuali Brave sync chain anda jika anda log masuk ke Brave. Untuk membenarkan laman mengingati anda, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">penjuru atas sebelah kanan kawasan carian: kanan <ph name="RIGHT"/>%, atas <ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Data Brave pada akaun anda</translation>
-<translation id="3369405342922656244">Cari halaman ini dengan Carian Imej</translation>
 <translation id="6610330853796830621">Gunakan kata laluan anda dengan Brave pada telefon anda</translation>
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Tukar kepada profil Brave yang sedia ada?</translation>
@@ -247,7 +234,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="3597003331831379823">Gagal untuk menjalankan persediaan dengan keistimewaan dipertingkat. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="4167284810587724062">Log masuk ke Brave</translation>
 <translation id="3066805437003400520">Data semakan imbas orang ini akan dipadamkan daripada peranti ini. Untuk memulihkan data itu, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
-<translation id="7029305463989165490">Untuk menghantar nombor daripada <ph name="ORIGIN"/> ke telefon Android anda, log masuk ke Brave pada kedua-dua peranti.</translation>
 <translation id="3667616615096815454">Tidak dapat memasang, aplikasi tidak dikenali oleh pelayan.</translation>
 <translation id="1128485277465085828">Gunakan <ph name="BEGIN_LINK"/>ungkapan laluan anda sendiri<ph name="END_LINK"/> untuk menyulitkan data Brave dalam Brave sync chain anda. Kaedah pembayaran dan alamat daripada Google Pay tidak akan disulitkan. Sejarah penyemakan imbas daripada Brave tidak akan disegerakkan.</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
@@ -263,6 +249,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 
           **Cadangkan Soalan:** Jana senarai berbulet 3-5 soalan yang mencabar minda yang boleh ditanya oleh pengguna untuk memahami tangkapan skrin dengan lebih baik. Soalan ini hendaklah mengandungi sekurang-kurangnya satu soalan yang khusus tentang objek visual, reka bentuk atau peletakan objek tersebut.</translation>
 <translation id="6899774208752247219"><ph name="PAGE_TITLE"/> - Brave Origin</translation>
+<translation id="1118754729376002185">Brave memerlukan kebenaran rangkaian setempat untuk laman ini</translation>
 <translation id="3885770153807205175">Pemilih bahasa</translation>
 <translation id="6315734375101223238">Sesuaikan dan kawal Brave. Perhatian anda diperlukan - klik untuk mendapatkan butiran.</translation>
 <translation id="7130675370997202556">Klik nama anda untuk membuka Brave dan mula menyemak imbas.</translation>
@@ -287,9 +274,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="6056473803837713617">Bantu jadikan Brave lebih baik dengan melaporkan <ph name="BEGIN_LINK"/>tetapan semasa<ph name="END_LINK"/></translation>
 <translation id="4050175100176540509">Peningkatan keselamatan penting dan ciri baharu tersedia dalam versi terkini.</translation>
 <translation id="4055805654398742145">Password Manager</translation>
-<translation id="6654312501894761082">Program lain pada komputer anda telah menambahkan sambungan yang boleh mengubah cara Brave berfungsi.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Organisasi anda akan menutup Brave secara automatik apabila Brave tidak digunakan selama 1 minit. Data semakan imbas dipadamkan. Pemadaman ini termasuk sejarah, autolengkap dan muat turun.}other{Organisasi anda akan menutup Brave secara automatik apabila Brave tidak digunakan selama # minit. Data semakan imbas dipadamkan. Pemadaman ini termasuk sejarah, autolengkap dan muat turun.}}</translation>
 <translation id="5794951150713244901">Akses halaman Perihal Brave</translation>
 <translation id="10925962326134232">Sesuaikan Brave untuk memberikan penyemak imbas anda rupa baharu</translation>
@@ -341,6 +325,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="2182657378556811785">Hampir terkini! Lancarkan semula Brave untuk menyelesaikan kemas kini.</translation>
 <translation id="6311668361877328515">Mempercepat laman dengan enjin V8 Brave tetapi Brave menjadi kurang tahan terhadap serangan</translation>
 <translation id="7402642357351265733">Jika anda turut berkongsi laporan penggunaan Brave, laporan tersebut menyertakan URL yang anda lawati</translation>
+<translation id="4673710618874938871">Log masuk sebagai <ph name="USER_NAME"/>, keahlian. Buka menu akaun</translation>
 <translation id="8142245354207161805">Nampaknya profil digunakan oleh proses Brave lain (<ph name="PROCESS_ID"/>) pada komputer lain (<ph name="HOST_NAME"/>). Brave telah mengunci profil supaya profil tidak rosak. Jika anda pasti tiada proses lain yang menggunakan profil ini, anda boleh membuka profil dan melancarkan semula Brave.</translation>
 <translation id="4680828127924988555">Batalkan Pemasangan</translation>
 <translation id="2014343159590733363">Sesetengah data Brave anda belum disimpan dalam Brave sync chain anda. Tunggu beberapa minit sebelum log keluar. Jika anda log keluar sekarang, data ini akan dipadamkan.</translation>
@@ -373,7 +358,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="758175943316138760">Sambung semula dari tempat anda berhenti dengan Brave pada iOS.</translation>
 <translation id="6234515504547364178">Log keluar daripada Brave</translation>
 <translation id="5234764350956374838">Ketepikan</translation>
-<translation id="5254739261293693943">Tanya tentang video ini</translation>
 <translation id="7690383309583926074">Dapatkan apl Brave untuk menyimpan kata laluan semasa dalam perjalanan</translation>
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
 <translation id="5286907366254680517">Dikesan</translation>
@@ -398,7 +382,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="604223321106006231">{NUM_TABS,plural, =1{Brave Mengesyorkan Penjedaan Tab yang Memperlahankan Penyemak Imbas Anda}other{Brave Mengesyorkan Penjedaan Tab yang Memperlahankan Penyemak Imbas Anda}}</translation>
 <translation id="894936507076470937">Brave mungkin tidak akan berfungsi dengan betul kerana tidak disokong pada edaran Linux ini lagi</translation>
 <translation id="2596557398669145729">Brave menyekat muat turun ini kerana fail tersebut boleh membahayakan akaun peribadi dan rangkaian sosial anda</translation>
-<translation id="696826782632239602">Brave memerlukan akses kepada lokasi anda untuk berkongsi lokasi dengan tapak ini</translation>
 <translation id="1744365871163268756">Sila tunggu sementara Brave memasang kemas kini sistem terkini.</translation>
 <translation id="3861679447659630159">Brave cuba mengedit kata laluan. Taip kata laluan Windows anda untuk membenarkan tindakan ini.</translation>
 <translation id="8535558155562097643">Bekerja dengan lancar menggunakan apl kegemaran anda seperti Google Drive dan YouTube semasa dalam perjalanan dengan Brave.</translation>
@@ -423,6 +406,7 @@ Jika halaman ini tidak berfungsi seperti yang dijangkakan, cuba benarkan pengopt
 <translation id="1834213228893578875">Brave mengosongkan memori daripada tab yang tidak aktif. Langkah ini memberi tab aktif dan apl lain lebih banyak sumber komputer dan memastikan Brave pantas. Tab anda yang tidak aktif menjadi aktif semula secara automatik apabila anda kembali kepada tab tersebut. <ph name="BEGIN_LINK"/>Ketahui Penjimat Memori dengan lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="899523323751802352">Jika anda terlupa ungkapan laluan anda atau mahu menukar tetapan ini, <ph name="SETTINGS_LINK"/> data Brave dalam akaun anda</translation>
 <translation id="82926023981336111">Sesuaikan dan kawal Brave. Tetapkan Brave sebagai lalai anda.</translation>
+<translation id="5660546041996455312">Pastikan kata laluan, penanda halaman dan sejarah anda disegerakkan dengan sempurna merentas peranti dengan menetapkan Brave sebagai penyemak imbas lalai anda.</translation>
 <translation id="5809516625706423866">Tidak dapat disambungkan kepada Internet. HTTP 401 Tidak Dibenarkan. Sila semak konfigurasi proksi anda.</translation>
 <translation id="95980832839683236">Mempercepat laman dengan enjin V8 Brave tetapi Brave menjadi kurang tahan sedikit terhadap serangan. Tetapan ini dimatikan.</translation>
 <translation id="1224606669200461217">Untuk menggunakan dan menyimpan data Brave dalam Brave sync chain anda, kemas kinikan Brave</translation>
@@ -440,7 +424,6 @@ Jika halaman ini tidak berfungsi seperti yang dijangkakan, cuba benarkan pengopt
 <translation id="5768962901674164501">Untuk mendapatkan penanda halaman ini dan pelbagai lagi pada semua peranti anda, log masuk ke Brave</translation>
 <translation id="5101892358689285100">Peribadikan Brave Anda</translation>
 <translation id="5960071705175224773">Tetapan anda telah diubah oleh apl yang tidak diketahui</translation>
-<translation id="5968400720580217226">AI Mode</translation>
 <translation id="5977420883993828287">Disematkan! Gunakan Tugasan Kontekstual sekali lagi daripada bar alat</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Organisasi anda akan menutup Brave secara automatik apabila Brave tidak digunakan selama 1 minit.}other{Organisasi anda akan menutup Brave secara automatik apabila Brave tidak digunakan selama # minit.}}</translation>
 <translation id="3598551856834560515">Kemas kini Brave untuk memulakan penyegerakan</translation>
@@ -465,12 +448,8 @@ Jika halaman ini tidak berfungsi seperti yang dijangkakan, cuba benarkan pengopt
 <translation id="6685697979743742605">Fail ini mungkin berbahaya<ph name="LINE_BREAK"/>Brave boleh menyemak muat turun ini untuk anda jika anda memberikan kata laluan. Maklumat tentang fail itu akan dihantar kepada Penyemakan Imbas Selamat Brave tetapi kandungan dan kata laluan fail akan kekal pada peranti anda.</translation>
 <translation id="6182736845697986886">Pemasangan gagal akibat ralat dalaman pelayan kemaskinian.</translation>
 <translation id="4368341489795135329">Pastikan anda telah log masuk ke Brave pada <ph name="TARGET_DEVICE_NAME"/> anda, kemudian cuba hantar lagi.</translation>
-<translation id="3038354906709778538">Program lain pada komputer anda telah menambahkan apl yang boleh mengubah cara Brave berfungsi.
-
-<ph name="EXTENSION_NAME"/></translation>
 <translation id="8320964054148936490">Komputer ini telah mempunyai versi Brave yang lebih baharu. Jika perisian tidak berfungsi, sila nyahpasang Brave dan cuba lagi.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave akan dilancarkan semula sekarang}=1{Brave akan dilancarkan semula dalam masa sesaat}other{Brave akan dilancarkan semula dalam masa # saat}}</translation>
-<translation id="6239161312595354541">Tanya Carian Imej tentang video ini</translation>
 <translation id="5980269616827212166">Brave memerlukan kebenaran akses storan untuk memuat turun fail</translation>
 <translation id="7651600795135059130">Semak URL melalui perbandingan dengan senarai laman tidak selamat yang disimpan dalam Brave</translation>
 <translation id="5019879183386042809">Jadikan Brave penyemak imbas lalai</translation>
@@ -561,13 +540,11 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
             • Menetapkan semula pintasan Brave
             <ph name="LINE_BREAKS"/>
             Penanda halaman, sejarah dan kata laluan yang disimpan tidak akan terjejas.</translation>
-<translation id="6934579572334859869">Tanya Carian Imej tentang imej ini</translation>
 <translation id="5529781826378237601">Anda telah mencapai had <ph name="BOOKMARK_LIMIT"/> penanda halaman Brave, maka sesetengah penanda halaman anda belum disimpan dalam Brave sync chain anda.
 
 Penanda halaman baharu tidak boleh disimpan dalam akaun anda sehingga anda memadamkan beberapa penanda halaman. Jika anda log keluar sekarang, penanda halaman yang tidak disimpan akan dipadamkan.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="3453763134178591239">Syarat Chrome OS</translation>
-<translation id="3335606533094650083">Brave memerlukan kebenaran untuk mengakses mikrofon anda bagi tapak ini</translation>
 <translation id="6643520655691573653">Masukkan ungkapan laluan anda untuk menggunakan dan menyimpan data Brave dalam akaun anda, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7011190694940573312">Pemasangan gagal kerana versi sistem operasi ini tidak disokong.</translation>
 <translation id="7024536598735240744">Ralat penyahpadatan: <ph name="UNPACK_ERROR"/>.</translation>
@@ -583,6 +560,7 @@ Penanda halaman baharu tidak boleh disimpan dalam akaun anda sehingga anda memad
 <translation id="2332301637111071062">Organisasi anda memadamkan data Brave apabila data tersebut tidak digunakan selama <ph name="TIMEOUT_DURATION"/>. Pemadaman ini termasuk sejarah, autolengkap dan muat turun.</translation>
 <translation id="1008530050039597147">Brave memerlukan kebenaran kamera untuk laman ini</translation>
 <translation id="1197672524850678392">Tidak dapat melancarkan Brave. Cuba lagi.</translation>
+<translation id="5020151688261063547">Tanya apa-apa sahaja, di tempat anda berada, dengan Gemini dalam Brave</translation>
 <translation id="3625983487600668413">Kekalkan Brave dalam Dok anda supaya dapat diakses dengan pantas pada bila-bila masa</translation>
 <translation id="5755581833598928580">Gunakan Brave pada bila-bila masa anda mengklik pautan dalam mesej, dokumen dan apl lain</translation>
 <translation id="7216228761061470870">Apabila anda menggunakan Carian Imej pada desktop, tajuk halaman, URL dan kandungan, termasuk PDF, akan dihantar kepada pelayan</translation>
@@ -603,6 +581,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7352651011704765696">Kesilapan telah berlaku</translation>
 <translation id="6085660187823915017">Untuk mendapatkan kemaskinian Brave yang akan datang, anda memerlukan macOS 13 atau versi lebih baharu. Komputer ini menggunakan macOS 12.</translation>
 <translation id="2865744782251083875">Anda belum melawati laman web ini baru-baru ini. Brave mengalih keluar <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>.</translation>
+<translation id="3871306442916198768">Tunjukkan Gemini dalam Brave dalam dulang sistem</translation>
 <translation id="4104934885375476361">Kini Brave ialah penyemak imbas lalai anda</translation>
 <translation id="7951152294775418909">Teruskan dari tempat anda berhenti: Brave memulihkan tab anda setiap kali anda memulakan semula apl. Untuk mematikan ciri ini, akses</translation>
 <translation id="3191314862567596053">Import Kata Laluan Kepada Brave</translation>
@@ -611,7 +590,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 3. Klik <ph name="BUTTON_3"/> dalam pemberitahuan Windows untuk menyematkan Brave pada bar tugas anda untuk akses pantas</translation>
 <translation id="4864311514218370796"><ph name="PAGE_TITLE"/> - Brave Origin Dev</translation>
 <translation id="7450541714075000668">Teks disalin</translation>
-<translation id="2034072705932785495">Brave memerlukan kebenaran untuk mengakses kamera anda bagi tapak ini</translation>
 <translation id="7129342855140808694">Untuk menggunakan mikrofon anda, berikan akses kepada Brave dalam <ph name="BEGIN_LINK"/>tetapan sistem<ph name="END_LINK"/></translation>
 <translation id="5296583608321648908">Untuk mendapatkan kemaskinian Brave yang akan datang, anda memerlukan Windows 10 atau yang lebih baharu. Komputer ini menggunakan Windows 7.</translation>
 <translation id="3962395975456095331">Lancarkan Semula Brave?</translation>
@@ -638,6 +616,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="4784414698887946907">Tindakan ini akan memadamkan data semakan imbas anda daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Pemasang tidak dapat mencipta direktori sementara. Sila semak ruang cakera kosong dan kebenaran untuk memasang perisian.</translation>
 <translation id="8543787950557226450">Tetapkan semula kepada Brave Lalai</translation>
+<translation id="4859382825808018797">Untuk melindungi kerja anda pada Brave, organisasi anda akan dapat melihat atau mengurus maklumat tertentu apabila anda log masuk ke Brave.</translation>
 <translation id="4976450819672499783">Tetapkan Brave sebagai lalai dan sematkan pada bar tugas</translation>
 <translation id="1978509466033734608">Jadikan Brave lebih pantas</translation>
 <translation id="8607348724092473027"><ph name="PAGE_TITLE"/> - Brave Origin Canary</translation>
@@ -651,7 +630,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7872446069773932638">Memuat turun... <ph name="SECONDS"/> saat lagi</translation>
 <translation id="5545136190679883344">Jika anda terlupa ungkapan laluan anda atau mahu menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akaun anda<ph name="END_LINK"/></translation>
 <translation id="9044562649276955255">Buka Gemini dalam Brave dengan pantas pada bila-bila masa anda memerlukan Gemini</translation>
-<translation id="7877212753140190672">Tanya tentang imej ini</translation>
 <translation id="5687542525349822727">Tetapkan Brave sebagai lalai anda</translation>
 <translation id="6396151137840491551">Brave meningkatkan sambungan tidak selamat kepada HTTPS secara automatik jika boleh</translation>
 <translation id="2925193881330501265">Anda telah log masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sila gunakan akaun yang sama untuk log masuk lagi.</translation>
@@ -733,7 +711,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="1419543648228375718">Log masuk ke Brave?</translation>
 <translation id="8747073452963259673">penjuru bawah sebelah kiri kawasan carian: kiri <ph name="LEFT"/>%, bawah <ph name="BOTTOM"/>%</translation>
 <translation id="878572486461146056">Ralat pemasangan: Pentadbir rangkaian anda telah menggunakan Dasar Kumpulan yang menghalang pemasangan: <ph name="INSTALL_ERROR"/></translation>
-<translation id="4831743161813926460">Brave memerlukan kebenaran untuk mengakses kamera dan mikrofon anda bagi tapak ini</translation>
 <translation id="8813277370772331957">Ingatkan saya kemudian</translation>
 <translation id="1588296410638341457">Kongsi dokumen ini dengan Gemini dalam Brave untuk mendapatkan ikhtisar pantas dan mengemukakan pertanyaan susulan</translation>
 <translation id="64216977793816291">Log Masuk ke Brave?</translation>
