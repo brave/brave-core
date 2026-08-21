@@ -80,7 +80,7 @@ bool IsSearchEvent(const AutocompleteMatch& match) {
 }  // namespace
 
 BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
-                                               Browser* browser,
+                                               BrowserWindowInterface* browser,
                                                Profile* profile)
     : ChromeOmniboxClient(location_bar, browser, profile),
       profile_(profile),
