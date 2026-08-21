@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 1cfb0d2c2139fb80a754cd3b3d53c4e3fd050b6b..d0aa812d8ca2d09e38af46cbf6e4e1ff9b0ed857 100644
+index 1cfb0d2c2139fb80a754cd3b3d53c4e3fd050b6b..63a8dcbed1647cd59c8bc2a34a0bc599bc6ef09a 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -379,7 +379,9 @@ ChromeContentRendererClient::ChromeContentRendererClient()
@@ -22,3 +22,12 @@ index 1cfb0d2c2139fb80a754cd3b3d53c4e3fd050b6b..d0aa812d8ca2d09e38af46cbf6e4e1ff
            render_frame, std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
      if (chrome_observer_->content_settings_manager()) {
+@@ -708,7 +710,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+   if (dom_distiller::ShouldStartDistillabilityService()) {
+     // Create DistillabilityAgent to send distillability updates to
+     // DistillabilityDriver in the browser process.
+-    new dom_distiller::DistillabilityAgent(render_frame, DCHECK_IS_ON());
++    new dom_distiller::DistillabilityAgent(render_frame, false);
+   }
+ 
+   blink::AssociatedInterfaceRegistry* associated_interfaces =
