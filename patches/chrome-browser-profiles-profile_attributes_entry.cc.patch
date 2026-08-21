@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_attributes_entry.cc b/chrome/browser/profiles/profile_attributes_entry.cc
-index 81c9c0f7b1db88acfd0af3130122fd4538ede6d1..b3bca14d1a0ee7b92e880a8624d3911333700d89 100644
+index f012ed054d7166db0aba8c46fc2a202bee2564a3..bb9023415f985e12323fdcc100c85c3c166672f7 100644
 --- a/chrome/browser/profiles/profile_attributes_entry.cc
 +++ b/chrome/browser/profiles/profile_attributes_entry.cc
-@@ -1066,6 +1066,7 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
+@@ -1069,6 +1069,7 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
  
  // This method should be periodically pruned of year+ old migrations.
  void ProfileAttributesEntry::MigrateObsoleteProfileAttributes() {

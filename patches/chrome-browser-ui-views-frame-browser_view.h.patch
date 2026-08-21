@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 3c9907fe4a326ef47e17a5bfe96908511a2cd2dd..cba1810918c1833e4b88ca4aed9381d2787fabc3 100644
+index 884a37d37ea1a25d2e0d8a7b8ba7221ce00ec1fa..a5c56ccedda8d3a2c321d7939bffb93be0987b45 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -661,7 +661,7 @@ class BrowserView : public BrowserWindow,
+@@ -663,7 +663,7 @@ class BrowserView : public BrowserWindow,
    views::ClientView* CreateClientView(views::Widget* widget) override;
    views::View* CreateOverlayView() override;
  #if BUILDFLAG(IS_MAC)

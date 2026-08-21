@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 43e265031941223c5d5eedbb20678ea297478834..7aaf8c077e7af12fb6592a9e3284183839288c6f 100644
+index 1f735f6998ecff883c5b40b4d1fac181ee7c717f..e80378ba1cd2ebb1714ea349d5600d449d79796a 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -505,6 +505,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -507,6 +507,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterBooleanPref(kMetricsConsentRestructureFeatureState, false);
    registry->RegisterTimePref(kObsoleteManagementPlatformLastLogTime,
                               base::Time());
@@ -10,7 +10,7 @@ index 43e265031941223c5d5eedbb20678ea297478834..7aaf8c077e7af12fb6592a9e32841838
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -997,6 +998,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -999,6 +1000,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref("autofill.wallet_import_enabled", true);
    registry->RegisterBooleanPref("sync.autofill_wallet_import_enabled_migrated",
                                  false);
@@ -18,7 +18,7 @@ index 43e265031941223c5d5eedbb20678ea297478834..7aaf8c077e7af12fb6592a9e32841838
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1028,6 +1030,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -1030,6 +1032,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 07/2026.
    prefs->ClearPref(kObsoleteManagementPlatformLastLogTime);
@@ -26,7 +26,7 @@ index 43e265031941223c5d5eedbb20678ea297478834..7aaf8c077e7af12fb6592a9e32841838
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1103,6 +1106,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+@@ -1105,6 +1108,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
    // Added 08/2026.
    prefs->ClearPref("autofill.wallet_import_enabled");
    prefs->ClearPref("sync.autofill_wallet_import_enabled_migrated");

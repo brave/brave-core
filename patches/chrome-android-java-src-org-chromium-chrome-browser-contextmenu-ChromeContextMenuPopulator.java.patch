@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 340688865cedf4bce2775f608c6deab189156b96..74118917e268a07bad2951d6fec718ec4a3e8a66 100644
+index 15e829f8b90e479b2d83de7a7b21140e40bd005f..22cb778e8d19b8daeec1980be686afed6b06e0e3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 @@ -275,6 +275,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
@@ -20,7 +20,7 @@ index 340688865cedf4bce2775f608c6deab189156b96..74118917e268a07bad2951d6fec718ec
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -728,6 +730,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -735,6 +737,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));

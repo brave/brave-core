@@ -100,6 +100,12 @@ inline constexpr char16_t kIsolatedAppSchemeUtf16[] = u"isolated-app";
 // widgets instead of using HTML.
 inline constexpr char kChromeNativeScheme[] = "chrome-native";
 
+// The chrome-experimental-site-token: scheme is used to retrieve site-specific
+// tokens.
+inline constexpr char kChromeExperimentalSiteTokenScheme[] =
+    "chrome-experimental-site-token";
+inline constexpr char kChromeExperimentalSiteTokenHost[] = "token";
+
 // The URL of safe section in Chrome page.
 inline constexpr char16_t kChromeSafePageURL[] = u"https://support.brave.app/";
 
@@ -407,6 +413,13 @@ inline constexpr char16_t kCardBenefitsLearnMoreURL[] =
 
 // "Learn more" URL for the Gmail OTP filling setting.
 inline constexpr char16_t kGmailOtpFillingLearnMoreURL[] =
+    u"https://support.brave.app";
+
+// URL for Gmail general settings.
+inline constexpr char16_t kGmailSettingsURL[] = u"https://support.brave.app";
+
+// URL for Gmail smart features settings.
+inline constexpr char16_t kGmailSmartFeaturesURL[] =
     u"https://support.brave.app";
 
 // "Learn more" URL for the performance intervention notification setting.

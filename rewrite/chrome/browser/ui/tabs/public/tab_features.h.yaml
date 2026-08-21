@@ -13,3 +13,13 @@ substitutions:
     make_virtual:
       class_name: TabFeatures
       method_name: Init
+
+  - description: |-
+      Let BraveTabFeatures create the thumbnail helper unconditionally.
+
+      We want it always available so hover modes can be switched via
+      settings without restarting the browser, unlike upstream which gates
+      creation on features::kTabHoverCardImages.
+    add_friend:
+      class_name: TabFeatures
+      friend_type: class BraveTabFeatures

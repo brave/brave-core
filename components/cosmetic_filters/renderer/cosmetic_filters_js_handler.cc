@@ -149,13 +149,14 @@ bool IsVettedSearchEngine(const GURL& url) {
   std::string domain_and_registry =
       net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  size_t registry_len = net::registry_controlled_domains::GetRegistryLength(
-      url, net::registry_controlled_domains::EXCLUDE_UNKNOWN_REGISTRIES,
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (domain_and_registry.length() > registry_len + 1) {
+  std::optional<std::string_view> registry =
+      net::registry_controlled_domains::GetRegistry(
+          url, net::registry_controlled_domains::EXCLUDE_UNKNOWN_REGISTRIES,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (registry && domain_and_registry.length() > registry->length() + 1) {
     std::string_view host =
         std::string_view(domain_and_registry)
-            .substr(0, domain_and_registry.length() - registry_len - 1);
+            .substr(0, domain_and_registry.length() - registry->length() - 1);
     if (kVettedSearchEngines.contains(host)) {
       return true;
     }

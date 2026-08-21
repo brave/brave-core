@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index a1b1d35cd9e75744ab145bf5677b0234674d91bf..b7747e2fc98c2f6f01e0c9269d16686296c653d3 100644
+index bdfc67a5e846bf96bbe7817bae0a838ea800d98f..e131c1d7d52d3ae98fff04585d94a7ec2282fb80 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -180,7 +180,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -195,7 +195,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
      private boolean mShouldUpdatePrefs;
  
      /** Maps {@link UserSelectableType} to the corresponding preference. */
@@ -11,7 +11,7 @@ index a1b1d35cd9e75744ab145bf5677b0234674d91bf..b7747e2fc98c2f6f01e0c9269d166862
  
      private Preference mGoogleActivityControls;
      private Preference mSyncEncryption;
-@@ -269,6 +269,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -284,6 +284,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      @Override
      public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -19,7 +19,7 @@ index a1b1d35cd9e75744ab145bf5677b0234674d91bf..b7747e2fc98c2f6f01e0c9269d166862
          if (mSyncService.isUsingExplicitPassphrase()
                  && preference
                          .getKey()
-@@ -467,7 +468,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -530,7 +531,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       * this state.
       */
      private void updateSyncPreferences() {

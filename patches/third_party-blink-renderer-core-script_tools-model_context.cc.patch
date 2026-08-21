@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index 0586b2995e7cae94bb2cc1fd2b4c36557c4baee1..d16ba72abb455fe37306be7a90f38a0025efdb1d 100644
+index 9ae8e5045bf6e2d35a3a8af0b2ec673a130df596..3c24cb5c069c10a098ddbed4a9b80621c200f375 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
 @@ -967,7 +967,11 @@ bool ModelContext::IsModelContextAllowed() const {

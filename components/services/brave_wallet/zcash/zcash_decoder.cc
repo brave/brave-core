@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/big_endian.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/services/brave_wallet/public/cpp/utils/protobuf_utils.h"
 #include "brave/components/services/brave_wallet/public/proto/zcash_grpc_data.pb.h"

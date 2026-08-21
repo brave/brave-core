@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sessions/BUILD.gn b/chrome/browser/sessions/BUILD.gn
-index fa6092e43269023b93f8ab0f08f00c955e629de8..958ed225d0708c89c679a8a558d0beea2d15a59c 100644
+index 0f6b5fab3ad71e12aeb799322e36de52ffa36be8..819021e160863a99108b191c3c55cba70e63570d 100644
 --- a/chrome/browser/sessions/BUILD.gn
 +++ b/chrome/browser/sessions/BUILD.gn
-@@ -168,6 +168,7 @@ source_set("impl") {
+@@ -169,6 +169,7 @@ source_set("impl") {
          "//chromeos/components/kiosk",
        ]
      }

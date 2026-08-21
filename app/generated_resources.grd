@@ -1424,6 +1424,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and Actions section in the main App Menu">
           Tools and Actions
         </message>
+        <message name="IDS_APP_MENU_INCOGNITO" desc="Label for the Private block button in the main App Menu">
+          Private
+        </message>
         <message name="IDS_PROFILE_ROW_VERIFY_MESSAGE" desc="A label to indicate that the profile needs credential verification (reauthentication). This is a shorter version of 'Verify it's you' that is used in other places.">
           Verify
         </message>
@@ -5619,6 +5622,9 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_UNPIN_FROM_TOOLBAR" desc="The label in an extension's context menu that the user can click to unpin the extension from the toolbar (sentence case).">
             Unpin from toolbar
           </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_WRITE_REVIEW" desc="The label in an extension's context menu that the user can click to write a review for the extension (sentence case).">
+            Write a review
+          </message>
           <message name="IDS_EXTENSIONS_OPTIONS_MENU_ITEM" desc="The text for the options menu item in context menus (sentence case).">
             Options
           </message>
@@ -5692,6 +5698,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_UNPIN_FROM_TOOLBAR" desc="The label in an extension's context menu that the user can click to unpin the extension from the toolbar (sentence case).">
             Unpin from Toolbar
+          </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_WRITE_REVIEW" desc="The label in an extension's context menu that the user can click to write a review for the extension (title case).">
+            Write a Review
           </message>
           <message name="IDS_EXTENSIONS_OPTIONS_MENU_ITEM" desc="The text for the options menu item in context menus (title case).">
             Options
@@ -10150,22 +10159,28 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_TAB_SCROLL_AUTO_SHOW_ON_OVERFLOW" desc="In Title Case: Text of the setting to automatically show scroll buttons on tab overflow.">
             Automatically Show Tab Scroll Buttons When Needed
           </message>
-          <message name="IDS_TAB_SCROLL_HIDE_BUTTONS" desc="In Title Case: Text of the context menu item or button to hide scroll buttons.">
-            Hide Scroll Buttons
-          </message>
-          <message name="IDS_TAB_SCROLL_PIN_BUTTONS" desc="In Title Case: Text of the context menu item to pin scroll buttons.">
+          <message name="IDS_TAB_SCROLL_PIN_BUTTONS_SYSTEM_MENU" desc="In Title Case: Text of the context system menu item to pin scroll buttons.">
             Pin Scroll Buttons
+          </message>
+          <message name="IDS_TAB_SCROLL_UNPIN_BUTTONS_SYSTEM_MENU" desc="In Title Case: Text of the context system menu item to unpin scroll buttons.">
+            Unpin Scroll Buttons
+          </message>
+          <message name="IDS_TAB_SCROLL_UNPIN_BUTTONS" desc="In Title Case: Text of the context menu item to unpin scroll buttons.">
+            Unpin
           </message>
         </then>
         <else>
           <message name="IDS_TAB_SCROLL_AUTO_SHOW_ON_OVERFLOW" desc="Text of the setting to automatically show scroll buttons on tab overflow.">
             Automatically show tab scroll buttons when needed
           </message>
-          <message name="IDS_TAB_SCROLL_HIDE_BUTTONS" desc="Text of the context menu item or button to hide scroll buttons.">
-            Hide scroll buttons
-          </message>
-          <message name="IDS_TAB_SCROLL_PIN_BUTTONS" desc="Text of the context menu item to pin scroll buttons.">
+          <message name="IDS_TAB_SCROLL_PIN_BUTTONS_SYSTEM_MENU" desc="Text of the context menu item to pin scroll buttons.">
             Pin scroll buttons
+          </message>
+          <message name="IDS_TAB_SCROLL_UNPIN_BUTTONS_SYSTEM_MENU" desc="In Title Case: Text of the context system menu item to unpin scroll buttons.">
+            Unpin scroll buttons
+          </message>
+          <message name="IDS_TAB_SCROLL_UNPIN_BUTTONS" desc="Text of the context menu item to unpin scroll buttons.">
+            Unpin
           </message>
         </else>
       </if>
@@ -18893,6 +18908,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_OMNIBOX_EVERYWHERE_WINDOW" desc="Label of the option to capture a window screenshot.">
       Window
+    </message>
+    <message name="IDS_OMNIBOX_EVERYWHERE_REGION" desc="Label of the option to capture a region screenshot.">
+      Region
     </message>
 
     <!-- Responsive Toolbar -->

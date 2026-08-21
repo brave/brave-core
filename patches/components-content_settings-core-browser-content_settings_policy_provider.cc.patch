@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 637e76ba55111213f1175ece3a1a17e7007e48dd..bae778110f8c9f00710a45cd4f239dfddcd36d70 100644
+index 1795fdef081f37abe7b7e86fad9de12ed22b7222..aa29a0097bc18829288bf3c7fce3d292a67e29a9 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
-@@ -51,6 +51,10 @@ struct PrefsForManagedContentSettingsMapEntry {
+@@ -52,6 +52,10 @@ struct PrefsForManagedContentSettingsMapEntry {
  // verifies this invariant or documents any necessary deviation.
  constexpr PrefsForManagedContentSettingsMapEntry
      kPrefsForManagedContentSettingsMap[] = {
@@ -13,7 +13,7 @@ index 637e76ba55111213f1175ece3a1a17e7007e48dd..bae778110f8c9f00710a45cd4f239dfd
          {prefs::kManagedAutomaticDownloadsAllowedForUrls,
           ContentSettingsType::AUTOMATIC_DOWNLOADS, CONTENT_SETTING_ALLOW},
          {prefs::kManagedAutomaticDownloadsBlockedForUrls,
-@@ -203,6 +207,8 @@ constexpr PrefsForManagedContentSettingsMapEntry
+@@ -206,6 +210,8 @@ constexpr PrefsForManagedContentSettingsMapEntry
  };
  
  constexpr const char* kManagedPrefs[] = {
@@ -22,7 +22,7 @@ index 637e76ba55111213f1175ece3a1a17e7007e48dd..bae778110f8c9f00710a45cd4f239dfd
      prefs::kManagedAutomaticDownloadsAllowedForUrls,
      prefs::kManagedAutomaticDownloadsBlockedForUrls,
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
-@@ -282,6 +288,11 @@ constexpr const char* kManagedPrefs[] = {
+@@ -287,6 +293,11 @@ constexpr const char* kManagedPrefs[] = {
  // the preference default content settings. If a default content settings type
  // is managed any user defined exceptions (patterns) for this type are ignored.
  constexpr const char* kManagedDefaultPrefs[] = {
@@ -34,7 +34,7 @@ index 637e76ba55111213f1175ece3a1a17e7007e48dd..bae778110f8c9f00710a45cd4f239dfd
      prefs::kManagedDefaultAdsSetting,
      prefs::kManagedDefaultAutomaticDownloadsSetting,
      prefs::kManagedDefaultClipboardSetting,
-@@ -379,6 +390,16 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+@@ -396,6 +407,16 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
  // static
  const PolicyProvider::PrefsForManagedDefaultMapEntry
      PolicyProvider::kPrefsForManagedDefault[] = {

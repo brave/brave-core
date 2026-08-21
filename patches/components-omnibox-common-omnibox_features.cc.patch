@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/common/omnibox_features.cc b/components/omnibox/common/omnibox_features.cc
-index cc81c0e828f05382a3889536ede7beb3f187d6f8..d417c2266bafb3117aa945e792e8d5720572e0b5 100644
+index 2f856db3b03679d9e698bef13f7fb3512d0cee9b..89037871ec40ae2d616d06eb0f3ccfda4b1483e3 100644
 --- a/components/omnibox/common/omnibox_features.cc
 +++ b/components/omnibox/common/omnibox_features.cc
 @@ -169,7 +169,8 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
@@ -12,7 +12,7 @@ index cc81c0e828f05382a3889536ede7beb3f187d6f8..d417c2266bafb3117aa945e792e8d572
  
  // Enables the AIM eligibility diagnostic component extension.
  BASE_FEATURE(kAimEligibilityComponentExtension, DISABLED);
-@@ -282,7 +283,8 @@ BASE_FEATURE(kMlUrlScoreCaching, enable_if(!IS_ANDROID));
+@@ -283,7 +284,8 @@ BASE_FEATURE(kMlUrlScoreCaching, enable_if(!IS_ANDROID));
  
  // If enabled, runs the ML scoring model to assign new relevance scores to the
  // URL suggestions and reranks them.
@@ -22,7 +22,7 @@ index cc81c0e828f05382a3889536ede7beb3f187d6f8..d417c2266bafb3117aa945e792e8d572
  
  // If enabled, specifies how URL model scores integrate with search traditional
  // scores.
-@@ -305,7 +307,8 @@ BASE_FEATURE(kOmniboxSearchPrefetchOnEnterKeyDown, DISABLED);
+@@ -306,7 +308,8 @@ BASE_FEATURE(kOmniboxSearchPrefetchOnEnterKeyDown, DISABLED);
  BASE_FEATURE(kOmniboxSiteSearch, DISABLED);
  
  // Enables additional site search providers for the Site search Starter Pack.
@@ -32,7 +32,7 @@ index cc81c0e828f05382a3889536ede7beb3f187d6f8..d417c2266bafb3117aa945e792e8d572
  
  // Enables an informational IPH message at the bottom of the Omnibox directing
  // users to certain starter pack engines.
-@@ -315,7 +318,8 @@ BASE_FEATURE(kStarterPackIPH, DISABLED);
+@@ -316,7 +319,8 @@ BASE_FEATURE(kStarterPackIPH, DISABLED);
  BASE_FEATURE(kAiModeStartPack, DISABLED);
  
  // If enabled, |SearchProvider| will not function in Zero Suggest.
@@ -42,7 +42,7 @@ index cc81c0e828f05382a3889536ede7beb3f187d6f8..d417c2266bafb3117aa945e792e8d572
  
  // If enabled, hl= is reported in search requests (applicable to iOS only).
  BASE_FEATURE(kReportApplicationLanguageInSearchRequest, ENABLED);
-@@ -342,7 +346,11 @@ BASE_FEATURE(kOmniboxMobileParityUpdate, ENABLED);
+@@ -343,7 +347,11 @@ BASE_FEATURE(kOmniboxMobileParityUpdate, ENABLED);
  
  // Updates various NTP/Omnibox assets and descriptions for visual alignment on
  // Android and iOS, V2.

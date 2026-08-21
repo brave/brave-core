@@ -1,5 +1,5 @@
 diff --git a/components/metrics/metrics_features.cc b/components/metrics/metrics_features.cc
-index 98d98b83030f96e1093efdbd7218783f832dc291..e51bc0bd66643ca518c70e9765a460a2fededf82 100644
+index 73cc027a331eeb5fcb78065e36115bdd5e04cb9d..56f99ab0d9a2cfee4de68a9c4b98f71e14732447 100644
 --- a/components/metrics/metrics_features.cc
 +++ b/components/metrics/metrics_features.cc
 @@ -10,9 +10,10 @@

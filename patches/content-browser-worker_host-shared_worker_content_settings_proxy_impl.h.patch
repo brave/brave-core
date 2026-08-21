@@ -1,0 +1,14 @@
+diff --git a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
+index 5cb6e6a8fe038e4bc354b179364b5d1584c881fb..941d627ade728b7734032bc5f64b62f25b0c248f 100644
+--- a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
++++ b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
+@@ -43,6 +43,9 @@ class SharedWorkerContentSettingsProxyImpl
+   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+   void AllowFileSystem(AllowFileSystemCallback callback) override;
+ 
++  void GetBraveShieldsSettings(
++      GetBraveShieldsSettingsCallback callback) override;
++
+  private:
+   const url::Origin origin_;
+   raw_ptr<SharedWorkerHost> owner_;

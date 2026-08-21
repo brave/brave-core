@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index b1cbee4f63c62db99f9ce608657ab71fe98c6efd..d66c9a19263ddfa3a1be4d093d173d8acdee4cf0 100644
+index ca62212f70a28378d6fda32a221ccd7c574732ac..0f743da42adace8a6bd90fb90cd1efadd09aadf6 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -464,7 +464,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
+@@ -496,7 +496,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
      } else if (auto collection =
                     std::get_if<std::unique_ptr<DetachedTabCollection>>(
                         &tab_or_collection)) {
@@ -16,7 +16,7 @@ index b1cbee4f63c62db99f9ce608657ab71fe98c6efd..d66c9a19263ddfa3a1be4d093d173d8a
                collection->get()->collection_)) {
          target_model->InsertDetachedTabGroupAt(std::move(*collection),
                                                 target_model->count());
-@@ -1130,7 +1135,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1165,7 +1170,7 @@ void Reload(BrowserWindowInterface* browser,
    ReloadInternal(browser, disposition, false);
  }
  
@@ -25,7 +25,7 @@ index b1cbee4f63c62db99f9ce608657ab71fe98c6efd..d66c9a19263ddfa3a1be4d093d173d8a
                            WindowOpenDisposition disposition) {
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
-@@ -1447,6 +1452,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1482,6 +1487,7 @@ void CloseTab(BrowserWindowInterface* browser) {
  #endif
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
@@ -33,7 +33,7 @@ index b1cbee4f63c62db99f9ce608657ab71fe98c6efd..d66c9a19263ddfa3a1be4d093d173d8a
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1775,7 +1781,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1809,7 +1815,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
    const GURL new_tab_url = !browser->GetProfile()->IsIncognitoProfile() &&
                                     tab_strip_model->count() > 1

@@ -107,7 +107,10 @@ source_set("ui") {
   ]
 
   if (is_mac) {
-    deps += [ "//chrome/browser:global_keyboard_shortcuts_mac" ]
+    deps += [
+      "//chrome/browser:global_keyboard_shortcuts_mac",
+      "//chrome/browser/ui:fullscreen_util_mac",
+    ]
   }
 
   if (enable_local_ai) {

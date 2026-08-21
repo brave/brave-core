@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index d9928110d93f06d53f1d5e98ce882aa35b4d54f6..7200c9531f9d894318613aafb9fca2bd7702f15f 100644
+index aae35f03e3d887a4f6580336e19697f416fdff41..4243ab0730afb46917f2819d8ecd75cd134ada6d 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -334,7 +334,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
@@ -11,7 +11,7 @@ index d9928110d93f06d53f1d5e98ce882aa35b4d54f6..7200c9531f9d894318613aafb9fca2bd
  
      // !!! Init may delete `drag_controller_` on some platforms. !!!
      // Init takes capture, which on some platforms may reenter Chrome, the
-@@ -580,6 +580,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -596,6 +596,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<TabSlotView*>& views) override {
@@ -19,7 +19,7 @@ index d9928110d93f06d53f1d5e98ce882aa35b4d54f6..7200c9531f9d894318613aafb9fca2bd
      CHECK(!views.empty()) << "The views vector must not be empty.";
  
      std::vector<gfx::Rect> bounds;
-@@ -972,6 +973,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -988,6 +989,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  
@@ -27,7 +27,7 @@ index d9928110d93f06d53f1d5e98ce882aa35b4d54f6..7200c9531f9d894318613aafb9fca2bd
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
-@@ -1526,7 +1528,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+@@ -1542,7 +1544,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,
        // automatically expand the group.

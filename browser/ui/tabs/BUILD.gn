@@ -60,6 +60,7 @@ if (!is_android) {
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/tabs:impl",
+      "//chrome/browser/ui/thumbnails",
     ]
 
     if (enable_ai_chat) {

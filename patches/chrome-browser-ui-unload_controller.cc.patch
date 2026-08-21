@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index e5cd22968a6d8569e1853a1926f0c187adc56fba..9f4334f402757588bca20a4372d06f6cdba70cf3 100644
+index f8ba1bf3ca9c32e1f760b2924e83a3d44d804c9e..d39d9612af3fdaff8f52538aaae9e0ae6ca97c1d 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
-@@ -177,6 +177,9 @@ void UnloadController::OnWindowClosing() {
+@@ -178,6 +178,9 @@ void UnloadController::OnWindowClosing() {
      tab_restore_service->BrowserClosing(
          browser_->GetFeatures().live_tab_context());
    }
@@ -12,7 +12,7 @@ index e5cd22968a6d8569e1853a1926f0c187adc56fba..9f4334f402757588bca20a4372d06f6c
  
    if (!browser_->GetTabStripModel()->empty()) {
      // Closing all the tabs results in eventually calling back to
-@@ -453,6 +456,7 @@ UnloadController::GetBrowserClosingStatus() {
+@@ -454,6 +457,7 @@ UnloadController::GetBrowserClosingStatus() {
  bool UnloadController::TryToCloseWindow(
      bool skip_beforeunload,
      const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
@@ -20,7 +20,7 @@ index e5cd22968a6d8569e1853a1926f0c187adc56fba..9f4334f402757588bca20a4372d06f6c
    cancel_download_confirmation_state_ =
        CancelDownloadConfirmationState::kResponseReceived;
    // The devtools browser gets its beforeunload events as the results of
-@@ -476,6 +480,7 @@ bool UnloadController::TryToCloseWindow(
+@@ -477,6 +481,7 @@ bool UnloadController::TryToCloseWindow(
  }
  
  void UnloadController::ResetTryToCloseWindow() {
@@ -28,7 +28,7 @@ index e5cd22968a6d8569e1853a1926f0c187adc56fba..9f4334f402757588bca20a4372d06f6c
    cancel_download_confirmation_state_ =
        CancelDownloadConfirmationState::kNotPrompted;
    if (!is_calling_before_unload_handlers()) {
-@@ -574,6 +579,9 @@ void UnloadController::OnTabStripModelChanged(
+@@ -595,6 +600,9 @@ void UnloadController::OnTabStripModelChanged(
  }
  
  void UnloadController::TabStripEmpty() {
@@ -38,7 +38,7 @@ index e5cd22968a6d8569e1853a1926f0c187adc56fba..9f4334f402757588bca20a4372d06f6c
    // Set is_attempting_to_close_browser_ here, so that extensions, etc, do not
    // attempt to add tabs to the browser before it closes.
    is_attempting_to_close_browser_ = true;
-@@ -923,6 +931,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+@@ -954,6 +962,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
  }
  
  void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {

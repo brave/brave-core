@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -20,6 +21,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_content_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/tabs/public/tab_interface.h"
@@ -153,9 +155,12 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   // If the Side Panel is still animating in then it won't yet be parented to
   // the SidePanel and we need to find it on the BrowserView instead.
-  AIChatMovableSidePanelWebView* chat_view =
-      views::AsViewClass<AIChatMovableSidePanelWebView>(
-          browser_view->GetSidePanelAnimationContent());
+  AIChatMovableSidePanelWebView* chat_view = nullptr;
+  if (auto* anim_view = browser_view->GetSidePanelAnimationContent()) {
+    CHECK_EQ(anim_view->children().size(), 1u);
+    chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
+        anim_view->children()[0]);
+  }
 
   if (!chat_view) {
     chat_view = views::AsViewClass<AIChatMovableSidePanelWebView>(
