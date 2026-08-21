@@ -13,6 +13,7 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/v6_zcash_serializer.h"
 
 namespace brave_wallet {
 
@@ -31,6 +32,10 @@ std::array<uint8_t, kZCashDigestSize>
 ZCashSerializerUtils::CalculateSignatureDigest(
     const ZCashTransaction& zcash_transaction,
     const std::optional<ZCashTransaction::TxInput>& input) {
+  if (zcash_transaction.is_v6()) {
+    return ZCashV6Serializer::CalculateSignatureDigest(zcash_transaction,
+                                                       input);
+  }
   return ZCashV5Serializer::CalculateSignatureDigest(zcash_transaction, input);
 }
 

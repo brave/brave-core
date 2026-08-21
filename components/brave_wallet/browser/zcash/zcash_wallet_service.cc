@@ -332,13 +332,11 @@ void ZCashWalletService::GetUtxos(const mojom::AccountIdPtr& account_id,
   }
 }
 
-void ZCashWalletService::OnCompleteTransactionTaskDone(
-    ZCashCompleteTransactionTask* task,
+void ZCashWalletService::OnCompleteTransactionTaskDoneImpl(
     mojom::AccountIdPtr account_id,
     ZCashTransaction original_zcash_transaction,
     SignAndPostTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> result) {
-  CHECK(complete_transaction_tasks_.erase(task));
   CHECK(original_zcash_transaction.ValidateAmounts());
 
   if (!result.has_value()) {
@@ -358,12 +356,53 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
                      std::move(result.value())));
 }
 
+void ZCashWalletService::OnCompleteTransactionTaskV5Done(
+    ZCashCompleteTransactionTaskV5* task,
+    mojom::AccountIdPtr account_id,
+    ZCashTransaction original_zcash_transaction,
+    SignAndPostTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(complete_transaction_tasks_v5_.erase(task));
+  OnCompleteTransactionTaskDoneImpl(std::move(account_id),
+                                    std::move(original_zcash_transaction),
+                                    std::move(callback), std::move(result));
+}
+
+void ZCashWalletService::OnCompleteTransactionTaskV6Done(
+    ZCashCompleteTransactionTaskV6* task,
+    mojom::AccountIdPtr account_id,
+    ZCashTransaction original_zcash_transaction,
+    SignAndPostTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(complete_transaction_tasks_v6_.erase(task));
+  OnCompleteTransactionTaskDoneImpl(std::move(account_id),
+                                    std::move(original_zcash_transaction),
+                                    std::move(callback), std::move(result));
+}
+
 void ZCashWalletService::SignAndPostTransaction(
     const mojom::AccountIdPtr& account_id,
     const ZCashTransaction& zcash_transaction,
     SignAndPostTransactionCallback callback) {
-  auto [task_it, inserted] = complete_transaction_tasks_.insert(
-      std::make_unique<ZCashCompleteTransactionTask>(
+  if (zcash_transaction.is_v6()) {
+    auto [task_it, inserted] = complete_transaction_tasks_v6_.insert(
+        std::make_unique<ZCashCompleteTransactionTaskV6>(
+            base::PassKey<ZCashWalletService>(), *this,
+            CreateActionContext(account_id), keyring_service_.get(),
+            zcash_transaction));
+    CHECK(inserted);
+    auto* task_ptr = task_it->get();
+
+    task_ptr->Start(base::BindOnce(
+        &ZCashWalletService::OnCompleteTransactionTaskV6Done,
+        weak_ptr_factory_.GetWeakPtr(), task_ptr, account_id.Clone(),
+        zcash_transaction, std::move(callback)));
+    return;
+  }
+
+  CHECK(zcash_transaction.is_v5());
+  auto [task_it, inserted] = complete_transaction_tasks_v5_.insert(
+      std::make_unique<ZCashCompleteTransactionTaskV5>(
           base::PassKey<ZCashWalletService>(), *this,
           CreateActionContext(account_id), keyring_service_.get(),
           zcash_transaction));
@@ -371,7 +410,7 @@ void ZCashWalletService::SignAndPostTransaction(
   auto* task_ptr = task_it->get();
 
   task_ptr->Start(base::BindOnce(
-      &ZCashWalletService::OnCompleteTransactionTaskDone,
+      &ZCashWalletService::OnCompleteTransactionTaskV5Done,
       weak_ptr_factory_.GetWeakPtr(), task_ptr, account_id.Clone(),
       zcash_transaction, std::move(callback)));
 }

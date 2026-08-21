@@ -18,7 +18,8 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task_v5.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task_v6.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
@@ -202,7 +203,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       base::OnceCallback<void(mojom::ZCashAccountShieldBirthdayPtr,
                               const std::optional<std::string>&)>;
 
-  friend class ZCashCompleteTransactionTask;
+  friend class ZCashCompleteTransactionTaskV5;
+  friend class ZCashCompleteTransactionTaskV6;
   friend class ZCashCreateTransparentTransactionTask;
   friend class ZCashDiscoverNextUnusedZCashAddressTask;
   friend class ZCashGetZCashChainTipStatusTask;
@@ -264,8 +266,21 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       CreateTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> result);
 
-  void OnCompleteTransactionTaskDone(
-      ZCashCompleteTransactionTask* task,
+  void OnCompleteTransactionTaskV5Done(
+      ZCashCompleteTransactionTaskV5* task,
+      mojom::AccountIdPtr account_id,
+      ZCashTransaction original_zcash_transaction,
+      SignAndPostTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> result);
+
+  void OnCompleteTransactionTaskV6Done(
+      ZCashCompleteTransactionTaskV6* task,
+      mojom::AccountIdPtr account_id,
+      ZCashTransaction original_zcash_transaction,
+      SignAndPostTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> result);
+
+  void OnCompleteTransactionTaskDoneImpl(
       mojom::AccountIdPtr account_id,
       ZCashTransaction original_zcash_transaction,
       SignAndPostTransactionCallback callback,
@@ -351,7 +366,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   raw_ref<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
 
-  TaskContainer<ZCashCompleteTransactionTask> complete_transaction_tasks_;
+  TaskContainer<ZCashCompleteTransactionTaskV5> complete_transaction_tasks_v5_;
+  TaskContainer<ZCashCompleteTransactionTaskV6> complete_transaction_tasks_v6_;
   TaskContainer<ZCashCreateTransparentTransactionTask>
       create_transaction_tasks_;
   TaskContainer<ZCashResolveBalanceTask> resolve_balance_tasks_;

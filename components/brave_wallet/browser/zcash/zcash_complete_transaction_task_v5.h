@@ -3,10 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_V5_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_V5_H_
 
+#include <array>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -21,22 +23,26 @@ namespace brave_wallet {
 class KeyringService;
 class ZCashWalletService;
 
-// Completes transaction by signing transparent inputs and generating orchard
-// part(if needed).
-class ZCashCompleteTransactionTask {
+// Completes a v5 transaction by signing transparent inputs and generating the
+// Orchard part (if needed).
+class ZCashCompleteTransactionTaskV5 {
  public:
-  using ZCashCompleteTransactionTaskCallback =
+  using ZCashCompleteTransactionTaskV5Callback =
       base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
-  ZCashCompleteTransactionTask(base::PassKey<ZCashWalletService> pass_key,
-                               ZCashWalletService& zcash_wallet_service,
-                               ZCashActionContext context,
-                               KeyringService& keyring_service,
-                               const ZCashTransaction& transaction);
-  ~ZCashCompleteTransactionTask();
+  ZCashCompleteTransactionTaskV5(base::PassKey<ZCashWalletService> pass_key,
+                                 ZCashWalletService& zcash_wallet_service,
+                                 ZCashActionContext context,
+                                 KeyringService& keyring_service,
+                                 const ZCashTransaction& transaction);
+  ~ZCashCompleteTransactionTaskV5();
 
-  void Start(ZCashCompleteTransactionTaskCallback callback);
+  void Start(ZCashCompleteTransactionTaskV5Callback callback);
 
  private:
+  static std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
+      std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
+      std::array<uint8_t, kZCashDigestSize> sighash);
+
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
@@ -66,7 +72,7 @@ class ZCashCompleteTransactionTask {
   ZCashActionContext context_;
   raw_ref<KeyringService> keyring_service_;
   ZCashTransaction transaction_;
-  ZCashCompleteTransactionTaskCallback callback_;
+  ZCashCompleteTransactionTaskV5Callback callback_;
 
   std::optional<std::string> error_;
   std::optional<uint32_t> consensus_branch_id_;
@@ -75,9 +81,9 @@ class ZCashCompleteTransactionTask {
   std::optional<std::vector<OrchardInput>> witness_inputs_;
   std::optional<zcash::mojom::TreeStatePtr> anchor_tree_state_;
 
-  base::WeakPtrFactory<ZCashCompleteTransactionTask> weak_ptr_factory_{this};
+  base::WeakPtrFactory<ZCashCompleteTransactionTaskV5> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_V5_H_

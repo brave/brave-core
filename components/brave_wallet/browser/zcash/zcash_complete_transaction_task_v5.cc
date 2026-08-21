@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task_v5.h"
 
 #include <array>
 #include <utility>
@@ -24,9 +24,9 @@
 
 namespace brave_wallet {
 
-namespace {
-
-std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
+// static
+std::unique_ptr<OrchardBundleManager>
+ZCashCompleteTransactionTaskV5::ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
   // Heavy CPU operation, should be executed on background thread
@@ -34,9 +34,7 @@ std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
   return result;
 }
 
-}  // namespace
-
-ZCashCompleteTransactionTask::ZCashCompleteTransactionTask(
+ZCashCompleteTransactionTaskV5::ZCashCompleteTransactionTaskV5(
     base::PassKey<ZCashWalletService> pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
@@ -45,17 +43,19 @@ ZCashCompleteTransactionTask::ZCashCompleteTransactionTask(
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
       keyring_service_(keyring_service),
-      transaction_(transaction) {}
+      transaction_(transaction) {
+  CHECK(transaction_.is_v5());
+}
 
-ZCashCompleteTransactionTask::~ZCashCompleteTransactionTask() = default;
+ZCashCompleteTransactionTaskV5::~ZCashCompleteTransactionTaskV5() = default;
 
-void ZCashCompleteTransactionTask::ScheduleWorkOnTask() {
+void ZCashCompleteTransactionTaskV5::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&ZCashCompleteTransactionTask::WorkOnTask,
+      FROM_HERE, base::BindOnce(&ZCashCompleteTransactionTaskV5::WorkOnTask,
                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::WorkOnTask() {
+void ZCashCompleteTransactionTaskV5::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(*error_));
     return;
@@ -104,21 +104,21 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
   std::move(callback_).Run(std::move(transaction_));
 }
 
-void ZCashCompleteTransactionTask::Start(
-    ZCashCompleteTransactionTaskCallback callback) {
+void ZCashCompleteTransactionTaskV5::Start(
+    ZCashCompleteTransactionTaskV5Callback callback) {
   DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
-void ZCashCompleteTransactionTask::GetLightdInfo() {
+void ZCashCompleteTransactionTaskV5::GetLightdInfo() {
   context_.zcash_rpc->GetLightdInfo(
       context_.chain_id,
-      base::BindOnce(&ZCashCompleteTransactionTask::OnGetLightdInfo,
+      base::BindOnce(&ZCashCompleteTransactionTaskV5::OnGetLightdInfo,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::OnGetLightdInfo(
+void ZCashCompleteTransactionTaskV5::OnGetLightdInfo(
     base::expected<zcash::mojom::LightdInfoPtr, std::string> result) {
   if (!result.has_value()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -139,14 +139,14 @@ void ZCashCompleteTransactionTask::OnGetLightdInfo(
   ScheduleWorkOnTask();
 }
 
-void ZCashCompleteTransactionTask::GetLatestBlock() {
+void ZCashCompleteTransactionTaskV5::GetLatestBlock() {
   context_.zcash_rpc->GetLatestBlock(
       context_.chain_id,
-      base::BindOnce(&ZCashCompleteTransactionTask::OnGetLatestBlockHeight,
+      base::BindOnce(&ZCashCompleteTransactionTaskV5::OnGetLatestBlockHeight,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
+void ZCashCompleteTransactionTaskV5::OnGetLatestBlockHeight(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -162,8 +162,7 @@ void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
   ScheduleWorkOnTask();
 }
 
-// v5 orchard witness calculation.
-void ZCashCompleteTransactionTask::CalculateWitness() {
+void ZCashCompleteTransactionTaskV5::CalculateWitness() {
   if (transaction_.v5_part().orchard.inputs.empty()) {
     witness_inputs_ = std::vector<OrchardInput>();
     ScheduleWorkOnTask();
@@ -176,11 +175,11 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
                 transaction_.v5_part().orchard.inputs,
                 transaction_.v5_part().orchard.anchor_block_height.value())
       .Then(base::BindOnce(
-          &ZCashCompleteTransactionTask::OnWitnessCalculateResult,
+          &ZCashCompleteTransactionTaskV5::OnWitnessCalculateResult,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
+void ZCashCompleteTransactionTaskV5::OnWitnessCalculateResult(
     base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -193,18 +192,17 @@ void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
   ScheduleWorkOnTask();
 }
 
-// v5 tree state fetch.
-void ZCashCompleteTransactionTask::GetTreeState() {
+void ZCashCompleteTransactionTaskV5::GetTreeState() {
   context_.zcash_rpc->GetTreeState(
       context_.chain_id,
       zcash::mojom::BlockID::New(
           transaction_.v5_part().orchard.anchor_block_height.value(),
           std::vector<uint8_t>({})),
-      base::BindOnce(&ZCashCompleteTransactionTask::OnGetTreeState,
+      base::BindOnce(&ZCashCompleteTransactionTaskV5::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::OnGetTreeState(
+void ZCashCompleteTransactionTaskV5::OnGetTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
   if (!result.has_value()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -217,8 +215,7 @@ void ZCashCompleteTransactionTask::OnGetTreeState(
   ScheduleWorkOnTask();
 }
 
-// v5 orchard signing.
-void ZCashCompleteTransactionTask::SignOrchardPart() {
+void ZCashCompleteTransactionTaskV5::SignOrchardPart() {
   auto state_tree_bytes = PrefixedHexStringToBytes(
       base::StrCat({"0x", anchor_tree_state_.value()->orchardTree}));
   if (!state_tree_bytes) {
@@ -242,7 +239,7 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   spends_bundle.inputs = transaction_.v5_part().orchard.inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs,
-      OrchardPool::kOrchard, false);
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
 
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -260,11 +257,11 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ApplyOrchardSignatures, std::move(orchard_bundle_manager),
                      sighash),
-      base::BindOnce(&ZCashCompleteTransactionTask::OnSignOrchardPartComplete,
+      base::BindOnce(&ZCashCompleteTransactionTaskV5::OnSignOrchardPartComplete,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
+void ZCashCompleteTransactionTaskV5::OnSignOrchardPartComplete(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -277,8 +274,7 @@ void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
   ScheduleWorkOnTask();
 }
 
-void ZCashCompleteTransactionTask::SignTransparentPart() {
-  // Sign transparent part
+void ZCashCompleteTransactionTaskV5::SignTransparentPart() {
   if (!ZCashSerializer::SignTransparentPart(
           keyring_service_.get(), context_.account_id, transaction_)) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
