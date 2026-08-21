@@ -5,18 +5,16 @@
 
 substitutions:
   - description: |
-      Update Brave's modern location bar color after Chromium updates it.
+      Refresh the Brave toolbar button tint before Chromium's cached-color early return.
 
-      Run Brave's color update after the Chromium location bar and optional
-      button backgrounds use the new color.
+      A private-to-standard tab switch can replace Brave button backgrounds. Refreshing the color
+      at the start of the method ensures the toolbar displays correctly, and this refresh call
+      is not ignored by upstream's early-exit due to the cached color being unchanged.
     regex:
-      re_pattern:
-        '(private\s+void\s+updateModernLocationBarColor\([^)]*\)\s*\{.*?mOptionalButtonCoordinator\.setBackgroundColorFilter\(color\);\s*\}\n)([
-        \t]*)(\})'
-      re_flags: [DOTALL]
+      re_pattern: '(private void updateModernLocationBarColor\([^)]*\)\s*\{)'
       replace: |-
-        \1        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
-        \2\3
+        \1
+                BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
   - description: |
       Skip location bar layout when the Brave location bar is unavailable.
 
