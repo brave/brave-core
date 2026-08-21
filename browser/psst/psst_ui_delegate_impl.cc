@@ -8,7 +8,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/psst/core/browser/pref_names.h"
-#include "brave/components/psst/core/common/constants.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
 

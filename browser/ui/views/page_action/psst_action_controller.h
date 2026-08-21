@@ -34,7 +34,7 @@ class PsstActionController : public ui::SimpleMenuModel::Delegate {
   PsstActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller,
-      const bool hide_disable_psst_menu_item);
+      bool hide_disable_psst_menu_item);
   PsstActionController(const PsstActionController&) = delete;
   PsstActionController& operator=(const PsstActionController&) = delete;
   ~PsstActionController() override;

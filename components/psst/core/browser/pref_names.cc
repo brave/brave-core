@@ -15,7 +15,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
 }
 
-bool IsPsstEnabledForProfile(PrefService& pref_service) {
+bool IsPsstEnabledForProfile(const PrefService& pref_service) {
   return features::IsPsstEnabled() &&
          pref_service.GetBoolean(prefs::kPsstEnabled);
 }

@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/psst/core/browser/pref_names.h"
-#include "brave/components/psst/core/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 

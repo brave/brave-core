@@ -65,7 +65,7 @@ namespace page_actions {
 PsstActionController::PsstActionController(
     tabs::TabInterface& tab,
     page_actions::PageActionController& page_action_controller,
-    const bool hide_disable_psst_menu_item)
+    bool hide_disable_psst_menu_item)
     : tab_(tab),
       page_action_controller_(
           static_cast<page_actions::PageActionControllerImpl&>(
