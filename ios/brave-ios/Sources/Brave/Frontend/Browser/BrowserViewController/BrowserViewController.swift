@@ -688,11 +688,13 @@ public class BrowserViewController: UIViewController {
     var minViewportInset = UIEdgeInsets()
     var maxViewportInset = UIEdgeInsets()
     if isUsingBottomBar {
+      minViewportInset.top = view.safeAreaInsets.top
+      maxViewportInset.top = view.safeAreaInsets.top
       minViewportInset.bottom = footer.bounds.height + collapsedURLBarView.bounds.height
       maxViewportInset.bottom = footer.bounds.height + header.expandedBarStackView.bounds.height
     } else {
-      minViewportInset.top = collapsedURLBarView.bounds.height
-      maxViewportInset.top = header.expandedBarStackView.bounds.height
+      minViewportInset.top = view.safeAreaInsets.top + collapsedURLBarView.bounds.height
+      maxViewportInset.top = view.safeAreaInsets.top + header.expandedBarStackView.bounds.height
       minViewportInset.bottom = footer.bounds.height
       maxViewportInset.bottom = footer.bounds.height
     }
