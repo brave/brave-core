@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_properties_provider.cc b/chrome/browser/ui/page_action/page_action_properties_provider.cc
-index 4d9ec05d2d72cbec3d4c3d193c0864a4487e0076..29c8042a46b88e2cf6b0588fcc9619db6ae32ffe 100644
+index 910ffa4b8755424e0985489e95880595388dca23..09e70fb78780af834da85a343123bc58e22bd27e 100644
 --- a/chrome/browser/ui/page_action/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_action/page_action_properties_provider.cc
 @@ -227,6 +227,55 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/bookmarks.html b/chrome/browser/resources/bookmarks/bookmarks.html
-index 8d147ada1dc6a421cb3c1b86012b4e106b96269c..66698ac6a6f9e6d6841b2f09f38c0fc3ed427cf2 100644
+index 751a85a5cb3ec85e5c4981c21216adcfeec39856..98fce08d66bb5d2e6c339657ab8809ba441a74ee 100644
 --- a/chrome/browser/resources/bookmarks/bookmarks.html
 +++ b/chrome/browser/resources/bookmarks/bookmarks.html
 @@ -30,6 +30,7 @@

@@ -2,7 +2,7 @@ diff --git a/components/translate/core/common/BUILD.gn b/components/translate/co
 index a5ff6bb9f0e16fc4d6f746203c17d519ced0df0e..4d782f761d2672d738f7cba5150a7fb8274dac62 100644
 --- a/components/translate/core/common/BUILD.gn
 +++ b/components/translate/core/common/BUILD.gn
-@@ -32,6 +32,8 @@ static_library("common") {
+@@ -36,6 +36,8 @@ static_library("common") {
      "//third_party/metrics_proto",
      "//url",
    ]

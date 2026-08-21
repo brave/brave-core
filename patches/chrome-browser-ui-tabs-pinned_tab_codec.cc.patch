@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/pinned_tab_codec.cc b/chrome/browser/ui/tabs/pinned_tab_codec.cc
-index fcee60557595f8001594c05a107b7b59745f13b8..037e66ac660b803b03b84544c0847cbf5bc34b48 100644
+index 0e89f68fc9f81df1266e1c9d2d2aa1c3120c4a77..fa42f47a68c622c56d4d8077915beb2e68f4d4af 100644
 --- a/chrome/browser/ui/tabs/pinned_tab_codec.cc
 +++ b/chrome/browser/ui/tabs/pinned_tab_codec.cc
 @@ -48,6 +48,7 @@ void EncodePinnedTabs(BrowserWindowInterface* browser,

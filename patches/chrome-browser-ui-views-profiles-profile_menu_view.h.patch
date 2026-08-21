@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
-index 2b876009054a70bff3801b7a7706d3bcadcb2f70..a42b8d27e42f4cc92094a57adbff52e66da6f085 100644
+index e37cb3f8817d32982283925772b6b35e4d8c651e..3ebcd443670bb8cd66cfadab1f079b212dbe6c70 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
-@@ -64,6 +64,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
+@@ -63,6 +63,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
    }
  
   private:
@@ -10,7 +10,7 @@ index 2b876009054a70bff3801b7a7706d3bcadcb2f70..a42b8d27e42f4cc92094a57adbff52e6
    friend class ProfileMenuViewExtensionsTest;
    friend class ProfileMenuViewSigninPendingTest;
    friend class ProfileMenuViewSignoutTest;
-@@ -82,7 +83,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
+@@ -81,7 +82,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
    void OnProfileManagementButtonClicked();
    void OnManageGoogleAccountButtonClicked();
    void OnGuestProfileButtonClicked();
@@ -19,7 +19,7 @@ index 2b876009054a70bff3801b7a7706d3bcadcb2f70..a42b8d27e42f4cc92094a57adbff52e6
    void OnSyncSettingsButtonClicked();
    void OnGoogleServicesSettingsButtonClicked();
    void OnAccountSettingsButtonClicked();
-@@ -123,12 +124,12 @@ class ProfileMenuView : public ProfileMenuViewBase {
+@@ -121,12 +122,12 @@ class ProfileMenuView : public ProfileMenuViewBase {
    void MaybeBuildChromeAccountSettingsButton();
    void MaybeBuildGoogleServicesSettingsButton();
    void MaybeBuildManageGoogleAccountButton();

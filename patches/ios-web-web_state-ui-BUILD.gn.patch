@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/ui/BUILD.gn b/ios/web/web_state/ui/BUILD.gn
-index f6f73a7d9d4b2530f49b9a1526a945219d4a5aa9..e54110c3b38d5133ad107abc721d023ef61410a6 100644
+index ed74a7a416959ff2338bf46c8801cabd2290f319..04c116a3ae0f67d7554c36e3336b6ce98797ef43 100644
 --- a/ios/web/web_state/ui/BUILD.gn
 +++ b/ios/web/web_state/ui/BUILD.gn
-@@ -86,6 +86,7 @@ source_set("ui") {
+@@ -88,6 +88,7 @@ source_set("ui") {
      "crw_wk_ui_handler.mm",
      "crw_wk_ui_handler_delegate.h",
    ]

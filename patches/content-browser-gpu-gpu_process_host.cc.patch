@@ -1,8 +1,8 @@
 diff --git a/content/browser/gpu/gpu_process_host.cc b/content/browser/gpu/gpu_process_host.cc
-index 9805811404bf3bba75996f3b8a889c249bf5d263..ee4bf237aabb33893d74a61840bedeef7cb3f233 100644
+index ab3f702bae17e5079ca4d398c978d24e66e5d9fe..cc3a05a0a9af79824f06204b840d0b02eaf40464 100644
 --- a/content/browser/gpu/gpu_process_host.cc
 +++ b/content/browser/gpu/gpu_process_host.cc
-@@ -448,6 +448,8 @@ class GpuSandboxedProcessLauncherDelegate
+@@ -450,6 +450,8 @@ class GpuSandboxedProcessLauncherDelegate
  
      // Block this DLL even if it is not loaded by the browser process.
      config->AddDllToUnload(L"cmsetac.dll");

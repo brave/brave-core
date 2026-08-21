@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn b/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
-index 501bf97ed3b9b0f72661ec0f260978c4009b032b..3cf0b20774ab63df627550664c0b9c46f074e8b5 100644
+index 95fbd9370e0c373a7f6e4facd68e219aeb257d18..45da44dd917b464a802dacdc0cde75b87a5b70f0 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
-@@ -114,4 +114,6 @@ source_set("searchbox_impl") {
+@@ -115,4 +115,6 @@ source_set("searchbox_impl") {
        "//components/contextual_search/footprints/internal",
      ]
    }
