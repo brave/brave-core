@@ -32,6 +32,11 @@ inline constexpr char kBraveVpnWireguardServiceNotifyConnectedSwitchName[] =
 inline constexpr char kBraveVpnWireguardServiceNotifyDisconnectedSwitchName[] =
     "notify-disconnected";
 
+// Notifies users that the connection was dropped because the firewall rules
+// that keep traffic inside the tunnel could not be installed.
+inline constexpr char kBraveVpnWireguardServiceNotifyFirewallErrorSwitchName[] =
+    "notify-firewall-error";
+
 }  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_SERVICE_CONSTANTS_H_

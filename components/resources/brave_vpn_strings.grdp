@@ -422,6 +422,9 @@ Let's get you connected!
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_DISCONNECTED" desc="Notification message of the system tray notification when vpn disconnected." formatter_data="webui=Vpn">
       Brave VPN - Disconnected
     </message>
+    <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_NOTIFICATION_FIREWALL_ERROR" desc="Notification message of the system tray notification when vpn disconnected because the firewall rules that keep traffic inside the tunnel could not be installed." formatter_data="webui=Vpn">
+      Brave VPN - Disconnected, couldn't protect your connection
+    </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser." formatter_data="webui=Vpn">
       Manage Account
     </message>

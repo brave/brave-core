@@ -6,8 +6,10 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
 
 #include <array>
+#include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
@@ -16,17 +18,22 @@
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/raw_ref.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/synchronization/waitable_event.h"
+#include "base/threading/platform_thread.h"
+#include "base/time/time.h"
 #include "base/win/access_control_list.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/security_descriptor.h"
 #include "base/win/sid.h"
 #include "base/win/windows_types.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_firewall.h"
 #include "brave/browser/brave_vpn/win/service_commands.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
@@ -133,6 +140,103 @@ std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
   scoped_temp_dir.Take();
   return temp_file_path;
 }
+
+// How long the tunnel adapter gets to appear before we give up on it. The
+// block-all filter is already in force by this point, so waiting costs
+// connectivity rather than privacy: without the adapter the tunnel simply
+// carries nothing, and this timeout is what turns that silent dead end into a
+// visible error. Generous because the first connect on a machine may have to
+// install the WireGuardNT driver, which is not a sub-second operation.
+constexpr base::TimeDelta kFirewallInstallTimeout = base::Seconds(30);
+
+// Owns the firewall for the lifetime of the tunnel. The global filters are
+// already installed by the time this is constructed; PermitTunnel() completes
+// the policy and runs on an OS worker thread from TunnelInterfaceWatcher.
+class ScopedFirewallHolder {
+ public:
+  explicit ScopedFirewallHolder(
+      std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall)
+      : firewall_(std::move(firewall)) {}
+  ScopedFirewallHolder(const ScopedFirewallHolder&) = delete;
+  ScopedFirewallHolder& operator=(const ScopedFirewallHolder&) = delete;
+  ~ScopedFirewallHolder() = default;
+
+  void PermitTunnel(const NET_LUID& tunnel_luid) {
+    if (!firewall_->PermitTunnelInterface(tunnel_luid)) {
+      // Fail closed. Block-all is already in force, so the tunnel would carry
+      // nothing anyway; stop it rather than leave the user staring at a dead
+      // connection.
+      VLOG(1) << "Failed to complete the WireGuard firewall, stopping tunnel";
+      wireguard::RequestTunnelShutdown();
+    }
+    settled_.Signal();
+  }
+
+  // False if the tunnel filters were neither installed nor failed within
+  // `timeout`, which means the adapter never showed up under the name we
+  // expected and the tunnel is up but carrying nothing.
+  bool WaitUntilSettled(base::TimeDelta timeout) {
+    return settled_.TimedWait(timeout);
+  }
+
+  // Releases the watchdog when the tunnel is going down for other reasons, so
+  // it does not hold the process open for the rest of the timeout.
+  void StopWaiting() { settled_.Signal(); }
+
+ private:
+  // Only touched from the interface-change thread after construction, and
+  // destroyed on the main thread once the watcher has been torn down.
+  const std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall_;
+  base::WaitableEvent settled_;
+};
+
+// Bounds how long the tunnel may run unprotected. If the adapter never resolves
+// to a LUID -- our guess at the name tunnel.dll gives it being wrong, say --
+// the filters are never installed and the tunnel would otherwise stay up with
+// no kill-switch and no DNS-leak protection, silently.
+//
+// This needs its own thread because tunnel_proc() blocks the main thread for
+// the tunnel's whole lifetime, and cannot be moved off it: tunnel.dll calls
+// StartServiceCtrlDispatcher(), which Windows requires on the initial thread.
+class FirewallWatchdog : public base::PlatformThread::Delegate {
+ public:
+  explicit FirewallWatchdog(ScopedFirewallHolder& holder) : holder_(holder) {}
+  FirewallWatchdog(const FirewallWatchdog&) = delete;
+  FirewallWatchdog& operator=(const FirewallWatchdog&) = delete;
+  ~FirewallWatchdog() override { Stop(); }
+
+  bool Start() {
+    running_ = base::PlatformThread::Create(0, this, &thread_handle_);
+    return running_;
+  }
+
+  // Idempotent, so the destructor can back this up if an early return is ever
+  // added between Start() and the explicit Stop().
+  void Stop() {
+    if (!running_) {
+      return;
+    }
+    running_ = false;
+    holder_->StopWaiting();
+    base::PlatformThread::Join(thread_handle_);
+  }
+
+ private:
+  void ThreadMain() override {
+    if (holder_->WaitUntilSettled(kFirewallInstallTimeout)) {
+      return;
+    }
+    LOG(ERROR) << "WireGuard firewall was not installed within "
+               << kFirewallInstallTimeout << ", disconnecting";
+    brave_vpn::RunWireGuardCommandForUsers(
+        brave_vpn::kBraveVpnWireguardServiceNotifyFirewallErrorSwitchName);
+    wireguard::RequestTunnelShutdown();
+  }
+
+  const raw_ref<ScopedFirewallHolder> holder_;
+  base::PlatformThreadHandle thread_handle_;
+  bool running_ = false;
+};
 
 bool IsServiceRunning(SC_HANDLE service) {
   SERVICE_STATUS service_status = {0};
@@ -349,10 +453,60 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
               << tunnel_lib.GetError()->ToString();
       return S_FALSE;
     }
+    // Our config routes no default route, so tunnel.dll installs none of its
+    // own WFP filters (see wireguard_utils.cc). Put the global half of ours in
+    // before the tunnel starts, so nothing escapes while the adapter is being
+    // created, and complete it once the adapter can be resolved to a LUID.
+    auto installed_firewall = ScopedWireguardFirewall::Create();
+    if (!installed_firewall) {
+      VLOG(1) << "Unable to install the firewall, refusing to connect "
+                 "unprotected";
+      return S_FALSE;
+    }
+
+    // `firewall` is declared before `watcher` so the watcher is torn down
+    // first, and its destructor waits for any in-flight callback before
+    // returning.
+    ScopedFirewallHolder firewall(std::move(installed_firewall));
+    auto watcher = TunnelInterfaceWatcher::Create(
+        GetTunnelInterfaceAlias(config_path),
+        base::BindOnce(&ScopedFirewallHolder::PermitTunnel,
+                       base::Unretained(&firewall)));
+    if (!watcher) {
+      VLOG(1) << "Unable to watch for the tunnel adapter, refusing to connect "
+                 "without a firewall";
+      return S_FALSE;
+    }
+
+    FirewallWatchdog watchdog(firewall);
+    if (!watchdog.Start()) {
+      VLOG(1) << "Unable to start the firewall watchdog, refusing to connect "
+                 "without a way to detect an unprotected tunnel";
+      return S_FALSE;
+    }
+
     // Show system notification about connected vpn.
     brave_vpn::RunWireGuardCommandForUsers(
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
+
+    // Owns the tunnel's whole lifetime: it returns only once the tunnel is
+    // down. If it ever failed to return -- an upstream bug, since its stop
+    // handler only moves the service to STOP_PENDING and returns -- the process
+    // would stay alive, and because our WFP session is dynamic that leaves
+    // block-all in force with nothing permitting the tunnel. The user would
+    // have no connectivity at all until the service is killed or the machine
+    // rebooted; RemoveExistingWireguardService() does not help, as it gives up
+    // after 2s and only marks the service for deletion.
+    //
+    // If a report ever points here, the fix is a deadline armed by
+    // RequestTunnelShutdown() that terminates the process. Note that it has to
+    // account for the failure actions from SetServiceFailureActions(): with
+    // dwResetPeriod == 0 every termination looks like a first failure, so a
+    // naive implementation restarts forever, and the IKEv2 fallback counter
+    // will not stop it because only browser-initiated connects increment it.
     auto result = tunnel_proc(config_path.value().c_str());
+    VLOG(1) << "Tunnel stopped, result: " << result;
+    watchdog.Stop();
     if (result) {
       ResetWireguardTunnelUsageFlag();
       return S_OK;
