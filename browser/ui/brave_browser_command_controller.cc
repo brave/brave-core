@@ -107,6 +107,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #endif
 
 namespace {
@@ -376,11 +377,38 @@ void BraveBrowserCommandController::InitBraveCommandState() {
               browser_->GetProfile()));
 #endif
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   UpdateCommandEnabled(
-      IDC_NEW_TEMPORARY_CONTAINER,
-      ContainersServiceFactory::GetForProfile(browser_->GetProfile()));
+      IDC_SHOW_EMAIL_ALIASES,
+      email_aliases::features::IsEmailAliasesEnabled() &&
+          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+              browser_->GetProfile()));
 #endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER,
+                       containers_service != nullptr);
+
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
+    UpdateCommandEnabled(id, containers_service != nullptr);
+  }
+#endif
+
+  if (browser_->is_type_normal()) {
+    // Delete these when upstream enables by default.
+    UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
+    UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
+  }
+
+  UpdateCommandEnabled(IDC_FORCE_PASTE, true);
+
+  UpdateCommandForFocusMode();
+}
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -810,6 +838,37 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_NEW_TAB_IN_CONTAINER_1:
+    case IDC_NEW_TAB_IN_CONTAINER_2:
+    case IDC_NEW_TAB_IN_CONTAINER_3:
+    case IDC_NEW_TAB_IN_CONTAINER_4:
+    case IDC_NEW_TAB_IN_CONTAINER_5:
+    case IDC_NEW_TAB_IN_CONTAINER_6:
+    case IDC_NEW_TAB_IN_CONTAINER_7:
+    case IDC_NEW_TAB_IN_CONTAINER_8:
+    case IDC_NEW_TAB_IN_CONTAINER_9: {
+      int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+
+      auto* containers_service =
+          ContainersServiceFactory::GetForProfile(browser_->profile());
+
+      if (!containers_service) {
+        break;
+      }
+
+      auto containers = containers_service->GetContainers();
+
+      if (index >= static_cast<int>(containers.size())) {
+        break;
+      }
+
+      brave::OpenUrlInContainer(base::to_address(browser_),
+                                browser_->GetNewTabURL(), containers[index],
+                                /*is_link=*/false);
+
+      break;
+    }
+
     case IDC_NEW_TEMPORARY_CONTAINER:
       brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
                                                 browser_->GetNewTabURL(),
