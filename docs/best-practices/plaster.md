@@ -193,3 +193,63 @@ neighbouring tokens that are not changing — that is what reintroduces fragilit
 and calls for `re_pattern`.
 
 ---
+
+<a id="PLSTR-003"></a>
+
+## ✅ Use Plaster to change private fields/methods visibility in Java for new code
+
+```yaml
+# ✅ CORRECT - simple visibility replacement for a field
+re_pattern: 'private (final @Nullable View mNtpHeader;)'
+replace: 'protected \1'
+```
+
+```java
+// ❌ WRONG - Bytecode manipulation for field visibility change
+        deleteField(sBraveFeedSurfaceCoordinatorClassName, "mNtpHeader");
+        makeProtectedField(sFeedSurfaceCoordinatorClassName, "mNtpHeader");
+```
+
+```yaml
+# ✅ CORRECT - simple visibility replacement for a method
+# Omit parentheses - upstream may add or change parameters
+re_pattern: 'private (void runMenuItemEnterAnimations)'
+replace: 'protected \1'
+```
+
+```java
+// ❌ WRONG - Bytecode manipulation for method visibility change
+
+// BraveAppMenuDummySuper.java
+class BraveAppMenuDummySuper extends AppMenu {
+
+public void runMenuItemEnterAnimations() {
+    assert false : "This class usage should be removed in the bytecode!";
+}
+}
+// BraveAppMenu.java
+public class BraveAppMenu extends BraveAppMenuDummySuper {
+
+@Override
+public void runMenuItemEnterAnimations() {
+    // We do nothing here as we don't want any fancy animation for the menu.
+}
+}
+// BraveAppMenuClassAdapter.java
+    changeSuperName(sBraveAppMenuClassName, sAppMenuClassName);
+    makePublicMethod(sAppMenuClassName, "runMenuItemEnterAnimations");
+```
+
+```java
+// 💡 Note: you can still use Bytecode to replace the static method
+    changeMethodOwner(
+            sManageAccountDevicesLinkView,
+            "getSharingAccountInfo",
+            sBraveManageAccountDevicesLinkView);
+
+// 💡 Note: you can still use Bytecode to redirect constructor
+// so as not to change every occurrence of the Chromium class name
+    redirectConstructor(sAppHooksClassName, sBraveAppHooksClassName);
+```
+
+---
