@@ -1,0 +1,76 @@
+diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
+index 6e2c2f0a85fd96bb0ad4af166a03543671204347..9c79c584f99bf5cc10f9e9cd9d8adfe1e666cf68 100644
+--- a/third_party/blink/common/features.cc
++++ b/third_party/blink/common/features.cc
+@@ -118,7 +118,8 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
+ 
+ // Enables URN URLs like those produced by Protected Audience auctions to be
+ // displayed by iframes (instead of requiring fenced frames).
+-BASE_FEATURE(kAllowURNsInIframes, base::FEATURE_ENABLED_BY_DEFAULT);
++// kAllowURNsInIframes feature state is enforced via plaster rewrite.
++BASE_FEATURE(kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // A console warning is shown when the opaque url returned from Protected
+ // Audience/selectUrl is used to navigate an iframe. Since fenced frames are not
+@@ -174,7 +175,8 @@ BASE_FEATURE(kBackForwardCachePauseMicrotasks,
+ 
+ // Enable background resource fetch in Blink. See https://crbug.com/1379780 for
+ // more details.
+-BASE_FEATURE(kBackgroundResourceFetch, base::FEATURE_ENABLED_BY_DEFAULT);
++// kBackgroundResourceFetch feature state is enforced via plaster rewrite.
++BASE_FEATURE(kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kBackgroundFontResponseProcessor,
+                    &kBackgroundResourceFetch,
+@@ -773,7 +775,8 @@ BASE_FEATURE_PARAM(bool,
+ // this feature does not automatically expose this element to the web, it only
+ // allows the element to be enabled by the runtime enabled feature, for origin
+ // trials.
+-BASE_FEATURE(kFencedFrames, base::FEATURE_ENABLED_BY_DEFAULT);
++// kFencedFrames feature state is enforced via plaster rewrite.
++BASE_FEATURE(kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enable sending event-level reports through reportEvent() in cross-origin
+ // subframes. This requires opt-in both from the cross-origin subframe that is
+@@ -1600,6 +1603,7 @@ BASE_FEATURE_PARAM(
+     "low_pri_async_exec_opt_out_high_fetch_priority_hint",
+     true);
+ 
++// kMixedContentAutoupgrade feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kMixedContentAutoupgrade,
+              "AutoupgradeMixedContent",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1918,13 +1922,9 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+                    &kPreloadingEagerHoverHeuristics,
+                    "hover_dwell_time",
+                    base::Milliseconds(10));
++// kPreloadingEagerViewportHeuristics feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPreloadingEagerViewportHeuristics,
+-#if BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#endif
+-);
++base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(base::TimeDelta,
+                    kPreloadingEagerViewportHeuristicsPresentTime,
+                    &kPreloadingEagerViewportHeuristics,
+@@ -2034,6 +2034,7 @@ BASE_FEATURE(kQuoteEmptySecChUaStringHeadersConsistently,
+ 
+ // Reduce the amount of information in the default 'referer' header for
+ // cross-origin requests.
++// kReducedReferrerGranularity feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // Whether `blink::MemoryCache` and `blink::ResourceFetcher` release their
+@@ -2414,7 +2415,8 @@ BASE_FEATURE_PARAM(int,
+ 
+ // Changes behavior of User-Agent Client Hints to send blank headers when the
+ // User-Agent string is overridden, instead of disabling the headers altogether.
+-BASE_FEATURE(kUACHOverrideBlank, base::FEATURE_DISABLED_BY_DEFAULT);
++// kUACHOverrideBlank feature state is enforced via plaster rewrite.
++BASE_FEATURE(kUACHOverrideBlank, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // If enabled, the body of `EmulateLoadStartedForInspector` is executed only
+ // once per Resource per ResourceFetcher, and thus duplicated network load

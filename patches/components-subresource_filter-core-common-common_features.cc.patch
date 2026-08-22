@@ -1,0 +1,14 @@
+diff --git a/components/subresource_filter/core/common/common_features.cc b/components/subresource_filter/core/common/common_features.cc
+index b821f722acdad29c6599258d9704ab6e5c309afb..ca25e6292509682558a91fe4c27d02017fee9b8d 100644
+--- a/components/subresource_filter/core/common/common_features.cc
++++ b/components/subresource_filter/core/common/common_features.cc
+@@ -6,7 +6,8 @@
+ 
+ namespace subresource_filter {
+ 
+-BASE_FEATURE(kAdTagging, base::FEATURE_ENABLED_BY_DEFAULT);
++// kAdTagging feature state is enforced via plaster rewrite.
++BASE_FEATURE(kAdTagging, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kSubresourceFilterPrewarm, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ }  // namespace subresource_filter

@@ -1,0 +1,23 @@
+diff --git a/net/base/features.cc b/net/base/features.cc
+index 54e646c9a6c7f74b8182cd1cada783cdef8e5810..bd2742e69ce08c7ecd84e34d99c9237af765a603 100644
+--- a/net/base/features.cc
++++ b/net/base/features.cc
+@@ -200,8 +200,9 @@ BASE_FEATURE(kSplitCacheByNetworkIsolationKey,
+ BASE_FEATURE(kSplitCodeCacheByNetworkIsolationKey,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kPartitionConnectionsByNetworkIsolationKey feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kPartitionConnectionsByNetworkIsolationKey,
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kSplitHostCacheByNetworkAnonymizationKey,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -386,6 +387,7 @@ BASE_FEATURE(kForceThirdPartyCookieBlocking,
+ 
+ BASE_FEATURE(kEnableEarlyHintsOnHttp11, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// kEnableWebTransportDraft07 feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kEnableWebTransportDraft07, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kWebTransportFineGrainedThrottling,

@@ -1,0 +1,24 @@
+diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
+index 179e14dfddf5bd0ef4b391dc8a865d8c49f5b6b2..7bde1748b085dd4031a53943c1377d4aa8e59c81 100644
+--- a/media/base/media_switches.cc
++++ b/media/base/media_switches.cc
+@@ -411,7 +411,8 @@ BASE_FEATURE(kRustMpegAudioDataParser, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kEnableHighChannelLayouts, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enables user control over muting tab audio from the tab strip.
+-BASE_FEATURE(kEnableTabMuting, base::FEATURE_DISABLED_BY_DEFAULT);
++// kEnableTabMuting feature state is enforced via plaster rewrite.
++BASE_FEATURE(kEnableTabMuting, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ #if BUILDFLAG(ENABLE_PLATFORM_HEVC)
+ // Enables HEVC hardware accelerated decoding.
+@@ -970,7 +971,8 @@ const base::FeatureParam<std::string>
+         "tr-TR,id-ID,cmn-Hans-CN,cmn-Hant-TW,vi-VN,ru-RU"};
+ 
+ // Enables the Live Caption feature on supported devices.
+-BASE_FEATURE(kLiveCaption, base::FEATURE_ENABLED_BY_DEFAULT);
++// kLiveCaption feature state is enforced via plaster rewrite.
++BASE_FEATURE(kLiveCaption, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enables the preemptive downloading of the SODA binary and language
+ // packs.
