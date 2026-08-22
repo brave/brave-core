@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/types/optional_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -106,17 +107,14 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
                         tx_2930->gas_price(), tx_2930->gas_limit(),
                         tx_2930->to(), tx_2930->value(), tx_2930->data(),
                         max_priority_fee_per_gas, max_fee_per_gas);
-  tx.v_ = tx_2930->v();
-  tx.r_ = tx_2930->r();
-  tx.s_ = tx_2930->s();
+  tx.signature_ = base::OptionalFromPtr(tx_2930->GetSignature());
   tx.access_list_ = std::move(*tx_2930->access_list());
 
   return tx;
 }
 
 std::vector<uint8_t> Eip1559Transaction::GetMessageToSignImpl() const {
-  DCHECK(chain_id_);
-  DCHECK(nonce_);
+  CHECK(nonce_);
 
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -147,7 +145,8 @@ base::DictValue Eip1559Transaction::ToValueImpl() const {
 }
 
 std::vector<uint8_t> Eip1559Transaction::Serialize() const {
-  DCHECK(chain_id_);
+  CHECK(nonce_);
+  CHECK(signature_);
 
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -159,9 +158,9 @@ std::vector<uint8_t> Eip1559Transaction::Serialize() const {
   list.Append(RLPUint256ToBlob(value_));
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(RLPUint256ToBlob(v_));
-  list.Append(base::Value(r_));
-  list.Append(base::Value(s_));
+  list.Append(RLPUint256ToBlob(signature_->recid()));
+  list.Append(base::Value(signature_->r_bytes()));
+  list.Append(base::Value(signature_->s_bytes()));
 
   std::vector<uint8_t> result;
   result.push_back(static_cast<uint8_t>(type_));
