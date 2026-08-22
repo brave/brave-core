@@ -311,6 +311,97 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
   EXPECT_EQ(tx_args[2], "0xf");
 }
 
+TEST(EthDataParser, GetTransactionInfoFromDataERC721SetApprovalForAll) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+  std::vector<uint8_t> data;
+
+  // OK: well-formed setApprovalForAll granting approval.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &data));
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_FALSE(swap_info);
+  ASSERT_EQ(tx_params.size(), 2UL);
+  EXPECT_EQ(tx_params[0], "address");
+  EXPECT_EQ(tx_params[1], "bool");
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // OK: well-formed setApprovalForAll revoking approval.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x0");
+
+  // OK (fail-safe): a non-canonical truthy `approved` value (neither 0 nor 1)
+  // still grants approval on permissive contracts, so it must be detected and
+  // surfaced as a grant rather than silently dropped (which would suppress the
+  // warning).
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000002",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // OK (fail-safe): a `approved` word with dirty high bytes (max uint256) is
+  // also non-zero and must be treated as granting.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // OK: an all-zero `approved` word with dirty high bytes cleared is still a
+  // revoke (only an exact zero value).
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  EXPECT_EQ(tx_args[1], "0x0");
+
+  // KO: missing the approved param.
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      &data));
+  EXPECT_FALSE(GetTransactionInfoFromData(data));
+}
+
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -3346,6 +3437,76 @@ TEST(EthDataParser,
 
   EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
   EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
+}
+
+TEST(EthDataParser, ByteScanFindsDirectSetApprovalForAllGrant) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &data));
+  auto operators = FindSetApprovalForAllOperatorsByByteScan(data);
+  ASSERT_EQ(operators.size(), 1u);
+  EXPECT_EQ(operators[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+}
+
+TEST(EthDataParser, ByteScanSkipsRevoke) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+  EXPECT_TRUE(FindSetApprovalForAllOperatorsByByteScan(data).empty());
+}
+
+TEST(EthDataParser, ByteScanFindsSelectorNestedVerbatimInMulticall) {
+  // A setApprovalForAll grant wrapped in multicall(bytes[]). The inner
+  // selector is not 32-byte aligned, so byte-by-byte scanning is required.
+  std::vector<uint8_t> inner;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &inner));
+  auto encode_multicall = [](const std::vector<std::vector<uint8_t>>& calls) {
+    std::vector<uint8_t> out = {0xac, 0x96, 0x50, 0xd8};
+    auto append_word = [&](uint64_t value) {
+      std::vector<uint8_t> word(32, 0);
+      for (int i = 0; i < 8; ++i) {
+        word[31 - i] = static_cast<uint8_t>((value >> (8 * i)) & 0xff);
+      }
+      out.insert(out.end(), word.begin(), word.end());
+    };
+    append_word(0x20);
+    append_word(calls.size());
+    size_t running = calls.size() * 32;
+    for (const auto& call : calls) {
+      append_word(running);
+      running += 32 + ((call.size() + 31) / 32) * 32;
+    }
+    for (const auto& call : calls) {
+      append_word(call.size());
+      out.insert(out.end(), call.begin(), call.end());
+      out.insert(out.end(), (((call.size() + 31) / 32) * 32) - call.size(), 0);
+    }
+    return out;
+  };
+  auto data = encode_multicall({inner});
+  auto operators = FindSetApprovalForAllOperatorsByByteScan(data);
+  ASSERT_EQ(operators.size(), 1u);
+  EXPECT_EQ(operators[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+}
+
+TEST(EthDataParser, ByteScanNoSelectorReturnsEmpty) {
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"  // ERC-20 transfer
+      "000000000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &data));
+  EXPECT_TRUE(FindSetApprovalForAllOperatorsByByteScan(data).empty());
 }
 
 }  // namespace brave_wallet

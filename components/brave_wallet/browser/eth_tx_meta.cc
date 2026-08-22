@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check_op.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -129,6 +130,19 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     if (!swap_info && swap_info_from_data) {
       swap_info = std::move(swap_info_from_data);
     }
+  }
+
+  // A setApprovalForAll grant nested in an opaque wrapper (e.g. a multicall)
+  // bypasses the top-level decode above; scan the raw calldata so the
+  // approval-for-all warning still fires. The scan skips revokes
+  // (approved == false) and is target-blind, so it may over-warn but never
+  // misses a verbatim grant.
+  auto approval_for_all_operators =
+      FindSetApprovalForAllOperatorsByByteScan(data);
+  if (!approval_for_all_operators.empty()) {
+    tx_type = mojom::TransactionType::ERC721SetApprovalForAll;
+    tx_params = {"address", "bool"};
+    tx_args = {base::JoinString(approval_for_all_operators, ","), "0x1"};
   }
 
   std::optional<std::string> signed_transaction;

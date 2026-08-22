@@ -11,6 +11,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -20,6 +21,12 @@ std::optional<std::tuple<mojom::TransactionType,    // tx_type
                          std::vector<std::string>,  // tx_args
                          mojom::SwapInfoPtr>>       // swap_info
 GetTransactionInfoFromData(const std::vector<uint8_t>& data);
+
+// Scans raw calldata for the setApprovalForAll selector and returns operator
+// addresses for each grant (revoke calls are skipped). Catches grants nested
+// in opaque wrappers such as multicall. Target-blind, may over-warn.
+std::vector<std::string> FindSetApprovalForAllOperatorsByByteScan(
+    base::span<const uint8_t> data);
 
 }  // namespace brave_wallet
 
