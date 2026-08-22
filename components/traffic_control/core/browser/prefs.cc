@@ -26,7 +26,10 @@ namespace {
 //       "id": "...",  // uuid
 //       "enabled": true,
 //       "condition": { "url_filter": "example.com" },   // optional fields
-//       "target":    { "container_id": "" }             // optional fields
+//       "target": {                                     // optional fields
+//         "container_id": "",
+//         "temporary_container": true
+//       }
 //     },
 //     ...
 //   ]
@@ -34,13 +37,14 @@ namespace {
 // Nested `condition` / `target` objects mirror the mojom structs so newer
 // clients can add optional fields without breaking older ones (unknown keys are
 // ignored on read). Unset optional fields are omitted; empty strings are
-// preserved.
+// preserved. `temporary_container` is omitted when false.
 constexpr char kIdKey[] = "id";
 constexpr char kEnabledKey[] = "enabled";
 constexpr char kConditionKey[] = "condition";
 constexpr char kUrlFilterKey[] = "url_filter";
 constexpr char kTargetKey[] = "target";
 constexpr char kContainerIdKey[] = "container_id";
+constexpr char kTemporaryContainerKey[] = "temporary_container";
 
 // Deserializes an optional string field from a nested dict.
 // Returns false when the key exists but is not a string (malformed sync data).
@@ -55,6 +59,19 @@ bool ReadOptionalString(const base::DictValue& dict,
   if (dict.contains(key)) {
     return false;
   }
+  return true;
+}
+
+// Deserializes an optional bool. Missing key => false. Wrong type => fail.
+bool ReadOptionalBool(const base::DictValue& dict, const char* key, bool& out) {
+  if (std::optional<bool> value = dict.FindBool(key)) {
+    out = *value;
+    return true;
+  }
+  if (dict.contains(key)) {
+    return false;
+  }
+  out = false;
   return true;
 }
 
@@ -76,17 +93,23 @@ mojom::TrafficRulePtr RuleFromDict(const base::DictValue& dict) {
     return nullptr;
   }
 
-  // Target: optional fields (currently container_id). An empty string is
-  // meaningful ("open outside a container") and must be preserved.
+  // Target: optional fields. An empty container_id string is meaningful
+  // ("open outside a container") and must be preserved.
   std::optional<std::string> container_id;
   if (!ReadOptionalString(*target_dict, kContainerIdKey, container_id)) {
     LOG(ERROR) << "Traffic rule target has a non-string container_id";
     return nullptr;
   }
+  bool temporary_container = false;
+  if (!ReadOptionalBool(*target_dict, kTemporaryContainerKey,
+                        temporary_container)) {
+    LOG(ERROR) << "Traffic rule target has a non-bool temporary_container";
+    return nullptr;
+  }
 
-  return mojom::TrafficRule::New(*id, *enabled,
-                                 mojom::Condition::New(std::move(url_filter)),
-                                 mojom::Target::New(std::move(container_id)));
+  return mojom::TrafficRule::New(
+      *id, *enabled, mojom::Condition::New(std::move(url_filter)),
+      mojom::Target::New(std::move(container_id), temporary_container));
 }
 
 base::DictValue RuleToDict(const mojom::TrafficRulePtr& rule) {
@@ -98,6 +121,9 @@ base::DictValue RuleToDict(const mojom::TrafficRulePtr& rule) {
   base::DictValue target;
   if (rule->target->container_id.has_value()) {
     target.Set(kContainerIdKey, *rule->target->container_id);
+  }
+  if (rule->target->temporary_container) {
+    target.Set(kTemporaryContainerKey, true);
   }
 
   return base::DictValue()

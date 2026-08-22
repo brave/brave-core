@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+# Linked into the browser binary so BraveAdjustLoadURLParams resolves for the
+# call injected into //chrome/browser/ui/navigator:impl.
+source_set("chromium_impl") {
+  sources = [ "browser_navigator_params_utils.cc" ]
+
+  deps = [
+    "//brave/components/containers/buildflags",
+    "//chrome/browser/ui/navigator",
+    "//content/public/browser",
+  ]
+
+  if (enable_containers) {
+    deps += [ "//brave/components/containers/content/browser" ]
+  }
+}

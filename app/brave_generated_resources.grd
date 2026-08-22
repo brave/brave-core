@@ -1082,7 +1082,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Close duplicate tabs
         </message>
         <if expr="enable_containers">
-          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
+          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container" formatter_data="webui=Containers">
             No container
           </message>
           <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
@@ -1094,7 +1094,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the context menu item for opening the Containers settings page.">
             Manage containers
           </message>
-          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it." formatter_data="webui=Containers">
             New temporary container
           </message>
         </if>
@@ -1128,7 +1128,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Close Duplicate Tabs
         </message>
         <if expr="enable_containers">
-          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container">
+          <message name="IDS_CXMENU_NO_CONTAINER" desc="The label of the 'No container' context menu item, indicating that the tab is not in any container" formatter_data="webui=Containers">
             No Container
           </message>
           <message name="IDS_CXMENU_OPEN_IN_CONTAINER" desc="The label of the 'Open in Container' context menu item">
@@ -1140,7 +1140,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the tab context menu item for opening the Containers settings page.">
             Manage Containers
           </message>
-          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+          <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it." formatter_data="webui=Containers">
             New Temporary Container
           </message>
         </if>

@@ -8,19 +8,25 @@ module traffic_control.mojom;
 // Match criteria for a traffic control rule. Fields are optional so rules can
 // grow additional conditions over time without breaking older clients.
 struct Condition {
-  // URL filter pattern (policy URL-blocklist syntax). When unset, the rule
-  // does not match based on URL.
+  // Freeform URL filter text (policy URL-blocklist syntax). May contain
+  // multiple patterns (one per line), blank lines, and `#` comments. When
+  // unset, the rule does not match based on URL. Matching code trims each line
+  // and ignores blanks/comments.
   string? url_filter;
 };
 
 // Destination for a matched rule.
 struct Target {
   // Container to open matched traffic in.
-  // - unset: no explicit container preference encoded for this rule
+  // - unset: no container destination chosen for this rule
   // - empty string: open in a non-contained tab (even if the current tab is
   //   in a container)
   // - non-empty: open in the container with this id
+  // Mutually exclusive with `temporary_container`.
   string? container_id;
+  // When true, open matched traffic in a newly created temporary container.
+  // Mutually exclusive with `container_id`.
+  bool temporary_container;
 };
 
 // Represents a traffic control rule that matches URLs and routes them to a
@@ -60,7 +66,8 @@ interface TrafficControlSettingsHandler {
   // creates a 1-to-1 connection between the handler and the settings UI.
   BindUI(pending_remote<TrafficControlSettingsUI> ui);
 
-  // Retrieves the current list of rules. Returns: Array of all configured rules.
+  // Retrieves the current list of rules. Returns: Array of all configured
+  // rules.
   GetRules() => (array<TrafficRule> rules);
 
   // Creates a new rule.

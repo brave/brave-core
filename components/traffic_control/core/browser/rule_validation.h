@@ -13,9 +13,11 @@
 
 namespace traffic_control {
 
-// Returns true if `filter` is a valid policy URL-blocklist filter string
-// (see url_matcher::util::FilterToComponents).
-bool IsValidUrlFilter(std::string_view filter);
+// Returns true if `filter_text` is valid freeform URL-filter text: one policy
+// URL-blocklist pattern per line (see url_matcher::util::FilterToComponents).
+// Empty lines and lines starting with `#` are ignored. At least one valid
+// pattern is required.
+bool IsValidUrlFilter(std::string_view filter_text);
 
 // Returns an error if the given rule properties are invalid for add/update.
 std::optional<mojom::RuleOperationError> ValidateRule(
