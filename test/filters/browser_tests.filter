@@ -2452,6 +2452,10 @@
 # in CR152), see https://issues.chromium.org/issues/539681873
 -ContextualSearchboxHandlerBrowserTest.WaitForTabFaviconLoad_Cached
 
+# These tests fail because we disable `net::features::kTLSTrustAnchorIDs`
+-PKIMetadataComponentChromeRootStoreMtcMetadataTest.EndToEnd/1
+-PKIMetadataComponentChromeRootStoreMtcMetadataTest.Revocation/1
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
