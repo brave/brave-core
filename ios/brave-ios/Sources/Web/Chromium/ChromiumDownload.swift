@@ -47,6 +47,15 @@ class ChromiumDownload: Download, CWVDownloadTaskDelegate {
   }
 
   func downloadTask(_ downloadTask: CWVDownloadTask, didFinishWithError error: (any Error)?) {
+    let error: (any Error)? = error.map { error in
+      let chromeError = error as NSError
+      if chromeError.code == CWVDownloadErrorAborted {
+        // Swap the Chromium error with a standard cancelled URLError since TabState doesn't expose
+        // Chromium specific types.
+        return URLError(.cancelled)
+      }
+      return error
+    }
     didFinish(self, error)
   }
 
