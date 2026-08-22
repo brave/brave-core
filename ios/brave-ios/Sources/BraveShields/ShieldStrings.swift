@@ -725,6 +725,73 @@ extension Strings.Shields {
     comment:
       "An error message telling the user that a rule is invalid"
   )
+  /// An error message telling the user that a scriptlet's name is invalid
+  public static let customScriptletInvalidNameError = NSLocalizedString(
+    "CustomScriptletInvalidNameError",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Invalid scriptlet name",
+    comment:
+      "An error message telling the user that the name they gave their custom scriptlet is invalid."
+  )
+  /// An error message telling the user that a scriptlet has no content
+  public static let customScriptletEmptyContentError = NSLocalizedString(
+    "CustomScriptletEmptyContentError",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "The scriptlet must contain some javascript",
+    comment:
+      "An error message telling the user that the custom scriptlet they are trying to save has no content"
+  )
+}
+
+// MARK: - Custom scriptlets
+
+extension Strings.Shields {
+  /// A navigation title for the screen where a user creates a new custom scriptlet
+  public static let addNewScriptletTitle = NSLocalizedString(
+    "shields.addNewScriptletTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Add New Scriptlet",
+    comment: "A navigation title for the screen where a user creates a new custom scriptlet"
+  )
+  /// A navigation title for the screen where a user edits an existing custom scriptlet
+  public static let editScriptletTitle = NSLocalizedString(
+    "shields.editScriptletTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit Scriptlet",
+    comment: "A navigation title for the screen where a user edits an existing custom scriptlet"
+  )
+  /// A section header above the text field where a user enters the custom scriptlet's name
+  public static let customScriptletNameSectionTitle = NSLocalizedString(
+    "shields.customScriptletNameSectionTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Name",
+    comment:
+      "A section header above the text field where a user enters the custom scriptlet's name"
+  )
+  /// A section header above the text editor where a user enters the custom scriptlet's JavaScript
+  public static let customScriptletContentSectionTitle = NSLocalizedString(
+    "shields.customScriptletContentSectionTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Content",
+    comment:
+      "A section header above the text editor where a user enters the custom scriptlet's JavaScript"
+  )
+  /// A warning shown in an empty custom scriptlet editor
+  public static let customScriptletContentWarning = NSLocalizedString(
+    "shields.customScriptletContentWarning",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Don’t paste code here that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer.",
+    comment: "A warning shown in an empty custom scriptlet editor"
+  )
 }
 
 // MARK: - HTTPS Upgrades
