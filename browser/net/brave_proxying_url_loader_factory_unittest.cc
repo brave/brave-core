@@ -15,9 +15,13 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "brave/browser/net/fake_brave_request_handler.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/content_browser_client.h"
+#include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/navigation_simulator.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_util.h"
@@ -66,8 +70,8 @@ class BraveProxyingURLLoaderFactoryTest : public testing::Test {
         content::ContentBrowserClient::URLLoaderFactoryType::
             kDocumentSubResource,
         url::Origin::Create(GURL("https://factory-initiator.example")),
-        net::IsolationInfo(), base::MakeRefCounted<RequestIDGenerator>(),
-        base::DoNothing(), nullptr);
+        net::IsolationInfo(), std::nullopt,
+        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
 
     mojo::Remote<network::mojom::URLLoaderFactory> factory;
     std::move(builder).Finish(factory.BindNewPipeAndPassReceiver(),
@@ -121,32 +125,6 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
 
   EXPECT_FALSE(client.has_received_redirect());
   EXPECT_EQ(net::ERR_UNSAFE_REDIRECT, client.completion_status().error_code);
-}
-
-TEST_F(BraveProxyingURLLoaderFactoryTest,
-       AllowsUnsafeRedirectWhenChecksAreBypassed) {
-  const GURL request_url("https://example.com/source");
-  const GURL unsafe_url("data:text/plain,safe-from-upstream-proxy");
-  network::ResourceRequest request = CreateRequest(
-      request_url, url::Origin::Create(GURL("https://initiator.example")));
-  auto redirect_head = CreateRedirectHead(unsafe_url);
-  redirect_head->bypass_redirect_checks = true;
-  network::TestURLLoaderFactory::Redirects redirects;
-  redirects.emplace_back(CreateRedirectInfo(request, unsafe_url),
-                         std::move(redirect_head));
-  test_factory_.AddResponse(request_url, network::mojom::URLResponseHead::New(),
-                            "", network::URLLoaderCompletionStatus(net::OK),
-                            std::move(redirects));
-
-  auto factory = CreateFactory();
-  network::TestURLLoaderClient client;
-  mojo::Remote<network::mojom::URLLoader> loader;
-  CreateLoaderAndStart(factory, loader, request, client);
-  client.RunUntilRedirectReceived();
-
-  EXPECT_TRUE(client.has_received_redirect());
-  EXPECT_EQ(unsafe_url, client.redirect_info().new_url);
-  EXPECT_TRUE(client.response_head()->bypass_redirect_checks);
 }
 
 TEST_F(BraveProxyingURLLoaderFactoryTest,
@@ -241,6 +219,166 @@ TEST_F(BraveProxyingURLLoaderFactoryTest,
       << ", initiator: " << *initiator_for_redirected;
   EXPECT_EQ(initiator, *initiator_for_redirected)
       << "Redirected URL: " << redirected_url;
+}
+
+// Coverage for AuthorizeBypassRedirectChecks() and for redirects authorized by
+// an inner proxy.
+class BraveProxyingURLLoaderFactoryNavigationTest
+    : public ChromeRenderViewHostTestHarness {
+ public:
+  BraveProxyingURLLoaderFactoryNavigationTest() {
+    request_handler_ =
+        std::make_unique<FakeBraveRequestHandler<std::shared_ptr>>();
+  }
+
+  void TearDown() override {
+    // The factory keeps a raw_ptr to the BrowserContext owned by the harness,
+    // so it has to go away first.
+    proxy_.reset();
+    ChromeRenderViewHostTestHarness::TearDown();
+  }
+
+ protected:
+  // Creates a navigation factory for `navigation_id` on the main frame, with
+  // `test_factory_` as the target factory.
+  mojo::Remote<network::mojom::URLLoaderFactory> CreateNavigationFactory(
+      int64_t navigation_id) {
+    network::URLLoaderFactoryBuilder builder;
+    proxy_ = std::make_unique<BraveProxyingURLLoaderFactory<std::shared_ptr>>(
+        *request_handler_, browser_context(), main_rfh()->GetGlobalFrameToken(),
+        builder,
+        content::ContentBrowserClient::URLLoaderFactoryType::kNavigation,
+        url::Origin::Create(GURL("https://factory-initiator.example")),
+        net::IsolationInfo(), navigation_id,
+        base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
+
+    mojo::Remote<network::mojom::URLLoaderFactory> factory;
+    std::move(builder).Finish(factory.BindNewPipeAndPassReceiver(),
+                              test_factory_.GetSafeWeakWrapper());
+    return factory;
+  }
+
+  // Makes `test_factory_` answer `url` with a redirect to `new_url`.
+  void AddRedirectResponse(const GURL& url, const GURL& new_url) {
+    network::ResourceRequest request;
+    request.url = url;
+    network::TestURLLoaderFactory::Redirects redirects;
+    redirects.emplace_back(CreateRedirectInfo(request, new_url),
+                           CreateRedirectHead(new_url));
+    test_factory_.AddResponse(url, network::mojom::URLResponseHead::New(), "",
+                              network::URLLoaderCompletionStatus(net::OK),
+                              std::move(redirects));
+  }
+
+  std::unique_ptr<FakeBraveRequestHandler<std::shared_ptr>> request_handler_;
+  network::TestURLLoaderFactory test_factory_;
+  std::unique_ptr<BraveProxyingURLLoaderFactory<std::shared_ptr>> proxy_;
+};
+
+// A redirect to a file:// URL is not a safe redirect target on its own, but an
+// inner proxy (Chromium's WebRequest proxy synthesizing an extension or DNR
+// redirect) can authorize it. We must forward such a redirect, and leave the
+// authorization for NavigationURLLoaderImpl to consume.
+TEST_F(BraveProxyingURLLoaderFactoryNavigationTest,
+       ForwardsUnsafeRedirectAuthorizedByInnerProxy) {
+  const GURL request_url("https://example.com/redirect");
+  const GURL file_url("file:///tmp/test_file.html");
+
+  auto navigation = content::NavigationSimulator::CreateBrowserInitiated(
+      request_url, web_contents());
+  navigation->Start();
+  content::NavigationHandle* handle = navigation->GetNavigationHandle();
+  ASSERT_TRUE(handle);
+
+  AddRedirectResponse(request_url, file_url);
+  auto factory = CreateNavigationFactory(handle->GetNavigationId());
+
+  // Mimic the inner proxy authorizing the redirect it is about to synthesize.
+  handle->SetBypassRedirectChecksForNextRedirect(true);
+
+  network::TestURLLoaderClient client;
+  mojo::Remote<network::mojom::URLLoader> loader;
+  network::ResourceRequest request;
+  request.url = request_url;
+  factory->CreateLoaderAndStart(loader.BindNewPipeAndPassReceiver(), 1, 0,
+                                request, client.CreateRemote(),
+                                net::MutableNetworkTrafficAnnotationTag());
+  client.RunUntilRedirectReceived();
+
+  ASSERT_TRUE(client.has_received_redirect());
+  EXPECT_EQ(file_url, client.redirect_info().new_url);
+  // The authorization is still pending for the navigation loader.
+  EXPECT_TRUE(handle->ConsumeBypassRedirectChecksForNextRedirect());
+}
+
+TEST_F(BraveProxyingURLLoaderFactoryNavigationTest,
+       BlocksUnsafeNavigationRedirectWithoutAuthorization) {
+  const GURL request_url("https://example.com/redirect");
+  const GURL file_url("file:///tmp/test_file.html");
+
+  auto navigation = content::NavigationSimulator::CreateBrowserInitiated(
+      request_url, web_contents());
+  navigation->Start();
+  content::NavigationHandle* handle = navigation->GetNavigationHandle();
+  ASSERT_TRUE(handle);
+
+  AddRedirectResponse(request_url, file_url);
+  auto factory = CreateNavigationFactory(handle->GetNavigationId());
+
+  network::TestURLLoaderClient client;
+  mojo::Remote<network::mojom::URLLoader> loader;
+  network::ResourceRequest request;
+  request.url = request_url;
+  factory->CreateLoaderAndStart(loader.BindNewPipeAndPassReceiver(), 1, 0,
+                                request, client.CreateRemote(),
+                                net::MutableNetworkTrafficAnnotationTag());
+  client.RunUntilComplete();
+
+  EXPECT_FALSE(client.has_received_redirect());
+  EXPECT_EQ(net::ERR_UNSAFE_REDIRECT, client.completion_status().error_code);
+}
+
+TEST_F(BraveProxyingURLLoaderFactoryNavigationTest,
+       AuthorizeBypassRedirectChecksMarksNavigationHandle) {
+  auto navigation = content::NavigationSimulator::CreateBrowserInitiated(
+      GURL("https://example.com/"), web_contents());
+  navigation->Start();
+  content::NavigationHandle* handle = navigation->GetNavigationHandle();
+  ASSERT_TRUE(handle);
+
+  content::RenderFrameHost* rfh = main_rfh();
+  ASSERT_TRUE(rfh);
+
+  network::URLLoaderFactoryBuilder builder;
+  network::TestURLLoaderFactory test_factory;
+  BraveProxyingURLLoaderFactory<std::shared_ptr> factory(
+      *request_handler_, browser_context(), rfh->GetGlobalFrameToken(), builder,
+      content::ContentBrowserClient::URLLoaderFactoryType::kNavigation,
+      url::Origin::Create(GURL("https://factory-initiator.example")),
+      net::IsolationInfo(), handle->GetNavigationId(),
+      base::MakeRefCounted<RequestIDGenerator>(), base::DoNothing(), nullptr);
+  mojo::Remote<network::mojom::URLLoaderFactory> factory_remote;
+  std::move(builder).Finish(factory_remote.BindNewPipeAndPassReceiver(),
+                            test_factory.GetSafeWeakWrapper());
+
+  network::ResourceRequest request;
+  request.url = GURL("https://example.com/");
+  mojo::Remote<network::mojom::URLLoader> loader;
+  network::TestURLLoaderClient client;
+  BraveProxyingURLLoaderFactory<std::shared_ptr>::InProgressRequest
+      in_progress_request(
+          factory, /*request_id=*/1, /*network_service_request_id=*/1,
+          rfh->GetGlobalFrameToken(), /*options=*/0, request, browser_context(),
+          net::MutableNetworkTrafficAnnotationTag(),
+          loader.BindNewPipeAndPassReceiver(), client.CreateRemote(), nullptr);
+
+  EXPECT_FALSE(handle->ConsumeBypassRedirectChecksForNextRedirect());
+
+  in_progress_request.AuthorizeBypassRedirectChecks();
+
+  EXPECT_TRUE(handle->ConsumeBypassRedirectChecksForNextRedirect());
+  // Consuming resets the flag until authorized again.
+  EXPECT_FALSE(handle->ConsumeBypassRedirectChecksForNextRedirect());
 }
 
 }  // namespace

@@ -9,6 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
+#include "ui/base/mojom/menu_source_type.mojom.h"
 
 class BraveAppMenu : public AppMenu {
  public:
@@ -25,7 +26,9 @@ class BraveAppMenu : public AppMenu {
   const Browser* browser() const { return browser_; }
 
   // AppMenu overrides:
-  void RunMenu(views::MenuButtonController* host) override;
+  void RunMenu(views::MenuButtonController* host,
+               ui::mojom::MenuSourceType source_type =
+                   ui::mojom::MenuSourceType::kNone) override;
   void ExecuteCommand(int command_id, int mouse_event_flags) override;
   void OnMenuClosed(views::MenuItemView* menu) override;
 

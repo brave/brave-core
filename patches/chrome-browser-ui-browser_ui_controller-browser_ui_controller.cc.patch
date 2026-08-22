@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc b/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
+index 60a3a7ebaa07d600ec4143736b5ceaaca01f74a9..dd6d66b64f9e057fa0cce973fe68452ea45d9d40 100644
+--- a/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
++++ b/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
+@@ -109,6 +109,8 @@ void BrowserUiController::UpdateUIForNavigationInTab(
+ 
+ void BrowserUiController::ScheduleUIUpdate(content::WebContents* source,
+                                            unsigned changed_flags) {
++  MaybeUpdateSidebarForUrlChange(*browser_, *tab_strip_model_, source,
++                                 changed_flags);
+   DCHECK(source);
+   // WebContents may in some rare cases send updates after they've been detached
+   // from the tabstrip but before they are deleted, causing a potential crash if

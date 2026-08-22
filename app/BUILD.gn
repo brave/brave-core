@@ -140,7 +140,6 @@ source_set("unit_tests") {
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
-    "//components/aggregation_service",
     "//components/attribution_reporting:features",
     "//components/autofill/core/common",
     "//components/browser_actuator/internal:features",
@@ -163,7 +162,6 @@ source_set("unit_tests") {
     "//components/manta",
     "//components/metrics",
     "//components/metrics/private_metrics:private_metrics_features",
-    "//components/metrics/private_metrics/private_insights",
     "//components/metrics/structured:structured_metrics_features",
     "//components/multistep_filter/core:features",
     "//components/network_time",
@@ -181,6 +179,7 @@ source_set("unit_tests") {
     "//components/plus_addresses/core/common:features",
     "//components/privacy_sandbox",
     "//components/private_ai:features",
+    "//components/private_insights",
     "//components/safe_browsing/core/common",
     "//components/search",
     "//components/segmentation_platform/public",
@@ -222,10 +221,7 @@ source_set("unit_tests") {
     ]
   }
   if (is_win) {
-    deps += [
-      "//chrome/browser/startup",
-      "//chrome/browser/win:mica_titlebar",
-    ]
+    deps += [ "//chrome/browser/startup" ]
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]

@@ -1,35 +1,55 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index e69db9c4e25538ac3fb82a3ab383630450beff84..50f8c04057892d0c9c156e68cd24a574d43342c9 100644
+index 69efc9593ea78cf7a3d3026c8c13e9f9e5dfe90d..938e7ad6df1d82db02639def1133dd3e46b1c40c 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -81,7 +81,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -59,8 +59,10 @@ import {getHtml} from './personalization_options.html.js';
+ 
+ export interface SettingsPersonalizationOptionsElement {
+   $: {
++    // <if expr="_google_chrome">
+     urlCollectionToggle: SettingsToggleButtonElement,
+-    // <if expr="not is_chromeos">
++    // </if>
++    // <if expr="_google_chrome and not is_chromeos">
+     toast: CrToastElement,
+     signinAllowedToggle: SettingsToggleButtonElement,
+     chromeSigninUserChoiceSelection: HTMLSelectElement,
+@@ -98,7 +100,7 @@ export class SettingsPersonalizationOptionsElement extends
      return {
-       syncStatus: Object,
+       syncStatus: {type: Object},
  
 -      // <if expr="_google_chrome and not is_chromeos">
 +      // <if expr="not is_chromeos">
-       // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
-       // (but handled differently in C++).
-       metricsReportingPref_: {
-@@ -150,7 +150,7 @@ export class SettingsPersonalizationOptionsElement extends
+       metricsReporting_: {type: Object},
  
-   declare syncStatus: SyncStatus;
+       showRestart_: {type: Boolean},
+@@ -126,7 +128,7 @@ export class SettingsPersonalizationOptionsElement extends
+ 
+   accessor syncStatus: SyncStatus = {statusAction: StatusAction.NO_ACTION};
  
 -  // <if expr="_google_chrome and not is_chromeos">
 +  // <if expr="not is_chromeos">
-   declare private metricsReportingPref_:
-       chrome.settingsPrivate.PrefObject<boolean>;
-   declare private showRestart_: boolean;
-@@ -201,7 +201,7 @@ export class SettingsPersonalizationOptionsElement extends
-   override ready() {
-     super.ready();
+   protected accessor metricsReporting_: MetricsReporting|undefined;
+   protected accessor showRestart_: boolean = false;
+   // </if>
+@@ -181,14 +183,14 @@ export class SettingsPersonalizationOptionsElement extends
+   override firstUpdated(changedProperties: PropertyValues<this>) {
+     super.firstUpdated(changedProperties);
  
 -    // <if expr="_google_chrome and not is_chromeos">
 +    // <if expr="not is_chromeos">
-     const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
-         this.setMetricsReportingPref_(metricsReporting);
-     this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -216,9 +216,11 @@ export class SettingsPersonalizationOptionsElement extends
+     const setMetricsReporting = (metricsReporting: MetricsReporting) =>
+         this.setMetricsReporting_(metricsReporting);
+     this.addWebUiListener('metrics-reporting-change', setMetricsReporting);
+     this.browserProxy_.getMetricsReporting().then(setMetricsReporting);
+     // </if>
+ 
+-    // <if expr="not is_chromeos">
++    // <if expr="_google_chrome and not is_chromeos">
+     this.syncBrowserProxy_.getChromeSigninUserChoiceInfo().then(
+         this.setChromeSigninUserChoiceInfo_.bind(this));
+     this.addWebUiListener(
+@@ -196,9 +198,11 @@ export class SettingsPersonalizationOptionsElement extends
          this.setChromeSigninUserChoiceInfo_.bind(this));
      // </if>
  
@@ -40,13 +60,48 @@ index e69db9c4e25538ac3fb82a3ab383630450beff84..50f8c04057892d0c9c156e68cd24a574
 +    // </if>
    }
  
-   // <if expr="is_chromeos">
-@@ -239,7 +241,7 @@ export class SettingsPersonalizationOptionsElement extends
+   private computeSyncFirstSetupInProgress_(): boolean {
+@@ -240,7 +244,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  
 -  // <if expr="_google_chrome and not is_chromeos">
 +  // <if expr="not is_chromeos">
-   private onMetricsReportingChange_() {
-     const control = this.shadowRoot!.querySelector<SettingsToggleButtonElement>(
-         '#metricsReportingControl');
+   protected onMetricsReportingChange_(e: Event) {
+     const target = e.target as CrToggleElement;
+     this.browserProxy_.setMetricsReportingEnabled(target.checked);
+@@ -311,7 +315,7 @@ export class SettingsPersonalizationOptionsElement extends
+     if (this.shadowRoot
+             .querySelector<SettingsSignoutDialogElement>(
+                 'settings-signout-dialog')!.wasConfirmed()) {
+-      // <if expr="not is_chromeos">
++      // <if expr="_google_chrome and not is_chromeos">
+       this.$.signinAllowedToggle.checked = false;
+       this.$.signinAllowedToggle.sendPrefChange();
+       this.$.toast.show();
+@@ -320,7 +324,7 @@ export class SettingsPersonalizationOptionsElement extends
+     this.showSignoutDialog_ = false;
+   }
+ 
+-  // <if expr="not is_chromeos">
++  // <if expr="_google_chrome and not is_chromeos">
+   protected onSigninAllowedSettingsBooleanControlChange_() {
+     if (this.syncStatus.signedInState === SignedInState.SYNCING &&
+         !this.$.signinAllowedToggle.checked) {
+@@ -332,12 +336,16 @@ export class SettingsPersonalizationOptionsElement extends
+       this.$.toast.show();
+     }
+   }
++  // </if>
+ 
++  // <if expr="not is_chromeos">
+   protected onRestartClick_(e: Event) {
+     e.stopPropagation();
+     this.performRestart(RestartType.RESTART);
+   }
++  // </if>
+ 
++  // <if expr="_google_chrome and not is_chromeos">
+   private setChromeSigninUserChoiceInfo_(info: ChromeSigninUserChoiceInfo) {
+     this.chromeSigninUserChoiceInfo_ = info;
+     if (info.choice !== ChromeSigninUserChoice.NO_CHOICE) {

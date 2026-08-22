@@ -24,7 +24,7 @@ using PdfTextCallback = base::OnceCallback<void(std::optional<std::string>)>;
 // Extracts all page text from a PDF loaded in the given WebContents via
 // PDFDocumentHelper. Assumes the PDF document has already finished loading.
 // Calls |callback| with the joined text or nullopt on failure.
-void ExtractTextFromLoadedPdf(content::WebContents* web_contents,
+void ExtractTextFromLoadedPdf(content::WebContents& web_contents,
                               PdfTextCallback callback);
 
 }  // namespace ai_chat

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/brave_browser_actions.h"
 
+#include "base/check.h"
+#include "base/check_deref.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
 #include "base/types/to_address.h"
@@ -12,9 +14,12 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -43,9 +48,42 @@
 #include "brave/components/playlist/core/browser/utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
+#endif
+
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/common/features.h"
 #include "chrome/browser/ui/page_action/page_action_triggers.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/speedreader_page_action_controller.h"
+#include "brave/components/speedreader/common/features.h"
+#include "components/tabs/public/tab_interface.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "components/tabs/public/tab_interface.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -98,6 +136,37 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (bwi->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
+      !profile_->IsOffTheRecord() &&
+      playlist::IsPlaylistAllowed(profile_->GetPrefs())) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  tabs::BraveTabFeatures* const brave_tab_features =
+                      tabs::BraveTabFeatures::FromTabFeatures(
+                          bwi->GetActiveTabInterface()->GetTabFeatures());
+                  CHECK(brave_tab_features);
+
+                  page_actions::PlaylistPageActionController* const controller =
+                      brave_tab_features->playlist_page_action_controller();
+                  CHECK(controller);
+                  controller->ExecuteAction();
+                },
+                bwi))
+            .SetActionId(kActionShowPlaylistPageAction)
+            .SetText(l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE))
+            .SetTooltipText(
+                l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE))
+            .SetImage(ui::ImageModel::FromVectorIcon(kLeoProductPlaylistAddIcon,
+                                                     ui::kColorIcon))
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAIChatEnabled(profile_->GetPrefs())) {
@@ -156,6 +225,128 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 #endif  // BUILDFLAG(ENABLE_PSST)
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  tabs::BraveTabFeatures* const brave_tab_features =
+                      tabs::BraveTabFeatures::FromTabFeatures(
+                          bwi->GetActiveTabInterface()->GetTabFeatures());
+                  CHECK(brave_tab_features);
+
+                  page_actions::SpeedreaderPageActionController* const
+                      controller = brave_tab_features
+                                       ->speedreader_page_action_controller();
+                  CHECK(controller);
+                  controller->ExecuteAction(context.GetProperty(
+                      page_actions::kBravePageActionEventFlagKey));
+                },
+                bwi))
+            .SetActionId(kActionShowSpeedreader)
+            .SetText(l10n_util::GetStringUTF16(
+                IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE))
+            .SetTooltipText(l10n_util::GetStringUTF16(
+                IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE))
+            .SetImage(ui::ImageModel::FromVectorIcon(kLeoProductSpeedreaderIcon,
+                                                     ui::kColorIcon))
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  root_action_item_->AddChild(
+      actions::ActionItem::Builder(
+          base::BindRepeating(
+              [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                 actions::ActionInvocationContext context) {
+                BrowserView& browser_view =
+                    CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+
+                tabs::BraveTabFeatures* const brave_tab_features =
+                    tabs::BraveTabFeatures::FromTabFeatures(
+                        bwi->GetActiveTabInterface()->GetTabFeatures());
+                CHECK(brave_tab_features);
+
+                page_actions::WaybackMachinePageActionController* const
+                    controller = brave_tab_features
+                                     ->wayback_machine_page_action_controller();
+                CHECK(controller);
+                controller->ExecuteAction(
+                    browser_view.toolbar_button_provider(), item);
+              },
+              bwi))
+          .SetActionId(kActionShowWaybackMachine)
+          .SetText(
+              l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_ICON_TOOLTIP))
+          .SetTooltipText(
+              l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_ICON_TOOLTIP))
+          .SetImage(
+              ui::ImageModel::FromVectorIcon(kLeoHistoryIcon, ui::kColorIcon))
+          .SetEnabled(true)
+          .Build());
+#endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+
+#if BUILDFLAG(ENABLE_TOR)
+  root_action_item_->AddChild(
+      actions::ActionItem::Builder(
+          base::BindRepeating(
+              [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                 actions::ActionInvocationContext context) {
+                tabs::BraveTabFeatures* const brave_tab_features =
+                    tabs::BraveTabFeatures::FromTabFeatures(
+                        bwi->GetActiveTabInterface()->GetTabFeatures());
+                CHECK(brave_tab_features);
+
+                page_actions::OnionLocationPageActionController* const
+                    controller = brave_tab_features
+                                     ->onion_location_page_action_controller();
+                CHECK(controller);
+                controller->ExecuteAction();
+              },
+              bwi))
+          .SetActionId(kActionShowOnionLocation)
+          .SetEnabled(true)
+          .Build());
+#endif  // BUILDFLAG(ENABLE_TOR)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (!profile_->IsOffTheRecord()) {
+    root_action_item_->AddChild(
+        actions::ActionItem::Builder(
+            base::BindRepeating(
+                [](BrowserWindowInterface* bwi, actions::ActionItem* item,
+                   actions::ActionInvocationContext context) {
+                  BrowserView& browser_view =
+                      CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+
+                  tabs::BraveTabFeatures* const brave_tab_features =
+                      tabs::BraveTabFeatures::FromTabFeatures(
+                          bwi->GetActiveTabInterface()->GetTabFeatures());
+                  CHECK(brave_tab_features);
+
+                  page_actions::BraveNewsPageActionController* const
+                      controller = brave_tab_features
+                                       ->brave_news_page_action_controller();
+                  CHECK(controller);
+                  controller->ExecuteAction(
+                      browser_view.toolbar_button_provider(), item);
+                },
+                bwi))
+            .SetActionId(kActionShowBraveNews)
+            .SetTooltipText(
+                l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP))
+            .SetImage(
+                ui::ImageModel::FromVectorIcon(kLeoRssIcon, ui::kColorIcon))
+            .SetEnabled(true)
+            .Build());
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsAllowed(profile_->GetPrefs()) &&

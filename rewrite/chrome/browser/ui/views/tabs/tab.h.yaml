@@ -4,9 +4,93 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Adding header for BraveAutocompleteSchemeClassifier'
+  - description: |-
+      Wrap `showing_close_button_` in `ControllableCloseButtonState`.
+
+      The controller can force-hide the close button (e.g. via a pref), and
+      this type centralizes that decision instead of scattering checks across
+      call sites.
     regex:
       re_pattern: 'bool showing_close_button_ = false;'
       replace:
         'ControllableCloseButtonState showing_close_button_{*controller_,
         *this};'
+
+  - description: |-
+      Lower the close-button threshold from 68 to 55.
+    regex:
+      pattern: 'kMinimumContentsWidthForCloseButtons = 68;'
+      replace: 'kMinimumContentsWidthForCloseButtons = 55;'
+
+  - description: |-
+      Declare `IsTabMuteIndicatorNotClickable`, overriding
+      `AlertIndicatorButton::Delegate`.
+    add_to_public:
+      class_name: Tab
+      code: 'bool IsTabMuteIndicatorNotClickable() override;'
+
+  - description: |-
+      Declare `ResetTabStyle`, so BraveTab can swap the tab style for
+      orientation changes.
+    add_to_public:
+      class_name: Tab
+      code: 'void ResetTabStyle(std::unique_ptr<TabStyleViews> new_style);'
+
+  - description: |-
+      Declare `GetTabHeight`, used instead of kTabHeight so vertical tabs get
+      their own height.
+    add_to_public:
+      class_name: Tab
+      code: 'int GetTabHeight() const;'
+
+  - description: 'Let BraveTab and its test reach private members.'
+    add_friend:
+      class_name: Tab
+      friend_type:
+        - class ::BraveTabTest
+        - class ::BraveTab
+
+  - description: 'Make GetWidthOfLargestSelectableRegion virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: GetWidthOfLargestSelectableRegion
+
+  - description: 'Make OnTabDataChanged virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: OnTabDataChanged
+
+  - description: 'Make ActiveStateChanged virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: ActiveStateChanged
+
+  - description: 'Make GetGroupColor virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: GetGroupColor
+
+  - description: 'Make UpdateIconVisibility virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: UpdateIconVisibility
+
+  - description: 'Make ShouldRenderAsNormalTab virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: ShouldRenderAsNormalTab
+
+  - description: 'Make MaybeAdjustLeftForPinnedTab virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: MaybeAdjustLeftForPinnedTab
+
+  - description: 'Make IsActive virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: IsActive
+
+  - description: 'Make MaybeUpdateHoverStatus virtual'
+    make_virtual:
+      class_name: Tab
+      method_name: MaybeUpdateHoverStatus

@@ -11,20 +11,13 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/web/js_messaging/prompt_facade.h"
 #include "ios/web/common/url_scheme_util.h"
-#include "ios/web/public/web_client.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnullability-completeness"
 
-#define IsAppSpecificURL(URL) \
-  IsAppSpecificURL(URL) &&    \
-      self.mojoFacade->IsWebUIMessageAllowedForFrame(origin_url, prompt)
-
 #include <ios/web/web_state/ui/crw_wk_ui_handler.mm>
-
-#undef IsAppSpecificURL
 
 @implementation BraveCRWWKUIHandler {
   std::unique_ptr<web::PromptFacade> _promptFacade;

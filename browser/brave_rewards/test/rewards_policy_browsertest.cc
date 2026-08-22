@@ -108,7 +108,7 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, GetRewardsAndAdsServices) {
 // Verify that Rewards menu item isn't enabled in the app menu when Brave
 // Rewards are disabled by policy.
 IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, AppMenuItemDisabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   if (IsBraveRewardsDisabledTest()) {
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
   } else {

@@ -16,7 +16,6 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
-#include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
@@ -36,7 +35,6 @@
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
-#include "components/metrics/private_metrics/private_insights/private_insights_features.h"
 #include "components/metrics/private_metrics/private_metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/multistep_filter/core/features.h"
@@ -55,6 +53,7 @@
 #include "components/plus_addresses/core/common/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/private_ai/features.h"
+#include "components/private_insights/private_insights_features.h"
 #include "components/safe_browsing/core/common/features.h"
 #include "components/search/ntp_features.h"
 #include "components/segmentation_platform/public/features.h"
@@ -97,7 +96,6 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/startup/startup_features.h"
-#include "chrome/browser/win/mica_titlebar.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
@@ -107,12 +105,11 @@
 TEST(FeatureDefaultsTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
-      &aggregation_service::kAggregationServiceMultipleCloudProviders,
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
+      &autofill::features::kAutofillAiWithDataSchema,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
-      &autofill::features::kYourSavedInfoSettingsPage,
       &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
@@ -225,9 +222,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
-#if BUILDFLAG(IS_WIN)
-      &kWindows11MicaTitlebar,
-#endif
       &lens::features::kLensOverlay,
       &lens::features::kLensOverlayOmniboxEntryPoint,
       &lens::features::kLensStandalone,
@@ -238,7 +232,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
       &network::features::kBrowsingTopics,
-      &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,
@@ -273,7 +266,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &personal_context::features::kPersonalContext,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
-      &privacy_sandbox::kPrivacySandboxSettings4,
 #if !BUILDFLAG(IS_ANDROID)
       &private_ai::kPrivateAi,
 #endif  // !BUILDFLAG(IS_ANDROID)

@@ -5,18 +5,14 @@
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
 
-#include <memory>
 #include <string>
-#include <utility>
 
-#include "components/browsing_topics/common/common_types.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 
 BravePrivacySandboxSettings::BravePrivacySandboxSettings(
-    std::unique_ptr<Delegate> delegate,
     HostContentSettingsMap* host_content_settings_map,
     content_settings::CookieSettings* cookie_settings,
     PrefService* pref_service)
@@ -44,55 +40,6 @@ void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
 
 // PrivacySandboxSettings:
 
-bool BravePrivacySandboxSettings::IsTopicsAllowed() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsTopicsAllowedForContext(
-    const url::Origin& top_frame_origin,
-    const GURL& url,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsTopicAllowed(
-    const privacy_sandbox::CanonicalTopic& topic) {
-  return false;
-}
-
-void BravePrivacySandboxSettings::SetTopicAllowed(
-    const privacy_sandbox::CanonicalTopic& topic,
-    bool allowed) {}
-
-bool BravePrivacySandboxSettings::IsTopicPrioritized(
-    const privacy_sandbox::CanonicalTopic& topic) {
-  return false;
-}
-
-void BravePrivacySandboxSettings::ClearTopicSettings(base::Time start_time,
-                                                     base::Time end_time) {}
-
-base::Time BravePrivacySandboxSettings::TopicsDataAccessibleSince() const {
-  // Future time means topics data is never accessible
-  return base::Time::Max();
-}
-
-void BravePrivacySandboxSettings::SetFledgeJoiningAllowed(
-    const std::string& top_frame_etld_plus1,
-    bool allowed) {}
-
-void BravePrivacySandboxSettings::ClearFledgeJoiningAllowedSettings(
-    base::Time start_time,
-    base::Time end_time) {}
-
-bool BravePrivacySandboxSettings::IsFledgeAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& auction_party,
-    privacy_sandbox::InterestGroupApiOperation interest_group_api_operation,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
 bool BravePrivacySandboxSettings::IsEventReportingDestinationAttested(
     const url::Origin& destination_origin,
     privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api) const {
@@ -116,47 +63,8 @@ bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
   return false;
 }
 
-bool BravePrivacySandboxSettings::IsPrivateAggregationAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& reporting_origin,
-    bool* out_block_is_site_setting_specific) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsPrivateAggregationDebugModeAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& reporting_origin) const {
-  return false;
-}
-
-void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
-void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
-
-bool BravePrivacySandboxSettings::IsPrivacySandboxRestricted() const {
-  return true;
-}
-
-bool BravePrivacySandboxSettings::IsPrivacySandboxCurrentlyUnrestricted()
-    const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsSubjectToM1NoticeRestricted() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsRestrictedNoticeEnabled() const {
-  return false;
-}
-
-void BravePrivacySandboxSettings::OnCookiesCleared() {}
 void BravePrivacySandboxSettings::AddObserver(Observer* observer) {}
 void BravePrivacySandboxSettings::RemoveObserver(Observer* observer) {}
-
-void BravePrivacySandboxSettings::SetDelegateForTesting(
-    std::unique_ptr<Delegate> delegate) {
-  delegate_ = std::move(delegate);
-}
 
 bool BravePrivacySandboxSettings::AreRelatedWebsiteSetsEnabled() const {
   return false;

@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
+#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -145,7 +146,7 @@ content::WebContents* PlaylistContentsWrapper::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  return static_cast<WebContentsDelegate*>(browser_view_->browser())
+  return BrowserWebContentsDelegate::From(browser_view_->browser())
       ->AddNewContents(source, std::move(new_contents), target_url, disposition,
                        window_features, user_gesture, was_blocked);
 }

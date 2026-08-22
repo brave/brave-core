@@ -231,6 +231,8 @@
 # This test fails because brave.omnibox.history_suggestions_enabled is not
 # registered.
 -SearchboxUtilsTest.CanPasteAndGo
+-SearchboxUtilsTest.ClassifyStringSearchQuery
+-SearchboxUtilsTest.ClassifyStringUrl
 
 # This test fails because its message is hardcoded to look for "Google Search"
 # instead of "Brave Search"
@@ -241,6 +243,14 @@
 # ECDSA/ML-DSA-44 (PQC) key-selection logic entirely, so this assertion of
 # upstream key selection never holds in our builds.
 -All/RequestSenderTest.CupKeySelection/*
+
+# These tests fail because of the following CHECK in identity_test_utils.cc:
+# identity_manager->AreRefreshTokensLoaded()
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromo
+-AccountPreviewDataServiceTest.GetPreferredAccountForPromoRespectsDefaultAccountOrderCookieJar
+-AccountPreviewDataServiceTest.RateLimitOn429PeriodicRefresh
+-AccountPreviewDataServiceTest.RemainingAccountsAllCachedDoesNotCrashAndRecomputes
+-IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*

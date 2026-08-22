@@ -1,13 +1,64 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 97e293aa77130a343cfdf46ad567a1a3da54718e..7984cd11035262dbb673533cc0e51f9f798c8638 100644
+index c9b7439741a43a4586c8652c37331731045aa8d6..1b36925d58eb41d14f26be4069a0abdcd72db15e 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -260,7 +260,7 @@ class AppBrowserController;
- class BrowserWindowFeatures {
+@@ -286,29 +286,29 @@ class AppBrowserController;
+ // Do not add more public accessors. Instead use the UnownedUserData design
+ // pattern, see ui/base/unowned_user_data/README.md.
+ // TODO(crbug.com/481268779a): Remove existing public accessors.
+-class BrowserWindowFeatures {
++class BrowserWindowFeatures_ChromiumImpl {
   public:
-   BrowserWindowFeatures();
+-  BrowserWindowFeatures();
 -  ~BrowserWindowFeatures();
-+  virtual ~BrowserWindowFeatures();
++  BrowserWindowFeatures_ChromiumImpl();
++  virtual ~BrowserWindowFeatures_ChromiumImpl();
  
-   BrowserWindowFeatures(const BrowserWindowFeatures&) = delete;
-   BrowserWindowFeatures& operator=(const BrowserWindowFeatures&) = delete;
+-  BrowserWindowFeatures(const BrowserWindowFeatures&) = delete;
+-  BrowserWindowFeatures& operator=(const BrowserWindowFeatures&) = delete;
++  BrowserWindowFeatures_ChromiumImpl(const BrowserWindowFeatures_ChromiumImpl&) = delete;
++  BrowserWindowFeatures_ChromiumImpl& operator=(const BrowserWindowFeatures_ChromiumImpl&) = delete;
+ 
+   // Called exactly once to initialize features. This is called prior to
+   // instantiating BrowserView, to allow the view hierarchy to depend on state
+   // in this class.
+-  void Init(BrowserWindowInterface* browser);
++  virtual void Init(BrowserWindowInterface* browser);
+ 
+   // Called exactly once to initialize features that depend on the window object
+   // being created.
+-  void InitPostWindowConstruction(Browser* browser);
++  virtual void InitPostWindowConstruction(Browser* browser);
+ 
+   // Called exactly once to initialize features that depend on the view
+   // hierarchy in BrowserView.
+-  void InitPostBrowserViewConstruction(BrowserView* browser_view);
++  virtual void InitPostBrowserViewConstruction(BrowserView* browser_view);
+ 
+   // Called exactly once to tear down state that depends on the window object.
+-  void TearDownPreBrowserWindowDestruction();
++  virtual void TearDownPreBrowserWindowDestruction();
+ 
+   ui::AcceleratorProvider* accelerator_provider() {
+     return accelerator_provider_;
+@@ -481,6 +481,7 @@ class BrowserWindowFeatures {
+   // of this class, we use lowercase_with_underscores even though the
+   // implementation is not inlined.
+   SidePanelUI* side_panel_ui();
++  const SidePanelUI* side_panel_ui() const;
+ 
+   SigninViewController* signin_view_controller() {
+     return signin_view_controller_.get();
+@@ -545,7 +546,12 @@ class BrowserWindowFeatures {
+   static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
+   GetUserDataFactoryForTesting();
+ 
++  const ExclusiveAccessManager* exclusive_access_manager() const {
++    return exclusive_access_manager_.get();
++  }
++
+  private:
++  friend class BrowserWindowFeatures;
+   static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
+   GetUserDataFactory();
+ 

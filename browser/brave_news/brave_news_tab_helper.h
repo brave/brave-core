@@ -78,6 +78,8 @@ class BraveNewsTabHelper
                        const GURL& site_url,
                        std::vector<brave_news::mojom::FeedSearchResultItemPtr>);
 
+  void SetDefaultFeedForTesting(brave_news::mojom::PublisherPtr publisher);
+
   void AddObserver(PageFeedsObserver* observer);
   void RemoveObserver(PageFeedsObserver* observer);
 

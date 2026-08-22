@@ -1,77 +1,144 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "ios/web/webui/mojo_facade.h"
 
-#include "base/check.h"
 #include "ios/components/webui/web_ui_url_constants.h"
-#include "ios/web/public/js_messaging/web_frames_manager.h"
-#include "mojo/public/cpp/system/simple_watcher.h"
-
-// Parse the FrameId from the mojom message
-#define last_watch_id_                                \
-  last_watch_id_;                                     \
-  std::string* frame_id = args.FindString("frameId"); \
-  CHECK(frame_id)
-
-// Brave Override that responds to the specific frame that requested the data
-// via mojom. Chrome-iOS responds only to the main-frame, but sub-frames can
-// also bind mojom. So we need to respond to whatever frame requested the
-// data, instead of always the main-frame.
-#define GetMainWebFrame()                                              \
-  GetFrameWithId(frame_id);                                            \
-  if (!main_frame) {                                                   \
-    main_frame =                                                       \
-        web_state_->GetPageWorldWebFramesManager()->GetMainWebFrame(); \
-  }
-// Add the frame id argument to the callback
-#define OnWatcherCallback(callback_id, watch_id, result) \
-  OnWatcherCallback(callback_id, watch_id, std::string frame_id, result)
-// Bind the frame id to the OnWatcherCallback
-#define Watch(PIPE, SIGNAL, CALLBACK)                                       \
-  Watch(PIPE, SIGNAL,                                                       \
-        base::BindRepeating(&MojoFacade::OnWatcherCallback,                 \
-                            base::Unretained(this), *callback_id, watch_id, \
-                            *frame_id));                                    \
-  (void)callback
+#include "url/gurl.h"
+#include "url/origin.h"
 
 #include <ios/web/webui/mojo_facade.mm>
 
-#undef Watch
-#undef OnWatcherCallback
-#undef GetMainWebFrame
-#undef last_watch_id_
-
+// The methods below are declared via the mojo_facade.h plaster
+// (rewrite/ios/web/webui/mojo_facade.h.yaml) and hooked into upstream's
+// control flow via the mojo_facade.mm plaster
+// (rewrite/ios/web/webui/mojo_facade.mm.yaml). They're defined here, after
+// the #include above, so they can use file-scope helpers upstream's own .mm
+// defines (e.g. FindIntOrDoubleAsInt) and rely on its own transitively
+// included headers (e.g. for base::SequencedTaskRunner, WebThread,
+// base::SysNSStringToUTF16).
 namespace web {
-bool MojoFacade::IsWebUIMessageAllowedForFrame(const GURL& origin,
-                                               NSString* prompt) {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  CHECK(prompt);
 
-  auto name_and_args =
-      GetMessageNameAndArguments(base::SysNSStringToUTF8(prompt));
-
-  // If the scheme is untrusted
-  if (name_and_args.name == "Mojo.bindInterface" &&
-      origin.scheme() == "chrome-untrusted") {
-    const base::DictValue& args = name_and_args.args;
-    const std::string* interface_name = args.FindString("interfaceName");
-    CHECK(interface_name);
-
-    // Check if the requested interface is registered for this origin
-    return web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
-        origin, *interface_name);
+// Resolves which frame a watch's callback should be delivered to, falling
+// back to the main frame exactly as upstream's own GetMainWebFrame() would.
+web::WebFrame* MojoFacade::GetFrameForWatch(int watch_id) {
+  auto it = watch_id_to_frame_id_.find(watch_id);
+  if (it != watch_id_to_frame_id_.end()) {
+    if (WebFrame* frame =
+            web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(
+                it->second)) {
+      return frame;
+    }
   }
-
-  // The interface is not requested from an "untrusted" origin,
-  // so let the normal code-flow handle it
-  return true;
+  return web_state_->GetPageWorldWebFramesManager()->GetMainWebFrame();
 }
 
-std::string MojoFacade::Dummy() {
-  return "";
+// Mirrors upstream's own AwaitNextMessage(), parameterized by frame instead
+// of hardcoded to main_frame_, so sub-frames that bind mojo interfaces (e.g.
+// AI Chat's untrusted conversation-entries iframe) get polled too.
+void MojoFacade::AwaitNextMessageForFrame(const std::string& frame_id) {
+  DCHECK_CURRENTLY_ON(WebThread::UI);
+
+  if (extra_polling_frame_ids_[frame_id]) {
+    return;
+  }
+
+  WebFrame* frame =
+      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(frame_id);
+  if (!frame) {
+    return;
+  }
+
+  extra_polling_frame_ids_[frame_id] = true;
+
+  auto callback =
+      base::BindOnce(&MojoFacade::OnAwaitNextMessageForFrameCompleted,
+                     weak_ptr_factory_.GetWeakPtr(), frame_id);
+
+  std::u16string fetch_next_message =
+      u"return await Mojo.internal.fetchNextMessageFromJS();";
+
+  frame->ExecuteAsyncJavaScript(fetch_next_message, base::DictValue(),
+                                std::move(callback));
+}
+
+// Mirrors upstream's own OnAwaitNextMessageCompleted(): dispatches into the
+// existing HandleMojoMessage(), routes the response back via
+// Mojo.internal.messageReceived on this same frame, then re-arms.
+void MojoFacade::OnAwaitNextMessageForFrameCompleted(
+    const std::string& frame_id,
+    const base::Value* value,
+    NSError* error) {
+  DCHECK_CURRENTLY_ON(WebThread::UI);
+
+  extra_polling_frame_ids_[frame_id] = false;
+
+  WebFrame* frame =
+      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(frame_id);
+  bool frame_still_alive = !web_state_->IsBeingDestroyed() && frame != nullptr;
+
+  if (error || !frame_still_alive || !value) {
+    if (error && frame_still_alive) {
+      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+          FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessageForFrame,
+                                    weak_ptr_factory_.GetWeakPtr(), frame_id));
+    }
+    return;
+  }
+
+  const base::DictValue* dict = value->GetIfDict();
+  if (dict) {
+    std::optional<int> message_id = FindIntOrDoubleAsInt(*dict, "message_id");
+    const base::DictValue* message = dict->FindDict("message");
+
+    if (message_id && message) {
+      base::WeakPtr<WebFrame> weak_frame = frame->AsWeakPtr();
+      HandleMojoMessage(
+          *message_id, message,
+          base::BindOnce(^(int msg_id, std::string response) {
+            WebFrame* target_frame = weak_frame.get();
+            if (!target_frame) {
+              return;
+            }
+            NSString* response_str = @"null";
+            if (!response.empty()) {
+              response_str = base::SysUTF8ToNSString(response);
+            }
+            NSString* script = [NSString
+                stringWithFormat:@"Mojo.internal.messageReceived(%d, %@)",
+                                 msg_id, response_str];
+            target_frame->ExecuteAsyncJavaScript(
+                base::SysNSStringToUTF16(script), base::DictValue(),
+                base::DoNothing());
+          }));
+    }
+  }
+  AwaitNextMessageForFrame(frame_id);
+}
+
+// Gates Mojo.bindInterface calls from chrome-untrusted:// origins against
+// InterfaceBinder::IsAllowedForOrigin (brave/chromium_src/ios/web/public/
+// web_state.h), which upstream never checks.
+bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
+  const std::string* frame_id = args.FindString("frameId");
+  if (!frame_id) {
+    return true;
+  }
+  WebFrame* frame =
+      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(*frame_id);
+  if (!frame) {
+    return true;
+  }
+  GURL origin = frame->GetSecurityOrigin().GetURL();
+  if (!origin.SchemeIs(kChromeUIUntrustedScheme)) {
+    return true;
+  }
+  const std::string* interface_name = args.FindString("interfaceName");
+  return interface_name &&
+         web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
+             origin, *interface_name);
 }
 
 }  // namespace web

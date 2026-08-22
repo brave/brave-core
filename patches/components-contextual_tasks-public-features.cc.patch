@@ -1,5 +1,5 @@
 diff --git a/components/contextual_tasks/public/features.cc b/components/contextual_tasks/public/features.cc
-index d73cd74143df76d4ef9b03933951ce86b1a69cc0..1f4fedf54a445493049e64e6878a6a10526f5dca 100644
+index 09306bbcb93266badc63b44d4d3da79c6be39f6c..bec8bbc4f7cd14140115ccd26024697327eb3efe 100644
 --- a/components/contextual_tasks/public/features.cc
 +++ b/components/contextual_tasks/public/features.cc
 @@ -33,6 +33,7 @@ std::optional<bool> g_sticky_conversation_enabled_override;
@@ -10,7 +10,7 @@ index d73cd74143df76d4ef9b03933951ce86b1a69cc0..1f4fedf54a445493049e64e6878a6a10
  BASE_FEATURE(kContextualTasks, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kContextualTasksPrivateApiNoAnimation,
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -169,6 +170,7 @@ BASE_FEATURE(kContextualTasksOverrideShowBottomSheetOnLargeScreen,
+@@ -165,6 +166,7 @@ BASE_FEATURE(kContextualTasksOverrideShowBottomSheetOnLargeScreen,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables prefetching of cookies for contextual tasks.
