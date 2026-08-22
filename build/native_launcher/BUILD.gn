@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+executable("native_launcher") {
+  sources = [
+    "launcher_config.cc",
+    "launcher_config.h",
+    "launcher_exit_codes.h",
+    "launcher_main.cc",
+    "launcher_util.cc",
+    "launcher_util.h",
+  ]
+
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [ "launcher_util_win.cc" ]
+  } else if (is_posix) {
+    sources += [ "launcher_util_posix.cc" ]
+  } else {
+    assert(false, "native_launcher is only supported on Windows and POSIX")
+  }
+
+  # Always optimize for speed
+  configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+  configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+  configs -= [ "//build/config/compiler:default_optimization" ]
+  configs += [ "//build/config/compiler:optimize_speed" ]
+}
