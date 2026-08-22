@@ -1324,6 +1324,7 @@ export class MockedWalletApiProxy {
     }> => {
       return {
         walletInfo: {
+          isFilecoinLedgerEnabled: true,
           isBitcoinEnabled: true,
           isBitcoinImportEnabled: true,
           isBitcoinLedgerEnabled: true,
