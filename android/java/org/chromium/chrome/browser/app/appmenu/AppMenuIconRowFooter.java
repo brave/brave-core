@@ -80,7 +80,8 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
 
         mShareButton = findViewById(R.id.share_menu_id);
         mShareButton.setOnClickListener(this);
-        Drawable shareIcon = AppCompatResources.getDrawable(getContext(), R.drawable.share_icon);
+        Drawable shareIcon =
+                AppCompatResources.getDrawable(getContext(), R.drawable.ic_share_white_24dp);
         DrawableCompat.setTintList(
                 shareIcon,
                 AppCompatResources.getColorStateList(
@@ -90,7 +91,7 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
         mHomeButton = findViewById(R.id.home_menu_id);
         mHomeButton.setOnClickListener(this);
         Drawable homeIcon =
-                AppCompatResources.getDrawable(getContext(), R.drawable.btn_toolbar_home);
+                AppCompatResources.getDrawable(getContext(), R.drawable.ic_browser_home);
         DrawableCompat.setTintList(
                 homeIcon,
                 AppCompatResources.getColorStateList(

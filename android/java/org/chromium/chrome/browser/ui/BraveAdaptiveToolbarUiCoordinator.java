@@ -73,7 +73,7 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
         var bookmarksButtonController =
                 new BraveBookmarksButtonController(
                         mContext,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_bookmarks),
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_product_bookmarks),
                         mActivityTabProvider,
                         mProfileSupplier,
                         mModalDialogManagerSupplier.get(),
@@ -84,7 +84,7 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
         var historyButtonController =
                 new BraveHistoryButtonController(
                         mContext,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_history),
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_history),
                         mActivityTabProvider,
                         mProfileSupplier,
                         mModalDialogManagerSupplier.get());
@@ -94,7 +94,7 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
         var downloadsButtonController =
                 new BraveDownloadsButtonController(
                         mContext,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_downloads),
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_download),
                         mActivityTabProvider,
                         mProfileSupplier,
                         mModalDialogManagerSupplier.get());

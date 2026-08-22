@@ -17,7 +17,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -118,7 +117,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
-import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.base.WindowAndroid;
@@ -253,18 +251,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
-        if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
-            ImageButton forwardButton = findViewById(R.id.forward_button);
-            if (forwardButton != null) {
-                final Drawable forwardButtonDrawable =
-                        UiUtils.getTintedDrawable(
-                                getContext(),
-                                R.drawable.btn_right_tablet,
-                                R.color.default_icon_color_tint_list);
-                forwardButton.setImageDrawable(forwardButtonDrawable);
-            }
-        }
 
         mWalletLayout = findViewById(R.id.brave_wallet_button_layout);
         mShieldsLayout = findViewById(R.id.brave_shields_button_layout);

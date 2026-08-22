@@ -13,7 +13,7 @@
           android:layout_height="wrap_content"
           android:minHeight="@dimen/min_touch_target_size"
           android:paddingTop="10dp"
-          app:iconSrc="@drawable/brave_menu_bookmarks"
+          app:iconSrc="@drawable/ic_product_bookmarks"
           app:primaryText="@string/menu_bookmarks"/>
 
      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
@@ -22,7 +22,7 @@
           android:layout_height="wrap_content"
           android:minHeight="@dimen/min_touch_target_size"
           android:paddingTop="10dp"
-          app:iconSrc="@drawable/brave_menu_history"
+          app:iconSrc="@drawable/ic_history"
           app:primaryText="@string/menu_history"/>
 
      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
@@ -31,7 +31,7 @@
           android:layout_height="wrap_content"
           android:minHeight="@dimen/min_touch_target_size"
           android:paddingTop="10dp"
-          app:iconSrc="@drawable/brave_menu_downloads"
+          app:iconSrc="@drawable/ic_download"
           app:primaryText="@string/menu_downloads"/>
 
      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription

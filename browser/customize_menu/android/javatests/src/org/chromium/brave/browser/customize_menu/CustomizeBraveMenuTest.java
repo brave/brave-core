@@ -371,19 +371,19 @@ public class CustomizeBraveMenuTest {
     public void testGetDrawableResFromMenuItemId_ValidIds() {
         // Test common menu items.
         assertEquals(
-                R.drawable.ic_window_tab_new,
+                R.drawable.ic_add_box_rounded_corner,
                 CustomizeBraveMenu.getDrawableResFromMenuItemId(R.id.new_tab_menu_id));
         assertEquals(
-                R.drawable.brave_menu_new_private_tab,
+                R.drawable.ic_incognito,
                 CustomizeBraveMenu.getDrawableResFromMenuItemId(R.id.new_incognito_tab_menu_id));
         assertEquals(
-                R.drawable.brave_menu_downloads,
+                R.drawable.ic_download,
                 CustomizeBraveMenu.getDrawableResFromMenuItemId(R.id.downloads_menu_id));
         assertEquals(
-                R.drawable.brave_menu_bookmarks,
+                R.drawable.ic_product_bookmarks,
                 CustomizeBraveMenu.getDrawableResFromMenuItemId(R.id.all_bookmarks_menu_id));
         assertEquals(
-                R.drawable.brave_menu_history,
+                R.drawable.ic_history,
                 CustomizeBraveMenu.getDrawableResFromMenuItemId(R.id.open_history_menu_id));
         assertEquals(
                 R.drawable.ic_product_brave_wallet,

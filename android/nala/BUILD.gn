@@ -8,17 +8,61 @@ import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 
-# Generate one copy() target per icon override and collect their dep labels. To
+# Emits the generated drawable for one icon override entry. Entries marked
+# `mirror = true` are flipped horizontally instead of copied verbatim, for
+# upstream icons that ship a separate `_rtl` drawable behind a values-ldrtl
+# alias. `res_root` keeps each android_resources() target's generated resource
+# directory to itself, which its all-files-are-listed check requires.
+template("nala_icon_override") {
+  _source = "$nala_base_path/drawable/${invoker.source}"
+  _output = "$target_gen_dir/${invoker.res_root}/drawable/${invoker.dest}"
+  if (defined(invoker.mirror) && invoker.mirror) {
+    action(target_name) {
+      script = "mirror_nala_icon.py"
+      sources = [ _source ]
+      outputs = [ _output ]
+      args = [
+        "--input",
+        rebase_path(_source, root_build_dir),
+        "--output",
+        rebase_path(_output, root_build_dir),
+      ]
+    }
+  } else {
+    copy(target_name) {
+      sources = [ _source ]
+      outputs = [ _output ]
+    }
+  }
+}
+
+# Generate one target per icon override and collect their dep labels. To
 # override a Chromium drawable, add an entry to nala_icon_overrides in
 # icons.gni.
 _nala_override_deps = []
 foreach(override, nala_icon_overrides) {
   _name = "nala_override_" + string_replace(override.dest, ".xml", "")
-  copy(_name) {
-    sources = [ "$nala_base_path/drawable/${override.source}" ]
-    outputs = [ "$target_gen_dir/res/drawable/${override.dest}" ]
+  nala_icon_override(_name) {
+    forward_variables_from(override, "*")
+    res_root = "res"
   }
   _nala_override_deps += [ ":$_name" ]
+}
+
+# Same, for drawables owned by //chrome/android:chrome_app_java_resources.
+# Those need their own android_resources() target below, so they are generated
+# into a separate resource directory.
+_nala_chrome_app_override_deps = []
+_nala_chrome_app_override_sources = []
+foreach(override, nala_chrome_app_icon_overrides) {
+  _name = "nala_override_" + string_replace(override.dest, ".xml", "")
+  nala_icon_override(_name) {
+    forward_variables_from(override, "*")
+    res_root = "chrome_app_res"
+  }
+  _nala_chrome_app_override_deps += [ ":$_name" ]
+  _nala_chrome_app_override_sources +=
+      [ "$target_gen_dir/chrome_app_res/drawable/${override.dest}" ]
 }
 
 # Generate a density PNG per bucket for each raster override, rasterizing the
@@ -59,6 +103,48 @@ foreach(override, nala_icon_raster_overrides) {
     deps = [ _rasterizer_target ]
   }
   _nala_override_deps += [ ":$_name" ]
+}
+
+# Same, for the PNG-only drawables that chrome_app_java_resources owns. These
+# rasterize through the same helper as nala_icon_raster_overrides, but land in
+# the chrome_app resource directory so the overlay target below picks them up.
+foreach(override, nala_chrome_app_icon_raster_overrides) {
+  _name = "nala_chrome_app_raster_" + override.dest
+  _source = "$nala_base_path/drawable/${override.source}"
+  action(_name) {
+    script = "//brave/build/android/nala_vd_rasterizer/rasterize_nala_icon.py"
+    inputs = [
+      _rasterizer_script,
+      _source,
+    ]
+    outputs = []
+    args = [
+      "--rasterizer",
+      rebase_path(_rasterizer_script, root_build_dir),
+      "--input",
+      rebase_path(_source, root_build_dir),
+      "--output-dir",
+      rebase_path("$target_gen_dir/chrome_app_res", root_build_dir),
+      "--dest-name",
+      override.dest,
+    ]
+    foreach(bucket, override.densities) {
+      outputs += [
+        "$target_gen_dir/chrome_app_res/drawable-$bucket/${override.dest}.png",
+      ]
+      args += [
+        "--density",
+        bucket,
+      ]
+    }
+    deps = [ _rasterizer_target ]
+  }
+  _nala_chrome_app_override_deps += [ ":$_name" ]
+  foreach(bucket, override.densities) {
+    _nala_chrome_app_override_sources += [
+      "$target_gen_dir/chrome_app_res/drawable-$bucket/${override.dest}.png",
+    ]
+  }
 }
 
 # Copies Nala Android tokens to the gen directory.
@@ -110,4 +196,20 @@ android_resources("java_resources") {
   }
   resource_overlay = true
   deps = [ ":nala" ]
+}
+
+# Overrides for drawables that //chrome/android:chrome_app_java_resources owns.
+# That target sets resource_overlay = true on its own sources, and overlays are
+# ordered so that dependents override dependencies (see write_build_config.py),
+# so overriding one of its drawables only works from a target that depends on
+# it. //chrome/android:chrome_java picks this up through brave_chrome_java_deps.
+# Mirrors what chrome_app_java_resources' sibling java_overlay_resources does
+# for //ui/android:ui_java_resources.
+if (current_toolchain == default_toolchain) {
+  android_resources("chrome_app_overlay_resources") {
+    sources = _nala_chrome_app_override_sources
+    resource_overlay = true
+    deps = _nala_chrome_app_override_deps
+    deps += [ "//chrome/android:chrome_app_java_resources" ]
+  }
 }
