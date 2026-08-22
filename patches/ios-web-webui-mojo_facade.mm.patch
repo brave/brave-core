@@ -1,12 +1,12 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index 4e7ecb965cb4066179d044d78307b2216a6b9e7b..c11fe90ef355a192541ec74599c503c3d8615416 100644
+index 4e7ecb965cb4066179d044d78307b2216a6b9e7b..c2456494cfe02643dc006eed9d8a2cf2bc3a17a0 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -231,6 +231,7 @@ void MojoFacade::HandleMojoMessage(
  }
  
  bool MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
-+  if (!IsBindInterfaceAllowedForFrame(args)) return;
++  if (!IsBindInterfaceAllowedForFrame(args)) return false;
    const std::string* interface_name = args.FindString("interfaceName");
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
