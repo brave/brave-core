@@ -1503,49 +1503,23 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     return Row(
       text: Strings.leoMenuItem,
       selection: { [unowned self] in
-        if FeatureList.kAIChatWebUIEnabled.enabled {
-          let model = AIChatSettingsViewModel(
-            helper: AIChatSettingsHelperImpl(profile: braveCore.profile),
-            skusService: Skus.SkusServiceFactory.get(profile: braveCore.profile)
-          )
-          let controller = UIHostingController(
-            rootView: AIChatSettingsView(viewModel: model)
-              .environment(
-                \.openURL,
-                OpenURLAction { [weak self] url in
-                  guard let self = self else { return .handled }
-                  self.settingsDelegate?.settingsOpenURLInNewTab(url)
-                  self.dismiss(animated: true)
-                  return .handled
-                }
-              )
-          )
-          self.navigationController?.pushViewController(controller, animated: true)
-        } else {
-          let model = AIChatViewModel(
-            braveCore: self.braveCore,
-            webDelegate: self.tabManager.selectedTab?.leoTabHelper,
-            braveTalkScript: nil
-          )
-
-          let controller = UIHostingController(
-            rootView:
-              AIChatAdvancedSettingsView(
-                model: model,
-                isModallyPresented: false
-              )
-              .environment(
-                \.openURL,
-                OpenURLAction { [weak self] url in
-                  guard let self = self else { return .handled }
-                  self.settingsDelegate?.settingsOpenURLInNewTab(url)
-                  self.dismiss(animated: true)
-                  return .handled
-                }
-              )
-          )
-          self.navigationController?.pushViewController(controller, animated: true)
-        }
+        let model = AIChatSettingsViewModel(
+          helper: AIChatSettingsHelperImpl(profile: braveCore.profile),
+          skusService: Skus.SkusServiceFactory.get(profile: braveCore.profile)
+        )
+        let controller = UIHostingController(
+          rootView: AIChatSettingsView(viewModel: model)
+            .environment(
+              \.openURL,
+              OpenURLAction { [weak self] url in
+                guard let self = self else { return .handled }
+                self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                self.dismiss(animated: true)
+                return .handled
+              }
+            )
+        )
+        self.navigationController?.pushViewController(controller, animated: true)
       },
       image: UIImage(braveSystemNamed: "leo.product.brave-leo"),
       accessory: .disclosureIndicator

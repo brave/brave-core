@@ -9,7 +9,6 @@ import BraveUI
 import OSLog
 import Preferences
 import SwiftUI
-import os.log
 
 public struct AIChatLeoSkusLogsView: View {
   @State
