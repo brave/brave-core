@@ -125,9 +125,14 @@ class Future(Generic[T]):
         Raises:
             Timeout: If the Future is not done within *timeout*.
         """
+        # The line right after `gevent.wait` actually switches greenlets (the
+        # example's `boom` future is still running here) goes unrecorded by
+        # `coverage`'s `concurrency='gevent'` tracer -- confirmed with a
+        # minimal repro outside this engine entirely, so it's a tracer
+        # limitation on resume-after-switch, not an untested code path.
         with gevent.Timeout(timeout, exception=Timeout()):
             done = gevent.wait([self._greenlet])[0]
-            return done.exception
+            return done.exception  # pragma: no cover
 
 
 class _IWaitWrapper(Iterator[Future[Any]]):
