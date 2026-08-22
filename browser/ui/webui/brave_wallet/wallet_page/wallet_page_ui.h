@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
+#include "brave/components/brave_wallet/common/trezor_bridge.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/webui_config.h"
@@ -29,7 +30,8 @@ class WalletPageHandler;
 
 class WalletPageUI : public ui::MojoWebUIController,
                      public mojom::PageHandlerFactory,
-                     public mojom::LedgerBridgeService {
+                     public mojom::LedgerBridgeService,
+                     public mojom::TrezorBridgeService {
  public:
   explicit WalletPageUI(content::WebUI* web_ui);
   WalletPageUI(const WalletPageUI&) = delete;
@@ -44,6 +46,10 @@ class WalletPageUI : public ui::MojoWebUIController,
   void BindInterface(
       mojo::PendingReceiver<mojom::LedgerBridgeService> receiver);
 
+  // Binds the `TrezorBridgeService` requested by the trusted renderer.
+  void BindInterface(
+      mojo::PendingReceiver<mojom::TrezorBridgeService> receiver);
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
@@ -51,6 +57,9 @@ class WalletPageUI : public ui::MojoWebUIController,
 
   // Called with `LedgerBridge` coming from untrusted subframe.
   void BindLedgerBridge(mojo::PendingRemote<mojom::LedgerBridge> bridge);
+
+  // Called with `TrezorBridge` coming from untrusted subframe.
+  void BindTrezorBridge(mojo::PendingRemote<mojom::TrezorBridge> bridge);
 
  private:
   // mojom::PageHandlerFactory:
@@ -86,8 +95,17 @@ class WalletPageUI : public ui::MojoWebUIController,
 
   void MaybeFuseLedgerBridge();
 
+  // mojom::TrezorBridgeService:
+  void BindTrezorBridge(
+      mojo::PendingReceiver<mojom::TrezorBridge> receiver) override;
+
+  void MaybeFuseTrezorBridge();
+
   mojo::PendingRemote<mojom::LedgerBridge> ledger_bridge_remote_;
   mojo::PendingReceiver<mojom::LedgerBridge> ledger_bridge_receiver_;
+
+  mojo::PendingRemote<mojom::TrezorBridge> trezor_bridge_remote_;
+  mojo::PendingReceiver<mojom::TrezorBridge> trezor_bridge_receiver_;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
@@ -95,7 +113,10 @@ class WalletPageUI : public ui::MojoWebUIController,
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 #endif
 
-  mojo::Receiver<mojom::LedgerBridgeService> service_receiver_{this};
+  mojo::Receiver<mojom::LedgerBridgeService> ledger_bridge_service_receiver_{
+      this};
+  mojo::Receiver<mojom::TrezorBridgeService> trezor_bridge_service_receiver_{
+      this};
   mojo::Receiver<mojom::PageHandlerFactory> page_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
