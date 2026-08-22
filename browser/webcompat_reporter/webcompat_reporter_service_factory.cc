@@ -81,7 +81,8 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
           g_brave_browser_process->ad_block_service(),
           HostContentSettingsMapFactory::GetForProfile(context),
           CookieSettingsFactory::GetForProfile(
-              Profile::FromBrowserContext(context))),
+              Profile::FromBrowserContext(context)),
+          context),
       std::move(report_uploader));
 }
 
