@@ -20,6 +20,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
@@ -115,6 +116,7 @@ preprocess_if_expr("preprocess") {
     "enable_playlist=$enable_playlist",
     "enable_psst=$enable_psst",
     "enable_speedreader=$enable_speedreader",
+    "enable_traffic_control=$enable_traffic_control",
     "enable_web_discovery=$enable_web_discovery",
     "enable_web_discovery_native=$enable_web_discovery_native",
   ]

@@ -29,10 +29,11 @@ namespace {
 mojom::TrafficRulePtr MakeRule(std::string_view id,
                                bool enabled,
                                std::optional<std::string> url_filter,
-                               std::optional<std::string> container_id) {
-  return mojom::TrafficRule::New(std::string(id), enabled,
-                                 mojom::Condition::New(std::move(url_filter)),
-                                 mojom::Target::New(std::move(container_id)));
+                               std::optional<std::string> container_id,
+                               bool temporary_container = false) {
+  return mojom::TrafficRule::New(
+      std::string(id), enabled, mojom::Condition::New(std::move(url_filter)),
+      mojom::Target::New(std::move(container_id), temporary_container));
 }
 
 class MockTrafficControlSettingsObserver
@@ -177,6 +178,30 @@ TEST_F(TrafficControlSettingsHandlerTest, AcceptsEmptyContainerId) {
   ASSERT_EQ(1u, rules.size());
   ASSERT_TRUE(rules[0]->target->container_id.has_value());
   EXPECT_TRUE(rules[0]->target->container_id->empty());
+  EXPECT_FALSE(rules[0]->target->temporary_container);
+}
+
+TEST_F(TrafficControlSettingsHandlerTest, AcceptsTemporaryContainer) {
+  base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
+  handler_->AddRule(MakeRule("", true, "example.com", std::nullopt,
+                             /*temporary_container=*/true),
+                    error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
+
+  base::test::TestFuture<std::vector<mojom::TrafficRulePtr>> future;
+  handler_->GetRules(future.GetCallback());
+  auto rules = future.Take();
+  ASSERT_EQ(1u, rules.size());
+  EXPECT_FALSE(rules[0]->target->container_id.has_value());
+  EXPECT_TRUE(rules[0]->target->temporary_container);
+}
+
+TEST_F(TrafficControlSettingsHandlerTest, RejectsTemporaryWithContainerId) {
+  base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
+  handler_->AddRule(MakeRule("", true, "example.com", "c1",
+                             /*temporary_container=*/true),
+                    error_future.GetCallback());
+  EXPECT_EQ(mojom::RuleOperationError::kInvalidTarget, error_future.Take());
 }
 
 }  // namespace traffic_control

@@ -51,6 +51,7 @@ include_rules += [
   "+brave/components/traffic_control/buildflags",
   "+brave/components/traffic_control/core/browser",
   "+brave/components/traffic_control/core/common",
+  "+brave/components/traffic_control/core/mojom",
   "+brave/components/de_amp/common",
   "+brave/components/de_amp/browser",
   "+brave/components/debounce/content/browser",

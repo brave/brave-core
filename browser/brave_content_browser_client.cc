@@ -97,6 +97,7 @@
 #include "brave/components/skus/common/skus_utils.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -250,6 +251,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/components/traffic_control/core/common/features.h"
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -662,6 +667,13 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<containers::mojom::ContainersSettingsHandler>();
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  if (base::FeatureList::IsEnabled(
+          traffic_control::features::kTrafficControl)) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<traffic_control::mojom::TrafficControlSettingsHandler>();
+  }
+#endif  // BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_AI_CHAT)
   registry.ForWebUI<BraveSettingsUI>()
