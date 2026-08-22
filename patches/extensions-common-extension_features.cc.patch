@@ -1,0 +1,14 @@
+diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
+index 33df2b6c871ebb374d7dd339e8d2a65a05a8360a..7bc83ae1f915ff0b14cb2065990be8efb48e9dc3 100644
+--- a/extensions/common/extension_features.cc
++++ b/extensions/common/extension_features.cc
+@@ -30,7 +30,8 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kApiContextualTasksPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kApiGlicPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
++// kApiGlicPrivate feature state is enforced via plaster rewrite.
++BASE_FEATURE(kApiGlicPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kApiEnterpriseReportingPrivateOnDataMaskingRulesTriggered,
+              base::FEATURE_ENABLED_BY_DEFAULT);

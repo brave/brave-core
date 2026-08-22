@@ -789,6 +789,20 @@
 # Flaky on our CI and upstream
 -IndigoToolbarTest.ExpandCollapseInteractions
 
+# These tests assume kSensorsAllowAskBlockPermissionModel's upstream default
+# (disabled), under which the sensors content setting icon stays hidden while
+# access is simply allowed. Brave ships this feature enabled by default, so
+# the icon is shown, which these tests don't expect.
+-ContentSettingImageModelTest.SensorAccessPermissionsChanged
+-ContentSettingImageModelTest.SensorAccessed
+
+# This test crashes because we disable blink::features::kFencedFrames.
+# AppendFencedFrame() still constructs a fenced frame via test-only APIs, but
+# with the feature off, ContentSubresourceFilterWebContentsHelper's throttle
+# manager never gets created for it, so navigating the frame hits
+# CHECK(rfh) in GetThrottleManager().
+-StorageAccessAPITabHelperTest.OnFrameReceivedUserActivation_FencedFrame
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata

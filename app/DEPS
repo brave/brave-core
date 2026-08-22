@@ -95,6 +95,8 @@ specific_include_rules = {
     "+extensions/common/extension_features.h",
     "+gpu/config/gpu_finch_features.h",
     "+net/base/features.h",
+    "+pdf/buildflags.h",
+    "+pdf/pdf_features.h",
     "+services/device/public/cpp/device_features.h",
     "+services/network/public/cpp/features.h",
     "+third_party/blink/public/common/features.h",

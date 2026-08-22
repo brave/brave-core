@@ -73,6 +73,7 @@
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
 #include "net/base/features.h"
+#include "pdf/buildflags.h"
 #include "services/network/public/cpp/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
@@ -92,6 +93,7 @@
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/enterprise/connectors/core/features.h"
 #include "components/translate/core/common/translate_util.h"
+#include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
 #endif
 
@@ -102,6 +104,10 @@
 
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
 #include "chrome/browser/media/webrtc/display_media_access_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PDF)
+#include "pdf/pdf_features.h"
 #endif
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
@@ -137,6 +143,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAndroidPageInfoAsAppMenuItem,
 #endif
+#if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
+      &chrome_pdf::features::kPdfSaveToDrive,
+      &chrome_pdf::features::kPdfSaveToDriveSurvey,
+#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
@@ -150,6 +160,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
+      &extensions_features::kApiGlicPrivate,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHAutofillAccountNameEmailSuggestionFeature,
@@ -192,6 +203,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &features::kPdfInfoBar,
 #endif
+      &features::kPrefetchProxy,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -293,6 +305,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kFirstRunDesktopRefresh,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
+      &syncer::kSyncAutofillValuableMetadata,
 #if !BUILDFLAG(IS_ANDROID)
       &tabs::kVerticalTabsLaunch,
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -307,6 +320,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 TEST(FeatureDefaultsTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
       &omnibox::kAblateSearchProviderWarmup,
+      &blink::features::kMixedContentAutoupgrade,
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
