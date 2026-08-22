@@ -30,7 +30,6 @@ import {
 import {
   DecryptMessageRequestPanel, //
 } from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
-import { ConfirmationPopup } from '../components/extension/confirmation_popup/confirmation_popup'
 import { ConnectWithSiteWrapper } from '../stories/style'
 import { PanelWrapper } from './panel_wrapper/panel_wrapper'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
@@ -41,6 +40,7 @@ import {
   useSafeUISelector,
   useSafeWalletSelector,
   useUnsafePanelSelector,
+  useUnsafeUISelector,
 } from '../common/hooks/use-safe-selector'
 import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
@@ -95,17 +95,19 @@ function Container() {
   )
 
   // panel selectors (unsafe)
-  const selectedTransactionId = useUnsafePanelSelector(
-    PanelSelectors.selectedTransactionId,
-  )
-  const submittingTransaction = useUnsafePanelSelector(
-    PanelSelectors.submittingTransaction,
-  )
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin,
   )
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts,
+  )
+
+  // ui selectors (unsafe) — shared confirm/status state with Desktop page
+  const selectedTransactionId = useUnsafeUISelector(
+    UISelectors.selectedTransactionId,
+  )
+  const submittingTransaction = useUnsafeUISelector(
+    UISelectors.submittingTransaction,
   )
 
   // queries
@@ -150,36 +152,6 @@ function Container() {
 
   const pendingOrConfirmingTransaction =
     selectedPendingTransaction ?? submittingTransaction
-
-  const sidePanelConfirmations = React.useMemo(() => {
-    if (
-      selectedPanel === 'transactionStatus'
-      && selectedTransactionId
-      && !submittingTransaction
-    ) {
-      return (
-        <ConfirmationPopup>
-          <TransactionStatus transactionLookup={selectedTransactionId} />
-        </ConfirmationPopup>
-      )
-    }
-    if (pendingOrConfirmingTransaction) {
-      return (
-        <ConfirmationPopup isLoading={isLoadingPendingActions}>
-          <PendingTransactionPanel
-            selectedPendingTransaction={pendingOrConfirmingTransaction}
-          />
-        </ConfirmationPopup>
-      )
-    }
-    return null
-  }, [
-    selectedPanel,
-    selectedTransactionId,
-    submittingTransaction,
-    pendingOrConfirmingTransaction,
-    isLoadingPendingActions,
-  ])
 
   // render
   if (!hasInitialized || (isLoadingPendingActions && !isSidePanel)) {
@@ -353,7 +325,6 @@ function Container() {
   return (
     <PanelWrapper>
       <PageContainer />
-      {isSidePanel && sidePanelConfirmations}
     </PanelWrapper>
   )
 }

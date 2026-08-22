@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // Actions
-import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
+import { UIActions } from '../../../../common/slices/ui.slice'
 
 // Types
 import { SerializableTransactionInfo } from '../../../../constants/types'
@@ -52,7 +52,7 @@ export const CancelTransaction = (props: Props) => {
       chainId: transaction.chainId,
       transactionId: transaction.id,
     })
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
+    dispatch(UIActions.setSelectedTransactionId(undefined))
   }
 
   return (
