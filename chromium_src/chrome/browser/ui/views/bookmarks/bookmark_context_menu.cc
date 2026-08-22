@@ -8,22 +8,18 @@
 #include "brave/browser/ui/toolbar/brave_bookmark_context_menu_controller.h"
 
 // Upstream's `BookmarkContextMenu` constructor only descends into the submenu
-// whose command id is `IDC_BOOKMARK_BAR_SUBMENU` which is only created when
-// `ntp_features::kNtpSimplificationBookmarkBar` is enabled (disabled by
-// default for now). We could just remap the id with our
-// `IDC_BRAVE_BOOKMARK_BAR_SUBMENU`, so the upstream populates Brave's submenu,
-// but we also have the containers submenu `DC_OPEN_IN_CONTAINER` that needs to
-// be populated, so it seems better to patch here to populate all our submenus.
-#define BRAVE_BOOKMARK_CONTEXT_MENU                                    \
-  if (menu_model->GetTypeAt(i) == ui::MenuModel::TYPE_SUBMENU) {       \
-    views::MenuItemView* item =                                        \
-        menu_->GetMenuItemByID(menu_model->GetCommandIdAt(i));         \
-    ui::MenuModel* brave_submodel = menu_model->GetSubmenuModelAt(i);  \
-    DCHECK(brave_submodel);                                            \
-    for (size_t j = 0; j < brave_submodel->GetItemCount(); ++j) {      \
-      views::MenuModelAdapter::AppendMenuItemFromModel(                \
-          brave_submodel, j, item, brave_submodel->GetCommandIdAt(j)); \
-    }                                                                  \
+// whose command id is `IDC_BOOKMARK_BAR_SUBMENU`. But, we also have the
+// containers submenu `IDC_OPEN_IN_CONTAINER` that needs to be populated, so it
+// seems better to patch here to populate our submenu.
+#define BRAVE_BOOKMARK_CONTEXT_MENU                                            \
+  if (menu_model->GetCommandIdAt(i) == IDC_OPEN_IN_CONTAINER) {                \
+    views::MenuItemView* item = menu_->GetMenuItemByID(IDC_OPEN_IN_CONTAINER); \
+    ui::MenuModel* container_submodel = menu_model->GetSubmenuModelAt(i);      \
+    DCHECK(container_submodel);                                                \
+    for (size_t j = 0; j < container_submodel->GetItemCount(); ++j) {          \
+      views::MenuModelAdapter::AppendMenuItemFromModel(                        \
+          container_submodel, j, item, container_submodel->GetCommandIdAt(j)); \
+    }                                                                          \
   }
 
 #define BookmarkContextMenuController BraveBookmarkContextMenuController

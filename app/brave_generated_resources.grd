@@ -191,12 +191,6 @@
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
       </message>
-      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_ALWAYS" desc="The name of the context menu item to always show bookmark bar">
-        Always
-      </message>
-      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
-        Never
-      </message>
       <if expr="use_titlecase">
         <message name="IDS_SHOW_ALL_BOOKMARKS_BUTTON" desc="The name of an checked menu item to toggle visibility of All Bookmarks button on the bookmarks bar">
           Show All Bookmarks Button
@@ -220,9 +214,6 @@
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy Clean Link
         </message>
-        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
-          Only On the New Tab Page
-        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_BRAVE_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
@@ -233,9 +224,6 @@
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy clean link
-        </message>
-        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
-           Only on the new tab page
         </message>
       </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">

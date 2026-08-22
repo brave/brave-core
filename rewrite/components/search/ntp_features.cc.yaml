@@ -84,3 +84,9 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kNtpModulesMaxColumnCount
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kNtpSimplificationBookmarkBar enabled.'
+    set_feature_flag_default_state:
+      feature_name: kNtpSimplificationBookmarkBar
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
