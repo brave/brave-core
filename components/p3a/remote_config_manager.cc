@@ -145,6 +145,8 @@ void RemoteConfigManager::SetMetricConfigs(
     metric_config.record_activation_date =
         remote_config.record_activation_date.value_or(
             metric_config.record_activation_date);
+    metric_config.priority =
+        remote_config.priority.value_or(metric_config.priority);
 
     if (remote_config.attributes) {
       metric_config.attributes = remote_config.attributes;

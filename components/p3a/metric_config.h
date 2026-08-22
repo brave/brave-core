@@ -76,6 +76,10 @@ struct MetricConfig {
   // overridden.
   std::optional<MetricLogType> cadence;
 
+  // If true, the metric will be prepared and transmitted ahead of non-priority
+  // metrics, at an accelerated interval, near the start of each epoch.
+  bool priority = false;
+
   // Custom attribute key names to include with the metric. Each
   // kCustomAttribute in the attributes list is replaced in order with the next
   // key from this array.
@@ -100,6 +104,7 @@ struct RemoteMetricConfig {
   std::optional<std::string> activation_metric_name;
   std::optional<MetricLogType> cadence;
   std::optional<RemoteCustomAttributes> custom_attributes;
+  std::optional<bool> priority;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<RemoteMetricConfig>* converter);
