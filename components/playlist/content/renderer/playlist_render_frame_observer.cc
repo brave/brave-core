@@ -118,6 +118,11 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
 #else
         render_frame()->GetWebFrame()->MainWorldScriptContext();
 #endif
+    if (context.IsEmpty()) {
+      return;
+    }
+    v8::Context::Scope context_scope(context);
+
     v8::Local<v8::Function> on_media_detected =
         gin::CreateFunctionTemplate(
             isolate,
