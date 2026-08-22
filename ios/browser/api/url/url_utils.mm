@@ -26,15 +26,18 @@ std::string GetRegistry(const GURL& url) {
     return std::string();  // No registry.
   }
 
-  size_t registry_length = GetRegistryLength(
-      url, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const std::optional<size_t> registry_length =
+      net::registry_controlled_domains::GetRegistry(
+          url, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)
+          .transform(&std::string_view::size);
 
-  if ((registry_length == std::string::npos) || (registry_length == 0)) {
+  if (!registry_length.has_value() || *registry_length == 0 ||
+      *registry_length >= url.GetHost().length()) {
     return std::string();  // No registry.
   }
-  return std::string(url.host(), url.host().length() - registry_length,
-                     registry_length);
+  return std::string(url.host(), url.host().length() - *registry_length,
+                     *registry_length);
 }
 
 + (NSURL*)URLFromIDNString:(NSString*)idnString {
