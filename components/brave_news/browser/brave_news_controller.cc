@@ -40,7 +40,9 @@
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/locales_helper.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/common/types.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
@@ -105,7 +107,8 @@ BraveNewsController::BraveNewsController(
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate,
-    std::unique_ptr<Delegate> delegate)
+    std::unique_ptr<Delegate> delegate,
+    bool is_first_time)
     :
 #if BUILDFLAG(IS_ANDROID)
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
@@ -133,6 +136,11 @@ BraveNewsController::BraveNewsController(
               // owned by BraveNewsController.
               base::Unretained(this))) {
   CHECK(policy_initialization_waiter_);
+
+  if (is_first_time &&
+      base::FeatureList::IsEnabled(features::kBraveNewsNewUserOptIn)) {
+    prefs->SetBoolean(prefs::kBraveNewsOptedIn, true);
+  }
 
   ResetEngine();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
