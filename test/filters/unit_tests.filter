@@ -163,6 +163,7 @@
 -ExecutionEngineUrlGatingTest.BlockIfInBlocklist
 -ExecutionEngineUrlGatingTest.BlockIfInBlocklistForOriginGating
 -ExecutionEngineUrlGatingTest.SafetyChecksForNextAction_PromptsForSensitiveSite
+-ExplainSelectionTriggerTest.RequestExplanationOptimizationGuide*
 -FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
@@ -224,6 +225,7 @@
 
 # These tests fail because we intentionally disable DICE signin via
 # BraveAccountConsistencyModeManager::IsDiceSignInAllowed()
+-AccountPreviewDataServiceTest.*
 -DiceTabHelperPrerenderTest.SigninStatusAfterPrerendering
 -DiceWebSigninInterceptorTest.*
 -GAIAInfoUpdateServiceTest.*
@@ -332,6 +334,7 @@
 -ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigrationForItems
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
+-IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
 -NotebooksEligibilityServiceFactoryTest.FeatureEnabledCreatesService
 -NotebooksServiceFactoryTest.FeatureEnabledUsesRealService
 -OpportunisticKeyRetrievalEnclaveManagerTest.StoringOpportunisticallyRetrievedKeyAfterSignInOfMatchingAccount
@@ -373,6 +376,7 @@
 -All/LastDownloadFinderTest.NonBinaryOnly/1
 -All/LastDownloadFinderTest.SimpleEndToEnd/1
 -All/SiteFamiliarityUtilsJsOptimizerParameterizedTest.DefaultBehavior/EsbFeatureEnabled_EsbUser
+-AntiVirusMetricsProviderTest.CallAsyncInit*/*
 -BundledSettingsMetricsProviderUnitTest.EnhancedBundle_SafeBrowsingMetrics
 -BundledSettingsMetricsProviderUnitTest.StandardBundle_SafeBrowsingMetrics
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
@@ -391,6 +395,7 @@
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTracker*
 -DeveloperPrivateApiUnitTest.ExtensionUpdatedEventOnAllowlistWarningChange
 -DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
+-DownloadRequestMakerTest.PopulateAntivirusProduct*
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExtensionDataCollectionTest.*
@@ -679,8 +684,7 @@
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
 -ContextualSearchboxHandlerTest.DriveDisclaimerControllerDoesNotCrashForIncognito
--ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
--ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
+-ContextualSearchboxHandlerTest.QueryAutocomplete_*
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 -ContextualTasksEligibilityManagerTest.*
 -ContextualTasksUiServiceTest.*
