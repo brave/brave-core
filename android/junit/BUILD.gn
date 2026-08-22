@@ -284,18 +284,15 @@ if (is_android) {
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.hub") {
     sources = [
-      "src/org/chromium/chrome/browser/hub/BraveDefaultPaneOrderControllerUnitTest.java",
       "src/org/chromium/chrome/browser/hub/BraveHubToolbarViewUnitTest.java",
     ]
 
     deps = [
       "//brave/browser/brave_shields/android:java",
-      "//brave/browser/hub/android:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/hub:java",
       "//chrome/browser/hub/internal:java",
-      "//third_party/android_deps:guava_android_java",
     ]
   }
 
@@ -403,6 +400,7 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridItemTouchHelperCallbackTest.java",
+      "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupsPaneTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilitiesUnitTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/BravePinnedTabStripItemContextMenuCoordinatorTest.java",
     ]
@@ -412,6 +410,7 @@ if (is_android) {
       "//base:base_junit_test_support",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/hub:java",
       "//chrome/browser/preferences:java",
     ]
   }
