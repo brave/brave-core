@@ -22,6 +22,8 @@ class BrowserContext;
 
 namespace ai_chat {
 
+class BrowserSettingsSearchTool;
+class BrowserSettingsValueTool;
 class CodeExecutionTool;
 class HistorySearchTool;
 class TabManagementTool;
@@ -50,6 +52,8 @@ class BrowserToolProvider : public ToolProvider {
   // Browser-specific tools owned by this provider
   std::unique_ptr<CodeExecutionTool> code_execution_tool_;
   std::unique_ptr<HistorySearchTool> history_search_tool_;
+  std::unique_ptr<BrowserSettingsSearchTool> browser_settings_search_tool_;
+  std::unique_ptr<BrowserSettingsValueTool> browser_settings_value_tool_;
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;
 #endif

@@ -48,6 +48,42 @@ function getSemanticHistorySearchToolNameLabel(toolInput: any) {
   return getLocale(S.CHAT_UI_TOOL_LABEL_SEMANTIC_HISTORY_SEARCH_GENERIC)
 }
 
+/**
+ * See browser_settings_search_tool.cc
+ * @param toolInput Expects { "query": string } but is not guaranteed.
+ */
+function getBrowserSettingsSearchToolNameLabel(toolInput: any) {
+  if (typeof toolInput?.query === 'string' && toolInput.query.length > 0) {
+    return formatLocale(S.CHAT_UI_TOOL_LABEL_BROWSER_SETTINGS_SEARCH, {
+      $1: toolInput.query as string,
+    })
+  }
+  return getLocale(S.CHAT_UI_TOOL_LABEL_BROWSER_SETTINGS_SEARCH_GENERIC)
+}
+
+/**
+ * See browser_settings_value_tool.cc
+ *
+ * This label is what the permission prompt shows the user, so it must name
+ * the settings that are about to be read rather than describe the action
+ * generically. The ids are internal preference paths, which is not ideal to
+ * show verbatim, but naming exactly what is being read matters more than
+ * polish here.
+ * @param toolInput Expects { "setting_ids": string[] } but is not guaranteed.
+ */
+function getBrowserSettingValueToolNameLabel(toolInput: any) {
+  const settingIds: string[] = Array.isArray(toolInput?.setting_ids)
+    ? toolInput.setting_ids.filter((id: unknown) => typeof id === 'string')
+    : []
+
+  if (!settingIds.length) {
+    return getLocale(S.CHAT_UI_TOOL_LABEL_BROWSER_SETTING_VALUE_GENERIC)
+  }
+  return formatLocale(S.CHAT_UI_TOOL_LABEL_BROWSER_SETTING_VALUE, {
+    $1: settingIds.join(', '),
+  })
+}
+
 function getSearchToolNameLabel(toolInput: any) {
   // toolInput is parsed (possibly malformed) JSON, so it may be undefined and
   // its `query` field — confusingly named — may be missing or not actually be
@@ -93,6 +129,10 @@ export function getToolLabel(toolName: string, toolInput: any) {
       return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
     case Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME:
       return getSemanticHistorySearchToolNameLabel(toolInput)
+    case Mojom.BROWSER_SETTINGS_SEARCH_TOOL_NAME:
+      return getBrowserSettingsSearchToolNameLabel(toolInput)
+    case Mojom.BROWSER_SETTING_VALUE_TOOL_NAME:
+      return getBrowserSettingValueToolNameLabel(toolInput)
     // <if expr="enable_ai_chat_tab_management_tool">
     case Mojom.TAB_MANAGEMENT_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_TAB_MANAGEMENT)

@@ -966,6 +966,24 @@
   <message name="IDS_CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to search the user's local browsing history. Calls out that the search itself is on-device and only the matched pages flow to Brave AI." formatter_data="webui=AiChat">
     Brave AI wants to search your browsing history. The search runs locally on your device, so your full history isn't sent anywhere. Only the matching pages' titles, URLs, and indexed text passages will be sent to Brave AI as part of this conversation.
   </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_BROWSER_SETTINGS_SEARCH" desc="Label shown while the assistant is looking up which Brave settings exist. $1 is the natural-language search query. This does not read any of the user's values." formatter_data="webui=AiChat">
+    Looking up Brave settings related to "<ph name="QUERY">$1<ex>clear cookies on exit</ex></ph>"
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_BROWSER_SETTINGS_SEARCH_GENERIC" desc="Label shown while the assistant is looking up which Brave settings exist when the query is not yet known." formatter_data="webui=AiChat">
+    Looking up Brave settings
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_BROWSER_SETTING_VALUE" desc="Label shown when the assistant wants to read the user's current value for specific Brave settings. $1 is a comma-separated list of internal preference paths, e.g. 'brave.de_amp.enabled, brave.ai_chat.user_memory_enabled'." formatter_data="webui=AiChat">
+    Read your Brave settings: <ph name="SETTING_IDS">$1<ex>brave.de_amp.enabled, brave.ai_chat.user_memory_enabled</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_BROWSER_SETTING_VALUE_GENERIC" desc="Label shown when the assistant wants to read the user's Brave settings but which settings is not yet known." formatter_data="webui=AiChat">
+    Read your Brave settings
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_BROWSER_SETTINGS_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to look up the list of Brave settings. Calls out that this only returns descriptions, not the user's own values." formatter_data="webui=AiChat">
+    Brave AI wants to look up which Brave settings exist so it can answer your question. This only sends the names of those settings — none of your own settings values are read or sent.
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_BROWSER_SETTING_VALUE_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to read the user's current values for specific Brave settings. Calls out that the values are sent to Brave AI and that approval applies only to this one request." formatter_data="webui=AiChat">
+    Brave AI wants to read how these settings are currently configured. Their values will be sent to Brave AI as part of this conversation. You'll be asked again the next time it wants to read your settings.
+  </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
     Code:
   </message>
