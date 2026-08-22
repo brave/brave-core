@@ -84,7 +84,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly, nullable) Feature* kBraveWalletWebUIIOS;
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletCardanoDAppSupportIOS;
-@property(class, nonatomic, readonly) Feature* kAIChatWebUIEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;
 @property(class, nonatomic, readonly)
     Feature* kWebKitAdvancedPrivacyProtections;

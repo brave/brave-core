@@ -369,11 +369,6 @@
 }
 #endif
 
-+ (Feature*)kAIChatWebUIEnabled {
-  return
-      [[Feature alloc] initWithFeature:&ai_chat::features::kAIChatWebUIEnabled];
-}
-
 + (Feature*)kBraveSyncDefaultPasswords {
   return [[Feature alloc]
       initWithFeature:&brave_sync::features::kBraveSyncDefaultPasswords];

@@ -207,13 +207,6 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),            \
       },                                                                    \
       {                                                                     \
-          "brave-ai-chat-webui",                                            \
-          "Brave AI Chat WebUI",                                            \
-          "Enables the use of Leo via WebUI",                               \
-          flags_ui::kOsIos,                                                 \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatWebUIEnabled),       \
-      },                                                                    \
-      {                                                                     \
           "brave-ai-chat-allow-private-ips",                                \
           "Private IP Addresses for Custom Model Endpoints",                \
           "Permits the use of private IP addresses as model endpoint URLs", \
