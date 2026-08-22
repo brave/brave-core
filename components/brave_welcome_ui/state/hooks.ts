@@ -6,21 +6,15 @@
 import * as React from 'react'
 import { BrowserProfile, ImportDataBrowserProxyImpl } from '../api/welcome_browser_proxy'
 import { loadTimeData } from '$web-common/loadTimeData'
-import { BrowserType, ViewType } from './component_types'
+import { ViewType } from './component_types'
+import { getBrowserType } from './utils'
 import DataContext from './context'
 
-const browserList = Object.values(BrowserType)
-
 export const getValidBrowserProfiles = (profiles: BrowserProfile[]) => {
-  const getBrowserName = (toFind: string) => {
-    // TODO(tali): Add exact matching for cases like "Chrome" vs "Chrome Canary"
-    return browserList.find(browser => toFind.includes(browser))
-  }
-
   let results = profiles
     .filter((profile) => profile.name !== 'Bookmarks HTML File')
     .map((profile) => {
-      const browserType = getBrowserName(profile.name)
+      const browserType = getBrowserType(profile.name)
       // Introducing a new property here
       return { ...profile, browserType }
     })
