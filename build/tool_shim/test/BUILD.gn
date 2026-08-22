@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/tool_shim/tool_shim.gni")
+import("//testing/test.gni")
+
+_helper_name = "tool_shim_test_helper"
+_helper_path = "$root_out_dir/$_helper_name"
+if (is_win) {
+  _helper_path += ".exe"
+}
+
+executable("tool_shim_test_helper") {
+  testonly = true
+  sources = [ "tool_shim_test_helper.cc" ]
+  deps = [ "//base" ]
+}
+
+tool_shim("test_tool_shim") {
+  testonly = true
+  executable = _helper_path
+  cwd = "$root_gen_dir"
+  args = [
+    "baked",
+    "with space",
+    "",
+    "quote\"d",
+  ]
+  env = {
+    TOOL_SHIM_TEST_VAR = "from-config"
+    TOOL_SHIM_TEST_EXIT_CODE = "7"
+  }
+  deps = [ ":tool_shim_test_helper" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "tool_shim_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/build/tool_shim:tool_shim_lib",
+    "//testing/gtest",
+  ]
+
+  data_deps = [ ":test_tool_shim" ]
+}
