@@ -1,5 +1,6 @@
 include_rules = [
   "+components/prefs",
+  "+components/pref_registry",
 ]
 
 specific_include_rules = {
