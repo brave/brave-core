@@ -15,7 +15,7 @@ import {
   getApplicableFilters,
   getTestsToRun,
   gnTargetToExecutableName,
-} from './testUtils.js'
+} from './testUtils.ts'
 
 const exec = promisify(child_process.execFile)
 
