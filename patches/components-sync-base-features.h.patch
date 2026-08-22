@@ -1,0 +1,13 @@
+diff --git a/components/sync/base/features.h b/components/sync/base/features.h
+index 20cb3e9dda285fb13439a8c7b4c8d67f55ca4966..d06b5591e17d2bb2835e8b1056b3d39fc699bb13 100644
+--- a/components/sync/base/features.h
++++ b/components/sync/base/features.h
+@@ -111,7 +111,7 @@ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
+ #endif
+ 
+ // Enables syncing of usage metadata from Google Wallet passes.
+-DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);
++BASE_DECLARE_FEATURE(kSyncAutofillValuableMetadata);
+ 
+ // Enables syncing of flight reservations coming from Google Wallet.
+ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncWalletFlightReservations);

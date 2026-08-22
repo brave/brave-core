@@ -1,0 +1,30 @@
+diff --git a/services/network/public/cpp/features.cc b/services/network/public/cpp/features.cc
+index 460f10739f8a56a84b8feb7b63acc26776dca833..e0afe3032fccabb1042cc0846b709c12e0a0bdf8 100644
+--- a/services/network/public/cpp/features.cc
++++ b/services/network/public/cpp/features.cc
+@@ -272,6 +272,7 @@ BASE_FEATURE_PARAM(bool,
+ // of vulnerable local devices.
+ //
+ // Spec: https://wicg.github.io/local-network-access/
++// kLocalNetworkAccessChecksWebSockets feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kLocalNetworkAccessChecksWebSockets,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+@@ -423,13 +424,15 @@ BASE_FEATURE(kUpdateRequestForCorsRedirect, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // https://github.com/patcg-individual-drafts/topics
+ // Kill switch for the Topics API.
+-BASE_FEATURE(kBrowsingTopics, base::FEATURE_ENABLED_BY_DEFAULT);
++// kBrowsingTopics feature state is enforced via plaster rewrite.
++BASE_FEATURE(kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enable the shared storage API. Note that enabling this feature does not
+ // automatically expose this API to the web, it only allows the element to be
+ // enabled by the runtime enabled feature, for origin trials.
+ // https://github.com/pythagoraskitty/shared-storage/blob/main/README.md
+-BASE_FEATURE(kSharedStorageAPI, base::FEATURE_ENABLED_BY_DEFAULT);
++// kSharedStorageAPI feature state is enforced via plaster rewrite.
++BASE_FEATURE(kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(size_t,
+                    kSharedStorageURLSelectionOperationInputURLSizeLimit,
+                    &kSharedStorageAPI,

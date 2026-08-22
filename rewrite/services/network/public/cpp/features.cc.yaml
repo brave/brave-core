@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Ship kBrowsingTopics disabled.'
+    set_feature_flag_default_state:
+      feature_name: kBrowsingTopics
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kLocalNetworkAccessChecksWebSockets enabled.'
+    set_feature_flag_default_state:
+      feature_name: kLocalNetworkAccessChecksWebSockets
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kSharedStorageAPI disabled.'
+    set_feature_flag_default_state:
+      feature_name: kSharedStorageAPI
+      value: base::FEATURE_DISABLED_BY_DEFAULT

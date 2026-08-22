@@ -13,6 +13,7 @@ import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
+import("//pdf/features.gni")
 
 action("generate_command_metadata") {
   command_files = [ "//brave/app/brave_command_ids.h" ]
@@ -192,6 +193,7 @@ source_set("unit_tests") {
     "//components/user_education/common",
     "//components/webapps/browser",
     "//gpu/config",
+    "//pdf:buildflags",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
     "//testing/gtest",
@@ -229,6 +231,9 @@ source_set("unit_tests") {
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]
+  }
+  if (enable_pdf) {
+    deps += [ "//pdf:features" ]
   }
 }
 

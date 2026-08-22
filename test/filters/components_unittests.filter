@@ -242,6 +242,10 @@
 # upstream key selection never holds in our builds.
 -All/RequestSenderTest.CupKeySelection/*
 
+# This test asserts features::kSkillsEnabled's upstream default which we
+# override.
+-SkillsFeaturesTest.IsSkillsEnabled_Default_PrefOn
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*

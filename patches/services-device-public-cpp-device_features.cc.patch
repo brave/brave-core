@@ -1,0 +1,28 @@
+diff --git a/services/device/public/cpp/device_features.cc b/services/device/public/cpp/device_features.cc
+index 8ab64b7ba03efecd887bfb7c54862d6d9b519573..937938f42a7f268324363b7a247a7d01c652b344 100644
+--- a/services/device/public/cpp/device_features.cc
++++ b/services/device/public/cpp/device_features.cc
+@@ -13,8 +13,9 @@ namespace features {
+ BASE_FEATURE(kGenericSensorExtraClasses, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enables an Allow/Ask/Block set of default permissions for sensors.
++// kSensorsAllowAskBlockPermissionModel feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kSensorsAllowAskBlockPermissionModel,
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // Enables browser-side privacy mitigations for generic sensors.
+ BASE_FEATURE(kSensorPrivacyMitigations, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -107,9 +108,11 @@ const base::FeatureParam<int> kWinSystemLocationPermissionPollingParam{
+ // the operating system's location API or our network-based provider
+ // as the source of location data for Geolocation API.
+ #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
++// kLocationProviderManager feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kLocationProviderManager, base::FEATURE_ENABLED_BY_DEFAULT);
+ #else
+-BASE_FEATURE(kLocationProviderManager, base::FEATURE_DISABLED_BY_DEFAULT);
++// kLocationProviderManager feature state is enforced via plaster rewrite.
++BASE_FEATURE(kLocationProviderManager, base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+ 
+ #if BUILDFLAG(IS_ANDROID)

@@ -1,0 +1,13 @@
+diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
+index 08cea18660669319011666947d34a0327b9793f3..c2057919be9ca716124874b8f10c4c91e94f4e03 100644
+--- a/components/sync/base/features.cc
++++ b/components/sync/base/features.cc
+@@ -108,7 +108,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
+ #endif
+ 
+-DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);
++BASE_FEATURE(kSyncAutofillValuableMetadata, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncWalletFlightReservations);
+ 
