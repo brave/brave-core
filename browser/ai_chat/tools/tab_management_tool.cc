@@ -8,12 +8,12 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -1206,7 +1206,7 @@ void TabManagementTool::HandleCreateGroup(UseToolCallback callback,
       }
 
       // Reverse the indices to avoid index shifting
-      for (int index : base::Reversed(valid_indices)) {
+      for (int index : std::views::reverse(valid_indices)) {
         tabs_moved_models.push_back(tab_strip->DetachTabAtForInsertion(index));
       }
     }

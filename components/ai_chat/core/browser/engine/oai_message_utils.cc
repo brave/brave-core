@@ -5,7 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
-#include "base/containers/adapters.h"
+#include <ranges>
+
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
 #include "base/strings/escape.h"
@@ -126,7 +127,7 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
 
   // Note: We iterate in reverse so that we prefer more recent page content
   // (i.e. the oldest content will be truncated when we run out of context).
-  for (const auto& page_content : base::Reversed(page_contents)) {
+  for (const auto& page_content : std::views::reverse(page_contents)) {
     uint32_t effective_length_limit = max_associated_content_length;
     if (max_per_content_length.has_value()) {
       effective_length_limit =

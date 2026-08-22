@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <limits>
 #include <optional>
+#include <ranges>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -321,7 +322,7 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
 
 void ReorderDraggedViewsForStacking(views::View* parent,
                                     const std::vector<TabSlotView*>& views) {
-  for (TabSlotView* view : base::Reversed(views)) {
+  for (TabSlotView* view : std::views::reverse(views)) {
     if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
         views::AsViewClass<Tab>(view)->data().pinned) {
       // As can't drag pinned tabs and unpinned tabs together, we don't need to

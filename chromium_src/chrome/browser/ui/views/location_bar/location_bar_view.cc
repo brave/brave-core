@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/containers/adapters.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+
+#include <ranges>
+
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
@@ -29,7 +32,7 @@
 
 #define BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS \
   auto right_most_trailing_views = GetRightMostTrailingViews();        \
-  for (auto* item : base::Reversed(right_most_trailing_views)) {       \
+  for (auto* item : std::views::reverse(right_most_trailing_views)) {  \
     add_trailing_decoration(                                           \
         item, /*intra_item_padding=*/0,                                \
         /*edge_padding=*/trailing_decorations_edge_padding);           \
@@ -37,7 +40,7 @@
 
 #define BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS \
   auto left_most_trailing_views = GetLeftMostTrailingViews();         \
-  for (auto* item : base::Reversed(left_most_trailing_views)) {       \
+  for (auto* item : std::views::reverse(left_most_trailing_views)) {  \
     add_trailing_decoration(                                          \
         item, /*intra_item_padding=*/0,                               \
         /*edge_padding=*/trailing_decorations_edge_padding);          \
