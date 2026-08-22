@@ -87,9 +87,6 @@ public class BrowserViewController: UIViewController {
     return bottomTouchArea
   }()
 
-  /// These constraints allow to show/hide tabs bar
-  private var webViewContainerTopOffset: Constraint?
-
   /// Backdrop used for displaying greyed background for private tabs
   private let webViewContainerBackdrop: UIView = {
     let webViewContainerBackdrop = UIView()
@@ -681,6 +678,76 @@ public class BrowserViewController: UIViewController {
     statusBarOverlay.isHidden = view.safeAreaInsets.top.isZero
   }
 
+  @available(iOS 26.0, *)
+  func updateWebViewObscuredInsets() {
+    guard let webViewProxy = tabManager.selectedTab?.webViewProxy else { return }
+
+    collapsedURLBarView.layoutIfNeeded()
+    header.expandedBarStackView.layoutIfNeeded()
+
+    var minViewportInset = UIEdgeInsets()
+    var maxViewportInset = UIEdgeInsets()
+    if isUsingBottomBar {
+      minViewportInset.top = view.safeAreaInsets.top
+      maxViewportInset.top = view.safeAreaInsets.top
+      minViewportInset.bottom = footer.bounds.height + collapsedURLBarView.bounds.height
+      maxViewportInset.bottom = footer.bounds.height + header.expandedBarStackView.bounds.height
+    } else {
+      minViewportInset.top = view.safeAreaInsets.top + collapsedURLBarView.bounds.height
+      maxViewportInset.top = view.safeAreaInsets.top + header.expandedBarStackView.bounds.height
+      minViewportInset.bottom = footer.bounds.height
+      maxViewportInset.bottom = footer.bounds.height
+    }
+    webViewProxy.setMinimumViewportInset(minViewportInset, maximumViewportInset: maxViewportInset)
+
+    let toolbarInsets = UIEdgeInsets(
+      top: max(
+        0,
+        toolbarLayoutGuide.layoutFrame.minY + (isUsingBottomBar ? 0 : header.bounds.height)
+      ),
+      left: 0,
+      bottom: max(
+        0,
+        view.bounds.height
+          - (toolbarLayoutGuide.layoutFrame.maxY
+            - (isUsingBottomBar
+              ? header.bounds.height + footer.bounds.height : footer.bounds.height))
+      ),
+      right: 0
+    )
+
+    // Obscured insets actually have to include safe area insets for some reason, toolbarInsets
+    // already include it so we override the values entirely
+    var obscuredInsets = view.safeAreaInsets
+    obscuredInsets.top = toolbarInsets.top
+    obscuredInsets.bottom = toolbarInsets.bottom
+
+    // Setting obscuredInsets actually includes a side-effect of setting the web views contentInset
+    webViewProxy.obscuredInsets = obscuredInsets
+
+    // But we still need to update the scroll indicator insets manually
+    var scrollIndicatorInsets = UIEdgeInsets(
+      top: max(0, toolbarInsets.top - view.safeAreaInsets.top),
+      left: 0,
+      bottom: max(0, toolbarInsets.bottom - view.safeAreaInsets.bottom),
+      right: 0
+    )
+
+    if let keyboardState, case let keyboardHeight = keyboardState.intersectionHeightForView(view),
+      keyboardHeight > 0
+    {
+      var contentInsets = webViewProxy.scrollView?.contentInset ?? .zero
+      contentInsets.bottom = keyboardHeight + toolbarInsets.bottom
+      webViewProxy.scrollView?.contentInset = contentInsets
+      if isUsingBottomBar {
+        scrollIndicatorInsets.bottom = 0
+      } else {
+        scrollIndicatorInsets.bottom -= toolbarInsets.bottom
+      }
+    }
+    webViewProxy.scrollView?.scrollIndicatorInsets = scrollIndicatorInsets
+  }
+
   fileprivate func updateToolbarStateForTraitCollection(
     _ newCollection: UITraitCollection,
     withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator? = nil
@@ -1226,6 +1293,12 @@ public class BrowserViewController: UIViewController {
       make.height.equalTo(UX.TabsBar.height)
     }
 
+    if #available(iOS 26.0, *) {
+      webViewContainer.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+    }
+
     webViewContainerBackdrop.snp.makeConstraints { make in
       make.edges.equalTo(webViewContainer)
     }
@@ -1257,6 +1330,10 @@ public class BrowserViewController: UIViewController {
       view.bounds.height - view.safeAreaInsets.top
     toolbarVisibilityViewModel.minimumCollapsableTransitionDistance =
       header.bounds.height + footer.bounds.height
+
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -1416,22 +1493,21 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    webViewContainer.snp.remakeConstraints { make in
-      make.left.right.equalTo(self.view)
+    if #unavailable(iOS 26.0) {
+      webViewContainer.snp.remakeConstraints { make in
+        make.left.right.equalTo(self.view)
 
-      if self.isUsingBottomBar {
-        webViewContainerTopOffset =
+        if self.isUsingBottomBar {
           make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide.snp.top)
-          .constraint
-      } else {
-        webViewContainerTopOffset =
-          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
-      }
+        } else {
+          make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom)
+        }
 
-      if self.isUsingBottomBar {
-        make.bottom.equalTo(self.header.snp.top)
-      } else {
-        make.bottom.equalTo(self.footer.snp.top)
+        if self.isUsingBottomBar {
+          make.bottom.equalTo(self.header.snp.top)
+        } else {
+          make.bottom.equalTo(self.footer.snp.top)
+        }
       }
     }
 
@@ -1489,11 +1565,9 @@ public class BrowserViewController: UIViewController {
     // The home controller may change sizes if we tap the URL bar while on about:home.
     pageOverlayLayoutGuide.snp.remakeConstraints { make in
       if self.isUsingBottomBar {
-        webViewContainerTopOffset =
-          make.top.equalTo(readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide).constraint
+        make.top.equalTo(readerModeBar?.snp.bottom ?? self.toolbarLayoutGuide)
       } else {
-        webViewContainerTopOffset =
-          make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
+        make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom)
       }
 
       make.left.right.equalTo(self.view)
