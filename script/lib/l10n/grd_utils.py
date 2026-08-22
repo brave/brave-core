@@ -17,7 +17,8 @@ from lib.l10n.grd_string_replacements import (branding_replacements,
                                               brave_strings_grd_replacements,
                                               default_replacements,
                                               fixup_replacements,
-                                              main_text_only_replacements)
+                                              main_text_only_replacements,
+                                              per_file_replacements)
 from lib.l10n.validation import validate_tags_in_one_string
 
 # Map of google_chrome_strings.grd resources ids to migrate to brave_strings.grd
@@ -34,12 +35,17 @@ GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
 INSTALLER_STRINGS = ['IDS_SETUP_PATCH_FAILED']
 
 
-def braveify_grd_text(text, is_main_text, branding_replacements_only):
+def braveify_grd_text(text,
+                      is_main_text,
+                      branding_replacements_only,
+                      file_replacements=()):
     """Replaces text string to Brave wording"""
     for (pattern, to) in branding_replacements:
         text = re.sub(pattern, to, text)
     if not branding_replacements_only:
         for (pattern, to) in default_replacements:
+            text = re.sub(pattern, to, text)
+        for (pattern, to) in file_replacements:
             text = re.sub(pattern, to, text)
     for (pattern, to) in fixup_replacements:
         text = re.sub(pattern, to, text)
@@ -49,21 +55,28 @@ def braveify_grd_text(text, is_main_text, branding_replacements_only):
     return text
 
 
-def generate_braveified_node(elem, is_comment, branding_replacements_only):
+def generate_braveified_node(elem,
+                             is_comment,
+                             branding_replacements_only,
+                             file_replacements=()):
     """Replaces a node and attributes to Brave wording"""
     if elem.text:
-        elem.text = braveify_grd_text(
-            elem.text, not is_comment, branding_replacements_only)
+        elem.text = braveify_grd_text(elem.text, not is_comment,
+                                      branding_replacements_only,
+                                      file_replacements)
 
     if elem.tail:
-        elem.tail = braveify_grd_text(
-            elem.tail, not is_comment, branding_replacements_only)
+        elem.tail = braveify_grd_text(elem.tail, not is_comment,
+                                      branding_replacements_only,
+                                      file_replacements)
 
     if 'desc' in elem.keys():
-        elem.attrib['desc'] = braveify_grd_text(
-            elem.attrib['desc'], False, branding_replacements_only)
+        elem.attrib['desc'] = braveify_grd_text(elem.attrib['desc'], False,
+                                                branding_replacements_only,
+                                                file_replacements)
     for child in elem:
-        generate_braveified_node(child, is_comment, branding_replacements_only)
+        generate_braveified_node(child, is_comment, branding_replacements_only,
+                                 file_replacements)
 
 
 def escape_element_text(elem):
@@ -114,13 +127,17 @@ def write_xml_file_from_tree(string_path, xml_tree):
         f.write(transformed_content)
 
 
-def braveify_grd_tree(source_xml_tree, branding_replacements_only):
+def braveify_grd_tree(source_xml_tree,
+                      branding_replacements_only,
+                      file_replacements=()):
     """Takes in a grd(p) tree and replaces all messages and comments with Brave
        wording"""
     for elem in source_xml_tree.xpath('//message'):
-        generate_braveified_node(elem, False, branding_replacements_only)
+        generate_braveified_node(elem, False, branding_replacements_only,
+                                 file_replacements)
     for elem in source_xml_tree.xpath('//comment()'):
-        generate_braveified_node(elem, True, branding_replacements_only)
+        generate_braveified_node(elem, True, branding_replacements_only,
+                                 file_replacements)
 
 
 def replace_strings_in_brave_strings_grd(source_xml_tree):
@@ -143,7 +160,9 @@ def braveify_grd_in_place(source_string_path):
        wording"""
     source_xml_tree = lxml.etree.parse(source_string_path)
     print(f'Applying branding to {source_string_path}')
-    braveify_grd_tree(source_xml_tree, False)
+    braveify_grd_tree(
+        source_xml_tree, False,
+        per_file_replacements.get(os.path.basename(source_string_path), ()))
     if os.path.basename(source_string_path) == 'brave_strings.grd':
         replace_strings_in_brave_strings_grd(source_xml_tree)
     write_xml_file_from_tree(source_string_path, source_xml_tree)

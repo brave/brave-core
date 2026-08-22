@@ -91,6 +91,8 @@ are declared in tools/grit/grit_args.gni.
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <part file="actor_strings_override.grdp" />
+
       <part file="app_management_strings_override.grdp" />
 
       <part file="bookmarks_strings_override.grdp" />
