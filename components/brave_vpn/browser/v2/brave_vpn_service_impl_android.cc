@@ -13,6 +13,7 @@
 #include "base/notimplemented.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
+#include "brave/components/brave_vpn/browser/v2/api/transport_protocol.h"
 #include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
 
 namespace brave_vpn::v2 {
@@ -58,7 +59,14 @@ void BraveVpnServiceImpl::GetIKEv2ProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,
     const std::string& hostname) {
-  NOTIMPLEMENTED();
+  if (!api_client_) {
+    std::move(callback).Run({}, false);
+    return;
+  }
+  api_client_->GetProfileCredentials(
+      base::BindOnce(&RunResponseCallback, std::move(callback)), hostname,
+      subscriber_credential, endpoints::TransportProtocol::kIKEv2, std::nullopt,
+      std::nullopt);
 }
 
 void BraveVpnServiceImpl::GetWireguardProfileCredentials(
@@ -66,16 +74,30 @@ void BraveVpnServiceImpl::GetWireguardProfileCredentials(
     const std::string& subscriber_credential,
     const std::string& public_key,
     const std::string& hostname) {
-  NOTIMPLEMENTED();
+  if (!api_client_) {
+    std::move(callback).Run({}, false);
+    return;
+  }
+  api_client_->GetProfileCredentials(
+      base::BindOnce(&RunResponseCallback, std::move(callback)), hostname,
+      subscriber_credential, endpoints::TransportProtocol::kWireguard,
+      public_key, std::nullopt);
 }
 
 void BraveVpnServiceImpl::VerifyCredentials(
     ResponseCallback callback,
     const std::string& hostname,
     const std::string& client_id,
-    const std::string& subscriber_credential,
+    const std::string& /*subscriber_credential*/,
     const std::string& api_auth_token) {
-  NOTIMPLEMENTED();
+  if (!api_client_) {
+    std::move(callback).Run({}, false);
+    return;
+  }
+  // Note: in v1.4 API, the subscriber credential is not used for verification.
+  api_client_->VerifyCredentials(
+      base::BindOnce(&RunResponseCallback, std::move(callback)), hostname,
+      client_id, api_auth_token);
 }
 
 void BraveVpnServiceImpl::InvalidateCredentials(
@@ -84,7 +106,13 @@ void BraveVpnServiceImpl::InvalidateCredentials(
     const std::string& client_id,
     const std::string& subscriber_credential,
     const std::string& api_auth_token) {
-  NOTIMPLEMENTED();
+  if (!api_client_) {
+    std::move(callback).Run({}, false);
+    return;
+  }
+  api_client_->InvalidateCredentials(
+      base::BindOnce(&RunResponseCallback, std::move(callback)), hostname,
+      client_id, api_auth_token, subscriber_credential);
 }
 
 void BraveVpnServiceImpl::VerifyPurchaseToken(ResponseCallback callback,

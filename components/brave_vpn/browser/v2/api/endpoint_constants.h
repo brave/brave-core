@@ -25,6 +25,17 @@ inline constexpr char kTimezonesForRegionsApi[] =
 inline constexpr char kHostnamesForRegionApi[] =
     "api/v1.3/servers/hostnames-for-region";
 
+// "Device" is Guardian's term for a VPN credential/connection instance, not a
+// physical device - interchangeable with "client" in Guardian's own docs. These
+// two constants along with suffixes cover registering, verifying, and
+// invalidating those credentials.
+inline constexpr char kDeviceCredentialsApi[] = "api/v1.4/device-credentials";
+inline constexpr char kDeviceApi[] = "api/v1.4/device";
+inline constexpr char kDeviceApiVerifyCredentialsSuffix[] =
+    "verify-credentials";
+inline constexpr char kDeviceApiInvalidateCredentialsSuffix[] =
+    "invalidate-credentials";
+
 // Endpoint request JSON keys that can be shared between multiple APIs.
 inline constexpr char kProductTypeKey[] = "product-type";
 inline constexpr char kProductIdKey[] = "product-id";
@@ -41,6 +52,10 @@ inline constexpr char kPaymentValidationMethodKey[] =
     "payment-validation-method";
 inline constexpr char kRegionKey[] = "region";
 inline constexpr char kRegionPrecisionKey[] = "region-precision";
+inline constexpr char kTransportProtocolKey[] = "transport-protocol";
+inline constexpr char kPublicKeyKey[] = "public-key";
+inline constexpr char kMultihopExitRegionKey[] = "multihop-exit-region";
+inline constexpr char kApiAuthTokenKey[] = "api-auth-token";
 
 // Default payment validation method used by Brave.
 inline constexpr char kValidationMethodDefaultValue[] = "brave-premium";
