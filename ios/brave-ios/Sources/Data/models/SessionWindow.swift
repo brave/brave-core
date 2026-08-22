@@ -96,31 +96,39 @@ extension SessionWindow {
 
   public static func createWindow(isSelected: Bool, uuid: UUID) {
     DataController.performOnMainContext { context in
-      if let sessionWindow = SessionWindow.from(windowId: uuid, in: context) {
-        Self.all().forEach {
-          $0.isSelected = false
-        }
-
-        sessionWindow.isSelected = isSelected
-        return
-      }
-
-      let count = SessionWindow.count(context: context) ?? 0
-      let window = SessionWindow(
-        context: context,
-        index: Int32(count),
-        isSelected: isSelected
-      )
-      window.windowId = uuid
-
-      do {
-        try context.save()
-      } catch {
-        Logger.module.error(
-          "performTask save error: \(error.localizedDescription, privacy: .public)"
-        )
+      _ = ensureWindow(windowId: uuid, isSelected: isSelected, in: context)
+      if context.hasChanges {
+        try? context.save()
       }
     }
+  }
+
+  /// Returns an existing window or creates one with the given id in the supplied context.
+  @discardableResult
+  static func ensureWindow(
+    windowId: UUID,
+    isSelected: Bool,
+    in context: NSManagedObjectContext
+  ) -> SessionWindow? {
+    if let sessionWindow = SessionWindow.from(windowId: windowId, in: context) {
+      if isSelected {
+        let predicate = NSPredicate(format: "isSelected == true")
+        all(where: predicate, context: context)?.forEach {
+          $0.isSelected = false
+        }
+        sessionWindow.isSelected = true
+      }
+      return sessionWindow
+    }
+
+    let count = SessionWindow.count(context: context) ?? 0
+    let window = SessionWindow(
+      context: context,
+      index: Int32(count),
+      isSelected: isSelected
+    )
+    window.windowId = windowId
+    return window
   }
 
   /// Marks the specified window as selected
