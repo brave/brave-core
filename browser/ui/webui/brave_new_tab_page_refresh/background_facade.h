@@ -51,6 +51,8 @@ class BackgroundFacade {
 
   std::vector<std::string> GetCustomBackgrounds();
 
+  std::vector<std::string> GetDisabledBraveBackgrounds();
+
   mojom::SelectedBackgroundPtr GetSelectedBackground();
 
   // The `callback` runs synchronously for Wallpaper backgrounds or when an
@@ -65,6 +67,9 @@ class BackgroundFacade {
 
   void RemoveCustomBackground(const std::string& background_url,
                               base::OnceClosure callback);
+
+  void SetBraveBackgroundEnabled(const std::string& background_url,
+                                 bool enabled);
 
   void NotifySponsoredImageLogoClicked(
       const std::string& wallpaper_id,

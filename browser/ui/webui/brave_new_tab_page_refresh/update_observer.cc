@@ -45,6 +45,8 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(NTPBackgroundPrefs::kPrefName, Source::kBackgrounds);
   AddPrefListener(NTPBackgroundPrefs::kCustomImageListPrefName,
                   Source::kBackgrounds);
+  AddPrefListener(NTPBackgroundPrefs::kDisabledBraveImageListPrefName,
+                  Source::kBackgrounds);
 
   AddPrefListener(brave_search_conversion::prefs::kShowNTPSearchBox,
                   Source::kSearch);
