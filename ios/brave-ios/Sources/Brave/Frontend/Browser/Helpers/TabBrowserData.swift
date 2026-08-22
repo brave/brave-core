@@ -182,24 +182,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   private(set) lazy var leoTabHelper = BraveLeoScriptTabHelper(tab: tab)
 
-  /// Boolean tracking custom url-scheme alert presented
-  var isExternalAppAlertPresented = false
-  var externalAppPopup: AlertPopupView?
-  var externalAppPopupContinuation: CheckedContinuation<Bool, Never>?
-  var externalAppAlertCounter = 0
-  var isExternalAppAlertSuppressed = false
-  var externalAppURLDomain: String?
-  /// The url the currently presented custom url-scheme alert is asking about
-  var externalAppURL: URL?
-
-  func resetExternalAlertProperties() {
-    externalAppAlertCounter = 0
-    isExternalAppAlertPresented = false
-    isExternalAppAlertSuppressed = false
-    externalAppURLDomain = nil
-    externalAppURL = nil
-  }
-
   /// A list of domains that we want to proceed to anyways regardless of any ad-blocking
   var proceedAnywaysDomainList: Set<String> = []
 
@@ -302,10 +284,6 @@ class TabBrowserData: NSObject, TabObserver {
   }
 
   // MARK: - TabObserver
-
-  func tabDidStartNavigation(_ tab: some TabState) {
-    resetExternalAlertProperties()
-  }
 
   func tabDidChangeTitle(_ tab: some TabState) {
     syncTab?.setTitle(tab.displayTitle)
