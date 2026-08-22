@@ -13,12 +13,14 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/function_ref.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace sync_pb {
 class AIChatCompressibleString;
 class AIChatConversationSpecifics;
+class AIChatConversationSpecifics_Entry;
 class AIChatUploadedFile;
 class EntitySpecifics;
 }  // namespace sync_pb
@@ -76,6 +78,29 @@ void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file);
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 
+// Invokes |visit| for every AIChatCompressibleString on |entry| that
+// FitEntryWithinSyncBudget is allowed to omit. Code on the receiving side that
+// has to recognise or undo an omission uses this so it covers exactly the field
+// set the budget policy can drop, rather than maintaining a second list of its
+// own. Uploaded file bytes are not covered — they are raw bytes rather than an
+// AIChatCompressibleString, so callers handle
+// AIChatUploadedFile::omitted_data_hash separately.
+using CompressibleStringVisitor =
+    base::FunctionRef<void(sync_pb::AIChatCompressibleString&)>;
+void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                            CompressibleStringVisitor visit);
+
+// Drops long-text and binary fields from |entry| (replacing each with a
+// content hash so the receiver can restore it from a byte-identical local
+// copy) until the serialized record fits under the per-record size budget.
+// Fields are dropped in a fixed priority order — see the omission passes in
+// the implementation. Returns true if the entry fits, either because no
+// omission was needed or because omitting brought it under budget, and false
+// if it remains too large even after every omittable field is gone — callers
+// must refuse to commit such records.
+bool FitEntryWithinSyncBudget(
+    sync_pb::AIChatConversationSpecifics_Entry* entry);
+
 // Builds a sync entity containing only conversation metadata.
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
     const mojom::Conversation& conversation);
@@ -103,7 +128,7 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 // |conversation_turn_uuid|. When non-null, |associated_content_texts|
 // receives the last_contents value for each AC where the sender provided
 // one; absent map entries mean the caller should preserve any existing
-// local text (forward-compat or truncated-for-sync).
+// local text (forward-compat or omitted-for-sync).
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
