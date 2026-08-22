@@ -16,14 +16,36 @@ export interface SponsoredRichMediaBackgroundInfo {
   targetUrl: string
 }
 
+// The subset of an autocomplete match posted back to the rich media
+// background iframe as `richMediaSearchMatches`.
+export interface RichMediaSearchMatch {
+  contents: string
+  description: string
+  destinationUrl: string
+  iconUrl: string
+  imageUrl: string
+  allowedToBeDefaultMatch: boolean
+}
+
 interface StatusProps {
   richMediaHasLoaded: boolean
 }
 
 interface Props extends StatusProps {
   sponsoredRichMediaBackgroundInfo: SponsoredRichMediaBackgroundInfo
+  searchMatches?: RichMediaSearchMatch[]
+  // Reports an ad event and, for a click, also navigates to the ad's
+  // destination URL. Only appropriate for the generic `richMediaEvent`
+  // message; other messages that separately trigger their own navigation
+  // (e.g. opening Brave Search) must report through `onAdEventReported`
+  // instead, to avoid navigating twice.
   onEventReported: (name: BraveAds.NewTabPageAdEventType) => void
+  // Reports an ad event without any navigation side effect.
+  onAdEventReported?: (name: BraveAds.NewTabPageAdEventType) => void
   onLoaded: () => void
+  onOpenBraveSearch?: (query: string) => void
+  onQueryAutocomplete?: (query: string) => void
+  onMakeBraveSearchDefault?: () => void
 }
 
 const iframeAllow = `
@@ -66,11 +88,7 @@ const SponsoredRichMediaBackgroundIframe = styled('iframe') <StatusProps>`
 ///   type: 'richMediaEvent',
 ///   value: 'click'
 /// }
-function getEventType(event: MessageEvent): BraveAds.NewTabPageAdEventType | undefined {
-  if (!event.data || event.data.type !== 'richMediaEvent') {
-    return undefined
-  }
-
+function getEventType(value: unknown): BraveAds.NewTabPageAdEventType | undefined {
   const eventMap: { [key: string]: BraveAds.NewTabPageAdEventType } = {
     'click': BraveAds.NewTabPageAdEventType.kClicked,
     'interaction': BraveAds.NewTabPageAdEventType.kInteraction,
@@ -79,7 +97,59 @@ function getEventType(event: MessageEvent): BraveAds.NewTabPageAdEventType | und
     'media100': BraveAds.NewTabPageAdEventType.kMedia100
   }
 
-  return eventMap[event.data.value]
+  return eventMap[value as string]
+}
+
+export interface RichMediaMessageCapabilities {
+  onEventReported: (name: BraveAds.NewTabPageAdEventType) => void
+  onAdEventReported?: (name: BraveAds.NewTabPageAdEventType) => void
+  onOpenBraveSearch?: (query: string) => void
+  onQueryAutocomplete?: (query: string) => void
+  onMakeBraveSearchDefault?: () => void
+}
+
+// Reads a message posted from the rich media background iframe and executes
+// the appropriate capability. Exported for testing.
+export function dispatchRichMediaMessage(
+  data: any,
+  capabilities: RichMediaMessageCapabilities,
+) {
+  if (!data) {
+    return
+  }
+
+  switch (data.type) {
+    case 'richMediaEvent': {
+      const eventType = getEventType(data.value)
+      if (eventType) {
+        capabilities.onEventReported(eventType)
+      }
+      break
+    }
+    case 'richMediaOpenBraveSearchWithQuery': {
+      if (data.value) {
+        capabilities.onAdEventReported?.(BraveAds.NewTabPageAdEventType.kClicked)
+        capabilities.onOpenBraveSearch?.(String(data.value))
+      }
+      break
+    }
+    case 'richMediaQueryBraveSearchAutocomplete': {
+      if (typeof data.value === 'string') {
+        capabilities.onQueryAutocomplete?.(data.value)
+      }
+      break
+    }
+    case 'richMediaMakeBraveSearchDefault': {
+      capabilities.onMakeBraveSearchDefault?.()
+      break
+    }
+    case 'richMediaHideBraveSearchBox': {
+      // Not supported on Android: there is no native search box visibility
+      // control reachable from this WebUI. Recognized and ignored so
+      // unsupported creatives don't produce a console warning.
+      break
+    }
+  }
 }
 
 export function SponsoredRichMediaBackground(props: Props) {
@@ -105,12 +175,13 @@ export function SponsoredRichMediaBackground(props: Props) {
           return
         }
 
-        const eventType = getEventType(event)
-        if (!eventType) {
-          return
-        }
-
-        props.onEventReported(eventType)
+        dispatchRichMediaMessage(event.data, {
+          onEventReported: props.onEventReported,
+          onAdEventReported: props.onAdEventReported,
+          onOpenBraveSearch: props.onOpenBraveSearch,
+          onQueryAutocomplete: props.onQueryAutocomplete,
+          onMakeBraveSearchDefault: props.onMakeBraveSearchDefault,
+        })
       }
 
       window.addEventListener('message', listener)
@@ -119,7 +190,23 @@ export function SponsoredRichMediaBackground(props: Props) {
       console.error('Error setting up sponsored rich media event listener')
       return () => { }
     }
-  }, [props.onEventReported])
+  }, [props.onEventReported, props.onAdEventReported, props.onOpenBraveSearch, props.onQueryAutocomplete, props.onMakeBraveSearchDefault])
+
+  React.useEffect(() => {
+    if (!props.searchMatches || !iframeRef.current?.contentWindow) {
+      return
+    }
+    try {
+      const ntpNewTabTakeoverRichMediaUrlOrigin =
+        new URL(loadTimeData.getString('ntpNewTabTakeoverRichMediaUrl')).origin
+      iframeRef.current.contentWindow.postMessage({
+        type: 'richMediaSearchMatches',
+        value: props.searchMatches
+      }, ntpNewTabTakeoverRichMediaUrlOrigin)
+    } catch (e) {
+      console.error('Error posting search matches to sponsored rich media iframe')
+    }
+  }, [props.searchMatches])
 
   return (
     <SponsoredRichMediaBackgroundIframe

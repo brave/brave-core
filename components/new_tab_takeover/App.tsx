@@ -10,8 +10,13 @@ import * as BraveAdsMojom from 'gen/brave/components/brave_ads/core/mojom/brave_
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 import {
-  SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground
+  SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground, RichMediaSearchMatch
 } from '../brave_new_tab_ui/containers/newTab/sponsored_rich_media_background'
+
+// Mirrors `kBraveSearchHost` (brave/components/constants/url_constants.h).
+// Not imported directly since that constant is only exposed to C++/desktop's
+// separate webpack bundle.
+const braveSearchHost = 'search.brave.com'
 
 function sanitizeId(value: string | null): string | null {
   if (!value || value.length === 0) {
@@ -47,6 +52,7 @@ export default function App(props: React.PropsWithChildren) {
   const [sponsoredRichMediaAdEventHandler, setSponsoredRichMediaAdEventHandler] = React.useState<NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote | null>(null)
   const [newTabTakeover, setNewTabTakeover] = React.useState<NewTabTakeoverMojom.NewTabTakeoverRemote | null>(null)
   const [richMediaHasLoaded, setRichMediaHasLoaded] = React.useState(false)
+  const [searchMatches, setSearchMatches] = React.useState<RichMediaSearchMatch[] | undefined>(undefined)
 
   const getCurrentWallpaper = React.useCallback(async () => {
     if (!newTabTakeover || !placementId || !creativeInstanceId) {
@@ -92,6 +98,70 @@ export default function App(props: React.PropsWithChildren) {
     getCurrentWallpaper()
   }, [getCurrentWallpaper, newTabTakeover])
 
+  const onOpenBraveSearch = React.useCallback((query: string) => {
+    if (!newTabTakeover) {
+      return
+    }
+    const mojomUrl = new Url();
+    mojomUrl.url = `https://${braveSearchHost}/search?q=${encodeURIComponent(query)}`;
+    newTabTakeover.navigateToUrl(mojomUrl);
+  }, [newTabTakeover])
+
+  const onQueryAutocomplete = React.useCallback(async (query: string) => {
+    if (!newTabTakeover) {
+      return
+    }
+    try {
+      const { matches } = await newTabTakeover.queryAutocomplete(query);
+      setSearchMatches(matches.map((match): RichMediaSearchMatch => ({
+        contents: match.contents,
+        description: match.description,
+        destinationUrl: match.destinationUrl.url,
+        iconUrl: match.iconUrl.url,
+        imageUrl: match.imageUrl.url,
+        allowedToBeDefaultMatch: match.allowedToBeDefaultMatch
+      })))
+    } catch (error) {
+      console.error('Failed to query Brave Search autocomplete:', error);
+    }
+  }, [newTabTakeover])
+
+  const onMakeBraveSearchDefault = React.useCallback(async () => {
+    if (!newTabTakeover) {
+      return
+    }
+    try {
+      const { success } = await newTabTakeover.setDefaultSearchEngineAsBraveSearch();
+      if (!success) {
+        console.error('Failed to set Brave Search as the default search engine');
+      }
+    } catch (error) {
+      console.error('Failed to set Brave Search as the default search engine:', error);
+    }
+  }, [newTabTakeover])
+
+  const reportAdEvent = React.useCallback((adEventType: BraveAdsMojom.NewTabPageAdEventType) => {
+    if (!sponsoredRichMediaAdEventHandler || !sponsoredRichMediaBackgroundInfo) {
+      return
+    }
+    sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
+      sponsoredRichMediaBackgroundInfo.placementId,
+      sponsoredRichMediaBackgroundInfo.creativeInstanceId,
+      sponsoredRichMediaBackgroundInfo.metricType,
+      adEventType
+    );
+  }, [sponsoredRichMediaAdEventHandler, sponsoredRichMediaBackgroundInfo])
+
+  const onEventReported = React.useCallback((adEventType: BraveAdsMojom.NewTabPageAdEventType) => {
+    reportAdEvent(adEventType)
+
+    if (adEventType === BraveAdsMojom.NewTabPageAdEventType.kClicked && sponsoredRichMediaBackgroundInfo) {
+      const mojomUrl = new Url();
+      mojomUrl.url = sponsoredRichMediaBackgroundInfo.targetUrl;
+      newTabTakeover?.navigateToUrl(mojomUrl);
+    }
+  }, [reportAdEvent, sponsoredRichMediaBackgroundInfo, newTabTakeover])
+
   return (
     <React.Fragment>
       {sponsoredRichMediaBackgroundInfo && sponsoredRichMediaAdEventHandler && newTabTakeover && (
@@ -99,20 +169,12 @@ export default function App(props: React.PropsWithChildren) {
           sponsoredRichMediaBackgroundInfo={sponsoredRichMediaBackgroundInfo}
           richMediaHasLoaded={richMediaHasLoaded}
           onLoaded={() => setRichMediaHasLoaded(true)}
-          onEventReported={(adEventType) => {
-            sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
-              sponsoredRichMediaBackgroundInfo.placementId,
-              sponsoredRichMediaBackgroundInfo.creativeInstanceId,
-              sponsoredRichMediaBackgroundInfo.metricType,
-              adEventType
-            );
-
-            if (adEventType === BraveAdsMojom.NewTabPageAdEventType.kClicked) {
-              const mojomUrl = new Url();
-              mojomUrl.url = sponsoredRichMediaBackgroundInfo.targetUrl;
-              newTabTakeover.navigateToUrl(mojomUrl);
-            }
-          }}
+          onEventReported={onEventReported}
+          onAdEventReported={reportAdEvent}
+          searchMatches={searchMatches}
+          onOpenBraveSearch={onOpenBraveSearch}
+          onQueryAutocomplete={onQueryAutocomplete}
+          onMakeBraveSearchDefault={onMakeBraveSearchDefault}
         />
       )}
     </React.Fragment>

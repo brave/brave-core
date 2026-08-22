@@ -42,3 +42,23 @@ source_set("new_tab_takeover") {
     "//mojo/public/cpp/bindings",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "new_tab_takeover_ui_unittest.cc" ]
+
+  deps = [
+    ":new_tab_takeover",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/new_tab_takeover/mojom",
+    "//brave/components/ntp_background_images/browser",
+    "//chrome/browser/search_engines",
+    "//chrome/test:test_support",
+    "//components/search_engines",
+    "//content/public/test:test_support",
+    "//testing/gtest",
+  ]
+}

@@ -10,20 +10,32 @@
 #include <string>
 #include <utility>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/new_tab_takeover/grit/new_tab_takeover_generated_map.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/omnibox/browser/autocomplete_classifier.h"
+#include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/autocomplete_provider_client.h"
+#include "components/search_engines/template_url_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/metrics_proto/omnibox_event.pb.h"
 
 namespace {
 
@@ -62,7 +74,13 @@ NewTabTakeoverUI::NewTabTakeoverUI(
                     kNTPNewTabTakeoverRichMediaUrl);
 }
 
-NewTabTakeoverUI::~NewTabTakeoverUI() = default;
+NewTabTakeoverUI::~NewTabTakeoverUI() {
+  // A mojom reply callback must always be run, even if the
+  // AutocompleteController query it was waiting on never reached `done()`.
+  if (pending_query_autocomplete_callback_) {
+    std::move(pending_query_autocomplete_callback_).Run({});
+  }
+}
 
 void NewTabTakeoverUI::BindInterface(
     mojo::PendingReceiver<new_tab_takeover::mojom::NewTabTakeover>
@@ -128,6 +146,79 @@ void NewTabTakeoverUI::NavigateToUrl(const GURL& url) {
   params.user_gesture = true;
   params.initiator_origin = url::Origin();
   web_contents->OpenURL(params, /*navigation_handle_callback=*/{});
+}
+
+void NewTabTakeoverUI::QueryAutocomplete(const std::string& input,
+                                         QueryAutocompleteCallback callback) {
+  if (pending_query_autocomplete_callback_) {
+    // A query is already in flight. Resolve it with an empty result rather
+    // than dropping it, as mojom reply callbacks must always be run.
+    std::move(pending_query_autocomplete_callback_).Run({});
+  }
+  pending_query_autocomplete_callback_ = std::move(callback);
+
+  Profile* const profile = Profile::FromWebUI(web_ui());
+  if (!autocomplete_controller_) {
+    std::unique_ptr<AutocompleteProviderClient> autocomplete_provider_client =
+        std::make_unique<ChromeAutocompleteProviderClient>(profile);
+    autocomplete_controller_ = std::make_unique<AutocompleteController>(
+        std::move(autocomplete_provider_client),
+        AutocompleteControllerConfig{
+            .provider_types =
+                AutocompleteClassifier::DefaultOmniboxProviders()});
+    autocomplete_controller_->AddObserver(this);
+  }
+
+  // `NTP_REALBOX` refers specifically to desktop's realbox widget. This is a
+  // search box rendered inside a rich media ad on Android's native New Tab
+  // Page, so the generic `NTP` classification is the accurate fit.
+  AutocompleteInput autocomplete_input(
+      base::UTF8ToUTF16(input), metrics::OmniboxEventProto::NTP,
+      ChromeAutocompleteSchemeClassifier(profile));
+  autocomplete_controller_->Start(autocomplete_input);
+}
+
+void NewTabTakeoverUI::SetDefaultSearchEngineAsBraveSearch(
+    SetDefaultSearchEngineAsBraveSearchCallback callback) {
+  Profile* const profile = Profile::FromWebUI(web_ui());
+  TemplateURLService* const template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  if (!template_url_service) {
+    std::move(callback).Run(/*success=*/false);
+    return;
+  }
+
+  auto* const template_url =
+      template_url_service->GetTemplateURLForHost(kBraveSearchHost);
+  if (!template_url) {
+    std::move(callback).Run(/*success=*/false);
+    return;
+  }
+
+  template_url_service->SetUserSelectedDefaultSearchProvider(template_url);
+  std::move(callback).Run(/*success=*/true);
+}
+
+void NewTabTakeoverUI::OnResultChanged(AutocompleteController* controller,
+                                       bool default_match_changed) {
+  if (!pending_query_autocomplete_callback_ || !controller->done()) {
+    return;
+  }
+
+  std::vector<new_tab_takeover::mojom::AutocompleteMatchPtr> matches;
+  for (const AutocompleteMatch& match : controller->result()) {
+    auto mojom_match = new_tab_takeover::mojom::AutocompleteMatch::New();
+    mojom_match->contents = base::UTF16ToUTF8(match.contents);
+    mojom_match->description = base::UTF16ToUTF8(match.description);
+    mojom_match->destination_url = match.destination_url;
+    mojom_match->icon_url = match.icon_url;
+    mojom_match->image_url = match.image_url;
+    mojom_match->allowed_to_be_default_match =
+        match.allowed_to_be_default_match;
+    matches.push_back(std::move(mojom_match));
+  }
+
+  std::move(pending_query_autocomplete_callback_).Run(std::move(matches));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(NewTabTakeoverUI)
