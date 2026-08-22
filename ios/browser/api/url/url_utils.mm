@@ -30,7 +30,7 @@ std::string GetRegistry(const GURL& url) {
       net::registry_controlled_domains::GetRegistry(
           url, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)
-    .transform(&std::string_view::size);
+          .transform(&std::string_view::size);
 
   if (!registry_length.has_value() || *registry_length == 0 ||
       *registry_length >= url.GetHost().length()) {
