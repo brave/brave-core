@@ -1,6 +1,6 @@
 use criterion::*;
 
-use regex::{bytes::Regex as BytesRegex, Regex, RegexSet};
+use regex::{Regex, RegexSet, bytes::Regex as BytesRegex};
 
 fn bench_simple_regexes(c: &mut Criterion) {
     let mut group = c.benchmark_group("regex");

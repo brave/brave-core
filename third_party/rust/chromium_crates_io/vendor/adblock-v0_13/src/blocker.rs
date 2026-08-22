@@ -232,38 +232,37 @@ impl Blocker {
         let redirect_resource = {
             let mut exceptions = vec![];
             for redirect_filter in redirect_filters.iter() {
-                if redirect_filter.filter_mask.is_exception() {
-                    if let Some(redirect) = redirect_filter.modifier_option.as_ref() {
-                        exceptions.push(redirect);
-                    }
+                if redirect_filter.filter_mask.is_exception()
+                    && let Some(redirect) = redirect_filter.modifier_option.as_ref()
+                {
+                    exceptions.push(redirect);
                 }
             }
             let mut resource_and_priority = None;
             for redirect_filter in redirect_filters.iter() {
-                if !redirect_filter.filter_mask.is_exception() {
-                    if let Some(redirect) = redirect_filter.modifier_option.as_ref() {
-                        if !exceptions.contains(&redirect) {
-                            // parse redirect + priority
-                            let (resource, priority) =
-                                if let Some(idx) = find_char_reverse(b':', redirect.as_bytes()) {
-                                    let priority_str = &redirect[idx + 1..];
-                                    let resource = &redirect[..idx];
-                                    if let Ok(priority) = priority_str.parse::<i32>() {
-                                        (resource, priority)
-                                    } else {
-                                        (&redirect[..], 0)
-                                    }
-                                } else {
-                                    (&redirect[..], 0)
-                                };
-                            if let Some((_, p1)) = resource_and_priority {
-                                if priority > p1 {
-                                    resource_and_priority = Some((resource, priority));
-                                }
+                if !redirect_filter.filter_mask.is_exception()
+                    && let Some(redirect) = redirect_filter.modifier_option.as_ref()
+                    && !exceptions.contains(&redirect)
+                {
+                    // parse redirect + priority
+                    let (resource, priority) =
+                        if let Some(idx) = find_char_reverse(b':', redirect.as_bytes()) {
+                            let priority_str = &redirect[idx + 1..];
+                            let resource = &redirect[..idx];
+                            if let Ok(priority) = priority_str.parse::<i32>() {
+                                (resource, priority)
                             } else {
-                                resource_and_priority = Some((resource, priority));
+                                (&redirect[..], 0)
                             }
+                        } else {
+                            (&redirect[..], 0)
+                        };
+                    if let Some((_, p1)) = resource_and_priority {
+                        if priority > p1 {
+                            resource_and_priority = Some((resource, priority));
                         }
+                    } else {
+                        resource_and_priority = Some((resource, priority));
                     }
                 }
             }
@@ -361,11 +360,12 @@ impl Blocker {
             for removeparam_filter in filters {
                 if let Some(removeparam) = &removeparam_filter.modifier_option {
                     params.iter_mut().for_each(|(param, include)| {
-                        if let QParam::KeyValue(k, v) = param {
-                            if !v.is_empty() && k == removeparam {
-                                *include = false;
-                                rewrite = true;
-                            }
+                        if let QParam::KeyValue(k, v) = param
+                            && !v.is_empty()
+                            && k == removeparam
+                        {
+                            *include = false;
+                            rewrite = true;
                         }
                     });
                 }
@@ -438,11 +438,7 @@ impl Blocker {
 
         let mut remaining_directives = enabled_directives.difference(&disabled_directives);
 
-        let mut merged = if let Some(directive) = remaining_directives.next() {
-            String::from(*directive)
-        } else {
-            return None;
-        };
+        let mut merged = String::from(*remaining_directives.next()?);
 
         remaining_directives.for_each(|directive| {
             merged.push(',');

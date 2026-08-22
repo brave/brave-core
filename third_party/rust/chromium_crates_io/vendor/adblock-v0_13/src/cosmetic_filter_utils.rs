@@ -21,13 +21,12 @@ pub(crate) fn key_from_selector(selector: &str) -> Option<String> {
 
     // If there are no escape characters in the selector, just take the first class or id token.
     let mat = RE_PLAIN_SELECTOR.find(selector);
-    if let Some(location) = mat {
+    {
+        let location = mat?;
         let key = &location.as_str();
         if find_char(b'\\', key.as_bytes()).is_none() {
             return Some((*key).into());
         }
-    } else {
-        return None;
     }
 
     // Otherwise, the characters in the selector must be escaped.
