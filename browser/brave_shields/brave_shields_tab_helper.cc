@@ -37,6 +37,7 @@
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 
 using net::AppendQueryParameter;
@@ -73,6 +74,7 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
+  brave_shields_settings_observation_.Observe(&*brave_shields_settings_);
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       brave_shields::prefs::kAdBlockOnlyModeEnabled,
@@ -176,6 +178,14 @@ void BraveShieldsTabHelper::OnContentSettingChanged(
     for (Observer& obs : observer_list_) {
       obs.OnShieldsEnabledChanged();
     }
+  }
+}
+
+void BraveShieldsTabHelper::OnShieldsSettingsChanged(const GURL& url) {
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          GetCurrentSiteURL(), url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    ReloadWebContents();
   }
 }
 
@@ -287,8 +297,6 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
         brave_shields::prefs::kShieldsDisabledCount,
         prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) + 1);
   }
-
-  ReloadWebContents();
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
@@ -408,14 +416,10 @@ bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
 
 void BraveShieldsTabHelper::SetAdBlockMode(mojom::AdBlockMode mode) {
   brave_shields_settings_->SetAdBlockMode(mode, GetCurrentSiteURL());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetFingerprintMode(mojom::FingerprintMode mode) {
   brave_shields_settings_->SetFingerprintMode(mode, GetCurrentSiteURL());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
@@ -462,8 +466,6 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
 
 void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
   brave_shields_settings_->SetNoScriptEnabled(is_enabled, GetCurrentSiteURL());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
