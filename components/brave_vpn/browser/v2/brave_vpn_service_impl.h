@@ -14,7 +14,12 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+#include "brave/components/brave_vpn/browser/v2/agent_client.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -27,7 +32,12 @@ namespace brave_vpn::v2 {
 class BraveVpnApiClient;
 class PurchasedStateManager;
 
-class BraveVpnServiceImpl : public BraveVpnService {
+class BraveVpnServiceImpl : public BraveVpnService
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+    ,
+                            public AgentClient::Observer
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+{
  public:
   BraveVpnServiceImpl(
       PrefService* local_prefs,
@@ -127,8 +137,22 @@ class BraveVpnServiceImpl : public BraveVpnService {
   // KeyedService overrides:
   void Shutdown() override;
 
-  // BraveVpnService overrides:
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  // Brings the agent connection in line with |state|. The subscription is what
+  // decides whether this profile has any business holding a connection, so this
+  // is the one place that opens or drops one.
+  void UpdateAgentConnection(mojom::PurchasedState state);
+
+  // AgentClient::Observer overrides:
+  void OnAgentConnected() override;
+  void OnAgentDisconnected() override;
+  void OnAgentUnavailable(
+      std::optional<mojom::BrowserAuthResult> result) override;
+  void OnAgentNotRunning() override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
 #if !BUILDFLAG(IS_ANDROID)
+  // BraveVpnService overrides:
   void SetConnectionStateForTesting(mojom::ConnectionState state) override;
   void SetPurchasedStateForTesting(const std::string& env,
                                    mojom::PurchasedState state) override;
@@ -140,7 +164,11 @@ class BraveVpnServiceImpl : public BraveVpnService {
   const raw_ref<PrefService> profile_prefs_;
   std::unique_ptr<BraveVpnApiClient> api_client_;
   std::unique_ptr<SkusServiceClient> skus_client_;
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  std::unique_ptr<AgentClient> agent_client_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::unique_ptr<PurchasedStateManager> purchased_state_manager_;
+
   [[maybe_unused]] mojom::ConnectionState connection_state_;
 };
 
