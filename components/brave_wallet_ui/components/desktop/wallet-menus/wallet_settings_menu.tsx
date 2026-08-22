@@ -33,10 +33,7 @@ import { CreateAccountOptions } from '../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import {
-  useGetSelectedChainQuery,
-  useLockWalletMutation,
-} from '../../../common/slices/api.slice'
+import { useLockWalletMutation } from '../../../common/slices/api.slice'
 import { openWalletSettings } from '../../../utils/routes-utils'
 import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
@@ -79,39 +76,23 @@ export const WalletSettingsMenu = (props: Props) => {
       LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_DISTRIBUTION_HIDDEN,
       true,
     )
-  // queries
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // mutations
   const [lockWallet] = useLockWalletMutation()
 
   // methods
   const onClickConnectedSites = React.useCallback(() => {
-    if (!selectedNetwork) {
-      return
-    }
+    // TODO(https://github.com/brave/brave-browser/issues/58322): Should be
+    // able to navigate to specific coin permissions.
+    const dappCoinName = 'ethereum'
+    const dappPermissionsUrl = `brave://settings/content/${dappCoinName}`
 
-    let route: string
-    switch (selectedNetwork.coin) {
-      case BraveWallet.CoinType.ETH:
-        route = 'ethereum'
-        break
-      case BraveWallet.CoinType.SOL:
-        route = 'solana'
-        break
-      case BraveWallet.CoinType.ADA:
-        route = 'cardano'
-        break
-      default:
-        throw new Error('Coin not supported')
-    }
-
-    chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
+    chrome.tabs.create({ url: dappPermissionsUrl }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-  }, [selectedNetwork])
+  }, [])
 
   const onClickHelpCenter = () => {
     if (chrome.tabs !== undefined) {
