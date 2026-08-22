@@ -12,14 +12,18 @@
 #include "base/functional/bind.h"
 #include "base/task/bind_post_task.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -121,15 +125,17 @@ bool SponsoredSitesFacade::IsEligible() const {
 }
 
 bool SponsoredSitesFacade::IsEnabled() const {
-  return pref_service_->GetBoolean(kNewTabPageShowSponsoredSites);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  return pref_service_->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 bool SponsoredSitesFacade::IsNewTabPageAdsEnabled() const {
   return pref_service_->GetBoolean(
              ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         pref_service_->GetBoolean(
-             ntp_background_images::prefs::
-                 kNewTabPageShowSponsoredImagesBackgroundImage);
+         IsEnabled();
 }
 
 bool SponsoredSitesFacade::IsRewardsWalletConnected() const {

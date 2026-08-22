@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
@@ -56,6 +57,10 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/request_otr/common/pref_names.h",
     "//components/translate/core/browser/translate_pref_names.h",
   ]
+
+  if (enable_brave_ads) {
+    sources += [ "//brave/components/brave_ads/core/public/prefs/pref_names.h" ]
+  }
 
   if (enable_brave_wallet) {
     sources += [ "//brave/components/decentralized_dns/core/pref_names.h" ]

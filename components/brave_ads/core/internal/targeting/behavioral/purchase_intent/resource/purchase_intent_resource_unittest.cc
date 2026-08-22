@@ -121,9 +121,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   // Act
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   EXPECT_FALSE(resource_->IsLoaded());
@@ -149,7 +147,6 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
   test::OptOutOfNewTabPageAds();
-  test::OptOutOfSearchResultAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -172,7 +169,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   ASSERT_FALSE(resource_->IsLoaded());
 
   // Act
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
   EXPECT_FALSE(resource_->IsLoaded());

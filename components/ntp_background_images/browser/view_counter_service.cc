@@ -21,12 +21,12 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -38,6 +38,11 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace ntp_background_images {
 
@@ -100,10 +105,12 @@ ViewCounterService::ViewCounterService(
       brave_rewards::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
+      brave_ads::prefs::kSponsoredEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   pref_change_registrar_.Add(
       prefs::kNewTabPageShowBackgroundImage,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
@@ -307,10 +314,12 @@ void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 
-  if (pref_name == prefs::kNewTabPageShowBackgroundImage ||
-      pref_name == prefs::kNewTabPageShowSponsoredImagesBackgroundImage) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (pref_name == brave_ads::prefs::kSponsoredEnabled ||
+      pref_name == prefs::kNewTabPageShowBackgroundImage) {
     RecordSponsoredImagesEnabledP3A(prefs_);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   ResetModel();
 }
@@ -370,9 +379,12 @@ bool ViewCounterService::IsShowBackgroundImageOptedIn() const {
 }
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
-  return prefs_->GetBoolean(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage) &&
-        is_supported_locale_;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  return prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled) &&
+         is_supported_locale_;
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void ViewCounterService::OnGetCurrentBrandedWallpaper(

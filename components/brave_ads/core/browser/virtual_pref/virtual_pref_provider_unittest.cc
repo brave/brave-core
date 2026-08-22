@@ -14,6 +14,7 @@
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/test/virtual_pref_provider_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -34,10 +35,7 @@ class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
         true);
     prefs_.registry()->RegisterBooleanPref(
         ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-    prefs_.registry()->RegisterBooleanPref(
-        ntp_background_images::prefs::
-            kNewTabPageShowSponsoredImagesBackgroundImage,
-        true);
+    prefs_.registry()->RegisterBooleanPref(prefs::kSponsoredEnabled, true);
     prefs_.registry()->RegisterBooleanPref(
         brave_rewards::prefs::kDisabledByPolicy, false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
@@ -144,9 +142,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest,
   // Arrange
   prefs_.SetBoolean(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
-  prefs_.SetBoolean(ntp_background_images::prefs::
-                        kNewTabPageShowSponsoredImagesBackgroundImage,
-                    false);
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
 
   // Act
   const base::DictValue virtual_prefs = GetVirtualPrefs();

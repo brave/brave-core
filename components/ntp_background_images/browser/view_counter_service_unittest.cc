@@ -20,6 +20,8 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -203,6 +205,7 @@ class ViewCounterServiceTest : public testing::Test {
 
   void SetUp() override {
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
+    brave_ads::RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
 
@@ -251,8 +254,7 @@ class ViewCounterServiceTest : public testing::Test {
   }
 
   void SetSponsoredImagesVisibility(bool should_show) {
-    prefs_.SetBoolean(prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
-                      should_show);
+    prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, should_show);
   }
 
   void MockSponsoredImagesData(WallpaperType wallpaper_type) {
