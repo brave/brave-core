@@ -752,8 +752,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequestShieldsOff) {
 // See crbug.com/1372291.
 #if BUILDFLAG(IS_ANDROID)
 #define MAYBE_WebSocketBlocking DISABLED_WebSocketBlocking
+#define MAYBE_SharedWorkerWebSocketBlockingRespectsShieldsSetting \
+  DISABLED_SharedWorkerWebSocketBlockingRespectsShieldsSetting
 #else
 #define MAYBE_WebSocketBlocking WebSocketBlocking
+#define MAYBE_SharedWorkerWebSocketBlockingRespectsShieldsSetting \
+  SharedWorkerWebSocketBlockingRespectsShieldsSetting
 #endif
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
@@ -773,6 +777,31 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
   EXPECT_EQ(false,
             EvalJs(contents, content::JsReplace("checkWebsocketConnection($1)",
                                                 ws_url.spec())));
+  EXPECT_EQ(false,
+            EvalJs(contents, content::JsReplace(
+                                 "checkSharedWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    AdBlockServiceTest,
+    MAYBE_SharedWorkerWebSocketBlockingRespectsShieldsSetting) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  const GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
+  NavigateToURL(url);
+
+  const GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace(
+                             "checkSharedWorkerWebsocketConnection($1)",
+                             ws_url.spec())));
 }
 
 // Load a page with an ad image which is matched by a filter in the additional
