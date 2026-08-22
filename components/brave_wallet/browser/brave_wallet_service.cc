@@ -44,6 +44,8 @@
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -51,6 +53,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -238,7 +241,8 @@ BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* profile_prefs,
-    PrefService* local_state)
+    PrefService* local_state,
+    HostContentSettingsMap* host_content_settings_map)
     : profile_prefs_(profile_prefs),
       delegate_(std::move(delegate)),
       network_manager_(std::make_unique<NetworkManager>(profile_prefs)),
@@ -261,6 +265,7 @@ BraveWalletService::BraveWalletService(
       simulation_service_(
           std::make_unique<SimulationService>(url_loader_factory, this)),
       ipfs_service_(std::make_unique<BraveWalletIpfsService>(profile_prefs)),
+      host_content_settings_map_(host_content_settings_map),
       weak_ptr_factory_(this) {
   CHECK(delegate_);
   keyring_service_->SetDelegate(delegate_.get());
@@ -298,7 +303,11 @@ BraveWalletService::BraveWalletService(
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
-      profile_prefs, CreateTxStorage(*delegate_));
+      profile_prefs, CreateTxStorage(*delegate_),
+      base::BindRepeating(static_cast<bool (BraveWalletService::*)(
+                              const url::Origin&, const mojom::AccountIdPtr&)>(
+                              &BraveWalletService::HasPermissionSync),
+                          base::Unretained(this)));
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
@@ -306,6 +315,9 @@ BraveWalletService::BraveWalletService(
       *simple_hash_client_, profile_prefs);
 
   delegate_->AddObserver(this);
+  if (host_content_settings_map_) {
+    host_content_settings_map_->AddObserver(this);
+  }
 
   keyring_service_->SetAutolockEnabled(delegate_->IsAutolockEnabled());
   keyring_service_->set_wallet_reset_cb(base::BindRepeating(
@@ -359,7 +371,11 @@ BraveWalletService::BraveWalletService(
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
 
-BraveWalletService::~BraveWalletService() = default;
+BraveWalletService::~BraveWalletService() {
+  if (host_content_settings_map_) {
+    host_content_settings_map_->RemoveObserver(this);
+  }
+}
 
 // For unit tests
 void BraveWalletService::RemovePrefListenersForTests() {
@@ -1280,6 +1296,84 @@ void BraveWalletService::OnActiveOriginChanged(
     const mojom::OriginInfoPtr& origin_info) {
   for (const auto& observer : observers_) {
     observer->OnActiveOriginChanged(origin_info.Clone());
+  }
+}
+
+void BraveWalletService::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type) {
+  if (content_type != ContentSettingsType::BRAVE_ETHEREUM &&
+      content_type != ContentSettingsType::BRAVE_SOLANA &&
+      content_type != ContentSettingsType::BRAVE_CARDANO) {
+    return;
+  }
+  tx_service_->RejectUnapprovedTransactionsWithoutPermission();
+  DrainSignMessageRequestsWithoutPermission();
+  DrainSignSolTransactionsRequestsWithoutPermission();
+  DrainSignCardanoTransactionRequestsWithoutPermission();
+}
+
+void BraveWalletService::DrainSignMessageRequestsWithoutPermission() {
+  std::vector<PendingSignMessageRequest> to_drain;
+  for (auto it = sign_message_requests_.begin();
+       it != sign_message_requests_.end();) {
+    auto origin =
+        url::Origin::Create(GURL(it->request->origin_info->origin_spec));
+    if (HasPermissionSync(origin, it->request->account_id)) {
+      ++it;
+      continue;
+    }
+    to_drain.push_back(std::move(*it));
+    it = sign_message_requests_.erase(it);
+  }
+  // approved=false so the provider rejects the request as if the user
+  // declined it.
+  for (auto& request : to_drain) {
+    std::move(request.callback).Run(false, nullptr, std::nullopt);
+  }
+}
+
+void BraveWalletService::DrainSignSolTransactionsRequestsWithoutPermission() {
+  std::vector<SignSolTransactionsRequestCallback> to_drain;
+  auto req_it = sign_sol_transactions_requests_.begin();
+  auto cb_it = sign_sol_transactions_callbacks_.begin();
+  while (req_it != sign_sol_transactions_requests_.end()) {
+    auto origin =
+        url::Origin::Create(GURL((*req_it)->origin_info->origin_spec));
+    if (HasPermissionSync(origin, (*req_it)->from_account_id)) {
+      ++req_it;
+      ++cb_it;
+      continue;
+    }
+    to_drain.push_back(std::move(*cb_it));
+    req_it = sign_sol_transactions_requests_.erase(req_it);
+    cb_it = sign_sol_transactions_callbacks_.erase(cb_it);
+  }
+  for (auto& callback : to_drain) {
+    std::move(callback).Run(false, {}, std::nullopt);
+  }
+}
+
+void BraveWalletService::
+    DrainSignCardanoTransactionRequestsWithoutPermission() {
+  std::vector<SignCardanoTransactionRequestCallback> to_drain;
+  auto req_it = sign_cardano_transaction_requests_.begin();
+  auto cb_it = sign_cardano_transaction_callbacks_.begin();
+  while (req_it != sign_cardano_transaction_requests_.end()) {
+    auto origin =
+        url::Origin::Create(GURL((*req_it)->origin_info->origin_spec));
+    if (HasPermissionSync(origin, (*req_it)->account_id)) {
+      ++req_it;
+      ++cb_it;
+      continue;
+    }
+    to_drain.push_back(std::move(*cb_it));
+    req_it = sign_cardano_transaction_requests_.erase(req_it);
+    cb_it = sign_cardano_transaction_callbacks_.erase(cb_it);
+  }
+  for (auto& callback : to_drain) {
+    std::move(callback).Run(false, std::nullopt);
   }
 }
 

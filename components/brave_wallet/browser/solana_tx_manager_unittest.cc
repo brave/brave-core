@@ -126,8 +126,10 @@ class SolanaTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, &prefs_,
-        CreateTxStorageForTest(temp_dir_.GetPath()));
+        *keyring_service_, &prefs_, CreateTxStorageForTest(temp_dir_.GetPath()),
+        base::BindRepeating([](const url::Origin&, const mojom::AccountIdPtr&) {
+          return true;
+        }));
 
     CreateWallet();
 

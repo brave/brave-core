@@ -21,6 +21,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -208,7 +209,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
-        &local_state_);
+        &local_state_, host_content_settings_map());
     brave_wallet_service_->asset_ratio_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
 
@@ -395,6 +396,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   ~EthereumProviderImplUnitTest() override = default;
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
+  BraveWalletService* brave_wallet_service() {
+    return brave_wallet_service_.get();
+  }
   TxService* tx_service() { return brave_wallet_service_->tx_service(); }
   JsonRpcService* json_rpc_service() {
     return brave_wallet_service_->json_rpc_service();
@@ -1597,6 +1601,108 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
     Unlock();
     ResetEthereumPermission(account_0->account_id);
   }
+}
+
+TEST_F(EthereumProviderImplUnitTest,
+       SignMessage_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  Navigate(GURL("https://brave.com"));
+  AddEthereumPermission(account_0->account_id);
+
+  const std::string message = "0x1234";
+  std::string signature;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+
+  base::RunLoop run_loop;
+  provider()->SignMessage(
+      account_0->address, message,
+      base::BindLambdaForTesting(
+          [&](mojom::EthereumProviderResponsePtr response) {
+            signature.clear();
+            if (response->formed_response.type() == base::Value::Type::STRING) {
+              signature = response->formed_response.GetString();
+            }
+            GetErrorCodeMessage(std::move(response->formed_response), &error,
+                                &error_message);
+            run_loop.Quit();
+          }),
+      base::Value());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !brave_wallet_service()->GetPendingSignMessageRequestsSync().empty();
+  }));
+
+  // Revoke the site's authorization while the request is still queued.
+  // This triggers the drain, which rejects the request.
+  ResetEthereumPermission(account_0->account_id);
+  run_loop.Run();
+
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(EthereumProviderImplUnitTest,
+       SignMessage_MultipleRequestsPermissionRevoked_AllDrained) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  Navigate(GURL("https://brave.com"));
+  AddEthereumPermission(account_0->account_id);
+
+  const std::string message = "0x1234";
+  std::vector<std::string> signatures;
+  std::vector<mojom::ProviderError> errors;
+  std::vector<std::string> error_messages;
+
+  base::RunLoop run_loop;
+  int pending = 2;
+  auto on_response = [&](mojom::EthereumProviderResponsePtr response) {
+    std::string signature;
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      signature = response->formed_response.GetString();
+    }
+    signatures.push_back(signature);
+    mojom::ProviderError error = mojom::ProviderError::kUnknown;
+    std::string error_message;
+    GetErrorCodeMessage(std::move(response->formed_response), &error,
+                        &error_message);
+    errors.push_back(error);
+    error_messages.push_back(error_message);
+    if (--pending == 0) {
+      run_loop.Quit();
+    }
+  };
+
+  provider()->SignMessage(account_0->address, message,
+                          base::BindLambdaForTesting(on_response),
+                          base::Value());
+  provider()->SignMessage(account_0->address, message,
+                          base::BindLambdaForTesting(on_response),
+                          base::Value());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return brave_wallet_service()->GetPendingSignMessageRequestsSync().size() ==
+           2u;
+  }));
+
+  // Revoke permission — the drain must reject both queued requests.
+  ResetEthereumPermission(account_0->account_id);
+  run_loop.Run();
+
+  ASSERT_EQ(signatures.size(), 2u);
+  ASSERT_EQ(errors.size(), 2u);
+  ASSERT_EQ(error_messages.size(), 2u);
+  for (size_t i = 0; i < 2; ++i) {
+    EXPECT_TRUE(signatures[i].empty()) << "i=" << i;
+    EXPECT_EQ(errors[i], mojom::ProviderError::kUserRejectedRequest)
+        << "i=" << i;
+    EXPECT_EQ(error_messages[i],
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST))
+        << "i=" << i;
+  }
+  EXPECT_TRUE(
+      brave_wallet_service()->GetPendingSignMessageRequestsSync().empty());
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {

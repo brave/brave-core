@@ -31,6 +31,7 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -57,10 +58,12 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                      PolkadotWalletService* polkadot_wallet_service,
                      KeyringService& keyring_service,
                      PrefService* prefs,
-                     std::unique_ptr<TxStorage> tx_storage)
+                     std::unique_ptr<TxStorage> tx_storage,
+                     OriginPermissionChecker origin_permission_checker)
     : prefs_(prefs),
       json_rpc_service_(json_rpc_service),
-      tx_storage_(std::move(tx_storage)) {
+      tx_storage_(std::move(tx_storage)),
+      origin_permission_checker_(std::move(origin_permission_checker)) {
   account_resolver_delegate_ =
       std::make_unique<AccountResolverDelegateImpl>(keyring_service);
 
@@ -739,6 +742,38 @@ void TxService::ProcessBtcHardwareSignature(
 
 TxStorage* TxService::GetTxStorageForTesting() {
   return tx_storage_.get();
+}
+
+bool TxService::HasOriginPermission(const url::Origin& origin,
+                                    const mojom::AccountIdPtr& account_id) {
+  if (!origin_permission_checker_) {
+    return false;
+  }
+  return origin_permission_checker_.Run(origin, account_id);
+}
+
+void TxService::RejectUnapprovedTransactionsWithoutPermission() {
+  for (auto& tx_manager : tx_manager_map_) {
+    auto transactions =
+        tx_manager.second->GetAllTransactionInfo(std::nullopt, std::nullopt);
+    for (auto& tx : transactions) {
+      if (tx->tx_status != mojom::TransactionStatus::Unapproved) {
+        continue;
+      }
+      if (!tx->origin_info) {
+        continue;
+      }
+      auto origin = url::Origin::Create(GURL(tx->origin_info->origin_spec));
+      if (origin.scheme() != url::kHttpScheme &&
+          origin.scheme() != url::kHttpsScheme) {
+        continue;
+      }
+      if (HasOriginPermission(origin, tx->from_account_id)) {
+        continue;
+      }
+      tx_manager.second->RejectTransaction(tx->id, base::BindOnce([](bool) {}));
+    }
+  }
 }
 
 }  // namespace brave_wallet

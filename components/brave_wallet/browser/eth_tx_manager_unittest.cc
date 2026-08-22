@@ -37,6 +37,7 @@
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/value_store/value_store_frontend.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -248,7 +249,10 @@ class EthTxManagerUnitTest : public testing::Test {
     tx_storage_ptr_ = tx_storage.get();
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, GetPrefs(), std::move(tx_storage));
+        *keyring_service_, GetPrefs(), std::move(tx_storage),
+        base::BindRepeating([](bool* granted, const url::Origin&,
+                               const mojom::AccountIdPtr&) { return *granted; },
+                            base::Unretained(&permission_granted_)));
 
     GetAccountUtils().CreateWallet(kMnemonicAbandonAbandon,
                                    kTestWalletPassword);
@@ -453,6 +457,7 @@ class EthTxManagerUnitTest : public testing::Test {
   std::unique_ptr<TxService> tx_service_;
   raw_ptr<TxStorage> tx_storage_ptr_ = nullptr;
   std::vector<uint8_t> data_;
+  bool permission_granted_ = true;
 };
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
@@ -2485,6 +2490,32 @@ TEST_F(EthTxManagerUnitTest, GetSignedTransaction) {
             "6c7d89a26051f74c88016345785d8a000083000102c080a0353cfbd58e495f3f39"
             "32e9f39c21358ea1bddf6bc873b2c56ec18d21ba19226da016f887fee07e5fa871"
             "591135699691adda8d2df99383a4a16172eca36421077a");
+}
+
+TEST_F(EthTxManagerUnitTest,
+       RejectUnapprovedTransactionsWithoutPermission_RejectsPendingTx) {
+  auto tx_data =
+      mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  eth_tx_manager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data), from(), GetOrigin(), false,
+      add_tx_future.GetCallback());
+  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
+
+  ASSERT_EQ(eth_tx_manager()->GetTransactionInfo(tx_meta_id)->tx_status,
+            mojom::TransactionStatus::Unapproved);
+
+  permission_granted_ = false;
+
+  tx_service_->RejectUnapprovedTransactionsWithoutPermission();
+
+  EXPECT_EQ(eth_tx_manager()->GetTransactionInfo(tx_meta_id)->tx_status,
+            mojom::TransactionStatus::Rejected);
 }
 
 }  //  namespace brave_wallet
