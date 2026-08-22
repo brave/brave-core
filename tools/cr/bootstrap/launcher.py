@@ -256,15 +256,17 @@ class SelfUpdater:
 
         Runs `tarball_installer.py` with the same runtime the launcher is
         using, assuming a bare, stdlib-only environment.
+
+        A failed install propagates: the pinned target is missing or stale,
+        so running some other version of the tool (or none at all) would
+        hide the failure from whatever drives us. `check_call` names the
+        exact command in the failure, and the installer's own traceback has
+        already reached stderr.
         """
         installer = self.checkout / 'tools' / 'cr' / 'tarball_installer.py'
         if not installer.is_file():
             return
-        try:
-            subprocess.call([sys.executable, str(installer), self.entry])
-        except OSError as error:
-            sys.stderr.write(
-                f'launcher.py: could not run tarball_installer.py: {error}\n')
+        subprocess.check_call([sys.executable, str(installer), self.entry])
 
     def _load_extra_deps(self):
         """Import the checkout's stdlib-only `extra_deps` module, or None.
@@ -300,6 +302,10 @@ def resolve_invocation(tool: str, checkout: Path | None,
     are usually run from checkout, but certain tools are allowed to fallback to
     system binaries if nothing is found in checkout, when `allow_fallback` is
     True.
+
+    A failed deployment of a stale self-updatable target propagates: that is
+    never fallback-worthy, since the checkout asked for a pinned version and
+    could not get it.
     """
     shim = find_shim_target(tool)
     invocation = None
