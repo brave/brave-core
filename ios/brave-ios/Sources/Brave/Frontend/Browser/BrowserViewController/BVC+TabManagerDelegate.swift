@@ -176,7 +176,19 @@ extension BrowserViewController: TabManagerDelegate {
       )
       if let sheet = quickViewController.sheetPresentationController {
         sheet.prefersGrabberVisible = true
-        sheet.detents = [.large()]
+
+        let customDetentId = "customDetent"
+        let customDetent = UISheetPresentationController.Detent.custom(
+          identifier: .init(customDetentId)
+        ) { context in
+          context.maximumDetentValue * 0.95
+        }
+        sheet.detents = [
+          customDetent,
+          .large(),
+        ]
+        sheet.selectedDetentIdentifier = .init(customDetentId)
+
         sheet.prefersEdgeAttachedInCompactHeight = true
       }
       self.present(quickViewController, animated: true)
