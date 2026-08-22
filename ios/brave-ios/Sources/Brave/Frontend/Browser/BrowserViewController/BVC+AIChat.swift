@@ -50,6 +50,13 @@ extension BrowserViewController {
     }
   }
 
+  func presentLeoVoiceInput() {
+    handleVoiceRecognitionRequest { [weak self] query in
+      guard let self, let query else { return }
+      self.openBraveLeo(with: query)
+    }
+  }
+
   private func handleVoiceRecognitionRequest(_ completion: @escaping (String?) -> Void) {
     if !speechRecognizer.isVoiceSearchAvailable {
       completion(nil)
