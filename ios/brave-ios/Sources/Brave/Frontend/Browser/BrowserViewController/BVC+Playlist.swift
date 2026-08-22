@@ -302,50 +302,54 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
       }
     }
 
-    if PlaylistManager.shared.isDiskSpaceEncumbered()
-      && !BrowserViewController.didShowStorageFullWarning
-    {
-      BrowserViewController.didShowStorageFullWarning = true
-      let alert = UIAlertController(
-        title: Strings.PlayList.playlistDiskSpaceWarningTitle,
-        message: Strings.PlayList.playlistDiskSpaceWarningMessage,
-        preferredStyle: .alert
-      )
+    Task { @MainActor in
+      let shouldWarnAboutStorage =
+        await PlaylistManager.shared.isDiskSpaceEncumberedAfterReclamation()
+        && !BrowserViewController.didShowStorageFullWarning
 
-      alert.addAction(
-        UIAlertAction(
-          title: Strings.PlayList.playlistDiskSpaceAddAnywayButtonTitle,
-          style: .default,
-          handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.openInPlaylistActivityItem = (enabled: true, item: item)
-            self.addToPlayListActivityItem = nil
-
-            AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-            addItemToPlaylist(item, folderUUID, completion)
-          }
+      if shouldWarnAboutStorage, self.view.window != nil {
+        BrowserViewController.didShowStorageFullWarning = true
+        let alert = UIAlertController(
+          title: Strings.PlayList.playlistDiskSpaceWarningTitle,
+          message: Strings.PlayList.playlistDiskSpaceWarningMessage,
+          preferredStyle: .alert
         )
-      )
 
-      alert.addAction(
-        UIAlertAction(
-          title: Strings.cancelButtonTitle,
-          style: .cancel,
-          handler: { _ in
-            completion?(false)
-          }
+        alert.addAction(
+          UIAlertAction(
+            title: Strings.PlayList.playlistDiskSpaceAddAnywayButtonTitle,
+            style: .default,
+            handler: { [weak self] _ in
+              guard let self = self else { return }
+              self.openInPlaylistActivityItem = (enabled: true, item: item)
+              self.addToPlayListActivityItem = nil
+
+              AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
+              addItemToPlaylist(item, folderUUID, completion)
+            }
+          )
         )
-      )
 
-      // Sometimes the MENU controller is being displayed and cannot present the alert
-      // So we need to ask it to present the alert
-      (presentedViewController ?? self).present(alert, animated: true, completion: nil)
-    } else {
-      openInPlaylistActivityItem = (enabled: true, item: item)
-      addToPlayListActivityItem = nil
+        alert.addAction(
+          UIAlertAction(
+            title: Strings.cancelButtonTitle,
+            style: .cancel,
+            handler: { _ in
+              completion?(false)
+            }
+          )
+        )
 
-      AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-      addItemToPlaylist(item, folderUUID, completion)
+        // Sometimes the MENU controller is being displayed and cannot present the alert
+        // So we need to ask it to present the alert
+        (presentedViewController ?? self).present(alert, animated: true, completion: nil)
+      } else {
+        openInPlaylistActivityItem = (enabled: true, item: item)
+        addToPlayListActivityItem = nil
+
+        AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
+        addItemToPlaylist(item, folderUUID, completion)
+      }
     }
   }
 }
