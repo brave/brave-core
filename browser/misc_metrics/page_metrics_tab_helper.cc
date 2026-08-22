@@ -25,7 +25,10 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/restore_type.h"
+#include "ui/base/base_window.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/rect.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_session_state.h"
@@ -77,8 +80,18 @@ void PageMetricsTabHelper::DidFinishNavigation(
   if (is_otr) {
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);
   } else {
-    brave_search::BackupResultsServiceImpl::RecordLastViewSize(
-        g_browser_process->local_state(), web_contents()->GetSize());
+    gfx::Rect window_bounds;
+    auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents());
+    auto* browser_window = tab ? tab->GetBrowserWindowInterface() : nullptr;
+    if (auto* window = browser_window ? browser_window->GetWindow() : nullptr) {
+      window_bounds = window->GetBounds();
+      gfx::Point origin = window_bounds.origin();
+      origin.SetToMax(gfx::Point());
+      window_bounds.set_origin(origin);
+    }
+    brave_search::BackupResultsServiceImpl::RecordLastViewGeometry(
+        g_browser_process->local_state(), web_contents()->GetSize(),
+        window_bounds);
   }
 
   bool is_reload = false;
