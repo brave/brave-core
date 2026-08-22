@@ -53,7 +53,6 @@ var package = Package(
     .library(name: "Web", targets: ["Web"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
     .library(name: "Origin", targets: ["Origin"]),
-    .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
   ],
@@ -619,7 +618,6 @@ var package = Package(
     .testTarget(name: "BrowserMenuTests", dependencies: ["BrowserMenu"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
-    .executableTarget(name: "LeoAssetCatalogGenerator"),
     .target(
       name: "BraveTalk",
       dependencies: [
