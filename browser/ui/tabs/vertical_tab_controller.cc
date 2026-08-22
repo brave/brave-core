@@ -54,6 +54,16 @@ bool VerticalTabController::SupportsBraveVerticalTabs() const {
     return false;
   }
 
+  if (base::FeatureList::IsEnabled(tabs::kTabStripUnification)) {
+    // Our vertical tabs assume the horizontal tab strip region view is always a
+    // `HorizontalTabStripRegionViewOld` (aliased as
+    // `HorizontalTabStripRegionView`) and reach into its `tab_strip_` field
+    // directly. Under `kTabStripUnification`, the horizontal region view can
+    // instead be a `HorizontalTabStripRegionViewNew`, which has no such field,
+    // so unsupported for now.
+    return false;
+  }
+
   return type_ == BrowserWindowInterface::TYPE_NORMAL;
 }
 
