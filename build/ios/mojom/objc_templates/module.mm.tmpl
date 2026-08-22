@@ -32,6 +32,10 @@
 {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} = {{const|const_objc_assign}};
 {% endfor %}
 
+{%- for enum in nullable_enums %}
+{%    include "enum_box_implementation.tmpl" %}
+{%- endfor %}
+
 {%- if generate_namespace %}
 @implementation {{class_prefix}}
 @end

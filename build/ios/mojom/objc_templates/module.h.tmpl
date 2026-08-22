@@ -44,6 +44,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+{%- for enum in nullable_enums %}
+{%   include "enum_box_declaration.tmpl" %}
+{% endfor %}
+
 {# Constants #}
 {%- for const in constants %}
 {%-   set name = const.name|objc_enum_formatter -%}
