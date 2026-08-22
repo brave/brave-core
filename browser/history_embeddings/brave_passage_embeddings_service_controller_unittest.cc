@@ -147,4 +147,20 @@ TEST_F(BravePassageEmbeddingsServiceControllerTest,
       base::test::RunUntil([&] { return !controller_->IsModelAvailable(); }));
 }
 
+// Losing the component takes the model with it: the master switch turning off
+// unregisters the component and removes its files, so the paths published from
+// its install dir are gone.
+TEST_F(BravePassageEmbeddingsServiceControllerTest,
+       ClearedInstallDirClearsModel) {
+  const base::FilePath component = CreateComponentDir("with-model-info");
+  WriteModelInfo(component, /*version=*/13);
+  InstallComponent(component);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return observer_.metadata().has_value(); }));
+  ASSERT_TRUE(controller_->IsModelAvailable());
+
+  InstallComponent(base::FilePath());
+  EXPECT_FALSE(controller_->IsModelAvailable());
+}
+
 }  // namespace passage_embeddings

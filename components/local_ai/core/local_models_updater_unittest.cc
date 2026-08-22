@@ -34,6 +34,18 @@ namespace {
 constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("BraveLocalAIModels");
 constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
+
+class TestUpdaterStateObserver : public LocalModelsUpdaterState::Observer {
+ public:
+  void OnLocalModelsReady(const base::FilePath& install_dir) override {
+    ++ready_count;
+  }
+  void OnLocalModelsUnavailable() override { ++unavailable_count; }
+
+  int ready_count = 0;
+  int unavailable_count = 0;
+};
+
 }  // namespace
 
 class LocalModelsUpdaterUnitTest : public testing::Test {
@@ -57,7 +69,9 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
   }
 
   void TearDown() override {
-    // Clear singleton state to avoid polluting other test suites.
+    // Clear singleton state to avoid polluting other test suites, and to drop
+    // the registrar's pointers to the per-test cus and local state.
+    ShutdownLocalModelsComponentRegistration();
     LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
   }
 
@@ -120,6 +134,10 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  // Nothing was registered, so the directory is ours to remove.
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
   ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
@@ -134,6 +152,9 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
   feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
 
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
   ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
@@ -155,11 +176,138 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenMasterSwitchOff) {
 
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
   ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
+}
+
+// Tests that ComponentReady() is ignored while the master switch is off. An
+// unregistration is deferred behind an in-flight update, so that update still
+// installs and reports ready after the switch turned off.
+TEST_F(LocalModelsUpdaterUnitTest, ComponentReadyIgnoredWhenMasterSwitchOff) {
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(false));
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+
+  LocalModelsComponentInstallerPolicy policy;
+  policy.ComponentReady(base::Version("1.0.0"), install_dir_,
+                        base::DictValue());
+  EXPECT_TRUE(LocalModelsUpdaterState::GetInstance()->GetInstallDir().empty());
+}
+
+// Tests that observers are told when the models go away, so they can drop
+// anything derived from the install dir.
+TEST_F(LocalModelsUpdaterUnitTest, ObserverNotifiedWhenModelsGoAway) {
+  auto* state = LocalModelsUpdaterState::GetInstance();
+  TestUpdaterStateObserver observer;
+  state->AddObserver(&observer);
+
+  state->SetInstallDir(install_dir_);
+  EXPECT_EQ(observer.ready_count, 1);
+  EXPECT_EQ(observer.unavailable_count, 0);
+
+  state->SetInstallDir(base::FilePath());
+  EXPECT_EQ(observer.ready_count, 1);
+  EXPECT_EQ(observer.unavailable_count, 1);
+
+  state->RemoveObserver(&observer);
+}
+
+// Tests that the component is unregistered and removed when the local AI
+// master switch is turned off after the component was already registered.
+// Brave Origin verifies the purchase asynchronously, so the switch can only
+// reach its managed value after components have been registered.
+TEST_F(LocalModelsUpdaterUnitTest, UnregisterWhenMasterSwitchTurnsOff) {
+  base::RunLoop run_loop;
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_))
+      .Times(1)
+      .WillOnce(testing::Return(true));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(1)
+      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  run_loop.Run();
+
+  LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir_);
+
+  // The component was registered, so ComponentInstaller::Uninstall() owns
+  // removing the files; we only drop the recorded install dir.
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(true));
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+
+  EXPECT_TRUE(LocalModelsUpdaterState::GetInstance()->GetInstallDir().empty());
+}
+
+// Tests that nothing is registered when the master switch turns off between
+// ManageLocalModelsComponentRegistration() and the registration it queues.
+TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenMasterSwitchTurnsOffFirst) {
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(false));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(0);
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
+}
+
+// Tests that a registration in flight is undone when the master switch turns
+// off while ComponentInstaller is registering. Sync() runs before the component
+// reaches the service, so it has nothing to unregister and the teardown has to
+// happen again once registration lands.
+TEST_F(LocalModelsUpdaterUnitTest,
+       UnregisterWhenMasterSwitchTurnsOffWhileRegistering) {
+  int unregister_count = 0;
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .WillRepeatedly([&unregister_count]() {
+        ++unregister_count;
+        return true;
+      });
+  // ComponentInstaller::FinishRegistration() registers before it runs our
+  // callback, so this is the moment the switch can turn off unnoticed.
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_)).WillOnce([this]() {
+    local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+    return true;
+  });
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(0);
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+
+  // One unregister from the pref change, one from the registration landing
+  // afterwards.
+  ASSERT_TRUE(base::test::RunUntil([&]() { return unregister_count == 2; }));
+}
+
+// Tests that the component is registered when the local AI master switch is
+// turned on after startup.
+TEST_F(LocalModelsUpdaterUnitTest, RegisterWhenMasterSwitchTurnsOn) {
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .Times(1)
+      .WillOnce(testing::Return(false));
+  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_))
+      .Times(1)
+      .WillOnce(testing::Return(true));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(1)
+      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+  local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
+  run_loop.Run();
 }
 
 }  // namespace local_ai

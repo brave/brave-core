@@ -16,9 +16,15 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "base/location.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -27,6 +33,7 @@
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client.h"
 #include "crypto/sha2.h"
@@ -52,9 +59,125 @@ base::FilePath GetComponentDir() {
   return components_dir.Append(kComponentInstallDir);
 }
 
-void DeleteComponentDirectory() {
-  base::DeletePathRecursively(GetComponentDir());
-}
+// Keeps the component registration in sync with the `kBraveLocalAIEnabled`
+// master switch for the whole session, so a switch that only turns off after
+// components are registered still tears the component back down.
+class LocalModelsComponentRegistrar {
+ public:
+  static LocalModelsComponentRegistrar* GetInstance() {
+    static base::NoDestructor<LocalModelsComponentRegistrar> instance;
+    return instance.get();
+  }
+
+  LocalModelsComponentRegistrar(const LocalModelsComponentRegistrar&) = delete;
+  LocalModelsComponentRegistrar& operator=(
+      const LocalModelsComponentRegistrar&) = delete;
+
+  // At most once per process, or once per Shutdown(): this is a singleton and
+  // PrefChangeRegistrar DCHECKs when the same pref is registered twice.
+  void Start(component_updater::ComponentUpdateService* cus,
+             PrefService* local_state) {
+    CHECK(pref_change_registrar_.IsEmpty());
+    cus_ = cus;
+    if (local_state) {
+      pref_change_registrar_.Init(local_state);
+      pref_change_registrar_.Add(
+          prefs::kBraveLocalAIEnabled,
+          base::BindRepeating(&LocalModelsComponentRegistrar::Sync,
+                              base::Unretained(this)));
+    }
+    Sync();
+  }
+
+  void Shutdown() {
+    pref_change_registrar_.Reset();
+    cus_ = nullptr;
+  }
+
+  // The master switch on its own. ComponentReady() is gated on this rather
+  // than IsEnabled(), because it also fires for a policy that was constructed
+  // without the registrar ever being started; defaulting to enabled then
+  // matches the pref's registered default.
+  bool IsMasterSwitchEnabled() const {
+    const PrefService* local_state = pref_change_registrar_.prefs();
+    return !local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled);
+  }
+
+ private:
+  friend base::NoDestructor<LocalModelsComponentRegistrar>;
+
+  LocalModelsComponentRegistrar() = default;
+  ~LocalModelsComponentRegistrar() = default;
+
+  bool IsEnabled() const {
+    return cus_ && pref_change_registrar_.prefs() && IsMasterSwitchEnabled() &&
+           base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+  }
+
+  void Sync() {
+    if (!IsEnabled()) {
+      Unregister();
+      return;
+    }
+    // Hop through the file task runner so that a delete queued by an earlier
+    // Unregister() has finished before the component installs into that same
+    // directory again.
+    file_task_runner_->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(),
+        base::BindOnce(&LocalModelsComponentRegistrar::Register,
+                       base::Unretained(this)));
+  }
+
+  void Register() {
+    if (!IsEnabled()) {
+      return;
+    }
+    auto installer =
+        base::MakeRefCounted<component_updater::ComponentInstaller>(
+            std::make_unique<LocalModelsComponentInstallerPolicy>());
+    installer->Register(
+        cus_, base::BindOnce(&LocalModelsComponentRegistrar::OnRegistered,
+                             base::Unretained(this)));
+  }
+
+  // ComponentInstaller::Register() reads the installed manifest on a blocking
+  // task runner before it registers, so the master switch can turn off in
+  // between - at which point Sync() has nothing to unregister yet.
+  void OnRegistered() {
+    if (!cus_) {
+      return;
+    }
+    if (!IsEnabled()) {
+      Unregister();
+      return;
+    }
+    brave_component_updater::BraveOnDemandUpdater::GetInstance()
+        ->EnsureInstalled(kComponentId);
+  }
+
+  void Unregister() {
+    // UnregisterComponent() reports whether the component was registered. When
+    // it was, ComponentInstaller::Uninstall() removes the installed versions
+    // and the directory on its own task runner, so deleting it here as well
+    // would race that. Clean up directly only when nothing was registered -
+    // a directory left behind by a previous session.
+    const bool was_registered = cus_ && cus_->UnregisterComponent(kComponentId);
+    LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
+    if (!was_registered) {
+      file_task_runner_->PostTask(
+          FROM_HERE, base::GetDeletePathRecursivelyCallback(GetComponentDir()));
+    }
+  }
+
+  raw_ptr<component_updater::ComponentUpdateService> cus_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
+  // Serializes our own directory deletes against the registrations that follow
+  // them.
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner_ =
+      base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+};
 
 }  // namespace
 
@@ -92,6 +215,12 @@ void LocalModelsComponentInstallerPolicy::ComponentReady(
     const base::FilePath& install_dir,
     base::DictValue manifest) {
   if (install_dir.empty()) {
+    return;
+  }
+  // An unregistration is deferred while an update is in flight, so this still
+  // fires for a download that started before the master switch turned off.
+  // Don't publish a component that is on its way back out.
+  if (!LocalModelsComponentRegistrar::GetInstance()->IsMasterSwitchEnabled()) {
     return;
   }
   LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
@@ -148,6 +277,7 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   install_dir_ = install_dir;
   if (install_dir.empty()) {
     embeddinggemma_litert_dir_ = base::FilePath();
+    observers_.Notify(&Observer::OnLocalModelsUnavailable);
     return;
   }
   embeddinggemma_litert_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir)
@@ -171,23 +301,11 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state) {
-  const bool local_ai_enabled =
-      local_state &&
-      local_state->GetBoolean(local_ai::prefs::kBraveLocalAIEnabled);
-  if (!local_ai_enabled || !cus ||
-      !base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    DeleteComponentDirectory();
-    return;
-  }
+  LocalModelsComponentRegistrar::GetInstance()->Start(cus, local_state);
+}
 
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<LocalModelsComponentInstallerPolicy>());
-  installer->Register(
-      // After Register, run the callback with component id.
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kComponentId);
-      }));
+void ShutdownLocalModelsComponentRegistration() {
+  LocalModelsComponentRegistrar::GetInstance()->Shutdown();
 }
 
 }  // namespace local_ai

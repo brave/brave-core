@@ -76,6 +76,12 @@ class LocalModelsUpdaterState {
    public:
     // Called when the local models are ready (component installed)
     virtual void OnLocalModelsReady(const base::FilePath& install_dir) = 0;
+
+    // Called when the local models are gone: the master switch turned off, so
+    // the component was unregistered and its directory removed. Observers must
+    // drop anything they derived from the install dir - the files behind it no
+    // longer exist.
+    virtual void OnLocalModelsUnavailable() = 0;
   };
 
   static LocalModelsUpdaterState* GetInstance();
@@ -106,9 +112,17 @@ class LocalModelsUpdaterState {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
+// Registers or unregisters the local models component to match the
+// `kBraveLocalAIEnabled` master switch, and keeps it in sync for the rest of
+// the session. The switch is managed by Brave Origin, whose purchase check is
+// asynchronous, so its value can land after components are registered.
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state);
+
+// Drops the references taken by ManageLocalModelsComponentRegistration(). Must
+// run before `cus` and `local_state` are destroyed.
+void ShutdownLocalModelsComponentRegistration();
 
 }  // namespace local_ai
 
