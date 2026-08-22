@@ -1344,3 +1344,31 @@ This is a mojom-specific application of [CS-014](#CS-014). The
 target produces it.
 
 ---
+
+<a id="CS-071"></a>
+
+## ✅ Use Security Origins (Not URLs) for Security Decisions on sites
+
+Chromium sometimes loads remote content under an opaque ("null-like") security
+origin — e.g. `<iframe sandbox>`, fenced frames — to reduce platform privileges
+(no cookies, etc.). That is distinct from _inferred_ origin cases such as
+`about:blank` or `blob:` frames. Opaque origins break the usual assumption that
+the security origin identifies the party controlling the content. Brave privacy
+interventions often need that controlling party, so they can still apply
+protections below what the platform grants.
+
+**For determining a frame's origin for Brave privacy interventions** — content
+filtering rules, scriptlet injection, content-settings-tied interventions
+(fingerprinting level, adblock aggressiveness), and same-site checks for
+cosmetic filtering at the default adblocking level — use this algorithm:
+
+1. If the frame has a non-opaque security origin, use that.
+2. Else if it is a network-loaded frame, use the origin the content was loaded
+   from.
+3. Else (locally set content such as `about:srcdoc`), use the security origin of
+   the parent frame.
+
+See also the
+[Chromium origin-vs-url guide](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/security/origin-vs-url.md).
+
+---
