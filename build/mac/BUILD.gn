@@ -9,7 +9,6 @@ import("//brave/updater/config.gni")
 import("//build/util/branding.gni")
 import("//build/util/process_version.gni")
 import("//chrome/common/features.gni")
-import("//chrome/updater/branding.gni")
 import("//chrome/version.gni")
 import("//components/crx_file/crx3.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -388,8 +387,7 @@ copy("copy_signing_config") {
 }
 
 copy("copy_browser_install_script") {
-  deps = [ "//chrome/updater/mac:browser_install_script" ]
-  sources = [ "$root_out_dir/$browser_product_name Packaging/updater/.install" ]
+  sources = [ "//chrome/installer/mac/keystone_install.sh" ]
   outputs = [ "$packaging_dir/keystone_install.sh" ]
 }
 

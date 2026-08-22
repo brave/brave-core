@@ -88,6 +88,11 @@ def Main():
     parser.add_argument('--enable_updater',
                         dest='enable_updater',
                         action='store_true')
+    parser.add_argument('--update_check_url',
+                        dest='update_check_url',
+                        action='store',
+                        default=None,
+                        help='Omaha 4 update server URL')
     args = parser.parse_args()
 
     # Read the plist into its parsed format. Convert the file to 'xml1' as
@@ -126,8 +131,14 @@ def Main():
     plist['SUEnableSystemProfiling'] = False
 
     if args.enable_updater:
+        if not args.update_check_url:
+            parser.error('--enable_updater requires --update_check_url')
         plist['KSProductID'] = plist['CFBundleIdentifier']
         plist['KSVersion'] = plist['CFBundleShortVersionString']
+        # keystone_install.sh requires this key. Its value probably does not
+        # matter: it gets passed to `ksadmin --register` but is never used
+        # there. We still provide a real value for forward compatibility.
+        plist['KSUpdateURL'] = args.update_check_url
 
     # Now that all keys have been mutated, rewrite the file.
     # Convert Info.plist to the format requested by the --format flag. Any
