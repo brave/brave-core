@@ -16,6 +16,8 @@ class WebContents;
 
 class Browser;
 
+// Offers to look up the current page in the Internet Archive after a failed
+// navigation. Call Show() when the user activates the Wayback Machine icon.
 class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(WaybackMachineBubbleView, views::BubbleDialogDelegateView)
 
@@ -26,11 +28,15 @@ class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
                            views::View* anchor);
   ~WaybackMachineBubbleView() override;
 
-  // views::BubbleDialogDelegateView override;
+  // views::View:
+  void AddedToWidget() override;
+
+  // views::BubbleDialogDelegateView:
   void OnWidgetVisibilityChanged(views::Widget* widget, bool visible) override;
 
  private:
   void OnAccepted();
+  void OnDontAskAgain();
 
   base::WeakPtr<content::WebContents> web_contents_;
 };

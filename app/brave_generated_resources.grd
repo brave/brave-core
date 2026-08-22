@@ -1027,23 +1027,26 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Web3 Domains
       </message>
       <!-- Brave Wayback Machine -->
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
-        Sorry, that page is missing.
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="Title on the Wayback Machine bubble when the page returned an error">
+        The page is missing
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
-        Couldn't load saved version
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT" desc="Title on the Wayback Machine bubble when no archived version exists">
+        No archived version is available
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
-        Do you want to check if a saved version is available on the Wayback Machine?
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT" desc="Body text on the Wayback Machine bubble asking whether to search the Internet Archive">
+        The Internet Archive saves past versions of many web pages. Do you want to look for this page in the Archive?
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
-        Wayback Machine couldn't find a saved version of this site.
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="Body text on the Wayback Machine bubble when the Internet Archive has no copy of this page">
+        Sorry, we checked the Internet Archive and it doesn't have an archived version of this page.
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
-        Check saved version
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="Button label that searches the Internet Archive for a saved copy of the page">
+        Look in the Archive
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Text to show for the no thanks button.">
-        Dismiss
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Button label that closes the Wayback Machine bubble without searching">
+        Cancel
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DONT_ASK_AGAIN_TEXT" desc="Button label that disables the Wayback Machine feature and closes the bubble">
+        Don't ask again
       </message>
 
       <!-- Brave's copyright statement -->
