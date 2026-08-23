@@ -10,6 +10,7 @@ import ConversationAreaButton from '../../../common/components/conversation_area
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import { getToolPermissionImplications } from '../assistant_response/get_tool_permission_implications'
+import CodeBlock from '../code_block'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './tool_permission_challenge.module.scss'
 
@@ -28,6 +29,76 @@ interface Props {
    * Display label for the tool that needs permission
    */
   toolLabel: string
+
+  /**
+   * The tool's arguments, already parsed from `toolUseEvent.argumentsJson` by
+   * the parent. It is created by parsing LLM output, so it could be anything -
+   * including `null` when the JSON was absent or malformed. In that case we
+   * fall back to displaying the raw `argumentsJson`, since the user should
+   * still be able to see what the tool was asked to do before allowing it.
+   */
+  toolInput?: any
+}
+
+/**
+ * The exact arguments the tool would be called with, for the user to inspect
+ * before granting permission. Renders nothing when there is nothing useful to
+ * show, so that tools taking no arguments don't get an empty disclosure.
+ */
+function ToolArguments({
+  toolInput,
+  argumentsJson,
+}: {
+  toolInput: any
+  argumentsJson: string
+}) {
+  const [isExpanded, setIsExpanded] = React.useState(false)
+
+  const argumentsText = React.useMemo(() => {
+    // Pretty-print whatever the parent managed to parse. Anything that came
+    // out of JSON.parse is safe to re-stringify.
+    if (typeof toolInput === 'object' && toolInput !== null) {
+      // Don't show a disclosure for `{}` - there are no arguments to inspect.
+      if (!Array.isArray(toolInput) && Object.keys(toolInput).length === 0) {
+        return null
+      }
+      return JSON.stringify(toolInput, null, 2)
+    }
+    // Malformed, partial or non-object JSON - show it verbatim rather than
+    // hiding the arguments the user is being asked to approve.
+    return argumentsJson || null
+  }, [toolInput, argumentsJson])
+
+  if (!argumentsText) {
+    return null
+  }
+
+  return (
+    <div>
+      <button
+        className={styles.argumentsToggle}
+        aria-expanded={isExpanded}
+        data-testid='tool-arguments-toggle'
+        onClick={() => setIsExpanded((expanded) => !expanded)}
+      >
+        {isExpanded
+          ? getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HIDE_ARGUMENTS_BUTTON)
+          : getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_SHOW_ARGUMENTS_BUTTON)}
+        <Icon name={isExpanded ? 'carat-down' : 'carat-right'} />
+      </button>
+      {isExpanded && (
+        <div
+          className={styles.arguments}
+          data-testid='tool-arguments'
+        >
+          <CodeBlock.Block
+            code={argumentsText}
+            lang='json'
+          />
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function ToolPermissionChallenge(props: Props) {
@@ -86,6 +157,11 @@ export default function ToolPermissionChallenge(props: Props) {
         {permissionChallenge.plan && (
           <p className={styles.assessment}>{permissionChallenge.plan}</p>
         )}
+
+        <ToolArguments
+          toolInput={props.toolInput}
+          argumentsJson={props.toolUseEvent.argumentsJson}
+        />
 
         <ConversationAreaButton
           className={styles.permissionButton}

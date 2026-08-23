@@ -927,6 +927,12 @@
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON" desc="Button text to deny the permission challenge" formatter_data="webui=AiChat">
     Deny
   </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_SHOW_ARGUMENTS_BUTTON" desc="Button label on the tool permission prompt that expands a section showing the full arguments the AI wants to pass to the tool" formatter_data="webui=AiChat">
+    Show tool arguments
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_HIDE_ARGUMENTS_BUTTON" desc="Button label on the tool permission prompt that collapses the section showing the full arguments the AI wants to pass to the tool" formatter_data="webui=AiChat">
+    Hide tool arguments
+  </message>
   <message name="IDS_AI_CHAT_VERIFIED_LABEL" desc="Label for the verified NEAR AI model" formatter_data="webui=AiChat">
     Verified
   </message>
