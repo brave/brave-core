@@ -350,6 +350,36 @@ inside:
             },
         },
 
+        # The last entry of an anonymous enum. A typed anonymous enum has an
+        # empty MISSING name node in tree-sitter, while an untyped one has no
+        # name field, so both forms select anonymity. The entry/body nesting and
+        # reverse entry position mirror the named-enum matcher above.
+        "cxx.find_last_anonymous_enum_entry": {
+            "template": """\
+kind: enumerator
+nthChild:
+  position: 1
+  reverse: true
+  ofRule:
+    kind: enumerator
+inside:
+  kind: enumerator_list
+  inside:
+    kind: enum_specifier
+    any:
+      - not:
+          has:
+            field: name
+            pattern: $_
+      - has:
+          field: name
+          regex: ^$
+""",
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
         # Every identifier-family token whose text is exactly `class_name`:
         # type positions (type_identifier), the `Class::` qualifier
         # (namespace_identifier), the ctor/dtor name and bare uses (identifier),
@@ -602,6 +632,36 @@ regex: ^{class_name}$
         "cxx.append_enum_entries_after_last": {
             "matcher": "cxx.find_last_enum_entry",
             "inputs": ["enum_name", "entries", "comma"],
+            "replace": {
+                "consume_after": "{comma}",
+                "re_pattern": "(?s)^(.*)$",
+                "replace": "\\1,\\n{entries}",
+            },
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
+        # Anonymous-enum forms of the two operations above. They deliberately
+        # carry no name input; exact-one matching rejects ambiguous files.
+        "cxx.insert_anonymous_enum_entries_before_max_value": {
+            "matcher": "cxx.find_last_anonymous_enum_entry",
+            "inputs": ["entries", "indent", "value"],
+            "when_set": {
+                "value": " = {value}",
+            },
+            "replace": {
+                "re_pattern": "(?s)^(\\w+).*$",
+                "replace": "{entries}\\n{indent}\\1{value}",
+            },
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
+        "cxx.append_anonymous_enum_entries_after_last": {
+            "matcher": "cxx.find_last_anonymous_enum_entry",
+            "inputs": ["entries", "comma"],
             "replace": {
                 "consume_after": "{comma}",
                 "re_pattern": "(?s)^(.*)$",

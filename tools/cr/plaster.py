@@ -1788,7 +1788,8 @@ class AddEnumEntries(_AstGrepRewriter):
 
         Fields:
 
-        - `enum_name` — the enum to extend (can be `enum` or `enum class`).
+        - `enum_name` — optional: the enum to extend (can be `enum` or
+          `enum class`). Omit it to target an anonymous enum.
         - `entries` — the entry to add, or a list of them, in the order they
           should appear. Each is an entry name, optionally with an `= value` of
           its own (`kBraveMaxValue = kBraveCardano`).
@@ -1816,9 +1817,13 @@ class AddEnumEntries(_AstGrepRewriter):
             add_enum_entries:
               enum_name: SignatureAlgorithm
               entries: ECDSA_SHA384
+
+          - description: Add a value to the anonymous enum.
+            add_enum_entries:
+              entries: kBraveValue
         ```
 
-        The first entry turns this upstream enum:
+        The first example turns this upstream enum:
 
         ```cpp
         enum class Property {
@@ -1846,6 +1851,10 @@ class AddEnumEntries(_AstGrepRewriter):
     # enum's current last entry when no `max_value` is declared.
     _INSERT_BEFORE_MAX_VALUE: Final = 'cxx.insert_enum_entries_before_max_value'
     _APPEND_AFTER_LAST: Final = 'cxx.append_enum_entries_after_last'
+    _INSERT_ANONYMOUS_BEFORE_MAX_VALUE: Final = (
+        'cxx.insert_anonymous_enum_entries_before_max_value')
+    _APPEND_AFTER_ANONYMOUS_LAST: Final = (
+        'cxx.append_anonymous_enum_entries_after_last')
 
     # One entry as authored: a name, optionally with an `= value`. A comma or a
     # newline would take the shape of the emitted list out of our hands.
@@ -1866,7 +1875,7 @@ class AddEnumEntries(_AstGrepRewriter):
                              f'accept a count other than 1 '
                              f'(in "{description}")')
 
-    def __init__(self, *, enum_name: str, entries: list[str],
+    def __init__(self, *, enum_name: str | None, entries: list[str],
                  max_value: str | None):
         super().__init__()
         self._enum_name = enum_name
@@ -1890,36 +1899,51 @@ class AddEnumEntries(_AstGrepRewriter):
                              contents,
                              blank_for_parse=blank_for_parse)
         source = contents.encode('utf-8')
-        enum_inputs = {'enum_name': self._enum_name}
+        enum_inputs = ({
+            'enum_name': self._enum_name
+        } if self._enum_name is not None else {})
+        insert_before_max_value = (self._INSERT_BEFORE_MAX_VALUE
+                                   if self._enum_name is not None else
+                                   self._INSERT_ANONYMOUS_BEFORE_MAX_VALUE)
+        append_after_last = (self._APPEND_AFTER_LAST
+                             if self._enum_name is not None else
+                             self._APPEND_AFTER_ANONYMOUS_LAST)
 
-        last = engine.first_match(
-            Operation(self._INSERT_BEFORE_MAX_VALUE, enum_inputs))
-        # A missing anchor leaves the run to report the count shortfall.
-        last_text = source[last.start:last.end].decode('utf-8') if last else ''
-        indent = _leading_indent(source, last.start) if last else ''
+        anchors = engine.find_matches(
+            Operation(insert_before_max_value, enum_inputs))
+        anchor_error = MatchExpectation.exactly(1).error_for(len(anchors))
+        if anchor_error:
+            return contents, [anchor_error]
+        last = anchors[0]
+        last_text = source[last.start:last.end].decode('utf-8')
+        indent = _leading_indent(source, last.start)
 
         if self._max_value is not None:
             name = self._entry_name(last_text)
-            if last is not None and name != self._max_value:
+            if name != self._max_value:
+                enum_label = (f'Enum `{self._enum_name}`' if self._enum_name
+                              is not None else 'Anonymous enum')
                 return contents, [
-                    f'Enum `{self._enum_name}` ends in `{name}`, not in the '
+                    f'{enum_label} ends in `{name}`, not in the '
                     f'declared `max_value` entry `{self._max_value}` '
                     f'(in "{description}")'
                 ]
-            op = Operation(
-                self._INSERT_BEFORE_MAX_VALUE, {
-                    'enum_name': self._enum_name,
-                    'entries': self._entry_block(indent, indent_first=False),
-                    'indent': indent,
-                    'value': self._repointed_entry(last_text),
-                }, MatchExpectation.exactly(1))
+            op_inputs = {
+                **enum_inputs,
+                'entries': self._entry_block(indent, indent_first=False),
+                'indent': indent,
+                'value': self._repointed_entry(last_text),
+            }
+            op = Operation(insert_before_max_value, op_inputs,
+                           MatchExpectation.exactly(1))
         else:
-            op = Operation(
-                self._APPEND_AFTER_LAST, {
-                    'enum_name': self._enum_name,
-                    'entries': self._entry_block(indent, indent_first=True),
-                    'comma': self._separator(source, last.end) if last else '',
-                }, MatchExpectation.exactly(1))
+            op_inputs = {
+                **enum_inputs,
+                'entries': self._entry_block(indent, indent_first=True),
+                'comma': self._separator(source, last.end),
+            }
+            op = Operation(append_after_last, op_inputs,
+                           MatchExpectation.exactly(1))
         changes = engine.run(op)
         error = op.expectation.error_for(changes)
         return engine.content, [error] if error else []
@@ -1983,18 +2007,20 @@ class AddEnumEntries(_AstGrepRewriter):
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
                 f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        missing = sorted({'enum_name', 'entries'} - set(body))
+        missing = sorted({'entries'} - set(body))
         if missing:
             raise ValueError(f'{cls.NAME} requires arg(s): '
                              f'{", ".join(missing)} (in "{description}")')
-        if not isinstance(body['enum_name'], str) or not body['enum_name']:
+        enum_name = body.get('enum_name')
+        if ('enum_name' in body
+                and (not isinstance(enum_name, str) or not enum_name)):
             raise ValueError(f'{cls.NAME} `enum_name` must be a non-empty '
                              f'string (in "{description}")')
         max_value = body.get('max_value')
         if max_value is not None and not cls._is_entry_name(max_value):
             raise ValueError(f'{cls.NAME} `max_value` must be an entry name '
                              f'(in "{description}")')
-        return cls(enum_name=body['enum_name'],
+        return cls(enum_name=enum_name,
                    entries=cls._parse_entries(body['entries'], description),
                    max_value=max_value)
 
@@ -2945,8 +2971,12 @@ class AstRewriter:
         real source (e.g. to derive an insertion's indentation) at the returned
         offsets before running the op.
         """
-        matches = self._locate(op)
+        matches = self.find_matches(op)
         return matches[0] if matches else None
+
+    def find_matches(self, op: Operation) -> list[AstMatch]:
+        """Every match for `op`'s matcher, without mutating content."""
+        return self._locate(op)
 
     def _resolve_captures(self, matcher: dict, match: AstMatch,
                           needed: set[str], op_id: str) -> dict[str, str]:
