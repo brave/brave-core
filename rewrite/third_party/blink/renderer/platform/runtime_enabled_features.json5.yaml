@@ -1,0 +1,136 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare the Brave-only IsInTorContext runtime flag.
+    regex:
+      re_pattern: '(  data: \[.*)\n  \],\n\}'
+      re_flags: [DOTALL]
+      replace: |2-
+        \1
+            {
+              name: "BraveIsInTorContext",
+              public: true,
+              base_feature: "none",
+            },
+          ],
+        }
+
+  - description: |-
+      Hold CompositorTimelineTrigger at experimental.
+
+      The anchor matches the status so we get to review it if anything
+      changes.
+    regex:
+      pattern: |2-
+              name: "CompositorTimelineTrigger",
+              status: "stable",
+      replace: |2-
+              name: "CompositorTimelineTrigger",
+              status: "experimental", // Brave: revert when crbug.com/541924666 is fixed.
+
+  # The three following entries are plastered to generate no `base::Feature` at
+  # all.
+  - description:
+      'Generate no base::Feature for FileSystemAccessAPIExperimental.'
+    regex:
+      re_pattern: '^( *)(name: "FileSystemAccessAPIExperimental",)'
+      re_flags: [MULTILINE]
+      replace: '\1\2\n\1base_feature: "none",'
+
+  - description: 'Generate no base::Feature for FileSystemAccessLocal.'
+    regex:
+      re_pattern: '^( *)(name: "FileSystemAccessLocal",)'
+      re_flags: [MULTILINE]
+      replace: '\1\2\n\1base_feature: "none",'
+
+  - description: 'Generate no base::Feature for MiddleClickAutoscroll.'
+    regex:
+      re_pattern: '^( *)(name: "MiddleClickAutoscroll",)'
+      re_flags: [MULTILINE]
+      replace: '\1\2\n\1base_feature: "none",'
+
+  # These plaster override the `base::Feature` value for the blink runtime
+  # features. Keep them in alphabetical order.
+  - description: 'Ship the interest-group ad-targeting API disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AdInterestGroupAPI
+      value: disabled
+
+  - description: "Ship the Prompt API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIPromptAPI
+      value: disabled
+
+  - description: "Ship the Prompt API's multimodal input base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIPromptAPIMultimodalInput
+      value: disabled
+
+  - description: "Ship the Proofreader API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIProofreadingAPI
+      value: disabled
+
+  - description: "Ship the Rewriter API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIRewriterAPI
+      value: disabled
+
+  - description: "Ship the Summarizer API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AISummarizationAPI
+      value: disabled
+
+  - description: "Ship the Writer API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: AIWriterAPI
+      value: disabled
+
+  - description: 'Ship the Controlled Frame tag disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ControlledFrame
+      value: disabled
+
+  - description: 'Ship the Protected Audience ad auction API disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: Fledge
+      value: disabled
+
+  - description: "Ship the Language Detection API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: LanguageDetectionAPI
+      value: disabled
+
+  - description: 'Ship the PARAKEET ad serving API disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: Parakeet
+      value: disabled
+
+  - description: 'Ship prerendering disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: Prerender2
+      value: disabled
+
+  - description: |-
+      Pin the reduced user-agent minor version on.
+
+      This is what upstream ships today, so it changes nothing on its own.
+      It is stated anyway to keep the reduced minor version from sliding
+      back should upstream move the flag off `stable`.
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ReduceUserAgentMinorVersion
+      value: enabled
+
+  - description: "Ship the Translation API's base feature disabled."
+    set_blink_runtime_enabled_feature_state:
+      feature_name: TranslationAPI
+      value: disabled
+
+  - description: 'Ship the user media element base feature disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: UserMediaElement
+      value: disabled
