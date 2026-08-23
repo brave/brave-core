@@ -110,7 +110,7 @@ export function getApplicableFilters(config: Config, suite: string) {
   return filterFilePaths
 }
 
-export function getDefaultTestSuiteArgs(testSuite: string) {
+export function getDefaultTestSuiteArgs(testSuite: string): string[] {
   switch (testSuite) {
     case 'brave_network_audit_tests':
       return [

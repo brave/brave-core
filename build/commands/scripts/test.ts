@@ -344,7 +344,7 @@ program
     }
 
     const testsSuitesToRun = options.base
-      ? await getAffectedTests({ ...options, mainTestSuite })
+      ? await getAffectedTests({ ...options, suite: mainTestSuite })
       : getTestsToRun(config, mainTestSuite)
 
     if (testsSuitesToRun.length === 0 && !options.quiet) {
