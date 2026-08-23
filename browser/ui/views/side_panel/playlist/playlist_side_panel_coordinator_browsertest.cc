@@ -50,7 +50,7 @@ class PlaylistCoordinatorBrowserTest : public web_app::WebAppBrowserTestBase {
   ~PlaylistCoordinatorBrowserTest() override = default;
 
  protected:
-  Browser* InstallPWA(const GURL& start_url) {
+  BrowserWindowInterface* InstallPWA(const GURL& start_url) {
     auto web_app_info =
         web_app::WebAppInstallInfo::CreateWithStartUrlForTesting(start_url);
     web_app_info->scope = start_url.GetWithoutFilename();
