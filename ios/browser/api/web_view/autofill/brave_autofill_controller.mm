@@ -166,6 +166,11 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
   [_autofillAgent notifyFormsSeen:updatedForms inFrame:frame];
 }
 
+- (void)scrollFieldIntoView:(const autofill::FieldRendererId&)field
+                    inFrame:(web::WebFrame*)frame {
+  [_autofillAgent scrollFieldIntoView:field inFrame:frame];
+}
+
 #pragma mark - CWVAutofillClientIOSBridge
 
 - (void)
