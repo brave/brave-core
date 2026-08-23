@@ -33,6 +33,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/autocomplete_match_type.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/remote_suggestions_service.h"
 #include "components/omnibox/browser/search_provider.h"
@@ -290,6 +291,26 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
       base::StrCat({kSuggestionUrlHost, "brave_private"})));
 }
 #endif
+
+// Arithmetic is answered locally, so the operands never reach the suggest
+// server. Unlike the checks below, this applies on every platform.
+TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
+  const auto has_calculator_match = [&]() {
+    return std::ranges::any_of(provider_->matches(), [](const auto& match) {
+      return match.type == AutocompleteMatchType::CALCULATOR;
+    });
+  };
+
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
+  EXPECT_EQ(0, test_url_loader_factory_.NumPending());
+  EXPECT_TRUE(has_calculator_match());
+
+  // Expressions we can't answer exactly fall through to the suggest server
+  // instead of showing an approximation.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"10 / 3"));
+  EXPECT_EQ(1, test_url_loader_factory_.NumPending());
+  EXPECT_FALSE(has_calculator_match());
+}
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
 TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {

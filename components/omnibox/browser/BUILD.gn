@@ -11,6 +11,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "//brave/components/omnibox/browser/arithmetic_evaluator_unittest.cc",
     "//brave/components/omnibox/browser/brave_bookmark_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.cc",
     "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h",

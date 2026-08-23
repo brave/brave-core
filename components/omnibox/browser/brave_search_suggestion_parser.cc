@@ -44,6 +44,37 @@ std::optional<std::u16string> GetAnswer(const base::DictValue& suggestion) {
 
 }  // namespace
 
+SearchSuggestionParser::SuggestResult MakeCalculatorSuggestResult(
+    const std::u16string& expression,
+    const std::u16string& answer,
+    const std::u16string& input_text,
+    EntityInfo entity_info,
+    int relevance,
+    bool from_keyword) {
+  std::u16string match_contents = answer;
+  if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_DESKTOP) {
+    // Desktop shows "<expression> = <answer>" on one line, as upstream does.
+    match_contents = l10n_util::GetStringFUTF16(
+        IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE, expression,
+        answer);
+  }
+
+  // The suggestion is the answer, so accepting the match searches the text the
+  // user typed. See BaseSearchProvider::CreateSearchSuggestion.
+  return SearchSuggestionParser::SuggestResult(
+      /*suggestion*/ answer, AutocompleteMatchType::CALCULATOR,
+      omnibox::TYPE_CALCULATOR,
+      /*subtypes*/ {}, match_contents,
+      /*match_contents_prefix*/ {},
+      // An annotation would become the match description, which restores the
+      // separator the desktop match cell suppresses for CALCULATOR -- the row
+      // would read "<answer> - <annotation>".
+      /*annotation*/ {}, std::move(entity_info),
+      /*deletion_url*/ {}, from_keyword, omnibox::NAV_INTENT_NONE, relevance,
+      /*relevance_from_server*/ false, /*should_prefetch*/ false,
+      /*should_prerender*/ false, base::CollapseWhitespace(input_text, false));
+}
+
 bool ParseSuggestResults(const base::ListValue& root_list,
                          const AutocompleteInput& input,
                          bool is_keyword_result,
@@ -136,9 +167,9 @@ bool ParseSuggestResults(const base::ListValue& root_list,
       suggest_type = omnibox::TYPE_ENTITY;
       match_type = AutocompleteMatchType::SEARCH_SUGGEST_ENTITY;
     } else if (GetVerticalType(suggestion_dict) == "calculator") {
-      // Verticals we don't handle stay plain query suggestions.
+      // Verticals we don't handle stay plain query suggestions. The match type
+      // is set by MakeCalculatorSuggestResult() below.
       suggest_type = omnibox::TYPE_CALCULATOR;
-      match_type = AutocompleteMatchType::CALCULATOR;
     }
 
     if (auto* name = suggestion_dict.FindString("name")) {
@@ -161,38 +192,23 @@ bool ParseSuggestResults(const base::ListValue& root_list,
       entity_info.set_annotation(*description);
     }
 
-    std::u16string suggestion_text;
-    std::u16string match_contents;
     if (suggest_type == omnibox::TYPE_CALCULATOR) {
       auto answer = GetAnswer(suggestion_dict);
       if (!answer || answer->empty()) {
         continue;
       }
-      // An annotation becomes the match description, which restores the
-      // separator the desktop match cell suppresses for CALCULATOR -- the row
-      // would read "<answer> - <description>".
-      annotation.clear();
-      // The suggestion is the answer, so accepting the match searches the text
-      // the user typed. See BaseSearchProvider::CreateSearchSuggestion.
-      suggestion_text = std::move(*answer);
-      match_contents = suggestion_text;
-      if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_DESKTOP) {
-        // Desktop shows "<expression> = <answer>" on one line, as upstream
-        // does.
-        const auto* expression = suggestion_dict.FindString("expression");
-        match_contents = l10n_util::GetStringFUTF16(
-            IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE,
-            base::UTF8ToUTF16(expression ? *expression : *search_query),
-            suggestion_text);
-      }
-    } else {
-      suggestion_text = base::UTF8ToUTF16(*search_query);
-      match_contents = suggestion_text;
+      const auto* expression = suggestion_dict.FindString("expression");
+      results->suggest_results.push_back(MakeCalculatorSuggestResult(
+          base::UTF8ToUTF16(expression ? *expression : *search_query), *answer,
+          input_text, std::move(entity_info), /*relevance*/ -1,
+          is_keyword_result));
+      continue;
     }
 
+    const std::u16string suggestion_text = base::UTF8ToUTF16(*search_query);
     auto result = SearchSuggestionParser::SuggestResult(
         suggestion_text, match_type, suggest_type,
-        /*subtypes*/ {}, match_contents,
+        /*subtypes*/ {}, /*match_contents*/ suggestion_text,
         /*match_contents_prefix*/ {},
         /*annotation*/ annotation, std::move(entity_info),
         /*deletion_url*/ {}, is_keyword_result, omnibox::NAV_INTENT_NONE,
