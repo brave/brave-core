@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/callback_list.h"
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
@@ -298,6 +299,10 @@ class BraveTabContainer : public TabContainerImpl,
   bool ShouldShowVerticalTabs() const;
   bool IsPinned(const Tab* tab) const;
 
+  // Returns the view model index of |tab|, served from
+  // |visibility_pass_cache_| during a visibility pass.
+  std::optional<size_t> GetTabIndex(const Tab* tab) const;
+
   // Called when the tree tabs enabled state changes.
   void OnTreeTabsEnabledChanged();
 
@@ -331,6 +336,19 @@ class BraveTabContainer : public TabContainerImpl,
       nullptr;
 
   bool layout_locked_ = false;
+
+  // Per-pass cache for SetTabSlotVisibility(): the superclass queries
+  // ShouldTabBeVisible()/IsPinned() once per tab, and each query performs
+  // linear scans (GetIndexOfView, GetPinnedTabCount), making one visibility
+  // pass O(n^2) with large tab counts. Populated only for the duration of
+  // one SetTabSlotVisibility() call.
+  struct VisibilityPassCache {
+    size_t pinned_tab_count = 0;
+    int pinned_tabs_area_bottom = 0;
+    int pinned_tabs_area_boundary = 0;
+    base::flat_map<const Tab*, size_t> tab_indices;
+  };
+  std::optional<VisibilityPassCache> visibility_pass_cache_;
 
   // Size we last laid out at.
   std::optional<gfx::Size> last_layout_size_;
