@@ -5,6 +5,8 @@
 
 #include "brave/ios/browser/api/url/url_utils.h"
 
+#include <optional>
+
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #import "net/base/apple/url_conversions.h"
@@ -121,22 +123,19 @@ std::string GetRegistry(const GURL& url) {
 @implementation NSURL (StaticUtilities)
 
 std::string GetRegistryFromHost(const std::string& host) {
-  auto GetRegistryLength = [](const std::string& host) -> size_t {
-    return net::registry_controlled_domains::PermissiveGetHostRegistryLength(
-        host, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
-        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  };
-
   if (host.empty() || url::HostIsIPAddress(host)) {
     return std::string();  // No registry.
   }
 
-  size_t registry_length = GetRegistryLength(host);
+  std::optional<std::string_view> registry =
+      net::registry_controlled_domains::PermissiveGetHostRegistry(
+          host, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-  if ((registry_length == std::string::npos) || (registry_length == 0)) {
+  if (!registry.has_value() || registry->empty()) {
     return std::string();  // No registry.
   }
-  return std::string(host, host.length() - registry_length, registry_length);
+  return std::string(*registry);
 }
 
 + (NSString*)brave_registryFromHost:(NSString*)host {
