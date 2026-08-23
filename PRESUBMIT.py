@@ -672,6 +672,22 @@ def CheckJson5ParseErrors(input_api, output_api):
     return results
 
 
+def CheckNoCommittedSecretsFiles(input_api, output_api):
+    """Refuses a committed `secrets.gni` anywhere in the tree.
+    """
+    offending = [
+        f.LocalPath() for f in input_api.AffectedFiles(include_deletes=False)
+        if f.LocalPath().endswith('secrets.gni')
+    ]
+    if not offending:
+        return []
+    return [
+        output_api.PresubmitError(
+            'secret values must never be checked in; found:\n  ' +
+            '\n  '.join(offending))
+    ]
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We

@@ -13,6 +13,7 @@ import subprocess
 
 import gen_paths
 import generated_output
+import dotenv
 
 _CHROMIUM_SRC_DIR = gen_paths.BOTS_DIR.parents[2]
 
@@ -37,27 +38,46 @@ class BuildDirGenerator(generated_output.OutputGenerator):
         which is not necessarily the default `out/<builder>` once
         `--out-dir` overrides it, so the import must follow it there.
         """
-        return '//%s/brave_secrets.gni' % self.out_dir.relative_to(
+        return '//%s/secrets.gni' % self.out_dir.relative_to(
             _CHROMIUM_SRC_DIR).as_posix()
 
-    @staticmethod
-    def render_secrets_gni_stub(secrets: dict[str, str]) -> str:
-        """Renders a placeholder `brave_secrets.gni` for a `secrets` map.
+    def resolve_secrets(self, secrets: dict[str, str]) -> dict[str, str]:
+        """Resolves every declared secret's real value.
 
-        This stub exists so a builder that declares secrets still gets a
-        `gn gen` that succeeds. Every declared GN arg gets a "dummy" value, the
-        same placeholder `gn_args.py` already uses for `brave_google_api_key`.
+        This function reads the secrets from the `.env` file as usual and
+        returns a dictionary for them.
+
+        Raises:
+            BotsError: the secrets `.env` file has no entry for one of the
+                declared names.
         """
-        return ''.join('%s = "dummy"\n' % name for name in sorted(secrets))
+        env = dotenv.read()
+        missing = sorted(name for name in secrets if name not in env)
+        if missing:
+            raise generated_output.BotsError(
+                'builder %r declares secret(s) %s with no matching entry in '
+                '%s.' %
+                (self.builder_name, ', '.join(missing), dotenv.DEFAULT_PATH))
+        return {name: env[name] for name in secrets}
+
+    @staticmethod
+    def render_secrets_gni(secrets: dict[str, str]) -> str:
+        """Renders `secrets.gni` from resolved secret values."""
+        return ''.join('%s = %s\n' %
+                       (name, generated_output.gn_helpers.ToGNString(value))
+                       for name, value in sorted(secrets.items()))
 
     def write_build_dir(self) -> str:
-        """Writes `args.gn` (and a secrets stub, if the builder declares
-        any) into `self.out_dir`, creating it if needed.
+        """Writes `args.gn` and a resolved `secrets.gni` into `self.out_dir`.
 
         Returns:
             The rendered `args.gn` text.
         """
         resolved = self.read_generated_gn_args()
+        declared_secrets = resolved.get('secrets')
+        secrets = (self.resolve_secrets(declared_secrets)
+                   if declared_secrets else None)
+
         args_gn = self.render_args_gn(resolved)
 
         self.out_dir.mkdir(parents=True, exist_ok=True)
@@ -65,24 +85,18 @@ class BuildDirGenerator(generated_output.OutputGenerator):
                                               encoding='utf-8',
                                               newline='\n')
 
-        secrets = resolved.get('secrets')
         if secrets:
-            (self.out_dir / 'brave_secrets.gni').write_text(
-                self.render_secrets_gni_stub(secrets),
-                encoding='utf-8',
-                newline='\n')
+            secrets_path = self.out_dir / 'secrets.gni'
+            secrets_path.write_text(self.render_secrets_gni(secrets),
+                                    encoding='utf-8',
+                                    newline='\n')
+            # Restrictive permissions: this file carries real secret values.
+            secrets_path.chmod(0o600)
 
         return args_gn
 
     def run_gn_gen(self) -> int:
         """Runs `gn gen` against `self.out_dir`.
-
-        `args.gn` is already on disk (`write_build_dir`), so, as `mb.py gen`
-        does, this only ever needs to name the directory; `--check` runs the
-        header checker over the whole graph, matching `mb.py`'s own default.
-        GN resolves the build directory against the source root it finds
-        from the working directory, so this always runs from
-        `_CHROMIUM_SRC_DIR`.
         """
         return subprocess.call([
             'gn', 'gen',

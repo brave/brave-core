@@ -22,7 +22,21 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import gen_paths
 import generated_output
+import dotenv
 import validate
+
+
+def _patch_dotenv(test_case, contents: str) -> None:
+    """Points `dotenv.DEFAULT_PATH` at a temp file with `contents` for
+    the duration of `test_case`."""
+    tmp = tempfile.TemporaryDirectory()
+    test_case.addCleanup(tmp.cleanup)
+    path = Path(tmp.name) / '.env'
+    path.write_text(contents, encoding='utf-8')
+
+    original = dotenv.DEFAULT_PATH
+    dotenv.DEFAULT_PATH = path
+    test_case.addCleanup(lambda: setattr(dotenv, 'DEFAULT_PATH', original))
 
 
 def _write_builder(output_dir,
@@ -199,29 +213,46 @@ class ValidatorRunTest(_OutputDirTestCase):
         self.assertIn('source-absolute', errs[0])
 
     def test_leaked_secret_value_is_reported(self):
-        self.addCleanup(os.environ.pop, 'FAKE_SECRET_ENV_VAR', None)
-        os.environ['FAKE_SECRET_ENV_VAR'] = 'super-secret-value'
+        _patch_dotenv(self, 'fake_secret_key=super-secret-value\n')
         _write_builder(self.output_dir,
                        'b',
                        gn_args={
                            'gn_args': {
                                'target_os': 'linux',
                                'target_cpu': 'x64',
-                               'brave_google_api_key': 'super-secret-value',
+                               'unrelated_gn_arg': 'super-secret-value',
                            },
                            'secrets': {
-                               'brave_services_key': 'FAKE_SECRET_ENV_VAR',
+                               'fake_secret_key': 'FAKE_SECRET_ENV_VAR',
                            },
                        })
         errs = validate._Validator().run()
         self.assertEqual(len(errs), 1)
-        self.assertIn('brave_google_api_key', errs[0])
-        self.assertIn('brave_services_key', errs[0])
+        self.assertIn('unrelated_gn_arg', errs[0])
+        self.assertIn('fake_secret_key', errs[0])
         self.assertNotIn('super-secret-value', errs[0])
 
-    def test_secret_declared_but_env_var_unset_is_fine(self):
-        self.addCleanup(os.environ.pop, 'FAKE_SECRET_ENV_VAR', None)
-        os.environ.pop('FAKE_SECRET_ENV_VAR', None)
+    def test_unset_dummy_placeholder_is_not_flagged_as_leaked(self):
+        # An unset secret and an unrelated gn_arg can both legitimately be
+        # "dummy", and that coincidence must not read as one leaking into the
+        # other.
+        _patch_dotenv(self, 'fake_secret_key=dummy\n')
+        _write_builder(self.output_dir,
+                       'b',
+                       gn_args={
+                           'gn_args': {
+                               'target_os': 'linux',
+                               'target_cpu': 'x64',
+                               'unrelated_gn_arg': 'dummy',
+                           },
+                           'secrets': {
+                               'fake_secret_key': 'FAKE_SECRET_ENV_VAR',
+                           },
+                       })
+        self.assertEqual(validate._Validator().run(), [])
+
+    def test_secret_declared_but_not_in_dotenv_is_fine(self):
+        _patch_dotenv(self, '')  # No matching entry.
         _write_builder(self.output_dir,
                        'b',
                        gn_args={
@@ -230,7 +261,7 @@ class ValidatorRunTest(_OutputDirTestCase):
                                'target_cpu': 'x64',
                            },
                            'secrets': {
-                               'brave_services_key': 'FAKE_SECRET_ENV_VAR',
+                               'fake_secret_key': 'FAKE_SECRET_ENV_VAR',
                            },
                        })
         self.assertEqual(validate._Validator().run(), [])

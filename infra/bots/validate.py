@@ -12,16 +12,19 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from pathlib import Path
 
 import gen_paths
 import generated_output
+import dotenv
 
 _CHROMIUM_SRC_DIR = gen_paths.BOTS_DIR.parents[2]
 
 # The three files `bots.py snapshot` writes for every builder.
 _REQUIRED_FILES = ('gn-args.json', 'sync.json', 'targets.json')
+
+# The placeholder value an unset secret carries.
+_UNSET_SECRET_PLACEHOLDER = 'dummy'
 
 
 def _list_builder_dirs() -> list[Path]:
@@ -153,20 +156,25 @@ class _Validator:
                                   gn_args_json: dict) -> None:
         """Checks a declared secret's real value never made it into
         `gn_args`.
+
+        The secrets `.env` file (`dotenv.py`) is a list of `gn` values.
         """
         secrets = gn_args_json.get('secrets') or {}
         gn_args = gn_args_json.get('gn_args') or {}
-        for gn_arg_name, env_var_name in secrets.items():
-            value = os.environ.get(env_var_name)
-            if not value:
+        if not secrets:
+            return
+        secret_values = dotenv.read()
+        for gn_arg_name in secrets:
+            value = secret_values.get(gn_arg_name)
+            if not value or value == _UNSET_SECRET_PLACEHOLDER:
                 continue
             for other_name, other_value in gn_args.items():
                 if isinstance(other_value, str) and value in other_value:
                     self._errs.append(
                         '%s: gn_args[%r] appears to contain the value of '
-                        'secret %r (from $%s); secret values must never be '
-                        'checked in' %
-                        (gn_args_path, other_name, gn_arg_name, env_var_name))
+                        'secret %r (from %s). Secret values MUST NEVER be '
+                        'checked in' % (gn_args_path, other_name, gn_arg_name,
+                                        dotenv.DEFAULT_PATH))
 
     def _check_sync_schema(self, sync_path: Path, sync_json: dict) -> None:
         for required in ('target_os', 'target_cpu', 'gclient_overrides'):
