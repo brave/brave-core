@@ -58,11 +58,11 @@ class SidebarWebPanelInteractiveUITest
   }
 
   // Call delegate code path directly as sending click event makes this test
-  // flaky on macOS CI.
+  // flaky on macOS/linux CI.
   auto ActivatePane([[maybe_unused]] std::string_view view_id,
                     [[maybe_unused]] views::View* target_view,
                     content::WebContents* target_contents) {
-#if BUILDFLAG(IS_MAC)
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     return Steps(Do([this, target_contents]() {
       GetBraveMultiContentsView()->delegate_for_testing()->WebContentsFocused(
           target_contents);
