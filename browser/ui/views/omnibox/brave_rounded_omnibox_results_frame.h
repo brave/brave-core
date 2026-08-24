@@ -10,7 +10,7 @@
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
 #include "components/prefs/pref_member.h"
 
-class Browser;
+class BrowserWindowInterface;
 class LocationBarView;
 
 class BraveRoundedOmniboxResultsFrame : public RoundedOmniboxResultsFrame {
@@ -27,7 +27,7 @@ class BraveRoundedOmniboxResultsFrame : public RoundedOmniboxResultsFrame {
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_window_title_for_vertical_tabs_;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_ROUNDED_OMNIBOX_RESULTS_FRAME_H_
