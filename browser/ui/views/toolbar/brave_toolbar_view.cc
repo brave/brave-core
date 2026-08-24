@@ -210,7 +210,8 @@ class BraveToolbarView::LayoutGuard {
   raw_ptr<BraveLocationBarView> bar_ = nullptr;
 };
 
-BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
+BraveToolbarView::BraveToolbarView(BrowserWindowInterface* browser,
+                                   BrowserView* browser_view)
     : ToolbarView(browser, browser_view) {}
 
 BraveToolbarView::~BraveToolbarView() = default;
@@ -329,7 +330,7 @@ void BraveToolbarView::Init() {
 #endif  // BUILDFLAG(IS_LINUX)
   }
 
-  const auto callback = [](Browser* browser, int command,
+  const auto callback = [](BrowserWindowInterface* browser, int command,
                            const ui::Event& event) {
     chrome::ExecuteCommandWithDisposition(
         browser, command, ui::DispositionFromEventFlags(event.flags()));
