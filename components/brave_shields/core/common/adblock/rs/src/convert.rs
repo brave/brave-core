@@ -84,12 +84,13 @@ fn to_filter_rule_info(info: Option<InnerFilterRuleDebugInfo>) -> UniquePtr<Filt
     let Some(raw_line) = info.raw_line else {
         return UniquePtr::null();
     };
-    let source_location = info.source_location.unwrap_or_default();
-    UniquePtr::new(FilterRuleInfo {
-        raw_line,
-        source_index: source_location.source_index,
-        line_number: source_location.line_number,
-    })
+
+    let mut filter_rule_info = FilterRuleInfo { raw_line, source_index: -1, line_number: -1 };
+    if let Some(source_location) = info.source_location {
+        filter_rule_info.source_index = i32::try_from(source_location.source_index).unwrap_or(-1);
+        filter_rule_info.line_number = i32::try_from(source_location.line_number).unwrap_or(-1);
+    }
+    UniquePtr::new(filter_rule_info)
 }
 
 impl From<InnerBlockerResult> for BlockerResult {

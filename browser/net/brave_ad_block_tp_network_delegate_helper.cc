@@ -50,7 +50,7 @@ namespace brave {
 namespace {
 
 std::optional<content::devtools_instrumentation::AdblockFilterRuleInfo>
-ToAdblockFilterRuleInfo(const std::unique_ptr<adblock::FilterRuleInfo>& info) {
+ToAdblockFilterRuleInfo(const adblock::FilterRuleInfo* info) {
   if (!info) {
     return std::nullopt;
   }
@@ -283,8 +283,8 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
     if (has_valid_rewritten_url) {
       info.rewritten_url = result.new_url_spec;
     }
-    info.filter = ToAdblockFilterRuleInfo(adblock_result.filter);
-    info.exception = ToAdblockFilterRuleInfo(adblock_result.exception);
+    info.filter = ToAdblockFilterRuleInfo(adblock_result.filter.get());
+    info.exception = ToAdblockFilterRuleInfo(adblock_result.exception.get());
 
     content::devtools_instrumentation::SendAdblockInfo(
         input.render_frame_token, input.devtools_request_id.value(), info);

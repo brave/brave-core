@@ -22,8 +22,8 @@ ToProtocolAdblockFilterRuleInfo(
     const content::devtools_instrumentation::AdblockFilterRuleInfo& info) {
   return content::protocol::Network::AdblockFilterRuleInfo::Create()
       .SetRawLine(info.raw_line)
-      .SetSourceIndex(static_cast<int>(info.source_index))
-      .SetLineNumber(static_cast<int>(info.line_number))
+      .SetSourceIndex(info.source_index)
+      .SetLineNumber(info.line_number)
       .Build();
 }
 
