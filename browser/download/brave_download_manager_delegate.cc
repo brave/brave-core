@@ -48,10 +48,12 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
-  // IPTC metadata stripping only available for png/jpeg types. So, for non
+  // IPTC metadata stripping only available for jpeg types. So, for non
   // types rely on upstream flow.
+  // TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
+  // more investigation whether FBMD is present or not. So, tackling only jpeg.
   const std::string mime_type = item->GetMimeType();
-  if (mime_type != "image/png" && mime_type != "image/jpeg") {
+  if (mime_type != "image/jpeg") {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
@@ -104,12 +106,30 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
   return false;
 }
 
-void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
-                                                           bool success) {
+void BraveDownloadManagerDelegate::OnImageMetadataStripped(
+    uint32_t download_id,
+    image_metadata_stripper::StrippingResultCode result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!success) {
-    DVLOG(1) << "Failed to strip image metadata from download file.";
+  switch (result) {
+    case image_metadata_stripper::StrippingResultCode::kStrippingFailed: {
+      DVLOG(1) << "Failed to strip image metadata from download file.";
+      break;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kIgnored: {
+      DVLOG(1) << "Stripping ignored as FBMD metadata may not be present.";
+      break;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kStripped: {
+      DVLOG(1) << "FBMD found and stripped from image metadata.";
+      break;
+    }
+
+    default: {
+      NOTREACHED();
+    }
   }
 
   // The download may have been removed while the stripping task was running, so

@@ -27,6 +27,7 @@ source_set("browser_tests") {
     ":download",
     "//base",
     "//base/test:test_support",
+    "//brave/components/constants",
     "//brave/components/image_metadata_stripper/common",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
@@ -40,6 +41,8 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
