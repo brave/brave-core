@@ -539,8 +539,15 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Make left split view as active to make secondary container put
   // at right side(end).
   tab_strip_model->ActivateTabAt(0);
+
+  // Split containers are positioned by a scheduled layout. Flush it before
+  // reading their bounds, otherwise the end container still has its initial
+  // empty bounds at the contents area's origin.
+  RunScheduledLayouts();
+
   auto* left_split_view = GetStartSplitContentsView();
   auto* right_split_view = GetEndSplitContentsView();
+  ASSERT_FALSE(right_split_view->bounds().IsEmpty());
 
   // Check left split view's left hot corner handles.
   mouse_position = left_split_view->GetLocalBounds().origin();
