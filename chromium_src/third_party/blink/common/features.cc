@@ -3,23 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_override.h"
-
 #include <third_party/blink/common/features.cc>
 
 namespace blink::features {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
-    // This feature uses shared memory to reduce IPCs to access cookies, but
-    // Ephemeral Storage can switch cookie storage backend at runtime, so we
-    // can't use it.
-    {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
-}});
 
 BASE_FEATURE(kFileSystemAccessAPI, base::FEATURE_DISABLED_BY_DEFAULT);
 
