@@ -17,6 +17,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/task_environment.h"
@@ -2594,7 +2595,8 @@ TEST_F(ZCashWalletServiceUnitTest,
   base::test::TestFuture<const std::optional<std::string>&> first_sync_future;
   zcash_wallet_service_->StartShieldSync(account_id_1.Clone(), 0,
                                          first_sync_future.GetCallback());
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !held_tree_state_callback.is_null(); }));
   ASSERT_TRUE(held_tree_state_callback);
 
   base::test::TestFuture<const std::optional<std::string>&> second_sync_future;

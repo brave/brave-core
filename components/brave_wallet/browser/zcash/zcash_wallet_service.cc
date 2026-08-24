@@ -196,13 +196,14 @@ void ZCashWalletService::StartShieldSyncInternal(
     return;
   }
 
-  shield_sync_services_[account_id.Clone()] =
-      std::make_unique<ZCashShieldSyncService>(
-          *this, CreateActionContext(account_id), account_birthday, fvk.value(),
-          weak_ptr_factory_.GetWeakPtr());
-
-  shield_sync_services_[account_id.Clone()]->StartSyncing(
-      to == 0 ? std::nullopt : std::optional<uint32_t>(to));
+  auto sync_service = std::make_unique<ZCashShieldSyncService>(
+      *this, CreateActionContext(account_id), account_birthday, fvk.value(),
+      weak_ptr_factory_.GetWeakPtr());
+  auto [it, inserted] = shield_sync_services_.emplace(std::move(account_id),
+                                                      std::move(sync_service));
+  CHECK(inserted);
+  it->second->StartSyncing(to == 0 ? std::nullopt
+                                   : std::optional<uint32_t>(to));
 
   std::move(callback).Run(std::nullopt);
 }
@@ -732,7 +733,7 @@ void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
                                         uint32_t account_birthday_block,
                                         ResetSyncStateCallback callback) {
   if (IsZCashShieldedTransactionsEnabled()) {
-    if (shield_sync_services_.find(account_id) != shield_sync_services_.end()) {
+    if (shield_sync_services_.contains(account_id)) {
       std::move(callback).Run("Sync in progress");
       return;
     }
@@ -766,9 +767,20 @@ void ZCashWalletService::ResetSyncStateToIronwoodActivation(
     std::move(callback).Run("Sync in progress");
     return;
   }
-  ResetSyncStateToIronwoodActivationInternal(std::move(account_id),
-                                             /*persist_flag_on_success=*/true,
-                                             std::move(callback));
+  pending_ironwood_rewinds_[account_id.Clone()] = true;
+  ResetSyncStateToIronwoodActivationInternal(
+      account_id.Clone(), /*persist_flag_on_success=*/true,
+      base::BindOnce(&ZCashWalletService::OnResetSyncStateToIronwoodActivation,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
+                     std::move(callback)));
+}
+
+void ZCashWalletService::OnResetSyncStateToIronwoodActivation(
+    mojom::AccountIdPtr account_id,
+    ResetSyncStateToIronwoodActivationCallback callback,
+    const std::optional<std::string>& error) {
+  pending_ironwood_rewinds_.erase(account_id);
+  std::move(callback).Run(error);
 }
 
 void ZCashWalletService::ResetSyncStateToIronwoodActivationInternal(
@@ -781,7 +793,7 @@ void ZCashWalletService::ResetSyncStateToIronwoodActivationInternal(
     return;
   }
 
-  if (shield_sync_services_.find(account_id) != shield_sync_services_.end()) {
+  if (shield_sync_services_.contains(account_id)) {
     std::move(callback).Run("Sync in progress");
     return;
   }
@@ -792,7 +804,7 @@ void ZCashWalletService::ResetSyncStateToIronwoodActivationInternal(
       .Then(base::BindOnce(
           &ZCashWalletService::
               OnGetAccountMetaForResetSyncStateToIronwoodActivation,
-          weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+          ironwood_rewind_weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
           persist_flag_on_success, std::move(callback)));
 }
 
@@ -1119,6 +1131,9 @@ void ZCashWalletService::OnGetAccountMetaForResetSyncStateToIronwoodActivation(
     return;
   }
 
+  const auto chain_id = GetNetworkForZCashKeyring(account_id->keyring_id);
+  const uint32_t ironwood_activation_height =
+      GetIronwoodActivationHeight(chain_id);
   if (!result.value() || !result.value()->latest_scanned_block_id) {
     if (persist_flag_on_success) {
       keyring_service_->SetZCashIronwoodSyncStateReset(account_id, true);
@@ -1127,9 +1142,6 @@ void ZCashWalletService::OnGetAccountMetaForResetSyncStateToIronwoodActivation(
     return;
   }
 
-  const auto chain_id = GetNetworkForZCashKeyring(account_id->keyring_id);
-  const uint32_t ironwood_activation_height =
-      GetIronwoodActivationHeight(chain_id);
   if (result.value()->latest_scanned_block_id.value() <
       ironwood_activation_height) {
     if (persist_flag_on_success) {
@@ -1139,6 +1151,7 @@ void ZCashWalletService::OnGetAccountMetaForResetSyncStateToIronwoodActivation(
     return;
   }
 
+  CHECK_GT(ironwood_activation_height, 0u);
   const uint32_t rewind_height = ironwood_activation_height - 1;
   auto block_id =
       zcash::mojom::BlockID::New(rewind_height, std::vector<uint8_t>());
@@ -1146,8 +1159,8 @@ void ZCashWalletService::OnGetAccountMetaForResetSyncStateToIronwoodActivation(
       chain_id, std::move(block_id),
       base::BindOnce(&ZCashWalletService::
                          OnGetTreeStateForResetSyncStateToIronwoodActivation,
-                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
-                     rewind_height, persist_flag_on_success,
+                     ironwood_rewind_weak_ptr_factory_.GetWeakPtr(),
+                     account_id.Clone(), rewind_height, persist_flag_on_success,
                      std::move(callback)));
 }
 
@@ -1174,7 +1187,7 @@ void ZCashWalletService::OnGetTreeStateForResetSyncStateToIronwoodActivation(
       .WithArgs(account_id.Clone(), rewind_height, *reverted_hash)
       .Then(base::BindOnce(
           &ZCashWalletService::OnRewindForResetSyncStateToIronwoodActivation,
-          weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+          ironwood_rewind_weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
           persist_flag_on_success, std::move(callback)));
 }
 
@@ -1275,12 +1288,14 @@ void ZCashWalletService::Unlocked() {
 }
 
 void ZCashWalletService::Locked() {
+  ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   auto_sync_managers_.clear();
   pending_ironwood_rewinds_.clear();
   shield_sync_services_.clear();
 }
 
 void ZCashWalletService::Reset() {
+  ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   weak_ptr_factory_.InvalidateWeakPtrs();
   pending_ironwood_rewinds_.clear();
   shield_sync_services_.clear();
@@ -1295,6 +1310,7 @@ void ZCashWalletService::ShutdownSyncStateForTesting() {
   get_zcash_chain_tip_status_tasks_.clear();
   pending_ironwood_rewinds_.clear();
   shield_sync_services_.clear();
+  ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   weak_ptr_factory_.InvalidateWeakPtrs();
   sync_state().SynchronouslyResetForTest();
 }

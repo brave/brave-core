@@ -304,6 +304,10 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       uint32_t to,
       StartShieldSyncCallback callback,
       const std::optional<std::string>& error);
+  void OnResetSyncStateToIronwoodActivation(
+      mojom::AccountIdPtr account_id,
+      ResetSyncStateToIronwoodActivationCallback callback,
+      const std::optional<std::string>& error);
 
   void OnCreateOrchardToTransparentTransactionTaskDone(
       ZCashCreateOrchardToTransparentTransactionTask* task,
@@ -416,7 +420,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       create_orchard_to_transparent_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
       shield_sync_services_;
-  // Accounts with an in-flight Ironwood rewind preflight for StartShieldSync.
+  // Accounts with an in-flight Ironwood rewind.
   std::map<mojom::AccountIdPtr, bool> pending_ironwood_rewinds_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashAutoSyncManager>>
       auto_sync_managers_;
@@ -427,6 +431,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
+  base::WeakPtrFactory<ZCashWalletService> ironwood_rewind_weak_ptr_factory_{
+      this};
   base::WeakPtrFactory<ZCashWalletService> weak_ptr_factory_{this};
 };
 
