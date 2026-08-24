@@ -425,6 +425,11 @@ void AdBlockService::DiscardRegex(uint64_t regex_id) {
       .WithArgs(regex_id);
 }
 
+void AdBlockService::DropDATCache() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  dat_cache_manager_->DropDATCache();
+}
+
 void AdBlockService::SetupDiscardPolicy(
     const adblock::RegexManagerDiscardPolicy& policy) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

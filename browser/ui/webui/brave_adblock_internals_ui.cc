@@ -63,6 +63,10 @@ class BraveAdblockInternalsMessageHandler
         "brave_adblock_internals.setDebugMode",
         base::BindRepeating(&BraveAdblockInternalsMessageHandler::SetDebugMode,
                             base::Unretained(this)));
+    web_ui()->RegisterMessageCallback(
+        "brave_adblock_internals.dropDATCache",
+        base::BindRepeating(&BraveAdblockInternalsMessageHandler::DropDATCache,
+                            base::Unretained(this)));
   }
 
   void GetDebugInfo(const base::ListValue& args) {
@@ -127,6 +131,12 @@ class BraveAdblockInternalsMessageHandler
     CHECK_EQ(1U, args.size());
     const bool debug_mode = args[0].GetBool();
     g_brave_browser_process->ad_block_service()->SetDebugMode(debug_mode);
+    g_brave_browser_process->ad_block_service()->DropDATCache();
+  }
+
+  void DropDATCache(const base::ListValue& args) {
+    CHECK_EQ(0U, args.size());
+    g_brave_browser_process->ad_block_service()->DropDATCache();
   }
 
   void OnGetDebugInfo(const std::string& callback_id,
