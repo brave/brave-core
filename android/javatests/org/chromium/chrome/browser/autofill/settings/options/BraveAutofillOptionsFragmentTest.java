@@ -133,6 +133,7 @@ public class BraveAutofillOptionsFragmentTest {
     @SmallTest
     public void testSupportedAutofillOptionsReferrersAreExplicit() {
         assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.SETTINGS);
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.SETTINGS_SEARCH);
         assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.PAYMENT_METHODS_FRAGMENT);
         assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.AUTOFILL_PROFILES_FRAGMENT);
         assertSupportedAutofillOptionsReferrer(
