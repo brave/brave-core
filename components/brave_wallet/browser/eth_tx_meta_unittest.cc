@@ -242,6 +242,29 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
               "0x35353535353535353535353535353535353535bb");
   }
 
+  // ERC1155 safe transfer final recipient
+  {
+    std::vector<uint8_t> encoded_data;
+    std::string data;
+    EXPECT_TRUE(erc1155::SafeTransferFrom(
+        "0x3535353535353535353535353535353535353535",
+        "0x35353535353535353535353535353535353535bb", 10, 1, &data));
+    EXPECT_TRUE(PrefixedHexStringToBytes(data, &encoded_data));
+
+    std::unique_ptr<Eip1559Transaction> tx =
+        std::make_unique<Eip1559Transaction>(
+            *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                mojom::TxData::New(mojom::kSepoliaChainId, "0x09",
+                                   "0x4a817c800", "0x5208",
+                                   "0x3535353535353535353535353535353535353535",
+                                   "0x0de0b6b3a7640000", encoded_data),
+                "0x1E", "0x32")));
+
+    EthTxMeta meta(eth_account_id, std::move(tx));
+    ASSERT_EQ(meta.ToTransactionInfo()->effective_recipient.value(),
+              "0x35353535353535353535353535353535353535bb");
+  }
+
   // Just ETH transfer
   {
     std::unique_ptr<Eip1559Transaction> tx =
