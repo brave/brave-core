@@ -49,6 +49,7 @@ patches/**/*.patchinfo
 /third_party/wintun/
 /third_party/ast-grep-intermediate/
 /third_party/ast-grep-src/
+/third_party/tree-sitter-gn-src/
 /third_party/ast-grep/ast-grep-*
 /third_party/updater/mac/
 *.xcodeproj
