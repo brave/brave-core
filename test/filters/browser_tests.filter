@@ -1304,6 +1304,7 @@
 # See, chromium_src\chrome\browser\ui\navigator\browser_navigator_params_utils.cc for details.
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/*
+-HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeAllowlistOnlyInitialHost/*
 -HttpsUpgradesTypedSchemelessNavigationBalancedModeBrowserTest.TypedSchemelessNavigationFallback_BalancedMode
 -HttpsUpgradesSecureOriginAllowlistBrowserTest.HostNotInAllowlistShowWarning
 
