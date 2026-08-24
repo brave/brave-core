@@ -1,0 +1,13 @@
+diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabManagementDelegateImpl.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabManagementDelegateImpl.java
+index 7af1bc0c5af3e67421d3bb34f46acb00d936100d..021874057c708ba2b90f37b1737ba4e829c0718f 100644
+--- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabManagementDelegateImpl.java
++++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabManagementDelegateImpl.java
+@@ -242,7 +242,7 @@ public class TabManagementDelegateImpl implements TabManagementDelegate {
+             DataSharingTabManager dataSharingTabManager) {
+         LazyOneshotSupplier<TabModel> tabModelSupplier =
+                 LazyOneshotSupplier.fromSupplier(() -> tabModelSelector.getModel(false));
+-        return new TabGroupsPane(
++        return new BraveTabGroupsPane(
+                 context,
+                 tabModelSupplier,
+                 onToolbarAlphaChange,
