@@ -9,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -39,6 +40,24 @@ public class TransactionUtils {
         } else {
             return CoinType.ETH;
         }
+    }
+
+    /**
+     * Checks whether the sending account can cover the network fee of a transaction. Adapted from
+     * {@code accountHasInsufficientFundsForGas} in components/brave_wallet_ui/utils/tx-utils.ts.
+     *
+     * @param txInfo Transaction to verify.
+     * @param parsedTx Parsed {@code txInfo}, holding the network fee.
+     * @param nativeBalance Native asset balance of the sending account, {@code null} when unknown.
+     * @return {@code true} when the balance does not cover the network fee.
+     */
+    public static boolean hasInsufficientBalanceForGas(
+            @NonNull final TransactionInfo txInfo,
+            @NonNull final ParsedTransaction parsedTx,
+            @Nullable final Double nativeBalance) {
+        return isBalanceCheckSupported(txInfo)
+                && nativeBalance != null
+                && parsedTx.getGasFee() > nativeBalance;
     }
 
     /**
