@@ -7,6 +7,8 @@ import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("brave_ads") {
   sources = [
+    "ads_client_ios_observer.cc",
+    "ads_client_ios_observer.h",
     "ads_media_reporting_javascript_feature.h",
     "ads_media_reporting_javascript_feature.mm",
     "ads_service_factory_ios.h",
