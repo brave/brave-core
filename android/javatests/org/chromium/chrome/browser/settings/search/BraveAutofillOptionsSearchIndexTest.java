@@ -88,7 +88,7 @@ public class BraveAutofillOptionsSearchIndexTest {
         buildIndex();
 
         SettingsIndexData.Entry entry = getPrivateWindowEntry();
-        assertSettingsReferrerExtras(entry);
+        assertSettingsSearchReferrerExtras(entry);
         assertSearchFindsPrivateWindowEntry(entry);
 
         SettingsIndexData.Entry legacyAutofillOptionsEntry =
@@ -96,7 +96,7 @@ public class BraveAutofillOptionsSearchIndexTest {
                         MainSettings.class.getName(), MainSettings.PREF_AUTOFILL_OPTIONS);
         assertNotNull(legacyAutofillOptionsEntry);
         assertEquals(AutofillOptionsFragment.class.getName(), legacyAutofillOptionsEntry.fragment);
-        assertSettingsReferrerExtras(legacyAutofillOptionsEntry);
+        assertSettingsSearchReferrerExtras(legacyAutofillOptionsEntry);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class BraveAutofillOptionsSearchIndexTest {
         buildIndex();
 
         SettingsIndexData.Entry entry = getPrivateWindowEntry();
-        assertSettingsReferrerExtras(entry);
+        assertSettingsSearchReferrerExtras(entry);
         assertSearchFindsPrivateWindowEntry(entry);
 
         assertNull(
@@ -128,13 +128,13 @@ public class BraveAutofillOptionsSearchIndexTest {
                         AutofillAndPasswordsFragment.PREF_AUTOFILL_SETTINGS);
         assertNotNull(homeAutofillOptionsEntry);
         assertEquals(AutofillOptionsFragment.class.getName(), homeAutofillOptionsEntry.fragment);
-        assertSettingsReferrerExtras(homeAutofillOptionsEntry);
+        assertSettingsSearchReferrerExtras(homeAutofillOptionsEntry);
 
         List<SettingsIndexData.Entry> breadcrumbEntries =
                 mIndexData.getBreadcrumbEntries(
                         AutofillOptionsFragment.class.getName(),
                         AutofillOptionsFragment.createRequiredArgs(
-                                AutofillOptionsReferrer.SETTINGS),
+                                AutofillOptionsReferrer.SETTINGS_SEARCH),
                         MainSettings.class.getName());
         assertNotNull(breadcrumbEntries);
         assertEquals(2, breadcrumbEntries.size());
@@ -157,10 +157,10 @@ public class BraveAutofillOptionsSearchIndexTest {
         return entry;
     }
 
-    private void assertSettingsReferrerExtras(SettingsIndexData.Entry entry) {
+    private void assertSettingsSearchReferrerExtras(SettingsIndexData.Entry entry) {
         assertTrue(entry.extras.containsKey(AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER));
         assertEquals(
-                AutofillOptionsReferrer.SETTINGS,
+                AutofillOptionsReferrer.SETTINGS_SEARCH,
                 entry.extras.getInt(AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER));
     }
 
