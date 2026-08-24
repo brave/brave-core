@@ -41,6 +41,23 @@ public class TransactionUtils {
         }
     }
 
+    /**
+     * Balance checks only cover the coins Android fetches balances for. UTXO based coins are left
+     * out as well, since their transactions are created only once inputs covering both the amount
+     * and the fee have been found.
+     */
+    private static boolean isBalanceCheckSupported(@NonNull final TransactionInfo txInfo) {
+        switch (txInfo.txDataUnion.which()) {
+            case TxDataUnion.Tag.EthTxData:
+            case TxDataUnion.Tag.EthTxData1559:
+            case TxDataUnion.Tag.SolanaTxData:
+            case TxDataUnion.Tag.FilTxData:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public static @StringRes int getTxType(TransactionInfo info) {
         if (info == null) return R.string.wallet_details_function_type_other;
         switch (info.txType) {
