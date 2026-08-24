@@ -5,6 +5,6 @@
 """`chromium_checkout` module: clone / sync / validate a Chromium src/ tree."""
 
 DEPS = [
-    'path', 'raw_io', 'json', 'step', 'context', 'depot_tools', 'env',
+    'path', 'raw_io', 'json', 'step', 'context', 'depot_tools', 'env', 'git',
     'git_cache', 'platform'
 ]

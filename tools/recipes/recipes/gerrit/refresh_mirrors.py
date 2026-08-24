@@ -15,7 +15,9 @@ from PB.recipes.brave.gerrit.refresh_mirrors import InputProperties
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
-DEPS = ['path', 'step', 'chromium_checkout', 'depot_tools', 'git_cache']
+DEPS = [
+    'path', 'step', 'chromium_checkout', 'depot_tools', 'git_cache', 'raw_io'
+]
 
 PROPERTIES = InputProperties
 
@@ -51,11 +53,20 @@ def GenTests(api):
         api.chromium_checkout.with_git_cache(),
         api.chromium_checkout.git_cache_populated(),
         api.properties(gerrit_user='chromium-mirror-bot'),
+        api.step_data('fetch tags exists (before)',
+                      stdout=api.raw_io.output_text(
+                          '/b/cache/chromium.googlesource'
+                          '.com-chromium-src\n')),
         api.post_process(post_process.MustRun, 'clone from git cache'),
         api.post_process(post_process.StepCommandContains, 'fetch tags',
                          ['--ref', 'refs/tags/*']),
         api.post_process(post_process.StepCommandDoesNotContain, 'fetch tags',
                          ['--no-fetch-tags']),
+        api.post_process(post_process.MustRun,
+                         'fetch tags disable (before): gc.auto=0'),
+        api.post_process(
+            post_process.MustRun,
+            'fetch tags disable (before): maintenance.gc.enabled=false'),
         api.post_process(post_process.MustRun, 'refresh gerrit mirrors'),
         api.post_process(post_process.StepCommandContains,
                          'refresh gerrit mirrors',

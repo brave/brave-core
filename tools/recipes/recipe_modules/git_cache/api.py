@@ -60,6 +60,10 @@ class GitCacheApi(RecipeApi):
             no_fetch_tags: Skip fetching tags that point at fetched objects.
             step_name: Step name for the `git cache populate` call.
         """
+        # Disable auto-gc before the populate() call, to avoid long maintainance
+        # tasks running. No-op if the mirror doesn't exist in git cache.
+        git_config_updated = self._disable_auto_gc(url, step_name, 'before')
+
         cmd = [
             'git', 'cache', 'populate', '--cache-dir', self._path, url,
             '--reset-fetch-config'
@@ -71,6 +75,41 @@ class GitCacheApi(RecipeApi):
         if commit:
             cmd.extend(['--commit', commit])
         self.m.step(step_name, cmd)
+
+        # Apply the auto-gc disabling if it has not been done yet. (There is
+        # a small chance for git cache to wipe the shared repo and build again,
+        # but then we can skip seting the config for that particular run, and
+        # leave it for the next one)
+        if not git_config_updated:
+            self._disable_auto_gc(url, step_name, 'after')
+
+    def _disable_auto_gc(self, url: str, step_name: str, when: str) -> bool:
+        """Stop git's own automatic gc from ever running against this mirror.
+
+        A `git fetch` into the mirror can trigger git's built-in auto-gc,
+        which on a repo the size of chromium/src can OOM or take hours (see
+        the `git` module's `disable_auto_gc` for what exactly this disables
+        and why). A no-op when the mirror doesn't exist yet: a
+        freshly-created mirror won't have accumulated enough packs to hit
+        this on its own first fetch, and the config set here takes effect
+        from its next one.
+
+        Args:
+            when: Distinguishes the pre- and post-populate call sites in step
+                names (`populate()` runs this twice per call).
+        """
+        result = self.m.step(f'{step_name} exists ({when})', [
+            'git', 'cache', 'exists', '--quiet', '--cache-dir', self._path, url
+        ],
+                             stdout=self.m.raw_io.output_text(),
+                             check=False)
+        mirror_dir = result.stdout.strip()
+        if not mirror_dir:
+            return False
+
+        self.m.git.disable_auto_gc(mirror_dir,
+                                   step_name=f'{step_name} disable ({when})')
+        return True
 
     def mirror_dir(self,
                    url: str,

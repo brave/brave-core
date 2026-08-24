@@ -219,7 +219,7 @@ class ChromiumCheckoutApi(RecipeApi):
                 'git', 'clone', '--no-checkout', '--local', '--shared',
                 *depth_args, mirror_dir, chromium_src
             ])
-            self._disable_git_gc(chromium_src)
+            self.m.git.disable_auto_gc(chromium_src)
 
             if is_qualified_ref:
                 # `ref` is a fully-qualified ref outside `refs/heads/*` and
@@ -381,14 +381,3 @@ class ChromiumCheckoutApi(RecipeApi):
                                   commit=commit,
                                   step_name=populate_step)
         return self.m.git_cache.mirror_dir(url, step_name=exists_step)
-
-    def _disable_git_gc(self, chromium_src: str | Path) -> None:
-        """Disable background gc in *chromium_src*.
-
-        A shared, long-lived checkout can have several tools touching it
-        around the same time, and an auto-triggered `git gc` racing with them
-        (or being killed midway) can corrupt the repo.
-        """
-        for key in ('gc.auto', 'gc.autodetach', 'gc.autopacklimit'):
-            self.m.step(f'git config {key}=0', ['git', 'config', key, '0'],
-                        cwd=chromium_src)

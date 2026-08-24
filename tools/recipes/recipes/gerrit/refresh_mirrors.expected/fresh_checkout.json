@@ -41,6 +41,21 @@
     "cmd": [
       "git",
       "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
       "populate",
       "--cache-dir",
       "/b/cache",
@@ -54,6 +69,21 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (after)"
   },
   {
     "cmd": [
@@ -96,7 +126,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git config gc.auto=0"
+    "name": "disable auto-gc: gc.auto=0"
   },
   {
     "cmd": [
@@ -109,7 +139,7 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git config gc.autodetach=0"
+    "name": "disable auto-gc: gc.autodetach=0"
   },
   {
     "cmd": [
@@ -122,7 +152,20 @@
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git config gc.autopacklimit=0"
+    "name": "disable auto-gc: gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.gc.enabled=false"
   },
   {
     "cmd": [
@@ -168,6 +211,58 @@
       "CHROME_HEADLESS": "1"
     },
     "name": "gclient sync"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "fetch tags exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "fetch tags disable (before): maintenance.gc.enabled=false"
   },
   {
     "cmd": [
