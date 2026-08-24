@@ -152,6 +152,46 @@ class CheckJson5ParseErrorsTest(unittest.TestCase):
         self.assertEqual([], errors)
 
 
+class CheckNoCommittedSecretsFilesTest(unittest.TestCase):
+
+    def testFlagsASecretsGniFile(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('out/linux-x64-asan-brave/secrets.gni',
+                             ['fake_secret_key = "abc123"']),
+        ]
+
+        errors = PRESUBMIT.CheckNoCommittedSecretsFiles(
+            input_api, MockOutputApi())
+
+        self.assertEqual(1, len(errors))
+        self.assertIn('secrets.gni', errors[0].message)
+
+    def testIgnoresOtherGniFiles(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('brave/build/args/brave_defaults.gni',
+                             ['is_asan = true']),
+        ]
+
+        errors = PRESUBMIT.CheckNoCommittedSecretsFiles(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+    def testIgnoresDeletedSecretsFiles(self):
+        input_api = MockInputApi()
+        input_api.files = [
+            MockAffectedFile('out/linux-x64-asan-brave/secrets.gni', [],
+                             action='D'),
+        ]
+
+        errors = PRESUBMIT.CheckNoCommittedSecretsFiles(
+            input_api, MockOutputApi())
+
+        self.assertEqual([], errors)
+
+
 class CheckTodoBugReferencesTest(unittest.TestCase):
 
     def _Check(self, line):

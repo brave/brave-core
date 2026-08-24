@@ -61,7 +61,7 @@ class OutputGenerator:
     def secrets_import_path(self) -> str:
         """The `//`-prefixed GN label `render_args_gn()` imports secrets from.
         """
-        return '//out/%s/brave_secrets.gni' % self.builder_name
+        return '//out/%s/secrets.gni' % self.builder_name
 
     def render_args_gn(self, resolved: dict) -> str:
         """Renders a resolved `gn-args.json` payload as `args.gn` text."""

@@ -103,8 +103,8 @@ class RenderArgsGnTest(unittest.TestCase):
                 },
             })
         lines = rendered.split('\n')
-        self.assertEqual(
-            lines[0], 'import("//out/linux-x64-asan-brave/brave_secrets.gni")')
+        self.assertEqual(lines[0],
+                         'import("//out/linux-x64-asan-brave/secrets.gni")')
         self.assertNotIn('BRAVE_SERVICES_KEY', rendered)
         self.assertNotIn('brave_services_key', rendered)
 
