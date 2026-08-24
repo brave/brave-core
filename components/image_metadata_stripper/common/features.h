@@ -11,9 +11,9 @@
 namespace image_metadata_stripper {
 namespace features {
 
-// Controls whether tracking metadata is stripped from downloaded images. When
-// disabled, downloads follow the upstream completion path untouched.
-BASE_DECLARE_FEATURE(kStripDownloadedImageMetadata);
+// Controls whether tracking metadata is stripped from images on download /
+// upload flow.
+BASE_DECLARE_FEATURE(kStripImageMetadataV1);
 
 }  // namespace features
 }  // namespace image_metadata_stripper

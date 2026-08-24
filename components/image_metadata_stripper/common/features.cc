@@ -10,9 +10,7 @@
 namespace image_metadata_stripper {
 namespace features {
 
-// TODO(https://github.com/brave/brave-browser/issues/5238): Enable by default
-// once RemoveIptcMetadata() strips the FBMD payload.
-BASE_FEATURE(kStripDownloadedImageMetadata, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kStripImageMetadataV1, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace image_metadata_stripper

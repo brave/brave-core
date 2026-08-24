@@ -43,7 +43,7 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!base::FeatureList::IsEnabled(
-          image_metadata_stripper::features::kStripDownloadedImageMetadata)) {
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }

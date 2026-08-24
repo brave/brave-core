@@ -158,7 +158,7 @@ class BraveDownloadManagerDelegateBrowserTestBase : public PlatformBrowserTest {
  protected:
   explicit BraveDownloadManagerDelegateBrowserTestBase(bool strip_metadata) {
     feature_list_.InitWithFeatureState(
-        image_metadata_stripper::features::kStripDownloadedImageMetadata,
+        image_metadata_stripper::features::kStripImageMetadataV1,
         strip_metadata);
   }
 
