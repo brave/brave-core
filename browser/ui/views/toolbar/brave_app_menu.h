@@ -13,7 +13,7 @@
 
 class BraveAppMenu : public AppMenu {
  public:
-  BraveAppMenu(Browser* browser,
+  BraveAppMenu(BrowserWindowInterface* browser,
                ui::MenuModel* model,
                int run_types,
                base::RepeatingClosure on_menu_closed_callback);
@@ -22,8 +22,8 @@ class BraveAppMenu : public AppMenu {
   BraveAppMenu(const BraveAppMenu&) = delete;
   BraveAppMenu& operator=(const BraveAppMenu&) = delete;
 
-  Browser* browser() { return browser_; }
-  const Browser* browser() const { return browser_; }
+  BrowserWindowInterface* browser() { return browser_; }
+  const BrowserWindowInterface* browser() const { return browser_; }
 
   // AppMenu overrides:
   void RunMenu(views::MenuButtonController* host,

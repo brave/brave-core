@@ -18,8 +18,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -79,7 +79,7 @@ bool PromotionButtonController::PromotionEnabled(PrefService* prefs) {
 PromotionButtonController::PromotionButtonController(
     PromotionButtonView* button,
     OmniboxViewViews* omnibox_view,
-    Browser* browser)
+    BrowserWindowInterface* browser)
     : button_(button),
       omnibox_view_(omnibox_view),
       prefs_(*browser->GetProfile()->GetPrefs()),
@@ -135,7 +135,8 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
 
   // In browser test, this happens on x64 macOS release build.
   // https://github.com/brave/brave-browser/issues/51026
-  if (!BrowserWindow::FromBrowser(&browser_.get())) {
+  BrowserWindow* browser_window = BrowserWindow::FromBrowser(&browser_.get());
+  if (!browser_window) {
     return false;
   }
 
@@ -143,18 +144,15 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   // Promotion button will be shown for current search provider's
   // suggestion entries to make users search with brave search with that
   // suggestion.
-  if (!BrowserWindow::FromBrowser(&browser_.get())
-           ->GetLocationBar()
+  if (!browser_window->GetLocationBar()
            ->GetOmniboxController()
            ->IsPopupOpen()) {
     return false;
   }
 
   // Only show promotion for search query. Not url.
-  OmniboxEditModel* edit_model = BrowserWindow::FromBrowser(&browser_.get())
-                                     ->GetLocationBar()
-                                     ->GetOmniboxController()
-                                     ->edit_model();
+  OmniboxEditModel* edit_model =
+      browser_window->GetLocationBar()->GetOmniboxController()->edit_model();
   if (edit_model->CurrentTextIsURL()) {
     return false;
   }
