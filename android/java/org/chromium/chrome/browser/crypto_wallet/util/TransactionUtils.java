@@ -43,6 +43,52 @@ public class TransactionUtils {
     }
 
     /**
+     * Checks whether the sending account can cover the amount of a transaction and its network fee.
+     * Adapted from {@code accountHasInsufficientFundsForTransaction} in
+     * components/brave_wallet_ui/utils/tx-utils.ts.
+     *
+     * @param txInfo Transaction to verify.
+     * @param parsedTx Parsed {@code txInfo}, holding the amount sent and the network fee.
+     * @param nativeBalance Native asset balance of the sending account, {@code null} when unknown.
+     * @param tokenBalance Balance of the token sent, {@code null} when the transaction does not
+     *     send a token or when the balance is unknown.
+     * @return {@code true} when the balance does not cover the transaction.
+     */
+    public static boolean hasInsufficientBalance(
+            @NonNull final TransactionInfo txInfo,
+            @NonNull final ParsedTransaction parsedTx,
+            @Nullable final Double nativeBalance,
+            @Nullable final Double tokenBalance) {
+        if (!isBalanceCheckSupported(txInfo)) {
+            return false;
+        }
+
+        switch (txInfo.txType) {
+            // Spending can be approved for more tokens than the account holds, and NFT
+            // transfers move a single token that the account is known to own.
+            case TransactionType.ERC20_APPROVE:
+            case TransactionType.ERC721_TRANSFER_FROM:
+            case TransactionType.ERC721_SAFE_TRANSFER_FROM:
+                return false;
+            case TransactionType.ERC20_TRANSFER:
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER:
+            case TransactionType.SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION:
+                return tokenBalance != null && parsedTx.getValue() > tokenBalance;
+            default:
+                break;
+        }
+
+        // Swaps selling a token are limited by the balance of the token sold. Swaps selling the
+        // native asset fall through to the check below.
+        if (parsedTx.getIsSwap() && tokenBalance != null) {
+            return parsedTx.getValue() > tokenBalance;
+        }
+
+        // The native asset also pays the network fee, so the balance must cover both.
+        return nativeBalance != null && parsedTx.getValue() + parsedTx.getGasFee() > nativeBalance;
+    }
+
+    /**
      * Checks whether the sending account can cover the network fee of a transaction. Adapted from
      * {@code accountHasInsufficientFundsForGas} in components/brave_wallet_ui/utils/tx-utils.ts.
      *
