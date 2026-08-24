@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">მეტი…</translation>
 <translation id="71316462802471551">ელფოსტის ზედმეტსახელები</translation>
-<translation id="209130971304928953">ჩანართების სამუშაო სივრცედ შენახვა…</translation>
-<translation id="877984331511007834">სამუშაო სივრცის გახსნა…</translation>
-<translation id="1310182651927031327">ჩანართების სამუშაო სივრცედ შენახვა…</translation>
-<translation id="3588277741646479444">სამუშაო სივრცის გახსნა…</translation>
+<translation id="8350985546648269694">მიმდინარე ფანჯრებისა და ჩანართების სივრცედ შენახვა</translation>
+<translation id="5327248766486351172">სახელი</translation>
+<translation id="6379791766023874417">შეიყვანეთ თქვენი სივრცის სახელწოდება</translation>
+<translation id="9174724474418499472">ჩემი სივრცე</translation>
+<translation id="5317780077021120954">შენახვა</translation>
+<translation id="7658239707568436148">გაუქმება</translation>
+<translation id="196342407904926436">სივრცის პარამეტრები</translation>
+<translation id="2806407377752719586">სივრცის წაშლა</translation>
+<translation id="1844931500883490339">ნამდვილად გსურთ ამ სივრცის წაშლა? შენახული სივრცე სამუდამოდ წაიშლება. ეს ქმედება დაუბრუნებელი იქნება.</translation>
+<translation id="8261506727792406068">წაშლა</translation>
+<translation id="8428213095426709021">პარამეტრები</translation>
+<translation id="1212321046099128987">სივრცე შექმნილი არ არის</translation>
+<translation id="3524567389166933243">შექმენით თქვენი პირველი სივრცე ქვემოთ მოცემულ შენახვის ღილაკზე დაწკაპუნებით.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 ენა} other {# ენა}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> ფანჯარა</translation>
+<translation id="1680377529024357662">მიმდინარე ფანჯრებისა და ჩანართების სივრცედ შენახვა</translation>
+<translation id="5561829325295347472">შეიყვანეთ თქვენი სივრცის სახელწოდება</translation>
+<translation id="2028520494010039812">სივრცის პარამეტრები</translation>
+<translation id="1580775521202322063">სივრცის წაშლა</translation>
+<translation id="3004759399777164093">ნამდვილად გსურთ ამ სივრცის წაშლა? შენახული სივრცე სამუდამოდ წაიშლება. ეს ქმედება დაუბრუნებელი იქნება.</translation>
+<translation id="7563692436589408797">სივრცე შექმნილი არ არის</translation>
+<translation id="3945077125173636695">შექმენით თქვენი პირველი სივრცე ქვემოთ მოცემულ შენახვის ღილაკზე დაწკაპუნებით.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 ჩანართი} other {# ჩანართი}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> ფანჯარა</translation>
+<translation id="3326655241685890930">სივრცეები</translation>
 <translation id="1990886731975529483">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
 <translation id="8926389886865778422">აღარ მკითხო</translation>
 <translation id="4900351245762303149">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">ეს გვერდი ვერ განიხილავს ვიდე კონტენტს</translation>
 <translation id="4988333904713528597">ყოველთვის დაუშვებელია ვიდე კონტენტების ავტომატური მოთავსება <ph name="HOST"/></translation>
 <translation id="4150684676757176434">გაგრძელეთ ვიდე კონტენტების ავტომატური თამაში დაბლოკვა</translation>
-<translation id="3477357195688115718">Brave არ იკვლევს გაფართოებებს უსაფრთხოებისთვის. მხოლოდ იმ შემთხვევაში დააინსტალირეთ ეს გაფართოება, თუ ენდობით დეველოპერს.</translation>
+<translation id="2201935460386712655">Brave არ იკვლევს გაფართოებებს უსაფრთხოებისთვის. დააინსტალირეთ "<ph name="EXTENSION_NAME"/>" მხოლოდ იმ შემთხვევაში, თუ ენდობით დეველოპერს.</translation>
 <translation id="2928844661231356557">Bluetooth მოწყობილობაზე წვდომის მინიჭება საშუალებას მისცემს საიტს წაიკითხოს თქვენს შესახებ იდენტიფიკაციური და პოტენციურად სენსიტიური ინფორმაცია. მხოლოდ საიტებს ენდობით, რომლებსაც აძლევთ წვდომას Bluetooth მოწყობილობებზე. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor ფანჯრები</translation>
 <translation id="7965178729203412357">ახალი Tor იდენტობა</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">ფილტრების მართვა</translation>
 <translation id="3108584651298176909">ჩვენების წესები</translation>
 <translation id="5156986655891520787">დამალვის წესები</translation>
-<translation id="7658239707568436148">გაუქმება</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">გახსნა .onion მისამართით: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">იძულებითი ჩასმა</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">სქრინშოტის აღება</translation>
 <translation id="3114478090884951591">ხილული არეალი</translation>
 <translation id="2026367923222947564">სრული გვერდი</translation>
+<translation id="4218885227032158909">არჩეული არე</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ნახვა Web Extensions Store-ში</translation>
 <translation id="3161744659507801211">გაფრთხილება: Brave ვერ უშლის ხელს გაფართოებებს თქვენს ბრაუზინგ ისტორიის ცვლასა.</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">მედიის გადატანა</translation>
 <translation id="4418985925423678811">ახალი ფლეილისთი</translation>
 <translation id="385051799172605136">უკან</translation>
-<translation id="5317780077021120954">შენახვა</translation>
 <translation id="7930125899031086027">შექმნა და გადატანა</translation>
 <translation id="2860159216666546928">შეარჩიეთ ფოლდერი ამ მედიას გადატანა</translation>
 <translation id="9130105487623071247">ფლეილისთის სახელი</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> პუნქტი შერჩეულია</translation>
 <translation id="3596306474342941843">ფლეილისთის წაშლა</translation>
 <translation id="7110726588168439924">დარწმუნებული ხართ, რომ გსურთ ამ ფლეილისთის და მისი ყველა შინაარის წაშლა? ეს ქმედება ვერ დააბრუნდება.</translation>
-<translation id="8261506727792406068">წაშლა</translation>
 <translation id="8152485753254079984">ახალი ფლეილისთი</translation>
 <translation id="5397019762993984652">დამატება თქვენი Play Later ფოლდერიდან</translation>
 <translation id="7525067979554623046">შექმნა</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">კონტეინერის რედაქტირება</translation>
 <translation id="7900511996284443779">კონტეინერის წაშლა</translation>
 <translation id="2738687336989232152">დარწმუნებული ხართ, რომ გსურთ ატაშვოთ კონტეინერი <ph name="CONTAINER_NAME"/>? ეს წაშლის ყველა მონაცემს, რომელიც მას უკავშირდება.</translation>
-<translation id="5327248766486351172">სახელი</translation>
 <translation id="104766043551382253">ხატულა</translation>
 <translation id="5431318178759467895">ფერი</translation>
 <translation id="4328541188421002379">დაასახელეთ კონტეინერი, როგორიცაა სამუშაო ან პერსონალური</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">დააკონფიგურირეთ თქვენი ბრაუზერი ისე, რომ Brave-ის მხარდაჭერა შეინარჩუნოთ</translation>
 <translation id="123297831435065577">Brave Origin არის ბრაუზერის ფასიანი ვერსია იმ მომხმარებლებისთვის, რომლებსაც არ ჭირდებათ ყველა ფუნქცია, რომელიც Brave-ს ბიზნესად აყალიბებს, მაგრამ მაინც სურთ ის კონფიდენციალურობა, რომელსაც მხოლოდ Brave გთავაზობთ. Origin-ის მომხმარებლები გააგრძელებენ სარგებლობას ჩვენი ინდუსტრიის წამყვანი კონფიდენციალურობით, რეკლამის ბლოკირებითა და სიჩქარით (Shields-ის მეშვეობით), ასევე რეგულარული პროგრამული განახლებებით, Chromium-ის გასწორებებითა და უსაფრთხოებისა და კონფიდენციალურობის გაუმჯობესებებით.</translation>
 <translation id="7984508421152399880">ახლავე ყიდვა</translation>
+<translation id="1882724423074862793">აღადგინეთ ყიდვა</translation>
 <translation id="5567412479632285879">Brave Rewards გამორთულია</translation>
 <translation id="413570371620795359">გახსენით ჯილდოების პანელი გასააქტიურებლად და დასაწყებად</translation>
 <translation id="1051600834033686945">გახსენით სრული Brave Rewards პარამეტრები</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">დიაგნოსტიკური ანგარიშების ავტომატურად გაგზავნა</translation>
 <translation id="8868426106596092089">დაეხმარეთ Brave-ს პროდუქტების სტაბილურობის გაუმჯობესებაში დიაგნოსტიკური რეპორტების ავტომატური გაგზავნით, როდესაც Brave ბრაუზერი გაითიშება ან გაიყინება</translation>
 <translation id="4891600875049212418">მგრძნობიარე საიტებზე ვიზიტისას გამოიყენეთ „Off-The-Record“ კონფიდენციალობის რეჟიმი</translation>
+<translation id="1022603984240541480">კონფიდენციალურობის პარამეტრების მორგების შეტყობინების ჩვენება თავსებად საიტებზე</translation>
+<translation id="3528176629974273019">საშუალებას აძლევს Brave-ს ავტომატურად შემოგთავაზოთ (და დაარეგულიროს) კონკრეტული საიტის კონფიდენციალურობის პარამეტრები.</translation>
 <translation id="509873765238158442">Microsoft Recall-ის დაბლოკვა</translation>
 <translation id="4763421121695677716">არ დაუშვათ Microsoft Windows-ის Recall ფუნქციამ ავტომატურად გადაიღოს ეკრანის სურათები Brave-ის გახსნილი ტაბებიდან.</translation>
 <translation id="1968895725257436430">მონაცემთა შეგროვება</translation>
@@ -733,6 +754,7 @@
 <translation id="4425607417590286548">ცვლილებების გამოყენება</translation>
 <translation id="2128143836897950793">დააწკაპუნეთ 'მოითხოვეთ ახალი ხიდი...' ხიდების მისაღებად</translation>
 <translation id="3314921753580327793">მისამართების შეყვანა:პორტი (ერთი ყოველი ხაზისთვის)</translation>
+<translation id="7002083631026466886">Tor ვერ იყენებს ამ ხიდს. შეადარეთ იმ ხიდს, რომელიც მოგეცათ და შემდეგ სცადეთ თავიდან:</translation>
 <translation id="3755189300481406891">მოითხოვეთ ხიდი</translation>
 <translation id="6924425739431382319">ვუკავშირდებით BridgeDB. გთხოვთ მოითმინოთ.</translation>
 <translation id="811745063252080651">კაპჩას ამოხსნა ხიდის მისაღებად.</translation>
@@ -910,7 +932,6 @@
 <translation id="1838374766361614909">ძიების გასუფთავება</translation>
 <translation id="5126255551970171328">მეხსიერებაში ძიება</translation>
 <translation id="7402116145895962069">დაასინქრონე შენს Ollama-ის ლოკალური მოდელები</translation>
-<translation id="4835154437390745810">მართავს Ollama</translation>
 <translation id="5985516785067818307">კითხვარის პანელი</translation>
 <translation id="8347743943525229984">Brave-ის გამოკითხვის დაშვება</translation>
 <translation id="3204080538332044581">ეს პარამეტრი Brave-ს საშუალებას აძლევს, ახალ ტაბზე პირადი გამოკითხვის ბმულები გვაჩვენოს. გამოკითხვები გვეხმარება მომხმარებელთა საჭიროებების უკეთ გაცნობაში, ფუნქციონალის გაუმჯობესებასა და ბრაუზერზე დაფუძნებული სარეკლამო კამპანიების ეფექტიანობის შეფასებაში. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/>;</translation>

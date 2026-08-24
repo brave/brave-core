@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Xóa dữ liệu duyệt web</translation>
 <translation id="1690924763769415936">Phát nền</translation>
 <translation id="6332924730165919598">Việc đóng tất cả các tab sẽ đóng Brave</translation>
+<translation id="2557725907027944082">Nhóm</translation>
 <translation id="8308305244351876417">Cho phép phát âm thanh khi bạn chuyển sang tab khác trong Brave hoặc ứng dụng khác hoặc khi màn hình thiết bị của bạn tắt.</translation>
 <translation id="49147335255967913">Mở liên kết YouTube trong Brave</translation>
 <translation id="4150201353443180367">Hiển thị</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Tìm hiểu thêm về Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Cho phép (Khởi chạy lại ngay)</translation>
 <translation id="2433507940547922241">Hình thức</translation>
+<translation id="316542773973815724">Điều hướng</translation>
 <translation id="9040069796107003510">Biểu tượng Brave Phần thưởng</translation>
 <translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
-<translation id="1215433243238902715">Bật thanh điều hướng phía dưới</translation>
+<translation id="4393974575368329991">Thanh điều hướng phía dưới</translation>
+<translation id="1834226716203076292">Hiển thị thanh dưới cùng để truy cập nhanh vào trang chủ, dấu trang và tìm kiếm</translation>
 <translation id="1422686363939271829">Cài đặt này bị vô hiệu hóa khi thanh địa chỉ được chọn hiển thị ở phía dưới</translation>
 <translation id="6587448235155023666">Các thay đổi bạn thực hiện sẽ có hiệu lực vào lần tới khi bạn khởi chạy lại Brave</translation>
 <translation id="8701563696941209024">KHỞI CHẠY LẠI NGAY</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Gửi báo cáo chẩn đoán ẩn danh nếu bạn gặp sự cố hoặc đóng băng.</translation>
 <translation id="4780647518983772446">Chia sẻ thông tin chi tiết riêng tư và ẩn danh về các tính năng Brave đang được người dùng sử dụng.</translation>
 <translation id="5109496672133133896">Thông tin chi tiết sản phẩm riêng tư</translation>
-<translation id="3545804467215833536">Chạm để xem Khiên Brave</translation>
-<translation id="1724327820822194498">Xem tất cả nội dung xấu mà Brave đã chặn, trên mọi trang, với Khiên.</translation>
+<translation id="4340039903315468568">Xem tất cả nội dung xấu mà Brave đã chặn trên mọi trang với Lá chắn. Chạm để xem</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> quảng cáo &amp; trình theo dõi bị chặn</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
 <translation id="5806601733251372221">Khiên Brave</translation>
@@ -443,6 +445,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="7141438739990875547">Mạng Bitcoin</translation>
 <translation id="9055546041146396417">Nếu trang web này bị hỏng, hãy thử tắt Khiên.</translation>
 <translation id="7898672232170410330">Chặn thành phần</translation>
+<translation id="7205939464631857223">Xóa tất cả thành phần bị chặn</translation>
 <translation id="7961015016161918242">Không bao giờ</translation>
 <translation id="3200744626782631683">Dữ liệu duyệt web không bao giờ bị xóa vĩnh viễn một cách tự động</translation>
 <translation id="1991004083507807299">Khi các thẻ đã đóng</translation>
@@ -505,7 +508,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3980704343258720102">Xóa tất cả dữ liệu duyệt web</translation>
 <translation id="8089997572759938512">Đặt lại báo cáo quyền riêng tư về 0</translation>
 <translation id="2718046830255553131">Dữ liệu trong báo cáo quyền riêng tư đã bị xóa.</translation>
-<translation id="8376263745431603066">Bật "Chế độ Ban đêm" (Thử nghiệm)</translation>
+<translation id="3623948252408240879">Chế độ tối</translation>
+<translation id="1257950165130031194">Buộc chế độ tối cho nội dung web</translation>
+<translation id="8710601165725654801">Màu động</translation>
+<translation id="7865194971711852999">Chủ đề ứng dụng khớp với màu hình nền</translation>
 <translation id="1383876407941801731">Tìm kiếm</translation>
 <translation id="13296465911709339">Đã sao chép văn bản của bạn vào khay nhớ tạm.</translation>
 <translation id="2735834606413553397">Địa chỉ công cộng đã được sao chép vào khay nhớ tạm.</translation>
@@ -725,7 +731,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4979796155378508955">Giao dịch có thể không được truyền vào mạng nếu giá trị số giao dịch tùy chỉnh không tuần tự hoặc có các lỗi khác.</translation>
 <translation id="750843150060816463">Giá xăng (Gwei)</translation>
 <translation id="1426320910664514906">Hạn mức ga</translation>
-<translation id="6389441740143786465">Tắt Trung tâm chia sẻ</translation>
+<translation id="1784950057929740513">Trung tâm chia sẻ</translation>
 <translation id="473775607612524610">Cập nhật</translation>
 <translation id="479795390141144417">Cập nhật tài khoản không thành công.</translation>
 <translation id="8084782383392198011">Tên tài khoản không được trống.</translation>
@@ -800,8 +806,12 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1060221736464994328">Cho phép trang này chuyển đổi mạng?</translation>
 <translation id="2478788592457735063">Điều này sẽ chuyển đổi mạng sang một mạng đã thêm trước đó.</translation>
 <translation id="8756686998207163764">Chuyển đổi mạng</translation>
+<translation id="8905793906896555159">Bật nhóm thẻ</translation>
+<translation id="7632160823264702523">Thanh nhóm thẻ</translation>
+<translation id="2477807195394450274">Hiển thị thanh dưới cùng để truy cập nhanh vào các thẻ trong nhóm thẻ đang mở</translation>
+<translation id="8374720587111523381">Mở các liên kết trong nhóm thẻ hiện tại</translation>
 <translation id="5324095733417835490">Chỉ mở các liên kết trong nhóm tab hiện tại</translation>
-<translation id="2620277345862119868">Tự động mở tất cả các liên kết trong nhóm tab hiện tại</translation>
+<translation id="1227658541937938697">Tự động mở tất cả các liên kết trong nhóm thẻ hiện tại</translation>
 <translation id="5242300593039211344">Khóa Ví</translation>
 <translation id="1108298724135935307">Các website đã kết nối</translation>
 <translation id="4255623233927788178">Xem trên trình khám phá khối</translation>
@@ -1083,7 +1093,7 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="6393423486818299209">Sử dụng nhà cung cấp dịch vụ hiện tại của bạn hoặc DNS Wikimedia</translation>
 <translation id="3401384982562827787">Sử dụng nhà cung cấp dịch vụ hiện tại của bạn hoặc Cloudflare</translation>
 <translation id="8812367543786936496">Nếu nhà cung cấp dịch vụ hiện tại của bạn không an toàn thì Brave sẽ sử dụng nhà cung cấp DNS thay thế an toàn</translation>
-<translation id="1381108437654541567">Kích hoạt đa cửa sổ</translation>
+<translation id="750538469281113679">Đa cửa sổ</translation>
 <translation id="6167344249617630304">Mở tối đa 5 cửa sổ cùng lúc và di chuyển các tab từ cửa sổ này sang cửa sổ khác</translation>
 <translation id="1063948063403254568">Đã phát hiện đa cửa sổ</translation>
 <translation id="4661882208707630158">Vui lòng hợp nhất các tab sang một cửa sổ Brave khác hoặc đóng các cửa sổ Brave khác trước khi tắt tính năng đa cửa sổ.</translation>

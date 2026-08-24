@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Browserdaten löschen</translation>
 <translation id="1690924763769415936">Hintergrundwiedergabe</translation>
 <translation id="6332924730165919598">Das Schließen aller Registerkarten schließt Brave</translation>
+<translation id="2557725907027944082">Gruppen</translation>
 <translation id="8308305244351876417">Erlaubt die Wiedergabe, wenn Sie zu einem anderen Brave-Tab oder einer anderen App wechseln oder sich Ihr Gerätebildschirm abschaltet.</translation>
 <translation id="49147335255967913">YouTube-Links in Brave öffnen</translation>
 <translation id="4150201353443180367">Ansicht</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Mehr über Widevine erfahren<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Erlauben (jetzt neu starten)</translation>
 <translation id="2433507940547922241">Darstellung</translation>
+<translation id="316542773973815724">Navigation</translation>
 <translation id="9040069796107003510">Brave Rewards-Symbol</translation>
 <translation id="6333347122924254968">Brave Rewards-Symbol in der Adressleiste anzeigen</translation>
-<translation id="1215433243238902715">Untere Navigationsleiste aktivieren</translation>
+<translation id="4393974575368329991">Untere Navigationsleiste</translation>
+<translation id="1834226716203076292">Untere Leiste für schnellen Zugriff auf Startseite, Lesezeichen und Suche anzeigen</translation>
 <translation id="1422686363939271829">Diese Einstellung ist deaktiviert, wenn die Adressleiste unten positioniert ist.</translation>
 <translation id="6587448235155023666">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam</translation>
 <translation id="8701563696941209024">JETZT NEU STARTEN</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Senden Sie anonyme Diagnoseberichte, wenn Brave abstürzt oder hängen bleibt.</translation>
 <translation id="4780647518983772446">Teilen Sie private und anonyme Produkteinblicke darüber, welche Brave-Funktionen verwendet werden.</translation>
 <translation id="5109496672133133896">Private Produkteinblicke</translation>
-<translation id="3545804467215833536">Tippen, um Brave Schutz anzuzeigen</translation>
-<translation id="1724327820822194498">Sehen Sie all die fiesen Dinge, die Brave auf jeder Website mit Schutz blockiert hat.</translation>
+<translation id="4340039903315468568">Sehe all die Dinge, die Brave auf jeder Website mit Shields blockiert hat. Zum Anzeigen tippen</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> Anzeigen &amp; Tracker blockiert</translation>
 <translation id="8281886186245836920">Überspringen</translation>
 <translation id="5806601733251372221">Brave Schutz</translation>
@@ -443,6 +445,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7141438739990875547">Bitcoin-Netzwerke</translation>
 <translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Schutz aus ist.</translation>
 <translation id="7898672232170410330">Element blockieren</translation>
+<translation id="7205939464631857223">Alle blockierten Elemente löschen</translation>
 <translation id="7961015016161918242">Nie</translation>
 <translation id="3200744626782631683">Browserdaten werden nie automatisch gelöscht</translation>
 <translation id="1991004083507807299">Tab der Website geschlossen</translation>
@@ -505,7 +508,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3980704343258720102">Löscht alle Browserdaten</translation>
 <translation id="8089997572759938512">Setzt Ihre Privatsphäreberichte auf Null zurück</translation>
 <translation id="2718046830255553131">Die Privatsphäreberichtsdaten wurden gelöscht.</translation>
-<translation id="8376263745431603066">"Nachtmodus" aktivieren (experimentell)</translation>
+<translation id="3623948252408240879">Nachtmodus</translation>
+<translation id="1257950165130031194">Dark Mode für Webinhalte erzwingen</translation>
+<translation id="8710601165725654801">Dynamische Farben</translation>
+<translation id="7865194971711852999">App-Design passt sich den Hintergrundbildfarben an</translation>
 <translation id="1383876407941801731">Suchen</translation>
 <translation id="13296465911709339">Ihr Text wurde in die Zwischenablage kopiert.</translation>
 <translation id="2735834606413553397">Öffentliche Adresse wurde in die Zwischenablage kopiert.</translation>
@@ -725,7 +731,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4979796155378508955">Die Transaktion wird möglicherweise nicht an das Netzwerk weitergegeben, wenn der benutzerdefinierte Nonce-Wert nicht sequenziell ist oder andere Fehler aufweist.</translation>
 <translation id="750843150060816463">Gaspreis (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimit</translation>
-<translation id="6389441740143786465">Freigabe-Hub deaktivieren</translation>
+<translation id="1784950057929740513">Freigabezentrum</translation>
 <translation id="473775607612524610">Aktualisieren</translation>
 <translation id="479795390141144417">Kontoaktualisierung fehlgeschlagen.</translation>
 <translation id="8084782383392198011">Kontoname darf nicht leer sein.</translation>
@@ -800,8 +806,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1060221736464994328">Dieser Site erlauben, das Netzwerk zu wechseln?</translation>
 <translation id="2478788592457735063">Dadurch wird das Netzwerk zu einem zuvor hinzugefügten Netzwerk gewechselt.</translation>
 <translation id="8756686998207163764">Netzwerk wechseln</translation>
+<translation id="8905793906896555159">Tab-Gruppen aktivieren</translation>
+<translation id="7632160823264702523">Tab-Gruppen-Leiste</translation>
+<translation id="2477807195394450274">Untere Leiste für schnellen Zugriff auf Tabs in der aktuell geöffneten Tab-Gruppe anzeigen</translation>
+<translation id="8374720587111523381">Links in aktueller Tab-Gruppe öffnen</translation>
 <translation id="5324095733417835490">Nur offene Links in aktueller Tabgruppe</translation>
-<translation id="2620277345862119868">Öffnet alle Links automatisch in der aktuellen Tabgruppe.</translation>
+<translation id="1227658541937938697">Alle Links automatisch in der aktuellen Tab-Gruppe öffnen</translation>
 <translation id="5242300593039211344">Wallet schließen</translation>
 <translation id="1108298724135935307">Verbundene Websites</translation>
 <translation id="4255623233927788178">Im Block-Explorer anzeigen</translation>
@@ -1080,7 +1090,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6393423486818299209">Ihren aktuellen Dienstanbieter oder Wikimedia DNS nutzen</translation>
 <translation id="3401384982562827787">Ihren aktuellen Dienstanbieter oder Cloudflare nutzen</translation>
 <translation id="8812367543786936496">Wenn Ihr aktueller Dienstanbieter unsicher ist, nutzt Brave einen alternativen, sicheren DNS-Anbieter</translation>
-<translation id="1381108437654541567">„Mehrere Fenster“ aktivieren</translation>
+<translation id="750538469281113679">Mehrere Fenster</translation>
 <translation id="6167344249617630304">Sie können bis zu 5 Fenster gleichzeitig öffnen und Tabs aus einem Fenster in ein anderes ziehen</translation>
 <translation id="1063948063403254568">Mehrere Fenster erkannt</translation>
 <translation id="4661882208707630158">Bitte verschieben Sie Ihre Tabs in ein einziges Brave-Fenster oder schließen Sie andere Brave-Fenster, bevor Sie die „Mehrere Fenster“-Funktion deaktivieren.</translation>

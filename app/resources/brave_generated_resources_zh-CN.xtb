@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">更多…</translation>
 <translation id="71316462802471551">电子邮件别名</translation>
-<translation id="209130971304928953">将标签页保存为工作区…</translation>
-<translation id="877984331511007834">打开工作区…</translation>
-<translation id="1310182651927031327">将标签页保存为工作区…</translation>
-<translation id="3588277741646479444">打开工作区…</translation>
+<translation id="8350985546648269694">将当前窗口和标签页保存为空间</translation>
+<translation id="5327248766486351172">名称</translation>
+<translation id="6379791766023874417">输入您的空间名称</translation>
+<translation id="9174724474418499472">我的空间</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="7658239707568436148">取消</translation>
+<translation id="196342407904926436">空间选项</translation>
+<translation id="2806407377752719586">删除空间</translation>
+<translation id="1844931500883490339">您确定要删除此空间吗？保存的空间将被永久移除。此操作无法撤销。</translation>
+<translation id="8261506727792406068">删除</translation>
+<translation id="8428213095426709021">设置</translation>
+<translation id="1212321046099128987">尚未创建空间</translation>
+<translation id="3524567389166933243">点击下方的保存按钮创建您的第一个空间。</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 个标签页} other {# 个标签页}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> 个窗口</translation>
+<translation id="1680377529024357662">将当前窗口和标签页保存为空间</translation>
+<translation id="5561829325295347472">输入您的空间名称</translation>
+<translation id="2028520494010039812">空间选项</translation>
+<translation id="1580775521202322063">删除空间</translation>
+<translation id="3004759399777164093">您确定要删除此空间吗？保存的空间将被永久移除。此操作无法撤销。</translation>
+<translation id="7563692436589408797">尚未创建空间</translation>
+<translation id="3945077125173636695">点击下方的保存按钮创建您的第一个空间。</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 个标签页} other {# 个标签页}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> 个窗口</translation>
+<translation id="3326655241685890930">空间</translation>
 <translation id="1990886731975529483">安装并运行 Google Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="4900351245762303149">安装 Google Widevine</translation>
@@ -36,7 +57,7 @@
 <translation id="3218385319396786393">已禁止在此网页上运行自动播放</translation>
 <translation id="4988333904713528597">始终允许自动播放<ph name="HOST"/></translation>
 <translation id="4150684676757176434">继续禁止自动播放</translation>
-<translation id="3477357195688115718">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
+<translation id="2201935460386712655">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装“<ph name="EXTENSION_NAME"/>”。</translation>
 <translation id="2928844661231356557">授予对蓝牙设备的访问权限将允许该站点读取有关您的身份信息和潜在的敏感信息。仅允许您信任的站点访问蓝牙设备。<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor 窗口</translation>
 <translation id="7965178729203412357">新 Tor 身份</translation>
@@ -62,7 +83,6 @@
 <translation id="3211174446914979436">管理筛选器</translation>
 <translation id="3108584651298176909">显示规则</translation>
 <translation id="5156986655891520787">隐藏规则</translation>
-<translation id="7658239707568436148">取消</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 地址开启： <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">强制粘贴</translation>
@@ -90,6 +110,7 @@
 <translation id="191886777375280620">捕获屏幕截图</translation>
 <translation id="3114478090884951591">可见区域</translation>
 <translation id="2026367923222947564">整个页面</translation>
+<translation id="4218885227032158909">选定区域</translation>
 <translation id="4928988318462976765">网络扩展程序商店</translation>
 <translation id="9181207987584064303">在网络扩展程序商店中查看</translation>
 <translation id="3161744659507801211">警告：Brave 无法阻止扩展程序记录您的浏览活动。</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">移动媒体</translation>
 <translation id="4418985925423678811">新建播放列表</translation>
 <translation id="385051799172605136">后退</translation>
-<translation id="5317780077021120954">保存</translation>
 <translation id="7930125899031086027">创建并移动</translation>
 <translation id="2860159216666546928">选择一个文件夹将此媒体移动到</translation>
 <translation id="9130105487623071247">播放列表名称</translation>
 <translation id="1857042171340443373">已选<ph name="NUM_ITEMS"/>项</translation>
 <translation id="3596306474342941843">删除播放列表</translation>
 <translation id="7110726588168439924">您确定要删除此播放列表及其所有内容吗？此操作无法撤销。</translation>
-<translation id="8261506727792406068">删除</translation>
 <translation id="8152485753254079984">新建播放列表</translation>
 <translation id="5397019762993984652">从稍后播放文件夹中添加</translation>
 <translation id="7525067979554623046">创建</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">编辑容器</translation>
 <translation id="7900511996284443779">删除容器</translation>
 <translation id="2738687336989232152">您确定要删除容器<ph name="CONTAINER_NAME"/>吗？这将会删除与之相关的所有数据。</translation>
-<translation id="5327248766486351172">名称</translation>
 <translation id="104766043551382253">图标</translation>
 <translation id="5431318178759467895">颜色</translation>
 <translation id="4328541188421002379">给您的容器命名，如“工作”或“个人”</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">在支持 Brave 的同时定制您的浏览器</translation>
 <translation id="123297831435065577">Brave Origin 是一款为不需要支持 Brave 作为业务的所有功能但仍想要只有 Brave 提供的隐私保护的用户提供的付费浏览器版本。Origin 用户将继续受益于我们行业领先的隐私、广告拦截和速度（通过 Brave 盾牌），以及定期的软件更新、Chromium 补丁和安全及隐私改进。</translation>
 <translation id="7984508421152399880">立即购买</translation>
+<translation id="1882724423074862793">恢复购买</translation>
 <translation id="5567412479632285879">Brave 奖励已禁用</translation>
 <translation id="413570371620795359">打开奖励面板，启用并开始体验服务</translation>
 <translation id="1051600834033686945">打开完整的 Brave 奖励设置</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">自动发送诊断报告</translation>
 <translation id="8868426106596092089">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高产品稳定性</translation>
 <translation id="4891600875049212418">访问敏感网站时不记录在案</translation>
+<translation id="1022603984240541480">在兼容的网站上显示隐私设置调整通知</translation>
+<translation id="3528176629974273019">允许 Brave 自动建议（并调整）特定网站的隐私设置。</translation>
 <translation id="509873765238158442">阻止  Microsoft Recall</translation>
 <translation id="4763421121695677716">在 Microsoft Windows 电脑上阻止 Recall 功能，停止自动截取任何打开的 Brave 标签页的屏幕截图。</translation>
 <translation id="1968895725257436430">资料合集</translation>
@@ -737,6 +758,7 @@
 <translation id="4425607417590286548">应用更改</translation>
 <translation id="2128143836897950793">要获取网桥，请点击“请求新网桥...”</translation>
 <translation id="3314921753580327793">输入地址：端口（每行一个）</translation>
+<translation id="7002083631026466886">Tor 无法使用此网桥。请对照您获得的网桥进行检查，然后重试：</translation>
 <translation id="3755189300481406891">请求提供网桥</translation>
 <translation id="6924425739431382319">联系 BridgeDB。请稍等。</translation>
 <translation id="811745063252080651">解决验证码问题即可请求提供网桥。</translation>
@@ -914,7 +936,6 @@
 <translation id="1838374766361614909">清除搜索</translation>
 <translation id="5126255551970171328">搜索记忆</translation>
 <translation id="7402116145895962069">同步您的 Ollama 本地模型</translation>
-<translation id="4835154437390745810">由 Ollama 管理</translation>
 <translation id="5985516785067818307">跟踪调查</translation>
 <translation id="8347743943525229984">允许 Brave 进行调查</translation>
 <translation id="3204080538332044581">允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>

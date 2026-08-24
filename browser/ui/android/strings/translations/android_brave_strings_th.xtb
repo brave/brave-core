@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">ล้างข้อมูลการท่องเว็บ</translation>
 <translation id="1690924763769415936">เล่นในพื้นหลัง</translation>
 <translation id="6332924730165919598">การปิดแท็บทั้งหมดจะเป็นการปิด Brave</translation>
+<translation id="2557725907027944082">กลุ่ม</translation>
 <translation id="8308305244351876417">อนุญาตให้เปิดเสียงเมื่อคุณเปลี่ยนเป็นแท็บอื่นใน Brave หรือเปลี่ยนเป็นแอปอื่น หรือเมื่อปิดหน้าจออุปกรณ์</translation>
 <translation id="49147335255967913">เปิดลิงก์ YouTube ใน Brave</translation>
 <translation id="4150201353443180367">การแสดงผล</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติมเกี่ยวกับ Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">อนุญาต (เปิดใหม่อีกครั้ง)</translation>
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
+<translation id="316542773973815724">การนำทาง</translation>
 <translation id="9040069796107003510">ไอคอน Brave Rewards</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
-<translation id="1215433243238902715">เปิดใช้งานแถบเครื่องมือนำทางด้านล่าง</translation>
+<translation id="4393974575368329991">แถบเครื่องมือนำทางด้านล่าง</translation>
+<translation id="1834226716203076292">แสดงแถบด้านล่างเพื่อเข้าถึงหน้าแรก บุ๊กมาร์ก และการค้นหาได้อย่างรวดเร็ว</translation>
 <translation id="1422686363939271829">การตั้งค่านี้จะไม่สามารถใช้งานได้เมื่อเลือกตำแหน่งแถบที่อยู่ไว้ด้านล่าง</translation>
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
 <translation id="8701563696941209024">เปิดใช้งานใหม่เลย</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">ส่งรายงานการวินิจฉัยแบบไม่ระบุชื่อหากคุณพบข้อขัดข้องหรืออาการค้าง</translation>
 <translation id="4780647518983772446">แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อ ซึ่งมีข้อมูลเกี่ยวกับคุณสมบัติ Brave ที่ใช้</translation>
 <translation id="5109496672133133896">ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัว</translation>
-<translation id="3545804467215833536">แตะเพื่อดู Brave Shields</translation>
-<translation id="1724327820822194498">ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Brave Shields</translation>
+<translation id="4340039903315468568">ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Shields แตะเพื่อดู</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> บล็อกโฆษณา &amp; ตัวติดตามแล้ว</translation>
 <translation id="8281886186245836920">ข้าม</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -443,6 +445,7 @@
 <translation id="7141438739990875547">เครือข่าย Bitcoin</translation>
 <translation id="9055546041146396417">หากเว็บดูเหมือนมีปัญหา ลองปิด Shields ดู</translation>
 <translation id="7898672232170410330">บล็อกองค์ประกอบ</translation>
+<translation id="7205939464631857223">ลบทุกองค์ประกอบที่ถูกบล็อก</translation>
 <translation id="7961015016161918242">ไม่ต้องเลย</translation>
 <translation id="3200744626782631683">ข้อมูลการท่องเว็บจะไม่ถูกลบโดยอัตโนมัติ</translation>
 <translation id="1991004083507807299">ปิดแท็บของเว็บไซต์แล้ว</translation>
@@ -505,7 +508,10 @@
 <translation id="3980704343258720102">ล้างข้อมูลการท่องเว็บทั้งหมด</translation>
 <translation id="8089997572759938512">รีเซ็ตรายงานความเป็นส่วนตัวของคุณเป็นศูนย์</translation>
 <translation id="2718046830255553131">ล้างข้อมูลรายงานความเป็นส่วนตัวแล้ว</translation>
-<translation id="8376263745431603066">เปิดใช้งาน "โหมดการคืน" (ทดลอง)</translation>
+<translation id="3623948252408240879">โหมดกลางคืน</translation>
+<translation id="1257950165130031194">บังคับใช้โหมดมืดสำหรับเนื้อหาเว็บ</translation>
+<translation id="8710601165725654801">สีแบบไดนามิก</translation>
+<translation id="7865194971711852999">ธีมแอปเข้ากับสีของภาพพื้นหลัง</translation>
 <translation id="1383876407941801731">ค้นหา</translation>
 <translation id="13296465911709339">ข้อความของคุณได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="2735834606413553397">คัดลอกที่อยู่สาธารณะไปยังคลิปบอร์ดแล้ว</translation>
@@ -725,7 +731,7 @@
 <translation id="4979796155378508955">ไม่สามารถเผยแพร่ธุรกรรมในเครือข่ายได้หากค่า Nonce ที่กำหนดเองไม่ต่อเนื่องหรือมีข้อผิดพลาดอื่นๆ</translation>
 <translation id="750843150060816463">ราคาแก๊ส (GWEI)</translation>
 <translation id="1426320910664514906">วงเงินแก็ส</translation>
-<translation id="6389441740143786465">ปิดใช้งานการแชร์ฮับ</translation>
+<translation id="1784950057929740513">การแชร์ฮับ</translation>
 <translation id="473775607612524610">อัปเดต</translation>
 <translation id="479795390141144417">อัปเดตบัญชีไม่สำเร็จ</translation>
 <translation id="8084782383392198011">ชื่อบัญชีต้องไม่เว้นว่าง</translation>
@@ -800,8 +806,12 @@
 <translation id="1060221736464994328">อนุญาตให้เว็บไซต์นี้สลับเครือข่ายหรือไม่</translation>
 <translation id="2478788592457735063">การดำเนินการนี้จะสลับเครือข่ายเป็นเครือข่ายที่เพิ่มไว้ก่อนหน้านี้</translation>
 <translation id="8756686998207163764">สลับเครือข่าย</translation>
+<translation id="8905793906896555159">เปิดใช้งานกลุ่มแท็บ</translation>
+<translation id="7632160823264702523">แถบกลุ่มแท็บ</translation>
+<translation id="2477807195394450274">แสดงแถบด้านล่างเพื่อเข้าถึงแท็บในกลุ่มแท็บที่เปิดอยู่ในปัจจุบันได้อย่างรวดเร็ว</translation>
+<translation id="8374720587111523381">เปิดลิงก์ในกลุ่มแท็บปัจจุบัน</translation>
 <translation id="5324095733417835490">เปิดลิงก์ในกลุ่มแท็บปัจจุบันเท่านั้น</translation>
-<translation id="2620277345862119868">เปิดลิงก์ทั้งหมดโดยอัตโนมัติในกลุ่มแท็บปัจจุบัน</translation>
+<translation id="1227658541937938697">เปิดลิงก์ทั้งหมดโดยอัตโนมัติในกลุ่มแท็บปัจจุบัน</translation>
 <translation id="5242300593039211344">ล็อกกระเป๋าเงิน</translation>
 <translation id="1108298724135935307">ไซต์ที่เชื่อมต่อ</translation>
 <translation id="4255623233927788178">ดูบน Block Explorer</translation>
@@ -1080,7 +1090,7 @@
 <translation id="6393423486818299209">ใช้ผู้ให้บริการปัจจุบันของคุณหรือ Wikimedia DNS</translation>
 <translation id="3401384982562827787">ใช้ผู้ให้บริการปัจจุบันของคุณหรือ Cloudflare</translation>
 <translation id="8812367543786936496">หากผู้ให้บริการปัจจุบันของคุณไม่ปลอดภัย Brave จะใช้ผู้ให้บริการ DNS สำรองที่ปลอดภัย</translation>
-<translation id="1381108437654541567">เปิดการใช้งานแบบหลายหน้าต่าง</translation>
+<translation id="750538469281113679">หลายหน้าต่าง</translation>
 <translation id="6167344249617630304">เปิดได้สูงสุดครั้งละ 5 หน้าต่างและสามารถย้ายแท็บจากหน้าต่างหนึ่งไปอีกหน้าต่างหนึ่งได้</translation>
 <translation id="1063948063403254568">ตรวจพบหลายหน้าต่าง</translation>
 <translation id="4661882208707630158">โปรดรวมแท็บอื่นๆ เข้ากับหน้าต่าง Brave หรือปิดหน้าต่าง Brave ก่อนที่จะปิดใช้งานคุณสมบัติหลายหน้าต่าง</translation>

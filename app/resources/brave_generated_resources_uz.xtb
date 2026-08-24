@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Koʻproq</translation>
 <translation id="71316462802471551">Elektron pochta taxalluslari</translation>
-<translation id="209130971304928953">Tablarni ish maydoni sifatida saqlash…</translation>
-<translation id="877984331511007834">Ish maydonini ochish…</translation>
-<translation id="1310182651927031327">Yorliqlarni ish maydoni sifatida saqlash…</translation>
-<translation id="3588277741646479444">Ish maydonini ochish…</translation>
+<translation id="8350985546648269694">Joriy oynalar va varaqlarni Bo'shliq sifatida saqlash</translation>
+<translation id="5327248766486351172">Nomi</translation>
+<translation id="6379791766023874417">Joyingiz nomini kiriting</translation>
+<translation id="9174724474418499472">Mening joyim</translation>
+<translation id="5317780077021120954">Saqlash</translation>
+<translation id="7658239707568436148">Bekor qilish</translation>
+<translation id="196342407904926436">Joy uchun variantlar</translation>
+<translation id="2806407377752719586">Joyni oʻchirish</translation>
+<translation id="1844931500883490339">Haqiqatan ham ushbu joyni oʻchirib tashlamoqchimisiz? Saqlangan joy butunlay oʻchirib tashlanadi. Ushbu amalni bekor qilib boʻlmaydi.</translation>
+<translation id="8261506727792406068">Oʻchirish</translation>
+<translation id="8428213095426709021">Sozlamalar</translation>
+<translation id="1212321046099128987">Hech qanday joy yaratilmagan</translation>
+<translation id="3524567389166933243">Quyidagi Saqlash tugmasini bosib birinchi joyingizni yarating.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> ta oyna</translation>
+<translation id="1680377529024357662">Joriy oynalar va varaqlarni joy sifatida saqlash</translation>
+<translation id="5561829325295347472">Joyingiz nomini kiriting</translation>
+<translation id="2028520494010039812">Joy uchun variantlar</translation>
+<translation id="1580775521202322063">Joyni oʻchirish</translation>
+<translation id="3004759399777164093">Haqiqatan ham ushbu joyni oʻchirib tashlamoqchimisiz? Saqlangan joy butunlay oʻchirib tashlanadi. Ushbu amalni bekor qilib boʻlmaydi.</translation>
+<translation id="7563692436589408797">Hech qanday joy yaratilmagan</translation>
+<translation id="3945077125173636695">Quyidagi Saqlash tugmasini bosib birinchi joyingizni yarating.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 tab} other {# tabs}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> ta oyna</translation>
+<translation id="3326655241685890930">Joylar</translation>
 <translation id="1990886731975529483">Google Widevine oʻrnatish va ishga tushirish</translation>
 <translation id="8926389886865778422">Boshqa soʻralmasin</translation>
 <translation id="4900351245762303149">Google Widevine oʻrnatish</translation>
@@ -37,7 +58,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3218385319396786393">Bu sahifada avtomatik o'ynatish bloklandi</translation>
 <translation id="4988333904713528597">Autoplay imkonini doimo <ph name="HOST"/> da berish</translation>
 <translation id="4150684676757176434">Autoplay bloklashni davom ettirish</translation>
-<translation id="3477357195688115718">Brave kengaytmalarning xavfsizlik va xavfsizlikni tekshirmaydi. Bu kengaytmani faqat ishlab chiquvchiga ishonsangiz o'rnating.</translation>
+<translation id="2201935460386712655">Brave kengaytmalarning xavfsizligini tekshirmaydi. "<ph name="EXTENSION_NAME"/>" ni faqat ishlab chiquvchiga ishonsangiz o'rnating.</translation>
 <translation id="2928844661231356557">Bluetooth qurilmasiga kirish huquqini berish, saytga siz haqingizda identifikatsiyalovchi va ehtimoliy nozik ma'lumotlarni o'qishga imkon beradi. Faqat ishonchli saytlar Bluetooth qurilmalariga kirishga imkon bering. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor oynalari</translation>
 <translation id="7965178729203412357">Yangi Tor Identifikatori</translation>
@@ -63,7 +84,6 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3211174446914979436">Filtrlarni boshqarish</translation>
 <translation id="3108584651298176909">Qoidalarni koʻrsatish</translation>
 <translation id="5156986655891520787">Qoidalarni yashirish</translation>
-<translation id="7658239707568436148">Bekor qilish</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion adresidan foydalanib oching: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Majburiy joylashtirish</translation>
@@ -91,6 +111,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="191886777375280620">Skrinshotni suratga olish</translation>
 <translation id="3114478090884951591">Koʻrinadigan hudud</translation>
 <translation id="2026367923222947564">Toʻliq sahifa</translation>
+<translation id="4218885227032158909">Tanlangan hudud</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Web Extensions Store'da ochish</translation>
 <translation id="3161744659507801211">Ogohlantirish: Brave kengaytmalarning sizning ko'rish tarixingizni yozib qo'yishini oldini ololmaydi.</translation>
@@ -289,14 +310,12 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="55252794453047936">Medialarni koʻchirish</translation>
 <translation id="4418985925423678811">Yangi Pleylist</translation>
 <translation id="385051799172605136">Orqaga</translation>
-<translation id="5317780077021120954">Saqlash</translation>
 <translation id="7930125899031086027">Yaratish va koʻchirish</translation>
 <translation id="2860159216666546928">Ushbu mediaga koʻchirish uchun papkani tanlang</translation>
 <translation id="9130105487623071247">Pleylist nomi</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> elementlar tanlangan</translation>
 <translation id="3596306474342941843">Pleylistni oʻchirish</translation>
 <translation id="7110726588168439924">Haqiqatan ham ushbu pleylistni va uning barcha kontentlarini oʻchirib tashlamoqchimisiz? Ushbu amalni bekor qilib boʻlmaydi.</translation>
-<translation id="8261506727792406068">Oʻchirish</translation>
 <translation id="8152485753254079984">Yangi pleylist</translation>
 <translation id="5397019762993984652">Play Later papkangizdan qoʻshish</translation>
 <translation id="7525067979554623046">Yaratish</translation>
@@ -393,7 +412,6 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8900907990448657776">Konteynerni tahrirlash</translation>
 <translation id="7900511996284443779">Konteynerni oʻchirish</translation>
 <translation id="2738687336989232152">Konteyner <ph name="CONTAINER_NAME"/> oʻchirmaqchimisiz? Bu unga bog‘liq barcha ma'lumotlarni olib tashlaydi.</translation>
-<translation id="5327248766486351172">Nomi</translation>
 <translation id="104766043551382253">Belgi</translation>
 <translation id="5431318178759467895">Rang</translation>
 <translation id="4328541188421002379">Konteyneringizga ish yoki shaxsiy tarzda nom bering</translation>
@@ -547,6 +565,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2587535830241068901">Brave’ni moslashtiring va baribir Brave’ni qo‘llab-quvvatlang</translation>
 <translation id="123297831435065577">Brave Origin - brauzer foydalanuvchilari uchun to'langan versiya bo'lib, Brave-ni biznes sifatida qo'llab-quvvatlash uchun zarur bo'lgan barcha xususiyatlarga ehtiyoj sezmaydigan, lekin faqat Brave taklif qiladigan maxfiylikni xohlaydiganlar uchun. Origin foydalanuvchilari bizning sanoat etakchi maxfiylik, bloklovchi va tezlik (Qalqonlar orqali), shuningdek muntazam dasturiy ta'minotning yangilanishlari, Chromium yamoqlari va xavfsizlik hamda maxfiylik yaxshilanishlaridan foydalanishda davom etadilar.</translation>
 <translation id="7984508421152399880">Hozir sotib oling</translation>
+<translation id="1882724423074862793">Sotib olishni qayta tiklash</translation>
 <translation id="5567412479632285879">Brave Mukofotlari oʻchirilgan</translation>
 <translation id="413570371620795359">Faollashtirish va boshlash uchun Mukofotlar panelini oching</translation>
 <translation id="1051600834033686945">Toʻliq Brave Mukofotlar sozlamalarini oching</translation>
@@ -583,6 +602,8 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="933652931229970927">Diagnostika hisobotlarini avtomatik yuborish</translation>
 <translation id="8868426106596092089">Brave Brauzer ishlamay qolganda yoki muzlaganda diagnostika hisobotlarini avtomatik yuborish orqali Brave mahsulotining barqarorligini oshirishga yordam bering</translation>
 <translation id="4891600875049212418">Qaltis saytlarga tashrif buyurganingizda, anonim rejimga oʻting</translation>
+<translation id="1022603984240541480">Mos saytlarda Maxfiylik sozlamalarini sozlash bildirishnomasini koʻrsatish</translation>
+<translation id="3528176629974273019">Brave saytga xos maxfiylik sozlamalarini avtomatik taklif qilishi (va sozlashi) mumkin.</translation>
 <translation id="509873765238158442">Microsoft Recall'ni bloklash</translation>
 <translation id="4763421121695677716">Microsoft Windows kompyuterlarida Recall funksiyasining Brave'dagi ochiq varaqlarning skrinshotlarini avtomatik tarzda olishini bloklang.</translation>
 <translation id="1968895725257436430">Ma'lumot yig'ish</translation>
@@ -737,6 +758,7 @@ Buni amalga oshirishni xohlaysizmi?</translation>
 <translation id="4425607417590286548">O'zgarishlarni qo'llash</translation>
 <translation id="2128143836897950793">'Yangi ko'prik so'rang...' tugmasini bosing va ko'priklarni oling</translation>
 <translation id="3314921753580327793">Manzilni kiriting:port (har bir chiziqtan keyin)</translation>
+<translation id="7002083631026466886">Tor bu koʻprikdan foydalana olmaydi. Uni sizga berilgan koʻprik bilan solishtirib tekshiring, keyin qaytadan urinib koʻring:</translation>
 <translation id="3755189300481406891">Ko'prik so'rash</translation>
 <translation id="6924425739431382319">BridgeDB bilan bog'lanmoqda. Kuting.</translation>
 <translation id="811745063252080651">Ko'prik so'rash uchun CAPTCHA ni hal qiling.</translation>
@@ -914,7 +936,6 @@ Buni amalga oshirishni xohlaysizmi?</translation>
 <translation id="1838374766361614909">Qidiruvni tozalash</translation>
 <translation id="5126255551970171328">Xotiradan izlang</translation>
 <translation id="7402116145895962069">Ollama’dagi lokal modellarni sinxronlashtiring</translation>
-<translation id="4835154437390745810">Ollama tomonidan boshqariladi</translation>
 <translation id="5985516785067818307">Soʻrovnoma ishtirokchisi</translation>
 <translation id="8347743943525229984">Brave soʻrovnomalariga ruxsat bering</translation>
 <translation id="3204080538332044581">Brave'ga yangi varaq sahifasida shaxsiy soʻrovnomalarga havolalarni koʻrsatishga ruxsat beradi. Soʻrovnomalar bizga yangi funksiyalarni yaxshilash va brauzer orqali amalga oshiriladigan reklama kampaniyalarining samaradorligini baholashga yordam beradi. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>

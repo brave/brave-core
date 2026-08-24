@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Futa data ya kuvinjari</translation>
 <translation id="1690924763769415936">Mchezo wa mandharinyuma</translation>
 <translation id="6332924730165919598">Ukifunga vitufe vyote utafunga Brave</translation>
+<translation id="2557725907027944082">Vikundi</translation>
 <translation id="8308305244351876417">Huruhusu sauti kucheza wakati unatumia kichupo kingine katika Brave au programu nyingine au skrini ya kifaa chako imezimwa.</translation>
 <translation id="49147335255967913">Fungua viungo vya YouTube kwenye Brave</translation>
 <translation id="4150201353443180367">Onyesho</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Pata habari zaidi kuhusu Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Ruhusu (Zindua Upya Sasa)</translation>
 <translation id="2433507940547922241">Sura</translation>
+<translation id="316542773973815724">Usafiri</translation>
 <translation id="9040069796107003510">Aikoni ya Tuzo za Brave</translation>
 <translation id="6333347122924254968">Onyesha ikoni ya Brave Rewards kwenye upau wa anwani</translation>
-<translation id="1215433243238902715">Washa upau wa chini wa usafiri</translation>
+<translation id="4393974575368329991">Upau wa chini wa usafiri</translation>
+<translation id="1834226716203076292">Onyesha upau wa chini kwa ufikiaji wa haraka wa nyumbani, alamisho na utafutaji</translation>
 <translation id="1422686363939271829">Mpangilio huu umezimwa wakati nafasi ya chini ya upau wa anwani imechaguliwa</translation>
 <translation id="6587448235155023666">Mabadiliko yako yatatekelezwa utakapofungua upya Brave</translation>
 <translation id="8701563696941209024">WASHA UPYA SASA</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Tuma ripoti za uchunguzi wa kubainisha matatizo ikiwa utakabiliwa na programu kuacha kufanya kazi vyema au kukwama.</translation>
 <translation id="4780647518983772446">Shiriki maarifa ya bidhaa ya faragha na yasiyokutambulisha kuhusu ni vipengele vipi vya Brave vinavyotumiwa.</translation>
 <translation id="5109496672133133896">Maarifa ya faragha ya bidhaa</translation>
-<translation id="3545804467215833536">Gusa ili utazame Brave Shields</translation>
-<translation id="1724327820822194498">Tazama mambo yote mabaya ambayo Brave imezuia katika kila ukurasa, kwa Shields.</translation>
+<translation id="4340039903315468568">Tazama mambo yote mabaya ambayo Brave imezuia katika kila ukurasa kwa Shields. Gusa ili kuona</translation>
 <translation id="3092683655478890840">Matangazo na vifuatiliaji vya<ph name="TRACKER_COUNT"/>vimezuiwa</translation>
 <translation id="8281886186245836920">Ruka</translation>
 <translation id="5806601733251372221">Vilinzi vya Brave</translation>
@@ -440,6 +442,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7141438739990875547">Mitandao ya Bitcoin</translation>
 <translation id="9055546041146396417">Ikiwa tovuti inaonekana kuwa na kasoro, jaribu Shields hapa chini.</translation>
 <translation id="7898672232170410330">Zuia elementi</translation>
+<translation id="7205939464631857223">Futa vipengee vyote vilivyofungiwa</translation>
 <translation id="7961015016161918242">Katu</translation>
 <translation id="3200744626782631683">Data ya kuvinjari haifutwi kiotomatiki.</translation>
 <translation id="1991004083507807299">Kichupo cha tovuti kifunguka</translation>
@@ -502,7 +505,10 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="3980704343258720102">Hufuta data zote za kuvinjari</translation>
 <translation id="8089997572759938512">Huweka upya ripoti zako za faragha hadi sufuri</translation>
 <translation id="2718046830255553131">Data ya ripoti za faragha imefutwa.</translation>
-<translation id="8376263745431603066">Wezesha "Hali ya Usiku" (Majaribio)</translation>
+<translation id="3623948252408240879">Hali ya Usiku</translation>
+<translation id="1257950165130031194">Lazimisha hali ya giza kwa maudhui ya wavuti</translation>
+<translation id="8710601165725654801">Rangi zinazobadilika</translation>
+<translation id="7865194971711852999">Mandhari ya programu yanalingana na rangi za mandhari</translation>
 <translation id="1383876407941801731">Tafuta</translation>
 <translation id="13296465911709339">Maandishi yako yamenakiliwa kwenye ubao wa kunakili.</translation>
 <translation id="2735834606413553397">Anwani ya umma imenakiliwa kwenye ubao wa kunakili.</translation>
@@ -722,7 +728,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="4979796155378508955">Muamala hauwezi kuenezwa hadi kwa mtandao ikiwa thamani maalum ya nonsi haifuatani au ina hitilafu zingine.</translation>
 <translation id="750843150060816463">Bei ya Gesi (Gwei)</translation>
 <translation id="1426320910664514906">Kikomo cha Gesi</translation>
-<translation id="6389441740143786465">Lemaza Kushiriki Hub</translation>
+<translation id="1784950057929740513">Kituo cha Kushiriki</translation>
 <translation id="473775607612524610">Sasisha</translation>
 <translation id="479795390141144417">Akaunti imeshindwa kusasishwa.</translation>
 <translation id="8084782383392198011">Jina la akaunti haliwezi kuwa tupu.</translation>
@@ -797,8 +803,12 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1060221736464994328">Ruhusu tovuti hii kubadilisha mtandao?</translation>
 <translation id="2478788592457735063">Hii itabadilisha mtandao hadi kwenye mtandao ulioongezwa awali.</translation>
 <translation id="8756686998207163764">Badilisha mitandao</translation>
+<translation id="8905793906896555159">Washa vikundi vya vichupo</translation>
+<translation id="7632160823264702523">Upau wa vikundi vya vichupo</translation>
+<translation id="2477807195394450274">Onyesha upau wa chini kwa ufikiaji wa haraka wa vichupo katika kikundi cha vichupo kilichofunguliwa sasa</translation>
+<translation id="8374720587111523381">Fungua viungo kwenye kikundi cha vichupo kilichopo</translation>
 <translation id="5324095733417835490">Fungua tu viungo kwenye kikundi cha vichupo kilichopo</translation>
-<translation id="2620277345862119868">Inafungua kiotomatiki viungo vyote kwenye kikundi cha vichupo kilichopo</translation>
+<translation id="1227658541937938697">Fungua kiotomatiki viungo vyote kwenye kikundi cha vichupo kilichopo</translation>
 <translation id="5242300593039211344">Funga Pochi</translation>
 <translation id="1108298724135935307">Tovuti zilizounganishwa</translation>
 <translation id="4255623233927788178">Tazama kwenye zuia explorer</translation>
@@ -1077,7 +1087,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6393423486818299209">Tumia mtoa huduma wako wa sasa au Wikimedia DNS</translation>
 <translation id="3401384982562827787">Tumia mtoa huduma wako wa sasa au Cloudflare</translation>
 <translation id="8812367543786936496">Ikiwa mtoa huduma wako wa sasa si salama, Brave hutumia mtoa huduma mbadala wa DNS ambaye ni salama</translation>
-<translation id="1381108437654541567">Wezesha madirisha mengi</translation>
+<translation id="750538469281113679">Madirisha mengi</translation>
 <translation id="6167344249617630304">Fungua hadi madirisha 5 kwa wakati mmoja na usogeze vichupo kutoka dirisha moja hadi lingine</translation>
 <translation id="1063948063403254568">Madirisha mengi yamegunduliwa</translation>
 <translation id="4661882208707630158">Tafadhali unganisha vichupo kwenye dirisha lingine la Brave au ufunge madirisha mengine ya Brave, kabla ya kulemaza kipengele cha madirisha mengi.</translation>

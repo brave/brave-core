@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">Seus itens inativos não vão se acumular</translation>
 <translation id="1329584516321524826">Atualizado agora</translation>
 <translation id="1340839264183302272">Sair do grupo</translation>
+<translation id="1386966479075994683">Mostrar guias</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Abrir o grupo de guias compartilhado <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_ONE"/> guia na cor <ph name="COLOR_NAME"/> e o rótulo <ph name="CARD_LABEL"/>.}one{Abrir o grupo de guias compartilhado <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_MANY"/> guia na cor <ph name="COLOR_NAME"/> e o rótulo <ph name="CARD_LABEL"/>.}other{Abrir o grupo de guias compartilhado <ph name="TITLE_OF_GROUP"/> com <ph name="TABS_COUNT_MANY"/> guias na cor <ph name="COLOR_NAME"/> e o rótulo <ph name="CARD_LABEL"/>.}}</translation>
 <translation id="1486715732399361704">Todos os seus grupos de guias vão aparecer aqui</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Criado há <ph name="NUM_MINS_ONE"/> minuto}one{Criado há <ph name="NUM_MINS_MANY"/> minuto}other{Criado há <ph name="NUM_MINS_MANY"/> minutos}}</translation>
@@ -44,6 +45,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Desagrupar guia}one{Desagrupar guia}other{Desagrupar guias}}</translation>
 <translation id="2271452184061378400">Seus grupos de guias são salvos aqui</translation>
 <translation id="2277224997687551299">Editar nome do grupo</translation>
+<translation id="2289567621059034186">Nova guia abaixo</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Adicionar guia aos favoritos}one{Adicionar guia aos favoritos}other{Adicionar guias aos favoritos}}</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="2371084566192454134">Guias e grupos de guias</translation>
@@ -78,6 +80,7 @@
 <translation id="3152596030350326139">Mostrar guias horizontalmente</translation>
 <translation id="31806439105337256">Mostrar guias verticalmente</translation>
 <translation id="3194464645767632461">nota</translation>
+<translation id="3228962656492373217">Fechar guias abaixo</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Adicionar <ph name="TABS_COUNT_ONE"/> guia ao grupo}one{Adicionar <ph name="TABS_COUNT_MANY"/> guia ao grupo}other{Adicionar <ph name="TABS_COUNT_MANY"/> guias ao grupo}}</translation>
 <translation id="3328308545011660196">Sugestão: <ph name="NUMBER_OF_TABS"/> guias parecem ser relacionadas. Agrupá-las?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{Após 1 dia de inatividade}one{Após <ph name="DAY_COUNT_MANY"/> dia de inatividade}other{Após <ph name="DAY_COUNT_MANY"/> dias de inatividade}}</translation>
@@ -124,7 +127,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Mover guia para outra janela}one{Mover guia para outra janela}other{Mover guias para outras janelas}}</translation>
 <translation id="5073204694187207510">Ocultar grade de tela cheia</translation>
 <translation id="5076161749301278626">Ver avaliações da loja?</translation>
+<translation id="5093447877601682598">Enviar feedback sobre a barra de guias</translation>
 <translation id="5161254044473106830">O título é obrigatório</translation>
+<translation id="5204584298075822291">Ocultar guias</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{O Brave fecha automaticamente as guias e os grupos de guias inativos após <ph name="AUTO_DELETE_DELAY_ONE"/> mês. Você pode mudar isso nas configurações.}one{O Brave fecha automaticamente as guias e os grupos de guias inativos após <ph name="AUTO_DELETE_DELAY_MANY"/> mês. Você pode mudar isso nas configurações.}other{O Brave fecha automaticamente as guias e os grupos de guias inativos após <ph name="AUTO_DELETE_DELAY_MANY"/> meses. Você pode mudar isso nas configurações.}}</translation>
 <translation id="5254233580564156835">Uso da memória: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Sua última guia</translation>

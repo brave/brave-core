@@ -203,6 +203,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="8026334261755873520">ब्राउझिंग डेटा साफ करा</translation>
 <translation id="1690924763769415936">बॅकग्राऊंड प्ले</translation>
 <translation id="6332924730165919598">सर्व टॅब बंद केल्यावर ब्रेव्ह बंद होतो</translation>
+<translation id="2557725907027944082">गट</translation>
 <translation id="8308305244351876417">यामुळे तुम्ही Brave च्या दुसऱ्या टॅबमध्ये गेलात, किंवा दुसऱ्या ॲपमध्ये गेलात किंवा डिव्हाईसची स्क्रीन बंद केलीत तरी ऑडिओ प्ले होत राहतो.</translation>
 <translation id="49147335255967913">YouTube लिंक्स Brave मध्ये उघडा</translation>
 <translation id="4150201353443180367">डिस्प्ले करा</translation>
@@ -213,9 +214,11 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>वाइडवाइन विषयी अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">परवानगी द्या (आता री लॉन्च करा)</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
+<translation id="316542773973815724">नेव्हिगेशन</translation>
 <translation id="9040069796107003510">Brave रीवॉर्ड्स आयकॉन</translation>
 <translation id="6333347122924254968">पत्रव्यतिरिक्त Brave रीवॉर्ड्स आयकॉन दाखवा</translation>
-<translation id="1215433243238902715">खालचा नेव्हिगेशन टूलबार सक्षम करा</translation>
+<translation id="4393974575368329991">खालचा नेव्हिगेशन टूलबार</translation>
+<translation id="1834226716203076292">होम, बुकमार्क आणि शोध यांच्या जलद ऍक्सेससाठी खालचा बार दाखवा</translation>
 <translation id="1422686363939271829">तळाचा अ‍ॅड्रेस बार निवडला असताना हे सेटिंग अक्षम आहे</translation>
 <translation id="6587448235155023666">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील</translation>
 <translation id="8701563696941209024">आता री लॉन्च करा</translation>
@@ -235,8 +238,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="6188781052835527980">तुम्ही क्रॅश किंवा फ्रीझ अनुभवलात तर निदानाचे अहवाल पाठवा.</translation>
 <translation id="4780647518983772446">ब्रेव्हची कोणती वैशिष्ट्ये वापरली जात आहेत याविषयीची गोपनीय आणि निनावी उत्पादन माहिती सांगा.</translation>
 <translation id="5109496672133133896">खाजगी उत्पादन अंतर्दृष्टी</translation>
-<translation id="3545804467215833536">Brave शील्ड्स पाहण्यासाठी टॅप करा</translation>
-<translation id="1724327820822194498">प्रत्येक पृष्ठावर Brave कडून अवरोधित केलेली सर्व वाईट गोष्टी पहा, शील्ड्ससह.</translation>
+<translation id="4340039903315468568">प्रत्येक पृष्ठावर Brave कडून अवरोधित केलेली सर्व वाईट गोष्टी शील्ड्ससह पहा. पाहण्यासाठी टॅप करा</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ॲड्स &amp; ट्रॅकर्स ब्लॉक केले</translation>
 <translation id="8281886186245836920">वगळा</translation>
 <translation id="5806601733251372221">ब्रेव्ह शील्ड्स</translation>
@@ -441,6 +443,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="7141438739990875547">Bitcoin नेटवर्क्स</translation>
 <translation id="9055546041146396417">ही साइट बिघडलेली वाटत असेल, तर शील्ड्स बंद करून पाहा.</translation>
 <translation id="7898672232170410330">घटक अवरोधित करा</translation>
+<translation id="7205939464631857223">सर्व अवरोधित केलेले घटक साफ करा</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="3200744626782631683">ब्राउझिंग डेटा कधीही स्वयंचलितपणे नष्ट केला जात नाही.</translation>
 <translation id="1991004083507807299">साइट टॅब बंद केले</translation>
@@ -503,7 +506,10 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="3980704343258720102">बाहेर पडताना सर्व ब्राउझिंग डेटा क्लियर करते</translation>
 <translation id="8089997572759938512">तुमच्या गुप्तता अहवालांना शून्य करत आहे</translation>
 <translation id="2718046830255553131">गोपनीयता अहवाल डेटा साफ करण्यात आला आहे.</translation>
-<translation id="8376263745431603066">"रात्रीचा मोड" सक्षम करा (प्रायोगिक)</translation>
+<translation id="3623948252408240879">नाइट मोड</translation>
+<translation id="1257950165130031194">वेब सामग्रीसाठी डार्क मोड सक्ती करा</translation>
+<translation id="8710601165725654801">डायनॅमिक रंग</translation>
+<translation id="7865194971711852999">अ‍ॅप थीम वॉलपेपर रंगांशी जुळते</translation>
 <translation id="1383876407941801731">शोधा</translation>
 <translation id="13296465911709339">तुमचा मजकूर क्लिपबोर्डवर कॉपी केला आहे.</translation>
 <translation id="2735834606413553397">सार्वजनिक पत्ता क्लिपबोर्डवर कॉपी केला आहे.</translation>
@@ -715,7 +721,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="4979796155378508955">कस्टम नॉन-सीक्वेंशल असलेले किंवा इतर त्रुटी असलेले नॉन सेन्स व्हॅल्यू असल्यास व्यवहार नेटवर्कवर प्रसारित होणार नाही.</translation>
 <translation id="750843150060816463">गॅस किंमत (Gwei)</translation>
 <translation id="1426320910664514906">गॅस लिमिट</translation>
-<translation id="6389441740143786465">शेअरिंग हब अक्षम करा</translation>
+<translation id="1784950057929740513">शेअरिंग हब</translation>
 <translation id="473775607612524610">अपडेट करा</translation>
 <translation id="479795390141144417">खाते अद्यतन करणे अयशस्वी.</translation>
 <translation id="8084782383392198011">खाते नाव रिकामे ठेवता येणार नाही.</translation>
@@ -790,8 +796,12 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1060221736464994328">या साइटला नेटवर्क बदलण्यास अनुमती द्यायची का?</translation>
 <translation id="2478788592457735063">यामुळे पूर्वी जोडलेले एक नेटवर्क चालू होईल.</translation>
 <translation id="8756686998207163764">नेटवर्क बदला</translation>
+<translation id="8905793906896555159">टॅब गट सक्षम करा</translation>
+<translation id="7632160823264702523">टॅब गट बार</translation>
+<translation id="2477807195394450274">सध्या उघडलेल्या टॅब गटातील टॅबच्या जलद ऍक्सेससाठी खालचा बार दाखवा</translation>
+<translation id="8374720587111523381">सध्याच्या टॅब गटामध्ये लिंक उघडा</translation>
 <translation id="5324095733417835490">सध्याच्या टॅब गटामध्ये फक्त लिंक उघडा</translation>
-<translation id="2620277345862119868">स्वयंचलितपणे सर्व लिंक सध्याच्या टॅब गटात उघडते</translation>
+<translation id="1227658541937938697">स्वयंचलितपणे सर्व लिंक सध्याच्या टॅब गटात उघडा</translation>
 <translation id="5242300593039211344">वॉलेट लॉक करा</translation>
 <translation id="1108298724135935307">कनेक्ट केलेल्या साइट्स</translation>
 <translation id="4255623233927788178">ब्लॉक एक्सप्लोररवर पाहा</translation>
@@ -1070,7 +1080,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="6393423486818299209">तुमचा चालू सेवा पुरवठादार किंवा Wikimedia DNS वापरा</translation>
 <translation id="3401384982562827787">तुमचा चालू सेवा पुरवठादार किंवा Cloudflare वापरा</translation>
 <translation id="8812367543786936496">तुमचा चालू सेवा पुरवठादार असुरक्षित असल्यास, Brave सुरक्षित पर्यायी DNS पुरवठादार वापरेल</translation>
-<translation id="1381108437654541567">अनेक विंडो सक्षम करा</translation>
+<translation id="750538469281113679">अनेक विंडो</translation>
 <translation id="6167344249617630304">साथीचेजोडीने एकावेळी 5 पर्यंत विंडो उघडा आणि एकाच विंडोमधून दुसऱ्या विंडोत शिफ्ट करा</translation>
 <translation id="1063948063403254568">अनेक विंडो शोधल्या</translation>
 <translation id="4661882208707630158">एकाच विंडोमधील टॅबमध्ये मिक्स करा किंवा अन्य विंडोज बंद करा आणि अक्षम करण्यापूर्वी अनेक विंडो वैशिष्ट्य बंद करा.</translation>

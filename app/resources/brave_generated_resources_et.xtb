@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Rohkem…</translation>
 <translation id="71316462802471551">E-posti aliased</translation>
-<translation id="209130971304928953">Salvesta vahekaardid tööruumina…</translation>
-<translation id="877984331511007834">Ava tööruum…</translation>
-<translation id="1310182651927031327">Salvesta vahekaardid tööruumina…</translation>
-<translation id="3588277741646479444">Ava tööruum…</translation>
+<translation id="8350985546648269694">Salvesta praegused aknad ja vahekaardid ruumina</translation>
+<translation id="5327248766486351172">Nimi</translation>
+<translation id="6379791766023874417">Sisestage oma ruumi nimi</translation>
+<translation id="9174724474418499472">Minu ruum</translation>
+<translation id="5317780077021120954">Salvesta</translation>
+<translation id="7658239707568436148">Tühista</translation>
+<translation id="196342407904926436">Ruumi valikud</translation>
+<translation id="2806407377752719586">Kustuta ruum</translation>
+<translation id="1844931500883490339">Kas soovite kindlasti selle ruumi kustutada? Salvestatud ruum eemaldatakse jäädavalt. Seda toimingut ei saa tagasi võtta.</translation>
+<translation id="8261506727792406068">Kustuta</translation>
+<translation id="8428213095426709021">Seaded</translation>
+<translation id="1212321046099128987">Ühtegi ruumi pole loodud</translation>
+<translation id="3524567389166933243">Looge oma esimene ruum, klõpsates allolevat salvestusnuppu.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 vaheleht} other {# vahelehte}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> akent</translation>
+<translation id="1680377529024357662">Salvesta praegused aknad ja vahekaardid ruumina</translation>
+<translation id="5561829325295347472">Sisestage oma ruumi nimi</translation>
+<translation id="2028520494010039812">Ruumi valikud</translation>
+<translation id="1580775521202322063">Kustuta ruum</translation>
+<translation id="3004759399777164093">Kas soovite kindlasti selle ruumi kustutada? Salvestatud ruum eemaldatakse jäädavalt. Seda toimingut ei saa tagasi võtta.</translation>
+<translation id="7563692436589408797">Ühtegi ruumi pole loodud</translation>
+<translation id="3945077125173636695">Looge oma esimene ruum, klõpsates allolevat salvestusnuppu.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 vaheleht} other {# vahelehte}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> akent</translation>
+<translation id="3326655241685890930">Ruumid</translation>
 <translation id="1990886731975529483">Google Widevine'i installimine ja käivitamine</translation>
 <translation id="8926389886865778422">Ära enam küsi</translation>
 <translation id="4900351245762303149">Google Widevine'i installimine</translation>
@@ -37,7 +58,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="3218385319396786393">Automaatesitus blokeeriti sellel lehel</translation>
 <translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jätka automaatesituse blokeerimist</translation>
-<translation id="3477357195688115718">Brave ei kontrolli laienduste turvalisust ja ohutust. Installige see laiendus ainult juhul, kui usaldate arendajat.</translation>
+<translation id="2201935460386712655">Brave ei kontrolli laienduste turvalisust ja ohutust. Installige „<ph name="EXTENSION_NAME"/>“ ainult juhul, kui usaldate arendajat.</translation>
 <translation id="2928844661231356557">Bluetoothi seadmele juurdepääsu andmine võimaldab veebisaidil lugeda teie isikut tuvastavat ja potentsiaalselt tundlikku teavet. Lubage juurdepääs Bluetoothi seadmetele ainult veebisaitidele, mida usaldate. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tori aknad</translation>
 <translation id="7965178729203412357">Uus Tor'i identiteet</translation>
@@ -63,7 +84,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="3211174446914979436">Filtrite haldamine</translation>
 <translation id="3108584651298176909">Näita reegleid</translation>
 <translation id="5156986655891520787">Peida reeglid</translation>
-<translation id="7658239707568436148">Tühista</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Kasuta avamiseks .onion-i aadressi: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Sundkleebi</translation>
@@ -91,6 +111,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="191886777375280620">Jäädvusta kuvatõmmis</translation>
 <translation id="3114478090884951591">Nähtav ala</translation>
 <translation id="2026367923222947564">Terve leht</translation>
+<translation id="4218885227032158909">Valitud ala</translation>
 <translation id="4928988318462976765">Veebilaienduste pood</translation>
 <translation id="9181207987584064303">Kuva veebilaienduste poes</translation>
 <translation id="3161744659507801211">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada.</translation>
@@ -289,14 +310,12 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="55252794453047936">Meedia liigutamine</translation>
 <translation id="4418985925423678811">Uus esitusloend</translation>
 <translation id="385051799172605136">Tagasi</translation>
-<translation id="5317780077021120954">Salvesta</translation>
 <translation id="7930125899031086027">Loomine ja liigutamine</translation>
 <translation id="2860159216666546928">Valige kaust, kuhu soovite selle meedia liigutada</translation>
 <translation id="9130105487623071247">Esitusloendi nimi</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> üksus(t) valitud</translation>
 <translation id="3596306474342941843">Kustuta esitusloend</translation>
 <translation id="7110726588168439924">Kas soovite kindlasti selle esitusloendi ja kogu selle sisu kustutada? Seda toimingut ei saa tagasi võtta.</translation>
-<translation id="8261506727792406068">Kustuta</translation>
 <translation id="8152485753254079984">Uus esitusloend</translation>
 <translation id="5397019762993984652">Lisamine kaustast Esita hiljem</translation>
 <translation id="7525067979554623046">Loo</translation>
@@ -393,7 +412,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8900907990448657776">Muuda ümbrist</translation>
 <translation id="7900511996284443779">Kustuta ümbris</translation>
 <translation id="2738687336989232152">Kas olete kindel, et soovite kustutada ümbrise <ph name="CONTAINER_NAME"/>? Kustutamine eemaldab kõik sellega seotud andmed.</translation>
-<translation id="5327248766486351172">Nimi</translation>
 <translation id="104766043551382253">Ikoon</translation>
 <translation id="5431318178759467895">Värv</translation>
 <translation id="4328541188421002379">Andke ümbrisele nimi, näiteks Töö või Isiklik</translation>
@@ -547,6 +565,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="2587535830241068901">Kohandage oma brauserit, toetades samal ajal Brave'i</translation>
 <translation id="123297831435065577">Brave Origin on brauseri tasuline versioon kasutajatele, kes ei vaja kõiki funktsioone, mis toetavad Brave'i kui äri, kuid soovivad siiski privaatsust, mida pakub ainult Brave. Origin'i kasutajad jätkavad meie tööstust juhtivast privaatsusest, adblockerist ja kiirusest (Kaitse kaudu) saamist, samuti regulaarsetest tarkvarauuendustest, Chromium-i plaastritest ning turvalisuse ja privaatsuse parandustest.</translation>
 <translation id="7984508421152399880">Osta nüüd</translation>
+<translation id="1882724423074862793">Taasta ost</translation>
 <translation id="5567412479632285879">Brave’i auhinnad on keelatud</translation>
 <translation id="413570371620795359">Lubamiseks ja alustamiseks avage preemiate paneel</translation>
 <translation id="1051600834033686945">Ava kõik Brave’i auhindade seaded</translation>
@@ -583,6 +602,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="933652931229970927">Saada diagnostikaaruanded automaatselt</translation>
 <translation id="8868426106596092089">Aidake parandada Brave'i toote stabiilsust, saates automaatselt diagnostikaaruandeid, kui Brave'i brauser läheb krahhi või hangub</translation>
 <translation id="4891600875049212418">Lülita tundlike saitide külastamisel sisse suvand „Mitteametlikult“</translation>
+<translation id="1022603984240541480">Kuva ühilduvatel saitidel privaatsusseadete häälestamise teavitus</translation>
+<translation id="3528176629974273019">Võimaldab Brave'il automaatselt soovitada (ja kohandada) saidipõhiseid privaatsusseadeid.</translation>
 <translation id="509873765238158442">Blokeeri Microsofti tagasikutsumine</translation>
 <translation id="4763421121695677716">Blokeerige Microsoft Windowsi arvutite Recall-funktsiooni luba teha automaatselt ekraanipilte avatud Brave'i vahelehtedest.</translation>
 <translation id="1968895725257436430">Andmete kogumine</translation>
@@ -738,6 +759,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4425607417590286548">Rakenda muudatused</translation>
 <translation id="2128143836897950793">Sildade hankimiseks klõpsake valikul "Taotle uut silda...".</translation>
 <translation id="3314921753580327793">Tippige aadress:port (iga rea kohta üks)</translation>
+<translation id="7002083631026466886">Tor ei saa seda silda kasutada. Kontrollige seda teile antud silla vastu ja proovige uuesti:</translation>
 <translation id="3755189300481406891">Silla taotlemine</translation>
 <translation id="6924425739431382319">BridgeDB-ga ühenduse võtmine. Palun oodake.</translation>
 <translation id="811745063252080651">Silla taotlemiseks lahendage CAPTCHA.</translation>
@@ -916,7 +938,6 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="1838374766361614909">Tühjenda otsing</translation>
 <translation id="5126255551970171328">Otsi mälestust</translation>
 <translation id="7402116145895962069">Sünkrooni oma kohaliku Ollama mudelid</translation>
-<translation id="4835154437390745810">Haldab Ollama</translation>
 <translation id="5985516785067818307">Uuringu paneeli liige</translation>
 <translation id="8347743943525229984">Lubage Brave'i uuringud</translation>
 <translation id="3204080538332044581">Võimaldab Brave'il näidata uuel vahekaardil linke privaatsetele küsitlustele. Küsitlused aitavad meil luua paremaid funktsioone ja mõõta brauseripõhiste reklaamikampaaniate tõhusust. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
