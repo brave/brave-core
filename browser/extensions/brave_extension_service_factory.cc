@@ -45,8 +45,8 @@ BraveExtensionServiceFactory::BuildServiceInstanceForBrowserContext(
 
 bool BraveExtensionServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   // Nothing else fetches this service, so it must be created eagerly for the
-  // observer to be live when the list loads.
-  return true;
+  // observer to be live when the list loads. No list means nothing to observe.
+  return BraveGlobalFeatures::GetExtensionMalwareBlocklist() != nullptr;
 }
 
 }  // namespace extensions
