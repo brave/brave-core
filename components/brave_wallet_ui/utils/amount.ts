@@ -32,7 +32,7 @@ const SUBSCRIPT_DIGITS = '₀₁₂₃₄₅₆₇₈₉'
 const TINY_COMPACT_LEADING_ZEROS = 4
 const TINY_COMPACT_SIGNIFICANT_DIGITS = 4
 const COMPACT_ABBREVIATION_DECIMALS = 2
-const COMPACT_ABBREVIATION_THRESHOLD = 100_000
+const COMPACT_ABBREVIATION_THRESHOLD = 1_000_000
 const COMPACT_ASSET_ABBREVIATION_THRESHOLD = 1_000_000_000
 const DUST_FIAT_THRESHOLD = 0.00001
 
@@ -431,7 +431,7 @@ export default class Amount {
 
   /**
    * Compact display formatting for fiat amounts. Abbreviates large values
-   * (>= 100,000), shows $0.00 for dust values (< $0.00001), and falls back
+   * (>= 1,000,000), shows $0.00 for dust values (< $0.00001), and falls back
    * to formatAsFiat for everything else.
    */
   compactAsFiat(currency?: string, maxDecimals: number = 20): string {
