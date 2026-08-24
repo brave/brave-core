@@ -7,6 +7,7 @@
  <ScrollView android:id="@+id/brave_news_settings"
      xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:fillViewport="true"
      android:layout_height="match_parent"
      android:layout_width="match_parent">
 
@@ -16,75 +17,89 @@
           android:layout_height="wrap_content"
           android:orientation="vertical">
 
-          <LinearLayout
+          <androidx.constraintlayout.widget.ConstraintLayout
                android:id="@+id/layout_optin_card"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginHorizontal="20dp"
-               android:orientation="vertical"
+               android:layout_height="match_parent"
                android:visibility="gone">
 
-               <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animation_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
+               <ImageView
+                    android:id="@+id/optin_icon"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginTop="48dp"
                     android:contentDescription="@null"
-                    android:layout_gravity="center_horizontal"
-                    app:lottie_loop="true"
-                    app:lottie_fileName="ntp_news_optin_icon_animation.json"
-                    app:lottie_autoPlay="true" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_product_brave_news"
+                    app:tint="@color/primitive_orange_60" />
 
                <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/optin_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingHorizontal="20dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
                     android:text="@string/brave_news_settings_optin_title"
-                    android:gravity="center"
                     android:textColor="@color/news_settings_title_color"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/optin_icon" />
 
                <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/optin_subtitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/brave_news_settings_optin_subtitle"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:textColor="@color/news_settings_subtitle_color"
-                    android:textSize="15sp" />
+                    android:text="@string/brave_news_settings_optin_subtitle"
+                    android:textColor="@color/news_settings_title_color"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/optin_title" />
 
                <Button
                     android:id="@+id/btn_turn_on_news"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/themed_button_48_rounded_bg"
-                    app:backgroundTint="@null"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="4dp"
                     android:text="@string/turn_on_brave_news"
                     android:textAllCaps="false"
                     android:textColor="?attr/globalFilledButtonTextColor"
                     android:textSize="16sp"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="20dp"
-                    android:minHeight="0dp"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toTopOf="@id/btn_learn_more"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     style="?android:attr/borderlessButtonStyle"/>
 
                 <Button
                     android:id="@+id/btn_learn_more"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@android:color/transparent"
                     android:text="@string/brave_news_optin_learn_more"
                     android:textAllCaps="false"
-                    android:textColor="?attr/globalTextButtonTextColor"
+                    android:textColor="@color/default_text_color_list_baseline"
                     android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     style="?android:attr/borderlessButtonStyle"/>
 
-          </LinearLayout>
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
           <androidx.constraintlayout.widget.ConstraintLayout
                android:id="@+id/layout_switch"
