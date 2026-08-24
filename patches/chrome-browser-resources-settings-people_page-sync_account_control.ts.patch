@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_account_control.ts b/chrome/browser/resources/settings/people_page/sync_account_control.ts
+index 44ded747e4f3936b9ba572fdd99ead289b7224ab..14dbc6a363a64ed2de1940fbb096cc0d951c7c14 100644
+--- a/chrome/browser/resources/settings/people_page/sync_account_control.ts
++++ b/chrome/browser/resources/settings/people_page/sync_account_control.ts
+@@ -887,5 +887,3 @@ declare global {
+   }
+ }
+ 
+-customElements.define(
+-    SettingsSyncAccountControlElement.is, SettingsSyncAccountControlElement);
