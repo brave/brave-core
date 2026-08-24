@@ -225,7 +225,15 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
 
     if FeatureList.kQuickViewEnabled.enabled,
       Preferences.General.openLinkInQuickViewMode.value,
-      shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
+      await shouldOpenInQuickView(
+        requestURL: requestURL,
+        requestInfo: requestInfo,
+        shieldLevel: tab.braveShieldsHelper?.shieldLevel(
+          for: requestURL,
+          considerAllShieldsOption: true
+        ) ?? .standard,
+        tab: tab
+      )
     {
       presentInQuickView?(requestURL, tab)
       return .cancel
@@ -335,8 +343,9 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
   private func shouldOpenInQuickView(
     requestURL: URL,
     requestInfo: WebRequestInfo,
+    shieldLevel: ShieldLevel,
     tab: some TabState
-  ) -> Bool {
+  ) async -> Bool {
     guard requestInfo.isMainFrame,
       requestInfo.navigationType == .linkActivated,
       requestInfo.isUserInitiated,
@@ -346,7 +355,8 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       !BraveSearchManager.isValidURL(requestURL),  // don't intercept same-domain nav
       requestURL.isWebPage(includeDataURIs: false)
     else { return false }
-    return true
+
+    return await !BlockedDomainTabHelper.isDomainBlocked(requestURL, tab: tab)
   }
 }
 

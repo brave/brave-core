@@ -128,6 +128,13 @@ class QuickViewController: UIViewController {
       tab.addPolicyDecider(braveShieldsHelper)
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
+      tab.blockedDomainTabHelper = .init(
+        tab: tab,
+        onBlockedDomainRequest: { [weak self, weak tab] request in
+          guard let self, let tab else { return }
+          self.openNewTab(with: request, inPrivateMode: tab.isPrivate)
+        }
+      )
     }
     tab.protectionStats = .init(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
@@ -754,6 +761,13 @@ extension QuickViewController: TabObserver {
       let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab)
     {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
+      tab.blockedDomainTabHelper = .init(
+        tab: tab,
+        onBlockedDomainRequest: { [weak self, weak tab] request in
+          guard let self, let tab else { return }
+          self.openNewTab(with: request, inPrivateMode: tab.isPrivate)
+        }
+      )
     }
   }
 

@@ -50,7 +50,10 @@ public class BlockedDomainHandler: InternalSchemeResponse {
         of: "%proceed_action%",
         with: Strings.Shields.domainBlockedProceedAction
       )
-      .replacingOccurrences(of: "%go_back_action%", with: Strings.Shields.domainBlockedGoBackAction)
+      .replacingOccurrences(
+        of: "%go_back_action%",
+        with: Strings.Shields.domainBlockedBackToSafetyAction
+      )
       .replacingOccurrences(
         of: "%message_handler%",
         with: BlockedDomainScriptHandler.messageHandlerName

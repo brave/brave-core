@@ -67,11 +67,12 @@ class BlockedDomainScriptHandler: TabContentScript {
 
     guard let listItem = tab.backForwardList?.backList.reversed().first(where: { $0.url != url })
     else {
-      // How is this even possible?
-      // All testing indicates no, so we will not handle.
-      // If we find it is, then we need to disable or hide the "Go Back" button in these cases.
-      // But this would require heavy changes or ugly mechanisms to InternalSchemeHandler.
-      tab.goBack()
+      // this is possible when blocked domain interstitial screen is load explicitly
+      // for example, when a blocked domain was visited in QuickView mode, it will cause
+      // the QuickView to close and load the interstital explicitly in a regular tab.
+      if let url = URL(string: "about:newtab") {
+        tab.loadRequest(URLRequest(url: url))
+      }
       return
     }
 
