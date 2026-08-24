@@ -48,9 +48,12 @@ PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
 
-  if (!profile || ((!psst::features::IsPsstFeatureFlagEnabled() ||
-                    !psst::IsPsstSettingPrefEnabled(*profile->GetPrefs())) &&
-                   psst::IsPsstManaged(*profile->GetPrefs()))) {
+  // When PSST is managed (Brave Origin/enterprise
+  // policy), a policy change to enable/disable it only takes effect after
+  // the browser restarts and this factory runs again.
+  if ((!psst::features::IsPsstFeatureFlagEnabled() ||
+       !psst::IsPsstSettingPrefEnabled(*profile->GetPrefs())) &&
+      psst::IsPsstManaged(*profile->GetPrefs())) {
     return nullptr;
   }
 
