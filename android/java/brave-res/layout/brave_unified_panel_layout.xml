@@ -31,17 +31,6 @@
 
     </ScrollView>
 
-    <!-- HTTPS Upgrade Panel -->
-    <ScrollView
-        android:id="@+id/https_panel_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <include layout="@layout/brave_https_upgrade_panel"/>
-
-    </ScrollView>
-
     <!-- Trackers & Ads Panel -->
     <ScrollView
         android:id="@+id/trackers_panel_container"

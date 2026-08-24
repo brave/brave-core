@@ -98,7 +98,6 @@
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                       \
     &debounce::features::kBraveDebounce,                                       \
     &webcompat::features::kBraveWebcompatExceptionsService,                    \
-    &net::features::kBraveHttpsByDefault,                                      \
     &net::features::kBraveFallbackDoHProvider,                                 \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission,        \
     &net::features::kBraveForgetFirstPartyStorage,                             \

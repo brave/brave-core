@@ -14,7 +14,6 @@ import { StringKey, getString } from './strings'
 
 import {
   AdBlockMode,
-  HttpsUpgradeMode,
   FingerprintMode,
   CookieBlockMode,
   ContentSettingSource,
@@ -54,7 +53,6 @@ export function AdvancedSettings(props: Props) {
       }}
     >
       <AdBlockControl showDetails={props.showAdsBlocked} />
-      <HttpsUpgradeControls />
       <BlockScriptsControls showDetails={props.showScriptsBlocked} />
       <FingerprintingControls showDetails={props.showFingerprintingDetails} />
       <CookieBlockControls />
@@ -124,46 +122,6 @@ function getAdBlockModeLabel(mode: number | undefined) {
       return 'BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL'
   }
   throw new Error(`Unrecognized AdBlockMode value: ${mode}`)
-}
-
-function HttpsUpgradeControls() {
-  const api = useShieldsApi()
-  const { data: siteSettings } = api.useGetSiteSettings()
-  const isHttpsByDefaultEnabled = api.useIsHttpsByDefaultEnabledData()
-  const isTorProfile = api.useIsTorProfileData()
-
-  if (!siteSettings) {
-    return null
-  }
-
-  const httpsUpgradeMode = siteSettings.httpsUpgradeMode
-
-  if (!isHttpsByDefaultEnabled || isTorProfile) {
-    return null
-  }
-
-  return (
-    <div>
-      <Icon name='lock-dots' />
-      <Dropdown
-        value={String(httpsUpgradeMode)}
-        onChange={({ value }) => {
-          withEnumValue(value, (mode) => api.setHttpsUpgradeMode([mode]))
-        }}
-      >
-        <leo-option value={String(HttpsUpgradeMode.STRICT_MODE)}>
-          {getString('BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STRICT')}
-        </leo-option>
-        <leo-option value={String(HttpsUpgradeMode.STANDARD_MODE)}>
-          {getString('BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STANDARD')}
-        </leo-option>
-        <leo-option value={String(HttpsUpgradeMode.DISABLED_MODE)}>
-          {getString('BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_DISABLED')}
-        </leo-option>
-      </Dropdown>
-      <div />
-    </div>
-  )
 }
 
 function BlockScriptsControls(props: { showDetails: () => void }) {

@@ -105,6 +105,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   ios::FaviconServiceFactory::GetInstance();
   ios::HistoryServiceFactory::GetInstance();
   ios::HostContentSettingsMapFactory::GetInstance();
+  HttpsUpgradeServiceFactory::GetInstance();
   ios::LocalOrSyncableBookmarkSyncServiceFactory::GetInstance();
   ios::PasswordManagerLogRouterFactory::GetInstance();
   ios::TemplateURLPrepopulateDataResolverFactory::GetInstance();
@@ -126,7 +127,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   DeviceInfoSyncServiceFactory::GetInstance();
   supervised_user::FamilyLinkSettingsServiceFactory::GetInstance();
   GoogleGroupsManagerFactory::GetInstance();
-  HttpsUpgradeServiceFactory::GetInstance();
   IdentityManagerFactory::GetInstance();
   IOSAccountSettingServiceFactory::GetInstance();
   IOSChromeAccountPasswordStoreFactory::GetInstance();

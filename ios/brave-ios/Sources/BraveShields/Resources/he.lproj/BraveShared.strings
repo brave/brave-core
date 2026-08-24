@@ -161,7 +161,6 @@
 "ForgetMeLabel" = "תשכחו אותי לאחר סגירת האתר הזה";
 
 /* The option the user can select to do strict https upgrading */
-"HttpsUpgradeLevelStrict" = "חמור";
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "רשימות עודכנו";
@@ -245,10 +244,8 @@
 "shredSiteSelectedTabsConfirmationMessage" = "גריסה תסגור את הכרטיסיות שנבחרו, ותמחק את כל נתוני האתר. פעולה זו לא ניתנת לביטול.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "האתר אינו מאובטח";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "החיבור אל %@ אינו מאובטח";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "כלי מעקב וחוסמי מודעות";
@@ -260,8 +257,6 @@
 "UpdatingLists" = "רשימות בתהליך עדכון";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "שדרג חיבורים ל-HTTPS";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "האזהרה הזו מוצגת לך מכיוון שהאתר הזה לא תומך ב-HTTPS.";
 

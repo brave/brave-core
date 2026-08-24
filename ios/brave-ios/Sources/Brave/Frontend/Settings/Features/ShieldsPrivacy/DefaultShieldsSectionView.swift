@@ -32,36 +32,6 @@ struct DefaultShieldsSectionView: View {
         )
       }
 
-      if FeatureList.kBraveHttpsByDefault.enabled {
-        FormPicker(selection: $settings.httpsUpgradeLevel) {
-          ForEach(HTTPSUpgradeLevel.allCases) { level in
-            Text(level.localizedTitle)
-              .foregroundColor(.secondary)
-              .tag(level)
-          }
-        } label: {
-          LabelView(
-            title: Strings.Shields.upgradeConnectionsToHTTPS,
-            subtitle: nil
-          )
-        }
-      } else {
-        ToggleView(
-          title: Strings.Shields.upgradeConnectionsToHTTPS,
-          subtitle: Strings.Shields.httpsEverywhereDescription,
-          toggle: Binding(
-            get: {
-              settings.httpsUpgradeLevel.isEnabled
-            },
-            set: { newValue in
-              settings.httpsUpgradeLevel =
-                !newValue
-                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
-            }
-          )
-        )
-      }
-
       ToggleView(
         title: Strings.Shields.autoRedirectAMPPages,
         subtitle: Strings.Shields.autoRedirectAMPPagesDescription,
@@ -128,20 +98,6 @@ extension ShieldLevel: Identifiable {
   public var localizedTitle: String {
     switch self {
     case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive
-    case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
-    case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
-    }
-  }
-}
-
-extension HTTPSUpgradeLevel: Identifiable {
-  public var id: String {
-    return rawValue
-  }
-
-  public var localizedTitle: String {
-    switch self {
-    case .strict: return Strings.Shields.httpsUpgradeLevelStrict
     case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
     case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
     }

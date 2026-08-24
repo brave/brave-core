@@ -899,13 +899,10 @@
 "Home" = "الصفحة الرئيسية";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "ترقية الاتصالات إلى HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "لفتح المواقع باستخدام HTTPS الآمن بدلًا من HTTP متى أمكن.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "ترقيات HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "استيراد بيانات التصفح";

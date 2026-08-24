@@ -352,7 +352,6 @@ public struct InternalURL {
   public enum Path: String {
     case readermode = "reader-mode"
     case blocked
-    case httpBlocked = "http-blocked"
     case basicAuth = "basic-auth"
 
     func matches(_ string: String) -> Bool {
@@ -407,10 +406,6 @@ public struct InternalURL {
 
   public var isBlockedPage: Bool {
     return InternalURL.Path.blocked.matches(url.path)
-  }
-
-  public var isHTTPBlockedPage: Bool {
-    return InternalURL.Path.httpBlocked.matches(url.path)
   }
 
   public var isReaderModePage: Bool {

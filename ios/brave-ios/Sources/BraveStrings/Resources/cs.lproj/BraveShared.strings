@@ -899,13 +899,10 @@
 "Home" = "Domovská stránka";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Upgradujte připojení na HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Pokud je to možné, tak otevírá weby pomocí zabezpečeného HTTPS namísto HTTP.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "Aktualizace HTTPS";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importovat data procházení";

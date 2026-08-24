@@ -899,13 +899,10 @@
 "Home" = "Дом";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Надогради везе на HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Отвара сајтове користећи безбедни HTTPS уместо HTTP када је могуће.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS надоградње";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Увези податке прегледања веба";

@@ -899,13 +899,10 @@
 "Home" = "Startpagina";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Upgrade verbindingen naar HTTPS";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhereDescription" = "Open sites met beveiligd HTTPS-protocol in plaats van HTTP indien mogelijk.";
 
 /* individual blocking statistic title */
-"HTTPSUpgrades" = "HTTPS-upgrades";
 
 /* Title of the button in settings where the user can import browsing data from other browsers. */
 "importBrowsingDataSettingsMenuTitle" = "Importeer browsergegevens";

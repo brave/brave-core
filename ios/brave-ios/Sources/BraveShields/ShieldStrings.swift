@@ -727,55 +727,7 @@ extension Strings.Shields {
   )
 }
 
-// MARK: - HTTPS Upgrades
-
 extension Strings.Shields {
-  /// The option the user can select to do aggressive ad and tracker blocking
-  public static let httpsUpgradeLevelStrict = NSLocalizedString(
-    "HttpsUpgradeLevelStrict",
-    bundle: .module,
-    value: "Strict",
-    comment: "The option the user can select to do strict https upgrading"
-  )
-  /// The option the user can select for the type of https upgrading
-  public static let upgradeConnectionsToHTTPS = NSLocalizedString(
-    "UpgradeConnectionsToHTTPS",
-    bundle: .module,
-    value: "Upgrade Connections to HTTPS",
-    comment: "The option the user can select for the type of https upgrading"
-  )
-
-  /// A page title for the warning page that appears when http was blocked
-  public static let siteIsNotSecure = NSLocalizedString(
-    "SiteIsNotSecure",
-    bundle: .module,
-    value: "Site is not secure",
-    comment: "A page title for the warning page that appears when http was blocked"
-  )
-
-  /// A page title for the warning page that appears when http was blocked
-  public static let theConnectionIsNotSecure = NSLocalizedString(
-    "TheConnectionIsNotSecure",
-    bundle: .module,
-    value: "The connection to %@ is not secure",
-    comment: "A page title for the warning page that appears when http was blocked"
-  )
-
-  /// A tab title that appears when a page was blocked
-  public static let httpBlockedDescription = NSLocalizedString(
-    "YourConnectionIsNotPrivate",
-    bundle: .module,
-    value: "You are seeing this warning because this site does not support HTTPS.",
-    comment: "A description shown an a page where the http page was blocked"
-  )
-  public static let httpsEverywhereDescription = NSLocalizedString(
-    "httpsEverywhereDescription",
-    bundle: .module,
-    value: "Opens sites using secure HTTPS instead of HTTP when possible.",
-    comment: ""
-  )
-}
-
 // MARK: Shields Settings
 extension Strings.Shields {
   public static let shieldsDefaults = NSLocalizedString(
@@ -906,7 +858,7 @@ extension Strings.Shields {
     "AboutBraveShieldsBody",
     bundle: .module,
     value:
-      "Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web â€” tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.",
+      "Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web — tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.",
     comment: "The body of the screen explaining Brave Shields"
   )
   public static let shieldsDownDisclaimer = NSLocalizedString(

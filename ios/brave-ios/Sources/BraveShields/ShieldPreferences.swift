@@ -66,28 +66,12 @@ extension Preferences {
     )
 
     private static let defaultBlockAdsAndTrackingLevel: ShieldLevel = .standard
-    private static let defaultHTTPsUpgradeLevel: HTTPSUpgradeLevel = .standard
 
     /// Get the level of the adblock and tracking protection as a stored preference
     /// - Warning: You should not access this directly but  through ``blockAdsAndTrackingLevel``
     public static var blockAdsAndTrackingLevelRaw = Preferences.Option<String>(
       key: "shields.block-ads-and-tracking-level",
       default: defaultBlockAdsAndTrackingLevel.rawValue
-    )
-
-    /// Get the level of the https upgrade setting as a stored preference
-    /// - Warning: You should not access this directly but  through ``httpsUpgradeLevel``
-    public static var httpsUpgradeLevelRaw = Preferences.Option<String>(
-      key: "shields.https-upgrade-level",
-      default: defaultHTTPsUpgradeLevel.rawValue
-    )
-
-    /// Get the enabled level for https upgrade for when the kBraveHttpsByDefault feature flag is off
-    /// This preserves the value the user had set (possibly `strict` or `standard`) when they enable
-    /// https everywhere
-    public static var httpsUpgradePriorEnabledLevelRaw = Preferences.Option<String?>(
-      key: "shields.https-upgrade-prior-enabled-level",
-      default: nil
     )
 
     /// Get the auto shred level setting as a stored preference
@@ -103,22 +87,6 @@ extension Preferences {
         ShieldLevel(rawValue: blockAdsAndTrackingLevelRaw.value) ?? defaultBlockAdsAndTrackingLevel
       }
       set { blockAdsAndTrackingLevelRaw.value = newValue.rawValue }
-    }
-
-    /// Get the level of HTTPS upgrades
-    public static var httpsUpgradeLevel: HTTPSUpgradeLevel {
-      get {
-        HTTPSUpgradeLevel(rawValue: httpsUpgradeLevelRaw.value) ?? defaultHTTPsUpgradeLevel
-      }
-      set { httpsUpgradeLevelRaw.value = newValue.rawValue }
-    }
-
-    /// Get the prior enabled level of HTTPS upgrades
-    public static var httpsUpgradePriorEnabledLevel: HTTPSUpgradeLevel? {
-      get {
-        httpsUpgradePriorEnabledLevelRaw.value.flatMap { HTTPSUpgradeLevel(rawValue: $0) }
-      }
-      set { httpsUpgradePriorEnabledLevelRaw.value = newValue?.rawValue }
     }
 
     /// Get the global shred level value
