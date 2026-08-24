@@ -147,6 +147,7 @@ import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ControlContainer;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
@@ -2304,6 +2305,7 @@ public class BytecodeTest {
                         ToolbarThemeColorProvider.class,
                         NonNullObservableSupplier.class,
                         ViewGroup.class,
+                        ControlContainer.class,
                         Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
