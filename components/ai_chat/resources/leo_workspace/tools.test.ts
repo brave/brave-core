@@ -6,7 +6,7 @@
 import { createFakeWorkspace, snapshotFakeWorkspace } from './test_file_system'
 import { registerTools } from './tools'
 
-// The tool shape registered with navigator.modelContext. Mirrors the internal
+// The tool shape registered with document.modelContext. Mirrors the internal
 // ModelContextTool interface in tools.ts, which isn't exported.
 interface RegisteredTool {
   name: string
@@ -23,7 +23,7 @@ let registered: Map<string, RegisteredTool>
 let registerTool: jest.Mock<Promise<void>, [RegisteredTool]>
 
 function setModelContext(value: unknown) {
-  Object.defineProperty(navigator, 'modelContext', {
+  Object.defineProperty(document, 'modelContext', {
     configurable: true,
     writable: true,
     value,
@@ -61,7 +61,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  delete navigator.modelContext
+  delete document.modelContext
 })
 
 describe('registerTools', () => {
@@ -121,7 +121,7 @@ describe('registerTools', () => {
     setModelContext(undefined)
     await expect(registerTools(createFakeWorkspace())).resolves.toBeUndefined()
     expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining('navigator.modelContext is unavailable'),
+      expect.stringContaining('document.modelContext is unavailable'),
     )
     expect(registerTool).not.toHaveBeenCalled()
   })
