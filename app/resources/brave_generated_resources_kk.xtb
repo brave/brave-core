@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Лео AI</translation>
 <translation id="8275068909952022340">Көбірек…</translation>
 <translation id="71316462802471551">Электрондық Пошта Псевдонимдері</translation>
-<translation id="209130971304928953">Қойындыларды жұмыс кеңістігі ретінде сақтау…</translation>
-<translation id="877984331511007834">Жұмыс кеңістігін ашу…</translation>
-<translation id="1310182651927031327">Қойындыларды жұмыс кеңістігі ретінде сақтау…</translation>
-<translation id="3588277741646479444">Жұмыс кеңістігін ашу…</translation>
+<translation id="8350985546648269694">Ағымдағы терезелер мен қойындыларды кеңістік ретінде сақтау</translation>
+<translation id="5327248766486351172">Атауы</translation>
+<translation id="6379791766023874417">Кеңістік атауын енгізіңіз</translation>
+<translation id="9174724474418499472">Менің кеңістігім</translation>
+<translation id="5317780077021120954">Сақтау</translation>
+<translation id="7658239707568436148">Бас тарту</translation>
+<translation id="196342407904926436">Кеңістік опциялары</translation>
+<translation id="2806407377752719586">Кеңістікті жою</translation>
+<translation id="1844931500883490339">Осы Кеңістікті жойғыңыз келетініне сенімдісіз бе? Сақталған Кеңістік біржола жойылады. Бұл әрекетті болдырмау мүмкін емес.</translation>
+<translation id="8261506727792406068">Жою</translation>
+<translation id="8428213095426709021">Баптаулар</translation>
+<translation id="1212321046099128987">Кеңістіктер жасалмаған</translation>
+<translation id="3524567389166933243">Төмендегі Сақтау түймесін басу арқылы алғашқы Кеңістігіңізді жасаңыз.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> терезе</translation>
+<translation id="1680377529024357662">Ағымдағы терезелер мен қойындыларды кеңістік ретінде сақтау</translation>
+<translation id="5561829325295347472">Кеңістік атауын енгізіңіз</translation>
+<translation id="2028520494010039812">Кеңістік опциялары</translation>
+<translation id="1580775521202322063">Кеңістікті жою</translation>
+<translation id="3004759399777164093">Осы кеңістікті жойғыңыз келетініне сенімдісіз бе? Сақталған кеңістік біржола жойылады. Бұл әрекетті болдырмау мүмкін емес.</translation>
+<translation id="7563692436589408797">Кеңістіктер жасалмаған</translation>
+<translation id="3945077125173636695">Төмендегі Сақтау түймесін басу арқылы алғашқы кеңістігіңізді жасаңыз.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 бет} other {# беттер}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> терезе</translation>
+<translation id="3326655241685890930">Кеңістіктер</translation>
 <translation id="1990886731975529483">Google Widevine орнатып, іске қосыңыз</translation>
 <translation id="8926389886865778422">Қайта сұрамаңыз</translation>
 <translation id="4900351245762303149">Google Widevine орнатыңыз</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">Бұл бетте автоматты ойнату бұғатталған</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> сайтында автоматты ойнатуға әрқашан рұқсат беру</translation>
 <translation id="4150684676757176434">Автоматты ойнатуды бұғаттауды жалғастыру</translation>
-<translation id="3477357195688115718">Brave кеңейтімдерді қауіпсіздік пен қауіпсіздік үшін тексермейді. Тек әзірлеушіге сенсеңіз, осы кеңейтімді орнатыңыз.</translation>
+<translation id="2201935460386712655">Brave кеңейтімдерді қауіпсіздік үшін тексермейді. "<ph name="EXTENSION_NAME"/>" кеңейтімін тек әзірлеушіге сенсеңіз орнатыңыз.</translation>
 <translation id="2928844661231356557">Bluetooth құрылғысына қол жеткізуге рұқсат беру сайтқа сіз туралы сәйкестендіруші және потенциалды сезімтал ақпаратты оқуына мүмкіндік береді. Тек сенімді сайттарға Bluetooth құрылғыларына қол жеткізуге рұқсат беріңіз. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor терезелері</translation>
 <translation id="7965178729203412357">Жаңа Tor идентификаторы</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">Фильтрлерді басқару</translation>
 <translation id="3108584651298176909">Ережелерді көрсету</translation>
 <translation id="5156986655891520787">Ережелерді жасыру</translation>
-<translation id="7658239707568436148">Бас тарту</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion мекенжайын пайдаланып ашу: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Қоюды мәжбүр ету</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">Скриншот түсіру</translation>
 <translation id="3114478090884951591">Көрінетін аймақ</translation>
 <translation id="2026367923222947564">Толық бет</translation>
+<translation id="4218885227032158909">Таңдалған аймақ</translation>
 <translation id="4928988318462976765">Веб Кеңейтімдер Дүкені</translation>
 <translation id="9181207987584064303">Веб Кеңейтімдер Дүкенінде көру</translation>
 <translation id="3161744659507801211">Ескерту: Brave кеңейтімдердің қарап шығу тарихыңызды жазуынан қорғай алмайды.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">Медианы жылжыту</translation>
 <translation id="4418985925423678811">Жаңа ойнату тізімі</translation>
 <translation id="385051799172605136">Артқа</translation>
-<translation id="5317780077021120954">Сақтау</translation>
 <translation id="7930125899031086027">Жасау және жылжыту</translation>
 <translation id="2860159216666546928">Бұл медианы жылжыту үшін қалтаны таңдаңыз</translation>
 <translation id="9130105487623071247">Ойнату тізімінің атауы</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> элемент таңдалды</translation>
 <translation id="3596306474342941843">Ойнату тізімін жою</translation>
 <translation id="7110726588168439924">Сіз осы ойнату тізімін және оның барлық мазмұнын жоюға сенімдісіз бе? Бұл әрекет қайтарылмайды.</translation>
-<translation id="8261506727792406068">Жою</translation>
 <translation id="8152485753254079984">Жаңа ойнату тізімі</translation>
 <translation id="5397019762993984652">Ойнап қалады қапшықтан қосу</translation>
 <translation id="7525067979554623046">Жасау</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">Контейнерді өңдеу</translation>
 <translation id="7900511996284443779">Контейнерді жою</translation>
 <translation id="2738687336989232152">Сіз <ph name="CONTAINER_NAME"/> контейнерін жойғыңыз келетініне сенімдісіз бе? Бұл онымен байланысты барлық деректерді жояды.</translation>
-<translation id="5327248766486351172">Атауы</translation>
 <translation id="104766043551382253">Иконка</translation>
 <translation id="5431318178759467895">Түс</translation>
 <translation id="4328541188421002379">Контейнерге жұмыс немесе жеке атау беріңіз</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">Браузеріңізді бейімдеп, Brave-ті қолдаңыз</translation>
 <translation id="123297831435065577">Brave Origin — Brave-ті бизнес ретінде қолдайтын барлық функциялар қажет емес, бірақ тек Brave ұсынатын құпиялылықты қалайтын пайдаланушыларға арналған браузердің ақылы нұсқасы. Origin пайдаланушылары біздің саладағы жетекші құпиялылық, жарнаманы бұғаттау және жылдамдықты (Shields арқылы), сондай-ақ тұрақты бағдарламалық жасақтаманы жаңартуларды, Chromium патчтарын және қауіпсіздік пен құпиялылықты жақсартуларды пайдалануды жалғастырады.</translation>
 <translation id="7984508421152399880">Қазір сатып алу</translation>
+<translation id="1882724423074862793">Сатып алуды қалпына келтіру</translation>
 <translation id="5567412479632285879">Brave Марапаттары өшірілген</translation>
 <translation id="413570371620795359">Қосу және бастау үшін Сыйлық панелін ашыңыз</translation>
 <translation id="1051600834033686945">Толық Brave Марапаттары параметрлерін ашыңыз</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">Диагностикалық есептерді автоматты түрде жіберу</translation>
 <translation id="8868426106596092089">Brave браузері бұзылған жағдайда Brave өнімінің тұрақтылығын автоматты түрде диагностикалық есептерді жіберу арқылы жақсартуға көмектесіңіз</translation>
 <translation id="4891600875049212418">Сезімтал сайттарға кірген кезде Off-The-Record режиміне өту</translation>
+<translation id="1022603984240541480">Үйлесімді сайттарда Құпиялылық параметрлерін баптау хабарландыруын көрсету</translation>
+<translation id="3528176629974273019">Brave-ге сайтқа тән құпиялылық параметрлерін автоматты түрде ұсынуға (және реттеуге) мүмкіндік береді.</translation>
 <translation id="509873765238158442">Microsoft Recall-ды блоктау</translation>
 <translation id="4763421121695677716">Microsoft Windows компьютерлеріндегі Microsoft Recall функциясының Brave қойындыларының кез келген ашық скриншоттарын автоматты түрде алуын болдырмаңыз.</translation>
 <translation id="1968895725257436430">Деректерді жинау</translation>
@@ -736,6 +757,7 @@
 <translation id="4425607417590286548">Өзгерістерді қолдану</translation>
 <translation id="2128143836897950793">'Жаңа көпір сұрау...' батырмасын басып көпірлерді алыңыз</translation>
 <translation id="3314921753580327793">Адрес:порт теріңіз (әр жолға бір-бірден)</translation>
+<translation id="7002083631026466886">Tor бұл көпірді пайдалана алмайды. Оны сізге берілген көпірмен салыстырып, қайта әрекеттеніп көріңіз:</translation>
 <translation id="3755189300481406891">Көпір сұрау</translation>
 <translation id="6924425739431382319">BridgeDB байланысы жүзеге асырылуда. Күтіңіз.</translation>
 <translation id="811745063252080651">Көпір сұрау үшін CAPTCHA шешіңіз.</translation>
@@ -913,7 +935,6 @@
 <translation id="1838374766361614909">Іздеуді тазалау</translation>
 <translation id="5126255551970171328">Жадтан іздеу</translation>
 <translation id="7402116145895962069">Ollama жергілікті үлгілеріңізді синхрондау</translation>
-<translation id="4835154437390745810">Ollama басқаратын</translation>
 <translation id="5985516785067818307">Сауалнама респонденті</translation>
 <translation id="8347743943525229984">Brave сауалнамаларына рұқсат беру</translation>
 <translation id="3204080538332044581">Brave-ке жаңа қойынды бетінде жеке сауалнамаларға сілтемелер көрсетуге мүмкіндік береді. Сауалнамалар бізге жақсы мүмкіндіктер жасауға және браузердегі жарнамалық кампаниялардың тиімділігін өлшеуге көмектеседі. <ph name="BEGIN_LINK"/>Көбірек біліңіз<ph name="END_LINK"/></translation>

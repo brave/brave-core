@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="8275068909952022340">עוד…</translation>
 <translation id="71316462802471551">מיילים בדויים</translation>
-<translation id="209130971304928953">שמירת לשוניות כסביבת עבודה…</translation>
-<translation id="877984331511007834">פתיחת סביבת עבודה…</translation>
-<translation id="1310182651927031327">שמור כרטיסיות כסביבת עבודה…</translation>
-<translation id="3588277741646479444">פתח סביבת עבודה…</translation>
+<translation id="8350985546648269694">שמור חלונות וכרטיסיות נוכחיים כמרחב</translation>
+<translation id="5327248766486351172">שם</translation>
+<translation id="6379791766023874417">הזנת שם המרחב שלך</translation>
+<translation id="9174724474418499472">המרחב שלי</translation>
+<translation id="5317780077021120954">שמור</translation>
+<translation id="7658239707568436148">ביטול</translation>
+<translation id="196342407904926436">אפשרויות מרחב</translation>
+<translation id="2806407377752719586">מחיקת מרחב</translation>
+<translation id="1844931500883490339">האם אתה בטוח שברצונך למחוק מרחב זה? המרחב השמור יוסר לצמיתות. לא ניתן לבטל פעולה זו.</translation>
+<translation id="8261506727792406068">מחיקה</translation>
+<translation id="8428213095426709021">הגדרות</translation>
+<translation id="1212321046099128987">לא נוצרו מרחבים</translation>
+<translation id="3524567389166933243">צור את המרחב הראשון שלך בלחיצה על כפתור השמירה למטה.</translation>
+<translation id="6632569090444863135">{TAB_COUNT,plural, =1{כרטיסייה אחת}two{# כרטיסיות}many{# כרטיסיות}other{# כרטיסיות}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> חלונות</translation>
+<translation id="1680377529024357662">שמור חלונות וכרטיסיות נוכחיים כמרחב</translation>
+<translation id="5561829325295347472">הזן את שם המרחב שלך</translation>
+<translation id="2028520494010039812">אפשרויות מרחב</translation>
+<translation id="1580775521202322063">מחק מרחב</translation>
+<translation id="3004759399777164093">האם אתה בטוח שברצונך למחוק מרחב זה? המרחב השמור יוסר לצמיתות. לא ניתן לבטל פעולה זו.</translation>
+<translation id="7563692436589408797">לא נוצרו מרחבים</translation>
+<translation id="3945077125173636695">צור את המרחב הראשון שלך בלחיצה על כפתור השמירה למטה.</translation>
+<translation id="4731210674738654452">{TAB_COUNT,plural, =1{כרטיסייה אחת}two{# כרטיסיות}many{# כרטיסיות}other{# כרטיסיות}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> חלונות</translation>
+<translation id="3326655241685890930">מרחבים</translation>
 <translation id="1990886731975529483">התקינו והפעילו את Google Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="4900351245762303149">התקינו את Google Widevine</translation>
@@ -36,7 +57,7 @@
 <translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST"/></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
-<translation id="3477357195688115718">Brave אינו בודק את האבטחה והבטיחות של הרחבות. התקן/י הרחבה זו רק אם יש לך אמון במפתח.</translation>
+<translation id="2201935460386712655">Brave אינו בודק את האבטחה והבטיחות של תוספים. התקן/י את "<ph name="EXTENSION_NAME"/>" רק אם יש לך אמון במפתח.</translation>
 <translation id="2928844661231356557">הענקת גישה למכשיר Bluetooth תאפשר לאתר לקרוא מידע מזהה עליכם שעלול גם להיות מידע רגיש. רצוי לאפשר גישה למכשירי Bluetooth, רק לאתרים שסומכים עליהם.<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">חלונות Tor</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">ניהול מסננים</translation>
 <translation id="3108584651298176909">הצגת כללים</translation>
 <translation id="5156986655891520787">הסתרת כללים</translation>
-<translation id="7658239707568436148">ביטול</translation>
 <translation id="7398397225367092613">.בצל</translation>
 <translation id="2269780537090240241">פתחו על ידי שימוש בכתובת בצל: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">הדבקה ישירה</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">לכידת צילום מסך</translation>
 <translation id="3114478090884951591">אזור גלוי</translation>
 <translation id="2026367923222947564">עמוד מלא</translation>
+<translation id="4218885227032158909">אזור שנבחר</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="3161744659507801211">אזהרה: Brave אינו יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלכם.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">הזז מדיה</translation>
 <translation id="4418985925423678811">רשימת השמעה חדשה</translation>
 <translation id="385051799172605136">חזרה</translation>
-<translation id="5317780077021120954">שמור</translation>
 <translation id="7930125899031086027">צור והזז</translation>
 <translation id="2860159216666546928">בחר תיקייה שאליה תעביר את המדיה הזו</translation>
 <translation id="9130105487623071247">שם רשימת השמעה</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> פריטים נבחרו</translation>
 <translation id="3596306474342941843">מחק רשימת השמעה</translation>
 <translation id="7110726588168439924">האם אתה בטוח שברצונך למחוק את רשימת ההשמעה הזאת ואת כל תוכנה? לא ניתן לבטל פעולה זו.</translation>
-<translation id="8261506727792406068">מחיקה</translation>
 <translation id="8152485753254079984">רשימת השמעה חדשה</translation>
 <translation id="5397019762993984652">הוסף מתיקיית Play Later שלך</translation>
 <translation id="7525067979554623046">צור</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">עריכת קונטיינר</translation>
 <translation id="7900511996284443779">מחיקת קונטיינר</translation>
 <translation id="2738687336989232152">בטוח שברצונך למחקור את הקונטיינר <ph name="CONTAINER_NAME"/>? זה יסיר את כל הנתונים הקשורים אליו.</translation>
-<translation id="5327248766486351172">שם</translation>
 <translation id="104766043551382253">סמל</translation>
 <translation id="5431318178759467895">צבע</translation>
 <translation id="4328541188421002379">אפשר לתת לקונטיינר שלך שם כמו ׳עבודה׳ או ׳אישי׳</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">התאם אישית את הדפדפן שלך תוך המשך תמיכה ב-Brave</translation>
 <translation id="123297831435065577">Brave Origin היא גרסה בתשלום של הדפדפן למשתמשים שלא זקוקים לכל התכונות התומכות ב-Brave כעסק, אך עדיין רוצים את הפרטיות שרק Brave מציעה. משתמשי Origin ימשיכו ליהנות מהפרטיות המובילה בתעשייה, חסימת מודעות ומהירות שלנו (דרך המגינים), כמו גם עדכוני תוכנה רגילים, תיקוני Chromium ושיפורי אבטחה ופרטיות.</translation>
 <translation id="7984508421152399880">קנה עכשיו</translation>
+<translation id="1882724423074862793">שחזר רכישה</translation>
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
 <translation id="8868426106596092089">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן Brave קורס או קופא</translation>
 <translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
+<translation id="1022603984240541480">הצג התראת כוונון הגדרות פרטיות באתרים תואמים</translation>
+<translation id="3528176629974273019">מאפשר ל-Brave להציע (ולהתאים) הגדרות פרטיות ספציפיות לאתר באופן אוטומטי.</translation>
 <translation id="509873765238158442">חסימת Microsoft Recall</translation>
 <translation id="4763421121695677716">חסימה של הפיצ׳ר Recall במחשבי Microsoft Windows כך שהוא לא יצלם צילומי מסך אוטומטית בכרטיסיות פתוחות של Brave.</translation>
 <translation id="1968895725257436430">איסוף נתונים</translation>
@@ -737,6 +758,7 @@
 <translation id="4425607417590286548">החל שינויים</translation>
 <translation id="2128143836897950793">לחץ על 'בקש גשר חדש...' כדי לקבל גשרים</translation>
 <translation id="3314921753580327793">הקלד כתובת: יציאה (אחת בכל שורה)</translation>
+<translation id="7002083631026466886">‏Tor לא יכול להשתמש בגשר זה. בדוק אותו מול הגשר שקיבלת, ואז נסה שוב:</translation>
 <translation id="3755189300481406891">בקש גשר</translation>
 <translation id="6924425739431382319">מתקשר עם BridgeDB. המתן בבקשה.</translation>
 <translation id="811745063252080651">פתרו את ה-CAPTCHA כדי לבקש גשר.</translation>
@@ -914,7 +936,6 @@
 <translation id="1838374766361614909">ניקוי חיפוש</translation>
 <translation id="5126255551970171328">חפש זיכרון</translation>
 <translation id="7402116145895962069">סנכרן את המודלים המקומיים של Ollama</translation>
-<translation id="4835154437390745810">מנוהל על ידי Ollama</translation>
 <translation id="5985516785067818307">משתתפ/ת בסקר</translation>
 <translation id="8347743943525229984">הפעלת סקרי Brave</translation>
 <translation id="3204080538332044581">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>

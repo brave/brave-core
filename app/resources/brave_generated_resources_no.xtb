@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Mer ...</translation>
 <translation id="71316462802471551">E-postalias</translation>
-<translation id="209130971304928953">Lagre faner som arbeidsområde …</translation>
-<translation id="877984331511007834">Åpne arbeidsområde …</translation>
-<translation id="1310182651927031327">Lagre faner som arbeidsområde …</translation>
-<translation id="3588277741646479444">Åpne arbeidsområde …</translation>
+<translation id="8350985546648269694">Lagre gjeldende vinduer og faner som område</translation>
+<translation id="5327248766486351172">Navn</translation>
+<translation id="6379791766023874417">Skriv inn navnet på rommet ditt</translation>
+<translation id="9174724474418499472">Mitt rom</translation>
+<translation id="5317780077021120954">Lagre</translation>
+<translation id="7658239707568436148">Avbryt</translation>
+<translation id="196342407904926436">Romalternativer</translation>
+<translation id="2806407377752719586">Slett rom</translation>
+<translation id="1844931500883490339">Er du sikker på at du vil slette dette rommet? Det lagrede rommet blir fjernet permanent. Denne handlingen kan ikke angres.</translation>
+<translation id="8261506727792406068">Slett</translation>
+<translation id="8428213095426709021">Innstillinger</translation>
+<translation id="1212321046099128987">Ingen rom er opprettet</translation>
+<translation id="3524567389166933243">Opprett ditt første rom ved å klikke på Lagre-knappen nedenfor.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 fane} other {# faner}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> vinduer</translation>
+<translation id="1680377529024357662">Lagre gjeldende vinduer og faner som rom</translation>
+<translation id="5561829325295347472">Skriv inn navnet på rommet ditt</translation>
+<translation id="2028520494010039812">Romalternativer</translation>
+<translation id="1580775521202322063">Slett rom</translation>
+<translation id="3004759399777164093">Er du sikker på at du vil slette dette rommet? Det lagrede rommet blir fjernet permanent. Denne handlingen kan ikke angres.</translation>
+<translation id="7563692436589408797">Ingen rom er opprettet</translation>
+<translation id="3945077125173636695">Opprett ditt første rom ved å klikke på Lagre-knappen nedenfor.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 fane} other {# faner}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> vinduer</translation>
+<translation id="3326655241685890930">Rom</translation>
 <translation id="1990886731975529483">Installer og kjør Google Widevine</translation>
 <translation id="8926389886865778422">Ikke spør igjen</translation>
 <translation id="4900351245762303149">Installer Google Widevine</translation>
@@ -37,7 +58,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
-<translation id="3477357195688115718">Brave gjennomgår ikke utvidelser for å sjekke om de er sikre. Installer denne utvidelsen kun hvis du stoler på utvikleren.</translation>
+<translation id="2201935460386712655">Brave gjennomgår ikke utvidelser for å sjekke om de er sikre. Installer «<ph name="EXTENSION_NAME"/>» kun hvis du stoler på utvikleren.</translation>
 <translation id="2928844661231356557">Hvis du gir en Bluetooth-enhet tilgang, vil siden kunne lese identifiserende og potensielt sensitiv informasjon om deg. Gi bare Bluetooth-til nettsider du stoler på. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor-vinduer</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -63,7 +84,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Behandle filtre</translation>
 <translation id="3108584651298176909">Vis regler</translation>
 <translation id="5156986655891520787">Skjul regler</translation>
-<translation id="7658239707568436148">Avbryt</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Åpne ved å bruke en .onion-adresse: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tving lim inn</translation>
@@ -91,6 +111,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Ta skjermbilde</translation>
 <translation id="3114478090884951591">Synlig område</translation>
 <translation id="2026367923222947564">Hele siden</translation>
+<translation id="4218885227032158909">Valgt område</translation>
 <translation id="4928988318462976765">Butikken for nettutvidelser</translation>
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke hindre programutvidelser i å registrere nettleserhistorikken din.</translation>
@@ -289,14 +310,12 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Flytt medier</translation>
 <translation id="4418985925423678811">Ny spilleliste</translation>
 <translation id="385051799172605136">Tilbake</translation>
-<translation id="5317780077021120954">Lagre</translation>
 <translation id="7930125899031086027">Opprett og flytt</translation>
 <translation id="2860159216666546928">Velg en mappe du vil flytte disse mediene til</translation>
 <translation id="9130105487623071247">Navn på spillelisten</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> elementer valgt</translation>
 <translation id="3596306474342941843">Slett spillelisten</translation>
 <translation id="7110726588168439924">Er du sikker på at du vil slette denne spillelisten og alt innholdet? Denne handlingen kan ikke angres.</translation>
-<translation id="8261506727792406068">Slett</translation>
 <translation id="8152485753254079984">Ny spilleliste</translation>
 <translation id="5397019762993984652">Legg til fra Spill av senere-mappen</translation>
 <translation id="7525067979554623046">Opprett</translation>
@@ -393,7 +412,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Rediger beholder</translation>
 <translation id="7900511996284443779">Slett beholder</translation>
 <translation id="2738687336989232152">Er du sikker på at du vil slette denne beholderen: <ph name="CONTAINER_NAME"/>? Alle dataene knyttet til beholderen vil slettes.</translation>
-<translation id="5327248766486351172">Navn</translation>
 <translation id="104766043551382253">Ikon</translation>
 <translation id="5431318178759467895">Farge</translation>
 <translation id="4328541188421002379">Gi beholderen et navn, f. eks. «jobb» eller «privat»</translation>
@@ -547,6 +565,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Tilpass nettleseren din og støtt Brave samtidig</translation>
 <translation id="123297831435065577">Brave Origin er en betalt versjon av nettleseren for brukere som ikke trenger alle funksjonene som støtter Brave som en bedrift, men som fortsatt ønsker personvernet som bare Brave tilbyr. Origin-brukere vil fortsette å dra nytte av vårt bransjeledende personvern, annonseblokkering og hastighet (via Shields), samt regelmessige programvareoppdateringer, Chromium-oppdateringer og forbedringer av sikkerhet og personvern.</translation>
 <translation id="7984508421152399880">Kjøp nå</translation>
+<translation id="1882724423074862793">Gjenopprett kjøp</translation>
 <translation id="5567412479632285879">Brave Rewards er deaktivert</translation>
 <translation id="413570371620795359">Åpne Belønninger-panelet for å aktivere og komme i gang</translation>
 <translation id="1051600834033686945">Åpne alle Brave Rewards-innstillingene</translation>
@@ -583,6 +602,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Send krasjrapporter automatisk</translation>
 <translation id="8868426106596092089">Bidra til å forbedre produktstabiliteten for Brave ved å automatisk sende diagnoserapporter hvis Brave-nettleseren krasjer eller slutter å fungere</translation>
 <translation id="4891600875049212418">Gå «off the record» når du besøker sensitive sider</translation>
+<translation id="1022603984240541480">Vis varsel om justering av personvernsinnstillinger på kompatible nettsteder</translation>
+<translation id="3528176629974273019">Lar Brave automatisk foreslå (og justere) nettstedsspesifikke personvernsinnstillinger.</translation>
 <translation id="509873765238158442">Blokkér Microsoft Recall</translation>
 <translation id="4763421121695677716">Hindrer Recall-funksjonen i å ta skjermbilder av åpne Brave-faner på PC-er med Microsoft Windows.</translation>
 <translation id="1968895725257436430">Datainnsamling</translation>
@@ -738,6 +759,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="4425607417590286548">Bruk endringene</translation>
 <translation id="2128143836897950793">Klikk på "Be om en ny bro ..." for å få broer</translation>
 <translation id="3314921753580327793">Skriv addressporten (én per linje)</translation>
+<translation id="7002083631026466886">Tor kan ikke bruke denne broen. Sjekk den mot broen du fikk oppgitt, og prøv deretter på nytt:</translation>
 <translation id="3755189300481406891">Be om bro</translation>
 <translation id="6924425739431382319">Kontakter BridgeDB. Vent litt.</translation>
 <translation id="811745063252080651">Løs CAPTCHA-en for å be om en bro.</translation>
@@ -916,7 +938,6 @@ Leo AI i fremtiden. Samtaleloggen, tilpasningene og minnene dine blir også slet
 <translation id="1838374766361614909">Fjern søk</translation>
 <translation id="5126255551970171328">Søk etter et minne</translation>
 <translation id="7402116145895962069">Synkroniser dine lokale Ollama-modeller</translation>
-<translation id="4835154437390745810">Administrert av Ollama</translation>
 <translation id="5985516785067818307">Spørreundersøkelser</translation>
 <translation id="8347743943525229984">Tillat undersøkelser fra Brave</translation>
 <translation id="3204080538332044581">Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren. <ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/>.</translation>

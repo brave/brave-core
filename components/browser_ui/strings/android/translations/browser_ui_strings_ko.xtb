@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">모바일 뷰 요청</translation>
 <translation id="2870560284913253234">사이트</translation>
 <translation id="2874939134665556319">이전 트랙</translation>
+<translation id="258271431472168668">Brave 기본값</translation>
 <translation id="2891975107962658722">사이트가 기기에 데이터를 저장하지 못하도록 차단</translation>
 <translation id="2903493209154104877">주소</translation>
+<translation id="2903764741244499151">사이트에서 PIP 모드를 자동으로 시작할 수 있습니다. 이렇게 하면 동영상을 계속 시청하면서 다른 작업을 위한 화면을 확보할 수 있습니다.</translation>
 <translation id="2918484639460781603">설정으로 이동</translation>
 <translation id="2932883381142163287">악용사례 신고</translation>
 <translation id="2939338015096024043">사용 설정하면 사이트에서 카메라 위치 추적 및 주변 환경 확인을 요청할 수 있습니다. 사용 중지하면 사이트에서 카메라 위치를 추적하거나 주변 환경을 확인할 수 없습니다.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">비밀번호 변경</translation>
 <translation id="3797520601150691162">특정 사이트에 어두운 테마를 적용하지 마세요.</translation>
 <translation id="3803367742635802571">방문한 사이트가 정상적으로 작동하지 않을 수 있음</translation>
-<translation id="8338457030135232378">Brave 색상</translation>
 <translation id="381841723434055211">전화번호</translation>
 <translation id="3823453485268218808">Mono 글꼴</translation>
 <translation id="3826050100957962900">서드 파티 로그인</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">전체화면 닫기</translation>
 <translation id="640163077447496506">오늘 만료됨</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">테마 컬렉션</translation>
 <translation id="6439114592976064011">사이트에서 내 가상 현실 기기 및 데이터를 사용하지 못하도록 차단</translation>
 <translation id="6447842834002726250">쿠키</translation>
 <translation id="6452138246455930388">열려 있는 탭의 가격 인하(<ph name="OLD_PRICE"/>~<ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/>)</translation>
@@ -620,6 +620,7 @@
 <translation id="7423098979219808738">우선 확인</translation>
 <translation id="7423538860840206698">클립보드 액세스가 차단됨</translation>
 <translation id="7425915948813553151">사이트에 어두운 테마 적용</translation>
+<translation id="2044383478723007273">Brave 색상</translation>
 <translation id="746412105358554870">JavaScript 최적화 및 보안</translation>
 <translation id="7478658909253570368">사이트에서 직렬 포트에 연결하도록 허용하지 않음</translation>
 <translation id="7488573225650545859">앱 목록의 탭 보기 숨기기</translation>
@@ -671,7 +672,6 @@
 <translation id="802154636333426148">다운로드 실패</translation>
 <translation id="8033047164036749181">이 사이트의 알림 수신</translation>
 <translation id="8051193500142930381">카메라가 필요한 기능이 작동하지 않음</translation>
-<translation id="2495032782748793764">Brave 기본값</translation>
 <translation id="8067883171444229417">동영상 재생</translation>
 <translation id="8068648041423924542">인증서를 선택할 수 없습니다.</translation>
 <translation id="8077120325605624147">어떤 사이트에서나 광고를 게재할 수 있습니다.</translation>
@@ -686,7 +686,6 @@
 <translation id="8163152278172770963">사이트에서 PIP 모드를 자동으로 입력하도록 허용하지 않음</translation>
 <translation id="8168435359814927499">콘텐츠</translation>
 <translation id="818487310457576362">전체 화면을 종료하려면 화면 측면에서 드래그하세요.</translation>
-<translation id="8186479265534291036">사이트가 작동하지 않나요? 서드 파티 쿠키가 차단되었습니다.</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> 허용됨</translation>
 <translation id="8200772114523450471">다시 시작</translation>
 <translation id="8211406090763984747">이 연결은 안전합니다.</translation>
@@ -757,7 +756,6 @@
 <translation id="8805385115381080995">사이트에서 내가 실제 사람임을 확인할 가능성이 줄어들기 때문에 브라우징이 더 빨라집니다.</translation>
 <translation id="881644524232657178">사용 설정하면 사이트에서 기기의 움직임 감지 센서와 조도 센서를 사용할 수 있습니다. 사용 중지하면 사이트에서 센서를 사용할 수 없습니다.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">서드 파티 쿠키를 일시적으로 허용해 보세요. 인터넷 사용 시 보안은 취약해지지만 사이트 기능이 예상대로 작동할 가능성은 높아집니다.</translation>
 <translation id="7532165358672313130">브라우징을 계속하면 사이트에서 Brave을 통해 이를 확인하고 이전에 방문한 적이 있는 이전 사이트로 내가 실제 사람인지 확인할 수 있습니다.</translation>
 <translation id="8899807382908246773">방해가 되는 광고</translation>
 <translation id="8903921497873541725">확대</translation>
@@ -783,7 +781,6 @@
 <translation id="913657688200966289"><ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 <ph name="APP_NAME"/> 관련 권한을 허용하세요.</translation>
 <translation id="9138037198177304356">알림 허용됨</translation>
 <translation id="9138217887606523162">현재 확대/축소 레벨은 <ph name="ZOOM_LEVEL"/>%%입니다</translation>
-<translation id="915112772806845021">사이트에서는 이 기능을 사용하여 PIP 모드로 자동 전환합니다. 이렇게 하면 동영상을 계속 시청하면서 다른 작업을 위한 화면을 확보할 수 있습니다.</translation>
 <translation id="7359422048569205930">Brave에서 기기의 앱 목록과 검색 결과에 최근 탭을 표시하도록 허용합니다. 이 기능은 Brave 설정에서 언제든지 사용 중지할 수 있습니다.</translation>
 <translation id="9162462602695099906">위험한 페이지입니다.</translation>
 <translation id="9182556968660520230">사이트에서 보호된 콘텐츠를 재생하도록 허용하지 않음</translation>

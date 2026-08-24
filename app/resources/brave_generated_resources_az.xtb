@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Daha çox…</translation>
 <translation id="71316462802471551">Email Ləqəbləri</translation>
-<translation id="209130971304928953">Tabları İş Sahəsi Kimi Saxla…</translation>
-<translation id="877984331511007834">İş Sahəsini Aç…</translation>
-<translation id="1310182651927031327">Tabları iş sahəsi kimi saxla…</translation>
-<translation id="3588277741646479444">İş sahəsini aç…</translation>
+<translation id="8350985546648269694">Cari Pəncərələri və Tabları Sahə kimi Yadda saxla</translation>
+<translation id="5327248766486351172">Ad</translation>
+<translation id="6379791766023874417">Məkan Adınızı Daxil Edin</translation>
+<translation id="9174724474418499472">Mənim Məkanım</translation>
+<translation id="5317780077021120954">Yadda saxla</translation>
+<translation id="7658239707568436148">Ləğv et</translation>
+<translation id="196342407904926436">Məkan Seçimləri</translation>
+<translation id="2806407377752719586">Məkanı Sil</translation>
+<translation id="1844931500883490339">Bu Məkanı silmək istədiyinizə əminsiniz? Yadda saxlanılmış Məkan həmişəlik silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.</translation>
+<translation id="8261506727792406068">Sil</translation>
+<translation id="8428213095426709021">Parametrlər</translation>
+<translation id="1212321046099128987">Heç Bir Məkan Yaradılmayıb</translation>
+<translation id="3524567389166933243">Aşağıdakı Saxla Düyməsinə Klikləyərək İlk Məkanınızı Yaradın.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 nişan} other {# nişan}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Pəncərə</translation>
+<translation id="1680377529024357662">Cari pəncərələri və tabları məkan kimi saxlayın</translation>
+<translation id="5561829325295347472">Məkan adınızı daxil edin</translation>
+<translation id="2028520494010039812">Məkan seçimləri</translation>
+<translation id="1580775521202322063">Məkanı sil</translation>
+<translation id="3004759399777164093">Bu məkanı silmək istədiyinizə əminsiniz? Yadda saxlanılmış məkan həmişəlik silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.</translation>
+<translation id="7563692436589408797">Heç bir məkan yaradılmayıb</translation>
+<translation id="3945077125173636695">Aşağıdakı Saxla düyməsinə klikləyərək ilk məkanınızı yaradın.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 nişan} other {# nişan}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> pəncərə</translation>
+<translation id="3326655241685890930">Məkanlar</translation>
 <translation id="1990886731975529483">Google Widevine quraşdırın və işə salın</translation>
 <translation id="8926389886865778422">Bir daha soruşma</translation>
 <translation id="4900351245762303149">Google Widevine-ı quraşdır</translation>
@@ -37,7 +58,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="3218385319396786393">Bu səhifədə autoplay bloklandı</translation>
 <translation id="4988333904713528597">Autoplay-ı <ph name="HOST"/> üçün həmişə icazə ver</translation>
 <translation id="4150684676757176434">Autoplay bloklamanı davam etdir</translation>
-<translation id="3477357195688115718">Brave genişləndirmələri təhlükəsizlik və təhlükəsizliyi yoxlanmır. Yalnız inkişaf etdiriciyə güvənirsinizsə, bu genişləndirməni quraşdırın.</translation>
+<translation id="2201935460386712655">Brave genişlənmələri təhlükəsizlik və mühafizə baxımından yoxlamır. "<ph name="EXTENSION_NAME"/>" yalnız developer-ə etibar edirsinizsə quraşdırın.</translation>
 <translation id="2928844661231356557">Bluetooth cihazına giriş icazə verərək, saytın identifikasiya və potensial olaraq həssas məlumatlarınızı oxumasını təmin edəcək. Yalnız güvəndiyiniz saytlara Bluetooth cihazlarına çıxış icazə verin. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor pəncərələri</translation>
 <translation id="7965178729203412357">Yeni Tor Identliyi</translation>
@@ -63,7 +84,6 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="3211174446914979436">Filtrləri idarə et</translation>
 <translation id="3108584651298176909">Qaydaları göstərin</translation>
 <translation id="5156986655891520787">Qaydaları gizlədin</translation>
-<translation id="7658239707568436148">Ləğv et</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion ünvanından istifadə edərək aç: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Yapışdırmağa məcbur et</translation>
@@ -91,6 +111,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="191886777375280620">Ekran görüntüsünü yadda saxla</translation>
 <translation id="3114478090884951591">Görünən sahə</translation>
 <translation id="2026367923222947564">Tam səhifə</translation>
+<translation id="4218885227032158909">Seçilmiş sahə</translation>
 <translation id="4928988318462976765">Veb Əlavələr Mağazası</translation>
 <translation id="9181207987584064303">Veb Əlavələr Mağazasına bax</translation>
 <translation id="3161744659507801211">Xəbərdarlıq: Brave, əlavə proqramların brauzer tarixçənizi qeyd etməsinin qarşısını ala bilmir.</translation>
@@ -289,14 +310,12 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="55252794453047936">Mediyanın daşınması</translation>
 <translation id="4418985925423678811">Yeni Pleylist</translation>
 <translation id="385051799172605136">Geri</translation>
-<translation id="5317780077021120954">Yadda saxla</translation>
 <translation id="7930125899031086027">Yarat və daşı</translation>
 <translation id="2860159216666546928">Bu mediyanı daşımaq üçün qovluq seçin</translation>
 <translation id="9130105487623071247">Pleylist adı</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> maddə seçilib</translation>
 <translation id="3596306474342941843">Pleylisti sil</translation>
 <translation id="7110726588168439924">Bu pleylisti və onun bütün məzmununu silmək istədiyinizə əminsiniz? Bu əməliyyatı geri qaytarmaq mümkün deyil.</translation>
-<translation id="8261506727792406068">Sil</translation>
 <translation id="8152485753254079984">Yeni pleylist</translation>
 <translation id="5397019762993984652">Sonra oynamaq üçün qovluğunuzdan əlavə edin</translation>
 <translation id="7525067979554623046">Yarat</translation>
@@ -393,7 +412,6 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="8900907990448657776">Containeri redaktə et</translation>
 <translation id="7900511996284443779">Containeri sil</translation>
 <translation id="2738687336989232152">Container <ph name="CONTAINER_NAME"/>ı silmək istədiyinizə əminsiniz? Bu, onunla əlaqəli bütün məlumatları siləcək.</translation>
-<translation id="5327248766486351172">Ad</translation>
 <translation id="104766043551382253">İkon</translation>
 <translation id="5431318178759467895">Rəng</translation>
 <translation id="4328541188421002379">Containerinizə İş və ya Şəxsi kimi bir ad verin</translation>
@@ -547,6 +565,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="2587535830241068901">Brauzeri fərdiləşdir və eyni zamanda Brave-i dəstəklə</translation>
 <translation id="123297831435065577">Brave Origin, Brave-ı bir biznes kimi dəstəkləmək üçün lazım olan bütün özəlliklərə ehtiyacı olmayan istifadəçilər üçün ödənişli brauzer versiyasıdır, lakin yalnız Brave-in təqdim etdiyi məxfiyyəti istəyirlər. Origin istifadəçiləri sənayedə aparıcı məxfilik, reklam bloklama və sürətdən (Təhlükəsizlik Qalxanları vasitəsilə), həmçinin müntəzəm proqram təminatı yeniləmələrindən, Chromium yamaqlarından və təhlükəsizlik və məxfilik təkmilləşdirmələrindən faydalanmağa davam edəcəklər.</translation>
 <translation id="7984508421152399880">İndi satın al</translation>
+<translation id="1882724423074862793">Almağı bərpa edin</translation>
 <translation id="5567412479632285879">Brave Mükafatları söndürülüb</translation>
 <translation id="413570371620795359">Başlamaq və aktivləşdirmək üçün Mükafatlar panelini açın</translation>
 <translation id="1051600834033686945">Brave Mükafatlarının tam parametrlərini açın</translation>
@@ -583,6 +602,8 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
 <translation id="8868426106596092089">Brave Brauzeri qəzaya uğradıqda və ya donanda avtomatik olaraq diaqnostik hesabatlar göndərməklə Brave-in məhsul sabitliyini yaxşılaşdırmağa kömək edin.</translation>
 <translation id="4891600875049212418">Həssas saytlara baş çəkərkən Of-The-Record rejiminə keç</translation>
+<translation id="1022603984240541480">Uyğun saytlarda Məxfilik parametrlərinin tənzimlənməsi bildirişini göstər</translation>
+<translation id="3528176629974273019">Brave-ə sayta xas məxfilik parametrlərini avtomatik olaraq təklif etməyə (və tənzimləməyə) icazə verir.</translation>
 <translation id="509873765238158442">Microsoft Recall-u blokla</translation>
 <translation id="4763421121695677716">Microsoft Windows kompüterlərindəki Recall xüsusiyyətinin hər hansı açıq Brave tab-vərəqələrinin ekran şəklini avtomatik çəkməməsi üçün onu bloklayın.</translation>
 <translation id="1968895725257436430">Məlumatların toplanması</translation>
@@ -737,6 +758,7 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="4425607417590286548">Dəyişiklikləri tətbiq edin</translation>
 <translation id="2128143836897950793">Bridge əldə etmək üçün 'Yeni Bridge-i sorğulayın...' vurun</translation>
 <translation id="3314921753580327793">Ünvan daxil edin:port (bir xətt üçün bir)</translation>
+<translation id="7002083631026466886">Tor bu körpüdən istifadə edə bilmir. Onu sizə verilmiş körpü ilə yoxlayın, sonra yenidən cəhd edin:</translation>
 <translation id="3755189300481406891">Bridge sorğusu</translation>
 <translation id="6924425739431382319">BridgeDB ilə əlaqə. Xahiş edirik gözləyin.</translation>
 <translation id="811745063252080651">Bridge sorğulamaq üçün CAPTCHA həll edin.</translation>
@@ -914,7 +936,6 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="1838374766361614909">Axtarışı təmizlə</translation>
 <translation id="5126255551970171328">Yaddaş üçün axtarış</translation>
 <translation id="7402116145895962069">Ollama lokal modellərini sinxronlaşdır</translation>
-<translation id="4835154437390745810">Ollama tərəfindən idarə olunur</translation>
 <translation id="5985516785067818307">Sorğu panelisti</translation>
 <translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
 <translation id="3204080538332044581">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>

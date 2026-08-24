@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo-tekoäly</translation>
 <translation id="8275068909952022340">Lisää…</translation>
 <translation id="71316462802471551">Sähköpostialiakset</translation>
-<translation id="209130971304928953">Tallenna välilehdet työtilana…</translation>
-<translation id="877984331511007834">Avaa työtila…</translation>
-<translation id="1310182651927031327">Tallenna välilehdet työtilana…</translation>
-<translation id="3588277741646479444">Avaa työtila…</translation>
+<translation id="8350985546648269694">Tallenna nykyiset ikkunat ja välilehdet tilana</translation>
+<translation id="5327248766486351172">Nimi</translation>
+<translation id="6379791766023874417">Anna tilan nimi</translation>
+<translation id="9174724474418499472">Oma tila</translation>
+<translation id="5317780077021120954">Tallenna</translation>
+<translation id="7658239707568436148">Peruuta</translation>
+<translation id="196342407904926436">Tilan vaihtoehdot</translation>
+<translation id="2806407377752719586">Poista tila</translation>
+<translation id="1844931500883490339">Haluatko varmasti poistaa tämän tilan? Tallennettu tila poistetaan pysyvästi. Tätä toimintoa ei voi kumota.</translation>
+<translation id="8261506727792406068">Poista</translation>
+<translation id="8428213095426709021">Asetukset</translation>
+<translation id="1212321046099128987">Ei luotuja tiloja</translation>
+<translation id="3524567389166933243">Luo ensimmäinen tilasi napsauttamalla alla olevaa Tallenna-painiketta.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 välilehti} other {# välilehteä}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> ikkunaa</translation>
+<translation id="1680377529024357662">Tallenna nykyiset ikkunat ja välilehdet tilana</translation>
+<translation id="5561829325295347472">Anna tilan nimi</translation>
+<translation id="2028520494010039812">Tilan vaihtoehdot</translation>
+<translation id="1580775521202322063">Poista tila</translation>
+<translation id="3004759399777164093">Haluatko varmasti poistaa tämän tilan? Tallennettu tila poistetaan pysyvästi. Tätä toimintoa ei voi kumota.</translation>
+<translation id="7563692436589408797">Ei luotuja tiloja</translation>
+<translation id="3945077125173636695">Luo ensimmäinen tilasi napsauttamalla alla olevaa Tallenna-painiketta.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 välilehti} other {# välilehteä}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> ikkunaa</translation>
+<translation id="3326655241685890930">Tilat</translation>
 <translation id="1990886731975529483">Asenna ja suorita Google Widevine</translation>
 <translation id="8926389886865778422">Älä kysy uudestaan</translation>
 <translation id="4900351245762303149">Asenna Google Widevine</translation>
@@ -37,7 +58,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
 <translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
-<translation id="3477357195688115718">Brave ei arvioi laajennusten turvallisuutta. Asenna tämä laajennus vain, jos luotat kehittäjään.</translation>
+<translation id="2201935460386712655">Brave ei arvioi laajennusten turvallisuutta. Asenna "<ph name="EXTENSION_NAME"/>" vain, jos luotat kehittäjään.</translation>
 <translation id="2928844661231356557">Bluetooth-laitteen käyttöoikeuden myöntäminen antaa sivustolle mahdollisuuden lukea sinusta tunnistavia ja mahdollisesti arkaluontoisia tietoja. Salli vain luotettavien sivustojen käyttää Bluetooth-laitteita. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor-ikkunat</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
@@ -63,7 +84,6 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3211174446914979436">Suodattimien hallinta</translation>
 <translation id="3108584651298176909">Näytä säännöt</translation>
 <translation id="5156986655891520787">Piilota säännöt</translation>
-<translation id="7658239707568436148">Peruuta</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Avaa käyttämällä .onion-osoitetta: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Pakota liittäminen</translation>
@@ -91,6 +111,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="191886777375280620">Kaappaa kuvakaappaus</translation>
 <translation id="3114478090884951591">Näkyvä alue</translation>
 <translation id="2026367923222947564">Koko sivu</translation>
+<translation id="4218885227032158909">Valittu alue</translation>
 <translation id="4928988318462976765">Verkkolaajennusten myymälä</translation>
 <translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
 <translation id="3161744659507801211">Varoitus: Brave ei voi estää laajennusosia tallentamasta selaushistoriaasi.</translation>
@@ -289,14 +310,12 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="55252794453047936">Siirrä mediaa</translation>
 <translation id="4418985925423678811">Uusi soittolista</translation>
 <translation id="385051799172605136">Edellinen</translation>
-<translation id="5317780077021120954">Tallenna</translation>
 <translation id="7930125899031086027">Luo ja siirrä</translation>
 <translation id="2860159216666546928">Valitse kansio, johon tämä media siirretään</translation>
 <translation id="9130105487623071247">Soittolistan nimi</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> kohdetta valittu</translation>
 <translation id="3596306474342941843">Poista soittolista</translation>
 <translation id="7110726588168439924">Haluatko varmasti poistaa tämän soittolistan ja kaiken sen sisällön? Tätä toimintoa ei voi kumota.</translation>
-<translation id="8261506727792406068">Poista</translation>
 <translation id="8152485753254079984">Uusi soittolista</translation>
 <translation id="5397019762993984652">Lisää Toista myöhemmin -kansiosta</translation>
 <translation id="7525067979554623046">Luo</translation>
@@ -393,7 +412,6 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8900907990448657776">Muokkaa säilöä</translation>
 <translation id="7900511996284443779">Poista säilö</translation>
 <translation id="2738687336989232152">Haluatko varmasti poistaa säilön <ph name="CONTAINER_NAME"/>? Tämä poistaa kaikki siihen liittyvät tiedot.</translation>
-<translation id="5327248766486351172">Nimi</translation>
 <translation id="104766043551382253">Kuvake</translation>
 <translation id="5431318178759467895">Väri</translation>
 <translation id="4328541188421002379">Anna säilölle nimi, kuten Työ tai Henkilökohtainen</translation>
@@ -547,6 +565,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="2587535830241068901">Mukauta selaimesi ja tue silti Bravea</translation>
 <translation id="123297831435065577">Brave Origin on maksettu selainversio käyttäjille, jotka eivät tarvitse kaikkia ominaisuuksia, jotka tukevat Bravea liiketoimintana, mutta haluavat silti yksityisyyden, jonka vain Brave tarjoaa. Origin-käyttäjät saavat edelleen hyötyä alan johtavasta yksityisyydestä, mainostenestosta ja nopeudesta (Suojauksen kautta), sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja turvallisuus- ja yksityisyysparannuksista.</translation>
 <translation id="7984508421152399880">Osta nyt</translation>
+<translation id="1882724423074862793">Palauta osto</translation>
 <translation id="5567412479632285879">Brave-palkinnot eivät ole käytössä</translation>
 <translation id="413570371620795359">Ota käyttöön avaamalla Palkinnot-paneeli ja aloita</translation>
 <translation id="1051600834033686945">Avaa täydet Brave-palkintojen asetukset</translation>
@@ -583,6 +602,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="933652931229970927">Lähetä diagnostiikkaraportit automaattisesti</translation>
 <translation id="8868426106596092089">Auta parantamaan Brave-tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy</translation>
 <translation id="4891600875049212418">Siirry luottamukselliseen tilaan, kun vierailet arkaluontoisissa sivustoissa</translation>
+<translation id="1022603984240541480">Näytä yksityisyysasetusten säätöilmoitus yhteensopivilla sivustoilla</translation>
+<translation id="3528176629974273019">Sallii Braven ehdottaa (ja säätää) sivustokohtaisia yksityisyysasetuksia automaattisesti.</translation>
 <translation id="509873765238158442">Estä Microsoft Recall</translation>
 <translation id="4763421121695677716">Estä Microsoft Windows -tietokoneiden Recall-ominaisuutta ottamasta automaattisesti kuvakaappauksia kaikista avoimista Brave-välilehdistä.</translation>
 <translation id="1968895725257436430">Tietojen keräys</translation>
@@ -738,6 +759,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="4425607417590286548">Ota muutokset käyttöön</translation>
 <translation id="2128143836897950793">Napsauta Pyydä uusi silta... saadaksesi siltoja</translation>
 <translation id="3314921753580327793">Kirjoita osoite:portti (yksi per rivi)</translation>
+<translation id="7002083631026466886">Tor ei voi käyttää tätä siltaa. Tarkista se saamaasi siltaan verrattuna ja yritä sitten uudelleen:</translation>
 <translation id="3755189300481406891">Pyydä siltaa</translation>
 <translation id="6924425739431382319">Ota yhteyttä BridgeDB:hen. Odota.</translation>
 <translation id="811745063252080651">Ratkaise CAPTCHA pyytääksesi siltaa.</translation>
@@ -915,7 +937,6 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1838374766361614909">Tyhjennä haku</translation>
 <translation id="5126255551970171328">Hae muistia</translation>
 <translation id="7402116145895962069">Synkronoi paikalliset Ollama-mallisi</translation>
-<translation id="4835154437390745810">Ollaman hallinnoima</translation>
 <translation id="5985516785067818307">Tutkimuspaneeli</translation>
 <translation id="8347743943525229984">Salli Braven kyselyt</translation>
 <translation id="3204080538332044581">Sallii Braven näyttää linkkejä yksityisiin kyselyihin uudella välilehdellä. Kyselyt auttavat meitä rakentamaan parempia ominaisuuksia ja mittaamaan selainpohjaisten mainoskampanjoiden tehokkuutta. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>

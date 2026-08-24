@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Ryd browserdata</translation>
 <translation id="1690924763769415936">Afspilning i baggrunden</translation>
 <translation id="6332924730165919598">Lukning af alle faner lukker Brave</translation>
+<translation id="2557725907027944082">Grupper</translation>
 <translation id="8308305244351876417">Tillad afspilning af lyd, når du skifter til en anden fane i Brave eller til en anden app, eller din enheds skærm er slukket.</translation>
 <translation id="49147335255967913">Åbn YouTube-links i Brave</translation>
 <translation id="4150201353443180367">Skærm</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Få mere at vide om Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Tillad (genstart nu)</translation>
 <translation id="2433507940547922241">Udseende</translation>
+<translation id="316542773973815724">Navigation</translation>
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Vis ikonet for Brave Belønninger i adresselinjen</translation>
-<translation id="1215433243238902715">Aktivér nederste navigationsværktøjslinje</translation>
+<translation id="4393974575368329991">Nederste navigationsværktøjslinje</translation>
+<translation id="1834226716203076292">Vis en nederste bjælke til hurtig adgang til hjem, bogmærker og søgning</translation>
 <translation id="1422686363939271829">Denne indstilling er deaktiveret, når den nederste adresselinjeposition er valgt</translation>
 <translation id="6587448235155023666">Dine ændringer træder i kraft næste gang du genstarter Brave</translation>
 <translation id="8701563696941209024">GENÅBN NU</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Send fejlrapporter, hvis browseren bryder sammen eller går i stå.</translation>
 <translation id="4780647518983772446">Del privat og anonym produktindsigt om, hvilke Brave-funktioner der bruges.</translation>
 <translation id="5109496672133133896">Privat produktindsigt</translation>
-<translation id="3545804467215833536">Klik for at se Brave Shields</translation>
-<translation id="1724327820822194498">Med Shields kan du se alt det skadelige fra hver eneste side, som Brave har blokeret.</translation>
+<translation id="4340039903315468568">Med Shields kan du se alt det skadelige fra hver eneste side, som Brave har blokeret. Tryk for at se</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> annoncer &amp; trackere blokeret</translation>
 <translation id="8281886186245836920">Spring over</translation>
 <translation id="5806601733251372221">Brave-Skjolde</translation>
@@ -440,6 +442,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7141438739990875547">Bitcoin-netværker</translation>
 <translation id="9055546041146396417">Hvis denne side ser forkert ud så prøv uden Shields.</translation>
 <translation id="7898672232170410330">Blokér element</translation>
+<translation id="7205939464631857223">Ryd alle blokerede elementer</translation>
 <translation id="7961015016161918242">Aldrig</translation>
 <translation id="3200744626782631683">Browsingdata slettes aldrig automatisk</translation>
 <translation id="1991004083507807299">Sidefane lukket</translation>
@@ -502,7 +505,10 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3980704343258720102">Rydder alle browserdata</translation>
 <translation id="8089997572759938512">Nulstil dine databeskyttelsesrapporter til nul</translation>
 <translation id="2718046830255553131">Data fra databeskyttelsesrapporter er blevet ryddet.</translation>
-<translation id="8376263745431603066">Aktivér "Nattilstand" (eksperimentel)</translation>
+<translation id="3623948252408240879">Nattilstand</translation>
+<translation id="1257950165130031194">Gennemtving mørk tilstand for webindhold</translation>
+<translation id="8710601165725654801">Dynamiske farver</translation>
+<translation id="7865194971711852999">App-tema matcher tapetfarver</translation>
 <translation id="1383876407941801731">Søg</translation>
 <translation id="13296465911709339">Din tekst er kopieret til udklipsholderen.</translation>
 <translation id="2735834606413553397">Offentlig adresse blev kopieret til udklipsholderen.</translation>
@@ -722,7 +728,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4979796155378508955">Transaktion må ikke overføres til netværket, hvis den tilpassede nonce-værdi er ikke-sekventiel eller har andre fejl.</translation>
 <translation id="750843150060816463">"Gas"-pris (Gwei)</translation>
 <translation id="1426320910664514906">Gas-grænse</translation>
-<translation id="6389441740143786465">Deaktivér Sharing Hub</translation>
+<translation id="1784950057929740513">Dele-hub</translation>
 <translation id="473775607612524610">Opdater</translation>
 <translation id="479795390141144417">Kontoopdatering mislykkedes.</translation>
 <translation id="8084782383392198011">Kontonavn kan ikke være tom.</translation>
@@ -797,8 +803,12 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1060221736464994328">Tillad denne side at skifte netværk?</translation>
 <translation id="2478788592457735063">Dette vil skifte netværket til et tidligere tilføjet netværk.</translation>
 <translation id="8756686998207163764">Skift netværk</translation>
+<translation id="8905793906896555159">Aktivér fanegrupper</translation>
+<translation id="7632160823264702523">Fanegruppebjælke</translation>
+<translation id="2477807195394450274">Vis en nederste bjælke til hurtig adgang til faner i den aktuelt åbne fanegruppe</translation>
+<translation id="8374720587111523381">Åbn links i nuværende fanegruppe</translation>
 <translation id="5324095733417835490">Åbn kun links i nuværende fanegruppe</translation>
-<translation id="2620277345862119868">Åbner automatisk alle links i nuværende gruppefane</translation>
+<translation id="1227658541937938697">Åbn automatisk alle links i den nuværende fanegruppe</translation>
 <translation id="5242300593039211344">Lås tegnebog</translation>
 <translation id="1108298724135935307">Forbundne websteder</translation>
 <translation id="4255623233927788178">Se på Block Explorer</translation>
@@ -1077,7 +1087,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6393423486818299209">Brug din nuværende udbyder eller Wikimedia DNS</translation>
 <translation id="3401384982562827787">Brug din nuværende udbyder eller Cloudflare</translation>
 <translation id="8812367543786936496">Hvis din nuværende tjenesteudbyder er usikker, bruger Brave en sikker alternativ DNS-udbyder</translation>
-<translation id="1381108437654541567">Aktiver flere faner</translation>
+<translation id="750538469281113679">Flere vinduer</translation>
 <translation id="6167344249617630304">Åbn op til 5 faner ad gangen, og flyt faner fra et vindue til et andet</translation>
 <translation id="1063948063403254568">Flere faner fundet</translation>
 <translation id="4661882208707630158">Sammenflet faner til en anden Brave-fane, eller luk andre Brave-faner, før du deaktiverer funktionen med flere faner.</translation>

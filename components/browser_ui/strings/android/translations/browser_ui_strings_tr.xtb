@@ -156,7 +156,7 @@
 <translation id="2490684707762498678"><ph name="APP_NAME"/> tarafından yönetiliyor</translation>
 <translation id="2498359688066513246">Yardım ve geri bildirim</translation>
 <translation id="2501278716633472235">Geri dön</translation>
-<translation id="2536779053640817375">Şu anda izin veriliyor • Tam</translation>
+<translation id="2536779053640817375">Bu defalık izin veriliyor • Tam</translation>
 <translation id="2544997614631598250">Koyu tema rengi</translation>
 <translation id="2546283357679194313">Çerezler ve site verileri</translation>
 <translation id="3127075554145176599">Brave'un internetteki tehditlere karşı en güçlü korumasından yararlanın</translation>
@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Mobil cihaz görünümü iste</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Önceki parça</translation>
+<translation id="258271431472168668">Brave varsayılanı</translation>
 <translation id="2891975107962658722">Bir sitenin cihazınıza veri kaydetmesini engelleyin</translation>
 <translation id="2903493209154104877">Adresler</translation>
+<translation id="2903764741244499151">Siteler otomatik olarak pencere içinde pencere moduna girebilir. Bu sayede hem video izlemeye devam edebilir hem de ekranınızda diğer görevler için yer açabilirsiniz.</translation>
 <translation id="2918484639460781603">Ayarlara git</translation>
 <translation id="2932883381142163287">Kötüye kullanım bildir</translation>
 <translation id="2939338015096024043">Bu düğme açıkken siteler kameranızın konumunu izlemek ve çevreniz hakkında bilgi edinmek isteyebilir. Düğme kapalıyken siteler kameranızın konumunu izleyemez veya çevreniz hakkında bilgi edinemez.</translation>
@@ -222,7 +224,7 @@
 <translation id="3165022941318558018">Bir sitenin, üçüncü taraf çerezlerini kullanmasına izin verin</translation>
 <translation id="3167868116600277716">Keşfet feed'i</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> depolanmış veri</translation>
-<translation id="3199078925536734975">Şu anda izin veriliyor • Yaklaşık</translation>
+<translation id="3199078925536734975">Bu defalık izin veriliyor • Yaklaşık</translation>
 <translation id="3208584281581115441">Şimdi kontrol et</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> uygulamasının size bildirim gönderebilmesi için <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'nda da bildirimleri açın.</translation>
 <translation id="3223425961342298674">Konuma izin verilmiyor</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Şifreleri değiştir</translation>
 <translation id="3797520601150691162">Belirli bir siteye koyu tema uygulama</translation>
 <translation id="3803367742635802571">Ziyaret ettiğiniz siteler tasarlandığı şekilde çalışmayabilir</translation>
-<translation id="8338457030135232378">Brave Renkleri</translation>
 <translation id="381841723434055211">Telefon numaraları</translation>
 <translation id="3823453485268218808">Mono yazı tipi</translation>
 <translation id="3826050100957962900">Üçüncü taraf oturum açma</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Tam ekrandan çık</translation>
 <translation id="640163077447496506">Süresi bugün dolacak</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Tema Koleksiyonları</translation>
 <translation id="6439114592976064011">Sitelerin sanal gerçeklik cihazımı ve verilerimi kullanmasını engelle</translation>
 <translation id="6447842834002726250">Çerezler</translation>
 <translation id="6452138246455930388"><ph name="DOMAIN_NAME"/> adresinin açık olduğu sekmenizde <ph name="PRODUCT_NAME"/> ürününün <ph name="OLD_PRICE"/> olan fiyatı düştü ve <ph name="NEW_PRICE"/> oldu</translation>
@@ -620,6 +620,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="7423098979219808738">Önce sor</translation>
 <translation id="7423538860840206698">Pano okuma engellendi</translation>
 <translation id="7425915948813553151">Siteler için koyu tema</translation>
+<translation id="2044383478723007273">Brave renkleri</translation>
 <translation id="746412105358554870">JavaScript optimizasyonu ve güvenlik</translation>
 <translation id="7478658909253570368">Sitelerin seri bağlantı noktalarına bağlanmasına izin verme</translation>
 <translation id="7488573225650545859">Uygulama listenizdeki sekmeleri görüntüle seçeneğini gizle</translation>
@@ -671,7 +672,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="802154636333426148">İndirilemedi</translation>
 <translation id="8033047164036749181">Bu siteden bildirim almak için abone olun</translation>
 <translation id="8051193500142930381">Kameranın kullanılmasını gerektiren özellikler çalışmaz</translation>
-<translation id="2495032782748793764">Brave Varsayılanı</translation>
 <translation id="8067883171444229417">Videoyu oynat</translation>
 <translation id="8068648041423924542">Sertifika seçilemiyor.</translation>
 <translation id="8077120325605624147">Ziyaret ettiğiniz herhangi bir site size reklam gösterebilir</translation>
@@ -686,7 +686,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="8163152278172770963">Sitelerin otomatik olarak pencere içinde pencere moduna girmesine izin verme</translation>
 <translation id="8168435359814927499">İçerik</translation>
 <translation id="818487310457576362">Tam ekrandan çıkmak için ekranın kenarından sürükleyin.</translation>
-<translation id="8186479265534291036">Site çalışmıyor mu? Üçüncü taraf çerezleri engellendi</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> için izin verildi</translation>
 <translation id="8200772114523450471">Sürdür</translation>
 <translation id="8211406090763984747">Bağlantı güvenli</translation>
@@ -757,7 +756,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="8805385115381080995">Sitelerin gerçek bir kişi olduğunuzu doğrulamanızı isteme olasılığı daha düşük olduğundan daha hızlı bir göz atma deneyimi yaşarsınız</translation>
 <translation id="881644524232657178">Bu düğme açıkken siteler cihazınızın hareket ve ışık sensörlerini kullanabilir. Düğme kapalıyken siteler sensörleri kullanamaz.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Üçüncü taraf çerezlerine geçici olarak izin vermeyi deneyin. Bu durumda, internette gezinirken daha az korunursunuz ancak site özelliklerinin beklendiği gibi çalışma olasılığı daha yüksektir.</translation>
 <translation id="7532165358672313130">Siz sitelere göz atarken siteler de Brave'dan kontrol ederek ziyaret ettiğiniz önceki bir siteden büyük olasılıkla gerçek bir kişi olduğunuzu doğrular</translation>
 <translation id="8899807382908246773">Araya giren reklamlar</translation>
 <translation id="8903921497873541725">Yakınlaştır</translation>
@@ -783,7 +781,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="913657688200966289"><ph name="APP_NAME"/> için izinleri açmak üzere <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'nda izinleri açın.</translation>
 <translation id="9138037198177304356">Bildirimlere izin veriliyor</translation>
 <translation id="9138217887606523162">Şu anki yakınlaştırma düzeyi %%<ph name="ZOOM_LEVEL"/></translation>
-<translation id="915112772806845021">Siteler, otomatik olarak pencere içinde pencere moduna girmek için bu özelliği kullanır. Bu sayede hem video izlemeye devam edebilir hem de ekranınızda diğer görevler için yer açabilirsiniz.</translation>
 <translation id="7359422048569205930">Brave'un son sekmelerinizi cihazınızın uygulama listesinde ve arama sonuçlarında göstermesine izin verin. Bu özelliği Brave ayarlarından istediğiniz zaman kapatabilirsiniz.</translation>
 <translation id="9162462602695099906">Bu sayfa tehlikeli</translation>
 <translation id="9182556968660520230">Sitelerin korumalı içeriği oynatmasına izin verme</translation>

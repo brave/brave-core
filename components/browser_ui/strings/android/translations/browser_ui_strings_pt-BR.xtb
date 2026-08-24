@@ -156,7 +156,7 @@
 <translation id="2490684707762498678">Gerenciadas por <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Ajuda e feedback</translation>
 <translation id="2501278716633472235">Voltar</translation>
-<translation id="2536779053640817375">Ativado desta vez • Exato</translation>
+<translation id="2536779053640817375">Permitido desta vez • Exato</translation>
 <translation id="2544997614631598250">Cor do tema: Escuro</translation>
 <translation id="2546283357679194313">Cookies e dados de sites</translation>
 <translation id="3127075554145176599">Tenha a blindagem mais potente do Brave contra ameaças on-line</translation>
@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Solicitar versão para dispositivos móveis</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Faixa anterior</translation>
+<translation id="258271431472168668">Padrão do Brave</translation>
 <translation id="2891975107962658722">Impedir que sites salvem dados no seu dispositivo</translation>
 <translation id="2903493209154104877">Endereços</translation>
+<translation id="2903764741244499151">Os sites podem entrar no modo picture-in-picture automaticamente. Isso permite que você continue assistindo a um vídeo e libera sua tela para outras tarefas.</translation>
 <translation id="2918484639460781603">Ir para as configurações</translation>
 <translation id="2932883381142163287">Denunciar abuso</translation>
 <translation id="2939338015096024043">Quando essa configuração está ativada, os sites podem pedir para rastrear a posição da câmera e saber mais sobre o ambiente à sua volta. Quando está desativada, os sites não podem rastrear a posição da câmera nem saber mais sobre o ambiente à sua volta.</translation>
@@ -222,7 +224,7 @@
 <translation id="3165022941318558018">Permitir que um site use cookies de terceiros</translation>
 <translation id="3167868116600277716">Feed do Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> de dados armazenados</translation>
-<translation id="3199078925536734975">Ativada desta vez • Aproximado</translation>
+<translation id="3199078925536734975">Permitido desta vez • Aproximado</translation>
 <translation id="3208584281581115441">Confirmar agora</translation>
 <translation id="321187648315454507">Para permitir que o app <ph name="APP_NAME"/> envie notificações, também é necessário ativá-las nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Acesso à localização não permitido</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Mudar senhas</translation>
 <translation id="3797520601150691162">Não aplicar o tema escuro para um site específico</translation>
 <translation id="3803367742635802571">Os sites que você visita podem parar de funcionar como planejado</translation>
-<translation id="8338457030135232378">Cores do Brave</translation>
 <translation id="381841723434055211">Números de telefone</translation>
 <translation id="3823453485268218808">Fonte Mono</translation>
 <translation id="3826050100957962900">Login de terceiros</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Sair do modo tela cheia</translation>
 <translation id="640163077447496506">Expira hoje</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Coleções de temas</translation>
 <translation id="6439114592976064011">Impedir que sites usem seus dispositivos e dados de realidade virtual</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Redução no preço na sua guia aberta: <ph name="PRODUCT_NAME"/> de <ph name="OLD_PRICE"/> por <ph name="NEW_PRICE"/> em <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="7423098979219808738">Perguntar primeiro</translation>
 <translation id="7423538860840206698">Leitura da área de transferência bloqueada</translation>
 <translation id="7425915948813553151">Tema escuro para sites</translation>
+<translation id="2044383478723007273">Cores do Brave</translation>
 <translation id="746412105358554870">Otimização e segurança de JavaScript</translation>
 <translation id="7478658909253570368">Não permitir que os sites se conectem a portas seriais</translation>
 <translation id="7488573225650545859">Ocultar a opção "Ver guias na lista de apps"</translation>
@@ -671,7 +672,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="802154636333426148">Falha no download</translation>
 <translation id="8033047164036749181">Inscreva-se para receber notificações deste site</translation>
 <translation id="8051193500142930381">Recursos que precisam de câmera não funcionarão</translation>
-<translation id="2495032782748793764">Padrão do Brave</translation>
 <translation id="8067883171444229417">Assistir vídeo</translation>
 <translation id="8068648041423924542">Não foi possível selecionar certificado.</translation>
 <translation id="8077120325605624147">Qualquer site que você visitar poderá mostrar anúncios para você</translation>
@@ -686,7 +686,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="8163152278172770963">Não permitir que os sites entrem no modo picture-in-picture automaticamente</translation>
 <translation id="8168435359814927499">Conteúdo</translation>
 <translation id="818487310457576362">Arraste da lateral da tela para sair do modo de tela cheia.</translation>
-<translation id="8186479265534291036">Site indisponível? Cookies de terceiros bloqueados</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> permitido</translation>
 <translation id="8200772114523450471">Retomar</translation>
 <translation id="8211406090763984747">A conexão é segura</translation>
@@ -757,7 +756,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="8805385115381080995">A navegação fica mais rápida porque é menos provável que os sites peçam para verificar se você é uma pessoa</translation>
 <translation id="881644524232657178">Quando essa configuração está ativada, os sites podem usar os sensores de movimento e luz do dispositivo. Quando está desativada, os sites não podem usar sensores.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Permita o uso de cookies de terceiros temporariamente, o que diminui a proteção da navegação, mas os recursos do site têm mais chances de funcionar conforme o esperado.</translation>
 <translation id="7532165358672313130">Conforme você navega, eles podem verificar com o navegador e o site visitado anteriormente que você é uma pessoa real</translation>
 <translation id="8899807382908246773">Anúncios invasivos</translation>
 <translation id="8903921497873541725">Aumentar zoom</translation>
@@ -783,7 +781,6 @@ A Proteção Avançada controla estas configurações do Brave:</translation>
 <translation id="913657688200966289">Ative as permissões para o app <ph name="APP_NAME"/> nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Acesso às notificações permitido</translation>
 <translation id="9138217887606523162">O zoom atual está em <ph name="ZOOM_LEVEL"/>%%</translation>
-<translation id="915112772806845021">Os sites usam esse recurso para entrar no modo picture-in-picture automaticamente. Isso permite que você continue assistindo um vídeo e libera sua tela para outras tarefas.</translation>
 <translation id="7359422048569205930">Permita que o Brave mostre suas guias recentes na lista de apps e nos resultados da pesquisa do dispositivo. É possível desativar essa opção a qualquer momento nas configurações do Brave.</translation>
 <translation id="9162462602695099906">Esta página é perigosa</translation>
 <translation id="9182556968660520230">Não permitir que os sites reproduzam conteúdo protegido</translation>

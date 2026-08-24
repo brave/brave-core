@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Mobile Ansicht anfordern</translation>
 <translation id="2870560284913253234">Website</translation>
 <translation id="2874939134665556319">Vorheriger Titel</translation>
+<translation id="258271431472168668">Brave-Standardeinstellung</translation>
 <translation id="2891975107962658722">Eine Website daran hindern, Daten auf deinem Gerät zu speichern</translation>
 <translation id="2903493209154104877">Adressen</translation>
+<translation id="2903764741244499151">Websites können den Bild-im-Bild-Modus automatisch aktivieren. So kannst du ein Video weiter ansehen und hast auf dem Bildschirm gleichzeitig Platz für andere Aufgaben.</translation>
 <translation id="2918484639460781603">Zu den Einstellungen wechseln</translation>
 <translation id="2932883381142163287">Missbrauch melden</translation>
 <translation id="2939338015096024043">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie deine Kameraposition erfassen und mehr über deine Umgebung ermitteln dürfen. Wenn er deaktiviert ist, können Websites deine Kameraposition nicht erfassen und nichts über deine Umgebung ermitteln.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Passwörter ändern</translation>
 <translation id="3797520601150691162">Dunkles Design auf eine bestimmte Website nicht anwenden</translation>
 <translation id="3803367742635802571">Websites funktionieren möglicherweise nicht mehr erwartungsgemäß</translation>
-<translation id="8338457030135232378">Brave-Farben</translation>
 <translation id="381841723434055211">Telefonnummern</translation>
 <translation id="3823453485268218808">Schriftart Mono</translation>
 <translation id="3826050100957962900">Anmeldung über Drittanbieter</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Vollbildmodus beenden</translation>
 <translation id="640163077447496506">Läuft heute ab</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Designsammlungen</translation>
 <translation id="6439114592976064011">Websites daran hindern, mein Virtual-Reality-Gerät und meine Virtual-Reality-Daten zu verwenden</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Preissenkung auf dem geöffneten Tab von <ph name="OLD_PRICE"/> auf <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="7423098979219808738">Zuerst fragen</translation>
 <translation id="7423538860840206698">Es dürfen keine Dateien aus der Zwischenablage abgerufen werden</translation>
 <translation id="7425915948813553151">Dunkles Design für Websites</translation>
+<translation id="2044383478723007273">Brave-Farben</translation>
 <translation id="746412105358554870">JavaScript-Optimierung und -Sicherheit</translation>
 <translation id="7478658909253570368">Websites dürfen keine Verbindung mit seriellen Ports herstellen</translation>
 <translation id="7488573225650545859">„Tabs in App-Liste anzeigen“ ausblenden</translation>
@@ -671,7 +672,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="802154636333426148">Downloadfehler</translation>
 <translation id="8033047164036749181">Benachrichtigungen von dieser Website abonnieren</translation>
 <translation id="8051193500142930381">Funktionen, die eine Kamera benötigen, funktionieren dann nicht</translation>
-<translation id="2495032782748793764">Brave-Standardeinstellung</translation>
 <translation id="8067883171444229417">Video ansehen</translation>
 <translation id="8068648041423924542">Zertifikat kann nicht ausgewählt werden.</translation>
 <translation id="8077120325605624147">Jede Website, die du besuchst, kann dir beliebige Werbung präsentieren</translation>
@@ -686,7 +686,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8163152278172770963">Websites dürfen den Bild-im-Bild-Modus nicht automatisch aktivieren</translation>
 <translation id="8168435359814927499">Inhalte</translation>
 <translation id="818487310457576362">Wische von der Seite des Bildschirms, um den Vollbildmodus zu beenden.</translation>
-<translation id="8186479265534291036">Website funktioniert nicht? Drittanbieter-Cookies werden blockiert.</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> zugelassen</translation>
 <translation id="8200772114523450471">Fortsetzen</translation>
 <translation id="8211406090763984747">Verbindung ist sicher</translation>
@@ -757,7 +756,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8805385115381080995">So wird das Surfen schneller, weil es weniger wahrscheinlich ist, dass eine Website dich darum bittet, deine Identität als echte Person zu bestätigen.</translation>
 <translation id="881644524232657178">Wenn dieser Schalter aktiviert ist, können Websites die Bewegungs- und Lichtsensoren deines Geräts verwenden. Wenn er deaktiviert ist, können Websites keine Sensoren verwenden.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Versuche, Drittanbieter-Cookies vorübergehend zuzulassen. Das bedeutet zwar weniger Schutz beim Surfen, aber dadurch erhöht sich die Wahrscheinlichkeit, dass Websites wie erwartet funktionieren.</translation>
 <translation id="7532165358672313130">Wenn du weitersurfst, können Websites diese Daten von Brave abrufen und über eine zuvor von dir besuchte Website bestätigen, dass du wahrscheinlich eine echte Person bist.</translation>
 <translation id="8899807382908246773">Aufdringliche Anzeigen</translation>
 <translation id="8903921497873541725">Vergrößern</translation>
@@ -783,7 +781,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="913657688200966289">Die Berechtigungen für <ph name="APP_NAME"/> können in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktiviert werden.</translation>
 <translation id="9138037198177304356">Benachrichtigungen zulässig</translation>
 <translation id="9138217887606523162">Die aktuelle Zoomstufe ist <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Websites verwenden diese Funktion, um automatisch den Bild-im-Bild-Modus zu aktivieren. So kannst du ein Video weiter ansehen und hast auf dem Bildschirm gleichzeitig Platz für andere Aufgaben.</translation>
 <translation id="7359422048569205930">Erlaube Brave, deine zuletzt geöffneten Tabs in der App-Liste und in den Suchergebnissen deines Geräts anzuzeigen. Diese Funktion lässt sich jederzeit in den Brave-Einstellungen deaktivieren.</translation>
 <translation id="9162462602695099906">Diese Seite ist gefährlich</translation>
 <translation id="9182556968660520230">Websites dürfen keine geschützten Inhalte wiedergeben</translation>

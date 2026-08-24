@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">IA Leo</translation>
 <translation id="8275068909952022340">Més…</translation>
 <translation id="71316462802471551">Correus electrònics alternatius</translation>
-<translation id="209130971304928953">Desa les pestanyes com a espai de treball…</translation>
-<translation id="877984331511007834">Obre un espai de treball…</translation>
-<translation id="1310182651927031327">Desa les pestanyes com a espai de treball…</translation>
-<translation id="3588277741646479444">Obre un espai de treball…</translation>
+<translation id="8350985546648269694">Desa les finestres i pestanyes actuals com a espai</translation>
+<translation id="5327248766486351172">Nom</translation>
+<translation id="6379791766023874417">Introdueix el nom del teu espai</translation>
+<translation id="9174724474418499472">El meu espai</translation>
+<translation id="5317780077021120954">Desa</translation>
+<translation id="7658239707568436148">Cancel·la</translation>
+<translation id="196342407904926436">Opcions de l'espai</translation>
+<translation id="2806407377752719586">Suprimeix l'espai</translation>
+<translation id="1844931500883490339">Segur que vols suprimir aquest espai? L'espai desat s'eliminarà permanentment. Aquesta acció no es pot desfer.</translation>
+<translation id="8261506727792406068">Suprimeix</translation>
+<translation id="8428213095426709021">Configuració</translation>
+<translation id="1212321046099128987">No s'han creat espais</translation>
+<translation id="3524567389166933243">Crea el teu primer espai fent clic al botó Desa de sota.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 pestanya} other {# pestanyes}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> finestres</translation>
+<translation id="1680377529024357662">Desa les finestres i pestanyes actuals com a espai</translation>
+<translation id="5561829325295347472">Introdueix el nom del teu espai</translation>
+<translation id="2028520494010039812">Opcions de l'espai</translation>
+<translation id="1580775521202322063">Suprimeix l'espai</translation>
+<translation id="3004759399777164093">Segur que vols suprimir aquest espai? L'espai desat s'eliminarà permanentment. Aquesta acció no es pot desfer.</translation>
+<translation id="7563692436589408797">No s'han creat espais</translation>
+<translation id="3945077125173636695">Crea el teu primer espai fent clic al botó Desa de sota.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 pestanya} other {# pestanyes}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> finestres</translation>
+<translation id="3326655241685890930">Espais</translation>
 <translation id="1990886731975529483">Instal·la i executa Google Widevine</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="4900351245762303149">Instal·la Google Widevine</translation>
@@ -37,7 +58,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
-<translation id="3477357195688115718">Brave no revisa la seguretat de les extensions. Instal·la aquesta extensió només si confies en el desenvolupador.</translation>
+<translation id="2201935460386712655">Brave no revisa la seguretat de les extensions. Instal·la "<ph name="EXTENSION_NAME"/>" només si confies en el desenvolupador.</translation>
 <translation id="2928844661231356557">Concedir l'accés a un dispositiu Bluetooth permetrà al lloc llegir la vostra informació identificadora i potencialment confidencial. Permet només l'accés a dispositius Bluetooth a llocs en els quals confies. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">finestres Tor</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
@@ -63,7 +84,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Gestionat filtres</translation>
 <translation id="3108584651298176909">Mostrar regles</translation>
 <translation id="5156986655891520787">Ocultar regles</translation>
-<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Obre amb una adreça .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Força l'enganxada</translation>
@@ -91,6 +111,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Captura de pantalla</translation>
 <translation id="3114478090884951591">Àrea visible</translation>
 <translation id="2026367923222947564">Pàgina completa</translation>
+<translation id="4218885227032158909">Àrea seleccionada</translation>
 <translation id="4928988318462976765">Botiga d'extensions web</translation>
 <translation id="9181207987584064303">Veure a la botiga d'extensions web</translation>
 <translation id="3161744659507801211">Atenció: Brave no pot evitar que les extensions gravin el teu historial de navegació.</translation>
@@ -289,14 +310,12 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="55252794453047936">Mou contingut multimèdia</translation>
 <translation id="4418985925423678811">Nova llista de reproducció</translation>
 <translation id="385051799172605136">Enrere</translation>
-<translation id="5317780077021120954">Desa</translation>
 <translation id="7930125899031086027">Crea i mou</translation>
 <translation id="2860159216666546928">Selecciona una carpeta per moure-hi el contingut multimèdia</translation>
 <translation id="9130105487623071247">Nom de la llista de reproducció</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> elements seleccionats</translation>
 <translation id="3596306474342941843">Suprimeix la llista de reproducció</translation>
 <translation id="7110726588168439924">Segur que vols suprimir aquesta llista de reproducció i tot el seu contingut? Aquesta acció no es pot desfer.</translation>
-<translation id="8261506727792406068">Suprimeix</translation>
 <translation id="8152485753254079984">Nova llista de reproducció</translation>
 <translation id="5397019762993984652">Afegeix des de la carpeta Reprodueix més tard</translation>
 <translation id="7525067979554623046">Crea</translation>
@@ -393,7 +412,6 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="8900907990448657776">Editar espai de treball</translation>
 <translation id="7900511996284443779">Eliminar espai de treball</translation>
 <translation id="2738687336989232152">Segur que vols eliminar l'espai de treball <ph name="CONTAINER_NAME"/>? Això n'eliminarà totes les dades associades.</translation>
-<translation id="5327248766486351172">Nom</translation>
 <translation id="104766043551382253">Icona</translation>
 <translation id="5431318178759467895">Color</translation>
 <translation id="4328541188421002379">Dona-li al teu espai de treball un nom com ara Feina o Personal</translation>
@@ -547,6 +565,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="2587535830241068901">Personalitza el teu navegador tot donant suport a Brave</translation>
 <translation id="123297831435065577">Brave Origin és una versió de pagament del navegador per a usuaris que no necessiten totes les funcions que suporten Brave com a negoci, però que encara volen la privacitat que només Brave ofereix. Els usuaris d'Origin continuaran beneficiant-se de la nostra privacitat líder del sector, bloqueig de publicitat i velocitat (mitjançant Escuts), així com actualitzacions de programari regulars, pegats de Chromium i millores de seguretat i privacitat.</translation>
 <translation id="7984508421152399880">Comprar ara</translation>
+<translation id="1882724423074862793">Restaura la compra</translation>
 <translation id="5567412479632285879">Recompenses de Brave està inhabilitat</translation>
 <translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
 <translation id="1051600834033686945">Obre la configuració completa de Recompenses de Brave</translation>
@@ -583,6 +602,8 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="933652931229970927">Envia informes de diagnòstic automàticament</translation>
 <translation id="8868426106596092089">Ajuda a millorar l'estabilitat del producte de Brave enviant automàticament informes de diagnòstic quan el navegador de Brave falla o es congela</translation>
 <translation id="4891600875049212418">Navega en mode Off-The-Record quan visitis llocs de naturalesa confidencial</translation>
+<translation id="1022603984240541480">Mostra la notificació d'ajust de la configuració de privadesa en llocs compatibles</translation>
+<translation id="3528176629974273019">Permet que Brave suggereixi (i ajusti) automàticament la configuració de privadesa específica de cada lloc.</translation>
 <translation id="509873765238158442">Bloquejar Microsoft Recall</translation>
 <translation id="4763421121695677716">Bloqueja la funció de recuperació als ordinadors amb Microsoft Windows perquè no es facin captures de pantalla automàtiques de cap de les pestanyes obertes de Brave.</translation>
 <translation id="1968895725257436430">Recopilació de dades</translation>
@@ -738,6 +759,7 @@ Segur que vols continuar?</translation>
 <translation id="4425607417590286548">Aplica canvis</translation>
 <translation id="2128143836897950793">Feu clic a 'Demanar un pont nou...' per obtenir ponts</translation>
 <translation id="3314921753580327793">Tipus adreça:port (un per línia)</translation>
+<translation id="7002083631026466886">Tor no pot utilitzar aquest pont. Comprova'l amb el pont que t'han donat i torna-ho a provar:</translation>
 <translation id="3755189300481406891">Sol·licita pont</translation>
 <translation id="6924425739431382319">Contactant amb BridgeDB. Si us plau, espera.</translation>
 <translation id="811745063252080651">Resol el CAPTCHA per sol·licitar un pont.</translation>
@@ -915,7 +937,6 @@ Segur que vols continuar?</translation>
 <translation id="1838374766361614909">Esborra la cerca</translation>
 <translation id="5126255551970171328">Cerca una memòria</translation>
 <translation id="7402116145895962069">Sincronitza els teus models locals d’Ollama</translation>
-<translation id="4835154437390745810">Gestionat per Ollama</translation>
 <translation id="5985516785067818307">Participant a la enquesta</translation>
 <translation id="8347743943525229984">Permetre les enquestes de Brave</translation>
 <translation id="3204080538332044581">Permet que Brave et mostri enllaços a enquestes privades a la pàgina de nova pestanya. Les enquestes ens ajuden a desenvolupar millors característiques i mesurar l'efectivitat de les campanyes publicitàries basades en el navegador. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>

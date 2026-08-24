@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="8275068909952022340">Ещё…</translation>
 <translation id="71316462802471551">Псевдонимы электронной почты</translation>
-<translation id="209130971304928953">Сохранить вкладки как рабочее пространство…</translation>
-<translation id="877984331511007834">Открыть рабочее пространство…</translation>
-<translation id="1310182651927031327">Сохранить вкладки как рабочую область…</translation>
-<translation id="3588277741646479444">Открыть рабочую область…</translation>
+<translation id="8350985546648269694">Сохранить текущие окна и вкладки как пространство</translation>
+<translation id="5327248766486351172">Название</translation>
+<translation id="6379791766023874417">Введите название пространства</translation>
+<translation id="9174724474418499472">Мое пространство</translation>
+<translation id="5317780077021120954">Сохранить</translation>
+<translation id="7658239707568436148">Отмена</translation>
+<translation id="196342407904926436">Настройки пространства</translation>
+<translation id="2806407377752719586">Удалить пространство</translation>
+<translation id="1844931500883490339">Удалить это пространство? Сохраненное пространство будет удалено безвозвратно. Действие нельзя отменить.</translation>
+<translation id="8261506727792406068">Delete</translation>
+<translation id="8428213095426709021">Настройки</translation>
+<translation id="1212321046099128987">Пространства не созданы</translation>
+<translation id="3524567389166933243">Создайте свое первое пространство, нажав кнопку «Сохранить» ниже.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 вкладка} one {# вкладка} few {# вкладки} many {# вкладок} other {# вкладки}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> окон</translation>
+<translation id="1680377529024357662">Сохранить текущие окна и вкладки как пространство</translation>
+<translation id="5561829325295347472">Введите название пространства</translation>
+<translation id="2028520494010039812">Настройки пространства</translation>
+<translation id="1580775521202322063">Удалить пространство</translation>
+<translation id="3004759399777164093">Удалить это пространство? Сохраненное пространство будет удалено безвозвратно. Действие нельзя отменить.</translation>
+<translation id="7563692436589408797">Пространства не созданы</translation>
+<translation id="3945077125173636695">Создайте свое первое пространство, нажав кнопку «Сохранить» ниже.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 вкладка} one {# вкладка} few {# вкладки} many {# вкладок} other {# вкладки}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> окон</translation>
+<translation id="3326655241685890930">Пространства</translation>
 <translation id="1990886731975529483">Установка и запуск Widevine</translation>
 <translation id="8926389886865778422">Больше не спрашивать</translation>
 <translation id="4900351245762303149">Установка расширения Widevine от компании Google</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">На этой странице заблокирован автозапуск</translation>
 <translation id="4988333904713528597">Всегда разрешать автоматическое воспроизведение на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
-<translation id="3477357195688115718">Brave не проверяет безопасность и надежность расширений. Устанавливайте только те расширения, разработчикам которых вы доверяете.</translation>
+<translation id="2201935460386712655">Brave не проверяет безопасность и надежность расширений. Устанавливайте расширение «<ph name="EXTENSION_NAME"/>» только в том случае, если вы доверяете его разработчику.</translation>
 <translation id="2928844661231356557">Если сайты получат доступ к устройствам Bluetooth, то смогут узнать потенциально конфиденциальную информацию о вас. Предоставляйте такие разрешения только доверенным ресурсам. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Окна Tor</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">Управлять фильтрами</translation>
 <translation id="3108584651298176909">Показывать правила</translation>
 <translation id="5156986655891520787">Скрывать правила</translation>
-<translation id="7658239707568436148">Отмена</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Открыть с помощью адреса .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Принудительная вставка</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">Захват скриншота</translation>
 <translation id="3114478090884951591">Видимая область</translation>
 <translation id="2026367923222947564">Вся страница</translation>
+<translation id="4218885227032158909">Выбранная область</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">Перемещение медиафайла</translation>
 <translation id="4418985925423678811">Новый плейлист</translation>
 <translation id="385051799172605136">Back</translation>
-<translation id="5317780077021120954">Сохранить</translation>
 <translation id="7930125899031086027">Создать и переместить</translation>
 <translation id="2860159216666546928">Выберите папку.</translation>
 <translation id="9130105487623071247">Название плейлиста</translation>
 <translation id="1857042171340443373">Выбрано объектов: <ph name="NUM_ITEMS"/></translation>
 <translation id="3596306474342941843">Удалить плейлист</translation>
 <translation id="7110726588168439924">Удалить плейлист и его содержимое? Действие нельзя отменить.</translation>
-<translation id="8261506727792406068">Delete</translation>
 <translation id="8152485753254079984">Новый плейлист</translation>
 <translation id="5397019762993984652">Добавить из плейлиста «Воспроизвести позже»</translation>
 <translation id="7525067979554623046">Создать</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">Редактировать контейнер</translation>
 <translation id="7900511996284443779">Удалить контейнер</translation>
 <translation id="2738687336989232152">Вы уверены, что хотите удалить контейнер <ph name="CONTAINER_NAME"/>? Это приведет к удалению всех данных, связанных с ним.</translation>
-<translation id="5327248766486351172">Название</translation>
 <translation id="104766043551382253">Иконка</translation>
 <translation id="5431318178759467895">Цвет</translation>
 <translation id="4328541188421002379">Дайте контейнеру имя, например, "Рабочий" или "Личный".</translation>
@@ -532,7 +550,7 @@
 <translation id="3020183492814296499">Ярлыки</translation>
 <translation id="2935698011275148880">Brave Origin</translation>
 <translation id="3486906647205325617">Чтобы некоторые изменения вступили в силу полностью, требуется перезапустить Браузер.</translation>
-<translation id="1919345977826869612">Ads</translation>
+<translation id="1919345977826869612">Реклама</translation>
 <translation id="944736176598169208">Вознаграждения</translation>
 <translation id="2839742394543397416">Аналитика</translation>
 <translation id="1799030480311994998">Функции</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">Настройте свой браузер, поддерживая при этом Brave</translation>
 <translation id="123297831435065577">Brave Origin — это платная версия Браузера для пользователей, которым не нужны все функции, поддерживающие бизнес-модель Brave, но которые всё же хотят получить уровень приватности, доступный только в Brave. Пользователи Origin продолжат пользоваться нашей передовой защитой конфиденциальности, блокировкой рекламы и высокой скоростью работы (благодаря Защите), а также получать регулярные обновления программного обеспечения, патчи Chromium и улучшения безопасности и приватности.</translation>
 <translation id="7984508421152399880">Купить сейчас</translation>
+<translation id="1882724423074862793">Восстановить покупку</translation>
 <translation id="5567412479632285879">Функция Вознаграждения Brave отключена</translation>
 <translation id="413570371620795359">Чтобы начать, откройте раздел</translation>
 <translation id="1051600834033686945">Открыть все настройки Вознаграждения Brave</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">Автоматически отправлять данные диагностики</translation>
 <translation id="8868426106596092089">Автоматически отправляя данные диагностики при сбое браузера Brave, вы помогаете повышать стабильность его работы</translation>
 <translation id="4891600875049212418">Включать режим «Не для протокола» при посещении сайтов с деликатным контентом</translation>
+<translation id="1022603984240541480">Показывать уведомление о настройке параметров конфиденциальности на совместимых сайтах</translation>
+<translation id="3528176629974273019">Позволяет Brave автоматически предлагать (и настраивать) параметры конфиденциальности для конкретных сайтов.</translation>
 <translation id="509873765238158442">Блокировать Microsoft Recall</translation>
 <translation id="4763421121695677716">Блокируйте функцию Recall на компьютерах Microsoft Windows от автоматического снятия скриншотов любых открытых вкладок Brave.</translation>
 <translation id="1968895725257436430">Сбор данных</translation>
@@ -738,6 +759,7 @@
 <translation id="4425607417590286548">Применить</translation>
 <translation id="2128143836897950793">Чтобы получить мосты, нажмите «Запросить мост»</translation>
 <translation id="3314921753580327793">Введите значение в формате адрес:порт (по одной комбинации на строку)</translation>
+<translation id="7002083631026466886">Tor не может использовать этот мост. Сверьте его с предоставленным вам мостом и повторите попытку:</translation>
 <translation id="3755189300481406891">Запрос моста</translation>
 <translation id="6924425739431382319">Связываемся с BridgeDB…</translation>
 <translation id="811745063252080651">Чтобы запросить мост, введите ответ на капчу.</translation>
@@ -913,7 +935,6 @@
 <translation id="1838374766361614909">Очистить поиск</translation>
 <translation id="5126255551970171328">Искать память</translation>
 <translation id="7402116145895962069">Синхронизировать локальные модели Ollama</translation>
-<translation id="4835154437390745810">Управляется Ollama</translation>
 <translation id="5985516785067818307">Панель опросов</translation>
 <translation id="8347743943525229984">Разрешить опросы Brave</translation>
 <translation id="3204080538332044581">Позволяет Brave показывать ссылки на частные опросы на странице новой вкладки. Опросы помогают нам создавать лучшие функции и измерять эффективность рекламных кампаний в браузере. <ph name="BEGIN_LINK"/>Узнать больше<ph name="END_LINK"/></translation>
