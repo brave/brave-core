@@ -54,4 +54,21 @@ TEST(BraveAdsConditionMatchersDatabaseTableUtilTest,
   EXPECT_THAT(StringToConditionMatchers(R"(malformed)"), ::testing::IsEmpty());
 }
 
+TEST(BraveAdsConditionMatchersDatabaseTableUtilTest,
+     RoundTripConditionMatcherWithoutCondition) {
+  // Arrange
+  //
+  // Regression test: the "[pref path operator]" (does not exist) matcher
+  // has no condition, which base64 encodes to an empty trailing segment -
+  // confirm it survives the string round trip rather than being dropped as
+  // malformed.
+  const ConditionMatcherMap condition_matchers = {
+      {/*pref_path*/ "[!]:foo.bar", /*condition*/ ""}};
+
+  // Act & Assert
+  EXPECT_EQ(
+      condition_matchers,
+      StringToConditionMatchers(ConditionMatchersToString(condition_matchers)));
+}
+
 }  // namespace brave_ads::database::table

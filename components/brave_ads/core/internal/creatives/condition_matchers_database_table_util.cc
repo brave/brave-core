@@ -38,23 +38,26 @@ ConditionMatcherMap StringToConditionMatchers(const std::string& value) {
 
   ConditionMatcherMap condition_matchers;
   for (const auto& condition_matcher_as_string : condition_matchers_as_string) {
+    // `SPLIT_WANT_ALL` because a condition-less matcher's `[pref path
+    // operator]` value base64 encodes to an empty trailing segment, which
+    // `SPLIT_WANT_NONEMPTY` would silently drop.
     const std::vector<std::string> condition_matcher =
         base::SplitString(condition_matcher_as_string, "|",
-                          base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+                          base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
     if (condition_matcher.size() != 2) {
-      // Malfomed condition matcher.
+      // Malformed condition matcher.
       continue;
     }
 
     std::string pref_path;
     if (!base::Base64Decode(condition_matcher[0], &pref_path)) {
-      // Malfomed condition matcher.
+      // Malformed condition matcher.
       continue;
     }
 
     std::string condition;
     if (!base::Base64Decode(condition_matcher[1], &condition)) {
-      // Malfomed condition matcher.
+      // Malformed condition matcher.
       continue;
     }
 
