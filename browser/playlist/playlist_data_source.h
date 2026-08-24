@@ -43,6 +43,7 @@ class PlaylistDataSource : public FaviconSource {
  private:
   struct DataRequest {
     enum class Type {
+      kNone,
       kThumbnail,
       kMedia,
       kFavicon,
@@ -54,7 +55,7 @@ class PlaylistDataSource : public FaviconSource {
     ~DataRequest();
 
     std::string id;
-    Type type;
+    Type type = Type::kNone;
   };
 
   void GetThumbnail(const DataRequest& request,
