@@ -242,6 +242,12 @@
 # upstream key selection never holds in our builds.
 -All/RequestSenderTest.CupKeySelection/*
 
+# Brave ships blink::features::kPrerender2 disabled.
+-PageLoadTrackerTest.PrerenderActivationInBackgroundTab
+-RecordReplayDriverFactoryTest.GetActiveDrivers
+-ContentAutofillDriverTest_Prerender.BadMessageIfPrerendering
+-ContentAutofillDriverTest_Prerender.ObserveFieldVisibilityDisconnectsIfInactive
+
 # This test asserts features::kSkillsEnabled's upstream default which we
 # override.
 -SkillsFeaturesTest.IsSkillsEnabled_Default_PrefOn
