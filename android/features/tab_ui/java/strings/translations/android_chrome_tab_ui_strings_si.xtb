@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">ඔබේ අක්‍රිය අයිතම ගොඩ ගැසෙන්නේ නැත</translation>
 <translation id="1329584516321524826">දැන් යාවත්කාලීන කරා පමණි</translation>
 <translation id="1340839264183302272">සමූහය හැර යන්න</translation>
+<translation id="1386966479075994683">පටිති දිග හරින්න</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{බෙදා ගත් <ph name="TITLE_OF_GROUP"/> පටිති සමූහය <ph name="TABS_COUNT_ONE"/> පටිත්තක්, වර්ණය <ph name="COLOR_NAME"/>, ලේබලය <ph name="CARD_LABEL"/> සමග පුළුල් කරන්න.}one{බෙදා ගත් <ph name="TITLE_OF_GROUP"/> පටිති සමූහය පටිති <ph name="TABS_COUNT_MANY"/>ක්, වර්ණය <ph name="COLOR_NAME"/>, ලේබලය <ph name="CARD_LABEL"/> සමග පුළුල් කරන්න.}other{බෙදා ගත් <ph name="TITLE_OF_GROUP"/> පටිති සමූහය පටිති <ph name="TABS_COUNT_MANY"/>ක්, වර්ණය <ph name="COLOR_NAME"/>, ලේබලය <ph name="CARD_LABEL"/> සමග පුළුල් කරන්න.}}</translation>
 <translation id="1486715732399361704">ඔබට ඔබේ සියලු පටිති සමූහ මෙහි සොයා ගත හැක</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{මිනිත්තු <ph name="NUM_MINS_ONE"/>ට පෙර තනන ලදි}one{මිනිත්තු <ph name="NUM_MINS_MANY"/>ට පෙර තනන ලදි}other{මිනිත්තු <ph name="NUM_MINS_MANY"/>ට පෙර තනන ලදි}}</translation>
@@ -44,6 +45,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{පටිත්ත සමූහගත නොකරන්න}one{පටිති සමූහගත නොකරන්න}other{පටිති සමූහගත නොකරන්න}}</translation>
 <translation id="2271452184061378400">ඔබේ පටිති සමූහය මෙහි සුරකිනු ලැබේ</translation>
 <translation id="2277224997687551299">සමූහ නම සංස්කරණය කරන්න</translation>
+<translation id="2289567621059034186">පහත නව පටිත්ත</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{පටිත්ත පිටුසන් කරන්න}one{පටිති පිටුසන් කරන්න}other{පටිති පිටුසන් කරන්න}}</translation>
 <translation id="2359808026110333948">කරගෙන යන්න</translation>
 <translation id="2371084566192454134">පටිති සහ පටිති සමූහ</translation>
@@ -78,6 +80,7 @@
 <translation id="3152596030350326139">පටිති තිරස්ව පෙන්වන්න</translation>
 <translation id="31806439105337256">පටිති සිරස් අතට පෙන්වන්න</translation>
 <translation id="3194464645767632461">ඇගයීම</translation>
+<translation id="3228962656492373217">පහත පටිති වසන්න</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{කණ්ඩායමට <ph name="TABS_COUNT_ONE"/> පටිත්ත එක් කරන්න}one{කණ්ඩායමට පටිති <ph name="TABS_COUNT_MANY"/> එක් කරන්න}other{කණ්ඩායමට පටිති <ph name="TABS_COUNT_MANY"/> එක් කරන්න}}</translation>
 <translation id="3328308545011660196">යෝජනාව: පටිති <ph name="NUMBER_OF_TABS"/> ක් අදාළ බව පෙනේ. ඒවා සමූහ කරන්නද?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{අක්‍රියව 1 දිනකට පසු}one{අක්‍රියව දින <ph name="DAY_COUNT_MANY"/>කට පසු}other{අක්‍රියව දින <ph name="DAY_COUNT_MANY"/>කට පසු}}</translation>
@@ -124,7 +127,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{පටිති නව කවුළුවට ගෙන යන්න}one{පටිති වෙනත් කවුළුවකට ගෙන යන්න}other{පටිති වෙනත් කවුළුවකට ගෙන යන්න}}</translation>
 <translation id="5073204694187207510">පූර්ණ තිර ජාලකය සඟවන්න</translation>
 <translation id="5076161749301278626">වෙළඳසැල් සමාලෝචන බලන්නද?</translation>
+<translation id="5093447877601682598">පටිති තීරුව පිළිබඳ ප්‍රතිපෝෂණ යවන්න</translation>
 <translation id="5161254044473106830">මාතෘකාව අවශ්‍යයි</translation>
+<translation id="5204584298075822291">පටිති හකුළන්න</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave ස්වයංක්‍රීය වී <ph name="AUTO_DELETE_DELAY_ONE"/> මාසයකට පසු අක්‍රිය පටිති සහ පටිති සමූහ වසා දමයි. ඔබට මෙය සැකසීම් තුළ වෙනස් කළ හැක.}one{Brave ස්වයංක්‍රීය වී මාස <ph name="AUTO_DELETE_DELAY_MANY"/>කට පසු අක්‍රිය පටිති සහ පටිති සමූහ වසා දමයි. ඔබට මෙය සැකසීම් තුළ වෙනස් කළ හැක.}other{Brave ස්වයංක්‍රීය වී මාස <ph name="AUTO_DELETE_DELAY_MANY"/>කට පසු අක්‍රිය පටිති සහ පටිති සමූහ වසා දමයි. ඔබට මෙය සැකසීම් තුළ වෙනස් කළ හැක.}}</translation>
 <translation id="5254233580564156835">මතකය භාවිතය: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">ඔබේ අවසන් පටිත්ත</translation>

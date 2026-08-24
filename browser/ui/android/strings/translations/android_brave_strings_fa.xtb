@@ -204,6 +204,7 @@
 <translation id="8026334261755873520">پاک کردن داده‌های مرور</translation>
 <translation id="1690924763769415936">پخش در پس‌زمینه</translation>
 <translation id="6332924730165919598">بستن همه برگه‌ها Brave را می‌بندد</translation>
+<translation id="2557725907027944082">گروه‌ها</translation>
 <translation id="8308305244351876417">وقتی به زبانه دیگری در Brave یا به برنامه دیگری بروید، یا صفحه دستگاه خاموش باشد، اجازه می‌دهد صدا پخش شود.</translation>
 <translation id="49147335255967913">پیوندهای YouTube را در Brave باز کنید</translation>
 <translation id="4150201353443180367">صفحه نمایش</translation>
@@ -214,9 +215,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>درباره Widevine بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">اجازه دهید (اکنون دوباره راه‌اندازی شود)</translation>
 <translation id="2433507940547922241">شکل ظاهری</translation>
+<translation id="316542773973815724">پیمایش</translation>
 <translation id="9040069796107003510">نماد پاداش‌های Brave</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
-<translation id="1215433243238902715">فعال‌سازی نوار ابزار پیمایش پایین</translation>
+<translation id="4393974575368329991">نوار ابزار پیمایش پایین</translation>
+<translation id="1834226716203076292">نمایش نوار پایین برای دسترسی سریع به خانه، نشانک‌ها و جستجو</translation>
 <translation id="1422686363939271829">هنگامی که نوار نشانی سمت پایین انتخاب شده باشد، این تنظیمات غیرفعال می‌شود</translation>
 <translation id="6587448235155023666">دفعه بعدی که Brave را راه‌اندازی می‌کنید، تغییرات شما اجرایی می‌شوند.</translation>
 <translation id="8701563696941209024">اکنون مجدداً راه‌اندازی شود</translation>
@@ -236,8 +239,7 @@
 <translation id="6188781052835527980">اگر با از کار افتادن یا توقف مواجه شدید، گزارش‌های عیب‌یابی را ارسال کنید.</translation>
 <translation id="4780647518983772446">اطلاعات آماری محصول مربوط به ویژگی‌های Brave که استفاده می‌شوند، خصوصی و بی‌نام اشتراک‌‌گذاری می‌شوند.</translation>
 <translation id="5109496672133133896">اطلاعات محصول خصوصی</translation>
-<translation id="3545804467215833536">برای مشاهده «سپرهای ایمنی Brave» ضربه بزنید</translation>
-<translation id="1724327820822194498">با «سپرهای ایمنی» همه موارد بدی را که Brave در هر صفحه مسدود کرده است ببینید.</translation>
+<translation id="4340039903315468568">با «سپرها» همه موارد بدی را که Brave در هر صفحه مسدود کرده است ببینید. برای مشاهده ضربه بزنید</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> آگهی و ردیاب مسدود شدند</translation>
 <translation id="8281886186245836920">رد شدن</translation>
 <translation id="5806601733251372221">سپرهای ایمنی Brave</translation>
@@ -442,6 +444,7 @@
 <translation id="7141438739990875547">شبکه‌های بیت‌کوین</translation>
 <translation id="9055546041146396417">اگر این سایت خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید.</translation>
 <translation id="7898672232170410330">عنصر قفل</translation>
+<translation id="7205939464631857223">همه عناصر مسدودشده را پاک کن</translation>
 <translation id="7961015016161918242">هرگز</translation>
 <translation id="3200744626782631683">داده‌های مرور هرگز به‌طور خودکار حذف نمی‌شوند.</translation>
 <translation id="1991004083507807299">برگه سایت بسته شد</translation>
@@ -504,7 +507,10 @@
 <translation id="3980704343258720102">همه داده‌های مرور را پاک می‌کند</translation>
 <translation id="8089997572759938512">گزارش‌های حریم‌خصوصی خود را به صفر بازنشانی کنید</translation>
 <translation id="2718046830255553131">داده‌های گزارش‌های حریم‌خصوصی پاک شده‌اند.</translation>
-<translation id="8376263745431603066">فعال کردن «حالت شب» (آزمایشی)</translation>
+<translation id="3623948252408240879">حالت شب</translation>
+<translation id="1257950165130031194">اجباری کردن حالت تیره برای محتوای وب</translation>
+<translation id="8710601165725654801">رنگ‌های پویا</translation>
+<translation id="7865194971711852999">طرح‌زمینه برنامه با رنگ‌های تصویر پس‌زمینه مطابقت دارد</translation>
 <translation id="1383876407941801731">جستجو</translation>
 <translation id="13296465911709339">نوشتار شما در بریده‌دان کپی شده است.</translation>
 <translation id="2735834606413553397">نشانی عمومی در بریده‌دان کپی شده است.</translation>
@@ -724,7 +730,7 @@
 <translation id="4979796155378508955">اگر مقدار نانس سفارشی غیرمتوالی یا دارای خطاهای دیگری باشد، ممکن است تراکنش در شبکه منتشر نشود.</translation>
 <translation id="750843150060816463">قیمت گس (Gwei)</translation>
 <translation id="1426320910664514906">محدوده گاز</translation>
-<translation id="6389441740143786465">غیرفعال کردن هاب اشتراک‌گذاری</translation>
+<translation id="1784950057929740513">مرکز اشتراک‌گذاری</translation>
 <translation id="473775607612524610">به‌روزرسانی</translation>
 <translation id="479795390141144417">به‌روزرسانی حساب ناموفق بود.</translation>
 <translation id="8084782383392198011">نام حساب نمی‌تواند خالی باشد.</translation>
@@ -799,8 +805,12 @@
 <translation id="1060221736464994328">اجازه می‌دهید این سایت شبکه را تغییر دهد؟</translation>
 <translation id="2478788592457735063">با این کار شبکه به شبکه‌ای که قبلاً اضافه شده است تغییر خواهد کرد.</translation>
 <translation id="8756686998207163764">تغییر شبکه</translation>
+<translation id="8905793906896555159">فعال کردن گروه‌های زبانه</translation>
+<translation id="7632160823264702523">نوار گروه‌های زبانه</translation>
+<translation id="2477807195394450274">نمایش نوار پایین برای دسترسی سریع به زبانه‌های موجود در گروه زبانه بازِ کنونی</translation>
+<translation id="8374720587111523381">باز کردن پیوندها در گروه زبانه فعلی</translation>
 <translation id="5324095733417835490">فقط پیوندها را در گروه زبانه فعلی باز کنید</translation>
-<translation id="2620277345862119868">به‌طور خودکار همه پیوندهای موجود در گروه زبانه فعلی را باز می‌کند</translation>
+<translation id="1227658541937938697">به‌طور خودکار همه پیوندها را در گروه زبانه فعلی باز کنید</translation>
 <translation id="5242300593039211344">قفل کردن کیف پول</translation>
 <translation id="1108298724135935307">سایتهای متصل</translation>
 <translation id="4255623233927788178">مشاهده در کاوشگر بلوک</translation>
@@ -1079,7 +1089,7 @@
 <translation id="6393423486818299209">از ارائه‌دهنده خدمات فعلی یا Wikimedia DNS خود استفاده کنید</translation>
 <translation id="3401384982562827787">از ارائه‌دهنده خدمات فعلی یا Cloudflare خود استفاده کنید</translation>
 <translation id="8812367543786936496">اگر ارائه‌دهنده خدمات فعلی شما ناامن است، Brave از یک ارائه‌دهنده جایگزین امن DNS استفاده می‌کند</translation>
-<translation id="1381108437654541567">فعال کردن پنجره‌های چندگانه</translation>
+<translation id="750538469281113679">پنجره‌های چندگانه</translation>
 <translation id="6167344249617630304">هم‌زمان تا 5 پنجره را باز کنید و زبانه‌ها به از پنجره‌ای به پنجره دیگر جابه‌جا کنید</translation>
 <translation id="1063948063403254568">پنجره‌های چندگانه شناسایی شدند</translation>
 <translation id="4661882208707630158">قبل از غیرفعال کردن ویژگی پنجره‌های چندگانه، لطفاً زبانه‌ها به در یک پنجره دیگر Brave ادغام کنید یا پنجره‌های دیگر Brave را ببندید.</translation>

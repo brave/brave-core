@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">ШІ Leo</translation>
 <translation id="8275068909952022340">Більше…</translation>
 <translation id="71316462802471551">Псевдоніми електронної пошти</translation>
-<translation id="209130971304928953">Зберегти вкладки як робочий простір…</translation>
-<translation id="877984331511007834">Відкрити робочий простір…</translation>
-<translation id="1310182651927031327">Зберегти вкладки як робочу область…</translation>
-<translation id="3588277741646479444">Відкрити робочу область…</translation>
+<translation id="8350985546648269694">Зберегти поточні вікна та вкладки як простір</translation>
+<translation id="5327248766486351172">Назва</translation>
+<translation id="6379791766023874417">Уведіть назву простору</translation>
+<translation id="9174724474418499472">Мій простір</translation>
+<translation id="5317780077021120954">Зберегти</translation>
+<translation id="7658239707568436148">Скасувати</translation>
+<translation id="196342407904926436">Параметри простору</translation>
+<translation id="2806407377752719586">Видалити простір</translation>
+<translation id="1844931500883490339">Дійсно видалити цей простір? Збережений простір буде остаточно вилучено. Цю дію неможливо скасувати.</translation>
+<translation id="8261506727792406068">Видалити</translation>
+<translation id="8428213095426709021">Налаштування</translation>
+<translation id="1212321046099128987">Не створено просторів</translation>
+<translation id="3524567389166933243">Створіть свій перший простір, натиснувши кнопку «Зберегти» нижче.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 вкладка} other {# вкладок}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> вікон</translation>
+<translation id="1680377529024357662">Зберегти поточні вікна та вкладки як простір</translation>
+<translation id="5561829325295347472">Уведіть назву простору</translation>
+<translation id="2028520494010039812">Параметри простору</translation>
+<translation id="1580775521202322063">Видалити простір</translation>
+<translation id="3004759399777164093">Дійсно видалити цей простір? Збережений простір буде остаточно вилучено. Цю дію неможливо скасувати.</translation>
+<translation id="7563692436589408797">Не створено просторів</translation>
+<translation id="3945077125173636695">Створіть свій перший простір, натиснувши кнопку «Зберегти» нижче.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 вкладка} other {# вкладок}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> вікон</translation>
+<translation id="3326655241685890930">Простори</translation>
 <translation id="1990886731975529483">Встановити й запустити Google Widevine</translation>
 <translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="4900351245762303149">Встановити Google Widevine</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">Автовідтворення заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автовідтворення на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Блокувати автовідтворення й надалі</translation>
-<translation id="3477357195688115718">Brave не перевіряє безпеку та надійність розширень. Встановлюйте це розширення лише якщо довіряєте його розробнику.</translation>
+<translation id="2201935460386712655">Brave не перевіряє безпеку та надійність розширень. Встановлюйте "<ph name="EXTENSION_NAME"/>" лише якщо довіряєте його розробнику.</translation>
 <translation id="2928844661231356557">Надання доступу Bluetooth-пристрою дозволить вебсайту зчитувати ідентифікаційну й потенційно конфіденційну інформацію про вас. Надавайте доступ до Bluetooth-пристроїв лише надійним вебсайтам. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Вікна Tor</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">Керування фільтрами</translation>
 <translation id="3108584651298176909">Показати правила</translation>
 <translation id="5156986655891520787">Сховати правила</translation>
-<translation id="7658239707568436148">Скасувати</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Відкрити за допомогою адреси .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Примусове вставляння</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">Захопити знімок екрана</translation>
 <translation id="3114478090884951591">Видима область</translation>
 <translation id="2026367923222947564">Уся сторінка</translation>
+<translation id="4218885227032158909">Вибрана область</translation>
 <translation id="4928988318462976765">Вебмагазин розширень</translation>
 <translation id="9181207987584064303">Переглянути у вебмагазині розширень</translation>
 <translation id="3161744659507801211">Попередження: Brave не може завадити розширенням записувати вашу історію перегляду.</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">Переміщення медіа</translation>
 <translation id="4418985925423678811">Новий список відтворення</translation>
 <translation id="385051799172605136">Назад</translation>
-<translation id="5317780077021120954">Зберегти</translation>
 <translation id="7930125899031086027">Створити й перемістити</translation>
 <translation id="2860159216666546928">Виберіть теку для переміщення цього медіа</translation>
 <translation id="9130105487623071247">Назва списку відтворення</translation>
 <translation id="1857042171340443373">Вибрано елементів: <ph name="NUM_ITEMS"/></translation>
 <translation id="3596306474342941843">Видалити список відтворення</translation>
 <translation id="7110726588168439924">Дійсно видалити цей список відтворення та весь його вміст? Цю дію неможливо скасувати.</translation>
-<translation id="8261506727792406068">Видалити</translation>
 <translation id="8152485753254079984">Новий список відтворення</translation>
 <translation id="5397019762993984652">Додати з теки ‎Відтворити пізніше</translation>
 <translation id="7525067979554623046">Створити</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">Редагувати контейнер</translation>
 <translation id="7900511996284443779">Видалити контейнер</translation>
 <translation id="2738687336989232152">Ви впевнені, що хочете видалити контейнер <ph name="CONTAINER_NAME"/>? Це призведе до видалення всіх даних, пов'язаних з ним.</translation>
-<translation id="5327248766486351172">Назва</translation>
 <translation id="104766043551382253">Іконка</translation>
 <translation id="5431318178759467895">Колір</translation>
 <translation id="4328541188421002379">Введіть назву для контейнера, наприклад, "Робочий" або "Особистий</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">Налаштуйте свій браузер і продовжуйте підтримувати Brave</translation>
 <translation id="123297831435065577">Brave Origin — це платна версія браузера для користувачів, які не потребують усіх функцій, що підтримують Brave як бізнес, але все ще хочуть приватність, яку пропонує лише Brave. Користувачі Origin продовжуватимуть користуватися нашою приватністю світового класу, блокуванням реклами та швидкістю (через Щити), а також регулярними оновленнями програмного забезпечення, виправленнями Chromium та покращеннями безпеки й приватності.</translation>
 <translation id="7984508421152399880">Купити зараз</translation>
+<translation id="1882724423074862793">Поновити покупку</translation>
 <translation id="5567412479632285879">Винагороди Brave вимкнено</translation>
 <translation id="413570371620795359">Відкрийте панель Винагороди, щоб увімкнути й почати роботу</translation>
 <translation id="1051600834033686945">Відкрити всі налаштування Винагород Brave</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">Автоматично надсилати діагностичні звіти</translation>
 <translation id="8868426106596092089">Допоможіть покращити стабільність Brave, автоматично надсилаючи діагностичні звіти під час збоїв або зависань браузера</translation>
 <translation id="4891600875049212418">Не залишайте слідів, переглядаючи конфіденційні сайти</translation>
+<translation id="1022603984240541480">Показувати сповіщення про налаштування параметрів приватності на сумісних сайтах</translation>
+<translation id="3528176629974273019">Дозволяє Brave автоматично пропонувати (та регулювати) параметри приватності для конкретних сайтів.</translation>
 <translation id="509873765238158442">Заблокувати Microsoft Recall</translation>
 <translation id="4763421121695677716">Заблокувати функцію Recall у Windows, щоб вона не робила знімки екрана відкритих вкладок Brave автоматично.</translation>
 <translation id="1968895725257436430">Збір даних</translation>
@@ -738,6 +759,7 @@
 <translation id="4425607417590286548">Застосувати зміни</translation>
 <translation id="2128143836897950793">Щоб отримати мости, натисніть «Подати запит на новий міст…».</translation>
 <translation id="3314921753580327793">Введіть адресу:порт (один запис на рядок)</translation>
+<translation id="7002083631026466886">Tor не може використати цей міст. Перевірте його з наданим вам мостом, а потім спробуйте знову:</translation>
 <translation id="3755189300481406891">Подати запит на міст</translation>
 <translation id="6924425739431382319">Встановлення зв’язку з BridgeDB. Зачекайте.</translation>
 <translation id="811745063252080651">Пройдіть тест CAPTCHA, щоб надіслати запит на міст.</translation>
@@ -915,7 +937,6 @@
 <translation id="1838374766361614909">Видалити дані пошуку</translation>
 <translation id="5126255551970171328">Пошук памʼяті</translation>
 <translation id="7402116145895962069">Синхронізувати локальні моделі Ollama</translation>
-<translation id="4835154437390745810">Керується Ollama</translation>
 <translation id="5985516785067818307">Панель опитування</translation>
 <translation id="8347743943525229984">Дозволити опитування від Brave</translation>
 <translation id="3204080538332044581">Brave може показувати приватні опитування на новій вкладці. Це допомагає нам розвивати функції, які вам потрібні, та краще розуміти, як працює реклама. <ph name="BEGIN_LINK"/>Дізнатися більше<ph name="END_LINK"/></translation>

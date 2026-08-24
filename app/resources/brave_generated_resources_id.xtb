@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="8275068909952022340">Lebih lanjut#8230;</translation>
 <translation id="71316462802471551">Alias Email</translation>
-<translation id="209130971304928953">Simpan Tab sebagai Ruang Kerja…</translation>
-<translation id="877984331511007834">Buka Ruang Kerja…</translation>
-<translation id="1310182651927031327">Simpan tab sebagai workspace…</translation>
-<translation id="3588277741646479444">Buka workspace…</translation>
+<translation id="8350985546648269694">Simpan Windows dan Tab Saat Ini sebagai Space</translation>
+<translation id="5327248766486351172">Nama</translation>
+<translation id="6379791766023874417">Masukkan Nama Space Anda</translation>
+<translation id="9174724474418499472">Space Saya</translation>
+<translation id="5317780077021120954">Simpan</translation>
+<translation id="7658239707568436148">Batal</translation>
+<translation id="196342407904926436">Opsi Space</translation>
+<translation id="2806407377752719586">Hapus Space</translation>
+<translation id="1844931500883490339">Anda yakin ingin menghapus Space ini? Space yang tersimpan akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.</translation>
+<translation id="8261506727792406068">Hapus</translation>
+<translation id="8428213095426709021">Setelan</translation>
+<translation id="1212321046099128987">Tidak Ada Space yang Dibuat</translation>
+<translation id="3524567389166933243">Buat Space Pertama Anda dengan Mengeklik Tombol Simpan di Bawah.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Tab}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Windows</translation>
+<translation id="1680377529024357662">Simpan windows dan tab saat ini sebagai space</translation>
+<translation id="5561829325295347472">Masukkan nama space Anda</translation>
+<translation id="2028520494010039812">Opsi space</translation>
+<translation id="1580775521202322063">Hapus space</translation>
+<translation id="3004759399777164093">Anda yakin ingin menghapus space ini? Space yang tersimpan akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.</translation>
+<translation id="7563692436589408797">Tidak ada space yang dibuat</translation>
+<translation id="3945077125173636695">Buat space pertama Anda dengan mengeklik tombol Simpan di bawah.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 tab} other {# tab}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> windows</translation>
+<translation id="3326655241685890930">Space</translation>
 <translation id="1990886731975529483">Instal dan jalankan Google Widevine</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="4900351245762303149">Instal Google Widevine</translation>
@@ -37,7 +58,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3218385319396786393">Putar otomatis pada laman ini diblokir</translation>
 <translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Lanjutkan memblokir putar otomatis</translation>
-<translation id="3477357195688115718">Brave tidak meninjau keamanan dan keselamatan ekstensi. Instal ekstensi ini hanya jika Anda percaya pada pengembangnya.</translation>
+<translation id="2201935460386712655">Brave tidak meninjau keamanan dan keselamatan ekstensi. Instal "<ph name="EXTENSION_NAME"/>" hanya jika Anda percaya pada pengembangnya.</translation>
 <translation id="2928844661231356557">Memberikan akses ke perangkat Bluetooth akan memungkinkan situs untuk membaca informasi yang mengidentifikasi dan berpotensi sensitif tentang Anda. Berikan izin hanya pada situs yang Anda percayai untuk mengakses perangkat Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Jendela Tor</translation>
 <translation id="7965178729203412357">Identitas Tor Baru</translation>
@@ -63,7 +84,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3211174446914979436">Kelola filter</translation>
 <translation id="3108584651298176909">Tampilkan aturan</translation>
 <translation id="5156986655891520787">Sembunyikan aturan</translation>
-<translation id="7658239707568436148">Batal</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buka menggunakan alamat .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tempelkan Paksa</translation>
@@ -91,6 +111,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="191886777375280620">Tangkap tangkapan layar</translation>
 <translation id="3114478090884951591">Area yang terlihat</translation>
 <translation id="2026367923222947564">Halaman penuh</translation>
+<translation id="4218885227032158909">Area yang dipilih</translation>
 <translation id="4928988318462976765">Toko Ekstensi Web</translation>
 <translation id="9181207987584064303">Lihat di Toko Ekstensi Web</translation>
 <translation id="3161744659507801211">Peringatan: Brave tidak dapat mencegah ekstensi merekam riwayat ramban Anda.</translation>
@@ -289,14 +310,12 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="55252794453047936">Pindahkan Media</translation>
 <translation id="4418985925423678811">Daftar Putar Baru</translation>
 <translation id="385051799172605136">Kembali</translation>
-<translation id="5317780077021120954">Simpan</translation>
 <translation id="7930125899031086027">Buat dan pindahkan</translation>
 <translation id="2860159216666546928">Pilih folder untuk memindahkan media ini ke</translation>
 <translation id="9130105487623071247">Nama daftar putar</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> hal yang dipilih</translation>
 <translation id="3596306474342941843">Hapus daftar putar</translation>
 <translation id="7110726588168439924">Anda yakin ingin menghapus daftar putar ini dan semua kontennya? Tindakan ini tidak dapat dibatalkan.</translation>
-<translation id="8261506727792406068">Hapus</translation>
 <translation id="8152485753254079984">Daftar putar baru</translation>
 <translation id="5397019762993984652">Tambahkan dari folder Putar Nanti</translation>
 <translation id="7525067979554623046">Buka</translation>
@@ -393,7 +412,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8900907990448657776">Edit kontainer</translation>
 <translation id="7900511996284443779">Hapus kontainer</translation>
 <translation id="2738687336989232152">Anda yakin mau menghapus kontainer <ph name="CONTAINER_NAME"/>? Ini akan menghapus semua data yang terkait dengannya.</translation>
-<translation id="5327248766486351172">Nama</translation>
 <translation id="104766043551382253">Ikon</translation>
 <translation id="5431318178759467895">Warna</translation>
 <translation id="4328541188421002379">Beri nama kontainer Anda seperti Pekerjaan atau Personal</translation>
@@ -547,6 +565,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2587535830241068901">Sesuaikan browser Anda dengan tetap mendukung Brave</translation>
 <translation id="123297831435065577">Brave Origin adalah versi berbayar dari browser untuk pengguna yang tidak memerlukan semua fitur yang mendukung Brave sebagai bisnis, tetapi masih menginginkan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapatkan keuntungan dari privasi terdepan industri kami, adblock, dan kecepatan (melalui Perisai), serta pembaruan perangkat lunak rutin, patch Chromium, dan peningkatan keamanan dan privasi.</translation>
 <translation id="7984508421152399880">Beli sekarang</translation>
+<translation id="1882724423074862793">Pulihkan pembelian</translation>
 <translation id="5567412479632285879">Imbalan Brave dinonaktifkan</translation>
 <translation id="413570371620795359">Buka panel Rewards untuk mengaktifkan dan memulai</translation>
 <translation id="1051600834033686945">Buka pengaturan penuh Imbalan Brave</translation>
@@ -583,6 +602,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="933652931229970927">Mengirim laporan diagnostik secara otomatis</translation>
 <translation id="8868426106596092089">Membantu meningkatkan stabilitas produk Brave dengan secara otomatis mengirim laporan diagnostik saat Peramban Brave bermasalah atau macet</translation>
 <translation id="4891600875049212418">Aktifkan Tanpa Catatan ketika mengunjungi situs sensitif</translation>
+<translation id="1022603984240541480">Tampilkan notifikasi penyetelan pengaturan Privasi di situs yang kompatibel</translation>
+<translation id="3528176629974273019">Memungkinkan Brave untuk secara otomatis menyarankan (dan menyesuaikan) pengaturan privasi khusus situs.</translation>
 <translation id="509873765238158442">Blokir Microsoft Recall</translation>
 <translation id="4763421121695677716">Blokir fitur Recall di komputer Microsoft Windows agar tidak bisa secara otomatis mengambil tangkapan layar dari tab Brave yang terbuka.</translation>
 <translation id="1968895725257436430">Pengumpulan data</translation>
@@ -738,6 +759,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4425607417590286548">Terapkan perubahan</translation>
 <translation id="2128143836897950793">Klik 'Minta Jembatan Baru...' untuk mendapatkan jembatan</translation>
 <translation id="3314921753580327793">Ketik alamat:porta (satu per baris)</translation>
+<translation id="7002083631026466886">Tor tidak dapat menggunakan bridge ini. Periksa terhadap bridge yang diberikan kepada Anda, lalu coba lagi:</translation>
 <translation id="3755189300481406891">Minta Jembatan</translation>
 <translation id="6924425739431382319">Menghubungi BridgeDB. Mohon tunggu.</translation>
 <translation id="811745063252080651">Pecahkan CAPTCHA untuk meminta jembatan.</translation>
@@ -915,7 +937,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1838374766361614909">Bersihkan Penelusuran</translation>
 <translation id="5126255551970171328">Cari memori</translation>
 <translation id="7402116145895962069">Sinkronkan model lokal Ollama Anda</translation>
-<translation id="4835154437390745810">Dikelola oleh Ollama</translation>
 <translation id="5985516785067818307">Panelis Survei</translation>
 <translation id="8347743943525229984">Izinkan survei Brave</translation>
 <translation id="3204080538332044581">Izinkan Brave menampilkan tautan ke survei privat di halaman tab baru. Survei membantu kami membangun fitur yang lebih baik dan mengukur keefektifan kampanye iklan berbasis browser. <ph name="BEGIN_LINK"/>Pelajari selengkapnya<ph name="END_LINK"/></translation>

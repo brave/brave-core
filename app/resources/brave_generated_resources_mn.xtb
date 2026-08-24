@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Илүү их…</translation>
 <translation id="71316462802471551">Имэйл хаягууд</translation>
-<translation id="209130971304928953">Табуудыг ажлын талбар болгож хадгалах…</translation>
-<translation id="877984331511007834">Ажлын талбар нээх…</translation>
-<translation id="1310182651927031327">Табуудыг ажлын талбар болгон хадгалах…</translation>
-<translation id="3588277741646479444">Ажлын талбар нээх…</translation>
+<translation id="8350985546648269694">Одоогийн Windows болон табуудыг Орон зай болгож хадгалах</translation>
+<translation id="5327248766486351172">Нэр</translation>
+<translation id="6379791766023874417">Орон зайныхаа нэрийг оруулах</translation>
+<translation id="9174724474418499472">Миний орон зай</translation>
+<translation id="5317780077021120954">Хадгалах</translation>
+<translation id="7658239707568436148">Цуцлах</translation>
+<translation id="196342407904926436">Орон зайн сонголтууд</translation>
+<translation id="2806407377752719586">Орон зай устгах</translation>
+<translation id="1844931500883490339">Энэ орон зайг устгахдаа итгэлтэй байна уу? Хадгалсан орон зай бүрмөсөн устгагдана. Энэ үйлдлийг буцааж болохгүй.</translation>
+<translation id="8261506727792406068">Устгах</translation>
+<translation id="8428213095426709021">Тохиргоо</translation>
+<translation id="1212321046099128987">Орон зай үүсгээгүй байна</translation>
+<translation id="3524567389166933243">Доорх Хадгалах товчийг дарж эхний орон зайгаа үүсгээрэй.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> цонх</translation>
+<translation id="1680377529024357662">Одоогийн цонх болон табуудыг орон зай болгон хадгалах</translation>
+<translation id="5561829325295347472">Орон зайныхаа нэрийг оруулах</translation>
+<translation id="2028520494010039812">Орон зайн сонголтууд</translation>
+<translation id="1580775521202322063">Орон зай устгах</translation>
+<translation id="3004759399777164093">Энэ орон зайг устгахдаа итгэлтэй байна уу? Хадгалсан орон зай бүрмөсөн устгагдана. Энэ үйлдлийг буцааж болохгүй.</translation>
+<translation id="7563692436589408797">Орон зай үүсгээгүй байна</translation>
+<translation id="3945077125173636695">Доорх Хадгалах товчийг дарж эхний орон зайгаа үүсгээрэй.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 таб} other {# табууд}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> цонх</translation>
+<translation id="3326655241685890930">Орон зайнууд</translation>
 <translation id="1990886731975529483">Google Widevine-ыг суулгаж, уншуулах</translation>
 <translation id="8926389886865778422">Дахин асуухгүй</translation>
 <translation id="4900351245762303149">Google Widevine суулгах</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">Энэ хуудсан дээр autoplay хориглогдсон</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> дээр үргэлж autoplay-г зөвшөөрөх</translation>
 <translation id="4150684676757176434">Autoplay-г үргэлжлүүлэн хориглох</translation>
-<translation id="3477357195688115718">Brave өргөтгөлүүдийн аюулгүй байдлыг шалгахгүй. Энэ өргөтгөлийг зөвхөн хөгжүүлэгчид итгэж байвал суулгаарай.</translation>
+<translation id="2201935460386712655">Brave өргөтгөлүүдийн аюулгүй байдлыг шалгахгүй. "<ph name="EXTENSION_NAME"/>"-ийг зөвхөн хөгжүүлэгчид итгэж байвал суулгаарай.</translation>
 <translation id="2928844661231356557">Bluetooth төхөөрөмжид хандахыг зөвшөөрөх нь уг site-д таныг таниулах боломжтой бөгөөд мэдрэмтгий мэдээллийг унших боломжтой болно. Зөвхөн итгэлтэй site-д Bluetooth төхөөрөмжүүдэд хандахыг зөвшөөрнө үү. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor цонхнууд</translation>
 <translation id="7965178729203412357">Шинэ Tor Identity</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">Шүүлтүүрүүдийг удирдах</translation>
 <translation id="3108584651298176909">Дүрмүүдийг харуулах</translation>
 <translation id="5156986655891520787">Дүрмүүдийг нуух</translation>
-<translation id="7658239707568436148">Цуцлах</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion хаягаар нээх: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Хүчээр Paste хийх</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">Скриншот авах</translation>
 <translation id="3114478090884951591">Харагдах хэсэг</translation>
 <translation id="2026367923222947564">Бүтэн хуудас</translation>
+<translation id="4218885227032158909">Сонгосон талбай</translation>
 <translation id="4928988318462976765">Веб өргөтгөлүүдийн дэлгүүр</translation>
 <translation id="9181207987584064303">Веб өргөтгөлүүдийн дэлгүүрт үзэх</translation>
 <translation id="3161744659507801211">Анхааруулга: Brave өргөтгөлүүд таны хайлтын түүхийг хувийн горим болон Tor горимд бичихээс сэргийлж чадахгүй.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">Медиа агуулгуудыг зөөх</translation>
 <translation id="4418985925423678811">Шинэ Playlist</translation>
 <translation id="385051799172605136">Буцах</translation>
-<translation id="5317780077021120954">Хадгалах</translation>
 <translation id="7930125899031086027">Үүсгээд зөө</translation>
 <translation id="2860159216666546928">Энэ медиа агуулгыг зөөх фолдер сонгох</translation>
 <translation id="9130105487623071247">Playlist нэр</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> зүйлсийг сонгосон</translation>
 <translation id="3596306474342941843">Playlist-ыг устгах</translation>
 <translation id="7110726588168439924">Энэ playlist болон бүх агуулгыг устгахад итгэлтэй байна уу? Энэ үйлдэл буцаж хийж чадахгүй.</translation>
-<translation id="8261506727792406068">Устгах</translation>
 <translation id="8152485753254079984">Шинэ playlist</translation>
 <translation id="5397019762993984652">Play Later Фолдероос агуулга нэмэх</translation>
 <translation id="7525067979554623046">Үүсгэх</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">Багц засах</translation>
 <translation id="7900511996284443779">Савыг устгах</translation>
 <translation id="2738687336989232152">Та савыг <ph name="CONTAINER_NAME"/> устгахдаа итгэлтэй байна уу? Энэ нь түүнтэй холбоотой бүх өгөгдлийг устгана.</translation>
-<translation id="5327248766486351172">Нэр</translation>
 <translation id="104766043551382253">Дүрс тэмдэг</translation>
 <translation id="5431318178759467895">Өнгө</translation>
 <translation id="4328541188421002379">Ажил эсвэл Хувийн гэх зэрэг саванд нэр өгөөрэй</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">Brave-г дэмжиж байх үедээ хөтчөө өөрийн хэрэгцээнд тохируулна уу</translation>
 <translation id="123297831435065577">Brave Origin нь Brave-ийг бизнес болгон дэмждэг бүх функцүүд хэрэггүй боловч зөвхөн Brave-ийн санал болгодог нууцлалыг хүсдэг хэрэглэгчдэд зориулсан төлбөртэй хувилбар юм. Origin хэрэглэгчид манай салбарын тэргүүлэгч нууцлал, зар сурталчилгаа хаах, хурд (Бамбай хамгаалалтаар), мөн тогтмол програм хангамжийн шинэчлэл, Chromium засварууд, аюулгүй байдал болон нууцлалын сайжруулалтуудаас үргэлжлүүлэн ашиг хүртэх болно.</translation>
 <translation id="7984508421152399880">Одоо худалдан авах</translation>
+<translation id="1882724423074862793">Худалдан авалтыг сэргээх</translation>
 <translation id="5567412479632285879">Brave Урамшуулал идэвхгүй</translation>
 <translation id="413570371620795359">Идэвхжүүлж эхлүүлэхийн тулд Урамшууллын самбарыг нээнэ үү</translation>
 <translation id="1051600834033686945">Brave Урамшууллын бүх тохиргоог нээх</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">Алдааны тайланг автоматаар илгээх</translation>
 <translation id="8868426106596092089">Brave хөтөч унтарч, гацах үед алдааны мэдээллийг автоматаар явуулснаар Brave-ийн бүтээгдэхүүний тогтвортой байдлыг сайжруулахад туслана уу</translation>
 <translation id="4891600875049212418">Эмзэг мэдээлэл бүхий сайтууд руу нууцлалтай орох</translation>
+<translation id="1022603984240541480">Тохирох сайтууд дээр Нууцлалын тохиргоо тохируулах мэдэгдэл харуулах</translation>
+<translation id="3528176629974273019">Brave-д сайт бүрийн нууцлалын тохиргоог автоматаар санал болгож (мөн тохируулах) боломж олгоно.</translation>
 <translation id="509873765238158442">Microsoft Recall-ийг хаах</translation>
 <translation id="4763421121695677716">Microsoft Windows компьютерууд дээр бүр Brave табуудын скриншотыг автомат байдлаар авах Recall функцийг хаана.</translation>
 <translation id="1968895725257436430">Өгөгдөл цуглуулах</translation>
@@ -736,6 +757,7 @@
 <translation id="4425607417590286548">Өөрчлөлтийг хэрэгжүүлэх</translation>
 <translation id="2128143836897950793">Bridge-ийг авахын тулд 'Шинэ bridge хүсэх...'-д дарна уу</translation>
 <translation id="3314921753580327793">Хаяг:порт (нэг мөр бүрд) бичиж оруулна уу</translation>
+<translation id="7002083631026466886">Tor энэ гүүрийг ашиглаж чадахгүй. Танд өгсөн гүүртэй харьцуулж шалгаад дахин оролдоно уу:</translation>
 <translation id="3755189300481406891">Bridge хүсэх</translation>
 <translation id="6924425739431382319">BridgeDB-т холбогдож байна. Түр хүлээнэ үү.</translation>
 <translation id="811745063252080651">Bridge авахын тулд CAPTCHA-г шийдвэрлэнэ үү.</translation>
@@ -913,7 +935,6 @@
 <translation id="1838374766361614909">Хайлт арилгах</translation>
 <translation id="5126255551970171328">Санах ой дотроос хайх</translation>
 <translation id="7402116145895962069">Орон нутгийн Ollama загваруудаа синк хийнэ үү</translation>
-<translation id="4835154437390745810">Ollama-аар удирдаж байна</translation>
 <translation id="5985516785067818307">Судалгаанд оролцогч</translation>
 <translation id="8347743943525229984">Brave судалгаануудыг зөвшөөрөх</translation>
 <translation id="3204080538332044581">Brave танд судалгаанд оролцох хувийн хандалтыг шинэ таб хуудсанд харуулахыг зөвшөөрнө. Судалгаа нь бидэнд шинэ онцлогуудыг нэмэгдүүлэх болон хөтөч доторхи сурталчилгааны компанит ажлуудын үр дүнг хэмжихэд тусалдаг. <ph name="BEGIN_LINK"/>Дэлгэрэнгүй унших<ph name="END_LINK"/></translation>

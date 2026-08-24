@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">Jūsu neaktīvie vienumi neuzkrāsies</translation>
 <translation id="1329584516321524826">Tikko atjaunināta</translation>
 <translation id="1340839264183302272">Pamest grupu</translation>
+<translation id="1386966479075994683">Izvērst cilnes</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Izvērst kopīgoto ciļņu grupu “<ph name="TITLE_OF_GROUP"/>” ar <ph name="TABS_COUNT_ONE"/> cilni šādā krāsā: <ph name="COLOR_NAME"/>; ar iezīmi “<ph name="CARD_LABEL"/>”.}zero{Izvērst kopīgoto ciļņu grupu “<ph name="TITLE_OF_GROUP"/>” ar <ph name="TABS_COUNT_MANY"/> cilnēm šādā krāsā: <ph name="COLOR_NAME"/>; ar iezīmi “<ph name="CARD_LABEL"/>”.}one{Izvērst kopīgoto ciļņu grupu “<ph name="TITLE_OF_GROUP"/>” ar <ph name="TABS_COUNT_MANY"/> cilni šādā krāsā: <ph name="COLOR_NAME"/>; ar iezīmi “<ph name="CARD_LABEL"/>”.}other{Izvērst kopīgoto ciļņu grupu “<ph name="TITLE_OF_GROUP"/>” ar <ph name="TABS_COUNT_MANY"/> cilnēm šādā krāsā: <ph name="COLOR_NAME"/>; ar iezīmi “<ph name="CARD_LABEL"/>”.}}</translation>
 <translation id="1486715732399361704">Šeit varat skatīt visas savas ciļņu grupas.</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Izveidota pirms <ph name="NUM_MINS_ONE"/> minūtes}zero{Izveidota pirms <ph name="NUM_MINS_MANY"/> minūtēm}one{Izveidota pirms <ph name="NUM_MINS_MANY"/> minūtes}other{Izveidota pirms <ph name="NUM_MINS_MANY"/> minūtēm}}</translation>
@@ -44,6 +45,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Atcelt cilnes grupēšanu}zero{Atcelt ciļņu grupēšanu}one{Atcelt ciļņu grupēšanu}other{Atcelt ciļņu grupēšanu}}</translation>
 <translation id="2271452184061378400">Jūsu ciļņu grupas ir saglabātas šeit</translation>
 <translation id="2277224997687551299">Rediģēt grupas nosaukumu</translation>
+<translation id="2289567621059034186">Jauna cilne apakšā</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Saglabāt kā grāmatzīmi}zero{Saglabāt kā grāmatzīmes}one{Saglabāt kā grāmatzīmes}other{Saglabāt kā grāmatzīmes}}</translation>
 <translation id="2359808026110333948">Turpināt</translation>
 <translation id="2371084566192454134">Cilnes un ciļņu grupas</translation>
@@ -78,6 +80,7 @@
 <translation id="3152596030350326139">Rādīt cilnes horizontāli</translation>
 <translation id="31806439105337256">Rādīt cilnes vertikāli</translation>
 <translation id="3194464645767632461">vērtējums</translation>
+<translation id="3228962656492373217">Aizvērt apakšā esošās cilnes</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Pievienot grupai <ph name="TABS_COUNT_ONE"/> cilni}zero{Pievienot grupai <ph name="TABS_COUNT_MANY"/> cilnes}one{Pievienot grupai <ph name="TABS_COUNT_MANY"/> cilni}other{Pievienot grupai <ph name="TABS_COUNT_MANY"/> cilnes}}</translation>
 <translation id="3328308545011660196">Ieteikums: šķiet, ka <ph name="NUMBER_OF_TABS"/> cilnes ir saistītas. Vai grupēt tās?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{Pēc vienas neaktivitātes dienas}zero{Pēc <ph name="DAY_COUNT_MANY"/> neaktivitātes dienām}one{Pēc <ph name="DAY_COUNT_MANY"/> neaktivitātes dienas}other{Pēc <ph name="DAY_COUNT_MANY"/> neaktivitātes dienām}}</translation>
@@ -124,7 +127,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Pārvietot cilnes uz jaunu logu}zero{Pārvietot cilnes uz citu logu}one{Pārvietot cilnes uz citu logu}other{Pārvietot cilnes uz citu logu}}</translation>
 <translation id="5073204694187207510">Slēpt pilnekrāna režģi</translation>
 <translation id="5076161749301278626">Vai skatīt atsauksmes par veikalu?</translation>
+<translation id="5093447877601682598">Sūtīt atsauksmes par ciļņu joslu</translation>
 <translation id="5161254044473106830">Jānorāda nosaukums</translation>
+<translation id="5204584298075822291">Sakļaut cilnes</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_ONE"/> mēneša. Varat to mainīt iestatījumos.}zero{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_MANY"/> mēnešiem. Varat to mainīt iestatījumos.}one{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_MANY"/> mēneša. Varat to mainīt iestatījumos.}other{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_MANY"/> mēnešiem. Varat to mainīt iestatījumos.}}</translation>
 <translation id="5254233580564156835">Atmiņas lietojums: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Jūsu pēdējā izmantotā cilne</translation>

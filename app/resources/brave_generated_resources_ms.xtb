@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="8275068909952022340">Lebih banyak…</translation>
 <translation id="71316462802471551">Alias E-mel</translation>
-<translation id="209130971304928953">Simpan Tab sebagai Ruang Kerja…</translation>
-<translation id="877984331511007834">Buka Ruang Kerja…</translation>
-<translation id="1310182651927031327">Simpan tab sebagai ruang kerja…</translation>
-<translation id="3588277741646479444">Buka ruang kerja…</translation>
+<translation id="8350985546648269694">Simpan Windows dan Tab Semasa sebagai Ruang</translation>
+<translation id="5327248766486351172">Nama</translation>
+<translation id="6379791766023874417">Masukkan Nama Ruang Anda</translation>
+<translation id="9174724474418499472">Ruang Saya</translation>
+<translation id="5317780077021120954">Simpan</translation>
+<translation id="7658239707568436148">Batal</translation>
+<translation id="196342407904926436">Pilihan Ruang</translation>
+<translation id="2806407377752719586">Padam Ruang</translation>
+<translation id="1844931500883490339">Betulkah anda mahu memadamkan Ruang ini? Ruang yang disimpan akan dialih keluar secara kekal. Tindakan ini tidak dapat dibuat asal.</translation>
+<translation id="8261506727792406068">Padam</translation>
+<translation id="8428213095426709021">Tetapan</translation>
+<translation id="1212321046099128987">Tiada Ruang Dicipta</translation>
+<translation id="3524567389166933243">Cipta Ruang Pertama Anda dengan Mengklik Butang Simpan di Bawah.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 Tab} other {# Tab}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Windows</translation>
+<translation id="1680377529024357662">Simpan windows dan tab semasa sebagai ruang</translation>
+<translation id="5561829325295347472">Masukkan nama ruang anda</translation>
+<translation id="2028520494010039812">Pilihan ruang</translation>
+<translation id="1580775521202322063">Padam ruang</translation>
+<translation id="3004759399777164093">Betulkah anda mahu memadamkan ruang ini? Ruang yang disimpan akan dialih keluar secara kekal. Tindakan ini tidak dapat dibuat asal.</translation>
+<translation id="7563692436589408797">Tiada ruang dicipta</translation>
+<translation id="3945077125173636695">Cipta ruang pertama anda dengan mengklik butang Simpan di bawah.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 tab} other {# tab}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> windows</translation>
+<translation id="3326655241685890930">Ruang</translation>
 <translation id="1990886731975529483">Pasang dan jalankan Google Widevine</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="4900351245762303149">Pasang Google Widevine</translation>
@@ -37,7 +58,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Main automatik telah disekat di halaman ini</translation>
 <translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Teruskan menyekat autoplay</translation>
-<translation id="3477357195688115718">Brave tidak menyemak sambungan untuk jaminan dan keselamatan. Pasang sambungan ini hanya jika anda mempercayai pembangunnya.</translation>
+<translation id="2201935460386712655">Brave tidak menyemak sambungan untuk jaminan dan keselamatan. Pasang "<ph name="EXTENSION_NAME"/>" hanya jika anda mempercayai pembangunnya.</translation>
 <translation id="2928844661231356557">Langkah memberikan akses kepada peranti Bluetooth akan membolehkan laman membaca maklumat boleh dikenal pasti dan mungkin sensitif tentang diri anda. Benarkan laman yang anda percayai sahaja untuk mengakses peranti Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tingkap Tor</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
@@ -63,7 +84,6 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Urus penapis</translation>
 <translation id="3108584651298176909">Tunjukkan peraturan</translation>
 <translation id="5156986655891520787">Sembunyikan peraturan</translation>
-<translation id="7658239707568436148">Batal</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buka menggunakan alamat .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Paksa Tampal</translation>
@@ -91,6 +111,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Tangkap tangkapan skrin</translation>
 <translation id="3114478090884951591">Kawasan boleh dilihat</translation>
 <translation id="2026367923222947564">Halaman penuh</translation>
+<translation id="4218885227032158909">Kawasan dipilih</translation>
 <translation id="4928988318462976765">Kedai Sambungan Web</translation>
 <translation id="9181207987584064303">Lihat di Kedai Sambungan Web</translation>
 <translation id="3161744659507801211">Amaran: Brave tidak boleh mengelakkan sambungan daripada merekod sejarah pelayaran anda.</translation>
@@ -289,14 +310,12 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Alihkan Media</translation>
 <translation id="4418985925423678811">Senarai Main Baharu</translation>
 <translation id="385051799172605136">Kembali</translation>
-<translation id="5317780077021120954">Simpan</translation>
 <translation id="7930125899031086027">Cipta dan alih</translation>
 <translation id="2860159216666546928">Pilih folder untuk mengalihkan media ini</translation>
 <translation id="9130105487623071247">Nama senarai main</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> item dipilih</translation>
 <translation id="3596306474342941843">Padam senarai main</translation>
 <translation id="7110726588168439924">Betulkah anda mahu memadamkan senarai main ini dan semua kandungannya? Tindakan ini tidak dapat dibuat asal.</translation>
-<translation id="8261506727792406068">Padam</translation>
 <translation id="8152485753254079984">Senarai main baharu</translation>
 <translation id="5397019762993984652">Tambahkan daripada folder Play Later anda</translation>
 <translation id="7525067979554623046">Cipta</translation>
@@ -393,7 +412,6 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Edit kontena</translation>
 <translation id="7900511996284443779">Padam kontena</translation>
 <translation id="2738687336989232152">Anda pasti mahu memadam kontena <ph name="CONTAINER_NAME"/>? Tindakan ini akan membuang semua data yang berkaitan dengannya.</translation>
-<translation id="5327248766486351172">Nama</translation>
 <translation id="104766043551382253">Ikon</translation>
 <translation id="5431318178759467895">Warna</translation>
 <translation id="4328541188421002379">Berikan nama kepada kontena anda, contohnya Kerja atau Peribadi</translation>
@@ -547,6 +565,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Sesuaikan pelayar anda sambil terus menyokong Brave</translation>
 <translation id="123297831435065577">Brave Origin ialah versi berbayar pelayar untuk pengguna yang tidak memerlukan semua ciri yang menyokong Brave sebagai perniagaan, tetapi masih mahukan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapat manfaat daripada privasi peringkat industri kami, pemblokiran iklan, dan kelajuan (melalui Perisai), serta kemas kini perisian biasa, tampalan Chromium, dan penambahbaikan keselamatan dan privasi.</translation>
 <translation id="7984508421152399880">Beli sekarang</translation>
+<translation id="1882724423074862793">Pulihkan pembelian</translation>
 <translation id="5567412479632285879">Ganjaran Brave dilumpuhkan</translation>
 <translation id="413570371620795359">Buka panel Ganjaran untuk mendayakan dan bermula</translation>
 <translation id="1051600834033686945">Buka tetapan penuh Ganjaran Brave</translation>
@@ -583,6 +602,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Hantar laporan diagnostik secara automatik</translation>
 <translation id="8868426106596092089">Bantu dalam meningkatkan kestabilan produk Brave dengan menghantar laporan diagnostik secara automatik apabila Penyemak Imbas Brave ranap atau pegun</translation>
 <translation id="4891600875049212418">Layari dalam mod Luar Rekod apabila melawati laman sensitif</translation>
+<translation id="1022603984240541480">Tunjukkan pemberitahuan penalaan tetapan Privasi pada tapak yang serasi</translation>
+<translation id="3528176629974273019">Membenarkan Brave mencadangkan (dan melaraskan) tetapan privasi khusus tapak secara automatik.</translation>
 <translation id="509873765238158442">Sekat Microsoft Recall</translation>
 <translation id="4763421121695677716">Sekat ciri Recall pada komputer Microsoft Windows daripada mengambil tangkapan skrin secara automatik bagi sebarang tab Brave yang dibuka.</translation>
 <translation id="1968895725257436430">Pengumpulan data</translation>
@@ -738,6 +759,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Gunakan perubahan</translation>
 <translation id="2128143836897950793">Klik pada 'Minta Penyambung Baharu...' untuk mendapatkan penyambung</translation>
 <translation id="3314921753580327793">Jenis alamat:port (satu setiap baris)</translation>
+<translation id="7002083631026466886">Tor tidak dapat menggunakan jambatan ini. Semaknya dengan jambatan yang diberikan kepada anda, kemudian cuba lagi:</translation>
 <translation id="3755189300481406891">Minta Penyambung</translation>
 <translation id="6924425739431382319">Menghubungi BridgeDB. Sila tunggu.</translation>
 <translation id="811745063252080651">Selesaikan CAPTCHA untuk meminta penyambung.</translation>
@@ -915,7 +937,6 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">Kosongkan Carian</translation>
 <translation id="5126255551970171328">Cari ingatan</translation>
 <translation id="7402116145895962069">Segerakkan model tempatan Ollama anda</translation>
-<translation id="4835154437390745810">Diurus oleh Ollama</translation>
 <translation id="5985516785067818307">Panel Tinjauan</translation>
 <translation id="8347743943525229984">Benarkan Tinjauan Brave</translation>
 <translation id="3204080538332044581">Benarkan Brave memaparkan pautan ke tinjauan peribadi di halaman tab baharu. Tinjauan membantu kami membina ciri yang lebih baik dan mengukur keberkesanan kempen iklan berasaskan pelayar. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>

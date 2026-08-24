@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">Vipengee vyako visivyotumika havitalundikana</translation>
 <translation id="1329584516321524826">Imesasishwa sasa hivi</translation>
 <translation id="1340839264183302272">Ondoka kwenye kikundi</translation>
+<translation id="1386966479075994683">Panua Vichupo</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Panua kikundi cha vichupo cha pamoja cha <ph name="TITLE_OF_GROUP"/> kilicho na kichupo <ph name="TABS_COUNT_ONE"/>, cha rangi ya <ph name="COLOR_NAME"/> na lebo ya <ph name="CARD_LABEL"/>.}other{Panua kikundi cha vichupo cha pamoja cha <ph name="TITLE_OF_GROUP"/> kilicho na vichupo <ph name="TABS_COUNT_MANY"/>, vya rangi ya <ph name="COLOR_NAME"/> na lebo ya <ph name="CARD_LABEL"/>.}}</translation>
 <translation id="1486715732399361704">Unaweza kupata vikundi vyako vyote vya vichupo hapa</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Kiliundwa dakika <ph name="NUM_MINS_ONE"/> iliyopita}other{Kiliundwa dakika <ph name="NUM_MINS_MANY"/> zilizopita}}</translation>
@@ -44,6 +45,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Ondoa kichupo katika kikundi}other{Ondoa vichupo katika kikundi}}</translation>
 <translation id="2271452184061378400">Vikundi vya vichupo vyako huhifadhiwa hapa</translation>
 <translation id="2277224997687551299">Badilisha jina la kikundi</translation>
+<translation id="2289567621059034186">Kichupo kipya kilicho hapa chini</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Alamisha kichupo}other{Alamisha vichupo}}</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="2371084566192454134">Vichupo na vikundi vya vichupo</translation>
@@ -78,6 +80,7 @@
 <translation id="3152596030350326139">Onyesha vichupo kwa mlalo</translation>
 <translation id="31806439105337256">Onyesha vichupo kwa mkao wima</translation>
 <translation id="3194464645767632461">ukadiriaji</translation>
+<translation id="3228962656492373217">Funga vichupo vilivyo hapa chini</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Weka kichupo <ph name="TABS_COUNT_ONE"/> kwenye kikundi}other{Weka vichupo <ph name="TABS_COUNT_MANY"/> kwenye kikundi}}</translation>
 <translation id="3328308545011660196">Pendekezo: Vichupo <ph name="NUMBER_OF_TABS"/> vinaonekana kuwa vinahusiana. Ungependa kuvipanga pamoja?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{Baada ya kutotumiwa kwa siku 1}other{Baada ya kutotumiwa kwa siku <ph name="DAY_COUNT_MANY"/>}}</translation>
@@ -124,7 +127,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Hamishia vichupo kwenye dirisha jipya}other{Hamishia vichupo kwenye dirisha lingine}}</translation>
 <translation id="5073204694187207510">Ficha gridi ya skrini nzima</translation>
 <translation id="5076161749301278626">Je, unaona maoni kuhusu duka?</translation>
+<translation id="5093447877601682598">Tuma maoni kuhusu ukanda wa vichupo</translation>
 <translation id="5161254044473106830">Kichwa kinahitajika</translation>
+<translation id="5204584298075822291">Kunja Vichupo</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave hufunga kiotomatiki vichupo na vikundi vya vichupo visivyotumika baada ya mwezi <ph name="AUTO_DELETE_DELAY_ONE"/>. Unaweza kubadilisha hali hii katika mipangilio.}other{Brave hufunga kiotomatiki vichupo na vikundi vya vichupo visivyotumika baada ya miezi <ph name="AUTO_DELETE_DELAY_MANY"/>. Unaweza kubadilisha hali hii katika mipangilio.}}</translation>
 <translation id="5254233580564156835">Matumizi ya hifadhi: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Kichupo chako cha mwisho</translation>

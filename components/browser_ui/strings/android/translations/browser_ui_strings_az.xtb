@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Mobil görünüş tələb edin</translation>
 <translation id="2870560284913253234">Sayt</translation>
 <translation id="2874939134665556319">Öncəki trek</translation>
+<translation id="258271431472168668">Brave defoltu</translation>
 <translation id="2891975107962658722">Saytın cihazınızda data saxlamasını bloklayın</translation>
 <translation id="2903493209154104877">Ünvanlar</translation>
+<translation id="2903764741244499151">Saytlar şəkildə şəkil rejiminə avtomatik daxil ola bilər. Bu funksiya sayəsində ekranı digər işlər üçün boş saxlayaraq videoya baxmağa davam edə bilərsiniz.</translation>
 <translation id="2918484639460781603">Ayarlara keçin</translation>
 <translation id="2932883381142163287">Sui-istifadəni xəbər verin</translation>
 <translation id="2939338015096024043">Aktiv ediləndə saytlar kamera mövqeyini izləmək və ətrafınız haqqında məlumat əldə etmək üçün icazə istəyə bilər. Deaktiv ediləndə saytlar kamera mövqeyini izləyə və ya ətrafınız haqqında məlumat əldə edə bilməz.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Parolları dəyişin</translation>
 <translation id="3797520601150691162">Müəyyən sayta tünd tema tətbiq etməyin</translation>
 <translation id="3803367742635802571">Ziyarət etdiyiniz saytlar nəzərdə tutulduğu kimi fəaliyyətini dayandıra bilər</translation>
-<translation id="8338457030135232378">Brave Rəngləri</translation>
 <translation id="381841723434055211">Telefon nömrələri</translation>
 <translation id="3823453485268218808">Şrift Mono</translation>
 <translation id="3826050100957962900">Üçüncü tərəfin girişi</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Tam ekrandan çıxın</translation>
 <translation id="640163077447496506">Bu gün vaxtı bitir</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Tema kolleksiyaları</translation>
 <translation id="6439114592976064011">Saytların virtual reallıq cihazınızı və datanızı istifadə etməsinin qarşısını alın</translation>
 <translation id="6447842834002726250">Kukilər</translation>
 <translation id="6452138246455930388">Açıq tabda qiymət <ph name="OLD_PRICE"/> məbləğindən <ph name="NEW_PRICE"/> məbləğinə düşdü: <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:</translation>
 <translation id="7423098979219808738">Öncə soruşun</translation>
 <translation id="7423538860840206698">Buferdə oxu girişi blok edildi</translation>
 <translation id="7425915948813553151">Saytlar üçün tünd tema</translation>
+<translation id="2044383478723007273">Brave rəngləri</translation>
 <translation id="746412105358554870">JavaScript optimallaşdırılması və təhlükəsizliyi</translation>
 <translation id="7478658909253570368">Saytlara ardıcıl portlara qoşulmaq icazəsi verməyin</translation>
 <translation id="7488573225650545859">Tətbiq siyahısındakı Baxış tablarını gizlədin</translation>
@@ -671,7 +672,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:</translation>
 <translation id="802154636333426148">Endirmə alınmadı</translation>
 <translation id="8033047164036749181">Bu saytdan gələn bildirişlərə abunə olun</translation>
 <translation id="8051193500142930381">Kamera tələb edən xüsusiyyətlər işləmir</translation>
-<translation id="2495032782748793764">Defolt Brave</translation>
 <translation id="8067883171444229417">Videonu oxudun</translation>
 <translation id="8068648041423924542">Sertifikatı seçmək mümkün deyil.</translation>
 <translation id="8077120325605624147">Ziyarət etdiyiniz istənilən sayt sizə istənilən reklamı göstərə bilər</translation>
@@ -686,7 +686,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:</translation>
 <translation id="8163152278172770963">Saytlara şəkildə şəkil rejiminə avtomatik daxil olmaq icazəsi verməyin</translation>
 <translation id="8168435359814927499">Kontent</translation>
 <translation id="818487310457576362">Tam ekrandan çıxmaq üçün ekranın kənarından dartın.</translation>
-<translation id="8186479265534291036">Sayt işləmir? Üçüncü tərəf kukiləri bloklanıb</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> üçün icazə verilib</translation>
 <translation id="8200772114523450471">Davam edin</translation>
 <translation id="8211406090763984747">Bağlantı təhlükəsizdir</translation>
@@ -757,7 +756,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:</translation>
 <translation id="8805385115381080995">Saytın real insan olduğunuzu təsdiqləmək ehtimalı az olduğuna görə daha sürətlə baxmaq olur</translation>
 <translation id="881644524232657178">Aktiv edildikdə saytlar cihazın hərəkət və işıq sensorlarından istifadə edə bilər. Deaktiv edildikdə saytlar sensorlardan istifadə edə bilməz.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Üçüncü tərəf kukilərinə müvəqqəti icazə verin. Axtarış zamanı qoruma az olsa da, funksiyaların gözlənilən kimi işləmə ehtimalı yüksəkdir.</translation>
 <translation id="7532165358672313130">Baxmağa davam etdikcə saytlar Brave ilə yoxlanış apara və daxil olduğunuz əvvəlki sayt ilə real insan olduğunuzu təsdiqləyə bilər</translation>
 <translation id="8899807382908246773">İntruziv reklamlar</translation>
 <translation id="8903921497873541725">Zoom</translation>
@@ -783,7 +781,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:</translation>
 <translation id="913657688200966289"><ph name="APP_NAME"/> üçün icazələri <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> aktiv edin.</translation>
 <translation id="9138037198177304356">Bildirişlərə icazə verilib</translation>
 <translation id="9138217887606523162">Cari zoom: <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Saytlar şəkildə şəkil rejiminə avtomatik daxil olmaq üçün bu funksiyadan istifadə edir. Digər tapşırıqlar üçün ekranı boşaldaraq video izləməyə davam edə bilərsiniz.</translation>
 <translation id="7359422048569205930">Brave-un cihazın tətbiq siyahısında və axtarış nəticələrində son tabları göstərməsinə icazə verin. Bunu istənilən vaxt Brave ayarlarında deaktiv edə bilərsiniz.</translation>
 <translation id="9162462602695099906">Bu səhifə təhlükəlidir</translation>
 <translation id="9182556968660520230">Saytlara qorunan məzmunu göstərmək icazəsi verməyin</translation>

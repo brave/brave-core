@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">清除瀏覽資料</translation>
 <translation id="1690924763769415936">背景播放</translation>
 <translation id="6332924730165919598">如關閉所有分頁，Brave 也會隨之關閉</translation>
+<translation id="2557725907027944082">群組</translation>
 <translation id="8308305244351876417">當您切換到 Brave 或其他應用程式中的另一個分頁或您的裝置螢幕關閉時，允許播放音訊。</translation>
 <translation id="49147335255967913">在 Brave 中開啟 YouTube 連結</translation>
 <translation id="4150201353443180367">顯示設定</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>深入瞭解 Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">允許（立刻重新啟動）</translation>
 <translation id="2433507940547922241">外觀</translation>
+<translation id="316542773973815724">導覽</translation>
 <translation id="9040069796107003510">Brave Rewards 圖示</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
-<translation id="1215433243238902715">啟用底部導覽工具列</translation>
+<translation id="4393974575368329991">底部導覽工具列</translation>
+<translation id="1834226716203076292">顯示底部列，以快速存取首頁、書籤和搜尋</translation>
 <translation id="1422686363939271829">選取底部位址列位置時，此設定會停用</translation>
 <translation id="6587448235155023666">所有變更將在你下次重啟 Brave 時生效</translation>
 <translation id="8701563696941209024">馬上重新啟動</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">系統當機或停止回應時傳送匿名診斷報告。</translation>
 <translation id="4780647518983772446">分享不公開的匿名產品深入分析，指出 Brave 正在使用哪些功能。</translation>
 <translation id="5109496672133133896">私人產品深入分析</translation>
-<translation id="3545804467215833536">輕觸以查看 Brave Shields</translation>
-<translation id="1724327820822194498">查看 Brave 使用 Shields 在每個頁面上封鎖的所有惡意內容。</translation>
+<translation id="4340039903315468568">使用 Shields 查看 Brave 在每個頁面封鎖的所有不速之客。點按即可檢視</translation>
 <translation id="3092683655478890840">已封鎖 <ph name="TRACKER_COUNT"/> 個廣告和追蹤器</translation>
 <translation id="8281886186245836920">略過</translation>
 <translation id="5806601733251372221">Brave 防護</translation>
@@ -443,6 +445,7 @@
 <translation id="7141438739990875547">比特幣網路</translation>
 <translation id="9055546041146396417">如果此網站顯示為損壞，請試試 Shields down</translation>
 <translation id="7898672232170410330">封鎖元素</translation>
+<translation id="7205939464631857223">清除所有攔截元件</translation>
 <translation id="7961015016161918242">一律不要</translation>
 <translation id="3200744626782631683">瀏覽資料絕不會自動被銷毀</translation>
 <translation id="1991004083507807299">網站分頁關閉</translation>
@@ -505,7 +508,10 @@
 <translation id="3980704343258720102">清除所有瀏覽資料</translation>
 <translation id="8089997572759938512">將您的隱私權報告重設為零</translation>
 <translation id="2718046830255553131">已清除隱私權報告資料。</translation>
-<translation id="8376263745431603066">啟用「夜間模式」（實驗性）</translation>
+<translation id="3623948252408240879">深色模式</translation>
+<translation id="1257950165130031194">強制網頁內容使用深色模式</translation>
+<translation id="8710601165725654801">動態色彩</translation>
+<translation id="7865194971711852999">應用程式主題配合桌布色彩</translation>
 <translation id="1383876407941801731">搜尋</translation>
 <translation id="13296465911709339">您的文字已複製到剪貼簿。</translation>
 <translation id="2735834606413553397">已將公共地址複製到剪貼簿。</translation>
@@ -725,7 +731,7 @@
 <translation id="4979796155378508955">如果自訂的 Nonce 值並非連續數值，或具有其他錯誤，交易可能無法傳輸至網路。</translation>
 <translation id="750843150060816463">Gas 價格 (Gwei)</translation>
 <translation id="1426320910664514906">Gas 上限</translation>
-<translation id="6389441740143786465">停用共用中樞</translation>
+<translation id="1784950057929740513">共享中心</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">帳號更新失敗。</translation>
 <translation id="8084782383392198011">帳號名稱不能為空。</translation>
@@ -800,8 +806,12 @@
 <translation id="1060221736464994328">允許此站點切換網路？</translation>
 <translation id="2478788592457735063">這會將網路切換到之前新增的網路。</translation>
 <translation id="8756686998207163764">切換網路</translation>
+<translation id="8905793906896555159">啟用分頁群組</translation>
+<translation id="7632160823264702523">分頁群組列</translation>
+<translation id="2477807195394450274">顯示底部列，以快速存取目前開啟的分頁群組中的分頁</translation>
+<translation id="8374720587111523381">在目前的分頁群組中開啟連結</translation>
 <translation id="5324095733417835490">僅在目前的分頁群組中開啟連結</translation>
-<translation id="2620277345862119868">自動開啟目前分頁群組中的所有連結</translation>
+<translation id="1227658541937938697">自動開啟目前分頁群組中的所有連結</translation>
 <translation id="5242300593039211344">鎖定錢包</translation>
 <translation id="1108298724135935307">已連結的網站</translation>
 <translation id="4255623233927788178">在區塊瀏覽器上檢視</translation>
@@ -1080,7 +1090,7 @@
 <translation id="6393423486818299209">使用您目前的服務供應商或 Wikimedia DNS</translation>
 <translation id="3401384982562827787">使用您目前的服務供應商或 Cloudflare</translation>
 <translation id="8812367543786936496">如果您目前的服務供應商不安全，Brave 會使用安全的替代 DNS 供應商</translation>
-<translation id="1381108437654541567">啟用多個視窗</translation>
+<translation id="750538469281113679">多個視窗</translation>
 <translation id="6167344249617630304">同時開啟最多 5 視窗，並將分頁從一個視窗移至另一個視窗</translation>
 <translation id="1063948063403254568">已偵測到多個視窗</translation>
 <translation id="4661882208707630158">請將分頁合併至另一個 Brave 視窗，或關閉其他 Brave 視窗，然後停用多視窗功能。</translation>

@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Browsegegevens wissen</translation>
 <translation id="1690924763769415936">Op achtergrond afspelen</translation>
 <translation id="6332924730165919598">Als je alle tabbladen sluit, wordt Brave gesloten</translation>
+<translation id="2557725907027944082">Groepen</translation>
 <translation id="8308305244351876417">Maakt audio afspelen mogelijk wanneer u naar een ander tabblad in Brave of naar een andere app gaat of wanneer het scherm van uw apparaat uit is.</translation>
 <translation id="49147335255967913">YouTube-links in Brave openen</translation>
 <translation id="4150201353443180367">Weergave</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Meer informatie over Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Toestaan (opnieuw starten)</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
+<translation id="316542773973815724">Navigatie</translation>
 <translation id="9040069796107003510">Brave Beloningen-pictogram</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
-<translation id="1215433243238902715">Onderste navigatiebalk inschakelen</translation>
+<translation id="4393974575368329991">Onderste navigatiebalk</translation>
+<translation id="1834226716203076292">Toon een onderste balk voor snelle toegang tot home, bladwijzers en zoeken</translation>
 <translation id="1422686363939271829">Deze instelling is uitgeschakeld wanneer de adresbalk onderaan wordt weergegeven</translation>
 <translation id="6587448235155023666">Je veranderingen zullen de volgende keer dat je Brave opstart in effect gaan</translation>
 <translation id="8701563696941209024">HERSTART NU</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Verzend anonieme diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
 <translation id="4780647518983772446">Deel anonieme productinzichten over welke Brave-functies worden gebruikt.</translation>
 <translation id="5109496672133133896">Persoonlijke productinzichten</translation>
-<translation id="3545804467215833536">Tik om Brave Shields te bekijken</translation>
-<translation id="1724327820822194498">Bekijk alles wat Brave heeft geblokkeerd op alle pagina's met Shields.</translation>
+<translation id="4340039903315468568">Bekijk alles wat Brave op elke pagina heeft geblokkeerd met Shields. Tik om te bekijken</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> advertenties en trackers geblokkeerd</translation>
 <translation id="8281886186245836920">Overslaan</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -440,6 +442,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7141438739990875547">Bitcoin-netwerken</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="7898672232170410330">Element blokkeren</translation>
+<translation id="7205939464631857223">Alle geblokkeerde elementen wissen</translation>
 <translation id="7961015016161918242">Nooit</translation>
 <translation id="3200744626782631683">Browsegegevens worden nooit automatisch vernietigd</translation>
 <translation id="1991004083507807299">Tabbladen van site gesloten</translation>
@@ -502,7 +505,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3980704343258720102">Hiermee worden alle browsergegevens gewist</translation>
 <translation id="8089997572759938512">Zet uw privacyrapporten op nul</translation>
 <translation id="2718046830255553131">Gegevens van privacyrapporten zijn gewist.</translation>
-<translation id="8376263745431603066">"Nachtmodus" inschakelen (experimenteel)</translation>
+<translation id="3623948252408240879">Nachtmodus</translation>
+<translation id="1257950165130031194">Donkere modus forceren voor webinhoud</translation>
+<translation id="8710601165725654801">Dynamische kleuren</translation>
+<translation id="7865194971711852999">App-thema komt overeen met achtergrondkleuren</translation>
 <translation id="1383876407941801731">Zoeken</translation>
 <translation id="13296465911709339">Uw tekst is gekopieerd naar het klembord.</translation>
 <translation id="2735834606413553397">Openbaar adres is gekopieerd naar klembord.</translation>
@@ -722,7 +728,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4979796155378508955">Transactie wordt mogelijk niet aan het netwerk doorgegeven indien aangepaste nonce-waarde niet-sequentieel is of andere fouten bevat.</translation>
 <translation id="750843150060816463">Gasprijs (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimiet</translation>
-<translation id="6389441740143786465">Sharing Hub uitschakelen</translation>
+<translation id="1784950057929740513">Deelhub</translation>
 <translation id="473775607612524610">Updaten</translation>
 <translation id="479795390141144417">Bijwerken van account is mislukt.</translation>
 <translation id="8084782383392198011">Veld voor accountnaam kan niet leeg zijn.</translation>
@@ -797,8 +803,12 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1060221736464994328">Deze site toestemming geven om te wisselen van netwerk?</translation>
 <translation id="2478788592457735063">Hiermee schakel je over naar een netwerk dat je eerder hebt toegevoegd.</translation>
 <translation id="8756686998207163764">Van netwerk wisselen</translation>
+<translation id="8905793906896555159">Tabbladgroepen inschakelen</translation>
+<translation id="7632160823264702523">Tabbladgroepenbalk</translation>
+<translation id="2477807195394450274">Toon een onderste balk voor snelle toegang tot tabbladen in de momenteel geopende tabbladgroep</translation>
+<translation id="8374720587111523381">Links openen in de huidige tabbladgroep</translation>
 <translation id="5324095733417835490">Links alleen openen in de huidige tabbladgroep</translation>
-<translation id="2620277345862119868">Opent alle links automatisch in de huidige tabbladgroep</translation>
+<translation id="1227658541937938697">Alle links automatisch openen in de huidige tabbladgroep</translation>
 <translation id="5242300593039211344">Wallet vergrendelen</translation>
 <translation id="1108298724135935307">Gekoppelde sites</translation>
 <translation id="4255623233927788178">Weergeven op Blokkering Explorer</translation>
@@ -1077,7 +1087,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6393423486818299209">Uw huidige serviceprovider of Wikimedia DNS gebruiken</translation>
 <translation id="3401384982562827787">Uw huidige serviceprovider of Cloudflare gebruiken</translation>
 <translation id="8812367543786936496">Als uw huidige serviceprovider onbeveiligd is, gebruikt Brave een beveiligde alternatieve DNS-provider</translation>
-<translation id="1381108437654541567">Meerdere vensters inschakelen</translation>
+<translation id="750538469281113679">Meerdere vensters</translation>
 <translation id="6167344249617630304">Open maximaal vijf vensters tegelijk en verplaats tabbladen van het ene venster naar het andere</translation>
 <translation id="1063948063403254568">Meerdere vensters gedetecteerd</translation>
 <translation id="4661882208707630158">Voeg tabbladen samen in een ander Brave-venster of sluit andere Brave-vensters voordat u de functie voor meerdere vensters uitschakelt.</translation>

@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">നിങ്ങളുടെ നിഷ്‌ക്രിയ ഇനങ്ങൾ കുന്നുകൂടില്ല</translation>
 <translation id="1329584516321524826">ഇപ്പോൾ അപ്ഡേറ്റുചെയ്‌തത്</translation>
 <translation id="1340839264183302272">ഗ്രൂപ്പ് വിടുക</translation>
+<translation id="1386966479075994683">ടാബുകൾ വികസിപ്പിക്കുക</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{<ph name="CARD_LABEL"/> ലേബലിൽ, <ph name="COLOR_NAME"/> നിറത്തിലുള്ള <ph name="TABS_COUNT_ONE"/> ടാബ് ഉൾപ്പെടുത്തി, പങ്കിട്ട <ph name="TITLE_OF_GROUP"/> ടാബ് ഗ്രൂപ്പ് വികസിപ്പിക്കുക.}other{<ph name="CARD_LABEL"/> ലേബലിൽ, <ph name="COLOR_NAME"/> നിറത്തിലുള്ള <ph name="TABS_COUNT_MANY"/> ടാബുകൾ ഉൾപ്പെടുത്തി, പങ്കിട്ട <ph name="TITLE_OF_GROUP"/> ടാബ് ഗ്രൂപ്പ് വികസിപ്പിക്കുക.}}</translation>
 <translation id="1486715732399361704">നിങ്ങളുടെ എല്ലാ ടാബ് ഗ്രൂപ്പുകളും ഇവിടെ കണ്ടെത്താം</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> മിനിറ്റ് മുമ്പ് സൃഷ്‌ടിച്ചത്}other{<ph name="NUM_MINS_MANY"/> മിനിറ്റ് മുമ്പ് സൃഷ്‌ടിച്ചത്}}</translation>
@@ -44,6 +45,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{ടാബ് അൺഗ്രൂപ്പ് ചെയ്യുക}other{ടാബുകൾ അൺഗ്രൂപ്പ് ചെയ്യുക}}</translation>
 <translation id="2271452184061378400">നിങ്ങളുടെ ടാബ് ഗ്രൂപ്പുകൾ ഇവിടെ സംരക്ഷിക്കും</translation>
 <translation id="2277224997687551299">ഗ്രൂപ്പിന്റെ പേര് എഡിറ്റ് ചെയ്യുക</translation>
+<translation id="2289567621059034186">ചുവടെയുള്ള പുതിയ ടാബ്</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{ടാബ് ബുക്ക്‌മാർക്ക് ചെയ്യുക}other{ടാബുകൾ ബുക്ക്‌മാർക്ക് ചെയ്യുക}}</translation>
 <translation id="2359808026110333948">തുടരുക</translation>
 <translation id="2371084566192454134">ടാബുകളും ടാബ് ഗ്രൂപ്പുകളും</translation>
@@ -78,6 +80,7 @@
 <translation id="3152596030350326139">ടാബുകൾ ഹൊറിസോണ്ടലായി കാണിക്കുക</translation>
 <translation id="31806439105337256">ടാബുകൾ വെർട്ടിക്കലായി കാണിക്കുക</translation>
 <translation id="3194464645767632461">റേറ്റിംഗ്</translation>
+<translation id="3228962656492373217">ചുവടെയുള്ള ടാബുകൾ അടയ്ക്കുക</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{ഗ്രൂപ്പിലേക്ക് <ph name="TABS_COUNT_ONE"/> ടാബ് ചേർക്കുക}other{ഗ്രൂപ്പിലേക്ക് <ph name="TABS_COUNT_MANY"/> ടാബുകൾ ചേർക്കുക}}</translation>
 <translation id="3328308545011660196">നിർദ്ദേശം: <ph name="NUMBER_OF_TABS"/> ടാബുകൾ സമാനമാണെന്ന് തോന്നുന്നു. അവ ഗ്രൂപ്പ് ചെയ്യണോ?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{ഒരു ദിവസത്തിന് ശേഷം നിഷ്‌ക്രിയമായി}other{<ph name="DAY_COUNT_MANY"/> ദിവസത്തിന് ശേഷം നിഷ്‌ക്രിയമായി}}</translation>
@@ -124,7 +127,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{ടാബുകൾ പുതിയ വിൻഡോയിലേക്ക് നീക്കുക}other{ടാബുകൾ മറ്റൊരു വിൻഡോയിലേക്ക് നീക്കുക}}</translation>
 <translation id="5073204694187207510">പൂർണ്ണസ്ക്രീൻ ഗ്രിഡ് മറയ്ക്കുക</translation>
 <translation id="5076161749301278626">സ്റ്റോർ റിവ്യൂകൾ കാണണോ?</translation>
+<translation id="5093447877601682598">തുറന്ന് വച്ചിട്ടുള്ള ടാബുകളെ കുറിച്ചുള്ള ഫീഡ്ബാക്ക് അയയ്ക്കുക</translation>
 <translation id="5161254044473106830">പേര് ആവശ്യമാണ്</translation>
+<translation id="5204584298075822291">ടാബുകൾ ചുരുക്കുക</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{<ph name="AUTO_DELETE_DELAY_ONE"/> മാസത്തിന് ശേഷം, നിഷ്‌ക്രിയ ടാബുകളും ടാബ് ഗ്രൂപ്പുകളും Brave സ്വയമേവ അടയ്‌ക്കുന്നു. ക്രമീകരണത്തിൽ നിങ്ങൾക്ക് ഇത് മാറ്റാനാകും.}other{<ph name="AUTO_DELETE_DELAY_MANY"/> മാസത്തിന് ശേഷം, നിഷ്‌ക്രിയ ടാബുകളും ടാബ് ഗ്രൂപ്പുകളും Brave സ്വയമേവ അടയ്‌ക്കുന്നു. ക്രമീകരണത്തിൽ നിങ്ങൾക്ക് ഇത് മാറ്റാനാകും.}}</translation>
 <translation id="5254233580564156835">മെമ്മറി ഉപയോഗം: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">നിങ്ങളുടെ അവസാന ടാബ്</translation>

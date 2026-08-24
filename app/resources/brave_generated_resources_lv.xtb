@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="8275068909952022340">Vairāk…</translation>
 <translation id="71316462802471551">E-pasta pseidonīmi</translation>
-<translation id="209130971304928953">Saglabāt cilnes kā darbvietu…</translation>
-<translation id="877984331511007834">Atvērt darbvietu…</translation>
-<translation id="1310182651927031327">Saglabāt cilnes kā darbvietu…</translation>
-<translation id="3588277741646479444">Atvērt darbvietu…</translation>
+<translation id="8350985546648269694">Saglabāt pašreizējos logus un cilnes kā telpu</translation>
+<translation id="5327248766486351172">Nosaukums</translation>
+<translation id="6379791766023874417">Ievadiet savas telpas nosaukumu</translation>
+<translation id="9174724474418499472">Mana telpa</translation>
+<translation id="5317780077021120954">Saglabāt</translation>
+<translation id="7658239707568436148">Atcelt</translation>
+<translation id="196342407904926436">Telpas iespējas</translation>
+<translation id="2806407377752719586">Dzēst telpu</translation>
+<translation id="1844931500883490339">Vai tiešām vēlaties dzēst šo telpu? Saglabātā telpa tiks neatgriezeniski noņemta. Šo darbību nevar atsaukt.</translation>
+<translation id="8261506727792406068">Dzēst</translation>
+<translation id="8428213095426709021">Iestatījumi</translation>
+<translation id="1212321046099128987">Nav izveidotu telpu</translation>
+<translation id="3524567389166933243">Izveidojiet savu pirmo telpu, noklikšķinot uz zemāk esošās pogas “Saglabāt”.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 cilne} other {# cilnes}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> logi</translation>
+<translation id="1680377529024357662">Saglabāt pašreizējos logus un cilnes kā telpu</translation>
+<translation id="5561829325295347472">Ievadiet savas telpas nosaukumu</translation>
+<translation id="2028520494010039812">Telpas iespējas</translation>
+<translation id="1580775521202322063">Dzēst telpu</translation>
+<translation id="3004759399777164093">Vai tiešām vēlaties dzēst šo telpu? Saglabātā telpa tiks neatgriezeniski noņemta. Šo darbību nevar atsaukt.</translation>
+<translation id="7563692436589408797">Nav izveidotu telpu</translation>
+<translation id="3945077125173636695">Izveidojiet savu pirmo telpu, noklikšķinot uz zemāk esošās pogas “Saglabāt”.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 cilne} other {# cilnes}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> logi</translation>
+<translation id="3326655241685890930">Telpas</translation>
 <translation id="1990886731975529483">Instalēt un palaist Google Widevine</translation>
 <translation id="8926389886865778422">Nejautāt atkārtoti</translation>
 <translation id="4900351245762303149">Instalēt Google Widevine</translation>
@@ -36,7 +57,7 @@
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
-<translation id="3477357195688115718">Brave nepārskata paplašinājumu aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
+<translation id="2201935460386712655">Brave nepārskata paplašinājumu aizsardzību un drošumu. Instalējiet “<ph name="EXTENSION_NAME"/>” tikai tad, ja uzticaties izstrādātājam.</translation>
 <translation id="2928844661231356557">Ja piešķirsiet piekļuvi Bluetooth ierīcei, vietne varēs lasīt identificējošu un, iespējams, sensitīvu informāciju par jums. Piekļūt Bluetooth ierīcēm atļaujiet tikai tām vietnēm, kurām uzticaties. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor logi</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
@@ -62,7 +83,6 @@
 <translation id="3211174446914979436">Pārvaldīt filtrus</translation>
 <translation id="3108584651298176909">Rādīt noteikumus</translation>
 <translation id="5156986655891520787">Paslēpt noteikumus</translation>
-<translation id="7658239707568436148">Atcelt</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atvērt, izmantojot .onion adresi: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Piespiedu ielīmēšana</translation>
@@ -90,6 +110,7 @@
 <translation id="191886777375280620">Tvert ekrānuzņēmumu</translation>
 <translation id="3114478090884951591">Redzamā zona</translation>
 <translation id="2026367923222947564">Pilna lapa</translation>
+<translation id="4218885227032158909">Atlasītais apgabals</translation>
 <translation id="4928988318462976765">Paplašinājumu interneta veikals</translation>
 <translation id="9181207987584064303">Skatīt paplašinājumu interneta veikalā</translation>
 <translation id="3161744659507801211">Brīdinājums: Brave nevar novērst to, ka paplašinājumi ieraksta jūsu pārlūkošanas vēsturi.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">Pārvietot multividi</translation>
 <translation id="4418985925423678811">Jauns atskaņošanas saraksts</translation>
 <translation id="385051799172605136">Atpakaļ</translation>
-<translation id="5317780077021120954">Saglabāt</translation>
 <translation id="7930125899031086027">Izveidot un pārvietot</translation>
 <translation id="2860159216666546928">Atlasīt mapi, uz kuru pārvietot šo multividi</translation>
 <translation id="9130105487623071247">Atskaņošanas saraksta nosaukums</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/>atlasītie vienumi</translation>
 <translation id="3596306474342941843">Dzēst atskaņošanas sarakstu</translation>
 <translation id="7110726588168439924">Vai tiešām vēlaties dzēst šo atskaņošanas sarakstu un visu tā saturu? Šo darbību nevar atsaukt.</translation>
-<translation id="8261506727792406068">Dzēst</translation>
 <translation id="8152485753254079984">Jauns atskaņošanas saraksts</translation>
 <translation id="5397019762993984652">Pievienot no mapes Atskaņot vēlāk</translation>
 <translation id="7525067979554623046">Izveidot</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">Rediģēt konteineri</translation>
 <translation id="7900511996284443779">Dzēst konteineri</translation>
 <translation id="2738687336989232152">Vai tiešām vēlaties dzēst konteineri <ph name="CONTAINER_NAME"/>? Tiks dzēsti visi ar to saistītie dati.</translation>
-<translation id="5327248766486351172">Nosaukums</translation>
 <translation id="104766043551382253">Ikona</translation>
 <translation id="5431318178759467895">Krāsa</translation>
 <translation id="4328541188421002379">Piešķiriet konteinerim nosaukumu, piemēram, “Darbs” vai “Personīgi”</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">Pielāgojiet savu pārlūkprogrammu, vienlaikus atbalstot Brave</translation>
 <translation id="123297831435065577">Brave Origin ir maksas pārlūka versija lietotājiem, kuriem nav nepieciešami visi Brave biznesa modeli atbalstošie līdzekļi, taču joprojām vēlas privātumu, ko piedāvā tikai Brave. Origin lietotāji turpinās gūt labumu no mūsu nozarē vadošās privātuma aizsardzības, reklāmu bloķēšanas un ātruma (izmantojot Vairogi), kā arī regulāru programmatūras atjauninājumu, Chromium labojumu un drošības un privātuma uzlabojumu.</translation>
 <translation id="7984508421152399880">Pirkt tūlīt</translation>
+<translation id="1882724423074862793">Atjaunot iegādi</translation>
 <translation id="5567412479632285879">Brave balvas ir atspējotas</translation>
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="1051600834033686945">Atvērt visus Brave balvu iestatījumus</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">Automātiski nosūtīt diagnostikas ziņojumus</translation>
 <translation id="8868426106596092089">Palīdziet uzlabot Brave produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties</translation>
 <translation id="4891600875049212418">Apmeklējot sensitīvas vietnes, pāriet neredzamajā režīmā</translation>
+<translation id="1022603984240541480">Rādīt paziņojumu par konfidencialitātes iestatījumu pielāgošanu saderīgās vietnēs</translation>
+<translation id="3528176629974273019">Ļauj Brave automātiski ieteikt (un pielāgot) vietnēm specifiskus konfidencialitātes iestatījumus.</translation>
 <translation id="509873765238158442">Bloķēt Microsoft funkciju "Recall"</translation>
 <translation id="4763421121695677716">Neļaut funkcijai "Recall" Microsoft Windows datoros automātiski uzņemt jebkuras atvērtas Brave cilnes ekrānuzņēmumus.</translation>
 <translation id="1968895725257436430">Datu vākšana</translation>
@@ -737,6 +758,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="4425607417590286548">Lietot izmaiņas</translation>
 <translation id="2128143836897950793">Noklikšķiniet uz 'Pieprasīt jaunu tiltu...' lai iegūtu tiltus</translation>
 <translation id="3314921753580327793">Ierakstiet adress:port (pa vienam katrā rindā)</translation>
+<translation id="7002083631026466886">Tor nevar izmantot šo tiltu. Salīdziniet to ar jums doto tiltu un pēc tam mēģiniet vēlreiz:</translation>
 <translation id="3755189300481406891">Pieprasīt tiltu</translation>
 <translation id="6924425739431382319">Sazinieties ar BridgeDB. Lūdzu uzgaidiet.</translation>
 <translation id="811745063252080651">Atrisiniet CAPTCHA, lai pieprasītu tiltu.</translation>
@@ -914,7 +936,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1838374766361614909">Notīrīt meklēšanu</translation>
 <translation id="5126255551970171328">Meklēt atmiņā</translation>
 <translation id="7402116145895962069">Sinhronizēt savus Ollama lokālos modeļus</translation>
-<translation id="4835154437390745810">Pārvalda Ollama</translation>
 <translation id="5985516785067818307">Aptaujas dalībnieks</translation>
 <translation id="8347743943525229984">Atļaut Brave aptaujas</translation>
 <translation id="3204080538332044581">Ļauj Brave rādīt saites uz privātām aptaujām jaunas cilnes lapā. Aptaujas palīdz mums veidot labākas funkcijas un izvērtēt pārlūkprogrammā balstītu reklāmas kampaņu efektivitāti. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>

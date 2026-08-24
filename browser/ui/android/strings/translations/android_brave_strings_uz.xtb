@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Shaxsiy ma’lumotlarni avtomatik tarzda tozalanish</translation>
 <translation id="1690924763769415936">Fonda ijro etish</translation>
 <translation id="6332924730165919598">Barcha varaqlar yopilsa, Brave yopiladi</translation>
+<translation id="2557725907027944082">Guruhlar</translation>
 <translation id="8308305244351876417">Boshqa Brave sahifasi yoki ilovaga almashilganda yoxud qurilma ekrani oʻchganida audio ijrosini davom ettirish.</translation>
 <translation id="49147335255967913">YouTube havolalarini Brave’da ochish</translation>
 <translation id="4150201353443180367">Interfeys</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevine haqida ko‘proq bilib oling<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Ruxsat berish (Hozir yangilang)</translation>
 <translation id="2433507940547922241">Qiyofa</translation>
+<translation id="316542773973815724">Navigatsiya</translation>
 <translation id="9040069796107003510">Brave Rewards belgisi</translation>
 <translation id="6333347122924254968">Manzil satrida Brave Rewards belgisini ko‘rsatish</translation>
-<translation id="1215433243238902715">Pastki navigatsion panelni yoqish</translation>
+<translation id="4393974575368329991">Pastki navigatsion panel</translation>
+<translation id="1834226716203076292">Bosh sahifa, xatcho'plar va qidiruvga tez kirish uchun pastki panelni ko'rsatish</translation>
 <translation id="1422686363939271829">Bu sozlama pastki manzil paneli tanlanganda o‘chiriladi</translation>
 <translation id="6587448235155023666">O‘zgartirishlaringiz Brave qayta ishga tushirilgandan keyin kuchga kiradi</translation>
 <translation id="8701563696941209024">HOZIR QAYTA ISHGA TUSHIRISH</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Ilova ishdan chiqqan yoki qotib qolganida diagnostika hisobotlarini yuborish.</translation>
 <translation id="4780647518983772446">Brave xususiyatlarining qaysi funksiyalarni ishlatayotgani haqidagi maxfiy va anonim mahsulot axborotini yuborish.</translation>
 <translation id="5109496672133133896">Maxfiy mahsulot tafsilotlari</translation>
-<translation id="3545804467215833536">Brave Qalqonlar bilan tanishish uchun bosing</translation>
-<translation id="1724327820822194498">Har sahifada Brave Shields bilan Brave bloklagan yomon narsalarni ko'ring.</translation>
+<translation id="4340039903315468568">Har sahifada Brave Qalqonlar bilan bloklagan yomon narsalarni ko'ring. Ko'rish uchun bosing</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ta reklama va treker bloklandi</translation>
 <translation id="8281886186245836920">Oʻtkazib yuborish</translation>
 <translation id="5806601733251372221">Brave Qalqon</translation>
@@ -447,6 +449,7 @@ Buni qilishga ishonchingiz komilmi?</translation>
 <translation id="7141438739990875547">Bitcoin tarmoqlari</translation>
 <translation id="9055546041146396417">Agar ushbu sayt kutilganidek ishlamayotgan boʻlsa, Qalqon funksiyalarini faolsizlantirishingiz mumkin.</translation>
 <translation id="7898672232170410330">Elementni bloklash</translation>
+<translation id="7205939464631857223">Bloklangan barcha elementlarni tozalash</translation>
 <translation id="7961015016161918242">Hech qachon</translation>
 <translation id="3200744626782631683">Brauzer ma'lumotlari hech qachon avtomatik ravishda yo'q qilinmaydi.</translation>
 <translation id="1991004083507807299">Sayt varaqi yopildi</translation>
@@ -511,7 +514,10 @@ bloklandi</translation>
 <translation id="3980704343258720102">Barcha brauzer ma'lumotlarini tozalaydi</translation>
 <translation id="8089997572759938512">Maxfiylik hisobotlarinizni nolga qaytaradi</translation>
 <translation id="2718046830255553131">Maxfiylik hisobotlari ma'lumotlari tozalandi.</translation>
-<translation id="8376263745431603066">"Tungi Rejim" funksiyasini yoqish (Eksperimental)</translation>
+<translation id="3623948252408240879">Tungi rejim</translation>
+<translation id="1257950165130031194">Veb-kontent uchun qorong'i rejimni majburiy yoqish</translation>
+<translation id="8710601165725654801">Dinamik ranglar</translation>
+<translation id="7865194971711852999">Ilova mavzusi fon rasmi ranglariga mos keladi</translation>
 <translation id="1383876407941801731">Qidiruv</translation>
 <translation id="13296465911709339">Matningiz vaqtincha xotiraga nusxalandi.</translation>
 <translation id="2735834606413553397">Jamoat manzili vaqtincha xotiraga nusxalandi.</translation>
@@ -737,7 +743,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="4979796155378508955">Tranzaksiya tarmoqda targ'ib qilinmasligi mumkin, agar tayyorlangan nonce qiymati ketma-ket bo'lmasa yoki boshqa xatoliklar mavjud bo'lsa.</translation>
 <translation id="750843150060816463">Gaz narxi (Gwei)</translation>
 <translation id="1426320910664514906">Gaz limiti</translation>
-<translation id="6389441740143786465">Yuborish markazini o‘chirib qo‘ying</translation>
+<translation id="1784950057929740513">Ulashish markazi</translation>
 <translation id="473775607612524610">Yangilash</translation>
 <translation id="479795390141144417">Hisob yangilanishi muvaffaqiyatsiz yakunlandi.</translation>
 <translation id="8084782383392198011">Hisob nomi bo‘sh bo'lmasligi kerak.</translation>
@@ -812,8 +818,12 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="1060221736464994328">Bu saytga tarmoqni almashtirish ruxsati berilsinmi?</translation>
 <translation id="2478788592457735063">Bunda tarmoq avval qoʻshilgan tarmoqqa almashtiriladi.</translation>
 <translation id="8756686998207163764">Tarmoqni almashtirish</translation>
+<translation id="8905793906896555159">Varaq guruhlarini yoqish</translation>
+<translation id="7632160823264702523">Varaq guruhlari paneli</translation>
+<translation id="2477807195394450274">Hozirda ochiq varaq guruhidagi varaqlarga tez kirish uchun pastki panelni ko'rsatish</translation>
+<translation id="8374720587111523381">Havolalarni joriy varaq guruhida ochish</translation>
 <translation id="5324095733417835490">Faqat hozirgi varaq guruhidagi havolalarni oching</translation>
-<translation id="2620277345862119868">Barcha havolalarni avtomatik ravishda joriy varaq guruhida ochadi</translation>
+<translation id="1227658541937938697">Barcha havolalarni avtomatik ravishda joriy varaq guruhida ochish</translation>
 <translation id="5242300593039211344">Hamyonni qulflash</translation>
 <translation id="1108298724135935307">Ulangan saytlar</translation>
 <translation id="4255623233927788178">Blok tekshiruvchida koʻrish</translation>
@@ -1096,7 +1106,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="6393423486818299209">Sizning joriy xizmat ko'rsatuvchingiz yoki Wikimedia DNS dan foydalaning</translation>
 <translation id="3401384982562827787">Sizning joriy xizmat ko'rsatuvchingiz yoki Cloudflare dan foydalaning</translation>
 <translation id="8812367543786936496">Agar sizning joriy xizmat ko'rsatuvchingiz xavfsiz bo'lmasa, Brave xavfsiz alternativ DNS provayderdan foydalanadi</translation>
-<translation id="1381108437654541567">Bir nechta oynalarni yoqing</translation>
+<translation id="750538469281113679">Bir nechta oynalar</translation>
 <translation id="6167344249617630304">Bir vaqtning o'zida 5 ta oynani oching va yorliqlarni bir oynadan ikkinchisiga ko'chiring</translation>
 <translation id="1063948063403254568">Bir nechta oynalar aniqlangan</translation>
 <translation id="4661882208707630158">Bir nechta oyna funksiyasini o‘chirishdan oldin, boshqa Brave oynalarini yopish va boshqa oynalarga yorliqlarni birlashtirishingizni so'raymiz.</translation>
