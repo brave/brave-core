@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Begär mobilvy</translation>
 <translation id="2870560284913253234">Webbplats</translation>
 <translation id="2874939134665556319">Föregående spår</translation>
+<translation id="258271431472168668">Standard i Brave</translation>
 <translation id="2891975107962658722">Blockera en webbplats från att spara data på enheten</translation>
 <translation id="2903493209154104877">Adresser</translation>
+<translation id="2903764741244499151">Webbplatser kan öppna bild-i-bild automatiskt. På så sätt kan du fortsätta titta på en video samtidigt som du frigör skärmen för andra uppgifter.</translation>
 <translation id="2918484639460781603">Öppna Inställningar</translation>
 <translation id="2932883381142163287">Anmäl otillåten användning</translation>
 <translation id="2939338015096024043">När detta är aktiverat kan webbplatser be om att registrera kamerans position och få mer information om din omgivning. När detta är inaktiverat får webbplatser inte registrera kamerans position eller få mer information om din omgivning.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Byt lösenord</translation>
 <translation id="3797520601150691162">Använd inte mörkt tema för en viss webbplats</translation>
 <translation id="3803367742635802571">Webbplatser du besöker kan sluta fungera som avsett</translation>
-<translation id="8338457030135232378">Färger i Brave</translation>
 <translation id="381841723434055211">Telefonnummer</translation>
 <translation id="3823453485268218808">Font med fast bredd</translation>
 <translation id="3826050100957962900">Tredjepartsinloggning</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Avsluta helskärmsläge</translation>
 <translation id="640163077447496506">Löper ut i dag</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Temasamlingar</translation>
 <translation id="6439114592976064011">Blockera webbplatser från att använda VR-enheter och VR-data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Prissänkning på den öppna fliken, från <ph name="OLD_PRICE"/> till <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="7423098979219808738">Fråga först</translation>
 <translation id="7423538860840206698">Läsbehörighet till Urklipp har nekats</translation>
 <translation id="7425915948813553151">Mörkt tema för webbplatser</translation>
+<translation id="2044383478723007273">Brave-färger</translation>
 <translation id="746412105358554870">JavaScript-optimering och säkerhet</translation>
 <translation id="7478658909253570368">Tillåt inte att webbplatser ansluter till en serieport</translation>
 <translation id="7488573225650545859">Dölj Visa flikar i applistan</translation>
@@ -671,7 +672,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="802154636333426148">Nedladdningen misslyckades</translation>
 <translation id="8033047164036749181">Prenumerera på aviseringar från den här webbplatsen</translation>
 <translation id="8051193500142930381">Funktioner som kräver en kamera slutar fungera</translation>
-<translation id="2495032782748793764">Standard i Brave</translation>
 <translation id="8067883171444229417">Spela upp video</translation>
 <translation id="8068648041423924542">Det går inte att välja certifikat.</translation>
 <translation id="8077120325605624147">Alla webbplatser du besöker kan visa alla annonser för dig</translation>
@@ -686,7 +686,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="8163152278172770963">Tillåt inte webbplatser att öppna bild-i-bild automatiskt</translation>
 <translation id="8168435359814927499">Innehåll</translation>
 <translation id="818487310457576362">Dra från sidan av skärmen för att avsluta helskärmsläge.</translation>
-<translation id="8186479265534291036">Fungerar inte webbplatsen? Cookies från tredje part har blockerats</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> tillåts</translation>
 <translation id="8200772114523450471">Återuppta</translation>
 <translation id="8211406090763984747">Anslutningen är säker</translation>
@@ -757,7 +756,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="8805385115381080995">Du kan surfa snabbare eftersom det blir mindre sannolikt att en webbplats ber dig att verifiera att du är en riktig person</translation>
 <translation id="881644524232657178">När detta är aktiverat kan webbplatser använda enhetens rörelse- och ljussensorer. När detta är inaktiverat får webbplatser inte använda sensorer.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Testa att tillfälligt tillåta tredjepartscookies, vilket innebär mindre skydd när du surfar men större sannolikhet att webbplatsfunktionerna fungerar som förväntat.</translation>
 <translation id="7532165358672313130">När du fortsätter surfa kan webbplatser kontrollera informationen med Brave och verifiera med den föregående webbplatsen du besökte att du troligen är en riktig person.</translation>
 <translation id="8899807382908246773">Påträngande annonser</translation>
 <translation id="8903921497873541725">Zooma in</translation>
@@ -783,7 +781,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="913657688200966289">Aktivera behörigheter för <ph name="APP_NAME"/> i <ph name="BEGIN_LINK"/>Android-inställningarna<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Aviseringar tillåts</translation>
 <translation id="9138217887606523162">Nuvarande zoom är <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Webbplatser använder den här funktionen för att öppna bild-i-bild automatiskt. På så sätt kan du fortsätta titta på en video samtidigt som du frigör skärmen för andra uppgifter.</translation>
 <translation id="7359422048569205930">Tillåt att Brave visar dina senaste flikar i enhetens applista och sökresultat. Du kan inaktivera detta när som helst i Brave-inställningarna.</translation>
 <translation id="9162462602695099906">Den här sidan är farlig</translation>
 <translation id="9182556968660520230">Tillåt inte att webbplatser spelar upp skyddat innehåll</translation>

@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
 <translation id="71316462802471551">นามแฝงอีเมล</translation>
-<translation id="209130971304928953">บันทึกแท็บเป็นพื้นที่ทำงาน…</translation>
-<translation id="877984331511007834">เปิดพื้นที่ทำงาน…</translation>
-<translation id="1310182651927031327">บันทึกแท็บเป็นพื้นที่ทำงาน…</translation>
-<translation id="3588277741646479444">เปิดพื้นที่ทำงาน…</translation>
+<translation id="8350985546648269694">บันทึกหน้าต่างและแท็บปัจจุบันเป็น Space</translation>
+<translation id="5327248766486351172">ชื่อ</translation>
+<translation id="6379791766023874417">ใส่ชื่อสเปซของคุณ</translation>
+<translation id="9174724474418499472">สเปซของฉัน</translation>
+<translation id="5317780077021120954">บันทึก</translation>
+<translation id="7658239707568436148">ยกเลิก</translation>
+<translation id="196342407904926436">ตัวเลือกสเปซ</translation>
+<translation id="2806407377752719586">ลบสเปซ</translation>
+<translation id="1844931500883490339">คุณแน่ใจหรือไม่ว่าต้องการลบสเปซนี้ สเปซที่บันทึกไว้จะถูกลบออกอย่างถาวร การดำเนินการนี้ไม่สามารถยกเลิกได้</translation>
+<translation id="8261506727792406068">ลบ</translation>
+<translation id="8428213095426709021">การตั้งค่า</translation>
+<translation id="1212321046099128987">ยังไม่มีการสร้างสเปซ</translation>
+<translation id="3524567389166933243">สร้างสเปซแรกของคุณโดยคลิกปุ่มบันทึกด้านล่าง</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 แท็บ} other {# แท็บ}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> หน้าต่าง</translation>
+<translation id="1680377529024357662">บันทึกหน้าต่างและแท็บปัจจุบันเป็นสเปซ</translation>
+<translation id="5561829325295347472">ใส่ชื่อสเปซของคุณ</translation>
+<translation id="2028520494010039812">ตัวเลือกสเปซ</translation>
+<translation id="1580775521202322063">ลบสเปซ</translation>
+<translation id="3004759399777164093">คุณแน่ใจหรือไม่ว่าต้องการลบสเปซนี้ สเปซที่บันทึกไว้จะถูกลบออกอย่างถาวร การดำเนินการนี้ไม่สามารถยกเลิกได้</translation>
+<translation id="7563692436589408797">ยังไม่มีการสร้างสเปซ</translation>
+<translation id="3945077125173636695">สร้างสเปซแรกของคุณโดยคลิกปุ่มบันทึกด้านล่าง</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 แท็บ} other {# แท็บ}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> หน้าต่าง</translation>
+<translation id="3326655241685890930">สเปซ</translation>
 <translation id="1990886731975529483">ติดตั้งและเรียกใช้ Google Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="4900351245762303149">ติดตั้ง Google Widevine</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
-<translation id="3477357195688115718">Brave จะไม่ตรวจสอบความมั่นคงและความปลอดภัยของส่วนขยาย โปรดติดตั้งส่วนขยายนี้ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
+<translation id="2201935460386712655">Brave จะไม่ตรวจสอบความมั่นคงและความปลอดภัยของส่วนขยาย โปรดติดตั้ง "<ph name="EXTENSION_NAME"/>" ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
 <translation id="2928844661231356557">การให้สิทธิ์การเข้าถึงอุปกรณ์บลูทูธจะทำให้เว็บไซต์สามารถอ่านข้อมูลที่ระบุตัวตนและอาจมีความละเอียดอ่อนเกี่ยวกับคุณได้ อนุญาตเฉพาะเว็บไซต์ที่คุณเชื่อถือให้เข้าถึงอุปกรณ์บลูทูธเท่านั้น <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">ทอร์วินโดว์</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">จัดการตัวกรอง</translation>
 <translation id="3108584651298176909">แสดงกฎ</translation>
 <translation id="5156986655891520787">ซ่อนกฎ</translation>
-<translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">เปิดโดยใช้ที่อยู่ .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">บังคับวาง</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">จับภาพหน้าจอ</translation>
 <translation id="3114478090884951591">พื้นที่ที่มองเห็นได้</translation>
 <translation id="2026367923222947564">เต็มหน้า</translation>
+<translation id="4218885227032158909">พื้นที่ที่เลือก</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ดูใน Web Extensions Store</translation>
 <translation id="3161744659507801211">คำเตือน: Brave ไม่สามารถป้องกันไม่ให้ส่วนขยายต่างๆ บันทึกประวัติการท่องเว็บของคุณ</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">ย้ายสื่อ</translation>
 <translation id="4418985925423678811">เพลย์ลิสต์ใหม่</translation>
 <translation id="385051799172605136">กลับ</translation>
-<translation id="5317780077021120954">บันทึก</translation>
 <translation id="7930125899031086027">สร้างและย้าย</translation>
 <translation id="2860159216666546928">เลือกโฟลเดอร์ที่จะย้ายสื่อนี้ไป</translation>
 <translation id="9130105487623071247">ชื่อเพลย์ลิสต์</translation>
 <translation id="1857042171340443373">รายการที่เลือก <ph name="NUM_ITEMS"/> รายการ</translation>
 <translation id="3596306474342941843">ลบเพลย์ลิสต์</translation>
 <translation id="7110726588168439924">คุณแน่ใจหรือไม่ว่าต้องการลบเพลย์ลิสต์นี้และเนื้อหาทั้งหมดในเพลย์ลิสต์ การดำเนินการนี้ไม่สามารถยกเลิกได้</translation>
-<translation id="8261506727792406068">ลบ</translation>
 <translation id="8152485753254079984">เพลย์ลิสต์ใหม่</translation>
 <translation id="5397019762993984652">เพิ่มจากโฟลเดอร์เล่นภายหลังของคุณ</translation>
 <translation id="7525067979554623046">สร้าง</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">แก้ไขคอนเทนเนอร์</translation>
 <translation id="7900511996284443779">ลบคอนเทนเนอร์</translation>
 <translation id="2738687336989232152">คุณแน่ใจหรือไม่ว่าต้องการลบคอนเทนเนอร์ <ph name="CONTAINER_NAME"/> การดำเนินการนี้จะลบข้อมูลทั้งหมดที่เกี่ยวข้อง</translation>
-<translation id="5327248766486351172">ชื่อ</translation>
 <translation id="104766043551382253">ไอคอน</translation>
 <translation id="5431318178759467895">สี</translation>
 <translation id="4328541188421002379">ตั้งชื่อคอนเทนเนอร์ของคุณ เช่น งาน หรือ ส่วนตัว</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">ปรับแต่งเบราว์เซอร์ของคุณในขณะที่ยังคงสนับสนุน Brave</translation>
 <translation id="123297831435065577">Brave Origin เป็นเบราว์เซอร์เวอร์ชั่นที่เสียค่าใช้สำหรับผู้ใช้ที่ไม่ต้องการฟีเจอร์ทั้งหมดที่สนับสนุน Brave ในฐานะธุรกิจ แต่ยังต้องการความเป็นส่วนตัวที่เพียงแค่ Brave เท่านั้นที่มีให้ ผู้ใช้ Origin จะได้รับประโยชน์อย่างต่อเนื่องจากการป้องกันความเป็นส่วนตัวระดับอุตสาหกรรม การบล็อกโฆษณา และความเร็ว (ผ่าน Shields) รวมถึงการอัปเดตซอฟต์แวร์อย่างสม่ำเสมอ แพตช์ Chromium และการปรับปรุงความเป็นส่วนตัวและความปลอดภัย</translation>
 <translation id="7984508421152399880">ซื้อเลย</translation>
+<translation id="1882724423074862793">คืนค่าการซื้อ</translation>
 <translation id="5567412479632285879">Brave รีวอร์ดปิดใช้งานอยู่</translation>
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="1051600834033686945">เปิดการตั้งค่า Brave Rewards ทั้งหมด</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="8868426106596092089">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
 <translation id="4891600875049212418">ไปที่ Off-The-Record เมื่อเยี่ยมชมเว็บไซต์ที่สำคัญ</translation>
+<translation id="1022603984240541480">แสดงการแจ้งเตือนการปรับแต่งการตั้งค่าความเป็นส่วนตัวบนไซต์ที่รองรับ</translation>
+<translation id="3528176629974273019">อนุญาตให้ Brave แนะนำ (และปรับ) การตั้งค่าความเป็นส่วนตัวเฉพาะไซต์โดยอัตโนมัติ</translation>
 <translation id="509873765238158442">บล็อก Microsoft Recall</translation>
 <translation id="4763421121695677716">บล็อกฟีเจอร์ Recall บนคอมพิวเตอร์ Microsoft Windows ไม่ให้จับภาพหน้าจอของแท็บ Brave ที่เปิดอยู่โดยอัตโนมัติ</translation>
 <translation id="1968895725257436430">การรวบรวมข้อมูล</translation>
@@ -738,6 +759,7 @@
 <translation id="4425607417590286548">ใช้การเปลี่ยนแปลง</translation>
 <translation id="2128143836897950793">คลิกที่ 'ขอสะพานใหม่...' เพื่อรับสะพาน</translation>
 <translation id="3314921753580327793">พิมพ์ที่อยู่:พอร์ต (หนึ่งรายการต่อบรรทัด)</translation>
+<translation id="7002083631026466886">Tor ไม่สามารถใช้บริดจ์นี้ได้ ตรวจสอบกับบริดจ์ที่คุณได้รับ จากนั้นลองอีกครั้ง:</translation>
 <translation id="3755189300481406891">ขอสะพาน</translation>
 <translation id="6924425739431382319">ติดต่อ BridgeDB โปรดรอ</translation>
 <translation id="811745063252080651">แก้ไข CAPTCHA เพื่อขอสะพาน</translation>
@@ -917,7 +939,6 @@
 <translation id="1838374766361614909">ล้างการค้นหา</translation>
 <translation id="5126255551970171328">ค้นหาข้อมูลในความจำ</translation>
 <translation id="7402116145895962069">ซิงค์โมเดลโลคอล Ollama ของคุณ</translation>
-<translation id="4835154437390745810">จัดการโดย Ollama</translation>
 <translation id="5985516785067818307">ผู้ร่วมตอบแบบสำรวจ</translation>
 <translation id="8347743943525229984">เปิดใช้งานแบบสำรวจจาก Brave</translation>
 <translation id="3204080538332044581">อนุญาตให้ Brave แสดงลิงก์ไปยังแบบสำรวจส่วนตัวในหน้าแท็บใหม่ แบบสำรวจเหล่านี้ช่วยให้เราพัฒนาฟีเจอร์ให้ดีขึ้น และวัดประสิทธิภาพของแคมเปญโฆษณาบนเบราว์เซอร์ได้

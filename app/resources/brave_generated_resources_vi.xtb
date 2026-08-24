@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Nhiều hơn...</translation>
 <translation id="71316462802471551">Bí danh email</translation>
-<translation id="209130971304928953">Lưu các thẻ làm Không gian làm việc…</translation>
-<translation id="877984331511007834">Mở Không gian làm việc…</translation>
-<translation id="1310182651927031327">Lưu các thẻ thành không gian làm việc…</translation>
-<translation id="3588277741646479444">Mở không gian làm việc…</translation>
+<translation id="8350985546648269694">Lưu cửa sổ và thẻ hiện tại thành Không gian</translation>
+<translation id="5327248766486351172">Tên</translation>
+<translation id="6379791766023874417">Nhập Tên Space Của Bạn</translation>
+<translation id="9174724474418499472">Space Của Tôi</translation>
+<translation id="5317780077021120954">Lưu</translation>
+<translation id="7658239707568436148">Hủy</translation>
+<translation id="196342407904926436">Tùy Chọn Space</translation>
+<translation id="2806407377752719586">Xóa Space</translation>
+<translation id="1844931500883490339">Bạn có chắc là bạn muốn xóa Space này không? Space đã lưu sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</translation>
+<translation id="8261506727792406068">Xóa</translation>
+<translation id="8428213095426709021">Cài đặt</translation>
+<translation id="1212321046099128987">Chưa Tạo Space Nào</translation>
+<translation id="3524567389166933243">Tạo Space Đầu Tiên Của Bạn Bằng Cách Nhấp Vào Nút Lưu Bên Dưới.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 tab} other {# tab}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Cửa Sổ</translation>
+<translation id="1680377529024357662">Lưu các cửa sổ và tab hiện tại làm space</translation>
+<translation id="5561829325295347472">Nhập tên space của bạn</translation>
+<translation id="2028520494010039812">Tùy chọn space</translation>
+<translation id="1580775521202322063">Xóa space</translation>
+<translation id="3004759399777164093">Bạn có chắc là bạn muốn xóa space này không? Space đã lưu sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.</translation>
+<translation id="7563692436589408797">Chưa tạo space nào</translation>
+<translation id="3945077125173636695">Tạo space đầu tiên của bạn bằng cách nhấp vào nút Lưu bên dưới.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 tab} other {# tab}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> cửa sổ</translation>
+<translation id="3326655241685890930">Space</translation>
 <translation id="1990886731975529483">Cài đặt và chạy Google Widevine</translation>
 <translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="4900351245762303149">Cài đặt Google Widevine</translation>
@@ -37,7 +58,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
-<translation id="3477357195688115718">Brave không xem xét các tiện ích mở rộng để bảo mật và an toàn. Chỉ cài đặt tiện ích mở rộng này nếu bạn tin tưởng nhà phát triển.</translation>
+<translation id="2201935460386712655">Brave không xem xét các phần mở rộng để bảo mật và an toàn. Chỉ cài đặt "<ph name="EXTENSION_NAME"/>" nếu bạn tin tưởng nhà phát triển.</translation>
 <translation id="2928844661231356557">Việc cấp quyền truy cập vào thiết bị Bluetooth sẽ cho phép trang web đọc thông tin nhận dạng và thông tin nhạy cảm có thể có về bạn. Chỉ cho phép các trang web bạn tin cậy truy cập vào thiết bị Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Cửa sổ Tor</translation>
 <translation id="7965178729203412357">Danh tính Tor mới</translation>
@@ -63,7 +84,6 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Quản lý bộ lọc</translation>
 <translation id="3108584651298176909">Hiển thị quy tắc</translation>
 <translation id="5156986655891520787">Ẩn quy tắc</translation>
-<translation id="7658239707568436148">Hủy</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Mở bằng địa chỉ .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Buộc dán</translation>
@@ -91,6 +111,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Chụp ảnh màn hình</translation>
 <translation id="3114478090884951591">Vùng nhìn thấy được</translation>
 <translation id="2026367923222947564">Toàn bộ trang</translation>
+<translation id="4218885227032158909">Vùng đã chọn</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="3161744659507801211">Cảnh báo: Brave không thể chặn các tiện ích mở rộng ghi lại lịch sử duyệt web của bạn.</translation>
@@ -289,14 +310,12 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Chuyển phương tiện</translation>
 <translation id="4418985925423678811">Danh sách phát mới</translation>
 <translation id="385051799172605136">Quay lại</translation>
-<translation id="5317780077021120954">Lưu</translation>
 <translation id="7930125899031086027">Tạo và di chuyển</translation>
 <translation id="2860159216666546928">Chọn thư mục để chuyển phương tiện này đến</translation>
 <translation id="9130105487623071247">Tên danh sách phát</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> mục được chọn</translation>
 <translation id="3596306474342941843">Xóa danh sách phát</translation>
 <translation id="7110726588168439924">Bạn có chắc là bạn muốn xóa danh sách phát này và tất cả các nội dung của nó? Hành động này không thể hoàn tác.</translation>
-<translation id="8261506727792406068">Xóa</translation>
 <translation id="8152485753254079984">Danh sach mới</translation>
 <translation id="5397019762993984652">Thêm từ thư mục Phát sau của bạn</translation>
 <translation id="7525067979554623046">Tạo</translation>
@@ -393,7 +412,6 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Chỉnh sửa vùng chứa</translation>
 <translation id="7900511996284443779">Xóa vùng chứa</translation>
 <translation id="2738687336989232152">Bạn có chắc muốn xóa vùng chứa <ph name="CONTAINER_NAME"/>? Thao tác này sẽ xóa tất cả dữ liệu liên quan đến vùng chứa.</translation>
-<translation id="5327248766486351172">Tên</translation>
 <translation id="104766043551382253">Biểu tượng</translation>
 <translation id="5431318178759467895">Màu</translation>
 <translation id="4328541188421002379">Đặt tên cho vùng chứa của bạn như Công việc hay Cá nhân</translation>
@@ -547,6 +565,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Tùy chỉnh trình duyệt của bạn mà vẫn hỗ trợ Brave</translation>
 <translation id="123297831435065577">Brave Origin là phiên bản trả phí của trình duyệt dành cho những người dùng không cần tất cả các tính năng hỗ trợ Brave như một doanh nghiệp, nhưng vẫn muốn có quyền riêng tư mà chỉ có Brave cung cấp. Người dùng Origin sẽ tiếp tục hưởng lợi từ quyền riêng tư hàng đầu trong ngành của chúng tôi, chặn quảng cáo và tốc độ (thông qua Lá chắn), cũng như các bản cập nhật phần mềm thường xuyên, bản vá Chromium và cải tiến bảo mật và quyền riêng tư.</translation>
 <translation id="7984508421152399880">Mua ngay</translation>
+<translation id="1882724423074862793">Khôi phục lần mua</translation>
 <translation id="5567412479632285879">Đã tắt Brave Phần thưởng</translation>
 <translation id="413570371620795359">Mở khung Phần thưởng để bật và bắt đầu</translation>
 <translation id="1051600834033686945">Mở toàn bộ cài đặt Brave Phần thưởng</translation>
@@ -583,6 +602,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Tự động gửi báo cáo chẩn đoán</translation>
 <translation id="8868426106596092089">Giúp cải thiện độ ổn định của sản phẩm Brave bằng cách tự động gửi báo cáo chẩn đoán khi Trình duyệt Brave gặp sự cố hoặc đóng băng</translation>
 <translation id="4891600875049212418">Để chế độ ẩn danh khi truy cập các trang web nhạy cảm</translation>
+<translation id="1022603984240541480">Hiển thị thông báo điều chỉnh cài đặt Quyền riêng tư trên các trang tương thích</translation>
+<translation id="3528176629974273019">Cho phép Brave tự động đề xuất (và điều chỉnh) các cài đặt quyền riêng tư dành riêng cho trang.</translation>
 <translation id="509873765238158442">Chặn Microsoft Recall</translation>
 <translation id="4763421121695677716">Ngăn không để tính năng Recall tự động chụp ảnh màn hình của bất kỳ thẻ đang mở nào của trình duyệt Brave trên máy tính sử dụng Microsoft Windows.</translation>
 <translation id="1968895725257436430">Thu thập dữ liệu</translation>
@@ -738,6 +759,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Áp dụng thay đổi</translation>
 <translation id="2128143836897950793">Nhấp vào 'Yêu cầu Cầu nối mới...' để nhận cầu</translation>
 <translation id="3314921753580327793">Nhập address:port (mỗi dòng nhập một)</translation>
+<translation id="7002083631026466886">Tor không thể sử dụng cầu nối này. Hãy kiểm tra lại với cầu nối mà bạn được cung cấp, sau đó thử lại:</translation>
 <translation id="3755189300481406891">Yêu cầu Cầu nối</translation>
 <translation id="6924425739431382319">Đang liên hệ BridgeDB. Vui lòng chờ.</translation>
 <translation id="811745063252080651">Giải mã CAPTCHA để yêu cầu cầu nối.</translation>
@@ -916,7 +938,6 @@ Leo AI trong tương lai và cũng sẽ xóa lịch sử trò chuyện, các tù
 <translation id="1838374766361614909">Xóa tìm kiếm</translation>
 <translation id="5126255551970171328">Tìm kiếm bộ nhớ</translation>
 <translation id="7402116145895962069">Đồng bộ mô hình cục bộ Ollama của bạn</translation>
-<translation id="4835154437390745810">Được quản lý bởi Ollama</translation>
 <translation id="5985516785067818307">Người tham gia khảo sát</translation>
 <translation id="8347743943525229984">Cho phép Brave thực hiện khảo sát</translation>
 <translation id="3204080538332044581">Cho phép Brave hiển thị liên kết đến các khảo sát riêng tư trên trang thẻ mới của bạn. Khảo sát giúp chúng tôi phát triển các tính năng tốt hơn và đo lường hiệu quả của các chiến dịch quảng cáo trên trình duyệt. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>

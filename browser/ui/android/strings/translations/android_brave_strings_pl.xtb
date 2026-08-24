@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Wyczyść dane przeglądania</translation>
 <translation id="1690924763769415936">Odtwarzanie w tle</translation>
 <translation id="6332924730165919598">Zamknięcie wszystkich kart zamyka Brave</translation>
+<translation id="2557725907027944082">Grupy</translation>
 <translation id="8308305244351876417">Zezwól na odtwarzanie po przełączeniu na inną kartę w przeglądarce Brave, aplikację lub po wyłączeniu ekranu Twojego urządzenia.</translation>
 <translation id="49147335255967913">Otwieraj linki z YouTube w Brave</translation>
 <translation id="4150201353443180367">Wygląd</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Dowiedz się więcej o Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Zezwalaj (uruchom ponownie teraz)</translation>
 <translation id="2433507940547922241">Wygląd</translation>
+<translation id="316542773973815724">Nawigacja</translation>
 <translation id="9040069796107003510">Ikona nagród Brave</translation>
 <translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
-<translation id="1215433243238902715">Włącz pasek nawigacji na dole</translation>
+<translation id="4393974575368329991">Pasek nawigacji na dole</translation>
+<translation id="1834226716203076292">Wyświetlaj dolny pasek zapewniający szybki dostęp do strony głównej, zakładek i wyszukiwania</translation>
 <translation id="1422686363939271829">To ustawienie jest wyłączone, gdy wybrana jest dolna pozycja paska adresu</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
 <translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Wysyłaj anonimowe raporty diagnostyczne w przypadku wystąpienia błędu.</translation>
 <translation id="4780647518983772446">Dziel się w sposób prywatny i anonimowy uwagami na temat funkcji Brave.</translation>
 <translation id="5109496672133133896">Prywatne uwagi na temat produktu</translation>
-<translation id="3545804467215833536">Stuknij, aby wyświetlić Tarcze Brave</translation>
-<translation id="1724327820822194498">Dzięki Tarczom będzie można zobaczyć wszystkie zablokowane przez Brave niepożądane elementy.</translation>
+<translation id="4340039903315468568">Zobacz niepożądane elementy, które na każdej stronie blokuje Shields. Naciśnij, aby wyświetlić</translation>
 <translation id="3092683655478890840">Zablokowanych reklam i skryptów śledzących: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Pomiń</translation>
 <translation id="5806601733251372221">Tarcze Brave</translation>
@@ -443,6 +445,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="7141438739990875547">Sieci Bitcoin</translation>
 <translation id="9055546041146396417">Jeśli strona nie działa, spróbuj wyłączyć tarcze.</translation>
 <translation id="7898672232170410330">Blokuj element</translation>
+<translation id="7205939464631857223">Wyczyść wszystkie zablokowane elementy</translation>
 <translation id="7961015016161918242">Nigdy</translation>
 <translation id="3200744626782631683">Dane dotyczące przeglądania stron internetowych nigdy nie są automatycznie niszczone</translation>
 <translation id="1991004083507807299">Zamknięte zakładki strony</translation>
@@ -505,7 +508,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3980704343258720102">Usuwa wszystkie dane przeglądania</translation>
 <translation id="8089997572759938512">Resetuje Twoje raporty o prywatności do zera.</translation>
 <translation id="2718046830255553131">Wyczyszczono dane o raportach o prywatności.</translation>
-<translation id="8376263745431603066">Włącz „Tryb nocny” (funkcja eksperymentalna)</translation>
+<translation id="3623948252408240879">Tryb nocny</translation>
+<translation id="1257950165130031194">Wymuszaj tryb ciemny dla treści internetowych</translation>
+<translation id="8710601165725654801">Dynamiczne kolory</translation>
+<translation id="7865194971711852999">Motyw aplikacji dopasowany do kolorów tapety</translation>
 <translation id="1383876407941801731">Szukaj</translation>
 <translation id="13296465911709339">Twój tekst został skopiowany do schowka.</translation>
 <translation id="2735834606413553397">Adres publiczny został skopiowany do schowka.</translation>
@@ -725,7 +731,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4979796155378508955">Transakcja może nie zostać przesłana do sieci, jeśli niestandardowa wartość jednorazowa jest niesekwencyjna lub zawiera inne błędy.</translation>
 <translation id="750843150060816463">Cena gazu (Gwei)</translation>
 <translation id="1426320910664514906">Limit gazu</translation>
-<translation id="6389441740143786465">Wyłącz centrum udostępniania</translation>
+<translation id="1784950057929740513">Hub udostępniania</translation>
 <translation id="473775607612524610">Aktualizuj</translation>
 <translation id="479795390141144417">Aktualizacja konta nie powiodła się.</translation>
 <translation id="8084782383392198011">Nazwa konta nie może być pusta.</translation>
@@ -800,8 +806,12 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="1060221736464994328">Czy zezwolić tej witrynie na zmianę sieci?</translation>
 <translation id="2478788592457735063">Spowoduje to zmianę sieci na poprzednio dodaną sieć.</translation>
 <translation id="8756686998207163764">Zmień sieć</translation>
+<translation id="8905793906896555159">Włącz grupy kart</translation>
+<translation id="7632160823264702523">Pasek grup kart</translation>
+<translation id="2477807195394450274">Wyświetlaj dolny pasek zapewniający szybki dostęp do kart w aktualnie otwartej grupie kart</translation>
+<translation id="8374720587111523381">Otwieraj łącza w bieżącej grupie kart</translation>
 <translation id="5324095733417835490">Otwiera łącza tylko w bieżącej grupie kart</translation>
-<translation id="2620277345862119868">Automatycznie otwieraj wszystkie łącza w bieżącej grupie kart</translation>
+<translation id="1227658541937938697">Automatycznie otwieraj wszystkie łącza w bieżącej grupie kart</translation>
 <translation id="5242300593039211344">Zablokuj portfel</translation>
 <translation id="1108298724135935307">Połączone strony</translation>
 <translation id="4255623233927788178">Wyświetl w eksploratorze bloków</translation>
@@ -1082,7 +1092,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="6393423486818299209">Wybierz Twojego dostawcę usług internetowych lub Wikimedia DNS</translation>
 <translation id="3401384982562827787">Wybierz Twojego dostawcę usług internetowych lub Cloudflare</translation>
 <translation id="8812367543786936496">Jeśli Twój dostawca usług jest niepewny, Brave może skorzystać z alternatywnego, bezpiecznego DNS</translation>
-<translation id="1381108437654541567">Zezwól na wiele okien</translation>
+<translation id="750538469281113679">Wiele okien</translation>
 <translation id="6167344249617630304">Otwórz do 5 okien jednocześnie i przenoś karty między oknami</translation>
 <translation id="1063948063403254568">Wykryto wiele okien</translation>
 <translation id="4661882208707630158">Scal karty w innym oknie Brave lub zamknij okna Brave przed wyłączeniem funkcji wielu okien.</translation>

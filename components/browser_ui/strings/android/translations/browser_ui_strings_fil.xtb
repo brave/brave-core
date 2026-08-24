@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Mag-request ng mobile view</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Nakaraang track</translation>
+<translation id="258271431472168668">Default ng Brave</translation>
 <translation id="2891975107962658722">Mag-block ng site sa pag-save ng data sa iyong device</translation>
 <translation id="2903493209154104877">Mga Address</translation>
+<translation id="2903764741244499151">Awtomatikong makakapasok sa picture-in-picture ang mga site. Magbibigay-daan ito sa iyong magpatuloy sa panonood ng video, habang binabakante ang screen mo para sa iba pang gawain.</translation>
 <translation id="2918484639460781603">Pumunta sa mga setting</translation>
 <translation id="2932883381142163287">I-ulat ang pang-aabuso</translation>
 <translation id="2939338015096024043">Kapag naka-on, puwedeng hilingin ng mga site na i-track ang posisyon ng iyong camera at malaman ang tungkol sa paligid mo. Kapag naka-off, hindi mata-track ng mga site ang posisyon ng iyong camera o malalaman ang tungkol sa paligid mo.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Palitan ang mga password</translation>
 <translation id="3797520601150691162">Huwag ilapat ang madilim na tema para sa isang partikular na site</translation>
 <translation id="3803367742635802571">Posibleng hindi na gumana ayon sa disenyo ang mga site na binibisita mo</translation>
-<translation id="8338457030135232378">Mga Kulay ng Brave</translation>
 <translation id="381841723434055211">Mga numero ng telepono</translation>
 <translation id="3823453485268218808">Font Mono</translation>
 <translation id="3826050100957962900">Third-party na pag-sign in</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Lumabas sa buong screen</translation>
 <translation id="640163077447496506">Mag-e-expire ngayong araw</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Mga Koleksyon ng Tema</translation>
 <translation id="6439114592976064011">I-block ang mga site sa paggamit sa iyong virtual reality device at data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">May pagbaba ng presyo sa iyong nakabukas na tab, <ph name="NEW_PRICE"/> na dating <ph name="OLD_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:</translat
 <translation id="7423098979219808738">Magtanong muna</translation>
 <translation id="7423538860840206698">Na-block sa pag-read ng clipboard</translation>
 <translation id="7425915948813553151">Madilim na tema para sa mga site</translation>
+<translation id="2044383478723007273">Mga kulay ng Brave</translation>
 <translation id="746412105358554870">Pag-optimize at seguridad ng JavaScript</translation>
 <translation id="7478658909253570368">Huwag payagan ang mga site na kumonekta sa mga serial port</translation>
 <translation id="7488573225650545859">I-hide ang Tingnan ang mga tab sa iyong listahan ng app</translation>
@@ -671,7 +672,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:</translat
 <translation id="802154636333426148">Hindi na-download</translation>
 <translation id="8033047164036749181">Mag-subscribe para sa mga notification mula sa site na ito</translation>
 <translation id="8051193500142930381">Hindi gagana ang mga feature na nangangailangan ng camera</translation>
-<translation id="2495032782748793764">Default ng Brave</translation>
 <translation id="8067883171444229417">I-play ang video</translation>
 <translation id="8068648041423924542">Hindi makapili ng certificate.</translation>
 <translation id="8077120325605624147">Puwedeng magpakita ng anumang ad sa iyo ang anumang site na bibisitahin mo</translation>
@@ -686,7 +686,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:</translat
 <translation id="8163152278172770963">Huwag payagan ang mga site na awtomatikong pumasok sa picture-in-picture</translation>
 <translation id="8168435359814927499">Content</translation>
 <translation id="818487310457576362">Mag-drag mula sa gilid ng screen para lumabas sa full screen.</translation>
-<translation id="8186479265534291036">Hindi gumagana ang site? Naka-block ang third-party na cookies</translation>
 <translation id="8197286292360124385">Pinapayagan ang <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Resume</translation>
 <translation id="8211406090763984747">Secure ang koneksyon</translation>
@@ -757,7 +756,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:</translat
 <translation id="8805385115381080995">Mas mabilis ang pag-browse dahil mas maliit ang posibilidad na hilingin sa iyo ng site na i-verify na totoong tao ka</translation>
 <translation id="881644524232657178">Kapag naka-on, magagamit ng mga site ang mga sensor ng paggalaw at liwanag ng iyong device. Kapag naka-off, hindi makakagamit ang mga site ng mga sensor.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Subukang payagan nang pansamantala ang third-party na cookies, na nangangahulugang mas mahina ang proteksyon sa pag-browse pero mas malamang na gumana ang mga feature ng site gaya ng inaasahan.</translation>
 <translation id="7532165358672313130">Habang patuloy kang nagba-browse, puwedeng sumangguni ang mga site sa Brave at i-verify sa naunang site na binisita mo kung malamang na totoong tao ka.</translation>
 <translation id="8899807382908246773">Mga nakakasagabal na ad</translation>
 <translation id="8903921497873541725">Mag-zoom in</translation>
@@ -783,7 +781,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:</translat
 <translation id="913657688200966289">I-on ang mga pahintulot para sa <ph name="APP_NAME"/> sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Pinapayagan ang mga notification</translation>
 <translation id="9138217887606523162"><ph name="ZOOM_LEVEL"/> %% ang kasalukuyang pag-zoom</translation>
-<translation id="915112772806845021">Ginagamit ng mga site ang feature na ito para awtomatikong pumasok sa picture-in-picture. Nagbibigay-daan ito sa iyong patuloy na makapanood ng video, habang binabakante ang screen mo para sa iba pang gawain.</translation>
 <translation id="7359422048569205930">Hayaang ipakita ng Brave ang iyong mga kamakailang tab sa listahan ng app at mga resulta ng paghahanap ng device mo. Puwede mo itong i-off anumang oras sa mga setting ng Brave.</translation>
 <translation id="9162462602695099906">Mapanganib ang page na ito</translation>
 <translation id="9182556968660520230">Huwag payagan ang mga site na mag-play ng pinoprotektahang content</translation>

@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">モバイルビューをリクエストする</translation>
 <translation id="2870560284913253234">ウェブサイト</translation>
 <translation id="2874939134665556319">前のトラック</translation>
+<translation id="258271431472168668">Brave のデフォルト</translation>
 <translation id="2891975107962658722">サイトによるデバイスへのデータ保存をブロックします</translation>
 <translation id="2903493209154104877">住所</translation>
+<translation id="2903764741244499151">サイトはピクチャー イン ピクチャーを自動的に開始できます。これにより、動画の視聴を続行しながら、画面で他のタスクを行うことができます。</translation>
 <translation id="2918484639460781603">設定に移動</translation>
 <translation id="2932883381142163287">不正行為を報告</translation>
 <translation id="2939338015096024043">オンにすると、サイトはカメラ位置の追跡と周囲の状況の検出を要求できます。オフにすると、サイトはカメラ位置の追跡や周囲の状況の検出を行えません。</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">パスワードを変更</translation>
 <translation id="3797520601150691162">ダークモードを特定のサイトに適用しません</translation>
 <translation id="3803367742635802571">アクセスするサイトが想定どおりに機能しなくなる可能性があります</translation>
-<translation id="8338457030135232378">Brave の色</translation>
 <translation id="381841723434055211">電話番号</translation>
 <translation id="3823453485268218808">フォント Mono</translation>
 <translation id="3826050100957962900">サードパーティのログイン</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">全画面表示を終了</translation>
 <translation id="640163077447496506">今日で期限切れ</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">テーマ コレクション</translation>
 <translation id="6439114592976064011">サイトによるバーチャル リアリティ デバイスとデータの使用をブロックする</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6452138246455930388">開いているタブの値下げ情報（<ph name="OLD_PRICE"/> から <ph name="NEW_PRICE"/>、<ph name="PRODUCT_NAME"/>、<ph name="DOMAIN_NAME"/>）</translation>
@@ -620,6 +620,7 @@
 <translation id="7423098979219808738">最初に確認する</translation>
 <translation id="7423538860840206698">クリップボードの読み取りがブロックされています</translation>
 <translation id="7425915948813553151">サイトのダークモード</translation>
+<translation id="2044383478723007273">Brave の色</translation>
 <translation id="746412105358554870">JavaScript の最適化とセキュリティ</translation>
 <translation id="7478658909253570368">サイトにシリアルポートへの接続を許可しない</translation>
 <translation id="7488573225650545859">[アプリリストにタブを表示] を非表示にする</translation>
@@ -671,7 +672,6 @@
 <translation id="802154636333426148">ダウンロード エラー</translation>
 <translation id="8033047164036749181">このサイトの通知を許可</translation>
 <translation id="8051193500142930381">カメラを必要とする機能は動作しなくなります</translation>
-<translation id="2495032782748793764">Brave のデフォルト</translation>
 <translation id="8067883171444229417">動画を再生します</translation>
 <translation id="8068648041423924542">証明書を選択できません</translation>
 <translation id="8077120325605624147">アクセスしたすべてのサイトであらゆる広告の表示が許可されます</translation>
@@ -686,7 +686,6 @@
 <translation id="8163152278172770963">サイトにピクチャー イン ピクチャーの自動開始を許可しない</translation>
 <translation id="8168435359814927499">コンテンツ</translation>
 <translation id="818487310457576362">全画面表示を終了するには、画面の端からドラッグします。</translation>
-<translation id="8186479265534291036">サイトが動作していない場合 サードパーティ Cookie がブロックされています</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/>を許可</translation>
 <translation id="8200772114523450471">再開</translation>
 <translation id="8211406090763984747">この接続は保護されています</translation>
@@ -757,7 +756,6 @@
 <translation id="8805385115381080995">サイトであなたが実在のユーザーであることを確認する頻度が減るため、ブラウジングが高速化されます</translation>
 <translation id="881644524232657178">オンにすると、サイトはデバイスのモーション センサーと光センサーを使用できます。オフにすると、サイトはセンサーを使用できません。</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">サードパーティ Cookie を一時的に許可してみてください。ブラウジング保護の強度は低下しますが、サイトの機能が想定どおりに動作する可能性が高くなります。</translation>
 <translation id="7532165358672313130">それ以降にアクセスしたサイトは、あなたが実在のユーザーであることを、前にアクセスしたサイトから Brave を介して確認できます。</translation>
 <translation id="8899807382908246773">煩わしい広告</translation>
 <translation id="8903921497873541725">拡大する</translation>
@@ -783,7 +781,6 @@
 <translation id="913657688200966289"><ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>で <ph name="APP_NAME"/> の権限を有効にしてください。</translation>
 <translation id="9138037198177304356">通知が許可されています</translation>
 <translation id="9138217887606523162">現在のズームレベルは <ph name="ZOOM_LEVEL"/>%% です</translation>
-<translation id="915112772806845021">サイトがピクチャー イン ピクチャーを自動的に開始する機能です。この機能を使用すると、動画の視聴を続行しながら、画面で他のタスクを行うことができます。</translation>
 <translation id="7359422048569205930">Brave で最近使ったタブをデバイスのアプリリストと検索結果に表示できます。この機能は Brave の設定でいつでもオフにできます。</translation>
 <translation id="9162462602695099906">このページは危険です</translation>
 <translation id="9182556968660520230">サイトに保護されたコンテンツの再生を許可しない</translation>

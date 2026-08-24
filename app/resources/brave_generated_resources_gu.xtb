@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">વધુ...</translation>
 <translation id="71316462802471551">ઇમેઇલ ઉપનામો</translation>
-<translation id="209130971304928953">ટૅબ્સને વર્કસ્પેસ તરીકે સાચવો…</translation>
-<translation id="877984331511007834">વર્કસ્પેસ ખોલો…</translation>
-<translation id="1310182651927031327">ટૅબ્સને વર્કસ્પેસ તરીકે સાચવો…</translation>
-<translation id="3588277741646479444">વર્કસ્પેસ ખોલો…</translation>
+<translation id="8350985546648269694">વર્તમાન Windows અને ટૅબ્સને સ્પેસ તરીકે સાચવો</translation>
+<translation id="5327248766486351172">નામ</translation>
+<translation id="6379791766023874417">તમારું સ્પેસ નામ દાખલ કરો</translation>
+<translation id="9174724474418499472">મારી સ્પેસ</translation>
+<translation id="5317780077021120954">સાચવો</translation>
+<translation id="7658239707568436148">રદ કરો</translation>
+<translation id="196342407904926436">સ્પેસ વિકલ્પો</translation>
+<translation id="2806407377752719586">સ્પેસ ડિલીટ કરો</translation>
+<translation id="1844931500883490339">શું તમે પુષ્ટિ કરેલાં છે કે તમે આ સ્પેસ ડિલીટ કરવા માંગો છો? સાચવેલી સ્પેસ કાયમ માટે દૂર કરવામાં આવશે. આ પગલું ઉલટાવી શકાતું નથી.</translation>
+<translation id="8261506727792406068">ડિલીટ કરો</translation>
+<translation id="8428213095426709021">સેટિંગ્સ</translation>
+<translation id="1212321046099128987">કોઈ સ્પેસ બનાવેલી નથી</translation>
+<translation id="3524567389166933243">નીચેના સાચવો બટન પર ક્લિક કરીને તમારી પ્રથમ સ્પેસ બનાવો.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 ટૅબ} one {# ટૅબ} other {# ટૅબ}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Windows</translation>
+<translation id="1680377529024357662">વર્તમાન windows અને ટૅબ્સને સ્પેસ તરીકે સાચવો</translation>
+<translation id="5561829325295347472">તમારું સ્પેસ નામ દાખલ કરો</translation>
+<translation id="2028520494010039812">સ્પેસ વિકલ્પો</translation>
+<translation id="1580775521202322063">સ્પેસ ડિલીટ કરો</translation>
+<translation id="3004759399777164093">શું તમે પુષ્ટિ કરેલાં છે કે તમે આ સ્પેસ ડિલીટ કરવા માંગો છો? સાચવેલી સ્પેસ કાયમ માટે દૂર કરવામાં આવશે. આ પગલું ઉલટાવી શકાતું નથી.</translation>
+<translation id="7563692436589408797">કોઈ સ્પેસ બનાવેલી નથી</translation>
+<translation id="3945077125173636695">નીચેના સાચવો બટન પર ક્લિક કરીને તમારી પ્રથમ સ્પેસ બનાવો.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 ટૅબ} one {# ટૅબ} other {# ટૅબ}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> windows</translation>
+<translation id="3326655241685890930">સ્પેસ</translation>
 <translation id="1990886731975529483">Google Widevine ઇન્સ્ટોલ કરો અને ચલાવો</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="4900351245762303149">Google Widevine ઇન્સ્ટોલ કરો</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">આ પેજ પર Autoplay બ્લોક કરવામાં આવ્યું છે</translation>
 <translation id="4988333904713528597">હંમેશ માટે <ph name="HOST"/> પર autoplay ને મંજૂરી આપો</translation>
 <translation id="4150684676757176434">Autoplay બંધ રાખો</translation>
-<translation id="3477357195688115718">Brave સુરક્ષા અને સલામતી માટે એક્સટેંશનનું અવલોકન કરતું નથી. આ એક્સટેંશન ઇન્સ્ટોલ કરો માત્ર જો તમે ડેવલપર પર વિશ્વાસ કરો.</translation>
+<translation id="2201935460386712655">Brave એક્સ્ટેન્શન્સની સિક્યોરિટી અને સલામતી માટે સમીક્ષા કરતું નથી. "<ph name="EXTENSION_NAME"/>"ને ફક્ત ત્યારે જ ઇન્સ્ટોલ કરો જો તમે ડેવલપર પર વિશ્વાસ કરો છો.</translation>
 <translation id="2928844661231356557">Bluetooth ડિવાઈસને એક્સેસ આપવાથી સાઇટ તમારા વિશે ઓળખીને તેમજ સંભવિત સંવેદનશીલ માહિતી વાંચી શકશે. ફક્ત તમને વિશ્વાસ ધરાવતી સાઇટોને જ Bluetooth ડિવાઈસની એક્સેસ આપો. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor વિન્ડોઝ</translation>
 <translation id="7965178729203412357">નવી Tor આઇડેન્ટિટી</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">ફિલ્ટરો મેનેજ કરો</translation>
 <translation id="3108584651298176909">નિયમો બતાવો</translation>
 <translation id="5156986655891520787">નિયમો છુપાવો</translation>
-<translation id="7658239707568436148">રદ કરો</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion એડ્રેસ સાથે ખોલો: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">ફોર્સ પેસ્ટ</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">સ્ક્રીનશૉટ કૅપ્ચર કરો</translation>
 <translation id="3114478090884951591">દૃશ્યમાન વિસ્તાર</translation>
 <translation id="2026367923222947564">સંપૂર્ણ પૃષ્ઠ</translation>
+<translation id="4218885227032158909">પસંદ કરેલ વિસ્તાર</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Web Extensions Storeમાં જુઓ</translation>
 <translation id="3161744659507801211">ચેતવણી: Brave ખાનગી વિંડોમાં એક્સ્ટેંશન્સની ઈતિહાસ રેકોડિંગને રોકી શકતું નથી.</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">મુવ મીડિયા</translation>
 <translation id="4418985925423678811">નવી પ્લેલિસ્ટ</translation>
 <translation id="385051799172605136">પાછળ</translation>
-<translation id="5317780077021120954">સાચવો</translation>
 <translation id="7930125899031086027">બનાવો અને મુકો</translation>
 <translation id="2860159216666546928">આ મીડિયા ક્યાં ફોલ્ડર મુવારવું છે તે પસંદ કરો</translation>
 <translation id="9130105487623071247">પ્લેલિસ્ટ નામ</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> આઇટમ્સ પસંદ કરેલ</translation>
 <translation id="3596306474342941843">પ્લેલિસ્ટને ડિલીટ કરો</translation>
 <translation id="7110726588168439924">શું તમે પુષ્ટિ કરેલાં છે કે તમે આ પ્લેલિસ્ટ અને તેના બધા સામગ્રીને ડિલીટ કરવા માંગો છો? આ પગલું ઉલટાવી શકાતું નથી.</translation>
-<translation id="8261506727792406068">ડિલીટ કરો</translation>
 <translation id="8152485753254079984">નવું પ્લેલિસ્ટ</translation>
 <translation id="5397019762993984652">તમારા પ્લે લેટર ફિલ્ડર પરથી ઉમેરો</translation>
 <translation id="7525067979554623046">બનાવો</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">કન્ટેનર સંપાદિત કરો</translation>
 <translation id="7900511996284443779">કન્ટેનર કાઢી નાખો</translation>
 <translation id="2738687336989232152">શું તમે ખરેખર કન્ટેનર <ph name="CONTAINER_NAME"/> કાઢી નાખવું છે? આ તેની સાથેના તમામ ડેટાને દૂર કરશે.</translation>
-<translation id="5327248766486351172">નામ</translation>
 <translation id="104766043551382253">આઇકન</translation>
 <translation id="5431318178759467895">રંગ</translation>
 <translation id="4328541188421002379">તમારા કન્ટેનરને "વર્ક" અથવા "પર્સનલ" જેમ નામ આપો</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">Brave ને સપોર્ટ કરતા કરતી વખતે તમારું બ્રાઉઝર કસ્ટમાઇઝ કરો</translation>
 <translation id="123297831435065577">Brave Origin એ બ્રાઉઝરનું ચૂકવેલ સંસ્કરણ છે એવા વપરાશકર્તાઓ માટે કે જેમને તમામ ફીચર્સની જરૂર નથી જે Brave ને બિઝનેસ તરીકે સમર્થન આપે છે, પરંતુ તેમ છતાં તેઓ માત્ર Brave દ્વારા આપવામાં આવતી ગોપનીયતા ચાહે છે. Origin વપરાશકર્તાઓ અમારી ઉદ્યોગ-અગ્રણી ગોપનીયતા, adblock, અને ગતિ (શિલ્ડ્સ દ્વારા) નો લાભ મેળવવાનું ચાલુ રાખશે, તેમજ નિયમિત સોફ્ટવેર અપડેટ્સ, Chromium પેચ્સ, અને સુરક્ષા અને ગોપનીયતા સુધારણાઓ.</translation>
 <translation id="7984508421152399880">હવે ખરીદો</translation>
+<translation id="1882724423074862793">ખરીદ પુનઃસ્થાપિત કરો</translation>
 <translation id="5567412479632285879">Brave Rewards નિષ્ક્રિય છે</translation>
 <translation id="413570371620795359">સક્રિય કરવા અને પ્રારંભ કરવા માટે_rewards પેનલ ખુલ્લો</translation>
 <translation id="1051600834033686945">સંપૂર્ણ Brave Rewards સેટિંગ્સ ખોલો</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">આપમેળે ડાયગ્નોસ્ટિક્સ રિપોર્ટ મોકલો</translation>
 <translation id="8868426106596092089">Brave બ્રાઉઝર ક્રેશ થાય અથવા ફ્રીઝ થાય ત્યારે ડાયગ્નોસ્ટિક રિપોર્ટસ આપમેળે મોકલવાથી Braveની ઉત્પાદન સ્થિરતા સુધારવામાં મદદ કરો.</translation>
 <translation id="4891600875049212418">સંવેદનશીલ સાઇટ્સની મુલાકાત લેતી વખતે રેકોર્ડ-થી-દૂર થઈ જાઓ</translation>
+<translation id="1022603984240541480">સુસંગત સાઇટ્સ પર Privacy સેટિંગ્સ ટ્યુનિંગ સૂચના બતાવો</translation>
+<translation id="3528176629974273019">Braveને આપમેળે (અને ગોઠવીને) સાઇટ-વિશિષ્ટ privacy સેટિંગ્સ સૂચવવાની મંજૂરી આપે છે.</translation>
 <translation id="509873765238158442">Microsoft Recallને બ્લોક કરો</translation>
 <translation id="4763421121695677716">Microsoft Windows કમ્પ્યુટર પરથી Recall ફીચરને કોઈપણ ખુલ્લી Brave ટૅબના આપમેળે સ્ક્રીનશૉટ લેવાથી બ્લોક કરો.</translation>
 <translation id="1968895725257436430">માહિતી સંગ્રહ</translation>
@@ -737,6 +758,7 @@
 <translation id="4425607417590286548">ફેરફારો લાગુ કરો</translation>
 <translation id="2128143836897950793">બ્રિજ મેળવવા માટે 'Request a New Bridge...' પર ક્લિક કરો</translation>
 <translation id="3314921753580327793">સરનામું:પોર્ટ ટાઇપ કરો (દરેક લાઇન પર એક)</translation>
+<translation id="7002083631026466886">Tor આ બ્રિજનો ઉપયોગ કરી શકતું નથી. તમને આપવામાં આવેલ બ્રિજ સાથે તેને ચકાસો, પછી ફરી પ્રયાસ કરો:</translation>
 <translation id="3755189300481406891">બ્રિજ માંગો</translation>
 <translation id="6924425739431382319">BridgeDB ની રજૂઆત કરવામાં આવી રહી છે. કૃપા કરીને રાહ જુઓ.</translation>
 <translation id="811745063252080651">બ્રિજ માગનાં CAPTCHA ની માંગ કરવા માટે કૅપ્ટચા ઉકેલો.</translation>
@@ -914,7 +936,6 @@
 <translation id="1838374766361614909">શોધ સાફ કરો</translation>
 <translation id="5126255551970171328">સ્મૃતિ માટે શોધો</translation>
 <translation id="7402116145895962069">તમારા Ollama સ્થાનિક મોડલ્સને સync કરો</translation>
-<translation id="4835154437390745810">Ollama દ્વારા વ્યવસ્થિત</translation>
 <translation id="5985516785067818307">સર્વે પેનલિસ્ટ</translation>
 <translation id="8347743943525229984">Brave સર્વેને મંજૂરી આપો</translation>
 <translation id="3204080538332044581">Braveને નવા ટૅબ પેજ પર પ્રાઇવેટ સર્વેની લિંક દર્શાવવાની મંજૂરી આપે છે. સર્વે અમને બહેતર ફીચર બનાવવા અને બ્રાઉઝર-આધારિત જાહેરાત પ્રચારોની અસરકારકતા માપવામાં મદદ કરે છે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>

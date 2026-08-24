@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Mais…</translation>
 <translation id="71316462802471551">Aliases de e-mail</translation>
-<translation id="209130971304928953">Salvar abas como espaço de trabalho…</translation>
-<translation id="877984331511007834">Abrir espaço de trabalho…</translation>
-<translation id="1310182651927031327">Salvar abas como espaço de trabalho…</translation>
-<translation id="3588277741646479444">Abrir espaço de trabalho…</translation>
+<translation id="8350985546648269694">Salvar janelas e abas atuais como espaço</translation>
+<translation id="5327248766486351172">Nome</translation>
+<translation id="6379791766023874417">Introduza o nome do seu espaço</translation>
+<translation id="9174724474418499472">Meu espaço</translation>
+<translation id="5317780077021120954">Salvar</translation>
+<translation id="7658239707568436148">Cancelar</translation>
+<translation id="196342407904926436">Opções de espaço</translation>
+<translation id="2806407377752719586">Excluir espaço</translation>
+<translation id="1844931500883490339">Deseja mesmo excluir este espaço? O espaço salvo será removido permanentemente. Essa ação não pode ser desfeita.</translation>
+<translation id="8261506727792406068">Excluir</translation>
+<translation id="8428213095426709021">Configurações</translation>
+<translation id="1212321046099128987">Nenhum espaço criado</translation>
+<translation id="3524567389166933243">Crie Seu Primeiro Espaço Clicando no Botão Salvar Abaixo.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 guia} other {# guias}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Janelas</translation>
+<translation id="1680377529024357662">Salvar janelas e guias atuais como espaço</translation>
+<translation id="5561829325295347472">Introduza o nome do seu espaço</translation>
+<translation id="2028520494010039812">Opções de espaço</translation>
+<translation id="1580775521202322063">Excluir espaço</translation>
+<translation id="3004759399777164093">Deseja mesmo excluir este espaço? O espaço salvo será removido permanentemente. Essa ação não pode ser desfeita.</translation>
+<translation id="7563692436589408797">Nenhum espaço criado</translation>
+<translation id="3945077125173636695">Crie seu primeiro espaço clicando no botão Salvar abaixo.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 guia} other {# guias}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> janelas</translation>
+<translation id="3326655241685890930">Espaços</translation>
 <translation id="1990886731975529483">Instalar e executar o Google Widevine</translation>
 <translation id="8926389886865778422">Não perguntar novamente</translation>
 <translation id="4900351245762303149">Instalar o Brave Widevine</translation>
@@ -37,7 +58,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
-<translation id="3477357195688115718">O Brave não avalia as extensões quanto a segurança e proteção. Somente instale esta extensão caso confie no desenvolvedor.</translation>
+<translation id="2201935460386712655">O Brave não avalia as extensões quanto a segurança e proteção. Somente instale "<ph name="EXTENSION_NAME"/>" caso confie no desenvolvedor.</translation>
 <translation id="2928844661231356557">Conceder acesso a um dispositivo Bluetooth permitirá que o site leia informações de identificação e potencialmente confidenciais sobre você. Permitir que apenas sites em que você confia acessem dispositivos Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Janelas Tor</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
@@ -63,7 +84,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Gerenciar filtros</translation>
 <translation id="3108584651298176909">Mostrar regras</translation>
 <translation id="5156986655891520787">Ocultar regras</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Abra usando o endereço .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forçar colagem</translation>
@@ -91,6 +111,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Capturar tela</translation>
 <translation id="3114478090884951591">Área visível</translation>
 <translation id="2026367923222947564">Página inteira</translation>
+<translation id="4218885227032158909">Área selecionada</translation>
 <translation id="4928988318462976765">Loja Virtual de Extensões</translation>
 <translation id="9181207987584064303">Visualizar na Loja Virtual de Extensões</translation>
 <translation id="3161744659507801211">Aviso: o Brave não pode impedir que as extensões registrem seu histórico de navegação.</translation>
@@ -289,14 +310,12 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Mover mídia</translation>
 <translation id="4418985925423678811">Nova lista de reprodução</translation>
 <translation id="385051799172605136">Voltar</translation>
-<translation id="5317780077021120954">Salvar</translation>
 <translation id="7930125899031086027">Criar e mover</translation>
 <translation id="2860159216666546928">Selecione uma pasta para onde mover esta mídia.</translation>
 <translation id="9130105487623071247">Nome da lista de reprodução</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> itens selecionados</translation>
 <translation id="3596306474342941843">Excluir a lista de reprodução</translation>
 <translation id="7110726588168439924">Deseja mesmo excluir esta lista de reprodução e todo o seu conteúdo? Essa ação não pode ser desfeita.</translation>
-<translation id="8261506727792406068">Excluir</translation>
 <translation id="8152485753254079984">Lista de reprodução nova</translation>
 <translation id="5397019762993984652">Adicionar da sua pasta Reproduzir mais tarde</translation>
 <translation id="7525067979554623046">Criar</translation>
@@ -393,7 +412,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Editar contêiner</translation>
 <translation id="7900511996284443779">Excluir contêiner</translation>
 <translation id="2738687336989232152">Tem certeza que deseja excluir este contêiner <ph name="CONTAINER_NAME"/>? Todos os dados associados a ele serão removidos com esta ação.</translation>
-<translation id="5327248766486351172">Nome</translation>
 <translation id="104766043551382253">Ícone</translation>
 <translation id="5431318178759467895">Cor</translation>
 <translation id="4328541188421002379">Dê um nome ao seu contêiner, como por exemplo "Trabalho" ou "Pessoal"</translation>
@@ -547,6 +565,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Personalize seu navegador sem deixar de oferecer suporte ao Brave</translation>
 <translation id="123297831435065577">Brave Origin é uma versão paga do navegador para usuários que não precisam de todos os recursos que sustentam o Brave como negócio, mas ainda desejam a privacidade que apenas o Brave oferece. Os usuários do Origin continuarão a se beneficiar de nossa privacidade líder do setor, bloqueador de anúncios e velocidade (via Proteções), bem como atualizações regulares de software, patches do Chromium e melhorias de segurança e privacidade.</translation>
 <translation id="7984508421152399880">Compre agora</translation>
+<translation id="1882724423074862793">Restaurar compra</translation>
 <translation id="5567412479632285879">O Brave Rewards está desativado</translation>
 <translation id="413570371620795359">Abra o painel "Recompensas" para ativar e começar</translation>
 <translation id="1051600834033686945">Abrir as configurações completas do Brave Rewards</translation>
@@ -583,6 +602,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Enviar relatórios de diagnóstico automaticamente</translation>
 <translation id="8868426106596092089">Ajude a melhorar a estabilidade do Brave enviando automaticamente relatórios de diagnóstico quando o navegador Brave apresentar falha ou congelar</translation>
 <translation id="4891600875049212418">Fique anônimo ao visitar sites confidenciais</translation>
+<translation id="1022603984240541480">Mostrar notificação de ajuste das configurações de privacidade em sites compatíveis</translation>
+<translation id="3528176629974273019">Permite que o Brave sugira (e ajuste) automaticamente configurações de privacidade específicas do site.</translation>
 <translation id="509873765238158442">Bloquear o recall da Microsoft</translation>
 <translation id="4763421121695677716">Bloqueia o recurso de recall nos computadores Microsoft Windows o impedindo de tirar capturas de tela automaticamente de qualquer guia aberta do Brave.</translation>
 <translation id="1968895725257436430">Coleta de dados</translation>
@@ -738,6 +759,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Aplicar alterações</translation>
 <translation id="2128143836897950793">Clique em "Solicitar uma nova ponte..." para obter pontes</translation>
 <translation id="3314921753580327793">Digite endereço:porta (um item por linha)</translation>
+<translation id="7002083631026466886">O Tor não pode usar esta ponte. Verifique-a com a ponte que você recebeu e tente novamente:</translation>
 <translation id="3755189300481406891">Solicitar ponte</translation>
 <translation id="6924425739431382319">Entrando em contato com a BridgeDB. Aguarde.</translation>
 <translation id="811745063252080651">Resolva o CAPTCHA para solicitar uma ponte.</translation>
@@ -915,7 +937,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">Limpar pesquisa</translation>
 <translation id="5126255551970171328">Pesquisar por uma memória</translation>
 <translation id="7402116145895962069">Sincronizar seus modelos locais do Ollama</translation>
-<translation id="4835154437390745810">Gerenciado pelo Ollama</translation>
 <translation id="5985516785067818307">Participante da pesquisa</translation>
 <translation id="8347743943525229984">Autorizar pesquisas Brave</translation>
 <translation id="3204080538332044581">Permite que o Brave mostre links para pesquisas privadas na página da nova guia. As pesquisas nos ajudam a criar recursos melhores e a medir a eficácia das campanhas publicitárias baseadas no navegador. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>

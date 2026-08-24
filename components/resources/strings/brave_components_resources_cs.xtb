@@ -526,12 +526,9 @@
 }</translation>
 <translation id="3264975266761862670">Jste připraveni začít vydělávat?</translation>
 <translation id="2784412028126205842">Připojte výplatní účet</translation>
-<translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {Tento měsíc jste viděli <ph name="COUNT_BEGIN"/> # reklam<ph name="COUNT_END"/>}
-      =1 {Mohli jste dostat zaplaceno za <ph name="COUNT_BEGIN"/> # reklamu<ph name="COUNT_END"/>, kterou jste tento měsíc viděli.}
-      few {Mohli jste dostat zaplaceno za <ph name="COUNT_BEGIN"/> # reklamy<ph name="COUNT_END"/>, které jste tento měsíc viděli.}
-      many {Mohli jste dostat zaplaceno za <ph name="COUNT_BEGIN"/> # reklam<ph name="COUNT_END"/>, které jste tento měsíc viděli.}
-      other {Mohli jste dostat zaplaceno za <ph name="COUNT_BEGIN"/> # reklam<ph name="COUNT_END"/>, které jste tento měsíc viděli.}
+<translation id="4083788716319248418">{ADS_VIEWED, plural,
+      =1 {Tento měsíc jste viděli <ph name="COUNT_BEGIN"/> # reklamu<ph name="COUNT_END"/>}
+      other {Tento měsíc jste viděli <ph name="COUNT_BEGIN"/> # reklam<ph name="COUNT_END"/>}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
       =0 {Tento měsíc jste viděli <ph name="COUNT_BEGIN"/> # reklam<ph name="COUNT_END"/>}
@@ -1142,6 +1139,7 @@
 <translation id="793994607260936590">první</translation>
 <translation id="4709524402122994378">transakce</translation>
 <translation id="4591079278963448049">Přidružený účet tokenu zatím neexistuje. Na jeho vytvoření a financování bude vynaložena malá částka SOL.</translation>
+<translation id="1468846486094099016">Odhadovaný obsah podpisu</translation>
 <translation id="3240773103344793224">Byla vyžádána změna vlastnictví účtu</translation>
 <translation id="8041423758956015568">Touto transakcí se vlastnictví účtu převede na nový program. Tato akce je nevratná a může vést ke ztrátě finančních prostředků.</translation>
 <translation id="1426320910664514906">Gas Limit</translation>
@@ -1614,6 +1612,13 @@
 <translation id="5333225216561354793">Požadujeme, abyste vzali na vědomí níže uvedené položky</translation>
 <translation id="4284971227128011550">Chápu, že se jedná o peněženku s vlastní úschovou a že jsem výhradně odpovědný/á za veškeré související finanční prostředky, aktiva nebo účty a za přijetí veškerých vhodných opatření k zabezpečení, ochraně a zálohování mé peněženky. Dále chápu, že Brave nemůže získat přístup k mé peněžence nebo zvrátit transakce mým jménem a že moje fráze pro obnovení je JEDINÝ způsob, jak znovu získat přístup v případě ztráty hesla, odcizení zařízení nebo podobných okolností.</translation>
 <translation id="3604445540387095708">Četl/a jsem <ph name="LINK_BEFORE"/>Podmínky použití<ph name="LINK_AFTER"/>a souhlasím s nimi.</translation>
+<translation id="7298195798382681320">Doporučeno</translation>
+<translation id="5261730884092815272">12 slov</translation>
+<translation id="4937679440025366600">24 slov</translation>
+<translation id="7875799385764282380">Silné zabezpečení a rychlejší zápis. Používá je většina peněženek.</translation>
+<translation id="8157829085295816223">Maximální bezpečnostní rezerva. Vhodné pro použití v jiných peněženkách (které mohou vyžadovat 24slovní frázi).</translation>
+<translation id="4357180991717571915">Zvolte délku své fráze pro obnovení</translation>
+<translation id="8997001537838391693">Vaše fráze pro obnovení obnoví přístup k peněžence, pokud zapomenete heslo nebo ztratíte zařízení. Uložíte si ji v dalších krocích.</translation>
 <translation id="1422451606553326863">Koupit kryptoměny</translation>
 <translation id="3887541341068007345">Kontrola rozšíření peněženky...</translation>
 <translation id="8407091560429310499">Výběr aktiva</translation>
@@ -1855,6 +1860,8 @@
 <translation id="7716113567047550378">Toto okno nezavírejte, dokud synchronizace neskončí.</translation>
 <translation id="5123590959308755060">Pokračovat v používání peněženky v nové kartě</translation>
 <translation id="4594014034647546191">Blok „datum založení účtu“ byl ochráněn</translation>
+<translation id="2242190818083876475">Resetovat datum založení účtu</translation>
+<translation id="5080237867196215050">Resetování data založení účtu bude vyžadovat úplnou opětovnou synchronizaci. Pro pokračování zadejte nový blok data založení a klikněte na „Resetovat datum založení účtu“.</translation>
 <translation id="6666784075827260119">Datum založení účtu musí být větší než <ph name="BLOCK_NUMBER"/></translation>
 <translation id="3102477628835823956">Datum založení účtu musí být menší než <ph name="BLOCK_NUMBER"/></translation>
 <translation id="6850229669854962550">Zaostává o <ph name="BLOCKS"/> bloky/ů</translation>
@@ -2002,6 +2009,10 @@ other {# zdrojů}
 <translation id="7948579849190819732">Aktuální karta</translation>
 <translation id="7056969230130642253">Už jste vše viděli</translation>
 <translation id="7292242212818928219">K dispozici je nový obsah. Chcete ho načíst?</translation>
+<translation id="6007028324976222777">Importovat z OPML</translation>
+<translation id="8871004282386501355">Exportovat do OPML</translation>
+<translation id="481478016164478903">Přidáno <ph name="PUBLISHER_COUNT"/> vydavatelů, <ph name="FEED_COUNT"/> přímých kanálů a <ph name="CHANNEL_COUNT"/> kanálů. Přeskočeno <ph name="SKIPPED_COUNT"/> již přidaných.</translation>
+<translation id="5537748547202815718">Tento soubor se nepodařilo importovat. Ujistěte se, že se jedná o platný soubor OPML.</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">Vpřed</translation>
 <translation id="1272079795634619415">Zastavit</translation>
@@ -2009,6 +2020,8 @@ other {# zdrojů}
 <translation id="7211681214230730336">Znovu načíst odstraňovací mezipaměť</translation>
 <translation id="1779766957982586368">Zavřít okno</translation>
 <translation id="5210365745912300556">Zavřít kartu</translation>
+<translation id="8852436503814917529">Přepnout na další kartu</translation>
+<translation id="1543046737011894871">Přepnout na předchozí kartu</translation>
 <translation id="2291643155573394834">Další karta</translation>
 <translation id="7748528009589593815">Předchozí karta</translation>
 <translation id="3738690686686515962">Vybrat kartu 0</translation>
@@ -2026,7 +2039,6 @@ other {# zdrojů}
 <translation id="4841735924729216702">Nabídka okna</translation>
 <translation id="3649256019230929621">Minimalizovat okno</translation>
 <translation id="906458777597946297">Maximalizovat okno</translation>
-<translation id="2082612610620888017">Zobrazit všechna okna</translation>
 <translation id="1111843722790053332">Otevřít v okně PWA</translation>
 <translation id="907981618023904259">Nastavení webové aplikace</translation>
 <translation id="4138336125382947023">Informace o webové aplikaci</translation>
@@ -2085,7 +2097,6 @@ other {# zdrojů}
 <translation id="7012611213801651252">Zobrazit nabídku avatara</translation>
 <translation id="6263048902976129908">Přepnout nástroje pro vývojáře</translation>
 <translation id="1386786836007298307">Přepnout nástrojovou lištu na celou obrazovku</translation>
-<translation id="461433814913785913">Přizpůsobit dotykovou lištu</translation>
 <translation id="4722786500079380710">Přepnout události Apple JavaScript</translation>
 <translation id="5825969867518399495">Instalace PWA</translation>
 <translation id="7888244262238732644">Zobrazit stránku řízení</translation>
@@ -2125,7 +2136,11 @@ other {# zdrojů}
 <translation id="6332027154313182926">Přepnout Brave VPN</translation>
 <translation id="6539014233195996894">Přepnout ztlumení lišty</translation>
 <translation id="2682865834956428001">Přepnout pozici boční lišty</translation>
-<translation id="6105745639559695088">Přepnout postranní panel</translation>
+<translation id="7095235686444800565">Přepnout aktuální boční panel</translation>
+<translation id="6330741325040551950">Přepnout boční panel Záložky</translation>
+<translation id="1973174482432326058">Přepnout boční panel Seznam četby</translation>
+<translation id="14910687022901840">Přepnout boční panel Playlist</translation>
+<translation id="3195191401552731345">Přepnout boční panel Zprávy Brave</translation>
 <translation id="3488252265135539275">Přepnout vertikální karty</translation>
 <translation id="7134064542341959603">Přepnout název okna vertikálních karet</translation>
 <translation id="3067105725259639716">Konfigurovat Novinky Brave</translation>
@@ -2138,6 +2153,7 @@ other {# zdrojů}
 <translation id="134184943774258988">Přepnout viditelnost tlačítka Všechny záložky</translation>
 <translation id="2158862020143233462">Přepnout štíty</translation>
 <translation id="3010280727642018218">Přepnout JavaScript</translation>
+<translation id="8324318899000695659">Blokovat prvky</translation>
 <translation id="188822869499214197">Zobrazit bublinu seznamu stop</translation>
 <translation id="3202536111478033084">Seskupit karty stávajícího původu</translation>
 <translation id="6002210667729577411">Přesunou skupinu do nového okna</translation>
@@ -2254,23 +2270,21 @@ other {# zdrojů}
 <translation id="7905602379229309187">Koncový bod je aktuálně přetížen. Zkuste to prosím znovu později.</translation>
 <translation id="8151638057146502721">Konfigurovat</translation>
 <translation id="999273441077650169">Model se dynamicky mění, aby použil ten nejlepší pro daný úkol.<ph name="LINK_BEFORE"/>Dozvědět se více<ph name="LINK_AFTER"/></translation>
-<translation id="1238020084128916796">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Llama 3.1 8B, který vytvořila společnost Meta, aby byl výkonný a použitelný v mnoha případech. Model Llama je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen VL 30B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM-5, který vytvořila společnost Zhipu AI, aby byl výkonný a použitelný v mnoha případech. Model GLM-5 je hostován na NEAR prostřednictvím jejich ověřitelně soukromé zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM-5.1, který vytvořila společnost Zhipu AI, aby byl výkonný a použitelný v mnoha případech. Model GLM-5.1 je hostován na NEAR prostřednictvím jejich ověřitelně soukromé zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ahoj, jsem Leo. Jsem AI asistent od Brave. Mě pohání Claude Instant, model vytvořený společností Anthropic pro konverzační a textové úkoly. Claude Instant je hostován Brave na vlastní zabezpečené infrastruktuře.<ph name="LINK_BEFORE"/>Více informací<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Haiku, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Haiku je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Sonnet, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Sonnet je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="6277330815126859513">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Llama 4 Maverick, který vytvořila společnost Meta, aby byl výkonný a použitelný v mnoha případech. Model Llama 4 Maverick je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="5833148755396048122">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GPT OSS 20B, který vytvořila společnost OpenAI, aby byl výkonný a použitelný v mnoha případech. Model GPT OSS 20B je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="5414593137581221307">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GPT OSS 120B, který vytvořila společnost OpenAI, aby byl výkonný a použitelný v mnoha případech. Model GPT OSS 120B je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="3399141352144059821">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Grok 4.3, který vytvořila společnost xAI, aby byl výkonný a použitelný v mnoha případech. Model Grok 4.3 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="8868813509973985458">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GPT 5.4, který vytvořila společnost OpenAI, aby byl výkonný a použitelný v mnoha případech. Model GPT 5.4 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Mistral Large, který vytvořila společnost Mistral, aby byl výkonný a použitelný v mnoha případech. Model Mistral Large je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen 3 235B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen 3 235B je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Deepseek V3.2, který vytvořila společnost Deepseek, aby byl výkonný a použitelný v mnoha případech. Model Deepseek V3.2 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="3767678495358551728">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen 3 Coder 480B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen 3 Coder 480B je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Opus, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Opus je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM-4-7-Flash, který vytvořila společnost Zhipu AI, aby byl výkonný a použitelný v mnoha případech. Model GLM-4-7-Flash je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Kimi K2.5, který vytvořila společnost Moonshot AI, aby byl výkonný a použitelný v mnoha případech. Model Kimi K2.5 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="3484076625906498634">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Nemotron Nano 3 30B, který vytvořila společnost NVIDIA, aby byl výkonný a použitelný v mnoha případech. Model Nemotron Nano 3 30B je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Brave Ocelot, který vytvořila společnost Brave pro shrnutí webových stránek. Model Brave Ocelot je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Místní</translation>
@@ -2290,20 +2304,15 @@ other {# zdrojů}
 <translation id="5543505256451301851">Vyzkoušet 7 dní zdarma</translation>
 <translation id="849535826888024304">Dosaženo limitu počtu odpovědí</translation>
 <translation id="2252128900328632803">Dosáhli jste limitu pro tarif Leo. Získejte vyšší míru odezvy předplacením služby Premium nebo to zkuste brzy znovu.</translation>
-<translation id="4173478269537830374">Prozkoumejte různé modely umělé inteligence</translation>
-<translation id="3245401959451976966">Osvoboďte svou kreativitu</translation>
-<translation id="4165928407303989823">Držte se tématu</translation>
-<translation id="2389665228467129817">Chatujte déle</translation>
+<translation id="8746303650199962589">Získejte přístup k nejmodernějším LLM od Anthropic, OpenAI, DeepSeek a dalších</translation>
+<translation id="4366237751405135351">Najděte modely specifické pro úlohy jako kódování, generování obsahu a další</translation>
+<translation id="7494418589245805538">Vyšší limity služby pro vaše konverzace</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /měsíc</translation>
 <translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /rok</translation>
-<translation id="1028627582482425924">Jeden rok</translation>
-<translation id="36366199652730057">Nejlepší hodnota</translation>
+<translation id="4955814292505481804">Roční</translation>
+<translation id="7724435637185902140">Ušetřete ~17 %</translation>
 <translation id="5151923271944811339">Přepnout na bezplatný model</translation>
 <translation id="5474757891469990756">Odemkněte plnou sílu Lea s předplatným Premium:</translation>
-<translation id="3453542753968940696">Přednostní přístup k výkonným modelům s různými dovednostmi.</translation>
-<translation id="5031778211368112461">Přístup k modelům vhodnějším pro kreativní úkoly a vytváření obsahu.</translation>
-<translation id="298783097210745222">Přesnější odpovědi pro detailněji zaměřené konverzace.</translation>
-<translation id="4314705522985583059">Vyšší limity služby pro delší konverzace.</translation>
 <translation id="1068954060985569277">Relace vašeho účtu Brave vypršela. Navštivte stránku svého účtu a obnovte ji, poté se vraťte a používejte funkce premium.</translation>
 <translation id="94736968936709953">Zpětná vazba byla úspěšně odeslána</translation>
 <translation id="9109355817507033196">Odpověď se nelíbí</translation>
@@ -2353,6 +2362,10 @@ other {# zdrojů}
 <translation id="8742658901413346500">Tato konverzace je dlouhá a Leo může brzy začít zapomínat. Delší konverzace můžete získat přepnutím na model premium nebo můžete chat vymazat a obnovit ho.</translation>
 <translation id="6495402307502950726">Vymazat konverzaci</translation>
 <translation id="903201991022343217">Zahájit novou konverzaci</translation>
+<translation id="8742207701089910775">Sdílet tuto konverzaci</translation>
+<translation id="4014016095804982975">Vaše konverzace bude nahrána šifrovaně a lze ji dešifrovat pouze pomocí vygenerovaného odkazu. Brave nebude moci vaši konverzaci zobrazit. Pouze vy a lidé, s nimiž tento odkaz sdílíte, mohou dešifrovat vaši sdílenou konverzaci. Všechny sdílené konverzace vyprší po 7 dnech.</translation>
+<translation id="1390174375123434798">Vygenerovat odkaz</translation>
+<translation id="8904787158537906492">Odkaz zkopírován do schránky</translation>
 <translation id="8171760814579050200">Přejmenovat konverzaci</translation>
 <translation id="402386227879573975">Kopírovat celou konverzaci</translation>
 <translation id="5397794290049113714">Vy</translation>
@@ -2396,13 +2409,13 @@ other {# zdrojů}
 <translation id="7821251979960635244">Po zahájení konverzace se zde zobrazí historie vašich konverzací.</translation>
 <translation id="887511360213807449">Historie je vypnutá</translation>
 <translation id="5380979378058584412">Chcete-li zobrazit své předchozí konverzace se službou Leo, musíte povolit historii konverzací.</translation>
-<translation id="7348809809749151120">Rychlý • Vyhledávač</translation>
 <translation id="3185367320601718531">Konverzace a generování textu</translation>
 <translation id="2793458212460902934">Rychlý • Vyhledávač • Nástroje</translation>
 <translation id="8506027496671575183">Vyhledávač • Vize • Nástroje</translation>
 <translation id="3184606955650139158">Rychlý • Vyhledávač • Vize</translation>
 <translation id="7465032796278724624">Ověřitelný soukromý režim s NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dynamicky mění, aby použil ten nejlepší pro danou úlohu</translation>
+<translation id="7348809809749151120">Rychlý • Vyhledávač</translation>
 <translation id="3213834013136637671">Vyhledávač • Vize</translation>
 <translation id="5276681919620506371">Vyhledávač • Nástroje</translation>
 <translation id="7434375176361995333">Shrnutí • Rychlý</translation>
@@ -2533,6 +2546,7 @@ other {# zdrojů}
 <translation id="3486480638399578250">Chraňte svou osobní e-mailovou adresu</translation>
 <translation id="7765422154906712751">Vytvářejte jedinečné, náhodné adresy, které přeposílají na váš Brave účet a mohou být kdykoli odstraněny. Uchovejte skutečnou e-mailovou adresu skrytou před inzerenty.</translation>
 <translation id="71316462802471551">E-mailové aliasy</translation>
+<translation id="7901376755618482277">Zobrazit nápovědu „Nový alias“ na polích e-mailu</translation>
 <translation id="6002159997868894136">Kliknutím zkopírujete alias</translation>
 <translation id="8105770564756958406">Používáno <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Vytvořte až 5 bezplatných e-mailových aliasů, abyste ochránili svou skutečnou e-mailovou adresu.</translation>
@@ -2578,6 +2592,10 @@ other {# zdrojů}
 <translation id="367191282389216837">Neplatná odpověď služby Email Aliases</translation>
 <translation id="7203490731644771170">Chyba služby Email Aliases: <ph name="ERROR"/></translation>
 <translation id="8767862600155091621">Chyba: Alias není k dispozici</translation>
+<translation id="1706715315466634757">E-mailové aliasy</translation>
+<translation id="7087933122203937032">Vytvářejte jedinečné, náhodné adresy, které přeposílají na e-mail vašeho účtu Brave a mohou být kdykoli odstraněny. Uchovejte skutečnou e-mailovou adresu skrytou před inzerenty.</translation>
+<translation id="8057865981284642090">Chcete-li používat E-mailové aliasy, musíte být přihlášeni ke svému účtu Brave. Začněte kliknutím na tlačítko níže.</translation>
+<translation id="4472575034687746823">Začít</translation>
 <translation id="8370801182970639038">Automaticky (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Povolit vyhledávače</translation>
 <translation id="8285901519864208412">Skrýt kartu Odměny</translation>
@@ -2656,7 +2674,6 @@ other {# zdrojů}
 <translation id="9204041448536398473">Nastavení globálního štítu</translation>
 <translation id="2108334320919763866">Globální výchozí nastavení</translation>
 <translation id="1896472873031845605">Globální nastavení</translation>
-<translation id="8324318899000695659">Blokovat prvky</translation>
 <translation id="7205939464631857223">Vymazat všechny zablokované prvky</translation>
 <translation id="3440043456924990296">Nastavení jsou ve správě vaší organizace</translation>
 <translation id="7053983685419859001">Blokovat</translation>
@@ -2758,6 +2775,21 @@ other {# zdrojů}
 <translation id="6764845498618413165">Zjistit více.</translation>
 <translation id="7818938154803162778">Jistě, pomohu vám</translation>
 <translation id="7207456302801184289">Vítá vás Brave</translation>
+<translation id="5341040774109629148">Připravte se na nejlepší zážitek z prohlížení</translation>
+<translation id="6124979241984215095">Zažijte web bez sledování. Brave vás automaticky chrání před trackery, reklamami a fingerprintingem.</translation>
+<translation id="8722651357687610395">Nastavit Brave jako výchozí</translation>
+<translation id="6385063238068436833">Začít od nuly</translation>
+<translation id="2601678491007820794">Importujte vše ze svého starého prohlížeče a udělejte přechod plynulým.</translation>
+<translation id="5291297136536006359">Můžete to udělat i později v nastavení služby Brave.</translation>
+<translation id="701087249209337256">Vezměte si s sebou obsah svého starého prohlížeče</translation>
+<translation id="7463724872882590240">Vyberte svůj předchozí prohlížeč</translation>
+<translation id="6091623542030502746">Co chcete importovat?</translation>
+<translation id="4740018245743691625">Výsledky importu</translation>
+<translation id="5418312173593538711">Importování vašeho obsahu</translation>
+<translation id="6865313869410766144">Data automatického vyplňování formulářů</translation>
+<translation id="6786747875388722282">Rozšíření</translation>
+<translation id="5869522115854928033">Uložená hesla</translation>
+<translation id="4692623383562244444">Vyhledávače</translation>
 <translation id="4988030440045495002">Ultra tmavý motiv</translation>
 <translation id="2422927186524098759">Postranní panel</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2767,6 +2799,7 @@ other {# zdrojů}
 <translation id="2478076885740497414">Instalovat aplikaci</translation>
 <translation id="8293206222192510085">Přidat záložku</translation>
 <translation id="7758460733045216901">Panel záložek</translation>
+<translation id="9124418807119853058">Tlačítko pro přepnutí svislých karet</translation>
 <translation id="958268166261124668">Brave VPN: Připojeno</translation>
 <translation id="6021669293402055982">Brave VPN: Odpojeno</translation>
 <translation id="3541307549916475335">Uživatelské rozhraní panelu Brave VPN</translation>
@@ -2931,7 +2964,7 @@ Pojďme vás připojit!</translation>
 <translation id="9033485352495162741">Potvrzení proběhlo úspěšně. Nyní zadejte požadované nové heslo:</translation>
 <translation id="1293857704520741614">Přihlaste se ke svému účtu</translation>
 <translation id="118617366439356381">Zapomněli jste heslo?</translation>
-<translation id="5183159033908953146">Potvrďte e-mail svého účtu Brave a poté obdržíte odkaz pro obnovení hesla. Odkaz bude platný pouze 30 minut.</translation>
+<translation id="5636406393070713097">Potvrďte e-mail svého účtu Brave a poté obdržíte kód pro obnovení hesla. Kód bude platný pouze 15 minut.</translation>
 <translation id="3674472551471103443">Obnovit heslo</translation>
 <translation id="2755539422340788311">Ověřte svůj e-mail</translation>
 <translation id="6641436078676327508">Měli byste obdržet e-mail s krátkým kódem. Zadejte jej zde pro pokračování.</translation>
@@ -2948,16 +2981,13 @@ Pojďme vás připojit!</translation>
 <translation id="7144067487084094749">Pro tuto e-mailovou adresu již existuje účet. Zkuste se přihlásit místo vytvoření účtu.</translation>
 <translation id="5288951359968156008">Doména této e-mailové adresy není podporována. Použijte prosím jinou e-mailovou adresu.</translation>
 <translation id="7625678607509255072">Překročen limit ověření e-mailu. Před opakováním počkejte prosím 30 minut.</translation>
-<translation id="9121175588136821850">Platnost ověřovacího kódu vypršela. Spusťte registrační proces znovu.</translation>
-<translation id="8439543211004394821">Bylo zadáno příliš mnoho nesprávných kódů. Spusťte registrační proces znovu.</translation>
 <translation id="3229986152760633988">Nesprávný kód, zkuste to prosím znovu.</translation>
 <translation id="818783632689113711">Pro tuto e-mailovou adresu už byl požadavek na účet odeslán. Zkontrolujte prosím svůj e-mail nebo to zkuste znovu za 30 minut.</translation>
 <translation id="4776810543245166572">Pro tuto e-mailovou adresu nebyl nalezen žádný účet.</translation>
-<translation id="7090885444036935209">Neplatná e-mailová adresa.</translation>
 <translation id="1542836798393843657">Příliš mnoho pokusů o ověření pro tuto e-mailovou adresu. Zkuste to znovu za 24 hodin.</translation>
 <translation id="7572012011062736429">Interní chyba. Zavřete dialogové okno, zrušte ověření a zkuste to znovu.</translation>
-<translation id="2477280119520811719">Platnost ověřovacího kódu vypršela. Spusťte proces změny hesla znovu.</translation>
-<translation id="7103280722523884198">Bylo zadáno příliš mnoho nesprávných kódů. Spusťte proces změny hesla znovu.</translation>
+<translation id="7502408214945538786">Účet Brave vám umožňuje vytvářet a spravovat vaše e-mailové aliasy.</translation>
+<translation id="237081360011331787">Účet Brave vám umožňuje vytvářet a spravovat vaše e-mailové aliasy. <ph name="BEGIN_LINK"/>Zjistit více<ph name="END_LINK"/></translation>
 <translation id="4178004989875422946">Účet Brave vám umožní snadný přístup ke službám Brave.</translation>
 <translation id="4902897635127068510">Měli jste na mysli <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock je zapnutý</translation>
@@ -2966,6 +2996,7 @@ Pojďme vás připojit!</translation>
 <translation id="2112559299194052697">Nelze odeslat znovu</translation>
 <translation id="7932611814134267012">Již bylo odesláno příliš mnoho ověřovacích e-mailů. Zkontrolujte prosím svou spamovou složku.</translation>
 <translation id="1364223093800750401">E-mail je již ověřen.</translation>
+<translation id="1054874027734589261">Zadali jste příliš mnoho nesprávných kódů. Zrušte ověření a zkuste to znovu.</translation>
 <translation id="1353061468772282268">Platnost ověřovacího kódu vypršela. Zrušte ověření a zkuste to znovu.</translation>
 <translation id="3353844160742960162">Ladění nastavení soukromí</translation>
 <translation id="528205534230423181">Tento web nabízí nastavení soukromí, která pro vás Brave může automaticky upravit. Zde je naše doporučení:</translation>

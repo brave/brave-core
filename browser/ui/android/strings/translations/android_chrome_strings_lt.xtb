@@ -11,7 +11,6 @@
 <translation id="1035113036584565771">Uždaryta patarimų pranešimų reklama</translation>
 <translation id="1036348656032585052">Išjungti</translation>
 <translation id="1045899828449635435">Taip pat išvalyti duomenis iš šių svetainių?</translation>
-<translation id="2613914054476417349">Išbandykite „Gemini“ naršyklėje „Brave“, kad gautumėte atsakymus, pagrindines išvadas ir kt.</translation>
 <translation id="1052842760770519282">Kai kurie slaptažodžiai nepasiekiami</translation>
 <translation id="1057623954802068161">Slinkti į puslapio viršų</translation>
 <translation id="1066338698580889414">Patarimų pranešimų reklama atidaryta per visą ekrano aukštį</translation>
@@ -38,6 +37,7 @@
 <translation id="1140317858355046628">Jei ją ištrinsite, visi iš karto neteks prieigos prie skirtukų grupės „<ph name="GROUP_NAME"/>“ ir ji bus ištrinta iš visų įrenginių.</translation>
 <translation id="1142732900304639782">Nesiūlyti versti šių svetainių</translation>
 <translation id="1143193470214071120">Uždarykite langą arba tvarkykite langus</translation>
+<translation id="1143486892058798649">Išsaugoti nuorodą kaip…</translation>
 <translation id="1149725087019908252">Nuskaitomas failas „<ph name="FILE_NAME"/>“</translation>
 <translation id="7083341910267693582">„<ph name="APP_NAME"/>“ bus atidaryta naršyklėje „Brave“. Tęsdami sutinkate su <ph name="BEGIN_LINK1"/>„Brave“ paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>„Brave“ bei „Brave“ OS papildomomis paslaugų teikimo sąlygomis<ph name="END_LINK2"/>.</translation>
 <translation id="7443574521624544928">Neturite „Brave“ slaptažodžių tvarkyklėje išsaugotų slaptažodžių.</translation>
@@ -68,6 +68,7 @@
 <translation id="1239792311949352652">Sparčiai bendrinkite šį puslapį. Jei norite redaguoti šį spartųjį klavišą, eikite į skiltį „Nustatymai“.</translation>
 <translation id="1240288207750131269">Įkeliama <ph name="LANG"/></translation>
 <translation id="124116460088058876">Daugiau kalbų</translation>
+<translation id="1241381048229838873">Rodyti visas žymas</translation>
 <translation id="124678866338384709">Uždaryti dabartinį skirtuką</translation>
 <translation id="1246905108078336582">Pašalinti pasiūlymą iš iškarpinės?</translation>
 <translation id="1996480094660735607">„Brave“ papuoštas logotipas: <ph name="DOODLE_DESCRIPTION"/></translation>
@@ -137,11 +138,13 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="8090895580117672212">Jei norite tvarkyti „Brave“ paskyrą, palieskite mygtuką „Tvarkyti“</translation>
 <translation id="1549000191223877751">Perkelti į kitą langą</translation>
 <translation id="1705567146636171298">Atnaujinti „Brave“</translation>
+<translation id="1554352084785952638"><ph name="SEARCH_ENGINE"/> pagal užklausą „<ph name="SEARCH_TERMS"/>“</translation>
 <translation id="2509230690562869141">Padėkite tobulinti „Brave“ žmonėms, naudojantiems ją kaip jūs</translation>
 <translation id="1568636008098739136">Klausytis šio puslapio. Jei norite redaguoti šį spartųjį klavišą, palieskite ir palaikykite.</translation>
 <translation id="1571041387761170095">Nėra nesudėtingų ar pakartotinai naudojamų slaptažodžių</translation>
 <translation id="1578591621182011812">{NUM_PASSWORDS,plural, =1{Šiame įrenginyje yra vienas pažeistas slaptažodis}one{Šiame įrenginyje yra # pažeistas slaptažodis}few{Šiame įrenginyje yra # pažeisti slaptažodžiai}many{Šiame įrenginyje yra # pažeisto slaptažodžio}other{Šiame įrenginyje yra # pažeistų slaptažodžių}}</translation>
 <translation id="1594635596540195766">Siūlomų elementų toliau pateiktame sąraše: <ph name="SUGGESTIONS_COUNT"/>.</translation>
+<translation id="159689249463841786">Pasirinkite aplanką, šiuo metu pasirinkta „<ph name="FOLDER_NAME"/>“</translation>
 <translation id="1598163867407640634">Naudokite „<ph name="SITE_ETLD_PLUS_ONE"/>“ su „<ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>“</translation>
 <translation id="1598770407402123677">„<ph name="TAB_TITLE"/>“, prisegtas įrašantis skirtukas</translation>
 <translation id="1600756129506222718">„<ph name="TAB_TITLE"/>“, bendrinantis skirtukas</translation>
@@ -225,7 +228,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="1986685561493779662">Toks pavadinimas jau yra</translation>
 <translation id="6968892567705775281">Įtraukti aplinkinį tekstą į „Brave“ paieškas?</translation>
 <translation id="2021896219286479412">Viso ekrano svetainės valdikliai</translation>
-<translation id="2022953316617983419">QR kodas</translation>
+<translation id="6412450189646164330">Išnaudokite visas „Gemini“ galimybes iš „Brave“ įrankių juostos. Norėdami tinkinti ilgai laikykite paspaustą.</translation>
 <translation id="2024195579772565064">Paieškos variklio ištrynimas</translation>
 <translation id="2029669011553795746">Patarimų pranešimų pasirinkimo lapas atidarytas per pusę ekrano aukščio</translation>
 <translation id="2038563949887743358">Įjungti stalinio kompiuterio svetainės užklausą</translation>
@@ -235,6 +238,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="2056878612599315956">Svetainė pristabdyta</translation>
 <translation id="2063047797624276601">Organizacija įjungė Sustiprintą saugų naršymą</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{Nepavyko atlikti 1 atsisiuntimo}one{Nepavyko atlikti # atsisiuntimo}few{Nepavyko atlikti # atsisiuntimų}many{Nepavyko atlikti # atsisiuntimo}other{Nepavyko atlikti # atsisiuntimų}}</translation>
+<translation id="2066690553719545730">Visada rodyti DI režimą</translation>
 <translation id="2067805253194386918">teksto pranešimas</translation>
 <translation id="2079545284768500474">Anuliuoti</translation>
 <translation id="2082238445998314030">Rezultatų: <ph name="RESULT_NUMBER"/> iš <ph name="TOTAL_RESULTS"/></translation>
@@ -253,6 +257,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="5905359144499324202">„Brave“ reguliariai tikrina, ar naršyklės nustatymai yra saugiausi. Pranešime, jei reikės ką nors peržiūrėti.</translation>
 <translation id="2149968176347646218">Ryšys nėra saugus</translation>
 <translation id="2149973817440762519">Redaguoti žymes</translation>
+<translation id="2158475082070321257">Kopijuoti nuorodą į paryškintą tekstą</translation>
 <translation id="526235294307144732">Jei norite naudoti ir išsaugoti „Brave“ duomenis „Brave“ paskyroje, įveskite slaptafrazę</translation>
 <translation id="2164015935042801524">Spustelėkite čia dešiniuoju klavišu, kad skirtukai būtų rodomi vertikaliai</translation>
 <translation id="2166228530126694506"><ph name="VERSION_NUMBER"/> versija</translation>
@@ -266,6 +271,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="2190355936436201913">(tuščias)</translation>
 <translation id="219283042927675668">Skirtukai grupėje</translation>
 <translation id="2194856509914051091">Į ką reikėtų atsižvelgti</translation>
+<translation id="2196695604589508993">Atidaryti istoriją</translation>
 <translation id="2205701497928406883">„<ph name="TAB_TITLE"/>“, prisegtas bendrinantis skirtukas</translation>
 <translation id="22091350895006575">Pridėti naudotojo vardą</translation>
 <translation id="4075202346699640887">Atidarius „Brave“ be profilio užrakto, išsaugoti slaptažodžiai ir mokėjimo metodai bus pašalinti iš automobilio. Naudojant profilio užraktą šie duomenys apsaugomi.</translation>
@@ -290,15 +296,16 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="2297822946037605517">Bendrinti šį puslapį</translation>
 <translation id="230115972905494466">Nerasta jokių suderinamų įrenginių</translation>
 <translation id="2316129865977710310">Ne, ačiū</translation>
-<translation id="2318045970523081853">Palieskite ir skambinkite</translation>
 <translation id="232137538351753795">Perbraukite iš kairiojo krašto, kad grįžtumėte</translation>
 <translation id="2323763861024343754">Svetainės saugykla</translation>
 <translation id="2327445548174191329">Iš <ph name="DEVICE_NAME"/></translation>
 <translation id="2328474416100889417">Visi iškart neteks prieigos prie skirtukų grupės „<ph name="GROUP_NAME"/>“, o visos kvietimų nuorodos bus išjungtos</translation>
 <translation id="3096606216245789753">Pristatome DI režimą naršyklėje „Brave“</translation>
 <translation id="2330186936255788117">Daugiau žymių</translation>
+<translation id="2330243730505117832">Lapas „Įrenginio pasirinkimas“ uždarytas.</translation>
 <translation id="2332515770639153015">Sustiprintas saugus naršymas įjungtas</translation>
 <translation id="233375395665273385">Ištrinti ir atsijungti</translation>
+<translation id="1241732115914452718">DI pagrįstos „Brave“ saugos funkcijos padeda apsaugoti jus nuo internetinių grėsmių, suteikdamos jums pasitikėjimo naršant</translation>
 <translation id="2341410551640223969">Nepavyko įdiegti „<ph name="WEBAPK_NAME"/>“.</translation>
 <translation id="3587672679800759167">Bendras „Brave“ naudojamų duomenų kiekis, įskaitant paskyras, žymes ir išsaugotus nustatymus</translation>
 <translation id="2354001756790975382">Kitos žymės</translation>
@@ -418,7 +425,6 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="2839604041336226596">„<ph name="TAB_TITLE"/>“, kelis kartus pasirinktas prisegtas skirtukas</translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{Tikrinta prieš 1 dieną}one{Tikrinta prieš # dieną}few{Tikrinta prieš # dienas}many{Tikrinta prieš # dienos}other{Tikrinta prieš # dienų}}</translation>
 <translation id="2842985007712546952">Viršaplankis</translation>
-<translation id="2860954141821109167">Įsitikinkite, kad šiame įrenginyje įgalinta telefono programa</translation>
 <translation id="286473047976978798">Taikyti išvaizdos nuostatas?</translation>
 <translation id="2869416538780777323">{OTHER_TAB_COUNT,plural, =1{<ph name="URL"/> ir dar 1 skirtukas}one{<ph name="URL"/> ir dar <ph name="TAB_COUNT_MANY"/> skirtukas}few{<ph name="URL"/> ir dar <ph name="TAB_COUNT_MANY"/> skirtukai}many{<ph name="URL"/> ir dar <ph name="TAB_COUNT_MANY"/> skirtuko}other{<ph name="URL"/> ir dar <ph name="TAB_COUNT_MANY"/> skirtukų}}</translation>
 <translation id="2869430948265924908">Jei norite apsaugoti neskelbtiną turinį automobilyje, turite sukurti automobilio profilio užraktą.  Tai galite padaryti naudodami PIN kodą, kodą arba slaptažodį.</translation>
@@ -436,7 +442,6 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="2900528713135656174">Sukurti įvykį</translation>
 <translation id="2901411048554510387">Rodomi pasiūlymai, susiję su svetaine „<ph name="WEBSITE_TITLE"/>“</translation>
 <translation id="2904300462646366554">Atsisiųsti PDF failai automatiškai atidaromi naudojant vieną iš įrenginio PDF žiūriklių</translation>
-<translation id="2904414404539560095">Įrenginių, su kuriais reikia bendrinti skirtuką, sąrašas atidarytas (visas aukštis).</translation>
 <translation id="7339921667754113786">„Brave“ pranešimų platforma</translation>
 <translation id="2912247081180973411">Uždaryti langus</translation>
 <translation id="2918484639460781603">Eiti į nustatymus</translation>
@@ -479,6 +484,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="3037177537145227281">Kaina stebima</translation>
 <translation id="3251012123600267109">Rodomi raginimai prisijungti prie „Brave“.</translation>
 <translation id="3038272154009688107">Žr. visas svetaines</translation>
+<translation id="3044436568790455247">Lapas „Įrenginio pasirinkimas“ atidarytas per visą ekrano aukštį.</translation>
 <translation id="3057938290530993634">Palieskite ir palaikykite, kad prisegtumėte dažniausiai lankomas svetaines, kad kitą kartą galėtumėte lengvai pasiekti</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> žymė}one{<ph name="BOOKMARKS_COUNT_MANY"/> žymė}few{<ph name="BOOKMARKS_COUNT_MANY"/> žymės}many{<ph name="BOOKMARKS_COUNT_MANY"/> žymės}other{<ph name="BOOKMARKS_COUNT_MANY"/> žymių}}</translation>
 <translation id="6153252609477956632">Su jūsų pomėgiais susiję straipsniai naršyklėje „Brave“</translation>
@@ -487,6 +493,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="3067505415088964188">Kaina yra maža</translation>
 <translation id="3070005020161560471">Versti automatiškai</translation>
 <translation id="1094255666887095087">„<ph name="APP_NAME"/>“ bus atidaryta naršyklėje „Brave“. Tęsdami sutinkate su <ph name="BEGIN_LINK1"/>„Brave“ paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>„Brave“ bei „Brave“ OS papildomomis paslaugų teikimo sąlygomis<ph name="END_LINK2"/>. Taip pat taikoma <ph name="BEGIN_LINK3"/>privatumo politika<ph name="END_LINK3"/>.</translation>
+<translation id="3075397426753215787">Įrenginio pasirinkimas.</translation>
 <translation id="3080375898390966733">Ieškoti skirtuke naudojant „Google Lens“</translation>
 <translation id="3080525922482950719">Išsaugoję puslapius galėsite skaityti juos vėliau arba neprisijungę</translation>
 <translation id="3087734570205094154">Apačia</translation>
@@ -524,12 +531,12 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="3282801380074962248">Išskleisti skiltį</translation>
 <translation id="3285065882678541460">{TAB_COUNT,plural, =1{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_ONE"/> skirtukas}one{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> skirtukas}few{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> skirtukai}many{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> skirtuko}other{<ph name="TAB_GROUPS_PART"/>, <ph name="TAB_COUNT_MANY"/> skirtukų}}</translation>
 <translation id="8794905135160933967">{PASSWORDS_COUNT,plural, =1{Vienas slaptažodis išsaugotas tik šiame įrenginyje. Jei norite jį naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}one{# slaptažodis išsaugotas tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}few{# slaptažodžiai išsaugoti tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}many{# slaptažodžio išsaugota tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}other{# slaptažodžių išsaugota tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}}</translation>
+<translation id="3287664192482809715">Lapas „Įrenginio pasirinkimas“ atidarytas iki pusės ekrano aukščio.</translation>
 <translation id="3293181007446299124">Naršymo istorija saugoma privačiai įrenginyje, o ataskaitos siunčiamos su delsa, siekiant apsaugoti jūsų tapatybę</translation>
 <translation id="3301639354590628973">Perjungti paskyras?</translation>
 <translation id="3301936297336370235">Slaptažodžio pasiūlymo patvirtinimas</translation>
 <translation id="3302615849591357577">Atkurkite skirtukų grupę „<ph name="TITLE_OF_GROUP"/>“, kurios spalva <ph name="COLOR_NAME"/>, kaip naują foninę skirtukų grupę.</translation>
 <translation id="3303855915957856445">Nerasta jokių paieškos rezultatų</translation>
-<translation id="3305130791745726624">Siųsti į įrenginius</translation>
 <translation id="3305795716056605962">Verskite puslapius naudodami mygtuką „Daugiau parinkčių“</translation>
 <translation id="3307355280394823921">Atidaryti istoriją</translation>
 <translation id="3309978850836730073">Skaitymo režimas visada pasiekiamas čia</translation>
@@ -538,6 +545,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="3331974543021145906">Programos informacija</translation>
 <translation id="3334729583274622784">Pakeisti failo plėtinį?</translation>
 <translation id="333863344734218290">Įspėja apie nesaugias viešas ir privačias svetaines</translation>
+<translation id="3339788961947270565">Užbaigiamas išjungimas</translation>
 <translation id="3340978935015468852">Nustatymai</translation>
 <translation id="3351959803838327376">Ilgai paspauskite svetainę ir atidarykite meniu</translation>
 <translation id="3359667936385849800">Naudokitės dabartinio paslaugos teikėjo paslaugomis</translation>
@@ -589,6 +597,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="3577473026931028326">Kažkas ne taip. Bandykite dar kartą.</translation>
 <translation id="3577558748185201054">Tvarkykite pomėgius ir nuostatas</translation>
 <translation id="3587482841069643663">Visi</translation>
+<translation id="3598421953808879451">Išsaugoti vaizdo įrašą kaip…</translation>
 <translation id="3602290021589620013">Peržiūra</translation>
 <translation id="3614126103057878858">Kainų įžvalgos</translation>
 <translation id="3616113530831147358">Garsas</translation>
@@ -695,6 +704,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="4044708993631234325">Apatinis lapas</translation>
 <translation id="4045441967987592849">Atidaryti iš naujo</translation>
 <translation id="4049920046559074950">Daugiau „<ph name="INSTANCE_TITLE"/>“ parinkčių</translation>
+<translation id="4051548576872472315">Čia rasite neseniai uždarytus skirtukus ir langus</translation>
 <translation id="4052419222954753986">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> įprastas skirtukas su nauja veikla bendrinamose skirtukų grupėse}one{<ph name="TABS_COUNT_MANY"/> įprastas skirtukas su nauja veikla bendrinamose skirtukų grupėse}few{<ph name="TABS_COUNT_MANY"/> įprasti skirtukai su nauja veikla bendrinamose skirtukų grupėse}many{<ph name="TABS_COUNT_MANY"/> įprasto skirtuko su nauja veikla bendrinamose skirtukų grupėse}other{<ph name="TABS_COUNT_MANY"/> įprastų skirtukų su nauja veikla bendrinamose skirtukų grupėse}}</translation>
 <translation id="405365679581583349">„Google Play“ paslaugų atnaujinimas</translation>
 <translation id="405399507749852140">Gaukite įspėjimus, jei kaina bus sumažinta bet kurioje svetainėje</translation>
@@ -712,7 +722,6 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="4116038641877404294">Atsisiųskite puslapius, kad galėtumėte naudoti juos neprisijungę</translation>
 <translation id="37459938731864814">Jums nereikės prisiminti šio slaptažodžio. Jis bus išsaugotas „Brave“ slaptažodžių tvarkyklėje kaip priskirtas el. pašto adresui <ph name="USERNAME"/>.</translation>
 <translation id="4132137475637520539">Leisti prisijungti visiems nuorodą turintiems žmonėms</translation>
-<translation id="4135200667068010335">Įrenginių, su kuriais reikia bendrinti skirtuką, sąrašas uždarytas.</translation>
 <translation id="4136632885151622181">„<ph name="TAB_TITLE"/>“, kelis kartus pasirinktas prisegtas įrašantis skirtukas</translation>
 <translation id="4137746084635924146">Dabartinės įrenginio kalba</translation>
 <translation id="414128724510021958">Svetainės kompiuteriams, kurių užklausos pateikiamos pagal numatytuosius nustatymus</translation>
@@ -744,7 +753,6 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="4256782883801055595">Atvirojo šaltinio licencijos</translation>
 <translation id="426652736638196239">Šis IBAN bus išsaugotas tik šiame įrenginyje</translation>
 <translation id="4269820728363426813">Kopijuoti nuorodos adresą</translation>
-<translation id="4270730597186910506">Stebėkite produktą arba nebestebėkite jo.</translation>
 <translation id="4277529130885813215">Naudoti kitą įrenginį</translation>
 <translation id="427987768447457592">Nauja skirtukų grupė</translation>
 <translation id="6553929648301062677">Jūsų organizacija (<ph name="MANAGED_DOMAIN"/>) tvarko paskyrą, prie kurios jungiatės, ir tai, kaip galima naudoti „Brave“. Administratorius gali nustatyti arba apriboti tam tikras funkcijas.</translation>
@@ -793,6 +801,7 @@ Tik jūsų slaptafrazę turintis asmuo galės perskaityti šifruotus duomenis. S
 <translation id="442518031075347249">Nebegalėsite naudoti virtualiosios kortelės su „Google Pay“. <ph name="BEGIN_LINK1"/>Sužinokite daugiau apie virtualiąsias korteles<ph name="END_LINK1"/></translation>
 <translation id="442577985493096785">{TAB_COUNT,plural, =1{„<ph name="TAB_TITLE"/>“ ir dar <ph name="TAB_COUNT_ONE"/> skirtukas bus uždaryti}one{„<ph name="TAB_TITLE"/>“ ir dar <ph name="TAB_COUNT_MANY"/> skirtukas bus uždaryti}few{„<ph name="TAB_TITLE"/>“ ir dar <ph name="TAB_COUNT_MANY"/> skirtukai bus uždaryti}many{„<ph name="TAB_TITLE"/>“ ir dar <ph name="TAB_COUNT_MANY"/> skirtuko bus uždaryti}other{„<ph name="TAB_TITLE"/>“ ir dar <ph name="TAB_COUNT_MANY"/> skirtukų bus uždaryti}}</translation>
 <translation id="4430277756566635951">Šiuo metu pasirinkta: <ph name="EMAIL"/>. Pasirinkite paskyrą.</translation>
+<translation id="4430369329743628066">Žymė pridėta</translation>
 <translation id="4452411734226507615">Uždaryti skirtuką „<ph name="TAB_TITLE"/>“</translation>
 <translation id="4452548195519783679">Sukurta „<ph name="FOLDER_NAME"/>“ žymė</translation>
 <translation id="4460822871039013969">„<ph name="TAB_TITLE"/>“, pasirinktas prisegtas įrašantis skirtukas</translation>
@@ -1009,6 +1018,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="5390367025924544771">„<ph name="WEBSITE_ORIGIN"/>“ nori naudoti asmens informaciją iš skaitmeninės piniginės. Tęskite, tik jei pasitikite šia svetaine. Pavojingose svetainėse gali būti bandoma apgaule priversti jus atskleisti tokią informaciją kaip oficialūs vardas ir pavardė ar asmens tapatybės numeris.</translation>
 <translation id="4799771635362945886">Užtikrinkite, kad visada galėtumėte naudoti „Brave“ duomenis „Brave“ paskyroje</translation>
 <translation id="539881862970320163">Siūlomas sudėtingas slaptažodis. Klaviatūra paslėpta.</translation>
+<translation id="5404274604891474619">Nepavyko redaguoti PDF</translation>
 <translation id="5409881200985013443">Pateikti <ph name="ONE_TIME_CODE"/> įrenginyje (<ph name="CLIENT_NAME"/>)?</translation>
 <translation id="5410300144953132176"><ph name="OWNER_FULL_NAME"/> (<ph name="OWNER_EMAIL"/>) nori, kad prisijungtumėte prie skirtukų grupės. Visi nuorodą turintys žmonės gali redaguoti visus skirtukus, todėl būkite atsargūs. Nuoroda baigia galioti po 48 val.</translation>
 <translation id="5414836363063783498">Patvirtinama…</translation>
@@ -1018,7 +1028,6 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="5436928407363358055">Jei norite lengvai tęsti ten, kur baigėte, sinchronizuokite istoriją ir skirtukus</translation>
 <translation id="5438292632479953702">Atsisiųsti dar kartą</translation>
 <translation id="2766925507720001104">Įspėjama apie pavojingas svetaines, net ir apie tas, apie kurias anksčiau „Brave“ nežinojo, analizuojant daugiau duomenų iš svetainių, nei taikant įprastą apsaugą. Galite pasirinkti praleisti „Brave“ įspėjimus.</translation>
-<translation id="5441137934526263133">Neveikia svetainė? Trečiųjų šalių slapukai užblokuoti</translation>
 <translation id="5441466871879044658">Versti į šią kalbą</translation>
 <translation id="5444999712122199445">Grįžti į svetainę</translation>
 <translation id="544776284582297024">Norėdami atidaryti skirtukus ir vienu metu lankytis skirtinguose puslapiuose, palieskite mygtuką „Atidaryti skirtukai“</translation>
@@ -1034,6 +1043,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="5517326820028369152">Naujausios veiklos apatinis lapas</translation>
 <translation id="5526281268548144413">Negalima uždaryti keliuose languose</translation>
 <translation id="5532536403031755365">Užtikrinkite didesnę apsaugą nuo grėsmių internete naudodami sustiprintą apsaugą</translation>
+<translation id="5540127996007641535">{NUM_BOOKMARKS,plural, =1{Atidaryti žymę}one{Atidaryti viską (#)}few{Atidaryti viską (#)}many{Atidaryti viską (#)}other{Atidaryti viską (#)}}</translation>
 <translation id="5548606607480005320">Saugos patikra</translation>
 <translation id="4362225295386962644">Kai naudojate slaptažodį, „Brave“ įspėja jus, jei jis paskelbtas internete. Tai atliekant, slaptažodžiai ir naudotojų vardai užšifruojami, kad niekas negalėtų jų perskaityti, įskaitant „Brave“.</translation>
 <translation id="5555525474779371165">Saugaus naršymo apsaugos lygio pasirinkimas</translation>
@@ -1086,7 +1096,6 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="5763514718066511291">Palieskite, jei norite nukopijuoti šios programos URL</translation>
 <translation id="5765517223145864268">Papasakokite savo įspūdžius. Arba <ph name="BEGIN_LINK"/>pakeiskite nustatymus<ph name="END_LINK"/>.</translation>
 <translation id="5776970333778123608">Nesvarbūs duomenys</translation>
-<translation id="5788665823391532892">Praneškite apie problemą...</translation>
 <translation id="5793665092639000975">Naudojama <ph name="SPACE_USED"/> iš <ph name="SPACE_AVAILABLE"/></translation>
 <translation id="5797949256525811424">Užblokuota tema</translation>
 <translation id="580893287573699959">Tvarkykite dominančias temas ir svetaines</translation>
@@ -1136,6 +1145,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="5995726099713306770">Atsisiųsti puslapį dar kartą?</translation>
 <translation id="7074956098903074365">Organizacija reikalauja prisijungti, kad galėtumėte naudoti „Brave“.</translation>
 <translation id="6456271171669383967">Palikti „Brave“</translation>
+<translation id="6002122790816966947">Jūsų įrenginiai</translation>
 <translation id="6011308810877101166">Paieškos pasiūlymų tobulinimas</translation>
 <translation id="6013305291643746595">Rūšiuojama pagal seniausią</translation>
 <translation id="296137235951584143">Suasmeninkite „Brave“</translation>
@@ -1201,6 +1211,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6246073558347462570">Kontekstinis iššokantysis langas</translation>
 <translation id="8883879481897424949">„Brave“ slaptažodžių tvarkytuvė</translation>
 <translation id="6248988683584659830">Ieškoti nustatymų</translation>
+<translation id="6250486830372700930">Taip pat galite pašalinti plėtinius iš šio įrenginio</translation>
 <translation id="2715956954609894918">Peržiūrėkite „Brave“ istoriją čia</translation>
 <translation id="6254139308321626268">Peržiūrite PDF failą</translation>
 <translation id="725280687245147974">Naudodami „Brave“ įrankius galite saugiai naršyti ir valdyti situaciją</translation>
@@ -1223,8 +1234,10 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6312687380483398334">Žiniatinklio programos (nutildyta)</translation>
 <translation id="6315386555979018699">Ištrinti ir tęsti</translation>
 <translation id="6316139424528454185">„Android“ versija nepalaikoma</translation>
+<translation id="6485997157403727556">Norint naudoti plėtinį „<ph name="EXTENSION_NAME"/>“, reikia prisijungti prie „Brave“</translation>
 <translation id="6324916366299863871">Redaguoti spartųjį klavišą</translation>
 <translation id="6324977638108296054">Nepavyko sukurti nuorodos į paryškintą tekstą</translation>
+<translation id="6331836477476466332">Saugesnė ir galingesnė naršyklė jums</translation>
 <translation id="6333140779060797560">Bendrinti per „<ph name="APPLICATION"/>“</translation>
 <translation id="6335454563754888572">Redaguoti URL, nukreipiantį į puslapį: <ph name="PAGE_URL"/></translation>
 <translation id="6337234675334993532">Šifruotė</translation>
@@ -1340,7 +1353,6 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6762511428368667596"><ph name="NAME"/>, <ph name="EMAIL"/>.</translation>
 <translation id="676305334223455055">Prisijunkite, kad gautumėte pagal jūsų pomėgius atrinkto turinio.</translation>
 <translation id="6764137532716892442">Bendrinama skirtukų grupė „<ph name="GROUP_TITLE"/>“ su nauja veikla</translation>
-<translation id="6767294960381293877">Įrenginių, su kuriais reikia bendrinti skirtuką, sąrašas atidarytas (pusė aukščio).</translation>
 <translation id="8174975477247159780">„Brave“ ir „Brave“ OS papildomos paslaugų teikimo sąlygos</translation>
 <translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="6787600234697426339">Pasiektas <ph name="MAX_INSTANCE_COUNT"/> lang. apribojimas</translation>
@@ -1363,26 +1375,28 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6831043979455480757">Vertėjas</translation>
 <translation id="9090109834269142153">Gaukite pranešimą, kai „Brave“ randa geriausius paieškos rezultatus, kai jūsų nėra.</translation>
 <translation id="6846298663435243399">Įkeliama…</translation>
-<translation id="6850409657436465440">Atsisiuntimas vis dar vykdomas</translation>
 <translation id="6850830437481525139">Uždaryta skirtukų lapų: <ph name="TAB_COUNT"/></translation>
 <translation id="6852437757508328589">{NUM_RESULTS,plural, =1{Rastas vienas rezultatas}one{Rastas # rezultatas}few{Rasti # rezultatai}many{Rasta # rezultato}other{Rasta # rezultatų}}</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{Garso failai, vienas garso failas sąraše}one{Garso failai, # garso failas sąraše}few{Garso failai, # garso failai sąraše}many{Garso failai, # garso failo sąraše}other{Garso failai, # garso failų sąraše}}</translation>
+<translation id="6857043990326114901">Pridėti aplanką…</translation>
 <translation id="4046835482356054431">„Brave“ funkcija „Discover“ – išjungta</translation>
+<translation id="6858893072923394368">Pridėti puslapį…</translation>
 <translation id="6864459304226931083">Atsisiųsti vaizdą</translation>
 <translation id="686490460830618322">Programos filtro lapas</translation>
 <translation id="6865313869410766144">Automatinio pildymo formos duomenys</translation>
 <translation id="1565666992559765293">Adresai nešifruojami naudojant slaptafrazę. Juos galite naudoti kitose „Brave“ paslaugose.</translation>
 <translation id="6870625088374152862">Prisijungta kaip <ph name="USER_EMAIL_ADDRESS"/></translation>
+<translation id="6871397658902960384">Pradėkite naršyti</translation>
 <translation id="687838958001010630">Visi nuorodą turintys žmonės gali redaguoti visus skirtukus</translation>
 <translation id="6880903702195291049">Leidimai atrodo gerai</translation>
 <translation id="6883204995689174413">Bendrinti</translation>
 <translation id="8975140877370364494">{ITEMS_COUNT,plural, =1{Vienas elementas išsaugotas tik šiame įrenginyje. Jei norite jį naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}one{# elementas išsaugotas tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}few{# elementai išsaugoti tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}many{# elemento išsaugota tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}other{# elementų išsaugota tik šiame įrenginyje. Jei norite juos naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje.}}</translation>
-<translation id="6883606786470492001">Valdykite skelbimų temas ir kitus nustatymus, kad apribotumėte, ką svetainės gali sužinoti apie jus, kad galėtų rodyti suasmenintus skelbimus</translation>
 <translation id="6883906387682976294">Atšaukti šios svetainės pranešimų prenumeratą</translation>
 <translation id="688398477366397178">Leiskite svetainėms žinoti kalbas, kuriomis kalbate. Kai bus įmanoma, jos rodys turinį tomis kalbomis.</translation>
 <translation id="6885933993535178919">{NUM_SITES,plural, =1{Atšaukta vienos svetainės prenumerata}one{Atšaukta # svetainės prenumerata}few{Atšaukta # svetainių prenumerata}many{Atšaukta # svetainės prenumerata}other{Atšaukta # svetainių prenumerata}}</translation>
 <translation id="6886500155621657325">{ITEMS_COUNT,plural, =1{Vienas slaptažodis}one{# slaptažodis}few{# slaptažodžiai}many{# slaptažodžio}other{# slaptažodžių}}</translation>
 <translation id="667636428974305054">Kai atsijungsite, „Brave“ paskyroje esančios žymės, slaptažodžiai ir kt. bus pašalinti iš šio įrenginio.</translation>
+<translation id="5241784838196645561">Jei norite naudoti šį plėtinį, prisijunkite prie „Brave“. Taip pat galėsite naudoti ir išsaugoti slaptažodžius bei kitą informaciją „Brave“ paskyroje.</translation>
 <translation id="6896758677409633944">Kopijuoti</translation>
 <translation id="3677019108032076044">Naudokite savo slaptafrazę, kad užšifruotumėte visus „Brave“ duomenis „Brave“ paskyroje</translation>
 <translation id="6900532703269623216">Sustiprinta apsauga</translation>
@@ -1394,6 +1408,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6910211073230771657">Ištrintas</translation>
 <translation id="6916590542764765824">Plėtinių tvarkymas</translation>
 <translation id="6918398787259831832">Jei ši problema kartosis, <ph name="BEGIN_LINK"/>gaukite daugiau informacijos<ph name="END_LINK"/> iš „<ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>“.</translation>
+<translation id="6920262510368602827">Sukurti šio puslapio QR kodą</translation>
 <translation id="1431096429631226393"><ph name="PERMISSION"/> <ph name="SEPARATOR"/> „Brave“ pašalino šiuos leidimus, nes pastaruoju metu nesilankėte</translation>
 <translation id="6927821422725196292">{TABS_COUNT,plural, =1{Vienas skirtukas}one{<ph name="NUMBER_OF_TABS"/> skirtukas}few{<ph name="NUMBER_OF_TABS"/> skirtukai}many{<ph name="NUMBER_OF_TABS"/> skirtuko}other{<ph name="NUMBER_OF_TABS"/> skirtukų}}</translation>
 <translation id="5854472260286669100">Visi įrenginyje ir „Brave“ paskyroje išsaugoti saugos kodai bus ištrinti</translation>
@@ -1417,6 +1432,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="6980258170429555165">Paryškintas meniu „<ph name="MENU_NAME"/>“.</translation>
 <translation id="6983306615164277634">Be to, jei norite pakeisti poziciją, galite paliesti ir palaikyti adreso juostą.</translation>
 <translation id="6996145122199359148">Atsisiųsti šį puslapį</translation>
+<translation id="7007648447224463482">Atidaryti viską naujame lange</translation>
 <translation id="7013762323294215682">Šis prieigos raktas bus išsaugotas slaptažodžių tvarkyklėje. Visi jį galintys pasiekti asmenys galės naudoti šį prieigos raktą.</translation>
 <translation id="7020741890149022655">Pridėti į skaitymo sąrašą<ph name="BEGIN_NEW"/>Nauja<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Atidaryti naršyklėje</translation>
@@ -1435,7 +1451,6 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="7087066066828635014">Patarimų pranešimai įjungti</translation>
 <translation id="8208853227947884571">„Brave“ atnaujinta</translation>
 <translation id="7106762743910369165">Jūsų naršyklę tvarko jūsų organizacija</translation>
-<translation id="144902786838571419">„Brave“ suteikia daugiau galimybių valdyti matomus skelbimus ir apriboja, ką svetainės gali sužinoti apie jus, kai jose rodomi suasmeninti skelbimai.</translation>
 <translation id="7111822978084196600">Pavadinkite šį langą</translation>
 <translation id="7115358764509798967">Numatytoji sistemos vertė</translation>
 <translation id="7117485132243600300">Tvarkykite stebimą turinį, siūlomas temas ir paieškas</translation>
@@ -1451,6 +1466,7 @@ Pavyzdžiui, kai kurios svetainės gali atsakyti į šią užklausą rodydamos j
 <translation id="1206376179559420424">Slaptafrazės šifruotė neapima mokėjimo metodų ir adresų iš „Google Pay“.
 
 Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave“ duomenis paskyroje<ph name="END_LINK"/>.</translation>
+<translation id="7159399361248977424">Išsaugoti vaizdą kaip…</translation>
 <translation id="2679203756569766105">Sužinokite daugiau apie tai, kodėl „Brave“ blokuoja kai kuriuos failus</translation>
 <translation id="7168323970702333693">Prisijungta kaip <ph name="USER_NAME"/>. Atidaromi nustatymai.</translation>
 <translation id="6390064556944765055">Visi įrenginyje ir „Brave Wallet“ išsaugoti saugos kodai bus ištrinti</translation>
@@ -1480,6 +1496,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="7248671827512403053">Programa</translation>
 <translation id="7253951228444156601">Tikrinami slaptažodžiai…</translation>
 <translation id="4957342254208357193">Jūsų „Android“ įrenginyje gali būti panašus nustatymas. Jei naršyklėje „Brave“ ir „Android“ įrenginyje įjungtas skelbimų vertinimo nustatymas, įmonė gali vertinti skelbimo efektyvumą svetainėse, kuriose lankotės, ir programose, kurias naudojate.</translation>
+<translation id="7265857422443387781">Ieškoti skirtuke naudojant „Google Lens“ <ph name="BEGIN_NEW"/>Nauja<ph name="END_NEW"/></translation>
 <translation id="727288900855680735">Pateikti <ph name="ONE_TIME_CODE"/> šaltiniui <ph name="ORIGIN"/>?</translation>
 <translation id="7274013316676448362">Užblokuota svetainė</translation>
 <translation id="7276868533747677875">Jei anksčiau eksportavote slaptažodžius, ieškokite CSV failo įrenginyje ir importuokite juos į pageidaujamą slaptažodžių tvarkyklę.</translation>
@@ -1504,6 +1521,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="7359002509206457351">Prieiga prie mokėjimo metodų</translation>
 <translation id="7363349185727752629">Privatumo pasirinkimų vadovas</translation>
 <translation id="7364103838544876661">Daugiau naršymo duomenų ištrynimo parinkčių</translation>
+<translation id="736435710397109878">Kortelės slapyvardis, daugiausia 25 simboliai</translation>
 <translation id="5640892076695177498">Jei norite pradėti saugoti ir naudoti slaptažodžius naudodami „Brave“ slaptažodžių tvarkyklę, atnaujinkite „Google Play“ paslaugas</translation>
 <translation id="7368009310682364976">Peržiūrėti neseniai atidarytus skirtukus</translation>
 <translation id="7368927539449986686">Svetainių paieškos redagavimas</translation>
@@ -1534,6 +1552,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="7475688122056506577">SD kortelė nerasta. Gali trūkti kai kurių failų.</translation>
 <translation id="7479104141328977413">Skirtuko valdymas</translation>
 <translation id="7481312909269577407">Persiųsti</translation>
+<translation id="7481588001304663390">{NUM_BOOKMARKS,plural, =1{Atidaryti naujoje skirtukų grupėje}one{Atidaryti viską (#) naujoje skirtukų grupėje}few{Atidaryti viską (#) naujoje skirtukų grupėje}many{Atidaryti viską (#) naujoje skirtukų grupėje}other{Atidaryti viską (#) naujoje skirtukų grupėje}}</translation>
 <translation id="7482656565088326534">Peržiūros skirtukas</translation>
 <translation id="7484997419527351112">„Discover“ – išjungta</translation>
 <translation id="7485033510383818941">Jei norite atnaujinti sklaidos kanalo turinį, patraukite puslapį žemyn</translation>
@@ -1618,6 +1637,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="7824665136384946951">Organizacija išjungė Saugaus naršymo funkciją</translation>
 <translation id="7825973332242257878">Skirtukų grupės</translation>
 <translation id="802130069867035673">Jūsų „Brave“, visur</translation>
+<translation id="7845155831233417403">Gali būti daugiausia tiek langų: <ph name="MAX_INSTANCE_COUNT"/>. Uždarykite langą, kad galėtumėte tęsti.</translation>
 <translation id="7846161022626028328">Įvyko klaida. Bandykite dar kartą.</translation>
 <translation id="7068829570137757602">„Brave“ paslaugos</translation>
 <translation id="784652447248278262">Esamas langas</translation>
@@ -1683,6 +1703,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8101414242770404289">Nėra skirtukų: <ph name="TIME_PERIOD"/></translation>
 <translation id="810433609302852">Patarimų pranešimų funkcijos reklamos ir naudojimo veiksmų apatinis lapas</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
+<translation id="8109802255973641442">Pašalinti plėtinius ir duomenis, išsaugotus šiame įrenginyje</translation>
 <translation id="2919733817273403520">Padėti tobulinti „Brave“ funkcijas ir našumą</translation>
 <translation id="4565206163201411670">Rodyti „Brave“ veiklą Skaitmeninės gerovės programoje?</translation>
 <translation id="8118117428362942925">Jei reikia pagalbos, paprašykite vieno iš tėvų (<ph name="PARENT_NAME"/>)</translation>
@@ -1736,10 +1757,12 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8281886186245836920">Praleisti</translation>
 <translation id="8282297628636750033">Kai galima, taikyti tamsiąją temą svetainėse</translation>
 <translation id="8282950411412455249">Eiti į skiltį „Saugos nustatymai“</translation>
+<translation id="8289602658021943461">Išsaugoti vaizdo įrašo kadrą kaip…</translation>
 <translation id="8313599942510782709">Užduotis vis dar vykdoma</translation>
 <translation id="8317318757008452355">Atidaryti spausdinimo parinktis</translation>
 <translation id="8320212361750431956">Naujausia veikla</translation>
 <translation id="832514020744584629"><ph name="PREF_TITLE"/>  <ph name="BEGIN_NEW"/>Naujiena<ph name="END_NEW"/></translation>
+<translation id="8333026248928723981">Žymės ir sąrašai</translation>
 <translation id="7174809333940729365">„Brave“ praneš jums apie svetaines, kurios galbūt siunčia per daug pranešimų</translation>
 <translation id="834313815369870491">Niekada neversti svetainių</translation>
 <translation id="8348430946834215779">Kai įmanoma, naudokite HTTPS ir gaukite įspėjimą prieš įkeliant jo nepalaikančias svetaines</translation>
@@ -1769,6 +1792,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8445448999790540984">Nepavyksta eksportuoti slaptažodžių</translation>
 <translation id="8446884382197647889">Sužinokite daugiau</translation>
 <translation id="8449781591250785734">{NUM_SITES,plural, =1{Leidimai pašalinti iš vienos svetainės}one{Leidimai pašalinti iš # svetainės}few{Leidimai pašalinti iš # svetainių}many{Leidimai pašalinti iš # svetainės}other{Leidimai pašalinti iš # svetainių}}</translation>
+<translation id="8449836157089738489">Atidaryti viską naujoje skirtukų grupėje</translation>
 <translation id="8453310803815879010">Paleisti dinozauro žaidimą</translation>
 <translation id="8455675988389029454">Pasiekite savo žymes, slaptažodžius ir kitus duomenis visuose įrenginiuose</translation>
 <translation id="8458341576712814616">Spartusis klavišas</translation>
@@ -1778,6 +1802,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8460448946170646641">Peržiūrėkite pagrindinius privatumo ir saugos valdiklius</translation>
 <translation id="8460932807646981183">Tvarkyti paieškos variklius ir svetainių paiešką</translation>
 <translation id="8465252176946159372">Negalioja</translation>
+<translation id="8472353072135865937">{NUM_BOOKMARKS,plural, =1{Atidaryti naujame lange}one{Atidaryti viską (#) naujame lange}few{Atidaryti viską (#) naujame lange}many{Atidaryti viską (#) naujame lange}other{Atidaryti viską (#) naujame lange}}</translation>
 <translation id="8473863474539038330">Adresai ir dar daugiau</translation>
 <translation id="847433688444405067">Naršymas įrenginiuose</translation>
 <translation id="8477178913400731244">Ištrinti duomenis</translation>
@@ -1790,6 +1815,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8506357771923193001">Čia rasite atsisiuntimus</translation>
 <translation id="8512053371384421952">Nebegausite pranešimų iš <ph name="DOMAIN"/>.</translation>
 <translation id="8516012719330875537">Vaizdų redagavimo priemonė</translation>
+<translation id="8517759303731677493">Redaguoti…</translation>
 <translation id="8533670235862049797">Saugus naršymas įjungtas</translation>
 <translation id="8538291624121505885">„<ph name="TAB_TITLE"/>“, kelis kartus pasirinktas prisegtas vaizdo vaizde skirtukas</translation>
 <translation id="8540136935098276800">Įveskite tinkamo formato URL</translation>
@@ -1811,6 +1837,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="860282621117673749">Įspėjimai apie sumažintas kainas</translation>
 <translation id="8611922158252451755">Visi nuorodą turintys žmonės gali redaguoti visus skirtukus, todėl bendrinkite atsakingai. Nuoroda baigia galioti po 48 val.</translation>
 <translation id="5784514951651328424">„Brave“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="8626572875733549102">Versti į: <ph name="LANGUAGE"/></translation>
 <translation id="5601608515527024348">Atidarykite „Brave“ meniu &gt; „Nustatymai“</translation>
 <translation id="8634050254805484913">Paslėpta siauruose ekranuose</translation>
 <translation id="8635399646025169806">Išsaugoti skirtukų grupę?</translation>
@@ -1837,6 +1864,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8738163682604285902">Peržiūrėti Teksto perskaitymo režimą?</translation>
 <translation id="8746155870861185046">Bendrinti paryškinimą</translation>
 <translation id="8748850008226585750">Turinys paslėptas</translation>
+<translation id="874918643257405732">Žymėti šį skirtuką</translation>
 <translation id="8754448020583829686">Kopijuoti be nuorodos</translation>
 <translation id="8756969031206844760">Atnaujinti slaptažodį?</translation>
 <translation id="5237925635961014228">{NUM_PASSWORDS,plural, =1{„Brave“ aptiko nesudėtingą slaptažodį, kurį galėtumėte patobulinti}one{„Brave“ aptiko # nesudėtingą slaptažodį, kurį galėtumėte patobulinti}few{„Brave“ aptiko # nesudėtingus slaptažodžius, kuriuos galėtumėte patobulinti}many{„Brave“ aptiko # nesudėtingo slaptažodžio, kuriuos galėtumėte patobulinti}other{„Brave“ aptiko # nesudėtingų slaptažodžių, kuriuos galėtumėte patobulinti}}</translation>
@@ -1925,7 +1953,6 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="9101137867221042551">Tvarkymas</translation>
 <translation id="9102803872260866941">Peržiūros skirtukas atidarytas</translation>
 <translation id="9102864637938129124">Svetainės ir reklamuotojai gali geriau suprasti skelbimų našumą. Šis nustatymas įjungtas.</translation>
-<translation id="9104217018994036254">Įrenginių, su kuriais reikia bendrinti skirtuką, sąrašas.</translation>
 <translation id="9106148373857059373">Žymių išsaugojimo srautas uždarytas</translation>
 <translation id="9108808586816295166">Saugi DNS gali būti pasiekiama ne visą laiką</translation>
 <translation id="9112483451228487295">Greitai ištrinkite naršymo duomenis</translation>
@@ -1951,10 +1978,10 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="9204836675896933765">Liko failų: 1</translation>
 <translation id="9205933215779845960">Nepavyko rasti šio puslapio. Patikrinkite rašybą arba pabandykite ieškoti sistemoje „<ph name="SEARCH_ENGINE"/>“.</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="9209888181064652401">Nepavyksta skambinti</translation>
 <translation id="9212845824145208577">Negalima eiti žemiau. Pabandykite pradėti toliau žemiau esančiame puslapyje.</translation>
 <translation id="9218430445555521422">Nustatyti kaip numatytąjį</translation>
 <translation id="9219103736887031265">Vaizdai</translation>
+<translation id="142389341645668510">Tinkinti „Brave“</translation>
 <translation id="9222198206152536936">Jei norite pasiekti žymes ir kitas funkcijas visuose įrenginiuose, prisijunkite kaip <ph name="EMAIL"/></translation>
 <translation id="7625138338483121345">Nustatymas „Brave“ numatytąja naršykle</translation>
 <translation id="4596514158372210596">„Brave“ veiklos pašalinimas iš Skaitmeninės gerovės</translation>
@@ -1964,6 +1991,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="938850635132480979">Klaida: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Įvesti slaptafrazę</translation>
 <translation id="945522503751344254">Siųsti atsiliepimą</translation>
+<translation id="948276827484905248">Sukurti QR kodą</translation>
 <translation id="5406914950576900927">„Brave“ gali naudoti <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/>, kai paieškos atliekamos Kinijoje. Šį nustatymą galite pakeisti skiltyje <ph name="BEGIN_LINK"/>„Nustatymai“<ph name="END_LINK"/>.</translation>
 <translation id="961856697154696964">Ištrinti naršymo duomenis</translation>
 <translation id="963246339335003378">Atidaryti užduočių tvarkytuvę</translation>
@@ -1985,6 +2013,12 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="2589970573128789862">„Brave“ inkognito režimas</translation>
 <translation id="5809126106485463836">Inkognito režimas užtikrina, kad naršymas būtų nematomas kitiems įrenginio naudotojams.</translation>
 <translation id="2633278372998075009">Inkognito skirtukai</translation>
+<translation id="2553965567482403773">{NUM_BOOKMARKS, plural,
+          =1 {Atidaryti inkognito lange}
+          few {Atidaryti visus (#) inkognito lange}
+          many {Atidaryti visus (#) inkognito lange}
+          other {Atidaryti visus (#) inkognito lange}}</translation>
+<translation id="7206817092936005164">Atverti viską inkognito lange</translation>
 <translation id="8810805383611013660">Atverti inkognito skirtuke</translation>
 <translation id="5556722972306334687">Atverti inkognito lange</translation>
 <translation id="3110967157686007724">Inkognito skirtukas</translation>
@@ -1998,9 +2032,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="6302653771627628530">Kai išeisite iš „Brave“, inkognito kortelės bus užblokuotos</translation>
 <translation id="4167670741834902166">Naujas inkognito skirtukas</translation>
 <translation id="5760418762676108038">Naujas inkognito langas</translation>
-<translation id="408336132633586393">Privatus langas</translation>
 <translation id="8120164982795455341">Naujas inkognito skirtukas</translation>
-<translation id="3377025655491224618">Inkognito skirtukas</translation>
 <translation id="8428257636009471988">Apsilankykite žiniatinklio parduotuvėje</translation>
 <translation id="922970047082941203">{NUM_WINDOWS, plural,
           =1 {Uždaryti 1 Privatus langas}
@@ -2046,6 +2078,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>ištrinkite „Brave
 <translation id="8511632746183549739"><ph name="TAB_TITLE"/>, Daugkartinis prisegtas privatus skirtukas</translation>
 <translation id="2280910239864711607">Atidaryti naują skirtuką inkognito režimu</translation>
 <translation id="4831439914611488655">Atidaryti naują langą inkognito režimu</translation>
+<translation id="408336132633586393">Privatus langas</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> inkognito skirtukas}
           other {<ph name="TAB_COUNT_NORMAL"/> inkognito skirtukai}}</translation>

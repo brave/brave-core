@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Išvalyti naršymo duomenis</translation>
 <translation id="1690924763769415936">Vaizdo įrašo atkūrimas fone</translation>
 <translation id="6332924730165919598">Užveriant visus skirtukus užveriama „Brave“</translation>
+<translation id="2557725907027944082">Grupės</translation>
 <translation id="8308305244351876417">Leidžia toliau atkurti garsą perjungus kitą „Brave“ skirtuką, atvėrus kitą programą arba esant išjungtam ekranui.</translation>
 <translation id="49147335255967913">Atidaryti „YouTube“ nuorodas naudojant „Brave“</translation>
 <translation id="4150201353443180367">Pateiktis</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Sužinokite daugiau apie „Widevine“<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Leisti (paleisti iš naujo dabar)</translation>
 <translation id="2433507940547922241">Išvaizda</translation>
+<translation id="316542773973815724">Naršymas</translation>
 <translation id="9040069796107003510">„Brave Rewards“ piktograma</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
-<translation id="1215433243238902715">Įjungti apatinę naršymo juostą</translation>
+<translation id="4393974575368329991">Apatinė naršymo juosta</translation>
+<translation id="1834226716203076292">Rodyti apatinę juostą, kad būtų galima greitai pasiekti pradžią, žymes ir paiešką</translation>
 <translation id="1422686363939271829">Ši nuostata išjungiama, kai pasirinkta apatinė adreso juostos padėtis</translation>
 <translation id="6587448235155023666">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“</translation>
 <translation id="8701563696941209024">IŠ NAUJO PALEISTI DABAR</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Siųskite diagnostikos ataskaitas įvykus strigčiai.</translation>
 <translation id="4780647518983772446">Bendrinkite privačias ir anonimines įžvalgas apie produktus, pasakodami, kokias „Brave</translation>
 <translation id="5109496672133133896">Privačios produkto įžvalgos</translation>
-<translation id="3545804467215833536">Palieskite, jei norite pamatyti „Brave“ skydus</translation>
-<translation id="1724327820822194498">Pamatykite visus blogus dalykus, kuriuos naudodama skydus kiekviename puslapyje blokuoja „Brave“.</translation>
+<translation id="4340039903315468568">Pamatykite visus blogus dalykus, kuriuos naudodama skydus kiekviename puslapyje blokuoja „Brave“. Bakstelėkite, kad peržiūrėtumėte</translation>
 <translation id="3092683655478890840">Užblokuotos reklamos ir sekikliai: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Praleisti</translation>
 <translation id="5806601733251372221">„Brave“ skydai</translation>
@@ -447,6 +449,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7141438739990875547">„Bitcoin“ tinklai</translation>
 <translation id="9055546041146396417">Jei ši svetainė atrodo neveikianti, pabandykite nuleisti skydus.</translation>
 <translation id="7898672232170410330">Blokuoti elementą</translation>
+<translation id="7205939464631857223">Išvalykite visus užblokuotus elementus</translation>
 <translation id="7961015016161918242">Niekada</translation>
 <translation id="3200744626782631683">Naršymo duomenys niekada nėra automatiškai sunaikinami</translation>
 <translation id="1991004083507807299">Svetainės skirtukas uždarytas</translation>
@@ -509,7 +512,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3980704343258720102">Išvalomi visi naršymo duomenis</translation>
 <translation id="8089997572759938512">Nustato jūsų privatumo ataskaitas iki nulio</translation>
 <translation id="2718046830255553131">Privatumo ataskaitų duomenys išvalyti.</translation>
-<translation id="8376263745431603066">Įgalinti „Naktinis režimas“ (eksperimentinė funkcija)</translation>
+<translation id="3623948252408240879">Nakties režimas</translation>
+<translation id="1257950165130031194">Priverstinis tamsus režimas žiniatinklio turiniui</translation>
+<translation id="8710601165725654801">Dinaminės spalvos</translation>
+<translation id="7865194971711852999">Programos tema atitinka darbalaukio fono spalvas</translation>
 <translation id="1383876407941801731">Ieškoti</translation>
 <translation id="13296465911709339">Jūsų tekstas nukopijuotas į iškarpinę.</translation>
 <translation id="2735834606413553397">Viešasis adresas nukopijuotas į iškarpinę.</translation>
@@ -729,7 +735,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4979796155378508955">Operacija gali būti neužpildyta tinkle, jei tinkinta operacijos numerio reikšmė neturi sekos arba yra kitų klaidų.</translation>
 <translation id="750843150060816463">Energijos kaina (Gwei)</translation>
 <translation id="1426320910664514906">Dujų apribojimas</translation>
-<translation id="6389441740143786465">Išjungti bendrinimo telkinį</translation>
+<translation id="1784950057929740513">Bendrinimo telkinys</translation>
 <translation id="473775607612524610">Atnaujinti</translation>
 <translation id="479795390141144417">Paskyros atnaujinti nepavyko.</translation>
 <translation id="8084782383392198011">Reikia nurodyti paskyros pavadinimą.</translation>
@@ -804,8 +810,12 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1060221736464994328">Leisti šiai svetainei perjungti tinklą?</translation>
 <translation id="2478788592457735063">Taip tinklas bus perjungtas į anksčiau pridėtą tinklą.</translation>
 <translation id="8756686998207163764">Perjungti tinklą</translation>
+<translation id="8905793906896555159">Įgalinti kortelių grupes</translation>
+<translation id="7632160823264702523">Kortelių grupių juosta</translation>
+<translation id="2477807195394450274">Rodyti apatinę juostą, kad būtų galima greitai pasiekti korteles esamoje atvertoje kortelių grupėje</translation>
+<translation id="8374720587111523381">Atverti nuorodas esamoje kortelių grupėje</translation>
 <translation id="5324095733417835490">Atverti tik esamos kortelių grupės nuorodas</translation>
-<translation id="2620277345862119868">Automatiškai atidaro visas dabartinės skirtukų grupės nuorodas</translation>
+<translation id="1227658541937938697">Automatiškai atverti visas nuorodas esamoje kortelių grupėje</translation>
 <translation id="5242300593039211344">Užrakinti piniginę</translation>
 <translation id="1108298724135935307">Susietos svetainės</translation>
 <translation id="4255623233927788178">Peržiūrėti blokų naršyklėje</translation>
@@ -1084,7 +1094,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6393423486818299209">Naudokite savo dabartinį paslaugų teikėją arba „Wikimedia DNS“</translation>
 <translation id="3401384982562827787">Naudokite savo dabartinį paslaugų teikėją arba „Cloudflare“</translation>
 <translation id="8812367543786936496">Jei jūsų dabartinis paslaugų teikėjas nesaugus, „Brave“ naudoja saugų alternatyvų DNS teikėją</translation>
-<translation id="1381108437654541567">Įgalinti kelis langus</translation>
+<translation id="750538469281113679">Keli langai</translation>
 <translation id="6167344249617630304">Vienu metu atverkite iki 5 langų ir perkelkite korteles iš vieno lango į kitą</translation>
 <translation id="1063948063403254568">Aptikti keli langai</translation>
 <translation id="4661882208707630158">Prieš išjungdami kelių langų funkciją, sujunkite korteles į kitą „Brave“ langą arba užverkite kitus „Brave“ langus.</translation>

@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">আপোনাৰ নিষ্ক্ৰিয় বস্তুবোৰ সঞ্চয় কৰা নহ'ব</translation>
 <translation id="1329584516321524826">এই মাত্ৰ আপডে’ট কৰা হ’ল</translation>
 <translation id="1340839264183302272">গোটৰ পৰা বাহিৰ হওক</translation>
+<translation id="1386966479075994683">টেব বিস্তাৰ কৰক</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{<ph name="TITLE_OF_GROUP"/> নামৰ শ্বেয়াৰ কৰা টেবৰ গোটটো <ph name="TABS_COUNT_ONE"/> টা টেব, <ph name="COLOR_NAME"/> ৰং, <ph name="CARD_LABEL"/> লেবেললৈ বিস্তাৰ কৰক।}one{<ph name="TITLE_OF_GROUP"/> নামৰ শ্বেয়াৰ কৰা টেবৰ গোটটো <ph name="TABS_COUNT_MANY"/> টা টেব, <ph name="COLOR_NAME"/> ৰং, <ph name="CARD_LABEL"/> লেবেললৈ বিস্তাৰ কৰক।}other{<ph name="TITLE_OF_GROUP"/> নামৰ শ্বেয়াৰ কৰা টেবৰ গোটটো <ph name="TABS_COUNT_MANY"/> টা টেব, <ph name="COLOR_NAME"/> ৰং, <ph name="CARD_LABEL"/> লেবেললৈ বিস্তাৰ কৰক।}}</translation>
 <translation id="1486715732399361704">আপুনি ইয়াত আপোনাৰ আটাইবোৰ টেবৰ গোট বিচাৰি পাব পাৰে</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> মিনিট পূৰ্বে সৃষ্টি কৰা হৈছে}one{<ph name="NUM_MINS_MANY"/> মিনিট পূৰ্বে সৃষ্টি কৰা হৈছে}other{<ph name="NUM_MINS_MANY"/> মিনিট পূৰ্বে সৃষ্টি কৰা হৈছে}}</translation>
@@ -46,6 +47,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{টেবৰ গোট ভংগ কৰক}one{টেবৰ গোট ভংগ কৰক}other{টেবৰ গোট ভংগ কৰক}}</translation>
 <translation id="2271452184061378400">আপোনাৰ টেবৰ গোটসমূহ ইয়াত ছেভ কৰা হয়</translation>
 <translation id="2277224997687551299">গোটৰ নাম সম্পাদনা কৰক</translation>
+<translation id="2289567621059034186">তলত নতুন টেব</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{টেব বুকমাৰ্ক কৰক}one{টেব বুকমাৰ্ক কৰক}other{টেব বুকমাৰ্ক কৰক}}</translation>
 <translation id="2359808026110333948">অব্যাহত ৰাখক</translation>
 <translation id="2371084566192454134">টেব আৰু টেবৰ গোট</translation>
@@ -80,6 +82,7 @@
 <translation id="3152596030350326139">টেবসমূহ অনুভূমিকভাৱে দেখুৱাওক</translation>
 <translation id="31806439105337256">টেবসমূহ উলম্বভাৱে দেখুৱাওক</translation>
 <translation id="3194464645767632461">মূল্যাংকন</translation>
+<translation id="3228962656492373217">তলত থকা টেবসমূহ বন্ধ কৰক</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{গোটত <ph name="TABS_COUNT_ONE"/> টা টেব যোগ দিয়ক}one{গোটত <ph name="TABS_COUNT_MANY"/> টা টেব যোগ দিয়ক}other{গোটত <ph name="TABS_COUNT_MANY"/> টা টেব যোগ দিয়ক}}</translation>
 <translation id="3328308545011660196">পৰামৰ্শ: <ph name="NUMBER_OF_TABS"/>টা টেব জড়িত যেন লাগিছে। সেইকেইটা একগোট কৰিবনে?</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{১ দিন নিষ্ক্ৰিয় হৈ থকাৰ পাছত}one{<ph name="DAY_COUNT_MANY"/> দিন নিষ্ক্ৰিয় হৈ থকাৰ পাছত}other{<ph name="DAY_COUNT_MANY"/> দিন নিষ্ক্ৰিয় হৈ থকাৰ পাছত}}</translation>
@@ -126,7 +129,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{টেবসমূহ নতুন ৱিণ্ড’লৈ স্থানান্তৰ কৰক}one{টেবসমূহ অন্য এখন ৱিণ্ড’লৈ স্থানান্তৰ কৰক}other{টেবসমূহ অন্য এখন ৱিণ্ড’লৈ স্থানান্তৰ কৰক}}</translation>
 <translation id="5073204694187207510">সম্পূৰ্ণ স্ক্রীণৰ গ্ৰিড লুকুৱাওক</translation>
 <translation id="5076161749301278626">ষ্ট'ৰৰ পর্যালোচনা চাবনে?</translation>
+<translation id="5093447877601682598">টেবৰ ষ্ট্ৰিপৰ বিষয়ে মতামত পঠিয়াওক</translation>
 <translation id="5161254044473106830">শিৰোনাম বাধ্যতামূলক</translation>
+<translation id="5204584298075822291">টেব সংকোচন কৰক</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Braveএ <ph name="AUTO_DELETE_DELAY_ONE"/> মাহৰ পাছত স্বয়ংক্ৰিয়ভাৱে নিষ্ক্ৰিয় টেবসমূহ আৰু টেবৰ গোটসমূহ বন্ধ কৰে। আপুনি এইটো ছেটিঙত সলনি কৰিব পাৰে।}one{Braveএ <ph name="AUTO_DELETE_DELAY_MANY"/> মাহৰ পাছত স্বয়ংক্ৰিয়ভাৱে নিষ্ক্ৰিয় টেবসমূহ আৰু টেবৰ গোটসমূহ বন্ধ কৰে। আপুনি এইটো ছেটিঙত সলনি কৰিব পাৰে।}other{Braveএ <ph name="AUTO_DELETE_DELAY_MANY"/> মাহৰ পাছত স্বয়ংক্ৰিয়ভাৱে নিষ্ক্ৰিয় টেবসমূহ আৰু টেবৰ গোটসমূহ বন্ধ কৰে। আপুনি এইটো ছেটিঙত সলনি কৰিব পাৰে।}}</translation>
 <translation id="5254233580564156835">মেম’ৰীৰ ব্যৱহাৰ: <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">আপোনাৰ অন্তিম টেব</translation>

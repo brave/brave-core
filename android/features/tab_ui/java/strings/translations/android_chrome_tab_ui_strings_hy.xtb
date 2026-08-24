@@ -14,6 +14,7 @@
 <translation id="1321004960118052490">Ձեր ոչ ակտիվ տարրերը չեն կուտակվի</translation>
 <translation id="1329584516321524826">Թարմացվեց հենց նոր</translation>
 <translation id="1340839264183302272">Լքել խումբը</translation>
+<translation id="1386966479075994683">Ծավալել ներդիրները</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Ծավալել ներդիրների «<ph name="TITLE_OF_GROUP"/>» ընդհանուր խումբը, որին տրված է <ph name="COLOR_NAME"/> գույնը և «<ph name="CARD_LABEL"/>» պիտակը, և այնտեղ կա <ph name="TABS_COUNT_ONE"/> ներդիր։}one{Ծավալել ներդիրների «<ph name="TITLE_OF_GROUP"/>» ընդհանուր խումբը, որին տրված է <ph name="COLOR_NAME"/> գույնը և «<ph name="CARD_LABEL"/>» պիտակը, և այնտեղ կա <ph name="TABS_COUNT_MANY"/> ներդիր։}other{Ծավալել ներդիրների «<ph name="TITLE_OF_GROUP"/>» ընդհանուր խումբը, որին տրված է <ph name="COLOR_NAME"/> գույնը և «<ph name="CARD_LABEL"/>» պիտակը, և այնտեղ կա <ph name="TABS_COUNT_MANY"/> ներդիր։}}</translation>
 <translation id="1486715732399361704">Այստեղ կգտնեք ձեր բոլոր ներդիրների խմբերը</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Ստեղծվել է <ph name="NUM_MINS_ONE"/> րոպե առաջ}one{Ստեղծվել է <ph name="NUM_MINS_MANY"/> րոպե առաջ}other{Ստեղծվել է <ph name="NUM_MINS_MANY"/> րոպե առաջ}}</translation>
@@ -46,6 +47,7 @@
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Հեռացնել ներդիրը խմբից}one{Հեռացնել ներդիրը խմբից}other{Հեռացնել ներդիրները խմբից}}</translation>
 <translation id="2271452184061378400">Ձեր ներդիրների խմբերը պահվում են այստեղ</translation>
 <translation id="2277224997687551299">Փոփոխել խմբի անունը</translation>
+<translation id="2289567621059034186">Նոր ներդիր ներքևում</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Էջանշել ներդիրը}one{Էջանշել ներդիրը}other{Էջանշել ներդիրները}}</translation>
 <translation id="2359808026110333948">Շարունակել</translation>
 <translation id="2371084566192454134">Ներդիրներ և ներդիրների խմբեր</translation>
@@ -80,6 +82,7 @@
 <translation id="3152596030350326139">Ցույց տալ ներդիրները հորիզոնական դիրքով</translation>
 <translation id="31806439105337256">Ցույց տալ ներդիրներն ուղղաձիգ դիրքով</translation>
 <translation id="3194464645767632461">գնահատական</translation>
+<translation id="3228962656492373217">Փակել ներքևի ներդիրները</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Ավելացրեք <ph name="TABS_COUNT_ONE"/> ընտրված ներդիր խմբում}one{Ավելացրեք <ph name="TABS_COUNT_MANY"/> ընտրված ներդիր խմբում}other{Ավելացրեք <ph name="TABS_COUNT_MANY"/> ընտրված ներդիր խմբում}}</translation>
 <translation id="3328308545011660196">Հուշում․ <ph name="NUMBER_OF_TABS"/> ներդիր նմանություն ունեն։ Խմբավորե՞լ դրանք։</translation>
 <translation id="3330595302841061275">{DAY_COUNT,plural, =1{1 օր հետո ներդիրը կդառնա ոչ ակտիվ}one{<ph name="DAY_COUNT_MANY"/> օր հետո ներդիրը կդառնա ոչ ակտիվ}other{<ph name="DAY_COUNT_MANY"/> օր հետո ներդիրը կդառնա ոչ ակտիվ}}</translation>
@@ -126,7 +129,9 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Ներդիրները տեղափոխել նոր պատուհան}one{Ներդիրները տեղափոխել մեկ այլ պատուհան}other{Ներդիրները տեղափոխել մեկ այլ պատուհան}}</translation>
 <translation id="5073204694187207510">Թաքցնել լիաէկրան ցանցը</translation>
 <translation id="5076161749301278626">Ցուցադրե՞լ խանութի մասին կարծիքները</translation>
+<translation id="5093447877601682598">Կարծիք հայտնել ներդիրների հատվածի մասին</translation>
 <translation id="5161254044473106830">Վերնագիրը պարտադիր է</translation>
+<translation id="5204584298075822291">Ծալել ներդիրները</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave-ը ավտոմատ կերպով փակում է ոչ ակտիվ ներդիրներն ու ներդիրների խմբերը, որոնք դուք չեք օգտագործել ավելի քան <ph name="AUTO_DELETE_DELAY_ONE"/> ամիս։ Այս պարամետրը կարող եք փոխել կարգավորումներում։}one{Brave-ը ավտոմատ կերպով փակում է ոչ ակտիվ ներդիրներն ու ներդիրների խմբերը, որոնք դուք չեք օգտագործել ավելի քան <ph name="AUTO_DELETE_DELAY_MANY"/> ամիս։ Այս պարամետրը կարող եք փոխել կարգավորումներում։}other{Brave-ը ավտոմատ կերպով փակում է ոչ ակտիվ ներդիրներն ու ներդիրների խմբերը, որոնք դուք չեք օգտագործել ավելի քան <ph name="AUTO_DELETE_DELAY_MANY"/> ամիս։ Այս պարամետրը կարող եք փոխել կարգավորումներում։}}</translation>
 <translation id="5254233580564156835">Հիշողության օգտագործում՝ <ph name="MEMORY_USAGE"/></translation>
 <translation id="5339733443032484186">Ձեր վերջին ներդիրը</translation>

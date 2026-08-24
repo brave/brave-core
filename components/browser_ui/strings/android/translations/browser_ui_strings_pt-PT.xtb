@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Peça a vista de dispositivo móvel</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Faixa anterior</translation>
+<translation id="258271431472168668">Predefinição do Brave</translation>
 <translation id="2891975107962658722">Impeça um site de guardar dados no seu dispositivo</translation>
 <translation id="2903493209154104877">Moradas</translation>
+<translation id="2903764741244499151">Os sites podem entrar automaticamente no modo ecrã no ecrã. Isto permite-lhe continuar a ver um vídeo enquanto liberta o ecrã para outras tarefas.</translation>
 <translation id="2918484639460781603">Ir para definições</translation>
 <translation id="2932883381142163287">Denunciar abuso</translation>
 <translation id="2939338015096024043">Quando esta opção está ativada, os sites podem pedir para monitorizar a posição da câmara e saber mais sobre o ambiente à sua volta. Quando esta opção está desativada, os sites não podem monitorizar a posição da câmara nem saber mais sobre o ambiente à sua volta.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Alterar palavras-passe</translation>
 <translation id="3797520601150691162">Não aplique o tema escuro a um site específico</translation>
 <translation id="3803367742635802571">Os sites que visita podem deixar de funcionar como previsto</translation>
-<translation id="8338457030135232378">Cores do Brave</translation>
 <translation id="381841723434055211">Números de telefone</translation>
 <translation id="3823453485268218808">Tipo de letra: Mono</translation>
 <translation id="3826050100957962900">Início de sessão de terceiros</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Sair do modo de ecrã inteiro</translation>
 <translation id="640163077447496506">Expira hoje</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Coleções de temas</translation>
 <translation id="6439114592976064011">Impedir que os sites utilizem aos seus dados e dispositivo de realidade virtual</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Descida do preço no separador aberto, de <ph name="OLD_PRICE"/> para <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ A Proteção avançada controla estas definições do Brave:</translation>
 <translation id="7423098979219808738">Perguntar primeiro</translation>
 <translation id="7423538860840206698">Leitura da área de transferência bloqueada</translation>
 <translation id="7425915948813553151">Tema escuro para sites</translation>
+<translation id="2044383478723007273">Cores do Brave</translation>
 <translation id="746412105358554870">Otimização e segurança de JavaScript</translation>
 <translation id="7478658909253570368">Não permitir que os sites estabeleçam ligação a portas de série</translation>
 <translation id="7488573225650545859">Ocultar Ver separadores na lista de apps</translation>
@@ -671,7 +672,6 @@ A Proteção avançada controla estas definições do Brave:</translation>
 <translation id="802154636333426148">Falha ao transferir</translation>
 <translation id="8033047164036749181">Subscreva as notificações deste site</translation>
 <translation id="8051193500142930381">As funcionalidades que precisam de uma câmara não funcionam</translation>
-<translation id="2495032782748793764">Predefinição do Brave</translation>
 <translation id="8067883171444229417">Ver vídeo</translation>
 <translation id="8068648041423924542">Não é possível selecionar o certificado.</translation>
 <translation id="8077120325605624147">Qualquer site que visitar pode mostrar-lhe qualquer anúncio</translation>
@@ -686,7 +686,6 @@ A Proteção avançada controla estas definições do Brave:</translation>
 <translation id="8163152278172770963">Não permitir que os sites entrem automaticamente no modo ecrã no ecrã</translation>
 <translation id="8168435359814927499">Conteúdo</translation>
 <translation id="818487310457576362">Arraste a partir da parte lateral do ecrã para sair do modo de ecrã inteiro.</translation>
-<translation id="8186479265534291036">O site não funciona? Cookies de terceiros bloqueados</translation>
 <translation id="8197286292360124385">Autorização de <ph name="PERMISSION_1"/>.</translation>
 <translation id="8200772114523450471">Continuar</translation>
 <translation id="8211406090763984747">A ligação é segura</translation>
@@ -757,7 +756,6 @@ A Proteção avançada controla estas definições do Brave:</translation>
 <translation id="8805385115381080995">A navegação é mais rápida porque é menos provável que um site lhe peça para validar que é uma pessoa real</translation>
 <translation id="881644524232657178">Quando esta opção está ativada, os sites podem usar os sensores de movimentos e luz do dispositivo. Quando esta opção está desativada, os sites não podem usar sensores.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Experimente permitir temporariamente os cookies de terceiros, o que significa uma menor proteção da navegação, mas é mais provável que as funcionalidades do site funcionem conforme esperado.</translation>
 <translation id="7532165358672313130">À medida que navega, os sites podem verificar com o Brave e validar com um site anterior que tenha visitado que provavelmente é uma pessoa real</translation>
 <translation id="8899807382908246773">Anúncios intrusivos</translation>
 <translation id="8903921497873541725">Ampliar</translation>
@@ -783,7 +781,6 @@ A Proteção avançada controla estas definições do Brave:</translation>
 <translation id="913657688200966289">Ative as autorizações para a app <ph name="APP_NAME"/> nas <ph name="BEGIN_LINK"/>Definições do Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Acesso às notificações permitido</translation>
 <translation id="9138217887606523162">O zoom atual é de <ph name="ZOOM_LEVEL"/>%%</translation>
-<translation id="915112772806845021">Os sites usam esta funcionalidade para entrar automaticamente no modo ecrã no ecrã. Isto permite-lhe continuar a ver um vídeo enquanto liberta o ecrã para outras tarefas.</translation>
 <translation id="7359422048569205930">Permita que o Brave mostre os seus separadores recentes na lista de apps e nos resultados da pesquisa do seu dispositivo. Pode desativar esta opção em qualquer altura nas definições do Brave.</translation>
 <translation id="9162462602695099906">Esta página é perigosa</translation>
 <translation id="9182556968660520230">Não permitir que os sites reproduzam conteúdo protegido</translation>

@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">هوش مصنوعی Leo</translation>
 <translation id="8275068909952022340">بیشتر…</translation>
 <translation id="71316462802471551">ایمیل‌های مستعار</translation>
-<translation id="209130971304928953">ذخیره زبانه‌ها به‌عنوان فضای کاری…</translation>
-<translation id="877984331511007834">باز کردن فضای کاری…</translation>
-<translation id="1310182651927031327">ذخیره زبانه‌ها به‌عنوان فضای کاری…</translation>
-<translation id="3588277741646479444">باز کردن فضای کاری…</translation>
+<translation id="8350985546648269694">ذخیره پنجره‌ها و برگه‌های فعلی به عنوان فضا</translation>
+<translation id="5327248766486351172">نام</translation>
+<translation id="6379791766023874417">نام Space خود را وارد کنید</translation>
+<translation id="9174724474418499472">Space من</translation>
+<translation id="5317780077021120954">ذخیره</translation>
+<translation id="7658239707568436148">لغو</translation>
+<translation id="196342407904926436">گزینه‌های Space</translation>
+<translation id="2806407377752719586">حذف Space</translation>
+<translation id="1844931500883490339">آیا مطمئن هستید که می‌خواهید این Space را حذف کنید؟ Space ذخیره‌شده برای همیشه حذف خواهد شد. امکان بازگرداندن این اقدام وجود ندارد.</translation>
+<translation id="8261506727792406068">پاک کنید</translation>
+<translation id="8428213095426709021">تنظیمات</translation>
+<translation id="1212321046099128987">هیچ Space ای ایجاد نشده است</translation>
+<translation id="3524567389166933243">با کلیک بر روی دکمه ذخیره در پایین، اولین Space خود را ایجاد کنید.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {۱ برگه} one {# برگه} other {# برگه}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> پنجره</translation>
+<translation id="1680377529024357662">ذخیره پنجره‌ها و برگه‌های فعلی به‌عنوان Space</translation>
+<translation id="5561829325295347472">نام Space خود را وارد کنید</translation>
+<translation id="2028520494010039812">گزینه‌های Space</translation>
+<translation id="1580775521202322063">حذف Space</translation>
+<translation id="3004759399777164093">آیا مطمئن هستید که می‌خواهید این Space را حذف کنید؟ Space ذخیره‌شده برای همیشه حذف خواهد شد. امکان بازگرداندن این اقدام وجود ندارد.</translation>
+<translation id="7563692436589408797">هیچ Space ای ایجاد نشده است</translation>
+<translation id="3945077125173636695">با کلیک بر روی دکمه ذخیره در پایین، اولین Space خود را ایجاد کنید.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {۱ برگه} one {# برگه} other {# برگه}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> پنجره</translation>
+<translation id="3326655241685890930">Spaces</translation>
 <translation id="1990886731975529483">Google Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="4900351245762303149">Google Widevine را نصب کنید</translation>
@@ -36,7 +57,7 @@
 <translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
-<translation id="3477357195688115718">Brave ایمنی و امنیت افزونه‌ها را بررسی نمی‌کند. تنها درصورتی‌که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
+<translation id="2201935460386712655">Brave ایمنی و امنیت افزونه‌ها را بررسی نمی‌کند. تنها درصورتی‌که به برنامه‌نویس اعتماد دارید، «<ph name="EXTENSION_NAME"/>» را نصب کنید.</translation>
 <translation id="2928844661231356557">اعطای دسترسی به دستگاه بلوتوث به سایت امکان می‌دهد اطلاعات قابل تشخیص‌دهنده هویت و بالقوه حساس شما را بخواند. فقط به سایت‌هایی که به آن‌ها اعتماد دارید اجازه دهید به دستگاه‌های بلوتوث دسترسی داشته باشند. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">پنجره های Tor</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
@@ -62,7 +83,6 @@
 <translation id="3211174446914979436">مدیریت فیلترها</translation>
 <translation id="3108584651298176909">نمایش قواعد</translation>
 <translation id="5156986655891520787">پنهان کردن قواعد</translation>
-<translation id="7658239707568436148">لغو</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">باز کردن با استفاده از آدرس ‎.onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">جای‌گذاری اجباری</translation>
@@ -90,6 +110,7 @@
 <translation id="191886777375280620">ضبط عکس صفحه</translation>
 <translation id="3114478090884951591">ناحیه قابل مشاهده</translation>
 <translation id="2026367923222947564">صفحه کامل</translation>
+<translation id="4218885227032158909">ناحیه انتخاب‌شده</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="3161744659507801211">هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود.</translation>
@@ -288,14 +309,12 @@
 <translation id="55252794453047936">انتقال رسانه</translation>
 <translation id="4418985925423678811">لیست پخش جدید</translation>
 <translation id="385051799172605136">بازگشت</translation>
-<translation id="5317780077021120954">ذخیره</translation>
 <translation id="7930125899031086027">ایجاد و انتقال</translation>
 <translation id="2860159216666546928">پوشه‌ای را برای انتقال این رسانه انتخاب کنید</translation>
 <translation id="9130105487623071247">نام لیست پخش</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> آیتم انتخاب شد</translation>
 <translation id="3596306474342941843">لیست پخش را پاک کنید</translation>
 <translation id="7110726588168439924">آیا مطمئن هستید که می‌خواهید این لیست پخش و تمامی مختوای آن را حذف کنید؟ امکان بازگرداندن این اقدام وجود ندارد.</translation>
-<translation id="8261506727792406068">پاک کنید</translation>
 <translation id="8152485753254079984">لیست پخش جدید</translation>
 <translation id="5397019762993984652">افزودن از پوشه پخش بعدی</translation>
 <translation id="7525067979554623046">ایجاد کنید</translation>
@@ -392,7 +411,6 @@
 <translation id="8900907990448657776">ویرایش محفظه</translation>
 <translation id="7900511996284443779">حذف محفظه</translation>
 <translation id="2738687336989232152">مطمئنید که می‌خواهید محفظه <ph name="CONTAINER_NAME"/> را حذف کنید؟ این کار تمام داده‌های مرتبط با آن را حذف خواهد کرد.</translation>
-<translation id="5327248766486351172">نام</translation>
 <translation id="104766043551382253">نماد</translation>
 <translation id="5431318178759467895">رنگ</translation>
 <translation id="4328541188421002379">برای محفظه خود نامی انتخاب کنید، مثلاً «کار» یا «شخصی»</translation>
@@ -546,6 +564,7 @@
 <translation id="2587535830241068901">مرورگر خود را شخصی‌سازی کنید و همچنان از Brave پشتیبانی کنید</translation>
 <translation id="123297831435065577">Brave Origin نسخهٔ پولی از مرورگر برای کاربرانی است که نیاز به تمام ویژگی‌هایی ندارند که Brave را به‌عنوان یک تجارت پشتیبانی می‌کنند، اما همچنان می‌خواهند از حریم خصوصی‌ای که تنها Brave ارائه می‌دهد بهره‌مند شوند. کاربران Origin همچنان از حریم خصوصی برتر صنعت، مسدود کردن تبلیغات و سرعت (از طریق سپرها)، و همچنین به‌روزرسانی‌های نرم‌افزاری منظم، رقعه‌های Chromium و بهبودهای امنیتی و حریم خصوصی بهره‌مند خواهند شد.</translation>
 <translation id="7984508421152399880">اکنون بخرید</translation>
+<translation id="1882724423074862793">بازیابی خرید</translation>
 <translation id="5567412479632285879">پاداش‌های Brave غیرفعال است</translation>
 <translation id="413570371620795359">برای فعال‌سازی و شروع، دریچه‌ی جوایز را باز کنید</translation>
 <translation id="1051600834033686945">تنظیمات کامل پاداش‌های Brave را باز کنید</translation>
@@ -582,6 +601,8 @@
 <translation id="933652931229970927">ارسال خودکار گزارش‌های عیب‌یابی</translation>
 <translation id="8868426106596092089">وقتی «مروگر Brave» خراب یا متوقف می‌شود، با ارسال خودکار گزارش‌های عیب‌یابی به بهبود پایداری محصول Brave کمک کنید</translation>
 <translation id="4891600875049212418">هنگام بازدید از سایت‌های حساس، به «حالت خصوصی و محرمانه» بروید</translation>
+<translation id="1022603984240541480">نمایش اعلان تنظیم حریم خصوصی در سایت‌های سازگار</translation>
+<translation id="3528176629974273019">به Brave اجازه می‌دهد به‌طور خودکار تنظیمات حریم خصوصی مخصوص هر سایت را پیشنهاد دهد (و تنظیم کند).</translation>
 <translation id="509873765238158442">مسدود کردن فراخوانی Microsoft</translation>
 <translation id="4763421121695677716">قابلیت فراخوانی را در Microsoft Windows مسدود کنید تا به‌ صورت خودکار از زبانه‌های باز Brave عکس صفحه گرفته نشود.</translation>
 <translation id="1968895725257436430">جمع‌آوری داده</translation>
@@ -737,6 +758,7 @@
 <translation id="4425607417590286548">تغغیرات را اعمال کن</translation>
 <translation id="2128143836897950793">برای دریافت پل ها روی "درخواست پل جدید..." کلیک کنید</translation>
 <translation id="3314921753580327793">آدرس: پورت (یکی در هر خط) را تایپ کنید</translation>
+<translation id="7002083631026466886">Tor نمی‌تواند از این پل استفاده کند. آن را با پلی که به شما داده شده مقایسه کنید، سپس دوباره تلاش کنید:</translation>
 <translation id="3755189300481406891">درخواست پل</translation>
 <translation id="6924425739431382319">تماس با BridgeDB لطفا صبر کنید.</translation>
 <translation id="811745063252080651">برای درخواست پل، CAPTCHA را حل کنید.</translation>
@@ -914,7 +936,6 @@
 <translation id="1838374766361614909">پاک کردن Search</translation>
 <translation id="5126255551970171328">Search حافظه</translation>
 <translation id="7402116145895962069">همگام‌سازی مدل‌های محلی Ollama شما</translation>
-<translation id="4835154437390745810">مدیریت‌شده توسط Ollama</translation>
 <translation id="5985516785067818307">عضو پنل نظرسنجی</translation>
 <translation id="8347743943525229984">مجاز کردن نظرسنجی‌های Brave</translation>
 <translation id="3204080538332044581">به Brave اجازه می‌دهد که در صفحه زبانه جدید لینک‌های نظرسنجی‌های خصوصی را نمایش دهد. نظرسنجی‌ها به ما کمک می‌کنند تا قابلیت‌های بهتری بسازیم و اثربخشی کمپین‌های تبلیغاتی مرورگرمحور را ارزیابی کنیم. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
