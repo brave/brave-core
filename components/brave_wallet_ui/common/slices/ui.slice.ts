@@ -8,6 +8,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BraveWallet, UIState } from '../../constants/types'
 import { walletApi } from './api.slice'
 import { SetTransactionProviderErrorType } from '../constants/action_types'
+import {
+  setSelectedTransactionId,
+  setSubmittingTransaction,
+} from './ui_tx_actions'
 
 export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
@@ -16,6 +20,8 @@ export const defaultUIState: UIState = {
   isSidePanel: false,
   isMobile: false,
   isIOS: false,
+  selectedTransactionId: undefined,
+  submittingTransaction: undefined,
 }
 
 // slice
@@ -40,6 +46,14 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
       },
     },
     extraReducers: (builder) => {
+      builder.addCase(setSelectedTransactionId, (state, { payload }) => {
+        state.selectedTransactionId = payload
+      })
+
+      builder.addCase(setSubmittingTransaction, (state, { payload }) => {
+        state.submittingTransaction = payload
+      })
+
       builder.addMatcher(
         walletApi.endpoints.getTransactions.matchFulfilled,
         (state, { payload }) => {
@@ -90,5 +104,9 @@ export const createUIReducer = (initialState: UIState) => {
 
 export const uiSlice = createUISlice()
 export const uiReducer = uiSlice.reducer
-export const UIActions = uiSlice.actions
+export const UIActions = {
+  ...uiSlice.actions,
+  setSelectedTransactionId,
+  setSubmittingTransaction,
+}
 export default uiReducer

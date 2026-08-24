@@ -8,9 +8,9 @@ import Button from '@brave/leo/react/button'
 
 // Hooks
 import {
-  useUnsafePanelSelector, //
+  useUnsafeUISelector, //
 } from '../../../../common/hooks/use-safe-selector'
-import { PanelSelectors } from '../../../../panel/selectors'
+import { UISelectors } from '../../../../common/selectors'
 
 // Types
 import { ParsedTransaction } from '../../../../utils/tx-utils'
@@ -66,8 +66,8 @@ export function PendingTransactionActionsFooter({
   isUnshieldingFunds,
 }: Props) {
   // selectors
-  const submittingTransaction = useUnsafePanelSelector(
-    PanelSelectors.submittingTransaction,
+  const submittingTransaction = useUnsafeUISelector(
+    UISelectors.submittingTransaction,
   )
 
   // state

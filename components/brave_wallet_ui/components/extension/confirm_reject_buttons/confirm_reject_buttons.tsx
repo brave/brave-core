@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 // Hooks
-import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
-import { PanelSelectors } from '../../../panel/selectors'
+import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -36,8 +36,8 @@ export const ConfirmRejectButtons = (props: Props) => {
   } = props
 
   // selectors
-  const submittingTransaction = useUnsafePanelSelector(
-    PanelSelectors.submittingTransaction,
+  const submittingTransaction = useUnsafeUISelector(
+    UISelectors.submittingTransaction,
   )
 
   // State

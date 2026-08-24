@@ -35,6 +35,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Actions
 import { PanelActions } from '../../../panel/actions'
+import { setSelectedTransactionId } from '../ui_tx_actions'
 
 // utils
 import {
@@ -50,6 +51,7 @@ import { makeSerializableTransaction } from '../../../utils/model-serialization-
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
 import { sortTransactionByDate } from '../../../utils/tx-utils'
+import { getIsBraveWalletOrigin } from '../../../utils/string-utils'
 import {
   signLedgerEthereumTransaction,
   signLedgerFilecoinTransaction,
@@ -1239,7 +1241,7 @@ export const transactionEndpoints = ({
             }
             if (result.success) {
               store.dispatch(
-                PanelActions.setSelectedTransactionId({
+                setSelectedTransactionId({
                   chainId: txInfo.chainId,
                   coin: getCoinFromTxDataUnion(txInfo.txDataUnion),
                   id: txInfo.id,
@@ -1294,7 +1296,7 @@ export const transactionEndpoints = ({
             )
             if (result.success) {
               store.dispatch(
-                PanelActions.setSelectedTransactionId({
+                setSelectedTransactionId({
                   chainId: txInfo.chainId,
                   coin: getCoinFromTxDataUnion(txInfo.txDataUnion),
                   id: txInfo.id,
@@ -1665,9 +1667,16 @@ export const transactionEndpoints = ({
       { success: boolean; txId: string },
       SerializableTransactionInfo
     >({
-      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+      queryFn: async (arg, api, extraOptions, baseQuery) => {
         const { pageHandler } = baseQuery(undefined).data
-        pageHandler?.showApprovePanelUI()
+        const { ui } = api.getState() as { ui: { isMobile: boolean } }
+        // Desktop-only: wallet-origin txs confirm in-page. Mobile (Android /
+        // iOS) still opens the native approve panel for all origins.
+        const isWalletOrigin =
+          !!arg.originInfo && getIsBraveWalletOrigin(arg.originInfo)
+        if (pageHandler && (ui.isMobile || !isWalletOrigin)) {
+          pageHandler.showApprovePanelUI()
+        }
         return {
           data: {
             success: true,
