@@ -1,13 +1,14 @@
 diff --git a/components/sync/model/model_error.h b/components/sync/model/model_error.h
-index d7becf1a79424f197e976abe438be2b91cd5699f..5cb3e8df79fc0106aaf573faf33c2dd992f8a524 100644
+index d7becf1a79424f197e976abe438be2b91cd5699f..f35d386a38732d2bb8fcc881fc72f91796de0f59 100644
 --- a/components/sync/model/model_error.h
 +++ b/components/sync/model/model_error.h
-@@ -203,7 +203,7 @@ class ModelError {
+@@ -203,7 +203,8 @@ class ModelError {
      kTabContextContainerFailedToDeserializeSpecifics = 193,
      kJourneysFailedToLoadMetadata = 194,
      kJourneysDatabaseError = 195,
 -    kMaxValue = kJourneysDatabaseError,
-+    kAIChatFailedToLoadMetadata = 193, kMaxValue = kAIChatFailedToLoadMetadata,
++    kAIChatFailedToLoadMetadata,
++    kMaxValue = kAIChatFailedToLoadMetadata,
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/sync/enums.xml:SyncModelError)
  
