@@ -65,8 +65,9 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
       const bundlePath = '/email_aliases.bundle.js'
       import(bundlePath).then(({mount}) => {
         mount(this.$.signInRoot, this.$.manageSection, {
-          onLoggedInChange: (loggedIn: boolean) => {
-            this.showEmailAliasesSettings_ = loggedIn;
+          onLoggedInChange: (_: boolean) => {
+            // Show even if not logged-in.
+            this.showEmailAliasesSettings_ = true;
           },
         });
       });
