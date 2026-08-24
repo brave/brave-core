@@ -9,6 +9,7 @@ from __future__ import annotations
 import abc
 import argparse
 import ast
+from collections.abc import KeysView, Mapping
 from dataclasses import dataclass, field
 import hashlib
 import itertools
@@ -416,7 +417,7 @@ class Rewriter(abc.ABC):
 
     # Static, per-subclass metadata. Declared `ClassVar` so they are shared by
     # the class (never per-instance); each concrete rewriter overrides them
-    # with `Final` constants (see `Regex`).
+    # with `Final` constants (see `AllRegexRewriter`).
 
     # The `<name>:` key that selects this rewriter in a `substitutions:` entry.
     NAME: ClassVar[str] = ''
@@ -467,14 +468,16 @@ class Rewriter(abc.ABC):
         """The full, user-facing help for this rewriter as dedented Markdown."""
         return textwrap.dedent(cls.HELP or cls.__doc__ or '').strip('\n')
 
-    def source_language(self) -> str | None:
-        """The source language this rewriter requires, or None if agnostic.
+    @classmethod
+    def namespace(cls) -> str:
+        """The namespace this rewriter belongs to.
 
-        AST rewriters parse the target in a specific language (the `<lang>.`
-        prefix of their op id), so they may only be used on sources of that
-        language. Text rewriters are language-agnostic and return None.
+        A rewriter bound to one kind of source names that namespace (the
+        `<ns>.` prefix of its op id), and may only be used on a target
+        `RewriterNamespace` claims for it. The default is the global
+        namespace, `all`.
         """
-        return None
+        return _GLOBAL_NAMESPACE
 
 
 # The file-wide plaster keys allowed at the top level of a YAML plaster.
@@ -485,16 +488,76 @@ _TOP_LEVEL_KEYS: Final = frozenset({
     'blank_metadata_header_macros',
 })
 
-# Target-source suffixes plaster treats as C++. `blank_macros_for_ast_parsing`
-# blanks constructs for the tree-sitter C++ parser, so it is only meaningful for
-# these.
-_CXX_SOURCE_SUFFIXES: Final = frozenset(
-    {'.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx', '.c++', '.mm'})
+
+@dataclass(frozen=True)
+class RewriterNamespace:
+    """A rewriter namespace, which ties it to particular sources and a grammar.
+
+    The `<namespace>.` prefix an op id carries in `rewriters.pyl`, the target
+    sources that prefix may be used on, and the grammar `ast-grep` parses those
+    sources with are tied together.
+
+    A rewriter belongs to the namespace named by its op id, and a particular
+    plaster matches a namespace based on its extension. Based on that a
+    substitution can resolve which rewriter to use.
+
+    `all` (`_GLOBAL_NAMESPACE`) is the global namespace, and therefore it
+    doesn't provide any information about grammar or extensions.
+    """
+
+    # The op-id prefix (e.g. `cxx` in `cxx.make_virtual`), and the name this
+    # namespace is known by everywhere else.
+    name: str
+
+    # The grammar `ast-grep` should use for rewriters in this namespace, or
+    # None when there is none to use.
+    ast_grep_language: str | None
+
+    # The extensions matched with this namespace. (e.g. `.cc`, `.cpp`, `.h`,
+    # etc. for `cxx`).
+    suffixes: frozenset[str]
+
+
+# The global namespace, available to all plaster extensions.
+_GLOBAL_NAMESPACE: Final = 'all'
+
+# Every namespace plaster knows. The single place to register a language.
+_NAMESPACES: Final = (
+    RewriterNamespace(name=_GLOBAL_NAMESPACE,
+                      ast_grep_language=None,
+                      suffixes=frozenset()),
+    RewriterNamespace(name='cxx',
+                      ast_grep_language='cpp',
+                      suffixes=frozenset({
+                          '.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx',
+                          '.c++', '.mm'
+                      })),
+)
+
+_NAMESPACE_BY_NAME: Final = MappingProxyType(
+    {namespace.name: namespace
+     for namespace in _NAMESPACES})
+
+_NAMESPACE_BY_SUFFIX: Final = MappingProxyType({
+    suffix: namespace
+    for namespace in _NAMESPACES
+    for suffix in namespace.suffixes
+})
+
+
+def _namespace_of_source(plaster_path: Path) -> str | None:
+    """The namespace for a given plaster file extension, or None.
+
+    Never returns `all`: that namespace claims no suffixes.
+    """
+    namespace = _NAMESPACE_BY_SUFFIX.get(plaster_path.with_suffix('').suffix)
+    return namespace.name if namespace else None
 
 
 def _is_cxx_source(plaster_path: Path) -> bool:
-    """True if the plaster's target source (its path minus `.yaml`) is C++."""
-    return plaster_path.with_suffix('').suffix in _CXX_SOURCE_SUFFIXES
+    """Indicates if a plaster file extension corresponds to a C++ source.
+    """
+    return _namespace_of_source(plaster_path) == 'cxx'
 
 
 @dataclass(frozen=True)
@@ -581,11 +644,16 @@ class Substitution:
         }
 
     @staticmethod
-    def from_yaml(contents: str) -> PlasterSpec:
+    def from_yaml(contents: str, *, namespace: str | None) -> PlasterSpec:
         """Parse a YAML plaster file into a `PlasterSpec`.
 
         YAML plasters use a top-level `substitutions:` list, plus file-level
         values.
+
+        `namespace` is the namespace for this plaster file and is what a
+        `substitutions:` key resolves against, with no collisions when the same
+        key names a rewriter in more than one namespace. When `None` is
+        provided, only the global namespace is supported.
         """
         data = yaml.load(contents, Loader=Substitution._NoDupSafeLoader)
         if data is None:
@@ -624,22 +692,27 @@ class Substitution:
                 'Plaster YAML `substitutions:` must contain at least one entry'
             )
         return PlasterSpec(
-            substitutions=[Substitution._from_item(entry) for entry in raw],
+            substitutions=[
+                Substitution._from_item(entry, namespace=namespace)
+                for entry in raw
+            ],
             blank_macros_for_ast_parsing=blank_macros,
             blank_string_adjacent_macros_for_ast_parsing=(
                 blank_string_adjacent_macros),
             blank_metadata_header_macros=blank_metadata_header_macros)
 
     @staticmethod
-    def _from_item(data: object) -> Substitution:
+    def _from_item(data: object, *, namespace: str | None) -> Substitution:
         """Validate one `substitutions:` entry and build its rewriter.
 
         An entry names a rewriter by carrying one of `_REWRITERS` as a key,
-        alongside the item-level `description` and optional `count`.
+        alongside the item-level `description` and optional `count`. That name
+        is resolved against `namespace`, the target's namespace.
 
         Raises:
-            ValueError: on a malformed entry (missing/typo'd keys, a missing
-                or unknown rewriter, or invalid rewriter-specific fields).
+            ValueError: on a malformed entry (missing/typo'd keys; a missing,
+                unknown, or wrong-namespace rewriter; or invalid
+                rewriter-specific fields).
         """
         if not isinstance(data, dict):
             raise ValueError(f'substitution entry must be a mapping, got '
@@ -650,7 +723,7 @@ class Substitution:
         if not isinstance(description, str):
             raise ValueError('No description specified for substitution entry')
 
-        rewriter_keys = sorted(keys & _REWRITERS.keys())
+        rewriter_keys = sorted(keys & _REWRITERS.names)
         if len(rewriter_keys) > 1:
             raise ValueError(
                 f'Only one rewriter allowed per entry, got '
@@ -664,13 +737,19 @@ class Substitution:
                                  f'rewriter: '
                                  f'{", ".join(repr(k) for k in unknown)} '
                                  f'(in "{description}")')
+            cls = _REWRITERS.resolve(name, namespace)
+            if cls is None:
+                available = ', '.join(sorted(_REWRITERS.candidates(name)))
+                raise ValueError(
+                    f'the `{name}` rewriter is not available for this '
+                    f'source, which is not in any namespace it serves '
+                    f'({available}) (in "{description}")')
             # The chosen rewriter decides what an omitted `count:` means, and
             # may reject a count it does not support.
-            expected_count = Substitution._parse_count(
-                data, description, _REWRITERS[name].DEFAULT_COUNT)
-            _REWRITERS[name].validate_count(expected_count, description)
-            rewriter = _REWRITERS[name].parse(data[name],
-                                              description=description)
+            expected_count = Substitution._parse_count(data, description,
+                                                       cls.DEFAULT_COUNT)
+            cls.validate_count(expected_count, description)
+            rewriter = cls.parse(data[name], description=description)
             return Substitution(description=description,
                                 expected_count=expected_count,
                                 rewriter=rewriter)
@@ -682,7 +761,7 @@ class Substitution:
         unknown = sorted(keys - {'description', 'count'})
         bad_rewriters = [k for k in unknown if isinstance(data[k], dict)]
         if bad_rewriters:
-            available = ', '.join(sorted(_REWRITERS)) or '(none)'
+            available = ', '.join(sorted(_REWRITERS.names)) or '(none)'
             raise ValueError(
                 f'Unknown rewriter(s): '
                 f'{", ".join(repr(k) for k in bad_rewriters)}; available '
@@ -692,7 +771,7 @@ class Substitution:
                              f'{", ".join(repr(k) for k in unknown)}')
         raise ValueError(
             f'No rewriter specified (in "{description}"); expected one of: '
-            f'{", ".join(sorted(_REWRITERS)) or "(none)"}')
+            f'{", ".join(sorted(_REWRITERS.names)) or "(none)"}')
 
     @staticmethod
     def _parse_count(data: dict[str, object],
@@ -786,7 +865,7 @@ def _parse_re_flags(flags_raw: object, description: str) -> int:
     return re_flags
 
 
-class Regex(Rewriter):
+class AllRegexRewriter(Rewriter):
     """A regex substitution applied with `re.subn` (the native rewriter).
     """
 
@@ -850,7 +929,7 @@ class Regex(Rewriter):
         return content, [error] if error else []
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> Regex:
+    def parse(cls, body: object, *, description: str) -> AllRegexRewriter:
         """Build from a `regex:` body (a mapping of the regex fields)."""
         if not isinstance(body, dict):
             raise ValueError(f'"regex" must be a mapping (in "{description}")')
@@ -942,13 +1021,14 @@ class _AstGrepRewriter(Rewriter):
         # subclasses hold their own parsed shape and leave this empty.
         self._inputs = inputs if inputs is not None else {}
 
-    def source_language(self) -> str:
-        """The `<lang>.` prefix for the op (e.g. `cxx` for `cxx.make_virtual`).
+    @classmethod
+    def namespace(cls) -> str:
+        """The `<ns>.` prefix of the op (e.g. `cxx` for `cxx.make_virtual`).
 
-        AST rewriters parse the target in this language, so they are only valid
-        on sources of it.
+        Read off `OP_ID` rather than declared separately, so a rewriter can
+        never claim a namespace its ops do not belong to.
         """
-        return self.OP_ID.split('.', 1)[0]
+        return cls.OP_ID.split('.', 1)[0]
 
     def operations(self, count: int) -> list[Operation]:
         """The ordered ast-grep operations this rewriter expands to.
@@ -1021,7 +1101,7 @@ class _AstGrepRewriter(Rewriter):
         return cls({key: body[key] for key in keys})
 
 
-class MakeVirtual(_AstGrepRewriter):
+class CxxMakeVirtualRewriter(_AstGrepRewriter):
     """Make a C++ method declaration `virtual`, via the ast-grep rewriters."""
 
     NAME: Final = 'make_virtual'
@@ -1054,7 +1134,7 @@ class MakeVirtual(_AstGrepRewriter):
     """
 
 
-class AddFriend(_AstGrepRewriter):
+class CxxAddFriendRewriter(_AstGrepRewriter):
     """Add one or more `friend` declarations to a C++ class's private section,
     via the ast-grep rewriters."""
 
@@ -1116,7 +1196,7 @@ class AddFriend(_AstGrepRewriter):
         ]
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> AddFriend:
+    def parse(cls, body: object, *, description: str) -> CxxAddFriendRewriter:
         """Validate an `add_friend:` body, accepting a single friend or a list.
 
         `friend_type` may be a string (one friend) or a non-empty list of
@@ -1151,11 +1231,11 @@ class AddFriend(_AstGrepRewriter):
                 and all(isinstance(item, str) for item in value)):
             return list(value)
         raise ValueError(
-            f'{AddFriend.NAME} `friend_type` must be a string or a non-empty '
+            f'{CxxAddFriendRewriter.NAME} `friend_type` must be a string or a non-empty '
             f'list of strings (in "{description}")')
 
 
-class DropFinal(_AstGrepRewriter):
+class CxxDropFinalRewriter(_AstGrepRewriter):
     """Remove the `final` specifier from a C++ class declaration, via the
     ast-grep rewriters, so the class can be subclassed."""
 
@@ -1183,7 +1263,7 @@ class DropFinal(_AstGrepRewriter):
     """
 
 
-class PreemptFunctionImpl(_AstGrepRewriter):
+class CxxPreemptFunctionImplRewriter(_AstGrepRewriter):
     """Insert a statement block at the top of a C++ function body, via the
     ast-grep rewriters.
     """
@@ -1292,7 +1372,8 @@ class PreemptFunctionImpl(_AstGrepRewriter):
         ]
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> PreemptFunctionImpl:
+    def parse(cls, body: object, *,
+              description: str) -> CxxPreemptFunctionImplRewriter:
         """Validate a `preempt_function_impl:` body and resolve what to insert.
 
         Requires `function_name`, plus exactly one of `code` or `return_if`;
@@ -1346,7 +1427,7 @@ class PreemptFunctionImpl(_AstGrepRewriter):
         return f'if ({condition}) return{value};'
 
 
-class AfterFunctionImpl(_AstGrepRewriter):
+class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
     """Wrap a function body in a lambda and run a code block after it.
 
     The upstream body runs first, then our code. The idea of this rewriter is to
@@ -1459,7 +1540,8 @@ class AfterFunctionImpl(_AstGrepRewriter):
         ]
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> AfterFunctionImpl:
+    def parse(cls, body: object, *,
+              description: str) -> CxxAfterFunctionImplRewriter:
         """Validate an `after_function_impl:` body and resolve what to append.
 
         Requires `function_name` and `code`. `result_var` is optional and, when
@@ -1499,7 +1581,7 @@ class AfterFunctionImpl(_AstGrepRewriter):
         return result_var
 
 
-class RenameClass(_AstGrepRewriter):
+class CxxRenameClassRewriter(_AstGrepRewriter):
     """Rename a C++ class."""
 
     NAME: Final = 'rename_class'
@@ -1530,7 +1612,7 @@ class RenameClass(_AstGrepRewriter):
     """
 
 
-class AddToProtected(_AstGrepRewriter):
+class CxxAddToProtectedRewriter(_AstGrepRewriter):
     """Add a member declaration to a C++ class's `protected:` section"""
 
     NAME: Final = 'add_to_protected'
@@ -1626,7 +1708,8 @@ class AddToProtected(_AstGrepRewriter):
         return engine.content, [error] if error else []
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> AddToProtected:
+    def parse(cls, body: object, *,
+              description: str) -> CxxAddToProtectedRewriter:
         """Validate an `add_to_protected:` body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
@@ -1648,7 +1731,7 @@ class AddToProtected(_AstGrepRewriter):
         return cls(class_name=body['class_name'], code=body['code'])
 
 
-class AddToPublic(_AstGrepRewriter):
+class CxxAddToPublicRewriter(_AstGrepRewriter):
     """Append a member declaration to the end of a C++ class's `public:` section
     """
 
@@ -1747,7 +1830,8 @@ class AddToPublic(_AstGrepRewriter):
         return engine.content, [error] if error else []
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> AddToPublic:
+    def parse(cls, body: object, *,
+              description: str) -> CxxAddToPublicRewriter:
         """Validate an `add_to_public:` body of string args."""
         if not isinstance(body, dict):
             raise ValueError(
@@ -1769,7 +1853,7 @@ class AddToPublic(_AstGrepRewriter):
         return cls(class_name=body['class_name'], code=body['code'])
 
 
-class AddEnumEntries(_AstGrepRewriter):
+class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
     """Append entries to a C++ enum, keeping its max-value entry last."""
 
     NAME: Final = 'add_enum_entries'
@@ -1972,7 +2056,8 @@ class AddEnumEntries(_AstGrepRewriter):
         return match.group().decode('utf-8') if match else ''
 
     @classmethod
-    def parse(cls, body: object, *, description: str) -> AddEnumEntries:
+    def parse(cls, body: object, *,
+              description: str) -> CxxAddEnumEntriesRewriter:
         """Validate the body, accepting one entry or a list of them."""
         if not isinstance(body, dict):
             raise ValueError(
@@ -2016,12 +2101,82 @@ class AddEnumEntries(_AstGrepRewriter):
         return list(entries)
 
 
-_REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
-    rewriter.NAME: rewriter
-    for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
-                     PreemptFunctionImpl, AfterFunctionImpl, RenameClass,
-                     AddToProtected, AddToPublic, AddEnumEntries)
-})
+# The hand-written rewriters. `_REWRITERS` is assembled from these plus the
+# ones generated from `rewriters.pyl` for `RegexMacro`.
+_DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
+                              CxxAddFriendRewriter, CxxDropFinalRewriter,
+                              CxxPreemptFunctionImplRewriter,
+                              CxxAfterFunctionImplRewriter,
+                              CxxRenameClassRewriter,
+                              CxxAddToProtectedRewriter,
+                              CxxAddToPublicRewriter,
+                              CxxAddEnumEntriesRewriter)
+
+
+class RewriterRegistry:
+    """Every rewriter, indexed by its `NAME` and then by its namespace.
+
+    A `substitutions:` key names a rewriter, but a name alone does not
+    identify one: two rewriters may share a `NAME` as long as they declare
+    different namespaces, which is how one key can mean "the C++ rewriter" in a
+    `.cc.yaml` and a different rewriter elsewhere. `resolve` picks between
+    them using the namespace of the plaster's target.
+    """
+
+    def __init__(self, *rewriters: type[Rewriter]) -> None:
+        by_name: dict[str, dict[str, type[Rewriter]]] = {}
+        for rewriter in rewriters:
+            candidates = by_name.setdefault(rewriter.NAME, {})
+            namespace = rewriter.namespace()
+            if namespace in candidates:
+                raise AssertionError(
+                    f'rewriter {rewriter.NAME!r} is registered twice for '
+                    f'namespace {namespace!r}: '
+                    f'{candidates[namespace].__name__} and '
+                    f'{rewriter.__name__}')
+            candidates[namespace] = rewriter
+        self._by_name: Mapping[str, Mapping[str, type[Rewriter]]] = (
+            MappingProxyType({
+                name: MappingProxyType(candidates)
+                for name, candidates in by_name.items()
+            }))
+
+    def __contains__(self, name: object) -> bool:
+        return name in self._by_name
+
+    @property
+    def names(self) -> KeysView[str]:
+        """Every registered `NAME`, regardless of namespace."""
+        return self._by_name.keys()
+
+    def candidates(self, name: str) -> Mapping[str, type[Rewriter]]:
+        """The rewriters registered under `name`, keyed by namespace."""
+        return self._by_name[name]
+
+    def resolve(self, name: str,
+                namespace: str | None) -> type[Rewriter] | None:
+        """Retrieves the rewriter under `name` for `namespace`.
+
+        This function resolves a rewriter lookup for a given `namespace`, and if
+        any is found returns that for the namespace, otherwise it attempts to
+        find that rewriter in the global namespace.
+        """
+        candidates = self._by_name[name]
+        return candidates.get(namespace) or candidates.get(_GLOBAL_NAMESPACE)
+
+    def by_namespace(self) -> list[tuple[str, list[type[Rewriter]]]]:
+        """`(namespace, rewriters)` pairs, name-sorted, for the help index.
+
+        The rewriter name can be read from `NAME` inside `rewriters`. Namespaces
+        sort by name, with the global one last.
+        """
+        grouped: dict[str, list[type[Rewriter]]] = {}
+        for candidates in self._by_name.values():
+            for namespace, rewriter in candidates.items():
+                grouped.setdefault(namespace, []).append(rewriter)
+        return [(namespace, sorted(grouped[namespace],
+                                   key=lambda cls: cls.NAME)) for namespace in
+                sorted(grouped, key=lambda ns: (ns == _GLOBAL_NAMESPACE, ns))]
 
 
 @dataclass
@@ -2102,9 +2257,13 @@ class PlasterFile:
 
         info = PatchinfoBuilder(self.path)
         if suffix == '.yaml':
-            doc = Substitution.from_yaml(info.plaster_contents)
-            is_cxx = _is_cxx_source(self.path)
-            if not is_cxx:
+            # Each `substitutions:` key resolves against the target's own
+            # namespace, so a rewriter that does not serve this kind of source
+            # is already rejected by the time this returns.
+            doc = Substitution.from_yaml(info.plaster_contents,
+                                         namespace=_namespace_of_source(
+                                             self.path))
+            if not _is_cxx_source(self.path):
                 if doc.blank_macros_for_ast_parsing:
                     raise ValueError(
                         '`blank_macros_for_ast_parsing` is only supported for '
@@ -2117,11 +2276,6 @@ class PlasterFile:
                     raise ValueError(
                         '`blank_metadata_header_macros` is only supported '
                         f'for C++ sources (in {self.path})')
-                for substitution in doc.substitutions:
-                    if substitution.rewriter.source_language() == 'cxx':
-                        raise ValueError(
-                            f'the `{substitution.rewriter.NAME}` rewriter is '
-                            f'only supported for C++ sources (in {self.path})')
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         try:
@@ -2195,11 +2349,6 @@ class RewritersSchemaError(PlasterError):
     """Raised when `rewriters.pyl` does not conform to the expected schema."""
 
 
-# Namespace mapping for ast-grep rewriter types. This list will grow as more
-# rewriters are added for other languages.
-_LANGUAGE_BY_PREFIX = MappingProxyType({'cxx': 'cpp'})
-
-
 def _is_regex(pattern: str) -> bool:
     """schema predicate: True if `pattern` compiles as a regular expression."""
     try:
@@ -2210,9 +2359,9 @@ def _is_regex(pattern: str) -> bool:
 
 
 def _is_op_id(op_id: str) -> bool:
-    """schema predicate: True if `op_id` is `<known-lang>.<name>`."""
+    """schema predicate: True if `op_id` is `<known-namespace>.<name>`."""
     prefix, _, name = op_id.partition('.')
-    return bool(name) and prefix in _LANGUAGE_BY_PREFIX
+    return bool(name) and prefix in _NAMESPACE_BY_NAME
 
 
 def _placeholders(template: str) -> set[str]:
@@ -2373,9 +2522,9 @@ class RewritersEval:
 
     The main function of this class is to make sure the file is valid, and to
     provide access to the loaded content. Note the distinction from the
-    `Rewriter` op classes above: `Rewriter`/`Regex` are the `substitutions:`
-    transforms, while this loads the declarative ast-grep matcher/rewriter
-    *specs* those transforms will drive.
+    `Rewriter` op classes above: `Rewriter`/`AllRegexRewriter` are the
+    `substitutions:` transforms, while this loads the declarative ast-grep
+    matcher/rewriter *specs* those transforms will drive.
     """
 
     # Process-wide singleton, loaded once from REWRITERS_FILE by load().
@@ -2449,14 +2598,25 @@ class RewritersEval:
 
     @classmethod
     def language_of(cls, op_id: str) -> str:
-        """Return the ast-grep language id derived from `op_id`'s prefix."""
+        """Return the ast-grep language id for `op_id`'s namespace.
+
+        This function is use to determine which grammar to request from
+        `ast-grep`, however by the time exection has reached this point, it is
+        assumed that namespace resolution already took place, so there should be
+        a value always.
+        """
         prefix = op_id.split('.', 1)[0]
         try:
-            return _LANGUAGE_BY_PREFIX[prefix]
+            language = _NAMESPACE_BY_NAME[prefix].ast_grep_language
         except KeyError:
             raise RewritersSchemaError(
-                f'op {op_id!r} has unknown language prefix {prefix!r}; '
-                f'known prefixes: {sorted(_LANGUAGE_BY_PREFIX)}') from None
+                f'op {op_id!r} has unknown namespace prefix {prefix!r}; '
+                f'known namespaces: {sorted(_NAMESPACE_BY_NAME)}') from None
+        if language is None:
+            raise RewritersSchemaError(
+                f'op {op_id!r} is in the {prefix!r} namespace, which names no '
+                f'grammar to parse with')
+        return language
 
     # -- validation ---------------------------------------------------------
 
@@ -2470,21 +2630,25 @@ class RewritersEval:
                 f'{source}: not a valid Python literal: {e}') from e
 
     def _check_cross_references(self) -> None:
-        """Validate rules that span records, which schema cannot express.
+        """Validate rules that span records, which schema cannot express."""
 
-        Each rewriter must reference a matcher that exists, must declare the
-        same result node as that matcher (it replaces the node the matcher
-        locates, so the two must agree), and its declared `inputs` must be
-        exactly the `{placeholder}`s used across the matcher template and the
-        `replace` template -- so the op's advertised interface never drifts from
-        what its templates actually consume. A `replace` template may also name
-        the matcher's captures, which the engine fills per match. Unlike inputs,
-        a capture need not be used (matchers are shared, so a capture one
-        rewriter needs is dead weight to another).
+        # An ast op has to sit in a namespace `ast-grep` can parse. The schema
+        # only checks the namespace is *known*, however it is necessary to also
+        # check that a particular ast-based entries are using a known namespace
+        # with a known supported grammar by ast-grep.
+        for category, ops in (('matcher', self._matchers), ('rewriter',
+                                                            self._rewriters)):
+            for op_id in ops:
+                namespace = op_id.split('.', 1)[0]
+                if _NAMESPACE_BY_NAME[namespace].ast_grep_language is None:
+                    raise RewritersSchemaError(
+                        f'{self._source}: ast {category} {op_id!r} is in the '
+                        f'{namespace!r} namespace, which names no grammar to '
+                        f'parse with; only text ops (regex_macro) can live '
+                        f'there')
 
-        Every metavariable a capture reads must be one the matcher's own
-        template binds, so a renamed `$VAR` cannot silently stop resolving.
-        """
+        # Every other rule is per-op, and each checker below documents the
+        # one it enforces.
         for op_id, spec in self._matchers.items():
             self._check_matcher_captures(op_id, spec)
         for op_id, spec in self._rewriters.items():
@@ -2563,9 +2727,9 @@ class RewritersEval:
         must line up.
 
         The macro must pick exactly one of `pattern`/`re_pattern` (the same
-        mutual exclusivity `Regex.parse` enforces for a plain `regex:` block)
-        and name only real `re` flags. Each `inputs` entry's `name` must be
-        unique, and the set of names must be exactly the union of
+        mutual exclusivity `AllRegexRewriter.parse` enforces for a plain
+        `regex:` block) and name only real `re` flags. Each `inputs` entry's
+        `name` must be unique, and the set of names must be exactly the union of
         `{placeholder}`s used across the active pattern field and `replace`,
         so the macro's advertised interface never drifts from what it
         actually consumes or leaves an input undocumented.
@@ -3184,9 +3348,10 @@ class RegexMacro(Rewriter):
     def __init__(self, inputs: dict[str, str]):
         self._inputs = inputs
 
-    def source_language(self) -> str:
-        """The `<lang>.` prefix for the op (e.g. `cxx`)."""
-        return self.OP_ID.split('.', 1)[0]
+    @classmethod
+    def namespace(cls) -> str:
+        """The `<ns>.` prefix of the op (e.g. `cxx`)."""
+        return cls.OP_ID.split('.', 1)[0]
 
     def apply(
         self,
@@ -3246,29 +3411,37 @@ def _regex_macro_help(spec: dict) -> str:
     return '\n'.join(lines + [''] + fields)
 
 
-def _regex_macro_rewriters() -> dict[str, type[RegexMacro]]:
+def _regex_macro_rewriters() -> list[type[RegexMacro]]:
     """One auto-generated `RegexMacro` subclass per declared `regex_macro` op.
 
-    This function produces a list of entries to be used by `_REWRITERS` to
-    register all the `regex_macro` ops declared in `rewriters.pyl`.
+    This function produces the entries `_REWRITERS` registers for all the
+    `regex_macro` ops declared in `rewriters.pyl`.
     """
-    rewriters: dict[str, type[RegexMacro]] = {}
+    rewriters: list[type[RegexMacro]] = []
     for op_id, spec in RewritersEval.load().regex_macros.items():
-        name = op_id.split('.', 1)[1]
+        namespace, name = op_id.split('.', 1)
         first_paragraph = spec['description'].strip().split('\n\n', 1)[0]
-        rewriters[name] = type(
-            f'RegexMacro_{name}', (RegexMacro, ), {
-                'NAME': name,
-                'OP_ID': op_id,
-                'SUMMARY': ' '.join(first_paragraph.split()),
-                'HELP': _regex_macro_help(spec),
-            })
+        # `[Namespace][Name]Rewriter`, matching how the hand-written rewriters
+        # are named, so two rewriters sharing a `NAME` across namespaces never
+        # share a class name too.
+        class_name = (namespace.capitalize() +
+                      ''.join(word.capitalize()
+                              for word in name.split('_')) + 'Rewriter')
+        rewriters.append(
+            type(
+                class_name, (RegexMacro, ), {
+                    'NAME': name,
+                    'OP_ID': op_id,
+                    'SUMMARY': ' '.join(first_paragraph.split()),
+                    'HELP': _regex_macro_help(spec),
+                }))
     return rewriters
 
 
-# Every `regex_macro` op declared in `rewriters.pyl` joins `_REWRITERS`
-# alongside the hand-written rewriters above, each under its own bare name.
-_REWRITERS = MappingProxyType({**_REWRITERS, **_regex_macro_rewriters()})
+# The global registry of all rewriters plaster knows about, including the
+# regex macros and the ast-based hand-written rewriters.
+_REWRITERS: Final = RewriterRegistry(*_DECLARED_REWRITERS,
+                                     *_regex_macro_rewriters())
 
 
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
@@ -3364,7 +3537,7 @@ class Help(argparse.Action):
     """
 
     # The colour to be used to highlight each command/rewriter.
-    _TOPIC_STYLE = 'bold green'
+    _TOPIC_STYLE = 'bold yellow'
 
     def __init__(self, option_strings: list[str], dest: str,
                  commands: _CommandRegistry, **kwargs):
@@ -3396,6 +3569,10 @@ class Help(argparse.Action):
         With no topic, prints an overview. When called for a specific rewriters
         or command, it prints that topic's own docs. Returns the process exit
         code.
+
+        A rewriter topic may be a bare name (`make_virtual`), which documents
+        every namespace that name is in, or one qualified with a namespace
+        (`cxx.make_virtual`), which documents just that one.
         """
         if topic is None:
             self._print_overview()
@@ -3412,8 +3589,26 @@ class Help(argparse.Action):
         if topic in _REWRITERS:
             self._print_rewriter_help(topic)
             return 0
+        namespace, dot, name = topic.rpartition('.')
+        if dot and name in _REWRITERS:
+            return self._print_qualified_rewriter_help(namespace, name)
         console.print(f'[red]Unknown help topic:[/] {topic}', highlight=False)
         console.print('Run "plaster --help" to list commands and rewriters.')
+        return 1
+
+    def _print_qualified_rewriter_help(self, namespace: str, name: str) -> int:
+        """Print the docs for `name` in `namespace`, or explain it is not one.
+        """
+        candidates = _REWRITERS.candidates(name)
+        if namespace in candidates:
+            self._print_rewriter_help(name, namespace=namespace)
+            return 0
+        console.print(
+            f'[red]No[/] [{self._TOPIC_STYLE}]{name}[/] [red]rewriter in the '
+            f'[/][{self._TOPIC_STYLE}]{namespace}[/][red] namespace.[/]',
+            highlight=False)
+        console.print(f'It is available in: {", ".join(sorted(candidates))}.',
+                      highlight=False)
         return 1
 
     def _print_overview(self) -> None:
@@ -3437,27 +3632,52 @@ class Help(argparse.Action):
         self._print_topic_index('Commands', 'command', entries)
 
     def _print_rewriters(self) -> None:
-        """Print the `Rewriters` category from the rewriter registry."""
-        entries = [(name, rewriter.SUMMARY)
-                   for name, rewriter in _REWRITERS.items()]
-        self._print_topic_index('Rewriters', 'rewriter', entries)
+        """Print the `Rewriters` category, subdivided by namespace.
+        """
+        groups = _REWRITERS.by_namespace()
+        self._print_index_header('Rewriters', 'rewriter')
+        width = max((len(rewriter.NAME) for _, rewriters in groups
+                     for rewriter in rewriters),
+                    default=0)
+        for index, (namespace, rewriters) in enumerate(groups):
+            if index:
+                console.print()
+            console.print(f'  {namespace}:', highlight=False)
+            self._print_index_rows([(rewriter.NAME, rewriter.SUMMARY)
+                                    for rewriter in rewriters],
+                                   width=width,
+                                   indent=4)
 
     def _print_topic_index(self, title: str, kind: str,
                            entries: list[tuple[str, str]]) -> None:
-        """Print one help category: a header plus colourised `name summary`
-        rows.
+        """Print one flat help category: a header plus `name summary` rows.
 
         `kind` is the noun used in the "type ... for more details" hint (e.g.
         "command"). `entries` are `(name, summary)` pairs listed in order.
         """
+        self._print_index_header(title, kind)
+        self._print_index_rows(entries,
+                               width=max((len(name) for name, _ in entries),
+                                         default=0))
+
+    @staticmethod
+    def _print_index_header(title: str, kind: str) -> None:
+        """Print a help category's header line and its `--help <kind>` hint."""
         console.print(
             f'{title} [dim](type "plaster --help <{kind}>" for more '
             f'details)[/]:',
             highlight=False)
-        width = max((len(name) for name, _ in entries), default=0)
+
+    def _print_index_rows(self,
+                          entries: list[tuple[str, str]],
+                          *,
+                          width: int,
+                          indent: int = 2) -> None:
+        """Print colourised `name summary` rows, names padded to `width`."""
         for name, summary in entries:
             console.print(
-                f'  [{self._TOPIC_STYLE}]{name:<{width}}[/]  {summary}',
+                f'{"":<{indent}}[{self._TOPIC_STYLE}]{name:<{width}}[/]  '
+                f'{summary}',
                 highlight=False)
 
     @staticmethod
@@ -3469,15 +3689,44 @@ class Help(argparse.Action):
         for flags, summary in entries:
             console.print(f'  {flags:<{width}}  {summary}', highlight=False)
 
-    def _print_rewriter_help(self, name: str) -> None:
-        """Print the full docs for the rewriter registered under `name`."""
-        rewriter = _REWRITERS[name]
-        console.print(f'[{self._TOPIC_STYLE}]{name}[/] — {rewriter.SUMMARY}',
-                      highlight=False)
-        console.print()
-        # Rewriter help is authored in Markdown; render it with rich so inline
-        # code and the YAML example code block display nicely.
-        console.print(Markdown(rewriter.help_text()))
+    def _print_rewriter_help(self,
+                             name: str,
+                             *,
+                             namespace: str | None = None) -> None:
+        """Print the full docs for the rewriter(s) registered under `name`.
+
+        A name shared across namespaces has a rewriter per namespace, each
+        its own with its own docs, so by default each prints in full, labelled
+        by namespace to tell them apart, with a hint on how to ask for one.
+        `namespace` narrows that to the single rewriter it names.
+        """
+        candidates = _REWRITERS.candidates(name)
+        if namespace is not None:
+            selected = [candidates[namespace]]
+        else:
+            selected = sorted(
+                candidates.values(),
+                key=lambda cls:
+                (cls.namespace() == _GLOBAL_NAMESPACE, cls.namespace()))
+        # A lone rewriter needs no namespace label: there is nothing to tell
+        # it apart from, and the label would just be noise.
+        labelled = len(selected) > 1
+        for index, rewriter in enumerate(selected):
+            if index:
+                console.print()
+            label = (f' [dim]({rewriter.namespace()})[/]' if labelled else '')
+            console.print(
+                f'[{self._TOPIC_STYLE}]{name}[/]{label} — {rewriter.SUMMARY}',
+                highlight=False)
+            console.print()
+            # Rewriter help is authored in Markdown; render it with rich so
+            # inline code and the YAML example code block display nicely.
+            console.print(Markdown(rewriter.help_text()))
+        if labelled:
+            console.print(
+                f'[dim](type "plaster --help <namespace>.{name}" for just '
+                f'one of these)[/]',
+                highlight=False)
 
     def _option_entries(self) -> list[tuple[str, str]]:
         """`(flags, help)` rows for the active parser's global optionals.

@@ -1202,9 +1202,16 @@ class RewriterFormsTest(unittest.TestCase):
         plaster.PlasterFile(plaster_path).apply()
         return (self.fake_chromium_src.chromium / src).read_text()
 
-    def _expect_value_error(self, yaml_body: str, substr: str):
+    def _expect_value_error(self,
+                            yaml_body: str,
+                            substr: str,
+                            name: str = 'validation.cc'):
+        # Defaults to a C++ target, since most callers check how a cxx
+        # rewriter validates its own body -- which it only gets to do once the
+        # name has resolved to it, so the target has to be one it serves. Pass
+        # a `name` outside that namespace to test the resolution itself.
         with self.assertRaises(ValueError) as ctx:
-            self._apply('validation.idl', 'dummy', yaml_body)
+            self._apply(name, 'dummy', yaml_body)
         self.assertIn(substr, str(ctx.exception))
 
     # -- regex op -----------------------------------------------------------
@@ -3472,7 +3479,8 @@ class RewriterFormsTest(unittest.TestCase):
             "      re_pattern: 'x'\n"
             "      replace: 'y'\n",
             '`blank_metadata_header_macros` is only supported for C++ '
-            'sources')
+            'sources',
+            name='validation.idl')
 
     def test_metadata_header_flag_allowed_for_cxx_source(self):
         result = self._apply(
@@ -3619,8 +3627,8 @@ class RewriterFormsTest(unittest.TestCase):
             '      class_name: C\n', 'Unrecognised top-level plaster key')
 
     def test_blank_flag_rejected_for_non_cxx_source(self):
-        # `_expect_value_error` targets a `.idl` source; the flag only applies
-        # to C++ files, so it is rejected there.
+        # The flag only applies to C++ files, so it is rejected on a `.idl`
+        # target.
         self._expect_value_error(
             'blank_macros_for_ast_parsing: true\n'
             'substitutions:\n'
@@ -3628,7 +3636,8 @@ class RewriterFormsTest(unittest.TestCase):
             '    regex:\n'
             "      re_pattern: 'x'\n"
             "      replace: 'y'\n",
-            '`blank_macros_for_ast_parsing` is only supported for C++ sources')
+            '`blank_macros_for_ast_parsing` is only supported for C++ sources',
+            name='validation.idl')
 
     def test_blank_flag_allowed_for_cxx_source(self):
         # The same flag is accepted for a `.h` source (here with no AST work to
@@ -3692,7 +3701,8 @@ class RewriterFormsTest(unittest.TestCase):
             "      re_pattern: 'x'\n"
             "      replace: 'y'\n",
             '`blank_string_adjacent_macros_for_ast_parsing` is only '
-            'supported for C++ sources')
+            'supported for C++ sources',
+            name='validation.idl')
 
     def test_macros_flag_alone_does_not_enable_string_adjacent_pass(self):
         # Setting `blank_macros_for_ast_parsing` must not also enable the
@@ -3764,15 +3774,17 @@ class RewriterFormsTest(unittest.TestCase):
             '};\n')
 
     def test_ast_rewriter_rejected_for_non_cxx_source(self):
-        # AST rewriters (cxx.* ops) only work on C++ sources; the `.idl` target
-        # of `_expect_value_error` is not one.
+        # AST rewriters belong to the `cxx` namespace, which a `.idl` target
+        # is not in, so the name resolves to nothing usable here.
         self._expect_value_error(
             'substitutions:\n'
             '  - description: AST rewriter on a non-C++ source\n'
             '    make_virtual:\n'
             '      class_name: C\n'
             '      method_name: Foo\n',
-            'the `make_virtual` rewriter is only supported for C++ sources')
+            'the `make_virtual` rewriter is not available for this source, '
+            'which is not in any namespace it serves (cxx)',
+            name='validation.idl')
 
     def test_regex_rewriter_allowed_for_non_cxx_source(self):
         # Text rewriters are language-agnostic, so they work on any source.
@@ -3893,16 +3905,20 @@ class RegexMacroDispatchTest(unittest.TestCase):
             'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
 
     def test_registered_under_its_bare_name(self):
-        # The YAML key is the op id with its `cxx.` prefix stripped.
+        # The YAML key is the op id with its `cxx.` prefix stripped, and the
+        # prefix becomes the namespace it is registered under.
         self.assertIn('set_feature_flag_default_state', plaster._REWRITERS)
-        cls = plaster._REWRITERS['set_feature_flag_default_state']
+        cls = plaster._REWRITERS.resolve('set_feature_flag_default_state',
+                                         'cxx')
         self.assertTrue(issubclass(cls, plaster.RegexMacro))
         self.assertEqual(cls.OP_ID, 'cxx.set_feature_flag_default_state')
+        self.assertEqual(cls.namespace(), 'cxx')
 
     def test_help_text_lists_every_input(self):
         # `plaster --help <macro>` must document each input, not just the
         # macro's own top-level `description`.
-        cls = plaster._REWRITERS['set_feature_flag_default_state']
+        cls = plaster._REWRITERS.resolve('set_feature_flag_default_state',
+                                         'cxx')
         help_text = cls.help_text()
         self.assertIn('Fields:', help_text)
         self.assertIn('feature_name', help_text)
@@ -3918,7 +3934,7 @@ class RegexMacroDispatchTest(unittest.TestCase):
               '    set_feature_flag_default_state:\n' \
               '      feature_name: kFoo\n'
         with self.assertRaises(ValueError) as cm:
-            plaster.Substitution.from_yaml(spec)
+            plaster.Substitution.from_yaml(spec, namespace='cxx')
         self.assertIn('requires arg(s): value', str(cm.exception))
 
     def test_unknown_arg_is_rejected(self):
@@ -3929,7 +3945,7 @@ class RegexMacroDispatchTest(unittest.TestCase):
                 '      value: base::FEATURE_DISABLED_BY_DEFAULT\n'
                 '      bogus: x\n')
         with self.assertRaises(ValueError) as cm:
-            plaster.Substitution.from_yaml(spec)
+            plaster.Substitution.from_yaml(spec, namespace='cxx')
         self.assertIn("Unrecognised set_feature_flag_default_state arg(s)",
                       str(cm.exception))
         self.assertIn("'bogus'", str(cm.exception))
@@ -3941,7 +3957,7 @@ class RegexMacroDispatchTest(unittest.TestCase):
                 '      feature_name: kFoo\n'
                 '      value: 1\n')
         with self.assertRaises(ValueError) as cm:
-            plaster.Substitution.from_yaml(spec)
+            plaster.Substitution.from_yaml(spec, namespace='cxx')
         self.assertIn('must be a string', str(cm.exception))
 
     def test_unknown_macro_name_is_unrecognised(self):
@@ -3992,8 +4008,9 @@ class RegexMacroDispatchTest(unittest.TestCase):
                 '      feature_name: kFoo\n'
                 '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
         self.assertIn(
-            'the `set_feature_flag_default_state` rewriter is only '
-            'supported for C++ sources', str(cm.exception))
+            'the `set_feature_flag_default_state` rewriter is not available '
+            'for this source, which is not in any namespace it serves (cxx)',
+            str(cm.exception))
 
     def _expect_value_error(self, yaml_body: str, substr: str):
         with self.assertRaises(ValueError) as ctx:
@@ -4042,23 +4059,217 @@ class RegexMacroHelpTest(unittest.TestCase):
         self.assertLess(help_text.index('`foo`'), help_text.index('`bar`'))
 
 
+class RewriterNamespaceTest(unittest.TestCase):
+    """`RewriterNamespace` binds op-id prefixes, target suffixes and grammars.
+
+    It is the one table a new language is added to, so these check both that
+    the shipped entries are coherent and that a plaster's target resolves to
+    the namespace claiming its suffix.
+    """
+
+    # -- the shipped table ---------------------------------------------------
+
+    def test_every_namespace_is_indexed_under_its_own_name(self):
+        for name, namespace in plaster._NAMESPACE_BY_NAME.items():
+            self.assertEqual(namespace.name, name)
+
+    def test_a_source_namespace_claims_suffixes(self):
+        # Everything but the global namespace describes a real kind of
+        # source, so it must say which targets it covers. Whether it also
+        # names a grammar is a separate question -- see below.
+        for name, namespace in plaster._NAMESPACE_BY_NAME.items():
+            if name == plaster._GLOBAL_NAMESPACE:
+                continue
+            self.assertTrue(namespace.suffixes, f'{name} claims no suffixes')
+
+    def test_a_grammar_is_optional_and_independent_of_suffixes(self):
+        # A namespace names a grammar only when ast-grep can parse it. A
+        # language it cannot parse (GN, say) is still a perfectly good
+        # namespace with its own suffixes -- it just hosts text ops only. So
+        # claiming suffixes must not be taken to imply having a grammar.
+        for name, namespace in plaster._NAMESPACE_BY_NAME.items():
+            if namespace.ast_grep_language is None:
+                continue
+            self.assertTrue(
+                namespace.ast_grep_language,
+                f'{name} has an empty grammar id; use None to '
+                f'mean "ast-grep cannot parse this"')
+
+    def test_the_global_namespace_has_no_grammar_and_no_suffixes(self):
+        # `all` describes what a rewriter can be used on, not a kind of
+        # source: nothing is in it, and its ops are never parsed.
+        namespace = plaster._NAMESPACE_BY_NAME[plaster._GLOBAL_NAMESPACE]
+        self.assertIsNone(namespace.ast_grep_language)
+        self.assertEqual(namespace.suffixes, frozenset())
+
+    def test_no_suffix_is_claimed_by_two_namespaces(self):
+        # `_NAMESPACE_BY_SUFFIX` is built by flattening, so a suffix claimed
+        # twice would silently resolve to whichever namespace came last.
+        claimed = [
+            suffix for namespace in plaster._NAMESPACES
+            for suffix in namespace.suffixes
+        ]
+        self.assertCountEqual(claimed, set(claimed))
+
+    def test_suffix_index_covers_every_declared_suffix(self):
+        for namespace in plaster._NAMESPACES:
+            for suffix in namespace.suffixes:
+                self.assertIs(plaster._NAMESPACE_BY_SUFFIX[suffix], namespace)
+
+    # -- resolving a plaster's target ----------------------------------------
+
+    def test_cxx_targets_resolve_to_the_cxx_namespace(self):
+        for name in ('foo.cc.yaml', 'foo.h.yaml', 'foo.mm.yaml',
+                     'foo.cpp.yaml'):
+            self.assertEqual(
+                plaster._namespace_of_source(Path('rewrite/dir') / name),
+                'cxx', name)
+
+    def test_unclaimed_suffix_resolves_to_no_namespace(self):
+        self.assertIsNone(
+            plaster._namespace_of_source(Path('rewrite/foo.idl.yaml')))
+        self.assertIsNone(
+            plaster._namespace_of_source(Path('rewrite/foo.grd.yaml')))
+
+    def test_only_the_suffix_before_yaml_decides(self):
+        # A `.cc` earlier in the name must not make a `.idl` target C++.
+        self.assertIsNone(
+            plaster._namespace_of_source(Path('rewrite/foo.cc.idl.yaml')))
+
+    def test_is_cxx_source_agrees_with_the_namespace(self):
+        self.assertTrue(plaster._is_cxx_source(Path('rewrite/foo.cc.yaml')))
+        self.assertFalse(plaster._is_cxx_source(Path('rewrite/foo.idl.yaml')))
+
+    def test_no_target_resolves_to_the_global_namespace(self):
+        # `all` is a fallback, never something a target is in, so no suffix
+        # may lead to it.
+        self.assertNotIn(
+            plaster._GLOBAL_NAMESPACE,
+            {ns.name
+             for ns in plaster._NAMESPACE_BY_SUFFIX.values()})
+
+
 class RewriterRegistryTest(unittest.TestCase):
-    """The `_REWRITERS` registry drives both YAML dispatch and help."""
+    """`RewriterRegistry` drives both YAML dispatch and help.
 
-    def test_regex_is_registered_under_its_name(self):
-        self.assertIs(plaster._REWRITERS['regex'], plaster.Regex)
+    The shipped registry (`_REWRITERS`) is checked for the invariants every
+    rewriter must hold; the namespace machinery itself is exercised against
+    purpose-built registries, so the cases stay stable as real rewriters come
+    and go.
+    """
 
-    def test_registry_is_read_only(self):
+    @staticmethod
+    def _rewriter(name: str,
+                  namespace: str,
+                  summary: str = 's') -> type[plaster.Rewriter]:
+        """A throwaway rewriter class with the given name and namespace."""
+        return type(
+            f'{namespace.capitalize()}{name}Rewriter',
+            (plaster.AllRegexRewriter, ), {
+                'NAME': name,
+                'SUMMARY': summary,
+                'HELP': 'help',
+                'namespace': classmethod(lambda cls, ns=namespace: ns),
+            })
+
+    # -- the shipped registry ------------------------------------------------
+
+    def test_regex_is_registered_in_the_global_namespace(self):
+        self.assertEqual(plaster.AllRegexRewriter.namespace(),
+                         plaster._GLOBAL_NAMESPACE)
+        self.assertEqual(dict(plaster._REWRITERS.candidates('regex')),
+                         {plaster._GLOBAL_NAMESPACE: plaster.AllRegexRewriter})
+
+    def test_a_global_rewriter_resolves_for_any_target(self):
+        for target in ('cxx', None):
+            self.assertIs(plaster._REWRITERS.resolve('regex', target),
+                          plaster.AllRegexRewriter)
+
+    def test_candidates_are_read_only(self):
         with self.assertRaises(TypeError):
-            plaster._REWRITERS['regex'] = plaster.Regex
+            plaster._REWRITERS.candidates('regex')[
+                plaster._GLOBAL_NAMESPACE] = None
 
     def test_every_rewriter_is_self_describing(self):
-        # Each rewriter must be keyed by its own NAME and carry the metadata the
-        # help system relies on, so a new rewriter can never show up blank.
-        for name, cls in plaster._REWRITERS.items():
-            self.assertEqual(cls.NAME, name)
-            self.assertTrue(cls.SUMMARY, f'{name} is missing a SUMMARY')
-            self.assertTrue(cls.help_text(), f'{name} is missing help text')
+        # Each rewriter must be keyed by its own NAME, agree with the
+        # namespace it is filed under, and carry the metadata the help system
+        # relies on, so a new rewriter can never show up blank or misfiled.
+        for name in plaster._REWRITERS.names:
+            for namespace, cls in plaster._REWRITERS.candidates(name).items():
+                label = f'{name} ({namespace})'
+                self.assertEqual(cls.NAME, name)
+                self.assertEqual(cls.namespace(), namespace)
+                self.assertTrue(cls.SUMMARY, f'{label} is missing a SUMMARY')
+                self.assertTrue(cls.help_text(), f'{label} has no help text')
+
+    def test_every_rewriter_names_a_known_namespace(self):
+        known = set(plaster._NAMESPACE_BY_NAME)
+        for name in plaster._REWRITERS.names:
+            for namespace in plaster._REWRITERS.candidates(name):
+                self.assertIn(
+                    namespace, known,
+                    f'{name} is filed under an unregistered namespace')
+
+    # -- resolution ----------------------------------------------------------
+
+    def test_resolve_prefers_an_exact_namespace_match(self):
+        cxx = self._rewriter('shared', 'cxx')
+        js = self._rewriter('shared', 'js')
+        registry = plaster.RewriterRegistry(cxx, js)
+        self.assertIs(registry.resolve('shared', 'cxx'), cxx)
+        self.assertIs(registry.resolve('shared', 'js'), js)
+
+    def test_resolve_falls_back_to_the_global_namespace(self):
+        # A global rewriter reads the target as text, so it fits a target in
+        # any namespace -- and one in no namespace at all.
+        globally = self._rewriter('anywhere', plaster._GLOBAL_NAMESPACE)
+        registry = plaster.RewriterRegistry(globally)
+        self.assertIs(registry.resolve('anywhere', 'cxx'), globally)
+        self.assertIs(registry.resolve('anywhere', None), globally)
+
+    def test_exact_match_wins_over_the_global_fallback(self):
+        cxx = self._rewriter('shared', 'cxx')
+        globally = self._rewriter('shared', plaster._GLOBAL_NAMESPACE)
+        registry = plaster.RewriterRegistry(cxx, globally)
+        self.assertIs(registry.resolve('shared', 'cxx'), cxx)
+        self.assertIs(registry.resolve('shared', 'js'), globally)
+
+    def test_resolve_returns_none_for_a_namespace_it_does_not_serve(self):
+        registry = plaster.RewriterRegistry(self._rewriter('cxx_only', 'cxx'))
+        self.assertIsNone(registry.resolve('cxx_only', 'js'))
+        self.assertIsNone(registry.resolve('cxx_only', None))
+
+    def test_same_name_in_one_namespace_is_rejected(self):
+        # Two rewriters sharing a name *and* a namespace would silently
+        # shadow one another, so building the registry fails outright.
+        with self.assertRaises(AssertionError) as ctx:
+            plaster.RewriterRegistry(self._rewriter('clash', 'cxx'),
+                                     self._rewriter('clash', 'cxx'))
+        self.assertIn('registered twice', str(ctx.exception))
+        self.assertIn("'cxx'", str(ctx.exception))
+
+    def test_names_are_reported_once_regardless_of_namespace(self):
+        registry = plaster.RewriterRegistry(
+            self._rewriter('shared', 'cxx'), self._rewriter('shared', 'js'),
+            self._rewriter('solo', plaster._GLOBAL_NAMESPACE))
+        self.assertEqual(sorted(registry.names), ['shared', 'solo'])
+        self.assertIn('shared', registry)
+        self.assertNotIn('absent', registry)
+
+    # -- help grouping -------------------------------------------------------
+
+    def test_by_namespace_groups_and_sorts_with_the_global_one_last(self):
+        registry = plaster.RewriterRegistry(
+            self._rewriter('shared', 'js'), self._rewriter('shared', 'cxx'),
+            self._rewriter('alpha', 'cxx'),
+            self._rewriter('solo', plaster._GLOBAL_NAMESPACE))
+        grouped = [(namespace, [rewriter.NAME for rewriter in rewriters])
+                   for namespace, rewriters in registry.by_namespace()]
+        self.assertEqual(grouped, [
+            ('cxx', ['alpha', 'shared']),
+            ('js', ['shared']),
+            (plaster._GLOBAL_NAMESPACE, ['solo']),
+        ])
 
 
 class AstGrepCompositionTest(unittest.TestCase):
@@ -4071,13 +4282,13 @@ class AstGrepCompositionTest(unittest.TestCase):
     def test_declared_inputs_read_from_spec(self):
         # The accepted arg keys come from the op spec, not a duplicated class
         # constant.
-        self.assertEqual(plaster.MakeVirtual.declared_inputs(),
+        self.assertEqual(plaster.CxxMakeVirtualRewriter.declared_inputs(),
                          frozenset({'class_name', 'method_name'}))
-        self.assertEqual(plaster.DropFinal.declared_inputs(),
+        self.assertEqual(plaster.CxxDropFinalRewriter.declared_inputs(),
                          frozenset({'class_name'}))
 
     def test_flat_rewriter_expands_to_one_operation(self):
-        rewriter = plaster.MakeVirtual.parse(
+        rewriter = plaster.CxxMakeVirtualRewriter.parse(
             {
                 'class_name': 'C',
                 'method_name': 'Foo'
@@ -4090,7 +4301,7 @@ class AstGrepCompositionTest(unittest.TestCase):
         ])
 
     def test_add_friend_single_expands_to_one_operation(self):
-        rewriter = plaster.AddFriend.parse(
+        rewriter = plaster.CxxAddFriendRewriter.parse(
             {
                 'class_name': 'C',
                 'friend_type': 'class BraveC'
@@ -4106,7 +4317,7 @@ class AstGrepCompositionTest(unittest.TestCase):
     def test_add_friend_list_expands_reversed_to_preserve_order(self):
         # Each insertion goes to the top of the private section, so the ops are
         # emitted in reverse of the authored list to land them in order.
-        rewriter = plaster.AddFriend.parse(
+        rewriter = plaster.CxxAddFriendRewriter.parse(
             {
                 'class_name': 'C',
                 'friend_type': ['class BraveC', 'class BraveCTest'],
@@ -4274,6 +4485,43 @@ class RewritersEvalTest(unittest.TestCase):
                 'ast.matcher'].pop('cxx.find_class_method_decl')
 
         self._assert_invalid(mutate, 'Wrong keys')
+
+    def test_ast_op_in_the_global_namespace_is_rejected(self):
+        # `all` is a known namespace, so the op id itself is well-formed --
+        # but it names no grammar, and an ast op cannot be parsed without one.
+        def mutate(s):
+            s['ast.matcher']['all.find_class_method_decl'] = s[
+                'ast.matcher'].pop('cxx.find_class_method_decl')
+
+        self._assert_invalid(mutate, 'names no grammar to parse with')
+
+    def test_ast_rewriter_in_the_global_namespace_is_rejected(self):
+
+        def mutate(s):
+            s['ast.rewriter']['all.make_virtual'] = s['ast.rewriter'].pop(
+                'cxx.make_virtual')
+
+        self._assert_invalid(mutate, 'names no grammar to parse with')
+
+    def test_ast_op_in_an_unparseable_source_namespace_is_rejected(self):
+        # The same rejection, for the other reason a namespace can lack a
+        # grammar: a real kind of source, with its own suffixes, that
+        # ast-grep has no parser for. Text ops there are fine; ast ops are
+        # not, and must fail at load rather than at invocation.
+        unparseable = plaster.RewriterNamespace(name='gn',
+                                                ast_grep_language=None,
+                                                suffixes=frozenset(
+                                                    {'.gn', '.gni'}))
+        namespaces = dict(plaster._NAMESPACE_BY_NAME) | {'gn': unparseable}
+        self.addCleanup(setattr, plaster, '_NAMESPACE_BY_NAME',
+                        plaster._NAMESPACE_BY_NAME)
+        plaster._NAMESPACE_BY_NAME = namespaces
+
+        def mutate(s):
+            s['ast.matcher']['gn.find_class_method_decl'] = s[
+                'ast.matcher'].pop('cxx.find_class_method_decl')
+
+        self._assert_invalid(mutate, 'names no grammar to parse with')
 
     # -- matcher schema ------------------------------------------------------
 
@@ -5414,7 +5662,7 @@ class _ComposingAstGrepRewriter(plaster._AstGrepRewriter):
 
     Exists only to prove the base's `apply` drives and accumulates across an
     arbitrary `operations()` list -- the composition seam itself, with no
-    concrete rewriter (MakeVirtual/AddFriend/DropFinal) in the picture.
+    concrete rewriter (CxxMakeVirtualRewriter/CxxAddFriendRewriter/CxxDropFinalRewriter) in the picture.
     """
 
     NAME = 'composing_test_op'
@@ -5681,11 +5929,85 @@ class HelpTest(unittest.TestCase):
         self.assertIn('regex', out)
         self.assertNotIn('Commands', out)
 
+    def test_rewriters_are_grouped_by_namespace(self):
+        # One `Rewriters` index, with the namespaces as headings inside it --
+        # the header and its hint are not repeated per group.
+        code, out = self._parse('rewriters')
+        self.assertEqual(code, 0)
+        self.assertEqual(out.count('type "plaster --help <rewriter>"'), 1)
+        for namespace in plaster._NAMESPACE_BY_NAME:
+            self.assertIn(f'{namespace}:', out)
+        # The namespace-agnostic rewriters get a heading of their own, last.
+        self.assertIn('all:', out)
+        self.assertLess(out.index('cxx:'), out.index('all:'))
+
+    def test_namespaced_rewriter_is_listed_under_its_namespace(self):
+        code, out = self._parse('rewriters')
+        self.assertEqual(code, 0)
+        cxx_section = out[out.index('cxx:'):out.index('all:')]
+        agnostic_section = out[out.index('all:'):]
+        self.assertIn('make_virtual', cxx_section)
+        self.assertNotIn('make_virtual', agnostic_section)
+        self.assertIn('regex', agnostic_section)
+
     def test_rewriter_topic_prints_its_docs(self):
         code, out = self._parse('regex')
         self.assertEqual(code, 0)
         self.assertIn('re.subn', out)
         self.assertIn('re_flags', out)
+
+    def test_namespace_qualified_rewriter_topic_prints_its_docs(self):
+        # `<namespace>.<name>` asks for one specific rewriter.
+        code, out = self._parse('cxx.make_virtual')
+        self.assertEqual(code, 0)
+        self.assertIn('class_name', out)
+
+    def test_qualified_topic_in_the_wrong_namespace_is_an_error(self):
+        # The name is real, so the error names the namespaces it does serve
+        # rather than falling through to the generic unknown-topic message.
+        code, out = self._parse('js.make_virtual')
+        self.assertEqual(code, 1)
+        self.assertNotIn('Unknown help topic', out)
+        self.assertIn('make_virtual', out)
+        self.assertIn('js', out)
+        self.assertIn('cxx', out)
+
+    def test_qualified_topic_with_an_unknown_name_is_unknown(self):
+        code, out = self._parse('cxx.not_a_rewriter')
+        self.assertEqual(code, 1)
+        self.assertIn('Unknown help topic', out)
+
+    def test_shared_name_documents_every_namespace_and_hints_at_narrowing(
+            self):
+        # A bare name covers each namespace it is in, labels them, and says
+        # how to ask for just one. Uses a purpose-built registry so the case
+        # holds whether or not a real name happens to be shared today.
+        shared = type(
+            'AllSharedRewriter', (plaster.AllRegexRewriter, ), {
+                'NAME': 'shared',
+                'SUMMARY': 'The global one.',
+                'HELP': 'Global docs.',
+            })
+        cxx = type(
+            'CxxSharedRewriter', (plaster.AllRegexRewriter, ), {
+                'NAME': 'shared',
+                'SUMMARY': 'The C++ one.',
+                'HELP': 'Cxx docs.',
+                'namespace': classmethod(lambda cls: 'cxx'),
+            })
+        self.addCleanup(setattr, plaster, '_REWRITERS', plaster._REWRITERS)
+        plaster._REWRITERS = plaster.RewriterRegistry(shared, cxx)
+
+        code, out = self._parse('shared')
+        self.assertEqual(code, 0)
+        self.assertIn('Cxx docs.', out)
+        self.assertIn('Global docs.', out)
+        self.assertIn('<namespace>.shared', out)
+
+        code, out = self._parse('cxx.shared')
+        self.assertEqual(code, 0)
+        self.assertIn('Cxx docs.', out)
+        self.assertNotIn('Global docs.', out)
 
     def test_command_topic_prints_argparse_help(self):
         code, out = self._parse('apply')
