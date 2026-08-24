@@ -181,6 +181,12 @@ extension BrowserViewController: TabManagerDelegate {
       }
       self.present(quickViewController, animated: true)
     }
+    tab.blockedDomainTabHelper = .init(
+      tab: tab,
+      onBlockedDomainRequest: { [weak tab] request in
+        tab?.loadRequest(request)
+      }
+    )
   }
 
   func tabManager(
