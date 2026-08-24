@@ -1456,13 +1456,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveOverrideDownloadDangerLevel),     \
       },                                                                       \
       {                                                                        \
-          "brave-strip-downloaded-image-metadata",                             \
-          "Strip metadata from downloaded images",                             \
+          "brave-strip-image-metadata-v1",                                     \
+          "Strip tracking metadata from images",                               \
           "Removes tracking metadata, such as the Facebook IPTC identifiers, " \
-          "from JPEG and PNG images as they are downloaded.",                  \
+          "from images when they are downloaded/uploaded.",                    \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(image_metadata_stripper::features::               \
-                                 kStripDownloadedImageMetadata),               \
+          FEATURE_VALUE_TYPE(                                                  \
+              image_metadata_stripper::features::kStripImageMetadataV1),       \
       },                                                                       \
       {                                                                        \
           "brave-webcompat-exceptions-service",                                \
