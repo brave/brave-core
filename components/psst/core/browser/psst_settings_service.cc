@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/psst/core/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -128,7 +129,8 @@ void PsstSettingsService::SetPsstWebsiteSettings(
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
-  return IsPsstEnabledForProfile(*prefs_);
+  return features::IsPsstFeatureFlagEnabled() &&
+         IsPsstSettingPrefEnabled(*prefs_);
 }
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
@@ -136,7 +138,7 @@ void PsstSettingsService::SetPsstEnabled(bool enabled) {
 }
 
 bool PsstSettingsService::IsManagedPreference() const {
-  return prefs_->IsManagedPreference(prefs::kPsstEnabled);
+  return IsPsstManaged(*prefs_);
 }
 
 void PsstSettingsService::SetInfobarShowCounter(int value) {

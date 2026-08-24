@@ -12,7 +12,7 @@ namespace psst::features {
 
 BASE_DECLARE_FEATURE(kEnablePsst);
 
-bool IsPsstEnabled();
+bool IsPsstFeatureFlagEnabled();
 
 }  // namespace psst::features
 

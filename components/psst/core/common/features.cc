@@ -9,7 +9,7 @@ namespace psst::features {
 
 BASE_FEATURE(kEnablePsst, base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsPsstEnabled() {
+bool IsPsstFeatureFlagEnabled() {
   return base::FeatureList::IsEnabled(psst::features::kEnablePsst);
 }
 

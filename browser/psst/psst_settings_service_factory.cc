@@ -11,6 +11,7 @@
 #include "base/no_destructor.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
+#include "brave/components/psst/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
@@ -47,9 +48,9 @@ PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
 
-  if (!profile ||
-      (!psst::IsPsstEnabledForProfile(*profile->GetPrefs()) &&
-       profile->GetPrefs()->IsManagedPreference(psst::prefs::kPsstEnabled))) {
+  if (!profile || ((!psst::features::IsPsstFeatureFlagEnabled() ||
+                    !psst::IsPsstSettingPrefEnabled(*profile->GetPrefs())) &&
+                   psst::IsPsstManaged(*profile->GetPrefs()))) {
     return nullptr;
   }
 

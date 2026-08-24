@@ -71,7 +71,7 @@ PsstActionController::PsstActionController(
           static_cast<page_actions::PageActionControllerImpl&>(
               page_action_controller)),
       hide_disable_psst_menu_item_(hide_disable_psst_menu_item) {
-  CHECK(psst::features::IsPsstEnabled());
+  CHECK(psst::features::IsPsstFeatureFlagEnabled());
 }
 
 PsstActionController::~PsstActionController() = default;

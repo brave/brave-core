@@ -309,7 +309,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
               profile));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
-  html_source->AddBoolean("isPsstEnabled", psst::features::IsPsstEnabled());
+  html_source->AddBoolean("isPsstEnabled",
+                          psst::features::IsPsstFeatureFlagEnabled());
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(

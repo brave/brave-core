@@ -5,7 +5,6 @@
 
 #include "brave/components/psst/core/browser/pref_names.h"
 
-#include "brave/components/psst/core/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace psst {
@@ -15,9 +14,12 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(prefs::kPsstInfobarShownCounter, 0);
 }
 
-bool IsPsstEnabledForProfile(const PrefService& pref_service) {
-  return features::IsPsstEnabled() &&
-         pref_service.GetBoolean(prefs::kPsstEnabled);
+bool IsPsstSettingPrefEnabled(const PrefService& pref_service) {
+  return pref_service.GetBoolean(prefs::kPsstEnabled);
+}
+
+bool IsPsstManaged(const PrefService& pref_service) {
+  return pref_service.IsManagedPreference(prefs::kPsstEnabled);
 }
 
 }  // namespace psst
