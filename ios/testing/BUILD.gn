@@ -3,8 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
 
 test("ios_brave_unit_tests") {
@@ -25,6 +27,7 @@ test("ios_brave_unit_tests") {
 
     # Unit tests
     ":legacy_unit_tests",
+    ":mojom_objc_generator_unit_tests",
     "//brave/ios/browser/brave_ads:unit_tests",
     "//brave/ios/browser/brave_shields:unit_tests",
     "//brave/ios/browser/brave_shields/cosmetic_filtering:unit_tests",
@@ -62,4 +65,25 @@ source_set("legacy_unit_tests") {
     "Foundation.framework",
     "Security.framework",
   ]
+}
+
+source_set("mojom_objc_generator_unit_tests") {
+  testonly = true
+
+  sources = [ "mojom_objc_generator_unittest.mm" ]
+
+  deps = [
+    ":mojom_objc_generator_test_mojom_objc",
+    "//testing/gtest",
+  ]
+}
+
+mojom("mojom_objc_generator_test_mojom") {
+  sources = [ "mojom_objc_generator_test.mojom" ]
+}
+
+ios_objc_mojom_wrappers("mojom_objc_generator_test_mojom_objc") {
+  generate_namespace = false
+  mojom_target = ":mojom_objc_generator_test_mojom"
+  sources = [ "mojom_objc_generator_test.mojom" ]
 }

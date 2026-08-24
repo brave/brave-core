@@ -224,7 +224,19 @@ class EnumMojoTypemap(MojoTypemap):
         return mojom.IsEnumKind(kind)
     def _ObjCWrappedType(self):
         return "%s%s" % (ObjCPrefixFromKind(self.kind), self.kind.name)
+
+    def _IsNullable(self):
+        return mojom.IsNullableKind(self.kind)
+
+    def _ObjCBoxType(self):
+        return "%sBox*" % self._ObjCWrappedType()
+
+    def _ObjCBoxClass(self):
+        return "%sBox" % self._ObjCWrappedType()
+
     def ObjCWrappedType(self):
+        if self._IsNullable():
+            return self._ObjCBoxType()
         if self.is_inside_container:
             return "NSNumber*"
         return self._ObjCWrappedType()
@@ -235,11 +247,16 @@ class EnumMojoTypemap(MojoTypemap):
             return None
         return self.CppToObjC("%s::%s" % (self.ExpectedCppType(), default.name))
     def ObjCToCpp(self, accessor):
-        if self.is_inside_container:
+        if self._IsNullable():
+            accessor = "%s.value" % accessor
+        elif self.is_inside_container:
             accessor = "%s.intValue" % accessor
         return "static_cast<%s>(%s)" % (self.ExpectedCppType(), accessor)
     def CppToObjC(self, accessor):
         result = "static_cast<%s>(%s)" % (self._ObjCWrappedType(), accessor)
+        if self._IsNullable():
+            return "[[%s alloc] initWithValue:%s]" % (self._ObjCBoxClass(),
+                                                      result)
         if self.is_inside_container:
             return "@(%s)" % result
         return result
@@ -680,6 +697,36 @@ class Generator(generator.Generator):
             return True
         return False
 
+    def _CollectNullableEnumKinds(self, kind, found):
+        if mojom.IsNullableKind(kind) and mojom.IsEnumKind(kind):
+            # Nullable/non-nullable variants share this dict, so it
+            # uniquely identifies the underlying enum type.
+            found.add(id(kind.shared_definition))
+        elif mojom.IsArrayKind(kind):
+            self._CollectNullableEnumKinds(kind.kind, found)
+        elif mojom.IsMapKind(kind):
+            self._CollectNullableEnumKinds(kind.key_kind, found)
+            self._CollectNullableEnumKinds(kind.value_kind, found)
+
+    def _GetNullableEnums(self, all_structs, all_unions, all_interfaces,
+                          all_enums):
+        found = set()
+        for struct in all_structs:
+            for field in struct.fields:
+                self._CollectNullableEnumKinds(field.kind, found)
+        for union in all_unions:
+            for field in union.fields:
+                self._CollectNullableEnumKinds(field.kind, found)
+        for interface in all_interfaces:
+            for method in interface.methods:
+                for param in method.parameters:
+                    self._CollectNullableEnumKinds(param.kind, found)
+                for param in (method.response_parameters or []):
+                    self._CollectNullableEnumKinds(param.kind, found)
+        return [
+            enum for enum in all_enums if id(enum.shared_definition) in found
+        ]
+
     def _ConstObjCAssign(self, constant):
         kind = constant.kind
         # Obj-C only supports a handful of constant types
@@ -736,8 +783,11 @@ class Generator(generator.Generator):
 
         for interface in self.module.interfaces:
             all_enums.extend(interface.enums)
+        nullable_enums = self._GetNullableEnums(all_structs, all_unions,
+                                                all_interfaces, all_enums)
         return {
             "all_enums": all_enums,
+            "nullable_enums": nullable_enums,
             "enums": self.module.enums,
             "imports": brave_imports,
             "interfaces": all_interfaces,

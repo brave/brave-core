@@ -1,0 +1,8 @@
+{%- set enum_type = "%s%s"|format(class_prefix, enum.name) %}
+{%- set box_type = "%sBox"|format(enum_type) %}
+OBJC_EXPORT
+NS_SWIFT_NAME({{class_prefix}}.{{enum.name}}Box)
+@interface {{box_type}} : NSObject
+- (instancetype)initWithValue:({{enum_type}})value;
+@property (nonatomic) {{enum_type}} value;
+@end
