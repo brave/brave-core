@@ -35,7 +35,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
-#include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom-forward.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)

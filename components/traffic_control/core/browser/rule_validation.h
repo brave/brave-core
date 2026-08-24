@@ -13,10 +13,10 @@
 
 namespace traffic_control {
 
-// Returns true if `filter_text` is valid freeform URL-filter text: one policy
+// Returns true if `filter_text` is valid URL-filter text: one policy
 // URL-blocklist pattern per line (see url_matcher::util::FilterToComponents).
-// Empty lines and lines starting with `#` are ignored. At least one valid
-// pattern is required.
+// Blank lines and `#` comments are skipped. Any other line that fails to parse
+// makes the whole filter invalid. At least one valid pattern is required.
 bool IsValidUrlFilter(std::string_view filter_text);
 
 // Returns an error if the given rule properties are invalid for add/update.

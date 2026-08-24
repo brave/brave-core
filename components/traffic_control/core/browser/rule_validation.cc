@@ -32,8 +32,9 @@ bool IsValidUrlFilterLine(std::string_view filter) {
 }  // namespace
 
 bool IsValidUrlFilter(std::string_view filter_text) {
-  // Freeform multiline text: one pattern per line. Empty lines and `#`
-  // comments are ignored. At least one valid pattern is required.
+  // One pattern per line. Blank lines and `#` comments are skipped. Any other
+  // line that fails to parse makes the whole filter invalid. At least one
+  // valid pattern is required.
   bool has_pattern = false;
   for (std::string_view line : base::SplitStringPiece(
            filter_text, "\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL)) {

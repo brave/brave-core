@@ -291,6 +291,7 @@ if (enable_containers) {
 }
 
 if (enable_traffic_control) {
+  assert(enable_containers)
   brave_settings_ts_files += [
     "brave_content_page/traffic_control_browser_proxy.ts",
     "brave_content_page/traffic_control_utils.ts",
