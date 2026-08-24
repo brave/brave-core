@@ -214,7 +214,7 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
   // managed preferences mode and was enabled at startup (e.g., admin or Brave
   // Origin policies)
   if (psst_settings_service_->IsManagedPreference() &&
-      psst_settings_service_->WasPsstEnabledAtStartup()) {
+      psst_settings_service_->was_enabled_at_startup()) {
     return;
   }
 

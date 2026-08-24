@@ -17,9 +17,14 @@ namespace psst {
 class PsstSettingsService;
 }  // namespace psst
 
+// Profile keyed service factory for the `PsstSettingsService`.
 class PsstSettingsServiceFactory : public ProfileKeyedServiceFactory {
  public:
+  // Returns the singleton instance of `PsstSettingsServiceFactory`.
   static PsstSettingsServiceFactory* GetInstance();
+
+  // Returns the instance of `PsstSettingsServiceFactory` for the passed
+  // `profile`.
   static psst::PsstSettingsService* GetForProfile(Profile* profile);
 
  private:
@@ -29,6 +34,9 @@ class PsstSettingsServiceFactory : public ProfileKeyedServiceFactory {
   ~PsstSettingsServiceFactory() override;
 
   // ProfileKeyedServiceFactory overrides:
+  //
+  // Returns nullptr when PSST is disabled via feature flag, or explicitly
+  // disabled via policy.
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };

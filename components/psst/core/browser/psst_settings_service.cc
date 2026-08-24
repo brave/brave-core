@@ -45,7 +45,9 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
 PsstSettingsService::PsstSettingsService(
     HostContentSettingsMap& host_content_settings_map,
     PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
+    : host_content_settings_map_(host_content_settings_map),
+      prefs_(prefs),
+      was_enabled_at_startup_(prefs_ && IsPsstEnabled()) {
   CHECK(prefs_);
 
   pref_change_registrar_.Init(prefs_);
@@ -53,7 +55,6 @@ PsstSettingsService::PsstSettingsService(
       prefs::kPsstEnabled,
       base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
-  was_enabled_at_startup_ = IsPsstEnabled();
 }
 
 PsstSettingsService::~PsstSettingsService() = default;
@@ -136,10 +137,6 @@ bool PsstSettingsService::IsPsstEnabled() const {
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
-}
-
-bool PsstSettingsService::WasPsstEnabledAtStartup() const {
-  return was_enabled_at_startup_;
 }
 
 bool PsstSettingsService::IsManagedPreference() const {
