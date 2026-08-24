@@ -92,7 +92,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         boolean isTablet =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                         ContextUtils.getApplicationContext());
-        if (isTablet) {
+        // The bottom navigation bar is not available on tablets, nor when upstream's bottom bar
+        // replaces it.
+        if (isTablet || BottomToolbarConfiguration.isAndroidBottomBarEnabled()) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         }
 

@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.toolbar.ToolbarHairlineView;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
@@ -232,6 +233,11 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     @Override
     protected void onLayoutManagerAvailable(LayoutManagerImpl layoutManager) {
         super.onLayoutManagerAvailable(layoutManager);
+
+        if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+            // Nothing to make room for at the bottom of the hub.
+            return;
+        }
 
         mHubManagerSupplier.onAvailable(
                 hubManager -> {
