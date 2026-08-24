@@ -175,6 +175,7 @@ export interface WalletState {
   isAnkrBalancesFeatureEnabled: boolean
   isRefreshingNetworksAndTokens: boolean
   isZCashShieldedTransactionsEnabled: boolean
+  isZCashIronwoodEnabled: boolean
   isCardanoEnabled: boolean
   isCardanoDappSupportEnabled: boolean
   isPolkadotEnabled: boolean

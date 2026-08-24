@@ -33,6 +33,8 @@ export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
   wallet.isRefreshingNetworksAndTokens
 export const isZCashShieldedTransactionsEnabled = ({ wallet }: State) =>
   wallet.isZCashShieldedTransactionsEnabled
+export const isZCashIronwoodEnabled = ({ wallet }: State) =>
+  wallet.isZCashIronwoodEnabled
 export const isPolkadotEnabled = ({ wallet }: State) => wallet.isPolkadotEnabled
 
 // memoized selectors (safe for objects and arrays)

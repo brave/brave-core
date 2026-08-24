@@ -1336,6 +1336,7 @@ export class MockedWalletApiProxy {
           isAnkrBalancesFeatureEnabled: false,
           isTransactionSimulationsFeatureEnabled: true,
           isZCashShieldedTransactionsEnabled: false,
+          isZCashIronwoodEnabled: false,
           enabledCoins: [
             BraveWallet.CoinType.BTC,
             BraveWallet.CoinType.ZEC,

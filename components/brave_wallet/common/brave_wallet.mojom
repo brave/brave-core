@@ -1023,6 +1023,7 @@ struct WalletInfo {
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
   bool is_z_cash_shielded_transactions_enabled;
+  bool is_z_cash_ironwood_enabled;
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
