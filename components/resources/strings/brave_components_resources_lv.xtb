@@ -525,10 +525,9 @@
     }</translation>
 <translation id="3264975266761862670">Vai esat gatavs sākt pelnīt?</translation>
 <translation id="2784412028126205842">Pievienot izmaksas kontu</translation>
-<translation id="1789518312567918588">{ADS_VIEWED, plural,
-  =0 {Jūs redzējāt <ph name="COUNT_BEGIN"/> # reklāmas<ph name="COUNT_END"/> šomēnes}
-  =1 {Jūs varētu saņemt samaksu par <ph name="COUNT_BEGIN"/> # reklāmu<ph name="COUNT_END"/>, ko redzējāt šajā mēnesī.}
-  other {Jūs varētu saņemt samaksu par <ph name="COUNT_BEGIN"/> # reklāmām<ph name="COUNT_END"/>, ko redzējāt šajā mēnesī.}
+<translation id="4083788716319248418">{ADS_VIEWED, plural,
+  =1 {Jūs šomēnes esat skatījuši <ph name="COUNT_BEGIN"/> # reklāmu<ph name="COUNT_END"/>}
+  other {Jūs šomēnes esat skatījuši <ph name="COUNT_BEGIN"/> # reklāmas<ph name="COUNT_END"/>}
 }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
   =0 {Jūs šomēnes esat skatījuši <ph name="COUNT_BEGIN"/> # reklāmas<ph name="COUNT_END"/>}
@@ -1135,6 +1134,7 @@
 <translation id="793994607260936590">pirmais</translation>
 <translation id="4709524402122994378">darījumi</translation>
 <translation id="4591079278963448049">Saistītais marķiera konts vēl neeksistē. Tā izveidei un finansēšanai tiks izmantots neliels daudzums SOL.</translation>
+<translation id="1468846486094099016">Aptuvenā paraksta datu slodze</translation>
 <translation id="3240773103344793224">Pieprasīta konta īpašnieka maiņa</translation>
 <translation id="8041423758956015568">Ar šo darījumu konta īpašumtiesības tiks piešķirtas jaunai programmai. Šī darbība ir neatgriežama un var radīt līdzekļu zaudēšanu.</translation>
 <translation id="1426320910664514906">Gas robežvērtība</translation>
@@ -1604,6 +1604,13 @@
 <translation id="5333225216561354793">Jums jāapstiprina turpmāk aprakstītais</translation>
 <translation id="4284971227128011550">Es saprotu, ka šis ir pašapkalpošanās maks un ka es viens pats esmu atbildīgs par visiem saistītajiem līdzekļiem, aktīviem un kontiem un par attiecīgu darbību veikšanu sava maka aizsardzībai, drošībai un atgūšanai. Es saprotu, ka Brave nevar piekļūt manam makam vai atcelt darījumus manā vārdā un ka mana atgūšanas frāze ir VIENĪGAIS veids, kā atgūt piekļuvi nozaudētas paroles, nozagtas ierīces vai līdzīgas situācijas gadījumā.</translation>
 <translation id="3604445540387095708">Esmu izlasījis <ph name="LINK_BEFORE"/>lietošanas noteikumus<ph name="LINK_AFTER"/> un piekrītu tiem.</translation>
+<translation id="7298195798382681320">Ieteicams</translation>
+<translation id="5261730884092815272">12 vārdi</translation>
+<translation id="4937679440025366600">24 vārdi</translation>
+<translation id="7875799385764282380">Spēcīga drošība un ātrāk pierakstāma. Izmanto vairums maku.</translation>
+<translation id="8157829085295816223">Maksimāla drošības rezerve. Piemērota lietošanai citos makos (kuriem var būt nepieciešama 24 vārdu frāze).</translation>
+<translation id="4357180991717571915">Izvēlieties savas atjaunošanas frāzes garumu</translation>
+<translation id="8997001537838391693">Jūsu atjaunošanas frāze atjauno piekļuvi makam, ja aizmirstat paroli vai pazaudējat ierīci. Jūs to saglabāsiet nākamajos soļos.</translation>
 <translation id="1422451606553326863">Pirkt kripto</translation>
 <translation id="3887541341068007345">Notiek maka paplašinājumu pārbaude...</translation>
 <translation id="8407091560429310499">Atlasīt aktīvu</translation>
@@ -1845,6 +1852,8 @@
 <translation id="7716113567047550378">Lūdzu, neaizveriet šo logu, kamēr sinhronizācija nav pabeigta.</translation>
 <translation id="5123590959308755060">Turpināt lietot maku jaunā cilnē</translation>
 <translation id="4594014034647546191">Šifrēta konta sākuma bloks</translation>
+<translation id="2242190818083876475">Atiestatīt konta sākuma datumu</translation>
+<translation id="5080237867196215050">Konta sākuma datuma atiestatīšanai būs nepieciešama pilna atkārtota sinhronizācija. Ievadiet jaunu sākuma bloku un noklikšķiniet uz "Atiestatīt konta sākuma datumu", lai turpinātu.</translation>
 <translation id="6666784075827260119">Konta sākuma blokam jābūt lielākam par <ph name="BLOCK_NUMBER"/></translation>
 <translation id="3102477628835823956">Konta sākuma blokam jābūt mazākam par <ph name="BLOCK_NUMBER"/></translation>
 <translation id="6850229669854962550"><ph name="BLOCKS"/> nav apstrādāti</translation>
@@ -1991,6 +2000,10 @@
 <translation id="7948579849190819732">Pašreizējā cilne</translation>
 <translation id="7056969230130642253">East informēts par visu aktuālo</translation>
 <translation id="7292242212818928219">Ir pieejams jauns saturs. Ielādēt atkārtoti?</translation>
+<translation id="6007028324976222777">Importēt no OPML</translation>
+<translation id="8871004282386501355">Eksportēt uz OPML</translation>
+<translation id="481478016164478903">Pievienoti <ph name="PUBLISHER_COUNT"/> izdevēji, <ph name="FEED_COUNT"/> tiešās plūsmas un <ph name="CHANNEL_COUNT"/> kanāli. Izlaisti <ph name="SKIPPED_COUNT"/> jau pievienoti.</translation>
+<translation id="5537748547202815718">Neizdevās importēt šo failu. Pārliecinieties, ka tas ir derīgs OPML fails.</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">Pārsūtīt</translation>
 <translation id="1272079795634619415">Apturēt</translation>
@@ -1998,6 +2011,8 @@
 <translation id="7211681214230730336">Ielādēt vēlreiz, notīrot kešatmiņu</translation>
 <translation id="1779766957982586368">Aizvērt logu</translation>
 <translation id="5210365745912300556">Aizvērt cilni</translation>
+<translation id="8852436503814917529">Pārslēgties uz nākamo cilni</translation>
+<translation id="1543046737011894871">Pārslēgties uz iepriekšējo cilni</translation>
 <translation id="2291643155573394834">Nākamā cilne</translation>
 <translation id="7748528009589593815">Iepriekšējā cilne</translation>
 <translation id="3738690686686515962">Atlasīt 0. cilni</translation>
@@ -2015,7 +2030,6 @@
 <translation id="4841735924729216702">Loga izvēlne</translation>
 <translation id="3649256019230929621">Minimizēt logu</translation>
 <translation id="906458777597946297">Maksimizēt logu</translation>
-<translation id="2082612610620888017">Parādīt visus logus</translation>
 <translation id="1111843722790053332">Atvērt PWA logā</translation>
 <translation id="907981618023904259">Tīmekļa lietotņu iestatījumi</translation>
 <translation id="4138336125382947023">Tīmekļa lietotņu informācija</translation>
@@ -2074,7 +2088,6 @@
 <translation id="7012611213801651252">Parādīt iemiesojuma izvēlni</translation>
 <translation id="6263048902976129908">Atvērt/aizvērt izstrādātāja rīkus</translation>
 <translation id="1386786836007298307">Rādīt/slēpt rīkjoslu pilnekrāna režīmā</translation>
-<translation id="461433814913785913">Pielāgot Touch Bar</translation>
 <translation id="4722786500079380710">Ieslēgt/izslēgt JavaScript Apple notikumus</translation>
 <translation id="5825969867518399495">Instalēt PWA</translation>
 <translation id="7888244262238732644">Rādīt pārvaldības lapu</translation>
@@ -2114,7 +2127,11 @@
 <translation id="6332027154313182926">Ieslēgt/izslēgt Brave VPN</translation>
 <translation id="6539014233195996894">Ieslēgt/izslēgt skaņas izslēgšanu cilnē</translation>
 <translation id="2682865834956428001">Mainīt sānu joslas novietojumu</translation>
-<translation id="6105745639559695088">Ieslēgt/izslēgt sānu joslu</translation>
+<translation id="7095235686444800565">Pārslēgt pašreizējo sānu paneli</translation>
+<translation id="6330741325040551950">Pārslēgt grāmatzīmju sānu paneli</translation>
+<translation id="1973174482432326058">Pārslēgt lasīšanas saraksta sānu paneli</translation>
+<translation id="14910687022901840">Pārslēgt atskaņošanas saraksta sānu paneli</translation>
+<translation id="3195191401552731345">Pārslēgt Brave ziņu sānu paneli</translation>
 <translation id="3488252265135539275">Ieslēgt/izslēgt vertikālās cilnes</translation>
 <translation id="7134064542341959603">Rādīt/slēpt loga nosaukumu vertikālajās cilnēs</translation>
 <translation id="3067105725259639716">Konfigurēt Brave ziņas</translation>
@@ -2127,6 +2144,7 @@
 <translation id="134184943774258988">Komandas Visas grāmatzīmes pogas redzamība</translation>
 <translation id="2158862020143233462">Ieslēgt/izslēgt aizsargus</translation>
 <translation id="3010280727642018218">Ieslēgt/izslēgt JavaScript</translation>
+<translation id="8324318899000695659">Bloķēt elementus</translation>
 <translation id="188822869499214197">Rādīt atskaņošanas saraksta burbuli</translation>
 <translation id="3202536111478033084">Grupējiet cilnes pēc pašreizējās izcelsmes</translation>
 <translation id="6002210667729577411">Pārvietot grupu uz jaunu logu</translation>
@@ -2239,23 +2257,21 @@
 <translation id="7905602379229309187">Galapunkts pašlaik ir pārslogots. Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
 <translation id="8151638057146502721">Konfigurēt</translation>
 <translation id="999273441077650169">Modelis dinamiski mainās, lai izmantotu labāko modeli uzdevumam.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="1238020084128916796">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 3.1 8B – Meta izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Llama modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Qwen VL 30B – Alibaba Cloud izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Qwen savā drošajā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-5 – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GLM-5 modeli NEAR serveros caur viņu pārbaudāmo privāto drošo infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-5.1 – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GLM-5.1 modeli NEAR serveros caur viņu pārbaudāmo privāto drošo infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Sveiki, esmu Leo. Esmu Brave mākslīgā intelekta palīgs. Mani darbina Claude Instant — Anthropic radīts modelis, kas paredzēts sarunu un teksta apstrādes uzdevumiem. Claude Instant darbojas Brave infrastruktūrā, kas ir droša un pārvaldīta pašu spēkiem.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Haiku" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Haiku" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Sonnet" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Sonnet" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="6277330815126859513">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 4 Maverick – Meta izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Llama 4 Maverick modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="5833148755396048122">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GPT OSS 20B – OpenAI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GPT OSS 20B modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="5414593137581221307">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GPT OSS 120B – OpenAI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GPT OSS 120B modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="3399141352144059821">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Grok 4.3 – xAI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Grok 4.3 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="8868813509973985458">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GPT 5.4 – OpenAI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GPT 5.4 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Mistral Large – Mistral izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Mistral Large modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Alibaba Cloud izstrādātais modelis "Qwen 3 235B" dažādu uzdevumu risināšanai. Brave mitina modeli "Qwen 3 235B" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Deepseek V3.2 – Deepseek izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Deepseek V3.2 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="3767678495358551728">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Alibaba Cloud izstrādātais modelis "Qwen 3 Coder 480B" dažādu uzdevumu risināšanai. Brave mitina modeli "Qwen 3 Coder 480B" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Opus" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Opus" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-4-7-Flash – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GLM-4-7-Flash modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Kimi K2.5 – Moonshot AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Kimi K2.5 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="3484076625906498634">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Nemotron Nano 3 30B – NVIDIA izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Nemotron Nano 3 30B modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Brave Ocelot – Brave izstrādāts modelis tīmekļa lapu kopsavilkumam. Brave mitina Brave Ocelot modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokāls</translation>
@@ -2275,20 +2291,15 @@
 <translation id="5543505256451301851">Izmēģiniet 7 dienas bez maksas</translation>
 <translation id="849535826888024304">Ir sasniegts atbilžu biežuma limits</translation>
 <translation id="2252128900328632803">Esat sasniedzis Leo likmes ierobežojumu. Atslēdziet augstāku atbildes likmi, abonējot Premium, vai mēģiniet vēlreiz pēc neliela brīža.</translation>
-<translation id="4173478269537830374">Atklājiet dažādus AI modeļus</translation>
-<translation id="3245401959451976966">Atklājiet savu radošumu</translation>
-<translation id="4165928407303989823">Palieciet pie tēmas</translation>
-<translation id="2389665228467129817">Tērzējiet ilgāk</translation>
+<translation id="8746303650199962589">Piekļūstiet jaunākajiem LLM no Anthropic, OpenAI, DeepSeek un citiem</translation>
+<translation id="4366237751405135351">Atrodiet konkrētiem uzdevumiem paredzētus modeļus kodēšanai, satura ģenerēšanai un citiem mērķiem</translation>
+<translation id="7494418589245805538">Iegūstiet augstākus likmes ierobežojumus savām sarunām</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> ASV dolāri mēnesī</translation>
 <translation id="9031958221569934724"><ph name="PRICE_VALUE"/> ASV dolāri gadā</translation>
-<translation id="1028627582482425924">Viens gads</translation>
-<translation id="36366199652730057">Labākā cena</translation>
+<translation id="4955814292505481804">Gada</translation>
+<translation id="7724435637185902140">Ietaupiet ~17%</translation>
 <translation id="5151923271944811339">Pārslēgties uz bezmaksas modeli</translation>
 <translation id="5474757891469990756">Atbloķējiet pilnu Leo potenciālu ar Premium:</translation>
-<translation id="3453542753968940696">Prioritāra piekļuve jaudīgiem modeļiem ar dažādām prasmēm.</translation>
-<translation id="5031778211368112461">Piekļuves modeļi, kas labāk piemēroti radošiem uzdevumiem un satura radīšanai.</translation>
-<translation id="298783097210745222">Iegūstiet precīzākas atbildes niansētākām sarunām.</translation>
-<translation id="4314705522985583059">Iegūstiet augstākus likmju ierobežojumus ilgākām sarunām.</translation>
 <translation id="1068954060985569277">Jūsu Brave konta sesijas derīgums ir beidzies. Lūdzu, apmeklējiet sava konta  lapu, lai atsvaidzinātu, tad atgriezieties, lai izmantotu premium funkcijas.</translation>
 <translation id="94736968936709953">Atsauksme veiksmīgi nosūtīta</translation>
 <translation id="9109355817507033196">Atbilde nepatika</translation>
@@ -2338,6 +2349,10 @@
 <translation id="8742658901413346500">Saruna ir gara, un Leo, iespējams, drīz aizmirsīs dažādas lietas. Jūs varat piedalīties garākās sarunās, pārslēdzoties uz premium modeli, vai jūs varat notīrīt tērzēšanu, lai to atiestatītu.</translation>
 <translation id="6495402307502950726">Notīrīt sarunu</translation>
 <translation id="903201991022343217">Sākt jaunu sarunu</translation>
+<translation id="8742207701089910775">Kopīgot šo sarunu</translation>
+<translation id="4014016095804982975">Jūsu saruna tiks augšupielādēta šifrētā veidā, un to varēs atšifrēt tikai ar ģenerēto saiti. Brave nevarēs skatīt jūsu sarunu. Tikai jūs un cilvēki, ar kuriem kopīgojat šo saiti, varēs atšifrēt jūsu kopīgoto sarunu. Visas kopīgotās sarunas beigsies pēc 7 dienām.</translation>
+<translation id="1390174375123434798">Ģenerēt saiti</translation>
+<translation id="8904787158537906492">Saite kopēta starpliktuvē</translation>
 <translation id="8171760814579050200">Pārsaukt sarunu</translation>
 <translation id="402386227879573975">Kopēt visu sarunu</translation>
 <translation id="5397794290049113714">Jūs</translation>
@@ -2381,13 +2396,13 @@
 <translation id="7821251979960635244">Kolīdz sāksiet sarunu, jūsu sarunu vēsture tiks parādīta šeit.</translation>
 <translation id="887511360213807449">Vēstures saglabāšana ir atspējota</translation>
 <translation id="5380979378058584412">Lai skatītu iepriekšējās sarunas ar Leo, jums jāiespējo sarunu vēstures saglabāšana.</translation>
-<translation id="7348809809749151120">Ātri • Meklēt</translation>
 <translation id="3185367320601718531">Sarunas un teksta ģenerēšana</translation>
 <translation id="2793458212460902934">Ātri • Meklēt • Rīki</translation>
 <translation id="8506027496671575183">Meklēt • Vision • Rīki</translation>
 <translation id="3184606955650139158">Ātrais • Meklēšana • Redze</translation>
 <translation id="7465032796278724624">Pārbaudīta konfidencialitāte ar NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelis dinamiski mainās, lai izmantotu labāko modeli uzdevumam</translation>
+<translation id="7348809809749151120">Ātri • Meklēt</translation>
 <translation id="3213834013136637671">Meklēšana • Redze</translation>
 <translation id="5276681919620506371">Meklēt • Rīki</translation>
 <translation id="7434375176361995333">Kopsavilkumi • Ātri</translation>
@@ -2518,6 +2533,7 @@
 <translation id="3486480638399578250">Saglabājiet savas personīgās e-pasta adreses konfidencialitāti</translation>
 <translation id="7765422154906712751">Izveidojiet unikālas, uzģenerētas adreses, kas pārsūta ziņojumus uz jūsu Brave konta e-pastu un var tikt dzēstas jebkurā laikā. Saglabājiet savu faktisko e-pasta adresi konfidenciālu un nepieejamu reklāmdevējiem.</translation>
 <translation id="71316462802471551">E-pasta pseidonīmi</translation>
+<translation id="7901376755618482277">Rādīt "Jauns aizstājvārds" norādi e-pasta laukos</translation>
 <translation id="6002159997868894136">Klikšķiniet, lai kopētu pseidonīmu</translation>
 <translation id="8105770564756958406">Izmanto <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">Izveidojiet līdz 5 bezmaksas e-pasta pseidonīmiem, lai saglabātu savu īsto e-pasta adresi konfidenciālu.</translation>
@@ -2563,6 +2579,10 @@
 <translation id="367191282389216837">Nederīga atbilde no pakalpojuma E-pasta aizstājvārdi</translation>
 <translation id="7203490731644771170">E-pasta aizstājvārdu pakalpojuma kļūda: <ph name="ERROR"/></translation>
 <translation id="8767862600155091621">Kļūda: Lietotājvārds nav pieejams</translation>
+<translation id="1706715315466634757">E-pasta aizstājvārdi</translation>
+<translation id="7087933122203937032">Izveidojiet unikālas, uzģenerētas adreses, kas pārsūta ziņojumus uz jūsu Brave konta e-pastu un var tikt dzēstas jebkurā laikā. Saglabājiet savu faktisko e-pasta adresi konfidenciālu un nepieejamu reklāmdevējiem.</translation>
+<translation id="8057865981284642090">Lai izmantotu e-pasta aizstājvārdus, jums jābūt pieteiktam savā Brave kontā. Sāciet, noklikšķinot uz zemāk esošās pogas.</translation>
+<translation id="4472575034687746823">Sākt darbu</translation>
 <translation id="8370801182970639038">Automātiski (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Iespējotās meklētājprogrammas</translation>
 <translation id="8285901519864208412">Slēpt kartīti “Rewards”</translation>
@@ -2641,7 +2661,6 @@
 <translation id="9204041448536398473">Globālie aizsarga iestatījumi</translation>
 <translation id="2108334320919763866">Globālie noklusējuma iestatījumi</translation>
 <translation id="1896472873031845605">Globālie iestatījumi</translation>
-<translation id="8324318899000695659">Bloķēt elementus</translation>
 <translation id="7205939464631857223">Notīrīt visus bloķētos elementus</translation>
 <translation id="3440043456924990296">Organizācijas pārvaldītie iestatījumi</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
@@ -2742,6 +2761,21 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6764845498618413165">Uzzināt vairāk.</translation>
 <translation id="7818938154803162778">Protams, es palīdzēšu</translation>
 <translation id="7207456302801184289">Laipni lūdzam pārlūkā Brave!</translation>
+<translation id="5341040774109629148">Sagatavojieties labākajai pārlūkošanas pieredzei</translation>
+<translation id="6124979241984215095">Piedzīvojiet tīmekli, netiekot novērotam. Brave jūs automātiski aizsargā no izsekotājiem, reklāmām un pirkstu nospiedumu noteikšanas.</translation>
+<translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="6385063238068436833">Sākt no jauna</translation>
+<translation id="2601678491007820794">Importējiet visu no sava vecā pārlūka un padariet pāreju nemanāmu.</translation>
+<translation id="5291297136536006359">Jūs to varat izdarīt arī vēlāk Brave iestatījumos.</translation>
+<translation id="701087249209337256">Paņemiet līdzi sava vecā pārlūka saturu</translation>
+<translation id="7463724872882590240">Izvēlieties savu iepriekšējo pārlūku</translation>
+<translation id="6091623542030502746">Ko jūs vēlaties importēt?</translation>
+<translation id="4740018245743691625">Importa rezultāti</translation>
+<translation id="5418312173593538711">Jūsu satura importēšana</translation>
+<translation id="6865313869410766144">Automātiskās aizpildes veidlapas dati</translation>
+<translation id="6786747875388722282">Paplašinājumi</translation>
+<translation id="5869522115854928033">Saglabātās paroles</translation>
+<translation id="4692623383562244444">Meklētājprogrammas</translation>
 <translation id="4988030440045495002">Īpaši tumša tēma</translation>
 <translation id="2422927186524098759">Sānjosla</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2751,6 +2785,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="2478076885740497414">Instalēt lietotni</translation>
 <translation id="8293206222192510085">Pievienot grāmatzīmi</translation>
 <translation id="7758460733045216901">Grāmatzīmju panelis</translation>
+<translation id="9124418807119853058">Vertikālo ciļņu pārslēgšanas poga</translation>
 <translation id="958268166261124668">Brave VPN: Savienots</translation>
 <translation id="6021669293402055982">Brave VPN: Atvienots</translation>
 <translation id="3541307549916475335">Brave VPN paneļa lietotāja saskarne</translation>
@@ -2915,7 +2950,7 @@ esošo cilni.</translation>
 <translation id="9033485352495162741">Apstiprināšana veiksmīga. Tagad ievadiet vēlamo jauno paroli:</translation>
 <translation id="1293857704520741614">Piesakieties savā kontā</translation>
 <translation id="118617366439356381">Aizmirsāt savu paroli?</translation>
-<translation id="5183159033908953146">Apstipriniet sava Brave konta e-pastu, un jūs saņemsiet saiti, lai atiestatītu paroli. Saite būs derīga tikai 30 minūtes.</translation>
+<translation id="5636406393070713097">Apstipriniet sava Brave konta e-pastu, un jūs saņemsiet kodu, lai atiestatītu paroli. Kods būs derīgs tikai 15 minūtes.</translation>
 <translation id="3674472551471103443">Atiestatiet savu paroli</translation>
 <translation id="2755539422340788311">Apstipriniet savu e-pastu</translation>
 <translation id="6641436078676327508">Jums vajadzēja saņemt e-pastu ar īsu kodu. Lūdzu, ievadiet to šeit, lai turpinātu.</translation>
@@ -2932,16 +2967,13 @@ esošo cilni.</translation>
 <translation id="7144067487084094749">Šai e-pasta adresei jau pastāv konts. Mēģiniet pieteikties, nevis izveidot kontu.</translation>
 <translation id="5288951359968156008">Šīs e-pasta adreses domēns netiek atbalstīts. Lūdzu, izmantojiet citu e-pasta adresi.</translation>
 <translation id="7625678607509255072">Pārsniegts e-pasta verifikāciju limits. Lūdzu, pagaidiet 30 minūtes, pirms mēģināt vēlreiz.</translation>
-<translation id="9121175588136821850">Verifikācijas koda termiņš beidzies. Sāciet reģistrācijas procesu no jauna.</translation>
-<translation id="8439543211004394821">Tika ievadīts pārāk daudz nepareizu kodu. Sāciet reģistrācijas procesu no jauna.</translation>
 <translation id="3229986152760633988">Nepareizs kods, lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="818783632689113711">Kontam šajā e-pasta adresē jau ir pieprasīta izveide. Lūdzu, pārbaudiet savu e-pastu vai mēģiniet vēlreiz pēc 30 minūtēm.</translation>
 <translation id="4776810543245166572">Šai e-pasta adresei nav atrasts neviens konts.</translation>
-<translation id="7090885444036935209">Nederīga e-pasta adrese.</translation>
 <translation id="1542836798393843657">Pārāk daudz verifikācijas mēģinājumu šai e-pasta adresei. Mēģiniet vēlreiz pēc 24 stundām.</translation>
 <translation id="7572012011062736429">Iekšēja kļūda. Aizveriet dialoglodziņu, atceliet verifikāciju un mēģiniet vēlreiz.</translation>
-<translation id="2477280119520811719">Verifikācijas koda termiņš beidzies. Sāciet paroles maiņas procesu no jauna.</translation>
-<translation id="7103280722523884198">Tika ievadīts pārāk daudz nepareizu kodu. Sāciet paroles maiņas procesu no jauna.</translation>
+<translation id="7502408214945538786">Brave konts ļauj jums izveidot un pārvaldīt savus e-pasta aizstājvārdus.</translation>
+<translation id="237081360011331787">Brave konts ļauj jums izveidot un pārvaldīt savus e-pasta aizstājvārdus. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="4178004989875422946">Brave konts ļaus jums viegli piekļūt Brave pakalpojumiem.</translation>
 <translation id="4902897635127068510">Vai jūs domājāt <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock ir ieslēgts</translation>
@@ -2950,6 +2982,7 @@ esošo cilni.</translation>
 <translation id="2112559299194052697">Nevar nosūtīt atkārtoti</translation>
 <translation id="7932611814134267012">Jau ir nosūtīts pārāk daudz verifikācijas e-pastu. Lūdzu, pārbaudiet surogātpasta mapi.</translation>
 <translation id="1364223093800750401">E-pasts jau ir verificēts.</translation>
+<translation id="1054874027734589261">Jūs ievadījāt pārāk daudz nepareizu kodu. Atceliet verifikāciju un mēģiniet vēlreiz.</translation>
 <translation id="1353061468772282268">Verifikācijas koda termiņš ir beidzies. Atceliet verifikāciju un mēģiniet vēlreiz.</translation>
 <translation id="3353844160742960162">Privātuma iestatījumu pielāgošana</translation>
 <translation id="528205534230423181">Šī tīmekļa vietne piedāvā privātuma iestatījumus, ko Brave var automātiski pielāgot jūsu vietā. Lūk, ko mēs iesakām:</translation>

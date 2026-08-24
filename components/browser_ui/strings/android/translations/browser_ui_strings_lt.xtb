@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Pateikti užklausą dėl rodinio versijos mobiliesiems</translation>
 <translation id="2870560284913253234">Svetainė</translation>
 <translation id="2874939134665556319">Ankstesnis takelis</translation>
+<translation id="258271431472168668">Numatytoji „Brave“ tema</translation>
 <translation id="2891975107962658722">Neleiskite svetainei išsaugoti duomenų įrenginyje</translation>
 <translation id="2903493209154104877">Adresai</translation>
+<translation id="2903764741244499151">Svetainėse galima automatiškai įjungti vaizdo vaizde režimą. Taip galite toliau žiūrėti vaizdo įrašą, o ekranas bus atlaisvintas kitoms užduotims.</translation>
 <translation id="2918484639460781603">Eiti į nustatymus</translation>
 <translation id="2932883381142163287">Pranešti apie piktnaudžiavimą</translation>
 <translation id="2939338015096024043">Įjungus svetainėse gali būti prašoma stebėti fotoaparato padėtį ir sužinoti apie jūsų aplinką. Išjungus svetainės negali stebėti fotoaparato padėties ar sužinoti apie jūsų aplinką.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Keisti slaptažodžius</translation>
 <translation id="3797520601150691162">Netaikyti tamsiosios temos konkrečiai svetainei</translation>
 <translation id="3803367742635802571">Svetainės, kuriose lankotės, gali neveikti taip, kaip numatyta</translation>
-<translation id="8338457030135232378">„Brave“ spalvos</translation>
 <translation id="381841723434055211">Telefono numeriai</translation>
 <translation id="3823453485268218808">Šriftas: lygiaplotis</translation>
 <translation id="3826050100957962900">Trečiosios šalies prisijungimas</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Išeiti iš viso ekrano režimo</translation>
 <translation id="640163077447496506">Galiojimo laikas baigsis šiandien</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Temų rinkiniai</translation>
 <translation id="6439114592976064011">Neleisti svetainėms naudoti virtualiosios realybės įrenginio ir duomenų</translation>
 <translation id="6447842834002726250">Slapukai</translation>
 <translation id="6452138246455930388">Sumažinta kaina atidarytame skirtuke: iš <ph name="OLD_PRICE"/> į <ph name="NEW_PRICE"/>, „<ph name="PRODUCT_NAME"/>“, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="7423098979219808738">Pirmiausia paklausti</translation>
 <translation id="7423538860840206698">Neleidžiama skaityti iškarpinės</translation>
 <translation id="7425915948813553151">Tamsioji tema, skirta svetainėms</translation>
+<translation id="2044383478723007273">„Brave“ spalvos</translation>
 <translation id="746412105358554870">„JavaScript“ optimizavimas ir sauga</translation>
 <translation id="7478658909253570368">Neleisti svetainėms prisijungti prie nuosekliųjų prievadų</translation>
 <translation id="7488573225650545859">Slėpti peržiūros skirtukus programų sąraše</translation>
@@ -671,7 +672,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="802154636333426148">Įvyko atsisiuntimo klaida</translation>
 <translation id="8033047164036749181">Prenumeruoti šios svetainės pranešimus</translation>
 <translation id="8051193500142930381">Funkcijos, kurioms reikalingas fotoaparatas, neveiks</translation>
-<translation id="2495032782748793764">Numatytoji „Brave“ parinktis</translation>
 <translation id="8067883171444229417">Leisti vaizdo įrašą</translation>
 <translation id="8068648041423924542">Nepavyko pasirinkti sertifikato.</translation>
 <translation id="8077120325605624147">Bet kokia svetainė, kurioje lankotės, gali rodyti jums bet kokį skelbimą</translation>
@@ -686,7 +686,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="8163152278172770963">Neleisti svetainėms automatiškai įjungti vaizdo vaizde režimo</translation>
 <translation id="8168435359814927499">Turinys</translation>
 <translation id="818487310457576362">Vilkite nuo ekrano šono, kad išeitumėte iš viso ekrano režimo.</translation>
-<translation id="8186479265534291036">Neveikia svetainė? Trečiųjų šalių slapukai užblokuoti</translation>
 <translation id="8197286292360124385">Leidžiama: <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Atnaujinti</translation>
 <translation id="8211406090763984747">Ryšys saugus</translation>
@@ -757,7 +756,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="8805385115381080995">Naršymo procesas greitesnis, nes mažiau tikėtina, kad bus prašoma patvirtinti, jos esate realus asmuo</translation>
 <translation id="881644524232657178">Įjungus svetainėse gali būti naudojami įrenginio judesio ir šviesos jutikliai. Išjungus svetainėse negalima naudoti jutiklių.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Pabandykite laikinai leisti trečiųjų šalių slapukus: tai reiškia, kad naršydami būsite mažiau apsaugoti, bet labiau tikėtina, kad svetainės funkcijos tinkamai veiks.</translation>
 <translation id="7532165358672313130">Jums naršant toliau, svetainės gali tikrinti sistemoje „Brave“ ir iš ankstesnės svetainės, kurioje lankėtės, patvirtinti, kad tikriausiai esate realus asmuo</translation>
 <translation id="8899807382908246773">Nepageidaujami skelbimai</translation>
 <translation id="8903921497873541725">Artinti</translation>
@@ -783,7 +781,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="913657688200966289">Įjunkite „<ph name="APP_NAME"/>“ leidimus <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Pranešimai leidžiami</translation>
 <translation id="9138217887606523162">Dabartinis mastelis yra <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Svetainėse naudojama ši funkcija, kad būtų galima įjungti vaizdo vaizde režimą automatiškai. Taip galite toliau žiūrėti vaizdo įrašą, o ekranas bus atlaisvintas kitoms užduotims.</translation>
 <translation id="7359422048569205930">Leiskite „Brave“ rodyti naujausius skirtukus įrenginio programų sąraše ir paieškos rezultatuose. Galite bet kada išjungti tai „Brave“ nustatymuose.</translation>
 <translation id="9162462602695099906">Šis puslapis pavojingas</translation>
 <translation id="9182556968660520230">Neleisti svetainėms leisti apsaugoto turinio</translation>

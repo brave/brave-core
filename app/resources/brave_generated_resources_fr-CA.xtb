@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">IA Leo</translation>
 <translation id="8275068909952022340">Plus…</translation>
 <translation id="71316462802471551">Alias de courriel</translation>
-<translation id="209130971304928953">Enregistrer les onglets comme espace de travail…</translation>
-<translation id="877984331511007834">Ouvrir l'espace de travail…</translation>
-<translation id="1310182651927031327">Enregistrer les onglets comme espace de travail…</translation>
-<translation id="3588277741646479444">Ouvrir un espace de travail…</translation>
+<translation id="8350985546648269694">Enregistrer les fenêtres et onglets actuels comme espace</translation>
+<translation id="5327248766486351172">Nom</translation>
+<translation id="6379791766023874417">Saisissez le nom de votre espace</translation>
+<translation id="9174724474418499472">Mon espace</translation>
+<translation id="5317780077021120954">Enregistrer</translation>
+<translation id="7658239707568436148">Annuler</translation>
+<translation id="196342407904926436">Options de l'espace</translation>
+<translation id="2806407377752719586">Supprimer l'espace</translation>
+<translation id="1844931500883490339">Voulez-vous vraiment supprimer cet espace? L'espace enregistré sera supprimé définitivement. Cette action ne peut être annulée.</translation>
+<translation id="8261506727792406068">Supprimer</translation>
+<translation id="8428213095426709021">Paramètres</translation>
+<translation id="1212321046099128987">Aucun espace créé</translation>
+<translation id="3524567389166933243">Créez votre premier espace en cliquant sur le bouton Enregistrer ci-dessous.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {1 onglet} other {# onglets}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> fenêtres</translation>
+<translation id="1680377529024357662">Enregistrer les fenêtres et onglets actuels comme espace</translation>
+<translation id="5561829325295347472">Saisissez le nom de votre espace</translation>
+<translation id="2028520494010039812">Options de l'espace</translation>
+<translation id="1580775521202322063">Supprimer l'espace</translation>
+<translation id="3004759399777164093">Voulez-vous vraiment supprimer cet espace? L'espace enregistré sera supprimé définitivement. Cette action ne peut être annulée.</translation>
+<translation id="7563692436589408797">Aucun espace créé</translation>
+<translation id="3945077125173636695">Créez votre premier espace en cliquant sur le bouton Enregistrer ci-dessous.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {1 onglet} other {# onglets}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> fenêtres</translation>
+<translation id="3326655241685890930">Espaces</translation>
 <translation id="1990886731975529483">Installer et exécuter Google Widevine</translation>
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
 <translation id="4900351245762303149">Installer Google Widevine</translation>
@@ -37,7 +58,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="3218385319396786393">La lecture automatique a été bloquée sur cette page</translation>
 <translation id="4988333904713528597">Autorisez toujours l'activation de la lecture automatique <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuer de bloquer la lecture automatique</translation>
-<translation id="3477357195688115718">Brave ne vérifie pas si les extensions sont sécurisées et sûres. N'installez cette extension que si vous faites confiance au développeur.</translation>
+<translation id="2201935460386712655">Brave ne vérifie pas si les extensions sont sécurisées et sûres. N'installez « <ph name="EXTENSION_NAME"/> » que si vous faites confiance au développeur.</translation>
 <translation id="2928844661231356557">Autoriser l'accès à un appareil Bluetooth permet au site de lire des renseignements d'identification et des renseignements potentiellement sensibles vous concernant. N'autorisez que les sites auxquels vous faites confiance à accéder aux appareils Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Fenêtres Tor</translation>
 <translation id="7965178729203412357">Nouvelle identité de Tor</translation>
@@ -63,7 +84,6 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="3211174446914979436">Gérer les filtres</translation>
 <translation id="3108584651298176909">Afficher les règles</translation>
 <translation id="5156986655891520787">Cacher les règles</translation>
-<translation id="7658239707568436148">Annuler</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Ouvrir avec l'adresse .onion : <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Collage forcé</translation>
@@ -91,6 +111,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="191886777375280620">Capturer une capture d'écran</translation>
 <translation id="3114478090884951591">Zone visible</translation>
 <translation id="2026367923222947564">Page complète</translation>
+<translation id="4218885227032158909">Zone sélectionnée</translation>
 <translation id="4928988318462976765">Magasin d'extensions Web</translation>
 <translation id="9181207987584064303">Afficher dans la Boutique des extensions Web</translation>
 <translation id="3161744659507801211">Avertissement : Brave ne peut pas empêcher les extensions d'enregistrer votre historique de navigation.</translation>
@@ -289,14 +310,12 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="55252794453047936">Déplacer le média</translation>
 <translation id="4418985925423678811">Nouvelle liste de lecture</translation>
 <translation id="385051799172605136">Retour</translation>
-<translation id="5317780077021120954">Enregistrer</translation>
 <translation id="7930125899031086027">Créer et déplacer</translation>
 <translation id="2860159216666546928">Sélectionner un dossier vers lequel déplacer ce média</translation>
 <translation id="9130105487623071247">Nom de la liste de lecture</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> éléments sélectionnés</translation>
 <translation id="3596306474342941843">Supprimer la liste de lecture</translation>
 <translation id="7110726588168439924">Voulez-vous vraiment supprimer cette liste de lecture et tout son contenu? Cette action ne peut être annulée.</translation>
-<translation id="8261506727792406068">Supprimer</translation>
 <translation id="8152485753254079984">Nouvelle liste de lecture</translation>
 <translation id="5397019762993984652">Ajouter à partir de votre dossier Lire plus tard</translation>
 <translation id="7525067979554623046">Créer</translation>
@@ -393,7 +412,6 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8900907990448657776">Modifier le dossier</translation>
 <translation id="7900511996284443779">Supprimer le dossier</translation>
 <translation id="2738687336989232152">Voulez-vous vraiment supprimer le dossier <ph name="CONTAINER_NAME"/>? Toutes les données associées seront également supprimées.</translation>
-<translation id="5327248766486351172">Nom</translation>
 <translation id="104766043551382253">Icône</translation>
 <translation id="5431318178759467895">Couleur</translation>
 <translation id="4328541188421002379">Choisissez un nom pour votre dossier, par exemple Travail ou Personnel</translation>
@@ -547,6 +565,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="2587535830241068901">Personnalisez votre navigateur tout en continuant de soutenir Brave</translation>
 <translation id="123297831435065577">Brave Origin est une version payante du navigateur pour les utilisateurs qui n'ont pas besoin de toutes les fonctionnalités qui soutiennent Brave en tant qu'entreprise, mais qui veulent quand même la confidentialité que seul Brave offre. Les utilisateurs d'Origin continueront à bénéficier de notre confidentialité de pointe, du blocage des publicités et de la vitesse (via les boucliers), ainsi que des mises à jour régulières des logiciels, des correctifs Chromium et des améliorations de sécurité et de confidentialité.</translation>
 <translation id="7984508421152399880">Acheter maintenant</translation>
+<translation id="1882724423074862793">Restaurer l'achat</translation>
 <translation id="5567412479632285879">Le programme de récompenses Brave est désactivé</translation>
 <translation id="413570371620795359">Ouvrez la section Récompenses pour activer cette fonctionnalité et commencer</translation>
 <translation id="1051600834033686945">Ouvrir l'intégralité des paramètres Brave Rewards</translation>
@@ -583,6 +602,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="933652931229970927">Envoyer automatiquement les rapports de diagnostic</translation>
 <translation id="8868426106596092089">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque</translation>
 <translation id="4891600875049212418">Protégez votre vie privée lorsque vous consultez des sites sensibles</translation>
+<translation id="1022603984240541480">Afficher la notification d'ajustement des paramètres de confidentialité sur les sites compatibles</translation>
+<translation id="3528176629974273019">Permet à Brave de suggérer (et d'ajuster) automatiquement des paramètres de confidentialité propres au site.</translation>
 <translation id="509873765238158442">Bloquer la fonction Recall de Microsoft</translation>
 <translation id="4763421121695677716">Empêche la fonction Recall de prendre automatiquement des captures d’écran des onglets Brave ouverts sur les ordinateurs Windows.</translation>
 <translation id="1968895725257436430">Collecte de données</translation>
@@ -738,6 +759,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="4425607417590286548">Appliquer les modifications</translation>
 <translation id="2128143836897950793">Cliquez sur « Demander un nouveau pont… » pour obtenir des ponts</translation>
 <translation id="3314921753580327793">Entrez adresse:port (un par ligne)</translation>
+<translation id="7002083631026466886">Tor ne peut pas utiliser ce pont. Vérifiez-le par rapport au pont qui vous a été fourni, puis réessayez :</translation>
 <translation id="3755189300481406891">Demander un pont</translation>
 <translation id="6924425739431382319">Nous communiquons avec BridgeDB. Veuillez patienter.</translation>
 <translation id="811745063252080651">Résolvez le CAPTCHA pour demander un pont.</translation>
@@ -915,7 +937,6 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="1838374766361614909">Effacer la recherche</translation>
 <translation id="5126255551970171328">Rechercher une mémoire</translation>
 <translation id="7402116145895962069">Synchroniser vos modèles locaux Ollama</translation>
-<translation id="4835154437390745810">Géré par Ollama</translation>
 <translation id="5985516785067818307">Participant au sondage</translation>
 <translation id="8347743943525229984">Autoriser les sondages Brave</translation>
 <translation id="3204080538332044581">Autorise Brave à afficher des liens vers des sondages privés sur la page du nouvel onglet. Ces sondages nous aident à développer de meilleures fonctionnalités et à mesurer l’efficacité des campagnes publicitaires dans le navigateur. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>

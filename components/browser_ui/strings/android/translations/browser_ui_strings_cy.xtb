@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Gofyn am wedd symudol</translation>
 <translation id="2870560284913253234">Gwefan</translation>
 <translation id="2874939134665556319">Trac blaenorol</translation>
+<translation id="258271431472168668">Diofyn Brave</translation>
 <translation id="2891975107962658722">Rhwystro gwefan rhag cadw data ar eich dyfais</translation>
 <translation id="2903493209154104877">Cyfeiriadau</translation>
+<translation id="2903764741244499151">Gall gwefannau gyrchu llun mewn llun yn awtomatig. Mae hyn yn eich galluogi i barhau i wylio fideo, tra'n rhyddhau eich sgrîn ar gyfer tasgau eraill.</translation>
 <translation id="2918484639460781603">Mynd i'r gosodiadau</translation>
 <translation id="2932883381142163287">Rhoi gwybod am gamddefnydd</translation>
 <translation id="2939338015096024043">Pan fydd wedi'i droi ymlaen, gall gwefannau ofyn am olrhain lleoliad eich camera a dysgu am eich amgylchoedd. Pan fydd wedi'i ddiffodd, ni all gwefannau olrhain lleoliad eich camera na dysgu am eich amgylchoedd.</translation>
@@ -279,7 +281,6 @@
 <translation id="3779154269823594982">Newid cyfrineiriau</translation>
 <translation id="3797520601150691162">Peidio â defnyddio'r thema dywyll ar gyfer gwefan benodol</translation>
 <translation id="3803367742635802571">Mae'n bosib y bydd gwefannau y byddwch yn ymweld â nhw yn peidio â gweithio fel y'u cynlluniwyd</translation>
-<translation id="8338457030135232378">Lliwiau Brave</translation>
 <translation id="381841723434055211">Rhifau ffôn</translation>
 <translation id="3823453485268218808">Ffont Mono</translation>
 <translation id="3826050100957962900">Mewngofnodi trydydd parti</translation>
@@ -529,7 +530,6 @@
 <translation id="6398765197997659313">Gadael y sgrîn lawn</translation>
 <translation id="640163077447496506">Yn darfod heddiw</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Casgliadau Thema</translation>
 <translation id="6439114592976064011">Rhwystro gwefannau rhag defnyddio eich dyfais rhithwrionedd a'i data</translation>
 <translation id="6447842834002726250">Cwcis</translation>
 <translation id="6452138246455930388">Gostyngiad pris ar eich tab agored, o <ph name="OLD_PRICE"/> i <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -624,6 +624,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="7423098979219808738">Gofyn yn gyntaf</translation>
 <translation id="7423538860840206698">Wedi'i rwystro rhag darllen y clipfwrdd</translation>
 <translation id="7425915948813553151">Thema dywyll ar gyfer gwefannau</translation>
+<translation id="2044383478723007273">Lliwiau Brave</translation>
 <translation id="746412105358554870">Optimeiddio a diogelwch JavaScript</translation>
 <translation id="7478658909253570368">Peidio â chaniatáu i wefannau gysylltu â phyrth cyfresol</translation>
 <translation id="7488573225650545859">Cuddio tabiau Gweld yn eich rhestr apiau</translation>
@@ -675,7 +676,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="802154636333426148">Wedi methu â lawrlwytho</translation>
 <translation id="8033047164036749181">Tanysgrifiwch ar gyfer hysbysiadau o'r wefan hon</translation>
 <translation id="8051193500142930381">Ni fydd nodweddion sydd angen camera yn gweithio</translation>
-<translation id="2495032782748793764">Diofyn Brave</translation>
 <translation id="8067883171444229417">Chwarae'r fideo</translation>
 <translation id="8068648041423924542">Methu â dewis tystysgrif.</translation>
 <translation id="8077120325605624147">Gall unrhyw wefan yr ymwelwch â hi ddangos unrhyw hysbyseb i chi</translation>
@@ -690,7 +690,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="8163152278172770963">Peidio â chaniatáu gwefannau i gyrchu llun mewn llun yn awtomatig</translation>
 <translation id="8168435359814927499">Cynnwys</translation>
 <translation id="818487310457576362">Llusgwch o ochr y sgrîn i adael y sgrin lawn.</translation>
-<translation id="8186479265534291036">Gwefan ddim yn gweithio? Mae cwcis trydydd parti wedi'u rhwystro</translation>
 <translation id="8197286292360124385">Caniateir <ph name="PERMISSION_1"/></translation>
 <translation id="8200772114523450471">Parhau</translation>
 <translation id="8211406090763984747">Mae'r cysylltiad yn ddiogel</translation>
@@ -761,7 +760,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="8805385115381080995">Mae pori yn gyflymach oherwydd bod gwefan yn llai tebygol o ofyn i chi gadarnhau eich bod yn berson go iawn</translation>
 <translation id="881644524232657178">Pan fydd wedi'i droi ymlaen, gall gwefannau ddefnyddio synwyryddion symud a golau eich dyfais. Pan fydd wedi'i ddiffodd, ni all gwefannau ddefnyddio synwyryddion.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Rhowch gynnig ar ganiatáu cwcis trydydd parti dros dro, sy'n golygu llai o amddiffyniad pori ond mae nodweddion y wefan yn fwy tebygol o weithio fel y disgwyl.</translation>
 <translation id="7532165358672313130">Wrth i chi barhau i bori, gall gwefannau wirio gyda Brave a chadarnhau gyda gwefan flaenorol rydych wedi ymweld â hi eich bod yn debygol o fod yn berson go iawn</translation>
 <translation id="8899807382908246773">Hysbysebion ymwthiol</translation>
 <translation id="8903921497873541725">Chwyddo</translation>
@@ -787,7 +785,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="913657688200966289">Trowch ganiatadau ar gyfer <ph name="APP_NAME"/> ymlaen yn <ph name="BEGIN_LINK"/>Gosodiadau Android<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Caniateir hysbysiadau</translation>
 <translation id="9138217887606523162">Y lefel chwyddo yw <ph name="ZOOM_LEVEL"/> %% ar hyn o bryd</translation>
-<translation id="915112772806845021">Mae gwefannau yn defnyddio'r nodwedd hon i gyrchu llun mewn llun yn awtomatig. Mae hyn yn eich galluogi i barhau i wylio fideo, tra'n rhyddhau eich sgrîn ar gyfer tasgau eraill.</translation>
 <translation id="7359422048569205930">Gadewch i Brave ddangos eich tabiau diweddar yn rhestr apiau a chanlyniadau chwilio eich dyfais. Gallwch ddiffodd hwn unrhyw bryd yng ngosodiadau Brave.</translation>
 <translation id="9162462602695099906">Mae'r dudalen hon yn beryglus</translation>
 <translation id="9182556968660520230">Peidio â chaniatáu i wefannau chwarae cynnwys gwarchodedig</translation>

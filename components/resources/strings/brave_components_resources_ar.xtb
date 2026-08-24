@@ -525,12 +525,9 @@
     }</translation>
 <translation id="3264975266761862670">هل أنت مستعد لبدء الكسب؟</translation>
 <translation id="2784412028126205842">ربط حساب الدفع</translation>
-<translation id="1789518312567918588">{ADS_VIEWED, plural,
-      =0 {لقد شاهدت <ph name="COUNT_BEGIN"/> # ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
-      =1 {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلان<ph name="COUNT_END"/> الذي شاهدته هذا الشهر.}
-      few {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
-      many {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
-      other {قد تحصل على مكافأة نظير <ph name="COUNT_BEGIN"/># ميزة الإعلانات<ph name="COUNT_END"/> شاهدتها هذا الشهر.}
+<translation id="4083788716319248418">{ADS_VIEWED, plural,
+      =1 {لقد شاهدت <ph name="COUNT_BEGIN"/> # إعلان<ph name="COUNT_END"/> هذا الشهر}
+      other {لقد شاهدت <ph name="COUNT_BEGIN"/> # إعلانات<ph name="COUNT_END"/> هذا الشهر}
     }</translation>
 <translation id="1100743684843603297">{ADS_VIEWED, plural,
       =0 {لقد شاهدت <ph name="COUNT_BEGIN"/> # ميزة الإعلانات<ph name="COUNT_END"/> هذا الشهر}
@@ -1139,6 +1136,7 @@
 <translation id="793994607260936590">أولا</translation>
 <translation id="4709524402122994378">المعاملات</translation>
 <translation id="4591079278963448049">حساب الرمز المرتبط غير موجود حتى الآن. سينفق مبلغ صغير من SOL لإنشائه وتمويله.</translation>
+<translation id="1468846486094099016">حمولة التوقيع المقدّرة</translation>
 <translation id="3240773103344793224">تم طلب تغيير ملكية الحساب</translation>
 <translation id="8041423758956015568">ستعيد هذه المعاملة تعيين ملكية الحساب إلى برنامج جديد. ولا يمكن الرجوع في هذا الإجراء وقد يؤدي إلى خسارة الأموال.</translation>
 <translation id="1426320910664514906">الحد الأقصى لوحدات جاس</translation>
@@ -1609,6 +1607,13 @@
 <translation id="5333225216561354793">نطلب منك الإقرار بالبنود الواردة أدناه</translation>
 <translation id="4284971227128011550">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Brave لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
 <translation id="3604445540387095708">قرأت شروط الاستخدام <ph name="LINK_BEFORE"/>وأوافق عليها<ph name="LINK_AFTER"/>.</translation>
+<translation id="7298195798382681320">موصى به</translation>
+<translation id="5261730884092815272">12 كلمة</translation>
+<translation id="4937679440025366600">24 كلمة</translation>
+<translation id="7875799385764282380">أمان قوي وأسرع في تدوينها. تستخدمها معظم المحافظ.</translation>
+<translation id="8157829085295816223">أقصى هامش أمان. مناسبة للاستخدام في محافظ أخرى (التي قد تتطلب عبارة من 24 كلمة).</translation>
+<translation id="4357180991717571915">اختر طول عبارة الاسترداد الخاصة بك</translation>
+<translation id="8997001537838391693">تستعيد عبارة الاسترداد الخاصة بك الوصول إلى المحفظة إذا نسيت كلمة المرور أو فقدت جهازك. ستحفظها في الخطوات التالية.</translation>
 <translation id="1422451606553326863">شراء العملات المشفرة</translation>
 <translation id="3887541341068007345">جارٍ التحقق من ملحقات المحفظة...</translation>
 <translation id="8407091560429310499">تحديد أصل</translation>
@@ -1850,6 +1855,8 @@
 <translation id="7716113567047550378">يُرجى عدم إغلاق هذه النافذة حتى تنتهي المزامنة.</translation>
 <translation id="5123590959308755060">مواصلة استخدام المحفظة في علامة تبويب جديدة</translation>
 <translation id="4594014034647546191">كتلة ميلاد الحساب المحمي</translation>
+<translation id="2242190818083876475">إعادة تعيين ميلاد الحساب</translation>
+<translation id="5080237867196215050">ستتطلب إعادة تعيين ميلاد حسابك إعادة مزامنة كاملة. أدخل كتلة ميلاد جديدة وانقر على "إعادة تعيين ميلاد الحساب" للمتابعة.</translation>
 <translation id="6666784075827260119">يجب أن يتجاوز الحساب المُنشَأ <ph name="BLOCK_NUMBER"/></translation>
 <translation id="3102477628835823956">يجب أن يقل الحساب المُنشَأ عن <ph name="BLOCK_NUMBER"/></translation>
 <translation id="6850229669854962550">متأخر بـ <ph name="BLOCKS"/> كتلة</translation>
@@ -1996,6 +2003,10 @@
 <translation id="7948579849190819732">علامة التبويب الحالية</translation>
 <translation id="7056969230130642253">أنت متابع لأحدث المستجدات</translation>
 <translation id="7292242212818928219">ثمَّة محتوى جديد متاح. هل تريد إعادة التحميل؟</translation>
+<translation id="6007028324976222777">استيراد من OPML</translation>
+<translation id="8871004282386501355">تصدير إلى OPML</translation>
+<translation id="481478016164478903">تمت إضافة <ph name="PUBLISHER_COUNT"/> ناشرين و<ph name="FEED_COUNT"/> خلاصات مباشرة و<ph name="CHANNEL_COUNT"/> قنوات. تم تخطي <ph name="SKIPPED_COUNT"/> مضافة بالفعل.</translation>
+<translation id="5537748547202815718">تعذّر استيراد هذا الملف. تأكد من أنه ملف OPML صالح.</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
 <translation id="1272079795634619415">إيقاف</translation>
@@ -2003,6 +2014,8 @@
 <translation id="7211681214230730336">إعادة تحميل حذف بيانات ذاكرة التخزين المؤقت</translation>
 <translation id="1779766957982586368">إغلاق النافذة</translation>
 <translation id="5210365745912300556">إغلاق علامة التبويب</translation>
+<translation id="8852436503814917529">التنقل إلى علامة التبويب التالية</translation>
+<translation id="1543046737011894871">التنقل إلى علامة التبويب السابقة</translation>
 <translation id="2291643155573394834">علامة التبويب التالية</translation>
 <translation id="7748528009589593815">علامة التبويب السابقة</translation>
 <translation id="3738690686686515962">تحديد علامة التبويب 0</translation>
@@ -2020,7 +2033,6 @@
 <translation id="4841735924729216702">قائمة النوافذ</translation>
 <translation id="3649256019230929621">تصغير النافذة</translation>
 <translation id="906458777597946297">تكبير النافذة</translation>
-<translation id="2082612610620888017">عرض جميع النوافذ</translation>
 <translation id="1111843722790053332">فتح في نافذة PWA</translation>
 <translation id="907981618023904259">إعدادات تطبيق الويب</translation>
 <translation id="4138336125382947023">معلومات تطبيق الويب</translation>
@@ -2079,7 +2091,6 @@
 <translation id="7012611213801651252">عرض قائمة الصور الرمزية</translation>
 <translation id="6263048902976129908">تبديل أدوات المطور</translation>
 <translation id="1386786836007298307">تبديل شريط الأدوات في وضع ملء الشاشة</translation>
-<translation id="461433814913785913">تخصيص شريط اللمس</translation>
 <translation id="4722786500079380710">تبديل أحداث JavaScript على Apple</translation>
 <translation id="5825969867518399495">تثبيت PWA</translation>
 <translation id="7888244262238732644">عرض صفحة الإدارة</translation>
@@ -2119,7 +2130,11 @@
 <translation id="6332027154313182926">تبديل Brave VPN</translation>
 <translation id="6539014233195996894">تبديل وضع كتم صوت علامة التبويب</translation>
 <translation id="2682865834956428001">تبديل مكان الشريط الجانبي</translation>
-<translation id="6105745639559695088">تبديل الشريط الجانبي</translation>
+<translation id="7095235686444800565">تبديل اللوحة الجانبية الحالية</translation>
+<translation id="6330741325040551950">تبديل اللوحة الجانبية للإشارات المرجعية</translation>
+<translation id="1973174482432326058">تبديل اللوحة الجانبية لقائمة القراءة</translation>
+<translation id="14910687022901840">تبديل اللوحة الجانبية لقائمة التشغيل</translation>
+<translation id="3195191401552731345">تبديل اللوحة الجانبية لأخبار Brave</translation>
 <translation id="3488252265135539275">تبديل علامات التبويب الرأسية</translation>
 <translation id="7134064542341959603">تبديل عنوان نافذة علامات التبويب الرأسية</translation>
 <translation id="3067105725259639716">تكوين أخبار Brave</translation>
@@ -2132,6 +2147,7 @@
 <translation id="134184943774258988">تبديل رؤية زر كل الإشارات المرجعية</translation>
 <translation id="2158862020143233462">تبديل طرق الحماية</translation>
 <translation id="3010280727642018218">تبديل JavaScript</translation>
+<translation id="8324318899000695659">حظر العناصر</translation>
 <translation id="188822869499214197">عرض المخطط الفقاعي لقائمة التشغيل</translation>
 <translation id="3202536111478033084">تجميع علامات التبويب على الأصل الحالي</translation>
 <translation id="6002210667729577411">نقل المجموعة إلى نافذة جديدة</translation>
@@ -2244,23 +2260,21 @@
 <translation id="7905602379229309187">نقطة النهاية محملة فوق طاقتها حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</translation>
 <translation id="8151638057146502721">إعداد</translation>
 <translation id="999273441077650169">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="1238020084128916796">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 3.1 8B، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen VL 30B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-5، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-5 من خلال البنية التحتية الآمنة المتحققة من صحتها الخاصة بـ NEAR.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-5.1، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-5.1 من خلال البنية التحتية الآمنة المتحققة من صحتها الخاصة بـ NEAR.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">مرحبًا، أنا ليو. أنا مساعد ذكي من Brave. أعمل بواسطة Claude Instant، نموذج طورته Anthropic لأداء مهام المحادثة ومعالجة النصوص. يتم تشغيل Claude Instant عبر بنية Brave التحتية الآمنة الخاصة.<ph name="LINK_BEFORE"/>اعرف المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="6277330815126859513">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 4 Maverick، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama 4 Maverick من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="5833148755396048122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT OSS 20B، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT OSS 20B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="5414593137581221307">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT OSS 120B، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT OSS 120B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3399141352144059821">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Grok 4.3، وهو نموذج تم إنشاؤه من طرف xAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Grok 4.3 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8868813509973985458">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GPT 5.4، وهو نموذج تم إنشاؤه من طرف OpenAI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GPT 5.4 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Mistral Large، وهو نموذج تم إنشاؤه من طرف Mistral ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Mistral Large من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3 235B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3 235B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Deepseek V3.2، وهو نموذج تم إنشاؤه من طرف Deepseek ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Deepseek V3.2 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="3767678495358551728">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 3 Coder 480B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen 3 Coder 480B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Opus، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Opus من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-4-7-Flash، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-4-7-Flash من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Kimi K2.5، وهو نموذج تم إنشاؤه من طرف Moonshot AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Kimi K2.5 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3484076625906498634">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Nemotron Nano 3 30B، وهو نموذج تم إنشاؤه من طرف NVIDIA ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Nemotron Nano 3 30B من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Brave Ocelot، وهو نموذج تم إنشاؤه من طرف Brave لتلخيص صفحات الويب. يتم استضافة Brave Ocelot من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">محلي</translation>
@@ -2280,20 +2294,15 @@
 <translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
 <translation id="849535826888024304">تم بلوغ الحد الأقصى من معدل الاستجابة</translation>
 <translation id="2252128900328632803">لقد وصلت إلى الحد الأقصى لسعر  Leo. احصل على معدل استجابة أعلى من خلال الاشتراك في Premium، أو حاول مرة أخرى قريبًا.</translation>
-<translation id="4173478269537830374">اكتشف نماذج الذكاء الاصطناعي المختلفة</translation>
-<translation id="3245401959451976966">أطلق العنان لإبداعك</translation>
-<translation id="4165928407303989823">البقاء على الموضوع</translation>
-<translation id="2389665228467129817">الدردشة لفترة أطول</translation>
+<translation id="8746303650199962589">الوصول إلى أحدث نماذج LLM من Anthropic وOpenAI وDeepSeek والمزيد</translation>
+<translation id="4366237751405135351">ابحث عن نماذج خاصة بالمهام للبرمجة وإنشاء المحتوى وما بعد ذلك</translation>
+<translation id="7494418589245805538">احصل على حدود أسعار أعلى لمحادثاتك</translation>
 <translation id="8556044455877152001">دولار أمريكي<ph name="PRICE_VALUE"/>/الشهر</translation>
 <translation id="9031958221569934724"><ph name="PRICE_VALUE"/> دولار أمريكي /السنة</translation>
-<translation id="1028627582482425924">سنة واحدة</translation>
-<translation id="36366199652730057">أفضل قيمة</translation>
+<translation id="4955814292505481804">سنوي</translation>
+<translation id="7724435637185902140">وفّر ~17%</translation>
 <translation id="5151923271944811339">التبديل إلى النموذج المجاني</translation>
 <translation id="5474757891469990756">أطلق قوى Leo الكاملة مع Premium:</translation>
-<translation id="3453542753968940696">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة.</translation>
-<translation id="5031778211368112461">الوصول إلى النماذج الأكثر ملاءمةً للمهام الإبداعية وإنشاء المحتوى.</translation>
-<translation id="298783097210745222">احصل على إجابات أكثر دقة لمحادثات أكثر دقة.</translation>
-<translation id="4314705522985583059">احصل على حدود أسعار أعلى للمحادثات الأطول.</translation>
 <translation id="1068954060985569277">لقد انتهت صلاحية الجلسة لحساب Brave خاصتك. يرجى زيارة صفحة حسابك للتحديث، ثم العودة لاستخدام المميزات المتقدمة.</translation>
 <translation id="94736968936709953">تم إرسال التعليقات بنجاح</translation>
 <translation id="9109355817507033196">تم اختيار عدم الإعجاب بالإجابة</translation>
@@ -2343,6 +2352,10 @@
 <translation id="8742658901413346500">إن هذه المحادثة طويلة وLeo قد ينسى بعض الأشياء قريبًا. بإمكانك الحصول على محادثات أطول عن طريق التبديل للنموذج الحصري (Premium)، أو يمكنك محو سجل الدردشة لإعادة ضبطه.</translation>
 <translation id="6495402307502950726">مسح المحادثة</translation>
 <translation id="903201991022343217">بدء محادثة جديدة</translation>
+<translation id="8742207701089910775">مشاركة هذه المحادثة</translation>
+<translation id="4014016095804982975">سيتم تحميل محادثتك مشفّرة ولا يمكن فك تشفيرها إلا بالرابط الذي تم إنشاؤه. لن يتمكن Brave من عرض محادثتك. فقط أنت والأشخاص الذين تشارك معهم هذا الرابط يمكنهم فك تشفير محادثتك المشتركة. ستنتهي صلاحية جميع المحادثات المشتركة بعد 7 أيام.</translation>
+<translation id="1390174375123434798">إنشاء رابط</translation>
+<translation id="8904787158537906492">تم نسخ الرابط إلى الحافظة</translation>
 <translation id="8171760814579050200">إعادة تسمية المحادثة</translation>
 <translation id="402386227879573975">نسخ المحادثة بأكملها</translation>
 <translation id="5397794290049113714">أنت</translation>
@@ -2386,13 +2399,13 @@
 <translation id="7821251979960635244">سيظهر سجل المحادثة الخاص بك هنا بمجرد بدء محادثة.</translation>
 <translation id="887511360213807449">تم تعطيل السجل</translation>
 <translation id="5380979378058584412">لعرض محادثاتك السابقة مع Leo، تحتاج إلى تمكين سجل المحادثة.</translation>
-<translation id="7348809809749151120">سريع • Search</translation>
 <translation id="3185367320601718531">إنشاء المحادثات والنصوص</translation>
 <translation id="2793458212460902934">سريع • Search • أدوات</translation>
 <translation id="8506027496671575183">Search • رؤية • أدوات</translation>
 <translation id="3184606955650139158">سريع • Search • رؤى</translation>
 <translation id="7465032796278724624">خاص يمكن التحقق منه باستخدام NEAR AI TEE</translation>
 <translation id="8782867266498869301">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة</translation>
+<translation id="7348809809749151120">سريع • Search</translation>
 <translation id="3213834013136637671">Search • رؤى</translation>
 <translation id="5276681919620506371">بحث • أدوات</translation>
 <translation id="7434375176361995333">ملخصات • سريع</translation>
@@ -2523,6 +2536,7 @@
 <translation id="3486480638399578250">حافظ على خصوصية عنوان بريدك الإلكتروني الشخصي</translation>
 <translation id="7765422154906712751">أنشئ عناوين فريدة وعشوائية يتم توجيهها إلى عنوان بريدك الإلكتروني في حساب Brave ويمكن حذفها في أي وقت. احمِ عنوان بريدك الإلكتروني الفعلي ضد الكشف أو استخدام المعلنين له.</translation>
 <translation id="71316462802471551">المعرفات البديلة للبريد الإلكتروني</translation>
+<translation id="7901376755618482277">عرض تلميح "اسم مستعار جديد" في حقول البريد الإلكتروني</translation>
 <translation id="6002159997868894136">اضغط لنسخ الاسم المستعار</translation>
 <translation id="8105770564756958406">يُستعمل بواسطة <ph name="DOMAINS"/></translation>
 <translation id="5006956315579221642">أنشئ ما يصل إلى 5 معرّفات بريد إلكتروني بديلة مجانية لحماية عنوان بريدك الإلكتروني الحقيقي.</translation>
@@ -2568,6 +2582,10 @@
 <translation id="367191282389216837">استجابة غير صالحة من خدمة الأسماء المستعارة للبريد الإلكتروني</translation>
 <translation id="7203490731644771170">خطأ في خدمة الأسماء المستعارة للبريد الإلكتروني: <ph name="ERROR"/></translation>
 <translation id="8767862600155091621">خطأ: الاسم المستعار غير متوفر</translation>
+<translation id="1706715315466634757">الأسماء المستعارة للبريد الإلكتروني</translation>
+<translation id="7087933122203937032">أنشئ عناوين فريدة وعشوائية يتم توجيهها إلى عنوان بريدك الإلكتروني في حساب Brave ويمكن حذفها في أي وقت. احمِ عنوان بريدك الإلكتروني الفعلي ضد الكشف أو استخدام المعلنين له.</translation>
+<translation id="8057865981284642090">لاستخدام الأسماء المستعارة للبريد الإلكتروني، تحتاج إلى تسجيل الدخول إلى حسابك على Brave. ابدأ بالنقر على الزر أدناه.</translation>
+<translation id="4472575034687746823">الخطوات الأولى</translation>
 <translation id="8370801182970639038">تلقائي (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">محركات البحث الممكّنة</translation>
 <translation id="8285901519864208412">إخفاء بطاقة المكافآت</translation>
@@ -2646,7 +2664,6 @@
 <translation id="9204041448536398473">إعدادات دروع الحماية العالمية</translation>
 <translation id="2108334320919763866">الإعدادات الافتراضية العالمية</translation>
 <translation id="1896472873031845605">الإعدادات العامة</translation>
-<translation id="8324318899000695659">حظر العناصر</translation>
 <translation id="7205939464631857223">مسح جميع العناصر المحجوبة</translation>
 <translation id="3440043456924990296">الإعدادات التي تديرها المؤسسة</translation>
 <translation id="7053983685419859001">منع</translation>
@@ -2747,6 +2764,21 @@
 <translation id="6764845498618413165">اطلع على المزيد من المعلومات.</translation>
 <translation id="7818938154803162778">بالتأكيد، سأقدم المساعدة.</translation>
 <translation id="7207456302801184289">مرحباً بك في Brave</translation>
+<translation id="5341040774109629148">استعد لأفضل تجربة تصفح</translation>
+<translation id="6124979241984215095">استمتع بالويب دون أن تتم مراقبتك. يحميك Brave من أدوات التتبع والإعلانات والبصمة، كل ذلك تلقائيًا.</translation>
+<translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="6385063238068436833">البدء من الصفر</translation>
+<translation id="2601678491007820794">استورد كل شيء من متصفحك القديم واجعل الانتقال سلسًا.</translation>
+<translation id="5291297136536006359">يمكنك أيضًا القيام بذلك لاحقًا في إعدادات Brave.</translation>
+<translation id="701087249209337256">أحضر معك محتوى متصفحك القديم</translation>
+<translation id="7463724872882590240">حدّد متصفحك السابق</translation>
+<translation id="6091623542030502746">ماذا تريد أن تستورد؟</translation>
+<translation id="4740018245743691625">نتائج الاستيراد</translation>
+<translation id="5418312173593538711">جارٍ استيراد المحتوى الخاص بك</translation>
+<translation id="6865313869410766144">بيانات نماذج الملء التلقائي</translation>
+<translation id="6786747875388722282">الإضافات</translation>
+<translation id="5869522115854928033">كلمات المرور المحفوظة</translation>
+<translation id="4692623383562244444">محركات البحث</translation>
 <translation id="4988030440045495002">مظهر فائق الظلام</translation>
 <translation id="2422927186524098759">الشريط الجانبي</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2756,6 +2788,7 @@
 <translation id="2478076885740497414">تثبيت التطبيق</translation>
 <translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
 <translation id="7758460733045216901">لوحة الإشارات المرجعية</translation>
+<translation id="9124418807119853058">زر تبديل علامات التبويب العمودية</translation>
 <translation id="958268166261124668">Brave VPN: متصل</translation>
 <translation id="6021669293402055982">Brave VPN: غير متصل</translation>
 <translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>
@@ -2918,7 +2951,7 @@
 <translation id="9033485352495162741">تم التأكيد بنجاح. الآن أدخل كلمة المرور الجديدة التي تريدها:</translation>
 <translation id="1293857704520741614">سجّل الدخول إلى حسابك</translation>
 <translation id="118617366439356381">هل نسيت كلمة المرور؟</translation>
-<translation id="5183159033908953146">أكّد البريد الإلكتروني لحسابك على Brave وستتلقى بعد ذلك رابطًا لإعادة تعيين كلمة المرور. سيكون الرابط صالحًا لمدة 30 دقيقة فقط.</translation>
+<translation id="5636406393070713097">أكّد البريد الإلكتروني لحسابك على Brave وستتلقى بعد ذلك رمزًا لإعادة تعيين كلمة المرور. سيكون الرمز صالحًا لمدة 15 دقيقة فقط.</translation>
 <translation id="3674472551471103443">إعادة تعيين كلمة المرور</translation>
 <translation id="2755539422340788311">تحقق من بريدك الإلكتروني</translation>
 <translation id="6641436078676327508">من المفترض أن تكون قد تلقيت رسالة بريد إلكتروني تحتوي على رمز قصير. يرجى إدخاله هنا للمتابعة.</translation>
@@ -2935,16 +2968,13 @@
 <translation id="7144067487084094749">يوجد حساب بالفعل لعنوان البريد الإلكتروني هذا. حاول تسجيل الدخول بدلاً من إنشاء حساب.</translation>
 <translation id="5288951359968156008">نطاق عنوان البريد الإلكتروني هذا غير مدعوم. يُرجى استخدام عنوان بريد إلكتروني مختلف.</translation>
 <translation id="7625678607509255072">تم تجاوز حد التحقق من البريد الإلكتروني. يُرجى الانتظار 30 دقيقة قبل المحاولة مجددًا.</translation>
-<translation id="9121175588136821850">انتهت صلاحية رمز التحقق. ابدأ عملية التسجيل مرة أخرى.</translation>
-<translation id="8439543211004394821">تم إدخال عدد كبير جدًا من الرموز غير الصحيحة. ابدأ عملية التسجيل مرة أخرى.</translation>
 <translation id="3229986152760633988">رمز خاطئ، يُرجى المحاولة مجددًا.</translation>
 <translation id="818783632689113711">تم طلب حساب بالفعل لعنوان البريد الإلكتروني هذا. يرجى التحقق من بريدك الإلكتروني أو المحاولة مرة أخرى خلال 30 دقيقة.</translation>
 <translation id="4776810543245166572">لم يتم العثور على أي حساب لعنوان البريد الإلكتروني هذا.</translation>
-<translation id="7090885444036935209">عنوان البريد الإلكتروني غير صالح.</translation>
 <translation id="1542836798393843657">عدد كبير جدًا من محاولات التحقق لعنوان البريد الإلكتروني هذا. أعد المحاولة خلال 24 ساعة.</translation>
 <translation id="7572012011062736429">خطأ داخلي. أغلِق مربع الحوار، وألغِ التحقق، وأعد المحاولة.</translation>
-<translation id="2477280119520811719">انتهت صلاحية رمز التحقق. ابدأ عملية تغيير كلمة المرور مرة أخرى.</translation>
-<translation id="7103280722523884198">تم إدخال عدد كبير جدًا من الرموز غير الصحيحة. ابدأ عملية تغيير كلمة المرور مرة أخرى.</translation>
+<translation id="7502408214945538786">يتيح لك حساب Brave إنشاء وإدارة الأسماء المستعارة للبريد الإلكتروني الخاصة بك.</translation>
+<translation id="237081360011331787">يتيح لك حساب Brave إنشاء وإدارة الأسماء المستعارة للبريد الإلكتروني الخاصة بك. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
 <translation id="4178004989875422946">سيتيح لك حساب Brave الوصول بسهولة إلى خدمات Brave.</translation>
 <translation id="4902897635127068510">هل تقصد <ph name="SUGGESTION"/>؟</translation>
 <translation id="8314772463905284467">مفتاح Caps Lock مفعّل</translation>
@@ -2953,6 +2983,7 @@
 <translation id="2112559299194052697">تعذرت إعادة الإرسال</translation>
 <translation id="7932611814134267012">تم إرسال عدد كبير جدًا من رسائل التحقق بالبريد الإلكتروني بالفعل. يُرجى التحقق من مجلد البريد غير المرغوب فيه.</translation>
 <translation id="1364223093800750401">تم التحقق من البريد الإلكتروني بالفعل.</translation>
+<translation id="1054874027734589261">لقد أدخلت الكثير من الرموز غير الصحيحة. ألغِ التحقق وأعد المحاولة.</translation>
 <translation id="1353061468772282268">انتهت صلاحية رمز التحقق. ألغِ التحقق وأعد المحاولة.</translation>
 <translation id="3353844160742960162">ضبط إعدادات الخصوصية</translation>
 <translation id="528205534230423181">يوفّر هذا الموقع إعدادات خصوصية يمكن لـ Brave ضبطها لك تلقائيًا. إليك ما نوصي به:</translation>

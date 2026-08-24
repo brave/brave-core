@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Kosongkan data semakan imbas</translation>
 <translation id="1690924763769415936">Main di latar belakang</translation>
 <translation id="6332924730165919598">Brave akan ditutup apabila semua tab ditutup</translation>
+<translation id="2557725907027944082">Kumpulan</translation>
 <translation id="8308305244351876417">Membolehkan audio dimainkan apabila anda beralih ke tab lain dalam Brave atau beralih ke apl lain atau skrin peranti anda dimatikan.</translation>
 <translation id="49147335255967913">Buka pautan Youtube dalam Brave</translation>
 <translation id="4150201353443180367">Paparan</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Ketahui lebih lanjut tentang Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Benarkan (Lancarkan Semula Sekarang)</translation>
 <translation id="2433507940547922241">Tampilan</translation>
+<translation id="316542773973815724">Navigasi</translation>
 <translation id="9040069796107003510">Ikon Ganjaran Brave</translation>
 <translation id="6333347122924254968">Tunjukkan ikon Ganjaran Brave dalam bar alamat</translation>
-<translation id="1215433243238902715">Bolehkan bar alat navigasi bawah</translation>
+<translation id="4393974575368329991">Bar alat navigasi bawah</translation>
+<translation id="1834226716203076292">Tunjukkan bar bawah untuk akses pantas ke laman utama, penanda halaman dan carian</translation>
 <translation id="1422686363939271829">Tetapan ini dimatikan apabila kedudukan bar alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Perubahan anda akan kelihatan apabila anda melancarkan semula Brave</translation>
 <translation id="8701563696941209024">LANCARKAN SEMULA SEKARANG</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Hantar laporan diagnostik tanpa nama jika anda mengalami ranap atau beku.</translation>
 <translation id="4780647518983772446">Kongsikan cerapan produk yang bersifat peribadi dan tanpa nama tentang ciri Brave yang digunakan.</translation>
 <translation id="5109496672133133896">Cerapan produk peribadi</translation>
-<translation id="3545804467215833536">Ketik untuk melihat Brave Shields</translation>
-<translation id="1724327820822194498">Lihat semua perkara buruk yang disekat oleh Brave, pada setiap halaman, dengan bantuan Shields.</translation>
+<translation id="4340039903315468568">Lihat semua perkara kurang baik yang disekat oleh Brave pada setiap halaman dengan Shields. Ketik untuk melihat</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> iklan &amp; penjejak disekat</translation>
 <translation id="8281886186245836920">Langkau</translation>
 <translation id="5806601733251372221">Pelindung Brave</translation>
@@ -443,6 +445,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7141438739990875547">Rangkaian Bitcoin</translation>
 <translation id="9055546041146396417">Sekiranya laman ini nampaknya rosak, cuba Shields.</translation>
 <translation id="7898672232170410330">Sekat elemen</translation>
+<translation id="7205939464631857223">Kosongkan semua elemen yang disekat</translation>
 <translation id="7961015016161918242">Tidak sama sekali</translation>
 <translation id="3200744626782631683">Data pelayaran tidak pernah dipadam secara automatik.</translation>
 <translation id="1991004083507807299">Tab Laman Ditutup</translation>
@@ -505,7 +508,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3980704343258720102">Mengosongkan semua data semak imbas</translation>
 <translation id="8089997572759938512">Menetapkan semula laporan privasi anda ke sifar</translation>
 <translation id="2718046830255553131">Data laporan privasi telah dibersihkan.</translation>
-<translation id="8376263745431603066">Dayakan "Mod Malam" (Eksperimen)</translation>
+<translation id="3623948252408240879">Mod Malam</translation>
+<translation id="1257950165130031194">Paksa mod gelap untuk kandungan web</translation>
+<translation id="8710601165725654801">Warna dinamik</translation>
+<translation id="7865194971711852999">Tema apl sepadan dengan warna kertas dinding</translation>
 <translation id="1383876407941801731">Cari</translation>
 <translation id="13296465911709339">Teks anda telah disalin ke papan klip.</translation>
 <translation id="2735834606413553397">Alamat awam telah disalin ke papan keratan.</translation>
@@ -725,7 +731,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4979796155378508955">Transaksi mungkin tidak disebarluaskan ke rangkaian jika nilai nonce tersuai tidak mengikut urutan atau mempunyai ralat lain.</translation>
 <translation id="750843150060816463">Harga Gas (Gwei)</translation>
 <translation id="1426320910664514906">Had Gas</translation>
-<translation id="6389441740143786465">Nyahdayakan Hab Pengongsian</translation>
+<translation id="1784950057929740513">Hab Perkongsian</translation>
 <translation id="473775607612524610">Kemas kini</translation>
 <translation id="479795390141144417">Kemas kini akaun gagal.</translation>
 <translation id="8084782383392198011">Nama akaun tidak boleh kosong.</translation>
@@ -800,8 +806,12 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1060221736464994328">Benarkan laman ini untuk tukar rangkaian?</translation>
 <translation id="2478788592457735063">Ini akan menukarkan rangkaian kepada rangkaian yang ditambah sebelum ini.</translation>
 <translation id="8756686998207163764">Tukar rangkaian</translation>
+<translation id="8905793906896555159">Dayakan kumpulan tab</translation>
+<translation id="7632160823264702523">Bar kumpulan tab</translation>
+<translation id="2477807195394450274">Tunjukkan bar bawah untuk akses pantas ke tab dalam kumpulan tab yang sedang dibuka</translation>
+<translation id="8374720587111523381">Buka pautan dalam kumpulan tab semasa</translation>
 <translation id="5324095733417835490">Hanya buka pautan dalam kumpulan tab semasa</translation>
-<translation id="2620277345862119868">Buka semua pautan secara automatik dalam kumpulan tab semasa</translation>
+<translation id="1227658541937938697">Buka semua pautan secara automatik dalam kumpulan tab semasa</translation>
 <translation id="5242300593039211344">Kuncikan Dompet</translation>
 <translation id="1108298724135935307">Laman web bersambung</translation>
 <translation id="4255623233927788178">Lihat pada sekatan penjelajah</translation>
@@ -1080,7 +1090,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6393423486818299209">Gunakan penyedia perkhidmatan semasa anda atau Wikimedia DNS</translation>
 <translation id="3401384982562827787">Gunakan penyedia perkhidmatan semasa anda atau Cloudflare</translation>
 <translation id="8812367543786936496">Jika penyedia perkhidmatan semasa anda tidak selamat, Brave menggunakan penyedia DNS alternatif yang selamat</translation>
-<translation id="1381108437654541567">Dayakan berbilang tetingkap</translation>
+<translation id="750538469281113679">Berbilang tetingkap</translation>
 <translation id="6167344249617630304">Buka hingga 5 tetingkap pada satu masa dan alihkan tab dari satu tetingkap ke tetingkap yang lain</translation>
 <translation id="1063948063403254568">Berbilang tetingkap dikesan</translation>
 <translation id="4661882208707630158">Sila gabungkan tab ke tetingkap Brave lain, atau tutup tetingkap Brave lain, sebelum menyahdayakan ciri berbilang tetingkap.</translation>

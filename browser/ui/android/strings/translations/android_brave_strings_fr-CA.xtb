@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">Effacer les données de navigation</translation>
 <translation id="1690924763769415936">Lecture en arrière-plan</translation>
 <translation id="6332924730165919598">Fermer tous les onglets ferme Brave</translation>
+<translation id="2557725907027944082">Groupes</translation>
 <translation id="8308305244351876417">Permet de lire du contenu audio lorsque vous basculez vers un autre onglet dans Brave ou une autre app, ou si l'écran de votre appareil est éteint.</translation>
 <translation id="49147335255967913">Ouvrir les liens YouTube dans Brave</translation>
 <translation id="4150201353443180367">Affichage</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>En savoir plus à propos de Widevine<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">Autoriser (Relancer maintenant)</translation>
 <translation id="2433507940547922241">Apparence</translation>
+<translation id="316542773973815724">Navigation</translation>
 <translation id="9040069796107003510">Icône du programme de récompenses Brave</translation>
 <translation id="6333347122924254968">Afficher l’icône du programme de récompenses Brave dans la barre d’adresses</translation>
-<translation id="1215433243238902715">Activer la barre d'outils de navigation inférieure</translation>
+<translation id="4393974575368329991">Barre d'outils de navigation inférieure</translation>
+<translation id="1834226716203076292">Afficher une barre inférieure pour un accès rapide à l'accueil, aux favoris et à la recherche</translation>
 <translation id="1422686363939271829">Ce paramètre est désactivé lorsque la position de la barre d'adresse inférieure est sélectionnée</translation>
 <translation id="6587448235155023666">Vos changements prendront effet la prochaine fois que vous lancerez Brave</translation>
 <translation id="8701563696941209024">RELANCEZ MAINTENANT</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">Envoyer des rapports de diagnostic anonymes en cas de dysfonctionnement.</translation>
 <translation id="4780647518983772446">Partagez des renseignements privés et anonymes sur les fonctionnalités de Brave qui sont utilisées.</translation>
 <translation id="5109496672133133896">Renseignements privés sur les produits</translation>
-<translation id="3545804467215833536">Appuyez pour voir les boucliers Brave</translation>
-<translation id="1724327820822194498">Visualisez toutes les nuisances bloquées par Brave sur chaque page grâce aux boucliers.</translation>
+<translation id="4340039903315468568">Visualisez toutes les nuisances bloquées par Brave sur chaque page grâce aux boucliers. Touchez pour afficher</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> publicités et traceurs bloqués</translation>
 <translation id="8281886186245836920">Passer</translation>
 <translation id="5806601733251372221">Boucliers de Brave</translation>
@@ -440,6 +442,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7141438739990875547">Réseaux bitcoin</translation>
 <translation id="9055546041146396417">Si ce site semble en panne, essayez de désactiver Shields.</translation>
 <translation id="7898672232170410330">Bloquer l'élément</translation>
+<translation id="7205939464631857223">Effacer tous les éléments bloqués</translation>
 <translation id="7961015016161918242">Jamais</translation>
 <translation id="3200744626782631683">Les données de navigation ne sont jamais broyées automatiquement</translation>
 <translation id="1991004083507807299">Onglets du site fermés</translation>
@@ -502,7 +505,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3980704343258720102">Efface toutes les données de navigation</translation>
 <translation id="8089997572759938512">Réinitialise vos rapports de confidentialité à zéro</translation>
 <translation id="2718046830255553131">Les données de rapports de confidentialité ont été effacées.</translation>
-<translation id="8376263745431603066">Activer le « mode nuit » (expérimental)</translation>
+<translation id="3623948252408240879">Mode sombre</translation>
+<translation id="1257950165130031194">Forcer le mode sombre pour le contenu Web</translation>
+<translation id="8710601165725654801">Couleurs dynamiques</translation>
+<translation id="7865194971711852999">Le thème de l'application s'accorde aux couleurs du fond d'écran</translation>
 <translation id="1383876407941801731">Recherche</translation>
 <translation id="13296465911709339">Votre texte a été copié dans le presse-papiers.</translation>
 <translation id="2735834606413553397">L'adresse publique a été copiée dans le presse-papiers.</translation>
@@ -722,7 +728,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4979796155378508955">La transaction peut ne pas être propagée sur le réseau si la valeur du nonce personnalisé n'est pas séquentielle ou présente d'autres erreurs.</translation>
 <translation id="750843150060816463">Prix du Gas (Gwei)</translation>
 <translation id="1426320910664514906">Limite de Gas</translation>
-<translation id="6389441740143786465">Désactiver le centre de partage</translation>
+<translation id="1784950057929740513">Centre de partage</translation>
 <translation id="473775607612524610">Mise à jour</translation>
 <translation id="479795390141144417">Échec de la mise à jour du compte.</translation>
 <translation id="8084782383392198011">Le nom du compte ne peut pas être vide.</translation>
@@ -797,8 +803,12 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1060221736464994328">Autoriser ce site à changer de réseau?</translation>
 <translation id="2478788592457735063">Vous allez basculer sur un réseau déjà ajouté.</translation>
 <translation id="8756686998207163764">Changer de réseau</translation>
+<translation id="8905793906896555159">Activer les groupes d'onglets</translation>
+<translation id="7632160823264702523">Barre des groupes d'onglets</translation>
+<translation id="2477807195394450274">Afficher une barre inférieure pour un accès rapide aux onglets du groupe d'onglets actuellement ouvert</translation>
+<translation id="8374720587111523381">Ouvrir les liens dans le groupe d'onglets actuel</translation>
 <translation id="5324095733417835490">Ouvrir les liens uniquement dans le groupe d'onglets actuel</translation>
-<translation id="2620277345862119868">Ouvre automatiquement tous les liens dans le groupe d'onglets actuel</translation>
+<translation id="1227658541937938697">Ouvre automatiquement tous les liens dans le groupe d'onglets actuel</translation>
 <translation id="5242300593039211344">Verrouiller le portefeuille</translation>
 <translation id="1108298724135935307">Sites connectés</translation>
 <translation id="4255623233927788178">Afficher sur l'explorateur de bloc</translation>
@@ -1078,7 +1088,7 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="6393423486818299209">Utilisez votre fournisseur de service actuel ou Wikimedia DNS</translation>
 <translation id="3401384982562827787">Utilisez votre fournisseur de service actuel ou Cloudflare</translation>
 <translation id="8812367543786936496">Si votre fournisseur de service actuel n'est pas sécurisé, Brave utilise un fournisseur DNS alternatif sécurisé.</translation>
-<translation id="1381108437654541567">Activer les fenêtres multiples</translation>
+<translation id="750538469281113679">Fenêtres multiples</translation>
 <translation id="6167344249617630304">Ouvrez jusqu'à 5 fenêtres à la fois et déplacez vos onglets d'une fenêtre à l'autre</translation>
 <translation id="1063948063403254568">Fenêtres multiples détectées</translation>
 <translation id="4661882208707630158">Avant de désactiver la fonctionnalité Fenêtres multiples, assurez-vous de regrouper vos onglets dans une autre fenêtre Brave ou de fermer les autres fenêtres Brave.</translation>

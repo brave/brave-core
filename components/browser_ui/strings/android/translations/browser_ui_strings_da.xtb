@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Anmod om mobilvenlig visning</translation>
 <translation id="2870560284913253234">Website</translation>
 <translation id="2874939134665556319">Forrige nummer</translation>
+<translation id="258271431472168668">Brave-standard</translation>
 <translation id="2891975107962658722">Bloker et website på en måde, hvor det ikke kan gemme data på din enhed</translation>
 <translation id="2903493209154104877">Adresser</translation>
+<translation id="2903764741244499151">Websites kan automatisk åbne integreret billede. På den måde kan du fortsætte med at se en video og samtidig have plads til at udføre andre opgaver på skærmen.</translation>
 <translation id="2918484639460781603">Gå til indstillinger</translation>
 <translation id="2932883381142163287">Rapportér misbrug</translation>
 <translation id="2939338015096024043">Når dette er slået til, kan websites anmode om tilladelse til at registrere din kameraposition og få oplysninger om dine omgivelser. Når dette er slået fra, kan websites ikke registrere din kameraposition eller få oplysninger om dine omgivelser.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Skift adgangskoder</translation>
 <translation id="3797520601150691162">Anvend ikke Mørkt tema på et bestemt website</translation>
 <translation id="3803367742635802571">Websites, du besøger, holder muligvis op med at fungere som forventet</translation>
-<translation id="8338457030135232378">Brave-farver</translation>
 <translation id="381841723434055211">Telefonnumre</translation>
 <translation id="3823453485268218808">Mono-skrifttype</translation>
 <translation id="3826050100957962900">Tredjepartslogin</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Afslut fuld skærm</translation>
 <translation id="640163077447496506">Udløber i dag</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Temasamlinger</translation>
 <translation id="6439114592976064011">Bloker websites fra at benytte dine virtual reality-enheder og -data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Prisfald på din åbne fane fra <ph name="OLD_PRICE"/> til <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="7423098979219808738">Spørg først</translation>
 <translation id="7423538860840206698">Blokeret fra at læse udklipsholderen</translation>
 <translation id="7425915948813553151">Mørkt tema på websites</translation>
+<translation id="2044383478723007273">Brave-farver</translation>
 <translation id="746412105358554870">JavaScript-optimering og -sikkerhed</translation>
 <translation id="7478658909253570368">Tillad ikke, at websites opretter forbindelse til serieporte</translation>
 <translation id="7488573225650545859">Skjul Se faner på din appliste</translation>
@@ -671,7 +672,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="802154636333426148">Download mislykkedes</translation>
 <translation id="8033047164036749181">Abonner på notifikationer fra dette website</translation>
 <translation id="8051193500142930381">Funktioner, der skal bruge et kamera, fungerer ikke</translation>
-<translation id="2495032782748793764">Standard i Brave</translation>
 <translation id="8067883171444229417">Afspil video</translation>
 <translation id="8068648041423924542">Certifikatet kunne ikke vælges.</translation>
 <translation id="8077120325605624147">Ethvert website, du besøger, kan vise dig en hvilken som helst annonce</translation>
@@ -686,7 +686,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="8163152278172770963">Tillad ikke, at websites automatisk åbner integreret billede</translation>
 <translation id="8168435359814927499">Indhold</translation>
 <translation id="818487310457576362">Træk fra siden af skærmen for at afslutte fuld skærm.</translation>
-<translation id="8186479265534291036">Fungerer websitet ikke? Tredjepartscookies er blokeret</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> blev tilladt</translation>
 <translation id="8200772114523450471">Genoptag</translation>
 <translation id="8211406090763984747">Forbindelsen er sikker</translation>
@@ -757,7 +756,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="8805385115381080995">Dette skaber færre afbrydelser, når du bruger nettet, da det er mindre sandsynligt, at et website beder dig om at verificere, at du er en rigtig person</translation>
 <translation id="881644524232657178">Når denne indstilling er aktiveret, kan websites anvende din enheds bevægelses- og lyssensorer. Når denne indstilling er deaktiveret, kan websites ikke anvende sensorer.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Prøv midlertidigt at tillade tredjepartscookies, hvilket vil betyde mindre browserbeskyttelse, men større sandsynlighed for, at websitefunktionerne fungerer som forventet.</translation>
 <translation id="7532165358672313130">Når du derefter bruger nettet, kan websites ved hjælp af Brave tjekke og verificere via et website, du tidligere har besøgt, at du sandsynligvis er en rigtig person</translation>
 <translation id="8899807382908246773">Påtrængende annoncer</translation>
 <translation id="8903921497873541725">Zoom ind</translation>
@@ -783,7 +781,6 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:</translation>
 <translation id="913657688200966289">Aktivér tilladelser for <ph name="APP_NAME"/> i <ph name="BEGIN_LINK"/>Android-indstillingerne<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Notifikationer er tilladt</translation>
 <translation id="9138217887606523162">Det aktuelle zoomniveau er <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Websites anvender denne funktion til automatisk at åbne integreret billede. På den måde kan du fortsætte med at se en video og samtidig have plads til at udføre andre opgaver på skærmen.</translation>
 <translation id="7359422048569205930">Få Brave til at vise dine seneste faner på din enheds appliste og i søgeresultaterne. Du kan til enhver tid deaktivere dette i Brave-indstillingerne.</translation>
 <translation id="9162462602695099906">Denne side er farlig</translation>
 <translation id="9182556968660520230">Tillad ikke, at websites afspiller beskyttet indhold</translation>

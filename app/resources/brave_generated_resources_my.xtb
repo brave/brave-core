@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">နောက်ထပ်…</translation>
 <translation id="71316462802471551">အီးမေးလ် Alias</translation>
-<translation id="209130971304928953">တဘ်များကို Workspace အဖြစ်သိမ်းမည်…</translation>
-<translation id="877984331511007834">Workspace ဖွင့်မည်…</translation>
-<translation id="1310182651927031327">တဘ်များကို workspace အဖြစ်သိမ်းမည်…</translation>
-<translation id="3588277741646479444">Workspace ဖွင့်မည်…</translation>
+<translation id="8350985546648269694">လက်ရှိ Windows နှင့် တဘ်များကို Space အဖြစ် သိမ်းဆည်းပါ</translation>
+<translation id="5327248766486351172">အမည်</translation>
+<translation id="6379791766023874417">သင့် Space အမည် ရိုက်ထည့်ပါ</translation>
+<translation id="9174724474418499472">ကျွန်ုပ်၏ Space</translation>
+<translation id="5317780077021120954">သိမ်းဆည်းမည်</translation>
+<translation id="7658239707568436148">ပယ်ဖျက်ရန်</translation>
+<translation id="196342407904926436">Space ရွေးချယ်မှုများ</translation>
+<translation id="2806407377752719586">Space ဖျက်မည်</translation>
+<translation id="1844931500883490339">ဤ Space ကို ဖျက်လိုသည်မှာ သေချာပါသလား? သိမ်းဆည်းထားသည့် Space ကို အပြီးအပိုင် ဖယ်ရှားလိုက်ပါမည်။ ဒီလုပ်ဆောင်ချက်ကို ပြန်မပြင်နိုင်ပါ။</translation>
+<translation id="8261506727792406068">ဖျက်မည်</translation>
+<translation id="8428213095426709021">ဆက်တင်</translation>
+<translation id="1212321046099128987">Space များ ဖန်တီးမထားပါ</translation>
+<translation id="3524567389166933243">အောက်ရှိ သိမ်းဆည်းမည် ခလုတ်ကို နှိပ်၍ သင့်၏ ပထမဆုံး Space ကို ဖန်တီးပါ။</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {တက် ၁} other {တက်များ #}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> Windows</translation>
+<translation id="1680377529024357662">လက်ရှိ Windows နှင့် တဘ်များကို Space အဖြစ် သိမ်းဆည်းပါ</translation>
+<translation id="5561829325295347472">သင့် Space အမည် ရိုက်ထည့်ပါ</translation>
+<translation id="2028520494010039812">Space ရွေးချယ်မှုများ</translation>
+<translation id="1580775521202322063">Space ဖျက်မည်</translation>
+<translation id="3004759399777164093">ဤ Space ကို ဖျက်လိုသည်မှာ သေချာပါသလား? သိမ်းဆည်းထားသည့် Space ကို အပြီးအပိုင် ဖယ်ရှားလိုက်ပါမည်။ ဒီလုပ်ဆောင်ချက်ကို ပြန်မပြင်နိုင်ပါ။</translation>
+<translation id="7563692436589408797">Space များ ဖန်တီးမထားပါ</translation>
+<translation id="3945077125173636695">အောက်ရှိ သိမ်းဆည်းမည် ခလုတ်ကို နှိပ်၍ သင့်၏ ပထမဆုံး Space ကို ဖန်တီးပါ။</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {တက်ဘ် ၁} other {တက်ဘ်များ #}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> windows</translation>
+<translation id="3326655241685890930">Spaces</translation>
 <translation id="1990886731975529483">Google Widevine ကို ထည့်သွင်းသုံးစွဲရန်</translation>
 <translation id="8926389886865778422">ထပ်မပြောပါနဲ့</translation>
 <translation id="4900351245762303149">Google Widevine ကို ထည့်သွင်းရန်</translation>
@@ -37,7 +58,7 @@
 <translation id="3218385319396786393">ဤစာမျက်နှာတွင် Autoplay ပိတ်ထားသည်</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> တွင် Autoplay ခွင့်ပြုသည်</translation>
 <translation id="4150684676757176434">Autoplay ပိတ်၍ ထိန်းသိမ်းထားသည်ကို ဆက်လက်ပြုလုပ်မည်</translation>
-<translation id="3477357195688115718">Brave သည်အမှုလက်ခံပြုလက်ထားသော လုံအသည်းသန့်ဆိုပါ ဒေသကိုစိစစ်၍မရပါ။ ယင်း အပိုဆောင်း ဒေသကို ထည့်သွင်းပါက developer ကိုယုံကြည်ခြင်းဖြစ်သည်။</translation>
+<translation id="2201935460386712655">Brave သည် extension များကို security နှင့် ဘေးကင်းမှုအတွက် စစ်ဆေးခြင်း မရှိပါ။ "<ph name="EXTENSION_NAME"/>" ကို developer ကို ယုံကြည်မှသာ ထည့်သွင်းပါ။</translation>
 <translation id="2928844661231356557">Bluetooth device များသို့ ခွင့်ပြု လုပ်ရင် သင်သည် အပလီကေးရှင်းနှင့် ပေါင်းသက်နှိပ်စာဖြင့် သက်သေသာဝင်များနေ့စဉ်တိုင်းနှင့် အဓိကသရုပ်ဖေါ်မည်။ ယုံကြည်သော site များထဲတွင်သာ  Bluetooth device များ ခွင့်ပြုပါမည်။ <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor windows</translation>
 <translation id="7965178729203412357">Tor Identity အသစ်</translation>
@@ -63,7 +84,6 @@
 <translation id="3211174446914979436">မန်နေဂျာ သို့မဟုတ် ဖလလစ်တာ</translation>
 <translation id="3108584651298176909">လမ်းပြချက်များ ပြပါ</translation>
 <translation id="5156986655891520787">လမ်းပြချက်များ ဖျောက်ရန်</translation>
-<translation id="7658239707568436148">ပယ်ဖျက်ရန်</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">ယခု Tor: <ph name="ADDRESS"/> မှ အသုံးပြုပါ</translation>
 <translation id="4759098689276706664">အကူးအပြောင်းခွင့်ကို အကြိမ်မကန့်သတ်ဖိသို့ ကူးပြောင်းရန်</translation>
@@ -91,6 +111,7 @@
 <translation id="191886777375280620">စကရင်ရှော့ဖမ်းယူရန်</translation>
 <translation id="3114478090884951591">ပေါ်နေသည့် နေရာ</translation>
 <translation id="2026367923222947564">စာမျက်နှာ အပြည့်</translation>
+<translation id="4218885227032158909">ရွေးချယ်ထားသည့် နေရာ</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">View in Web Extensions Store</translation>
 <translation id="3161744659507801211">သတိပေးချက် - Brave သည် သင်သည် private mode နှင့် Tor mode တွင်ဘရိုက်ဇာသည်သင်၏ရှာဖွေရေးမှတ်တမ်းများကိုမှတ်ယူနေသည့် extensions များကိုတား၍မရပါ။</translation>
@@ -289,14 +310,12 @@
 <translation id="55252794453047936">မီဒီယာများရွှေ့ခြင်း</translation>
 <translation id="4418985925423678811">ပလေးလစ်အသစ်</translation>
 <translation id="385051799172605136">နောက်ပြန်</translation>
-<translation id="5317780077021120954">သိမ်းဆည်းမည်</translation>
 <translation id="7930125899031086027">ဖန်တီးပြီးရွှေ့ပါ</translation>
 <translation id="2860159216666546928">ဤမီဒီယာများကိုရွှေ့ရန် ဖိုလ်ဒါတစ်ခုရွေးချယ်ပါ</translation>
 <translation id="9130105487623071247">ပလေးလစ်နာမည်</translation>
 <translation id="1857042171340443373"><ph name="NUM_ITEMS"/> ပစ္စည်းများ ရွေးချယ်ထားသည်</translation>
 <translation id="3596306474342941843">ပလေးလစ်ကိုဖျက်ပါ</translation>
 <translation id="7110726588168439924">ဤပလေးလစ်နှင့်၎င်း၏ အကြောင်းအရာ အားလုံးကို ဖျက်လိုသည်မှာ သေချာပါသလား? ဒီလုပ်ဆောင်ချက်ကိုမပြန်ပြင်နိုင်ပါ။</translation>
-<translation id="8261506727792406068">ဖျက်မည်</translation>
 <translation id="8152485753254079984">ပလေးလစ်အသစ်</translation>
 <translation id="5397019762993984652">သင့်၏ Play Later ဖိုလ်ဒါမှ ထည့်ပါ</translation>
 <translation id="7525067979554623046">ဖန်တီးပါ</translation>
@@ -393,7 +412,6 @@
 <translation id="8900907990448657776">container ကို ပြင်ဆင်ပါ</translation>
 <translation id="7900511996284443779">container ကို ဖျက်ပါ</translation>
 <translation id="2738687336989232152">container <ph name="CONTAINER_NAME"/> ကို ဖျက်မှာ သေချာပါလား? ဒါက  သက်ဆိုင်သော အချက်အလက်ကို ဖျက်ရန် ဖြစ်သည်。</translation>
-<translation id="5327248766486351172">အမည်</translation>
 <translation id="104766043551382253">ပုံ</translation>
 <translation id="5431318178759467895">အရောင်</translation>
 <translation id="4328541188421002379">သင်၏ container အမည်ကို ပေးသောလိုအပ်ပဲ</translation>
@@ -547,6 +565,7 @@
 <translation id="2587535830241068901">သင်၏ browser ကို ကိုယ်ပိုင်လိုအပ်ချက်နှင့်အညီ ပြင်ဆင်အသုံးပြုနိုင်ပြီး Brave ကို အထောက်အပံ့ပေးနေမည်</translation>
 <translation id="123297831435065577">Brave Origin သည် Brave ကို လုပ်ငန်းတစ်ခုအနေဖြင့် ပံ့ပိုးပေးသော လုပ်ဆောင်ချက်အားလုံးကို မလိုအပ်သော်လည်း Brave သာ ပေးအပ်နိုင်သည့် privacy ကို ဆက်လက်လိုလားသော အသုံးပြုသူများအတွက် ပေးချေရသော browser ဗားရှင်းတစ်ခု ဖြစ်သည်။ Origin အသုံးပြုသူများသည် ကျွန်ုပ်တို့၏ စက်မှုလုပ်ငန်းတွင် ထိပ်တန်း privacy၊ adblock နှင့် အမြန်နှုန်း (ဒိုင်းကာ မှတစ်ဆင့်) အပြင် ပုံမှန် software updates များ၊ Chromium patches များနှင့် security နှင့် privacy တိုးတက်မှုများမှ ဆက်လက်အကျိုးကျေးဇူး ခံစားရရှိမည် ဖြစ်သည်။</translation>
 <translation id="7984508421152399880">ယခုအခါ ဝယ်ယူပါ</translation>
+<translation id="1882724423074862793">ဝယ်ယူမှု ပြန်လည်ရယူခြင်း</translation>
 <translation id="5567412479632285879">Brave ဆုလက်ဆောင်များကို ဖျက်ထားသည်</translation>
 <translation id="413570371620795359">ဖွင့်ရန် Brave ဆုလက်ဆောင်များ ပန်နယ်ကို ဖွင့်ပြီး စတင်ပါ</translation>
 <translation id="1051600834033686945">Brave ဆုလက်ဆောင်များ အပြည့်အစုံကို ဖွင့်ပါ</translation>
@@ -583,6 +602,8 @@
 <translation id="933652931229970927">ချွတ်ယွင်းချက်အခြေအနေပြ ရီပို့တ်များကို အော်တိုပို့ပေးရန်</translation>
 <translation id="8868426106596092089">Brave Browser がクラッシュしたり凍結したときに診断レポートを自動送信することで、Brave の製品の安定性の向上にご協力ください。</translation>
 <translation id="4891600875049212418">သွေးတိုးနေသာဆိုက်များကို သွေးထွက်သောအချိန်တွင်ပင်တိုင်ပါ</translation>
+<translation id="1022603984240541480">တွဲဖက်နိုင်သည့် site များတွင် ကိုယ်ရေးကိုယ်တာ ဆက်တင် ချိန်ညှိမှု အသိပေးချက် ပြပါ</translation>
+<translation id="3528176629974273019">Brave အား site-specific ကိုယ်ရေးကိုယ်တာ ဆက်တင်များကို အလိုအလျောက် အကြံပြု (နှင့် ချိန်ညှိ) ခွင့်ပြုသည်။</translation>
 <translation id="509873765238158442">Microsoft Recall ကိုပိတ်ရန်</translation>
 <translation id="4763421121695677716">Microsoft Windows ကွန်ပျူတာများတွင်ထားရှိထားသော Brave tab များ၏ screenshot များကို အလိုအလျောက်ယူမှီ မည်ဆိုသော Recall လုပ်ဆောင်ချက်ကိုပိတ်ရန်။</translation>
 <translation id="1968895725257436430">အချက်အလက် စုဆောင်းခြင်း</translation>
@@ -733,6 +754,7 @@
 <translation id="4425607417590286548">ပြောင်းလဲမှုများကို လျှောက်ထားပါ</translation>
 <translation id="2128143836897950793">bridges များ ရယူရန် 'New Bridge...' ကို နှိပ်ပါ</translation>
 <translation id="3314921753580327793">လိပ်စာ:port ရိုက်ပါ (တစ်ကြောင်းတွင် တစ်ပုံစံသော)</translation>
+<translation id="7002083631026466886">Tor သည် ဤ bridge ကို အသုံးမပြုနိုင်ပါ။ သင်ရရှိထားသည့် bridge နှင့် စစ်ဆေးပြီး ထပ်မံ ကြိုးစားပါ-</translation>
 <translation id="3755189300481406891">Bridge တောင်းဆိုပါ</translation>
 <translation id="6924425739431382319">BridgeDB ရဲ့ချိတ်ဆက်နေသည်။ ကျေးဇူးပြု၍စောင့်ပါ။</translation>
 <translation id="811745063252080651">bridge တစ်ခုတောင်းဆိုရန် CAPTCHA ကိုဖြေပါ။</translation>
@@ -910,7 +932,6 @@
 <translation id="1838374766361614909">ရှာဖွေမှုရှင်းလင်းရန်</translation>
 <translation id="5126255551970171328">မှတ်ဉာဏ်တစ်ခုကို ရှာဖွေပါ</translation>
 <translation id="7402116145895962069">သင့် Ollama ဒေတာပုံစံများကို အ同步ပြုလုပ်ပါ</translation>
-<translation id="4835154437390745810">Ollama မှ စီမံထားသည်</translation>
 <translation id="5985516785067818307">စစ်တမ်း Panelist</translation>
 <translation id="8347743943525229984">Brave စစ်တမ်းများကို ခွင့်ပြုပါ</translation>
 <translation id="3204080538332044581">ဆောင်းပါးများကို ဖောက်ထွင်းအသုံးပြုခြင်းရော စစ်တမ်းများက အကောင်ဆုံးသောအင်္ဂျင်များကို အကောင်းဆုံးဖြစ်နေပြီဖြစ်ပါတယ်။ <ph name="BEGIN_LINK"/> သင်ဦးစွာပြုလုပ်နိုင်သော ဆောင်းပါးများ၏ အဆုံးဆုံးကို သင်ထောက်ပြထားပါ။ <ph name="END_LINK"/></translation>

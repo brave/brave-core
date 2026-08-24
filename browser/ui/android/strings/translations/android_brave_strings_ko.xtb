@@ -202,6 +202,7 @@
 <translation id="8026334261755873520">인터넷 사용 기록 삭제</translation>
 <translation id="1690924763769415936">백그라운드 재생</translation>
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
+<translation id="2557725907027944082">그룹</translation>
 <translation id="8308305244351876417">Brave 내 다른 탭 또는 다른 앱으로 전환하거나 디바이스 화면이 꺼져도 오디오가 재생됩니다.</translation>
 <translation id="49147335255967913">Brave에서 YouTube 링크 열기</translation>
 <translation id="4150201353443180367">디스플레이</translation>
@@ -212,9 +213,11 @@
 <translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevine 자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="6961369821791548622">허용(지금 다시 실행)</translation>
 <translation id="2433507940547922241">모양</translation>
+<translation id="316542773973815724">탐색</translation>
 <translation id="9040069796107003510">Brave 리워드 아이콘</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave 리워드 아이콘 표시</translation>
-<translation id="1215433243238902715">하단 탐색 도구 모음 활성화</translation>
+<translation id="4393974575368329991">하단 탐색 도구 모음</translation>
+<translation id="1834226716203076292">홈, 북마크, 검색에 빠르게 접근할 수 있는 하단 표시줄 표시</translation>
 <translation id="1422686363939271829">하단 주소 표시줄 위치를 선택하면 이 설정이 비활성화됩니다.</translation>
 <translation id="6587448235155023666">변경 사항은 다음번에 Brave를 재실행할 때 적용됩니다</translation>
 <translation id="8701563696941209024">지금 재실행</translation>
@@ -234,8 +237,7 @@
 <translation id="6188781052835527980">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
 <translation id="4780647518983772446">Brave 기능이 사용되는 방식에 대한 프라이빗 익명 제품 인사이트를 공유합니다.</translation>
 <translation id="5109496672133133896">프라이빗 제품 인사이트</translation>
-<translation id="3545804467215833536">탭하여 Brave Shields 보기</translation>
-<translation id="1724327820822194498">모든 페이지에서 Brave가 Shields로 차단한 모든 나쁜 것들을 확인합니다.</translation>
+<translation id="4340039903315468568">Shields로 모든 페이지에서 Brave가 차단한 모든 나쁜 것들을 확인하세요. 탭하여 보기</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>개의 광고 및 트래커 차단됨</translation>
 <translation id="8281886186245836920">건너뛰기</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -443,6 +445,7 @@
 <translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="9055546041146396417">이 사이트가 손상된 것 같으면 실드 다운을 시도합니다.</translation>
 <translation id="7898672232170410330">요소 차단</translation>
+<translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
 <translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="3200744626782631683">브라우징 데이터는 절대 자동으로 파기되지 않습니다.</translation>
 <translation id="1991004083507807299">사이트 탭이 닫혔을 때</translation>
@@ -505,7 +508,10 @@
 <translation id="3980704343258720102">모든 인터넷 사용 기록 지우기</translation>
 <translation id="8089997572759938512">개인정보 보고서를 0으로 재설정</translation>
 <translation id="2718046830255553131">개인정보 보고서 데이터가 삭제되었습니다.</translation>
-<translation id="8376263745431603066">"야간 모드" 활성화 (시험용)</translation>
+<translation id="3623948252408240879">야간 모드</translation>
+<translation id="1257950165130031194">웹 콘텐츠에 다크 모드 강제 적용</translation>
+<translation id="8710601165725654801">다이내믹 컬러</translation>
+<translation id="7865194971711852999">앱 테마가 배경화면 색상과 일치</translation>
 <translation id="1383876407941801731">검색</translation>
 <translation id="13296465911709339">텍스트가 클립보드에 복사되었습니다.</translation>
 <translation id="2735834606413553397">공개 주소가 클립보드에 복사되었습니다.</translation>
@@ -725,7 +731,7 @@
 <translation id="4979796155378508955">맞춤 논스 값이 시퀀셜이 아니거나 기타 오류가 있으면 트랜잭션이 네트워크로 전파되지 않을 수 있습니다.</translation>
 <translation id="750843150060816463">가스 가격(Gwei)</translation>
 <translation id="1426320910664514906">가스 한도</translation>
-<translation id="6389441740143786465">공유 허브 비활성화</translation>
+<translation id="1784950057929740513">공유 허브</translation>
 <translation id="473775607612524610">업데이트</translation>
 <translation id="479795390141144417">계정 업데이트에 실패했습니다.</translation>
 <translation id="8084782383392198011">계정 이름은 비워 둘 수 없습니다.</translation>
@@ -800,8 +806,12 @@
 <translation id="1060221736464994328">이 사이트가 네트워크를 전환할 수 있게 허용하시겠습니까?</translation>
 <translation id="2478788592457735063">네트워크가 이전에 추가한 네트워크로 전환됩니다.</translation>
 <translation id="8756686998207163764">네트워크 전환</translation>
+<translation id="8905793906896555159">탭 그룹 활성화</translation>
+<translation id="7632160823264702523">탭 그룹 표시줄</translation>
+<translation id="2477807195394450274">현재 열린 탭 그룹의 탭에 빠르게 접근할 수 있는 하단 표시줄 표시</translation>
+<translation id="8374720587111523381">현재 탭 그룹에서 링크 열기</translation>
 <translation id="5324095733417835490">현재 탭 그룹 내에서만 링크 열기</translation>
-<translation id="2620277345862119868">현재 탭 그룹 내에서 모든 링크 자동으로 열기</translation>
+<translation id="1227658541937938697">현재 탭 그룹 내에서 모든 링크 자동으로 열기</translation>
 <translation id="5242300593039211344">월렛 잠금</translation>
 <translation id="1108298724135935307">연결된 사이트</translation>
 <translation id="4255623233927788178">블록 탐색기에서 보기</translation>
@@ -1080,7 +1090,7 @@
 <translation id="6393423486818299209">현재 서비스 제공자 또는 Wikimedia DNS 사용</translation>
 <translation id="3401384982562827787">현재 서비스 제공자 또는 Cloudflare 사용</translation>
 <translation id="8812367543786936496">현재 서비스 제공자가 비보안이면 Brave가 대체 보안 DNS 제공자를 사용합니다.</translation>
-<translation id="1381108437654541567">여러 창 활성화</translation>
+<translation id="750538469281113679">여러 창</translation>
 <translation id="6167344249617630304">동시에 최대 5개의 창을 열고 한 창에서 다른 창으로 탭 이동</translation>
 <translation id="1063948063403254568">여러 창 감지됨</translation>
 <translation id="4661882208707630158">탭을 다른 Brave 창으로 병합하거나 다른 Brave 창을 닫아야 여러 창 기능을 비활성화할 수 있습니다.</translation>

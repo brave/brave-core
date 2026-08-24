@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Zaidi…</translation>
 <translation id="71316462802471551">Miendenisho ya Barua Pepe</translation>
-<translation id="209130971304928953">Hifadhi Vichupo kama Eneo la Kazi…</translation>
-<translation id="877984331511007834">Fungua Eneo la Kazi…</translation>
-<translation id="1310182651927031327">Hifadhi vichupo kama eneo la kazi…</translation>
-<translation id="3588277741646479444">Fungua eneo la kazi…</translation>
+<translation id="8350985546648269694">Hifadhi Madirisha na Vichupo vya Sasa kama Nafasi</translation>
+<translation id="5327248766486351172">Jina</translation>
+<translation id="6379791766023874417">Weka Jina la Nafasi Yako</translation>
+<translation id="9174724474418499472">Nafasi Yangu</translation>
+<translation id="5317780077021120954">Hifadhi</translation>
+<translation id="7658239707568436148">Ghairi</translation>
+<translation id="196342407904926436">Machaguo ya Nafasi</translation>
+<translation id="2806407377752719586">Futa Nafasi</translation>
+<translation id="1844931500883490339">Je, una uhakika unataka kufuta Nafasi hii? Nafasi iliyohifadhiwa itaondolewa kabisa. Kitendo hiki hakiwezi kutenduliwa.</translation>
+<translation id="8261506727792406068">Futa</translation>
+<translation id="8428213095426709021">Mipangilio</translation>
+<translation id="1212321046099128987">Hakuna Nafasi Zilizoundwa</translation>
+<translation id="3524567389166933243">Unda Nafasi Yako ya Kwanza kwa Kubofya Kitufe cha Kuhifadhi Hapa Chini.</translation>
+<translation id="6632569090444863135">{TAB_COUNT, plural, =1 {Kebo 1} other {# Kebo}}</translation>
+<translation id="3719033730609396016">Madirisha <ph name="WINDOW_COUNT"/></translation>
+<translation id="1680377529024357662">Hifadhi madirisha na vichupo vya sasa kama nafasi</translation>
+<translation id="5561829325295347472">Weka jina la nafasi yako</translation>
+<translation id="2028520494010039812">Machaguo ya nafasi</translation>
+<translation id="1580775521202322063">Futa nafasi</translation>
+<translation id="3004759399777164093">Je, una uhakika unataka kufuta nafasi hii? Nafasi iliyohifadhiwa itaondolewa kabisa. Kitendo hiki hakiwezi kutenduliwa.</translation>
+<translation id="7563692436589408797">Hakuna nafasi zilizoundwa</translation>
+<translation id="3945077125173636695">Unda nafasi yako ya kwanza kwa kubofya kitufe cha Kuhifadhi hapa chini.</translation>
+<translation id="4731210674738654452">{TAB_COUNT, plural, =1 {kichupo 1} other {vichupo #}}</translation>
+<translation id="1310330626680091210">madirisha <ph name="WINDOW_COUNT"/></translation>
+<translation id="3326655241685890930">Nafasi</translation>
 <translation id="1990886731975529483">Sakinisha na kuendesha Google Widevine</translation>
 <translation id="8926389886865778422">Nisiulizwe tena</translation>
 <translation id="4900351245762303149">Sakinisha Google Widevine</translation>
@@ -37,7 +58,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3218385319396786393">Kufungua kiotomati kumezuiwa kwenye ukurasa huu</translation>
 <translation id="4988333904713528597">Daima ruhusu kufungua kiotomati kwenye <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Endelea kuzuia kufungua kiotomati</translation>
-<translation id="3477357195688115718">Brave haikagui viendelezi kwa ajili ya usalama. Sakinisha kiendelezi hiki ikiwa tu unamwamini msanidi wake.</translation>
+<translation id="2201935460386712655">Brave haikagui viendelezi kwa ajili ya usalama. Sakinisha "<ph name="EXTENSION_NAME"/>" ikiwa tu unamwamini msanidi wake.</translation>
 <translation id="2928844661231356557">Kutoa idhini ya ufikiaji wa kifaa cha Bluetooth kutaruhusu tovuti kusoma taarifa za kutambulisha na zinaweza kuwa nyeti kukuhusu. Ruhusu tu tovuti unazoziamini kufikia vifaa vya Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Madirisha ya Tor</translation>
 <translation id="7965178729203412357">Utambulisho Mpya wa Tor</translation>
@@ -63,7 +84,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3211174446914979436">Dhibiti vichujio</translation>
 <translation id="3108584651298176909">Onyesha sheria</translation>
 <translation id="5156986655891520787">Ficha sheria</translation>
-<translation id="7658239707568436148">Ghairi</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Fungua ukitumia anwani ya .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Lazimisha Kubandika</translation>
@@ -91,6 +111,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191886777375280620">Nasa picha ya skrini</translation>
 <translation id="3114478090884951591">Eneo linaloonekana</translation>
 <translation id="2026367923222947564">Ukurasa kamili</translation>
+<translation id="4218885227032158909">Eneo lililoteuliwa</translation>
 <translation id="4928988318462976765">Duka la Viendelezi vya Wavuti</translation>
 <translation id="9181207987584064303">Tazama kwenye Duka la Viendelezi vya Wavuti</translation>
 <translation id="3161744659507801211">Onyo: Brave haiwezi kuzuia viendelezi kurekodi historia yako ya kuvinjari.</translation>
@@ -289,14 +310,12 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="55252794453047936">Hamisha Midia</translation>
 <translation id="4418985925423678811">Orodha Chezeshi Mpya</translation>
 <translation id="385051799172605136">Nyuma</translation>
-<translation id="5317780077021120954">Hifadhi</translation>
 <translation id="7930125899031086027">Unda na uhamishe</translation>
 <translation id="2860159216666546928">Chagua ya folda ya kuhamisha midia hii kwayo</translation>
 <translation id="9130105487623071247">Jina la orodha ya kucheza</translation>
 <translation id="1857042171340443373">Vipengee <ph name="NUM_ITEMS"/> vimechaguliwa</translation>
 <translation id="3596306474342941843">Futa orodha ya kucheza</translation>
 <translation id="7110726588168439924">Je, una uhakika unataka kufuta orodha chezeshi hii na maudhui yake yote? Kitendo hiki hakiwezi kutenduliwa.</translation>
-<translation id="8261506727792406068">Futa</translation>
 <translation id="8152485753254079984">Orodha mpya ya kucheza</translation>
 <translation id="5397019762993984652">Ongeza kutoka folda yako ya Cheza Baadaye</translation>
 <translation id="7525067979554623046">Unda</translation>
@@ -393,7 +412,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8900907990448657776">Hariri kontena</translation>
 <translation id="7900511996284443779">Futa kontena</translation>
 <translation id="2738687336989232152">Je, una uhakika unataka kufuta kontena <ph name="CONTAINER_NAME"/>? Hii itaondoa data zote zinazohusiana nayo.</translation>
-<translation id="5327248766486351172">Jina</translation>
 <translation id="104766043551382253">Ikoni</translation>
 <translation id="5431318178759467895">Rangi</translation>
 <translation id="4328541188421002379">Patie kontena lako jina kama Kazi au Binafsi</translation>
@@ -547,6 +565,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2587535830241068901">Badilisha kivinjari chako huku ukiendelea kuiunga mkono Brave</translation>
 <translation id="123297831435065577">Brave Origin ni toleo linalolipiwa la browser kwa watumiaji ambao hawahitaji vipengele vyote vinavyounga mkono Brave kama biashara, lakini bado wanataka faragha ambayo Brave pekee inatoa. Watumiaji wa Origin wataendelea kufaidika kutokana na faragha yetu inayoongoza katika sekta, kuzuia matangazo, na kasi (kupitia Shields), pamoja na masasisho ya kawaida ya programu, viraka vya Chromium, na maboresho ya security na faragha.</translation>
 <translation id="7984508421152399880">Nunua sasa</translation>
+<translation id="1882724423074862793">Kurudisha ununuzi</translation>
 <translation id="5567412479632285879">Kipengele cha Zawadi za Brave kimelemazwa</translation>
 <translation id="413570371620795359">Fungua paneli ya Zawadi ili kuwezesha na kuanza</translation>
 <translation id="1051600834033686945">Fungua mipangilio kamili ya Zawadi za Brave</translation>
@@ -583,6 +602,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="933652931229970927">Tuma ripoti za uchunguzi kiotomatiki</translation>
 <translation id="8868426106596092089">Saidia kuimarisha uthabiti wa bidhaa ya Brave kwa kutuma ripoti za uchunguzi kiotomatiki Kivinjari cha Brave kinapoacha kufanya kazi au kukwama</translation>
 <translation id="4891600875049212418">Nenda Chembani unapotembelea tovuti nyeti</translation>
+<translation id="1022603984240541480">Onyesha arifa ya urekebishaji wa mipangilio ya Faragha kwenye tovuti zinazooana</translation>
+<translation id="3528176629974273019">Huruhusu Brave kupendekeza kiotomatiki (na kurekebisha) mipangilio ya faragha mahususi kwa tovuti.</translation>
 <translation id="509873765238158442">Zuia Microsoft Recall</translation>
 <translation id="4763421121695677716">Zuia kipengele cha Recall kwenye kompyuta za Microsoft Windows kuchukua picha za skrini kiotomatiki za vichupo vyovyote vya Brave vilivyofunguliwa.</translation>
 <translation id="1968895725257436430">Ukusanyaji wa data</translation>
@@ -738,6 +759,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4425607417590286548">Tekeleza mabadiliko</translation>
 <translation id="2128143836897950793">Bofya kwenye 'Omba Daraja Jipya...' ili kupata madaraja</translation>
 <translation id="3314921753580327793">Andika anwani: bandari (moja kwa kila mstari)</translation>
+<translation id="7002083631026466886">Tor haiwezi kutumia daraja hili. Lilinganishe na daraja ulilopewa, kisha ujaribu tena:</translation>
 <translation id="3755189300481406891">Omba Daraja</translation>
 <translation id="6924425739431382319">Inawasiliana na BridgeDB. Tafadhali subiri.</translation>
 <translation id="811745063252080651">Tatua CAPTCHA ili uombe daraja.</translation>
@@ -915,7 +937,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1838374766361614909">Futa utafutaji</translation>
 <translation id="5126255551970171328">Tafuta kumbukumbu</translation>
 <translation id="7402116145895962069">Landanisha miundo yako ya ndani ya Ollama</translation>
-<translation id="4835154437390745810">Imesimamiwa na Ollama</translation>
 <translation id="5985516785067818307">Paneli ya Utafiti</translation>
 <translation id="8347743943525229984">Ruhusu tafiti za Brave</translation>
 <translation id="3204080538332044581">Inaruhusu Brave kuonyesha viungo kwa tafiti za faragha katika ukurasa wa kichupo kipya. Tafiti zinatusaidia kujenga vipengele bora na kupima ufanisi wa kampeni za matangazo zinazotegemea kivinjari. <ph name="BEGIN_LINK"/>Jifunze zaidi<ph name="END_LINK"/></translation>

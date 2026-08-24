@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Požadovat mobilní zobrazení</translation>
 <translation id="2870560284913253234">Weby</translation>
 <translation id="2874939134665556319">Předchozí skladba</translation>
+<translation id="258271431472168668">Výchozí nastavení Chromu</translation>
 <translation id="2891975107962658722">Blokovat webu ukládání dat do zařízení</translation>
 <translation id="2903493209154104877">Adresy</translation>
+<translation id="2903764741244499151">Weby mohou automaticky aktivovat režim obrazu v obraze. To vám umožní pokračovat ve sledování videa a zároveň uvolnit obrazovku pro jiné úkoly.</translation>
 <translation id="2918484639460781603">Přejít na nastavení</translation>
 <translation id="2932883381142163287">Nahlásit zneužití</translation>
 <translation id="2939338015096024043">Když je tato možnost zapnutá, weby mohou žádat o sledování polohy kamery a o informace o okolí. Když je vypnutá, weby nemohou sledovat polohu kamery ani získat informace o okolí.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Změnit hesla</translation>
 <translation id="3797520601150691162">Nepoužívat tmavý motiv pro konkrétní web</translation>
 <translation id="3803367742635802571">Navštívené weby mohou přestat fungovat podle očekávání</translation>
-<translation id="8338457030135232378">Barvy Chromu</translation>
 <translation id="381841723434055211">Telefonní čísla</translation>
 <translation id="3823453485268218808">Neproporcionální písmo</translation>
 <translation id="3826050100957962900">Externí přihlašování</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Ukončit režim celé obrazovky</translation>
 <translation id="640163077447496506">Platnost skončí dnes</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Sbírka motivů</translation>
 <translation id="6439114592976064011">Bránit webům v používání zařízení a dat pro virtuální realitu</translation>
 <translation id="6447842834002726250">Soubory cookie</translation>
 <translation id="6452138246455930388">Pokles ceny na otevřené kartě z <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="7423098979219808738">Nejprve se dotázat</translation>
 <translation id="7423538860840206698">Čtení schránky je blokováno</translation>
 <translation id="7425915948813553151">Tmavý motiv pro weby</translation>
+<translation id="2044383478723007273">Barvy Chromu</translation>
 <translation id="746412105358554870">Optimalizace a zabezpečení JavaScriptu</translation>
 <translation id="7478658909253570368">Nepovolovat webům připojení k sériovým portům</translation>
 <translation id="7488573225650545859">Skrýt kartu Zobrazení karet v seznamu aplikací</translation>
@@ -671,7 +672,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="802154636333426148">Stažení se nezdařilo</translation>
 <translation id="8033047164036749181">Odebírat oznámení z tohoto webu</translation>
 <translation id="8051193500142930381">Funkce vyžadující fotoaparát nebudou k dispozici</translation>
-<translation id="2495032782748793764">Výchozí nastavení Chromu</translation>
 <translation id="8067883171444229417">Přehrát video</translation>
 <translation id="8068648041423924542">Certifikát nelze vybrat.</translation>
 <translation id="8077120325605624147">Kterýkoliv web, který navštívíte, vám může zobrazit jakoukoliv reklamu</translation>
@@ -686,7 +686,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="8163152278172770963">Nepovolovat webům automaticky aktivovat režim obrazu v obraze</translation>
 <translation id="8168435359814927499">Obsah</translation>
 <translation id="818487310457576362">Přetažením ze strany obrazovky ukončíte celou obrazovku.</translation>
-<translation id="8186479265534291036">Web nefunguje? Soubory cookie třetích stran jsou blokovány</translation>
 <translation id="8197286292360124385">Oprávnění <ph name="PERMISSION_1"/> je povoleno</translation>
 <translation id="8200772114523450471">Pokračovat</translation>
 <translation id="8211406090763984747">Připojení je zabezpečené</translation>
@@ -757,7 +756,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="8805385115381080995">Procházení je rychlejší, protože je méně pravděpodobné, že vás web požádá o ověření, že jste skutečná osoba</translation>
 <translation id="881644524232657178">Když je tato možnost zapnutá, mohou weby používat senzory pohybu a světla na zařízení. Když je vypnutá, weby senzory používat nemohou.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Zkuste dočasně povolit soubory cookie třetích stran – budete při procházení méně chráněni, ale funkce webu budou s větší pravděpodobností fungovat správně.</translation>
 <translation id="7532165358672313130">Při dalším procházení může Brave na požádání jinému webu sdělit, že vás předchozí web ověřil jako pravděpodobně skutečného uživatele</translation>
 <translation id="8899807382908246773">Rušivé reklamy</translation>
 <translation id="8903921497873541725">Přiblížit</translation>
@@ -783,7 +781,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="913657688200966289">Zapněte v <ph name="BEGIN_LINK"/>Nastavení Android<ph name="END_LINK"/> oprávnění pro aplikaci <ph name="APP_NAME"/>.</translation>
 <translation id="9138037198177304356">Oznámení jsou povolena</translation>
 <translation id="9138217887606523162">Aktuální přiblížení je <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Weby tuto funkci používají k automatické aktivaci režimu obrazu v obraze. To vám umožní pokračovat ve sledování videa a zároveň uvolnit obrazovku pro jiné úkoly.</translation>
 <translation id="7359422048569205930">Umožněte Chromu zobrazovat nedávno použité karty v seznamu aplikací a ve výsledcích vyhledávání v zařízení. Tuto funkci můžete v nastavení Chromu kdykoli vypnout.</translation>
 <translation id="9162462602695099906">Tato stránka je nebezpečná</translation>
 <translation id="9182556968660520230">Nepovolovat webům přehrávání chráněného obsahu</translation>

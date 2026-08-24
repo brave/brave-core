@@ -20,10 +20,31 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Viac…</translation>
 <translation id="71316462802471551">Emailové aliasy</translation>
-<translation id="209130971304928953">Uložiť karty ako pracovný priestor…</translation>
-<translation id="877984331511007834">Otvoriť pracovný priestor…</translation>
-<translation id="1310182651927031327">Uložiť karty ako pracovný priestor…</translation>
-<translation id="3588277741646479444">Otvoriť pracovný priestor…</translation>
+<translation id="8350985546648269694">Uložiť aktuálne okná a karty ako priestor</translation>
+<translation id="5327248766486351172">Názov</translation>
+<translation id="6379791766023874417">Zadať názov priestoru</translation>
+<translation id="9174724474418499472">Môj priestor</translation>
+<translation id="5317780077021120954">Uložiť</translation>
+<translation id="7658239707568436148">Zrušiť</translation>
+<translation id="196342407904926436">Možnosti priestoru</translation>
+<translation id="2806407377752719586">Odstrániť priestor</translation>
+<translation id="1844931500883490339">Naozaj chcete odstrániť tento priestor? Uložený priestor bude natrvalo odstránený. Túto akciu nemožno vrátiť späť.</translation>
+<translation id="8261506727792406068">Odstrániť</translation>
+<translation id="8428213095426709021">Nastavenia</translation>
+<translation id="1212321046099128987">Neboli vytvorené žiadne priestory</translation>
+<translation id="3524567389166933243">Vytvorte svoj prvý priestor kliknutím na tlačidlo Uložiť nižšie.</translation>
+<translation id="6632569090444863135">{TAB_COUNT,plural, =1{1 karta}few{# karty}many{# karty}other{# kariet}}</translation>
+<translation id="3719033730609396016"><ph name="WINDOW_COUNT"/> okien</translation>
+<translation id="1680377529024357662">Uložiť aktuálne okná a karty ako priestor</translation>
+<translation id="5561829325295347472">Zadajte názov priestoru</translation>
+<translation id="2028520494010039812">Možnosti priestoru</translation>
+<translation id="1580775521202322063">Odstrániť priestor</translation>
+<translation id="3004759399777164093">Naozaj chcete odstrániť tento priestor? Uložený priestor bude natrvalo odstránený. Túto akciu nemožno vrátiť späť.</translation>
+<translation id="7563692436589408797">Neboli vytvorené žiadne priestory</translation>
+<translation id="3945077125173636695">Vytvorte svoj prvý priestor kliknutím na tlačidlo Uložiť nižšie.</translation>
+<translation id="4731210674738654452">{TAB_COUNT,plural, =1{1 karta}few{# karty}many{# karty}other{# kariet}}</translation>
+<translation id="1310330626680091210"><ph name="WINDOW_COUNT"/> okien</translation>
+<translation id="3326655241685890930">Priestory</translation>
 <translation id="1990886731975529483">Nainštalovať a spustiť Google Widevine</translation>
 <translation id="8926389886865778422">Túto otázku už nezobrazovať</translation>
 <translation id="4900351245762303149">Nainštalovať Google Widevine</translation>
@@ -37,7 +58,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3218385319396786393">Funkcia autoplay bola na tejto stránke zakázaná</translation>
 <translation id="4988333904713528597">Vždy povoliť automatické prehrávanie na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovať v blokovaní funkcie autoplay</translation>
-<translation id="3477357195688115718">Brave nekontroluje rozšírenia z hľadiska bezpečnosti a ochrany. Toto rozšírenie nainštalujte, iba ak dôverujete vývojárovi.</translation>
+<translation id="2201935460386712655">Brave nekontroluje rozšírenia z hľadiska bezpečnosti a ochrany. Rozšírenie „<ph name="EXTENSION_NAME"/>“ nainštalujte, iba ak dôverujete vývojárovi.</translation>
 <translation id="2928844661231356557">Poskytnutie prístupu k zariadeniu Bluetooth umožní stránke čítať identifikačné a potenciálne citlivé informácie o vás. Prístup k zariadeniam Bluetooth povoľte len dôveryhodným stránkam. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Okná Tor</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
@@ -63,7 +84,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3211174446914979436">Spravovať filtre</translation>
 <translation id="3108584651298176909">Zobraziť pravidlá</translation>
 <translation id="5156986655891520787">Skryť pravidlá</translation>
-<translation id="7658239707568436148">Zrušiť</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvoriť pomocou adresy .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vynútiť prilepenie</translation>
@@ -91,6 +111,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="191886777375280620">Zachytiť snímku obrazovky</translation>
 <translation id="3114478090884951591">Viditeľná oblasť</translation>
 <translation id="2026367923222947564">Celá stránka</translation>
+<translation id="4218885227032158909">Vybraná oblasť</translation>
 <translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
 <translation id="9181207987584064303">Zobraziť v Obchode webových rozšírení</translation>
 <translation id="3161744659507801211">Varovanie: Brave nemôže zabrániť rozšíreniam v zaznamenávaní vašej histórie prehliadania.</translation>
@@ -289,14 +310,12 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="55252794453047936">Presunúť médiá</translation>
 <translation id="4418985925423678811">Nový zoznam médií</translation>
 <translation id="385051799172605136">Naspäť</translation>
-<translation id="5317780077021120954">Uložiť</translation>
 <translation id="7930125899031086027">Vytvoriť a presunúť</translation>
 <translation id="2860159216666546928">Vyberte priečinok, do ktorého chcete presunúť toto médium</translation>
 <translation id="9130105487623071247">Názov zoznamu skladieb</translation>
 <translation id="1857042171340443373">Počet vybraných položiek: <ph name="NUM_ITEMS"/></translation>
 <translation id="3596306474342941843">Odstrániť zoznam skladieb</translation>
 <translation id="7110726588168439924">Naozaj chcete odstrániť tento zoznam médií a celý jeho obsah? Túto akciu nemožno vrátiť späť.</translation>
-<translation id="8261506727792406068">Odstrániť</translation>
 <translation id="8152485753254079984">Nový zoznam skladieb</translation>
 <translation id="5397019762993984652">Pridať z priečinka Prehrať neskôr</translation>
 <translation id="7525067979554623046">Vytvořit</translation>
@@ -393,7 +412,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8900907990448657776">Upraviť kontajner</translation>
 <translation id="7900511996284443779">Odstrániť kontajner</translation>
 <translation id="2738687336989232152">Naozaj chcete odstrániť kontajner <ph name="CONTAINER_NAME"/>? Týmto odstránite všetky údaje, ktoré sú s ním spojené.</translation>
-<translation id="5327248766486351172">Názov</translation>
 <translation id="104766043551382253">Ikona</translation>
 <translation id="5431318178759467895">Farba</translation>
 <translation id="4328541188421002379">Dajte kontajneru názov, napríklad Práca alebo Osobné</translation>
@@ -547,6 +565,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2587535830241068901">Prispôsobenie prehliadača a zároveň podpora Brave</translation>
 <translation id="123297831435065577">Brave Origin je platená verzia prehliadača pre používateľov, ktorí nepotrebujú všetky funkcie, ktoré podporujú Brave ako podnikanie, ale stále chcú súkromie, ktoré ponúka iba Brave. Používatelia Origin budú naďalej profitovať z našej špecializovanej ochrany súkromia, blokávania reklám a rýchlosti (prostredníctvom Štítov), ako aj z pravidelných aktualizácií softvéru, opráv Chromium a zlepšení bezpečnosti a súkromia.</translation>
 <translation id="7984508421152399880">Kúpiť teraz</translation>
+<translation id="1882724423074862793">Obnoviť nákup</translation>
 <translation id="5567412479632285879">Odmeny Brave sú vypnuté</translation>
 <translation id="413570371620795359">Otvorením panelu Odmeny zapnite panel a začnite</translation>
 <translation id="1051600834033686945">Otvoriť úplné nastavenia služby Odmeny Brave</translation>
@@ -583,6 +602,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="933652931229970927">Automaticky odosielať diagnostické správy</translation>
 <translation id="8868426106596092089">Pomôžte zlepšiť stabilitu produktu Brave automatickým odosielaním diagnostických správ, keď prehliadač Brave spadne alebo zamrzne</translation>
 <translation id="4891600875049212418">Pri návšteve citlivých lokalít postupovať bez oficiálneho zápisu</translation>
+<translation id="1022603984240541480">Zobraziť upozornenie na ladenie nastavení súkromia na kompatibilných lokalitách</translation>
+<translation id="3528176629974273019">Umožňuje prehliadaču Brave automaticky navrhovať (a upravovať) nastavenia súkromia špecifické pre lokalitu.</translation>
 <translation id="509873765238158442">Blokovať Microsoft Recall</translation>
 <translation id="4763421121695677716">Zabráni funkcii Recall v počítačoch so systémom Microsoft Windows, aby automaticky robila snímky obrazovky akýchkoľvek otvorených kariet v Brave.</translation>
 <translation id="1968895725257436430">Zbieranie údajov</translation>
@@ -737,6 +758,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4425607417590286548">Aplikovať zmeny</translation>
 <translation id="2128143836897950793">Kliknutím na 'Požiadať o nový most...' získate mosty</translation>
 <translation id="3314921753580327793">Zadajte adresu: port (jedna na riadok)</translation>
+<translation id="7002083631026466886">Tor nemôže použiť tento most. Skontrolujte ho oproti mostu, ktorý ste dostali, a potom to skúste znova:</translation>
 <translation id="3755189300481406891">Žiadosť o most</translation>
 <translation id="6924425739431382319">Kontaktovanie BridgeDB. Prosím, čakajte.</translation>
 <translation id="811745063252080651">Vyriešte CAPTCHA a požiadajte o most.</translation>
@@ -917,7 +939,6 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="1838374766361614909">Vymazať vyhľadávanie</translation>
 <translation id="5126255551970171328">Vyhľadať pamäť</translation>
 <translation id="7402116145895962069">Synchronizovať svoje miestne modely Ollama</translation>
-<translation id="4835154437390745810">Spravované aplikáciou Ollama</translation>
 <translation id="5985516785067818307">Účasť v prieskumoch</translation>
 <translation id="8347743943525229984">Povoliť prieskumy od Brave</translation>
 <translation id="3204080538332044581">Umožňuje spoločnosti Brave zobrazovať odkazy na súkromné prieskumy na stránke novej karty. Prieskumy nám pomáhajú vytvárať lepšie funkcie a merať účinnosť reklamných kampaní v prehliadači. <ph name="BEGIN_LINK"/>Viac informácií<ph name="END_LINK"/></translation>

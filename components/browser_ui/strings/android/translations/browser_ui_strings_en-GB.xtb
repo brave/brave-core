@@ -192,8 +192,10 @@
 <translation id="2850913818900871965">Request mobile view</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="2874939134665556319">Previous track</translation>
+<translation id="258271431472168668">Brave default</translation>
 <translation id="2891975107962658722">Block a site from saving data on your device</translation>
 <translation id="2903493209154104877">Addresses</translation>
+<translation id="2903764741244499151">Sites can enter picture-in-picture automatically. This lets you continue watching a video while freeing up your screen for other tasks.</translation>
 <translation id="2918484639460781603">Go to settings</translation>
 <translation id="2932883381142163287">Report abuse</translation>
 <translation id="2939338015096024043">When on, sites can ask to track your camera position and learn about your surroundings. When off, sites can't track your camera position or learn about your surroundings.</translation>
@@ -277,7 +279,6 @@
 <translation id="3779154269823594982">Change passwords</translation>
 <translation id="3797520601150691162">Don’t apply Dark theme for a specific site</translation>
 <translation id="3803367742635802571">Sites that you visit may stop working as designed</translation>
-<translation id="8338457030135232378">Brave colours</translation>
 <translation id="381841723434055211">Phone numbers</translation>
 <translation id="3823453485268218808">Font Mono</translation>
 <translation id="3826050100957962900">Third-party sign-in</translation>
@@ -525,7 +526,6 @@
 <translation id="6398765197997659313">Exit full screen</translation>
 <translation id="640163077447496506">Expires today</translation>
 <translation id="6405650995156823521"><ph name="FIRST_PART"/> • <ph name="SECOND_PART"/></translation>
-<translation id="6413980879783180524">Theme collections</translation>
 <translation id="6439114592976064011">Block sites from using your virtual reality device and data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Price drop on your open tab, from <ph name="OLD_PRICE"/> to <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
@@ -620,6 +620,7 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="7423098979219808738">Ask first</translation>
 <translation id="7423538860840206698">Blocked from reading clipboard</translation>
 <translation id="7425915948813553151">Dark theme for sites</translation>
+<translation id="2044383478723007273">Brave colours</translation>
 <translation id="746412105358554870">JavaScript optimisation and security</translation>
 <translation id="7478658909253570368">Don't allow sites to connect to serial ports</translation>
 <translation id="7488573225650545859">Hide View tabs in your app list</translation>
@@ -671,7 +672,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="802154636333426148">Download failed</translation>
 <translation id="8033047164036749181">Subscribe for notifications from this site</translation>
 <translation id="8051193500142930381">Features that need a camera won't work</translation>
-<translation id="2495032782748793764">Brave default</translation>
 <translation id="8067883171444229417">Play video</translation>
 <translation id="8068648041423924542">Unable to select certificate.</translation>
 <translation id="8077120325605624147">Any site that you visit can show any ad to you</translation>
@@ -686,7 +686,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="8163152278172770963">Don't allow sites to enter picture-in-picture automatically</translation>
 <translation id="8168435359814927499">Content</translation>
 <translation id="818487310457576362">Drag from the side of the screen to exit full screen.</translation>
-<translation id="8186479265534291036">Site not working? Third-party cookies blocked</translation>
 <translation id="8197286292360124385"><ph name="PERMISSION_1"/> allowed</translation>
 <translation id="8200772114523450471">Resume</translation>
 <translation id="8211406090763984747">Connection is secure</translation>
@@ -757,7 +756,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="8805385115381080995">Browsing is faster because a site is less likely to ask you to verify that you're a real person</translation>
 <translation id="881644524232657178">When on, sites can use your device's motion and light sensors. When off, sites can't use sensors.</translation>
 <translation id="8847988622838149491">USB</translation>
-<translation id="8874790741333031443">Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.</translation>
 <translation id="7532165358672313130">As you keep browsing, sites can check with Brave and verify with a previous site that you've visited that you're likely a real person</translation>
 <translation id="8899807382908246773">Intrusive ads</translation>
 <translation id="8903921497873541725">Zoom in</translation>
@@ -783,7 +781,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="913657688200966289">Turn on permissions for <ph name="APP_NAME"/> in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
 <translation id="9138037198177304356">Notifications allowed</translation>
 <translation id="9138217887606523162">Current zoom is <ph name="ZOOM_LEVEL"/> %%</translation>
-<translation id="915112772806845021">Sites use this feature to enter picture-in-picture automatically. This lets you continue watching a video while freeing up your screen for other tasks.</translation>
 <translation id="7359422048569205930">Let Brave show your recent tabs in your device's app list and search results. You can turn this off at any time in Brave settings.</translation>
 <translation id="9162462602695099906">This page is dangerous</translation>
 <translation id="9182556968660520230">Don't allow sites to play protected content</translation>
