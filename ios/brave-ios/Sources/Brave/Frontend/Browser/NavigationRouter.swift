@@ -221,6 +221,10 @@ public enum NavigationPath: Equatable {
     case .braveLeo:
       bvc.popToBVC()
       bvc.openBraveLeo()
+    case .braveLeoVoiceInput:
+      bvc.popToBVC {
+        bvc.presentLeoVoiceInput()
+      }
     case .askBrave:
       guard let url = URL(string: "https://search.brave.com/ask") else { return }
       bvc.popToBVC()

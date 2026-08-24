@@ -198,6 +198,16 @@
 					<key>INEnumValueName</key>
 					<string>askBrave</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Leo AI Voice Input</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>vQ8mZ1</string>
+					<key>INEnumValueIndex</key>
+					<integer>13</integer>
+					<key>INEnumValueName</key>
+					<string>braveLeoVoiceInput</string>
+				</dict>
 			</array>
 		</dict>
 	</array>
