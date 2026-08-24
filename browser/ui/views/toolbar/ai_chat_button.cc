@@ -18,8 +18,8 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -28,7 +28,7 @@
 #include "ui/views/accessibility/view_accessibility.h"
 #include "url/gurl.h"
 
-AIChatButton::AIChatButton(Browser* browser)
+AIChatButton::AIChatButton(BrowserWindowInterface* browser)
     : ToolbarButton(base::BindRepeating(&AIChatButton::ButtonPressed,
                                         base::Unretained(this))),
       browser_(*browser),

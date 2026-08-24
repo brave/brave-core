@@ -14,14 +14,14 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/menus/simple_menu_model.h"
 
-class Browser;
+class BrowserWindowInterface;
 class PrefService;
 
 class AIChatButton : public ToolbarButton,
                      public ui::SimpleMenuModel::Delegate {
   METADATA_HEADER(AIChatButton, ToolbarButton)
  public:
-  explicit AIChatButton(Browser* browser);
+  explicit AIChatButton(BrowserWindowInterface* browser);
   AIChatButton(const AIChatButton&) = delete;
   AIChatButton& operator=(const AIChatButton&) = delete;
   ~AIChatButton() override;
@@ -45,7 +45,7 @@ class AIChatButton : public ToolbarButton,
   void ExecuteCommand(int command_id, int event_flags) override;
   bool IsCommandIdChecked(int command_id) const override;
 
-  const raw_ref<Browser> browser_;
+  const raw_ref<BrowserWindowInterface> browser_;
   raw_ref<PrefService> prefs_;
 };
 
