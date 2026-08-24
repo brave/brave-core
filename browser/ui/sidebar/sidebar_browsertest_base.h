@@ -19,6 +19,7 @@
 #include "ui/gfx/animation/animation_test_api.h"
 
 class BraveBrowserView;
+class BraveMultiContentsView;
 class SidebarContainerView;
 class SidebarControlView;
 class SidebarItemsContentsView;
@@ -114,6 +115,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   int GetFirstPanelItemIndex();
   int GetFirstWebItemIndex();
+  BraveMultiContentsView* GetBraveMultiContentsView();
 
   BraveBrowserView* browser_view();
 

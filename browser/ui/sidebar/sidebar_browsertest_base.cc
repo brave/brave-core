@@ -20,6 +20,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
@@ -233,6 +234,10 @@ int SidebarBrowserTest::GetFirstWebItemIndex() {
   auto const iter =
       std::ranges::find(items, false, &SidebarItem::open_in_panel);
   return std::distance(items.cbegin(), iter);
+}
+
+BraveMultiContentsView* SidebarBrowserTest::GetBraveMultiContentsView() {
+  return browser_view()->GetBraveMultiContentsView();
 }
 
 BraveBrowserView* SidebarBrowserTest::browser_view() {

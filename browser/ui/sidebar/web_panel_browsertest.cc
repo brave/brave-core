@@ -32,10 +32,6 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
   }
   ~WebPanelBrowserTest() override = default;
 
-  BraveMultiContentsView* GetBraveMultiContentsView() {
-    return browser_view()->GetBraveMultiContentsView();
-  }
-
   SidebarWebPanelController* web_panel_controller() {
     return controller()->GetWebPanelController();
   }
@@ -44,9 +40,10 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
   base::test::ScopedFeatureList scoped_features_;
 };
 
-// Regression test for the crash by BraveMultiContentsView's web-panel
-// container wasn't registered in MultiContentsView::container_focusable_map_.
-// BrowserView::MaybeUpdateStoredFocusForWebContents() dereferenced a null
+// Regression test for a crash caused by BraveMultiContentsView's web-panel
+// container never being registered in
+// MultiContentsView::container_focusable_map_, which left
+// BrowserView::MaybeUpdateStoredFocusForWebContents() dereferencing a null
 // FocusableViewMap*.
 IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
                        ReactivatingWebPanelTabAfterFocusLossDoesNotCrash) {
@@ -55,16 +52,15 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
       kSidebarItemAddedFeedbackBubbleShowCount, 3);
 
   // Add the current tab as a web panel sidebar item.
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com/")));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
   ASSERT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
   controller()->AddItemWithCurrentTab();
-  const int web_panel_item_index = model()->GetAllSidebarItems().size() - 1;
+  const size_t web_panel_item_index = model()->GetAllSidebarItems().size() - 1;
   ASSERT_TRUE(
       model()->GetAllSidebarItems()[web_panel_item_index].is_web_panel_type());
 
   // Give ourselves another regular tab to switch to later.
-  chrome::AddTabAt(browser(), GURL("https://basicattentiontoken.com/"), -1,
+  chrome::AddTabAt(browser(), GURL("about:blank"), -1,
                    /*foreground*/ true);
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -85,6 +81,7 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
 
   // Force real UI focus onto the panel's contents view.
   GetBraveMultiContentsView()->GetActiveContentsView()->RequestFocus();
+  ASSERT_TRUE(GetBraveMultiContentsView()->GetActiveContentsView()->HasFocus());
 
   // Switch to another tab. This stores the focused view against the panel's
   // WebContents via ChromeWebContentsViewFocusHelper::StoreFocus().

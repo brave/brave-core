@@ -42,10 +42,6 @@ class SidebarWebPanelInteractiveUITest
   }
   ~SidebarWebPanelInteractiveUITest() override = default;
 
-  BraveMultiContentsView* GetBraveMultiContentsView() {
-    return browser_view()->GetBraveMultiContentsView();
-  }
-
   auto WaitForActiveTabChange(int index) {
     DEFINE_LOCAL_STATE_IDENTIFIER_VALUE(ui::test::PollingStateObserver<int>,
                                         kActiveTabIndexObserver);

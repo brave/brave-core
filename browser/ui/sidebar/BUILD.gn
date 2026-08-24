@@ -106,6 +106,7 @@ source_set("test_support") {
     ":sidebar_impl",
     "//base",
     "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",
