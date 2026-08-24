@@ -7,8 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.base.ThreadUtils.runOnUiThread;
 
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,11 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.LottieProperty;
-import com.airbnb.lottie.model.KeyPath;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -41,7 +34,6 @@ import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.theme.BraveDynamicColors;
@@ -56,11 +48,12 @@ import java.util.List;
 public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         implements BraveNewsPreferencesDataListener,
                 ConnectionErrorHandler,
-                FragmentSettingsNavigation {
+                FragmentSettingsNavigation,
+                BottomInsetViewProvider {
     public static final String PREF_SHOW_OPTIN = "show_optin";
 
     private LinearLayout mParentLayout;
-    private LinearLayout mOptinLayout;
+    private View mOptinLayout;
     private MaterialSwitch mSwitchShowNews;
     private TextView mTvSearch;
     private TextView mTvFollowingCount;
@@ -91,6 +84,11 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     }
 
     @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         mPageTitle.set(getString(R.string.brave_news_title));
 
@@ -99,7 +97,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         View view = getView();
         if (view != null) {
             mParentLayout = (LinearLayout) view.findViewById(R.id.layout_parent);
-            mOptinLayout = (LinearLayout) view.findViewById(R.id.layout_optin_card);
+            mOptinLayout = view.findViewById(R.id.layout_optin_card);
             mSwitchShowNews = (MaterialSwitch) view.findViewById(R.id.switch_show_news);
             mDivider = view.findViewById(R.id.divider);
             mLayoutSwitch = view.findViewById(R.id.layout_switch);
@@ -142,23 +140,6 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     }
 
     private void setData() {
-        if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                && getView() != null) {
-            LottieAnimationView lottieAnimationVIew =
-                    (LottieAnimationView) getView().findViewById(R.id.animation_view);
-
-            try {
-                lottieAnimationVIew.addValueCallback(new KeyPath("newspaper", "**"),
-                        LottieProperty.COLOR_FILTER,
-                        frameInfo
-                        -> new PorterDuffColorFilter(ContextCompat.getColor(getActivity(),
-                                                             R.color.news_settings_optin_color),
-                                PorterDuff.Mode.SRC_ATOP));
-            } catch (Exception exception) {
-                // if newspaper keypath changed in animation json
-            }
-        }
-
         if (!BraveNewsUtils.getLocale().isEmpty()
                 && BraveNewsUtils.getSuggestionsPublisherList().size() > 0) {
             mIsSuggestionAvailable = true;
@@ -264,7 +245,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             }
 
         } else {
-            parentLayoutParams.gravity = Gravity.CENTER_VERTICAL;
+            parentLayoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
+            parentLayoutParams.gravity = Gravity.NO_GRAVITY;
             mParentLayout.setLayoutParams(parentLayoutParams);
             mOptinLayout.setVisibility(View.VISIBLE);
             mLayoutSwitch.setVisibility(View.GONE);
