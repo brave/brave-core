@@ -93,8 +93,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
                                            uint64_t total_tokens,
                                            uint64_t trimmed_tokens);
 
-  // Deletes the conversation with the provided UUID
-  virtual bool DeleteConversation(std::string_view conversation_uuid);
+  // Deletes the conversations with the provided UUIDs, and all of their data,
+  // in a single transaction. No-op for an empty list.
+  virtual bool DeleteConversations(const std::vector<std::string>& uuids);
 
   // Deletes the conversation entry with the provided ID and all associated
   // edits and events.
@@ -141,6 +142,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   bool LazyInit(bool re_init = false);
   sql::InitStatus InitInternal();
 
+  // Deletes a single conversation and all of its rows. Must be called within a
+  // transaction started by the caller.
+  bool DeleteConversationInternal(std::string_view conversation_uuid);
+
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
       std::string_view conversation_id);
   std::vector<mojom::ContentArchivePtr> GetArchiveContentsForConversation(
@@ -161,6 +166,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
                             std::string_view value);
 
   bool CreateSchema();
+
+  // Must run after migrations: older databases are missing columns that some
+  // of these indexes cover, and CreateSchema() runs before migrations.
+  bool CreateIndexes();
 
   // The directory storing the database.
   const base::FilePath db_file_path_;

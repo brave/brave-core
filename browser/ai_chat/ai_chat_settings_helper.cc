@@ -179,8 +179,9 @@ void AIChatSettingsHelper::DeleteConversations(int time_period) {
   }
   browsing_data::TimePeriod period =
       static_cast<browsing_data::TimePeriod>(time_period);
-  service->DeleteConversations(browsing_data::CalculateBeginDeleteTime(period),
-                               browsing_data::CalculateEndDeleteTime(period));
+  service->DeleteConversationsInRange(
+      browsing_data::CalculateBeginDeleteTime(period),
+      browsing_data::CalculateEndDeleteTime(period));
 }
 
 void AIChatSettingsHelper::SetClientPage(

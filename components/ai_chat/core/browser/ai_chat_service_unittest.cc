@@ -228,7 +228,10 @@ class MockAIChatDatabase : public AIChatDatabase {
               (override));
 
   MOCK_METHOD(bool, DeleteConversationEntry, (std::string_view), (override));
-  MOCK_METHOD(bool, DeleteConversation, (std::string_view), (override));
+  MOCK_METHOD(bool,
+              DeleteConversations,
+              (const std::vector<std::string>&),
+              (override));
   MOCK_METHOD(bool, DeleteAllData, (), (override));
   MOCK_METHOD((std::optional<std::vector<ClearedAssociatedContentEntry>>),
               DeleteAssociatedWebContent,
@@ -1011,8 +1014,8 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   testing::Mock::VerifyAndClearExpectations(&associated_content);
 }
 
-TEST_P(AIChatServiceUnitTest, DeleteConversations) {
-  // Create conversations, call DeleteConversations and verify all
+TEST_P(AIChatServiceUnitTest, DeleteConversationsInRange) {
+  // Create conversations, call DeleteConversationsInRange and verify all
   // conversations are deleted, whether a client is connected or not.
   ConversationHandler* conversation_handler1 = CreateConversation();
   auto client1 = CreateConversationClient(conversation_handler1);
@@ -1034,7 +1037,7 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations) {
 
   ExpectConversationsSize(FROM_HERE, 4);
 
-  ai_chat_service_->DeleteConversations();
+  ai_chat_service_->DeleteConversationsInRange();
 
   ExpectConversationsSize(FROM_HERE, 0);
 
@@ -1043,8 +1046,8 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations) {
   ExpectConversationsSize(FROM_HERE, 0);
 }
 
-TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
-  // Create conversations, call DeleteConversations and verify all
+TEST_P(AIChatServiceUnitTest, DeleteConversationsInRange_TimeRange) {
+  // Create conversations, call DeleteConversationsInRange and verify all
   // conversations are deleted, whether a client is connected or not.
   ConversationHandler* conversation_handler1 = CreateConversation();
   auto client1 = CreateConversationClient(conversation_handler1);
@@ -1073,8 +1076,9 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
 
   ExpectConversationsSize(FROM_HERE, 4);
 
-  ai_chat_service_->DeleteConversations(base::Time::Now() - base::Minutes(245),
-                                        base::Time::Now() - base::Minutes(110));
+  ai_chat_service_->DeleteConversationsInRange(
+      base::Time::Now() - base::Minutes(245),
+      base::Time::Now() - base::Minutes(110));
 
   // Should only keep conversation_handler3 (1 hour ago)
   ExpectConversationsSize(FROM_HERE, 1);
@@ -1082,6 +1086,47 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   // Verify deleted from database
   ResetService();
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+}
+
+TEST_P(AIChatServiceUnitTest, DeleteConversations_OnlyProvidedUuids) {
+  // Only the conversations whose UUID is provided are deleted, in memory and
+  // in the database.
+  ConversationHandler* conversation_handler1 = CreateConversation();
+  auto client1 = CreateConversationClient(conversation_handler1);
+  conversation_handler1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* conversation_handler2 = CreateConversation();
+  auto client2 = CreateConversationClient(conversation_handler2);
+  conversation_handler2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* conversation_handler3 = CreateConversation();
+  auto client3 = CreateConversationClient(conversation_handler3);
+  conversation_handler3->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  const std::string uuid1 = conversation_handler1->get_conversation_uuid();
+  const std::string uuid2 = conversation_handler2->get_conversation_uuid();
+  const std::string uuid3 = conversation_handler3->get_conversation_uuid();
+
+  ExpectConversationsSize(FROM_HERE, 3);
+
+  ai_chat_service_->DeleteConversations({uuid1, uuid3});
+
+  ExpectConversationsSize(FROM_HERE, 1);
+
+  // Verify only the listed conversations were deleted from the database
+  ResetService();
+  base::RunLoop run_loop;
+  client_->service_remote()->GetConversations(base::BindLambdaForTesting(
+      [&](std::vector<mojom::ConversationPtr> conversations) {
+        if (IsAIChatHistoryEnabled()) {
+          ASSERT_EQ(conversations.size(), 1u);
+          EXPECT_EQ(conversations[0]->uuid, uuid2);
+        } else {
+          EXPECT_EQ(conversations.size(), 0u);
+        }
+        run_loop.Quit();
+      }));
+  run_loop.Run();
 }
 
 TEST_P(
@@ -1500,7 +1545,7 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTokenInfo(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversationEntry(_)).Times(0);
-  EXPECT_CALL(*mock_db_ptr, DeleteConversation(_)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, DeleteConversations(_)).Times(0);
 
   // Replace the real database with our mock
   ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));

@@ -422,8 +422,9 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
   return conversation;
 }
 
-void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
-                                        std::optional<base::Time> end_time) {
+void AIChatService::DeleteConversationsInRange(
+    std::optional<base::Time> begin_time,
+    std::optional<base::Time> end_time) {
   if (!begin_time.has_value() && !end_time.has_value()) {
     // Delete all conversations
     // Delete in-memory data
@@ -454,12 +455,7 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     }
   }
 
-  for (const auto& uuid : conversation_keys) {
-    DeleteConversation(uuid);
-  }
-  if (!conversation_keys.empty()) {
-    OnConversationListChanged();
-  }
+  DeleteConversations(conversation_keys);
 }
 
 void AIChatService::DeleteAssociatedWebContent(
@@ -814,37 +810,52 @@ void AIChatService::GetPremiumStatus(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AIChatService::DeleteConversation(const std::string& id) {
-  if (auto node = conversation_handlers_.extract(id)) {
-    conversation_observations_.RemoveObservation(node.mapped().get());
-    if (ai_chat_metrics_) {
-      ai_chat_metrics_->RecordConversationUnload(id);
+void AIChatService::DeleteConversations(const std::vector<std::string>& uuids) {
+  if (uuids.empty()) {
+    return;
+  }
+
+  // Temporary conversations are never persisted, so they don't need deleting
+  // from the database.
+  std::vector<std::string> persisted_uuids;
+  for (const auto& uuid : uuids) {
+    if (auto node = conversation_handlers_.extract(uuid)) {
+      conversation_observations_.RemoveObservation(node.mapped().get());
+      if (ai_chat_metrics_) {
+        ai_chat_metrics_->RecordConversationUnload(uuid);
+      }
+    }
+    bool temporary = false;
+    if (auto node = conversations_.extract(uuid)) {
+      temporary = node.mapped()->temporary;
+    }
+    if (!temporary) {
+      persisted_uuids.push_back(uuid);
     }
   }
-  bool temporary = false;
-  if (auto node = conversations_.extract(id)) {
-    temporary = node.mapped()->temporary;
-  }
-  DVLOG(1) << "Erased conversation due to deletion request (" << id
-           << "). Now have " << conversations_.size()
-           << " Conversation metadata items and "
+  DVLOG(1) << "Erased " << uuids.size()
+           << " conversation(s) due to deletion request. Now have "
+           << conversations_.size() << " Conversation metadata items and "
            << conversation_handlers_.size()
            << " ConversationHandler instances.";
   OnConversationListChanged();
+
   // Update database
-  if (ai_chat_db_ && !temporary) {
-    // Notify the sync bridge BEFORE the DB delete so it can enumerate the
+  if (ai_chat_db_ && !persisted_uuids.empty()) {
+    // Notify the sync bridge BEFORE the DB delete so it can enumerate each
     // conversation's entries (still present in the DB) and emit deletes for
-    // each entry sync record. Both tasks run on db_task_runner_ in order.
+    // each entry sync record. All tasks run on db_task_runner_ in order.
     if (sync_backend_) {
-      CHECK_DEREF(db_task_runner_)
-          .PostTask(FROM_HERE,
-                    base::BindOnce(&AIChatSyncBackend::OnConversationDeleted,
-                                   sync_backend_, id));
+      for (const auto& uuid : persisted_uuids) {
+        CHECK_DEREF(db_task_runner_)
+            .PostTask(FROM_HERE,
+                      base::BindOnce(&AIChatSyncBackend::OnConversationDeleted,
+                                     sync_backend_, uuid));
+      }
     }
     ai_chat_db_
-        .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversation))
-        .WithArgs(id);
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversations))
+        .WithArgs(persisted_uuids);
   }
 }
 
