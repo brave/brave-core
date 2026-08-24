@@ -1,5 +1,5 @@
 diff --git a/net/base/features.cc b/net/base/features.cc
-index 54e646c9a6c7f74b8182cd1cada783cdef8e5810..bd2742e69ce08c7ecd84e34d99c9237af765a603 100644
+index 54e646c9a6c7f74b8182cd1cada783cdef8e5810..6b43aeb2a75927e4408e18dbfca543376bed4381 100644
 --- a/net/base/features.cc
 +++ b/net/base/features.cc
 @@ -200,8 +200,9 @@ BASE_FEATURE(kSplitCacheByNetworkIsolationKey,
@@ -21,3 +21,13 @@ index 54e646c9a6c7f74b8182cd1cada783cdef8e5810..bd2742e69ce08c7ecd84e34d99c9237a
  BASE_FEATURE(kEnableWebTransportDraft07, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kWebTransportFineGrainedThrottling,
+@@ -679,7 +681,8 @@ BASE_FEATURE(kRestrictAbusePorts, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kRestrictAbusePortsOnLocalhost, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kTLSTrustAnchorIDs, base::FEATURE_ENABLED_BY_DEFAULT);
++// kTLSTrustAnchorIDs feature state is enforced via plaster rewrite.
++BASE_FEATURE(kTLSTrustAnchorIDs, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kNonMtcTrustAnchorIDs, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
