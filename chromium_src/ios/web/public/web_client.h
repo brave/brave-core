@@ -18,8 +18,9 @@ class WebState;
 
 // Add methods to override in BraveWebClient.
 //
-// `ShouldBlockJavaScript`, `GetUserAgentForRequest`, and
-// `ShouldBlockUniversalLinks` will be called from BraveCRWWKNavigationHandler
+// `ShouldBlockJavaScript`, `GetUserAgentForRequest`,
+// `ShouldBlockUniversalLinks` and `IsGlobalPrivacyControlEnabled` will be
+// called from BraveCRWWKNavigationHandler
 // to allow us to implement a Brave specific features during web navigation
 //
 // `DidResetConfiguration` will be called from
@@ -33,6 +34,8 @@ class WebState;
                                            NSURLRequest* request);             \
   virtual bool ShouldBlockUniversalLinks(web::WebState* web_state,             \
                                          NSURLRequest* request);               \
+  virtual bool IsGlobalPrivacyControlEnabled(                                  \
+      web::BrowserState* browser_state);                                       \
   virtual void DidResetConfiguration(web::BrowserState* browser_state,         \
                                      WKWebViewConfiguration* configuration);   \
   virtual bool IsBrowserLockdownModeEnabled

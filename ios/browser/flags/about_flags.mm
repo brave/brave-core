@@ -188,6 +188,15 @@ const flags_ui::FeatureEntry::FeatureVariation
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kWebKitAdvancedPrivacyProtections),     \
+      },                                                                       \
+      {                                                                        \
+          "ios-webkit-global-privacy-control",                                 \
+          "Enable WebKit Global Privacy Control",                              \
+          "Attach the Global Privacy Control signal to navigation request "    \
+          "headers",                                                           \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kWebKitGlobalPrivacyControl),           \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                       \
