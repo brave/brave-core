@@ -31,6 +31,14 @@
       </cr-button>
     </template>
   </settings-toggle-button>
+<if expr="enable_brave_ads">
+  <settings-toggle-button id="sponsoredAdsEnabled"
+      class="hr"
+      pref="{{prefs.brave.brave_ads.sponsored.enabled}}"
+      label="$i18n{sponsoredAdsEnabledTitle}"
+      sub-label="$i18n{sponsoredAdsEnabledDesc}">
+  </settings-toggle-button>
+</if>
   <template is="dom-if" if="[[showSurveyPanelist_]]">
     <cr-link-row id="surveyPanelistLinkRow"
       class="hr" label="$i18n{surveyPanelist}"
