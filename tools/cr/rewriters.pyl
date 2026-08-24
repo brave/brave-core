@@ -6,8 +6,14 @@
 # rewriters.pyl — ast-grep op specs for plaster. Data only: a Python literal
 # (ast.literal_eval), so no imports, calls, or names.
 #
-# Two op categories, each keyed by an op id "<lang>.<name>" ("cxx" -> cpp,
-# resolved in code):
+# Three op categories, each keyed by an op id "<namespace>.<name>".
+#
+# The namespace says which sources an op may be used on. It is matched against
+# the namespace claiming a plaster's target suffix (`foo.cc.yaml` -> `.cc` ->
+# `cxx`), so two ops may share a name as long as they are in different
+# namespaces. `all` is the global namespace: its ops apply to every target,
+# whatever the suffix, and are what a name falls back to when nothing matches
+# the target's own namespace.
 #
 #   "ast.matcher" — a structural query:
 #       template: ast-grep rule body (the part under `rule:`). Its {placeholder}
