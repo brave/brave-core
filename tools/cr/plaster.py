@@ -539,6 +539,11 @@ _NAMESPACES: Final = (
                           '.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx',
                           '.c++', '.mm'
                       })),
+    # We include JSON5 with js because `ast-grep` has no tree-sitter for it, but
+    # the JS one works just fine.
+    RewriterNamespace(name='js',
+                      ast_grep_language='js',
+                      suffixes=frozenset({'.js', '.json5'})),
 )
 
 _NAMESPACE_BY_NAME: Final = MappingProxyType(
@@ -2108,6 +2113,95 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
         return list(entries)
 
 
+class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
+    """Override a value `base::Feature` for a `runtime_enabled_features.json5`.
+
+    This rewriter has the same purpose as the one used for C++,
+    `CxxSetFeatureFlagDefaultStateRewriter`, which is override the default state
+    of a particular flag. It is named for the field it sets rather than after
+    that rewriter, since the flag it overrides is one Blink generates from
+    this file rather than one declared in C++.
+    """
+
+    NAME: Final = 'set_blink_runtime_enabled_feature_state'
+
+    # Two ops share the work (see `apply`); this names the namespace and a
+    # representative op for the base's helpers.
+    OP_ID: Final = 'js.set_blink_runtime_enabled_feature_state'
+
+    SUMMARY: Final = "Force a runtime feature's `base::Feature` default state."
+
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Sets `base_feature_status` on a `runtime_enabled_features.json5`
+        feature entry, overriding it.
+
+        Fields:
+
+        - `feature_name` — the entry's `name`, unquoted, e.g. `MyFeature`.
+        - `value` — `enabled` or `disabled`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Ship MyFeature's base feature disabled.
+            set_blink_runtime_enabled_feature_state:
+              feature_name: MyFeature
+              value: disabled
+        ```
+
+        ```diff
+         {
+           name: "MyFeature",
+        +  base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
+           status: "stable",
+         },
+        ```
+    """
+
+    # Replaces the value of a `base_feature_status` the entry already has.
+    _SET_EXISTING: Final = 'js.set_blink_runtime_enabled_feature_state'
+
+    # Adds the field to an entry that lacks it.
+    _ADD_NEW: Final = 'js.add_blink_runtime_enabled_feature_state'
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # One entry, one field, set once, so no other count means anything.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} sets the field exactly once and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        # Which op applies turns on whether the entry already declares the
+        # field, so `count` -- already validated as 1 -- says nothing here.
+        del count, description
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        # Locating the entry first is what tells the two apart. A missing
+        # entry leaves `has_field` False, and the add op then reports the
+        # shortfall through the usual count check.
+        entry = engine.first_match(Operation(self.OP_ID, self._inputs))
+        source = contents.encode('utf-8')
+        has_field = (entry is not None and b'base_feature_status:'
+                     in source[entry.start:entry.end])
+        op = Operation(self._SET_EXISTING if has_field else self._ADD_NEW,
+                       self._inputs, MatchExpectation.exactly(1))
+        changes = engine.run(op)
+        error = op.expectation.error_for(changes)
+        return engine.content, [error] if error else []
+
+
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
 _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
@@ -2117,7 +2211,8 @@ _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
                               CxxRenameClassRewriter,
                               CxxAddToProtectedRewriter,
                               CxxAddToPublicRewriter,
-                              CxxAddEnumEntriesRewriter)
+                              CxxAddEnumEntriesRewriter,
+                              JsSetBlinkRuntimeEnabledFeatureStateRewriter)
 
 
 class RewriterRegistry:

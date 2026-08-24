@@ -3847,6 +3847,165 @@ class RewriterFormsTest(unittest.TestCase):
             "      replace: 'Brave'\n")
         self.assertEqual(result, 'A Brave thing.\n')
 
+    # -- js.set_blink_runtime_enabled_feature_state op (real ast-grep) ------
+    #
+    # Targets `runtime_enabled_features.json5`, parsed with ast-grep's `js`
+    # grammar. The rewriter is composite: per entry, it works out at apply
+    # time whether to add the field or override the one already there.
+
+    _FEATURE_YAML = ('substitutions:\n'
+                     '  - description: Ship MyFeature disabled.\n'
+                     '    set_blink_runtime_enabled_feature_state:\n'
+                     '      feature_name: MyFeature\n'
+                     '      value: disabled\n')
+
+    def test_blink_runtime_enabled_feature_state_adds_a_missing_field(self):
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_overrides_an_existing_field(
+            self):
+        # Upstream puts the field last, by the origin-trial keys rather than
+        # by `name`; it is overridden where it stands, not moved.
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    origin_trial_feature_name: "MyFeature",\n'
+            '    base_feature_status: "enabled",\n'
+            '    copied_from_base_feature_if: "overridden",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    origin_trial_feature_name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
+            '    copied_from_base_feature_if: "overridden",\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_survives_a_leading_comment(
+            self):
+        # A comment before `name` -- common upstream -- must not defeat the
+        # match, as a positional `{name: "...", $$$REST}` pattern would.
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    // PARAKEET ad serving runtime flag/JS API.\n'
+            '    name: "MyFeature",\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertIn(
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n', result)
+
+    def test_blink_runtime_enabled_feature_state_ignores_a_longer_name_field(
+            self):
+        # `origin_trial_feature_name` ends in the same characters as `name`
+        # and often carries the same value; the field must land after the
+        # real `name`, not after that one.
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    origin_trial_feature_name: "MyFeature",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
+            '    origin_trial_feature_name: "MyFeature",\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_leaves_sibling_entries_alone(
+            self):
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "OtherFeature",\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "OtherFeature",\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_reapplies_unchanged(self):
+        # Rerunning over already-migrated text takes the override branch and
+        # must not stack up a second comment.
+        once = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    status: "stable",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        twice = self._apply('runtime_enabled_features.json5', once,
+                            self._FEATURE_YAML)
+        self.assertEqual(once, twice)
+        self.assertEqual(
+            twice.count('// feature state is enforced via plaster rewrite.'),
+            1)
+
+    def test_blink_runtime_enabled_feature_state_unknown_feature_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'runtime_enabled_features.json5', '[\n'
+                '  {\n'
+                '    name: "OtherFeature",\n'
+                '    status: "stable",\n'
+                '  },\n'
+                '];\n', self._FEATURE_YAML)
+
+    def test_blink_runtime_enabled_feature_state_count_other_than_one_rejected(
+            self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    set_blink_runtime_enabled_feature_state:\n'
+            '      feature_name: MyFeature\n'
+            '      value: disabled\n',
+            'does not accept a count other than 1',
+            name='validation.json5')
+
     # -- validation ---------------------------------------------------------
 
     def test_two_op_keys_rejected(self):
@@ -4050,7 +4209,8 @@ class RegexMacroDispatchTest(unittest.TestCase):
             result, '// kFoo feature state is enforced via plaster rewrite.\n'
             'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
 
-    def test_rejected_on_a_non_cxx_source(self):
+    def test_rejected_on_a_source_outside_every_namespace_it_serves(self):
+        # The name belongs to `cxx` alone, and a `.idl` target is not in it.
         with self.assertRaises(ValueError) as cm:
             self._apply(
                 'feature.idl', 'irrelevant', 'substitutions:\n'
@@ -4060,8 +4220,8 @@ class RegexMacroDispatchTest(unittest.TestCase):
                 '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
         self.assertIn(
             'the `set_feature_flag_default_state` rewriter is not available '
-            'for this source, which is not in any namespace it serves (cxx)',
-            str(cm.exception))
+            'for this source, which is not in any namespace it serves '
+            '(cxx)', str(cm.exception))
 
     def _expect_value_error(self, yaml_body: str, substr: str):
         with self.assertRaises(ValueError) as ctx:

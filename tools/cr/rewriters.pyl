@@ -380,6 +380,29 @@ regex: ^{class_name}$
                 "node": "identifier",
             },
         },
+
+        # A `runtime_enabled_features.json5` feature entry: the object, in
+        # that file's list of features, whose `name` field is `feature_name`.
+        #
+        # Matched through `has`/`all` rather than a `{name: "...", $$$REST}`
+        # as preceeding comments confuse the parser.
+        "js.find_runtime_feature_entry": {
+            "template": """\
+kind: object
+has:
+  kind: pair
+  all:
+    - has:
+        field: key
+        regex: ^name$
+    - has:
+        field: value
+        regex: ^"{feature_name}"$
+""",
+            "result": {
+                "node": "object",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -615,6 +638,57 @@ regex: ^{class_name}$
             },
             "result": {
                 "node": "enumerator",
+            },
+        },
+
+        # Both ops below set a feature entry's `base_feature_status`, which is
+        # what forces the default state of the `base::Feature` the entry
+        # generates. Which one applies depends on whether the entry already
+        # declares the field, so the two are paired and chosen between by
+        # `js.set_blink_runtime_enabled_feature_state`'s frontend rewriter.
+        #
+        # We leave a trailing comment on the field, so the substitution always
+        # produces a diff even when upstream's own value already agrees with
+        # ours, as feature flags are preemtively overridden most of the time.
+
+        # The field is absent, so it is inserted directly after `name`. The
+        # negative lookahead is what establishes absence; with the field
+        # present this op matches nothing, and the count check reports it.
+        "js.add_blink_runtime_enabled_feature_state": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "value"],
+            "replace": {
+                "re_pattern":
+                    "([ \\t]*)((?<![A-Za-z0-9_])name:\\s*\"[^\"]*\",)"
+                    "(?![\\s\\S]*?(?<![A-Za-z0-9_])base_feature_status:)",
+                "replace":
+                    "\\1\\2\\n\\1base_feature_status: \"{value}\",  "
+                    "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # The field is already declared, so only its value changes, wherever
+        # in the entry it sits. Upstream tends to put it last, next to
+        # `copied_from_base_feature_if`, rather than beside `name`. The
+        # optional trailing group swallows a comment an earlier run left, so
+        # reapplying does not stack up copies of it.
+        "js.set_blink_runtime_enabled_feature_state": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "value"],
+            "replace": {
+                "re_pattern":
+                    "((?<![A-Za-z0-9_])base_feature_status:\\s*\")[^\"]*(\",)"
+                    "(?:[ \\t]*// feature state is enforced via plaster "
+                    "rewrite\\.)?",
+                "replace":
+                    "\\1{value}\\2  "
+                    "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
             },
         },
     },
