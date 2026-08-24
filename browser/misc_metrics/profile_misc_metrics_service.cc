@@ -13,6 +13,7 @@
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
@@ -37,6 +38,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
@@ -110,10 +115,12 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         prefs::kSearchSuggestEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
     pref_change_registrar_.Add(
-        kNewTabPageShowSponsoredSites,
+        brave_ads::prefs::kSponsoredEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 #endif
   auto* personal_data_manager =
@@ -166,8 +173,12 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
       profile_prefs_->GetBoolean(brave_shields::prefs::kAdBlockDeveloperMode);
   UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,
                              shields_dev_mode_enabled ? 1 : INT_MAX - 1, 2);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   bool show_sponsored_sites =
-      profile_prefs_->GetBoolean(kNewTabPageShowSponsoredSites);
+      profile_prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
+#else
+  bool show_sponsored_sites = false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   UMA_HISTOGRAM_EXACT_LINEAR(kNewTabPageShowSponsoredSitesHistogramName,
                              show_sponsored_sites ? INT_MAX - 1 : 0, 2);
 }

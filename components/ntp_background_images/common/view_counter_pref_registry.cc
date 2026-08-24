@@ -5,12 +5,17 @@
 
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace ntp_background_images {
 
@@ -31,6 +36,12 @@ constexpr char kNewTabTakeoverInfobarShowCount[] =
 constexpr char kNewTabPageSuperReferralThemesOption[] =
     "brave.new_tab_page.super_referral_themes_option";
 
+// Added 08/2026.
+constexpr char kObsoleteNewTabPageShowSponsoredImages[] =
+    "brave.new_tab_page.show_branded_background_image";
+constexpr char kObsoleteNewTabPageShowSponsoredSites[] =
+    "brave.new_tab_page.show_sponsored_sites";
+
 }  // namespace
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -43,8 +54,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
                                 false);
-  registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
@@ -62,6 +71,10 @@ void RegisterProfilePrefsForMigration(
 
   // Added 11/2025.
   registry->RegisterIntegerPref(kNewTabPageSuperReferralThemesOption, 0);
+
+  // Added 08/2026.
+  registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredImages, true);
+  registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredSites, true);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
@@ -73,6 +86,19 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 11/2025.
   prefs->ClearPref(kNewTabPageSuperReferralThemesOption);
+
+  // Added 08/2026.
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  if (prefs->HasPrefPath(kObsoleteNewTabPageShowSponsoredImages) ||
+      prefs->HasPrefPath(kObsoleteNewTabPageShowSponsoredSites)) {
+    prefs->SetBoolean(
+        brave_ads::prefs::kSponsoredEnabled,
+        prefs->GetBoolean(kObsoleteNewTabPageShowSponsoredImages) &&
+            prefs->GetBoolean(kObsoleteNewTabPageShowSponsoredSites));
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  prefs->ClearPref(kObsoleteNewTabPageShowSponsoredImages);
+  prefs->ClearPref(kObsoleteNewTabPageShowSponsoredSites);
 }
 
 }  // namespace ntp_background_images

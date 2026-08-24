@@ -119,9 +119,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {
   // Act & Assert
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        false);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, false);
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
@@ -135,9 +133,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
   // Act & Assert
   SetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfSearchResultAds) {
@@ -147,7 +143,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfSearchResultAds) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, false);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, false);
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToSearchResultAds) {
@@ -159,7 +155,7 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToSearchResultAds) {
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act & Assert
-  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+  SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 }
 
 TEST_F(BraveAdsSubdivisionTest,

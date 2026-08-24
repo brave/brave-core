@@ -151,9 +151,8 @@ class AdsServiceImpl : public AdsService,
   void UnregisterLanguageResourceComponent();
 
   bool UserHasJoinedBraveRewards() const;
-  bool UserHasOptedInToNewTabPageAds() const;
+  bool IsSponsoredAdsEnabled() const;
   bool IsNotificationAdsEnabled() const;
-  bool UserHasOptedInToSearchResultAds() const;
 
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
@@ -178,6 +177,7 @@ class AdsServiceImpl : public AdsService,
                                                       bool shutdown_succeeded);
   void ClearAllPrefsAndAdsServiceDataAndMaybeRestart(ResultCallback callback,
                                                      bool shutdown_succeeded);
+  void ClearAdsPrefs();
   void ClearAdsServiceDataAndMaybeRestart(ResultCallback callback);
   void ClearAdsServiceDataAndMaybeRestartCallback(ResultCallback callback,
                                                   bool success);
@@ -200,9 +200,9 @@ class AdsServiceImpl : public AdsService,
   void InitializePrefChangeRegistrar();
   void InitializeBraveRewardsPrefChangeRegistrar();
   void InitializeSubdivisionTargetingPrefChangeRegistrar();
-  void InitializeNewTabPageAdsPrefChangeRegistrar();
+  void InitializeNewTabPageBackgroundImagePrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
-  void InitializeSearchResultAdsPrefChangeRegistrar();
+  void InitializeSponsoredAdsPrefChangeRegistrar();
   void OnAdsPrefChanged(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;

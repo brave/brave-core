@@ -10,6 +10,7 @@
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
@@ -19,6 +20,10 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/new_tab_page/prefs/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -38,10 +43,10 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   // one off should also hide the tiles.
   AddPrefListener(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
                   {Source::kBackgrounds, Source::kTopSites});
-  AddPrefListener(ntp_background_images::prefs::
-                      kNewTabPageShowSponsoredImagesBackgroundImage,
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  AddPrefListener(brave_ads::prefs::kSponsoredEnabled,
                   {Source::kBackgrounds, Source::kTopSites});
-  AddPrefListener(kNewTabPageShowSponsoredSites, Source::kTopSites);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   AddPrefListener(NTPBackgroundPrefs::kPrefName, Source::kBackgrounds);
   AddPrefListener(NTPBackgroundPrefs::kCustomImageListPrefName,
                   Source::kBackgrounds);

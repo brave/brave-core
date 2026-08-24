@@ -17,6 +17,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/sponsored_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -37,11 +38,33 @@
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
 #endif
 
 namespace brave_new_tab_page_refresh {
+
+namespace {
+
+bool IsSponsoredAdsEnabled(const PrefService& pref_service) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  return pref_service.GetBoolean(brave_ads::prefs::kSponsoredEnabled);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+}
+
+void SetSponsoredAdsEnabled(PrefService& pref_service, bool enabled) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  pref_service.SetBoolean(brave_ads::prefs::kSponsoredEnabled, enabled);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+}
+
+}  // namespace
 
 NewTabPageHandler::NewTabPageHandler(
     mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
@@ -111,18 +134,13 @@ void NewTabPageHandler::SetBackgroundsEnabled(
 
 void NewTabPageHandler::GetSponsoredImagesEnabled(
     GetSponsoredImagesEnabledCallback callback) {
-  bool sponsored_images_enabled = pref_service_->GetBoolean(
-      ntp_background_images::prefs::
-          kNewTabPageShowSponsoredImagesBackgroundImage);
-  std::move(callback).Run(sponsored_images_enabled);
+  std::move(callback).Run(IsSponsoredAdsEnabled(*pref_service_));
 }
 
 void NewTabPageHandler::SetSponsoredImagesEnabled(
     bool enabled,
     SetSponsoredImagesEnabledCallback callback) {
-  pref_service_->SetBoolean(ntp_background_images::prefs::
-                                kNewTabPageShowSponsoredImagesBackgroundImage,
-                            enabled);
+  SetSponsoredAdsEnabled(*pref_service_, enabled);
   std::move(callback).Run();
 }
 
@@ -364,15 +382,13 @@ void NewTabPageHandler::SetShowTopSites(bool show_top_sites,
 
 void NewTabPageHandler::GetShowSponsoredSites(
     GetShowSponsoredSitesCallback callback) {
-  std::move(callback).Run(
-      pref_service_->GetBoolean(kNewTabPageShowSponsoredSites));
+  std::move(callback).Run(IsSponsoredAdsEnabled(*pref_service_));
 }
 
 void NewTabPageHandler::SetShowSponsoredSites(
     bool show_sponsored_sites,
     SetShowSponsoredSitesCallback callback) {
-  pref_service_->SetBoolean(kNewTabPageShowSponsoredSites,
-                            show_sponsored_sites);
+  SetSponsoredAdsEnabled(*pref_service_, show_sponsored_sites);
   std::move(callback).Run();
 }
 

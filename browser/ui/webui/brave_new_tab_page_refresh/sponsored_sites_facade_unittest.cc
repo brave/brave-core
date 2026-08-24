@@ -20,8 +20,9 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -103,8 +104,7 @@ class SponsoredSitesFacadeTest : public testing::Test {
  public:
   void SetUp() override {
     ntp_background_images::RegisterProfilePrefs(profile_prefs_.registry());
-    profile_prefs_.registry()->RegisterBooleanPref(
-        kNewTabPageShowSponsoredSites, true);
+    brave_ads::RegisterProfilePrefs(profile_prefs_.registry());
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RegisterProfilePrefs(profile_prefs_.registry());
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -173,7 +173,7 @@ class SponsoredSitesFacadeTest : public testing::Test {
 };
 
 TEST_F(SponsoredSitesFacadeTest, ReturnsNoSitesWhenSponsoredSitesDisabled) {
-  profile_prefs_.SetBoolean(kNewTabPageShowSponsoredSites, false);
+  profile_prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, false);
 
   auto facade = CreateFacade();
   background_images_service_->OnGetSponsoredSitesData(CreateSponsoredSitesData(

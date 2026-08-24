@@ -20,6 +20,7 @@
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
@@ -469,7 +471,7 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
 
   // Clear preferences only after confirming shutdown succeeded so the pref
   // state and database are always cleared together or not at all.
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  ClearAdsPrefs();
 
   file_task_runner_->PostTaskAndReply(
       FROM_HERE,
@@ -482,6 +484,19 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
           storage_path_),
       base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImplIOS::ClearAdsPrefs() {
+  std::optional<bool> sponsored_enabled;
+  if (prefs_->HasPrefPath(prefs::kSponsoredEnabled)) {
+    sponsored_enabled = prefs_->GetBoolean(prefs::kSponsoredEnabled);
+  }
+
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
+  if (sponsored_enabled) {
+    prefs_->SetBoolean(prefs::kSponsoredEnabled, *sponsored_enabled);
+  }
 }
 
 void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback) {

@@ -38,9 +38,7 @@ bool UserHasJoinedBraveRewardsAndConnectedWallet() {
 bool UserHasOptedInToNewTabPageAds() {
   return GetProfileBooleanPref(
              ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         GetProfileBooleanPref(
-             ntp_background_images::prefs::
-                 kNewTabPageShowSponsoredImagesBackgroundImage);
+         GetProfileBooleanPref(prefs::kSponsoredEnabled);
 }
 
 bool IsNotificationAdsEnabled() {
@@ -56,7 +54,7 @@ int GetMaximumNotificationAdsPerHour() {
 }
 
 bool UserHasOptedInToSearchResultAds() {
-  return GetProfileBooleanPref(prefs::kOptedInToSearchResultAds);
+  return GetProfileBooleanPref(prefs::kSponsoredEnabled);
 }
 
 bool UserHasOptedInToSurveyPanelist() {
