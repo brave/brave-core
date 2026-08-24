@@ -96,6 +96,7 @@ source_set("unit_tests") {
     "//components/component_updater:test_support",
     "//components/history_embeddings/core",
     "//components/prefs:test_support",
+    "//components/update_client",
     "//testing/gmock",
     "//testing/gtest",
   ]

@@ -72,6 +72,8 @@ bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
 
 void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
     const base::FilePath& install_dir) {
+  // Drop a load still in flight for the dir this one replaces.
+  weak_ptr_factory_.InvalidateWeakPtrs();
   // The component ships the LiteRT model in optimization guide's own layout:
   // model.tflite, model-info.pb, and the SentencePiece model listed in its
   // additional_files. Loading it here reads the version and the embedder
@@ -89,7 +91,14 @@ void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
               ->GetEmbeddingGemmaLitertDir()),
       base::BindOnce(
           &BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded,
-          base::Unretained(this)));
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BravePassageEmbeddingsServiceController::OnLocalModelsUnavailable() {
+  // The files go with the component, so drop the model built from them.
+  // Cancelling first stops a load in flight republishing what it just read.
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  PassageEmbeddingsServiceController::MaybeUpdateModelInfo(std::nullopt);
 }
 
 void BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded(

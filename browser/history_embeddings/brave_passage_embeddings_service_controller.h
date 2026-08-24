@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/scoped_observation.h"
 #include "base/types/optional_ref.h"
@@ -55,6 +56,7 @@ class BravePassageEmbeddingsServiceController
 
   // local_ai::LocalModelsUpdaterState::Observer:
   void OnLocalModelsReady(const base::FilePath& install_dir) override;
+  void OnLocalModelsUnavailable() override;
 
   // Reply for the model dir load posted by OnLocalModelsReady. `model_info` is
   // empty when the component ships no usable model.
@@ -64,6 +66,12 @@ class BravePassageEmbeddingsServiceController
   base::ScopedObservation<local_ai::LocalModelsUpdaterState,
                           local_ai::LocalModelsUpdaterState::Observer>
       updater_state_observation_{this};
+
+  // Guards the in-flight model dir load. Invalidated whenever the install dir
+  // changes, so a load started for a dir that is no longer current cannot
+  // publish the model it read.
+  base::WeakPtrFactory<BravePassageEmbeddingsServiceController>
+      weak_ptr_factory_{this};
 };
 
 }  // namespace passage_embeddings
