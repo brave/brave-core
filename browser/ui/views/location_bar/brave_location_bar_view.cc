@@ -89,7 +89,7 @@ std::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
 
 }  // namespace
 
-BraveLocationBarView::BraveLocationBarView(Browser* browser,
+BraveLocationBarView::BraveLocationBarView(BrowserWindowInterface* browser,
                                            Profile* profile,
                                            CommandUpdater* command_updater,
                                            Delegate* delegate,
