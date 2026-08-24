@@ -26,14 +26,6 @@ static_library("browser") {
   } else if (is_linux || is_mac || is_win) {
     sources += [ "brave_vpn_service_impl_desktop.cc" ]
   }
-  if (enable_brave_vpn_v2_apps) {
-    sources += [
-      "agent_client.cc",
-      "agent_client.h",
-      "browser_endpoint_impl.cc",
-      "browser_endpoint_impl.h",
-    ]
-  }
 
   public_deps = [
     "//brave/components/brave_vpn/browser",
@@ -44,12 +36,6 @@ static_library("browser") {
     "//mojo/public/cpp/bindings",
     "//net",
   ]
-  if (enable_brave_vpn_v2_apps) {
-    public_deps += [
-      "//brave/components/brave_vpn/common/mojom:agent",
-      "//mojo/public/cpp/platform",
-    ]
-  }
 
   deps = [
     "api",
@@ -62,7 +48,20 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+
   if (enable_brave_vpn_v2_apps) {
+    sources += [
+      "agent_client.cc",
+      "agent_client.h",
+      "browser_endpoint_impl.cc",
+      "browser_endpoint_impl.h",
+    ]
+
+    public_deps += [
+      "//brave/components/brave_vpn/common/mojom:agent",
+      "//mojo/public/cpp/platform",
+    ]
+
     deps += [
       "//brave/components/brave_vpn/common/v2:common",
       "//components/named_mojo_ipc_server",

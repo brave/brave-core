@@ -18,11 +18,14 @@
 #include "base/time/tick_clock.h"
 #include "base/timer/timer.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/platform/named_platform_channel.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 #include "net/base/backoff_entry.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS));
 
 namespace brave_vpn::v2 {
 
@@ -155,7 +158,7 @@ class AgentClient {
                                        Connector connector);
 
   void StartConnect();
-  void OnTransportConnected(ConnectResult result);
+  void OnConnectBlockingCompleted(ConnectResult result);
   void OnAuthResult(mojom::BrowserAuthResult result);
   void OnHandshakeTimeout();
   void OnSessionPipeDisconnected(std::string_view reason);

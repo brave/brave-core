@@ -192,11 +192,11 @@ void AgentClient::StartConnect() {
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(&AgentClient::ConnectBlocking, server_name_provider_,
                      connector_),
-      base::BindOnce(&AgentClient::OnTransportConnected,
+      base::BindOnce(&AgentClient::OnConnectBlockingCompleted,
                      weak_factory_.GetWeakPtr()));
 }
 
-void AgentClient::OnTransportConnected(ConnectResult result) {
+void AgentClient::OnConnectBlockingCompleted(ConnectResult result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(state_ == State::kConnecting);
 

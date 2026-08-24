@@ -7,9 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BROWSER_ENDPOINT_IMPL_H_
 
 #include "base/functional/callback.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS));
 
 namespace brave_vpn::v2 {
 

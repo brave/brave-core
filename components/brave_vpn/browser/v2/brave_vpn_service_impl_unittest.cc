@@ -200,7 +200,7 @@ TEST_F(BraveVpnServiceImplTest, PurchasedStateDrivesAgentConnection) {
 
   // The recoverable states leave a live connection alone: each can coexist with
   // a running tunnel, and the person still has to be able to disconnect it.
-  for (const auto state :
+  for (const mojom::PurchasedState state :
        {mojom::PurchasedState::LOADING, mojom::PurchasedState::SESSION_EXPIRED,
         mojom::PurchasedState::FAILED,
         mojom::PurchasedState::OUT_OF_CREDENTIALS}) {

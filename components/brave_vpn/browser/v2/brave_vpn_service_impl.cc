@@ -23,7 +23,6 @@
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "build/build_config.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn::v2 {
@@ -121,10 +120,7 @@ void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
 
 void BraveVpnServiceImpl::Shutdown() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
-  if (agent_client_) {
-    agent_client_->RemoveObserver(this);
-    agent_client_.reset();
-  }
+  agent_client_.reset();
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   purchased_state_manager_.reset();
   api_client_.reset();
