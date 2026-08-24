@@ -59,6 +59,11 @@ class PsstSettingsService : public KeyedService {
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);
 
+  // Latched once, at construction (i.e. at profile/browser startup). If
+  // policy disables PSST mid-session, this keeps returning the value it had
+  // at startup so already-managed-enabled users aren't cut off until restart.
+  bool WasPsstEnabledAtStartup() const;
+
   bool IsManagedPreference() const;
 
   void SetInfobarShowCounter(int value);
@@ -71,6 +76,7 @@ class PsstSettingsService : public KeyedService {
   raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
   base::ObserverList<PrefObserver> observers_;
   PrefChangeRegistrar pref_change_registrar_;
+  bool was_enabled_at_startup_;
   base::WeakPtrFactory<PsstSettingsService> weak_ptr_factory_{this};
 };
 

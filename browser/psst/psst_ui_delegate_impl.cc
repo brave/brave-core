@@ -211,8 +211,10 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
   }
 
   // Do not remove the omnibar icon infobar and consent dialog when it is in
-  // managed preferences mode (e.g., admin or Brave Origin policies)
-  if (psst_settings_service_->IsManagedPreference()) {
+  // managed preferences mode and was enabled at startup (e.g., admin or Brave
+  // Origin policies)
+  if (psst_settings_service_->IsManagedPreference() &&
+      psst_settings_service_->WasPsstEnabledAtStartup()) {
     return;
   }
 

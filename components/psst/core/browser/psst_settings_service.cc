@@ -53,6 +53,7 @@ PsstSettingsService::PsstSettingsService(
       prefs::kPsstEnabled,
       base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  was_enabled_at_startup_ = IsPsstEnabled();
 }
 
 PsstSettingsService::~PsstSettingsService() = default;
@@ -135,6 +136,10 @@ bool PsstSettingsService::IsPsstEnabled() const {
 
 void PsstSettingsService::SetPsstEnabled(bool enabled) {
   prefs_->SetBoolean(prefs::kPsstEnabled, enabled);
+}
+
+bool PsstSettingsService::WasPsstEnabledAtStartup() const {
+  return was_enabled_at_startup_;
 }
 
 bool PsstSettingsService::IsManagedPreference() const {

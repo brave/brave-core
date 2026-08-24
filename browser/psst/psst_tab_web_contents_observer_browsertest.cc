@@ -48,6 +48,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -1163,6 +1164,61 @@ IN_PROC_BROWSER_TEST_F(PsstEnabledByPolicyBrowserTest,
   // The managed preference is untouched by the infobar dismissal.
   EXPECT_TRUE(GetPrefs()->IsManagedPreference(prefs::kPsstEnabled));
   EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+}
+
+// Fixture that disables PSST via a mandatory administrator policy, which
+// makes `prefs::kPsstEnabled` a managed, disabled preference before the
+// profile is created. This causes `PsstSettingsServiceFactory::GetForProfile`
+// to return null for the profile (see
+// `PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext`), which
+// previously crashed `BraveTabFeatures::Init()` when it unconditionally
+// dereferenced the null service.
+class PsstDisabledByPolicyBrowserTest
+    : public PsstTabWebContentsObserverBrowserTest {
+ public:
+  PsstDisabledByPolicyBrowserTest() = default;
+  ~PsstDisabledByPolicyBrowserTest() override = default;
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PsstTabWebContentsObserverBrowserTest::SetUpInProcessBrowserTestFixture();
+
+    EXPECT_CALL(policy_provider_, IsInitializationComplete(testing::_))
+        .WillRepeatedly(testing::Return(true));
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(
+        &policy_provider_);
+
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kPsstEnabled, policy::POLICY_LEVEL_MANDATORY,
+                 policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
+                 base::Value(false), nullptr);
+    policy_provider_.UpdateChromePolicy(policies);
+  }
+
+ private:
+  policy::MockConfigurationPolicyProvider policy_provider_;
+};
+
+// When PSST is disabled by administrator policy, no `PsstSettingsService`
+// exists for the profile. The browser must not crash creating or navigating
+// tabs, and since there's no service to drive the PSST flow, the location bar
+// icon never appears for a matching site.
+IN_PROC_BROWSER_TEST_F(PsstDisabledByPolicyBrowserTest,
+                       ManagedPolicyDisablesServiceWithoutCrash) {
+  ASSERT_TRUE(GetPrefs()->IsManagedPreference(prefs::kPsstEnabled));
+  ASSERT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+  // No service is created for the profile, exercising the null branch in
+  // `BraveTabFeatures::Init()`.
+  EXPECT_FALSE(GetPsstSettingsService());
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  content::RunAllTasksUntilIdle();
+
+  IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+  if (psst_view) {
+    views::test::RunScheduledLayout(psst_view);
+    EXPECT_FALSE(psst_view->GetVisible());
+  }
 }
 
 }  // namespace psst
