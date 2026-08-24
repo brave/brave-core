@@ -195,6 +195,11 @@
             android:summary="@string/brave_stats_usage_ping_summary"
             android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="sponsored_ads_enabled"
+            android:title="@string/sponsored_ads_enabled_title"
+            android:summary="@string/sponsored_ads_enabled_summary"
+            android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="survey_panelist"
             android:title="@string/survey_panelist_title"
             android:summary="@string/survey_panelist_summary"
