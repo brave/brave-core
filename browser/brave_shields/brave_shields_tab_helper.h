@@ -15,6 +15,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -36,6 +37,7 @@ class BraveShieldsTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BraveShieldsTabHelper>,
       public content_settings::Observer,
+      public BraveShieldsSettingsService::Observer,
       public favicon::FaviconDriverObserver {
  public:
   BraveShieldsTabHelper(const BraveShieldsTabHelper&) = delete;
@@ -64,29 +66,20 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetBlockedJsList();
   std::vector<GURL> GetAllowedJsList();
   std::vector<GURL> GetFingerprintsList();
-  bool IsBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
   bool IsBraveShieldsAdBlockOnlyModeEnabled();
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
   bool ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
   void SetBraveShieldsAdBlockOnlyModePromptDismissed();
+  void ReloadWebContents();
   GURL GetCurrentSiteURL() const;
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
-  mojom::AdBlockMode GetAdBlockMode();
-  mojom::FingerprintMode GetFingerprintMode();
   mojom::CookieBlockMode GetCookieBlockMode();
   mojom::HttpsUpgradeMode GetHttpsUpgradeMode();
-  bool GetNoScriptEnabled();
-  mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
-  bool GetForgetFirstPartyStorageEnabled();
-  void SetAdBlockMode(mojom::AdBlockMode mode);
-  void SetFingerprintMode(mojom::FingerprintMode mode);
   void SetCookieBlockMode(mojom::CookieBlockMode mode);
   void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
-  void SetIsNoScriptEnabled(bool is_enabled);
-  void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void EnforceSiteDataCleanup();
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
@@ -120,6 +113,9 @@ class BraveShieldsTabHelper
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
 
+  // BraveShieldsSettingsService::Observer
+  void OnShieldsSettingsChanged(const std::string& etld_plus_one) override;
+
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
                         NotificationIconType notification_icon_type,
@@ -127,7 +123,6 @@ class BraveShieldsTabHelper
                         bool icon_url_changed,
                         const gfx::Image& image) override;
 
-  void ReloadWebContents();
   void MaybeNotifyRepeatedReloads(content::NavigationHandle* navigation_handle);
 
   void OnShieldsAdBlockOnlyModeEnabledChanged();
@@ -146,6 +141,9 @@ class BraveShieldsTabHelper
       observation_{this};
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
+  base::ScopedObservation<BraveShieldsSettingsService,
+                          BraveShieldsSettingsService::Observer>
+      brave_shields_settings_observation_{this};
 
   PrefChangeRegistrar local_state_change_registrar_;
   const raw_ptr<ephemeral_storage::EphemeralStorageService>

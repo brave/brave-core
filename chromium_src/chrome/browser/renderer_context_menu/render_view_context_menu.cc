@@ -18,6 +18,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -28,6 +29,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -740,10 +742,16 @@ void RenderViewContextMenu::AppendDeveloperItems() {
   auto* shields_tab_helper =
       brave_shields::BraveShieldsTabHelper::FromWebContents(
           source_web_contents_);
-  bool add_block_elements = shields_tab_helper &&
-                            shields_tab_helper->IsBraveShieldsEnabled() &&
-                            shields_tab_helper->GetAdBlockMode() !=
-                                brave_shields::mojom::AdBlockMode::ALLOW;
+  bool add_block_elements = false;
+  if (shields_tab_helper) {
+    auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+        Profile::FromBrowserContext(source_web_contents_->GetBrowserContext()));
+    CHECK(shields_settings);
+    const auto& url = shields_tab_helper->GetCurrentSiteURL();
+    add_block_elements = shields_settings->IsBraveShieldsEnabled(url) &&
+                         shields_settings->GetAdBlockMode(url) !=
+                             brave_shields::mojom::AdBlockMode::ALLOW;
+  }
   add_block_elements &=
       params_.selection_text.empty() || !params_.link_url.is_empty();
 
