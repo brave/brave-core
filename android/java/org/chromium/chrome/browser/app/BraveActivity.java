@@ -1384,7 +1384,10 @@ public abstract class BraveActivity extends ChromeActivity
             BraveOriginSubscriptionPrefs.requestCredentialSummary(
                     profile,
                     (isActive) -> {
-                        if (!BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)
+                        // The summary request is asynchronous, so the profile captured above may
+                        // already be destroyed by the time this runs.
+                        if (BraveOriginSubscriptionPrefs.isProfileUsable(profile)
+                                && !BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile)
                                 && !isActive) {
                             BraveOriginSubscriptionPrefs.verifyPurchase(profile);
                         }
