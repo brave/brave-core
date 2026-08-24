@@ -9,7 +9,6 @@
 
 #include "brave/browser/brave_global_features.h"
 #include "brave/browser/extensions/brave_extension_service.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/chrome_extension_system_factory.h"
 #include "extensions/browser/extension_system.h"
 
@@ -41,8 +40,7 @@ BraveExtensionServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   return std::make_unique<BraveExtensionService>(
       ExtensionSystem::Get(context),
-      BraveGlobalFeatures::FromGlobalFeatures(g_browser_process->GetFeatures())
-          ->extension_malware_blocklist());
+      BraveGlobalFeatures::GetExtensionMalwareBlocklist());
 }
 
 bool BraveExtensionServiceFactory::ServiceIsCreatedWithBrowserContext() const {

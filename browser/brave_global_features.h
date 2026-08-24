@@ -29,10 +29,17 @@ class BraveGlobalFeatures : public GlobalFeatures {
   BraveGlobalFeatures(const BraveGlobalFeatures&) = delete;
   BraveGlobalFeatures& operator=(const BraveGlobalFeatures&) = delete;
 
+  // Null when tests have replaced GlobalFeatures with their own subclass.
   static BraveGlobalFeatures* FromGlobalFeatures(
       GlobalFeatures* global_features);
 
+  // GlobalFeatures:
+  bool IsBraveGlobalFeatures() const override;
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  static extension_malware_blocklist::ExtensionMalwareBlocklist*
+  GetExtensionMalwareBlocklist();
+
   // Null when the kExtensionMalwareBlocklist feature is disabled.
   extension_malware_blocklist::ExtensionMalwareBlocklist*
   extension_malware_blocklist() {

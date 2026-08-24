@@ -82,9 +82,7 @@ void RegisterComponentsForUpdate() {
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_malware_blocklist::RegisterExtensionMalwareBlocklistComponent(
-      cus,
-      BraveGlobalFeatures::FromGlobalFeatures(g_browser_process->GetFeatures())
-          ->extension_malware_blocklist());
+      cus, BraveGlobalFeatures::GetExtensionMalwareBlocklist());
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(
