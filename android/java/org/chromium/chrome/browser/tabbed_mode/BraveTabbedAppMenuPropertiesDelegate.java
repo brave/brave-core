@@ -885,22 +885,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 0,
                                 isMenuIconAtStart())));
 
-        // Universal Install / Open Web APK
+        // Universal Install
         if (WebappsUtils.isAddToHomeIntentSupported()) {
-            // This is the 'webapp is already installed' case, so we offer to open the webapp.
-            String appName = mContext.getString(R.string.webapp);
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuItemType.STANDARD,
-                            AppMenuItemUtils.buildBaseModelForTextItem(
-                                            mAppMenuItemTheme,
-                                            R.id.open_webapk_id,
-                                            isMenuIconAtStart())
-                                    .with(
-                                            AppMenuItemProperties.TITLE,
-                                            mContext.getString(R.string.menu_open_webapk, appName))
-                                    .build()));
-
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
