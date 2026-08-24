@@ -181,7 +181,6 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
       // policy
       psst_settings_service_->SetPsstEnabled(false);
     }
-    psst_settings_service_->SetInfobarShowCounter(kMaxPsstInfobarShownCounter);
   }
 }
 
