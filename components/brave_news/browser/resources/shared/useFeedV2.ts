@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 import { addFeedListener } from "./feedListener";
 import { loadTimeData } from "$web-common/loadTimeData";
@@ -56,6 +56,24 @@ const saveFeed = (feed?: FeedV2) => {
 
 const isTooOld = (feed: FeedV2) => mojoTimeToJSDate(feed.constructTime).getTime() + MAX_AGE_FOR_CACHED_FEED < Date.now()
 
+/**
+ * Parses a feed out of session/local storage. Storage can hold truncated or
+ * otherwise malformed data (for example if a quota error interrupted a write),
+ * and |maybeLoadFeed| runs during render, so an uncaught SyntaxError here would
+ * take down the whole feed tree. Returns undefined instead so callers fall back
+ * to fetching a fresh feed.
+ */
+const parseCachedFeed = (data: string | null): FeedV2 | undefined => {
+  if (!data) return undefined
+
+  try {
+    return JSON.parse(data) as FeedV2
+  } catch (err) {
+    console.error('Brave News: discarding unparseable cached feed', err)
+    return undefined
+  }
+}
+
 const maybeLoadFeed = (view?: FeedView) => {
   const cachedFeed = localCache[view!]
   if (cachedFeed && !isTooOld(cachedFeed)) {
@@ -71,7 +89,14 @@ const maybeLoadFeed = (view?: FeedView) => {
 
   if (!data) return
 
-  const feed: FeedV2 = JSON.parse(data)
+  const feed = parseCachedFeed(data)
+
+  // Remove unparseable data so we fall back to fetching a fresh feed.
+  if (!feed) {
+    localStorage.removeItem(FEED_KEY)
+    sessionStorage.removeItem(FEED_KEY)
+    return undefined
+  }
 
   // Remove any cached feed whose items include a type no longer supported
   // in the FeedItemV2.
@@ -95,34 +120,6 @@ const maybeLoadFeed = (view?: FeedView) => {
   }
 
   // If the feed doesn't match what we stored, don't return it.
-  return !view || feedTypeToFeedView(feed.type) === view
-    ? feed
-    : undefined
-}
-
-const readFeedFromCache = (view?: FeedView): FeedV2 | undefined => {
-  const cachedFeed = localCache[view!]
-  if (cachedFeed && !isTooOld(cachedFeed)) {
-    return cachedFeed
-  }
-
-  let data = sessionStorage.getItem(FEED_KEY)
-  if (!data) {
-    data = localStorage.getItem(FEED_KEY)
-  }
-
-  if (!data) return undefined
-
-  const feed: FeedV2 = JSON.parse(data)
-
-  if (feed.items?.some(item => !item.article && !item.cluster && !item.discover && !item.hero)) {
-    return undefined
-  }
-
-  if (isTooOld(feed)) return undefined
-
-  if (typeof feed.error === 'number') return undefined
-
   return !view || feedTypeToFeedView(feed.type) === view
     ? feed
     : undefined
@@ -156,23 +153,9 @@ const fetchFeed = (feedView: FeedView) => {
 }
 
 export const useFeedV2 = (enabled: boolean) => {
-  const [fetchedFeed, setFetchedFeed] = useState<FeedV2 | undefined>(maybeLoadFeed())
-  const [feedView, setFeedView] = useState<FeedView>(maybeLoadFeedView(fetchedFeed))
-  const [fetchedForView, setFetchedForView] = useState<FeedView | undefined>(
-    fetchedFeed ? feedView : undefined)
+  const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
+  const [feedView, setFeedView] = useState<FeedView>(maybeLoadFeedView(feedV2))
   const [hash, setHash] = useState<string>()
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
-  // Synchronous cache lookup (pure read, recomputes when feedView/enabled change).
-  const cachedFeed = useMemo(
-    () => enabled ? readFeedFromCache(feedView) : undefined,
-    [enabled, feedView])
-
-  // Effective feed: refreshing shows loading; otherwise cache takes priority,
-  // then the fetched feed if it belongs to the current view.
-  const feedV2 = isRefreshing
-    ? undefined
-    : cachedFeed ?? (fetchedForView === feedView ? fetchedFeed : undefined)
 
   // Clear out of date caches when the feed receives new data.
   useEffect(() => {
@@ -186,9 +169,8 @@ export const useFeedV2 = (enabled: boolean) => {
       }
 
       // If what's in localStorage isn't from the latest data, make sure we remove
-      // it. Without the eslint-disable-next-line comment the below will fail on iOS
-
-      const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
+      // it.
+      const localStorageData = parseCachedFeed(localStorage.getItem(FEED_KEY))
       if (localStorageData?.sourceHash !== latestHash) {
         localStorage.removeItem(FEED_KEY)
       }
@@ -211,38 +193,30 @@ export const useFeedV2 = (enabled: boolean) => {
     return () => { cancelled = true }
   }, [enabled])
 
-  // Run cache side-effects (persist last-visited feed, clean up stale storage)
-  // when the view or enabled state changes.
   useEffect(() => {
     if (!enabled) return
-    maybeLoadFeed(feedView)
-  }, [enabled, feedView])
 
-  // Fetch the feed asynchronously when there is no cached feed for the current
-  // view. State is only set inside the async callback, not synchronously in the
-  // effect body.
-  useEffect(() => {
-    if (!enabled || cachedFeed) return
-    if (fetchedForView === feedView && fetchedFeed !== undefined) return
+    setFeedV2(undefined)
+
+    const cachedFeed = maybeLoadFeed(feedView)
+    if (cachedFeed) {
+      setFeedV2(cachedFeed)
+      return
+    }
 
     let cancelled = false
     fetchFeed(feedView).then((feed) => {
       if (cancelled) return
-      setFetchedFeed(feed)
-      setFetchedForView(feedView)
+      setFeedV2(feed)
     })
     return () => { cancelled = true }
-  }, [enabled, feedView, cachedFeed, fetchedForView, fetchedFeed])
+  }, [feedView, enabled])
 
   const refresh = useCallback(() => {
-    // Show the loading indicator while the fetch is in progress.
-    setIsRefreshing(true)
+    // Set the feed to undefined - this will trigger the loading indicator.
+    setFeedV2(undefined)
     getBraveNewsController().ensureFeedV2IsUpdating()
-    fetchFeed(feedView).then((feed) => {
-      setFetchedFeed(feed)
-      setFetchedForView(feedView)
-      setIsRefreshing(false)
-    })
+    fetchFeed(feedView).then(setFeedV2)
   }, [feedView])
 
   // When we switch back to this tab, if the feed is stale refresh it.

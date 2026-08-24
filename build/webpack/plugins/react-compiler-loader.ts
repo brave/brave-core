@@ -14,7 +14,11 @@ import reactCompiler from 'babel-plugin-react-compiler'
  *
  * Scoped to the opted-in `reactCompilerPaths` in `rules.ts`.
  */
-export default function reactCompilerLoader(this: any, source: string, map: any) {
+export default function reactCompilerLoader(
+  this: any,
+  source: string,
+  map: any,
+) {
   try {
     const result = transformSync(source, {
       filename: this.resourcePath,
@@ -22,15 +26,15 @@ export default function reactCompilerLoader(this: any, source: string, map: any)
       configFile: false,
       sourceMaps: true,
       inputSourceMap: map,
-      plugins: [
-        reactCompiler as PluginItem,
-      ],
+      plugins: [reactCompiler as PluginItem],
     })
 
     this.callback(null, result?.code ?? source, result?.map ?? map)
   } catch (err: any) {
-    this.callback(new Error(
-      `react-compiler-loader error in ${this.resourcePath}:\n${err?.message ?? err}`,
-    ))
+    this.callback(
+      new Error(
+        `react-compiler-loader error in ${this.resourcePath}:\n${err?.message ?? err}`,
+      ),
+    )
   }
 }
