@@ -12,6 +12,9 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "components/optimization_guide/core/optimization_guide_proto_util.h"
@@ -145,6 +148,43 @@ TEST_F(BravePassageEmbeddingsServiceControllerTest,
   InstallComponent(CreateComponentDir("no-model-info"));
   EXPECT_TRUE(
       base::test::RunUntil([&] { return !controller_->IsModelAvailable(); }));
+}
+
+// Losing the component takes the model with it: the master switch turning off
+// unregisters the component and removes its files, so the paths published from
+// its install dir are gone.
+TEST_F(BravePassageEmbeddingsServiceControllerTest,
+       ClearedInstallDirClearsModel) {
+  const base::FilePath component = CreateComponentDir("with-model-info");
+  WriteModelInfo(component, /*version=*/13);
+  InstallComponent(component);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return observer_.metadata().has_value(); }));
+  ASSERT_TRUE(controller_->IsModelAvailable());
+
+  InstallComponent(base::FilePath());
+  EXPECT_FALSE(controller_->IsModelAvailable());
+}
+
+// A load still in flight when the models go away must not publish what it
+// read: those paths are about to be removed with the component.
+TEST_F(BravePassageEmbeddingsServiceControllerTest,
+       StaleLoadDoesNotRepublishModel) {
+  const base::FilePath component = CreateComponentDir("going-away");
+  WriteModelInfo(component, /*version=*/14);
+  InstallComponent(component);
+  // Take the models away without waiting, so the load is still in flight.
+  InstallComponent(base::FilePath());
+
+  // Let the load finish - that posts its reply - then drain the reply behind a
+  // sentinel queued after it.
+  base::ThreadPoolInstance::Get()->FlushForTesting();
+  bool drained = false;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindLambdaForTesting([&] { drained = true; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return drained; }));
+
+  EXPECT_FALSE(controller_->IsModelAvailable());
 }
 
 }  // namespace passage_embeddings
