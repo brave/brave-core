@@ -13,5 +13,6 @@ buildflag_header("buildflags") {
     "ENABLE_BRAVE_VPN_V1=$enable_brave_vpn_v1",
     "ENABLE_BRAVE_VPN_V2=$enable_brave_vpn_v2",
     "ENABLE_BRAVE_VPN_WIREGUARD=$enable_brave_vpn_wireguard",
+    "ENABLE_BRAVE_VPN_V2_APPS=$enable_brave_vpn_v2_apps",
   ]
 }

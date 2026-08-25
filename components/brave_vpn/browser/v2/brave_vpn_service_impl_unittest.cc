@@ -10,10 +10,13 @@
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/values.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -29,6 +32,10 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+#include "brave/components/brave_vpn/browser/v2/test/fake_agent.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace brave_vpn::v2 {
 namespace {
@@ -51,6 +58,10 @@ class BraveVpnServiceImplTest : public testing::Test {
     brave_vpn::RegisterProfilePrefs(profile_pref_service_.registry());
   }
 
+  void TearDown() override {
+    base::ThreadPoolInstance::Get()->FlushForTesting();
+  }
+
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
     ++skus_bind_count_;
     return fake_skus_service_.MakeRemote();
@@ -62,9 +73,41 @@ class BraveVpnServiceImplTest : public testing::Test {
         url_loader_factory_.GetSafeWeakWrapper(),
         base::BindRepeating(&BraveVpnServiceImplTest::GetSkusService,
                             base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+    // Replace the inert agent client the constructor made with one that never
+    // talks to the real agent, so tests are properly isolated.
+    ASSERT_TRUE(service_->agent_client_);
+    ASSERT_EQ(service_->agent_client_->state(),
+              AgentClient::State::kDisconnected);
+    ReplaceAgentClientWithFake();
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   }
 
   void ShutdownService() { service_->Shutdown(); }
+
+  void BlockVPNByPolicy(bool value) {
+    profile_pref_service_.SetManagedPref(prefs::kManagedBraveVPNDisabled,
+                                         base::Value(value));
+    EXPECT_EQ(brave_vpn::IsBraveVPNDisabledByPolicy(&profile_pref_service_),
+              value);
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  // Mirrors the wiring in BraveVpnServiceImpl's constructor. Keep in sync.
+  void ReplaceAgentClientWithFake() {
+    service_->agent_client_->RemoveObserver(service_.get());
+    service_->agent_client_ = AgentClient::CreateForTesting(
+        fake_agent_.GetServerNameProvider(), fake_agent_.GetConnector(),
+        /*tick_clock=*/nullptr);
+    service_->agent_client_->AddObserver(service_.get());
+  }
+
+  void UpdateAgentConnection(mojom::PurchasedState state) {
+    service_->UpdateAgentConnection(state);
+  }
+
+  AgentClient* agent_client() { return service_->agent_client_.get(); }
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
  protected:
   base::test::TaskEnvironment task_environment_;
@@ -74,8 +117,11 @@ class BraveVpnServiceImplTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   skus::FakeSkusService fake_skus_service_;
   int skus_bind_count_ = 0;
-  // Declared last so it is destroyed before the prefs and the fake SKUS
-  // service it points at.
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  FakeAgent fake_agent_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  // Declared last so it is destroyed before the prefs, the fake SKUS
+  // service, and the fake agent it points at.
   std::unique_ptr<BraveVpnServiceImpl> service_;
 };
 
@@ -123,6 +169,13 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
     EXPECT_EQ(info->state, mojom::PurchasedState::NOT_PURCHASED);
     EXPECT_EQ(info->description, std::nullopt);
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  // The agent client is gone; the mapping must not dereference it.
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
 #if !BUILDFLAG(IS_ANDROID)
   {
     base::test::TestFuture<bool, std::string> future;
@@ -134,5 +187,39 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+
+TEST_F(BraveVpnServiceImplTest, PurchasedStateDrivesAgentConnection) {
+  CreateService();
+  ASSERT_TRUE(agent_client());
+  ASSERT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
+
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  EXPECT_EQ(agent_client()->state(), AgentClient::State::kConnecting);
+
+  // The recoverable states leave a live connection alone: each can coexist with
+  // a running tunnel, and the person still has to be able to disconnect it.
+  for (const mojom::PurchasedState state :
+       {mojom::PurchasedState::LOADING, mojom::PurchasedState::SESSION_EXPIRED,
+        mojom::PurchasedState::FAILED,
+        mojom::PurchasedState::OUT_OF_CREDENTIALS}) {
+    UpdateAgentConnection(state);
+    EXPECT_EQ(agent_client()->state(), AgentClient::State::kConnecting)
+        << "dropped the connection on " << static_cast<int>(state);
+  }
+
+  UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
+  EXPECT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
+}
+
+TEST_F(BraveVpnServiceImplTest, PolicyDisabledKeepsAgentDisconnected) {
+  BlockVPNByPolicy(true);
+  CreateService();
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  EXPECT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
+}
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 }  // namespace brave_vpn::v2
