@@ -85,7 +85,18 @@ extension BrowserViewController: TabObserver {
     }
   }
 
+  public func tabWasShown(_ tab: some TabState) {
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
+  }
+
   public func tabDidCommitNavigation(_ tab: some TabState) {
+    // Odd Chromium behaviour resets the web views obscured insets when a navigation starts due to
+    // a bug with their fullscreen support, so we must set this again after a commit
+    if #available(iOS 26.0, *) {
+      updateWebViewObscuredInsets()
+    }
     // Reset the stored http request now that load has committed.
     tab.upgradedHTTPSRequest = nil
     tab.upgradeHTTPSTimeoutTimer?.invalidate()

@@ -368,11 +368,13 @@ extension TabState {
 }
 
 /// A basic proxy over the underlying web view that may be displaying web content
-public protocol WebViewProxy {
+public protocol WebViewProxy: AnyObject {
   var scrollView: UIScrollView? { get }
   var bounds: CGRect { get }
   var frame: CGRect { get }
   var isKeyboardVisible: Bool { get }
+  var obscuredInsets: UIEdgeInsets { get set }
+  func setMinimumViewportInset(_ minInset: UIEdgeInsets, maximumViewportInset: UIEdgeInsets)
   func becomeFirstResponder() -> Bool
 }
 
