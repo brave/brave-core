@@ -22,9 +22,7 @@ extension TabDataValues {
 public class BlockedDomainTabHelper: TabPolicyDecider {
 
   weak var tab: (any TabState)?
-  var onBlockedDomainRequest: ((URLRequest) -> Void)?
-
-  private var shieldLevel: ShieldLevel = .standard
+  let onBlockedDomainRequest: ((URLRequest) -> Void)?
 
   init(
     tab: some TabState,
