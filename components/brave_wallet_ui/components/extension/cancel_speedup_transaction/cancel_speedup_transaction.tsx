@@ -85,6 +85,7 @@ export function CancelSpeedupTransaction() {
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
+          close={onReject}
         />
         <Column
           width='100%'

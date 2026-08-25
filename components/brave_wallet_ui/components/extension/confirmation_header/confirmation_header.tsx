@@ -4,6 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Components
 import {
@@ -11,8 +16,8 @@ import {
 } from '../transaction_queue_selector/transaction_queue_selector'
 
 // Styled Components
-import { HorizontalSpace, Row } from '../../shared/style'
-import { HeaderText } from './confirmation_header.style'
+import { HorizontalSpace, Row, Text } from '../../shared/style'
+import { HeaderText, CloseButton } from './confirmation_header.style'
 
 interface Props {
   title: string
@@ -20,6 +25,7 @@ interface Props {
   queueNextTransaction: () => void
   queuePreviousTransaction: () => void
   rejectAllTransactions: () => void
+  close: () => void
 }
 
 export function ConfirmationHeader(props: Props) {
@@ -29,21 +35,54 @@ export function ConfirmationHeader(props: Props) {
     queueNextTransaction,
     queuePreviousTransaction,
     rejectAllTransactions,
+    close,
   } = props
+
+  // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isSidePanel = useSafeUISelector(UISelectors.isSidePanel)
+  const isOnlyPanel = isPanel && !isSidePanel
+
+  // Only used on the Panel (not Side Panel).
+  if (isOnlyPanel) {
+    return (
+      <Row
+        padding='18px'
+        justifyContent={
+          transactionsQueueLength > 1 ? 'space-between' : 'center'
+        }
+      >
+        {transactionsQueueLength > 1 && <HorizontalSpace space='110px' />}
+        <HeaderText textColor='primary'>{title}</HeaderText>
+        <TransactionQueueSelector
+          transactionsQueueLength={transactionsQueueLength}
+          queueNextTransaction={queueNextTransaction}
+          queuePreviousTransaction={queuePreviousTransaction}
+          rejectAllTransactions={rejectAllTransactions}
+        />
+      </Row>
+    )
+  }
 
   return (
     <Row
-      padding='18px'
-      justifyContent={transactionsQueueLength > 1 ? 'space-between' : 'center'}
+      padding='32px'
+      justifyContent='space-between'
     >
-      {transactionsQueueLength > 1 && <HorizontalSpace space='110px' />}
-      <HeaderText textColor='primary'>{title}</HeaderText>
-      <TransactionQueueSelector
-        transactionsQueueLength={transactionsQueueLength}
-        queueNextTransaction={queueNextTransaction}
-        queuePreviousTransaction={queuePreviousTransaction}
-        rejectAllTransactions={rejectAllTransactions}
-      />
+      <Text
+        textColor='primary'
+        variant='heading.h2'
+      >
+        {title}
+      </Text>
+      <CloseButton
+        fab
+        size='large'
+        kind='plain-faint'
+        onClick={close}
+      >
+        <Icon name='close' />
+      </CloseButton>
     </Row>
   )
 }

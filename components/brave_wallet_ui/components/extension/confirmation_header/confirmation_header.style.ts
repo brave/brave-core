@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/leo/react/button'
 
 // Shared Styles
 import { Text } from '../../shared/style'
@@ -12,4 +13,9 @@ import { Text } from '../../shared/style'
 export const HeaderText = styled(Text)`
   font: ${leo.font.heading.h4};
   letter-spacing: ${leo.typography.letterSpacing.headings};
+`
+
+export const CloseButton = styled(Button)`
+  --leo-button-color: ${leo.color.icon.default};
+  flex-grow: 0;
 `
