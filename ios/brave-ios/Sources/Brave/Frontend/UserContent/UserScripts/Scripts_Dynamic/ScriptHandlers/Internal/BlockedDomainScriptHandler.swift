@@ -70,9 +70,7 @@ class BlockedDomainScriptHandler: TabContentScript {
       // this is possible when blocked domain interstitial screen is load explicitly
       // for example, when a blocked domain was visited in QuickView mode, it will cause
       // the QuickView to close and load the interstital explicitly in a regular tab.
-      if let url = URL(string: "about:newtab") {
-        tab.loadRequest(URLRequest(url: url))
-      }
+      tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
       return
     }
 

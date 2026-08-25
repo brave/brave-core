@@ -228,10 +228,6 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       await shouldOpenInQuickView(
         requestURL: requestURL,
         requestInfo: requestInfo,
-        shieldLevel: tab.braveShieldsHelper?.shieldLevel(
-          for: requestURL,
-          considerAllShieldsOption: true
-        ) ?? .standard,
         tab: tab
       )
     {
@@ -343,7 +339,6 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
   private func shouldOpenInQuickView(
     requestURL: URL,
     requestInfo: WebRequestInfo,
-    shieldLevel: ShieldLevel,
     tab: some TabState
   ) async -> Bool {
     guard requestInfo.isMainFrame,
