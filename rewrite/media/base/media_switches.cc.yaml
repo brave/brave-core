@@ -13,3 +13,27 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kEnableTabMuting
       value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kGetDisplayMediaConfersActivation disabled, because it treats
+      permission grants as blanket user gestures.
+    set_feature_flag_default_state:
+      feature_name: kGetDisplayMediaConfersActivation
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kAutoplayBypassForMicCamera disabled, because if you grant permission
+      for mic/camera, the website can always autoplay in the future. Seems like
+      a bad idea, especially for audio-based fingerprinting attacks.
+    set_feature_flag_default_state:
+      feature_name: kAutoplayBypassForMicCamera
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kMediaDrmGetStatusForPolicy disabled, because it reveals hardware
+      info related to DRM about the user on Android. The worry here is that
+      websites might default to lower media quality but we can revisit this
+      later if there is legit website support.
+    set_feature_flag_default_state:
+      feature_name: kMediaDrmGetStatusForPolicy
+      value: base::FEATURE_DISABLED_BY_DEFAULT
