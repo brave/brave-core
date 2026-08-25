@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.h
+index 74819905270c55c2e61a034766b86d9b74d44063..62e749cb0c5a40f5accd1fed9dc851f7ad9c0c0f 100644
+--- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.h
++++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.h
+@@ -12,7 +12,7 @@ template <typename T>
+ class NoDestructor;
+ }
+ 
+-class ChromeBrowsingDataRemoverDelegate;
++class BraveBrowsingDataRemoverDelegate;
+ class Profile;
+ 
+ class ChromeBrowsingDataRemoverDelegateFactory
+@@ -22,7 +22,7 @@ class ChromeBrowsingDataRemoverDelegateFactory
+   static ChromeBrowsingDataRemoverDelegateFactory* GetInstance();
+ 
+   // Returns the ChromeBrowsingDataRemoverDelegate associated with |profile|.
+-  static ChromeBrowsingDataRemoverDelegate* GetForProfile(Profile* profile);
++  static BraveBrowsingDataRemoverDelegate* GetForProfile(Profile* profile);
+ 
+   ChromeBrowsingDataRemoverDelegateFactory(
+       const ChromeBrowsingDataRemoverDelegateFactory&) = delete;
