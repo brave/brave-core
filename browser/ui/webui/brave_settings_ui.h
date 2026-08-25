@@ -18,6 +18,7 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -31,6 +32,10 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/components/traffic_control/core/mojom/traffic_control.mojom-forward.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -84,6 +89,12 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(
       mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
           pending_receiver);
+#endif
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  void BindInterface(mojo::PendingReceiver<
+                     traffic_control::mojom::TrafficControlSettingsHandler>
+                         pending_receiver);
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)

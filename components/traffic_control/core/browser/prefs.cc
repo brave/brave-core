@@ -11,6 +11,7 @@
 
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/types/expected.h"
 #include "brave/components/traffic_control/core/browser/pref_names.h"
 #include "brave/components/traffic_control/core/common/features.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
@@ -26,7 +27,10 @@ namespace {
 //       "id": "...",  // uuid
 //       "enabled": true,
 //       "condition": { "url_filter": "example.com" },   // optional fields
-//       "target":    { "container_id": "" }             // optional fields
+//       "target": {                                     // optional fields
+//         "container_id": "",
+//         "temporary_container": true
+//       }
 //     },
 //     ...
 //   ]
@@ -34,28 +38,46 @@ namespace {
 // Nested `condition` / `target` objects mirror the mojom structs so newer
 // clients can add optional fields without breaking older ones (unknown keys are
 // ignored on read). Unset optional fields are omitted; empty strings are
-// preserved.
+// preserved. `temporary_container` is omitted when false.
 constexpr char kIdKey[] = "id";
 constexpr char kEnabledKey[] = "enabled";
 constexpr char kConditionKey[] = "condition";
 constexpr char kUrlFilterKey[] = "url_filter";
 constexpr char kTargetKey[] = "target";
 constexpr char kContainerIdKey[] = "container_id";
+constexpr char kTemporaryContainerKey[] = "temporary_container";
+
+enum class PrefFieldError {
+  kWrongType,
+};
 
 // Deserializes an optional string field from a nested dict.
-// Returns false when the key exists but is not a string (malformed sync data).
 // Empty strings are preserved; only a missing key means unset.
-bool ReadOptionalString(const base::DictValue& dict,
-                        const char* key,
-                        std::optional<std::string>& out) {
+// Wrong type (malformed sync data) => PrefFieldError::kWrongType.
+base::expected<std::optional<std::string>, PrefFieldError> ReadOptionalString(
+    const base::DictValue& dict,
+    std::string_view key) {
   if (const std::string* value = dict.FindString(key)) {
-    out = *value;
-    return true;
+    return *value;
   }
   if (dict.contains(key)) {
-    return false;
+    return base::unexpected(PrefFieldError::kWrongType);
   }
-  return true;
+  return std::nullopt;
+}
+
+// Deserializes an optional bool. Missing key => false.
+// Wrong type => PrefFieldError::kWrongType.
+base::expected<bool, PrefFieldError> ReadOptionalBool(
+    const base::DictValue& dict,
+    std::string_view key) {
+  if (std::optional<bool> value = dict.FindBool(key)) {
+    return *value;
+  }
+  if (dict.contains(key)) {
+    return base::unexpected(PrefFieldError::kWrongType);
+  }
+  return false;
 }
 
 mojom::TrafficRulePtr RuleFromDict(const base::DictValue& dict) {
@@ -70,23 +92,29 @@ mojom::TrafficRulePtr RuleFromDict(const base::DictValue& dict) {
 
   // Condition: optional fields (currently url_filter). Absent keys mean unset;
   // a present non-string value is treated as corrupt and the rule is skipped.
-  std::optional<std::string> url_filter;
-  if (!ReadOptionalString(*condition_dict, kUrlFilterKey, url_filter)) {
+  auto url_filter = ReadOptionalString(*condition_dict, kUrlFilterKey);
+  if (!url_filter.has_value()) {
     LOG(ERROR) << "Traffic rule condition has a non-string url_filter";
     return nullptr;
   }
 
-  // Target: optional fields (currently container_id). An empty string is
-  // meaningful ("open outside a container") and must be preserved.
-  std::optional<std::string> container_id;
-  if (!ReadOptionalString(*target_dict, kContainerIdKey, container_id)) {
+  // Target: optional fields. An empty container_id string is meaningful
+  // ("open outside a container") and must be preserved.
+  auto container_id = ReadOptionalString(*target_dict, kContainerIdKey);
+  if (!container_id.has_value()) {
     LOG(ERROR) << "Traffic rule target has a non-string container_id";
     return nullptr;
   }
+  auto temporary_container =
+      ReadOptionalBool(*target_dict, kTemporaryContainerKey);
+  if (!temporary_container.has_value()) {
+    LOG(ERROR) << "Traffic rule target has a non-bool temporary_container";
+    return nullptr;
+  }
 
-  return mojom::TrafficRule::New(*id, *enabled,
-                                 mojom::Condition::New(std::move(url_filter)),
-                                 mojom::Target::New(std::move(container_id)));
+  return mojom::TrafficRule::New(
+      *id, *enabled, mojom::Condition::New(std::move(*url_filter)),
+      mojom::Target::New(std::move(*container_id), *temporary_container));
 }
 
 base::DictValue RuleToDict(const mojom::TrafficRulePtr& rule) {
@@ -98,6 +126,9 @@ base::DictValue RuleToDict(const mojom::TrafficRulePtr& rule) {
   base::DictValue target;
   if (rule->target->container_id.has_value()) {
     target.Set(kContainerIdKey, *rule->target->container_id);
+  }
+  if (rule->target->temporary_container) {
+    target.Set(kTemporaryContainerKey, true);
   }
 
   return base::DictValue()

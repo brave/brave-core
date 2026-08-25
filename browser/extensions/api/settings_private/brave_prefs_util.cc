@@ -29,6 +29,7 @@
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
@@ -95,6 +96,10 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/components/email_aliases/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+#include "brave/components/traffic_control/core/browser/pref_names.h"
 #endif
 
 namespace extensions {
@@ -422,6 +427,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   (*s_brave_allowlist)[containers::prefs::kContainersEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
+  (*s_brave_allowlist)[traffic_control::prefs::kTrafficControlEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

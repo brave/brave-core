@@ -11,6 +11,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 
 # Provide our file list to chromium's settings page build Since our components
 # start in a different path, we'll do the first step (move them to the generated
@@ -287,6 +288,25 @@ if (enable_containers) {
   brave_settings_mojo_files_deps +=
       [ "//brave/components/containers/core/mojom:mojom_ts__generator" ]
   brave_settings_mojo_files += [ "$root_gen_dir/brave/components/containers/core/mojom/containers.mojom-webui.ts" ]
+}
+
+if (enable_traffic_control) {
+  assert(enable_containers)
+  brave_settings_ts_files += [
+    "brave_content_page/traffic_control_browser_proxy.ts",
+    "brave_content_page/traffic_control_utils.ts",
+    "brave_content_page/traffic_control_rule_dialog.html.ts",
+    "brave_content_page/traffic_control_rule_dialog.ts",
+    "brave_content_page/traffic_control.html.ts",
+    "brave_content_page/traffic_control.ts",
+  ]
+  brave_settings_local_css_files += [
+    "brave_content_page/traffic_control.css",
+    "brave_content_page/traffic_control_rule_dialog.css",
+  ]
+  brave_settings_mojo_files_deps +=
+      [ "//brave/components/traffic_control/core/mojom:mojom_ts__generator" ]
+  brave_settings_mojo_files += [ "$root_gen_dir/brave/components/traffic_control/core/mojom/traffic_control.mojom-webui.ts" ]
 }
 
 if (enable_speedreader) {

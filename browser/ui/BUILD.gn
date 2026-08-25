@@ -27,6 +27,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -47,6 +48,7 @@ group("ui_public_dependencies") {
     "//brave/components/containers/buildflags",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
+    "//brave/components/traffic_control/buildflags",
   ]
 }
 
@@ -1462,6 +1464,15 @@ source_set("ui") {
 
     public_deps +=
         [ "//brave/components/containers/content/browser:tab_restore" ]
+  }
+
+  if (enable_traffic_control) {
+    deps += [
+      "//brave/browser/traffic_control",
+      "//brave/components/traffic_control/core/browser",
+      "//brave/components/traffic_control/core/common",
+      "//brave/components/traffic_control/core/mojom",
+    ]
   }
 
   if (enable_email_aliases) {
