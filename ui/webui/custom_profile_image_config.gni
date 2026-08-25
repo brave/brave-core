@@ -3,7 +3,4 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//build/config/features.gni")
-
-enable_brave_custom_profile_image_webui =
-    use_blink && !is_chromeos && (is_win || is_linux || is_mac)
+enable_brave_custom_profile_image_webui = is_win || is_linux || is_mac
