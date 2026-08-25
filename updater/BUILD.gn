@@ -13,6 +13,9 @@ if (is_win || is_mac || is_linux) {
       "ping_configurator_unittest.cc",
       "run_all_unittests.cc",
     ]
+    if (is_win) {
+      sources += [ "win_util_unittest.cc" ]
+    }
     if (is_mac) {
       sources += [ "install_sh_mac_unittest.cc" ]
       data = [
