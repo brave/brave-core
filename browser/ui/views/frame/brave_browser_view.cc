@@ -1020,8 +1020,8 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // But, it could not when web panel is active and split view is opened
   // together. Early return to avoid crash from that.
   if (IsWebPanelContents(web_contents) && IsInSplitView()) {
-    return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
-        web_contents, false);
+    return DevtoolsUIController::From(browser_)->UpdateDevtools(web_contents,
+                                                                false);
   }
 
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
