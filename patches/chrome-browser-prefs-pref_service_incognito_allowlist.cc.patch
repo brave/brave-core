@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/prefs/pref_service_incognito_allowlist.cc b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
+index 916d5c4e13c994332fd72005f22dced5399e3ff8..fa6b5b03a01b123481111b6a9afc1ac71b1c5f2d 100644
+--- a/chrome/browser/prefs/pref_service_incognito_allowlist.cc
++++ b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
+@@ -27,6 +27,7 @@ namespace {
+ // List of keys that can be changed in the user prefs file by the incognito
+ // profile.
+ const char* const kPersistentPrefNames[] = {
++    bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
+ #if BUILDFLAG(IS_CHROMEOS)
+     // Accessibility preferences should be persisted if they are changed in
+     // incognito mode.
+@@ -226,10 +227,16 @@ const char* const kPersistentPrefNames[] = {
+ namespace prefs {
+ 
+ std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {
++  std::vector<const char*> result = [&]() -> std::vector<const char*> {
+   std::vector<const char*> allowlist;
+   allowlist.insert(allowlist.end(), std::begin(kPersistentPrefNames),
+                    std::end(kPersistentPrefNames));
+   return allowlist;
++  }();
++  for (auto pref : brave::GetBravePersistentPrefNames()) {
++    result.push_back(pref.data());
++  }
++  return result;
+ }
+ 
+ }  // namespace prefs

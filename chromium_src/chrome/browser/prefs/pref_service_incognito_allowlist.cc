@@ -5,27 +5,4 @@
 
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
-#include "components/bookmarks/common/bookmark_pref_names.h"
-
-#define GetIncognitoPersistentPrefsAllowlist \
-  GetIncognitoPersistentPrefsAllowlist_ChromiumImpl
-#define kShowBookmarkBar \
-  kShowBookmarkBar, bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP
-
 #include <chrome/browser/prefs/pref_service_incognito_allowlist.cc>
-
-#undef kShowBookmarkBar
-#undef GetIncognitoPersistentPrefsAllowlist
-
-namespace prefs {
-
-std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {
-  std::vector<const char*> allowlist =
-      GetIncognitoPersistentPrefsAllowlist_ChromiumImpl();
-  for (auto pref : brave::GetBravePersistentPrefNames()) {
-    allowlist.push_back(pref.data());
-  }
-  return allowlist;
-}
-
-}  // namespace prefs

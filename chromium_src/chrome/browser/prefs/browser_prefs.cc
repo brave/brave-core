@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/check.h"
+#include "base/files/file_path.h"
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_stats/buildflags.h"
@@ -33,14 +34,10 @@
 #include "brave/components/p3a/rotation_scheduler.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/accessibility/page_colors_controller.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
-#include "components/translate/core/browser/translate_prefs.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 #include "brave/browser/brave_stats/brave_stats_updater.h"
@@ -85,22 +82,6 @@
 #include "brave/components/tor/tor_utils.h"
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
-#include "brave/browser/widevine/widevine_utils.h"
-#endif
-
-#if !BUILDFLAG(ENABLE_EXTENSIONS)
-// CHROMIUM_SRC_NOLINT
-#define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
-#endif  // !BUILDFLAG(ENABLE_EXTENSIONS)
-
-#define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
-#define MigrateObsoleteLocalStatePrefs \
-  MigrateObsoleteLocalStatePrefs_ChromiumImpl
-#include <chrome/browser/prefs/browser_prefs.cc>
-#undef MigrateObsoleteProfilePrefs
-#undef MigrateObsoleteLocalStatePrefs
-
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
 #endif
@@ -117,27 +98,38 @@
 #include "brave/components/speedreader/speedreader_pref_migration.h"
 #endif
 
-// This method should be periodically pruned of year+ old migrations.
-void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
-                                 const base::FilePath& profile_path) {
+#if !BUILDFLAG(ENABLE_EXTENSIONS)
+// CHROMIUM_SRC_NOLINT
+#define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
+#endif  // !BUILDFLAG(ENABLE_EXTENSIONS)
+
+namespace {
+
+// Runs before the upstream body of MigrateObsoleteProfilePrefs().
+// BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
+void MigrateObsoleteBraveProfilePrefsBeforeChromium(
+    PrefService* profile_prefs) {
   DCHECK(profile_prefs);
-  // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Added 02/2020.
-  // Must be called before ChromiumImpl because it's migrating a Chromium pref
-  // to Brave pref.
+  // Must run before Chromium's migration: it moves a Chromium pref into a
+  // Brave one.
   gcm::MigrateGCMPrefs(profile_prefs);
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 06/2025.
-  // Must be called before ChromiumImpl because it's migrating a Chromium pref
-  // to Brave pref.
+  // Must run before Chromium's migration: it moves a Chromium pref into a
+  // Brave one.
   brave_welcome_page::prefs::MigratePrefs(profile_prefs);
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
 
-  MigrateObsoleteProfilePrefs_ChromiumImpl(profile_prefs, profile_path);
-
+// Runs after the upstream body of MigrateObsoleteProfilePrefs().
+void MigrateObsoleteBraveProfilePrefsAfterChromium(
+    PrefService* profile_prefs,
+    const base::FilePath& profile_path) {
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -278,15 +270,13 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
   // Added 2026-06
   profile_prefs->ClearPref(kTabsSearchShow);
-
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
-// This method should be periodically pruned of year+ old migrations.
-void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
-  // BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
-  MigrateObsoleteLocalStatePrefs_ChromiumImpl(local_state);
-
+// Runs after the upstream body of MigrateObsoleteLocalStatePrefs().
+// BEGIN_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
+void MigrateObsoleteBraveLocalStatePrefsAfterChromium(
+    PrefService* local_state) {
 #if BUILDFLAG(ENABLE_TOR)
   // Added 4/2021.
   tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
@@ -327,6 +317,10 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }
+
+}  // namespace
+
+#include <chrome/browser/prefs/browser_prefs.cc>
 
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #undef CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_

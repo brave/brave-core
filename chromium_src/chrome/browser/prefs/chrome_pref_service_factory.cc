@@ -7,11 +7,4 @@
 
 #include "brave/components/brave_shields/core/common/pref_names.h"
 
-#define BRAVE_TRACKED_PREFS_EXTEND                                  \
-  {90, brave_shields::prefs::kAdBlockDeveloperMode,                 \
-   EnforcementLevel::ENFORCE_ON_LOAD, PrefTrackingStrategy::ATOMIC, \
-   ValueType::IMPERSONAL},
-
 #include <chrome/browser/prefs/chrome_pref_service_factory.cc>
-
-#undef BRAVE_TRACKED_PREFS_EXTEND
