@@ -80,11 +80,14 @@ def BraveModifyPartsForSigning(parts, config):
             verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework'].options = full_hardened_runtime_options
 
-    # Overwrite to avoid TeamID mismatch with widevine dylib.
-    parts['helper-app'].entitlements = 'helper-entitlements.plist'
-    parts['helper-app'].options = (CodeSignOptions.RESTRICT
-                                   | CodeSignOptions.KILL
-                                   | CodeSignOptions.HARDENED_RUNTIME)
+    # Overwrite to avoid TeamID mismatch with widevine dylib. Library
+    # validation has to be off in every variant of the main helper, including
+    # the aperitif one, because that is where the CDM gets loaded.
+    for helper in ('helper-app', 'helper-aperitif-app'):
+        parts[helper].entitlements = 'helper-entitlements.plist'
+        parts[helper].options = (CodeSignOptions.RESTRICT
+                                 | CodeSignOptions.KILL
+                                 | CodeSignOptions.HARDENED_RUNTIME)
 
     if config.enable_updater:
         # The privileged helper is com.brave.Browser.UpdaterPrivilegedHelper.
