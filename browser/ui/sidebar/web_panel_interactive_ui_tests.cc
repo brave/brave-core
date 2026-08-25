@@ -53,20 +53,12 @@ class SidebarWebPanelInteractiveUITest
                  StopObservingState(kActiveTabIndexObserver));
   }
 
-  // Call delegate code path directly as sending click event makes this test
-  // flaky on macOS/linux CI.
-  auto ActivatePane([[maybe_unused]] std::string_view view_id,
-                    [[maybe_unused]] views::View* target_view,
-                    content::WebContents* target_contents) {
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  // Don't send click event as it makes this test flaky on all CI.
+  auto ActivatePane(content::WebContents* target_contents) {
     return Steps(Do([this, target_contents]() {
       GetBraveMultiContentsView()->delegate_for_testing()->WebContentsFocused(
           target_contents);
     }));
-#else
-    return Steps(NameView(view_id, target_view), MoveMouseTo(view_id),
-                 ClickMouse());
-#endif
   }
 
  private:
@@ -104,30 +96,19 @@ IN_PROC_BROWSER_TEST_F(SidebarWebPanelInteractiveUITest,
   ASSERT_TRUE(content::WaitForLoadStop(
       browser()->tab_strip_model()->GetWebContentsAt(0)));
 
-  views::View* web_panel_contents_view =
-      GetBraveMultiContentsView()->GetWebPanelContentsViewForTesting();
-  views::View* normal_tab_contents_view = GetBraveMultiContentsView()
-                                              ->contents_container_views()[0]
-                                              ->contents_view();
-
-  constexpr char kWebPanelContentsViewId[] = "WebPanelContentsView";
-  constexpr char kNormalTabContentsViewId[] = "NormalTabView";
-
   content::WebContents* web_panel_contents =
       browser()->tab_strip_model()->GetWebContentsAt(0);
   content::WebContents* normal_tab_contents =
       browser()->tab_strip_model()->GetWebContentsAt(1);
 
   RunTestSequence(
-      ActivatePane(kWebPanelContentsViewId, web_panel_contents_view,
-                   web_panel_contents),
-      WaitForActiveTabChange(0), Check([this]() {
+      ActivatePane(web_panel_contents), WaitForActiveTabChange(0),
+      Check([this]() {
         return GetBraveMultiContentsView()->is_web_panel_active_for_testing();
       }),
 
-      ActivatePane(kNormalTabContentsViewId, normal_tab_contents_view,
-                   normal_tab_contents),
-      WaitForActiveTabChange(1), Check([this]() {
+      ActivatePane(normal_tab_contents), WaitForActiveTabChange(1),
+      Check([this]() {
         return !GetBraveMultiContentsView()->is_web_panel_active_for_testing();
       }));
 }
