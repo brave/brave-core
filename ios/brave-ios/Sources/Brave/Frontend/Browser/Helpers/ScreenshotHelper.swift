@@ -37,7 +37,8 @@ class ScreenshotHelper {
       if !tab.canTakeSnapshot {
         return
       }
-      tab.takeSnapshot(rect: .null) { [weak tab] image in
+      let inset = tab.webViewProxy?.obscuredInsets ?? .zero
+      tab.takeSnapshot(rect: tab.view.bounds.inset(by: inset)) { [weak tab] image in
         guard let tab else { return }
         if let image = image {
           tab.browserData?.setScreenshot(image)
