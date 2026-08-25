@@ -22,8 +22,9 @@ class RefillConfirmationTokensDelegate {
   // tokens.
   virtual void OnDidRefillConfirmationTokens() {}
 
-  // Invoked to tell the delegate we failed to refill the confirmation tokens.
-  virtual void OnFailedToRefillConfirmationTokens() {}
+  // Invoked to tell the delegate we failed to refill the confirmation
+  // tokens; `will_retry` says whether a further attempt will follow.
+  virtual void OnFailedToRefillConfirmationTokens(bool will_retry) {}
 
   // Invoked to tell the delegate that we will retry refilling the confirmation
   // tokens at `retry_at`.

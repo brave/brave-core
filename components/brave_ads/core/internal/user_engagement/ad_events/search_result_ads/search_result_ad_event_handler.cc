@@ -114,7 +114,7 @@ void SearchResultAdEventHandler::MaybeFireServedEventCallback(
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "Search result ad: Failed to get ad events");
+    BLOG(0, "Search result ad: Failed to get ad events");
     return FailedToFireEvent(ad,
                              mojom::SearchResultAdEventType::kServedImpression,
                              std::move(callback));
@@ -184,7 +184,7 @@ void SearchResultAdEventHandler::MaybeFireEventCallback(
     bool success,
     const AdEventList& ad_events) const {
   if (!success) {
-    BLOG(1, "Search result ad: Failed to get ad events");
+    BLOG(0, "Search result ad: Failed to get ad events");
     return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
 
