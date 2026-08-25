@@ -232,6 +232,12 @@ class PsstTabWebContentsObserverUnitTestBase
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
 
+    // PsstSettingsService captures the initial pref value at construction
+    // time (see `was_enabled_at_startup_`), so tests that need it disabled
+    // from the start must set the pref before the service below is created,
+    // not from the test body.
+    ConfigurePrefsBeforeServiceCreation();
+
     psst::RegisterProfilePrefs(prefs_.registry());
     rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
 
@@ -253,14 +259,20 @@ class PsstTabWebContentsObserverUnitTestBase
     variations_service_ = std::make_unique<variations::TestVariationsService>(
         &variations_local_state_, metrics_state_manager_.get());
 
-    psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
-        new PsstTabWebContentsObserver(
-            mock_tab, rule_registry_.get(), psst_settings_service_,
-            variations_service_.get(), std::move(ui_delegate)));
-    psst_web_contents_observer_->SetInjectScriptCallback(
-        inject_script_callback_.Get());
-    psst_web_contents_observer_->SetInjectAsyncScriptCallback(
-        inject_async_script_callback_.Get());
+    // psst_settings_service_ is null when the PSST feature flag is disabled
+    // (see PsstSettingsServiceFactory::BuildServiceInstanceForBrowserContext),
+    // in which case there's nothing to construct the observer against.
+    if (psst_settings_service_) {
+      psst_web_contents_observer_ =
+          base::WrapUnique<PsstTabWebContentsObserver>(
+              new PsstTabWebContentsObserver(
+                  mock_tab, rule_registry_.get(), psst_settings_service_,
+                  variations_service_.get(), std::move(ui_delegate)));
+      psst_web_contents_observer_->SetInjectScriptCallback(
+          inject_script_callback_.Get());
+      psst_web_contents_observer_->SetInjectAsyncScriptCallback(
+          inject_async_script_callback_.Get());
+    }
   }
 
   void TearDown() override {
@@ -312,6 +324,10 @@ class PsstTabWebContentsObserverUnitTestBase
 
  protected:
   base::test::ScopedFeatureList feature_list_;
+
+  // Override to configure profile prefs prior to PsstSettingsService's
+  // creation, e.g. to test its startup-time behavior.
+  virtual void ConfigurePrefsBeforeServiceCreation() {}
 
  private:
   raw_ptr<MockUiDelegate> ui_delegate_;
@@ -726,8 +742,16 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(base::Value(), user_script_insert_future.Take());
 }
 
-TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  psst_settings_service()->SetPsstEnabled(false);
+class PsstTabWebContentsObserverPrefDisabledAtStartupUnitTest
+    : public PsstTabWebContentsObserverUnitTest {
+ public:
+  void ConfigurePrefsBeforeServiceCreation() override {
+    profile()->GetPrefs()->SetBoolean(prefs::kPsstEnabled, false);
+  }
+};
+
+TEST_F(PsstTabWebContentsObserverPrefDisabledAtStartupUnitTest,
+       PrefDisabledDontProcess) {
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -1282,11 +1306,7 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 };
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
-  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                mock_tab_interface(), browser_context(),
-                std::make_unique<MockUiDelegate>(), psst_settings_service(),
-                variations_service(), 2),
-            nullptr);
+  EXPECT_EQ(psst_settings_service(), nullptr);
 }
 
 }  // namespace psst
