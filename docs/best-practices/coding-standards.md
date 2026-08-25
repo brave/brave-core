@@ -514,12 +514,16 @@ unnecessary because the browser wouldn't even be running without it.
 
 <a id="CS-026"></a>
 
-## ✅ `NOTREACHED`/`CHECK(false)` Only for Security-Critical Invariants
+## ✅ `NOTREACHED`/`CHECK(false)` Only to ensure invariants hold
 
-**`NOTREACHED`/`CHECK(false)` should only crash the browser for
-security-critical invariants.** For non-security cases (like invalid enum values
-from data processing), prefer returning `std::optional`/`std::nullopt` or a
-default value.
+See first the Chromimum guide on this
+[CHECK(), DCHECK() and NOTREACHED()](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/checks.md)
+which outlines best practices around them. It also list helpful examples around
+the usage.
+
+**`NOTREACHED`/`CHECK(false)` should only crash the browser for invariants.**
+For other cases (like invalid enum values from data processing), prefer
+returning `std::optional`/`std::nullopt` or a default value.
 
 **Important:** `NOTREACHED()` is now fatal in all builds and terminates control
 flow. The compiler treats code after `NOTREACHED()` as dead code. Do not place
