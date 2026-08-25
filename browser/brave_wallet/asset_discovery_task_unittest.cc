@@ -5,18 +5,29 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_task.h"
 
+#include <array>
+#include <cstdint>
 #include <optional>
 #include <string_view>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/span.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/numerics/byte_conversions.h"
+#include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "base/values.h"
+#include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -42,6 +53,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -105,13 +117,64 @@ std::vector<mojom::AccountIdPtr> MakeAccountIds(
 }
 
 std::vector<mojom::ChainIdPtr> MakeChainIds(
-    const std::vector<std::string>& chain_ids,
+    base::span<const std::string> chain_ids,
     mojom::CoinType coin = mojom::CoinType::ETH) {
   std::vector<mojom::ChainIdPtr> result;
   for (auto& chain_id : chain_ids) {
     result.push_back(mojom::ChainId::New(coin, chain_id));
   }
   return result;
+}
+
+// pallet_assets asset ids of the test assets minted on the testnet Asset Hubs.
+// The registry carries the asset id as the token's contract address.
+// https://assethub-paseo.subscan.io/assets/50001010
+constexpr char kPaseoBatcAssetId[] = "50001010";
+// https://assethub-paseo.subscan.io/assets/50001011
+constexpr char kPaseoXbbcAssetId[] = "50001011";
+// https://assethub-westend.subscan.io/assets/50000345
+constexpr char kWestendXbbAssetId[] = "50000345";
+
+// Most of this mock data is structured verbatim from the
+// polkadot_substrate_rpc_unittest file.
+
+// A pallet_assets AssetAccount as it comes back over the wire: a little-endian
+// u128 balance followed by the status and reason bytes.
+// https://github.com/paritytech/polkadot-sdk/blob/81e6d5ac17544a9b11a177e5e16c8ca5c3887a6f/substrate/frame/assets/src/types.rs#L175-L188
+std::string PolkadotAssetAccountHex(uint128_t balance) {
+  std::array<uint8_t, 16 + 2> bytes = {};
+  base::span(bytes).first<16u>().copy_from(base::byte_span_from_ref(balance));
+  return base::StrCat({"0x", base::HexEncodeLower(bytes)});
+}
+
+std::string MakePolkadotAssetAccountsResponse(
+    base::span<const std::optional<uint128_t>> balances) {
+  // Currently we don't parse the storage key returned to us in the response so
+  // we can safely use a dummy value here.
+  static constexpr char kIgnoredStorageKey[] = "0x00";
+  static constexpr char kIgnoredBlockHash[] =
+      "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b";
+
+  base::ListValue changes;
+  for (const auto& balance : balances) {
+    // The second element of the vector contains the balance or `null`.
+    changes.Append(
+        base::ListValue()
+            .Append(kIgnoredStorageKey)
+            .Append(balance ? base::Value(PolkadotAssetAccountHex(*balance))
+                            : base::Value()));
+  }
+
+  auto response = base::WriteJson(
+      base::DictValue()
+          .Set("jsonrpc", "2.0")
+          .Set("id", 1)
+          .Set("result", base::ListValue().Append(
+                             base::DictValue()
+                                 .Set("block", kIgnoredBlockHash)
+                                 .Set("changes", std::move(changes)))));
+  CHECK(response);
+  return *response;
 }
 
 }  // namespace
@@ -127,11 +190,13 @@ class TestBraveWalletServiceObserverForAssetDiscoveryTask
 
   void OnDiscoverAssetsCompleted(
       std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {
-    ASSERT_EQ(expected_contract_addresses_.size(), discovered_assets.size());
-    for (size_t i = 0; i < discovered_assets.size(); i++) {
-      EXPECT_EQ(expected_contract_addresses_[i],
-                discovered_assets[i]->contract_address);
+    std::vector<std::string> contract_addresses;
+    for (const auto& asset : discovered_assets) {
+      contract_addresses.push_back(asset->contract_address);
     }
+    // Don't ASSERT so we can still gracefully quit the run loop.
+    EXPECT_THAT(contract_addresses,
+                testing::ElementsAreArray(expected_contract_addresses_));
     on_discover_assets_completed_fired_ = true;
     if (run_loop_asset_discovery_) {
       run_loop_asset_discovery_->Quit();
@@ -141,7 +206,10 @@ class TestBraveWalletServiceObserverForAssetDiscoveryTask
   void WaitForOnDiscoverAssetsCompleted(
       const std::vector<std::string>& addresses) {
     expected_contract_addresses_ = addresses;
-    run_loop_asset_discovery_ = std::make_unique<base::RunLoop>();
+    // We use recursive RunLoops to wait for observed notifications in the tests
+    // below, so we have to manually enable it.
+    run_loop_asset_discovery_ = std::make_unique<base::RunLoop>(
+        base::RunLoop::Type::kNestableTasksAllowed);
     run_loop_asset_discovery_->Run();
   }
 
@@ -180,7 +248,17 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletAnkrBalancesFeature, {}},
+         {features::kBraveWalletPolkadotFeature,
+          {{"polkadot_asset_discovery", "true"}}}},
+        {});
+
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+
+    // BlockchainRegistry is a process wide singleton, so start every test from
+    // an empty token list instead of inheriting the previous test's.
+    BlockchainRegistry::GetInstance()->UpdateTokenList(TokenListMap());
 
     TestingProfile::Builder builder;
     auto prefs =
@@ -194,6 +272,12 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
     tx_service_ = wallet_service_->tx_service();
+
+    // These tests drive AssetDiscoveryTask directly, so keep the manager from
+    // starting a run of its own when SetUpPolkadotAccounts() adds account or
+    // when any other index-based account is added.
+    wallet_service_->asset_discovery_manager()
+        ->SetAutoDiscoveryEnabledForTesting(false);
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
@@ -390,6 +474,103 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void SetUpPolkadotAccounts() {
+    AccountUtils account_utils(keyring_service_);
+    account_utils.CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+    dot_mainnet_account_ =
+        account_utils.EnsureDotAccount(0)->account_id.Clone();
+    dot_testnet_account_ =
+        account_utils.EnsureDotTestAccount(0)->account_id.Clone();
+    dot_testnet_account_2_ =
+        account_utils.EnsureDotTestAccount(1)->account_id.Clone();
+  }
+
+  // The pubkey as it appears in the pallet_assets storage keys, which is how
+  // SetInterceptorForDiscoverPolkadotAssets tells accounts apart.
+  std::string PolkadotPubKeyHex(const mojom::AccountIdPtr& account_id) {
+    auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+    CHECK(pubkey);
+    return base::HexEncodeLower(*pubkey);
+  }
+
+  // Puts Polkadot assets in the registry, keyed by chain. The registry carries
+  // the pallet_assets asset id as the token's contract address.
+  void SetPolkadotTokenRegistry(
+      const std::map<std::string, std::vector<std::string>>&
+          contract_addresses_by_chain) {
+    TokenListMap token_list_map;
+    for (const auto& [chain_id, contract_addresses] :
+         contract_addresses_by_chain) {
+      std::vector<mojom::BlockchainTokenPtr> tokens;
+      for (const auto& contract_address : contract_addresses) {
+        auto token = mojom::BlockchainToken::New();
+        token->chain_id = chain_id;
+        token->coin = mojom::CoinType::DOT;
+        token->contract_address = contract_address;
+        token->name = base::StrCat({"Asset ", contract_address});
+        token->symbol = base::StrCat({"AST", contract_address});
+        token->decimals = 6;
+        token->visible = true;
+        token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+        tokens.push_back(std::move(token));
+      }
+      token_list_map[GetTokenListKey(mojom::CoinType::DOT, chain_id)] =
+          std::move(tokens);
+    }
+    BlockchainRegistry::GetInstance()->UpdateTokenList(
+        std::move(token_list_map));
+  }
+
+  // Takes a mapping of network URLs to a mapping of account pubkeys (hex, as
+  // they appear in the requested storage keys) to responses. Requests matching
+  // nothing are left pending.
+  void SetInterceptorForDiscoverPolkadotAssets(
+      const std::map<GURL, std::map<std::string, std::string>>& requests) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, requests](const network::ResourceRequest& request) {
+          auto it = requests.find(request.url);
+          if (it == requests.end() || !request.request_body) {
+            return;
+          }
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          for (const auto& [pubkey, response] : it->second) {
+            if (request_string.find(pubkey) == std::string_view::npos) {
+              continue;
+            }
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+            return;
+          }
+        }));
+  }
+
+  void TestDiscoverPolkadotAssets(
+      base::span<const mojom::AccountIdPtr> accounts,
+      base::span<const std::string> chain_ids,
+      base::span<const std::string> expected_token_contract_addresses) {
+    base::RunLoop run_loop;
+    asset_discovery_task_->DiscoverPolkadotAssetsFromRegistry(
+        accounts, MakeChainIds(chain_ids, mojom::CoinType::DOT),
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> discovered_assets) {
+              std::vector<std::string> contract_addresses;
+              for (const auto& asset : discovered_assets) {
+                EXPECT_EQ(asset->coin, mojom::CoinType::DOT);
+                contract_addresses.push_back(asset->contract_address);
+              }
+              // Assets are discovered per account and per chain, so the order
+              // they come back in follows whichever query finished first.
+              EXPECT_THAT(contract_addresses,
+                          testing::UnorderedElementsAreArray(
+                              expected_token_contract_addresses));
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
   void TestDiscoverNFTsOnAllSupportedChains(
       std::map<mojom::CoinType, std::vector<std::string>> chain_ids_map,
       std::map<mojom::CoinType, std::vector<std::string>> addresses,
@@ -420,10 +601,13 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
   void TestDiscoverAssets(
       std::vector<mojom::AccountIdPtr> accounts,
+      std::vector<mojom::ChainIdPtr> fungible_chain_ids,
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverAssets(
-        std::move(accounts), {}, {}, base::BindLambdaForTesting([&]() {
+        std::move(accounts), std::move(fungible_chain_ids), {},
+        base::BindLambdaForTesting([&]() {
+          // Our recursive run loop is entered here.
           wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
               expected_token_contract_addresses);
           EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
@@ -441,6 +625,9 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     return wallet_service_->network_manager()->GetNetworkURL(chain_id, coin);
   }
 
+  // Declared first so that it outlives everything created while the features
+  // it enables are on.
+  base::test::ScopedFeatureList scoped_feature_list_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryTask>
       wallet_service_observer_;
@@ -454,8 +641,9 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
-  base::test::ScopedFeatureList scoped_feature_list_{
-      {features::kBraveWalletAnkrBalancesFeature}};
+  mojom::AccountIdPtr dot_mainnet_account_;
+  mojom::AccountIdPtr dot_testnet_account_;
+  mojom::AccountIdPtr dot_testnet_account_2_;
 };
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverAnkrTokens) {
@@ -1247,7 +1435,185 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverNFTs) {
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverAssets) {
   // Verify DiscoverAssetsStarted and DiscoverAssetsCompleted have both fired
-  TestDiscoverAssets({}, {});
+  TestDiscoverAssets({}, {}, {});
+}
+
+TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssetsFromRegistryNoQuery) {
+  // Nothing below should reach the network: each case is dropped before a
+  // balance query is made.
+
+  SetUpPolkadotAccounts();
+  SetPolkadotTokenRegistry(
+      {{mojom::kPolkadotPaseoAssetHub, {kPaseoBatcAssetId}}});
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        ADD_FAILURE() << "Unexpected request to " << request.url;
+      }));
+
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(dot_testnet_account_.Clone());
+
+  // No accounts.
+  TestDiscoverPolkadotAssets({}, {mojom::kPolkadotPaseoAssetHub}, {});
+
+  // No chains.
+  TestDiscoverPolkadotAssets(accounts, {}, {});
+
+  // Chain we know nothing about.
+  TestDiscoverPolkadotAssets(accounts, {"0xdeadbeef"}, {});
+
+  // Polkadot keyrings are chain scoped, so a mainnet account has nothing to
+  // find on a testnet Asset Hub.
+  std::vector<mojom::AccountIdPtr> mainnet_accounts;
+  mainnet_accounts.push_back(dot_mainnet_account_.Clone());
+  TestDiscoverPolkadotAssets(mainnet_accounts, {mojom::kPolkadotPaseoAssetHub},
+                             {});
+
+  // Chain without any tokens in the registry.
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotTestnetAssetHub}, {});
+
+  // Registry token whose contract address is not a pallet_assets asset id.
+  SetPolkadotTokenRegistry(
+      {{mojom::kPolkadotPaseoAssetHub, {"not-an-asset-id"}}});
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
+}
+
+TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssets) {
+  SetUpPolkadotAccounts();
+  SetPolkadotTokenRegistry(
+      {{mojom::kPolkadotPaseoAssetHub, {kPaseoBatcAssetId}}});
+  SetInterceptorForDiscoverPolkadotAssets(
+      {{GetNetwork(mojom::kPolkadotPaseoAssetHub, mojom::CoinType::DOT),
+        {{PolkadotPubKeyHex(dot_testnet_account_),
+          MakePolkadotAssetAccountsResponse({1'000'000})}}}});
+
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(dot_testnet_account_.Clone());
+  TestDiscoverAssets(
+      std::move(accounts),
+      MakeChainIds({mojom::kPolkadotPaseoAssetHub}, mojom::CoinType::DOT),
+      {kPaseoBatcAssetId});
+}
+
+TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssetsFeatureDisabled) {
+  base::test::ScopedFeatureList disabled_feature;
+  disabled_feature.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletPolkadotFeature,
+      {{"polkadot_asset_discovery", "false"}});
+
+  SetUpPolkadotAccounts();
+  SetPolkadotTokenRegistry(
+      {{mojom::kPolkadotPaseoAssetHub, {kPaseoBatcAssetId}}});
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        ADD_FAILURE() << "Unexpected request to " << request.url;
+      }));
+
+  // Discovery still completes, it just skips the Polkadot leg entirely.
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(dot_testnet_account_.Clone());
+  TestDiscoverAssets(
+      std::move(accounts),
+      MakeChainIds({mojom::kPolkadotPaseoAssetHub}, mojom::CoinType::DOT), {});
+}
+
+TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssetsFromRegistry) {
+  SetUpPolkadotAccounts();
+  SetPolkadotTokenRegistry({{mojom::kPolkadotPaseoAssetHub,
+                             {kPaseoBatcAssetId, kPaseoXbbcAssetId}}});
+  const GURL paseo_url =
+      GetNetwork(mojom::kPolkadotPaseoAssetHub, mojom::CoinType::DOT);
+
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(dot_testnet_account_.Clone());
+
+  // An account holding neither asset yields nothing, whether pallet_assets has
+  // no entry for it at all or an entry with a zero balance.
+  SetInterceptorForDiscoverPolkadotAssets(
+      {{paseo_url,
+        {{PolkadotPubKeyHex(dot_testnet_account_),
+          MakePolkadotAssetAccountsResponse({std::nullopt, 0})}}}});
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
+
+  // Only the asset with a balance is discovered.
+  SetInterceptorForDiscoverPolkadotAssets(
+      {{paseo_url,
+        {{PolkadotPubKeyHex(dot_testnet_account_),
+          MakePolkadotAssetAccountsResponse(
+              {std::nullopt, 1'000'000'000'000})}}}});
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub},
+                             {kPaseoXbbcAssetId});
+
+  // Discovering again finds nothing new: the asset is already a user asset.
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
+
+  // Two accounts holding the same asset yield it once.
+  accounts.push_back(dot_testnet_account_2_.Clone());
+  SetInterceptorForDiscoverPolkadotAssets(
+      {{paseo_url,
+        {{PolkadotPubKeyHex(dot_testnet_account_),
+          MakePolkadotAssetAccountsResponse({1'000'000, 1'000'000'000'000})},
+         {PolkadotPubKeyHex(dot_testnet_account_2_),
+          MakePolkadotAssetAccountsResponse({2'000'000, std::nullopt})}}}});
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub},
+                             {kPaseoBatcAssetId});
+}
+
+TEST_F(AssetDiscoveryTaskUnitTest,
+       DiscoverPolkadotAssetsFromRegistryMultipleChains) {
+  SetUpPolkadotAccounts();
+  SetPolkadotTokenRegistry(
+      {{mojom::kPolkadotPaseoAssetHub, {kPaseoBatcAssetId}},
+       {mojom::kPolkadotTestnetAssetHub, {kWestendXbbAssetId}}});
+
+  const std::string pubkey = PolkadotPubKeyHex(dot_testnet_account_);
+  SetInterceptorForDiscoverPolkadotAssets(
+      {{GetNetwork(mojom::kPolkadotPaseoAssetHub, mojom::CoinType::DOT),
+        {{pubkey, MakePolkadotAssetAccountsResponse({1'000'000})}}},
+       {GetNetwork(mojom::kPolkadotTestnetAssetHub, mojom::CoinType::DOT),
+        {{pubkey, MakePolkadotAssetAccountsResponse({2'000'000})}}}});
+
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(dot_testnet_account_.Clone());
+  TestDiscoverPolkadotAssets(
+      accounts,
+      {mojom::kPolkadotPaseoAssetHub, mojom::kPolkadotTestnetAssetHub},
+      {kPaseoBatcAssetId, kWestendXbbAssetId});
+}
+
+TEST_F(AssetDiscoveryTaskUnitTest, DiscoverPolkadotAssetsFromRegistryErrors) {
+  SetUpPolkadotAccounts();
+  SetPolkadotTokenRegistry({{mojom::kPolkadotPaseoAssetHub,
+                             {kPaseoBatcAssetId, kPaseoXbbcAssetId}}});
+  const GURL paseo_url =
+      GetNetwork(mojom::kPolkadotPaseoAssetHub, mojom::CoinType::DOT);
+
+  std::vector<mojom::AccountIdPtr> accounts;
+  accounts.push_back(dot_testnet_account_.Clone());
+
+  // JSON RPC error.
+  SetLimitExceededJsonErrorResponse();
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
+
+  // HTTP error.
+  SetHTTPRequestTimeoutInterceptor();
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
+
+  // Unparsable balance.
+  SetInterceptor(paseo_url, R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "result": [{
+      "block": "0x34afdc1454faf4461e7e0669212571d4ba829acdbaee8ffb22c0049feb6bb33b",
+      "changes": [["0x00", "0x1234"], ["0x00", "0x1234"]]
+    }]
+  })");
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
+
+  // Fewer balances than asset ids queried. The two are zipped by position, so
+  // a short response leaves us unable to tell which asset a balance is for.
+  SetInterceptor(paseo_url, MakePolkadotAssetAccountsResponse({1'000'000}));
+  TestDiscoverPolkadotAssets(accounts, {mojom::kPolkadotPaseoAssetHub}, {});
 }
 
 }  // namespace brave_wallet

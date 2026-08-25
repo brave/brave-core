@@ -370,6 +370,9 @@ class BraveWalletService : public KeyedService,
   AccountDiscoveryManager* account_discovery_manager() {
     return account_discovery_manager_.get();
   }
+  AssetDiscoveryManager* asset_discovery_manager() {
+    return asset_discovery_manager_.get();
+  }
 
   // Might return nullptr.
   BitcoinWalletService* GetBitcoinWalletService();

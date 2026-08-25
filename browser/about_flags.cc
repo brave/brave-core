@@ -174,6 +174,16 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
      nullptr},
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryDisabled[] = {
+    {"polkadot_asset_discovery", "false"}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryEnabled[] = {
+    {"polkadot_asset_discovery", "true"}};
+
+const flags_ui::FeatureEntry::FeatureVariation kPolkadotFeatureVariations[] = {
+    {"- Asset discovery disabled", kPolkadotAssetDiscoveryDisabled, nullptr},
+    {"- Asset discovery enabled", kPolkadotAssetDiscoveryEnabled, nullptr}};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if defined(TOOLKIT_VIEWS)
@@ -256,8 +266,9 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "Enable Brave Wallet Polkadot support",                             \
           "Polkadot support for native Brave Wallet",                         \
           kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletPolkadotFeature),           \
+          FEATURE_WITH_PARAMS_VALUE_TYPE(                                     \
+              brave_wallet::features::kBraveWalletPolkadotFeature,            \
+              kPolkadotFeatureVariations, "BraveWalletPolkadot"),             \
       },                                                                      \
       {                                                                       \
           "brave-wallet-bitcoin",                                             \

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/containers/extend.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -108,6 +109,12 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
   supported_chains.push_back(
       mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet));
 
+  if (IsPolkadotAssetDiscoveryEnabled()) {
+    base::Extend(supported_chains, std::array{mojom::kPolkadotMainnetAssetHub,
+                                              mojom::kPolkadotTestnetAssetHub,
+                                              mojom::kPolkadotPaseoAssetHub});
+  }
+
   return supported_chains;
 }
 
@@ -165,11 +172,17 @@ void AssetDiscoveryManager::FinishTask() {
 
 void AssetDiscoveryManager::AccountsAdded(
     std::vector<mojom::AccountInfoPtr> added_accounts) {
+  if (!auto_discovery_enabled_) {
+    return;
+  }
+
   std::vector<mojom::AccountIdPtr> accounts;
   for (const auto& account : added_accounts) {
     auto& account_id = account->account_id;
     if (account->account_id->coin == mojom::CoinType::ETH ||
-        account->account_id->coin == mojom::CoinType::SOL) {
+        account->account_id->coin == mojom::CoinType::SOL ||
+        (account->account_id->coin == mojom::CoinType::DOT &&
+         IsPolkadotAssetDiscoveryEnabled())) {
       accounts.push_back(account_id.Clone());
     }
   }
