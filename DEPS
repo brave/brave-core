@@ -3,9 +3,44 @@ use_relative_paths = True
 vars = {
   'download_prebuilt_sparkle': True,
   'checkout_dmg_tool': False,
+  # TODO(https://brave.dev/b/58378): Remove once `cr154` is merged.
+  'plaster_gn_version': 'git_revision:e0a6ab04a113b2dd039cab7c21c6f387e0d881ee',
 }
 
 deps = {
+  # TODO(https://brave.dev/b/58378): Remove this gn checkout once `cr154` is
+  # merged.
+  "third_party/gn/linux64": {
+    "packages": [
+      {
+        "package": "gn/gn/linux-${{arch}}",
+        "version": Var("plaster_gn_version"),
+      }
+    ],
+    "dep_type": "cipd",
+    "condition": 'host_os == "linux"',
+  },
+  "third_party/gn/mac": {
+    "packages": [
+      {
+        "package": "gn/gn/mac-${{arch}}",
+        "version": Var("plaster_gn_version"),
+      }
+    ],
+    "dep_type": "cipd",
+    "condition": 'host_os == "mac"',
+  },
+  "third_party/gn/win": {
+    "packages": [
+      {
+        "package": "gn/gn/windows-amd64",
+        "version": Var("plaster_gn_version"),
+      }
+    ],
+    "dep_type": "cipd",
+    "condition": 'host_os == "win"',
+  },
+
   "vendor/omaha": {
     "url": "https://github.com/brave/omaha.git@32383a4dc9c50a88e42be0e03e5b2f2ba7ad058b",
     "condition": "checkout_win",

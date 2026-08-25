@@ -23,6 +23,7 @@ import re
 import string
 import subprocess
 import sys
+import tempfile
 import textwrap
 from types import MappingProxyType
 from typing import Callable, ClassVar, Final
@@ -528,11 +529,17 @@ class RewriterNamespace:
 # The global namespace, available to all plaster extensions.
 _GLOBAL_NAMESPACE: Final = 'all'
 
+# The namespace for `gn` files.
+_GN_NAMESPACE: Final = 'gn'
+
 # Every namespace plaster knows. The single place to register a language.
 _NAMESPACES: Final = (
     RewriterNamespace(name=_GLOBAL_NAMESPACE,
                       ast_grep_language=None,
                       suffixes=frozenset()),
+    RewriterNamespace(name=_GN_NAMESPACE,
+                      ast_grep_language=None,
+                      suffixes=frozenset({'.gn', '.gni'})),
     RewriterNamespace(name='cxx',
                       ast_grep_language='cpp',
                       suffixes=frozenset({
@@ -2605,6 +2612,24 @@ _REGEX_MACRO_SCHEMA = {
     schema.Optional('re_flags'): [str],
 }
 
+# One declared input of a `gn_edit` op. `variadic` marks the input a plaster
+# may pass a list to (the values being added), which renders as gn's
+# space-separated value list; every other input takes a single string.
+_GN_EDIT_INPUT_SCHEMA = {
+    'name': _NON_EMPTY_STR,
+    'description': _NON_EMPTY_STR,
+    schema.Optional('variadic'): bool,
+}
+
+# A `gn edit` op: the two arguments `gn edit` takes, as templates over the op's
+# declared `inputs`.
+_GN_EDIT_SCHEMA = {
+    'description': _NON_EMPTY_STR,
+    'inputs': [_GN_EDIT_INPUT_SCHEMA],
+    'pattern': _NON_EMPTY_STR,
+    'command': _NON_EMPTY_STR,
+}
+
 # Top-level schema for rewriters.pyl.
 _REWRITERS_SCHEMA = schema.Schema({
     schema.Optional('ast.matcher'): {
@@ -2615,6 +2640,9 @@ _REWRITERS_SCHEMA = schema.Schema({
     },
     schema.Optional('regex_macro'): {
         schema.Optional(_OP_ID): _REGEX_MACRO_SCHEMA
+    },
+    schema.Optional('gn_edit'): {
+        schema.Optional(_OP_ID): _GN_EDIT_SCHEMA
     },
 })
 
@@ -2647,6 +2675,7 @@ class RewritersEval:
         self._matchers = data.get('ast.matcher', {})
         self._rewriters = data.get('ast.rewriter', {})
         self._regex_macros = data.get('regex_macro', {})
+        self._gn_edits = data.get('gn_edit', {})
         self._check_cross_references()
 
     @classmethod
@@ -2697,6 +2726,19 @@ class RewritersEval:
         except KeyError:
             raise RewritersSchemaError(
                 f'unknown regex macro op: {op_id!r}') from None
+
+    @property
+    def gn_edits(self) -> MappingProxyType[str, dict]:
+        """Read-only mapping of gn edit op id -> validated op spec."""
+        return MappingProxyType(self._gn_edits)
+
+    def gn_edit(self, op_id: str) -> dict:
+        """Return the gn edit spec for `op_id`, or raise if it is unknown."""
+        try:
+            return self._gn_edits[op_id]
+        except KeyError:
+            raise RewritersSchemaError(
+                f'unknown gn edit op: {op_id!r}') from None
 
     @classmethod
     def language_of(cls, op_id: str) -> str:
@@ -2749,6 +2791,15 @@ class RewritersEval:
                         f'parse with; only text ops (regex_macro) can live '
                         f'there')
 
+        # A gn edit op drives the `gn` binary to edit an upstream `gn` file.
+        for op_id in self._gn_edits:
+            namespace = op_id.split('.', 1)[0]
+            if namespace != _GN_NAMESPACE:
+                raise RewritersSchemaError(
+                    f'{self._source}: gn edit op {op_id!r} cannot be used in '
+                    f'the {namespace!r} namespace. They can only be used in '
+                    f'the {_GN_NAMESPACE!r} namespace.')
+
         # Every other rule is per-op, and each checker below documents the
         # one it enforces.
         for op_id, spec in self._matchers.items():
@@ -2757,6 +2808,8 @@ class RewritersEval:
             self._check_rewriter_interface(op_id, spec)
         for op_id, spec in self._regex_macros.items():
             self._check_regex_macro_interface(op_id, spec)
+        for op_id, spec in self._gn_edits.items():
+            self._check_gn_edit_interface(op_id, spec)
 
     def _check_matcher_captures(self, op_id: str, spec: dict) -> None:
         """Every metavariable a capture reads must be bound by the template."""
@@ -2868,6 +2921,34 @@ class RewritersEval:
         if unused:
             raise RewritersSchemaError(
                 f'{self._source}: regex macro {op_id!r} declares input(s) '
+                f'never used in its templates: {", ".join(unused)}')
+
+    def _check_gn_edit_interface(self, op_id: str, spec: dict) -> None:
+        """Checks a gn edit op's `pattern`/`command` and declared `inputs`.
+
+        `inputs` entry's `name` must be unique, and the set of names are exactly
+        the union of the `{placeholder}`s the templates use, so the op's
+        advertised interface matches what is passed to `gn edit`.
+        """
+        names = [entry['name'] for entry in spec['inputs']]
+        duplicates = sorted({name for name in names if names.count(name) > 1})
+        if duplicates:
+            raise RewritersSchemaError(
+                f'{self._source}: gn edit op {op_id!r} declares duplicate '
+                f'input name(s): {", ".join(duplicates)}')
+
+        declared = set(names)
+        used = _placeholders(spec['pattern']) | _placeholders(spec['command'])
+
+        undeclared = sorted(used - declared)
+        if undeclared:
+            raise RewritersSchemaError(
+                f'{self._source}: gn edit op {op_id!r} templates use '
+                f'undeclared input(s): {", ".join(undeclared)}')
+        unused = sorted(declared - used)
+        if unused:
+            raise RewritersSchemaError(
+                f'{self._source}: gn edit op {op_id!r} declares input(s) '
                 f'never used in its templates: {", ".join(unused)}')
 
 
@@ -3372,6 +3453,26 @@ class AstRewriter:
         return total
 
 
+def _check_declared_inputs(op_id: str, *, declared: frozenset[str],
+                           provided: frozenset[str]) -> None:
+    """Raise unless `provided` is exactly the inputs `op_id` declares.
+
+    Shared by the declarative backends, whose ops render templates over a
+    declared interface and so cannot render at all with an input missing, nor
+    silently ignore one that was never declared.
+    """
+    if provided == declared:
+        return
+    problems = []
+    missing = sorted(declared - provided)
+    if missing:
+        problems.append(f'missing input(s): {", ".join(missing)}')
+    unknown = sorted(provided - declared)
+    if unknown:
+        problems.append(f'unknown input(s): {", ".join(unknown)}')
+    raise ValueError(f'{op_id}: ' + '; '.join(problems))
+
+
 class RegexMacroEngine:
     """Applies named `regex_macro` ops (from `rewriters.pyl`) to file contents.
 
@@ -3400,16 +3501,9 @@ class RegexMacroEngine:
         """
         spec = self._rewriters.regex_macro(op_id)
         declared = frozenset(entry['name'] for entry in spec['inputs'])
-        provided = frozenset(inputs)
-        if provided != declared:
-            problems = []
-            missing = sorted(declared - provided)
-            if missing:
-                problems.append(f'missing input(s): {", ".join(missing)}')
-            unknown = sorted(provided - declared)
-            if unknown:
-                problems.append(f'unknown input(s): {", ".join(unknown)}')
-            raise ValueError(f'{op_id}: ' + '; '.join(problems))
+        _check_declared_inputs(op_id,
+                               declared=declared,
+                               provided=frozenset(inputs))
 
         re_pattern = spec.get('re_pattern')
         if re_pattern is not None:
@@ -3434,7 +3528,7 @@ class RegexMacro(Rewriter):
     substitution.
 
     Every `regex_macro` op gets a `RegexMacro` subclass generated automatically
-    from its `rewriters.pyl` spec (see `_regex_macro_rewriters`), carrying only
+    from its `rewriters.pyl` spec (see `_generated_rewriters`), carrying only
     the per-op `NAME` (the `substitutions:` key that selects it), `OP_ID`, and
     the `SUMMARY`/ `HELP` `plaster --help` renders.
 
@@ -3442,7 +3536,7 @@ class RegexMacro(Rewriter):
     applying it via `RegexMacroEngine` lives in this class.
     """
 
-    # Set on the generated subclass (see `_regex_macro_rewriters`): the
+    # Set on the generated subclass (see `_generated_rewriters`): the
     # `rewriters.pyl` op id this resolves to (e.g.
     # `cxx.set_feature_flag_default_state`).
     OP_ID: ClassVar[str] = ''
@@ -3496,16 +3590,304 @@ class RegexMacro(Rewriter):
         return cls({key: body[key] for key in keys})
 
 
-def _regex_macro_help(spec: dict) -> str:
-    """Full `plaster --help <macro>` text for one `regex_macro` spec.
+# TODO(https://brave.dev/b/58378): Remove once `cr154` is merged.
+def _gn_platform_dir() -> str:
+    """Host-OS token in gn's per-platform dir name under `third_party/gn`.
 
-    This function produces the markdown text used to show the help section for
-    a given regex macro.
+    Mirrors the CIPD subdirectories `brave/DEPS` provisions gn into.
+    """
+    if sys.platform == 'darwin':
+        return 'mac'
+    if sys.platform == 'win32':
+        return 'win'
+    return 'linux64'
+
+
+# TODO(https://brave.dev/b/58378): Remove once `cr154` is merged and the
+# upstream pin carries `gn edit`. At that point plaster should just call `gn`
+# off the PATH.
+_GN_EXE = '.exe' if sys.platform == 'win32' else ''
+GN_BIN = (Path(__file__).resolve().parents[2] / 'third_party' / 'gn' /
+          _gn_platform_dir() / f'gn{_GN_EXE}')
+
+
+class GnEditError(PlasterError):
+    """Raised when the gn binary fails to run an edit command."""
+
+
+def _quote_for_gn_command(value: str) -> str:
+    """Quote one value for the command string `gn edit` tokenises itself.
+
+    `gn edit` takes its subcommand and that subcommand's values as a single
+    argument, which it splits with `std::quoted`. A value carrying whitespace
+    or a quote therefore has to arrive already quoted and escaped the way
+    `std::quoted` expects, rather than relying on argv splitting.
+    """
+    if not value:
+        return '""'
+    if not any(character in value for character in ' \t\n"\\'):
+        return value
+    escaped = value.replace('\\', '\\\\').replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+@dataclass(frozen=True)
+class GnEditOutcome:
+    """What one `gn edit` invocation did to a build file."""
+
+    # The build file text after the edit.
+    contents: str
+
+    # True when gn rewrote the file. gn edits are idempotent, so a `False`
+    # here means the edit was a no-op: everything it would add is already
+    # present.
+    changed: bool
+
+
+class GnEditSandbox:
+    """A throwaway gn source root, so `gn edit` can act on plaster's text.
+
+    `gn edit` only edits build files *on disk*, and only inside a directory gn
+    recognises as a source root. So this lays out the smallest tree gn
+    accepts, hands it the contents, and reads the result back, leaving nothing
+    behind.
+
+    The contents are always written as the root `BUILD.gn`, which makes every
+    target addressable as `//:<name>` no matter where the real file lives.
+    Nothing is lost by dropping the real directory from the label, because
+    plaster already names the plaster file in every diagnostic it reports.
+    """
+
+    # A valid fake dotfile for `gn` to load, otherwise it segfaults.
+    _DOTFILE_CONTENTS: Final = 'buildconfig = "//build/BUILDCONFIG.gn"\n'
+
+    # The name gn expects of a build file.
+    _BUILD_FILE_NAME: Final = 'BUILD.gn'
+
+    def __init__(self, contents: str):
+        # The build file text as it arrived, kept to tell afterwards whether
+        # gn actually changed anything.
+        self._contents = contents
+
+        # The temporary source root, owned for the life of the `with` block.
+        # None outside it, since it only exists between enter and exit.
+        self._tempdir: tempfile.TemporaryDirectory | None = None
+
+        # Path of the build file inside that root, i.e. what gn edits and what
+        # the result is read back from. None until `__enter__` lays it out.
+        self._build_file: Path | None = None
+
+    def __enter__(self) -> GnEditSandbox:
+        self._tempdir = tempfile.TemporaryDirectory(prefix='plaster-gn-')
+        root = Path(self._tempdir.name)
+        (root / '.gn').write_text(self._DOTFILE_CONTENTS,
+                                  encoding='utf-8',
+                                  newline='\n')
+        self._build_file = root / self._BUILD_FILE_NAME
+        self._build_file.write_text(self._contents,
+                                    encoding='utf-8',
+                                    newline='\n')
+        return self
+
+    def __exit__(self, *exc_info) -> None:
+        assert self._tempdir is not None
+        self._tempdir.cleanup()
+        self._tempdir = None
+        self._build_file = None
+
+    def run(self, *, command: str, pattern: str) -> GnEditOutcome:
+        """Run `gn edit <command> <pattern>` and report what it did.
+
+        Raises `GnEditError` when gn refuses the edit, which covers both a
+        malformed command and a pattern matching no target, either way an error
+        in the plaster that named it.
+        """
+        assert self._build_file is not None
+        # TODO(https://brave.dev/b/58378): Drop this check once `cr154` is
+        # merged and `GN_BIN` becomes a plain `gn` off the PATH, which needs no
+        # provisioning of its own.
+        if not GN_BIN.exists():
+            raise GnEditError(
+                f'the gn binary is missing: {GN_BIN}. Run `gclient sync` to '
+                f'provision it')
+        root = self._build_file.parent
+        try:
+            terminal.run([GN_BIN, 'edit', command, pattern, f'--root={root}'])
+        except subprocess.CalledProcessError as e:
+            # gn reports the problem on stdout rather than stderr.
+            detail = ((e.stdout or '') + (e.stderr or '')).strip()
+            raise GnEditError(
+                f'gn edit failed ({e.returncode}): {detail}') from e
+
+        contents = self._build_file.read_text(encoding='utf-8')
+        return GnEditOutcome(contents=contents,
+                             changed=contents != self._contents)
+
+
+class GnEditEngine:
+    """Applies named `gn_edit` ops (from `rewriters.pyl`) to file contents.
+    """
+
+    def __init__(self, rewriters: RewritersEval, content: str):
+        # The loaded `rewriters.pyl`, which `run` reads an op's `pattern` and
+        # `command` templates out of.
+        self._rewriters = rewriters
+
+        # The file contents, replaced by each `run` with what gn wrote, so
+        # several ops applied in turn accumulate onto one another.
+        self._source = content
+
+    @property
+    def content(self) -> str:
+        """The current file contents, reflecting every applied edit."""
+        return self._source
+
+    def run(self, op_id: str, inputs: dict[str, str]) -> GnEditOutcome:
+        """Run one gn edit op, mutate content, and report what gn did.
+
+        `inputs` must supply exactly the op's declared `inputs`, no more and
+        no fewer. The spec's `pattern` and `command` are rendered with them
+        via `str.format` to form the two arguments `gn edit` takes.
+        """
+        spec = self._rewriters.gn_edit(op_id)
+        declared = frozenset(entry['name'] for entry in spec['inputs'])
+        _check_declared_inputs(op_id,
+                               declared=declared,
+                               provided=frozenset(inputs))
+        with GnEditSandbox(self._source) as sandbox:
+            outcome = sandbox.run(command=spec['command'].format(**inputs),
+                                  pattern=spec['pattern'].format(**inputs))
+        self._source = outcome.contents
+        return outcome
+
+
+class GnEditRewriter(Rewriter):
+    """Applies a named `gn_edit` op (declared in `rewriters.pyl`) as a
+    substitution.
+
+    Every `gn_edit` op gets a `GnEditRewriter` subclass generated
+    automatically from its `rewriters.pyl` spec (see `_generated_rewriters`),
+    exactly as `RegexMacro` does for regex macros, carrying only the per-op
+    `NAME` (the `substitutions:` key that selects it), `OP_ID`, and the
+    `SUMMARY`/`HELP` `plaster --help` renders.
+
+    Behaviour validating a body's keys against the op's declared `inputs`, and
+    applying it via `GnEditEngine`, lives in this class.
+    """
+
+    # Set on the generated subclass (see `_generated_rewriters`): the
+    # `rewriters.pyl` op id this resolves to (e.g. `gn.add_deps`).
+    OP_ID: ClassVar[str] = ''
+
+    def __init__(self, inputs: dict[str, str]):
+        self._inputs = inputs
+
+    @classmethod
+    def namespace(cls) -> str:
+        """The `<ns>.` prefix of the op (always `gn`)."""
+        return cls.OP_ID.split('.', 1)[0]
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # gn reports whether it rewrote the build file, never how many places
+        # it touched, so there is no count for a `count:` to assert against.
+        if count != 1:
+            raise ValueError(
+                f'{cls.NAME} does not accept a count other than 1 '
+                f'(in "{description}"); gn reports whether the build file '
+                f'changed, not a number of matches')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; gn reports no match count.
+        del blank_for_parse  # gn parses build files itself; nothing to relax.
+        engine = GnEditEngine(RewritersEval.load(), contents)
+        try:
+            outcome = engine.run(self.OP_ID, self._inputs)
+        except GnEditError as e:
+            # A pattern that matches no target, or a command gn rejects, is a
+            # mistake in the plaster rather than a bug in the tool, so it is
+            # reported like any other substitution failure instead of
+            # aborting the run with a traceback.
+            return contents, [f'{e} (in "{description}")']
+        # An edit that changed nothing is the one failure gn itself does not
+        # report: the values are all present already, so the substitution has
+        # become redundant and should be removed from the plaster.
+        errors = [] if outcome.changed else [
+            f'{self.NAME} changed nothing (in "{description}"); the target '
+            f'already carries every value it would add'
+        ]
+        return engine.content, errors
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> GnEditRewriter:
+        """Validate a `<op-name>:` body against the op's declared `inputs`.
+
+        A `variadic` input accepts a single string or a non-empty list of
+        them, and is rendered as gn's space-separated value list. Every other
+        input takes one non-empty string.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        spec = RewritersEval.load().gn_edit(cls.OP_ID)
+        keys = frozenset(entry['name'] for entry in spec['inputs'])
+        variadic = frozenset(entry['name'] for entry in spec['inputs']
+                             if entry.get('variadic'))
+        unknown = sorted(set(body) - keys)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(keys - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+
+        inputs = {}
+        for key in sorted(keys):
+            value = body[key]
+            if key in variadic:
+                inputs[key] = ' '.join(
+                    _quote_for_gn_command(item)
+                    for item in cls._parse_values(key, value, description))
+            elif isinstance(value, str) and value:
+                inputs[key] = value
+            else:
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(inputs)
+
+    @classmethod
+    def _parse_values(cls, key: str, value: object,
+                      description: str) -> list[str]:
+        """Normalise a variadic input to a non-empty list of strings."""
+        if isinstance(value, str) and value:
+            return [value]
+        if (isinstance(value, list) and value
+                and all(isinstance(item, str) and item for item in value)):
+            return list(value)
+        raise ValueError(f'{cls.NAME} `{key}` must be a non-empty string or a '
+                         f'non-empty list of them (in "{description}")')
+
+
+def _declared_op_help(spec: dict) -> str:
+    """Full `plaster --help <name>` text for one declarative op spec.
+
+    Shared by regex macros and gn edit ops since both document their interface
+    the same way, as `inputs` of `{name, description}`.
     """
     lines = spec['description'].rstrip('\n').splitlines()
     fields = ['Fields:', ''] + [
-        f"- `{entry['name']}` — {entry['description']}"
-        for entry in spec['inputs']
+        f"- `{entry['name']}` — {entry['description']}" +
+        (' May be a single value or a list of them.'
+         if entry.get('variadic') else '') for entry in spec['inputs']
     ]
     for index, line in enumerate(lines):
         if line.startswith('```'):
@@ -3513,14 +3895,18 @@ def _regex_macro_help(spec: dict) -> str:
     return '\n'.join(lines + [''] + fields)
 
 
-def _regex_macro_rewriters() -> list[type[RegexMacro]]:
-    """One auto-generated `RegexMacro` subclass per declared `regex_macro` op.
+def _generated_rewriters(base: type[Rewriter],
+                         specs: Mapping[str, dict]) -> list[type[Rewriter]]:
+    """One generated `base` subclass per declarative op in `specs`.
 
-    This function produces the entries `_REWRITERS` registers for all the
-    `regex_macro` ops declared in `rewriters.pyl`.
+    The two declarative backends expose their ops as `substitutions:` keys the
+    same way, so the class each one needs is built the same: the op's `NAME`
+    (the key that selects it) and `OP_ID`, plus the help `plaster --help`
+    renders. This function produces the entries `_REWRITERS` registers for
+    them.
     """
-    rewriters: list[type[RegexMacro]] = []
-    for op_id, spec in RewritersEval.load().regex_macros.items():
+    rewriters: list[type[Rewriter]] = []
+    for op_id, spec in specs.items():
         namespace, name = op_id.split('.', 1)
         first_paragraph = spec['description'].strip().split('\n\n', 1)[0]
         # `[Namespace][Name]Rewriter`, matching how the hand-written rewriters
@@ -3531,19 +3917,23 @@ def _regex_macro_rewriters() -> list[type[RegexMacro]]:
                               for word in name.split('_')) + 'Rewriter')
         rewriters.append(
             type(
-                class_name, (RegexMacro, ), {
+                class_name, (base, ), {
                     'NAME': name,
                     'OP_ID': op_id,
                     'SUMMARY': ' '.join(first_paragraph.split()),
-                    'HELP': _regex_macro_help(spec),
+                    'HELP': _declared_op_help(spec),
                 }))
     return rewriters
 
 
-# The global registry of all rewriters plaster knows about, including the
-# regex macros and the ast-based hand-written rewriters.
-_REWRITERS: Final = RewriterRegistry(*_DECLARED_REWRITERS,
-                                     *_regex_macro_rewriters())
+# The global registry of all rewriters plaster knows about: the hand-written
+# ones, plus the generated ones for each declarative backend.
+_REWRITERS: Final = RewriterRegistry(
+    *_DECLARED_REWRITERS,
+    *_generated_rewriters(RegexMacro,
+                          RewritersEval.load().regex_macros),
+    *_generated_rewriters(GnEditRewriter,
+                          RewritersEval.load().gn_edits))
 
 
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
