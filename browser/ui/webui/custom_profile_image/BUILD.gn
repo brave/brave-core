@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/ui/webui/custom_profile_image_config.gni")
+
+assert(enable_brave_custom_profile_image_webui)
+
+source_set("custom_profile_image") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+
+  public_deps = [ "//brave/browser/ui:custom_profile_image_buildflags" ]
+}

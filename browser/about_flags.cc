@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/custom_profile_image_buildflags.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -63,6 +64,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#include "brave/browser/ui/webui/custom_profile_image/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -142,6 +147,20 @@
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
+
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#define BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                     \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-custom-profile-image",                                  \
+      "Custom profile images",                                       \
+      "Enable custom profile images.",                               \
+      kOsWin | kOsLinux | kOsMac,                                    \
+      FEATURE_VALUE_TYPE(                                            \
+          custom_profile_image::features::kBraveCustomProfileImage), \
+  })
+#else
+#define BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 const flags_ui::FeatureEntry::FeatureParam
@@ -1551,6 +1570,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
+  BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                                     \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_FFMPEG_SOFTWARE_HEVC_DECODER_FEATURE_ENTRIES                           \

@@ -29,6 +29,8 @@ import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//brave/ui/webui/custom_profile_image_config.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -50,6 +52,12 @@ group("ui_public_dependencies") {
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/traffic_control/buildflags",
   ]
+}
+
+buildflag_header("custom_profile_image_buildflags") {
+  header = "custom_profile_image_buildflags.h"
+  flags =
+      [ "ENABLE_CUSTOM_PROFILE_IMAGE=$enable_brave_custom_profile_image_webui" ]
 }
 
 source_set("ui") {
