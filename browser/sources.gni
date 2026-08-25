@@ -409,6 +409,8 @@ if (enable_email_aliases) {
 if (enable_local_ai) {
   brave_chrome_browser_deps += [
     "//brave/browser/history_embeddings",
+    "//brave/browser/history_embeddings:status",
+    "//brave/browser/passage_embeddings:chromium_impl",
     "//brave/browser/speech",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/local_ai/core",

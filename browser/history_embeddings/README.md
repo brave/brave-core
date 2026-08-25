@@ -50,6 +50,14 @@ toggle off ⇒ neither service is built ⇒ no embedder. (Its other upstream gat
 `kPassageEmbedder`/`kPermissionsAIv4`, are disabled in Brave.) Applied at
 service creation, so changes take effect on restart.
 
+Because of that, the gate reads the setting through
+[`BraveHistoryEmbeddingsStatus`](brave_history_embeddings_status.h), which
+captures it as profile user data at profile setup — so the value the services
+were built with is available for the rest of the session. The side bar shows its
+"Relaunch" button while `NeedsRestart()` holds, reading it from `loadTimeData`
+(injected by `BraveHistoryUI`) on load and from the `OnEnabledChanged` Mojo push
+afterwards, so reloading brave://history does not clear the prompt.
+
 ## Model delivery + `EmbedderMetadataUpdated`
 
 `SchedulingEmbedder` waits for `EmbedderMetadataUpdated` before it dispatches
@@ -71,6 +79,12 @@ stored history rather than mix vector spaces. The file is generated in
 [`brave/leo-local-models`](https://github.com/brave/leo-local-models).
 
 ## Key Files
+
+- **`brave_history_embeddings_status.{h,cc}`** — Profile user data holding the
+  Semantic History Search setting the embedding services were built with. The
+  passage embedder gate reads through it, so `NeedsRestart()` answers whether
+  the brave://history toggle is waiting on a relaunch (see "Enabling / the
+  brave://history toggle" above).
 
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton subclass
   of `PassageEmbeddingsServiceController`. Provides `LitertServiceLauncher`,
@@ -124,6 +138,10 @@ utility through the standard `LoadModels` mojo call.
   `PassageEmbedderImpl::BuildExecutionTask` (via a
   `BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK` macro), so the sandboxed
   utility runs EmbeddingGemma on LiteRT instead of upstream's TFLite executor.
+
+- **`browser/ui/webui/history/brave_history_ui.{h,cc}`** — brave://history's
+  WebUI controller. Injects `braveHistoryEmbeddingsNeedsRestart` into the data
+  source and owns the Mojo page handler backing the toggle.
 
 - **`chromium_src/chrome/browser/page_content_annotations/`** — Factory
   overrides for `PageContentAnnotationsService`, `PageContentExtractionService`,

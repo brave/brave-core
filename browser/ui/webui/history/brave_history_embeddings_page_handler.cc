@@ -6,20 +6,23 @@
 #include "brave/browser/ui/webui/history/brave_history_embeddings_page_handler.h"
 
 #include "base/functional/bind.h"
+#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
 BraveHistoryEmbeddingsPageHandler::BraveHistoryEmbeddingsPageHandler(
     mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
         receiver,
     mojo::PendingRemote<brave_history_embeddings::mojom::Page> page,
-    PrefService* prefs,
+    Profile* profile,
     PrefService* local_state)
     : receiver_(this, std::move(receiver)),
       page_(std::move(page)),
-      prefs_(prefs),
+      profile_(profile),
       local_state_(local_state) {
-  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled,
       base::BindRepeating(&BraveHistoryEmbeddingsPageHandler::OnPrefChanged,
@@ -39,16 +42,15 @@ BraveHistoryEmbeddingsPageHandler::~BraveHistoryEmbeddingsPageHandler() =
     default;
 
 void BraveHistoryEmbeddingsPageHandler::SetEnabled(bool enabled) {
-  prefs_->SetBoolean(local_ai::prefs::kBraveHistoryEmbeddingsEnabled, enabled);
+  profile_->GetPrefs()->SetBoolean(
+      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, enabled);
 }
 
 void BraveHistoryEmbeddingsPageHandler::OnPrefChanged() {
-  // History embeddings is only effectively enabled when both the master
-  // "Local AI" switch (Brave Origin) and the per-profile history embeddings
-  // toggle are on.
-  const bool local_ai_enabled =
-      local_state_->GetBoolean(local_ai::prefs::kBraveLocalAIEnabled);
-  const bool profile_enabled =
-      prefs_->GetBoolean(local_ai::prefs::kBraveHistoryEmbeddingsEnabled);
-  page_->OnEnabledChanged(local_ai_enabled && profile_enabled);
+  // Same helper the WebUI data source reads `enableHistoryEmbeddings` from, so
+  // the pushed value matches what the rest of the page sees.
+  page_->OnEnabledChanged(
+      history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_),
+      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile_)
+          ->NeedsRestart());
 }

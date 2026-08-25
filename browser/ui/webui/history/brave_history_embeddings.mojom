@@ -26,5 +26,7 @@ interface PageHandler {
 // Notifications from the browser back to all chrome://history pages so any
 // UI consuming the enabled state can react without a page reload.
 interface Page {
-  OnEnabledChanged(bool enabled);
+  // `needs_restart` is true while `enabled` differs from the value the
+  // embedding services were built with, so it only applies after a relaunch.
+  OnEnabledChanged(bool enabled, bool needs_restart);
 };

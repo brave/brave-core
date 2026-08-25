@@ -15,6 +15,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 class PrefService;
+class Profile;
 
 class BraveHistoryEmbeddingsPageHandler
     : public brave_history_embeddings::mojom::PageHandler {
@@ -23,7 +24,7 @@ class BraveHistoryEmbeddingsPageHandler
       mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
           receiver,
       mojo::PendingRemote<brave_history_embeddings::mojom::Page> page,
-      PrefService* prefs,
+      Profile* profile,
       PrefService* local_state);
 
   BraveHistoryEmbeddingsPageHandler(const BraveHistoryEmbeddingsPageHandler&) =
@@ -41,8 +42,8 @@ class BraveHistoryEmbeddingsPageHandler
 
   mojo::Receiver<brave_history_embeddings::mojom::PageHandler> receiver_;
   mojo::Remote<brave_history_embeddings::mojom::Page> page_;
-  raw_ptr<PrefService> prefs_;
-  raw_ptr<PrefService> local_state_;
+  const raw_ptr<Profile> profile_;
+  const raw_ptr<PrefService> local_state_;
   PrefChangeRegistrar pref_change_registrar_;
   PrefChangeRegistrar local_state_change_registrar_;
 };

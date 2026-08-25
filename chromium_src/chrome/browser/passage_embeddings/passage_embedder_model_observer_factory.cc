@@ -9,17 +9,26 @@
 // keeps the on-device AI embedder from being created when the toggle is off.
 // Applied at service creation, so a toggle change takes effect on restart.
 
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
+
+// Implemented in //brave/browser/passage_embeddings:chromium_impl. Returns the
+// setting the profile's embedding services were built with.
+bool BraveIsHistoryEmbeddingsEnabled(Profile* profile);
 
 namespace history_embeddings {
 
 // Per-profile overload the macro below routes the upstream no-arg call to,
 // using the `context` in scope at the call site.
 bool IsHistoryEmbeddingsFeatureEnabled(content::BrowserContext* context) {
-  return IsHistoryEmbeddingsEnabledForProfile(
-      Profile::FromBrowserContext(context));
+  Profile* profile = Profile::FromBrowserContext(context);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  return BraveIsHistoryEmbeddingsEnabled(profile);
+#else
+  return IsHistoryEmbeddingsEnabledForProfile(profile);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
 }  // namespace history_embeddings
