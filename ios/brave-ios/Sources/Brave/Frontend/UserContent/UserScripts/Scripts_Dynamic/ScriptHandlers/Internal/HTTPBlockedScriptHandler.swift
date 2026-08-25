@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import Foundation
 import Shared
 import Web
@@ -51,8 +52,9 @@ class HTTPBlockedScriptHandler: TabContentScript {
     }
   }
 
-  private func didProceed(tab: some TabState) {
-    guard let url = tab.upgradedHTTPSRequest?.url ?? tab.visibleURL?.strippedInternalURL else {
+  @MainActor private func didProceed(tab: some TabState) {
+    let upgradedHTTPSRequest = tab.httpsUpgradeHelper?.upgradedHTTPSRequest
+    guard let url = upgradedHTTPSRequest?.url ?? tab.visibleURL?.strippedInternalURL else {
       //      assertionFailure(
       //        "There should be no way this method can be triggered if the tab is not on an internal url"
       //      )
@@ -61,17 +63,13 @@ class HTTPBlockedScriptHandler: TabContentScript {
 
     // When restoring the page, `upgradedHTTPSRequest` will be nil
     // So we default to the embedded internal page URL
-    let request = tab.upgradedHTTPSRequest ?? URLRequest(url: url)
-    if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
-      let host = url.host(percentEncoded: false)
-    {
-      httpsUpgradeService.allowHttp(forHost: host)
-    }
+    let request = upgradedHTTPSRequest ?? URLRequest(url: url)
+    tab.httpsUpgradeHelper?.allowHttp(for: url)
     tab.loadRequest(request)
   }
 
   @MainActor private func didGoBack(tab: some TabState) {
-    tab.upgradedHTTPSRequest = nil
+    tab.httpsUpgradeHelper?.cancelUpgrade()
     if tab.backForwardList?.backList.isEmpty == true {
       // interstitial was opened in a new tab
       tabManager?.addTabToRecentlyClosed(tab)
