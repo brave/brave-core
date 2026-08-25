@@ -106,6 +106,7 @@ source_set("test_support") {
     ":sidebar_impl",
     "//base",
     "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",
@@ -128,7 +129,10 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "//brave/browser/ui/sidebar/sidebar_browsertest.cc" ]
+  sources = [
+    "//brave/browser/ui/sidebar/sidebar_browsertest.cc",
+    "//brave/browser/ui/sidebar/web_panel_browsertest.cc",
+  ]
 
   deps = [
     ":sidebar",
