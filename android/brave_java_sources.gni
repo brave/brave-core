@@ -274,6 +274,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNtpAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveRecentTabsSnackbarHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporter.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NtpUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/OnBraveNtpListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/SponsoredRichMediaWebView.java",
