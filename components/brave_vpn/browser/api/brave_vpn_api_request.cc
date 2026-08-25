@@ -57,6 +57,16 @@ std::string CreateJSONRequestBody(base::ValueView node) {
 
 namespace brave_vpn {
 
+using v1::endpoints::kCreateSubscriberCredentialV12;
+using v1::endpoints::kCreateSupportTicket;
+using v1::endpoints::kCredential;
+using v1::endpoints::kHostnameForRegionNew;
+using v1::endpoints::kProfileCredential;
+using v1::endpoints::kServerRegionsWithCities;
+using v1::endpoints::kTimezonesForRegions;
+using v1::endpoints::kVerifyPurchaseToken;
+using v1::endpoints::kVpnHost;
+
 BraveVpnAPIRequest::BraveVpnAPIRequest(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(),

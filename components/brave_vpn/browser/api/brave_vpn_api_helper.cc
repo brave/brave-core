@@ -24,6 +24,13 @@
 
 namespace brave_vpn {
 
+using v1::endpoints::kSupportTicketEmailKey;
+using v1::endpoints::kSupportTicketPartnerClientIdKey;
+using v1::endpoints::kSupportTicketPaymentValidationMethodKey;
+using v1::endpoints::kSupportTicketSubjectKey;
+using v1::endpoints::kSupportTicketSubscriberCredential;
+using v1::endpoints::kSupportTicketSupportTicketKey;
+
 std::unique_ptr<Hostname> PickBestHostname(
     const std::vector<Hostname>& hostnames) {
   std::vector<Hostname> filtered_hostnames;

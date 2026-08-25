@@ -28,6 +28,8 @@
 // https://github.com/GuardianFirewall/GuardianConnect
 namespace brave_vpn {
 
+using v1::endpoints::kServerStatus;
+
 namespace {
 
 const NSString* kBraveVPNKey = @"BraveVPNKey";

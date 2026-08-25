@@ -22,6 +22,19 @@
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace brave_vpn {
+
+using v1::endpoints::kRegionCitiesKey;
+using v1::endpoints::kRegionContinentKey;
+using v1::endpoints::kRegionCountryIsoCodeKey;
+using v1::endpoints::kRegionCountryKey;
+using v1::endpoints::kRegionLatitudeKey;
+using v1::endpoints::kRegionLongitudeKey;
+using v1::endpoints::kRegionNameKey;
+using v1::endpoints::kRegionNamePrettyKey;
+using v1::endpoints::kRegionPrecisionKey;
+using v1::endpoints::kRegionServerCountKey;
+using v1::endpoints::kRegionSmartRoutingProxyStateKey;
+
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::RegionPtr>& region_list) {

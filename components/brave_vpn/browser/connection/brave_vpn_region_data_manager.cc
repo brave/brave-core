@@ -24,6 +24,9 @@
 #include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
+
+using v1::endpoints::kRegionCountryIsoCodeKey;
+
 BraveVPNRegionDataManager::BraveVPNRegionDataManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
