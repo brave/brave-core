@@ -7,7 +7,6 @@
 
 #include <algorithm>
 
-#include "base/containers/extend.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -110,9 +109,12 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
       mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet));
 
   if (IsPolkadotAssetDiscoveryEnabled()) {
-    base::Extend(supported_chains, std::array{mojom::kPolkadotMainnetAssetHub,
-                                              mojom::kPolkadotTestnetAssetHub,
-                                              mojom::kPolkadotPaseoAssetHub});
+    for (std::string chain_id :
+         {mojom::kPolkadotMainnetAssetHub, mojom::kPolkadotTestnetAssetHub,
+          mojom::kPolkadotPaseoAssetHub}) {
+      supported_chains.push_back(
+          mojom::ChainId::New(mojom::CoinType::DOT, std::move(chain_id)));
+    }
   }
 
   return supported_chains;
