@@ -90,6 +90,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               GetPremiumStatus,
               (mojom::Service::GetPremiumStatusCallback callback),
               (override));
+  MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
 class MockServiceClient : public mojom::ServiceObserver {
