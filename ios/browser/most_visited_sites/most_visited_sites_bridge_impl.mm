@@ -5,12 +5,13 @@
 
 #include "brave/ios/browser/most_visited_sites/most_visited_sites_bridge_impl.h"
 
+#include <map>
 #include <utility>
 
 #include "base/strings/sys_string_conversions.h"
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/ntp_tile.h"
-#include "ios/chrome/browser/ntp_tiles/model/most_visited_sites_observer_bridge.h"
+#include "components/ntp_tiles/section_type.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
@@ -26,73 +27,78 @@
 
 @end
 
-@interface MostVisitedSitesSubscriptionImpl
-    : NSObject <MostVisitedSitesObserving, MostVisitedSitesSubscription>
+namespace {
 
-- (instancetype)initWithObserver:(id<MostVisitedSitesObserverBridge>)observer
-                mostVisitedSites:(ntp_tiles::MostVisitedSites*)mostVisitedSites
-                     maxNumSites:(NSUInteger)maxNumSites;
+// Forwards `ntp_tiles::MostVisitedSites::Observer` callbacks directly to a
+// `MostVisitedSitesObserverBridge`.
+class MostVisitedSitesObserverImpl
+    : public ntp_tiles::MostVisitedSites::Observer {
+ public:
+  explicit MostVisitedSitesObserverImpl(
+      id<MostVisitedSitesObserverBridge> observer)
+      : observer_(observer) {}
+
+  void OnURLsAvailable(
+      bool is_user_triggered,
+      const std::map<ntp_tiles::SectionType, ntp_tiles::NTPTilesVector>&
+          sections) override {
+    const ntp_tiles::NTPTilesVector& tiles =
+        sections.at(ntp_tiles::SectionType::PERSONALIZED);
+    NSMutableArray<NTPTileBridge*>* bridgedTiles =
+        [NSMutableArray arrayWithCapacity:tiles.size()];
+    for (const ntp_tiles::NTPTile& tile : tiles) {
+      NSURL* url = net::NSURLWithGURL(tile.url);
+      if (!url) {
+        continue;
+      }
+      [bridgedTiles
+          addObject:[[NTPTileBridge alloc]
+                        initWithURL:url
+                              title:base::SysUTF16ToNSString(tile.title)]];
+    }
+    [observer_ mostVisitedSitesDidUpdateTiles:[bridgedTiles copy]];
+  }
+
+  void OnIconMadeAvailable(const GURL& site_url) override {
+    NSURL* url = net::NSURLWithGURL(site_url);
+    if (!url) {
+      return;
+    }
+    [observer_ mostVisitedSitesDidUpdateFaviconForURL:url];
+  }
+
+ private:
+  __weak id<MostVisitedSitesObserverBridge> observer_;
+};
+
+}  // namespace
+
+@interface MostVisitedSitesObservationImpl
+    : NSObject <MostVisitedSitesObservation>
+
+- (instancetype)initWithObserverBridge:
+    (std::unique_ptr<MostVisitedSitesObserverImpl>)observerBridge;
 
 @end
 
-@implementation MostVisitedSitesSubscriptionImpl {
-  __weak id<MostVisitedSitesObserverBridge> _observer;
-  raw_ptr<ntp_tiles::MostVisitedSites> _mostVisitedSites;
-  std::unique_ptr<ntp_tiles::MostVisitedSitesObserverBridge> _observerBridge;
+@implementation MostVisitedSitesObservationImpl {
+  std::unique_ptr<MostVisitedSitesObserverImpl> _observerBridge;
 }
 
-- (instancetype)initWithObserver:(id<MostVisitedSitesObserverBridge>)observer
-                mostVisitedSites:(ntp_tiles::MostVisitedSites*)mostVisitedSites
-                     maxNumSites:(NSUInteger)maxNumSites {
+- (instancetype)initWithObserverBridge:
+    (std::unique_ptr<MostVisitedSitesObserverImpl>)observerBridge {
   if ((self = [super init])) {
-    _observer = observer;
-    _mostVisitedSites = mostVisitedSites;
-    _observerBridge =
-        std::make_unique<ntp_tiles::MostVisitedSitesObserverBridge>(
-            self, mostVisitedSites);
-    _mostVisitedSites->AddMostVisitedURLsObserver(_observerBridge.get(),
-                                                  maxNumSites);
+    _observerBridge = std::move(observerBridge);
   }
   return self;
 }
 
 - (void)dealloc {
-  [self unsubscribe];
+  [self invalidate];
 }
 
-- (void)unsubscribe {
-  if (_observerBridge) {
-    _mostVisitedSites->RemoveMostVisitedURLsObserver(_observerBridge.get());
-    _observerBridge.reset();
-  }
-}
-
-#pragma mark - MostVisitedSitesObserving
-
-- (void)mostVisitedSites:(ntp_tiles::MostVisitedSites*)mostVisitedSites
-          didUpdateTiles:(const ntp_tiles::NTPTilesVector&)tiles {
-  NSMutableArray<NTPTileBridge*>* bridgedTiles =
-      [NSMutableArray arrayWithCapacity:tiles.size()];
-  for (const ntp_tiles::NTPTile& tile : tiles) {
-    NSURL* url = net::NSURLWithGURL(tile.url);
-    if (!url) {
-      continue;
-    }
-    [bridgedTiles
-        addObject:[[NTPTileBridge alloc]
-                      initWithURL:url
-                            title:base::SysUTF16ToNSString(tile.title)]];
-  }
-  [_observer mostVisitedSitesDidUpdateTiles:[bridgedTiles copy]];
-}
-
-- (void)mostVisitedSites:(ntp_tiles::MostVisitedSites*)mostVisi
-    didUpdateFaviconForURL:(const GURL&)siteURL {
-  NSURL* url = net::NSURLWithGURL(siteURL);
-  if (!url) {
-    return;
-  }
-  [_observer mostVisitedSitesDidUpdateFaviconForURL:url];
+- (void)invalidate {
+  _observerBridge.reset();
 }
 
 @end
@@ -112,13 +118,15 @@
   return self;
 }
 
-- (id<MostVisitedSitesSubscription>)
+- (id<MostVisitedSitesObservation>)
     startTopSitesOnlyWithObserver:(id<MostVisitedSitesObserverBridge>)observer
                       maxNumSites:(NSUInteger)maxNumSites {
-  return [[MostVisitedSitesSubscriptionImpl alloc]
-      initWithObserver:observer
-      mostVisitedSites:_mostVisitedSites.get()
-           maxNumSites:maxNumSites];
+  auto observerBridge =
+      std::make_unique<MostVisitedSitesObserverImpl>(observer);
+  _mostVisitedSites->AddMostVisitedURLsObserver(observerBridge.get(),
+                                                maxNumSites);
+  return [[MostVisitedSitesObservationImpl alloc]
+      initWithObserverBridge:std::move(observerBridge)];
 }
 
 - (void)refresh {

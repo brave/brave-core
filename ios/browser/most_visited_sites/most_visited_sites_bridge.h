@@ -40,12 +40,12 @@ NS_SWIFT_NAME(MostVisitedSitesObserver)
 /// A token representing one active observation of a `MostVisitedSitesBridge`.
 /// Retain this for as long as updates are wanted; releasing it (or calling
 /// `invalidate`) stops the observation.
-NS_SWIFT_NAME(MostVisitedSitesSubscription)
-@protocol MostVisitedSitesSubscription
+NS_SWIFT_NAME(MostVisitedSitesObservation)
+@protocol MostVisitedSitesObservation
 
 /// Stops the observation early. Also happens automatically when this object
 /// is deallocated.
-- (void)unsubscribe;
+- (void)invalidate;
 
 @end
 
@@ -63,7 +63,7 @@ NS_SWIFT_NAME(MostVisitedSites)
 /// `observer` is held weakly and receives the initial set of tiles
 /// May only be called once;
 /// `maxNumSites` is the max number of the returning tiles.
-- (id<MostVisitedSitesSubscription>)
+- (id<MostVisitedSitesObservation>)
     startTopSitesOnlyWithObserver:(id<MostVisitedSitesObserverBridge>)observer
                       maxNumSites:(NSUInteger)maxNumSites
     NS_SWIFT_NAME(startTopSitesOnly(observer:maxNumSites:));

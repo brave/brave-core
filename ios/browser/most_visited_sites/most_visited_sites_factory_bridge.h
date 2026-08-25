@@ -21,9 +21,8 @@ NS_SWIFT_NAME(MostVisitedSitesFactory)
 
 /// Creates a `MostVisitedSites` for `profile`
 /// or `nil` when `profile` is off the record.
-+ (id<MostVisitedSitesBridge>)mostVisitedSitesForProfile:
-    (id<ProfileBridge>)profile
-    NS_SWIFT_NAME(mostVisitedSites(for:)) NS_SWIFT_UI_ACTOR;
++ (id<MostVisitedSitesBridge>)getForProfile:(id<ProfileBridge>)profile
+    NS_SWIFT_NAME(get(for:)) NS_SWIFT_UI_ACTOR;
 
 @end
 

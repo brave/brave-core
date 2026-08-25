@@ -19,8 +19,7 @@
 
 @implementation MostVisitedSitesFactoryBridge
 
-+ (id<MostVisitedSitesBridge>)mostVisitedSitesForProfile:
-    (id<ProfileBridge>)profileBridge {
++ (id<MostVisitedSitesBridge>)getForProfile:(id<ProfileBridge>)profileBridge {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   ProfileBridgeImpl* holder =
       base::apple::ObjCCastStrict<ProfileBridgeImpl>(profileBridge);
