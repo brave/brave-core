@@ -5,12 +5,26 @@
 
 #include "brave/browser/ui/webui/history/brave_history_ui.h"
 
+#include <utility>
+
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/page_not_available_for_guest/page_not_available_for_guest_ui.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/history/brave_history_embeddings_page_handler.h"
 #endif
+
+// Matches HistoryUIConfig::CreateWebUIController, which this config replaces.
+std::unique_ptr<content::WebUIController>
+BraveHistoryUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                            const GURL& url) {
+  if (Profile::FromWebUI(web_ui)->IsGuestSession()) {
+    return std::make_unique<PageNotAvailableForGuestUI>(
+        web_ui, chrome::kChromeUIHistoryHost);
+  }
+  return std::make_unique<BraveHistoryUI>(web_ui);
+}
 
 BraveHistoryUI::BraveHistoryUI(content::WebUI* web_ui) : HistoryUI(web_ui) {}
 
