@@ -1,16 +1,13 @@
 diff --git a/chrome/browser/enterprise/data_protection/data_protection_features.cc b/chrome/browser/enterprise/data_protection/data_protection_features.cc
-index d4e92f03e973ddd08da31b65a9266da5f4320547..4c9f389080c2c108b62638faa3e87850b283ed67 100644
+index 2d0cfb3221fce8dcf6ee542c45df57e610c0201e..8323e040abf2aabf92c06130146b526ef8d9e0a6 100644
 --- a/chrome/browser/enterprise/data_protection/data_protection_features.cc
 +++ b/chrome/browser/enterprise/data_protection/data_protection_features.cc
-@@ -8,9 +8,9 @@
+@@ -8,7 +8,7 @@
  
  namespace enterprise_data_protection {
  
 -BASE_FEATURE(kEnableForceDownloadToCloud, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kEnableForceDownloadToCloud, base::FEATURE_DISABLED_BY_DEFAULT);
  
--BASE_FEATURE(kEnableForceDownloadToOneDrive, base::FEATURE_ENABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kEnableForceDownloadToOneDrive, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kEnableTabSharingProtection, base::FEATURE_DISABLED_BY_DEFAULT);
- 
