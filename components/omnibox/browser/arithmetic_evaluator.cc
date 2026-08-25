@@ -24,8 +24,10 @@ namespace {
 // formatted straight from the int64 and aren't subject to this.
 constexpr int kMaxSignificantDigits = 15;
 
-// Bounds recursion on untrusted omnibox input.
-constexpr int kMaxParenDepth = 16;
+// Bounds recursion on untrusted omnibox input. Operator runs are folded
+// iteratively, so this only has to cover the two constructs that genuinely
+// nest: parentheses, and the right-associative '^'.
+constexpr int kMaxRecursionDepth = 16;
 
 // Well below what would overflow: a larger power is more likely a typo than a
 // calculation, and evaluating it is pointless once the result can't be shown.
@@ -176,17 +178,24 @@ class Parser {
   }
 
   std::optional<Rational> ParseUnary() {
-    if (ConsumeIf(u'-')) {
-      auto value = ParseUnary();
-      // Negating in place is exact: `Rational` is reduced and excludes int64
-      // min, so the sign flip can't overflow or need re-reducing.
-      return value ? std::make_optional(Rational{-value->num, value->den})
-                   : std::nullopt;
+    // Signs are folded in a loop rather than by recursing per sign, so that a
+    // long run of them ("+++...+1") can't exhaust the stack.
+    bool negate = false;
+    while (true) {
+      if (ConsumeIf(u'-')) {
+        negate = !negate;
+      } else if (!ConsumeIf(u'+')) {
+        break;
+      }
     }
-    if (ConsumeIf(u'+')) {
-      return ParseUnary();
+
+    auto value = ParsePower();
+    if (!value || !negate) {
+      return value;
     }
-    return ParsePower();
+    // Negating in place is exact: `Rational` is reduced and excludes int64
+    // min, so the sign flip can't overflow or need re-reducing.
+    return Rational{-value->num, value->den};
   }
 
   // Right associative, and binds tighter than unary minus, so -2^2 is -4.
@@ -195,13 +204,19 @@ class Parser {
     if (!base || !ConsumeIf(u'^')) {
       return base;
     }
+    // Right associativity means recursing per '^', so this needs the same
+    // depth bound that nested parentheses get.
+    if (++depth_ > kMaxRecursionDepth) {
+      return std::nullopt;
+    }
     auto exponent = ParseUnary();
+    --depth_;
     return exponent ? Power(*base, *exponent) : std::nullopt;
   }
 
   std::optional<Rational> ParsePrimary() {
     if (ConsumeIf(u'(')) {
-      if (++depth_ > kMaxParenDepth) {
+      if (++depth_ > kMaxRecursionDepth) {
         return std::nullopt;
       }
       auto value = ParseSum();

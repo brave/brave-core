@@ -80,9 +80,9 @@ TEST(ArithmeticEvaluatorTest, DeclinesMalformedExpressions) {
 }
 
 // '-' and '/' are used to delimit card numbers, phone numbers, SSN, and dates.
-// We don't want those to evaluated as arithmetic because the user shouldn't be
-// expecting this and the result wouldn't have any value. Spaces should be used
-// between the operators to be explicit.
+// We don't want those to be evaluated as arithmetic because the user shouldn't
+// be expecting this and the result wouldn't have any value. Spaces should be
+// used between the operators to be explicit.
 TEST(ArithmeticEvaluatorTest, DeclinesFormattedIdentifiers) {
   EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"1234-5678-9012-3456"));
   EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"555-123-4567"));
@@ -94,6 +94,41 @@ TEST(ArithmeticEvaluatorTest, DeclinesFormattedIdentifiers) {
   // Input with spaces, the same operators are unambiguous.
   EXPECT_EQ(Integer(250000), EvaluateArithmeticExpression(u"1000000 / 4"));
   EXPECT_EQ(Integer(-4444), EvaluateArithmeticExpression(u"1234 - 5678"));
+}
+
+// Pasted input can be long, so no construct may recurse once per character.
+// These must decline (or fold) rather than exhaust the stack.
+TEST(ArithmeticEvaluatorTest, HandlesLongOperatorRuns) {
+  constexpr size_t kRunLength = 100000;
+
+  // Unary signs are folded iteratively, so a run of them is just a sign. Note
+  // every case here needs an unambiguous operator to get past
+  // `LooksLikeArithmetic`: a run of '-' alone is an identifier, not a sum.
+  EXPECT_EQ(Integer(1), EvaluateArithmeticExpression(
+                            std::u16string(kRunLength, u'+') + u"1"));
+  EXPECT_EQ(Integer(-1), EvaluateArithmeticExpression(
+                             std::u16string(kRunLength - 1, u'-') + u"1+0"));
+
+  // The sign loop breaks at the first non-sign character, handing the rest of
+  // the expression back to the binary operator loops. A run followed by more
+  // expression must still parse, and signs must not be confused with the
+  // binary operators that follow.
+  EXPECT_EQ(Integer(2), EvaluateArithmeticExpression(
+                            std::u16string(kRunLength, u'+') + u"1+1"));
+  EXPECT_EQ(Integer(-4), EvaluateArithmeticExpression(
+                             std::u16string(kRunLength - 1, u'-') + u"4+4-4"));
+  EXPECT_EQ(Integer(-4), EvaluateArithmeticExpression(u"-4+4-4"));
+  EXPECT_EQ(Integer(8), EvaluateArithmeticExpression(u"4 - -4"));
+  EXPECT_EQ(Integer(5), EvaluateArithmeticExpression(u"-+-5"));
+
+  // Nesting constructs are depth-bounded instead.
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(
+                              std::u16string(kRunLength, u'(') + u"1+1"));
+  std::u16string powers = u"2";
+  for (size_t i = 0; i < kRunLength; ++i) {
+    powers += u"^2";
+  }
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(powers));
 }
 
 TEST(ArithmeticEvaluatorTest, DeclinesNonArithmetic) {
