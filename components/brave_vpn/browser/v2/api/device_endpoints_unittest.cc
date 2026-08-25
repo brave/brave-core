@@ -70,4 +70,14 @@ TEST(DeviceEndpointsTest, InvalidateCredentialsRequestBodyToValue) {
                 .Set("subscriber-credential", kTestSubscriberCredential));
 }
 
+TEST(DeviceEndpointsTest, SetMultihopExitRegionRequestBodyToValue) {
+  const SetMultihopExitRegionRequestBody body{
+      .api_auth_token = kTestApiAuthToken,
+      .multihop_exit_region = kTestMultihopExitRegion};
+  EXPECT_EQ(body.ToValue(),
+            base::DictValue()
+                .Set("api-auth-token", kTestApiAuthToken)
+                .Set("multihop-exit-region", kTestMultihopExitRegion));
+}
+
 }  // namespace brave_vpn::v2::endpoints
