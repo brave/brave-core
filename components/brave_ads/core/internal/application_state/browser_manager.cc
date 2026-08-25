@@ -93,13 +93,22 @@ void BrowserManager::OnNotifyDidInitializeAds() {
 }
 
 void BrowserManager::OnNotifyBrowserDidBecomeActive() {
-  if (IsCurrentlyActive()) {
-    return;
+  if (!IsCurrentlyActive()) {
+    is_active_ = true;
+    LogBrowserActiveState();
+    NotifyBrowserDidBecomeActive();
   }
 
-  is_active_ = true;
-  LogBrowserActiveState();
-  NotifyBrowserDidBecomeActive();
+  // The OS doesn't reliably send a separate foreground/background transition
+  // on desktop the way it does on mobile, so a stale `false` foreground
+  // reading from `InitializeBrowserBackgroundState()`'s startup race (see
+  // `IsBrowserActive()`) would otherwise never self-correct; an activated
+  // browser window is, by definition, in the foreground.
+  if (!IsCurrentlyInForeground()) {
+    is_in_foreground_ = true;
+    LogBrowserBackgroundState();
+    NotifyBrowserDidEnterForeground();
+  }
 }
 
 void BrowserManager::OnNotifyBrowserDidResignActive() {

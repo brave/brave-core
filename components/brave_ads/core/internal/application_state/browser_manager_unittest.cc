@@ -99,4 +99,41 @@ TEST_F(BraveAdsBrowserManagerTest,
   EXPECT_FALSE(BrowserManager::GetInstance().IsInForeground());
 }
 
+// A racy `IsBrowserActive()` read at startup (see
+// `InitializeBrowserBackgroundState()`) can report `false` for a browser
+// window that is, in practice, already active; the native "did become
+// active" notification that follows shortly after should also correct the
+// stale foreground reading, since there is no separate foreground
+// notification to rely on for that self-correction on desktop.
+TEST_F(BraveAdsBrowserManagerTest,
+       OnNotifyBrowserDidBecomeActiveCorrectsStaleForegroundState) {
+  // Arrange
+  test::MockIsBrowserActive(ads_client_mock_, false);
+  ads_client_notifier_.NotifyDidInitializeAds();
+  ASSERT_FALSE(BrowserManager::GetInstance().IsInForeground());
+
+  // Act
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+
+  // Assert
+  EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
+}
+
+// Losing window focus (e.g. alt-tabbing to another app) is not the same as
+// the browser being minimized or occluded; the window can remain fully
+// visible while inactive, so resigning active must not also flip foreground
+// state to background.
+TEST_F(BraveAdsBrowserManagerTest,
+       OnNotifyBrowserDidResignActiveDoesNotAffectForegroundState) {
+  // Arrange
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ASSERT_TRUE(BrowserManager::GetInstance().IsInForeground());
+
+  // Act
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+
+  // Assert
+  EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
+}
+
 }  // namespace brave_ads
