@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add a RequestImage overload that takes an explicit traffic annotation.
+
+      RewardsServiceFactory needs to supply its own network traffic
+      annotation tag instead of the one baked into the public RequestImage
+      overload.
+    add_to_public:
+      class_name: BitmapFetcherService
+      code: |-
+        RequestId RequestImageWithNetworkTrafficAnnotationTag(
+            const GURL& url,
+            BitmapFetchedCallback callback,
+            const net::NetworkTrafficAnnotationTag& traffic_annotation);
