@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Recount Brave content settings types before Count() reports the total.
+
+      HostContentSettingsMap folds BRAVE_COOKIES into COOKIES and does not
+      enumerate the Shields-only types on its own, so ProcessBraveTypes must
+      run before the upstream total is reported.
+    regex:
+      re_pattern: '(ReportResult\(hosts\.size\(\) \+ empty_host_pattern\);)'
+      replace: |-
+        ProcessBraveTypes(iterate_content_settings_list, map_.get(),
+                            empty_host_pattern);
+          \1
