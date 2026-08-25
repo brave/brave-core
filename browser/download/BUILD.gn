@@ -41,5 +41,7 @@ source_set("browser_tests") {
     "//url",
   ]
 
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

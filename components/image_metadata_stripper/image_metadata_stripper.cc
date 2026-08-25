@@ -11,26 +11,40 @@
 
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "brave/components/image_metadata_stripper/internal/jpeg_iptc_metadata_stripper.h"
 
 namespace image_metadata_stripper {
 
-bool RemoveIptcMetadata(const base::FilePath& file_path) {
+StrippingResultCode RemoveIptcMetadata(const base::FilePath& file_path) {
   if (!base::PathExists(file_path)) {
     DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;
-    return false;
+    return StrippingResultCode::kFileNotFound;
   }
 
   std::optional<std::vector<uint8_t>> file_bytes =
       base::ReadFileToBytes(file_path);
   if (!file_bytes.has_value()) {
     DVLOG(1) << "IPTC strip failed; could not read: " << file_path;
-    return false;
+    return StrippingResultCode::kFileReadFailed;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/5238): Add the core
-  // logic to remove the IPTC metadata here.
-  DVLOG(1) << "IPTC strip skipped; not implemented yet: " << file_path;
-  return false;
+  jpeg::FbmdStripResult result =
+      jpeg::RemoveFbmdIptcMetadata(file_bytes.value());
+  switch (result) {
+    case jpeg::FbmdStripResult::kNotFound:
+      return StrippingResultCode::kMetadataNotFound;
+    case jpeg::FbmdStripResult::kFailed:
+      return StrippingResultCode::kStrippingFailed;
+    case jpeg::FbmdStripResult::kRemoved:
+      break;
+  }
+
+  if (!base::WriteFile(file_path, file_bytes.value())) {
+    DVLOG(1) << "IPTC strip failed; could not write: " << file_path;
+    return StrippingResultCode::kFileWriteFailed;
+  }
+
+  return StrippingResultCode::kStripped;
 }
 
 }  // namespace image_metadata_stripper

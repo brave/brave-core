@@ -10,13 +10,27 @@
 
 namespace image_metadata_stripper {
 
+// This enum lets the client know the result of their stripping request.
+enum class StrippingResultCode {
+  // The input file does not exist.
+  kFileNotFound,
+  // Initial file read failed to check for metadata.
+  kFileReadFailed,
+  // File rewrite failed with the stripped out metadata.
+  kFileWriteFailed,
+
+  // Metadata was not found.
+  kMetadataNotFound,
+  // Metadata was found but not able to be stripped.
+  kStrippingFailed,
+  // Metadata was found and stripped.
+  kStripped,
+};
+
 // Removes the FBMD metadata from the IPTC Instructions field
 // (https://www.iptc.org/std/photometadata/documentation/userguide/#_instructions)
 // for an image file in |file_path|.
-// TODO(https://github.com/brave/brave-browser/issues/5238): Add the core
-// logic to remove the IPTC metadata and update the return type bool to a proper
-// result code.
-bool RemoveIptcMetadata(const base::FilePath& file_path);
+StrippingResultCode RemoveIptcMetadata(const base::FilePath& file_path);
 
 }  // namespace image_metadata_stripper
 
