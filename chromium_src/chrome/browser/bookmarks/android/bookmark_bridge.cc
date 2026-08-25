@@ -22,13 +22,9 @@
 #include "components/user_data_importer/content/content_bookmark_parser.h"
 #include "components/user_data_importer/utility/bookmark_parser.h"
 
-// CHROMIUM_SRC_NOLINT
-#define BraveBookmarkBridge BookmarkBridge
-#include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
-#undef BraveBookmarkBridge
-
 using BraveBookmarkBridge = BookmarkBridge;
 
+#include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
 #include "ui/android/window_android.h"
 
 #include <chrome/browser/bookmarks/android/bookmark_bridge.cc>
