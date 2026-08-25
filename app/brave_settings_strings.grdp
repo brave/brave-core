@@ -143,7 +143,7 @@
       Traffic Control
     </message>
     <message name="IDS_SETTINGS_TRAFFIC_CONTROL_SECTION_DESCRIPTION" desc="Description for Traffic Control settings" formatter_data="webui=TrafficControl">
-      Configure specific sites to automatically open in a particular context, creating separation between your browsing contexts. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      Configure specific sites to automatically open in a particular context, creating separation between your browsing sessions. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_TRAFFIC_CONTROL_ENABLED_LABEL" desc="Toggle label enabling Traffic Control" formatter_data="webui=TrafficControl">
       Enable Traffic Control
@@ -179,7 +179,7 @@
       Enter URLs to manage with traffic control
     </message>
     <message name="IDS_SETTINGS_TRAFFIC_CONTROL_URL_FILTER_HINT" desc="Help text for URL filter syntax. FILTER_EXAMPLE spans wrap literal filter patterns and should not be translated." formatter_data="webui=TrafficControl">
-      <ph name="BEGIN_FILTER_EXAMPLE">&lt;span class="filter-example"&gt;</ph>example.com<ph name="END_FILTER_EXAMPLE">&lt;/span&gt;</ph> matches the site and its subdomains; <ph name="BEGIN_FILTER_EXAMPLE2">&lt;span class="filter-example"&gt;</ph>.example.com<ph name="END_FILTER_EXAMPLE2">&lt;/span&gt;</ph> matches the exact site.
+      <ph name="BEGIN_FILTER_EXAMPLE">&lt;span class="filter-example"&gt;</ph>example.com<ph name="END_FILTER_EXAMPLE">&lt;/span&gt;</ph> matches the site and its subdomains; <ph name="BEGIN_FILTER_EXAMPLE2">&lt;span class="filter-example"&gt;</ph>.example.com<ph name="END_FILTER_EXAMPLE2">&lt;/span&gt;</ph> matches the exact site; <ph name="BEGIN_FILTER_EXAMPLE3">&lt;span class="filter-example"&gt;</ph>*<ph name="END_FILTER_EXAMPLE3">&lt;/span&gt;</ph> matches all sites; <ph name="BEGIN_FILTER_EXAMPLE4">&lt;span class="filter-example"&gt;</ph>#<ph name="END_FILTER_EXAMPLE4">&lt;/span&gt;</ph> is a comment.
     </message>
     <message name="IDS_SETTINGS_TRAFFIC_CONTROL_URL_FILTER_AND_MORE" desc="Compact rules-list label when a traffic rule has multiple URL patterns. FIRST_URL is the first pattern; COUNT is how many additional patterns remain." formatter_data="webui=TrafficControl">
       <ph name="FIRST_URL">$1<ex>example.com</ex></ph> (and <ph name="COUNT">$2<ex>3</ex></ph> more URLs)
