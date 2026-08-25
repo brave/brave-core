@@ -782,6 +782,20 @@ if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
 
+  if (enable_sparkle) {
+    # This has to be a bundle_dep of the framework. A dep in the framework's
+    # link graph would also be collected by nested bundles that link it, such
+    # as the aperitif helper apps, adding copies of Sparkle that nothing
+    # re-signs.
+    if (build_sparkle) {
+      brave_chrome_framework_bundle_deps +=
+          [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
+    } else {
+      brave_chrome_framework_bundle_deps +=
+          [ "//brave/browser:prebuilt_sparkle_framework_bundle_data" ]
+    }
+  }
+
   if (enable_brave_vpn_v2_bundling) {
     brave_chrome_framework_bundle_deps += [ "//brave:vpn_apps_bundle_data" ]
   }
