@@ -37,8 +37,8 @@ static_library("misc_metrics_impl") {
   sources = [
     "//brave/browser/misc_metrics/doh_metrics.cc",
     "//brave/browser/misc_metrics/doh_metrics.h",
-    "//brave/browser/misc_metrics/fingerprint_input_metrics.cc",
-    "//brave/browser/misc_metrics/fingerprint_input_metrics.h",
+    "//brave/browser/misc_metrics/fingerprint_frequency_metrics.cc",
+    "//brave/browser/misc_metrics/fingerprint_frequency_metrics.h",
     "//brave/browser/misc_metrics/media_session_metrics_impl.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
@@ -140,7 +140,7 @@ source_set("unit_tests") {
 
   sources = [
     "doh_metrics_unittest.cc",
-    "fingerprint_input_metrics_unittest.cc",
+    "fingerprint_frequency_metrics_unittest.cc",
     "media_session_metrics_impl_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
@@ -196,7 +196,7 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "fingerprint_input_metrics_browsertest.cc" ]
+  sources = [ "fingerprint_frequency_metrics_browsertest.cc" ]
 
   # The web3 proxy is only injected alongside a wallet provider.
   if (enable_brave_wallet) {

@@ -3,28 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 const hashValue = (() => {
+  // Serializes values with sorted object keys to produce a stable string for hashing.
   function toCanonicalString(value) {
-    if (['string', 'number', 'boolean', 'undefined'].includes(typeof value)) {
-      return JSON.stringify(value)
-    }
-
-    if (value === null) {
-      return JSON.stringify(value)
-    }
-
-    if (Array.isArray(value)) {
-      const newArray = value.map(toCanonicalString)
-      return JSON.stringify(newArray)
-    }
-
-    const sortedObject = {}
-    for (const sortedKey of Object.keys(value).sort()) {
-      const aValue = value[sortedKey]
-      sortedObject[sortedKey] = toCanonicalString(aValue)
-    }
-    return JSON.stringify(sortedObject)
+    return JSON.stringify(value, (_, val) => {
+      if (val && typeof val === 'object' && !Array.isArray(val)) {
+        return Object.keys(val)
+          .sort()
+          .reduce((sorted, k) => {
+            sorted[k] = val[k]
+            return sorted
+          }, {})
+      }
+      return val
+    })
   }
 
+  // FNV-1a hash, using the standard parameters for the 32-bit variant
   return (value) => {
     const str = toCanonicalString(value)
     let h = 0x811c9dc5
@@ -42,6 +36,10 @@ const { getWebGlBasics, getWebGlExtensions } = (() => {
   /** WebGL context `getParameter` method is not a function */
   const STATUS_GET_PARAMETER_NOT_A_FUNCTION = -2
 
+  /**
+   * WebGL parameter enum values that can be queried via gl.getParameter().
+   * Context parameters describe GPU hardware limits and graphics settings (e.g. max texture size, viewport bounds).
+   */
   const validContextParameters = new Set([
     10752, 2849, 2884, 2885, 2886, 2928, 2929, 2930, 2931, 2932, 2960, 2961,
     2962, 2963, 2964, 2965, 2966, 2967, 2968, 2978, 3024, 3042, 3088, 3089,

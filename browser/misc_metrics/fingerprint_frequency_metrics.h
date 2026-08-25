@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_MISC_METRICS_FINGERPRINT_INPUT_METRICS_H_
-#define BRAVE_BROWSER_MISC_METRICS_FINGERPRINT_INPUT_METRICS_H_
+#ifndef BRAVE_BROWSER_MISC_METRICS_FINGERPRINT_FREQUENCY_METRICS_H_
+#define BRAVE_BROWSER_MISC_METRICS_FINGERPRINT_FREQUENCY_METRICS_H_
 
 #include <memory>
 #include <optional>
@@ -63,14 +63,17 @@ inline constexpr char kWebGLVendorFingerprintPercentHistogramName[] =
     "Brave.Shields.FPInput.WebGLVendor";
 
 // Collects and reports browser fingerprint input stability metrics over time.
-class FingerprintInputMetrics : public PagePercentageMetrics,
-                                public content::WebContentsObserver {
+// This is for an internal privacy study. Only the frequency of fingerprint
+// input changes are reported, and fingerprint values are never transmitted.
+class FingerprintFrequencyMetrics : public PagePercentageMetrics,
+                                    public content::WebContentsObserver {
  public:
-  FingerprintInputMetrics(PrefService* local_state, Profile* profile);
-  ~FingerprintInputMetrics() override;
+  FingerprintFrequencyMetrics(PrefService* local_state, Profile* profile);
+  ~FingerprintFrequencyMetrics() override;
 
-  FingerprintInputMetrics(const FingerprintInputMetrics&) = delete;
-  FingerprintInputMetrics& operator=(const FingerprintInputMetrics&) = delete;
+  FingerprintFrequencyMetrics(const FingerprintFrequencyMetrics&) = delete;
+  FingerprintFrequencyMetrics& operator=(const FingerprintFrequencyMetrics&) =
+      delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -95,20 +98,19 @@ class FingerprintInputMetrics : public PagePercentageMetrics,
   void HandleResult(base::Value result);
   void Cleanup();
 
-  raw_ptr<Profile> profile_;
-
   std::unique_ptr<content::WebContents> web_contents_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector_;
   base::WallClockTimer renderer_timer_;
   base::WallClockTimer report_timer_;
   base::OneShotTimer timeout_timer_;
 
-  std::optional<base::DictValue> fake_renderer_results_;
+  std::optional<base::DictValue> fake_renderer_results_for_testing_;
   base::OnceCallback<void(base::DictValue)> result_callback_for_testing_;
 
-  base::WeakPtrFactory<FingerprintInputMetrics> weak_ptr_factory_{this};
+  raw_ptr<Profile> profile_;
+  base::WeakPtrFactory<FingerprintFrequencyMetrics> weak_ptr_factory_{this};
 };
 
 }  // namespace misc_metrics
 
-#endif  // BRAVE_BROWSER_MISC_METRICS_FINGERPRINT_INPUT_METRICS_H_
+#endif  // BRAVE_BROWSER_MISC_METRICS_FINGERPRINT_FREQUENCY_METRICS_H_

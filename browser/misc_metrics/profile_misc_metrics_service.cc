@@ -9,7 +9,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/browser/misc_metrics/fingerprint_input_metrics.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
@@ -76,8 +76,8 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   auto* profile = Profile::FromBrowserContext(context);
   if (local_state && profile && !profile->IsOffTheRecord() &&
       base::FeatureList::IsEnabled(features::kFingerprintInputMetrics)) {
-    fingerprint_input_metrics_ =
-        std::make_unique<FingerprintInputMetrics>(local_state, profile);
+    fingerprint_frequency_metrics_ =
+        std::make_unique<FingerprintFrequencyMetrics>(local_state, profile);
   }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
@@ -138,6 +138,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 ProfileMiscMetricsService::~ProfileMiscMetricsService() = default;
 
 void ProfileMiscMetricsService::Shutdown() {
+  fingerprint_frequency_metrics_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   if (extension_metrics_) {
     extension_metrics_->Shutdown();

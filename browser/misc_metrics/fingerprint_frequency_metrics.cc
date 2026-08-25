@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/fingerprint_input_metrics.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 
 #include <string>
 #include <string_view>
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/rand_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
@@ -36,12 +35,7 @@ namespace misc_metrics {
 namespace {
 
 constexpr base::TimeDelta kReportInterval = base::Days(7);
-constexpr base::TimeDelta kCheckInterval = base::Minutes(30);
 constexpr base::TimeDelta kStartDelay = base::Seconds(30);
-constexpr base::TimeDelta kStartDelayMinRandom = base::Seconds(-5);
-constexpr base::TimeDelta kStartDelayMaxRandom = base::Seconds(15);
-constexpr base::TimeDelta kIntervalDelayMinRandom = base::Seconds(1);
-constexpr base::TimeDelta kIntervalDelayMaxRandom = base::Seconds(120);
 constexpr base::TimeDelta kExecutionTimeout = base::Seconds(30);
 
 constexpr char kTotalCountKey[] = "total";
@@ -75,15 +69,16 @@ constexpr FingerprintMetricEntry kFingerprintMetrics[] = {
 }  // namespace
 
 // static
-void FingerprintInputMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
+void FingerprintFrequencyMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kMiscMetricsFingerprintHashes);
   registry->RegisterDictionaryPref(kMiscMetricsFingerprintChangeCounts);
   registry->RegisterTimePref(kMiscMetricsFingerprintReportFrameStartTime, {});
   registry->RegisterTimePref(kMiscMetricsFingerprintLastExecutionTime, {});
 }
 
-FingerprintInputMetrics::FingerprintInputMetrics(PrefService* local_state,
-                                                 Profile* profile)
+FingerprintFrequencyMetrics::FingerprintFrequencyMetrics(
+    PrefService* local_state,
+    Profile* profile)
     : PagePercentageMetrics(local_state,
                             kMiscMetricsFingerprintChangeCounts,
                             kMiscMetricsFingerprintReportFrameStartTime,
@@ -91,21 +86,19 @@ FingerprintInputMetrics::FingerprintInputMetrics(PrefService* local_state,
       content::WebContentsObserver(nullptr),
       profile_(profile) {
   ReportAllMetrics();
-  base::TimeDelta delay =
-      kStartDelay +
-      base::RandTimeDelta(kStartDelayMinRandom, kStartDelayMaxRandom);
-  renderer_timer_.Start(FROM_HERE, base::Time::Now() + delay, this,
-                        &FingerprintInputMetrics::StartExecution);
+  renderer_timer_.Start(FROM_HERE, base::Time::Now() + kStartDelay, this,
+                        &FingerprintFrequencyMetrics::StartExecution);
 }
 
-FingerprintInputMetrics::~FingerprintInputMetrics() = default;
+FingerprintFrequencyMetrics::~FingerprintFrequencyMetrics() = default;
 
-void FingerprintInputMetrics::ReportAllMetrics() {
+void FingerprintFrequencyMetrics::ReportAllMetrics() {
   base::Time now = base::Time::Now();
-  report_timer_.Start(FROM_HERE, now + kCheckInterval, this,
-                      &FingerprintInputMetrics::ReportAllMetrics);
-
   if (!HasReportIntervalElapsed()) {
+    base::Time frame_start =
+        local_state_->GetTime(kMiscMetricsFingerprintReportFrameStartTime);
+    report_timer_.Start(FROM_HERE, frame_start + kReportInterval, this,
+                        &FingerprintFrequencyMetrics::ReportAllMetrics);
     return;
   }
 
@@ -120,46 +113,45 @@ void FingerprintInputMetrics::ReportAllMetrics() {
   }
 
   ResetCounts();
+  report_timer_.Start(FROM_HERE, now + kReportInterval, this,
+                      &FingerprintFrequencyMetrics::ReportAllMetrics);
 }
 
-void FingerprintInputMetrics::SetFakeRendererResultsForTesting(
+void FingerprintFrequencyMetrics::SetFakeRendererResultsForTesting(
     base::DictValue results) {
-  fake_renderer_results_ = std::move(results);
+  fake_renderer_results_for_testing_ = std::move(results);
 }
 
-void FingerprintInputMetrics::ExecuteRendererForTesting(
+void FingerprintFrequencyMetrics::ExecuteRendererForTesting(
     base::OnceCallback<void(base::DictValue)> callback) {
   result_callback_for_testing_ = std::move(callback);
   RunScriptInRenderer();
 }
 
-void FingerprintInputMetrics::StartExecution() {
+void FingerprintFrequencyMetrics::StartExecution() {
   base::Time now = base::Time::Now();
-  renderer_timer_.Start(
-      FROM_HERE,
-      now + kCheckInterval +
-          base::RandTimeDelta(kIntervalDelayMinRandom, kIntervalDelayMaxRandom),
-      this, &FingerprintInputMetrics::StartExecution);
-
   base::Time last_execution =
       local_state_->GetTime(kMiscMetricsFingerprintLastExecutionTime);
-  if (!last_execution.is_null() &&
-      now - last_execution <
-          features::kFingerprintInputRendererInterval.Get()) {
+  base::TimeDelta interval = features::kFingerprintInputRendererInterval.Get();
+  if (!last_execution.is_null() && (now - last_execution) < interval) {
+    renderer_timer_.Start(FROM_HERE, last_execution + interval, this,
+                          &FingerprintFrequencyMetrics::StartExecution);
     return;
   }
 
   local_state_->SetTime(kMiscMetricsFingerprintLastExecutionTime, now);
+  renderer_timer_.Start(FROM_HERE, now + interval, this,
+                        &FingerprintFrequencyMetrics::StartExecution);
 
-  if (fake_renderer_results_) {
-    HandleResult(base::Value(fake_renderer_results_->Clone()));
+  if (fake_renderer_results_for_testing_) {
+    HandleResult(base::Value(fake_renderer_results_for_testing_->Clone()));
     return;
   }
 
   RunScriptInRenderer();
 }
 
-void FingerprintInputMetrics::RunScriptInRenderer() {
+void FingerprintFrequencyMetrics::RunScriptInRenderer() {
   if (web_contents_) {
     return;
   }
@@ -181,11 +173,11 @@ void FingerprintInputMetrics::RunScriptInRenderer() {
       ui::PAGE_TRANSITION_TYPED, std::string());
 
   timeout_timer_.Start(FROM_HERE, kExecutionTimeout,
-                       base::BindOnce(&FingerprintInputMetrics::Cleanup,
+                       base::BindOnce(&FingerprintFrequencyMetrics::Cleanup,
                                       base::Unretained(this)));
 }
 
-void FingerprintInputMetrics::DidFinishLoad(
+void FingerprintFrequencyMetrics::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
   if (render_frame_host->GetParent() || injector_.is_bound()) {
@@ -202,11 +194,11 @@ void FingerprintInputMetrics::DidFinishLoad(
       content::ISOLATED_WORLD_ID_GLOBAL, base::UTF8ToUTF16(script),
       blink::mojom::UserActivationOption::kDoNotActivate,
       blink::mojom::PromiseResultOption::kAwait,
-      base::BindOnce(&FingerprintInputMetrics::HandleResult,
+      base::BindOnce(&FingerprintFrequencyMetrics::HandleResult,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void FingerprintInputMetrics::HandleResult(base::Value result) {
+void FingerprintFrequencyMetrics::HandleResult(base::Value result) {
   timeout_timer_.Stop();
 
   if (!result.is_dict()) {
@@ -237,7 +229,7 @@ void FingerprintInputMetrics::HandleResult(base::Value result) {
   }
 }
 
-void FingerprintInputMetrics::Cleanup() {
+void FingerprintFrequencyMetrics::Cleanup() {
   Observe(nullptr);
   injector_.reset();
   if (web_contents_) {
