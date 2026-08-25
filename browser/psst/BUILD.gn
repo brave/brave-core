@@ -92,6 +92,7 @@ source_set("browser_tests") {
     "//brave/components/psst/buildflags",
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
+    "//chrome/browser/ui/views/infobars",
     "//chrome/test:test_support",
     "//components/component_updater:test_support",
     "//components/infobars/content",

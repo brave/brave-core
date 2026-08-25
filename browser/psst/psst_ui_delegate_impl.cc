@@ -175,9 +175,6 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
                        weak_ptr_factory_.GetWeakPtr()));
 
     ui_presenter_->ShowConsentDialog();
-  } else {
-    // Disable PSST if user declined the infobar
-    psst_settings_service_->SetPsstEnabled(false);
   }
 }
 
