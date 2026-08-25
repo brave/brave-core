@@ -261,6 +261,7 @@ public protocol TabState: AnyObject {
   /// Returns the PDF data for the current page if one is being displayed
   var dataForDisplayedPDF: Data? { get }
   /// Returns a colour that was sampled from the top of the page for UI purposes
+  @available(iOS, obsoleted: 26.0, message: "Page top color is not sampled on iOS 26+")
   var sampledPageTopColor: UIColor? { get }
   /// The scale applied to the WKWebView which can be used to apply custom zoom settings to a page
   var viewScale: CGFloat { get set }

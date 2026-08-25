@@ -163,18 +163,20 @@ class ChromiumTabState: TabState, TabStateImpl {
     webViewObservations.append(
       contentsOf: keyValueObservations.map { observation in .init { observation.invalidate() } }
     )
-    if let webView = webView.internalWebView {
-      let sampledPageTopColorObservation =
-        StringKeyPathObserver<WKWebView, UIColor>(
-          object: webView,
-          keyPath: "_sampl\("edPageTopC")olor",
-          changeHandler: { [weak self] _ in
-            self?.webViewSampledPageTopColorDidChange()
-          }
+    if #unavailable(iOS 26.0) {
+      if let webView = webView.internalWebView {
+        let sampledPageTopColorObservation =
+          StringKeyPathObserver<WKWebView, UIColor>(
+            object: webView,
+            keyPath: "_sampl\("edPageTopC")olor",
+            changeHandler: { [weak self] _ in
+              self?.webViewSampledPageTopColorDidChange()
+            }
+          )
+        webViewObservations.append(
+          .init { sampledPageTopColorObservation.invalidate() }
         )
-      webViewObservations.append(
-        .init { sampledPageTopColorObservation.invalidate() }
-      )
+      }
     }
   }
 
