@@ -5,13 +5,11 @@
 
 #include "components/update_client/update_client.h"
 
-#include "base/logging.h"
+#include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
+#include "components/update_client/update_checker.h"
 
-#define UpdateClientFactory UpdateClientFactory_ChromiumImpl
 #include <components/update_client/update_client.cc>
-#undef UpdateClientFactory
-
-#include "base/logging.h"
 
 namespace update_client {
 
@@ -19,9 +17,8 @@ bool CrxInstaller::IsBraveComponent() const {
   return false;
 }
 
-scoped_refptr<UpdateClient> UpdateClientFactory(
+scoped_refptr<UpdateClient> SequentialUpdateClientFactory(
     scoped_refptr<Configurator> config) {
-  VLOG(3) << "Brave UpdateClientFactory called";
   return base::MakeRefCounted<UpdateClientImpl>(
       config, base::MakeRefCounted<PingManager>(config),
       base::BindRepeating(&SequentialUpdateChecker::Create));

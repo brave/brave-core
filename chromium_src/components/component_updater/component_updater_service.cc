@@ -8,8 +8,13 @@
 #include "base/notreached.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service_internal.h"
+#include "components/update_client/update_client.h"
 
+// See the documentation of SequentialUpdateClientFactory for an explanation why
+// we use it here.
+#define UpdateClientFactory SequentialUpdateClientFactory
 #include <components/component_updater/component_updater_service.cc>
+#undef UpdateClientFactory
 
 namespace component_updater {
 
