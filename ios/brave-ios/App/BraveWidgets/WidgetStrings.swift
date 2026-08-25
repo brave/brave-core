@@ -191,6 +191,13 @@ extension Strings {
       comment:
         "Title for Ask Brave shortcut. Brave is the company name and should not be translated"
     )
+    public static let braveLeoVoiceInput = NSLocalizedString(
+      "widgets.braveLeoVoiceInput",
+      bundle: widgetBundle,
+      value: "Leo Voice Input",
+      comment:
+        "Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated"
+    )
     public static let newsUnavailableByPolicy = NSLocalizedString(
       "widgets.newsUnavailableByPolicy",
       bundle: widgetBundle,
