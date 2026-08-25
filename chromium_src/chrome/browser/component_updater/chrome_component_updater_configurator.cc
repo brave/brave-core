@@ -5,22 +5,5 @@
 
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/net/system_network_context_manager.h"
 
-#define MakeChromeComponentUpdaterConfigurator \
-    MakeChromeComponentUpdaterConfigurator_ChromiumImpl
 #include <chrome/browser/component_updater/chrome_component_updater_configurator.cc>
-#undef MakeChromeComponentUpdaterConfigurator
-
-namespace component_updater {
-
-scoped_refptr<update_client::Configurator>
-MakeChromeComponentUpdaterConfigurator(const base::CommandLine* cmdline,
-                                       PrefService* pref_service) {
-  return base::MakeRefCounted<BraveConfigurator>(
-      cmdline, pref_service,
-      g_browser_process->system_network_context_manager()
-          ->GetSharedURLLoaderFactory());
-}
-
-}  // namespace component_updater

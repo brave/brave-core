@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Let callers observe when Widevine CDM registration finishes.'
+    regex:
+      pattern:
+        'void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {'
+      replace: |-
+        void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
+                                          base::OnceClosure callback) {
+
+  - description: 'Skip registering Widevine when the user has it disabled.'
+    preempt_function_impl:
+      function_name: RegisterWidevineCdmComponent
+      code: |-
+        DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+        if (!IsWidevineEnabled()) {
+          return;
+        }
+
+  - description: 'Forward the completion callback instead of dropping it.'
+    regex:
+      pattern: 'installer->Register(cus, base::OnceClosure());'
+      replace: 'installer->Register(cus, std::move(callback));'

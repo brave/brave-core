@@ -8,12 +8,6 @@
 
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#define RegisterWidevineCdmComponent(cus) \
-  RegisterWidevineCdmComponent(           \
-      cus, base::OnceCallback<void()> callback = base::OnceClosure())
-
 #include <chrome/browser/component_updater/widevine_cdm_component_installer.h>  // IWYU pragma: export
-
-#undef RegisterWidevineCdmComponent
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_COMPONENT_UPDATER_WIDEVINE_CDM_COMPONENT_INSTALLER_H_

@@ -8,12 +8,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 
-#define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
-
-#include <chrome/browser/component_updater/registration.cc>
-
-#undef RegisterComponentsForUpdate
-
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_global_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -54,8 +48,9 @@
 
 namespace component_updater {
 
-void RegisterComponentsForUpdate() {
-  RegisterComponentsForUpdate_ChromiumImpl();
+namespace {
+
+void RegisterBraveComponentsForUpdate() {
   ComponentUpdateService* cus = g_browser_process->component_updater();
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::WalletDataFilesInstaller::GetInstance()
@@ -94,4 +89,8 @@ void RegisterComponentsForUpdate() {
   RegisterQueryFilterComponent(cus);
 }
 
+}  // namespace
+
 }  // namespace component_updater
+
+#include <chrome/browser/component_updater/registration.cc>
