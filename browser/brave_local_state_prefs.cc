@@ -12,6 +12,7 @@
 #include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/browser/misc_metrics/fingerprint_input_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -261,6 +262,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   misc_metrics::ProcessMiscMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetrics::RegisterPrefs(registry);
+  misc_metrics::FingerprintInputMetrics::RegisterPrefs(registry);
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
 #endif
