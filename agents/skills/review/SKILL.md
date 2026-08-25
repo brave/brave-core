@@ -10,7 +10,7 @@ allowed-tools:
   Bash(gh issue list:*), Bash(gh issue view:*), Bash(gh pr list:*), Bash(gh pr
   view:*), Bash(gh pr diff:*), Bash(git diff:*), Bash(git log:*), Bash(git
   status:*), Bash(git merge-base:*), Bash(git branch:*), Bash(git rev-parse:*),
-  Read, Edit, Grep, Glob
+  Read, Edit, Grep, Glob, AskUserQuestion
 ---
 
 # Code Review Skill
@@ -1001,23 +1001,57 @@ If no issues: "None - changes look ready for PR."
 
 ### Posting to GitHub
 
-If the user asks you to post the review as a comment on GitHub, **always prefix
-the review body** with:
+If the user asks you to post the review to GitHub, follow this flow:
+
+**Step 1 — Assemble the final review.** Build the complete review exactly as it
+will be posted: review body (summary, verdict, general observations) plus inline
+comments, each tied to its file and line.
+
+**Step 2 — Ask for approval (if a question tool is available).** Before posting,
+present the final review and ask the user:
+
+> Do you agree with this review and acknowledge that it is posted on your
+> behalf, under your responsibility?
+
+- **User approves** → post the review with no disclaimer (Step 3)
+- **User declines** → post nothing; stop
+
+**Step 3 — Append the AI watermark.** Append this watermark as an HTML comment
+at the END of the review body AND at the END of every inline comment:
+
+```
+<!-- ai-review: model=<model|unknown>; harness=<Claude Code|opencode|unknown>; verification=<BDD,property,symbolic,TDD|none>; user-approved=<yes|not-asked> -->
+```
+
+Fields:
+
+- `model`: the AI model used, recovered from the environment when possible;
+  `unknown` if not recoverable
+- `harness`: the agent harness in use (e.g. `Claude Code`, `opencode`);
+  `unknown` if not detectable
+- `verification`: testing methods actually used to validate this review's claims
+  during this run (`BDD`, `property`, `symbolic`, `TDD`, comma separated);
+  `none` if none were performed
+- `user-approved`: `yes` if the user approved via the question tool; `not-asked`
+  if no question tool was available
+
+**No question tool available:** if the harness provides no question/ask tool,
+skip Step 2 and post the review with the current disclaimer prefix at the very
+beginning of the review body (as plain text, not as a blockquote) plus the
+watermark with `user-approved=not-asked`. The disclaimer:
 
 I generated this review about the changes, sharing here. It should be used for
 informational purposes only and not as proof of review.
-
-This disclaimer must appear at the very beginning of the review body (as plain
-text, not as a blockquote).
 
 **Post as inline code comments when possible.** When the review identifies
 specific issues tied to files and lines, post them as inline review comments on
 the actual code rather than as a single general comment. Use the GitHub review
 API to submit a single review with:
 
-- **Review body**: The summary, verdict, and any general observations (with the
-  disclaimer prefix above)
-- **Inline comments**: Each specific issue placed on its file and line
+- **Review body**: The summary, verdict, and any general observations (ending
+  with the watermark)
+- **Inline comments**: Each specific issue placed on its file and line (each
+  ending with the watermark)
 
 ```bash
 gh api repos/brave/brave-core/pulls/{number}/reviews \
@@ -1025,13 +1059,13 @@ gh api repos/brave/brave-core/pulls/{number}/reviews \
   --input - <<'EOF'
 {
   "event": "COMMENT",
-  "body": "I generated this review about the changes, sharing here. It should be used for informational purposes only and not as proof of review.\n\n## Summary\n...\n\n## Verdict: PASS/FAIL\n...",
+  "body": "## Summary\n...\n\n## Verdict: PASS/FAIL\n...\n\n<!-- ai-review: model=...; harness=...; verification=...; user-approved=yes -->",
   "comments": [
     {
       "path": "path/to/file.cc",
       "line": 42,
       "side": "RIGHT",
-      "body": "specific issue description for this line"
+      "body": "specific issue description for this line\n\n<!-- ai-review: model=...; harness=...; verification=...; user-approved=yes -->"
     }
   ]
 }
@@ -1100,8 +1134,9 @@ Review a PR by number (assumes brave/brave-core):
 - [ ] Researched previous fix attempts
 - [ ] If previous attempts exist: proved current fix is materially different (or
       FAILED the review)
-- [ ] Only posted to GitHub if user explicitly requested (with disclaimer
-      prefix)
+- [ ] Only posted to GitHub if user explicitly requested (after approval via the
+      question tool when available; watermark appended to the review body and
+      every inline comment)
 - [ ] For test disables: checked upstream flakiness via check-upstream-flake.py
 
 ### Local Mode Only
