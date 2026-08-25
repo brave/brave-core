@@ -15,7 +15,6 @@ import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -150,7 +149,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                                                 .BRAVE_DEFERRED_DEEPLINK_ORIGIN_PROMO, // presubmit: ignore-long-line
                                                         true);
                                     }
-                                } catch (RemoteException e) {
+                                } catch (Exception e) {
+                                    // Play Store may return a null bundle alongside an OK
+                                    // response code, which makes ReferrerDetails throw.
                                     Log.e(TAG, "Could not get referral", e);
                                 }
                                 // Connection established.
