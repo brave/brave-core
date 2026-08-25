@@ -1,8 +1,18 @@
 diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
-index aa96f61b4419ec454d26c86f277d33d38347c84b..e6735b485313c36213a17ebdf5aa198b524cdbc3 100644
+index aa96f61b4419ec454d26c86f277d33d38347c84b..53db0b831948d22f0330b4207c83000417a8e86b 100644
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
-@@ -554,7 +554,8 @@ BASE_FEATURE(kEnableHighChannelLayouts, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -389,7 +389,8 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Allows media to autoplay without a user gesture if the site has been
+ // granted microphone or camera permissions.
+-BASE_FEATURE(kAutoplayBypassForMicCamera, base::FEATURE_ENABLED_BY_DEFAULT);
++// kAutoplayBypassForMicCamera feature state is enforced via plaster rewrite.
++BASE_FEATURE(kAutoplayBypassForMicCamera, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Whether we should show a setting to disable autoplay policy.
+ BASE_FEATURE(kAutoplayDisableSettings, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -554,7 +555,8 @@ BASE_FEATURE(kEnableHighChannelLayouts, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kEnableRtcpReporting, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables user control over muting tab audio from the tab strip.
@@ -12,7 +22,18 @@ index aa96f61b4419ec454d26c86f277d33d38347c84b..e6735b485313c36213a17ebdf5aa198b
  
  // Enables tracking the occlusion of HW secure encrypted video elements.
  // The HW secure check is OS agnostic, but this switch is currently only
-@@ -711,7 +712,8 @@ BASE_FEATURE(kInternalMediaSession,
+@@ -615,8 +617,9 @@ BASE_FEATURE(kForceSoftwareForRtcLowResolutions,
+ //
+ // TODO(crbug.com/420406085): Remove after January 2028.
+ // Keep this flag around at least until that date.
++// kGetDisplayMediaConfersActivation feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kGetDisplayMediaConfersActivation,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Auto-dismiss global media controls.
+ BASE_FEATURE(kGlobalMediaControlsAutoDismiss, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -711,7 +714,8 @@ BASE_FEATURE(kInternalMediaSession,
  );
  
  // Enables the Live Caption feature on supported devices.
@@ -22,3 +43,13 @@ index aa96f61b4419ec454d26c86f277d33d38347c84b..e6735b485313c36213a17ebdf5aa198b
  
  // Enable automatic downloading of speech recognition language packs.
  BASE_FEATURE(kLiveCaptionAutomaticLanguageDownload,
+@@ -1314,7 +1318,8 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Enables MediaDrmBridge to call into MediaDrm API to query HDCP Status to
+ // support the CDM API GetStatusForPolicy.
+-BASE_FEATURE(kMediaDrmGetStatusForPolicy, base::FEATURE_ENABLED_BY_DEFAULT);
++// kMediaDrmGetStatusForPolicy feature state is enforced via plaster rewrite.
++BASE_FEATURE(kMediaDrmGetStatusForPolicy, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // An experimental feature to enable persistent-license type support in MediaDrm
+ // when using Encrypted Media Extensions (EME) API.

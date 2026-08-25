@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index b4bac32e265d103642ef96656f9b68fb897245bc..4e438cbcf63b39e51bba4a702a09b06b5a5754c2 100644
+index 775f70052cc7628762560ebaf293df3671fcb900..c298ee9712ff17091f24bb4d3cf9f15f1f4821a1 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -638,8 +638,10 @@ BASE_FEATURE(kFetchAccountInfoOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -642,8 +642,10 @@ BASE_FEATURE(kFetchAccountInfoOnRestart, base::FEATURE_DISABLED_BY_DEFAULT);
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -14,7 +14,15 @@ index b4bac32e265d103642ef96656f9b68fb897245bc..4e438cbcf63b39e51bba4a702a09b06b
  BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
  BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
-@@ -920,13 +922,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -808,6 +810,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif
+ 
++// kReadIsSubjectToUniversalOptOutCapability feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kReadIsSubjectToUniversalOptOutCapability,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+@@ -924,13 +927,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  
