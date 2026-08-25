@@ -7,6 +7,18 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
+source_set("arithmetic_evaluator") {
+  sources = [
+    "arithmetic_evaluator.cc",
+    "arithmetic_evaluator.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base:i18n",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -41,6 +53,7 @@ source_set("unit_tests") {
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
+    "//brave/components/omnibox/browser:arithmetic_evaluator",
     "//brave/components/omnibox/buildflags",
     "//brave/components/search_engines",
     "//chrome/browser/history",

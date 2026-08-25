@@ -8,8 +8,6 @@ import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
-  "//brave/components/omnibox/browser/arithmetic_evaluator.cc",
-  "//brave/components/omnibox/browser/arithmetic_evaluator.h",
   "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
   "//brave/components/omnibox/browser/brave_bookmark_provider.h",
   "//brave/components/omnibox/browser/brave_history_quick_provider.cc",
@@ -38,9 +36,9 @@ brave_components_omnibox_browser_sources = [
 
 brave_components_omnibox_browser_deps = [
   "//base",
-  "//base:i18n",
   "//brave/components/brave_search_conversion",
   "//brave/components/constants",
+  "//brave/components/omnibox/browser:arithmetic_evaluator",
   "//brave/components/omnibox/buildflags",
   "//brave/components/resources:strings",
   "//brave/components/vector_icons",
