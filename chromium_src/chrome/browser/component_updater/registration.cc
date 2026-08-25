@@ -89,7 +89,7 @@ void RegisterComponentsForUpdate() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(
       cus, g_browser_process->local_state());
-  local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(
+  local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
       cus, g_browser_process->local_state());
 #endif
   RegisterQueryFilterComponent(cus);

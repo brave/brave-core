@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -40,7 +41,10 @@ inline constexpr char kOnDeviceSpeechModelsComponentId[] =
 class OnDeviceSpeechModelsComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  OnDeviceSpeechModelsComponentInstallerPolicy();
+  // `local_state` gates `ComponentReady` on the `kBraveLocalAIEnabled` master
+  // switch, which can turn off while an update is already in flight.
+  explicit OnDeviceSpeechModelsComponentInstallerPolicy(
+      PrefService* local_state);
   ~OnDeviceSpeechModelsComponentInstallerPolicy() override;
 
   OnDeviceSpeechModelsComponentInstallerPolicy(
@@ -65,11 +69,34 @@ class OnDeviceSpeechModelsComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
+
+ private:
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 
-// Registers the on-device speech models component when the feature is enabled
-// and `kBraveLocalAIEnabled` is set, and deletes any installed copy otherwise.
-// Registering also requests the download, and is idempotent.
+// Called once while components are registered at startup, and then again
+// whenever the `kBraveLocalAIEnabled` master switch changes. Registers or
+// removes the component to match that switch and the feature. Removing the
+// model is only ever done from here.
+//
+// Brave Origin manages the switch and verifies the purchase asynchronously, so
+// its value can land after components are registered, which is why this
+// follows it rather than reading it once.
+void ManageOnDeviceSpeechModelsComponentRegistration(
+    component_updater::ComponentUpdateService* cus,
+    PrefService* local_state);
+
+// Drops the references taken by
+// `ManageOnDeviceSpeechModelsComponentRegistration`. Must run before `cus` and
+// `local_state` are destroyed.
+void ShutdownOnDeviceSpeechModelsComponentRegistration();
+
+// Registers the component, which also requests the download, and is
+// idempotent. Registers nothing when the feature or the master switch is off,
+// or when there is no update service to register with.
+//
+// Called when the user asks for the model through `install()`, and by
+// `ManageOnDeviceSpeechModelsComponentRegistration` above.
 //
 // `callback` is always run, asynchronously, for every outcome, including
 // `Error::INVALID_ARGUMENT` on the paths that register nothing.
