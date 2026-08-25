@@ -926,6 +926,12 @@
   <message name="IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION" desc="Open Data collection settings section">
     Data collection
   </message>
+  <message name="IDS_BRAVE_SETTINGS_SPONSORED_ADS_ENABLED_TITLE" desc="Title of the settings toggle that enables Sponsored Ads">
+    Enable Sponsored Ads
+  </message>
+  <message name="IDS_BRAVE_SETTINGS_SPONSORED_ADS_ENABLED_DESC" desc="Description under the settings toggle that enables Sponsored Ads">
+    Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.
+  </message>
 
   <!-- Settings / Privacy and security / Clear Browsing Data dialog -->
   <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
