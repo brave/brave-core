@@ -114,6 +114,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable-hdpi/ic_ad_free_videos.png",
     "java/brave-res/drawable-hdpi/share_activity_background.png",
     "java/brave-res/drawable-hdpi/vpn_install_bg.png",
+    "java/brave-res/drawable-ldrtl/brave_modern_toolbar_text_box_background.xml",
     "java/brave-res/drawable-ldrtl/brave_rating_emoji_happy_bg.xml",
     "java/brave-res/drawable-ldrtl/brave_rating_emoji_sad_bg.xml",
     "java/brave-res/drawable-ldrtl/modern_toolbar_background_grey_end_segment.xml",
