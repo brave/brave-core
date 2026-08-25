@@ -127,6 +127,7 @@ export const AllowSpendPanel = () => {
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
+          close={onReject}
         />
         <VerticalDivider />
 

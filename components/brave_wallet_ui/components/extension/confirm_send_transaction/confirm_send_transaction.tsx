@@ -185,6 +185,7 @@ export function ConfirmSendTransaction() {
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
+          close={onReject}
         />
         <ScrollableColumn
           width='100%'

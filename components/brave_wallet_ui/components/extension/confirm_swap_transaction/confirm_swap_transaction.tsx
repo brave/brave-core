@@ -187,6 +187,7 @@ export function ConfirmSwapTransaction() {
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
+          close={onReject}
         />
         <ScrollableColumn
           width='100%'
