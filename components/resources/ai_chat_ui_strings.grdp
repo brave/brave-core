@@ -867,6 +867,12 @@
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_NEW_CONVERSATION_IN_WORKSPACE" desc="Tooltip and accessible label for a button on a workspace (a local folder attached to conversations) in the conversation list, which starts a new conversation with that workspace attached" formatter_data="webui=AiChat">
     New conversation in this workspace
   </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_GENERATING" desc="Accessibility label and tooltip for a conversation that is currently generating a response in the background" formatter_data="webui=AiChat">
+    Generating
+  </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_COMPLETED_NOT_VIEWED" desc="Accessibility label and tooltip for a conversation that has finished generating and has not been viewed yet" formatter_data="webui=AiChat">
+    Completed not viewed
+  </message>
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu" formatter_data="webui=AiChat">
     Temporary chat
   </message>

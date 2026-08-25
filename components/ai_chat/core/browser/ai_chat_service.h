@@ -513,6 +513,12 @@ class AIChatService : public KeyedService,
   mojo::RemoteSet<mojom::UntrustedServiceObserver>
       untrusted_service_observer_remotes_;
 
+  // In-memory per-conversation generation state for ServiceObserver broadcast.
+  // kCompletedNotViewed is session-only (cleared on BindConversation).
+  std::map<std::string, mojom::ConversationGenerationState>
+      conversation_generation_state_;
+  void NotifyConversationGenerationState(const std::string& uuid);
+
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 
   // AIChatCredentialManager / Skus does not provide an event when
