@@ -10,9 +10,22 @@
 
 namespace image_metadata_stripper {
 
-// This class lets the client know on a very high level what happened to their
-// stripping request.
-enum class StrippingResultCode { kStripped, kStrippingFailed, kIgnored };
+// This enum lets the client know the result of their stripping request.
+enum class StrippingResultCode {
+  // The input file does not exist.
+  kFileNotFound,
+  // Initial file read failed to check for metadata.
+  kFileReadFailed,
+  // File rewrite failed with the stripped out metadata.
+  kFileWriteFailed,
+
+  // Metadata was not found.
+  kMetadataNotFound,
+  // Metadata was found but not able to be stripped.
+  kStrippingFailed,
+  // Metadata was found and stripped.
+  kStripped,
+};
 
 // Removes the FBMD metadata from the IPTC Instructions field
 // (https://www.iptc.org/std/photometadata/documentation/userguide/#_instructions)

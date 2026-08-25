@@ -111,14 +111,30 @@ void BraveDownloadManagerDelegate::OnImageMetadataStripped(
     image_metadata_stripper::StrippingResultCode result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+  // Debug logs.
   switch (result) {
-    case image_metadata_stripper::StrippingResultCode::kStrippingFailed: {
-      DVLOG(1) << "Failed to strip image metadata from download file.";
+    case image_metadata_stripper::StrippingResultCode::kFileNotFound: {
+      DVLOG(1) << "Stripping skipped as the download file does not exist.";
       break;
     }
 
-    case image_metadata_stripper::StrippingResultCode::kIgnored: {
+    case image_metadata_stripper::StrippingResultCode::kFileReadFailed: {
+      DVLOG(1) << "Failed to read the download file to check for metadata.";
+      break;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kFileWriteFailed: {
+      DVLOG(1) << "Failed to rewrite the download file without the metadata.";
+      break;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kMetadataNotFound: {
       DVLOG(1) << "Stripping ignored as FBMD metadata may not be present.";
+      break;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kStrippingFailed: {
+      DVLOG(1) << "Failed to strip image metadata from download file.";
       break;
     }
 

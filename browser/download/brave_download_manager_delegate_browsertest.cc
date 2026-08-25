@@ -227,23 +227,6 @@ class BraveDownloadManagerDelegateFeatureDisabledBrowserTest
 #define NON_ANDROID_TEST(test) test
 #endif
 
-IN_PROC_BROWSER_TEST_F(
-    BraveDownloadManagerDelegateBrowserTest,
-    NON_ANDROID_TEST(StripsMetadataFromDownloadedJpegImage)) {
-  base::test::TestFuture<void> iptc_metadata_stripper_future;
-  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
-      iptc_metadata_stripper_future.GetCallback());
-
-  DownloadURL(
-      embedded_test_server()->GetURL(std::string("/") + kJpegImageFileName));
-
-  // RemoveIptcMetadata() ran for the download, and the download still made it
-  // to disk afterwards.
-  EXPECT_TRUE(iptc_metadata_stripper_future.Wait());
-  // Check the download was completed.
-  AssertFileWasDownloaded(kJpegImageFileName);
-}
-
 // End-to-end coverage: downloading a real JPEG that carries a Facebook FBMD
 // IPTC record results in the record being scrubbed from the file on disk.
 IN_PROC_BROWSER_TEST_F(

@@ -18,21 +18,21 @@ namespace image_metadata_stripper {
 StrippingResultCode RemoveIptcMetadata(const base::FilePath& file_path) {
   if (!base::PathExists(file_path)) {
     DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;
-    return StrippingResultCode::kIgnored;
+    return StrippingResultCode::kFileNotFound;
   }
 
   std::optional<std::vector<uint8_t>> file_bytes =
       base::ReadFileToBytes(file_path);
   if (!file_bytes.has_value()) {
     DVLOG(1) << "IPTC strip failed; could not read: " << file_path;
-    return StrippingResultCode::kIgnored;
+    return StrippingResultCode::kFileReadFailed;
   }
 
   jpeg::FbmdStripResult result =
       jpeg::RemoveFbmdIptcMetadata(file_bytes.value());
   switch (result) {
     case jpeg::FbmdStripResult::kNotFound:
-      return StrippingResultCode::kIgnored;
+      return StrippingResultCode::kMetadataNotFound;
     case jpeg::FbmdStripResult::kFailed:
       return StrippingResultCode::kStrippingFailed;
     case jpeg::FbmdStripResult::kRemoved:
@@ -41,7 +41,7 @@ StrippingResultCode RemoveIptcMetadata(const base::FilePath& file_path) {
 
   if (!base::WriteFile(file_path, file_bytes.value())) {
     DVLOG(1) << "IPTC strip failed; could not write: " << file_path;
-    return StrippingResultCode::kStrippingFailed;
+    return StrippingResultCode::kFileWriteFailed;
   }
 
   return StrippingResultCode::kStripped;
