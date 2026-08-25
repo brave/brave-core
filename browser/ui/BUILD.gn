@@ -54,6 +54,7 @@ source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
     "//brave/browser:core",
+    "//brave/browser/ui/views/frame:browser_tests",
     "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
