@@ -43,6 +43,7 @@ class BraveToolbarView : public ToolbarView,
   BraveBookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
   SidePanelButton* side_panel_button() const { return side_panel_; }
+  ScreenshotButton* screenshot_button() const { return screenshot_button_; }
   ToolbarButton* vertical_tab_toggle_button() const {
     return vertical_tab_toggle_;
   }

@@ -48,6 +48,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -1321,6 +1322,17 @@ bool BraveBrowserView::UpdateToolbarSecurityState() {
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
+  if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
+                      command_id == IDC_SHARING_HUB_SCREENSHOT) {
+    auto* brave_toolbar_view = views::AsViewClass<BraveToolbarView>(toolbar());
+    if (auto* screenshot_button = brave_toolbar_view->screenshot_button()) {
+      screenshot_button->ShowBubbleForAccelerator();
+      return true;
+    }
+    // Brave's screenshot feature is disabled; fall through to upstream's
+    // Sharing Hub screenshot bubble below.
+  }
+
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser()->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {

@@ -33,6 +33,14 @@ ScreenshotButton::~ScreenshotButton() {
   SetCallback(PressedCallback());
 }
 
+void ScreenshotButton::ShowBubbleForAccelerator() {
+  if (!GetVisible()) {
+    SetVisible(true);
+    hide_after_bubble_closes_ = true;
+  }
+  ButtonPressed();
+}
+
 void ScreenshotButton::ButtonPressed() {
   if (bubble_widget_) {
     bubble_widget_->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
@@ -52,6 +60,10 @@ void ScreenshotButton::ButtonPressed() {
 }
 
 void ScreenshotButton::OnBubbleClosing(views::Widget::ClosedReason reason) {
+  if (hide_after_bubble_closes_) {
+    hide_after_bubble_closes_ = false;
+    SetVisible(false);
+  }
   base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
       FROM_HERE, bubble_widget_.release());
 }

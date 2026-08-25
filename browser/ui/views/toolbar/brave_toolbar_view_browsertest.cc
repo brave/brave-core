@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -156,6 +157,10 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     BraveBookmarkButton* bookmark_button = toolbar_view_->bookmark_button();
     DCHECK(bookmark_button);
     return bookmark_button->GetVisible();
+  }
+
+  ScreenshotButton* screenshot_button() {
+    return toolbar_view_->screenshot_button();
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -559,6 +564,24 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Reshowing the button should also work.
   prefs->SetBoolean(kShowBookmarksButton, true);
   EXPECT_TRUE(is_bookmark_button_shown());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       ScreenshotButtonCanBeToggledWithPref) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  ASSERT_TRUE(screenshot_button());
+
+  // By default, the button should be hidden.
+  EXPECT_FALSE(prefs->GetBoolean(kShowScreenshotButton));
+  EXPECT_FALSE(screenshot_button()->GetVisible());
+
+  // Showing the button should work.
+  prefs->SetBoolean(kShowScreenshotButton, true);
+  EXPECT_TRUE(screenshot_button()->GetVisible());
+
+  // Hiding it again should also work.
+  prefs->SetBoolean(kShowScreenshotButton, false);
+  EXPECT_FALSE(screenshot_button()->GetVisible());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
