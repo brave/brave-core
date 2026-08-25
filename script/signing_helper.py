@@ -45,6 +45,7 @@ def BraveModifyPartsForSigning(parts, config):
     # is_chrome_branded() to True.
     del parts['libchromecompaneros.dylib']
     del parts['liboptimization_guide_internal.dylib']
+    del parts['libsapisid.dylib']
 
     development = (config.provisioning_profile_basename is None)
 
