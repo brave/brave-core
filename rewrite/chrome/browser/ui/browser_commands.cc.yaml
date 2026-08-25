@@ -43,3 +43,39 @@ substitutions:
                 target_model->InsertDetachedTreeTabNodeAt(std::move(*collection),
                                                           target_model->count());
               } else \1\n
+
+  - description: |-
+      Scope ReloadInternal() to the active tab when its whole tree-tab
+      subtree is selected.
+
+      When `multiple_ui_tabs_selected` is true, the reload will perform on all
+      selected tabs. So when the selected tabs represent a whole tree tab, mark
+      `multiple_ui_tabs_selected` as false to scope the reload to the active tab
+      only. This is to avoid reloading the whole tree tab.
+
+    regex:
+      re_pattern: (void ReloadInternal\(.*?bool multiple_ui_tabs_selected =.*?;)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (multiple_ui_tabs_selected &&
+              static_cast<BraveTabStripModel*>(tab_strip_model)
+                  ->IsOnlyActiveTabAndTreeDescendantsSelected()) {
+            multiple_ui_tabs_selected = false;
+          }
+
+  - description: |-
+      Scope CloseTab() to the active tab when its whole tree-tab subtree
+      is selected.
+
+      When `only_active_split_tab_selected` is true, the close will perform on
+      only the active tab of split view. Likewise, when the selected tabs
+      represent a whole tree tab, fallback to the active tab only closing.
+
+    regex:
+      re_pattern: (void CloseTab\(.*?if \(only_active_split_tab_selected)\) \{
+      re_flags: [DOTALL]
+      replace: |-
+        \1 ||
+              static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
+                  ->IsOnlyActiveTabAndTreeDescendantsSelected()) {

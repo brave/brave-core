@@ -14,6 +14,7 @@
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -42,12 +43,18 @@
 #include "components/tabs/public/tab_group_tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "content/public/common/referrer.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/models/list_selection_model.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/events/event.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -290,6 +297,24 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
     // Prerequisite for enabling tree tabs.
     profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   }
+
+  // Counts DidStartLoading() calls on a WebContents, so tests can tell which
+  // tabs a reload command actually touched.
+  class ReloadObserver : public content::WebContentsObserver {
+   public:
+    ~ReloadObserver() override = default;
+
+    int load_count() const { return load_count_; }
+    void SetWebContents(content::WebContents* web_contents) {
+      Observe(web_contents);
+    }
+
+    // content::WebContentsObserver
+    void DidStartLoading() override { load_count_++; }
+
+   private:
+    int load_count_ = 0;
+  };
 
  private:
   base::test::ScopedFeatureList feature_list_;
@@ -3824,4 +3849,179 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
             tabs::TabCollection::Type::TREE_NODE);
 
   CloseBrowserSynchronously(new_browser);
+}
+
+// Activating a tree-tab parent selects its whole subtree (see the
+// SelectTab_* tests in this file), but IDC_CLOSE_TAB should still only close
+// the active tab in that case, mirroring OnlyCloseActiveTabInSplitView in
+// chrome/browser/ui/browser_commands_browsertest.cc for split tabs.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, OnlyCloseActiveTabInTreeSubtree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  std::vector<content::WebContents*> child_contents;
+  for (int i = 0; i < 2; ++i) {
+    std::unique_ptr<content::WebContents> contents = CreateWebContents();
+    child_contents.push_back(contents.get());
+    auto child_interface = std::make_unique<tabs::TabModel>(std::move(contents),
+                                                            &tab_strip_model());
+    child_interface->set_opener(parent_tab);
+    tab_strip_model().AddTab(std::move(child_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Clicking the parent selects the parent and both children.
+  ClickTab(0);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB));
+
+  // Only the parent should have closed; both children remain.
+  EXPECT_EQ(2, tab_strip_model().count());
+  EXPECT_NE(tab_strip_model().GetIndexOfWebContents(child_contents[0]),
+            TabStripModel::kNoTab);
+  EXPECT_NE(tab_strip_model().GetIndexOfWebContents(child_contents[1]),
+            TabStripModel::kNoTab);
+}
+
+// Same as above but for IDC_RELOAD: only the active tab in the subtree
+// should reload.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, OnlyReloadActiveTabInTreeSubtree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  for (int i = 0; i < 2; ++i) {
+    auto child_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                            &tab_strip_model());
+    child_interface->set_opener(parent_tab);
+    tab_strip_model().AddTab(std::move(child_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Give every tab a committed navigation entry so IDC_RELOAD has something
+  // to reload, then track reload starts per tab.
+  std::vector<ReloadObserver> reload_observers(3);
+  for (int i = 0; i < 3; ++i) {
+    content::WebContents* const contents =
+        tab_strip_model().GetWebContentsAt(i);
+    contents->GetController().LoadURL(GURL("about:blank"), content::Referrer(),
+                                      ui::PAGE_TRANSITION_TYPED, std::string());
+    EXPECT_TRUE(content::WaitForLoadStop(contents));
+    reload_observers[i].SetWebContents(contents);
+  }
+
+  ClickTab(0);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(0)));
+
+  // Only the active (parent) tab should have reloaded; both children must be
+  // untouched.
+  EXPECT_EQ(1, reload_observers[0].load_count());
+  EXPECT_EQ(0, reload_observers[1].load_count());
+  EXPECT_EQ(0, reload_observers[2].load_count());
+}
+
+// If a tab outside the active tab's subtree is also selected, IDC_CLOSE_TAB
+// must close the whole selection, same as the existing
+// CloseAllTabsInSelectionModel split-tab behavior.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       CloseAllSelectedTabs_WhenExtraTabSelectedOutsideTree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // An unrelated tab that gets selected alongside the subtree, and one more
+  // that stays unselected so the browser has a tab left after closing.
+  for (int i = 0; i < 2; ++i) {
+    auto other_tab_interface = std::make_unique<tabs::TabModel>(
+        CreateWebContents(), &tab_strip_model());
+    tab_strip_model().AddTab(std::move(other_tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Select the parent's subtree (indices 0, 1), then additionally select the
+  // unrelated tab at index 2 (leaving index 3 unselected).
+  ClickTab(0);
+  tab_strip_model().SelectTabAt(2);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+  ASSERT_FALSE(tab_strip_model().IsTabSelected(3));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB));
+
+  // The whole selection (subtree + the extra tab) should have closed,
+  // leaving only the untouched tab.
+  EXPECT_EQ(1, tab_strip_model().count());
+}
+
+// If a tab outside the active tab's subtree is also selected, IDC_RELOAD
+// must reload the whole selection, not just the active tab.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       ReloadAllSelectedTabs_WhenExtraTabSelectedOutsideTree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  // An unrelated tab that gets selected alongside the subtree, and one more
+  // that stays unselected.
+  for (int i = 0; i < 2; ++i) {
+    auto other_tab_interface = std::make_unique<tabs::TabModel>(
+        CreateWebContents(), &tab_strip_model());
+    tab_strip_model().AddTab(std::move(other_tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Give every tab a committed navigation entry so IDC_RELOAD has something
+  // to reload, then track reload starts per tab.
+  std::vector<ReloadObserver> reload_observers(4);
+  for (int i = 0; i < 4; ++i) {
+    content::WebContents* const contents =
+        tab_strip_model().GetWebContentsAt(i);
+    contents->GetController().LoadURL(GURL("about:blank"), content::Referrer(),
+                                      ui::PAGE_TRANSITION_TYPED, std::string());
+    ASSERT_TRUE(content::WaitForLoadStop(contents));
+    reload_observers[i].SetWebContents(contents);
+  }
+
+  // Select the parent's subtree (indices 0, 1), then additionally select the
+  // unrelated tab at index 2 (leaving index 3 unselected).
+  ClickTab(0);
+  tab_strip_model().SelectTabAt(2);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(2));
+  ASSERT_FALSE(tab_strip_model().IsTabSelected(3));
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(0)));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(1)));
+  EXPECT_TRUE(content::WaitForLoadStop(tab_strip_model().GetWebContentsAt(2)));
+
+  // The whole selection (subtree + the extra tab) should have reloaded; the
+  // untouched tab must not.
+  EXPECT_EQ(1, reload_observers[0].load_count());
+  EXPECT_EQ(1, reload_observers[1].load_count());
+  EXPECT_EQ(1, reload_observers[2].load_count());
+  EXPECT_EQ(0, reload_observers[3].load_count());
 }
