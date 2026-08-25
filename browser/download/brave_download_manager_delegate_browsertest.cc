@@ -11,6 +11,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -20,7 +21,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "chrome/browser/download/download_core_service.h"
 #include "chrome/browser/download/download_core_service_factory.h"
@@ -144,8 +144,8 @@ class BraveDownloadManagerDelegateBrowserTestBase : public PlatformBrowserTest {
     {
       base::ScopedAllowBlockingForTesting allow_blocking;
       const base::FilePath fbmd_path =
-          base::PathService::CheckedGet(brave::DIR_TEST_DATA)
-              .AppendASCII("image_metadata_stripper")
+          base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+              .AppendASCII("brave/test/data/image_metadata_stripper")
               .AppendASCII(kFbmdJpegImageFileName);
       ASSERT_TRUE(base::ReadFileToString(fbmd_path, &fbmd_jpeg_contents_));
     }

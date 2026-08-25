@@ -27,7 +27,6 @@ source_set("browser_tests") {
     ":download",
     "//base",
     "//base/test:test_support",
-    "//brave/components/constants",
     "//brave/components/image_metadata_stripper/common",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
