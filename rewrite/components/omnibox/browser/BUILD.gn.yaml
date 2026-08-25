@@ -15,6 +15,17 @@ substitutions:
       replace: '\1\n  generate_legacy_js_bindings = true'
 
   - description: |
+      Enable legacy JS bindings generation for `fusebox_action_mojo_bindings`.
+
+      `mojo_bindings` now public_deps on `fusebox_action_mojo_bindings`, so its
+      `_js` target (from the plaster above) needs this target's `_js` target
+      to exist too.
+    regex:
+      re_pattern: '(mojom\("fusebox_action_mojo_bindings"\)\s*\{)'
+      re_flags: [DOTALL]
+      replace: '\1\n    generate_legacy_js_bindings = true'
+
+  - description: |
       Brave additions to `static_library("browser")`.
 
       The Brave sources and deps are grouped together at the end of the target.
