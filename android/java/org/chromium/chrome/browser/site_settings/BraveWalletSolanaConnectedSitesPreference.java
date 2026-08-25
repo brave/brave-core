@@ -40,6 +40,12 @@ public class BraveWalletSolanaConnectedSitesPreference
         initBraveWalletService();
 
         mRecyclerView = (RecyclerView) holder.findViewById(R.id.connected_sites_list);
+        if (mAdapter == null) {
+            mAdapter = new BraveWalletEthereumConnectedSitesListAdapter(new String[0], this);
+        }
+        // The preference can be re-bound to a different view holder, so the adapter has
+        // to be attached on every bind and not only when it is first created.
+        mRecyclerView.setAdapter(mAdapter);
         updateWebSitesList();
     }
 
@@ -53,15 +59,12 @@ public class BraveWalletSolanaConnectedSitesPreference
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateWebSitesList() {
-        mBraveWalletService.getWebSitesWithPermission(CoinType.SOL, webSites -> {
-            if (mAdapter == null) {
-                mAdapter = new BraveWalletEthereumConnectedSitesListAdapter(webSites, this);
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                mAdapter.setWebSites(webSites);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+        mBraveWalletService.getWebSitesWithPermission(
+                CoinType.SOL,
+                webSites -> {
+                    mAdapter.setWebSites(webSites);
+                    mAdapter.notifyDataSetChanged();
+                });
     }
 
     @Override
