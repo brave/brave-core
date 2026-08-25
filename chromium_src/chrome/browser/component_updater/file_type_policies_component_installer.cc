@@ -5,14 +5,6 @@
 
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 
-#define RegisterFileTypePoliciesComponent \
-  RegisterFileTypePoliciesComponent_ChromiumImpl
-#include <chrome/browser/component_updater/file_type_policies_component_installer.cc>
-#undef RegisterFileTypePoliciesComponent
-
-#include "chrome/browser/component_updater/component_updater_utils.h"
-#include "components/component_updater/component_updater_service.h"
-
 namespace component_updater {
 
 constexpr char kFileTypePoliciesComponentId[] =
@@ -23,10 +15,6 @@ void OnFileTypePoliciesRegistered() {
       kFileTypePoliciesComponentId);
 }
 
-void RegisterFileTypePoliciesComponent(ComponentUpdateService* cus) {
-  auto installer = base::MakeRefCounted<ComponentInstaller>(
-      std::make_unique<FileTypePoliciesComponentInstallerPolicy>());
-  installer->Register(cus, base::BindOnce(&OnFileTypePoliciesRegistered));
-}
-
 }  // namespace component_updater
+
+#include <chrome/browser/component_updater/file_type_policies_component_installer.cc>
