@@ -90,7 +90,7 @@ if (root) {
 
   createRoot(root).render(
     <StyledComponentsProvider>
-      <BraveNewsContextProvider openArticlesInNewTab={false}>
+      <BraveNewsContextProvider openArticlesInNewTab={false} renderImagesImmediately>
         <Sidebar />
       </BraveNewsContextProvider>
     </StyledComponentsProvider>
