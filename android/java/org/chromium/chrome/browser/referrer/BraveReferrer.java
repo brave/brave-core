@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.referrer;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.RemoteException;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -170,7 +169,9 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     // Set flag to not repeat this procedure
                     ChromeSharedPreferences.getInstance()
                             .writeBoolean(BRAVE_REFERRER_RECEIVED, true);
-                } catch (RemoteException e) {
+                } catch (Exception e) {
+                    // Play Store may return a null bundle alongside an OK response code, which
+                    // makes ReferrerDetails throw.
                     Log.e(TAG, "Could not get referral: " + e.getMessage());
                 }
                 break;
