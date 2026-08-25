@@ -1376,6 +1376,13 @@ public class BrowserViewController: UIViewController {
 
     if #available(iOS 26.0, *) {
       updateWebViewObscuredInsets()
+      activeNewTabPageViewController?.additionalSafeAreaInsets = UIEdgeInsets(
+        top: pageOverlayLayoutGuide.layoutFrame.minY - view.safeAreaInsets.top,
+        left: 0,
+        bottom: view.bounds.height - pageOverlayLayoutGuide.layoutFrame.maxY
+          - view.safeAreaInsets.bottom,
+        right: 0
+      )
     }
   }
 
@@ -1690,12 +1697,17 @@ public class BrowserViewController: UIViewController {
       activeNewTabPageViewController = ntpController
 
       addChild(ntpController)
-      let subview = isUsingBottomBar ? header : statusBarOverlay
-      view.insertSubview(ntpController.view, belowSubview: subview)
+      view.insertSubview(ntpController.view, belowSubview: footer)
       ntpController.didMove(toParent: self)
 
-      ntpController.view.snp.makeConstraints {
-        $0.edges.equalTo(pageOverlayLayoutGuide)
+      if #available(iOS 26, *) {
+        ntpController.view.snp.makeConstraints {
+          $0.edges.equalTo(self.view)
+        }
+      } else {
+        ntpController.view.snp.makeConstraints {
+          $0.edges.equalTo(pageOverlayLayoutGuide)
+        }
       }
       ntpController.view.layoutIfNeeded()
 

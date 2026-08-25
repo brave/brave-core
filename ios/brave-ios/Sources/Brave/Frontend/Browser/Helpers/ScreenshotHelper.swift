@@ -28,7 +28,10 @@ class ScreenshotHelper {
 
     if url.isNewTabURL {
       if let homePanel = tabManager?.selectedTab?.newTabPageViewController {
-        let screenshot = homePanel.view.screenshot(quality: UIConstants.activeScreenshotQuality)
+        let screenshot = homePanel.view.screenshot(
+          offset: .init(x: 0, y: -homePanel.view.safeAreaInsets.top),
+          quality: UIConstants.activeScreenshotQuality
+        )
         tab.browserData?.setScreenshot(screenshot)
       } else {
         tab.browserData?.setScreenshot(nil)
