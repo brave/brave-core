@@ -279,6 +279,11 @@ TEST(BraveVPNUtilsUnitTest, DefaultPrefsTest) {
 
   EXPECT_TRUE(local_state_pref_service.GetBoolean(
       brave_vpn::prefs::kBraveVPNSmartProxyRoutingEnabled));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  EXPECT_TRUE(local_state_pref_service.GetBoolean(
+      brave_vpn::prefs::kBraveVPNWireguardBlockUntunneledTraffic));
+#endif
 }
 
 #if BUILDFLAG(IS_MAC)

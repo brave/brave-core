@@ -62,6 +62,9 @@ class FakeBraveVpnService : public BraveVpnService {
   void EnableSmartProxyRouting(bool enable) override {}
   void GetSmartProxyRoutingState(
       GetSmartProxyRoutingStateCallback callback) override {}
+  void BlockUntunneledTraffic(bool block) override {}
+  void GetBlockUntunneledTraffic(
+      GetBlockUntunneledTrafficCallback callback) override {}
 
   void SetConnectionStateForTesting(mojom::ConnectionState state) override {}
   void SetPurchasedStateForTesting(const std::string& env,

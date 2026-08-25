@@ -96,6 +96,16 @@ interface ServiceHandler {
 
   [EnableIfNot=is_android]
   GetSmartProxyRoutingState() => (bool enabled);
+
+  // true to |block| when want to block all untunneled traffic
+  [EnableIfNot=is_android]
+  BlockUntunneledTraffic(bool block);
+
+
+  // |available|: blocking untunneled traffic is supported.
+  // |blocked|: all untunneled traffic is blocked.
+  [EnableIfNot=is_android]
+  GetBlockUntunneledTraffic() => (bool available, bool blocked);
 };
 
 // WebUI-side handler for requests from the browser.
