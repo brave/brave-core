@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
-import { getLocale } from '$web-common/locale'
+import { formatLocale, getLocale } from '$web-common/locale'
 import { serializeConversationForSharing } from '../../../common/conversation_serialization'
 import { encryptForSharing } from '../../../common/conversation_share_encryption'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -18,6 +18,8 @@ import styles from './style.module.scss'
 interface Props {
   isOpen: boolean
   onClose: () => void
+  // Closes this dialog and opens the dialog listing every share the user has.
+  onManageShares: () => void
 }
 
 export default function ShareConversationModal(props: Props) {
@@ -112,6 +114,22 @@ export default function ShareConversationModal(props: Props) {
         )}
         <div className={styles.description}>
           {getLocale(S.CHAT_UI_SHARE_CONVERSATION_DIALOG_DESCRIPTION)}
+        </div>
+        <div className={styles.manageShares}>
+          {formatLocale(
+            S.CHAT_UI_SHARE_CONVERSATION_DIALOG_MANAGE_SHARES_LINK,
+            {
+              $1: (content) => (
+                <button
+                  key={content}
+                  className={styles.manageSharesLink}
+                  onClick={props.onManageShares}
+                >
+                  {content}
+                </button>
+              ),
+            },
+          )}
         </div>
       </div>
       <div slot='actions'>

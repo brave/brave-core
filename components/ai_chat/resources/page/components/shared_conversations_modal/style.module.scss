@@ -40,6 +40,13 @@
   // Long lists shouldn't push the dialog past the viewport.
   max-height: 320px;
   overflow-y: auto;
+  // The dialog is a grid whose column can't be narrower than its content's
+  // min-content width, and a nowrap share title's min-content width is the
+  // whole title. Without this the title widens the dialog (which scrolls
+  // horizontally) instead of ellipsizing. `min-width: 0` below can't do this:
+  // it removes the floor on a flex item's size, it doesn't cap what the item
+  // contributes to an ancestor's intrinsic width.
+  contain: inline-size;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -90,5 +97,5 @@
 .shareActions {
   display: flex;
   align-items: center;
-  gap: var(--leo-spacing-xs);
+  gap: var(--leo-spacing-m);
 }

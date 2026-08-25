@@ -423,6 +423,9 @@
   <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_DESCRIPTION" desc="Explanatory text in the share conversation dialog describing how the conversation is encrypted before being uploaded and when the shared link expires" formatter_data="webui=AiChat">
     Your conversation will be uploaded encrypted and can only be decrypted with the generated link. Brave will not be able to view your conversation. Only you and the people you share this link with can decrypt your shared conversation. All shared conversations will expire after 7 days.
   </message>
+  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_MANAGE_SHARES_LINK" desc="Text with an inline link at the bottom of the share conversation dialog. The link opens the dialog which lists every conversation the user has shared, where they can be copied or deleted." formatter_data="webui=AiChat">
+    You can <ph name="LINK_BEFORE">$1</ph>manage your shares<ph name="LINK_AFTER">/$1</ph> to find or delete them at any time.
+  </message>
   <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_GENERATE_LINK_BUTTON_LABEL" desc="A label for the button which generates and copies a shareable link for the current conversation" formatter_data="webui=AiChat">
     Generate link
   </message>

@@ -218,6 +218,10 @@ function Main() {
         <ShareConversationModal
           isOpen={isShareDialogOpen}
           onClose={() => setIsShareDialogOpen(false)}
+          onManageShares={() => {
+            setIsShareDialogOpen(false)
+            setIsSharedConversationsDialogOpen(true)
+          }}
         />
       )}
       {/* Mounted only while open so the list of shares is fetched fresh each
