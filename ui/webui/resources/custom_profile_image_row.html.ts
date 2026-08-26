@@ -52,6 +52,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               class="no-overlap"
               iron-icon="cr:add"
+              title="${this.uploadTooltip || nothing}"
               aria-label="${this.uploadTooltip || this.previewLabel}"
               @click="${this.onUploadClick_}"
             ></cr-icon-button>

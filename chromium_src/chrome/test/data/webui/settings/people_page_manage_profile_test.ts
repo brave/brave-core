@@ -318,6 +318,7 @@ function braveManageProfileFeatureEnabledTests() {
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
     assertEquals('CR-ICON-BUTTON', preview.tagName)
     assertEquals('cr:add', preview.getAttribute('iron-icon'))
+    assertEquals(row.uploadTooltip, preview.getAttribute('title'))
     assertEquals(row.uploadTooltip, preview.getAttribute('aria-label'))
 
     const uploadButton = getRequiredElement<HTMLElement>(
