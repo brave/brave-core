@@ -17,6 +17,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -71,6 +72,7 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
+import org.chromium.chrome.browser.omnibox.LocationBarBackgroundDrawable;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
@@ -118,6 +120,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.base.LocalizationUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.interpolators.Interpolators;
@@ -303,6 +306,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mYouTubePipButton.setOnLongClickListener(this);
             BraveTouchUtils.ensureMinTouchTarget(mYouTubePipButton);
         }
+
+        maybeSquareLocationBarTrailingCorners();
 
         mUnifiedPanelHandler = new BraveUnifiedPanelHandler(getContext());
         mUnifiedPanelHandler.addObserver(
@@ -1499,6 +1504,34 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         isTabSwitcherOnBottomControls() ? GONE : VISIBLE);
             }
         }
+    }
+
+    /**
+     * Squares off the trailing corners of the tablet location bar background, so that the Brave
+     * button segments laid out right after it continue the same rounded rectangle. Upstream builds
+     * that background programmatically with a single corner radius, which leaves a notch at the
+     * junction with the segments.
+     */
+    private void maybeSquareLocationBarTrailingCorners() {
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
+            return;
+        }
+
+        View locationBar = findViewById(R.id.location_bar);
+        Drawable background = locationBar != null ? locationBar.getBackground() : null;
+        if (!(background instanceof LocationBarBackgroundDrawable)) {
+            return;
+        }
+
+        float radius =
+                getResources()
+                        .getDimensionPixelSize(R.dimen.modern_toolbar_background_corner_radius);
+        // Radii are listed clockwise from the top left corner, as x/y pairs.
+        float[] radii =
+                LocalizationUtils.isLayoutRtl()
+                        ? new float[] {0, 0, radius, radius, radius, radius, 0, 0}
+                        : new float[] {radius, radius, 0, 0, 0, 0, radius, radius};
+        ((LocationBarBackgroundDrawable) background).getBackgroundGradient().setCornerRadii(radii);
     }
 
     private void updateShieldsLayoutBackground(boolean rounded) {
