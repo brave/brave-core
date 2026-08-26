@@ -3,10 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 #
-# rewriters.pyl — ast-grep op specs for plaster. Data only: a Python literal
+# rewriters.pyl — rewriter op specs for plaster. Data only: a Python literal
 # (ast.literal_eval), so no imports, calls, or names.
 #
-# Three op categories, each keyed by an op id "<namespace>.<name>".
+# Four op categories, each keyed by an op id "<namespace>.<name>".
 #
 # The namespace says which sources an op may be used on. It is matched against
 # the namespace claiming a plaster's target suffix (`foo.cc.yaml` -> `.cc` ->
@@ -99,6 +99,27 @@
 #       than the macro inspecting what is there. The substitution's own
 #       `count:` is what tells the caller a match -- and so a change --
 #       actually happened.
+#
+#   "gn_edit" — an edit performed by `gn edit` itself. Where the categories
+#       above rewrite text, these hand the build file to gn, which parses it,
+#       edits its syntax tree and formats the result, so an op says what to
+#       change.
+#       description: Markdown documenting the op, rendered by
+#                `plaster --help <name>` like a `Rewriter`'s `HELP`.
+#       inputs:  the op's `{placeholder}`s, each documented as
+#                { name, description }, plus optional `variadic` for the one a
+#                plaster may pass a list to (the values being added), which is
+#                rendered as gn's space-separated, quoted value list.
+#       pattern: the label pattern argument, selecting the targets to edit.
+#                Plaster hands gn the build file as the root `BUILD.gn`, so a
+#                target is addressed as "//:{target}".
+#       command: the command argument, i.e. a `gn help edit` subcommand and its
+#                values.
+#       Both templates are `str.format`ed with the inputs, and between them
+#       they must name every declared input exactly once over -- the same
+#       interface check the regex macros get. gn edits are idempotent, so
+#       plaster treats "the file did not change" as the failure to report
+#       rather than a `count:`, which these ops reject.
 
 {
     "ast.matcher": {
@@ -728,6 +749,75 @@ substitutions:
             ],
             "re_pattern": "([ \\t]*)(BASE_FEATURE\\(\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
             "replace": "\\1// {feature_name} feature state is enforced via plaster rewrite.\\n\\1\\2\\3\\4{value}\\5",
+        },
+    },
+    "gn_edit": {
+        "gn.add_deps": {
+            "description": """\
+Adds dependencies to a target in a `BUILD.gn` or `.gni` file.
+
+The labels are added to the target's `deps`, which is created if the target has
+none.
+
+```yaml
+substitutions:
+  - description: Depend on the Brave omnibox additions.
+    add_deps:
+      target: browser
+      deps:
+        - //brave/components/omnibox/browser
+        - //brave/components/omnibox/common
+```
+
+```diff
+   deps = [
++    "//brave/components/omnibox/browser",
++    "//brave/components/omnibox/common",
+     "//build:branding_buildflags",
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to add the dependencies to, e.g. `browser` for `static_library(\"browser\")`.",
+                },
+                {
+                    "name": "deps",
+                    "description": "The dependency label(s) to add, e.g. `//brave/components/omnibox/browser`.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add deps {deps}",
+        },
+        "gn.add_sources": {
+            "description": """\
+Adds source files to a target in a `BUILD.gn` or `.gni` file.
+
+The paths are added to the target's `sources`, which is created if the target
+has none.
+
+```yaml
+substitutions:
+  - description: Build the Brave colour mixers into the target.
+    add_sources:
+      target: mixers
+      sources: //brave/ui/color/brave_color_mixer.cc
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to add the sources to, e.g. `mixers` for `component(\"mixers\")`.",
+                },
+                {
+                    "name": "sources",
+                    "description": "The source path(s) to add, relative to the build file or `//`-rooted.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add sources {sources}",
         },
     },
 }
