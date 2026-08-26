@@ -106,6 +106,7 @@ class SearchPage implements PageInterface {
   updateSmartTabSharingActive(active: boolean): void { }
   setAimButtonConfig(text: string, tooltip: string, a11yLabel: string, iconUrl: Url): void { }
   resetPopupToInitialState(): void { }
+  onScreenshotMenuClosed(): void { }
 }
 
 export const search = new SearchPage()
