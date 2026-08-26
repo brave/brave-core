@@ -409,7 +409,7 @@ export const SendScreen = React.memo(() => {
               .multiplyByDecimals(tokenFromParams.decimals)
               .toHex(),
           }).unwrap()
-          resetSendFields()
+          setSendAmount('')
         } catch (error) {
           console.error('Btc send failed:', error)
           setTransactionProcessFailedMessage(
@@ -433,7 +433,7 @@ export const SendScreen = React.memo(() => {
             contractAddress: tokenFromParams.contractAddress,
             data: [],
           })
-          resetSendFields()
+          setSendAmount('')
           return
         }
 
@@ -448,7 +448,7 @@ export const SendScreen = React.memo(() => {
             tokenId: tokenFromParams.tokenId ?? '',
             data: [],
           })
-          resetSendFields()
+          setSendAmount('')
           return
         }
 
@@ -468,7 +468,7 @@ export const SendScreen = React.memo(() => {
             contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225',
             data: [],
           })
-          resetSendFields()
+          setSendAmount('')
           return
         }
 
@@ -482,7 +482,7 @@ export const SendScreen = React.memo(() => {
           gasLimit: '',
           data: [],
         })
-        resetSendFields()
+        setSendAmount('')
         return
       }
 
@@ -495,7 +495,7 @@ export const SendScreen = React.memo(() => {
             .multiplyByDecimals(tokenFromParams.decimals)
             .format(),
         })
-        resetSendFields()
+        setSendAmount('')
         return
       }
 
@@ -518,7 +518,6 @@ export const SendScreen = React.memo(() => {
             decimals: tokenFromParams.decimals,
             isCompressedNft: tokenFromParams.isCompressed,
           })
-          resetSendFields()
           return
         }
 
@@ -530,7 +529,7 @@ export const SendScreen = React.memo(() => {
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
         })
-        resetSendFields()
+        setSendAmount('')
         return
       }
 
@@ -550,7 +549,7 @@ export const SendScreen = React.memo(() => {
               .toHex(),
             memo: memoArray ? Array.from(memoArray) : undefined,
           }).unwrap()
-          resetSendFields()
+          setSendAmount('')
         } catch (error) {
           console.error('Zec send failed:', error)
           setTransactionProcessFailedMessage(
@@ -576,7 +575,7 @@ export const SendScreen = React.memo(() => {
               .toHex(),
             tokenId: tokenFromParams.contractAddress || undefined,
           }).unwrap()
-          resetSendFields()
+          setSendAmount('')
         } catch (error) {
           console.error('Cardano send failed:', error)
           setTransactionProcessFailedMessage(
@@ -599,7 +598,7 @@ export const SendScreen = React.memo(() => {
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
         })
-        resetSendFields()
+        setSendAmount('')
       }
     }
   }, [
@@ -612,7 +611,6 @@ export const SendScreen = React.memo(() => {
     sendAmount,
     resolvedDomainAddress,
     memoText,
-    resetSendFields,
     sendEvmTransaction,
     sendERC20Transfer,
     sendERC721TransferFrom,
