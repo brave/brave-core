@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Create each WebUIIOS knowing its host.
+
+      Brave stores these in a map keyed by host so a chrome-untrusted://
+      frame can have a WebUI of its own (see the web_state_impl_realized_web_state.h
+      override). The host is what lets the MojoFacade each one owns find its
+      frame instead of every facade falling back to the main frame.
+    regex:
+      re_pattern: 'std::make_unique<WebUIIOSImpl>\(owner_\)'
+      replace: 'std::make_unique<WebUIIOSImpl>(owner_, url.GetHost())'

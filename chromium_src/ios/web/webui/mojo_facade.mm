@@ -5,11 +5,18 @@
 
 #include "ios/web/webui/mojo_facade.h"
 
-#include "base/auto_reset.h"
 #include "base/notreached.h"
+#include "base/time/time.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+namespace web {
+// Spacing between retries of a poll that came back empty, used by the
+// mojo_facade.mm plaster. Defined ahead of the include below so upstream's
+// body can see it.
+inline constexpr base::TimeDelta kPollRetryDelay = base::Milliseconds(25);
+}  // namespace web
 
 #include <ios/web/webui/mojo_facade.mm>
 
@@ -17,181 +24,27 @@
 // (rewrite/ios/web/webui/mojo_facade.h.yaml) and hooked into upstream's
 // control flow via the mojo_facade.mm plaster
 // (rewrite/ios/web/webui/mojo_facade.mm.yaml). They're defined here, after
-// the #include above, so they can use file-scope helpers upstream's own .mm
-// defines (e.g. FindIntOrDoubleAsInt) and rely on its own transitively
-// included headers (e.g. for base::SequencedTaskRunner, WebThread,
-// base::SysNSStringToUTF16).
+// the #include above, so they can rely on the headers upstream's own .mm
+// pulls in transitively.
 namespace web {
 
-// The pipe table of the frame currently being serviced. Pipe ids come from a
-// per-frame JS counter that restarts at 1 in every frame, so they collide
-// across frames and each frame needs a table of its own.
-std::unordered_map<int, mojo::ScopedMessagePipeHandle>&
-MojoFacade::CurrentFramePipes() {
-  return pipes_[current_frame_id_];
-}
-
-void MojoFacade::StorePipeForCurrentFrame(int pipe_id,
-                                          mojo::ScopedMessagePipeHandle pipe) {
-  auto& frame_pipes = CurrentFramePipes();
-  // Within one frame ids never repeat: JS ids ascend from 1 and natively
-  // allocated ids descend from INT_MAX. Replacing a live pipe would silently
-  // close it, so a clash means the frame scoping has a hole.
-  if (frame_pipes.contains(pipe_id)) {
-    SCOPED_CRASH_KEY_NUMBER("MojoFacade", "pipe_id", pipe_id);
-    DUMP_WILL_BE_NOTREACHED();
+// A facade built without a host serves the main frame, which is what
+// upstream assumes when only one WebUI exists per WebState. Brave's
+// per-host WebUIs each name the frame they belong to.
+bool MojoFacade::ServesFrame(WebFrame* frame) const {
+  if (served_host_.empty()) {
+    return frame->IsMainFrame();
   }
-  frame_pipes[pipe_id] = std::move(pipe);
-}
-
-// Resolves `frame_id` to a live frame, falling back to the main frame. An id
-// naming no live frame means the message came from JS without Brave's
-// mojo_api.js frame tagging, so it gets upstream's behaviour, where the main
-// frame is the only frame that ever speaks mojo. Every caller resolves the
-// same way, so a pipe stored under an unresolvable id is found again by the
-// lookup that follows it.
-std::string MojoFacade::ResolveFrameId(const std::string& frame_id) {
-  if (!frame_id.empty() &&
-      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(frame_id)) {
-    return frame_id;
-  }
-  return GetMainFrameId();
-}
-
-// The frame `message` came from, as tagged by Brave's mojo_api.js plaster.
-std::string MojoFacade::GetFrameIdForMessage(const base::DictValue* message) {
-  const base::DictValue* args = message->FindDict("args");
-  const std::string* frame_id = args ? args->FindString("frameId") : nullptr;
-  return ResolveFrameId(frame_id ? *frame_id : std::string());
-}
-
-// The frame that created `watch_id` via MojoHandle.watch.
-std::string MojoFacade::GetFrameIdForWatch(int watch_id) {
-  auto it = watch_id_to_frame_id_.find(watch_id);
-  return ResolveFrameId(it != watch_id_to_frame_id_.end() ? it->second
-                                                          : std::string());
-}
-
-// Resolves which frame a watch's callback should be delivered to, falling
-// back to the main frame exactly as upstream's own GetMainWebFrame() would.
-web::WebFrame* MojoFacade::GetFrameForWatch(int watch_id) {
-  if (WebFrame* frame =
-          web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(
-              GetFrameIdForWatch(watch_id))) {
-    return frame;
-  }
-  return web_state_->GetPageWorldWebFramesManager()->GetMainWebFrame();
-}
-
-// Erases every watch (and its watchers_ entry) that `frame_id` created via
-// MojoHandle.watch, so a sub-frame's watches don't outlive it. Without this,
-// a stale watch_id_to_frame_id_ entry would make a later notification for it
-// fall through GetFrameForWatch to the main frame instead of being dropped.
-void MojoFacade::EraseWatchersForFrame(const std::string& frame_id) {
-  for (auto it = watch_id_to_frame_id_.begin();
-       it != watch_id_to_frame_id_.end();) {
-    if (it->second == frame_id) {
-      watchers_.erase(it->first);
-      it = watch_id_to_frame_id_.erase(it);
-    } else {
-      ++it;
-    }
-  }
-}
-
-// Mirrors upstream's own AwaitNextMessage(), parameterized by frame instead
-// of hardcoded to main_frame_, so sub-frames that bind mojo interfaces (e.g.
-// AI Chat's untrusted conversation-entries iframe) get polled too.
-void MojoFacade::AwaitNextMessageForFrame(const std::string& frame_id) {
-  DCHECK_CURRENTLY_ON(WebThread::UI);
-
-  if (extra_polling_frame_ids_[frame_id]) {
-    return;
-  }
-
-  WebFrame* frame =
-      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(frame_id);
-  if (!frame) {
-    return;
-  }
-
-  extra_polling_frame_ids_[frame_id] = true;
-
-  auto callback =
-      base::BindOnce(&MojoFacade::OnAwaitNextMessageForFrameCompleted,
-                     weak_ptr_factory_.GetWeakPtr(), frame_id);
-
-  std::u16string fetch_next_message =
-      u"return await Mojo.internal.fetchNextMessageFromJS();";
-
-  frame->ExecuteAsyncJavaScript(fetch_next_message, base::DictValue(),
-                                std::move(callback));
-}
-
-// Mirrors upstream's own OnAwaitNextMessageCompleted(): dispatches into the
-// existing HandleMojoMessage(), routes the response back via
-// Mojo.internal.messageReceived on this same frame, then re-arms.
-void MojoFacade::OnAwaitNextMessageForFrameCompleted(
-    const std::string& frame_id,
-    const base::Value* value,
-    NSError* error) {
-  DCHECK_CURRENTLY_ON(WebThread::UI);
-
-  extra_polling_frame_ids_[frame_id] = false;
-
-  WebFrame* frame =
-      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(frame_id);
-  bool frame_still_alive = !web_state_->IsBeingDestroyed() && frame != nullptr;
-
-  if (error || !frame_still_alive || !value) {
-    if (error && frame_still_alive) {
-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessageForFrame,
-                                    weak_ptr_factory_.GetWeakPtr(), frame_id));
-    }
-    return;
-  }
-
-  const base::DictValue* dict = value->GetIfDict();
-  if (dict) {
-    std::optional<int> message_id = FindIntOrDoubleAsInt(*dict, "message_id");
-    const base::DictValue* message = dict->FindDict("message");
-
-    if (message_id && message) {
-      base::WeakPtr<WebFrame> weak_frame = frame->AsWeakPtr();
-      HandleMojoMessage(
-          *message_id, message,
-          base::BindOnce(^(int msg_id, std::string response) {
-            WebFrame* target_frame = weak_frame.get();
-            if (!target_frame) {
-              return;
-            }
-            NSString* response_str = @"null";
-            if (!response.empty()) {
-              response_str = base::SysUTF8ToNSString(response);
-            }
-            NSString* script = [NSString
-                stringWithFormat:@"Mojo.internal.messageReceived(%d, %@)",
-                                 msg_id, response_str];
-            target_frame->ExecuteAsyncJavaScript(
-                base::SysNSStringToUTF16(script), base::DictValue(),
-                base::DoNothing());
-          }));
-    }
-  }
-  AwaitNextMessageForFrame(frame_id);
+  return frame->GetSecurityOrigin().host() == served_host_;
 }
 
 // Gates Mojo.bindInterface calls from chrome-untrusted:// origins against
 // InterfaceBinder::IsAllowedForOrigin (brave/chromium_src/ios/web/public/
-// web_state.h), which upstream never checks.
+// web_state.h), which upstream never checks. The origin is taken from the
+// frame this facade serves, established natively when it was constructed, so
+// page script can't nominate a frame other than its own.
 bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
-  const std::string* frame_id = args.FindString("frameId");
-  if (!frame_id) {
-    return true;
-  }
-  WebFrame* frame =
-      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(*frame_id);
+  WebFrame* frame = GetMainWebFrame();
   if (!frame) {
     return true;
   }
@@ -203,6 +56,31 @@ bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
   return interface_name &&
          web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
              origin, *interface_name);
+}
+
+// A frame whose document can't run scripts any more never recovers, and
+// upstream re-posts the poll on every failure, so the loop has to give up on
+// its own. The allowance covers a page whose mojo_api.js hasn't run yet,
+// which fails every poll until it has; paired with kPollRetryDelay it spans
+// about a second. A live frame resets it as soon as one poll carries a
+// message.
+bool MojoFacade::ShouldRetryPoll() {
+  static constexpr int kMaxConsecutivePollFailures = 40;
+  return ++consecutive_poll_failures_ <= kMaxConsecutivePollFailures;
+}
+
+// Reports what this facade knew when a message named a pipe id it doesn't
+// hold, so a dump says which of these it was: the table was empty (something
+// cleared it out from under the live JS context), the table was populated but
+// missing the id (the handle was consumed, or never created), or the id
+// belongs to a different frame.
+void MojoFacade::ReportUnknownPipe(const char* operation,
+                                   std::optional<int> pipe_id) {
+  DUMP_WILL_BE_NOTREACHED()
+      << operation << " named pipe id " << pipe_id.value_or(-1)
+      << ", which is not held by the facade for host "
+      << (served_host_.empty() ? std::string("<main frame>") : served_host_)
+      << ", holding " << pipes_.size() << " pipe(s)";
 }
 
 }  // namespace web
