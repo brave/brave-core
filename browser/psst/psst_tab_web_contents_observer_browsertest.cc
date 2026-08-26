@@ -6,6 +6,7 @@
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_util.h"
@@ -16,6 +17,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -29,8 +31,11 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
@@ -46,7 +51,10 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/actions/actions.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/events/event_constants.h"
@@ -446,6 +454,18 @@ class DialogCloseObserver : public content::WebContentsObserver {
 std::string CreateTestURL(net::EmbeddedTestServer& https_server,
                           const std::string_view path) {
   return https_server.GetURL("a.test", path).spec();
+}
+
+// Returns the consent dialog's rendered `document.body` background color, as
+// applied by the `--leo-color-container-background` CSS variable.
+SkColor GetDialogBodyBackgroundColor(content::WebContents* dialog_wc) {
+  const content::EvalJsResult result =
+      content::EvalJs(dialog_wc,
+                      "getComputedStyle(document.body).backgroundColor"
+                      ".match(/\\d+(\\.\\d+)?/g).slice(0, 3).map(Number)");
+  const base::ListValue& channels = result.ExtractList();
+  return SkColorSetRGB(channels[0].GetInt(), channels[1].GetInt(),
+                       channels[2].GetInt());
 }
 
 std::u16string CreateTestUtf16URL(net::EmbeddedTestServer& https_server,
@@ -1046,6 +1066,55 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/58296:
+// the consent dialog's background should track the browser's color mode
+// instead of staying fixed.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       ConsentDialogBackgroundFollowsColorMode) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile_);
+  ASSERT_TRUE(theme_service);
+
+  // Opens the consent dialog under the given color scheme and returns both
+  // the background color the dialog should be using (per the WebContents'
+  // own color provider) and the color it actually rendered.
+  auto open_dialog_and_get_colors =
+      [&](ThemeService::BrowserColorScheme color_scheme) {
+        theme_service->SetBrowserColorScheme(color_scheme);
+        chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+
+        content::WebContents* dialog_wc = nullptr;
+        NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_LEFT_MOUSE_BUTTON,
+                                              &dialog_wc);
+
+        const SkColor expected_color = dialog_wc->GetColorProvider().GetColor(
+            color_scheme == ThemeService::BrowserColorScheme::kDark
+                ? ui::kColorRefNeutral10
+                : ui::kColorRefNeutral100);
+        const SkColor actual_color = GetDialogBodyBackgroundColor(dialog_wc);
+
+        DialogCloseObserver dialog_close_observer(dialog_wc);
+        EXPECT_TRUE(CloseModalDialog(dialog_wc));
+        dialog_close_observer.Wait();
+
+        return std::make_pair(expected_color, actual_color);
+      };
+
+  const auto [light_expected, light_actual] =
+      open_dialog_and_get_colors(ThemeService::BrowserColorScheme::kLight);
+  const auto [dark_expected, dark_actual] =
+      open_dialog_and_get_colors(ThemeService::BrowserColorScheme::kDark);
+
+  EXPECT_EQ(light_actual, light_expected);
+  EXPECT_EQ(dark_actual, dark_expected);
+
+  // The background must actually change between color modes rather than staying
+  // fixed.
+  EXPECT_NE(light_actual, dark_actual);
 }
 
 }  // namespace psst
