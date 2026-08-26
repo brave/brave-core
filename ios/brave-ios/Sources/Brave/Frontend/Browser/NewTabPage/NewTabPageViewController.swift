@@ -650,8 +650,11 @@ class NewTabPageViewController: UIViewController {
         collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
       }
 
-      // scroll to offset .zero to preserve padding above section
-      collectionView.setContentOffset(.zero, animated: true)
+      // scroll to the top to preserve padding above section
+      collectionView.setContentOffset(
+        .init(x: 0, y: -collectionView.adjustedContentInset.top),
+        animated: true
+      )
       backgroundButtonsView.setNeedsLayout()
       collectionView.verticalScrollIndicatorInsets = .zero
       UIView.animate(withDuration: 0.25) {
@@ -764,7 +767,7 @@ class NewTabPageViewController: UIViewController {
           self.feedOverlayView.loaderView.isHidden = true
         }
       )
-      if collectionView.contentOffset.y == collectionView.contentInset.top {
+      if collectionView.contentOffset.y == -collectionView.adjustedContentInset.top {
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         let cells = collectionView.indexPathsForVisibleItems
@@ -811,7 +814,7 @@ class NewTabPageViewController: UIViewController {
         _completeLoading()
       }
     case (_, .loading):
-      if collectionView.contentOffset.y == collectionView.contentInset.top
+      if collectionView.contentOffset.y == -collectionView.adjustedContentInset.top
         || collectionView.numberOfItems(inSection: section) == 0
       {
         feedOverlayView.loaderView.isHidden = false
@@ -831,7 +834,7 @@ class NewTabPageViewController: UIViewController {
 
   @objc private func checkForUpdatedFeed() {
     if !isBraveNewsVisible || Preferences.BraveNews.isShowingOptIn.value { return }
-    if collectionView.contentOffset.y == collectionView.contentInset.top {
+    if collectionView.contentOffset.y == -collectionView.adjustedContentInset.top {
       // Reload contents if the user is not currently scrolled into the feed
       loadFeedContents()
     } else {
@@ -1051,14 +1054,21 @@ extension NewTabPageViewController {
     if collectionView.numberOfItems(inSection: newsSection) > 0 {
       // Hide the buttons as Brave News feeds appear
       backgroundButtonsView.alpha =
-        1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
+        1.0
+        - max(
+          0.0,
+          min(1.0, (scrollView.contentOffset.y + scrollView.adjustedContentInset.top) / 16)
+        )
       // Show the header as Brave News feeds appear
       // Offset of where Brave News starts
       let todayStart =
         collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+        - scrollView.adjustedContentInset.top - scrollView.adjustedContentInset.bottom
       // Offset of where the header should begin becoming visible
-      let alphaInStart = collectionView.frame.height / 2.0
-      let value = scrollView.contentOffset.y
+      let alphaInStart =
+        (collectionView.frame.height - scrollView.adjustedContentInset.top
+          - scrollView.adjustedContentInset.bottom) / 2.0
+      let value = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
       let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
       feedOverlayView.headerView.alpha = alpha
 
@@ -1066,7 +1076,7 @@ extension NewTabPageViewController {
         && !feedOverlayView.newContentAvailableButton.isLoading
       {
         let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
-        if velocity > 0 && collectionView.contentOffset.y < todayStart {
+        if velocity > 0 && value < todayStart {
           // Scrolling up
           self.feedOverlayView.hideNewContentAvailableButton()
         } else if velocity < 0 {
@@ -1100,9 +1110,15 @@ extension NewTabPageViewController {
       return
     }
     // Offset of where Brave News starts
-    let todayStart =
-      collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
-    collectionView.contentOffset.y = todayStart
+    guard let section = layout.braveNewsSection,
+      collectionView.numberOfItems(inSection: section) != 0,
+      let item = layout.layoutAttributesForItem(at: IndexPath(item: 0, section: section))
+    else {
+      return
+    }
+    // FIXME: Use size of header + padding
+    collectionView.contentOffset.y =
+      item.frame.minY - collectionView.adjustedContentInset.top - 56
   }
 
   // MARK: - P3A
