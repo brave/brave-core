@@ -63,14 +63,9 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
 
   size_t GetQueueSizeForTesting() { return queue_.size(); }
 
-  // Stops account creation from kicking off a discovery run. Explicit
-  // DiscoverAssetsOnAllSupportedChains() calls are unaffected.
-  void SetAutoDiscoveryEnabledForTesting(bool enabled) {
-    auto_discovery_enabled_ = enabled;
-  }
-
  private:
   friend class AssetDiscoveryManagerUnitTest;
+  friend class AssetDiscoveryTaskUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            GetFungibleSupportedChains);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
