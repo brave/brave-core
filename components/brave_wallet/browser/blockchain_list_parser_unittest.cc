@@ -72,6 +72,29 @@ TEST(BlockchainListParseUnitTest, ParseTokenList) {
           "symbol": "TSLA",
           "decimals": 8
         }
+      },
+    "polkadot_asset_hub": {
+        "1000085": {
+          "coingeckoId": "gavun-wud",
+          "decimals": 10,
+          "logo": "https://coin-images.coingecko.com/coins/images/53409/large/logo_small.png?1766718628",
+          "name": "Gavun Wud",
+          "symbol": "WUD"
+        },
+        "1337": {
+          "coingeckoId": "usd-coin",
+          "decimals": 6,
+          "logo": "https://coin-images.coingecko.com/coins/images/6319/large/USDC.png?1769615602",
+          "name": "USDC",
+          "symbol": "USDC"
+        },
+        "50000103": {
+          "coingeckoId": "my-paqman-coin",
+          "decimals": 12,
+          "logo": "https://coin-images.coingecko.com/coins/images/55315/large/1000001202.jpg?1745399713",
+          "name": "My Paqman Coin",
+          "symbol": "MPC"
+        }
       }
     }
   )");
@@ -81,6 +104,7 @@ TEST(BlockchainListParseUnitTest, ParseTokenList) {
   ASSERT_EQ(token_list_map["ethereum.0x1"].size(), 2UL);
   EXPECT_EQ(token_list_map["ethereum.0x2"].size(), 0UL);
   ASSERT_EQ(token_list_map["ethereum.0xaa36a7"].size(), 1UL);
+  ASSERT_EQ(token_list_map["polkadot.polkadot_asset_hub"].size(), 3UL);
 
   const auto& ethereum_token_list = token_list_map["ethereum.0x1"];
   EXPECT_EQ(ethereum_token_list[0]->name, "Crypto Kitties");
@@ -146,6 +170,34 @@ TEST(BlockchainListParseUnitTest, ParseTokenList) {
   solana_token_list.push_back(std::move(usdc));
   solana_token_list.push_back(std::move(wrapped_sol));
   EXPECT_EQ(token_list_map["solana.0x65"], solana_token_list);
+
+  auto wud = mojom::BlockchainToken::New(
+      "1000085", "Gavun Wud",
+      "https://coin-images.coingecko.com/coins/images/53409/large/"
+      "logo_small.png?1766718628",
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, false,
+      false, "WUD", 10, true, "", "gavun-wud", mojom::kPolkadotMainnetAssetHub,
+      mojom::CoinType::DOT, mojom::ZCashTokenType::kNone);
+  auto dot_usdc = mojom::BlockchainToken::New(
+      "1337", "USDC",
+      "https://coin-images.coingecko.com/coins/images/6319/large/"
+      "USDC.png?1769615602",
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, false,
+      false, "USDC", 6, true, "", "usd-coin", mojom::kPolkadotMainnetAssetHub,
+      mojom::CoinType::DOT, mojom::ZCashTokenType::kNone);
+  auto mpc = mojom::BlockchainToken::New(
+      "50000103", "My Paqman Coin",
+      "https://coin-images.coingecko.com/coins/images/55315/large/"
+      "1000001202.jpg?1745399713",
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, false,
+      false, "MPC", 12, true, "", "my-paqman-coin",
+      mojom::kPolkadotMainnetAssetHub, mojom::CoinType::DOT,
+      mojom::ZCashTokenType::kNone);
+  std::vector<mojom::BlockchainTokenPtr> polkadot_token_list;
+  polkadot_token_list.push_back(std::move(wud));
+  polkadot_token_list.push_back(std::move(dot_usdc));
+  polkadot_token_list.push_back(std::move(mpc));
+  EXPECT_EQ(token_list_map["polkadot.polkadot_asset_hub"], polkadot_token_list);
 
   token_list_map.clear();
   json = R"({})";
