@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
@@ -314,6 +315,14 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest,
   wallet_service()->SetPrivateWindowsEnabled(true);
   WaitForTxStorageInitialized(
       incognito_wallet_service()->tx_service()->GetTxStorageForTesting());
+  EXPECT_FALSE(wallet_service()
+                   ->tx_service()
+                   ->GetTxStorageForTesting()
+                   ->IsMemoryOnlyStorageForTesting());
+  EXPECT_TRUE(incognito_wallet_service()
+                  ->tx_service()
+                  ->GetTxStorageForTesting()
+                  ->IsMemoryOnlyStorageForTesting());
   EXPECT_EQ(0u, incognito_wallet_service()
                     ->tx_service()
                     ->GetPendingTransactionsCountSync());

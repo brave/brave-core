@@ -47,6 +47,7 @@ class TxStorage {
 
   ScopedTxsUpdate CreateScopedTxsUpdate();
 
+  bool IsMemoryOnlyStorageForTesting() const;
   void SetOnInitializedCallbackForTesting(base::OnceClosure callback);
   void DisableWritesForTesting(bool disable);
 

@@ -115,6 +115,10 @@ void TxStorage::DisableWritesForTesting(bool disable) {
   disable_writes_for_testing_ = disable;
 }
 
+bool TxStorage::IsMemoryOnlyStorageForTesting() const {  // IN-TEST
+  return !store_;
+}
+
 void TxStorage::SetOnInitializedCallbackForTesting(  // IN-TEST
     base::OnceClosure callback) {
   on_initialized_callback_for_testing_ = std::move(callback);

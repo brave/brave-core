@@ -194,6 +194,12 @@ mojom::NetworkInfoPtr GetFixedSelectedNetworkForAccount(
 
 std::unique_ptr<TxStorage> CreateTxStorage(
     BraveWalletServiceDelegate& wallet_delegate) {
+  // A private window shares the regular profile's directory, so opening the
+  // database there would both leak private window transactions to disk and
+  // race with the regular profile's instance over the same LevelDB files.
+  if (wallet_delegate.IsPrivateWindow()) {
+    return TxStorage::MakeWithMemoryOnlyStorage();
+  }
   return TxStorage::MakeWithDbStorage(wallet_delegate.GetWalletBaseDirectory());
 }
 
