@@ -41,7 +41,7 @@ function Main() {
   }
 
   return (
-    <PanelWrapper width={'348px'}>
+    <PanelWrapper width={'360px'}>
       <SellPanel />
     </PanelWrapper>
   )
