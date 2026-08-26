@@ -329,6 +329,17 @@ extension BrowserViewController: TabManagerDelegate {
       coins: dappSupportedCoins
     )
     updateURLBarWalletButton()
+
+    if #available(iOS 26.0, *) {
+      if let topEdgeInteraction {
+        topEdgeView.removeInteraction(topEdgeInteraction)
+      }
+      let interaction = UIScrollEdgeElementContainerInteraction()
+      interaction.edge = .top
+      interaction.scrollView = selected?.webViewProxy?.scrollView
+      topEdgeView.addInteraction(interaction)
+      topEdgeInteraction = interaction
+    }
   }
 
   func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {

@@ -106,6 +106,18 @@ public class BrowserViewController: UIViewController {
     return statusBarOverlay
   }()
 
+  // On 26 this is the `UIScrollEdgeElementContainerInteraction` assigned to the top of the web view
+  var topEdgeInteraction: (any UIInteraction)?
+  let topEdgeView: UIView = {
+    if #available(iOS 26, *) {
+      let view = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+      view.isUserInteractionEnabled = false
+      return view
+    } else {
+      return UIView()
+    }
+  }()
+
   private(set) var toolbar: BottomToolbarView?
   /// The fullscreen editing surface (URL input + favorites/search screens) shown while editing the
   /// URL. Builds and owns the favorites, search-results and search-loader instances.
@@ -675,7 +687,14 @@ public class BrowserViewController: UIViewController {
     super.viewSafeAreaInsetsDidChange()
 
     topTouchArea.isEnabled = view.safeAreaInsets.top > 0
-    statusBarOverlay.isHidden = view.safeAreaInsets.top.isZero
+    statusBarOverlay.isHidden = isStatusBarOverlayHidden
+  }
+
+  private var isStatusBarOverlayHidden: Bool {
+    if #unavailable(iOS 26.0) {
+      return view.safeAreaInsets.top.isZero
+    }
+    return isUsingBottomBar || view.safeAreaInsets.top.isZero
   }
 
   @available(iOS 26.0, *)
@@ -933,6 +952,8 @@ public class BrowserViewController: UIViewController {
       searchContainer?.isUsingBottomBar = isUsingBottomBar
       bottomBarKeyboardBackground.isHidden = !isUsingBottomBar
       topToolbar.displayTabTraySwipeGestureRecognizer?.isEnabled = isUsingBottomBar
+      statusBarOverlay.isHidden = isStatusBarOverlayHidden
+      topEdgeView.isHidden = !isUsingBottomBar
       updateTabsBarVisibility()
       updateStatusBarOverlayColor()
       updateViewConstraints()
@@ -966,6 +987,10 @@ public class BrowserViewController: UIViewController {
     view.addSubview(footer)
     view.addSubview(statusBarOverlay)
     view.addSubview(header)
+
+    if #available(iOS 26.0, *) {
+      view.addSubview(topEdgeView)
+    }
 
     // For now we hide some elements so they are not visible
     header.isHidden = true
@@ -1318,9 +1343,25 @@ public class BrowserViewController: UIViewController {
 
   override public func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    statusBarOverlay.snp.remakeConstraints { make in
-      make.top.left.right.equalTo(self.view)
-      make.bottom.equalTo(view.safeArea.top)
+
+    if #available(iOS 26, *), isUsingBottomBar {
+      // UIScrollEdgeElementContainerInteraction does not work unless the view its added to contains
+      // a glass view hierarchy in it (UIGlassEffect/UIGlassContainerEffect). The top edge in bottom
+      // bar doesn't contain any real chrome in that spot so we create a temporary
+      // view which has no real visibility (non-zero width)
+      topEdgeView.frame = .init(
+        x: 0,
+        y: 0,
+        width: CGFloat.leastNormalMagnitude,
+        height: view.safeAreaInsets.top
+      )
+    } else {
+      statusBarOverlay.frame = .init(
+        x: 0,
+        y: 0,
+        width: view.bounds.width,
+        height: view.safeAreaInsets.top
+      )
     }
 
     toolbarVisibilityViewModel.transitionDistance =
@@ -2186,16 +2227,21 @@ public class BrowserViewController: UIViewController {
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    if isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
-      !url.isNewTabURL, !InternalURL.isValid(url: url),
-      let color = tab.sampledPageTopColor
-    {
-      return color.isLight ? .darkContent : .lightContent
+    if #unavailable(iOS 26.0) {
+      if isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
+        !url.isNewTabURL, !InternalURL.isValid(url: url),
+        let color = tab.sampledPageTopColor
+      {
+        return color.isLight ? .darkContent : .lightContent
+      }
     }
     return super.preferredStatusBarStyle
   }
 
   func updateStatusBarOverlayColor() {
+    if #available(iOS 26.0, *) {
+      return
+    }
     defer { setNeedsStatusBarAppearanceUpdate() }
     guard isUsingBottomBar, let tab = tabManager.selectedTab, let url = tab.visibleURL,
       !url.isNewTabURL, !InternalURL.isValid(url: url),

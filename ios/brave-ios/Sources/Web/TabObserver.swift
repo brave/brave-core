@@ -27,6 +27,7 @@ public protocol TabObserver: AnyObject {
   func tabDidChangeLoadProgress(_ tab: some TabState)
   func tabDidChangeVisibleSecurityState(_ tab: some TabState)
   func tabDidChangeBackForwardState(_ tab: some TabState)
+  @available(iOS, obsoleted: 26.0, message: "Page top color is not sampled on iOS 26+")
   func tabDidChangeSampledPageTopColor(_ tab: some TabState)
   func tabDidUpdateFaviconStatus(_ tab: some TabState)
   func tab(_ tab: some TabState, didUpdateFaviconURLCandidates candidates: [WebFaviconCandidate])
