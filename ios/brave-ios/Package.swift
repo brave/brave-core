@@ -300,7 +300,7 @@ var package = Package(
     .testTarget(name: "BraveUITests", dependencies: ["BraveUI"]),
     .target(
       name: "BraveShields",
-      dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],
+      dependencies: ["Strings", "Preferences", "BraveCore", "BraveUI", "Web", "Data"],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(

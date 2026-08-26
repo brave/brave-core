@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveShared
+import BraveShields
 import Collections
 import Combine
 import Data
@@ -71,14 +72,7 @@ class ContentBlockerHelper: ObservableObject {
   /// The rule lists that are loaded into the current tab
   private var setRuleLists: Set<WKContentRuleList> = []
 
-  var stats: TPPageStats = TPPageStats() {
-    didSet {
-      guard tab != nil else { return }
-      statsDidChange?(stats)
-    }
-  }
-
-  var statsDidChange: ((TPPageStats) -> Void)?
+  @Published var stats = TrackingProtectionPageStats()
   @Published var blockedRequests: OrderedSet<BlockedRequestInfo> = []
 
   init(tab: (any TabState)?) {
@@ -86,7 +80,7 @@ class ContentBlockerHelper: ObservableObject {
   }
 
   func clearPageStats() {
-    stats = TPPageStats()
+    stats = .init()
     blockedRequests.removeAll()
   }
 
