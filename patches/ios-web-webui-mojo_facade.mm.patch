@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..5eb91053452aada886f3bc53a547249b68363cdd 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..31d061ae4b1f1ecde79793a0d2975fe384c14b80 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,18 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -67,7 +67,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..5eb91053452aada886f3bc53a547249b
    DCHECK_CURRENTLY_ON(WebThread::UI);
    if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
      main_frame_.reset();
-@@ -464,25 +476,33 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+@@ -464,25 +476,31 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
    }
@@ -86,8 +86,8 @@ index cbc39d0594174bb896c7f79198325959c7d304be..5eb91053452aada886f3bc53a547249b
 -    pipes_.clear();
 -    watchers_.clear();
 -    last_watch_id_ = 0;
-     is_awaiting_message_ = false;
-     weak_ptr_factory_.InvalidateWeakPtrs();
+-    is_awaiting_message_ = false;
+-    weak_ptr_factory_.InvalidateWeakPtrs();
      AwaitNextMessage();
    }
 +  }();

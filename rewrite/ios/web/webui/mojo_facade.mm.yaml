@@ -110,6 +110,28 @@ substitutions:
       replace: ''
 
   - description: |-
+      Don't restart a poll that is already in flight, it loses a message.
+
+      fetchNextMessageFromJS() shifts the message off the JS queue as it
+      hands it over, so a poll that never completes takes that message with
+      it, permanently. Invalidating the weak pointers here drops the
+      in-flight poll's completion silently, and the replacement poll
+      overwrites sendNextMessagePromiseResolver in JS, which is what makes
+      WebKit report "Completion handler for function call is no longer
+      reachable" on the abandoned one. is_awaiting_message_ is only ever
+      cleared by that completion, so the loop can also wedge shut.
+
+      AwaitNextMessage() already no-ops when a poll is running, so calling
+      it unguarded is all this needs to do. A frame that genuinely went away
+      is reset by WebFrameBecameUnavailable, which is where the state reset
+      belongs.
+    regex:
+      re_pattern:
+        'is_awaiting_message_ = false;\n    weak_ptr_factory_\.InvalidateWeakPtrs\(\);\n
+        \   AwaitNextMessage\(\);'
+      replace: 'AwaitNextMessage();'
+
+  - description: |-
       Don't crash the browser when a write names a pipe id we don't hold.
 
       Upstream hit this same "handle unknown to the facade" failure on the
