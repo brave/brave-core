@@ -30,6 +30,7 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -344,12 +345,20 @@ std::vector<Tab*> BraveTabContainer::AddTabs(
     std::vector<TabInsertionParams> tabs_params) {
   std::vector<Tab*> added_tabs =
       TabContainerImpl::AddTabs(std::move(tabs_params));
-  if (GetScrollDirection()) {
+  // Session restore inserts many background tabs back-to-back; scrolling to
+  // each one forces an extra full strip relayout per insert. The active tab
+  // is scrolled into view on activation anyway (see SetActiveTab).
+  if (GetScrollDirection() && !IsSessionRestoreInProgress()) {
     for (Tab* const tab : added_tabs) {
       ScrollTabToBeVisible(tab);
     }
   }
   return added_tabs;
+}
+
+bool BraveTabContainer::IsSessionRestoreInProgress() const {
+  auto* browser = tab_slot_controller_->GetBrowserWindowInterface();
+  return browser && SessionRestore::IsRestoring(browser->GetProfile());
 }
 
 void BraveTabContainer::StartInsertTabAnimation(int model_index) {
