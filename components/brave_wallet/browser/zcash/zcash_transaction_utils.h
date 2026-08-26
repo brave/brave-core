@@ -22,6 +22,7 @@ namespace brave_wallet {
 enum class ZCashTargetOutputType {
   kTransparent,
   kOrchard,
+  kIronwood,
 };
 
 struct PickInputsResult {

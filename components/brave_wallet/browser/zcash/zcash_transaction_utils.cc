@@ -75,6 +75,7 @@ base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
 // fee = max(2, (0, 1) + max(inputs, change?, 2)) * 5000
 // s->s
 // fee = max(2, max(inputs, 1 + change?, 2)) * 5000.
+// orchard_input_count used for both orchard and ironwood.
 base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     const base::StrictNumeric<uint32_t> transparent_input_count,
     const base::StrictNumeric<uint32_t> orchard_input_count,
@@ -88,6 +89,7 @@ base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
       orchard_input_count != 0u ? 1u : 0u;
   base::CheckedNumeric<uint32_t> transparent_output_count =
       transparent_input_count != 0u ? 1u : 0u;
+  base::CheckedNumeric<uint32_t> ironwood_output_count = 0u;
 
   // Add a target output.
   switch (output_type) {
@@ -97,6 +99,9 @@ base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     case ZCashTargetOutputType::kOrchard:
       orchard_output_count++;
       break;
+    case ZCashTargetOutputType::kIronwood:
+      ironwood_output_count++;
+      break;
     default:
       NOTREACHED();
   }
@@ -104,11 +109,13 @@ base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
   base::CheckedNumeric<uint32_t> orchard_actions_count = GetOrchardActionsCount(
       orchard_input_count, orchard_output_count.ValueOrDie(),
       orchard_cross_address_disabled);
+  base::CheckedNumeric<uint32_t> ironwood_actions_count =
+      GetOrchardActionsCount(0u, ironwood_output_count.ValueOrDie(), false);
   // https://github.com/zcash/librustzcash/blob/8eb78dfae38ca1c91a108a86a4a3b5505766c3f6/zcash_primitives/src/transaction/fees/zip317.rs#L188
   base::CheckedNumeric<uint32_t> logical_actions_count =
       base::CheckMax<uint32_t>(transparent_input_count,
                                transparent_output_count) +
-      orchard_actions_count;
+      orchard_actions_count + ironwood_actions_count;
   return base::CheckMul<uint64_t>(
       kMarginalFee, base::CheckMax(kGraceActionsCount, logical_actions_count));
 }
