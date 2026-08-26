@@ -31,6 +31,31 @@ bool MojoFacade::ServesFrame(WebFrame* frame) const {
                              : frame->GetFrameId() == served_frame_id_;
 }
 
+void MojoFacade::EnsureSubFrameFacade(WebFrame* frame) {
+  if (!IsMainFrameFacade() || !frame || frame->IsMainFrame()) {
+    return;
+  }
+  // Only WebUI documents ever speak mojo. Polling anything else would spin
+  // forever, since a frame without mojo_api.js throws on every poll and
+  // OnAwaitNextMessageCompleted retries on error.
+  const GURL origin = frame->GetSecurityOrigin().GetURL();
+  if (!origin.SchemeIs(kChromeUIScheme) &&
+      !origin.SchemeIs(kChromeUIUntrustedScheme)) {
+    return;
+  }
+  if (!web_state_->GetInterfaceBinderForMainFrame()
+           ->HasRegisteredInterfaces()) {
+    return;
+  }
+  std::unique_ptr<MojoFacade>& facade = sub_frame_facades_[frame->GetFrameId()];
+  if (!facade) {
+    facade = std::make_unique<MojoFacade>(web_state_, frame);
+  }
+  // The constructor only polls if the WebState isn't mid-load, which it may
+  // well have been when the frame first appeared.
+  facade->AwaitNextMessage();
+}
+
 // Gates Mojo.bindInterface calls from chrome-untrusted:// origins against
 // InterfaceBinder::IsAllowedForOrigin (brave/chromium_src/ios/web/public/
 // web_state.h), which upstream never checks. The origin is taken from the

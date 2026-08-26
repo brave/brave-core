@@ -42,6 +42,9 @@ substitutions:
         bool IsMainFrameFacade() const;
         // Whether `frame` is the frame this facade serves.
         bool ServesFrame(WebFrame* frame) const;
+        // Gives `frame` a facade of its own if it needs one, and makes sure
+        // it is polling. Does nothing unless IsMainFrameFacade().
+        void EnsureSubFrameFacade(WebFrame* frame);
         // Gates Mojo.bindInterface from a chrome-untrusted:// frame against
         // InterfaceBinder::IsAllowedForOrigin. See
         // brave/chromium_src/ios/web/public/web_state.h for the allowlist.

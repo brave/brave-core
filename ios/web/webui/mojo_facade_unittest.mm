@@ -425,7 +425,9 @@ TEST_F(MojoFacadeTest, SubFrameFacadeIsCreatedAndDestroyedWithItsFrame) {
       "FakeInterface",
       base::BindRepeating([](mojo::GenericPendingReceiver*) {}));
 
-  auto frame = FakeWebFrame::Create("abcdef01", /*is_main_frame=*/false);
+  // Only WebUI origins get a facade, so give the frame one.
+  auto frame = FakeWebFrame::Create("abcdef01", /*is_main_frame=*/false,
+                                    GURL("chrome-untrusted://test-host"));
   const std::string frame_id = frame->GetFrameId();
   frames_manager()->AddWebFrame(std::move(frame));
 

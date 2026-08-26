@@ -46,22 +46,10 @@ substitutions:
 
   - description: |-
       Give each new sub-frame a facade of its own.
-
-      Gated the same way upstream gates the main frame's own
-      AwaitNextMessage() call in the constructor: only once the page isn't
-      mid-load and something has actually registered an interface. Without
-      that gate a frame that never uses mojo would still get polled forever,
-      since OnAwaitNextMessageCompleted retries on error.
     after_function_impl:
       function_name: MojoFacade::WebFrameBecameAvailable
       code: |-
-        if (IsMainFrameFacade() && web_frame && !web_frame->IsMainFrame() &&
-            !web_state_->IsLoading() &&
-            web_state_->GetInterfaceBinderForMainFrame()
-                ->HasRegisteredInterfaces()) {
-          sub_frame_facades_[web_frame->GetFrameId()] =
-              std::make_unique<MojoFacade>(web_state_, web_frame);
-        }
+        EnsureSubFrameFacade(web_frame);
 
   - description: |-
       Drop a sub-frame's facade along with the frame.
@@ -77,12 +65,23 @@ substitutions:
         sub_frame_facades_.erase(frame_id);
 
   - description: |-
-      Drop every sub-frame facade when a new document commits, before
-      upstream resets the main frame's own state.
-    preempt_function_impl:
+      Service sub-frames that already existed when the page finished loading.
+
+      A sub-frame present in the document (AI Chat's conversation-entries
+      iframe among them) becomes available while the WebState is still
+      loading, before anything has registered an interface, so
+      WebFrameBecameAvailable alone never gives it a facade. Frames of the
+      previous document don't linger: each is erased by its own
+      WebFrameBecameUnavailable when a navigation tears them down.
+    after_function_impl:
       function_name: MojoFacade::PageLoaded
       code: |-
-        sub_frame_facades_.clear();
+        if (load_completion_status == PageLoadCompletionStatus::SUCCESS) {
+          for (WebFrame* frame :
+               web_state_->GetPageWorldWebFramesManager()->GetAllWebFrames()) {
+            EnsureSubFrameFacade(frame);
+          }
+        }
 
   - description: |-
       Drop the sub-frame facades before the WebState they point at goes.

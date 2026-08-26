@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b7374610883 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..5eb91053452aada886f3bc53a547249b68363cdd 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,18 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -47,7 +47,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b73
  
    const base::ListValue* handles_list = args.FindList("handles");
    CHECK(handles_list);
-@@ -448,14 +456,24 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -448,14 +456,18 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
@@ -58,13 +58,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b73
      main_frame_ = web_frame->AsWeakPtr();
    }
 +  }();
-+  if (IsMainFrameFacade() && web_frame && !web_frame->IsMainFrame() &&
-+      !web_state_->IsLoading() &&
-+      web_state_->GetInterfaceBinderForMainFrame()
-+          ->HasRegisteredInterfaces()) {
-+    sub_frame_facades_[web_frame->GetFrameId()] =
-+        std::make_unique<MojoFacade>(web_state_, web_frame);
-+  }
++  EnsureSubFrameFacade(web_frame);
  }
  
  void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
@@ -73,7 +67,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b73
    DCHECK_CURRENTLY_ON(WebThread::UI);
    if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
      main_frame_.reset();
-@@ -464,18 +482,18 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+@@ -464,25 +476,33 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
    }
@@ -83,7 +77,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b73
  
  void MojoFacade::PageLoaded(WebState* web_state,
                              PageLoadCompletionStatus load_completion_status) {
-+  sub_frame_facades_.clear();
++  [&]() -> void {
    DCHECK_CURRENTLY_ON(WebThread::UI);
    DCHECK_EQ(web_state_, web_state);
    if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
@@ -95,7 +89,14 @@ index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b73
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
      AwaitNextMessage();
-@@ -483,6 +501,7 @@ void MojoFacade::PageLoaded(WebState* web_state,
+   }
++  }();
++  if (load_completion_status == PageLoadCompletionStatus::SUCCESS) {
++    for (WebFrame* frame :
++         web_state_->GetPageWorldWebFramesManager()->GetAllWebFrames()) {
++      EnsureSubFrameFacade(frame);
++    }
++  }
  }
  
  void MojoFacade::WebStateDestroyed(WebState* web_state) {
