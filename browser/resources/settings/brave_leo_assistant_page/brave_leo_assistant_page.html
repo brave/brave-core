@@ -50,6 +50,20 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
       on-sub-label-link-clicked="openTabOrganizationLearnMore_">
     </settings-toggle-button>
+    <if expr="enable_local_ai">
+      <template is="dom-if"
+        if="[[prefs.brave.ai_chat.tab_organization_enabled.value]]">
+        <!-- Requires Semantic History Search (chrome://history), which is what
+             builds the passage index, so there is nothing to send without it. -->
+        <settings-toggle-button class="cr-row continuation list-frame"
+          pref="{{prefs.brave.ai_chat.tab_organization_send_page_content}}"
+          label="$i18n{braveLeoAssistantTabOrganizationSendPageContentLabel}"
+          sub-label="$i18n{braveLeoAssistantTabOrganizationSendPageContentDesc}"
+          disabled="[[!isSendPageContentAvailable_(
+              prefs.brave.history_embeddings_enabled.value)]]">
+        </settings-toggle-button>
+      </template>
+    </if>
   </template>
   <cr-link-row class="hr"
     label="$i18n{braveLeoAssistantAutocompleteLink}"
