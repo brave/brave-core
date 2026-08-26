@@ -387,6 +387,12 @@ copy("copy_signing_config") {
 }
 
 copy("copy_browser_install_script") {
+  # keystone_install.sh is shipped in updates and installs the respective new
+  # browser version. Even though Keystone is now the legacy updater, upstream
+  # have said that they will keep using the name keystone_install.sh because
+  # they also intend to maintain backwards-compatibility with Keystone
+  # (source: https://issues.chromium.org/issues/523387688#comment13). We
+  # therefore use the script as well.
   sources = [ "//chrome/installer/mac/keystone_install.sh" ]
   outputs = [ "$packaging_dir/keystone_install.sh" ]
 }
