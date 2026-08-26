@@ -107,6 +107,7 @@ source_set("ui") {
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/browser/ui/toolbar",
+    "//chrome/browser/ui/views/tabs/hovercard",
     "//chrome/browser/ui/webui:chrome_web_ui_controller_factory",
     "//media",
   ]
@@ -129,7 +130,10 @@ source_set("ui") {
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
-  public_deps = [ ":ui_public_dependencies" ]
+  public_deps = [
+    ":ui_public_dependencies",
+    "//chrome/browser/ui/views/tabs/hovercard",
+  ]
 
   sources = [
     "brave_scheme_utils.cc",
