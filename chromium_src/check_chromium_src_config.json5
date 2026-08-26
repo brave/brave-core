@@ -39,6 +39,7 @@
     'chrome/install_static/brave_restore_google_update_integration.h',
     'chrome/install_static/brave_stash_google_update_integration.h',
     'chrome/install_static/brave_user_data_dir_win_unittest.cc',
+    'components/autofill/core/browser/autofill_browser_util_unittest.cc',
     'components/search_engines/brave_template_url_prepopulate_data_unittest.cc',
     'components/search_engines/brave_template_url_service_util_unittest.cc',
     'components/variations/service/field_trial_unittest.cc',
