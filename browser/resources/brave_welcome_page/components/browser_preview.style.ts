@@ -21,7 +21,7 @@ export const style = scoped.css`
   }
 
   /* Color themes tint the browser chrome in light mode. */
-  &.custom-theme-color {
+  &.tint-toolbar-background {
     --preview-chrome-background: ${color.desktopbrowser.toolbar.button.hover};
   }
 

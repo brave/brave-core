@@ -51,7 +51,6 @@ export const style = scoped.css`
         inset: 20%;
         border-radius: ${radius.full};
         background: ${color.container.background};
-   
         z-index: -1;
       }
     }
