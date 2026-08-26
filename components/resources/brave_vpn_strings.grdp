@@ -57,7 +57,7 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn" formatter_data="webui=Vpn">
-    Start 7-day free trial
+    Start your 7 day free trial
   </message>
 
   <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN." formatter_data="webui=Vpn">Already purchased Brave VPN?</message>
@@ -118,24 +118,32 @@
     About
   </message>
 
-  <message name="IDS_BRAVE_VPN_FEATURE_1" desc="Key feature for selling advertising" formatter_data="webui=Vpn">
-    Extra privacy &amp; security online
+  <message name="IDS_BRAVE_VPN_FEATURE_1" desc="Selling point in the VPN purchase panel, about unrestricted access to content" formatter_data="webui=Vpn">
+    Access your favorite content without limits
   </message>
 
-  <message name="IDS_BRAVE_VPN_FEATURE_2" desc="Key feature for selling advertising" formatter_data="webui=Vpn">
-    Hide your IP &amp; change your location
+  <message name="IDS_BRAVE_VPN_FEATURE_2" desc="Selling point in the VPN purchase panel, about the number of available servers" formatter_data="webui=Vpn">
+    Hundreds of servers worldwide
   </message>
 
-  <message name="IDS_BRAVE_VPN_FEATURE_3" desc="Key feature for selling advertising" formatter_data="webui=Vpn">
-    Hundreds of servers around the world
+  <message name="IDS_BRAVE_VPN_FEATURE_3" desc="Selling point in the VPN purchase panel, about hiding the user's IP address and location" formatter_data="webui=Vpn">
+    Easily hide your IP &amp; change your location
   </message>
 
-  <message name="IDS_BRAVE_VPN_FEATURE_4" desc="Key feature for selling advertising" formatter_data="webui=Vpn">
-    Lightning-fast connection speeds
+  <message name="IDS_BRAVE_VPN_FEATURE_4" desc="Selling point in the VPN purchase panel, about connection speed" formatter_data="webui=Vpn">
+    Lightning fast connection speeds
   </message>
 
-  <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising" formatter_data="webui=Vpn">
-    Protect up to 10 devices with one plan
+  <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Selling point in the VPN purchase panel, about not keeping logs of user activity" formatter_data="webui=Vpn">
+    No logging, independently audited
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_6" desc="Selling point in the VPN purchase panel, about how many devices a single subscription covers" formatter_data="webui=Vpn">
+    One subscription covers 10 devices across desktop, Android, &amp; iOS
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_7" desc="Selling point in the VPN purchase panel, about being able to cancel the subscription at any time" formatter_data="webui=Vpn">
+    No commitment, cancel any time
   </message>
   <message name="IDS_BRAVE_VPN_SUPPORT_TICKET_FAILED" desc="Label to show failed response from support ticket creation request" formatter_data="webui=Vpn">
     Failed to create support ticket, check your connection.
