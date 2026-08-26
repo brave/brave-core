@@ -30,6 +30,11 @@ class BraveHistoryUIConfig
   BraveHistoryUIConfig()
       : DefaultWebUIConfig(content::kChromeUIScheme,
                            chrome::kChromeUIHistoryHost) {}
+
+  // content::WebUIConfig:
+  std::unique_ptr<content::WebUIController> CreateWebUIController(
+      content::WebUI* web_ui,
+      const GURL& url) override;
 };
 
 // Brave subclass of the chrome://history WebUI controller. When local AI is

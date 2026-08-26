@@ -28,6 +28,7 @@ source_set("history") {
     "//base",
     "//brave/components/local_ai/buildflags",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/webui/page_not_available_for_guest",
     "//chrome/common:constants",
     "//components/prefs",
     "//content/public/common",
