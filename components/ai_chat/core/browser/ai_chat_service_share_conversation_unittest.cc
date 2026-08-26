@@ -53,6 +53,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               GetPremiumStatus,
               (mojom::Service::GetPremiumStatusCallback callback),
               (override));
+  MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
 // Returns a fixed viewer URL without any network access, so tests can exercise
