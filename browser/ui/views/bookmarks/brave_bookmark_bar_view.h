@@ -6,14 +6,19 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BRAVE_BOOKMARK_BAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BRAVE_BOOKMARK_BAR_VIEW_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+
+class BookmarkBarUIController;
 
 class BraveBookmarkBarView : public BookmarkBarView {
   METADATA_HEADER(BraveBookmarkBarView, BookmarkBarView)
  public:
   BraveBookmarkBarView(BrowserWindowInterface* browser,
+                       std::unique_ptr<BookmarkBarUIController> controller,
                        BrowserView* browser_view);
   ~BraveBookmarkBarView() override;
 
