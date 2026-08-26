@@ -752,11 +752,40 @@ substitutions:
         },
     },
     "gn_edit": {
+        "gn.add_configs": {
+            "description": """\
+Adds configs to a GN target.
+
+The entries are added to the target's `configs`, which is created if the target
+has none.
+
+```yaml
+substitutions:
+  - description: Apply the Brave constants config.
+    add_configs:
+      target: common
+      configs: //brave/common:constants_configs
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to add the configs to, e.g. `common` for `source_set(\"common\")`.",
+                },
+                {
+                    "name": "configs",
+                    "description": "The config label(s) to add, e.g. `//brave/common:constants_configs`.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add configs {configs}",
+        },
         "gn.add_deps": {
             "description": """\
-Adds dependencies to a target in a `BUILD.gn` or `.gni` file.
+Adds dependencies to a GN target.
 
-The labels are added to the target's `deps`, which is created if the target has
+The entries are added to the target's `deps`, which is created if the target has
 none.
 
 ```yaml
@@ -790,9 +819,38 @@ substitutions:
             "pattern": "//:{target}",
             "command": "add deps {deps}",
         },
+        "gn.add_public_deps": {
+            "description": """\
+Adds public dependencies to a GN target.
+
+The entries are added to the target's `public_deps`, which is created if the
+target has none.
+
+```yaml
+substitutions:
+  - description: Re-export the Brave network additions.
+    add_public_deps:
+      target: cpp
+      public_deps: //brave/services/network/public/cpp
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to add the public dependencies to, e.g. `cpp` for `source_set(\"cpp\")`.",
+                },
+                {
+                    "name": "public_deps",
+                    "description": "The dependency label(s) to add, e.g. `//brave/services/network/public/cpp`.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add public_deps {public_deps}",
+        },
         "gn.add_sources": {
             "description": """\
-Adds source files to a target in a `BUILD.gn` or `.gni` file.
+Adds source files to a GN target.
 
 The paths are added to the target's `sources`, which is created if the target
 has none.
@@ -818,6 +876,36 @@ substitutions:
             ],
             "pattern": "//:{target}",
             "command": "add sources {sources}",
+        },
+        "gn.add_visibility": {
+            "description": """\
+Adds visibility entries to a gn target.
+
+The patterns are added to the target's `visibility`, which is created if the
+target has none. Be aware that a target declaring no `visibility` is visible to
+everything, so adding the first entry restricts it to exactly what is listed.
+
+```yaml
+substitutions:
+  - description: Let the Brave content layer reach this target.
+    add_visibility:
+      target: content
+      visibility: //brave/content/*
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to add the visibility entries to, e.g. `content` for `source_set(\"content\")`.",
+                },
+                {
+                    "name": "visibility",
+                    "description": "The label pattern(s) to make the target visible to, e.g. `//brave/content/*`.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add visibility {visibility}",
         },
     },
 }
