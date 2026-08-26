@@ -7735,8 +7735,10 @@ class GnEditSchemaTest(unittest.TestCase):
     def test_the_shipped_ops_validate(self):
         # `load()` validates on construction, so this fails loudly if a
         # shipped op ever drifts from its declared interface.
-        self.assertEqual(sorted(plaster.RewritersEval.load().gn_edits),
-                         ['gn.add_deps', 'gn.add_sources'])
+        self.assertEqual(sorted(plaster.RewritersEval.load().gn_edits), [
+            'gn.add_configs', 'gn.add_deps', 'gn.add_public_deps',
+            'gn.add_sources', 'gn.add_visibility'
+        ])
 
 
 class GnEditRewriterTest(unittest.TestCase):
@@ -7757,8 +7759,8 @@ class GnEditRewriterTest(unittest.TestCase):
     # -- registration -------------------------------------------------------
 
     def test_registered_under_its_bare_name_in_the_gn_namespace(self):
-        for name, op_id in (('add_deps', 'gn.add_deps'), ('add_sources',
-                                                          'gn.add_sources')):
+        for op_id in sorted(plaster.RewritersEval.load().gn_edits):
+            name = op_id.split('.', 1)[1]
             cls = self._cls(name)
             self.assertTrue(issubclass(cls, plaster.GnEditRewriter))
             self.assertEqual(cls.OP_ID, op_id)
@@ -7916,6 +7918,86 @@ class GnEditRewriterTest(unittest.TestCase):
         self.assertEqual(errors, [])
         for expected in ('"a.cc"', '"b.cc"', '"existing.cc"'):
             self.assertIn(expected, result)
+
+    def test_each_op_adds_to_the_attribute_it_names(self):
+        # The ops differ only by the attribute their `command` template names,
+        # so this checks each one lands in its own attribute and leaves the
+        # neighbouring ones alone -- the failure a copy-pasted spec produces.
+        source = ('source_set("foo") {\n'
+                  '  deps = []\n'
+                  '  public_deps = []\n'
+                  '  configs = []\n'
+                  '  visibility = []\n'
+                  '  sources = []\n'
+                  '}\n')
+        for name, attribute, value in (
+            ('add_configs', 'configs', '//brave/common:constants_configs'),
+            ('add_deps', 'deps', '//brave/a'),
+            ('add_public_deps', 'public_deps', '//brave/b'),
+            ('add_sources', 'sources', 'brave.cc'),
+            ('add_visibility', 'visibility', '//brave/content/*'),
+        ):
+            with self.subTest(name):
+                result, errors = self._parse(
+                    {
+                        'target': 'foo',
+                        attribute: value
+                    }, name=name).apply(source, count=1, description='d')
+                self.assertEqual(errors, [])
+                self.assertIn(f'{attribute} = [ "{value}" ]', result)
+                # Every other attribute is still empty.
+                for other in ('deps', 'public_deps', 'configs', 'visibility',
+                              'sources'):
+                    if other != attribute:
+                        self.assertIn(f'{other} = []', result)
+
+    def test_every_op_accepts_a_list_for_its_variadic_input(self):
+        # `variadic` is per-op declared data, so an op whose spec omitted the
+        # flag would reject a list body while every other op accepted one --
+        # and the single-value cases above would not notice.
+        source = ('source_set("foo") {\n'
+                  '  deps = []\n'
+                  '  public_deps = []\n'
+                  '  configs = []\n'
+                  '  visibility = []\n'
+                  '  sources = []\n'
+                  '}\n')
+        for op_id, spec in sorted(
+                plaster.RewritersEval.load().gn_edits.items()):
+            name = op_id.split('.', 1)[1]
+            variadic = [
+                entry['name'] for entry in spec['inputs']
+                if entry.get('variadic')
+            ]
+            with self.subTest(name):
+                self.assertEqual(variadic, [name.removeprefix('add_')])
+                result, errors = self._parse(
+                    {
+                        'target': 'foo',
+                        variadic[0]: ['//brave/a', '//brave/b']
+                    },
+                    name=name).apply(source, count=1, description='d')
+                self.assertEqual(errors, [])
+                self.assertIn('"//brave/a"', result)
+                self.assertIn('"//brave/b"', result)
+
+    def test_add_visibility_creates_the_attribute_when_absent(self):
+        # Worth pinning because it is a behaviour change rather than an
+        # addition: a target declaring no `visibility` is visible everywhere,
+        # so the first entry restricts it to exactly what is listed.
+        result, errors = self._parse(
+            {
+                'target': 'foo',
+                'visibility': '//brave/content/*'
+            },
+            name='add_visibility').apply(
+                'source_set("foo") {\n'
+                '  sources = [ "a.cc" ]\n'
+                '}\n',
+                count=1,
+                description='d')
+        self.assertEqual(errors, [])
+        self.assertIn('visibility = [ "//brave/content/*" ]', result)
 
 
 class GnEditDispatchTest(unittest.TestCase):
