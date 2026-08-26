@@ -5,9 +5,11 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
@@ -17,6 +19,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
+#include "brave/components/misc_metrics/features.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -76,6 +79,11 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
   auto* profile = Profile::FromBrowserContext(context);
+  if (local_state && profile && !profile->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(features::kFingerprintInputMetrics)) {
+    fingerprint_frequency_metrics_ =
+        std::make_unique<FingerprintFrequencyMetrics>(local_state, profile);
+  }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
@@ -137,6 +145,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 ProfileMiscMetricsService::~ProfileMiscMetricsService() = default;
 
 void ProfileMiscMetricsService::Shutdown() {
+  fingerprint_frequency_metrics_ = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   if (extension_metrics_) {
     extension_metrics_->Shutdown();

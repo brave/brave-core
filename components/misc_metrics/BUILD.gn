@@ -17,6 +17,8 @@ static_library("misc_metrics") {
     "autofill_metrics.h",
     "brave_search_metrics.cc",
     "brave_search_metrics.h",
+    "features.cc",
+    "features.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
     "language_metrics.cc",

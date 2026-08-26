@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/memory/raw_ptr.h"
+#include "base/time/time.h"
 #include "base/values.h"
 
 class PrefService;
@@ -22,13 +23,15 @@ class PagePercentageMetrics {
  protected:
   PagePercentageMetrics(PrefService* local_state,
                         std::string_view counts_pref_key,
-                        std::string_view frame_start_pref_key);
+                        std::string_view frame_start_pref_key,
+                        base::TimeDelta report_interval = base::Hours(24));
 
   void IncrementDictCount(std::string_view key);
   void RecordPercentageHistogram(const base::DictValue& counts,
                                  int total,
                                  std::string_view count_key,
-                                 const char* histogram_name);
+                                 const char* histogram_name,
+                                 bool report_if_zero = false);
   bool HasReportIntervalElapsed() const;
   void ResetCounts();
 
@@ -37,6 +40,7 @@ class PagePercentageMetrics {
  private:
   std::string_view counts_pref_key_;
   std::string_view frame_start_pref_key_;
+  base::TimeDelta report_interval_;
 };
 
 }  // namespace misc_metrics

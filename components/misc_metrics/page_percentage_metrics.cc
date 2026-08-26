@@ -12,19 +12,15 @@
 
 namespace misc_metrics {
 
-namespace {
-
-constexpr base::TimeDelta kReportInterval = base::Hours(24);
-
-}  // namespace
-
 PagePercentageMetrics::PagePercentageMetrics(
     PrefService* local_state,
     std::string_view counts_pref_key,
-    std::string_view frame_start_pref_key)
+    std::string_view frame_start_pref_key,
+    base::TimeDelta report_interval)
     : local_state_(local_state),
       counts_pref_key_(counts_pref_key),
-      frame_start_pref_key_(frame_start_pref_key) {
+      frame_start_pref_key_(frame_start_pref_key),
+      report_interval_(report_interval) {
   base::Time frame_start = local_state_->GetTime(frame_start_pref_key_);
   if (frame_start.is_null()) {
     local_state_->SetTime(frame_start_pref_key_, base::Time::Now());
@@ -41,12 +37,13 @@ void PagePercentageMetrics::RecordPercentageHistogram(
     const base::DictValue& counts,
     int total,
     std::string_view count_key,
-    const char* histogram_name) {
+    const char* histogram_name,
+    bool report_if_zero) {
   if (total == 0) {
     return;
   }
   int count = counts.FindInt(count_key).value_or(0);
-  if (count == 0) {
+  if (count == 0 && !report_if_zero) {
     return;
   }
   p3a_utils::RecordPercentageHistogram(histogram_name, kPercentageBuckets,
@@ -56,7 +53,7 @@ void PagePercentageMetrics::RecordPercentageHistogram(
 bool PagePercentageMetrics::HasReportIntervalElapsed() const {
   base::Time frame_start = local_state_->GetTime(frame_start_pref_key_);
   base::Time now = base::Time::Now();
-  return now - frame_start >= kReportInterval;
+  return now - frame_start >= report_interval_;
 }
 
 void PagePercentageMetrics::ResetCounts() {

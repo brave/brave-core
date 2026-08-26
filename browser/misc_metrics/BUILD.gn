@@ -37,6 +37,8 @@ static_library("misc_metrics_impl") {
   sources = [
     "//brave/browser/misc_metrics/doh_metrics.cc",
     "//brave/browser/misc_metrics/doh_metrics.h",
+    "//brave/browser/misc_metrics/fingerprint_frequency_metrics.cc",
+    "//brave/browser/misc_metrics/fingerprint_frequency_metrics.h",
     "//brave/browser/misc_metrics/media_session_metrics_impl.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
@@ -55,6 +57,8 @@ static_library("misc_metrics_impl") {
     "//brave/components/constants",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/script_injector/common/mojom",
     "//brave/components/time_period_storage",
     "//chrome/browser:browser_process",
     "//chrome/browser:shell_integration",
@@ -66,12 +70,15 @@ static_library("misc_metrics_impl") {
     "//chrome/common:constants",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/language/core/browser",
     "//components/prefs",
     "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
+    "//content/public/common",
     "//mojo/public/cpp/bindings",
     "//services/media_session/public/mojom",
+    "//third_party/blink/public/common",
     "//ui/base",
     "//ui/gfx/geometry",
   ]
@@ -133,6 +140,7 @@ source_set("unit_tests") {
 
   sources = [
     "doh_metrics_unittest.cc",
+    "fingerprint_frequency_metrics_unittest.cc",
     "media_session_metrics_impl_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
@@ -188,7 +196,7 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = []
+  sources = [ "fingerprint_frequency_metrics_browsertest.cc" ]
 
   # The web3 proxy is only injected alongside a wallet provider.
   if (enable_brave_wallet) {
@@ -208,6 +216,7 @@ source_set("browser_tests") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/test:test_support",
+    "//components/language/core/browser",
     "//components/prefs:test_support",
     "//content/test:test_support",
     "//net:test_support",

@@ -102,6 +102,15 @@ inline constexpr char kMiscMetricsCombinedSearchStudySearchMade[] =
 inline constexpr char kMiscMetricsCombinedSearchStudyMediaTime[] =
     "brave.misc_metrics.combined_search_study_media_time";
 
+inline constexpr char kMiscMetricsFingerprintHashes[] =
+    "brave.misc_metrics.fp_hashes";
+inline constexpr char kMiscMetricsFingerprintChangeCounts[] =
+    "brave.misc_metrics.fp_change_counts";
+inline constexpr char kMiscMetricsFingerprintReportFrameStartTime[] =
+    "brave.misc_metrics.fp_report_frame_start_time";
+inline constexpr char kMiscMetricsFingerprintLastExecutionTime[] =
+    "brave.misc_metrics.fp_last_execution_time";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
