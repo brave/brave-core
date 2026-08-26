@@ -21,6 +21,14 @@ export function themeIsGrey(theme: Theme) {
   return !theme.followDeviceTheme && theme.isGreyBaseline
 }
 
+// Returns true when a color theme is applied, as opposed to the default grey
+// baseline or the device theme.
+export function themeHasCustomColor(theme: Theme) {
+  return (
+    !theme.followDeviceTheme && !theme.isGreyBaseline && !!theme.foregroundColor
+  )
+}
+
 export function themeMatchesColor(theme: Theme, color: ChromeColor) {
   return (
     !theme.followDeviceTheme

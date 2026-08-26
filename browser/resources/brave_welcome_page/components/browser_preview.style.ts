@@ -10,12 +10,19 @@ const tabbar = color.desktopbrowser.tabbar
 
 export const style = scoped.css`
   & {
+    --preview-chrome-background: ${color.desktopbrowser.chromeBackgroundDesktop};
+
     flex: 0 0 auto;
     height: 255px;
     padding: 32px;
     border-radius: ${radius.xl};
     background: ${color.material.regular};
     overflow: hidden;
+  }
+
+  /* Color themes tint the browser chrome in light mode. */
+  &.custom-theme-color {
+    --preview-chrome-background: ${color.desktopbrowser.toolbar.button.hover};
   }
 
   .chrome {
@@ -26,7 +33,7 @@ export const style = scoped.css`
     align-items: stretch;
     overflow: hidden;
     border-radius: ${radius.l};
-    background: ${color.desktopbrowser.chromeBackgroundDesktop};
+    background: var(--preview-chrome-background);
     box-shadow: 0 0 0 0.75px rgba(6, 6, 5, 0.2);
 
     /* Highlights the top edge of the frame. Drawn as an overlay so that it
@@ -77,7 +84,7 @@ export const style = scoped.css`
     align-items: center;
     gap: ${spacing.xl};
     padding: ${spacing.s};
-    background: ${color.desktopbrowser.chromeBackgroundDesktop};
+    background: var(--preview-chrome-background);
   }
 
   .nav-buttons {
@@ -202,7 +209,7 @@ export const style = scoped.css`
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: ${color.desktopbrowser.chromeBackgroundDesktop};
+      background: var(--preview-chrome-background);
     }
 
     .pinned-tabs {

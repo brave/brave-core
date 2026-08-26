@@ -7,7 +7,10 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { IconName } from '@brave/leo/icons/meta'
 
+import { useWelcomeApi } from '../api/welcome_api_context'
 import { getString } from '../lib/strings'
+import * as themeColors from '../lib/theme_colors'
+import classnames from '$web-common/classnames'
 
 import { style } from './browser_preview.style'
 
@@ -25,12 +28,18 @@ interface BrowserPreviewProps {
 // Mock browser chrome that illustrates the selected tab layout. Hidden from
 // assistive technology.
 export function BrowserPreview(props: BrowserPreviewProps) {
+  const api = useWelcomeApi()
+
+  const theme = api.useTheme().data
   const isVertical = props.tabOrientation === 'vertical'
 
   return (
     <div
       data-css-scope={style.scope}
-      className={props.tabOrientation}
+      className={classnames(props.tabOrientation, {
+        'custom-theme-color':
+          theme && themeColors.themeHasCustomColor(theme) && !theme.isDarkMode,
+      })}
       aria-hidden='true'
     >
       <div className='chrome'>
