@@ -420,8 +420,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       create_orchard_to_transparent_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
       shield_sync_services_;
-  // Accounts with an in-flight Ironwood rewind.
-  std::map<mojom::AccountIdPtr, bool> pending_ironwood_rewinds_;
+  // Cancellation callbacks for accounts with an in-flight Ironwood rewind.
+  std::map<mojom::AccountIdPtr, ResetSyncStateToIronwoodActivationCallback>
+      pending_ironwood_rewinds_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashAutoSyncManager>>
       auto_sync_managers_;
   TaskContainer<ZCashGetZCashChainTipStatusTask>

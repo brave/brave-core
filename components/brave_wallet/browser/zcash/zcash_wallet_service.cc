@@ -163,12 +163,15 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
 
   if (IsZCashIronwoodEnabled() &&
       !keyring_service_->GetZCashIronwoodSyncStateReset(account_id)) {
-    pending_ironwood_rewinds_[account_id.Clone()] = true;
+    auto [rewind_callback, cancel_callback] =
+        base::SplitOnceCallback(std::move(callback));
+    pending_ironwood_rewinds_.emplace(account_id.Clone(),
+                                      std::move(cancel_callback));
     ResetSyncStateToIronwoodActivationInternal(
         account_id.Clone(), /*persist_flag_on_success=*/true,
         base::BindOnce(&ZCashWalletService::OnIronwoodRewindBeforeShieldSync,
                        weak_ptr_factory_.GetWeakPtr(), account_id.Clone(), to,
-                       std::move(callback)));
+                       std::move(rewind_callback)));
     return;
   }
 
@@ -767,12 +770,15 @@ void ZCashWalletService::ResetSyncStateToIronwoodActivation(
     std::move(callback).Run("Sync in progress");
     return;
   }
-  pending_ironwood_rewinds_[account_id.Clone()] = true;
+  auto [rewind_callback, cancel_callback] =
+      base::SplitOnceCallback(std::move(callback));
+  pending_ironwood_rewinds_.emplace(account_id.Clone(),
+                                    std::move(cancel_callback));
   ResetSyncStateToIronwoodActivationInternal(
       account_id.Clone(), /*persist_flag_on_success=*/true,
       base::BindOnce(&ZCashWalletService::OnResetSyncStateToIronwoodActivation,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
-                     std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                     std::move(rewind_callback)));
 }
 
 void ZCashWalletService::OnResetSyncStateToIronwoodActivation(
@@ -1288,9 +1294,12 @@ void ZCashWalletService::Unlocked() {
 }
 
 void ZCashWalletService::Locked() {
+  auto pending_ironwood_rewinds = std::exchange(pending_ironwood_rewinds_, {});
+  for (auto& pending_rewind : pending_ironwood_rewinds) {
+    std::move(pending_rewind.second).Run("Wallet locked");
+  }
   ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   auto_sync_managers_.clear();
-  pending_ironwood_rewinds_.clear();
   shield_sync_services_.clear();
 }
 

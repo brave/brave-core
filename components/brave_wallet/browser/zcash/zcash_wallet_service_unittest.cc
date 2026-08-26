@@ -226,6 +226,8 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     zcash_wallet_service_->MaybeInitAutoSyncManagers();
   }
 
+  void NotifyWalletLocked() { zcash_wallet_service_->Locked(); }
+
   void MockGetLatestBlockForAutoSync() {
     ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
         .WillByDefault([](const std::string& chain_id,
@@ -2570,6 +2572,7 @@ TEST_F(ZCashWalletServiceUnitTest,
   }
 
   ZCashRpc::GetTreeStateCallback held_tree_state_callback;
+  ZCashRpc::GetTreeStateCallback retry_tree_state_callback;
   EXPECT_CALL(zcash_rpc(), GetTreeState(_, _, _))
       .WillOnce([&](const std::string& chain_id,
                     zcash::mojom::BlockIDPtr block_id,
@@ -2577,12 +2580,11 @@ TEST_F(ZCashWalletServiceUnitTest,
         EXPECT_EQ(block_id->height, kRewindHeight);
         held_tree_state_callback = std::move(callback);
       })
-      .WillRepeatedly([&](const std::string& chain_id,
-                          zcash::mojom::BlockIDPtr block_id,
-                          ZCashRpc::GetTreeStateCallback callback) {
-        auto tree_state = zcash::mojom::TreeState::New(
-            "main", block_id->height, kRpcRewindHash, 123, "", "", "");
-        std::move(callback).Run(std::move(tree_state));
+      .WillOnce([&](const std::string& chain_id,
+                    zcash::mojom::BlockIDPtr block_id,
+                    ZCashRpc::GetTreeStateCallback callback) {
+        EXPECT_EQ(block_id->height, kRewindHeight);
+        retry_tree_state_callback = std::move(callback);
       });
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
@@ -2612,10 +2614,33 @@ TEST_F(ZCashWalletServiceUnitTest,
           .GetCallback<bool, const std::optional<std::string>&>());
   EXPECT_TRUE(in_progress_future.Get<0>());
 
+  NotifyWalletLocked();
+  EXPECT_EQ("Wallet locked", first_sync_future.Take());
+  EXPECT_FALSE(
+      keyring_service()->GetZCashIronwoodSyncStateReset(account_id_1.Clone()));
+
+  base::test::TestFuture<const std::optional<std::string>&> retry_sync_future;
+  zcash_wallet_service_->StartShieldSync(account_id_1.Clone(), 0,
+                                         retry_sync_future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !retry_tree_state_callback.is_null(); }));
+
   auto tree_state = zcash::mojom::TreeState::New(
       "main", kRewindHeight, kRpcRewindHash, 123, "", "", "");
   std::move(held_tree_state_callback).Run(std::move(tree_state));
-  EXPECT_EQ(std::nullopt, first_sync_future.Take());
+
+  base::test::TestFuture<bool, const std::optional<std::string>&>
+      retry_in_progress_future;
+  zcash_wallet_service_->IsSyncInProgress(
+      account_id_1.Clone(),
+      retry_in_progress_future
+          .GetCallback<bool, const std::optional<std::string>&>());
+  EXPECT_TRUE(retry_in_progress_future.Get<0>());
+
+  tree_state = zcash::mojom::TreeState::New("main", kRewindHeight,
+                                            kRpcRewindHash, 123, "", "", "");
+  std::move(retry_tree_state_callback).Run(std::move(tree_state));
+  EXPECT_EQ(std::nullopt, retry_sync_future.Take());
 }
 
 TEST_F(ZCashWalletServiceUnitTest,
