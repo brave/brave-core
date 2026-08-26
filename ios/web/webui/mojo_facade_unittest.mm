@@ -91,14 +91,29 @@ class MojoFacadeTest : public WebTest {
     return future.Get<1>();
   }
 
-  void CreateMessagePipe(uint32_t* handle0, uint32_t* handle1) {
-    int handle0_id = next_handle_id_++;
-    int handle1_id = next_handle_id_++;
+  // Tags `args` the way Brave's mojo_api.js plaster does. An empty
+  // `frame_id` stands for JS without that plaster, which MojoFacade treats as
+  // the main frame.
+  static void SetFrameId(base::DictValue* args, const std::string& frame_id) {
+    if (!frame_id.empty()) {
+      args->Set("frameId", frame_id);
+    }
+  }
+
+  // Creates a message pipe as `frame_id`'s JS would, with `handle0_id` and
+  // `handle1_id` standing in for the ids that frame's own
+  // Mojo.nextAvailableHandleId counter hands out.
+  void CreateMessagePipeWithIds(int handle0_id,
+                                int handle1_id,
+                                const std::string& frame_id,
+                                uint32_t* handle0,
+                                uint32_t* handle1) {
     base::DictValue create;
     create.Set("name", "Mojo.createMessagePipe");
     base::DictValue args;
     args.Set("handle0Id", handle0_id);
     args.Set("handle1Id", handle1_id);
+    SetFrameId(&args, frame_id);
     create.Set("args", std::move(args));
     std::string response_as_string = HandleMessage(create);
 
@@ -110,11 +125,22 @@ class MojoFacadeTest : public WebTest {
     *handle1 = [response_as_dict[@"handle1"] unsignedIntValue];
   }
 
-  void CloseHandle(uint32_t handle) {
+  void CreateMessagePipe(uint32_t* handle0,
+                         uint32_t* handle1,
+                         const std::string& frame_id = std::string()) {
+    int handle0_id = next_handle_id_++;
+    int handle1_id = next_handle_id_++;
+    CreateMessagePipeWithIds(handle0_id, handle1_id, frame_id, handle0,
+                             handle1);
+  }
+
+  void CloseHandle(uint32_t handle,
+                   const std::string& frame_id = std::string()) {
     base::DictValue close;
     close.Set("name", "MojoHandle.close");
     base::DictValue args;
     args.Set("handle", static_cast<int>(handle));
+    SetFrameId(&args, frame_id);
     close.Set("args", std::move(args));
     std::string result = HandleMessage(close);
     EXPECT_TRUE(result.empty());
@@ -131,9 +157,7 @@ class MojoFacadeTest : public WebTest {
     args.Set("handle", static_cast<int>(handle));
     args.Set("signals", static_cast<int>(MOJO_HANDLE_SIGNAL_READABLE));
     args.Set("callbackId", callback_id);
-    if (!frame_id.empty()) {
-      args.Set("frameId", frame_id);
-    }
+    SetFrameId(&args, frame_id);
     watch.Set("args", std::move(args));
     const std::string watch_id_as_string = HandleMessage(watch);
     EXPECT_FALSE(watch_id_as_string.empty());
@@ -151,13 +175,16 @@ class MojoFacadeTest : public WebTest {
     EXPECT_TRUE(HandleMessage(cancel_watch).empty());
   }
 
-  void WriteMessage(uint32_t handle, std::string_view buffer) {
+  void WriteMessage(uint32_t handle,
+                    std::string_view buffer,
+                    const std::string& frame_id = std::string()) {
     base::DictValue write;
     write.Set("name", "MojoHandle.writeMessage");
     base::DictValue args;
     args.Set("handle", static_cast<int>(handle));
     args.Set("handles", base::ListValue());
     args.Set("buffer", buffer);
+    SetFrameId(&args, frame_id);
     write.Set("args", std::move(args));
     const std::string result_as_string = HandleMessage(write);
     EXPECT_FALSE(result_as_string.empty());
@@ -177,12 +204,17 @@ class MojoFacadeTest : public WebTest {
     return base::UTF16ToUTF8(last_js_call);
   }
 
-  std::string GetExpectedWatchCallbackScript(uint32_t handle, int callback_id) {
+  // `buffer` is the JSON array of bytes the watched pipe is expected to
+  // yield, defaulting to "ABCD".
+  std::string GetExpectedWatchCallbackScript(
+      uint32_t handle,
+      int callback_id,
+      std::string_view buffer = "[65,66,67,68]") {
     return base::StringPrintf(
         "Mojo.internal.fetchNextMessageFromNative(%d, "
-        "{\"buffer\":[65,66,67,68],\"handles\":[],\"result\":0}); "
+        "{\"buffer\":%s,\"handles\":[],\"result\":0}); "
         "Mojo.internal.watchCallbacksHolder.callCallback(%d, %d);",
-        handle, callback_id, MOJO_RESULT_OK);
+        handle, buffer, callback_id, MOJO_RESULT_OK);
   }
 
  private:
@@ -230,18 +262,18 @@ TEST_P(MojoFacadeWatchFramesTest, Watch) {
   const std::string frame_id = test_frame->GetFrameId();
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1);
+  CreateMessagePipe(&handle0, &handle1, frame_id);
 
   const int kCallbackId = 99;
   WatchHandle(handle0, kCallbackId, frame_id);
 
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
+  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
 
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CloseHandle(handle0);
-  CloseHandle(handle1);
+  CloseHandle(handle0, frame_id);
+  CloseHandle(handle1, frame_id);
 }
 
 TEST_P(MojoFacadeWatchFramesTest, WatcherRearming) {
@@ -249,24 +281,24 @@ TEST_P(MojoFacadeWatchFramesTest, WatcherRearming) {
   const std::string frame_id = test_frame->GetFrameId();
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1);
+  CreateMessagePipe(&handle0, &handle1, frame_id);
 
   const int kCallbackId = 99;
   WatchHandle(handle0, kCallbackId, frame_id);
 
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
+  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
 
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
+  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
 
   // Check the watcher was rearmed and still targets the same frame.
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CloseHandle(handle0);
-  CloseHandle(handle1);
+  CloseHandle(handle0, frame_id);
+  CloseHandle(handle1, frame_id);
 }
 
 TEST_P(MojoFacadeWatchFramesTest, CancelWatch) {
@@ -274,7 +306,7 @@ TEST_P(MojoFacadeWatchFramesTest, CancelWatch) {
   const std::string frame_id = test_frame->GetFrameId();
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1);
+  CreateMessagePipe(&handle0, &handle1, frame_id);
 
   const int kCallbackId1 = 99;
   const int kCallbackId2 = 101;
@@ -286,21 +318,21 @@ TEST_P(MojoFacadeWatchFramesTest, CancelWatch) {
       "Mojo.internal.watchCallbacksHolder.callCallback(%d, %d);",
       handle0, MOJO_RESULT_SHOULD_WAIT, kCallbackId2, MOJO_RESULT_OK);
 
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
+  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
 
   // `expected_script` for callback 1 also fires, but only the last call is
   // kept.
   EXPECT_EQ(expected_script2, WaitForLastJavaScriptCallOnFrame(test_frame));
 
   CancelWatch(handle0, watch_id2);
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
+  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
 
   // Only the first watcher should be notified now.
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId1),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CloseHandle(handle0);
-  CloseHandle(handle1);
+  CloseHandle(handle0, frame_id);
+  CloseHandle(handle1, frame_id);
 }
 
 INSTANTIATE_TEST_SUITE_P(FrameTypes,
@@ -316,28 +348,95 @@ TEST_F(MojoFacadeTest, WatchIsErasedWhenOwningFrameDisappears) {
   const std::string frame_id = child_frame()->GetFrameId();
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1);
+  CreateMessagePipe(&handle0, &handle1, frame_id);
 
   const int kCallbackId = 99;
   WatchHandle(handle0, kCallbackId, frame_id);
+
+  // Signal the pipe so the watcher posts its notification, but don't let the
+  // run loop deliver it yet.
+  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
 
   // Remove the frame without canceling its watch first, as would happen if
   // e.g. AI Chat's untrusted conversation-entries iframe is torn down while
   // a watch is still pending. `child_frame()` is dangling after this call.
   frames_manager()->RemoveWebFrame(frame_id);
 
-  // Signal the still-open pipe. If the watch wasn't erased alongside the
-  // frame, this fires the (now-orphaned) watcher, which would misdirect its
-  // callback to the main frame.
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
-
+  // The pending notification must be dropped with the frame. If the watch had
+  // outlived it, GetFrameForWatch's "unknown frame" fallback would misdirect
+  // the callback to the main frame.
   EXPECT_FALSE(WaitUntilConditionOrTimeout(
       kWaitForJSCompletionTimeout, /*run_message_loop=*/true, ^bool {
         return !main_frame()->GetLastJavaScriptCall().empty();
       }));
+}
 
-  CloseHandle(handle0);
-  CloseHandle(handle1);
+// Tests that consuming a handle in one frame leaves the identically numbered
+// handle of another frame alone. Every frame runs its own copy of
+// ui/webui/resources/js/ios/mojo_api.js, whose Mojo.nextAvailableHandleId
+// counter restarts at 1 per JS context, so AI Chat's WebUI page and the
+// chrome-untrusted:// conversation iframe it embeds routinely mint the same
+// ids. Keyed by id alone, the close below erased the single shared entry and
+// the write that follows hit CHECK(pipe.is_valid()) in
+// HandleMojoHandleWriteMessage.
+TEST_F(MojoFacadeTest, ClosingAHandleLeavesTheSameIdInAnotherFrameAlone) {
+  const std::string main_frame_id = main_frame()->GetFrameId();
+  const std::string child_frame_id = child_frame()->GetFrameId();
+
+  uint32_t main_handle0, main_handle1;
+  CreateMessagePipeWithIds(1, 2, main_frame_id, &main_handle0, &main_handle1);
+
+  uint32_t child_handle0, child_handle1;
+  CreateMessagePipeWithIds(1, 2, child_frame_id, &child_handle0,
+                           &child_handle1);
+
+  // Both frames handed out the very same ids.
+  ASSERT_EQ(main_handle0, child_handle0);
+  ASSERT_EQ(main_handle1, child_handle1);
+
+  CloseHandle(child_handle0, child_frame_id);
+  CloseHandle(child_handle1, child_frame_id);
+
+  // The main frame's pipe must still be intact and writable.
+  WriteMessage(main_handle0, "QUJDRA==", main_frame_id);  // "ABCD" in base-64
+
+  CloseHandle(main_handle0, main_frame_id);
+  CloseHandle(main_handle1, main_frame_id);
+}
+
+// Tests that a watch notification reads from the pipe of the frame that
+// created the watch, rather than whichever frame last claimed that handle id.
+TEST_F(MojoFacadeTest, WatchReadsTheOwningFramesPipe) {
+  const std::string main_frame_id = main_frame()->GetFrameId();
+  const std::string child_frame_id = child_frame()->GetFrameId();
+
+  uint32_t main_handle0, main_handle1;
+  CreateMessagePipeWithIds(1, 2, main_frame_id, &main_handle0, &main_handle1);
+
+  uint32_t child_handle0, child_handle1;
+  CreateMessagePipeWithIds(1, 2, child_frame_id, &child_handle0,
+                           &child_handle1);
+
+  const int kMainCallbackId = 99;
+  const int kChildCallbackId = 101;
+  WatchHandle(main_handle0, kMainCallbackId, main_frame_id);
+  WatchHandle(child_handle0, kChildCallbackId, child_frame_id);
+
+  // Give each frame's pipe a payload of its own.
+  WriteMessage(main_handle1, "QUJDRA==", main_frame_id);    // "ABCD"
+  WriteMessage(child_handle1, "RUZHSA==", child_frame_id);  // "EFGH"
+
+  EXPECT_EQ(GetExpectedWatchCallbackScript(main_handle0, kMainCallbackId,
+                                           "[65,66,67,68]"),
+            WaitForLastJavaScriptCallOnFrame(main_frame()));
+  EXPECT_EQ(GetExpectedWatchCallbackScript(child_handle0, kChildCallbackId,
+                                           "[69,70,71,72]"),
+            WaitForLastJavaScriptCallOnFrame(child_frame()));
+
+  CloseHandle(main_handle0, main_frame_id);
+  CloseHandle(main_handle1, main_frame_id);
+  CloseHandle(child_handle0, child_frame_id);
+  CloseHandle(child_handle1, child_frame_id);
 }
 
 // Tests the chrome-untrusted:// per-origin interface allowlist gate on
@@ -359,19 +458,22 @@ class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
   // reports whether the interface's registered callback actually ran.
   bool TryBindInterface(FakeWebFrame* frame,
                         const std::string& interface_name) {
+    // The pipe has to be created by the same frame that binds it, since a
+    // frame can only reach its own handles.
+    const std::string frame_id = frame->GetFrameId();
     uint32_t handle0, handle1;
-    CreateMessagePipe(&handle0, &handle1);
+    CreateMessagePipe(&handle0, &handle1, frame_id);
 
     base::DictValue connect;
     connect.Set("name", "Mojo.bindInterface");
     base::DictValue args;
     args.Set("interfaceName", interface_name);
     args.Set("requestHandle", static_cast<int>(handle0));
-    args.Set("frameId", frame->GetFrameId());
+    args.Set("frameId", frame_id);
     connect.Set("args", std::move(args));
 
     HandleMessage(connect);
-    CloseHandle(handle1);
+    CloseHandle(handle1, frame_id);
     return interface_bound_;
   }
 

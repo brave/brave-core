@@ -5,6 +5,8 @@
 
 #include "ios/web/webui/mojo_facade.h"
 
+#include "base/auto_reset.h"
+#include "base/notreached.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -21,16 +23,62 @@
 // base::SysNSStringToUTF16).
 namespace web {
 
+// The pipe table of the frame currently being serviced. Pipe ids come from a
+// per-frame JS counter that restarts at 1 in every frame, so they collide
+// across frames and each frame needs a table of its own.
+std::unordered_map<int, mojo::ScopedMessagePipeHandle>&
+MojoFacade::CurrentFramePipes() {
+  return pipes_[current_frame_id_];
+}
+
+void MojoFacade::StorePipeForCurrentFrame(int pipe_id,
+                                          mojo::ScopedMessagePipeHandle pipe) {
+  auto& frame_pipes = CurrentFramePipes();
+  // Within one frame ids never repeat: JS ids ascend from 1 and natively
+  // allocated ids descend from INT_MAX. Replacing a live pipe would silently
+  // close it, so a clash means the frame scoping has a hole.
+  if (frame_pipes.contains(pipe_id)) {
+    SCOPED_CRASH_KEY_NUMBER("MojoFacade", "pipe_id", pipe_id);
+    DUMP_WILL_BE_NOTREACHED();
+  }
+  frame_pipes[pipe_id] = std::move(pipe);
+}
+
+// Resolves `frame_id` to a live frame, falling back to the main frame. An id
+// naming no live frame means the message came from JS without Brave's
+// mojo_api.js frame tagging, so it gets upstream's behaviour, where the main
+// frame is the only frame that ever speaks mojo. Every caller resolves the
+// same way, so a pipe stored under an unresolvable id is found again by the
+// lookup that follows it.
+std::string MojoFacade::ResolveFrameId(const std::string& frame_id) {
+  if (!frame_id.empty() &&
+      web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(frame_id)) {
+    return frame_id;
+  }
+  return GetMainFrameId();
+}
+
+// The frame `message` came from, as tagged by Brave's mojo_api.js plaster.
+std::string MojoFacade::GetFrameIdForMessage(const base::DictValue* message) {
+  const base::DictValue* args = message->FindDict("args");
+  const std::string* frame_id = args ? args->FindString("frameId") : nullptr;
+  return ResolveFrameId(frame_id ? *frame_id : std::string());
+}
+
+// The frame that created `watch_id` via MojoHandle.watch.
+std::string MojoFacade::GetFrameIdForWatch(int watch_id) {
+  auto it = watch_id_to_frame_id_.find(watch_id);
+  return ResolveFrameId(it != watch_id_to_frame_id_.end() ? it->second
+                                                          : std::string());
+}
+
 // Resolves which frame a watch's callback should be delivered to, falling
 // back to the main frame exactly as upstream's own GetMainWebFrame() would.
 web::WebFrame* MojoFacade::GetFrameForWatch(int watch_id) {
-  auto it = watch_id_to_frame_id_.find(watch_id);
-  if (it != watch_id_to_frame_id_.end()) {
-    if (WebFrame* frame =
-            web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(
-                it->second)) {
-      return frame;
-    }
+  if (WebFrame* frame =
+          web_state_->GetPageWorldWebFramesManager()->GetFrameWithId(
+              GetFrameIdForWatch(watch_id))) {
+    return frame;
   }
   return web_state_->GetPageWorldWebFramesManager()->GetMainWebFrame();
 }
