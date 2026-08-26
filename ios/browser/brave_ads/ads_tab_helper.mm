@@ -114,6 +114,11 @@ void AdsTabHelper::WasHidden(web::WebState* web_state) {
 void AdsTabHelper::DidStartNavigation(
     web::WebState* web_state,
     web::NavigationContext* navigation_context) {
+  // Not restricted by URL scheme. Some `chrome://` pages, such as
+  // `chrome://wallet`, are supported ad targets, so their navigations must
+  // still reach the redirect chain that page land and conversion tracking
+  // check against.
+
   redirect_chain_.clear();
   http_status_code_.reset();
   is_same_document_navigation_ = false;
