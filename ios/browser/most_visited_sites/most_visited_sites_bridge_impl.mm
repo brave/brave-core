@@ -19,8 +19,8 @@
 
 - (instancetype)initWithURL:(NSURL*)url title:(NSString*)title {
   if ((self = [super init])) {
-    _url = url;
-    _title = title;
+    _url = [url copy];
+    _title = [title copy];
   }
   return self;
 }
@@ -60,11 +60,8 @@ class MostVisitedSitesObserverImpl
   }
 
   void OnIconMadeAvailable(const GURL& site_url) override {
-    NSURL* url = net::NSURLWithGURL(site_url);
-    if (!url) {
-      return;
-    }
-    [observer_ mostVisitedSitesDidUpdateFaviconForURL:url];
+    [observer_
+        mostVisitedSitesDidUpdateFaviconForURL:net::NSURLWithGURL(site_url)];
   }
 
  private:
@@ -111,16 +108,20 @@ class MostVisitedSitesObserverImpl
     (std::unique_ptr<ntp_tiles::MostVisitedSites>)mostVisitedSites {
   if ((self = [super init])) {
     _mostVisitedSites = std::move(mostVisitedSites);
-    _mostVisitedSites->EnableTileTypes(
-        ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_top_sites(
-            true));
+    [self enableTopSitesOnlyTileTypes];
   }
   return self;
 }
 
+- (void)enableTopSitesOnlyTileTypes {
+  _mostVisitedSites->EnableTileTypes(
+      ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_top_sites(
+          true));
+}
+
 - (id<MostVisitedSitesObservation>)
-    startTopSitesOnlyWithObserver:(id<MostVisitedSitesObserverBridge>)observer
-                      maxNumSites:(NSUInteger)maxNumSites {
+    addMostVisitedURLsObserver:(id<MostVisitedSitesObserverBridge>)observer
+                   maxNumSites:(NSUInteger)maxNumSites {
   auto observerBridge =
       std::make_unique<MostVisitedSitesObserverImpl>(observer);
   _mostVisitedSites->AddMostVisitedURLsObserver(observerBridge.get(),

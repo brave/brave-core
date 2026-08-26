@@ -20,7 +20,6 @@ NS_SWIFT_NAME(MostVisitedSitesFactory)
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Creates a `MostVisitedSites` for `profile`
-/// or `nil` when `profile` is off the record.
 + (id<MostVisitedSitesBridge>)getForProfile:(id<ProfileBridge>)profile
     NS_SWIFT_NAME(get(for:)) NS_SWIFT_UI_ACTOR;
 

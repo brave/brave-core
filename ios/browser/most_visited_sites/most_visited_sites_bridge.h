@@ -33,7 +33,7 @@ NS_SWIFT_NAME(MostVisitedSitesObserver)
 - (void)mostVisitedSitesDidUpdateTiles:(NSArray<NTPTileBridge*>*)tiles;
 
 /// A favicon became available for the tile at `url`.
-- (void)mostVisitedSitesDidUpdateFaviconForURL:(NSURL*)url;
+- (void)mostVisitedSitesDidUpdateFaviconForURL:(nullable NSURL*)url;
 
 @end
 
@@ -54,19 +54,18 @@ NS_SWIFT_NAME(MostVisitedSitesObservation)
 NS_SWIFT_NAME(MostVisitedSites)
 @protocol MostVisitedSitesBridge
 
-/// Starts producing tiles and delivering them to `observer`. May be called
-/// any number of times; each call produces an independent observation.
+/// Starts producing tiles and delivering them to `observer`. Each call
+/// produces an independent observation.
 ///
 /// Only history-backed tiles are surfaced (`ntp_tiles::TileSource::TOP_SITES`,
 /// ranked by frecency).
 ///
 /// `observer` is held weakly and receives the initial set of tiles
-/// May only be called once;
 /// `maxNumSites` is the max number of the returning tiles.
 - (id<MostVisitedSitesObservation>)
-    startTopSitesOnlyWithObserver:(id<MostVisitedSitesObserverBridge>)observer
-                      maxNumSites:(NSUInteger)maxNumSites
-    NS_SWIFT_NAME(startTopSitesOnly(observer:maxNumSites:));
+    addMostVisitedURLsObserver:(id<MostVisitedSitesObserverBridge>)observer
+                   maxNumSites:(NSUInteger)maxNumSites
+    NS_SWIFT_NAME(addMostVisitedURLsObserver(observer:maxNumSites:));
 
 /// Requests an asynchronous refresh. The observer is notified only if the set
 /// of tiles changed.
