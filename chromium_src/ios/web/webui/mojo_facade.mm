@@ -31,10 +31,42 @@ bool MojoFacade::ServesFrame(WebFrame* frame) const {
                              : frame->GetFrameId() == served_frame_id_;
 }
 
+// TEMPORARY diagnostics. Revert before landing. `facade` distinguishes two
+// facades polling one frame (which clobbers the single resolver slot JS keeps
+// for fetchNextMessageFromJS) from one facade cycling normally.
+namespace {
+std::string FrameLabel(const std::string& served_frame_id) {
+  return served_frame_id.empty() ? std::string("MAIN") : served_frame_id;
+}
+}  // namespace
+
+void MojoFacade::LogPollStart() {
+  LOG(ERROR) << "[mojo] poll-start facade=" << this
+             << " frame=" << FrameLabel(served_frame_id_)
+             << " awaiting=" << is_awaiting_message_
+             << " failures=" << consecutive_poll_failures_;
+}
+
+void MojoFacade::LogPollDone(const std::string& web_frame_id,
+                             const base::Value* value,
+                             NSError* error) {
+  LOG(ERROR) << "[mojo] poll-done  facade=" << this
+             << " frame=" << FrameLabel(served_frame_id_)
+             << " reported=" << web_frame_id << " error="
+             << (error ? base::SysNSStringToUTF8(error.description)
+                       : std::string("none"))
+             << " value="
+             << (value ? base::WriteJson(*value).value_or("<unconvertible>")
+                       : std::string("<null>"));
+}
+
 void MojoFacade::EnsureSubFrameFacade(WebFrame* frame) {
   if (!IsMainFrameFacade() || !frame || frame->IsMainFrame()) {
     return;
   }
+  // TEMPORARY diagnostic. Revert before landing.
+  LOG(ERROR) << "[mojo] ensure frame=" << frame->GetFrameId()
+             << " origin=" << frame->GetSecurityOrigin().Serialize();
   // Only WebUI documents ever speak mojo. Polling anything else would spin
   // forever, since a frame without mojo_api.js throws on every poll and
   // OnAwaitNextMessageCompleted retries on error.
@@ -76,11 +108,6 @@ bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
              origin, *interface_name);
 }
 
-// Records what this facade knew when a message named a pipe id it doesn't
-// hold, so a report says which of these it was: the table was empty
-// (something cleared it out from under the live JS context), the table was
-// populated but missing the id (the handle was consumed, or never created),
-// or the id belongs to a different frame.
 // A frame whose document can't run scripts any more never recovers, and
 // upstream re-posts the poll on every failure, so the loop has to give up on
 // its own. The allowance is for genuinely transient failures; a live frame
@@ -90,6 +117,11 @@ bool MojoFacade::ShouldRetryPoll() {
   return ++consecutive_poll_failures_ <= kMaxConsecutivePollFailures;
 }
 
+// Records what this facade knew when a message named a pipe id it doesn't
+// hold, so a report says which of these it was: the table was empty
+// (something cleared it out from under the live JS context), the table was
+// populated but missing the id (the handle was consumed, or never created),
+// or the id belongs to a different frame.
 void MojoFacade::ReportUnknownPipe(const char* operation,
                                    std::optional<int> pipe_id) {
   SCOPED_CRASH_KEY_STRING32("MojoFacade", "operation", operation);

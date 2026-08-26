@@ -61,6 +61,12 @@ substitutions:
         // Polls in a row that carried no message.
         int consecutive_poll_failures_ = 0;
 
+        // TEMPORARY diagnostics. Revert before landing.
+        void LogPollStart();
+        void LogPollDone(const std::string& web_frame_id,
+                         const base::Value* value,
+                         NSError* error);
+
         // Id of the frame this facade serves, empty for the main frame,
         // whose identity can change over the WebState's life.
         std::string served_frame_id_;

@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f8adb050f 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..59a925427236fe938a71527be47d08dc6af3de6f 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,18 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -23,7 +23,23 @@ index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f
    if (main_frame) {
      main_frame_ = main_frame->AsWeakPtr();
      if (!web_state_->IsLoading() && web_state_->GetInterfaceBinderForMainFrame()
-@@ -124,13 +128,14 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+@@ -89,6 +93,7 @@ std::string MojoFacade::GetMainFrameId() const {
+ }
+ 
+ void MojoFacade::AwaitNextMessage() {
++  LogPollStart();
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+ 
+   if (is_awaiting_message_) {
+@@ -116,6 +121,7 @@ void MojoFacade::AwaitNextMessage() {
+ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+                                              const base::Value* value,
+                                              NSError* error) {
++  LogPollDone(web_frame_id, value, error);
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+ 
+   is_awaiting_message_ = false;
+@@ -124,13 +130,14 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
        !web_state_->IsBeingDestroyed() && GetMainFrameId() == web_frame_id;
  
    if (error || !is_same_frame || !value) {
@@ -39,7 +55,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f
  
    const base::DictValue* dict = value->GetIfDict();
    if (dict) {
-@@ -231,6 +236,7 @@ void MojoFacade::HandleMojoMessage(
+@@ -231,6 +238,7 @@ void MojoFacade::HandleMojoMessage(
  }
  
  bool MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
@@ -47,7 +63,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f
    const std::string* interface_name = args.FindString("interfaceName");
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
-@@ -279,9 +285,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
+@@ -279,9 +287,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
  base::Value MojoFacade::HandleMojoHandleWriteMessage(
      const base::DictValue& args) {
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
@@ -63,7 +79,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f
  
    const base::ListValue* handles_list = args.FindList("handles");
    CHECK(handles_list);
-@@ -448,14 +457,18 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -448,14 +459,18 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
@@ -83,7 +99,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f
    DCHECK_CURRENTLY_ON(WebThread::UI);
    if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
      main_frame_.reset();
-@@ -464,25 +477,31 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+@@ -464,25 +479,31 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
    }

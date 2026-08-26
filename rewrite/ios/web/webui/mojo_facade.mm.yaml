@@ -188,6 +188,20 @@ substitutions:
           }
 
   - description: |-
+      TEMPORARY diagnostic: trace the poll loop. Revert before landing.
+    preempt_function_impl:
+      function_name: MojoFacade::AwaitNextMessage
+      code: |-
+        LogPollStart();
+
+  - description: |-
+      TEMPORARY diagnostic: trace poll completions. Revert before landing.
+    preempt_function_impl:
+      function_name: MojoFacade::OnAwaitNextMessageCompleted
+      code: |-
+        LogPollDone(web_frame_id, value, error);
+
+  - description: |-
       Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
       interface allowlist.
 
