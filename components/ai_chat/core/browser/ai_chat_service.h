@@ -274,6 +274,24 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
+  using ShowCompletionNotificationCallback =
+      base::RepeatingCallback<void(const std::string& uuid,
+                                   const std::u16string& title)>;
+  using CloseCompletionNotificationCallback =
+      base::RepeatingCallback<void(const std::string& uuid)>;
+  void SetCompletionNotificationCallbacks(
+      ShowCompletionNotificationCallback show,
+      CloseCompletionNotificationCallback close);
+
+  void SetCompletionNotificationCallbackForTesting(
+      ShowCompletionNotificationCallback show) {
+    show_completion_notification_callback_ = std::move(show);
+  }
+  void SetCloseCompletionNotificationCallbackForTesting(
+      CloseCompletionNotificationCallback close) {
+    close_completion_notification_callback_ = std::move(close);
+  }
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -513,11 +531,11 @@ class AIChatService : public KeyedService,
   mojo::RemoteSet<mojom::UntrustedServiceObserver>
       untrusted_service_observer_remotes_;
 
-  // In-memory per-conversation generation state for ServiceObserver broadcast.
-  // kCompletedNotViewed is session-only (cleared on BindConversation).
   std::map<std::string, mojom::ConversationGenerationState>
       conversation_generation_state_;
   void NotifyConversationGenerationState(const std::string& uuid);
+  // Deletes a conversation without notifying the conversation list.
+  void EraseConversation(const std::string& id);
 
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 
@@ -554,6 +572,12 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  ShowCompletionNotificationCallback show_completion_notification_callback_;
+  CloseCompletionNotificationCallback close_completion_notification_callback_;
+  void MaybeShowCompletionNotification(const std::string& uuid);
+  void MaybeCloseCompletionNotification(const std::string& uuid);
+  bool IsConversationVisible(const std::string& uuid) const;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

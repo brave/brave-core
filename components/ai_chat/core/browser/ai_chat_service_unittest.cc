@@ -1871,11 +1871,8 @@ TEST_P(AIChatServiceUnitTest, DeleteSkill) {
   EXPECT_TRUE(all_skills.empty());
 }
 
-// Generation state — single enum kIdle/kGenerating/kCompletedNotViewed
-
 TEST_P(AIChatServiceUnitTest, GenerationState_SetsGenerating) {
   ConversationHandler* handler = CreateConversation();
-  // No client yet — background
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             handler->get_conversation_uuid(),
                             mojom::ConversationGenerationState::kGenerating))
@@ -1885,16 +1882,15 @@ TEST_P(AIChatServiceUnitTest, GenerationState_SetsGenerating) {
       static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
   EngineConsumer::GenerationCompletedCallback resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [&resolve](PageContentsMap&&,
-                     const EngineConsumer::ConversationHistoryView&, bool,
-                     const std::vector<base::WeakPtr<Tool>>&,
-                     std::optional<std::string_view>,
-                     const ConversationCapabilitySet&,
-                     EngineConsumer::GenerationDataCallback,
-                     EngineConsumer::GenerationCompletedCallback done) {
-            resolve = std::move(done);
-          });
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
   handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(client_.get());
@@ -1908,30 +1904,26 @@ TEST_P(AIChatServiceUnitTest, GenerationState_SetsGenerating) {
 TEST_P(AIChatServiceUnitTest,
        GenerationState_CompletedNotViewed_WhenBackground) {
   ConversationHandler* handler = CreateConversation();
-  // No client — background completion should become kCompletedNotViewed
   handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
   auto* engine =
       static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
   EngineConsumer::GenerationCompletedCallback resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [&resolve](PageContentsMap&&,
-                     const EngineConsumer::ConversationHistoryView&, bool,
-                     const std::vector<base::WeakPtr<Tool>>&,
-                     std::optional<std::string_view>,
-                     const ConversationCapabilitySet&,
-                     EngineConsumer::GenerationDataCallback,
-                     EngineConsumer::GenerationCompletedCallback done) {
-            resolve = std::move(done);
-          });
-  // kGenerating
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             handler->get_conversation_uuid(),
                             mojom::ConversationGenerationState::kGenerating));
   handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(client_.get());
-  // kCompletedNotViewed (no client connected)
   EXPECT_CALL(*client_,
               OnConversationGenerationStateChanged(
                   handler->get_conversation_uuid(),
@@ -1951,23 +1943,21 @@ TEST_P(AIChatServiceUnitTest, GenerationState_CompletionWhileViewed_StaysIdle) {
       static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
   EngineConsumer::GenerationCompletedCallback resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [&resolve](PageContentsMap&&,
-                     const EngineConsumer::ConversationHistoryView&, bool,
-                     const std::vector<base::WeakPtr<Tool>>&,
-                     std::optional<std::string_view>,
-                     const ConversationCapabilitySet&,
-                     EngineConsumer::GenerationDataCallback,
-                     EngineConsumer::GenerationCompletedCallback done) {
-            resolve = std::move(done);
-          });
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             handler->get_conversation_uuid(),
                             mojom::ConversationGenerationState::kGenerating));
   handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(client_.get());
-  // Viewed → should go to kIdle, not kCompletedNotViewed
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             handler->get_conversation_uuid(),
                             mojom::ConversationGenerationState::kIdle));
@@ -1978,6 +1968,19 @@ TEST_P(AIChatServiceUnitTest, GenerationState_CompletionWhileViewed_StaysIdle) {
   task_environment_.RunUntilIdle();
 }
 
+TEST_P(AIChatServiceUnitTest, GenerationState_StopWhileIdle_StaysIdle) {
+  bool notified = false;
+  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting(
+          [&](const std::string&, const std::u16string&) { notified = true; }));
+
+  ConversationHandler* handler = CreateConversation();
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(_, _)).Times(0);
+  ai_chat_service_->OnRequestInProgressChanged(handler, false);
+  task_environment_.RunUntilIdle();
+  EXPECT_FALSE(notified);
+}
+
 TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
   ConversationHandler* handler = CreateConversation();
   handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
@@ -1985,16 +1988,15 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
       static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
   EngineConsumer::GenerationCompletedCallback resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [&resolve](PageContentsMap&&,
-                     const EngineConsumer::ConversationHistoryView&, bool,
-                     const std::vector<base::WeakPtr<Tool>>&,
-                     std::optional<std::string_view>,
-                     const ConversationCapabilitySet&,
-                     EngineConsumer::GenerationDataCallback,
-                     EngineConsumer::GenerationCompletedCallback done) {
-            resolve = std::move(done);
-          });
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             handler->get_conversation_uuid(),
                             mojom::ConversationGenerationState::kGenerating));
@@ -2011,14 +2013,19 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
       std::nullopt)));
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(client_.get());
-  // Bind should clear to kIdle
   std::string uuid = handler->get_conversation_uuid();
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             uuid, mojom::ConversationGenerationState::kIdle));
-  mojo::PendingReceiver<mojom::ConversationHandler> recv;
-  mojo::PendingRemote<mojom::ConversationUI> remote;
+  mojo::Remote<mojom::ConversationHandler> handler_remote;
+  mojo::PendingReceiver<mojom::ConversationHandler> recv =
+      handler_remote.BindNewPipeAndPassReceiver();
+  mojo::PendingReceiver<mojom::ConversationUI> ui_receiver;
+  mojo::PendingRemote<mojom::ConversationUI> remote =
+      ui_receiver.InitWithNewPipeAndPassRemote();
   ai_chat_service_->BindConversation(uuid, std::move(recv), std::move(remote));
   task_environment_.RunUntilIdle();
+  // Keep pipes alive until the async GetConversation → handler->Bind
+  // completes. The Remote/Receiver destructors will clean up.
 }
 
 TEST_P(AIChatServiceUnitTest, GenerationState_DeleteClears) {
@@ -2028,16 +2035,15 @@ TEST_P(AIChatServiceUnitTest, GenerationState_DeleteClears) {
       static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
   EngineConsumer::GenerationCompletedCallback resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-      .WillOnce(
-          [&resolve](PageContentsMap&&,
-                     const EngineConsumer::ConversationHistoryView&, bool,
-                     const std::vector<base::WeakPtr<Tool>>&,
-                     std::optional<std::string_view>,
-                     const ConversationCapabilitySet&,
-                     EngineConsumer::GenerationDataCallback,
-                     EngineConsumer::GenerationCompletedCallback done) {
-            resolve = std::move(done);
-          });
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
   EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                             handler->get_conversation_uuid(),
                             mojom::ConversationGenerationState::kGenerating));
@@ -2069,16 +2075,15 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BulkDeleteClears) {
     auto* e = static_cast<MockEngineConsumer*>(h->GetEngineForTesting());
     EngineConsumer::GenerationCompletedCallback r;
     EXPECT_CALL(*e, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
-        .WillOnce(
-            [&r](PageContentsMap&&,
-                 const EngineConsumer::ConversationHistoryView&, bool,
-                 const std::vector<base::WeakPtr<Tool>>&,
-                 std::optional<std::string_view>,
-                 const ConversationCapabilitySet&,
-                 EngineConsumer::GenerationDataCallback,
-                 EngineConsumer::GenerationCompletedCallback done) {
-              r = std::move(done);
-            });
+        .WillOnce([&r](PageContentsMap&&,
+                       const EngineConsumer::ConversationHistoryView&, bool,
+                       const std::vector<base::WeakPtr<Tool>>&,
+                       std::optional<std::string_view>,
+                       const ConversationCapabilitySet&,
+                       EngineConsumer::GenerationDataCallback,
+                       EngineConsumer::GenerationCompletedCallback done) {
+          r = std::move(done);
+        });
     EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
                               h->get_conversation_uuid(),
                               mojom::ConversationGenerationState::kGenerating));
@@ -2102,6 +2107,177 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BulkDeleteClears) {
       .Times(2);
   ai_chat_service_->DeleteConversations();
   task_environment_.RunUntilIdle();
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_TriggersOnBackgroundCompletion) {
+  std::string notified_uuid;
+  std::u16string notified_title;
+  bool notified = false;
+
+  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting(
+          [&](const std::string& uuid, const std::u16string& title) {
+            notified = true;
+            notified_uuid = uuid;
+            notified_title = title;
+          }));
+
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
+  auto* engine =
+      static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
+
+  EngineConsumer::GenerationCompletedCallback resolve;
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
+
+  EXPECT_CALL(*client_,
+              OnConversationGenerationStateChanged(
+                  uuid, mojom::ConversationGenerationState::kGenerating));
+
+  handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+  task_environment_.RunUntilIdle();
+
+  EXPECT_FALSE(notified);
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+
+  EXPECT_CALL(
+      *client_,
+      OnConversationGenerationStateChanged(
+          uuid, mojom::ConversationGenerationState::kCompletedNotViewed));
+
+  std::move(resolve).Run(base::ok(EngineConsumer::GenerationResultData(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("")),
+      std::nullopt)));
+
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(notified);
+  EXPECT_EQ(notified_uuid, uuid);
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_NotTriggeredWhenViewed) {
+  std::string notified_uuid;
+  bool notified = false;
+
+  ai_chat_service_->SetCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting(
+          [&](const std::string& uuid, const std::u16string&) {
+            notified = true;
+            notified_uuid = uuid;
+          }));
+
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+  const std::string uuid = handler->get_conversation_uuid();
+  handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
+  auto* engine =
+      static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
+  EngineConsumer::GenerationCompletedCallback resolve;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
+
+  EXPECT_CALL(*client_,
+              OnConversationGenerationStateChanged(
+                  uuid, mojom::ConversationGenerationState::kGenerating));
+
+  handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
+                            uuid, mojom::ConversationGenerationState::kIdle));
+
+  std::move(resolve).Run(base::ok(EngineConsumer::GenerationResultData(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("")),
+      std::nullopt)));
+
+  task_environment_.RunUntilIdle();
+  EXPECT_FALSE(notified);
+}
+
+TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
+  bool close_notified = false;
+  std::string closed_uuid;
+
+  ai_chat_service_->SetCloseCompletionNotificationCallbackForTesting(
+      base::BindLambdaForTesting([&](const std::string& uuid) {
+        close_notified = true;
+        closed_uuid = uuid;
+      }));
+
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  handler->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
+  auto* engine =
+      static_cast<MockEngineConsumer*>(handler->GetEngineForTesting());
+  EngineConsumer::GenerationCompletedCallback resolve;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
+      .WillOnce([&resolve](PageContentsMap&&,
+                           const EngineConsumer::ConversationHistoryView&, bool,
+                           const std::vector<base::WeakPtr<Tool>>&,
+                           std::optional<std::string_view>,
+                           const ConversationCapabilitySet&,
+                           EngineConsumer::GenerationDataCallback,
+                           EngineConsumer::GenerationCompletedCallback done) {
+        resolve = std::move(done);
+      });
+
+  EXPECT_CALL(*client_,
+              OnConversationGenerationStateChanged(
+                  uuid, mojom::ConversationGenerationState::kGenerating));
+
+  handler->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+  task_environment_.RunUntilIdle();
+
+  EXPECT_CALL(
+      *client_,
+      OnConversationGenerationStateChanged(
+          uuid, mojom::ConversationGenerationState::kCompletedNotViewed));
+
+  std::move(resolve).Run(base::ok(EngineConsumer::GenerationResultData(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("")),
+      std::nullopt)));
+
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged(
+                            uuid, mojom::ConversationGenerationState::kIdle));
+
+  mojo::Remote<mojom::ConversationHandler> handler_remote;
+  mojo::PendingReceiver<mojom::ConversationHandler> recv =
+      handler_remote.BindNewPipeAndPassReceiver();
+  mojo::PendingReceiver<mojom::ConversationUI> ui_receiver;
+  mojo::PendingRemote<mojom::ConversationUI> remote =
+      ui_receiver.InitWithNewPipeAndPassRemote();
+
+  ai_chat_service_->BindConversation(uuid, std::move(recv), std::move(remote));
+  task_environment_.RunUntilIdle();
+
+  EXPECT_TRUE(close_notified);
+  EXPECT_EQ(closed_uuid, uuid);
 }
 
 }  // namespace ai_chat

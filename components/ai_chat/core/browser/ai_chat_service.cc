@@ -454,17 +454,10 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     conversation_handlers_.clear();
     conversations_.clear();
     content_conversations_.clear();
-    // Clear generation state — single map.
-    {
-      std::vector<std::string> gen_keys;
-      gen_keys.reserve(conversation_generation_state_.size());
-      for (auto& kv : conversation_generation_state_) {
-        gen_keys.push_back(kv.first);
-      }
-      conversation_generation_state_.clear();
-      for (auto& id : gen_keys) {
-        NotifyConversationGenerationState(id);
-      }
+    for (const auto& [id, state] :
+         std::exchange(conversation_generation_state_, {})) {
+      NotifyConversationGenerationState(id);
+      MaybeCloseCompletionNotification(id);
     }
 
     // Delete database data
@@ -489,43 +482,13 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     }
   }
 
-  // Batch delete without per-item list broadcast (else N+1
-  // OnConversationListChanged).
+  // Avoid notifying the list once per deleted conversation.
   for (const auto& uuid : conversation_keys) {
-    if (auto node = conversation_handlers_.extract(uuid)) {
-      conversation_observations_.RemoveObservation(node.mapped().get());
-      if (ai_chat_metrics_) {
-        ai_chat_metrics_->RecordConversationUnload(uuid);
-      }
-    }
-
-    bool temporary = false;
-    if (auto node = conversations_.extract(uuid)) {
-      temporary = node.mapped()->temporary;
-    }
-
-    if (conversation_generation_state_.erase(uuid) > 0) {
-      NotifyConversationGenerationState(uuid);
-    }
-
+    EraseConversation(uuid);
     std::erase_if(content_conversations_,
                   [&uuid](const auto& kv) { return kv.second == uuid; });
-
-    if (ai_chat_db_ && !temporary) {
-      if (sync_backend_) {
-        CHECK_DEREF(db_task_runner_)
-            .PostTask(FROM_HERE,
-                      base::BindOnce(&AIChatSyncBackend::OnConversationDeleted,
-                                     sync_backend_, uuid));
-      }
-      ai_chat_db_
-          .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversation))
-          .WithArgs(uuid);
-    }
   }
   if (!conversation_keys.empty()) {
-    DVLOG(1) << "Batch erased " << conversation_keys.size()
-             << " conversations by time range.";
     OnConversationListChanged();
   }
 }
@@ -887,6 +850,11 @@ void AIChatService::GetPremiumStatus(
 }
 
 void AIChatService::DeleteConversation(const std::string& id) {
+  EraseConversation(id);
+  OnConversationListChanged();
+}
+
+void AIChatService::EraseConversation(const std::string& id) {
   if (auto node = conversation_handlers_.extract(id)) {
     conversation_observations_.RemoveObservation(node.mapped().get());
     if (ai_chat_metrics_) {
@@ -905,7 +873,7 @@ void AIChatService::DeleteConversation(const std::string& id) {
   if (conversation_generation_state_.erase(id) > 0) {
     NotifyConversationGenerationState(id);
   }
-  OnConversationListChanged();
+  MaybeCloseCompletionNotification(id);
 
   // Update database
   if (ai_chat_db_ && !temporary) {
@@ -1145,15 +1113,14 @@ void AIChatService::MaybeUnloadConversation(
            << " ConversationHandler instances.";
   if (!IsAIChatHistoryEnabled() || !has_history || is_temporary) {
     // Can erase because no active UI and no history, so it's
-    // not a real / persistable conversation. Generation dot is
-    // session-only and stays until viewed; only clear it when the
-    // conversation itself is deleted.
+    // not a real / persistable conversation
     conversations_.erase(uuid);
     std::erase_if(content_conversations_,
                   [&uuid](const auto& kv) { return kv.second == uuid; });
     if (conversation_generation_state_.erase(uuid) > 0) {
       NotifyConversationGenerationState(uuid);
     }
+    MaybeCloseCompletionNotification(uuid);
     DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
@@ -1238,18 +1205,15 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
              it != conversation_generation_state_.end() &&
              it->second == mojom::ConversationGenerationState::kGenerating) {
     // Stopping an idle conversation also reports false, so only transition
-    // out of kGenerating. A completion witnessed by a connected client is
-    // not marked as not-viewed.
-
-    // TODO(ux): show red dot on error — currently also marks
-    // kCompletedNotViewed on engine failure (defaults to blue dot).
-    // When red-dot design lands, gate on success and use kFailedNotViewed.
-    if (handler->IsAnyClientConnected()) {
+    // out of kGenerating.
+    if (IsConversationVisible(uuid)) {
       conversation_generation_state_.erase(it);
+      NotifyConversationGenerationState(uuid);
     } else {
       it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
+      NotifyConversationGenerationState(uuid);
+      MaybeShowCompletionNotification(uuid);
     }
-    NotifyConversationGenerationState(uuid);
   }
 
   // We don't unload a conversation if it has a request in progress, so check
@@ -1534,13 +1498,13 @@ void AIChatService::BindConversation(
     const std::string& uuid,
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  // CompletedNotViewed is cleared on view. Generating tracking is
-  // seeded lazily on request events; avoid seeding for bogus uuids.
+  // Viewing a conversation clears its completed-not-viewed state.
   auto it = conversation_generation_state_.find(uuid);
   if (it != conversation_generation_state_.end() &&
       it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
     conversation_generation_state_.erase(it);
     NotifyConversationGenerationState(uuid);
+    MaybeCloseCompletionNotification(uuid);
   }
 
   GetConversation(
@@ -1570,7 +1534,7 @@ void AIChatService::BindObserver(
     mojom::Service::BindObserverCallback callback) {
   mojo::Remote<mojom::ServiceObserver> new_remote(std::move(observer));
   std::move(callback).Run(BuildState());
-  // Push baseline only to the newly bound remote (was N*M broadcast).
+  // Send existing generation state to the newly bound observer.
   for (auto& kv : conversation_generation_state_) {
     new_remote->OnConversationGenerationStateChanged(kv.first, kv.second);
   }
@@ -1646,6 +1610,38 @@ void AIChatService::NotifyConversationGenerationState(const std::string& uuid) {
                    : mojom::ConversationGenerationState::kIdle;
   for (auto& remote : observer_remotes_) {
     remote->OnConversationGenerationStateChanged(uuid, state);
+  }
+}
+
+void AIChatService::SetCompletionNotificationCallbacks(
+    ShowCompletionNotificationCallback show,
+    CloseCompletionNotificationCallback close) {
+  show_completion_notification_callback_ = std::move(show);
+  close_completion_notification_callback_ = std::move(close);
+}
+
+bool AIChatService::IsConversationVisible(const std::string& uuid) const {
+  auto it = conversation_handlers_.find(uuid);
+  if (it == conversation_handlers_.end()) {
+    return false;
+  }
+  return it->second->IsAnyClientConnected();
+}
+
+void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
+  if (!show_completion_notification_callback_) {
+    return;
+  }
+  std::u16string title_u16;
+  if (auto it = conversations_.find(uuid); it != conversations_.end()) {
+    title_u16 = base::UTF8ToUTF16(it->second->title);
+  }
+  show_completion_notification_callback_.Run(uuid, title_u16);
+}
+
+void AIChatService::MaybeCloseCompletionNotification(const std::string& uuid) {
+  if (close_completion_notification_callback_) {
+    close_completion_notification_callback_.Run(uuid);
   }
 }
 
