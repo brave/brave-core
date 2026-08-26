@@ -50,20 +50,22 @@ substitutions:
         }
 
   - description: |-
-      Stop polling a sub-frame once it goes away, and erase any watch it
-      created.
+      Stop polling a sub-frame once it goes away, and erase the watches and
+      pipes it created.
 
       Without this, a watch created by a sub-frame (e.g. AI Chat's
       untrusted conversation-entries iframe) outlives the frame: watchers_
       keeps armed-and-watching indefinitely, and a later notification for
       it gets misdirected to the main frame instead of dropped, since
       GetFrameForWatch falls back to the main frame when the original
-      frame can no longer be found.
+      frame can no longer be found. Upstream's own pipes_.clear() above only
+      runs for the main frame, so a sub-frame's table has to go here.
     after_function_impl:
       function_name: MojoFacade::WebFrameBecameUnavailable
       code: |-
         extra_polling_frame_ids_.erase(frame_id);
         EraseWatchersForFrame(frame_id);
+        pipes_.erase(frame_id);
 
   - description: |-
       Reset Brave's sub-frame routing state alongside upstream's own reset.
@@ -114,3 +116,47 @@ substitutions:
         )GetMainWebFrame\(\);'
       re_flags: [DOTALL]
       replace: '\1GetFrameForWatch(watch_id);'
+
+  - description: |-
+      Scope a message's pipe lookups to the frame that sent it.
+
+      Handle ids are minted by a per-frame JS counter that restarts at 1 in
+      every frame (see the mojo_facade.h plaster), so they mean nothing
+      without knowing the frame. This is the single funnel every JS-initiated
+      pipe operation passes through, so binding the frame here keeps
+      upstream's handlers written in terms of a bare pipe id.
+    preempt_function_impl:
+      function_name: MojoFacade::HandleMojoMessage
+      code: |-
+        base::AutoReset<std::string> frame_scope(&current_frame_id_,
+                                                 GetFrameIdForMessage(message));
+
+  - description: |-
+      Store a newly allocated pipe in the sending frame's table.
+    regex:
+      re_pattern: 'pipes_\[pipe_id\] = std::move\(pipe\);'
+      replace: 'StorePipeForCurrentFrame(pipe_id, std::move(pipe));'
+
+  - description: |-
+      Look pipes up by id in the current frame's table.
+
+      Only the by-pipe-id lookups move: pipes_.clear() and the
+      pipes_.erase(frame_id) added above address whole frames, which the
+      outer map still keys directly.
+    count: 5
+    regex:
+      re_pattern: 'pipes_\.(find\(id\)|end\(\)|erase\(it\))'
+      replace: 'CurrentFramePipes().\1'
+
+  - description: |-
+      Scope a watch notification's pipe reads to the frame that created it.
+
+      OnWatcherCallback reaches ReadMessageFromPipe without passing through
+      HandleMojoMessage, so it has to bind the frame itself. Must stay after
+      the GetFrameForWatch substitution above, which matches on this body
+      starting with its own first statement.
+    preempt_function_impl:
+      function_name: MojoFacade::OnWatcherCallback
+      code: |-
+        base::AutoReset<std::string> frame_scope(&current_frame_id_,
+                                                 GetFrameIdForWatch(watch_id));
