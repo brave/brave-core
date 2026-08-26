@@ -10,10 +10,12 @@
 #include "base/check.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -218,6 +220,65 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   permission_request_manager->RemoveObserver(&observer);
 }
 #endif  // OS_LINUX
+
+#if BUILDFLAG(ENABLE_TOR)
+// Installing Widevine is a global, persistent opt-in that fetches a proprietary
+// component from Google, so a Tor window must never ask for it. Neither of the
+// two places that queue a WidevinePermissionRequest may fire there: the install
+// prompt driven by ShouldShowWidevineOptIn(), and (on Linux) the follow-up
+// restart prompt driven by the component updater event.
+IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
+                       NoPermissionRequestInTorWindow) {
+  // Establish that the simulated request does reach the Widevine code path in
+  // this build, so the Tor expectations below can't pass vacuously.
+  GetPermissionRequestManager()->set_auto_response_for_test(
+      permissions::PermissionRequestManager::DISMISS);
+  SimulateWidevineKeySystemAccessRequest();
+  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(observer.bubble_added_);
+
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
+  brave::NewOffTheRecordWindowTor(browser());
+  Browser* tor_browser = tor_browser_creation_observer.Wait();
+  ASSERT_TRUE(tor_browser);
+  ASSERT_TRUE(tor_browser->GetProfile()->IsTor());
+
+  auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
+  auto* tor_permission_request_manager =
+      permissions::PermissionRequestManager::FromWebContents(tor_contents);
+  ASSERT_TRUE(tor_permission_request_manager);
+  TestObserver tor_observer;
+  tor_permission_request_manager->AddObserver(&tor_observer);
+
+  auto* tor_drm_tab_helper = BraveDrmTabHelper::FromWebContents(tor_contents);
+  ASSERT_TRUE(tor_drm_tab_helper);
+  tor_drm_tab_helper->OnWidevineKeySystemAccessRequestForFrame(
+      tor_contents->GetPrimaryMainFrame());
+  content::RunAllTasksUntilIdle();
+
+  EXPECT_FALSE(tor_observer.bubble_added_);
+  EXPECT_FALSE(tor_permission_request_manager->has_pending_requests());
+  EXPECT_FALSE(tor_permission_request_manager->IsRequestInProgress());
+
+#if BUILDFLAG(IS_LINUX)
+  // The restart prompt doesn't go through ShouldShowWidevineOptIn(). Its only
+  // other precondition is the tab's "widevine requested" bit, which the request
+  // above sets before any Tor check, so the Tor check is what has to suppress
+  // this prompt.
+  update_client::CrxUpdateItem item;
+  item.id = kWidevineComponentId;
+  item.state = update_client::ComponentState::kUpdated;
+  tor_drm_tab_helper->OnEvent(item);
+  content::RunAllTasksUntilIdle();
+
+  EXPECT_FALSE(tor_observer.bubble_added_);
+  EXPECT_FALSE(tor_permission_request_manager->has_pending_requests());
+  EXPECT_FALSE(tor_permission_request_manager->IsRequestInProgress());
+#endif  // BUILDFLAG(IS_LINUX)
+
+  tor_permission_request_manager->RemoveObserver(&tor_observer);
+}
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 class ScriptTriggerWidevinePermissionRequestBrowserTest
     : public CertVerifierBrowserTest {
