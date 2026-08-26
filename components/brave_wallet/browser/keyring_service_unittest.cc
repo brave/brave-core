@@ -5403,6 +5403,34 @@ TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
                 ->next_transparent_change_address->key_id);
 }
 
+TEST_F(KeyringServiceUnitTest, ZCashIronwoodSyncStateResetPref) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletZCashFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto zec_acc = GetAccountUtils(&service).EnsureZecAccount(0);
+
+  EXPECT_FALSE(service.GetZCashIronwoodSyncStateReset(zec_acc->account_id));
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(
+      service.SetZCashIronwoodSyncStateReset(zec_acc->account_id, true));
+  observer.WaitAndVerify();
+
+  EXPECT_TRUE(service.GetZCashIronwoodSyncStateReset(zec_acc->account_id));
+
+  const auto* account_metas = GetPrefForKeyringList(
+      GetPrefs(), kAccountMetas, mojom::KeyringId::kZCashMainnet);
+  ASSERT_TRUE(account_metas);
+  ASSERT_EQ(1u, account_metas->size());
+  const auto* account_dict = (*account_metas)[0].GetIfDict();
+  ASSERT_TRUE(account_dict);
+  EXPECT_TRUE(account_dict->FindBoolByDottedPath(kZcashIronwoodSyncStateReset));
+}
+
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   base::test::ScopedFeatureList feature_list;

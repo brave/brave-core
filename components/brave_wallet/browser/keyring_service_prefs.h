@@ -35,6 +35,8 @@ inline constexpr char kZcashAccountBirthdayBlockId[] =
     "zcash.account_birthday.block_id";
 inline constexpr char kZcashAccountBirthdayBlockHash[] =
     "zcash.account_birthday.block_hash";
+inline constexpr char kZcashIronwoodSyncStateReset[] =
+    "zcash.account_birthday.ironwood_sync_state_reset";
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id);
 

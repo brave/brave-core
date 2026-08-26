@@ -56,6 +56,11 @@ inline constexpr size_t kNu5BlockUpdate = 1687104;
 inline constexpr uint32_t kIronwoodActivationHeightMainnet = 3428143;
 inline constexpr uint32_t kIronwoodActivationHeightTestnet = 4134000;
 
+inline uint32_t GetIronwoodActivationHeight(const std::string& chain_id) {
+  return chain_id == mojom::kZCashTestnet ? kIronwoodActivationHeightTestnet
+                                          : kIronwoodActivationHeightMainnet;
+}
+
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
 using OrchardAddrRawPart = std::array<uint8_t, kOrchardRawBytesSize>;

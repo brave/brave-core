@@ -2267,6 +2267,11 @@ interface ZCashWalletService {
   ResetSyncState(AccountId account_id, uint32 account_birthday_block)
       => (string? error_message);
 
+  // Rewinds sync state to immediately before Ironwood activation so the
+  // activation block is rescanned. Does not change account birthday.
+  ResetSyncStateToIronwoodActivation(AccountId account_id)
+      => (string? error_message);
+
   GetChainTipStatus(AccountId account_id)
       => (ZCashChainTipStatus? status, string? error_message);
 };

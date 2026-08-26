@@ -1521,6 +1521,11 @@ export class MockedWalletApiProxy {
         errorMessage: null,
       }
     },
+    resetSyncStateToIronwoodActivation: async (_accountId) => {
+      return {
+        errorMessage: null,
+      }
+    },
   }
 
   setMockedQuote(newQuote: typeof this.mockZeroExQuote) {
