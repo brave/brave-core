@@ -71,6 +71,7 @@ source_set("ui") {
   ]
 
   deps = [
+    ":custom_profile_image_buildflags",
     "//brave/brave_domains",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
@@ -113,6 +114,10 @@ source_set("ui") {
     "//chrome/browser/ui/toolbar",
     "//media",
   ]
+
+  if (enable_brave_custom_profile_image_webui) {
+    deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
+  }
 
   if (is_mac) {
     deps += [ "//chrome/browser:global_keyboard_shortcuts_mac" ]

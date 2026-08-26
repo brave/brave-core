@@ -7,6 +7,13 @@
 
 #if !BUILDFLAG(IS_CHROMEOS)
 
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/custom_profile_image_buildflags.h"
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#include "brave/browser/ui/webui/custom_profile_image/features.h"
+#include "chrome/common/webui_url_constants.h"
+#include "chrome/test/base/web_ui_mocha_browser_test.h"
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -126,6 +133,49 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileBrowserTest,
 
   ASSERT_EQ("ready", WaitForManageProfilePickerLayout(web_contents));
 }
+
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+
+class BraveManageProfileWebUITest : public WebUIMochaBrowserTest {
+ protected:
+  explicit BraveManageProfileWebUITest(bool feature_enabled) {
+    scoped_feature_list_.InitWithFeatureState(
+        custom_profile_image::features::kBraveCustomProfileImage,
+        feature_enabled);
+    set_test_loader_host(chrome::kChromeUISettingsHost);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+class BraveManageProfileFeatureDisabledWebUITest
+    : public BraveManageProfileWebUITest {
+ public:
+  BraveManageProfileFeatureDisabledWebUITest()
+      : BraveManageProfileWebUITest(false) {}
+};
+
+class BraveManageProfileFeatureEnabledWebUITest
+    : public BraveManageProfileWebUITest {
+ public:
+  BraveManageProfileFeatureEnabledWebUITest()
+      : BraveManageProfileWebUITest(true) {}
+};
+
+IN_PROC_BROWSER_TEST_F(BraveManageProfileFeatureDisabledWebUITest,
+                       DoesNotRenderCustomProfileImageRow) {
+  RunTest("settings/people_page_manage_profile_test.js",
+          "runMochaSuite('BraveManageProfileFeatureDisabledTests')");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveManageProfileFeatureEnabledWebUITest,
+                       RendersAndUsesCustomProfileImageRow) {
+  RunTest("settings/people_page_manage_profile_test.js",
+          "runMochaSuite('BraveManageProfileFeatureEnabledTests')");
+}
+
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 
 }  // namespace
 

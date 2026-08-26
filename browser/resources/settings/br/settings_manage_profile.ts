@@ -7,7 +7,16 @@ import {
   RegisterPolymerTemplateModifications,
   RegisterStyleOverride,
 } from 'chrome://resources/brave/polymer_overriding.js'
-import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {html as polymerHtml} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+// <if expr="enable_custom_profile_image">
+import 'chrome://resources/brave/custom_profile_image_row.js'
+
+import {html, render} from 'chrome://resources/lit/v3_0/lit.rollup.js'
+
+import {BraveSettingsStrings} from '../brave_generated_resources_webui_strings.js'
+import {loadTimeData} from '../i18n_setup.js'
+// </if>
 
 // Brave avatar assets are organized in 7-color groups per style under
 // `app/theme/default_100_percent/common/avatars`. Chromium's default 6-column
@@ -17,7 +26,7 @@ const kManageProfilePickerColumns = '7'
 
 RegisterStyleOverride(
   'settings-manage-profile',
-  html`
+  polymerHtml`
     <style include="settings-shared">
       .content {
         --cr-section-indent-width: 20px;
@@ -31,26 +40,127 @@ RegisterStyleOverride(
         --icon-grid-gap: 22px !important;
         --icon-size: 66px !important;
       }
+
+      .custom-profile-image-section .content {
+        --icon-grid-gap: 22px;
+        --icon-size: 66px;
+      }
     </style>
   `,
 )
 
-RegisterPolymerTemplateModifications({
-  'settings-manage-profile': (templateContent) => {
-    const themeColorPicker = templateContent.querySelector(
-      'cr-theme-color-picker',
-    )
-    if (!themeColorPicker) {
-      throw new Error('[Settings] Missing Manage Profile theme color picker')
-    }
-    themeColorPicker.setAttribute('columns', kManageProfilePickerColumns)
+// <if expr="enable_custom_profile_image">
+const kCustomProfileImageRowId = 'customProfileImageRow'
 
-    const profileAvatarSelector = templateContent.querySelector(
-      'cr-profile-avatar-selector',
+function createCustomProfileImageSection(): DocumentFragment {
+  const previewLabel = loadTimeData.getString(
+    BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_PREVIEW_LABEL,
+  )
+  const selectedPreviewLabel = loadTimeData.getStringF(
+    BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL,
+    previewLabel,
+  )
+
+  const section = document.createDocumentFragment()
+  render(
+    html`
+      <div
+        class="cr-row manage-profile-section custom-profile-image-section"
+      >
+        <h1 class="cr-title-text">
+          ${loadTimeData.getString(
+            BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_TITLE,
+          )}
+        </h1>
+        <div class="content">
+          <br-custom-profile-image-row
+            id=${kCustomProfileImageRowId}
+            state="empty"
+            hide-title
+            title-label=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,
+            )}
+            replace-label=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REPLACE_ACTION,
+            )}
+            remove-label=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REMOVE_ACTION,
+            )}
+            selected-preview-label=${selectedPreviewLabel}
+            preview-label=${previewLabel}
+            upload-tooltip=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
+            )}
+            remove-tooltip=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP,
+            )}
+            invalid-image-label=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_INVALID_IMAGE,
+            )}
+          ></br-custom-profile-image-row>
+        </div>
+      </div>
+    `,
+    section,
+  )
+  return section
+}
+// </if>
+
+function customizeManageProfileTemplate(templateContent: DocumentFragment) {
+  const themeColorPicker = templateContent.querySelector(
+    'cr-theme-color-picker',
+  )
+  if (!themeColorPicker) {
+    throw new Error('[Settings] Missing Manage Profile theme color picker')
+  }
+  themeColorPicker.setAttribute('columns', kManageProfilePickerColumns)
+
+  const profileAvatarSelector = templateContent.querySelector(
+    'cr-profile-avatar-selector',
+  )
+  if (!profileAvatarSelector) {
+    throw new Error('[Settings] Missing Manage Profile avatar selector')
+  }
+  profileAvatarSelector.setAttribute('columns', kManageProfilePickerColumns)
+
+  // <if expr="enable_custom_profile_image">
+  if (!loadTimeData.getBoolean('customProfileImageEnabled')) {
+    return
+  }
+
+  if (templateContent.querySelector(`#${kCustomProfileImageRowId}`)) {
+    return
+  }
+
+  const themeColorSection = themeColorPicker.closest(
+    '.manage-profile-section',
+  )
+  if (!themeColorSection) {
+    throw new Error(
+      '[Settings] Missing Manage Profile theme color picker section',
     )
-    if (!profileAvatarSelector) {
-      throw new Error('[Settings] Missing Manage Profile avatar selector')
-    }
-    profileAvatarSelector.setAttribute('columns', kManageProfilePickerColumns)
-  },
+  }
+
+  const profileAvatarSection = profileAvatarSelector.closest(
+    '.manage-profile-section',
+  )
+  if (!profileAvatarSection) {
+    throw new Error('[Settings] Missing Manage Profile avatar section')
+  }
+
+  const sectionParent = profileAvatarSection.parentElement
+  if (!sectionParent || themeColorSection.parentElement !== sectionParent) {
+    throw new Error('[Settings] Manage Profile sections changed structure')
+  }
+
+  sectionParent.insertBefore(
+    createCustomProfileImageSection(),
+    profileAvatarSection,
+  )
+  // </if>
+}
+
+RegisterPolymerTemplateModifications({
+  'settings-manage-profile': customizeManageProfileTemplate,
 })

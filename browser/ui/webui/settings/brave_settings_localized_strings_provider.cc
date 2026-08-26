@@ -5,10 +5,15 @@
 
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 
+#include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
+#include "brave/browser/ui/custom_profile_image_buildflags.h"
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#include "brave/browser/ui/webui/custom_profile_image/features.h"
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -1497,6 +1502,12 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddLocalizedStrings(webui::kBraveSettingsStrings);
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+  html_source->AddBoolean(
+      "customProfileImageEnabled",
+      base::FeatureList::IsEnabled(
+          custom_profile_image::features::kBraveCustomProfileImage));
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 
   // We add strings regardless of the FeatureFlag state to prevent crash
 
