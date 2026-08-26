@@ -36,7 +36,8 @@ class FocusModeTitleBarViewBrowserTest : public InProcessBrowserTest {
  protected:
   FocusModeTitleBarViewBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(features::kBraveFocusMode);
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveFocusMode, {{"FocusModeUrlDisplay", "title-bar"}});
   }
 
   void SetUpOnMainThread() override {
