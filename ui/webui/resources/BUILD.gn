@@ -6,6 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/ui/webui/custom_profile_image_config.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -56,6 +57,14 @@ if (include_polymer) {
       "page_specific/settings/br_settings_shared.css",
       "page_specific/settings/br_settings_shared_lit.css",
     ]
+
+    if (enable_brave_custom_profile_image_webui) {
+      ts_files += [
+        "custom_profile_image_row.html.ts",
+        "custom_profile_image_row.ts",
+      ]
+      css_files += [ "custom_profile_image_row.css" ]
+    }
 
     ts_composite = true
     generate_grdp = true
