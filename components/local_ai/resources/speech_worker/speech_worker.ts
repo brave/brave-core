@@ -95,9 +95,10 @@ class SpeechRecognitionFactoryImpl
     return this.receiver.$.bindNewPipeAndPassRemote()
   }
 
-  async init(files: OrtModelFiles, lang: string = 'en-US') {
+  async init(files: OrtModelFiles, lang: string = 'es-ES') {
     try {
       const { modelType, promptId } = getNemotronModelType(lang)
+      // TODO: load model files based on modelType
       const model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
         readBigBuffer(files.encoderData, 'EncoderData'),

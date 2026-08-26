@@ -139,6 +139,8 @@ export class NemotronStreamSession {
   private readonly onResult: (text: string, isFinal: boolean) => void
   private readonly onError: () => void
   private readonly model: OrtNemotronModel
+  private readonly modelType: config.NemotronModelType
+  private readonly promptId: number | null
   private readonly modelConfig:
     | typeof config.ENGLISH_NEMOTRON_CONFIG
     | typeof config.MULTILINGUAL_NEMOTRON_CONFIG
@@ -185,10 +187,21 @@ export class NemotronStreamSession {
     onError: () => void,
   ) {
     this.model = model
+    this.modelType = modelType
     this.modelConfig =
       modelType === 'english'
         ? config.ENGLISH_NEMOTRON_CONFIG
         : config.MULTILINGUAL_NEMOTRON_CONFIG
+
+    this.promptId = promptId
+
+    if (modelType === 'multilingual' && promptId === null) {
+      throw new Error('Multilingual Nemotron requires a prompt ID')
+    }
+
+    if (modelType === 'english' && promptId !== null) {
+      throw new Error('English Nemotron must not receive a prompt ID')
+    }
 
     this.cacheCh = new Float32Array(
       this.modelConfig.NEMO_NUM_ENCODER_LAYERS
@@ -259,7 +272,7 @@ export class NemotronStreamSession {
     this.state = 'finishing'
 
     const flush =
-    this.modelConfig.SILENCE_FLUSH_CHUNKS
+      this.modelConfig.SILENCE_FLUSH_CHUNKS
       * this.modelConfig.NEMO_CHUNK
       * config.HOP_LENGTH
 
@@ -336,38 +349,45 @@ export class NemotronStreamSession {
       // </if>
 
       // Fresh input tensors every step. Do not reuse/carry ORT tensors.
-      const eo = await this.model.runEncoder(
-        {
-          audio_signal: new ort.Tensor('float32', sig, [
-            1,
-            config.N_MELS,
-            this.modelConfig.NEMO_FRAMES,
-          ]),
+      const encoderFeeds: Record<string, OrtTensor> = {
+        audio_signal: new ort.Tensor('float32', sig, [
+          1,
+          config.N_MELS,
+          this.modelConfig.NEMO_FRAMES,
+        ]),
 
-          length: new ort.Tensor(
-            'int64',
-            BigInt64Array.from([BigInt(this.modelConfig.NEMO_FRAMES)]),
-            [1],
-          ),
+        length: new ort.Tensor(
+          'int64',
+          BigInt64Array.from([BigInt(this.modelConfig.NEMO_FRAMES)]),
+          [1],
+        ),
 
-          cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
-            1,
-            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
-            this.modelConfig.NEMO_LEFT_CONTEXT,
-            this.modelConfig.NEMO_HIDDEN_DIM,
-          ]),
+        cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
+          1,
+          this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+          this.modelConfig.NEMO_LEFT_CONTEXT,
+          this.modelConfig.NEMO_HIDDEN_DIM,
+        ]),
 
-          cache_last_time: new ort.Tensor('float32', this.cacheTime, [
-            1,
-            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
-            this.modelConfig.NEMO_HIDDEN_DIM,
-            this.modelConfig.NEMO_CONV_CONTEXT,
-          ]),
+        cache_last_time: new ort.Tensor('float32', this.cacheTime, [
+          1,
+          this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+          this.modelConfig.NEMO_HIDDEN_DIM,
+          this.modelConfig.NEMO_CONV_CONTEXT,
+        ]),
 
-          cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
-        },
-        ENC_FETCHES,
-      )
+        cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
+      }
+
+      if (this.modelType === 'multilingual') {
+        encoderFeeds.prompt_index = new ort.Tensor(
+          'int64',
+          BigInt64Array.from([BigInt(this.promptId!)]),
+          [1],
+        )
+      }
+
+      const eo = await this.model.runEncoder(encoderFeeds, ENC_FETCHES)
 
       // <if expr="!is_official_build">
       const encoderMs = performance.now() - encoderStarted

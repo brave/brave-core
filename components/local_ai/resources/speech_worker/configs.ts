@@ -114,10 +114,7 @@ export const MULTILINGUAL_NEMOTRON_CONFIG = {
 
 // supported languages
 
-export const ENGLISH_SUPPORTED_LANGUAGES = [
-  'en-US',
-  'en-GB',
-] as const
+export const ENGLISH_SUPPORTED_LANGUAGES = ['en-US', 'en-GB'] as const
 
 export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
   'es-ES': 2,
@@ -126,5 +123,4 @@ export const MULTILINGUAL_SUPPORTED_LANGUAGES = {
   'pt-BR': 12,
   'pt-PT': 13,
   'hi-IN': 6,
- } as const
- 
+} as const
