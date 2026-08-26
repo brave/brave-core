@@ -698,20 +698,22 @@ public class BrowserViewController: UIViewController {
       minViewportInset.bottom = footer.bounds.height
       maxViewportInset.bottom = footer.bounds.height
     }
+    if let readerModeBar {
+      readerModeBar.layoutIfNeeded()
+      minViewportInset.top += readerModeBar.bounds.height
+      maxViewportInset.top += readerModeBar.bounds.height
+    }
     webViewProxy.setMinimumViewportInset(minViewportInset, maximumViewportInset: maxViewportInset)
 
     let toolbarInsets = UIEdgeInsets(
       top: max(
         0,
-        toolbarLayoutGuide.layoutFrame.minY + (isUsingBottomBar ? 0 : header.bounds.height)
+        pageOverlayLayoutGuide.layoutFrame.minY
       ),
       left: 0,
       bottom: max(
         0,
-        view.bounds.height
-          - (toolbarLayoutGuide.layoutFrame.maxY
-            - (isUsingBottomBar
-              ? header.bounds.height + footer.bounds.height : footer.bounds.height))
+        view.bounds.height - pageOverlayLayoutGuide.layoutFrame.maxY
       ),
       right: 0
     )
