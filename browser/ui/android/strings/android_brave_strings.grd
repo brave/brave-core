@@ -747,8 +747,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_BROWSER_LOCK_PRIVATE_TABS" desc="Toggle label: lock private tabs.">
         Private tabs
       </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_SCREEN_CAPTURE" desc="Section header on the Browser Lock settings screen, above the screenshot/video capture toggle.">
+        Screen capture
+      </message>
       <message name="IDS_BRAVE_BROWSER_LOCK_PREVENT_CAPTURE" desc="Toggle label: block screenshots and screen recording for locked-down parts of the browser.">
-        Prevent screenshot/video capture
+        Prevent screenshot/video capture of locked tabs
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
         Allow privacy-preserving product analytics (P3A)
