@@ -1,0 +1,25 @@
+diff --git a/content/public/browser/content_browser_client.cc b/content/public/browser/content_browser_client.cc
+index 2c79dbb65564871e8cca71a34a7f8f0347d37d24..3d5180ac270c4040cbc5de4dc09dac9ea8170c5a 100644
+--- a/content/public/browser/content_browser_client.cc
++++ b/content/public/browser/content_browser_client.cc
+@@ -1102,7 +1102,8 @@ void ContentBrowserClient::WillCreateURLLoaderFactory(
+   DCHECK(browser_context);
+ }
+ 
+-bool ContentBrowserClient::WillInterceptWebSocket(RenderFrameHost*) {
++bool ContentBrowserClient::WillInterceptWebSocket(int process_id,
++                                                  int frame_routing_id) {
+   return false;
+ }
+ 
+@@ -1119,7 +1120,9 @@ ContentBrowserClient::GetWebSocketOptions(RenderFrameHost* frame) {
+ }
+ 
+ void ContentBrowserClient::CreateWebSocket(
+-    RenderFrameHost* frame,
++    int process_id,
++    int frame_routing_id,
++    const url::Origin& initiator_origin,
+     WebSocketFactory factory,
+     const GURL& url,
+     const net::SiteForCookies& site_for_cookies,

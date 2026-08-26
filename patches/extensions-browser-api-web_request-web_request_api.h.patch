@@ -1,0 +1,15 @@
+diff --git a/extensions/browser/api/web_request/web_request_api.h b/extensions/browser/api/web_request/web_request_api.h
+index 84720fa1072aaddc91774965f9694928a846788b..c24006c7c243786d38ef7e1deadcc33e0d87165a 100644
+--- a/extensions/browser/api/web_request/web_request_api.h
++++ b/extensions/browser/api/web_request/web_request_api.h
+@@ -261,7 +261,9 @@ class WebRequestAPI : public BrowserContextKeyedAPI,
+   // Starts proxying the connection with `factory`. This function can be called
+   // only when MayHaveProxies() returns true.
+   void ProxyWebSocket(
+-      content::RenderFrameHost* frame,
++      content::RenderProcessHost& render_process_host,
++      int frame_routing_id,
++      const url::Origin& initiator_origin,
+       content::ContentBrowserClient::WebSocketFactory factory,
+       const GURL& url,
+       const net::SiteForCookies& site_for_cookies,

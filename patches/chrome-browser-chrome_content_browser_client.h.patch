@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
+index d01f3f13b3d9ea8bd0df517c7e3d66c31cb9029c..8246153271a05aba85647ae2441ce54a4830d3a1 100644
+--- a/chrome/browser/chrome_content_browser_client.h
++++ b/chrome/browser/chrome_content_browser_client.h
+@@ -713,11 +713,13 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+   CreateURLLoaderHandlerForServiceWorkerInitiatedNavigationRequest(
+       content::FrameTreeNodeId frame_tree_node_id,
+       const network::ResourceRequest& resource_request) override;
+-  bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
++  bool WillInterceptWebSocket(int process_id, int frame_routing_id) override;
+   content::ContentBrowserClient::WebSocketOptions GetWebSocketOptions(
+       content::RenderFrameHost* frame) override;
+   void CreateWebSocket(
+-      content::RenderFrameHost* frame,
++      int process_id,
++      int frame_routing_id,
++      const url::Origin& initiator_origin,
+       WebSocketFactory factory,
+       const GURL& url,
+       const net::SiteForCookies& site_for_cookies,

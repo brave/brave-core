@@ -33,6 +33,7 @@
 namespace content {
 class BrowserContext;
 class RenderFrameHost;
+class RenderProcessHost;
 }  // namespace content
 
 // Ensures that all web socket requests go through Brave network request
@@ -57,12 +58,17 @@ class BraveProxyingWebSocket
   BraveProxyingWebSocket& operator=(const BraveProxyingWebSocket&) = delete;
   ~BraveProxyingWebSocket() override;
 
+  // `frame_routing_id` is IPC::mojom::kRoutingIdNone when the initiator context
+  // is a shared or service worker, in which case there is no associated frame
+  // and `initiator_origin` provides the request initiator origin.
   static BraveProxyingWebSocket* ProxyWebSocket(
-      content::RenderFrameHost* frame,
+      content::RenderProcessHost& render_process_host,
+      int frame_routing_id,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const std::optional<std::string>& user_agent);
+      const std::optional<std::string>& user_agent,
+      const url::Origin& initiator_origin);
 
   void Start(mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
                  handshake_client,

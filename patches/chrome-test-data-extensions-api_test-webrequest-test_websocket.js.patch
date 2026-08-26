@@ -1,0 +1,195 @@
+diff --git a/chrome/test/data/extensions/api_test/webrequest/test_websocket.js b/chrome/test/data/extensions/api_test/webrequest/test_websocket.js
+index 656dee4441d9b5bf8a024f3f1e25c353b35e2790..1e8de1f7b38e4dfa1622969282f71ed064fa46b7 100644
+--- a/chrome/test/data/extensions/api_test/webrequest/test_websocket.js
++++ b/chrome/test/data/extensions/api_test/webrequest/test_websocket.js
+@@ -4,6 +4,14 @@
+ 
+ const callbackPass = chrome.test.callbackPass;
+ 
++// A shared worker has no associated frame, so the webRequest events for its
++// WebSocket handshake are reported with frameId/tabId of -1 and without a
++// documentId. See test_websocket_shared_worker_main.js.
++const isSharedWorkerTest = 'isSharedWorkerTest' in self;
++const documentId = isSharedWorkerTest ? undefined : 1;
++const frameId = isSharedWorkerTest ? -1 : 0;
++const tabId = isSharedWorkerTest ? -1 : 0;
++
+ chrome.tabs.getCurrent(function(tab) {
+   runTestsForTab(
+       [
+@@ -24,7 +32,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     // unknown.
+                     frameUrl: 'unknown frame URL',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -34,7 +44,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     url: url,
+                     type: 'websocket',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -44,7 +56,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     url: url,
+                     type: 'websocket',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -56,7 +70,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     statusCode: 101,
+                     statusLine: 'HTTP/1.1 101 Switching Protocols',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -70,7 +86,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     statusCode: 101,
+                     statusLine: 'HTTP/1.1 101 Switching Protocols',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -84,7 +102,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     statusCode: 101,
+                     statusLine: 'HTTP/1.1 101 Switching Protocols',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+               ],
+@@ -120,7 +140,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     type: 'websocket',
+                     frameUrl: 'unknown frame URL',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                   retval: {cancel: true},
+                 },
+@@ -134,7 +156,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     fromCache: false,
+                     initiator: getDomain(initiators.WEB_INITIATED),
+                     error: 'net::ERR_BLOCKED_BY_CLIENT',
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+               ],
+@@ -167,7 +191,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     type: 'websocket',
+                     frameUrl: 'unknown frame URL',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                   retval: {redirectUrl: redirectedUrl1},
+                 },
+@@ -178,7 +204,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     url: url,
+                     type: 'websocket',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -188,7 +216,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     url: url,
+                     type: 'websocket',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -200,7 +230,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     statusCode: 101,
+                     statusLine: 'HTTP/1.1 101 Switching Protocols',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                   retval: {redirectUrl: redirectedUrl2},
+                 },
+@@ -215,7 +247,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     initiator: getDomain(initiators.WEB_INITIATED),
+                     statusCode: 101,
+                     statusLine: 'HTTP/1.1 101 Switching Protocols',
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+                 {
+@@ -229,7 +263,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     initiator: getDomain(initiators.WEB_INITIATED),
+                     statusCode: 101,
+                     statusLine: 'HTTP/1.1 101 Switching Protocols',
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+               ],
+@@ -264,7 +300,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     type: 'websocket',
+                     frameUrl: 'unknown frame URL',
+                     initiator: getDomain(initiators.WEB_INITIATED),
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                   retval: {cancel: true},
+                 },
+@@ -278,7 +316,9 @@ chrome.tabs.getCurrent(function(tab) {
+                     fromCache: false,
+                     initiator: getDomain(initiators.WEB_INITIATED),
+                     error: 'net::ERR_BLOCKED_BY_CLIENT',
+-                    documentId: 1,
++                    documentId: documentId,
++                    frameId: frameId,
++                    tabId: tabId,
+                   },
+                 },
+               ],

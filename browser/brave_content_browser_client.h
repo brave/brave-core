@@ -132,9 +132,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
       override;
 
-  bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
+  bool WillInterceptWebSocket(int process_id, int frame_routing_id) override;
   void CreateWebSocket(
-      content::RenderFrameHost* frame,
+      int process_id,
+      int frame_routing_id,
+      const url::Origin& initiator_origin,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
@@ -217,7 +219,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   template <template <typename> class T>
   void CreateChromeWebSocket(
-      content::RenderFrameHost* frame,
+      int process_id,
+      int frame_routing_id,
+      const url::Origin& initiator_origin,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
       const std::optional<std::string>& user_agent,

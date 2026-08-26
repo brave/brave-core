@@ -60,17 +60,29 @@ BraveProxyingWebSocket<T>::~BraveProxyingWebSocket() {
 // static
 template <template <typename> class T>
 BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
-    content::RenderFrameHost* frame,
+    content::RenderProcessHost& render_process_host,
+    int frame_routing_id,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const std::optional<std::string>& user_agent) {
+    const std::optional<std::string>& user_agent,
+    const url::Origin& initiator_origin) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  // `frame` is null when the initiator context is a shared or service worker
+  // (i.e. `frame_routing_id` is IPC::mojom::kRoutingIdNone). In that case, use
+  // a default (empty) frame token; BraveRequestInfo falls back to the request
+  // initiator origin for such worker-scoped requests.
+  content::RenderFrameHost* frame = content::RenderFrameHost::FromID(
+      render_process_host.GetDeprecatedID(), frame_routing_id);
+  content::GlobalRenderFrameHostToken render_frame_token =
+      frame ? frame->GetGlobalFrameToken()
+            : content::GlobalRenderFrameHostToken();
 
   return ResourceContextData<T>::CreateProxyingWebSocket(
       std::move(factory), url, site_for_cookies, user_agent,
-      frame->GetProcess()->GetBrowserContext(), frame->GetGlobalFrameToken(),
-      frame->GetLastCommittedOrigin());
+      render_process_host.GetBrowserContext(), render_frame_token,
+      initiator_origin);
 }
 
 template <>

@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/extensions/api/web_request/web_request_apitest.cc b/chrome/browser/extensions/api/web_request/web_request_apitest.cc
+index cfc2451d1a657586d825a0d93a4da07102a90015..02e0127adf482f805e50100631cbff0b012e4d92 100644
+--- a/chrome/browser/extensions/api/web_request/web_request_apitest.cc
++++ b/chrome/browser/extensions/api/web_request/web_request_apitest.cc
+@@ -2531,6 +2531,18 @@ IN_PROC_BROWSER_TEST_F(ExtensionWebRequestApiTest, WebSocketRequestOnWorker) {
+       << message_;
+ }
+ 
++// Test that the webRequest events are dispatched for the WebSocket handshake
++// requests initiated from a shared worker, which has no associated frame.
++IN_PROC_BROWSER_TEST_F(ExtensionWebRequestApiTest,
++                       WebSocketRequestOnSharedWorker) {
++  ASSERT_TRUE(StartEmbeddedTestServer());
++  ASSERT_TRUE(StartWebSocketServer());
++  ASSERT_TRUE(RunExtensionTest(
++      "webrequest",
++      {.extension_url = "test_websocket_shared_worker.html"}))
++      << message_;
++}
++
+ // Tests that a clean close from the server is not reported as an error when
+ // there is a race between OnDropChannel and SendFrame.
+ // Regression test for https://crbug.com/40616409.

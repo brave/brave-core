@@ -1265,14 +1265,20 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
       factory_override, navigation_response_task_runner);
 }
 
-bool BraveContentBrowserClient::WillInterceptWebSocket(
-    content::RenderFrameHost* frame) {
-  return (frame != nullptr);
+bool BraveContentBrowserClient::WillInterceptWebSocket(int process_id,
+                                                       int frame_routing_id) {
+  // Brave intercepts all WebSocket handshakes (regardless of extensions) so
+  // that they go through Brave's network request handling framework (e.g. ad
+  // blocking). This includes handshakes initiated from shared or service
+  // workers, for which there is no associated frame.
+  return content::RenderProcessHost::FromID(process_id) != nullptr;
 }
 
 template <template <typename> class T>
 void BraveContentBrowserClient::CreateChromeWebSocket(
-    content::RenderFrameHost* frame,
+    int process_id,
+    int frame_routing_id,
+    const url::Origin& initiator_origin,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const std::optional<std::string>& user_agent,
@@ -1280,16 +1286,20 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options,
     BraveProxyingWebSocket<T>* proxy) {
-  if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
+  if (ChromeContentBrowserClient::WillInterceptWebSocket(process_id,
+                                                         frame_routing_id)) {
     ChromeContentBrowserClient::CreateWebSocket(
-        frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client), std::move(options));
+        process_id, frame_routing_id, initiator_origin,
+        proxy->CreateWebSocketFactory(), url, site_for_cookies, user_agent,
+        std::move(handshake_client), std::move(options));
   } else {
     proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
 }
 void BraveContentBrowserClient::CreateWebSocket(
-    content::RenderFrameHost* frame,
+    int process_id,
+    int frame_routing_id,
+    const url::Origin& initiator_origin,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
@@ -1297,35 +1307,41 @@ void BraveContentBrowserClient::CreateWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options) {
+  auto* render_process_host = content::RenderProcessHost::FromID(process_id);
+  if (!render_process_host) {
+    return;
+  }
+
 #if BUILDFLAG(ENABLE_TOR)
-  if (frame) {
-    content::BrowserContext* browser_context = frame->GetBrowserContext();
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (!profile->IsTor() &&
-        profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
-        net::IsOnion(url)) {
-      mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
-          std::move(handshake_client));
-      client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
-      return;
-    }
+  content::BrowserContext* browser_context =
+      render_process_host->GetBrowserContext();
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (profile && !profile->IsTor() &&
+      profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
+      net::IsOnion(url)) {
+    mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
+        std::move(handshake_client));
+    client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+    return;
   }
 #endif
 
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
-        frame, std::move(factory), url, site_for_cookies, user_agent);
+        *render_process_host, frame_routing_id, std::move(factory), url,
+        site_for_cookies, user_agent, initiator_origin);
     CreateChromeWebSocket<base::WeakPtr>(
-        frame, url, site_for_cookies, user_agent, std::move(handshake_client),
-        std::move(options), proxy);
+        process_id, frame_routing_id, initiator_origin, url, site_for_cookies,
+        user_agent, std::move(handshake_client), std::move(options), proxy);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
     auto* proxy =
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
-            frame, std::move(factory), url, site_for_cookies, user_agent);
+            *render_process_host, frame_routing_id, std::move(factory), url,
+            site_for_cookies, user_agent, initiator_origin);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
-        frame, url, site_for_cookies,        // nocheck
+        process_id, frame_routing_id, initiator_origin, url, site_for_cookies,
         user_agent, std::move(handshake_client), std::move(options), proxy);
   }
 }

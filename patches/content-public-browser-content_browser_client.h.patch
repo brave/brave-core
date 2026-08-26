@@ -1,0 +1,42 @@
+diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
+index 0b57cc869d78d870e86fd6d41660799dd4e160c6..bd8a1b7e4b5a51b81ab7ae5628a94af103738197 100644
+--- a/content/public/browser/content_browser_client.h
++++ b/content/public/browser/content_browser_client.h
+@@ -1991,7 +1991,12 @@ class CONTENT_EXPORT ContentBrowserClient {
+       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
+ 
+   // Returns true when the embedder wants to intercept a websocket connection.
+-  virtual bool WillInterceptWebSocket(RenderFrameHost* frame);
++  //
++  // `process_id` is the ID of the process which hosts the initiator context.
++  // `frame_routing_id` is the ID of the frame with which the initiator context
++  // is associated, or IPC::mojom::kRoutingIdNone if there is no associated
++  // frame (e.g. for shared or service workers).
++  virtual bool WillInterceptWebSocket(int process_id, int frame_routing_id);
+ 
+   struct CONTENT_EXPORT WebSocketOptions {
+     WebSocketOptions();
+@@ -2019,6 +2024,12 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // Allows the embedder to intercept a WebSocket connection. This is called
+   // only when WillInterceptWebSocket returns true.
+   //
++  // `process_id` is the ID of the process which hosts the initiator context.
++  // `frame_routing_id` is the ID of the frame with which the initiator context
++  // is associated, or IPC::mojom::kRoutingIdNone if there is no associated
++  // frame (e.g. for shared or service workers). `initiator_origin` is the
++  // origin of the initiator context.
++  //
+   // |factory| provides a way to create a usual WebSocket connection. |url|,
+   // |requested_protocols|, |user_agent|, |handshake_client| are arguments
+   // given from the renderer.
+@@ -2026,7 +2037,9 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // Always called on the UI thread and only when the Network Service is
+   // enabled.
+   virtual void CreateWebSocket(
+-      RenderFrameHost* frame,
++      int process_id,
++      int frame_routing_id,
++      const url::Origin& initiator_origin,
+       WebSocketFactory factory,
+       const GURL& url,
+       const net::SiteForCookies& site_for_cookies,

@@ -1,0 +1,45 @@
+diff --git a/extensions/browser/api/web_request/web_request_api.cc b/extensions/browser/api/web_request/web_request_api.cc
+index b81ac840ec422c54925f8b4152b88b636597e747..5628ef319e77434f3f9cff44b53d9c32af4d3583 100644
+--- a/extensions/browser/api/web_request/web_request_api.cc
++++ b/extensions/browser/api/web_request/web_request_api.cc
+@@ -959,7 +959,9 @@ bool WebRequestAPI::MaybeProxyAuthRequest(
+ }
+ 
+ void WebRequestAPI::ProxyWebSocket(
+-    content::RenderFrameHost* frame,
++    content::RenderProcessHost& render_process_host,
++    int frame_routing_id,
++    const url::Origin& initiator_origin,
+     content::ContentBrowserClient::WebSocketFactory factory,
+     const GURL& url,
+     const net::SiteForCookies& site_for_cookies,
+@@ -968,10 +970,13 @@ void WebRequestAPI::ProxyWebSocket(
+         handshake_client,
+     mojo::PendingRemote<network::mojom::TrustedHeaderClient> header_client) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+-  DCHECK(MayHaveProxiesForFrame(frame));
++  // `frame` may be null when the initiator context is a shared or service
++  // worker (i.e. `frame_routing_id` is IPC::mojom::kRoutingIdNone).
++  DCHECK(MayHaveProxiesForFrame(content::RenderFrameHost::FromID(
++      render_process_host.GetDeprecatedID(), frame_routing_id)));
+ 
+   content::BrowserContext* browser_context =
+-      frame->GetProcess()->GetBrowserContext();
++      render_process_host.GetBrowserContext();
+   const bool has_extra_headers =
+       WebRequestEventRouter::Get(browser_context)
+           ->HasAnyExtraHeadersListener(browser_context);
+@@ -982,10 +987,9 @@ void WebRequestAPI::ProxyWebSocket(
+   WebRequestProxyingWebSocket::StartProxying(
+       std::move(factory), url, site_for_cookies, user_agent,
+       std::move(handshake_client), has_extra_headers, has_security_info,
+-      std::move(header_client), frame->GetProcess()->GetDeprecatedID(),
+-      frame->GetRoutingID(), &request_id_generator_,
+-      frame->GetLastCommittedOrigin(), frame->GetProcess()->GetBrowserContext(),
+-      proxies_.get());
++      std::move(header_client), render_process_host.GetDeprecatedID(),
++      frame_routing_id, &request_id_generator_, initiator_origin,
++      browser_context, proxies_.get());
+ }
+ 
+ void WebRequestAPI::ProxyWebTransport(

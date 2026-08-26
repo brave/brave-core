@@ -1,0 +1,69 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index 8436913e6145a4c488524e45218396f61dffba0a..3acb22b09548f661b42df3ff44f3b75d06b523b5 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -6796,21 +6796,26 @@ ChromeContentBrowserClient::
+ }
+ 
+ bool ChromeContentBrowserClient::WillInterceptWebSocket(
+-    content::RenderFrameHost* frame) {
++    int process_id,
++    int frame_routing_id) {
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+-  if (!frame) {
++  auto* render_process_host = content::RenderProcessHost::FromID(process_id);
++  if (!render_process_host) {
+     return false;
+   }
+   const auto* web_request_api =
+       extensions::BrowserContextKeyedAPIFactory<extensions::WebRequestAPI>::Get(
+-          frame->GetBrowserContext());
++          render_process_host->GetBrowserContext());
+ 
+   // NOTE: Some unit test environments do not initialize
+   // BrowserContextKeyedAPI factories for e.g. WebRequest.
+   if (!web_request_api) {
+     return false;
+   } else {
+-    return web_request_api->MayHaveProxiesForFrame(frame);
++    // `frame` may be null when the initiator context is a shared or service
++    // worker (i.e. `frame_routing_id` is IPC::mojom::kRoutingIdNone).
++    return web_request_api->MayHaveProxiesForFrame(
++        content::RenderFrameHost::FromID(process_id, frame_routing_id));
+   }
+ #else
+   return false;
+@@ -6834,7 +6839,9 @@ ChromeContentBrowserClient::GetWebSocketOptions(
+ }
+ 
+ void ChromeContentBrowserClient::CreateWebSocket(
+-    content::RenderFrameHost* frame,
++    int process_id,
++    int frame_routing_id,
++    const url::Origin& initiator_origin,
+     WebSocketFactory factory,
+     const GURL& url,
+     const net::SiteForCookies& site_for_cookies,
+@@ -6843,17 +6850,18 @@ void ChromeContentBrowserClient::CreateWebSocket(
+         handshake_client,
+     content::ContentBrowserClient::WebSocketOptions options) {
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+-  // TODO(crbug.com/40195467): Request w/o a frame also should be proxied.
+-  if (!frame) {
++  auto* render_process_host = content::RenderProcessHost::FromID(process_id);
++  if (!render_process_host) {
+     return;
+   }
+   auto* web_request_api =
+       extensions::BrowserContextKeyedAPIFactory<extensions::WebRequestAPI>::Get(
+-          frame->GetBrowserContext());
++          render_process_host->GetBrowserContext());
+ 
+   DCHECK(web_request_api);
+   web_request_api->ProxyWebSocket(
+-      frame, std::move(factory), url, site_for_cookies, user_agent,
++      *render_process_host, frame_routing_id, initiator_origin,
++      std::move(factory), url, site_for_cookies, user_agent,
+       std::move(handshake_client), std::move(options.header_client));
+ #endif
+ }
