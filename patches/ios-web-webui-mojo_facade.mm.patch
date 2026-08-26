@@ -1,16 +1,16 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index 97dab8dd796c873558cda9aa06613656dc0f710e..9a7bc374a8e0e7abe0b327bee05a33e9cc52bb19 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..8b0e28598b3ad7e6db7eec56861cfd7cebe81813 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
-@@ -228,6 +228,7 @@ void MojoFacade::HandleMojoMessage(
+@@ -231,6 +231,7 @@ void MojoFacade::HandleMojoMessage(
  }
  
- void MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
+ bool MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
 +  if (!IsBindInterfaceAllowedForFrame(args)) return;
    const std::string* interface_name = args.FindString("interfaceName");
-   CHECK(interface_name);
+   std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
-@@ -342,7 +343,7 @@ void MojoFacade::OnWatcherCallback(int callback_id,
+@@ -356,7 +357,7 @@ void MojoFacade::OnWatcherCallback(int callback_id,
                                     int watch_id,
                                     int pipe_id,
                                     MojoResult result) {
@@ -19,7 +19,7 @@ index 97dab8dd796c873558cda9aa06613656dc0f710e..9a7bc374a8e0e7abe0b327bee05a33e9
    if (!main_frame) {
      return;
    }
-@@ -377,6 +378,7 @@ void MojoFacade::OnWatcherCallback(int callback_id,
+@@ -391,6 +392,7 @@ void MojoFacade::OnWatcherCallback(int callback_id,
  }
  
  base::Value MojoFacade::HandleMojoHandleWatch(const base::DictValue& args) {
@@ -27,7 +27,7 @@ index 97dab8dd796c873558cda9aa06613656dc0f710e..9a7bc374a8e0e7abe0b327bee05a33e9
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
    CHECK(pipe_id.has_value());
    std::optional<int> signals = FindIntOrDoubleAsInt(args, "signals");
-@@ -398,9 +400,19 @@ base::Value MojoFacade::HandleMojoHandleWatch(const base::DictValue& args) {
+@@ -412,9 +414,19 @@ base::Value MojoFacade::HandleMojoHandleWatch(const base::DictValue& args) {
    watcher->ArmOrNotify();
    watchers_.insert(std::make_pair(watch_id, std::move(watcher)));
    return base::Value(watch_id);
@@ -47,7 +47,7 @@ index 97dab8dd796c873558cda9aa06613656dc0f710e..9a7bc374a8e0e7abe0b327bee05a33e9
    std::optional<int> watch_id = FindIntOrDoubleAsInt(args, "watchId");
    CHECK(watch_id.has_value());
    watchers_.erase(*watch_id);
-@@ -434,14 +446,23 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -448,14 +460,23 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
@@ -71,7 +71,7 @@ index 97dab8dd796c873558cda9aa06613656dc0f710e..9a7bc374a8e0e7abe0b327bee05a33e9
    DCHECK_CURRENTLY_ON(WebThread::UI);
    if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
      main_frame_.reset();
-@@ -450,10 +471,15 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+@@ -464,10 +485,15 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
    }
@@ -87,7 +87,7 @@ index 97dab8dd796c873558cda9aa06613656dc0f710e..9a7bc374a8e0e7abe0b327bee05a33e9
    DCHECK_CURRENTLY_ON(WebThread::UI);
    DCHECK_EQ(web_state_, web_state);
    if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
-@@ -469,6 +495,8 @@ void MojoFacade::PageLoaded(WebState* web_state,
+@@ -483,6 +509,8 @@ void MojoFacade::PageLoaded(WebState* web_state,
  }
  
  void MojoFacade::WebStateDestroyed(WebState* web_state) {
