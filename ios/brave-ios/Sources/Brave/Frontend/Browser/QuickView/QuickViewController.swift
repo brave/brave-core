@@ -128,13 +128,7 @@ class QuickViewController: UIViewController {
       tab.addPolicyDecider(braveShieldsHelper)
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
-      tab.blockedDomainTabHelper = .init(
-        tab: tab,
-        onBlockedDomainRequest: { [weak self, weak tab] request in
-          guard let self, let tab else { return }
-          self.openNewTab(with: request, inPrivateMode: tab.isPrivate)
-        }
-      )
+      tab.blockedDomainTabHelper = .init(tab: tab)
     }
     tab.protectionStats = .init(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
@@ -145,6 +139,7 @@ class QuickViewController: UIViewController {
       self?.showReaderModeBar()
     }
     tab.historyTabHelper = .init(tab: tab, historyAPI: historyAPI)
+    tab.addPolicyDecider(self)
     tab.createWebView()
     tab.delegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
@@ -761,13 +756,7 @@ extension QuickViewController: TabObserver {
       let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab)
     {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
-      tab.blockedDomainTabHelper = .init(
-        tab: tab,
-        onBlockedDomainRequest: { [weak self, weak tab] request in
-          guard let self, let tab else { return }
-          self.openNewTab(with: request, inPrivateMode: tab.isPrivate)
-        }
-      )
+      tab.blockedDomainTabHelper = .init(tab: tab)
     }
   }
 
@@ -936,5 +925,34 @@ extension QuickViewController: KeyboardHelperDelegate {
     }
     animator.addCompletion { _ in self.toolbarVisibilityViewModel.isEnabled = true }
     animator.startAnimation()
+  }
+}
+
+extension QuickViewController: TabPolicyDecider {
+  func tab(
+    _ tab: some TabState,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    guard let url = request.url,
+      !url.isInternalURL(for: .readermode)
+    else { return .allow }
+
+    let isBlockedDomain = url.isInternalURL(for: .blocked)
+    let isBlockedHTTP = url.isInternalURL(for: .httpBlocked)
+    let isBasicAuth = url.isInternalURL(for: .basicAuth)
+    if isBlockedDomain || isBlockedHTTP || isBasicAuth || url.isWalletWebUIURL
+      || url == URL.WebUI.aiChat
+    {
+      handleUnsupportedRequest(request, tab.isPrivate)
+      return .cancel
+    }
+    return .allow
+  }
+
+  private func handleUnsupportedRequest(_ request: URLRequest, _ isPrivate: Bool) {
+    dismiss(animated: true) {
+      self.onOpenInNewTab?(request, isPrivate)
+    }
   }
 }
