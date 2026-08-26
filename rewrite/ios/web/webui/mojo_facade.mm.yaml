@@ -95,6 +95,7 @@ substitutions:
     preempt_function_impl:
       function_name: MojoFacade::HandleMojoBindInterface
       return_if: '!IsBindInterfaceAllowedForFrame(args)'
+      return_value: 'false'
 
   - description: |-
       Route watch callbacks to the frame that created the watch (see
