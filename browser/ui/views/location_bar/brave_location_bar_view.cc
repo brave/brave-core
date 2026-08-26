@@ -292,20 +292,6 @@ gfx::Size BraveLocationBarView::GetMinimumSize() const {
   return min_size;
 }
 
-gfx::Size BraveLocationBarView::CalculatePreferredSize(
-    const views::SizeBounds& available_size) const {
-  gfx::Size min_size = LocationBarView::CalculatePreferredSize(available_size);
-  if (brave_actions_ && brave_actions_->GetVisible()) {
-    const int brave_actions_min = brave_actions_->GetMinimumSize().width();
-    const int extra_width =
-        brave_actions_min +
-        GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
-    min_size.Enlarge(extra_width, 0);
-  }
-
-  return min_size;
-}
-
 void BraveLocationBarView::OnThemeChanged() {
   LocationBarView::OnThemeChanged();
 
