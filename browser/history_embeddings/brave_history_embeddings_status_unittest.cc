@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
@@ -17,6 +18,11 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace history_embeddings {
 
@@ -95,5 +101,52 @@ TEST_F(BraveHistoryEmbeddingsStatusTest, RestartClearsWhenTheSettingReverts) {
 
   EXPECT_FALSE(status()->NeedsRestart());
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+
+// Tab Focus can only send page content while this index exists, so turning the
+// index off has to withdraw that consent rather than park it until the index
+// comes back.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningTheSettingOffWithdrawsSendPageContent) {
+  BuildProfileWithSetting(true);
+  profile_->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
+
+  SetSemanticHistorySearchEnabled(false);
+
+  EXPECT_FALSE(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+}
+
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningTheSettingOnLeavesSendPageContent) {
+  BuildProfileWithSetting(false);
+  profile_->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent, true);
+
+  SetSemanticHistorySearchEnabled(true);
+
+  EXPECT_TRUE(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+}
+
+// The pref is only registered when the AI Chat feature is on at runtime, and
+// touching an unregistered pref is fatal, so the observer has to check the
+// feature rather than the buildflag.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       TurningTheSettingOffWithoutAIChatDoesNotTouchTheUnregisteredPref) {
+  base::test::ScopedFeatureList disable_ai_chat;
+  disable_ai_chat.InitAndDisableFeature(ai_chat::features::kAIChat);
+  BuildProfileWithSetting(true);
+  ASSERT_FALSE(profile_->GetPrefs()->FindPreference(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent));
+
+  SetSemanticHistorySearchEnabled(false);
+
+  EXPECT_TRUE(status()->NeedsRestart());
+}
+
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace history_embeddings
