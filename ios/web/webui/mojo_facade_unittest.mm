@@ -51,22 +51,39 @@ class FakeWebStateWithInterfaceBinder : public FakeWebState {
   InterfaceBinder interface_binder_{this};
 };
 
+// Reaches the facades a main-frame facade spawns for the sub-frames of its
+// WebState, which are otherwise only visible to the class itself.
+class TestMojoFacade : public MojoFacade {
+ public:
+  using MojoFacade::MojoFacade;
+
+  MojoFacade* SubFrameFacade(const std::string& frame_id) {
+    auto it = sub_frame_facades_.find(frame_id);
+    return it == sub_frame_facades_.end() ? nullptr : it->second.get();
+  }
+};
+
 }  // namespace
 
 // Frame type enum for parameterized tests.
 enum class FrameType { kMainFrame, kChildFrame };
 
-// A test fixture for MojoFacade's sub-frame routing. Copies the helper
+// A test fixture for MojoFacade's per-frame behaviour. Copies the helper
 // methods from //ios/web/webui/mojo_facade_unittest.mm, adding a child frame
-// alongside the main one and a `frameId` argument to WatchHandle, so the
-// same request flow can be exercised for either frame.
+// alongside the main one and a facade to serve it, so the same request flow
+// can be exercised for either frame.
+//
+// The child's facade is built directly rather than left to the main facade's
+// own spawning, which only happens once an interface is registered (see
+// SubFrameFacadeIsCreatedAndDestroyedWithItsFrame) and would otherwise leave
+// stray polling calls in the frames' JavaScript history.
 class MojoFacadeTest : public WebTest {
  protected:
   MojoFacadeTest() {
     auto web_frames_manager = std::make_unique<web::FakeWebFramesManager>();
     frames_manager_ = web_frames_manager.get();
     web_state_.SetWebFramesManager(std::move(web_frames_manager));
-    facade_ = std::make_unique<MojoFacade>(&web_state_);
+    facade_ = std::make_unique<TestMojoFacade>(&web_state_);
 
     auto main_frame = FakeWebFrame::CreateMainWebFrame();
     auto child_frame = FakeWebFrame::CreateChildWebFrame();
@@ -75,37 +92,42 @@ class MojoFacadeTest : public WebTest {
     child_frame_ = child_frame.get();
     frames_manager_->AddWebFrame(std::move(main_frame));
     frames_manager_->AddWebFrame(std::move(child_frame));
+
+    child_facade_ = std::make_unique<MojoFacade>(&web_state_, child_frame_);
+
     main_frame_->ClearJavaScriptCallHistory();
     child_frame_->ClearJavaScriptCallHistory();
   }
 
   FakeWebFrame* main_frame() { return main_frame_; }
   FakeWebFrame* child_frame() { return child_frame_; }
-  MojoFacade* facade() { return facade_.get(); }
+  // The facade serving the main frame, which also owns the sub-frame facades.
+  TestMojoFacade* facade() { return facade_.get(); }
+  MojoFacade* child_facade() { return child_facade_.get(); }
   FakeWebStateWithInterfaceBinder& web_state() { return web_state_; }
   FakeWebFramesManager* frames_manager() { return frames_manager_; }
 
-  std::string HandleMessage(const base::DictValue& message) {
+  MojoFacade* FacadeForType(FrameType frame_type) {
+    return frame_type == FrameType::kMainFrame ? facade() : child_facade();
+  }
+
+  FakeWebFrame* FrameForType(FrameType frame_type) {
+    return frame_type == FrameType::kMainFrame ? main_frame() : child_frame();
+  }
+
+  std::string HandleMessage(MojoFacade* facade,
+                            const base::DictValue& message) {
     base::test::TestFuture<int, std::string> future;
-    facade()->HandleMojoMessage(0, &message, future.GetCallback());
+    facade->HandleMojoMessage(0, &message, future.GetCallback());
     return future.Get<1>();
   }
 
-  // Tags `args` the way Brave's mojo_api.js plaster does. An empty
-  // `frame_id` stands for JS without that plaster, which MojoFacade treats as
-  // the main frame.
-  static void SetFrameId(base::DictValue* args, const std::string& frame_id) {
-    if (!frame_id.empty()) {
-      args->Set("frameId", frame_id);
-    }
-  }
-
-  // Creates a message pipe as `frame_id`'s JS would, with `handle0_id` and
+  // Creates a message pipe as `facade`'s frame would, with `handle0_id` and
   // `handle1_id` standing in for the ids that frame's own
   // Mojo.nextAvailableHandleId counter hands out.
-  void CreateMessagePipeWithIds(int handle0_id,
+  void CreateMessagePipeWithIds(MojoFacade* facade,
+                                int handle0_id,
                                 int handle1_id,
-                                const std::string& frame_id,
                                 uint32_t* handle0,
                                 uint32_t* handle1) {
     base::DictValue create;
@@ -113,9 +135,8 @@ class MojoFacadeTest : public WebTest {
     base::DictValue args;
     args.Set("handle0Id", handle0_id);
     args.Set("handle1Id", handle1_id);
-    SetFrameId(&args, frame_id);
     create.Set("args", std::move(args));
-    std::string response_as_string = HandleMessage(create);
+    std::string response_as_string = HandleMessage(facade, create);
 
     ASSERT_FALSE(response_as_string.empty());
     NSDictionary* response_as_dict = GetObject(response_as_string);
@@ -125,68 +146,58 @@ class MojoFacadeTest : public WebTest {
     *handle1 = [response_as_dict[@"handle1"] unsignedIntValue];
   }
 
-  void CreateMessagePipe(uint32_t* handle0,
-                         uint32_t* handle1,
-                         const std::string& frame_id = std::string()) {
+  void CreateMessagePipe(MojoFacade* facade,
+                         uint32_t* handle0,
+                         uint32_t* handle1) {
     int handle0_id = next_handle_id_++;
     int handle1_id = next_handle_id_++;
-    CreateMessagePipeWithIds(handle0_id, handle1_id, frame_id, handle0,
-                             handle1);
+    CreateMessagePipeWithIds(facade, handle0_id, handle1_id, handle0, handle1);
   }
 
-  void CloseHandle(uint32_t handle,
-                   const std::string& frame_id = std::string()) {
+  void CloseHandle(MojoFacade* facade, uint32_t handle) {
     base::DictValue close;
     close.Set("name", "MojoHandle.close");
     base::DictValue args;
     args.Set("handle", static_cast<int>(handle));
-    SetFrameId(&args, frame_id);
     close.Set("args", std::move(args));
-    std::string result = HandleMessage(close);
-    EXPECT_TRUE(result.empty());
+    EXPECT_TRUE(HandleMessage(facade, close).empty());
   }
 
-  // `frame_id` is optional, matching how Brave's mojo_api.js plaster only
-  // adds it once __gCrWeb.frameId is available.
-  int WatchHandle(uint32_t handle,
-                  int callback_id,
-                  const std::string& frame_id = std::string()) {
+  int WatchHandle(MojoFacade* facade, uint32_t handle, int callback_id) {
     base::DictValue watch;
     watch.Set("name", "MojoHandle.watch");
     base::DictValue args;
     args.Set("handle", static_cast<int>(handle));
     args.Set("signals", static_cast<int>(MOJO_HANDLE_SIGNAL_READABLE));
     args.Set("callbackId", callback_id);
-    SetFrameId(&args, frame_id);
     watch.Set("args", std::move(args));
-    const std::string watch_id_as_string = HandleMessage(watch);
+    const std::string watch_id_as_string = HandleMessage(facade, watch);
     EXPECT_FALSE(watch_id_as_string.empty());
     int watch_id = 0;
     EXPECT_TRUE(base::StringToInt(watch_id_as_string, &watch_id));
     return watch_id;
   }
 
-  void CancelWatch(uint32_t handle, int watch_id) {
+  void CancelWatch(MojoFacade* facade, int watch_id) {
     base::DictValue cancel_watch;
     cancel_watch.Set("name", "MojoWatcher.cancel");
     base::DictValue args;
     args.Set("watchId", watch_id);
     cancel_watch.Set("args", std::move(args));
-    EXPECT_TRUE(HandleMessage(cancel_watch).empty());
+    EXPECT_TRUE(HandleMessage(facade, cancel_watch).empty());
   }
 
-  void WriteMessage(uint32_t handle,
-                    std::string_view buffer,
-                    const std::string& frame_id = std::string()) {
+  void WriteMessage(MojoFacade* facade,
+                    uint32_t handle,
+                    std::string_view buffer) {
     base::DictValue write;
     write.Set("name", "MojoHandle.writeMessage");
     base::DictValue args;
     args.Set("handle", static_cast<int>(handle));
     args.Set("handles", base::ListValue());
     args.Set("buffer", buffer);
-    SetFrameId(&args, frame_id);
     write.Set("args", std::move(args));
-    const std::string result_as_string = HandleMessage(write);
+    const std::string result_as_string = HandleMessage(facade, write);
     EXPECT_FALSE(result_as_string.empty());
     unsigned result = 0u;
     EXPECT_TRUE(base::StringToUint(result_as_string, &result));
@@ -223,116 +234,94 @@ class MojoFacadeTest : public WebTest {
   raw_ptr<web::FakeWebFramesManager> frames_manager_;
   raw_ptr<FakeWebFrame> main_frame_;
   raw_ptr<FakeWebFrame> child_frame_;
-  std::unique_ptr<MojoFacade> facade_;
+  std::unique_ptr<TestMojoFacade> facade_;
+  std::unique_ptr<MojoFacade> child_facade_;
 };
-
-// Ensures that when an invalid frame id is passed into the watcher, it still
-// executes the callback on the main frame by default.
-TEST_F(MojoFacadeTest, WatchWithInvalidFrameId) {
-  uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1);
-
-  const int kCallbackId = 99;
-  WatchHandle(handle0, kCallbackId, "invalid");
-
-  WriteMessage(handle1, "QUJDRA==");  // "ABCD" in base-64
-
-  EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
-            WaitForLastJavaScriptCallOnFrame(main_frame()));
-
-  CloseHandle(handle0);
-  CloseHandle(handle1);
-}
 
 // Parameterized test fixture for frame-specific tests. Logic is copied from
 // //ios/web/webui/mojo_facade_unittest.mm, run against both the main and
-// child frames to verify watch notifications are routed to whichever frame
-// created the watch, not always the main frame.
+// child frames to verify each facade drives the frame it serves rather than
+// always the main frame.
 class MojoFacadeWatchFramesTest
     : public MojoFacadeTest,
-      public ::testing::WithParamInterface<FrameType> {
- protected:
-  FakeWebFrame* GetFrameForType(FrameType frame_type) {
-    return frame_type == FrameType::kMainFrame ? main_frame() : child_frame();
-  }
-};
+      public ::testing::WithParamInterface<FrameType> {};
 
 TEST_P(MojoFacadeWatchFramesTest, Watch) {
-  FakeWebFrame* test_frame = GetFrameForType(GetParam());
-  const std::string frame_id = test_frame->GetFrameId();
+  MojoFacade* facade = FacadeForType(GetParam());
+  FakeWebFrame* test_frame = FrameForType(GetParam());
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1, frame_id);
+  CreateMessagePipe(facade, &handle0, &handle1);
 
   const int kCallbackId = 99;
-  WatchHandle(handle0, kCallbackId, frame_id);
+  WatchHandle(facade, handle0, kCallbackId);
 
-  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
+  WriteMessage(facade, handle1, "QUJDRA==");  // "ABCD" in base-64
 
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CloseHandle(handle0, frame_id);
-  CloseHandle(handle1, frame_id);
+  CloseHandle(facade, handle0);
+  CloseHandle(facade, handle1);
 }
 
 TEST_P(MojoFacadeWatchFramesTest, WatcherRearming) {
-  FakeWebFrame* test_frame = GetFrameForType(GetParam());
-  const std::string frame_id = test_frame->GetFrameId();
+  MojoFacade* facade = FacadeForType(GetParam());
+  FakeWebFrame* test_frame = FrameForType(GetParam());
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1, frame_id);
+  CreateMessagePipe(facade, &handle0, &handle1);
 
   const int kCallbackId = 99;
-  WatchHandle(handle0, kCallbackId, frame_id);
+  WatchHandle(facade, handle0, kCallbackId);
 
-  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
+  WriteMessage(facade, handle1, "QUJDRA==");  // "ABCD" in base-64
 
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
+  WriteMessage(facade, handle1, "QUJDRA==");  // "ABCD" in base-64
 
   // Check the watcher was rearmed and still targets the same frame.
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CloseHandle(handle0, frame_id);
-  CloseHandle(handle1, frame_id);
+  CloseHandle(facade, handle0);
+  CloseHandle(facade, handle1);
 }
 
 TEST_P(MojoFacadeWatchFramesTest, CancelWatch) {
-  FakeWebFrame* test_frame = GetFrameForType(GetParam());
-  const std::string frame_id = test_frame->GetFrameId();
+  MojoFacade* facade = FacadeForType(GetParam());
+  FakeWebFrame* test_frame = FrameForType(GetParam());
 
   uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1, frame_id);
+  CreateMessagePipe(facade, &handle0, &handle1);
 
   const int kCallbackId1 = 99;
   const int kCallbackId2 = 101;
-  WatchHandle(handle0, kCallbackId1, frame_id);
-  const int watch_id2 = WatchHandle(handle0, kCallbackId2, frame_id);
+  WatchHandle(facade, handle0, kCallbackId1);
+  const int watch_id2 = WatchHandle(facade, handle0, kCallbackId2);
   const auto expected_script2 = base::StringPrintf(
       "Mojo.internal.fetchNextMessageFromNative(%d, "
       "{\"result\":%d}); "
       "Mojo.internal.watchCallbacksHolder.callCallback(%d, %d);",
       handle0, MOJO_RESULT_SHOULD_WAIT, kCallbackId2, MOJO_RESULT_OK);
 
-  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
+  WriteMessage(facade, handle1, "QUJDRA==");  // "ABCD" in base-64
 
   // `expected_script` for callback 1 also fires, but only the last call is
   // kept.
   EXPECT_EQ(expected_script2, WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CancelWatch(handle0, watch_id2);
-  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
+  CancelWatch(facade, watch_id2);
+  WriteMessage(facade, handle1, "QUJDRA==");  // "ABCD" in base-64
 
   // Only the first watcher should be notified now.
   EXPECT_EQ(GetExpectedWatchCallbackScript(handle0, kCallbackId1),
             WaitForLastJavaScriptCallOnFrame(test_frame));
 
-  CloseHandle(handle0, frame_id);
-  CloseHandle(handle1, frame_id);
+  CloseHandle(facade, handle0);
+  CloseHandle(facade, handle1);
 }
 
 INSTANTIATE_TEST_SUITE_P(FrameTypes,
@@ -340,91 +329,54 @@ INSTANTIATE_TEST_SUITE_P(FrameTypes,
                          ::testing::Values(FrameType::kMainFrame,
                                            FrameType::kChildFrame));
 
-// Tests that a sub-frame's watch doesn't outlive the frame that created it.
-// Without cleanup, a stale watch would later misdirect its notification to
-// the main frame (via GetFrameForWatch's "unknown frame" fallback) instead
-// of being dropped, since the frame's own removal never canceled it.
-TEST_F(MojoFacadeTest, WatchIsErasedWhenOwningFrameDisappears) {
-  const std::string frame_id = child_frame()->GetFrameId();
-
-  uint32_t handle0, handle1;
-  CreateMessagePipe(&handle0, &handle1, frame_id);
-
-  const int kCallbackId = 99;
-  WatchHandle(handle0, kCallbackId, frame_id);
-
-  // Signal the pipe so the watcher posts its notification, but don't let the
-  // run loop deliver it yet.
-  WriteMessage(handle1, "QUJDRA==", frame_id);  // "ABCD" in base-64
-
-  // Remove the frame without canceling its watch first, as would happen if
-  // e.g. AI Chat's untrusted conversation-entries iframe is torn down while
-  // a watch is still pending. `child_frame()` is dangling after this call.
-  frames_manager()->RemoveWebFrame(frame_id);
-
-  // The pending notification must be dropped with the frame. If the watch had
-  // outlived it, GetFrameForWatch's "unknown frame" fallback would misdirect
-  // the callback to the main frame.
-  EXPECT_FALSE(WaitUntilConditionOrTimeout(
-      kWaitForJSCompletionTimeout, /*run_message_loop=*/true, ^bool {
-        return !main_frame()->GetLastJavaScriptCall().empty();
-      }));
-}
-
 // Tests that consuming a handle in one frame leaves the identically numbered
 // handle of another frame alone. Every frame runs its own copy of
 // ui/webui/resources/js/ios/mojo_api.js, whose Mojo.nextAvailableHandleId
 // counter restarts at 1 per JS context, so AI Chat's WebUI page and the
 // chrome-untrusted:// conversation iframe it embeds routinely mint the same
-// ids. Keyed by id alone, the close below erased the single shared entry and
-// the write that follows hit CHECK(pipe.is_valid()) in
-// HandleMojoHandleWriteMessage.
-TEST_F(MojoFacadeTest, ClosingAHandleLeavesTheSameIdInAnotherFrameAlone) {
-  const std::string main_frame_id = main_frame()->GetFrameId();
-  const std::string child_frame_id = child_frame()->GetFrameId();
-
+// ids. Sharing one pipe table across frames, the close below erased the
+// entry the main frame was still using and the write that follows hit
+// CHECK(pipe.is_valid()) in HandleMojoHandleWriteMessage.
+TEST_F(MojoFacadeTest, HandleIdsAreIndependentPerFrame) {
   uint32_t main_handle0, main_handle1;
-  CreateMessagePipeWithIds(1, 2, main_frame_id, &main_handle0, &main_handle1);
+  CreateMessagePipeWithIds(facade(), 1, 2, &main_handle0, &main_handle1);
 
   uint32_t child_handle0, child_handle1;
-  CreateMessagePipeWithIds(1, 2, child_frame_id, &child_handle0,
+  CreateMessagePipeWithIds(child_facade(), 1, 2, &child_handle0,
                            &child_handle1);
 
   // Both frames handed out the very same ids.
   ASSERT_EQ(main_handle0, child_handle0);
   ASSERT_EQ(main_handle1, child_handle1);
 
-  CloseHandle(child_handle0, child_frame_id);
-  CloseHandle(child_handle1, child_frame_id);
+  CloseHandle(child_facade(), child_handle0);
+  CloseHandle(child_facade(), child_handle1);
 
   // The main frame's pipe must still be intact and writable.
-  WriteMessage(main_handle0, "QUJDRA==", main_frame_id);  // "ABCD" in base-64
+  WriteMessage(facade(), main_handle0, "QUJDRA==");  // "ABCD" in base-64
 
-  CloseHandle(main_handle0, main_frame_id);
-  CloseHandle(main_handle1, main_frame_id);
+  CloseHandle(facade(), main_handle0);
+  CloseHandle(facade(), main_handle1);
 }
 
 // Tests that a watch notification reads from the pipe of the frame that
 // created the watch, rather than whichever frame last claimed that handle id.
 TEST_F(MojoFacadeTest, WatchReadsTheOwningFramesPipe) {
-  const std::string main_frame_id = main_frame()->GetFrameId();
-  const std::string child_frame_id = child_frame()->GetFrameId();
-
   uint32_t main_handle0, main_handle1;
-  CreateMessagePipeWithIds(1, 2, main_frame_id, &main_handle0, &main_handle1);
+  CreateMessagePipeWithIds(facade(), 1, 2, &main_handle0, &main_handle1);
 
   uint32_t child_handle0, child_handle1;
-  CreateMessagePipeWithIds(1, 2, child_frame_id, &child_handle0,
+  CreateMessagePipeWithIds(child_facade(), 1, 2, &child_handle0,
                            &child_handle1);
 
   const int kMainCallbackId = 99;
   const int kChildCallbackId = 101;
-  WatchHandle(main_handle0, kMainCallbackId, main_frame_id);
-  WatchHandle(child_handle0, kChildCallbackId, child_frame_id);
+  WatchHandle(facade(), main_handle0, kMainCallbackId);
+  WatchHandle(child_facade(), child_handle0, kChildCallbackId);
 
   // Give each frame's pipe a payload of its own.
-  WriteMessage(main_handle1, "QUJDRA==", main_frame_id);    // "ABCD"
-  WriteMessage(child_handle1, "RUZHSA==", child_frame_id);  // "EFGH"
+  WriteMessage(facade(), main_handle1, "QUJDRA==");         // "ABCD"
+  WriteMessage(child_facade(), child_handle1, "RUZHSA==");  // "EFGH"
 
   EXPECT_EQ(GetExpectedWatchCallbackScript(main_handle0, kMainCallbackId,
                                            "[65,66,67,68]"),
@@ -433,10 +385,55 @@ TEST_F(MojoFacadeTest, WatchReadsTheOwningFramesPipe) {
                                            "[69,70,71,72]"),
             WaitForLastJavaScriptCallOnFrame(child_frame()));
 
-  CloseHandle(main_handle0, main_frame_id);
-  CloseHandle(main_handle1, main_frame_id);
-  CloseHandle(child_handle0, child_frame_id);
-  CloseHandle(child_handle1, child_frame_id);
+  CloseHandle(facade(), main_handle0);
+  CloseHandle(facade(), main_handle1);
+  CloseHandle(child_facade(), child_handle0);
+  CloseHandle(child_facade(), child_handle1);
+}
+
+// Tests that a sub-frame's watch doesn't outlive the frame that created it,
+// as would happen if e.g. AI Chat's untrusted conversation-entries iframe is
+// torn down while a watch is still pending.
+TEST_F(MojoFacadeTest, WatchIsErasedWhenOwningFrameDisappears) {
+  const std::string frame_id = child_frame()->GetFrameId();
+
+  uint32_t handle0, handle1;
+  CreateMessagePipe(child_facade(), &handle0, &handle1);
+
+  const int kCallbackId = 99;
+  WatchHandle(child_facade(), handle0, kCallbackId);
+
+  // Signal the pipe so the watcher posts its notification, but don't let the
+  // run loop deliver it yet.
+  WriteMessage(child_facade(), handle1, "QUJDRA==");  // "ABCD" in base-64
+
+  // `child_frame()` is dangling after this call.
+  frames_manager()->RemoveWebFrame(frame_id);
+
+  // The pending notification must be dropped along with the frame, rather
+  // than landing on the main frame.
+  EXPECT_FALSE(WaitUntilConditionOrTimeout(
+      kWaitForJSCompletionTimeout, /*run_message_loop=*/true, ^bool {
+        return !main_frame()->GetLastJavaScriptCall().empty();
+      }));
+}
+
+// Tests that the main frame's facade gives each sub-frame a facade of its own
+// and drops it with the frame.
+TEST_F(MojoFacadeTest, SubFrameFacadeIsCreatedAndDestroyedWithItsFrame) {
+  web_state().GetInterfaceBinderForMainFrame()->AddInterface(
+      "FakeInterface",
+      base::BindRepeating([](mojo::GenericPendingReceiver*) {}));
+
+  auto frame = FakeWebFrame::Create("abcdef01", /*is_main_frame=*/false);
+  const std::string frame_id = frame->GetFrameId();
+  frames_manager()->AddWebFrame(std::move(frame));
+
+  ASSERT_NE(nullptr, facade()->SubFrameFacade(frame_id));
+
+  frames_manager()->RemoveWebFrame(frame_id);
+
+  EXPECT_EQ(nullptr, facade()->SubFrameFacade(frame_id));
 }
 
 // Tests the chrome-untrusted:// per-origin interface allowlist gate on
@@ -444,36 +441,32 @@ TEST_F(MojoFacadeTest, WatchReadsTheOwningFramesPipe) {
 // brave/chromium_src/ios/web/public/web_state.h).
 class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
  protected:
-  // Adds a frame with the given origin and returns it. Not the fixture's
-  // main/child frame, since those have no origin set.
-  FakeWebFrame* AddFrameWithOrigin(const GURL& origin) {
+  // Adds a frame with the given origin and returns the facade the main
+  // frame's facade spawns for it. Not the fixture's main/child frame, since
+  // those have no origin set.
+  MojoFacade* AddFrameWithOrigin(const GURL& origin) {
     auto frame = FakeWebFrame::Create("originTestFrameId",
                                       /*is_main_frame=*/false, origin);
-    FakeWebFrame* frame_ptr = frame.get();
+    const std::string frame_id = frame->GetFrameId();
     frames_manager()->AddWebFrame(std::move(frame));
-    return frame_ptr;
+    return facade()->SubFrameFacade(frame_id);
   }
 
-  // Attempts Mojo.bindInterface for `interface_name` from `frame`, and
-  // reports whether the interface's registered callback actually ran.
-  bool TryBindInterface(FakeWebFrame* frame,
-                        const std::string& interface_name) {
-    // The pipe has to be created by the same frame that binds it, since a
-    // frame can only reach its own handles.
-    const std::string frame_id = frame->GetFrameId();
+  // Attempts Mojo.bindInterface for `interface_name` from `facade`'s frame,
+  // and reports whether the interface's registered callback actually ran.
+  bool TryBindInterface(MojoFacade* facade, const std::string& interface_name) {
     uint32_t handle0, handle1;
-    CreateMessagePipe(&handle0, &handle1, frame_id);
+    CreateMessagePipe(facade, &handle0, &handle1);
 
     base::DictValue connect;
     connect.Set("name", "Mojo.bindInterface");
     base::DictValue args;
     args.Set("interfaceName", interface_name);
     args.Set("requestHandle", static_cast<int>(handle0));
-    args.Set("frameId", frame_id);
     connect.Set("args", std::move(args));
 
-    HandleMessage(connect);
-    CloseHandle(handle1, frame_id);
+    HandleMessage(facade, connect);
+    CloseHandle(facade, handle1);
     return interface_bound_;
   }
 
@@ -508,18 +501,20 @@ class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
 TEST_F(MojoFacadeBindInterfaceOriginTest, AllowedForRegisteredOrigin) {
   const GURL kAllowedOrigin("chrome-untrusted://allowed-host");
   RegisterUntrustedInterface(kAllowedOrigin);
-  FakeWebFrame* frame = AddFrameWithOrigin(kAllowedOrigin);
+  MojoFacade* facade = AddFrameWithOrigin(kAllowedOrigin);
+  ASSERT_NE(nullptr, facade);
 
-  EXPECT_TRUE(TryBindInterface(frame, web::mojom::TestUIHandlerMojo::Name_));
+  EXPECT_TRUE(TryBindInterface(facade, web::mojom::TestUIHandlerMojo::Name_));
 }
 
 TEST_F(MojoFacadeBindInterfaceOriginTest, BlockedForUnregisteredOrigin) {
   const GURL kAllowedOrigin("chrome-untrusted://allowed-host");
   RegisterUntrustedInterface(kAllowedOrigin);
-  FakeWebFrame* frame =
+  MojoFacade* facade =
       AddFrameWithOrigin(GURL("chrome-untrusted://blocked-host"));
+  ASSERT_NE(nullptr, facade);
 
-  EXPECT_FALSE(TryBindInterface(frame, web::mojom::TestUIHandlerMojo::Name_));
+  EXPECT_FALSE(TryBindInterface(facade, web::mojom::TestUIHandlerMojo::Name_));
 }
 
 TEST_F(MojoFacadeBindInterfaceOriginTest, NotGatedForTrustedOrigin) {
@@ -527,9 +522,10 @@ TEST_F(MojoFacadeBindInterfaceOriginTest, NotGatedForTrustedOrigin) {
   // chrome-untrusted:// allowlist; binding from a trusted chrome:// frame
   // should go through even without any AddUntrustedInterface registration.
   RegisterTrustedInterface();
-  FakeWebFrame* frame = AddFrameWithOrigin(GURL("chrome://test-host"));
+  MojoFacade* facade = AddFrameWithOrigin(GURL("chrome://test-host"));
+  ASSERT_NE(nullptr, facade);
 
-  EXPECT_TRUE(TryBindInterface(frame, web::mojom::TestUIHandlerMojo::Name_));
+  EXPECT_TRUE(TryBindInterface(facade, web::mojom::TestUIHandlerMojo::Name_));
 }
 
 }  // namespace web
