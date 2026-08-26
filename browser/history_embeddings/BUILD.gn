@@ -18,9 +18,13 @@ source_set("status") {
   public_deps = [ "//base" ]
 
   deps = [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/local_ai/core",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
+    "//components/prefs",
   ]
 }
 
@@ -61,6 +65,8 @@ source_set("unit_tests") {
     ":status",
     "//base",
     "//base/test:test_support",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/local_ai/core",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
