@@ -55,6 +55,14 @@
   return nil;
 }
 
++ (instancetype)configurationWithIdentifier:(NSUUID*)storageIdentifier {
+  NOTREACHED();
+  return nil;
+}
+
+- (void)remove {
+}
+
 - (instancetype)initWithBrowserState:(web::BrowserState*)browserState {
   self = [super init];
   if (self) {
