@@ -2644,6 +2644,132 @@ TEST_F(ZCashWalletServiceUnitTest,
 }
 
 TEST_F(ZCashWalletServiceUnitTest,
+       StartShieldSync_IronwoodMigration_RejectsSyncBeforeRewindFinishes) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+
+  constexpr uint32_t kActivation = kIronwoodActivationHeightMainnet;
+  constexpr uint32_t kRewindHeight = kActivation - 1;
+  constexpr uint32_t kPastActivation = kActivation + 57u;
+  constexpr char kRewindHash[] =
+      "0xe99a69a926bd0d078d39445fdf237c08ddfd3f7a59f7dc266aef610000000000";
+  constexpr char kRpcRewindHash[] =
+      "000000000061ef6a26dcf7597a3ffddd087c23df5f44398d070dbd26a9699ae9";
+
+  auto account_id_1 = account_id();
+  keyring_service()->SetZCashAccountBirthday(
+      account_id_1.Clone(),
+      mojom::ZCashAccountShieldBirthday::New(100u, "hash"));
+
+  // Seed orchard state scanned past Ironwood activation so StartShieldSync
+  // must rewind before it can start.
+  base::test::TestFuture<
+      base::expected<OrchardStorage::Result, OrchardStorage::Error>>
+      register_account_future;
+  zcash_wallet_service_->sync_state()
+      .AsyncCall(&OrchardSyncState::RegisterAccount)
+      .WithArgs(account_id_1.Clone(), 100u)
+      .Then(register_account_future.GetCallback());
+  ASSERT_TRUE(register_account_future.Take().has_value());
+
+  {
+    std::vector<OrchardCommitment> orchard_commitments;
+    orchard_commitments.push_back(
+        CreateCommitment(CreateMockCommitmentValue(0, kDefaultCommitmentSeed),
+                         false, kRewindHeight));
+    auto result = CreateResultForTesting(OrchardTreeState(),
+                                         std::move(orchard_commitments),
+                                         kRewindHeight, kRewindHash);
+    base::test::TestFuture<
+        base::expected<OrchardStorage::Result, OrchardStorage::Error>>
+        apply_scan_results_future;
+    zcash_wallet_service_->sync_state()
+        .AsyncCall(&OrchardSyncState::ApplyScanResults)
+        .WithArgs(account_id_1.Clone(), std::move(result))
+        .Then(apply_scan_results_future.GetCallback());
+    ASSERT_TRUE(apply_scan_results_future.Take().has_value());
+  }
+
+  {
+    OrchardTreeState tree_state;
+    tree_state.block_height = kRewindHeight;
+    tree_state.tree_size = 1;
+    std::vector<OrchardCommitment> orchard_commitments;
+    orchard_commitments.push_back(
+        CreateCommitment(CreateMockCommitmentValue(1, kDefaultCommitmentSeed),
+                         false, kPastActivation));
+    auto result = CreateResultForTesting(std::move(tree_state),
+                                         std::move(orchard_commitments),
+                                         kPastActivation, "past_hash");
+    base::test::TestFuture<
+        base::expected<OrchardStorage::Result, OrchardStorage::Error>>
+        apply_scan_results_future;
+    zcash_wallet_service_->sync_state()
+        .AsyncCall(&OrchardSyncState::ApplyScanResults)
+        .WithArgs(account_id_1.Clone(), std::move(result))
+        .Then(apply_scan_results_future.GetCallback());
+    ASSERT_TRUE(apply_scan_results_future.Take().has_value());
+  }
+
+  // Hold the rewind-height tree state so the Ironwood rewind stays in-flight.
+  ZCashRpc::GetTreeStateCallback held_tree_state_callback;
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault([&](const std::string& chain_id,
+                         zcash::mojom::BlockIDPtr block_id,
+                         ZCashRpc::GetTreeStateCallback callback) {
+        if (block_id->height == kRewindHeight &&
+            held_tree_state_callback.is_null()) {
+          held_tree_state_callback = std::move(callback);
+          return;
+        }
+        auto tree_state = zcash::mojom::TreeState::New(
+            "main", block_id->height, kRpcRewindHash, 123, "", "", "");
+        std::move(callback).Run(std::move(tree_state));
+      });
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          [kPastActivation](const std::string& chain_id,
+                            ZCashRpc::GetLatestBlockCallback callback) {
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kPastActivation, std::vector<uint8_t>()));
+          });
+
+  // First StartShieldSync begins rewind and parks its callback until rewind
+  // finishes.
+  base::test::TestFuture<const std::optional<std::string>&> first_sync_future;
+  zcash_wallet_service_->StartShieldSync(account_id_1.Clone(), 0,
+                                         first_sync_future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !held_tree_state_callback.is_null(); }));
+
+  // A second StartShieldSync while rewind is still pending must be rejected.
+  base::test::TestFuture<const std::optional<std::string>&> second_sync_future;
+  zcash_wallet_service_->StartShieldSync(account_id_1.Clone(), 0,
+                                         second_sync_future.GetCallback());
+  EXPECT_EQ("Already in sync", second_sync_future.Take());
+
+  base::test::TestFuture<bool, const std::optional<std::string>&>
+      in_progress_future;
+  zcash_wallet_service_->IsSyncInProgress(
+      account_id_1.Clone(),
+      in_progress_future
+          .GetCallback<bool, const std::optional<std::string>&>());
+  EXPECT_TRUE(in_progress_future.Get<0>());
+  EXPECT_FALSE(first_sync_future.IsReady());
+
+  // Completing rewind unblocks the original StartShieldSync.
+  auto tree_state = zcash::mojom::TreeState::New(
+      "main", kRewindHeight, kRpcRewindHash, 123, "", "", "");
+  std::move(held_tree_state_callback).Run(std::move(tree_state));
+  EXPECT_EQ(std::nullopt, first_sync_future.Take());
+  EXPECT_TRUE(
+      keyring_service()->GetZCashIronwoodSyncStateReset(account_id_1.Clone()));
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
        MaybeInitAutoSyncManagers_DoesNotPerformIronwoodMigration) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(

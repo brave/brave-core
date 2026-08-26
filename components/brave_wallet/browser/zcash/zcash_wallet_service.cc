@@ -155,23 +155,23 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
     return;
   }
 
-  if (shield_sync_services_.contains(account_id) ||
-      pending_ironwood_rewinds_.contains(account_id)) {
+  if (shield_sync_services_.contains(account_id)) {
     std::move(callback).Run("Already in sync");
     return;
   }
 
   if (IsZCashIronwoodEnabled() &&
       !keyring_service_->GetZCashIronwoodSyncStateReset(account_id)) {
-    auto [rewind_callback, cancel_callback] =
-        base::SplitOnceCallback(std::move(callback));
-    pending_ironwood_rewinds_.emplace(account_id.Clone(),
-                                      std::move(cancel_callback));
+    if (!pending_sync_callback_.is_null()) {
+      std::move(callback).Run("Already in sync");
+      return;
+    }
+    pending_sync_callback_ = std::move(callback);
     ResetSyncStateToIronwoodActivationInternal(
         account_id.Clone(), /*persist_flag_on_success=*/true,
         base::BindOnce(&ZCashWalletService::OnIronwoodRewindBeforeShieldSync,
-                       weak_ptr_factory_.GetWeakPtr(), account_id.Clone(), to,
-                       std::move(rewind_callback)));
+                       ironwood_rewind_weak_ptr_factory_.GetWeakPtr(),
+                       account_id.Clone(), to));
     return;
   }
 
@@ -214,14 +214,11 @@ void ZCashWalletService::StartShieldSyncInternal(
 void ZCashWalletService::OnIronwoodRewindBeforeShieldSync(
     mojom::AccountIdPtr account_id,
     uint32_t to,
-    StartShieldSyncCallback callback,
     const std::optional<std::string>& error) {
-  pending_ironwood_rewinds_.erase(account_id);
-
-  if (keyring_service_->IsLockedSync()) {
-    std::move(callback).Run("Wallet locked");
+  if (pending_sync_callback_.is_null()) {
     return;
   }
+  auto callback = std::move(pending_sync_callback_);
 
   if (error) {
     OnSyncError(account_id, *error);
@@ -253,7 +250,7 @@ void ZCashWalletService::IsSyncInProgress(mojom::AccountIdPtr account_id,
                                           IsSyncInProgressCallback callback) {
   if (IsZCashShieldedTransactionsEnabled()) {
     std::move(callback).Run(shield_sync_services_.contains(account_id) ||
-                                pending_ironwood_rewinds_.contains(account_id),
+                                !pending_sync_callback_.is_null(),
                             std::nullopt);
     return;
   }
@@ -766,27 +763,13 @@ void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
 void ZCashWalletService::ResetSyncStateToIronwoodActivation(
     mojom::AccountIdPtr account_id,
     ResetSyncStateToIronwoodActivationCallback callback) {
-  if (pending_ironwood_rewinds_.contains(account_id)) {
+  if (!pending_sync_callback_.is_null()) {
     std::move(callback).Run("Sync in progress");
     return;
   }
-  auto [rewind_callback, cancel_callback] =
-      base::SplitOnceCallback(std::move(callback));
-  pending_ironwood_rewinds_.emplace(account_id.Clone(),
-                                    std::move(cancel_callback));
-  ResetSyncStateToIronwoodActivationInternal(
-      account_id.Clone(), /*persist_flag_on_success=*/true,
-      base::BindOnce(&ZCashWalletService::OnResetSyncStateToIronwoodActivation,
-                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
-                     std::move(rewind_callback)));
-}
-
-void ZCashWalletService::OnResetSyncStateToIronwoodActivation(
-    mojom::AccountIdPtr account_id,
-    ResetSyncStateToIronwoodActivationCallback callback,
-    const std::optional<std::string>& error) {
-  pending_ironwood_rewinds_.erase(account_id);
-  std::move(callback).Run(error);
+  ResetSyncStateToIronwoodActivationInternal(account_id.Clone(),
+                                             /*persist_flag_on_success=*/true,
+                                             std::move(callback));
 }
 
 void ZCashWalletService::ResetSyncStateToIronwoodActivationInternal(
@@ -1294,9 +1277,8 @@ void ZCashWalletService::Unlocked() {
 }
 
 void ZCashWalletService::Locked() {
-  auto pending_ironwood_rewinds = std::exchange(pending_ironwood_rewinds_, {});
-  for (auto& pending_rewind : pending_ironwood_rewinds) {
-    std::move(pending_rewind.second).Run("Wallet locked");
+  if (!pending_sync_callback_.is_null()) {
+    std::move(pending_sync_callback_).Run("Wallet locked");
   }
   ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   auto_sync_managers_.clear();
@@ -1304,9 +1286,9 @@ void ZCashWalletService::Locked() {
 }
 
 void ZCashWalletService::Reset() {
-  ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   weak_ptr_factory_.InvalidateWeakPtrs();
-  pending_ironwood_rewinds_.clear();
+  ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
+  pending_sync_callback_.Reset();
   shield_sync_services_.clear();
   sync_state().AsyncCall(&OrchardSyncState::ResetDatabase);
 }
@@ -1317,7 +1299,7 @@ void ZCashWalletService::ShutdownSyncStateForTesting() {
   // sync_state is being reset, AsyncCall DCHECKs because storage is null.
   auto_sync_managers_.clear();
   get_zcash_chain_tip_status_tasks_.clear();
-  pending_ironwood_rewinds_.clear();
+  pending_sync_callback_.Reset();
   shield_sync_services_.clear();
   ironwood_rewind_weak_ptr_factory_.InvalidateWeakPtrs();
   weak_ptr_factory_.InvalidateWeakPtrs();
