@@ -107,10 +107,16 @@ source_set("ui") {
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/browser/ui/toolbar",
-    "//chrome/browser/ui/views/tabs/hovercard",
     "//chrome/browser/ui/webui:chrome_web_ui_controller_factory",
     "//media",
   ]
+
+  if (toolkit_views) {
+    deps += [
+      "//chrome/browser/ui/views/extensions:extensions_menu_button",
+      "//chrome/browser/ui/views/tabs/hovercard",
+    ]
+  }
 
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
@@ -130,10 +136,15 @@ source_set("ui") {
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
-  public_deps = [
-    ":ui_public_dependencies",
-    "//chrome/browser/ui/views/tabs/hovercard",
-  ]
+  public_deps = [ ":ui_public_dependencies" ]
+
+  if (toolkit_views) {
+    public_deps += [
+      "//chrome/browser/ui/views/extensions:extensions_menu_entry_view",
+      "//chrome/browser/ui/views/extensions:extensions_menu_item_view",
+      "//chrome/browser/ui/views/tabs/hovercard",
+    ]
+  }
 
   sources = [
     "brave_scheme_utils.cc",
