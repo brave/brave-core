@@ -301,6 +301,14 @@ interface AIChatUIHandler {
   // required.
   GetFaviconDataURL(url.mojom.Url page_url) => (string? data_url);
 
+  // Shows a native folder picker so the user can choose a local "workspace"
+  // folder for the given conversation. The local workspace tools then operate
+  // on the selected folder. Returns the chosen absolute path, or null if the
+  // user cancelled. Only meaningful when the AIChatWorkspaceTools feature is
+  // enabled.
+  ShowWorkspaceFolderPicker(string conversation_uuid)
+      => (string? selected_path);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 

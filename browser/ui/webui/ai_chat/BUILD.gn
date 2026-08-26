@@ -22,7 +22,12 @@ source_set("ai_chat") {
     "code_sandbox_ui.h",
     "leo_workspace_ui.cc",
     "leo_workspace_ui.h",
+    "workspace_folder_chooser.cc",
+    "workspace_folder_chooser.h",
   ]
+
+  # workspace_folder_chooser.h derives from ui::SelectFileDialog::Listener.
+  public_deps = [ "//ui/shell_dialogs" ]
 
   deps = [
     "//brave/browser/ai_chat",
@@ -96,7 +101,7 @@ source_set("ai_chat") {
       "ai_chat_agent_new_tab_page_ui.cc",
       "ai_chat_agent_new_tab_page_ui.h",
     ]
-    public_deps = [ "//brave/browser/ai_chat:ai_chat_agent_profile" ]
+    public_deps += [ "//brave/browser/ai_chat:ai_chat_agent_profile" ]
     deps += [
       "//brave/browser/resources/ai_chat_agent_new_tab_page:pack_js_resources",
       "//brave/browser/resources/ai_chat_agent_new_tab_page:pack_static_resources",
@@ -123,6 +128,7 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//ui/gfx:test_support",
     "//ui/gfx/codec",
+    "//ui/shell_dialogs",
   ]
 
   sources = [ "ai_chat_ui_page_handler_unittest.cc" ]

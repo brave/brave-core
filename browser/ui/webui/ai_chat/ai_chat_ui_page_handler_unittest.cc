@@ -9,10 +9,13 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
+#include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
@@ -23,7 +26,9 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
+#include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -48,6 +53,10 @@
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_unittest_util.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
+#include "ui/shell_dialogs/select_file_dialog_factory.h"
+#include "ui/shell_dialogs/select_file_policy.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -57,6 +66,133 @@
 
 namespace ai_chat {
 
+namespace {
+
+// A ui::SelectFileDialog that lets the test decide when (and whether) a folder
+// is selected. ui::FakeSelectFileDialog isn't usable for a folder picker: its
+// CallFileSelected() looks the reply up by file-type extension, and a folder
+// picker passes no file types.
+class TestFolderSelectFileDialog : public ui::SelectFileDialog {
+ public:
+  TestFolderSelectFileDialog(Listener* listener,
+                             std::unique_ptr<ui::SelectFilePolicy> policy);
+
+  // ui::SelectFileDialog:
+  void SelectFileImpl(Type type,
+                      const std::u16string& title,
+                      const base::FilePath& default_path,
+                      const FileTypeInfo* file_types,
+                      int file_type_index,
+                      const base::FilePath::StringType& default_extension,
+                      gfx::NativeWindow owning_window,
+                      const GURL* caller) override;
+  bool HasMultipleFileTypeChoicesImpl() override;
+  bool IsRunning(gfx::NativeWindow owning_window) const override;
+  void ListenerDestroyed() override;
+
+  // Completes the dialog as if the user had picked |path| / hit cancel.
+  void SelectFolder(const base::FilePath& path);
+  void Cancel();
+
+  base::WeakPtr<TestFolderSelectFileDialog> GetWeakPtr();
+
+ private:
+  ~TestFolderSelectFileDialog() override;
+
+  base::WeakPtrFactory<TestFolderSelectFileDialog> weak_ptr_factory_{this};
+};
+
+TestFolderSelectFileDialog::TestFolderSelectFileDialog(
+    Listener* listener,
+    std::unique_ptr<ui::SelectFilePolicy> policy)
+    : ui::SelectFileDialog(listener, std::move(policy)) {}
+
+TestFolderSelectFileDialog::~TestFolderSelectFileDialog() = default;
+
+void TestFolderSelectFileDialog::SelectFileImpl(
+    Type type,
+    const std::u16string& title,
+    const base::FilePath& default_path,
+    const FileTypeInfo* file_types,
+    int file_type_index,
+    const base::FilePath::StringType& default_extension,
+    gfx::NativeWindow owning_window,
+    const GURL* caller) {}
+
+bool TestFolderSelectFileDialog::HasMultipleFileTypeChoicesImpl() {
+  return false;
+}
+
+bool TestFolderSelectFileDialog::IsRunning(
+    gfx::NativeWindow owning_window) const {
+  return listener_ != nullptr;
+}
+
+void TestFolderSelectFileDialog::ListenerDestroyed() {
+  listener_ = nullptr;
+}
+
+void TestFolderSelectFileDialog::SelectFolder(const base::FilePath& path) {
+  listener_->FileSelected(ui::SelectedFileInfo(path), /*index=*/0);
+}
+
+void TestFolderSelectFileDialog::Cancel() {
+  listener_->FileSelectionCanceled();
+}
+
+base::WeakPtr<TestFolderSelectFileDialog>
+TestFolderSelectFileDialog::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+// Makes any dialog opened by the code under test a TestFolderSelectFileDialog
+// reachable via last_dialog(). Registration is process-wide, so pair
+// RegisterFactory() with ui::SelectFileDialog::SetFactory(nullptr).
+class TestFolderSelectFileDialogFactory : public ui::SelectFileDialogFactory {
+ public:
+  TestFolderSelectFileDialogFactory();
+  ~TestFolderSelectFileDialogFactory() override;
+
+  // Registers a new factory with ui::SelectFileDialog, which takes ownership,
+  // and returns it. The returned pointer is valid until the next SetFactory().
+  static TestFolderSelectFileDialogFactory* RegisterFactory();
+
+  // ui::SelectFileDialogFactory:
+  ui::SelectFileDialog* Create(
+      ui::SelectFileDialog::Listener* listener,
+      std::unique_ptr<ui::SelectFilePolicy> policy) override;
+
+  TestFolderSelectFileDialog* last_dialog() { return last_dialog_.get(); }
+
+ private:
+  base::WeakPtr<TestFolderSelectFileDialog> last_dialog_;
+};
+
+TestFolderSelectFileDialogFactory::TestFolderSelectFileDialogFactory() =
+    default;
+
+TestFolderSelectFileDialogFactory::~TestFolderSelectFileDialogFactory() =
+    default;
+
+// static
+TestFolderSelectFileDialogFactory*
+TestFolderSelectFileDialogFactory::RegisterFactory() {
+  auto factory = std::make_unique<TestFolderSelectFileDialogFactory>();
+  auto* factory_ptr = factory.get();
+  ui::SelectFileDialog::SetFactory(std::move(factory));
+  return factory_ptr;
+}
+
+ui::SelectFileDialog* TestFolderSelectFileDialogFactory::Create(
+    ui::SelectFileDialog::Listener* listener,
+    std::unique_ptr<ui::SelectFilePolicy> policy) {
+  auto* dialog = new TestFolderSelectFileDialog(listener, std::move(policy));
+  last_dialog_ = dialog->GetWeakPtr();
+  return dialog;
+}
+
+}  // namespace
+
 class AIChatUIPageHandlerTest : public ChromeRenderViewHostTestHarness {
  public:
   AIChatUIPageHandlerTest() = default;
@@ -64,6 +200,10 @@ class AIChatUIPageHandlerTest : public ChromeRenderViewHostTestHarness {
 
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
+
+    // Registration is process-wide, so it's paired with the SetFactory(nullptr)
+    // in TearDown() to keep it from leaking into other tests in the binary.
+    dialog_factory_ = TestFolderSelectFileDialogFactory::RegisterFactory();
 
     // Create the AIChatService
     service_ = AIChatServiceFactory::GetForBrowserContext(GetBrowserContext());
@@ -79,6 +219,8 @@ class AIChatUIPageHandlerTest : public ChromeRenderViewHostTestHarness {
   void TearDown() override {
     service_ = nullptr;
     page_handler_.reset();
+    dialog_factory_ = nullptr;
+    ui::SelectFileDialog::SetFactory(nullptr);
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
@@ -97,9 +239,15 @@ class AIChatUIPageHandlerTest : public ChromeRenderViewHostTestHarness {
   AIChatService* service() { return service_; }
   AIChatUIPageHandler* page_handler() { return page_handler_.get(); }
 
+ protected:
+  TestFolderSelectFileDialog* last_dialog() {
+    return dialog_factory_->last_dialog();
+  }
+
  private:
   raw_ptr<AIChatService> service_ = nullptr;
   std::unique_ptr<AIChatUIPageHandler> page_handler_;
+  raw_ptr<TestFolderSelectFileDialogFactory> dialog_factory_ = nullptr;
 };
 
 TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_ValidHttpsUrl) {
@@ -169,6 +317,101 @@ TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_InvalidConversation) {
   page_handler()->AssociateUrlContent(test_url, title, "non-existent-uuid");
 
   // Should not crash
+}
+
+// The picker is experimental and must stay inert unless the feature is on.
+// kAIChatWorkspaceTools is disabled by default, so no ScopedFeatureList here.
+TEST_F(AIChatUIPageHandlerTest, ShowWorkspaceFolderPicker_FeatureDisabled) {
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker(
+      conversation->get_conversation_uuid(), future.GetCallback());
+
+  EXPECT_EQ(std::nullopt, future.Get());
+  EXPECT_FALSE(last_dialog()) << "no dialog should have been shown";
+  EXPECT_TRUE(conversation->associated_content_manager()
+                  ->GetAssociatedContent()
+                  .empty());
+}
+
+class AIChatUIPageHandlerWorkspaceTest : public AIChatUIPageHandlerTest {
+ public:
+  AIChatUIPageHandlerWorkspaceTest() {
+    scoped_feature_list_.InitAndEnableFeature(features::kAIChatWorkspaceTools);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       ShowWorkspaceFolderPicker_AttachesWorkspaceContent) {
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker(
+      conversation->get_conversation_uuid(), future.GetCallback());
+
+  const base::FilePath folder(FILE_PATH_LITERAL("/tmp/workspace"));
+  ASSERT_TRUE(last_dialog());
+  last_dialog()->SelectFolder(folder);
+
+  ASSERT_TRUE(future.Get().has_value());
+  EXPECT_EQ(folder.AsUTF8Unsafe(), *future.Get());
+
+  // The chosen folder becomes a WorkspaceAssociatedContent owned by the
+  // conversation, which is what gives Leo its file tools.
+  auto delegates = conversation->associated_content_manager()
+                       ->GetContentDelegatesForTesting();
+  ASSERT_EQ(1u, delegates.size());
+  auto* workspace_content =
+      static_cast<WorkspaceAssociatedContent*>(delegates[0]);
+  EXPECT_EQ(folder, workspace_content->folder_path());
+
+  // The workspace page's WebContents is owned by the conversation, which
+  // outlives the test harness. Drop it here so the harness doesn't report a
+  // leaked RenderWidgetHost.
+  auto associated_content =
+      conversation->associated_content_manager()->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  page_handler()->DisassociateContent(std::move(associated_content[0]),
+                                      conversation->get_conversation_uuid());
+}
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       ShowWorkspaceFolderPicker_CancelAttachesNothing) {
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker(
+      conversation->get_conversation_uuid(), future.GetCallback());
+
+  ASSERT_TRUE(last_dialog());
+  last_dialog()->Cancel();
+
+  EXPECT_EQ(std::nullopt, future.Get());
+  EXPECT_TRUE(conversation->associated_content_manager()
+                  ->GetAssociatedContent()
+                  .empty());
+}
+
+// The conversation can be deleted while the (modal-less) picker is open, so a
+// stale uuid must be reported back as "nothing was picked" rather than
+// crashing or silently succeeding.
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       ShowWorkspaceFolderPicker_UnknownConversation) {
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker("non-existent-uuid",
+                                            future.GetCallback());
+
+  ASSERT_TRUE(last_dialog());
+  last_dialog()->SelectFolder(base::FilePath(FILE_PATH_LITERAL("/tmp/nope")));
+
+  EXPECT_EQ(std::nullopt, future.Get());
 }
 
 TEST_F(AIChatUIPageHandlerTest, ProcessImageFile) {
