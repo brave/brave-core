@@ -1060,14 +1060,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
       url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc, &infobar_observer));
   ASSERT_TRUE(dialog_wc);
-  auto infobar =
-      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
-        return infobar->GetIdentifier() ==
-               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
-      });
-  // Infobar must be closed right after left mouse button omnibar icon's click,
-  // just before consent dialog opening
-  ASSERT_FALSE(infobar != manager->infobars().end());
+  // Ensure the infobar is dismissed when the omnibar icon is left-clicked.
+  infobar_observer.WaitForInfobarRemoved();
 
   const std::vector<std::string> perform_uids = {"1", "2"};
   ASSERT_TRUE(AcceptModalDialog(

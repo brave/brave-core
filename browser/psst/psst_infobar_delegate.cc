@@ -40,7 +40,6 @@ bool PsstInfoBarDelegate::Accept() {
     std::move(on_accept_callback_).Run(true);
   }
 
-  // Returns true to allow the infobar to be removed automatically
   return true;
 }
 
@@ -49,7 +48,6 @@ bool PsstInfoBarDelegate::Cancel() {
     std::move(on_accept_callback_).Run(false);
   }
 
-  // Returns true to allow the infobar to be removed automatically
   return true;
 }
 
