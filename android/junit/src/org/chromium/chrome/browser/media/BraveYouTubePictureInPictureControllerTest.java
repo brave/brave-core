@@ -409,7 +409,9 @@ public class BraveYouTubePictureInPictureControllerTest {
     public void onEnterPictureInPictureMode_resumesSessionWebContents() {
         // The entry resume must target the session's own WebContents: after a screen-lock
         // re-entry the foreground tab can differ from the session tab, and resuming the
-        // foreground tab would start unrelated media while the PiP video stays paused.
+        // foreground tab would start unrelated media while the PiP video stays paused. It must
+        // also be a UI resume: the pause it undoes was issued by the page or by the system's
+        // sleep handling, and a SYSTEM resume is dropped unless the last suspend was SYSTEM too.
         BraveYouTubePictureInPictureController controller =
                 spy(new BraveYouTubePictureInPictureController(mBraveActivity));
         doReturn(mMediaSession).when(controller).getMediaSession(any());
@@ -417,7 +419,7 @@ public class BraveYouTubePictureInPictureControllerTest {
 
         assertTrue(controller.onEnterPictureInPictureMode());
 
-        verify(mMediaSession).resume(SuspendType.SYSTEM);
+        verify(mMediaSession).resume(SuspendType.UI);
         verify(mBraveActivity, never()).getCurrentWebContents();
     }
 

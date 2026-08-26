@@ -252,7 +252,10 @@ public class BraveYouTubePictureInPictureController {
         if (webContents != null) {
             final MediaSession mediaSession = getMediaSession(webContents);
             if (mediaSession != null) {
-                mediaSession.resume(SuspendType.SYSTEM);
+                // Must be UI, not SYSTEM: MediaSessionImpl::OnResumeInternal drops a SYSTEM
+                // resume unless the preceding suspend was also SYSTEM, and the pause this
+                // undoes comes from the page (YouTube pauses itself while entering fullscreen).
+                mediaSession.resume(SuspendType.UI);
             }
         }
         return true;
