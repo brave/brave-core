@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.h b/chrome/browser/ui/views/frame/browser_frame_view_win.h
-index 0d3be37f68c7c1defba82902b197b71fa3128f3b..32c4cf9f3b039097303bfe1f0918d559074cbc2a 100644
+index 0d3be37f68c7c1defba82902b197b71fa3128f3b..2e3ae6ddda8ee322a8621e3a166a34b5edca5316 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_win.h
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_win.h
+@@ -79,7 +79,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
+   // additional draggable area that's considered part of the window frame rather
+   // than the tabstrip. If |restored| is true, this is calculated as if the
+   // window was restored, regardless of its current state.
+-  int TopAreaHeight(bool restored) const;
++  virtual int TopAreaHeight(bool restored) const;
+ 
+   const BrowserCaptionButtonContainer* caption_button_container_for_testing()
+       const {
 @@ -101,6 +101,7 @@ class BrowserFrameViewWin : public BrowserFrameView, public TabIconViewModel {
                                    float new_device_scale_factor) override;
  

@@ -107,13 +107,31 @@ int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
 
     if (!ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
       // In case Mica enabled, we should extend top insets so that title bar can
-      // be visible.
-      return TopAreaHeight(restored) +
-             caption_button_container_->GetPreferredSize().height();
+      // be visible. Note that we don't use TitlebarMaximizedVisualHeight()
+      // in this case, because it returns too short height for title to be
+      // visible - it will make title overlapped with toolbar area.
+      return TitlebarHeight(false);
     }
   }
 
   return BrowserFrameViewWin::GetTopInset(restored);
+}
+
+int BraveBrowserFrameViewWin::TopAreaHeight(bool restored) const {
+  auto* browser = GetBrowserView()->browser();
+  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+      vtc->ShouldShowBraveVerticalTabs()) {
+    if (vtc->ShouldShowWindowTitleForVerticalTabs() &&
+        !ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
+      // In case Mica enabled, we should extend top insets so that caption
+      // button is as tall as top area. Note that we don't use
+      // TitlebarMaximizedVisualHeight() in this case, because it returns too
+      // short height for title to be visible - it will make title overlapped
+      // with toolbar area.
+      return TitlebarHeight(false);
+    }
+  }
+  return BrowserFrameViewWin::TopAreaHeight(restored);
 }
 
 int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -10,6 +11,7 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
+#include "chrome/browser/win/mica_titlebar.h"
 #include "chrome/browser/win/titlebar_config.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -171,6 +173,119 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserFrameViewWinVerticalTabsLayoutTest,
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveBrowserFrameViewWinVerticalTabsLayoutTest,
+                         testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "WithTitle" : "WithoutTitle";
+                         });
+
+// Parameterized fixture: bool param = show window title in vertical tab mode.
+// Forces the (upstream-abandoned, no longer toggleable via chrome://flags)
+// Mica titlebar feature on, to exercise the vertical-tabs + Mica code paths
+// that the tests above skip. Whether this actually activates Mica still also
+// depends on OS state outside this test's control (Windows 11 22H2+, the
+// profile's theme, and the "accent color on title bars" setting), so on
+// machines/CI where those conditions aren't met this skips rather than
+// asserting anything.
+//
+// Regression coverage for
+// https://github.com/brave/brave-browser/issues/54721.
+class BraveBrowserFrameViewWinMicaVerticalTabsLayoutTest
+    : public BraveBrowserFrameViewWinTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  BraveBrowserFrameViewWinMicaVerticalTabsLayoutTest() {
+    scoped_feature_list_.InitAndEnableFeature(kWindows11MicaTitlebar);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Verifies that when Mica is actually active, the caption button container is
+// aligned exactly the same way as in the non-Mica case above (see
+// BraveBrowserFrameViewWinVerticalTabsLayoutTest): top at window-top +
+// WindowTopY(), and bottom aligned with the toolbar row top (with title) or
+// content area top (without title). Before the fix, GetTopInset() reserved
+// space using the container's independently computed GetPreferredSize()
+// (brave/brave-browser#54721) or, in an intermediate attempt, its live
+// height() queried before any layout had happened -- both drifted from the
+// height LayoutCaptionButtons() actually set, causing the container to render
+// clipped/shifted.
+IN_PROC_BROWSER_TEST_P(BraveBrowserFrameViewWinMicaVerticalTabsLayoutTest,
+                       CaptionButtonContainerAlignedWithTopContainerAndBorder) {
+  auto* frame = win_frame_view();
+  ASSERT_TRUE(frame) << "Expected BrowserFrameViewWin; wrong frame type";
+
+  if (ShouldBrowserCustomDrawTitlebar(browser_view())) {
+    GTEST_SKIP() << "Mica titlebar isn't actually active on this machine "
+                    "(needs Windows 11 22H2+, default System theme, and no "
+                    "\"accent color on title bars\"); can't exercise the "
+                    "Mica code path here.";
+  }
+
+  ASSERT_FALSE(browser_view()->GetWidget()->IsMaximized())
+      << "Test requires a restored (non-maximized) window";
+
+  const bool show_title = GetParam();
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, show_title);
+  browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
+
+  const auto* container = frame->caption_button_container_for_testing();
+  ASSERT_TRUE(container);
+
+  const gfx::Rect container_screen = container->GetBoundsInScreen();
+  const gfx::Rect window_screen = frame->GetWidget()->GetWindowBoundsInScreen();
+
+  const char* mode = show_title ? "Mica, vertical tabs with title"
+                                : "Mica, vertical tabs without title";
+
+  // 1. Container top must be at window top + WindowTopY().
+  EXPECT_EQ(container_screen.y(), window_screen.y() + frame->WindowTopY())
+      << "Caption button container top (" << container_screen.y()
+      << ") must be window top (" << window_screen.y() << ") + WindowTopY ("
+      << frame->WindowTopY() << ") in " << mode;
+
+  // 2. Container bottom alignment depends on whether the window title is
+  //    shown:
+  //    - With title: aligns with top_container top (toolbar row top).
+  //    - Without title: GetTopInset() is 0 while restored (see GetTopInset()),
+  //      so the container itself provides no reserved space; only check it
+  //      isn't clipped by (i.e. doesn't extend past) the content area top.
+  const gfx::Rect top_container_screen =
+      browser_view()->top_container()->GetBoundsInScreen();
+
+  if (show_title) {
+    EXPECT_EQ(container_screen.bottom(), top_container_screen.y())
+        << "Caption button container bottom (" << container_screen.bottom()
+        << ") must equal top_container top (" << top_container_screen.y()
+        << ") in " << mode;
+
+    // TopAreaHeight() is what BrowserDesktopWindowTreeHostWin::
+    // GetDwmFrameInsetsInPixels() reads (via the now-virtual TopAreaHeight())
+    // to decide how far down to extend the Mica glass material -- i.e. how
+    // tall a band the OS actually composites its native caption/buttons
+    // into. It must match GetTopInset() (the Views-side reserved space),
+    // or the native caption ends up squeezed into a shorter band than the
+    // toolbar is offset by, rendering the caption buttons undersized even
+    // though the Views-side layout above looks correct.
+    EXPECT_EQ(frame->TopAreaHeight(/*restored=*/false),
+              frame->GetTopInset(/*restored=*/false))
+        << "TopAreaHeight() (drives the Mica glass/native caption height) "
+           "must match GetTopInset() (the Views-reserved space) in "
+        << mode;
+  } else {
+    EXPECT_LE(container_screen.bottom(), top_container_screen.bottom())
+        << "Caption button container bottom (" << container_screen.bottom()
+        << ") must not exceed top_container bottom ("
+        << top_container_screen.bottom() << ") in " << mode;
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveBrowserFrameViewWinMicaVerticalTabsLayoutTest,
                          testing::Bool(),
                          [](const testing::TestParamInfo<bool>& info) {
                            return info.param ? "WithTitle" : "WithoutTitle";

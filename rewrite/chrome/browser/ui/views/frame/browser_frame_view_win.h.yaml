@@ -23,3 +23,8 @@ substitutions:
     add_friend:
       class_name: BrowserFrameViewWin
       friend_type: class BraveBrowserFrameViewWin
+
+  - description: 'Make TopAreaHeight virtual'
+    make_virtual:
+      class_name: BrowserFrameViewWin
+      method_name: TopAreaHeight

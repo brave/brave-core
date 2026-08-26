@@ -11,8 +11,16 @@
 #include "base/feature_list.h"
 #include "base/win/windows_types.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "skia/ext/skia_utils_win.h"
+#include "ui/display/win/screen_win.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/point.h"
 
 #define BrowserDesktopWindowTreeHostWin \
   BrowserDesktopWindowTreeHostWin_ChromiumImpl
