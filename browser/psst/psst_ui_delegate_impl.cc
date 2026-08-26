@@ -176,8 +176,8 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
 
     ui_presenter_->ShowConsentDialog();
   } else {
-    // Disable PSST if user declined the infobar
-    psst_settings_service_->SetPsstEnabled(false);
+    // TODO(https://github.com/brave/brave-browser/issues/58449): Handle infobar
+    // dismissal (e.g. close button, tab/navigation away).
   }
 }
 

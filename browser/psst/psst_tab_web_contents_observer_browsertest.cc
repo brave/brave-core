@@ -33,6 +33,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/infobars/confirm_infobar.h"
+#include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -646,10 +648,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // and waits for the menu to appear, or opens the consent dialog and waits
   // for it to appear. For a left-click, the opened consent dialog's WebContents
   // is returned via `dialog_wc_out` when provided.
+  // Passing `infobar_observer` makes it wait for infobar appearing
   void NavigateAndClickOnPsstLocationBarIcon(
       const GURL& url,
       ui::EventFlags event_flags,
-      content::WebContents** dialog_wc_out = nullptr) {
+      content::WebContents** dialog_wc_out = nullptr,
+      InfobarObserver* infobar_observer = nullptr) {
     ASSERT_TRUE(event_flags == ui::EF_RIGHT_MOUSE_BUTTON ||
                 event_flags == ui::EF_LEFT_MOUSE_BUTTON);
 
@@ -658,6 +662,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(action);
 
     ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
+    if (infobar_observer) {
+      infobar_observer->WaitForInfobarAdded();
+    }
 
     IconLabelBubbleView* const psst_view = GetPsstPageActionView();
     ASSERT_TRUE(psst_view);
@@ -721,6 +728,31 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         [dialog_ui]() { return dialog_ui->psst_consent_handler_ != nullptr; }));
   }
 
+  // Clicks the OK button to accept `infobar` and continue the flow, so that
+  // ConfirmInfoBar::OkButtonPressed() closes the infobar as it would in
+  // production.
+  void ClickInfobarOkButton(infobars::InfoBar* infobar) {
+    views::test::ButtonTestApi(
+        static_cast<ConfirmInfoBar*>(infobar)->ok_button_for_testing())
+        .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
+                                    gfx::Point(), base::TimeTicks(),
+                                    ui::EF_LEFT_MOUSE_BUTTON,
+                                    ui::EF_LEFT_MOUSE_BUTTON));
+  }
+
+  // Clicks the close ("x") button on `infobar`, so that
+  // InfoBarView::CloseButtonPressed() calls delegate()->InfoBarDismissed() and
+  // removes the infobar as it would in production.
+  void ClickInfobarCloseButton(infobars::InfoBar* infobar) {
+    views::test::ButtonTestApi(
+        views::Button::AsButton(
+            static_cast<InfoBarView*>(infobar)->close_button()))
+        .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(),
+                                    gfx::Point(), base::TimeTicks(),
+                                    ui::EF_LEFT_MOUSE_BUTTON,
+                                    ui::EF_LEFT_MOUSE_BUTTON));
+  }
+
  protected:
   raw_ptr<Profile> profile_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
@@ -774,8 +806,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
-  // Accept the infobar to continue the flow
-  confirm_delegate->Accept();
+  ClickInfobarOkButton(*infobar);
+  ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
 
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
@@ -826,14 +858,14 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   // Dismissing the infobar disables PSST, which in turn removes the infobar.
-  confirm_delegate->InfoBarDismissed();
+  ClickInfobarCloseButton(psst_infobar);
   ASSERT_TRUE(infobar_observer.WaitForInfobarRemoved());
   EXPECT_FALSE(GetPsstInfobar(manager));
 
   // Wait for console message only from user script
   ASSERT_TRUE(console_observer.Wait());
   EXPECT_TRUE(console_observer.CheckMessages());
-  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+  EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
@@ -876,7 +908,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(confirm_delegate->GetIdentifier(),
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
 
-  confirm_delegate->Accept();
+  ClickInfobarOkButton(*infobar);
 
   auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
@@ -993,9 +1025,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 }
 
 // After navigating to the initial page and left-clicking the PSST location bar
-// icon, accepting the consent dialog runs both scripts across all task pages,
-// applies the PSST settings, and navigates the tab back to the initial page
-// where tuning started.
+// icon, hiding the opened infobar, accepting the consent dialog runs both
+// scripts across all task pages, applies the PSST settings, and navigates the
+// tab back to the initial page where tuning started.
 IN_PROC_BROWSER_TEST_F(
     PsstTabWebContentsObserverBrowserTest,
     LocationBarIconLeftClickAppliesSettingsAndReturnsToPage) {
@@ -1003,6 +1035,8 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 
   const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
 
   // Observe both scripts running across the initial page and each task page.
   PsstWebContentsConsoleObserver console_observer(
@@ -1020,10 +1054,14 @@ IN_PROC_BROWSER_TEST_F(
        base::StrCat({kPolicyScriptLogPrefix,
                      CreateTestUtf16URL(https_server_, "/a_test_2.html")})});
 
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   content::WebContents* dialog_wc = nullptr;
   ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
-      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc, &infobar_observer));
   ASSERT_TRUE(dialog_wc);
+  // Ensure the infobar is dismissed when the omnibar icon is left-clicked.
+  infobar_observer.WaitForInfobarRemoved();
 
   const std::vector<std::string> perform_uids = {"1", "2"};
   ASSERT_TRUE(AcceptModalDialog(
