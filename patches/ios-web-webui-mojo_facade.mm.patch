@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..b97ba26c1becf94167633bd9b8c055fec637df65 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..c8ed5dbaa5d98b52ed2ed630167c6e5f8adb050f 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,18 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -23,16 +23,23 @@ index cbc39d0594174bb896c7f79198325959c7d304be..b97ba26c1becf94167633bd9b8c055fe
    if (main_frame) {
      main_frame_ = main_frame->AsWeakPtr();
      if (!web_state_->IsLoading() && web_state_->GetInterfaceBinderForMainFrame()
-@@ -124,7 +128,7 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+@@ -124,13 +128,14 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
        !web_state_->IsBeingDestroyed() && GetMainFrameId() == web_frame_id;
  
    if (error || !is_same_frame || !value) {
 -    if (error && is_same_frame) {
-+    if (is_same_frame) {
++    if (is_same_frame && ShouldRetryPoll()) {
        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
            FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessage,
                                      weak_ptr_factory_.GetWeakPtr()));
-@@ -231,6 +235,7 @@ void MojoFacade::HandleMojoMessage(
+     }
+     return;
+   }
++  consecutive_poll_failures_ = 0;
+ 
+   const base::DictValue* dict = value->GetIfDict();
+   if (dict) {
+@@ -231,6 +236,7 @@ void MojoFacade::HandleMojoMessage(
  }
  
  bool MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
@@ -40,7 +47,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..b97ba26c1becf94167633bd9b8c055fe
    const std::string* interface_name = args.FindString("interfaceName");
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
-@@ -279,9 +284,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
+@@ -279,9 +285,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
  base::Value MojoFacade::HandleMojoHandleWriteMessage(
      const base::DictValue& args) {
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
@@ -56,7 +63,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..b97ba26c1becf94167633bd9b8c055fe
  
    const base::ListValue* handles_list = args.FindList("handles");
    CHECK(handles_list);
-@@ -448,14 +456,18 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -448,14 +457,18 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
@@ -76,7 +83,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..b97ba26c1becf94167633bd9b8c055fe
    DCHECK_CURRENTLY_ON(WebThread::UI);
    if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
      main_frame_.reset();
-@@ -464,25 +476,31 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+@@ -464,25 +477,31 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
    }

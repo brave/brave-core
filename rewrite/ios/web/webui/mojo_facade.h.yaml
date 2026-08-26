@@ -53,6 +53,13 @@ substitutions:
         // doesn't hold.
         void ReportUnknownPipe(const char* operation,
                                std::optional<int> pipe_id);
+        // Whether a poll that came back empty is worth repeating. Counts the
+        // consecutive failures, so a frame that can no longer run scripts
+        // stops being asked.
+        bool ShouldRetryPoll();
+
+        // Polls in a row that carried no message.
+        int consecutive_poll_failures_ = 0;
 
         // Id of the frame this facade serves, empty for the main frame,
         // whose identity can change over the WebState's life.

@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
-index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..ac76cd23cd819adcc7ae41a901cfda15231dbab4 100644
+index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..98a3470e6e762850bfc254629c379cf0c37dbebf 100644
 --- a/ios/web/webui/mojo_facade.h
 +++ b/ios/web/webui/mojo_facade.h
 @@ -35,7 +35,7 @@ class MojoFacade : public web::WebStateObserver,
@@ -11,7 +11,7 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..ac76cd23cd819adcc7ae41a901cfda15
    ~MojoFacade() override;
  
    // A listener that polls for messages from a content page to be processed by
-@@ -58,6 +58,31 @@ class MojoFacade : public web::WebStateObserver,
+@@ -58,6 +58,38 @@ class MojoFacade : public web::WebStateObserver,
                           const base::DictValue* message,
                           base::OnceCallback<void(int, std::string)> completion);
  
@@ -32,6 +32,13 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..ac76cd23cd819adcc7ae41a901cfda15
 +  // doesn't hold.
 +  void ReportUnknownPipe(const char* operation,
 +                         std::optional<int> pipe_id);
++  // Whether a poll that came back empty is worth repeating. Counts the
++  // consecutive failures, so a frame that can no longer run scripts
++  // stops being asked.
++  bool ShouldRetryPoll();
++
++  // Polls in a row that carried no message.
++  int consecutive_poll_failures_ = 0;
 +
 +  // Id of the frame this facade serves, empty for the main frame,
 +  // whose identity can change over the WebState's life.

@@ -81,6 +81,15 @@ bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
 // (something cleared it out from under the live JS context), the table was
 // populated but missing the id (the handle was consumed, or never created),
 // or the id belongs to a different frame.
+// A frame whose document can't run scripts any more never recovers, and
+// upstream re-posts the poll on every failure, so the loop has to give up on
+// its own. The allowance is for genuinely transient failures; a live frame
+// resets it as soon as one poll carries a message.
+bool MojoFacade::ShouldRetryPoll() {
+  static constexpr int kMaxConsecutivePollFailures = 3;
+  return ++consecutive_poll_failures_ <= kMaxConsecutivePollFailures;
+}
+
 void MojoFacade::ReportUnknownPipe(const char* operation,
                                    std::optional<int> pipe_id) {
   SCOPED_CRASH_KEY_STRING32("MojoFacade", "operation", operation);

@@ -136,13 +136,33 @@ substitutions:
 
       A completion with neither a value nor an error ends the poll loop for
       good, because only the error branch re-arms. That happens whenever a
-      poll is abandoned (see the substitution above), and a frame whose loop
-      stops is never asked for a message again, so its WebUI simply stops
-      working. The frame still being the one this facade serves is the only
-      thing that should decide whether to carry on.
+      poll is abandoned, and a frame whose loop stops is never asked for a
+      message again, so its WebUI simply stops working.
+
+      Retrying can't be unconditional either: upstream re-posts on every
+      error with no bound, so a frame whose document can no longer run
+      scripts (a detached iframe, or the about:blank document one briefly
+      has before it navigates) spins a PostTask loop forever. ShouldRetryPoll
+      gives up after a few consecutive failures, and the counter resets on
+      the first completion that carries a message.
     regex:
       re_pattern: 'if \(error && is_same_frame\) \{'
-      replace: 'if (is_same_frame) {'
+      replace: 'if (is_same_frame && ShouldRetryPoll()) {'
+
+  - description: |-
+      A poll that delivered a message clears the consecutive-failure count.
+    regex:
+      re_pattern: |-
+        return;
+          \}
+
+          const base::DictValue\* dict = value->GetIfDict\(\);
+      replace: |-
+        return;
+          }
+          consecutive_poll_failures_ = 0;
+
+          const base::DictValue* dict = value->GetIfDict();
 
   - description: |-
       Don't crash the browser when a write names a pipe id we don't hold.
