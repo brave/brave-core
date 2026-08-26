@@ -7,8 +7,18 @@
 
 #include <memory>
 
+#include "base/functional/bind.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace history_embeddings {
 
@@ -19,12 +29,30 @@ constexpr char kBraveHistoryEmbeddingsStatusKey[] =
 
 }  // namespace
 
-BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(Profile* profile,
-                                                           bool enabled)
-    : profile_(profile), enabled_(enabled) {}
+BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(
+    Profile* profile,
+    PrefService* local_state,
+    bool enabled)
+    : profile_(profile), enabled_(enabled) {
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  pref_change_registrar_.Add(
+      local_ai::prefs::kBraveHistoryEmbeddingsEnabled,
+      base::BindRepeating(&BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged,
+                          base::Unretained(this)));
+  // The Local AI master switch is local state, so it needs its own registrar.
+  local_state_pref_change_registrar_.Init(local_state);
+  local_state_pref_change_registrar_.Add(
+      local_ai::prefs::kBraveLocalAIEnabled,
+      base::BindRepeating(&BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged,
+                          base::Unretained(this)));
+  // The Local AI master switch only takes effect on relaunch, so the profile
+  // can start with the index unavailable and no change to observe.
+  OnEnabledPrefChanged();
+}
 
 // static
-void BraveHistoryEmbeddingsStatus::CreateForProfile(Profile* profile) {
+void BraveHistoryEmbeddingsStatus::CreateForProfile(Profile* profile,
+                                                    PrefService* local_state) {
   if (profile->GetUserData(kBraveHistoryEmbeddingsStatusKey)) {
     return;
   }
@@ -32,13 +60,13 @@ void BraveHistoryEmbeddingsStatus::CreateForProfile(Profile* profile) {
   profile->SetUserData(
       kBraveHistoryEmbeddingsStatusKey,
       std::make_unique<BraveHistoryEmbeddingsStatus>(
-          profile, IsHistoryEmbeddingsEnabledForProfile(profile)));
+          profile, local_state, IsHistoryEmbeddingsEnabledForProfile(profile)));
 }
 
 // static
 BraveHistoryEmbeddingsStatus* BraveHistoryEmbeddingsStatus::GetForProfile(
     Profile* profile) {
-  CreateForProfile(profile);
+  CreateForProfile(profile, g_browser_process->local_state());
   return static_cast<BraveHistoryEmbeddingsStatus*>(
       profile->GetUserData(kBraveHistoryEmbeddingsStatusKey));
 }
@@ -49,6 +77,21 @@ bool BraveHistoryEmbeddingsStatus::IsEnabled() const {
 
 bool BraveHistoryEmbeddingsStatus::NeedsRestart() const {
   return IsHistoryEmbeddingsEnabledForProfile(profile_) != enabled_;
+}
+
+void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // The pref is only registered when the AI Chat feature is on at runtime,
+  // and clearing an unregistered pref is fatal.
+  if (!ai_chat::features::IsAIChatEnabled()) {
+    return;
+  }
+  if (IsHistoryEmbeddingsEnabledForProfile(profile_)) {
+    return;
+  }
+  profile_->GetPrefs()->ClearPref(
+      ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 }  // namespace history_embeddings
