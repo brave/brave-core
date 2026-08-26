@@ -175,6 +175,9 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
                        weak_ptr_factory_.GetWeakPtr()));
 
     ui_presenter_->ShowConsentDialog();
+  } else {
+    // TODO(https://github.com/brave/brave-browser/issues/58449): Handle infobar
+    // dismissal (e.g. close button, tab/navigation away).
   }
 }
 
