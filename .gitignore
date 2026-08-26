@@ -45,7 +45,6 @@ patches/**/*.patchinfo
 /third_party/node/mac_arm64/
 /third_party/node/win/
 /third_party/node/*.tar.gz
-/third_party/gn/
 /third_party/opengrep/bin/
 /third_party/wintun/
 /third_party/ast-grep-intermediate/

@@ -7456,8 +7456,7 @@ class GnEditSandboxTest(unittest.TestCase):
         self.assertIn('Unknown edit command', str(cm.exception))
 
     def test_a_missing_binary_is_reported_as_a_gn_edit_error(self):
-        with mock.patch.object(plaster, 'GN_BIN',
-                               Path('/nonexistent/gn')) as _:
+        with mock.patch.object(plaster, 'GN_BIN', '/nonexistent/gn') as _:
             with plaster.GnEditSandbox(self._TARGET) as sandbox:
                 with self.assertRaises(plaster.GnEditError) as cm:
                     sandbox.run(command='add deps //brave/a', pattern='//:foo')
@@ -8136,27 +8135,10 @@ class GnEditDispatchTest(unittest.TestCase):
 
 
 class GnBinaryPathTest(unittest.TestCase):
-    """`_gn_platform_dir` mirrors the CIPD dirs `brave/DEPS` provisions."""
+    """`GN_BIN` names the depot_tools shim, resolved off PATH."""
 
-    def _dir_for(self, platform: str) -> str:
-        with mock.patch.object(plaster.sys, 'platform', platform):
-            return plaster._gn_platform_dir()
-
-    def test_each_host_maps_to_its_cipd_subdirectory(self):
-        self.assertEqual(self._dir_for('linux'), 'linux64')
-        self.assertEqual(self._dir_for('darwin'), 'mac')
-        self.assertEqual(self._dir_for('win32'), 'win')
-
-    def test_an_unrecognised_host_falls_back_to_linux(self):
-        self.assertEqual(self._dir_for('freebsd13'), 'linux64')
-
-    def test_the_binary_sits_under_brave_third_party_gn(self):
-        # A different gn from the one Chromium pins under `buildtools/`, since
-        # `gn edit` is newer than the revision Chromium builds with.
-        self.assertEqual(plaster.GN_BIN.parent.parent.name, 'gn')
-        self.assertEqual(plaster.GN_BIN.parent.parent.parent.name,
-                         'third_party')
-        self.assertTrue(plaster.GN_BIN.name.startswith('gn'))
+    def test_gn_bin_is_the_bare_shim_name(self):
+        self.assertEqual(plaster.GN_BIN, 'gn')
 
 
 class GnNamespaceTest(unittest.TestCase):

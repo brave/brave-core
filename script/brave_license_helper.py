@@ -187,11 +187,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # plaster .toml file location should be skipped.
         os.path.join('brave', 'rewrite', 'third_party'),
 
-        # TODO(https://brave.dev/b/58378): Remove once `cr154` is merged.
-        # This path is being used to deploy a `gn` binary that is newer than the
-        # one in `master` right now.
-        os.path.join('brave', 'third_party', 'gn'),
-
         # TODO(https://github.com/brave/brave-browser/issues/54804)
         # remove the following line once we start putting
         # WinTun binaries into the browser distribution on Windows.
