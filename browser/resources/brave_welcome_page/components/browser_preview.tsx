@@ -8,7 +8,6 @@ import Icon from '@brave/leo/react/icon'
 import { IconName } from '@brave/leo/icons/meta'
 
 import { getString } from '../lib/strings'
-import classnames from '$web-common/classnames'
 
 import { style } from './browser_preview.style'
 
@@ -21,7 +20,6 @@ const pinnedTabIcons: IconName[] = [
 
 interface BrowserPreviewProps {
   tabOrientation: 'horizontal' | 'vertical'
-  tintToolbarBackground?: boolean
 }
 
 // Mock browser chrome that illustrates the selected tab layout. Hidden from
@@ -32,9 +30,7 @@ export function BrowserPreview(props: BrowserPreviewProps) {
   return (
     <div
       data-css-scope={style.scope}
-      className={classnames(props.tabOrientation, {
-        'tint-toolbar-background': props.tintToolbarBackground,
-      })}
+      className={props.tabOrientation}
       aria-hidden='true'
     >
       <div className='chrome'>
