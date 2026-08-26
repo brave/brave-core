@@ -393,7 +393,6 @@ source_set("browser_tests") {
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/constants",
-      "//brave/components/history_embeddings:test_support",
       "//brave/components/l10n/common:test_support",
       "//brave/components/resources:strings_grit",
       "//brave/components/sidebar/browser",
@@ -421,7 +420,10 @@ source_set("browser_tests") {
 
     if (enable_local_ai) {
       sources += [ "tools/history_search_tool_browsertest.cc" ]
-      deps += [ "//brave/components/local_ai/core" ]
+      deps += [
+        "//brave/components/history_embeddings:test_support",
+        "//brave/components/local_ai/core",
+      ]
     }
 
     if (enable_ai_chat_tab_management_tool) {
