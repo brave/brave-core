@@ -132,6 +132,19 @@ substitutions:
       replace: 'AwaitNextMessage();'
 
   - description: |-
+      Keep polling a frame that hands back nothing.
+
+      A completion with neither a value nor an error ends the poll loop for
+      good, because only the error branch re-arms. That happens whenever a
+      poll is abandoned (see the substitution above), and a frame whose loop
+      stops is never asked for a message again, so its WebUI simply stops
+      working. The frame still being the one this facade serves is the only
+      thing that should decide whether to carry on.
+    regex:
+      re_pattern: 'if \(error && is_same_frame\) \{'
+      replace: 'if (is_same_frame) {'
+
+  - description: |-
       Don't crash the browser when a write names a pipe id we don't hold.
 
       Upstream hit this same "handle unknown to the facade" failure on the

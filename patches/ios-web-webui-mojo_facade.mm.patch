@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..31d061ae4b1f1ecde79793a0d2975fe384c14b80 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..b97ba26c1becf94167633bd9b8c055fec637df65 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,18 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -23,6 +23,15 @@ index cbc39d0594174bb896c7f79198325959c7d304be..31d061ae4b1f1ecde79793a0d2975fe3
    if (main_frame) {
      main_frame_ = main_frame->AsWeakPtr();
      if (!web_state_->IsLoading() && web_state_->GetInterfaceBinderForMainFrame()
+@@ -124,7 +128,7 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+       !web_state_->IsBeingDestroyed() && GetMainFrameId() == web_frame_id;
+ 
+   if (error || !is_same_frame || !value) {
+-    if (error && is_same_frame) {
++    if (is_same_frame) {
+       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+           FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessage,
+                                     weak_ptr_factory_.GetWeakPtr()));
 @@ -231,6 +235,7 @@ void MojoFacade::HandleMojoMessage(
  }
  
