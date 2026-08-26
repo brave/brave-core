@@ -13,12 +13,12 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/numerics/byte_conversions.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -534,15 +534,15 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       const std::map<GURL, std::map<std::string, std::string>>& requests) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, requests](const network::ResourceRequest& request) {
-          auto it = requests.find(request.url);
-          if (it == requests.end() || !request.request_body) {
+          const auto* responses = base::FindOrNull(requests, request.url);
+          if (!responses || !request.request_body) {
             return;
           }
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()
                                               .AsStringPiece());
-          for (const auto& [pubkey, response] : it->second) {
+          for (const auto& [pubkey, response] : *responses) {
             if (request_string.find(pubkey) == std::string_view::npos) {
               continue;
             }
@@ -644,12 +644,12 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<TxService> tx_service_;
   mojom::AccountIdPtr dot_mainnet_account_;
   mojom::AccountIdPtr dot_testnet_account_;
   mojom::AccountIdPtr dot_testnet_account_2_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ptr<TxService> tx_service_;
 };
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverAnkrTokens) {
