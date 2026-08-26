@@ -14,6 +14,7 @@ interface IBraveVpnWireguardManager : IUnknown
                     [in] BSTR private_key,
                     [in] BSTR address,
                     [in] BSTR endpoint,
+                    [in] BOOL block_untunneled_traffic,
                     [out] DWORD* last_error);
 
   HRESULT DisableVpn([out] DWORD* last_error);

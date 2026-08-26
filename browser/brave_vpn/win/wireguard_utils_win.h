@@ -23,6 +23,7 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
                                     const std::string& client_private_key,
                                     const std::string& mapped_ip4_address,
                                     const std::string& vpn_server_hostname,
+                                    const bool block_untunneled_traffic,
                                     std::optional<std::string> smart_proxy_url,
                                     BooleanCallback callback);
 void DisableBraveVpnWireguardService(BooleanCallback callback);
