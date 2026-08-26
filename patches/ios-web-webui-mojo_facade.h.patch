@@ -1,60 +1,44 @@
 diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
-index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..039d1230cc1ff19f527733e62a722d7f8dcc1477 100644
+index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..5d23b666ba35e3f352cd3425b2cac75aa508ebbb 100644
 --- a/ios/web/webui/mojo_facade.h
 +++ b/ios/web/webui/mojo_facade.h
-@@ -58,6 +58,44 @@ class MojoFacade : public web::WebStateObserver,
+@@ -35,7 +35,8 @@ class MojoFacade : public web::WebStateObserver,
+  public:
+   // Constructs MojoFacade. The calling code must retain ownership of
+   // `web_state`, which cannot be null.
+-  explicit MojoFacade(WebState* web_state);
++  explicit MojoFacade(WebState* web_state,
++                      const std::string& webui_host = std::string());
+   ~MojoFacade() override;
+ 
+   // A listener that polls for messages from a content page to be processed by
+@@ -58,6 +59,29 @@ class MojoFacade : public web::WebStateObserver,
                           const base::DictValue* message,
                           base::OnceCallback<void(int, std::string)> completion);
  
 + protected:
-+  // The pipe table of the frame currently being serviced.
-+  std::unordered_map<int, mojo::ScopedMessagePipeHandle>& CurrentFramePipes();
-+  // Stores `pipe` under `pipe_id` in the current frame's table.
-+  void StorePipeForCurrentFrame(int pipe_id,
-+                                mojo::ScopedMessagePipeHandle pipe);
-+  // `frame_id` if it names a live frame, else the main frame's id.
-+  std::string ResolveFrameId(const std::string& frame_id);
-+  // Frame id that sent `message`, resolved as above.
-+  std::string GetFrameIdForMessage(const base::DictValue* message);
-+  // Frame id that created `watch_id`, resolved as above.
-+  std::string GetFrameIdForWatch(int watch_id);
++  // Whether `frame` is the frame this facade serves, which is the one
++  // whose security origin host matches served_host_. An empty
++  // served_host_ means the main frame, as upstream assumes.
++  bool ServesFrame(WebFrame* frame) const;
++  // Gates Mojo.bindInterface from a chrome-untrusted:// frame against
++  // InterfaceBinder::IsAllowedForOrigin. See
++  // brave/chromium_src/ios/web/public/web_state.h for the allowlist.
 +  bool IsBindInterfaceAllowedForFrame(const base::DictValue& args);
-+  void AwaitNextMessageForFrame(const std::string& frame_id);
-+  void OnAwaitNextMessageForFrameCompleted(const std::string& frame_id,
-+                                           const base::Value* value,
-+                                           NSError* error);
-+  // Resolves which frame a watch's callback should be delivered to,
-+  // falling back to the main frame exactly as upstream's own
-+  // GetMainWebFrame() call in OnWatcherCallback would.
-+  web::WebFrame* GetFrameForWatch(int watch_id);
-+  // Erases every watch (and watchers_ entry) created by `frame_id`,
-+  // so a sub-frame's watches can't outlive it and later misdirect to
-+  // the main frame via GetFrameForWatch's fallback.
-+  void EraseWatchersForFrame(const std::string& frame_id);
++  // Records what this facade knew when a message named a pipe id it
++  // doesn't hold.
++  void ReportUnknownPipe(const char* operation,
++                         std::optional<int> pipe_id);
++  // Whether a poll that came back empty is worth repeating. Counts the
++  // consecutive failures, so a frame that can no longer run scripts
++  // stops being asked.
++  bool ShouldRetryPoll();
 +
-+  // Frame ids of sub-frames (other than the main frame, already
-+  // covered by upstream's own is_awaiting_message_) currently being
-+  // polled. A std::map<std::string, bool> stands in for a set since
-+  // <set> isn't included here and this is the only place that needs
-+  // one.
-+  std::map<std::string, bool> extra_polling_frame_ids_;
-+  // Maps an active watch_id to the frame id that created it via
-+  // MojoHandle.watch.
-+  std::map<int, std::string> watch_id_to_frame_id_;
-+  // Frame whose message is being handled, empty outside of one.
-+  std::string current_frame_id_;
++  // Host of the WebUI this facade serves, empty for the main frame.
++  std::string served_host_;
++  // Polls in a row that carried no message.
++  int consecutive_poll_failures_ = 0;
 +
   private:
    // Callback for AwaitNextMessage completion.
    void OnAwaitNextMessageCompleted(const std::string& web_frame_id,
-@@ -163,7 +201,9 @@ class MojoFacade : public web::WebStateObserver,
- 
-   // A mapping of integer handles used by JS, to actual pipe handles used with
-   // Mojo APIs.
--  std::unordered_map<int, mojo::ScopedMessagePipeHandle> pipes_;
-+  // Keyed by frame id first: pipe ids are unique only within a frame.
-+  std::map<std::string, std::unordered_map<int, mojo::ScopedMessagePipeHandle>>
-+      pipes_;
- 
-   // Counter for generating unique pipe IDs for native-allocated handles,
-   // starting at max int and decrementing to avoid collision with JS handle IDs.

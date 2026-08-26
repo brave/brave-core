@@ -5,87 +5,163 @@
 
 substitutions:
   - description: |-
-      Record which frame created a watch, so OnWatcherCallback (patched
-      below) can route the eventual notification back to it instead of
-      always the main frame.
-    after_function_impl:
-      function_name: MojoFacade::HandleMojoHandleWatch
-      result_var: result
-      code: |-
-        if (const std::string* frame_id = args.FindString("frameId")) {
-          if (std::optional<int> watch_id = result.GetIfInt()) {
-            watch_id_to_frame_id_[*watch_id] = *frame_id;
+      Serve the frame belonging to this facade's WebUI host.
+
+      Every use of main_frame_ in this file means "the frame this facade
+      talks to" rather than "the main frame of the WebState": the poll loop
+      it drives, the frame it compares against when a poll completes, the
+      frame it delivers watch callbacks to, and the frame whose
+      disappearance tears its state down. Pointing it at the frame matching
+      served_host_ is therefore all a facade for a chrome-untrusted:// WebUI
+      needs to stop competing with the main frame's facade. See the
+      mojo_facade.h plaster for why more than one facade exists at all.
+    regex:
+      re_pattern:
+        'MojoFacade::MojoFacade\(WebState\* web_state\)\s*:
+        web_state_\(web_state\) \{'
+      re_flags: [DOTALL]
+      replace: |-
+        MojoFacade::MojoFacade(WebState* web_state, const std::string& webui_host)
+            : web_state_(web_state) {
+          served_host_ = webui_host;
+
+  - description: |-
+      Adopt the frame this facade's host names, rather than the main frame.
+    regex:
+      re_pattern: |-
+        WebFrame\* main_frame =
+              web_state_->GetPageWorldWebFramesManager\(\)->GetMainWebFrame\(\);
+      replace: |-
+        WebFrame* main_frame = nullptr;
+          for (WebFrame* frame :
+               web_state_->GetPageWorldWebFramesManager()->GetAllWebFrames()) {
+            if (ServesFrame(frame)) {
+              main_frame = frame;
+              break;
+            }
           }
-        }
-        return result;
-
-  - description: 'Clean up the frame mapping for a canceled watch.'
-    preempt_function_impl:
-      function_name: MojoFacade::HandleMojoWatcherCancel
-      code: |-
-        if (std::optional<int> watch_id = FindIntOrDoubleAsInt(args, "watchId")) {
-          watch_id_to_frame_id_.erase(*watch_id);
-        }
 
   - description: |-
-      Start polling any newly-available sub-frame for mojo messages too.
+      Track the served frame, and start polling as soon as it turns up.
 
-      Chromium only ever polls the main frame; Brave's AI Chat embeds an
-      untrusted conversation-entries iframe inside the main WebUI page that
-      also binds mojo interfaces, so it needs its own poll loop. Gated the
-      same way upstream gates the main frame's own AwaitNextMessage() call
-      (constructor, above): only once the page isn't mid-load and something
-      has actually registered an interface. Without this gate, a frame that
-      never uses mojo (e.g. any FakeWebFrame in a unit test, or an ordinary
-      iframe in production) would still get polled forever, since
-      OnAwaitNextMessageForFrameCompleted unconditionally retries on error.
-    after_function_impl:
-      function_name: MojoFacade::WebFrameBecameAvailable
-      code: |-
-        if (web_frame && !web_frame->IsMainFrame() &&
-            !web_state_->IsLoading() &&
-            web_state_->GetInterfaceBinderForMainFrame()
-                ->HasRegisteredInterfaces()) {
-          AwaitNextMessageForFrame(web_frame->GetFrameId());
-        }
+      A frame whose WebUI was created before it existed (the WebUI is built
+      from the navigation, the frame registers later) would otherwise never
+      be polled: upstream only ever starts the loop from the constructor and
+      from PageLoaded, both of which can run before the frame appears.
+    regex:
+      re_pattern: |-
+        if \(web_frame && web_frame->IsMainFrame\(\)\) \{
+            main_frame_ = web_frame->AsWeakPtr\(\);
+          \}
+      replace: |-
+        if (web_frame && ServesFrame(web_frame)) {
+            main_frame_ = web_frame->AsWeakPtr();
+            AwaitNextMessage();
+          }
 
   - description: |-
-      Stop polling a sub-frame once it goes away, and erase the watches and
-      pipes it created.
+      Stop discarding live pipes when the page finishes loading.
 
-      Without this, a watch created by a sub-frame (e.g. AI Chat's
-      untrusted conversation-entries iframe) outlives the frame: watchers_
-      keeps armed-and-watching indefinitely, and a later notification for
-      it gets misdirected to the main frame instead of dropped, since
-      GetFrameForWatch falls back to the main frame when the original
-      frame can no longer be found. Upstream's own pipes_.clear() above only
-      runs for the main frame, so a sub-frame's table has to go here.
-    after_function_impl:
-      function_name: MojoFacade::WebFrameBecameUnavailable
-      code: |-
-        extra_polling_frame_ids_.erase(frame_id);
-        EraseWatchersForFrame(frame_id);
-        pipes_.erase(frame_id);
+      PageLoaded means "done loading", not "new JS context". The document's
+      scripts have already run by then, so this throws away pipes the very
+      much alive JS context is still holding handles for, while nothing
+      resets its Mojo.nextAvailableHandleId counter (mojo_api.js keeps it
+      deliberately, via `Mojo.nextAvailableHandleId || 1`). The handle a
+      WebUI binds first and keeps longest is exactly the one that goes
+      stale, and writing to it later hits CHECK(pipe.is_valid()).
+
+      The correctly timed reset already exists in WebFrameBecameUnavailable,
+      which fires when the served frame goes away, i.e. when the JS context
+      that minted those ids is actually gone.
+    regex:
+      re_pattern:
+        'pipes_\.clear\(\);\n    watchers_\.clear\(\);\n    last_watch_id_ =
+        0;\n    '
+      replace: ''
 
   - description: |-
-      Reset Brave's sub-frame routing state alongside upstream's own reset.
+      Don't restart a poll that is already in flight, it loses a message.
 
-      Upstream's own reset calls weak_ptr_factory_.InvalidateWeakPtrs(),
-      which would otherwise silently strand an in-flight extra-frame poll
-      loop, leaving extra_polling_frame_ids_ stuck believing it's still
-      polling.
-    preempt_function_impl:
-      function_name: MojoFacade::PageLoaded
-      code: |-
-        extra_polling_frame_ids_.clear();
-        watch_id_to_frame_id_.clear();
+      fetchNextMessageFromJS() shifts the message off the JS queue as it
+      hands it over, so a poll that never completes takes that message with
+      it, permanently. Invalidating the weak pointers here drops the
+      in-flight poll's completion silently, and the replacement poll
+      overwrites sendNextMessagePromiseResolver in JS.
 
-  - description: 'Reset Brave sub-frame routing state on teardown too.'
-    preempt_function_impl:
-      function_name: MojoFacade::WebStateDestroyed
-      code: |-
-        extra_polling_frame_ids_.clear();
-        watch_id_to_frame_id_.clear();
+      AwaitNextMessage() already no-ops when a poll is running, so calling
+      it unguarded is all this needs to do. A frame that genuinely went away
+      is reset by WebFrameBecameUnavailable, which is where the state reset
+      belongs.
+    regex:
+      re_pattern:
+        'is_awaiting_message_ =
+        false;\n    weak_ptr_factory_\.InvalidateWeakPtrs\(\);\n
+        \   AwaitNextMessage\(\);'
+      replace: 'AwaitNextMessage();'
+
+  - description: |-
+      Keep polling a frame that hands back nothing.
+
+      A completion with neither a value nor an error ends the poll loop for
+      good, because only the error branch re-arms. Retrying can't be
+      unconditional either: upstream re-posts on every error with no bound,
+      so a frame whose document can no longer run scripts spins a PostTask
+      loop forever. ShouldRetryPoll gives up after a few consecutive
+      failures, and the counter resets on the first completion that carries
+      a message.
+    regex:
+      re_pattern: 'if \(error && is_same_frame\) \{'
+      replace: 'if (is_same_frame && ShouldRetryPoll()) {'
+
+  - description: |-
+      Space out poll retries instead of re-posting immediately.
+
+      The first polls of a page routinely fail with "ReferenceError: Can't
+      find variable: Mojo", because the loop starts before the page's copy of
+      mojo_api.js has run. Retrying immediately is no help there: each
+      attempt fails at once and only spends the allowance ShouldRetryPoll
+      keeps, so on a slower load the WebUI gives up before its own script is
+      ready. A short delay makes each retry a real second chance.
+    regex:
+      re_pattern: 'PostTask\(\s*FROM_HERE,\s*base::BindOnce\(&MojoFacade::AwaitNextMessage,\s*weak_ptr_factory_\.GetWeakPtr\(\)\)\);'
+      replace:
+        'PostDelayedTask(\n          FROM_HERE,\n          base::BindOnce(&MojoFacade::AwaitNextMessage,\n                         weak_ptr_factory_.GetWeakPtr()),\n          kPollRetryDelay);'
+
+  - description: |-
+      A poll that delivered a message clears the consecutive-failure count.
+    regex:
+      re_pattern: |-
+        return;
+          \}
+
+          const base::DictValue\* dict = value->GetIfDict\(\);
+      replace: |-
+        return;
+          }
+          consecutive_poll_failures_ = 0;
+
+          const base::DictValue* dict = value->GetIfDict();
+
+  - description: |-
+      Don't crash the browser when a write names a pipe id we don't hold.
+
+      Upstream hit this same "handle unknown to the facade" failure on the
+      sibling call site and made it non-fatal in 62168f0dc5969 ([iOS] Make
+      MojoFacade::HandleMojoBindInterface non-fatal), cherry-picked into the
+      8010 branch this rebase targets, without touching this one. A WebUI
+      page shouldn't be able to take the browser down either way.
+    regex:
+      re_pattern: |-
+        CHECK\(pipe_id\.has_value\(\)\);
+          mojo::MessagePipeHandle pipe = GetPipeFromId\(\*pipe_id\);
+          CHECK\(pipe\.is_valid\(\)\);
+      replace: |-
+        mojo::MessagePipeHandle pipe =
+              pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
+          if (!pipe.is_valid()) {
+            ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
+            return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
+          }
 
   - description: |-
       Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
@@ -98,65 +174,3 @@ substitutions:
       function_name: MojoFacade::HandleMojoBindInterface
       return_if: '!IsBindInterfaceAllowedForFrame(args)'
       return_value: 'false'
-
-  - description: |-
-      Route watch callbacks to the frame that created the watch (see
-      HandleMojoHandleWatch's after_function_impl above), falling back to
-      the main frame exactly as upstream does when unknown. Needed so
-      sub-frames (e.g. AI Chat's untrusted conversation-entries iframe) get
-      their own watch notifications instead of everything going to the main
-      frame.
-
-      Scoped to this one call site (rather than a #define on
-      GetMainWebFrame(), which is also called from its own definition and
-      from AwaitNextMessage()) by anchoring on the enclosing function name.
-    regex:
-      re_pattern:
-        '(MojoFacade::OnWatcherCallback\([^)]*\)\s*\{\s*WebFrame\* main_frame =
-        )GetMainWebFrame\(\);'
-      re_flags: [DOTALL]
-      replace: '\1GetFrameForWatch(watch_id);'
-
-  - description: |-
-      Scope a message's pipe lookups to the frame that sent it.
-
-      Handle ids are minted by a per-frame JS counter that restarts at 1 in
-      every frame (see the mojo_facade.h plaster), so they mean nothing
-      without knowing the frame. This is the single funnel every JS-initiated
-      pipe operation passes through, so binding the frame here keeps
-      upstream's handlers written in terms of a bare pipe id.
-    preempt_function_impl:
-      function_name: MojoFacade::HandleMojoMessage
-      code: |-
-        base::AutoReset<std::string> frame_scope(&current_frame_id_,
-                                                 GetFrameIdForMessage(message));
-
-  - description: |-
-      Store a newly allocated pipe in the sending frame's table.
-    regex:
-      re_pattern: 'pipes_\[pipe_id\] = std::move\(pipe\);'
-      replace: 'StorePipeForCurrentFrame(pipe_id, std::move(pipe));'
-
-  - description: |-
-      Look pipes up by id in the current frame's table.
-
-      Only the by-pipe-id lookups move: pipes_.clear() and the
-      pipes_.erase(frame_id) added above address whole frames, which the
-      outer map still keys directly.
-    count: 5
-    regex:
-      re_pattern: 'pipes_\.(find\(id\)|end\(\)|erase\(it\))'
-      replace: 'CurrentFramePipes().\1'
-
-  - description: |-
-      Scope a watch notification's pipe reads to the frame that created it.
-
-      OnWatcherCallback reaches ReadMessageFromPipe without passing through
-      HandleMojoMessage, so it has to bind the frame itself. Must stay after
-      the GetFrameForWatch substitution above, which matches on this body
-      starting with its own first statement.
-    preempt_function_impl:
-      function_name: MojoFacade::OnWatcherCallback
-      code: |-
-        base::AutoReset<std::string> frame_scope(&current_frame_id_,
-                                                 GetFrameIdForWatch(watch_id));
