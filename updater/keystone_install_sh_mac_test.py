@@ -4,8 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """
-This script tests Brave's customizations to chrome/updater/mac/.install.sh.
-You can run it with `python3 install_sh_mac_test.py`.
+This script tests Brave's customizations to
+chrome/installer/mac/keystone_install.sh. You can run it with
+`python3 keystone_install_sh_mac_test.py`.
 """
 
 from os import chmod, close, fdopen, makedirs, mkdir, pipe, stat
@@ -22,22 +23,23 @@ import sys
 import unittest
 
 SRC_ROOT = dirname(dirname(dirname(realpath(__file__))))
-INSTALL_SH = join(SRC_ROOT, "chrome", "updater", "mac", ".install.sh")
+KEYSTONE_INSTALL_SH = join(SRC_ROOT, "chrome", "installer", "mac",
+                           "keystone_install.sh")
 
 # We make it possible for the Python test to mock system executables. For
 # example:
 #     def mkdir(args):
 #         return 1, "Permission denied"
 #     self._run_install_sh(..., commands={'mkdir': mkdir})
-# This runs .install.sh with a modified PATH that includes a wrapper for `mkdir`
-# that returns 1 and prints "Permission denied" to stderr.
+# This runs keystone_install.sh with a modified PATH that includes a wrapper
+# for `mkdir` that returns 1 and prints "Permission denied" to stderr.
 # The way this works is that `mkdir` on PATH has the contents given by
 # COMMAND_WRAPPER (CW) below. CW writes the command name and arguments to a
 # dedicated file descriptor (PROMPT_FD). The Python implementation reads from
 # this file descriptor, invokes the associated Python function and writes the
 # exit code and stderr to a second dedicated file descriptor (RESPONSE_FD). CW
 # reads from this file descriptor, prints the given stderr and exits with the
-# given code. We use RESPONSE_FD rather than stdin because install.sh
+# given code. We use RESPONSE_FD rather than stdin because the script
 # backgrounds rsync (`rsync ... &`), and bash redirects backgrounded processes'
 # stdin to /dev/null in non-interactive shells.
 COMMAND_WRAPPER = """
@@ -59,7 +61,7 @@ UPDATE_VERSION = "2.0.0.0"
 
 
 @unittest.skipUnless(sys.platform == "darwin", "requires macOS")
-class InstallShPatchTest(unittest.TestCase):
+class KeystoneInstallShPatchTest(unittest.TestCase):
 
     def setUp(self):
         self.temp_dir = TemporaryDirectory()
@@ -170,8 +172,8 @@ class InstallShPatchTest(unittest.TestCase):
 
     def test_mkdir_failure_classified_by_stderr(self):
         """
-        When mkdir of new_versioned_dir fails, install.sh classifies the
-        stderr into a distinct exit code in [70, 75].
+        When mkdir of new_versioned_dir fails, keystone_install.sh classifies
+        the stderr into a distinct exit code in [70, 75].
         """
         cases = [
             (70, "Read-only file system"),
@@ -210,31 +212,25 @@ class InstallShPatchTest(unittest.TestCase):
         return dmg_dir
 
     def _prepare_install_sh(self):
-        with open(INSTALL_SH, "r") as f:
+        with open(KEYSTONE_INSTALL_SH, "r") as f:
             source = f.read()
-        patched, count = re.subn(r"^UPDATE_VERSION=\s*$",
-                                 f'UPDATE_VERSION="{UPDATE_VERSION}"',
-                                 source,
-                                 count=1,
-                                 flags=re.MULTILINE)
-        self.assertEqual(1, count)
         bin_dir = join(self.temp_dir.name, "bin")
         mkdir(bin_dir)
         # Prepend bin/ to PATH so tests can override commands like rsync.
         patched, count = re.subn(r'^export PATH="',
                                  f'export PATH="{bin_dir}:',
-                                 patched,
+                                 source,
                                  count=1,
                                  flags=re.MULTILINE)
         self.assertEqual(1, count)
-        install_sh_path = join(self.temp_dir.name, "install.sh")
+        install_sh_path = join(self.temp_dir.name, "keystone_install.sh")
         with open(install_sh_path, "w") as f:
             f.write(patched)
         chmod(install_sh_path, stat(install_sh_path).st_mode | S_IXUSR)
         return install_sh_path, bin_dir
 
     def _make_app(self, bundle_path, version):
-        """Create the minimum .app bundle that .install.sh's checks accept."""
+        """Create the minimum .app bundle that the script's checks accept."""
         contents = join(bundle_path, "Contents")
         framework_dir = join(contents, "Frameworks",
                              f"{PRODUCT_NAME} Framework.framework")
@@ -245,6 +241,12 @@ class InstallShPatchTest(unittest.TestCase):
                     "CFBundleDisplayName": PRODUCT_NAME,
                     "CFBundleShortVersionString": version,
                     "CFBundleExecutable": PRODUCT_NAME,
+                    "KSVersion": version,
+                    "KSProductID": "a.product.id",
+                    "KSUpdateURL": "https://an.update.url",
+                    # Makes the script treat the app as side-by-side capable,
+                    # which skips its Google-specific brand code logic.
+                    "CrProductDirName": "ANonEmptyValue",
                 },
                 f,
             )
@@ -281,11 +283,14 @@ class InstallShPatchTest(unittest.TestCase):
         response_r, response_w = pipe()
         env["PROMPT_FD"] = str(prompt_w)
         env["RESPONSE_FD"] = str(response_r)
+        # Make the script take the installed app from the environment instead
+        # of invoking ksadmin:
+        env["GOOGLE_CHROME_UPDATER_TEST_PATH"] = installed_app_dir
+        # Mirror what the updater does in production:
+        env["KS_TICKET_XC_PATH"] = installed_app_dir
         if is_root:
             env["EUID"] = "0"
-        proc = Popen([
-            self.install_sh, self.dmg_dir, installed_app_dir, CURRENT_VERSION
-        ],
+        proc = Popen([self.install_sh, self.dmg_dir],
                      stdin=DEVNULL,
                      stdout=PIPE,
                      stderr=STDOUT,
@@ -329,8 +334,8 @@ class InstallShPatchTest(unittest.TestCase):
             try:
                 responses.close()
             except BrokenPipeError:
-                # This can happen when install.sh exited before we got to write
-                # the last response.
+                # This can happen when the script exited before we got to
+                # write the last response.
                 pass
             drain_thread.join(timeout=5)
         output = "".join(output_lines)

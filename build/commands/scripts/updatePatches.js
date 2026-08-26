@@ -70,7 +70,8 @@ async function loadPlasterPathFilter(rewriteDir) {
   const managedSources = new Set()
 
   // The second pattern matches plaster files whose name starts with a dot (e.g.
-  // `chrome/updater/mac/.install.sh.yaml`); glob's `*` skips leading dots.
+  // a plaster for a dotfile like `.rustfmt.toml.yaml`); glob's `*` skips
+  // leading dots.
   const patterns = [`**/*${plasterExtension}`, `**/.*${plasterExtension}`]
   for await (const file of glob(patterns, { cwd: rewriteDir })) {
     // `<source>.yaml` -> `<source>`, normalized to posix separators so it

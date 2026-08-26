@@ -14,15 +14,15 @@
 
 namespace {
 
-// install_sh_test.py contains behavioral tests for Brave's customizations to
-// chrome/updater/mac/.install.sh. Run it as a subprocess and fail if any of
-// its Python tests fail.
-TEST(InstallShTest, RunTestScript) {
+// keystone_install_sh_mac_test.py contains behavioral tests for Brave's
+// customizations to chrome/installer/mac/keystone_install.sh. Run it as a
+// subprocess and fail if any of its Python tests fail.
+TEST(KeystoneInstallShTest, RunTestScript) {
   base::FilePath script =
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendUTF8("brave")
           .AppendUTF8("updater")
-          .AppendUTF8("install_sh_mac_test.py");
+          .AppendUTF8("keystone_install_sh_mac_test.py");
   base::CommandLine cmd(base::FilePath("python3"));
   cmd.AppendArgPath(script);
   std::string output;
