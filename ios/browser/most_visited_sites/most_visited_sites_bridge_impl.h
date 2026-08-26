@@ -26,8 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
     (std::unique_ptr<ntp_tiles::MostVisitedSites>)mostVisitedSites
     NS_DESIGNATED_INITIALIZER;
 
-- (void)enableTopSitesOnlyTileTypes;
-
 @end
 
 NS_ASSUME_NONNULL_END

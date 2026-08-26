@@ -65,7 +65,10 @@ NS_SWIFT_NAME(MostVisitedSites)
 - (id<MostVisitedSitesObservation>)
     addMostVisitedURLsObserver:(id<MostVisitedSitesObserverBridge>)observer
                    maxNumSites:(NSUInteger)maxNumSites
-    NS_SWIFT_NAME(addMostVisitedURLsObserver(observer:maxNumSites:));
+    NS_SWIFT_NAME(addMostVisitedURLsObserver(_:maxNumSites:));
+
+/// Enable topsite ntp tile type only
+- (void)enableTopSitesOnlyTileTypes;
 
 /// Requests an asynchronous refresh. The observer is notified only if the set
 /// of tiles changed.

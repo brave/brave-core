@@ -108,15 +108,8 @@ class MostVisitedSitesObserverImpl
     (std::unique_ptr<ntp_tiles::MostVisitedSites>)mostVisitedSites {
   if ((self = [super init])) {
     _mostVisitedSites = std::move(mostVisitedSites);
-    [self enableTopSitesOnlyTileTypes];
   }
   return self;
-}
-
-- (void)enableTopSitesOnlyTileTypes {
-  _mostVisitedSites->EnableTileTypes(
-      ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_top_sites(
-          true));
 }
 
 - (id<MostVisitedSitesObservation>)
@@ -128,6 +121,12 @@ class MostVisitedSitesObserverImpl
                                                 maxNumSites);
   return [[MostVisitedSitesObservationImpl alloc]
       initWithObserverBridge:std::move(observerBridge)];
+}
+
+- (void)enableTopSitesOnlyTileTypes {
+  _mostVisitedSites->EnableTileTypes(
+      ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_top_sites(
+          true));
 }
 
 - (void)refresh {
