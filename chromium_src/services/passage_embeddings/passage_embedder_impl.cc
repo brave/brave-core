@@ -8,7 +8,7 @@
 #include "build/buildflag.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
 
-#if !BUILDFLAG(IS_IOS) 
+#if !BUILDFLAG(IS_IOS)
 namespace base {
 class File;
 }  // namespace base
@@ -54,7 +54,6 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
 
 }  // namespace brave_history_embeddings
 #endif  // !BUILDFLAG(IS_IOS)
-
 
 // Injected at the top of PassageEmbedderImpl::BuildExecutionTask so
 // EmbeddingGemma runs through LiteRT's CompiledModel, falling through to the
