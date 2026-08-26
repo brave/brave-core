@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa0cab8cbf 100644
+index 72ff7572d05cdd9a12028aa2f0101bf79808cd07..e0d0b4a3c75de896eebb6ee0ccec2ec26b30ca6e 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -239,10 +239,10 @@
+@@ -241,10 +241,10 @@
  #include "chrome/browser/ui/overscroll_pref_manager.h"
  #endif  // defined(USE_AURA)
  
@@ -16,7 +16,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
    // This is used only for the controllers which will be created on demand
    // later.
    browser_ = browser;
-@@ -317,7 +317,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -319,7 +319,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
            BrowserInitState::From(browser)
                ->browser_window_create_params()
                .is_trusted_source,
@@ -25,7 +25,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
  
    side_panel_registry_ =
        GetUserDataFactory().CreateInstance<SidePanelRegistry>(*browser, browser);
-@@ -327,11 +327,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -329,11 +329,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    // initializes the default enabled states for UI commands
    // (InitCommandState). If BrowserActions is not built first, those initial
    // enabled updates will be completely dropped.
@@ -39,7 +39,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
  
    browser_animation_controller_ =
        GetUserDataFactory().CreateInstance<BrowserAnimationController>(*browser,
-@@ -374,7 +374,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -376,7 +376,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    }
  
    content_setting_bubble_model_delegate_ =
@@ -48,7 +48,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
  
    context_highlight_window_feature_ =
        std::make_unique<ContextHighlightWindowFeature>(*browser);
-@@ -655,7 +655,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -657,7 +657,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    embedder_browser_window_features_->Init(browser);
  }
  
@@ -57,7 +57,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
    // Foundational state used throughout this function. Computed/assigned early
    // so the alphabetical sections below can rely on them.
    Profile* const profile = browser_->GetProfile();
-@@ -779,7 +779,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
+@@ -789,7 +789,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
  
    // Must be after exclusive_access_manager_,
    // desktop_browser_window_capabilities_, and browser_ui_controller_.
@@ -66,7 +66,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
        browser, *exclusive_access_manager_, *browser_command_controller_,
        *unload_controller_, app_browser_controller_.get(),
        *BrowserWindow::FromBrowser(browser),
-@@ -865,7 +865,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
+@@ -875,7 +875,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
    // this for most browser.h types, we should also stop making the side_panel_.
    if (browser_view) {
      side_panel_coordinator_ =
@@ -75,7 +75,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
                                                                    browser);
    } else if (webui_browser_window) {
      webui_browser_side_panel_ui_ =
-@@ -1063,7 +1063,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
+@@ -1073,7 +1073,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
    embedder_browser_window_features_->InitPostWindowConstruction(browser);
  }
  
@@ -84,7 +84,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
      BrowserView* browser_view) {
    // WARNING: DO NOT ADD ANY MORE CODE HERE. Please perform setup in
    // InitPostWindowConstruction() instead.
-@@ -1073,7 +1073,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
+@@ -1083,7 +1083,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
        browser_view);
  }
  
@@ -93,7 +93,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
    // Tear down in reverse order of construction: embedder first, then
    // InitPostWindowConstruction, then Init. Within each section, members are
    // torn down in reverse of the corresponding Init* ordering. Dependency
-@@ -1205,27 +1205,27 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
+@@ -1215,27 +1215,27 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
    actor_border_view_controller_.reset();
  }
  
@@ -126,7 +126,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
    // Return nullptr if not initialized. This can happen in tests where
    // BrowserWindowFeatures is stubbed without being initialized with a browser.
    if (!browser_) {
-@@ -1234,7 +1234,7 @@ LocationBar* BrowserWindowFeatures::location_bar() {
+@@ -1244,7 +1244,7 @@ LocationBar* BrowserWindowFeatures::location_bar() {
    return BrowserWindow::FromBrowser(browser_)->GetLocationBar();
  }
  
@@ -135,7 +135,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
    // Return nullptr if not initialized. This can happen in tests where
    // BrowserWindowFeatures is stubbed without being initialized with a browser.
    if (!browser_) {
-@@ -1243,7 +1243,7 @@ const LocationBar* BrowserWindowFeatures::location_bar() const {
+@@ -1253,7 +1253,7 @@ const LocationBar* BrowserWindowFeatures::location_bar() const {
    return BrowserWindow::FromBrowser(browser_)->GetLocationBar();
  }
  
@@ -144,7 +144,7 @@ index dbd0845470fc0b84a180b7f9a72fb89aef694ecf..fefdc0aa5a97a80ba574bb46f3c937aa
    if (!find_bar_controller_.get()) {
      CHECK(browser_);
      find_bar_controller_ = std::make_unique<FindBarController>(
-@@ -1258,19 +1258,19 @@ FindBarController* BrowserWindowFeatures::GetFindBarController() {
+@@ -1268,19 +1268,19 @@ FindBarController* BrowserWindowFeatures::GetFindBarController() {
    return find_bar_controller_.get();
  }
  

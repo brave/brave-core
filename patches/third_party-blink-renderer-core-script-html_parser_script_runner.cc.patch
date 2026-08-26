@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/html_parser_script_runner.cc b/third_party/blink/renderer/core/script/html_parser_script_runner.cc
-index b3d713311dfd02668c3a589ddd9c5dd7159edb4e..fc4fe3bfde697789c1c5e2edf5403f59e2818446 100644
+index b12dda9912ff38786de7486a2b0b07230046bfc7..6d1cbac66b9a4e66b71ae33e6959ae3edcb615ee 100644
 --- a/third_party/blink/renderer/core/script/html_parser_script_runner.cc
 +++ b/third_party/blink/renderer/core/script/html_parser_script_runner.cc
-@@ -270,6 +270,12 @@ void HTMLParserScriptRunner::PendingScriptFinished(
+@@ -269,6 +269,12 @@ void HTMLParserScriptRunner::PendingScriptFinished(
      return;
    }
  

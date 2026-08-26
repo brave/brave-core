@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc b/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
-index 44527d0a7b264441eac9c25fa8b9347aeeb5c7d1..603729a3bb243bb4edb18c077d466aeaa277b1eb 100644
+index 5d35a355c7743111841128548855e86338bbd7c2..26b5a65407baaf2c6506fd7dca3905396829045d 100644
 --- a/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
 +++ b/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
-@@ -143,6 +143,7 @@ GPUAdapterInfo* GPUAdapter::CreateAdapterInfoForAdapter() {
+@@ -144,6 +144,7 @@ GPUAdapterInfo* GPUAdapter::CreateAdapterInfoForAdapter() {
        info->AppendMemoryHeapInfo(MakeGarbageCollected<GPUMemoryHeapInfo>(m));
      }
    } else {

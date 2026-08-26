@@ -1,8 +1,8 @@
 diff --git a/tools/clang/pylib/clang/compile_db.py b/tools/clang/pylib/clang/compile_db.py
-index 14f23adc73424d8c27fa51cf90bb8279736c69fe..9b63d23716d40e1c6e569d682dc21c2e0b8ab1f9 100755
+index 200512d7fbd51b1588d1b8c46ad0964479758ff2..16bbb5ad89e5a39723d108e70ed7741ed2575842 100755
 --- a/tools/clang/pylib/clang/compile_db.py
 +++ b/tools/clang/pylib/clang/compile_db.py
-@@ -225,3 +225,4 @@ def Read(path):
+@@ -241,3 +241,4 @@ def Read(path):
    """
    with open(os.path.join(path, 'compile_commands.json'), 'rb') as db:
      return json.load(db)
