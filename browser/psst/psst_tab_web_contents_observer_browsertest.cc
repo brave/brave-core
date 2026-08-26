@@ -1079,41 +1079,46 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   auto* theme_service = ThemeServiceFactory::GetForProfile(profile_);
   ASSERT_TRUE(theme_service);
 
-  // Opens the consent dialog under the given color scheme and returns both
+  // Opens the consent dialog under the given color scheme and sets both
   // the background color the dialog should be using (per the WebContents'
   // own color provider) and the color it actually rendered.
   auto open_dialog_and_get_colors =
-      [&](ThemeService::BrowserColorScheme color_scheme) {
+      [&](ThemeService::BrowserColorScheme color_scheme,
+          SkColor* expected_color_out, SkColor* actual_color_out) {
         theme_service->SetBrowserColorScheme(color_scheme);
         chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
 
         content::WebContents* dialog_wc = nullptr;
-        NavigateAndClickOnPsstLocationBarIcon(url, ui::EF_LEFT_MOUSE_BUTTON,
-                                              &dialog_wc);
+        ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+            url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+        ASSERT_TRUE(dialog_wc);
 
-        const SkColor expected_color = dialog_wc->GetColorProvider().GetColor(
+        *expected_color_out = dialog_wc->GetColorProvider().GetColor(
             color_scheme == ThemeService::BrowserColorScheme::kDark
                 ? ui::kColorRefNeutral10
                 : ui::kColorRefNeutral100);
-        const SkColor actual_color = GetDialogBodyBackgroundColor(dialog_wc);
+        *actual_color_out = GetDialogBodyBackgroundColor(dialog_wc);
 
         DialogCloseObserver dialog_close_observer(dialog_wc);
         EXPECT_TRUE(CloseModalDialog(dialog_wc));
         dialog_close_observer.Wait();
-
-        return std::make_pair(expected_color, actual_color);
       };
 
-  const auto [light_expected, light_actual] =
-      open_dialog_and_get_colors(ThemeService::BrowserColorScheme::kLight);
-  const auto [dark_expected, dark_actual] =
-      open_dialog_and_get_colors(ThemeService::BrowserColorScheme::kDark);
+  SkColor light_expected;
+  SkColor light_actual;
+  SkColor dark_expected;
+  SkColor dark_actual;
+  ASSERT_NO_FATAL_FAILURE(
+      open_dialog_and_get_colors(ThemeService::BrowserColorScheme::kLight,
+                                 &light_expected, &light_actual));
+  ASSERT_NO_FATAL_FAILURE(open_dialog_and_get_colors(
+      ThemeService::BrowserColorScheme::kDark, &dark_expected, &dark_actual));
 
   EXPECT_EQ(light_actual, light_expected);
   EXPECT_EQ(dark_actual, dark_expected);
 
-  // The background must actually change between color modes rather than staying
-  // fixed.
+  // The background must actually change between color modes rather than
+  // staying fixed.
   EXPECT_NE(light_actual, dark_actual);
 }
 
