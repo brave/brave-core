@@ -181,6 +181,7 @@ extension BrowserViewController: TabManagerDelegate {
       }
       self.present(quickViewController, animated: true)
     }
+    tab.blockedDomainTabHelper = .init(tab: tab)
   }
 
   func tabManager(
