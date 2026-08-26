@@ -13,7 +13,6 @@ import { ColorScheme } from '../api/welcome_api'
 import { useWelcomeApi } from '../api/welcome_api_context'
 import { useStepTransition } from './use_step_transition'
 import { getString } from '../lib/strings'
-import * as themeColors from '../lib/theme_colors'
 import { BrowserPreview } from './browser_preview'
 import { StepComponentProps } from './step_component_props'
 import { StepHeader } from './step_header'
@@ -27,13 +26,9 @@ export function AppearanceStep(props: StepComponentProps) {
   useStepTransition()
 
   const colorScheme = api.useGetColorScheme().data
-  const theme = api.useTheme().data
   const tabOrientation = api.useGetVerticalTabsEnabled().data
     ? 'vertical'
     : 'horizontal'
-  const tintToolbarBackground = Boolean(
-    theme && themeColors.themeHasCustomColor(theme) && !theme.isDarkMode,
-  )
 
   return (
     <div
@@ -47,10 +42,7 @@ export function AppearanceStep(props: StepComponentProps) {
           <p>{getString('WELCOME_PAGE_APPEARANCE_STEP_TEXT')}</p>
         </div>
         <div className='step-ui'>
-          <BrowserPreview
-            tabOrientation={tabOrientation}
-            tintToolbarBackground={tintToolbarBackground}
-          />
+          <BrowserPreview tabOrientation={tabOrientation} />
           <div className='tab-layout'>
             <h4>{getString('WELCOME_PAGE_TAB_LAYOUT_LABEL')}</h4>
             <SegmentedControl
