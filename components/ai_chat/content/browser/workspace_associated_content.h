@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "content/public/browser/weak_document_ptr.h"
@@ -72,6 +73,11 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
       blink::mojom::AIPageContentPtr result);
 
   const base::FilePath folder_path_;
+
+  // Outlives this object: the BrowserContext owns the conversation that owns
+  // this delegate. Held so the folder can be deregistered on destruction.
+  const raw_ptr<content::BrowserContext> browser_context_;
+
   std::unique_ptr<content::WebContents> web_contents_;
 
   // True once the workspace page has loaded and its handle has been delivered.

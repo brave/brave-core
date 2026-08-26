@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/content_tool.h"
+#include "brave/components/ai_chat/content/browser/workspace_content_registry.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -42,7 +43,7 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     base::FilePath folder_path,
     content::BrowserContext* browser_context,
     base::OnceCallback<void(content::WebContents*)> attach_tab_helpers)
-    : folder_path_(std::move(folder_path)) {
+    : folder_path_(std::move(folder_path)), browser_context_(browser_context) {
   std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
   GURL url(base::StrCat({kAIChatLeoWorkspaceUIURL, uuid}));
   DVLOG(2) << __func__ << " creating workspace content at " << url.spec()
@@ -51,6 +52,11 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
   set_uuid(uuid);
   set_url(url);
   SetTitle(u"Workspace");
+
+  // Make the folder servable at chrome-untrusted://leo-workspace-content/<uuid>
+  // for as long as this workspace exists, so generated files can be previewed.
+  WorkspaceContentRegistry::GetOrCreate(browser_context)
+      ->Register(uuid, folder_path_);
 
   // Hidden, headless background WebContents that hosts the workspace page.
   content::WebContents::CreateParams params(browser_context);
@@ -66,7 +72,13 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
   web_contents_->GetController().LoadURLWithParams(load_params);
 }
 
-WorkspaceAssociatedContent::~WorkspaceAssociatedContent() = default;
+WorkspaceAssociatedContent::~WorkspaceAssociatedContent() {
+  // Stop serving the folder. A preview iframe left pointing at this uuid now
+  // resolves to nothing rather than to some other workspace's folder.
+  if (browser_context_) {
+    WorkspaceContentRegistry::GetOrCreate(browser_context_)->Unregister(uuid());
+  }
+}
 
 void WorkspaceAssociatedContent::GetContent(GetPageContentCallback callback) {
   // Headless tool host: there is no page text to contribute to the

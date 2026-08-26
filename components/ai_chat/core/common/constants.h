@@ -58,6 +58,16 @@ inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
 inline constexpr char kAIChatLeoWorkspaceUIURL[] =
     "chrome-untrusted://leo-workspace/";
 
+// The chrome-untrusted WebUI that serves the contents of a workspace folder for
+// preview, at /<workspace-uuid>/<path relative to the folder>. Deliberately a
+// separate host (and therefore origin) from kAIChatLeoWorkspaceUIHost: that
+// page is auto-granted File System Access read/write for its origin, so
+// workspace files - which are model-authored - must never be served into it.
+inline constexpr char kAIChatLeoWorkspaceContentUIHost[] =
+    "leo-workspace-content";
+inline constexpr char kAIChatLeoWorkspaceContentUIURL[] =
+    "chrome-untrusted://leo-workspace-content/";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

@@ -20,6 +20,8 @@ source_set("ai_chat") {
     "chart_display_ui.h",
     "code_sandbox_ui.cc",
     "code_sandbox_ui.h",
+    "leo_workspace_content_ui.cc",
+    "leo_workspace_content_ui.h",
     "leo_workspace_ui.cc",
     "leo_workspace_ui.h",
     "workspace_folder_chooser.cc",
@@ -131,7 +133,10 @@ source_set("unit_tests") {
     "//ui/shell_dialogs",
   ]
 
-  sources = [ "ai_chat_ui_page_handler_unittest.cc" ]
+  sources = [
+    "ai_chat_ui_page_handler_unittest.cc",
+    "leo_workspace_content_ui_unittest.cc",
+  ]
 }
 
 source_set("browser_tests") {
