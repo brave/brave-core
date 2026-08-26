@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..ea8110182b823a21d87d922ccdc8978b345e04ae 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..a9ed0322ff4d1d4bef23ea17002b0b7374610883 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,18 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -31,7 +31,23 @@ index cbc39d0594174bb896c7f79198325959c7d304be..ea8110182b823a21d87d922ccdc8978b
    const std::string* interface_name = args.FindString("interfaceName");
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
-@@ -448,14 +453,24 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -279,9 +284,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
+ base::Value MojoFacade::HandleMojoHandleWriteMessage(
+     const base::DictValue& args) {
+   std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
+-  CHECK(pipe_id.has_value());
+-  mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
+-  CHECK(pipe.is_valid());
++  mojo::MessagePipeHandle pipe =
++      pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
++  if (!pipe.is_valid()) {
++    ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
++    return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
++  }
+ 
+   const base::ListValue* handles_list = args.FindList("handles");
+   CHECK(handles_list);
+@@ -448,14 +456,24 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
@@ -57,7 +73,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..ea8110182b823a21d87d922ccdc8978b
    DCHECK_CURRENTLY_ON(WebThread::UI);
    if (main_frame_ && main_frame_->GetFrameId() == frame_id) {
      main_frame_.reset();
-@@ -464,10 +479,13 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
+@@ -464,18 +482,18 @@ void MojoFacade::WebFrameBecameUnavailable(WebFramesManager* web_frames_manager,
      is_awaiting_message_ = false;
      weak_ptr_factory_.InvalidateWeakPtrs();
    }
@@ -71,6 +87,14 @@ index cbc39d0594174bb896c7f79198325959c7d304be..ea8110182b823a21d87d922ccdc8978b
    DCHECK_CURRENTLY_ON(WebThread::UI);
    DCHECK_EQ(web_state_, web_state);
    if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
+       GetMainWebFrame() &&
+       web_state_->GetInterfaceBinderForMainFrame()->HasRegisteredInterfaces()) {
+-    pipes_.clear();
+-    watchers_.clear();
+-    last_watch_id_ = 0;
+     is_awaiting_message_ = false;
+     weak_ptr_factory_.InvalidateWeakPtrs();
+     AwaitNextMessage();
 @@ -483,6 +501,7 @@ void MojoFacade::PageLoaded(WebState* web_state,
  }
  

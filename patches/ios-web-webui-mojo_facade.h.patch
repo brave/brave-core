@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
-index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..923183374f13b2af2dabc401c184368e1624871e 100644
+index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..e4d90be6d979fc9413104e89e975ba101c62ab9d 100644
 --- a/ios/web/webui/mojo_facade.h
 +++ b/ios/web/webui/mojo_facade.h
 @@ -35,7 +35,7 @@ class MojoFacade : public web::WebStateObserver,
@@ -11,7 +11,7 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..923183374f13b2af2dabc401c184368e
    ~MojoFacade() override;
  
    // A listener that polls for messages from a content page to be processed by
-@@ -58,6 +58,24 @@ class MojoFacade : public web::WebStateObserver,
+@@ -58,6 +58,28 @@ class MojoFacade : public web::WebStateObserver,
                           const base::DictValue* message,
                           base::OnceCallback<void(int, std::string)> completion);
  
@@ -25,6 +25,10 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..923183374f13b2af2dabc401c184368e
 +  // InterfaceBinder::IsAllowedForOrigin. See
 +  // brave/chromium_src/ios/web/public/web_state.h for the allowlist.
 +  bool IsBindInterfaceAllowedForFrame(const base::DictValue& args);
++  // Records what this facade knew when a message named a pipe id it
++  // doesn't hold.
++  void ReportUnknownPipe(const char* operation,
++                         std::optional<int> pipe_id);
 +
 +  // Id of the frame this facade serves, empty for the main frame,
 +  // whose identity can change over the WebState's life.

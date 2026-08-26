@@ -51,4 +51,21 @@ bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
              origin, *interface_name);
 }
 
+// Records what this facade knew when a message named a pipe id it doesn't
+// hold, so a report says which of these it was: the table was empty
+// (something cleared it out from under the live JS context), the table was
+// populated but missing the id (the handle was consumed, or never created),
+// or the id belongs to a different frame.
+void MojoFacade::ReportUnknownPipe(const char* operation,
+                                   std::optional<int> pipe_id) {
+  SCOPED_CRASH_KEY_STRING32("MojoFacade", "operation", operation);
+  SCOPED_CRASH_KEY_NUMBER("MojoFacade", "pipe_id", pipe_id.value_or(-1));
+  SCOPED_CRASH_KEY_NUMBER("MojoFacade", "live_pipes",
+                          static_cast<int>(pipes_.size()));
+  SCOPED_CRASH_KEY_STRING32(
+      "MojoFacade", "frame",
+      served_frame_id_.empty() ? std::string("main") : served_frame_id_);
+  base::debug::DumpWithoutCrashing();
+}
+
 }  // namespace web

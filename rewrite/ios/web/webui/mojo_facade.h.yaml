@@ -46,6 +46,10 @@ substitutions:
         // InterfaceBinder::IsAllowedForOrigin. See
         // brave/chromium_src/ios/web/public/web_state.h for the allowlist.
         bool IsBindInterfaceAllowedForFrame(const base::DictValue& args);
+        // Records what this facade knew when a message named a pipe id it
+        // doesn't hold.
+        void ReportUnknownPipe(const char* operation,
+                               std::optional<int> pipe_id);
 
         // Id of the frame this facade serves, empty for the main frame,
         // whose identity can change over the WebState's life.

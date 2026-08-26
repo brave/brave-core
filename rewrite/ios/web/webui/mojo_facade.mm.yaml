@@ -92,6 +92,48 @@ substitutions:
         sub_frame_facades_.clear();
 
   - description: |-
+      Stop discarding live pipes when the page finishes loading.
+
+      PageLoaded means "done loading", not "new JS context". The document's
+      scripts have already run by then, so this throws away pipes the very
+      much alive JS context is still holding handles for, while nothing
+      resets its Mojo.nextAvailableHandleId counter (mojo_api.js keeps it
+      deliberately, via `Mojo.nextAvailableHandleId || 1`). The handle a
+      WebUI binds first and keeps longest is exactly the one that goes
+      stale, and writing to it later hits CHECK(pipe.is_valid()).
+
+      The correctly timed reset already exists in WebFrameBecameUnavailable,
+      which fires when the main frame goes away, i.e. when the JS context
+      that minted those ids is actually gone. What PageLoaded is needed for
+      is restarting the poll loop, which the rest of this block does.
+    regex:
+      re_pattern: 'pipes_\.clear\(\);\n    watchers_\.clear\(\);\n    last_watch_id_ = 0;\n    '
+      replace: ''
+
+  - description: |-
+      Don't crash the browser when a write names a pipe id we don't hold.
+
+      Upstream hit this same "handle unknown to the facade" failure on the
+      sibling call site and made it non-fatal in 62168f0dc5969 ([iOS] Make
+      MojoFacade::HandleMojoBindInterface non-fatal), cherry-picked into the
+      8010 branch this rebase targets, without touching this one. A WebUI
+      page shouldn't be able to take the browser down either way, and the
+      crash keys say whether the table was empty, populated but missing the
+      id, or belongs to another frame.
+    regex:
+      re_pattern: |-
+        CHECK\(pipe_id\.has_value\(\)\);
+          mojo::MessagePipeHandle pipe = GetPipeFromId\(\*pipe_id\);
+          CHECK\(pipe\.is_valid\(\)\);
+      replace: |-
+        mojo::MessagePipeHandle pipe =
+              pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
+          if (!pipe.is_valid()) {
+            ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
+            return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
+          }
+
+  - description: |-
       Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
       interface allowlist.
 
