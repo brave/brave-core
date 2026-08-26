@@ -873,6 +873,12 @@
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_RESPONSE_READY" desc="Accessibility label and tooltip for the dot shown on a conversation whose response finished generating while it wasn't open, and that hasn't been opened since" formatter_data="webui=AiChat">
     Response ready
   </message>
+  <message name="IDS_AI_CHAT_NOTIFICATION_TITLE" desc="Title of the system notification shown when an AI Chat response finishes generating in a conversation that is not being viewed">
+    Leo AI response ready
+  </message>
+  <message name="IDS_AI_CHAT_NOTIFICATION_BODY_FALLBACK" desc="Body of the AI Chat response-ready notification, used when the conversation has no title">
+    Your AI response is ready
+  </message>
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu" formatter_data="webui=AiChat">
     Temporary chat
   </message>

@@ -16,6 +16,8 @@ static_library("ai_chat") {
   sources = [
     "ai_chat_enterprise_policy_checker.cc",
     "ai_chat_enterprise_policy_checker.h",
+    "ai_chat_notification_helper.cc",
+    "ai_chat_notification_helper.h",
     "ai_chat_service_factory.cc",
     "ai_chat_service_factory.h",
     "ai_chat_settings_helper.cc",
@@ -75,6 +77,7 @@ static_library("ai_chat") {
     "//chrome/browser:browser_process",
     "//chrome/browser/actor",
     "//chrome/browser/history_embeddings",
+    "//chrome/browser/notifications",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common",
