@@ -283,6 +283,7 @@ leo_icons_sources = [
   "filter.svg",
   "finger-double-tap.svg",
   "firefox-color.svg",
+  "flag.svg",
   "flash.svg",
   "flashdrive.svg",
   "folder-exchange.svg",
