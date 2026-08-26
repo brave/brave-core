@@ -22,14 +22,9 @@ extension TabDataValues {
 public class BlockedDomainTabHelper: TabPolicyDecider {
 
   weak var tab: (any TabState)?
-  let onBlockedDomainRequest: ((URLRequest) -> Void)?
 
-  init(
-    tab: some TabState,
-    onBlockedDomainRequest: ((URLRequest) -> Void)?
-  ) {
+  init(tab: some TabState) {
     self.tab = tab
-    self.onBlockedDomainRequest = onBlockedDomainRequest
     tab.addPolicyDecider(self)
   }
 
@@ -67,7 +62,7 @@ public class BlockedDomainTabHelper: TabPolicyDecider {
       await Self.isDomainBlocked(requestURL, tab: tab),
       let internalURL = requestURL.encodeEmbeddedInternalURL(for: .blocked)
     {
-      onBlockedDomainRequest?(PrivilegedRequest(url: internalURL) as URLRequest)
+      tab.loadRequest(PrivilegedRequest(url: internalURL) as URLRequest)
       return .cancel
     }
 
