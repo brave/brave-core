@@ -120,7 +120,11 @@ BASE_FEATURE(kBraveShieldsElementPicker,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAdblockOnlyMode,
+#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
              base::FEATURE_DISABLED_BY_DEFAULT);
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
 
 // Enables extra TRACE_EVENTs in content filter js. The feature is
 // primary designed for local debugging.
