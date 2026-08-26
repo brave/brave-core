@@ -114,6 +114,19 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     }
   }
 
+  const resetSyncStateToIronwoodActivation = async () => {
+    const result =
+      await getAPIProxy().zcashWalletService.resetSyncStateToIronwoodActivation(
+        props.accountId,
+      )
+    if (result.errorMessage) {
+      setSyncStatusResult('Reset error ' + result.errorMessage)
+    } else {
+      setSyncStatusResult('Rewound to Ironwood activation')
+      props.onAccountInfoChanged()
+    }
+  }
+
   const shieldAllFunds = async () => {
     let { txId, errorMessage } =
       await getAPIProxy().zcashWalletService.shieldAllFunds(props.accountId)
@@ -210,6 +223,9 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <button onClick={stopOrchardSync}>Stop orchard sync</button>
           <button onClick={resetAccountSyncState}>
             Reset account sync state
+          </button>
+          <button onClick={resetSyncStateToIronwoodActivation}>
+            Reset sync to Ironwood activation
           </button>
 
           <button onClick={fetchBalance}>Reload</button>
