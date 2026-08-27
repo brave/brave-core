@@ -1,8 +1,8 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 4ff67f34e2e635c9c56fe75d29ab2faaf9950bb4..48867db3fcb75bc1b58a9f5111e53cfda6d9a2cc 100644
+index 4dff13d0e1c57661e93c44c0288ad40d9941ca56..6714295f8912105faaa0f69765e8eb2bde0bd4b6 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
-@@ -25,6 +25,7 @@ enum class KeyType {
+@@ -30,6 +30,7 @@ enum class KeyType {
  const SignatureVerifier::SignatureAlgorithm kAllAlgorithms[] = {
      SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256,
      SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256,
@@ -10,7 +10,16 @@ index 4ff67f34e2e635c9c56fe75d29ab2faaf9950bb4..48867db3fcb75bc1b58a9f5111e53cfd
  };
  
  constexpr char kTestKeyName[] = "ChromeMetricsTestKey";
-@@ -116,6 +117,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
+@@ -119,6 +120,8 @@ constexpr sign::SignatureKind ToSignatureKind(
+       return sign::ECDSA_SHA256;
+     case SignatureVerifier::RSA_PSS_SHA256:
+       return sign::RSA_PSS_SHA256;
++    case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
++      return sign::ECDSA_SHA384;
+   }
+ 
+   NOTREACHED();
+@@ -147,6 +150,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -18,7 +27,7 @@ index 4ff67f34e2e635c9c56fe75d29ab2faaf9950bb4..48867db3fcb75bc1b58a9f5111e53cfd
          supported_virtual_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -196,6 +198,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
+@@ -218,6 +222,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -26,7 +35,7 @@ index 4ff67f34e2e635c9c56fe75d29ab2faaf9950bb4..48867db3fcb75bc1b58a9f5111e53cfd
          supported_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -347,6 +350,8 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
+@@ -385,6 +390,8 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
        return "RSA";
      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
        return "ECDSA";

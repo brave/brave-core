@@ -48,3 +48,16 @@ substitutions:
         \1
             case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
               return "ECDSA";\2
+
+  - description: |
+      Add `ECDSA_SHA384` to `ToSignatureKind`.
+
+      Maps ECDSA_SHA384 to its matching crypto::sign::SignatureKind, so
+      restricted-key benchmarking can verify ECDSA_SHA384 signatures.
+    regex:
+      re_pattern: '(ToSignatureKind\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
+              return sign::ECDSA_SHA384;\2
