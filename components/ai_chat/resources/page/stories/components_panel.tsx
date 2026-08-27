@@ -209,7 +209,7 @@ const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
 
 // Shown in the dialog opened from the "Tools" pill. The first description is
 // long enough to be clamped, so expand/collapse is exercised.
-const SAMPLE_CONTENT_TOOLS: Mojom.ContentToolInfo[] = [
+const SAMPLE_CONTENT_TOOLS: Mojom.ToolInfo[] = [
   {
     name: 'browse_invoices',
     description:

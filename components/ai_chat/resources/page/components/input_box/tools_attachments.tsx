@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
-import { formatLocale, getLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import WebsiteToolsModal from '../website_tools_modal'
 import styles from './tools_attachments.module.scss'
@@ -65,10 +65,6 @@ export default function ToolsAttachments(props: Props) {
               <button
                 type='button'
                 className={styles.toolPillOpen}
-                aria-label={formatLocale(
-                  S.CHAT_UI_TOOLS_ATTACHMENT_VIEW_LABEL,
-                  { $1: content.title },
-                )}
                 onClick={() => setOpenContentUuid(content.uuid)}
               >
                 <img

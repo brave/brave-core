@@ -668,7 +668,7 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_TRUE(manager->GetTools().empty());
 }
 
-TEST_F(AssociatedContentManagerUnitTest, GetContentToolInfos_DescribesTools) {
+TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_DescribesTools) {
   NiceMock<MockAssociatedContent> content;
   EXPECT_CALL(content, GetContentTools)
       .WillRepeatedly(
@@ -684,8 +684,8 @@ TEST_F(AssociatedContentManagerUnitTest, GetContentToolInfos_DescribesTools) {
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
 
-  base::test::TestFuture<std::vector<mojom::ContentToolInfoPtr>> infos;
-  manager->GetContentToolInfos(content.uuid(), infos.GetCallback());
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
   const auto& result = infos.Get();
   ASSERT_EQ(2u, result.size());
   EXPECT_EQ("browse_store", result[0]->name);
@@ -694,16 +694,15 @@ TEST_F(AssociatedContentManagerUnitTest, GetContentToolInfos_DescribesTools) {
   EXPECT_EQ("Remove all items from the cart.", result[1]->description);
 }
 
-TEST_F(AssociatedContentManagerUnitTest,
-       GetContentToolInfos_UnknownContentIsEmpty) {
+TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_UnknownContentIsEmpty) {
   // The dialog can outlive the content it was opened for, e.g. if the user
   // detaches the tab while it's open.
   NiceMock<MockAssociatedContent> content;
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
 
-  base::test::TestFuture<std::vector<mojom::ContentToolInfoPtr>> infos;
-  manager->GetContentToolInfos("not-an-attached-content", infos.GetCallback());
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos("not-an-attached-content", infos.GetCallback());
   EXPECT_TRUE(infos.Get().empty());
 }
 

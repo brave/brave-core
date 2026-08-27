@@ -455,7 +455,7 @@ interface ConversationHandler {
 
   // Gets the tools the associated content with |content_uuid| currently
   // exposes, for the tools pill's dialog. Empty if it's no longer associated.
-  GetContentTools(string content_uuid) => (array<ContentToolInfo> tools);
+  GetContentTools(string content_uuid) => (array<ToolInfo> tools);
 };
 
 interface ConversationUI {

@@ -20,7 +20,7 @@ interface Props {
 }
 
 function ToolItem(props: {
-  tool: Mojom.ContentToolInfo
+  tool: Mojom.ToolInfo
   isExpanded: boolean
   onToggle: () => void
 }) {
@@ -72,8 +72,7 @@ function ToolItem(props: {
 // pill above the input box.
 export default function WebsiteToolsModal(props: Props) {
   const conversation = useConversation()
-  // Placeholder data means the page hasn't been asked yet, so showing
-  // "no tools" would be wrong.
+  // Placeholder data means the page hasn't answered yet.
   const { getContentToolsData: tools, isPlaceholderData: isLoading } =
     conversation.api.useGetContentTools(props.content.uuid)
   // Only one description is expanded at a time, to keep the list scannable.
@@ -109,10 +108,6 @@ export default function WebsiteToolsModal(props: Props) {
         {isLoading ? (
           <div className={styles.placeholder}>
             <ProgressRing />
-          </div>
-        ) : tools.length === 0 ? (
-          <div className={styles.placeholder}>
-            {getLocale(S.CHAT_UI_WEBSITE_TOOLS_EMPTY)}
           </div>
         ) : (
           <div className={styles.tools}>

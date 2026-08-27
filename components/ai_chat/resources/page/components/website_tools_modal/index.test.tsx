@@ -15,15 +15,15 @@ import * as Mojom from '../../../common/mojom'
 const CONTENT: Mojom.AssociatedContent = {
   uuid: 'content-uuid',
   contentType: Mojom.ContentType.PageContent,
-  title: 'Liquid death - Murder your thirst',
+  title: 'My Website',
   contentId: 1,
-  url: { url: 'https://liquiddeath.com/collections/water' },
+  url: { url: 'https://mywebsite.com/collections/water' },
   contentUsedPercentage: 100,
   conversationTurnUuid: undefined,
   toolsAttached: true,
 }
 
-const TOOLS: Mojom.ContentToolInfo[] = [
+const TOOLS: Mojom.ToolInfo[] = [
   { name: 'browse_store', description: 'Browse OR navigate to collections.' },
   { name: 'cancel_cart', description: 'Remove all items from the cart.' },
 ]
@@ -64,17 +64,19 @@ describe('WebsiteToolsModal', () => {
     ).toBeInTheDocument()
     // Granting tools lets the site see the conversation, so it must be
     // identifiable.
+    expect(screen.getByText('My Website')).toBeInTheDocument()
     expect(
-      screen.getByText('Liquid death - Murder your thirst'),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText('liquiddeath.com/collections/water'),
+      screen.getByText('mywebsite.com/collections/water'),
     ).toBeInTheDocument()
   })
 
-  it('shows an empty state when the content no longer provides tools', async () => {
+  it('counts the tools it lists', async () => {
     await renderModal(
-      <MockContext>
+      <MockContext
+        conversationHandler={{
+          getContentTools: () => Promise.resolve({ tools: TOOLS }),
+        }}
+      >
         <WebsiteToolsModal
           content={CONTENT}
           onClose={() => {}}
@@ -84,7 +86,7 @@ describe('WebsiteToolsModal', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('CHAT_UI_WEBSITE_TOOLS_EMPTY'),
+        screen.getByText('CHAT_UI_WEBSITE_TOOLS_LIST_LABEL'),
       ).toBeInTheDocument()
     })
   })

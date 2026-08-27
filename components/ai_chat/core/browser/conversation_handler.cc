@@ -1985,8 +1985,7 @@ void ConversationHandler::SetToolsAttached(mojom::AssociatedContentPtr content,
 
 void ConversationHandler::GetContentTools(const std::string& content_uuid,
                                           GetContentToolsCallback callback) {
-  associated_content_manager_->GetContentToolInfos(content_uuid,
-                                                   std::move(callback));
+  associated_content_manager_->GetToolInfos(content_uuid, std::move(callback));
 }
 
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {

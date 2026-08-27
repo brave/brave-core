@@ -79,7 +79,7 @@ export default function createConversationApi(
         getContentTools: {
           response: (result) => result.tools,
           staleTime: 0,
-          placeholderData: [] as Mojom.ContentToolInfo[],
+          placeholderData: [] as Mojom.ToolInfo[],
         },
         // Mutations are only called when the mutate() function is run, e.g.
         // api.getScreenshots.mutate()

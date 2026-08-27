@@ -228,11 +228,8 @@ void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::GetContentToolInfos(
-    std::string_view content_uuid,
-    GetContentToolInfosCallback callback) {
-  DVLOG(1) << __func__;
-
+void AssociatedContentManager::GetToolInfos(std::string_view content_uuid,
+                                            GetToolInfosCallback callback) {
   auto it = std::ranges::find_if(content_delegates_,
                                  [&content_uuid](const auto& delegate) {
                                    return delegate->uuid() == content_uuid;
@@ -243,15 +240,15 @@ void AssociatedContentManager::GetContentToolInfos(
   }
 
   (*it)->GetContentTools(base::BindOnce(
-      [](GetContentToolInfosCallback callback,
+      [](GetToolInfosCallback callback,
          std::vector<std::unique_ptr<Tool>> tools) {
         tools.resize(std::min(tools.size(), kMaxToolsPerContent));
-        std::vector<mojom::ContentToolInfoPtr> infos;
+        std::vector<mojom::ToolInfoPtr> infos;
         infos.reserve(tools.size());
         for (const auto& tool : tools) {
-          infos.push_back(mojom::ContentToolInfo::New(
-              std::string(tool->DisplayName()),
-              std::string(tool->DisplayDescription())));
+          infos.push_back(
+              mojom::ToolInfo::New(std::string(tool->DisplayName()),
+                                   std::string(tool->DisplayDescription())));
         }
         std::move(callback).Run(std::move(infos));
       },

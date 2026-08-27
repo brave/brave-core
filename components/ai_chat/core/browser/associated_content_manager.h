@@ -83,10 +83,10 @@ class AssociatedContentManager : public ToolProvider,
   // Fetches the tools the content with |content_uuid| exposes, described for
   // display to the user. Empty if there's no such content. Capped at the same
   // limit as the tools handed to the LLM, so the UI doesn't overpromise.
-  using GetContentToolInfosCallback =
-      base::OnceCallback<void(std::vector<mojom::ContentToolInfoPtr>)>;
-  void GetContentToolInfos(std::string_view content_uuid,
-                           GetContentToolInfosCallback callback);
+  using GetToolInfosCallback =
+      base::OnceCallback<void(std::vector<mojom::ToolInfoPtr>)>;
+  void GetToolInfos(std::string_view content_uuid,
+                    GetToolInfosCallback callback);
 
   // Clears all content from the conversation.
   void ClearContent();

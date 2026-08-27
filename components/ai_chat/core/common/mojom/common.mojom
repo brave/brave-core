@@ -160,9 +160,9 @@ struct AssociatedContent {
   bool tools_attached;
 };
 
-// A tool exposed by a piece of associated content, as the content registered
-// it - i.e. for display to the user, not the mangled model-facing variant.
-struct ContentToolInfo {
+// Describes a tool for display to the user - its name and description as they
+// were registered, rather than the mangled model-facing variants.
+struct ToolInfo {
   string name;
   string description;
 };
