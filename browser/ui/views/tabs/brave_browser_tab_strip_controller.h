@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_
 
-#include <memory>
 #include <optional>
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -23,9 +22,7 @@ class TreeTabNodeId;
 class BraveBrowserTabStripController : public BrowserTabStripController {
  public:
   BraveBrowserTabStripController(TabStripModel* model,
-                                 BrowserView* browser_view,
-                                 std::unique_ptr<TabMenuModelFactory>
-                                     menu_model_factory_override = nullptr);
+                                 BrowserView* browser_view);
   BraveBrowserTabStripController(const BraveBrowserTabStripController&) =
       delete;
   BraveBrowserTabStripController& operator=(

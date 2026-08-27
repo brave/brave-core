@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
@@ -40,14 +39,8 @@
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
     TabStripModel* model,
-    BrowserView* browser_view,
-    std::unique_ptr<TabMenuModelFactory> menu_model_factory_override)
-    : BrowserTabStripController(
-          model,
-          browser_view,
-          menu_model_factory_override
-              ? std::move(menu_model_factory_override)
-              : std::make_unique<brave::BraveTabMenuModelFactory>()) {}
+    BrowserView* browser_view)
+    : BrowserTabStripController(model, browser_view) {}
 
 BraveBrowserTabStripController::~BraveBrowserTabStripController() = default;
 
