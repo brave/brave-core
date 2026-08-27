@@ -516,13 +516,6 @@ bool AddTunnelFilters(HANDLE engine,
                       const BaseObjects& base_objects,
                       const NET_LUID& tunnel_luid,
                       base::span<const UINT64> temporary_dns_filter_ids) {
-  for (const auto filter_id : temporary_dns_filter_ids) {
-    auto result = FwpmFilterDeleteById0(engine, filter_id);
-    if (result != ERROR_SUCCESS) {
-      VLOG(1) << "FwpmFilterDeleteById0 failed, error: " << std::hex << result;
-      return false;
-    }
-  }
   return AddPermitTunnelInterface(engine, base_objects, tunnel_luid) ==
              ERROR_SUCCESS &&
          AddBlockDns(engine, base_objects) == ERROR_SUCCESS;
@@ -628,6 +621,8 @@ bool ScopedWireguardFirewall::PermitTunnelInterface(
     return false;
   }
 
+  WithdrawTemporaryDns();
+
   if (!AddTunnelFilters(engine_, base_objects, tunnel_luid,
                         temporary_dns_filter_ids_)) {
     FwpmTransactionAbort0(engine_);
@@ -642,6 +637,18 @@ bool ScopedWireguardFirewall::PermitTunnelInterface(
 
   VLOG(1) << "WireGuard firewall now permits the tunnel adapter";
   return true;
+}
+
+void ScopedWireguardFirewall::WithdrawTemporaryDns() {
+  for (const auto filter_id : temporary_dns_filter_ids_) {
+    // Ignore return values: we are likely already on a failure path,
+    // and WFP will safely return an error if the filter is already gone.
+    FwpmFilterDeleteById0(engine_, filter_id);
+  }
+
+  // Clear the list so subsequent calls (e.g., from the watchdog) are a safe
+  // no-op.
+  temporary_dns_filter_ids_.clear();
 }
 
 ScopedWireguardFirewall::ScopedWireguardFirewall(

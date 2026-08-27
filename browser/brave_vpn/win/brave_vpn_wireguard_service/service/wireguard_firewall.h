@@ -70,6 +70,12 @@ class ScopedWireguardFirewall {
   // tunnel.dll; nothing else touches the engine until this object is destroyed.
   bool PermitTunnelInterface(const NET_LUID& tunnel_luid);
 
+  // Withdraws the temporary DNS allowance granted during phase one.
+  // Called automatically on success by PermitTunnelInterface(), but
+  // must be called manually on failure paths to prevent DNS leaks if the
+  // process survives.
+  void WithdrawTemporaryDns();
+
  private:
   ScopedWireguardFirewall(HANDLE engine,
                           const GUID& provider_key,
@@ -79,7 +85,7 @@ class ScopedWireguardFirewall {
   HANDLE engine_ = nullptr;
   const GUID provider_key_;
   const GUID sublayer_key_;
-  const std::vector<UINT64> temporary_dns_filter_ids_;
+  std::vector<UINT64> temporary_dns_filter_ids_;
 };
 
 // Watches for the arrival of the tunnel adapter that tunnel.dll creates and

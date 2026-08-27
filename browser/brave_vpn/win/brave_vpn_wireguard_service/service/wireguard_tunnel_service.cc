@@ -167,10 +167,13 @@ class ScopedFirewallHolder {
       // nothing anyway; stop it rather than leave the user staring at a dead
       // connection.
       VLOG(1) << "Failed to complete the WireGuard firewall, stopping tunnel";
+      firewall_->WithdrawTemporaryDns();
       wireguard::RequestTunnelShutdown();
     }
     settled_.Signal();
   }
+
+  void WithdrawTemporaryDns() { firewall_->WithdrawTemporaryDns(); }
 
   // False if the tunnel filters were neither installed nor failed within
   // `timeout`, which means the adapter never showed up under the name we
@@ -230,6 +233,11 @@ class FirewallWatchdog : public base::PlatformThread::Delegate {
                << kFirewallInstallTimeout << ", disconnecting";
     brave_vpn::RunWireGuardCommandForUsers(
         brave_vpn::kBraveVpnWireguardServiceNotifyFirewallErrorSwitchName);
+
+    // Ensure the temporary DNS permit is destroyed even if the
+    // service control manager fails to stop the tunnel process.
+    holder_->WithdrawTemporaryDns();
+
     wireguard::RequestTunnelShutdown();
   }
 
