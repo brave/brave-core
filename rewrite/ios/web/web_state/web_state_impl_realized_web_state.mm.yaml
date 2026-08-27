@@ -13,4 +13,4 @@ substitutions:
       frame instead of every facade falling back to the main frame.
     regex:
       re_pattern: 'std::make_unique<WebUIIOSImpl>\(owner_\)'
-      replace: 'std::make_unique<WebUIIOSImpl>(owner_, url.host())'
+      replace: 'std::make_unique<WebUIIOSImpl>(owner_, url.GetHost())'
