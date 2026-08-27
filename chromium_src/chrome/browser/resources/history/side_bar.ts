@@ -21,11 +21,6 @@ import {
 } from './brave_history_embeddings_browser_proxy.js'
 // </if>
 
-// Toggle value at startup, before any change. Services are gated at creation
-// time, so a change only takes effect after a relaunch.
-const braveHistoryEmbeddingsStartupEnabled =
-    loadTimeData.getBoolean('enableHistoryEmbeddings')
-
 injectStyle(HistorySideBarElementChromium, css`
   .cr-nav-menu-item {
     min-height: 20px !important;
@@ -103,21 +98,22 @@ class HistorySideBarElement extends HistorySideBarElementChromium {
       loadTimeData.getBoolean('isHistoryEmbeddingsFeatureEnabled')
   override accessor braveHistoryEmbeddingsEnabled: boolean =
       loadTimeData.getBoolean('enableHistoryEmbeddings')
-  // True once the toggle differs from its startup value, so the change is
-  // pending a relaunch. Flipping back to the original value clears it.
-  override accessor braveHistoryEmbeddingsNeedsRestart: boolean = false
+  // True while the toggle differs from the value the embedding services were
+  // built with. Tracked in the browser and injected by BraveHistoryUI so it
+  // outlives a page reload.
+  override accessor braveHistoryEmbeddingsNeedsRestart: boolean =
+      loadTimeData.getBoolean('braveHistoryEmbeddingsNeedsRestart')
 
-  // Re-read the toggle state from loadTimeData on every render cycle. The
-  // single Mojo subscription in app.ts updates loadTimeData and then calls
-  // requestUpdate() on this element, the toolbar, and the list — keeping all
-  // consumers on the same refresh mechanism.
+  // Re-read the toggle state and the relaunch flag from loadTimeData on every
+  // render cycle. The single Mojo subscription in app.ts updates loadTimeData
+  // and then calls requestUpdate() on this element, the toolbar, and the list
+  // — keeping all consumers on the same refresh mechanism.
   override willUpdate(changedProperties: PropertyValues<this>) {
     super.willUpdate(changedProperties)
     this.braveHistoryEmbeddingsEnabled =
         loadTimeData.getBoolean('enableHistoryEmbeddings')
     this.braveHistoryEmbeddingsNeedsRestart =
-        this.braveHistoryEmbeddingsEnabled !==
-        braveHistoryEmbeddingsStartupEnabled
+        loadTimeData.getBoolean('braveHistoryEmbeddingsNeedsRestart')
   }
 
   // <if expr="enable_local_ai">

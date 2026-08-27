@@ -7,6 +7,23 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# Holds the setting the embedding services were built with, so the
+# brave://history toggle can prompt for a relaunch once it diverges. Separate
+# from ":history_embeddings" because //chrome/browser/passage_embeddings reads
+# it, and that is what ":history_embeddings" is built on top of.
+source_set("status") {
+  public = [ "brave_history_embeddings_status.h" ]
+  sources = [ "brave_history_embeddings_status.cc" ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/history_embeddings",
+    "//chrome/browser/profiles:profile",
+  ]
+}
+
 # Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
 # HistoryEmbeddingsSearch. Shared by the tab_search WebUI page handler and the
 # AI Chat `tabSearch` markdown directive.
@@ -34,16 +51,25 @@ source_set("open_tab_search") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_passage_embeddings_service_controller_unittest.cc" ]
+  sources = [
+    "brave_history_embeddings_status_unittest.cc",
+    "brave_passage_embeddings_service_controller_unittest.cc",
+  ]
 
   deps = [
     ":history_embeddings",
+    ":status",
     "//base",
     "//base/test:test_support",
     "//brave/components/local_ai/core",
+    "//chrome/browser/prefs",
+    "//chrome/test:test_support",
+    "//components/history_embeddings/core",
     "//components/optimization_guide/core",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/passage_embeddings/core",
+    "//components/prefs",
+    "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gtest",
   ]

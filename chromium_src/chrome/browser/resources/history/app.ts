@@ -14,28 +14,36 @@ import {
   getBraveHistoryEmbeddingsBrowserProxy,
 } from './brave_history_embeddings_browser_proxy.js'
 
-// Subscribe directly to the Mojo `onEnabledChanged` notification so the
-// chrome://history UI reacts even when the side bar isn't rendered. Update
+// Refresh loadTimeData so any code reading `enableHistoryEmbeddings` or
+// `braveHistoryEmbeddingsNeedsRestart` inline picks up the new values, update
 // each history-app's reactive `enableHistoryEmbeddings_` accessor (Lit
-// re-renders the app shell), refresh loadTimeData so any code that reads
-// `enableHistoryEmbeddings` inline picks up the new value, and force a
-// re-render of the toolbar/list whose `compute*_` methods cache the value.
+// re-renders the app shell), and force a re-render of the toolbar/list whose
+// `compute*_` methods cache the value.
+function onHistoryEmbeddingsEnabledChanged(
+    enabled: boolean, needsRestart: boolean) {
+  loadTimeData.overrideValues({
+    enableHistoryEmbeddings: enabled,
+    braveHistoryEmbeddingsNeedsRestart: needsRestart,
+  })
+  for (const app of document.querySelectorAll('history-app')) {
+    ;(app as unknown as {enableHistoryEmbeddings_: boolean})
+        .enableHistoryEmbeddings_ = enabled
+  }
+  const root = document.querySelector('history-app')?.shadowRoot
+  if (!root) {
+    return
+  }
+  for (const el of root.querySelectorAll(
+           'history-side-bar, history-toolbar, history-list')) {
+    ;(el as unknown as {requestUpdate?: () => void}).requestUpdate?.()
+  }
+}
+
+// Subscribe directly to the Mojo notification so the brave://history UI reacts
+// even when the side bar isn't rendered.
 getBraveHistoryEmbeddingsBrowserProxy()
-    .callbackRouter.onEnabledChanged.addListener((enabled: boolean) => {
-      loadTimeData.overrideValues({enableHistoryEmbeddings: enabled})
-      for (const app of document.querySelectorAll('history-app')) {
-        ;(app as unknown as {enableHistoryEmbeddings_: boolean})
-            .enableHistoryEmbeddings_ = enabled
-      }
-      const root = document.querySelector('history-app')?.shadowRoot
-      if (!root) {
-        return
-      }
-      for (const el of root.querySelectorAll(
-               'history-side-bar, history-toolbar, history-list')) {
-        ;(el as unknown as {requestUpdate?: () => void}).requestUpdate?.()
-      }
-    })
+    .callbackRouter.onEnabledChanged.addListener(
+        onHistoryEmbeddingsEnabledChanged)
 // </if>
 
 injectStyle(HistoryAppElement, css`

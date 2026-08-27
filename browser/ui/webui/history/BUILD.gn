@@ -30,7 +30,6 @@ source_set("history") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui/page_not_available_for_guest",
     "//chrome/common:constants",
-    "//components/prefs",
     "//content/public/common",
   ]
 
@@ -40,7 +39,12 @@ source_set("history") {
       "brave_history_embeddings_page_handler.h",
     ]
 
-    deps += [ "//brave/components/local_ai/core" ]
+    deps += [
+      "//brave/browser/history_embeddings:status",
+      "//brave/components/local_ai/core",
+      "//chrome/browser/history_embeddings",
+      "//components/prefs",
+    ]
   }
 }
 
