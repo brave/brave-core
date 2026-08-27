@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
+index 3d2da0a0ce112613c1663e8a952cbda510b8d675..c9024ffac1cabe1d3a4d9c47ffcefc2875db20ea 100644
+--- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
++++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
+@@ -1634,7 +1634,7 @@ public abstract class ChromeFeatureList {
+     public static final BooleanCachedFeatureParam sAndroidBottomBarBypassGlicGeofencing =
+             newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "bypass_glic_geofencing", false);
+     public static final BooleanCachedFeatureParam sAndroidBottomBarDisableOnNtp =
+-            newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "disable_on_ntp", true);
++            newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "disable_on_ntp", false);
+     public static final BooleanCachedFeatureParam sAndroidBottomBarKeepAppMenuInToolbar =
+             newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "keep_app_menu_in_toolbar", false);
+     public static final BooleanCachedFeatureParam sAndroidBottomBarKeepHomeButtonInToolbar =

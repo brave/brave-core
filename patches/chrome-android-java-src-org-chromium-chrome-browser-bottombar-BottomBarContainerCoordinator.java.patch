@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java
+index dd382410a0f516eeab9c143c6faa18cfd912e8b9..21966af8fbb3488e749aac4b861c16baee50fd3d 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/bottombar/BottomBarContainerCoordinator.java
+@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.ui.bottombar.BottomBar;
+ import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
+ import org.chromium.chrome.browser.ui.bottombar.BottomBarCoordinator;
+ import org.chromium.chrome.browser.ui.bottombar.BottomBarMediator;
++import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarCoordinator;
+ import org.chromium.components.browser_ui.widget.gesture.BackPressHandler;
+ import org.chromium.ui.modaldialog.ModalDialogManager;
+ 
+@@ -113,7 +114,7 @@ public class BottomBarContainerCoordinator
+         mRequestLayerUpdateCallback = requestLayerUpdateCallback;
+ 
+         mBottomBarCoordinator =
+-                new BottomBarCoordinator(
++                new BraveBottomBarCoordinator(
+                         bottomBarContainer,
+                         actionRegistry,
+                         themeColorProvider,

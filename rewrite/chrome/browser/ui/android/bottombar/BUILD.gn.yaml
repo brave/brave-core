@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Embed Brave's bottom bar sources into the upstream component.
+
+      BottomBarCoordinator constructs BraveBottomBarButtonManager, so a target of
+      its own would have to be depended on by the component it depends on.
+    regex:
+      re_pattern: |-
+        (android_library\("java"\) \{\n  sources = \[.+?\n  \]\n)
+      re_flags: [DOTALL]
+      replace: |
+        \1  sources += brave_bottombar_java_sources

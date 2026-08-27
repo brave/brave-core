@@ -16,6 +16,7 @@ import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/hub/internal/android/java/java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
+import("//brave/browser/ui/android/bottombar/brave_bottombar_java_sources.gni")
 import("//brave/browser/ui/messages/android/java_sources.gni")
 import(
     "//brave/components/cached_flags/brave_components_cached_flags_java_sources.gni")
@@ -77,6 +78,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtilsDummySuper.java",
+  "../../brave/android/java/org/chromium/chrome/browser/bottombar/BraveBottomBarActionCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_account/BraveAccountServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPlansActivity.java",

@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/config.gni")
+import("//build/config/android/rules.gni")
+
+# BraveBottomBarButtonManager sits in the same directory but is embedded into
+# the upstream component instead - see brave_bottombar_java_sources.gni.
+android_library("java") {
+  sources = [ "java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarCoordinator.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//base:supplier_java",
+    "//build/android:build_java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/ui/android/actions:java",
+    "//chrome/browser/ui/android/bottombar:java",
+    "//chrome/browser/ui/android/layouts:java",
+    "//chrome/browser/ui/android/theme:java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+}

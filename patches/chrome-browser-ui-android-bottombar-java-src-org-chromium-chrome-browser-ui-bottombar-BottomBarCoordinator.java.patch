@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
+index 7bee1bffa325b5a7158aee8ded729ce0dc31902d..c36a2fca1cfdde45999123fb11861c7e43fb32e0 100644
+--- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
++++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
+@@ -44,7 +44,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+     private final BottomBarMediator mMediator;
+     private final BottomBarView mView;
+     private final PropertyModelChangeProcessor<PropertyModel, BottomBarView, PropertyKey> mMcp;
+-    private final BottomBarButtonManager mButtonManager;
++    protected final BottomBarButtonManager mButtonManager;
+     private final BottomBarPromoDialogCoordinator mPromoDialogCoordinator;
+     private final NullableObservableSupplier<Tab> mTabSupplier;
+ 
+@@ -84,7 +84,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+         mModel = new PropertyModel.Builder(BottomBarProperties.ALL_KEYS).build();
+ 
+         mButtonManager =
+-                new BottomBarButtonManager(configs, actionRegistry, mModel, ActionId.NEW_TAB);
++                new BraveBottomBarButtonManager(configs, actionRegistry, mModel, ActionId.NEW_TAB);
+ 
+         mPromoDialogCoordinator =
+                 new BottomBarPromoDialogCoordinator(
+@@ -112,7 +112,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+         mMcp = PropertyModelChangeProcessor.create(mModel, mView, BottomBarViewBinder::bind);
+     }
+ 
+-    private List<ActionConfig> createActionConfigs(
++    protected List<ActionConfig> createActionConfigs(
+             BottomBarView view, boolean shouldIncludeHomeButton) {
+         List<ActionConfig> configs = new ArrayList<>();
+ 

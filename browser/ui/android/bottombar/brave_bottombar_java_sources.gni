@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# BottomBarCoordinator constructs BraveBottomBarButtonManager, so it has to be
+# embedded into the upstream component - a target of its own would have to be
+# depended on by the component it depends on. Its sibling in the same directory,
+# BraveBottomBarCoordinator, is constructed from chrome_java instead and so
+# lives in the //brave/browser/ui/android/bottombar:java target.
+brave_bottombar_java_sources = [ "//brave/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarButtonManager.java" ]

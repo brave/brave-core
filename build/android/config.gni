@@ -45,6 +45,7 @@ brave_chrome_java_deps = [
   "//brave/browser/signin/services/android:java",
   "//brave/browser/skus/android:java",
   "//brave/browser/tab_group_sync:java",
+  "//brave/browser/ui/android/bottombar:java",
   "//brave/browser/ui/android/favicon:java",
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/omnibox:java",
