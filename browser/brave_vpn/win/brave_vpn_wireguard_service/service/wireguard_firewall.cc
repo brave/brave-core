@@ -77,8 +77,6 @@ struct FwpmMemoryTraits {
 };
 using ScopedFwpmMemory = base::ScopedGeneric<void*, FwpmMemoryTraits>;
 
-constexpr uint16_t kDnsPort = 53;
-
 constexpr uint8_t kUdpProtocol = IPPROTO_UDP;
 constexpr uint16_t kDhcpV4ClientPort = 68;
 constexpr uint16_t kDhcpV4ServerPort = 67;
@@ -96,10 +94,12 @@ struct Ipv6Prefix {
   uint8_t prefix_length;
 };
 
-// Reachable while connected. Note this deliberately includes multicast, which
-// covers mDNS (224.0.0.251), LLMNR (224.0.0.252) and SSDP (239.255.255.250), so
-// discovering a printer or NAS by name keeps working. Those all use ports other
-// than 53, so AddBlockDns() does not interfere with them.
+// Reachable while connected. Note this includes multicast for general local
+// network discovery (such as SSDP on 239.255.255.250). However, multicast
+// name resolution protocols (mDNS on 224.0.0.251, LLMNR on 224.0.0.252) are
+// explicitly overridden and blocked by AddBlockDns() to prevent cleartext
+// DNS leaks. As a result, discovering a printer or NAS by local hostname is
+// intentionally disabled, though direct IP access remains functional.
 constexpr Ipv4Prefix kLocalIpv4Prefixes[] = {
     {0x0a000000, 8},   // 10.0.0.0/8, RFC1918.
     {0xac100000, 12},  // 172.16.0.0/12, RFC1918.
@@ -364,19 +364,39 @@ DWORD AddPermitTunnelInterface(HANDLE engine,
                            conditions, L"Permit tunnel interface");
 }
 
-// Replaces tunnel.dll's blockDNS filter. Queries that go through the tunnel are
-// already permitted at a higher weight by AddPermitTunnelInterface(), so this
-// only catches queries that would otherwise leave over another adapter --
-// including the ones Windows' multihomed name resolution would send to the
-// router alongside the tunnel's resolver.
+// Replaces and expands tunnel.dll's blockDNS filter. Queries that go through
+// the tunnel are already permitted at a higher weight by
+// AddPermitTunnelInterface(), so this only catches queries that would otherwise
+// leave over another adapter.
+//
+// In addition to standard DNS (port 53), this explicitly blocks fallback
+// multicast and broadcast name resolution protocols: NetBIOS (137), mDNS
+// (5353), and LLMNR (5355). This is critical to prevent cleartext DNS leaks on
+// the local segment, which happen when Windows' multihomed name resolution
+// broadcasts queries to the LAN after the tunnel's resolver returns NXDOMAIN
+// (e.g., when a user types a local hostname).
 DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
-  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
-      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
-                             FWP_MATCH_EQUAL,
-                             {FWP_UINT16, {.uint16 = kDnsPort}}}};
-  return AddFilterToLayers(engine, base_objects, GetOutboundLayers(),
-                           FWP_ACTION_BLOCK, kWeightBlockDns, conditions,
-                           L"Block DNS");
+  constexpr uint16_t kNameResolutionPorts[] = {
+      53,    // Standard DNS
+      137,   // NetBIOS Name Service
+      5353,  // mDNS
+      5355,  // LLMNR
+  };
+
+  for (const uint16_t port : kNameResolutionPorts) {
+    std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+        FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
+                               FWP_MATCH_EQUAL,
+                               {FWP_UINT16, {.uint16 = port}}}};
+
+    auto result = AddFilterToLayers(engine, base_objects, GetOutboundLayers(),
+                                    FWP_ACTION_BLOCK, kWeightBlockDns,
+                                    conditions, L"Block DNS");
+    if (result != ERROR_SUCCESS) {
+      return result;
+    }
+  }
+  return ERROR_SUCCESS;
 }
 
 DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
@@ -455,6 +475,8 @@ DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
 DWORD AddTemporaryPermitDns(HANDLE engine,
                             const BaseObjects& base_objects,
                             std::vector<UINT64>* filter_ids) {
+  constexpr uint16_t kDnsPort = 53;
+
   std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
