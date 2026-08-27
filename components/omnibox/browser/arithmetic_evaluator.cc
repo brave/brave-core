@@ -17,6 +17,8 @@
 
 namespace omnibox {
 
+BASE_FEATURE(kBraveLocalCalculator, base::FEATURE_ENABLED_BY_DEFAULT);
+
 namespace {
 
 // Fractional answers are rendered through a double, so their significant

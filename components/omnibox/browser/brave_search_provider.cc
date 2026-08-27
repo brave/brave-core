@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
@@ -72,9 +73,16 @@ BraveSearchProvider::~BraveSearchProvider() = default;
 
 void BraveSearchProvider::Start(const AutocompleteInput& input,
                                 bool minimal_changes) {
-  // Evaluated up front because `SearchProvider::Start()` consults
-  // `IsQueryPotentiallyPrivate()` while deciding whether to query suggest.
-  calculator_answer_ = MaybeEvaluateLocally(input);
+  // Everything else keys off `calculator_answer_`, so leaving it empty is all
+  // it takes to fall back to the upstream behaviour.
+  calculator_answer_.reset();
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+  if (base::FeatureList::IsEnabled(omnibox::kBraveLocalCalculator)) {
+    // Evaluated up front because `SearchProvider::Start()` consults
+    // `IsQueryPotentiallyPrivate()` while deciding whether to query suggest.
+    calculator_answer_ = MaybeEvaluateLocally(input);
+  }
+#endif
 
   SearchProvider::Start(input, minimal_changes);
 }
@@ -100,9 +108,9 @@ void BraveSearchProvider::UpdateMatches() {
   SearchProvider::UpdateMatches();
 }
 
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
 std::optional<std::u16string> BraveSearchProvider::MaybeEvaluateLocally(
     const AutocompleteInput& input) const {
-#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
   if (input.IsZeroSuggest() || input.type() == metrics::OmniboxInputType::URL) {
     return std::nullopt;
   }
@@ -124,10 +132,8 @@ std::optional<std::u16string> BraveSearchProvider::MaybeEvaluateLocally(
   }
 
   return omnibox::EvaluateArithmeticExpression(input.text());
-#else
-  return std::nullopt;
-#endif
 }
+#endif
 
 void BraveSearchProvider::DoHistoryQuery(bool minimal_changes) {
   if (!client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {

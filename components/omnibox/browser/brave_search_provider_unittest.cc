@@ -20,6 +20,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/buildflags/buildflags.h"
@@ -47,6 +48,7 @@
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
 #include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
 #endif
 
@@ -329,6 +331,20 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
   ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678"));
   EXPECT_FALSE(sent_to_suggest("12345678"));
   EXPECT_FALSE(has_calculator_match());
+}
+
+// With the kill switch off, a withheld query gets no answer, as it did before
+// the local calculator existed.
+TEST_F(BraveSearchProviderTest, ArithmeticIsNotAnsweredWhenFeatureDisabled) {
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(omnibox::kBraveLocalCalculator);
+
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
+  EXPECT_FALSE(test_url_loader_factory_.IsPending(
+      base::StrCat({kSuggestionUrlHost, base::EscapePath("9500+7804")})));
+  EXPECT_FALSE(std::ranges::any_of(provider_->matches(), [](const auto& match) {
+    return match.type == AutocompleteMatchType::CALCULATOR;
+  }));
 }
 
 TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {

@@ -10,7 +10,18 @@
 #include <string>
 #include <string_view>
 
+#include "base/feature_list.h"
+
 namespace omnibox {
+
+// Kill switch for answering arithmetic locally. Disabling it leaves the
+// queries the long-number check withholds from the suggest server with no
+// answer, as they were before this existed.
+//
+// Declared here rather than with the other omnibox features because this
+// target is only built when the strict query check is, which is the only
+// caller.
+BASE_DECLARE_FEATURE(kBraveLocalCalculator);
 
 // Evaluates `text` as an arithmetic expression, returning the answer formatted
 // for the user's locale.

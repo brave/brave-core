@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/auto_reset.h"
+#include "brave/components/omnibox/buildflags/buildflags.h"
 #include "components/omnibox/browser/search_provider.h"
 
 class AutocompleteInput;
@@ -37,9 +38,12 @@ class BraveSearchProvider : public SearchProvider {
   ~BraveSearchProvider() override;
 
  private:
-  // Returns the answer when `input` is arithmetic we can evaluate exactly.
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+  // Returns the answer when `input` is arithmetic we can evaluate exactly, and
+  // the long-number check would withhold it from the suggest server.
   std::optional<std::u16string> MaybeEvaluateLocally(
       const AutocompleteInput& input) const;
+#endif
 
   bool input_is_pasted_from_clipboard_ = false;
 
