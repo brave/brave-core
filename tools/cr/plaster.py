@@ -3590,25 +3590,14 @@ class RegexMacro(Rewriter):
         return cls({key: body[key] for key in keys})
 
 
-# TODO(https://brave.dev/b/58378): Remove once `cr154` is merged.
-def _gn_platform_dir() -> str:
-    """Host-OS token in gn's per-platform dir name under `third_party/gn`.
+# TODO(https://brave.dev/b/58378): `gn edit` needs a newer gn than the one in
+# the current tag, so so package.json is overriding it, but the override must be
+# removed once cr154 is merged.
+GN_BIN = 'gn'
 
-    Mirrors the CIPD subdirectories `brave/DEPS` provisions gn into.
-    """
-    if sys.platform == 'darwin':
-        return 'mac'
-    if sys.platform == 'win32':
-        return 'win'
-    return 'linux64'
-
-
-# TODO(https://brave.dev/b/58378): Remove once `cr154` is merged and the
-# upstream pin carries `gn edit`. At that point plaster should just call `gn`
-# off the PATH.
-_GN_EXE = '.exe' if sys.platform == 'win32' else ''
-GN_BIN = (Path(__file__).resolve().parents[2] / 'third_party' / 'gn' /
-          _gn_platform_dir() / f'gn{_GN_EXE}')
+# The path `gn` is run at, to make sure the depot_tools shim resolves to the
+# correct `gn`.
+_BRAVE_CORE_DIR = Path(__file__).resolve().parents[2]
 
 
 class GnEditError(PlasterError):
@@ -3703,21 +3692,17 @@ class GnEditSandbox:
         in the plaster that named it.
         """
         assert self._build_file is not None
-        # TODO(https://brave.dev/b/58378): Drop this check once `cr154` is
-        # merged and `GN_BIN` becomes a plain `gn` off the PATH, which needs no
-        # provisioning of its own.
-        if not GN_BIN.exists():
-            raise GnEditError(
-                f'the gn binary is missing: {GN_BIN}. Run `gclient sync` to '
-                f'provision it')
         root = self._build_file.parent
         try:
-            terminal.run([GN_BIN, 'edit', command, pattern, f'--root={root}'])
+            terminal.run([GN_BIN, 'edit', command, pattern, f'--root={root}'],
+                         cwd=_BRAVE_CORE_DIR)
         except subprocess.CalledProcessError as e:
             # gn reports the problem on stdout rather than stderr.
             detail = ((e.stdout or '') + (e.stderr or '')).strip()
             raise GnEditError(
                 f'gn edit failed ({e.returncode}): {detail}') from e
+        except (FileNotFoundError, RuntimeError) as e:
+            raise GnEditError('the gn binary is missing') from e
 
         contents = self._build_file.read_text(encoding='utf-8')
         return GnEditOutcome(contents=contents,
