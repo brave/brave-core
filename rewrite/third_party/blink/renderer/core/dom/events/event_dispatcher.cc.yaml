@@ -5,7 +5,7 @@
 
 substitutions:
   - description:
-      'Adding ShouldBypassDefaultPreventedForContextMenu() in context menu
+      'Adding ShouldBypassDefaultPreventedForContextMenu() in default event
       handling'
     regex:
       re_pattern:

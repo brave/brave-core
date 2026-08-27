@@ -87,6 +87,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
@@ -555,6 +556,11 @@ public class BraveUnifiedPanelHandler {
             }
         }
 
+        View enablePasteItem = mAdvancedOptionsContent.findViewById(R.id.enable_paste_item);
+        if (enablePasteItem != null) {
+            enablePasteItem.setOnClickListener(v -> forcePaste());
+        }
+
         View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
         if (blockElementItem != null) {
 
@@ -594,6 +600,20 @@ public class BraveUnifiedPanelHandler {
         if (globalSettingsItem != null) {
             globalSettingsItem.setOnClickListener(v -> openGlobalShieldsSettings());
         }
+    }
+
+    private void forcePaste() {
+        if (mCurrentTab == null) {
+            return;
+        }
+
+        WebContents webContents = mCurrentTab.getWebContents();
+        if (webContents == null) {
+            return;
+        }
+
+        BraveForcePasteHelper.forcePaste(webContents);
+        hide();
     }
 
     private void resetSiteToShieldsDefaults() {

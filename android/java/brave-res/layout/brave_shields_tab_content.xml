@@ -443,7 +443,35 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 7. Block element (action with launch icon) -->
+            <!-- 7. Enable paste (action) -->
+            <LinearLayout
+                android:id="@+id/enable_paste_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    style="@style/LargeRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/enable_paste"
+                    android:textColor="?attr/colorOnSurface"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 8. Block element (action with launch icon) -->
             <LinearLayout
                 android:id="@+id/block_element_item"
                 android:layout_width="match_parent"
@@ -479,7 +507,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 8. Clear all blocked elements button -->
+            <!-- 9. Clear all blocked elements button -->
             <TextView
                 android:id="@+id/clear_blocked_elements_button"
                 style="@style/LargeRegular"
@@ -499,7 +527,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 9. Reset to defaults button -->
+            <!-- 10. Reset to defaults button -->
             <TextView
                 android:id="@+id/reset_shields_button"
                 style="@style/LargeRegular"
@@ -518,7 +546,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 9. Shields global settings -->
+            <!-- 11. Shields global settings -->
             <LinearLayout
                 android:id="@+id/global_settings_item"
                 android:layout_width="match_parent"
