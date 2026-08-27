@@ -51,7 +51,6 @@ include_rules += [
   "+components/password_manager/core/common/password_manager_features.h",
   "+components/performance_manager/public/features.h",
   "+components/permissions/features.h",
-  "+components/plus_addresses/core/common/features.h",
   "+components/privacy_sandbox/privacy_sandbox_features.h",
   "+components/safe_browsing/core/common/features.h",
   "+components/search/ntp_features.h",
