@@ -1,0 +1,13 @@
+diff --git a/ui/views/widget/widget.h b/ui/views/widget/widget.h
+index 27656ce25c55291eb2c7e173b19bc1e06a9d41b1..dd44efe74d449de9f0db6a5b318fc8ad0be3c1e3 100644
+--- a/ui/views/widget/widget.h
++++ b/ui/views/widget/widget.h
+@@ -655,7 +655,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWidgetDelegate,
+ 
+   // Initializes the widget, and in turn, the native widget. |params| should be
+   // moved to Init() by the caller.
+-  void Init(InitParams params);
++  virtual void Init(InitParams params);
+ 
+   // Returns the gfx::NativeView associated with this Widget.
+   gfx::NativeView GetNativeView() const;
