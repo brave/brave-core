@@ -8,6 +8,17 @@ import { scoped } from '$web-common/scoped_css'
 
 const tabbar = color.desktopbrowser.tabbar
 
+// Browser chrome colors, provided by chrome://theme/colors.css. The Nala
+// fallbacks apply where that stylesheet is unavailable (e.g. Storybook).
+const browserColor = {
+  toolbar: `var(--color-toolbar, ${color.desktopbrowser.chromeBackgroundDesktop})`,
+  frame: `var(--color-frame-active, ${tabbar.background})`,
+  activeTab: `var(--color-tab-background-active-frame-active, ${tabbar.activeTabHorizontal})`,
+  tabTitle: `var(--color-tab-foreground-active-frame-active, ${color.text.primary})`,
+  toolbarIcon: `var(--color-toolbar-button-icon, ${color.icon.default})`,
+  locationBar: `var(--color-location-bar-background, ${color.desktopbrowser.omnibar.backgroundDesktop})`,
+}
+
 export const style = scoped.css`
   & {
     flex: 0 0 auto;
@@ -26,7 +37,7 @@ export const style = scoped.css`
     align-items: stretch;
     overflow: hidden;
     border-radius: ${radius.l};
-    background: ${color.desktopbrowser.chromeBackgroundDesktop};
+    background: ${browserColor.toolbar};
     box-shadow: 0 0 0 0.75px rgba(6, 6, 5, 0.2);
 
     /* Highlights the top edge of the frame. Drawn as an overlay so that it
@@ -51,7 +62,7 @@ export const style = scoped.css`
   .toolbar-button,
   .omnibox-button {
     --leo-icon-size: 20px;
-    --leo-icon-color: ${color.icon.default};
+    --leo-icon-color: ${browserColor.toolbarIcon};
 
     flex: 0 0 auto;
     display: flex;
@@ -77,7 +88,7 @@ export const style = scoped.css`
     align-items: center;
     gap: ${spacing.xl};
     padding: ${spacing.s};
-    background: ${color.desktopbrowser.chromeBackgroundDesktop};
+    background: ${browserColor.toolbar};
   }
 
   .nav-buttons {
@@ -93,7 +104,7 @@ export const style = scoped.css`
     gap: ${spacing.m};
     padding: ${spacing.xs};
     border-radius: ${radius.m};
-    background: ${color.desktopbrowser.omnibar.backgroundDesktop};
+    background: ${browserColor.locationBar};
     overflow: hidden;
 
     .placeholder {
@@ -126,7 +137,7 @@ export const style = scoped.css`
       text-overflow: ellipsis;
       white-space: nowrap;
       font: ${font.default.regular};
-      color: ${color.text.primary};
+      color: ${browserColor.tabTitle};
     }
   }
 
@@ -155,12 +166,12 @@ export const style = scoped.css`
     min-width: 0;
     margin: 0 ${spacing.s} ${spacing.s};
     border-radius: ${radius.m};
-    background: ${color.desktopbrowser.omnibar.backgroundDesktop};
+    background: ${browserColor.locationBar};
   }
 
   &.horizontal {
     .top-bar {
-      background: ${tabbar.background};
+      background: ${browserColor.frame};
     }
 
     .tab-strip {
@@ -172,7 +183,7 @@ export const style = scoped.css`
     }
 
     /* The toolbar sits below the tab strip, so its top corners round away to
-     * reveal the tab strip background behind them. */
+     * reveal the frame behind them. */
     .address-bar {
       border-radius: ${radius.m} ${radius.m} 0 0;
     }
@@ -183,7 +194,7 @@ export const style = scoped.css`
 
     .active-tab {
       width: 228px;
-      background: ${tabbar.activeTabHorizontal};
+      background: ${browserColor.activeTab};
     }
 
     .new-tab {
@@ -202,7 +213,7 @@ export const style = scoped.css`
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: ${color.desktopbrowser.chromeBackgroundDesktop};
+      background: ${browserColor.toolbar};
     }
 
     .pinned-tabs {

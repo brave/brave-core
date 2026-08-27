@@ -50,7 +50,7 @@ export const style = scoped.css`
         position: absolute;
         inset: 20%;
         border-radius: ${radius.full};
-        background: ${color.white};
+        background: ${color.container.background};
         z-index: -1;
       }
     }

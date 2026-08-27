@@ -32,6 +32,7 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/webui/cr_components/theme_color_picker/theme_color_picker_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -40,6 +41,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -91,6 +93,10 @@ BraveWelcomePageUI::BraveWelcomePageUI(content::WebUI* web_ui)
                               IDR_BRAVE_WELCOME_PAGE_HTML);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
+
+  // Serves chrome://theme/colors.css, which the browser preview uses to match
+  // the colors of the surrounding browser chrome.
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 
   web_ui->AddMessageHandler(
       std::make_unique<settings::BraveImportBulkDataHandler>());
