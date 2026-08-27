@@ -117,6 +117,7 @@ export function createMockConversationHandler(
     getIsRequestInProgress: () =>
       Promise.resolve({ isRequestInProgress: false }),
     getAssociatedContentInfo: () => Promise.resolve({ associatedContent: [] }),
+    getContentTools: () => Promise.resolve({ tools: [] }),
 
     // Mutation methods - return empty/default results
     getScreenshots: () => Promise.resolve({ screenshots: [] }),

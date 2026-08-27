@@ -160,6 +160,14 @@ TEST_F(ContentToolTest, DescriptionIncludesHostAndOriginalMetadata) {
       std::string::npos);
 }
 
+TEST_F(ContentToolTest, DisplayNameAndDescriptionAreThePageProvidedOnes) {
+  auto mojo_tool = MakeScriptTool("highlight", "Highlight the page");
+  ContentTool tool(*mojo_tool, weak_document());
+  // No host prefix and none of the instructions added for the LLM.
+  EXPECT_EQ(tool.DisplayName(), "highlight");
+  EXPECT_EQ(tool.DisplayDescription(), "Highlight the page");
+}
+
 TEST_F(ContentToolTest, MissingInputSchemaYieldsNoProperties) {
   auto mojo_tool = MakeScriptTool("noop", "");
   ContentTool tool(*mojo_tool, weak_document());

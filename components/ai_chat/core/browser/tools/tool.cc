@@ -15,6 +15,14 @@ namespace ai_chat {
 Tool::Tool() = default;
 Tool::~Tool() = default;
 
+std::string_view Tool::DisplayName() const {
+  return Name();
+}
+
+std::string_view Tool::DisplayDescription() const {
+  return Description();
+}
+
 std::string_view Tool::Type() const {
   return "function";
 }

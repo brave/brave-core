@@ -65,7 +65,9 @@ std::string EscapeMarkdown(std::string_view text) {
 
 ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
                          content::WeakDocumentPtr rfh)
-    : rfh_(std::move(rfh)), internal_tool_name_(script_tool.name) {
+    : rfh_(std::move(rfh)),
+      internal_tool_name_(script_tool.name),
+      internal_tool_description_(script_tool.description) {
   const GURL& url = rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL();
 
   if (url.SchemeIs(content::kChromeUIUntrustedScheme)) {
@@ -124,6 +126,14 @@ std::string_view ContentTool::Name() const {
 
 std::string_view ContentTool::Description() const {
   return description_;
+}
+
+std::string_view ContentTool::DisplayName() const {
+  return internal_tool_name_;
+}
+
+std::string_view ContentTool::DisplayDescription() const {
+  return internal_tool_description_;
 }
 
 std::optional<base::DictValue> ContentTool::InputProperties() const {

@@ -160,6 +160,13 @@ struct AssociatedContent {
   bool tools_attached;
 };
 
+// Describes a tool for display to the user - its name and description as they
+// were registered, rather than the mangled model-facing variants.
+struct ToolInfo {
+  string name;
+  string description;
+};
+
 struct UploadedFile {
   string filename;
   uint32 filesize;

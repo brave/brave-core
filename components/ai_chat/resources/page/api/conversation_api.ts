@@ -74,6 +74,13 @@ export default function createConversationApi(
           prefetchWithArgs: [],
           placeholderData: [] as Mojom.ConversationTurn[],
         },
+        // The set of tools a page exposes changes as the user interacts with
+        // it, so never treat a previous result for a content as fresh.
+        getContentTools: {
+          response: (result) => result.tools,
+          staleTime: 0,
+          placeholderData: [] as Mojom.ToolInfo[],
+        },
         // Mutations are only called when the mutate() function is run, e.g.
         // api.getScreenshots.mutate()
         // or

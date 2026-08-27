@@ -1,0 +1,102 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.dialog {
+  --leo-dialog-padding: var(--leo-spacing-2xl);
+  --leo-dialog-width: 480px;
+}
+
+.title {
+  font: var(--leo-font-heading-h3);
+  color: var(--leo-color-text-primary);
+}
+
+// Leo's dialog is a grid whose column is sized by its content, and the
+// attachment chip's nowrap title/URL are as wide as the strings themselves.
+// Contain the inline size so long URLs ellipsise instead of widening the
+// dialog past its max-width.
+.site {
+  contain: inline-size;
+  margin-top: var(--leo-spacing-2xl);
+}
+
+.body {
+  contain: inline-size;
+}
+
+.tools {
+  border: 1px solid var(--leo-color-divider-subtle);
+  // Matches the attachment chip above it.
+  border-radius: var(--leo-radius-m);
+  overflow: hidden;
+}
+
+.toolsHeader {
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  background-color: var(--leo-color-page-background);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.toolsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tool {
+  & + & {
+    border-top: 1px solid var(--leo-color-divider-subtle);
+  }
+}
+
+// The whole row toggles its description, so it's a button spanning the row
+// rather than just the description text.
+.toolToggle {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+
+  // Descriptions short enough to fit have nothing to expand.
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.toolName {
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-text-primary);
+  word-break: break-word;
+}
+
+.toolDescription {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.toolDescriptionExpanded {
+  -webkit-line-clamp: unset;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--leo-spacing-3xl);
+}

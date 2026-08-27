@@ -207,6 +207,31 @@ const ASSOCIATED_CONTENT_WITH_TOOLS: Mojom.AssociatedContent = {
   toolsAttached: true,
 }
 
+// Shown in the dialog opened from the "Tools" pill. The first description is
+// long enough to be clamped, so expand/collapse is exercised.
+const SAMPLE_CONTENT_TOOLS: Mojom.ToolInfo[] = [
+  {
+    name: 'browse_invoices',
+    description:
+      'Browse OR navigate to invoices. Set navigate=true whenever the user'
+      + ' wants to be taken to an invoice page in the browser (triggers:'
+      + ' "browse to", "go to", "show me", "open", "take me to", "navigate to"'
+      + ' an invoice). With navigate=false (default), returns invoice data'
+      + ' without changing the page — use this only when the user is asking a'
+      + ' question about their invoices, not asking to view one.',
+  },
+  {
+    name: 'create_invoice',
+    description: 'Create a new draft invoice for a given customer and amount.',
+  },
+  {
+    name: 'send_invoice',
+    description:
+      'Email an existing draft invoice to its customer. Verifies the invoice'
+      + ' has a customer and at least one line item first.',
+  },
+]
+
 const SAMPLE_SKILLS: Mojom.Skill[] = [
   {
     id: 'translate-mode',
@@ -661,6 +686,7 @@ function StoryContext(
         getConversationHistory: async () => ({
           conversationHistory: await getConversationHistory(),
         }),
+        getContentTools: () => Promise.resolve({ tools: SAMPLE_CONTENT_TOOLS }),
       }}
       conversationProps={{
         selectedConversationId: activeChatContext.selectedConversationId,
