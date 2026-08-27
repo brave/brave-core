@@ -24,7 +24,7 @@ export const StyledIcon = styled(Icon)`
 
 export const VpnLogo = styled(Icon)`
   --leo-icon-size: 20px;
-  --leo-icon-color: ${gradient.iconsActive};
+  --leo-icon-color: ${gradient.hero};
 `
 
 export const SettingsButton = styled.button`

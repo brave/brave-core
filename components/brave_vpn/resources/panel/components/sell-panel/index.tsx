@@ -18,7 +18,9 @@ function SellPanel () {
     getLocale(S.BRAVE_VPN_FEATURE_2),
     getLocale(S.BRAVE_VPN_FEATURE_3),
     getLocale(S.BRAVE_VPN_FEATURE_4),
-    getLocale(S.BRAVE_VPN_FEATURE_5)
+    getLocale(S.BRAVE_VPN_FEATURE_5),
+    getLocale(S.BRAVE_VPN_FEATURE_6),
+    getLocale(S.BRAVE_VPN_FEATURE_7)
   ]), [])
 
   const handleClick = (intent: ManageURLType) => {
@@ -29,18 +31,18 @@ function SellPanel () {
   return (
     <Styles.Box>
       <Styles.PanelContent>
-        <Styles.MainLogo name='product-vpn' />
         <Styles.PanelHeader role='banner'>
+          <Styles.MainLogo name='product-vpn' />
           <Styles.ProductTitle>{getLocale(S.BRAVE_VPN)}</Styles.ProductTitle>
-          <Styles.PoweredBy>
-            <span>{getLocale(S.BRAVE_VPN_POWERED_BY)}</span>
-            <Styles.GuardianLogo />
-          </Styles.PoweredBy>
         </Styles.PanelHeader>
+        <Styles.PoweredBy>
+          <span>{getLocale(S.BRAVE_VPN_POWERED_BY)}</span>
+          <Styles.GuardianLogo />
+        </Styles.PoweredBy>
         <Styles.SellingPoints>
           {featureList.map((entry, i) => (
             <Styles.SellingPoint key={i}>
-              <Styles.SellingPointIcon name='shield-done' />
+              <Styles.SellingPointIcon name='check-normal' />
               <Styles.SellingPointLabel>
                 {entry}
               </Styles.SellingPointLabel>
@@ -50,8 +52,8 @@ function SellPanel () {
         <Styles.ActionArea>
           <Styles.ActionButton
             slot='actions'
-            kind='filled'
-            size='large'
+            kind='hero'
+            size='medium'
             onClick={() => handleClick(ManageURLType.CHECKOUT)}
           >
             {getLocale(S.BRAVE_VPN_BUY)}
@@ -64,7 +66,6 @@ function SellPanel () {
           </Styles.ActionLink>
         </Styles.ActionArea>
       </Styles.PanelContent>
-      <Styles.SellGraphic />
     </Styles.Box>
   )
 }
