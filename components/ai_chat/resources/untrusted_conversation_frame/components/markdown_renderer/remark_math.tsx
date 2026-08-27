@@ -39,8 +39,13 @@ export const MATH_BLOCK_TAG = 'mathblock'
  * Single-dollar text math is off because it misreads ordinary prose about
  * money: with it enabled, "costs $5 and $10 total" parses "5 and " as an
  * expression. Math is therefore delimited by `$$`, either inline (`$$x^2$$`)
- * or as a fence. `normalizeMathDelimiters` rewrites `\(…\)` and `\[…\]` into
- * that form before parsing.
+ * or as a fence.
+ *
+ * Models still emit `$…$` for inline math, so this does not mean single
+ * dollars go unrendered. `normalizeMathDelimiters` rewrites them — along with
+ * `\(…\)` and `\[…\]` — into `$$` before parsing, and applies a heuristic that
+ * this parser option has no way to express: it can see the whole span, so it
+ * can tell `$180^\circ$` from the "5 and " in "costs $5 and $10".
  */
 export const MATH_REMARK_OPTIONS: RemarkMathOptions = {
   singleDollarTextMath: false,
