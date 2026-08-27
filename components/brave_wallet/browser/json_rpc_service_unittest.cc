@@ -1857,9 +1857,11 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      features::kBraveWalletCardanoFeature);
+
   std::vector<base::DictValue> values;
-  const auto& origin_a = url::Origin::Create(GURL("https://a.com"));
-  const auto& origin_b = url::Origin::Create(GURL("https://b.com"));
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(NetworkInfoToValue(chain1));
 
@@ -1869,109 +1871,173 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 
   std::vector<mojom::NetworkInfoPtr> expected_chains =
       network_manager_->GetAllChains();
-  bool callback_is_called = false;
-  json_rpc_service_->GetAllNetworks(base::BindLambdaForTesting(
-      [&callback_is_called,
-       &expected_chains](std::vector<mojom::NetworkInfoPtr> chains) {
-        EXPECT_EQ(expected_chains.size(), chains.size());
+  TestFuture<mojom::AllNetworksPtr> future;
+  json_rpc_service_->GetAllNetworks(future.GetCallback());
+  mojom::AllNetworksPtr all_networks = future.Take();
 
-        for (size_t i = 0; i < chains.size(); i++) {
-          ASSERT_TRUE(chains.at(i).Equals(expected_chains.at(i)));
-        }
-        callback_is_called = true;
-      }));
-  task_environment_.RunUntilIdle();
-  ASSERT_TRUE(callback_is_called);
-}
+  EXPECT_EQ(all_networks->networks, expected_chains);
 
-TEST_F(JsonRpcServiceUnitTest, GetCustomNetworks) {
-  base::MockCallback<mojom::JsonRpcService::GetCustomNetworksCallback> callback;
-  std::vector<base::DictValue> values;
-  mojom::NetworkInfo chain1 = GetTestNetworkInfo1(mojom::kMainnetChainId);
-  values.push_back(NetworkInfoToValue(chain1));
+  std::vector<std::string> all_chain_ids;
+  for (const auto& network : all_networks->networks) {
+    all_chain_ids.push_back(network->chain_id);
+  }
+  EXPECT_THAT(all_chain_ids, ElementsAreArray(std::vector<std::string>{
+                                 mojom::kMainnetChainId,
+                                 mojom::kBaseMainnetChainId,
+                                 mojom::kPolygonMainnetChainId,
+                                 mojom::kBnbSmartChainMainnetChainId,
+                                 mojom::kOptimismMainnetChainId,
+                                 mojom::kAvalancheMainnetChainId,
+                                 mojom::kFilecoinEthereumMainnetChainId,
+                                 mojom::kNeonEVMMainnetChainId,
+                                 mojom::kSepoliaChainId,
+                                 mojom::kFilecoinEthereumTestnetChainId,
+                                 chain1.chain_id,
+                                 chain2.chain_id,
+                                 mojom::kSolanaMainnet,
+                                 mojom::kSolanaTestnet,
+                                 mojom::kSolanaDevnet,
+                                 mojom::kFilecoinMainnet,
+                                 mojom::kFilecoinTestnet,
+                                 mojom::kBitcoinMainnet,
+                                 mojom::kBitcoinTestnet,
+                                 mojom::kZCashMainnet,
+                                 mojom::kZCashTestnet,
+                                 mojom::kCardanoMainnet,
+                                 mojom::kCardanoTestnet,
+                             }));
 
-  mojom::NetworkInfo chain2 = GetTestNetworkInfo1("0x123456");
-  values.push_back(NetworkInfoToValue(chain2));
-  EXPECT_CALL(callback, Run(ElementsAreArray(std::vector<std::string>{})));
-  json_rpc_service_->GetCustomNetworks(mojom::CoinType::ETH, callback.Get());
-  testing::Mock::VerifyAndClearExpectations(&callback);
-  UpdateCustomNetworks(prefs(), &values);
+  EXPECT_THAT(all_networks->custom_chain_ids,
+              ElementsAreArray({chain1.chain_id, chain2.chain_id}));
 
-  EXPECT_CALL(callback, Run(ElementsAreArray({"0x1", "0x123456"})));
-  json_rpc_service_->GetCustomNetworks(mojom::CoinType::ETH, callback.Get());
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
+  // Testnets of all coins are hidden by default.
+  EXPECT_THAT(all_networks->hidden_chain_ids,
+              ElementsAreArray({
+                  mojom::kSepoliaChainId,
+                  mojom::kFilecoinEthereumTestnetChainId,
+                  mojom::kSolanaDevnet,
+                  mojom::kSolanaTestnet,
+                  mojom::kFilecoinTestnet,
+                  mojom::kBitcoinTestnet,
+                  mojom::kZCashTestnet,
+                  mojom::kCardanoTestnet,
+              }));
 
-TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
-  base::MockCallback<mojom::JsonRpcService::GetKnownNetworksCallback> callback;
-  std::vector<base::DictValue> values;
-  mojom::NetworkInfo chain1 = GetTestNetworkInfo1(mojom::kMainnetChainId);
-  values.push_back(NetworkInfoToValue(chain1));
-  UpdateCustomNetworks(prefs(), &values);
+  EXPECT_THAT(all_networks->ankr_chain_ids,
+              ElementsAreArray({
+                  mojom::kMainnetChainId,
+                  mojom::kBaseMainnetChainId,
+                  mojom::kPolygonMainnetChainId,
+                  mojom::kBnbSmartChainMainnetChainId,
+                  mojom::kOptimismMainnetChainId,
+                  mojom::kAvalancheMainnetChainId,
+              }));
 
-  EXPECT_CALL(
-      callback,
-      Run(ElementsAreArray({"0x1", "0x2105", "0x89", "0x38", "0xa", "0xa86a",
-                            "0x13a", "0xe9ac0d6", "0xaa36a7", "0x4cb2f"})));
-  json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_THAT(all_networks->swap_chain_ids,
+              ElementsAreArray({
+                  mojom::kMainnetChainId,
+                  mojom::kBaseMainnetChainId,
+                  mojom::kPolygonMainnetChainId,
+                  mojom::kBnbSmartChainMainnetChainId,
+                  mojom::kOptimismMainnetChainId,
+                  mojom::kAvalancheMainnetChainId,
+                  mojom::kFilecoinEthereumMainnetChainId,
+                  mojom::kSolanaMainnet,
+                  mojom::kBitcoinMainnet,
+                  mojom::kZCashMainnet,
+                  mojom::kCardanoMainnet,
+              }));
+
+  EXPECT_THAT(all_networks->off_ramp_chain_ids,
+              ElementsAreArray({
+                  mojom::kMainnetChainId,
+                  mojom::kPolygonMainnetChainId,
+                  mojom::kBnbSmartChainMainnetChainId,
+                  mojom::kOptimismMainnetChainId,
+                  mojom::kAvalancheMainnetChainId,
+                  mojom::kSolanaMainnet,
+                  mojom::kBitcoinMainnet,
+              }));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
-  TestFuture<const std::vector<std::string>&> future;
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      features::kBraveWalletCardanoFeature);
+
+  TestFuture<mojom::AllNetworksPtr> all_networks_future;
+  TestFuture<bool> bool_future;
+
+  // GetAllNetworks returns hidden networks of all coins, so expectations below
+  // always contain testnets of non-ETH coins, hidden by default.
+  const std::vector<std::string_view> k_other_hidden = {
+      mojom::kSolanaDevnet,   mojom::kSolanaTestnet, mojom::kFilecoinTestnet,
+      mojom::kBitcoinTestnet, mojom::kZCashTestnet,  mojom::kCardanoTestnet,
+  };
+  auto expected_hidden =
+      [&k_other_hidden](std::vector<std::string_view> eth_hidden) {
+        base::Extend(eth_hidden, k_other_hidden);
+        return eth_hidden;
+      };
 
   // Test networks are hidden by default.
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(future.Take(),
-              ElementsAreArray({mojom::kSepoliaChainId,
-                                mojom::kFilecoinEthereumTestnetChainId}));
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(
+      all_networks_future.Take()->hidden_chain_ids,
+      ElementsAreArray(expected_hidden(
+          {mojom::kSepoliaChainId, mojom::kFilecoinEthereumTestnetChainId})));
 
   // Remove network hidden by default.
-  network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH,
-                                        mojom::kSepoliaChainId);
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(future.Take(),
-              ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId}));
+  json_rpc_service_->RemoveHiddenNetwork(
+      mojom::CoinType::ETH, mojom::kSepoliaChainId, bool_future.GetCallback());
+  EXPECT_TRUE(bool_future.Take());
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(all_networks_future.Take()->hidden_chain_ids,
+              ElementsAreArray(
+                  expected_hidden({mojom::kFilecoinEthereumTestnetChainId})));
 
   // Making custom network hidden.
-  network_manager_->AddHiddenNetwork(mojom::CoinType::ETH, "0x123");
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(
-      future.Take(),
-      ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId, "0x123"}));
+  json_rpc_service_->AddHiddenNetwork(mojom::CoinType::ETH, "0x123",
+                                      bool_future.GetCallback());
+  EXPECT_TRUE(bool_future.Take());
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(all_networks_future.Take()->hidden_chain_ids,
+              ElementsAreArray(expected_hidden(
+                  {mojom::kFilecoinEthereumTestnetChainId, "0x123"})));
 
   // Making custom network visible.
-  network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH, "0x123");
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(future.Take(),
-              ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId}));
+  json_rpc_service_->RemoveHiddenNetwork(mojom::CoinType::ETH, "0x123",
+                                         bool_future.GetCallback());
+  EXPECT_TRUE(bool_future.Take());
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(all_networks_future.Take()->hidden_chain_ids,
+              ElementsAreArray(
+                  expected_hidden({mojom::kFilecoinEthereumTestnetChainId})));
 
   // Change active network so kFilecoinEthereumTestnetChainId so it is not
   // hidden.
   SetNetwork(mojom::kFilecoinEthereumTestnetChainId, mojom::CoinType::ETH,
              std::nullopt);
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(future.Take(), ElementsAreArray<std::string>({}));
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(all_networks_future.Take()->hidden_chain_ids,
+              ElementsAreArray(expected_hidden({})));
 
   // Change active network to Mainnet so kFilecoinEthereumTestnetChainId becomes
   // hidden.
   SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH, std::nullopt);
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(future.Take(),
-              ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId}));
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(all_networks_future.Take()->hidden_chain_ids,
+              ElementsAreArray(
+                  expected_hidden({mojom::kFilecoinEthereumTestnetChainId})));
 
   // Remove all hidden networks.
-  network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH,
-                                        mojom::kFilecoinEthereumTestnetChainId);
-  json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH,
-                                       future.GetCallback());
-  EXPECT_THAT(future.Take(), ElementsAreArray<std::string>({}));
+  json_rpc_service_->RemoveHiddenNetwork(mojom::CoinType::ETH,
+                                         mojom::kFilecoinEthereumTestnetChainId,
+                                         bool_future.GetCallback());
+  EXPECT_TRUE(bool_future.Take());
+  json_rpc_service_->GetAllNetworks(all_networks_future.GetCallback());
+  EXPECT_THAT(all_networks_future.Take()->hidden_chain_ids,
+              ElementsAreArray(expected_hidden({})));
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {

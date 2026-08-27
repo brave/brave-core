@@ -179,7 +179,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
 
   func sellTokens(
     provider: BraveWallet.OffRampProvider,
-    chainId: String,
+    chainIds: [String],
     completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
   ) {
     completion(Self.testTokens)

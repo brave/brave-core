@@ -15,7 +15,7 @@ import XCTest
   private var cancellables: Set<AnyCancellable> = .init()
 
   private func setupServices() -> (
-    BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
+    BraveWallet.TestKeyringService, MockJsonRpcService,
     BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService
   ) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
@@ -42,8 +42,8 @@ import XCTest
     rpcService._setNetwork = { chainId, coin, origin, completion in
       completion(true)
     }
-    rpcService._customNetworks = { $1([]) }
-    rpcService._hiddenNetworks = { $1([]) }
+    rpcService.allCustomNetworks = []
+    rpcService.hiddenNetworks = []
     rpcService._addHiddenNetwork = { $2(true) }
     rpcService._removeHiddenNetwork = { $2(true) }
 
@@ -54,7 +54,6 @@ import XCTest
     }
 
     let swapService = BraveWallet.TestSwapService()
-    swapService._isSwapSupported = { $1(true) }
 
     return (keyringService, rpcService, walletService, swapService)
   }

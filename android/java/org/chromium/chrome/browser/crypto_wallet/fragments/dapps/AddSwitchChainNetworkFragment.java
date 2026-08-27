@@ -251,8 +251,9 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                                 mBraveWalletBaseActivity
                                         .getJsonRpcService()
                                         .getAllNetworks(
-                                                chains -> {
-                                                    for (NetworkInfo network : chains) {
+                                                allNetworks -> {
+                                                    for (NetworkInfo network :
+                                                            allNetworks.networks) {
                                                         if (network.coin != CoinType.ETH) {
                                                             continue;
                                                         }

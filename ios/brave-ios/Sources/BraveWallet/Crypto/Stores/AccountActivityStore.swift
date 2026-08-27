@@ -140,7 +140,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   }
   @Published private(set) var isLoadingAccountFiat: Bool = false
   @Published private(set) var accountTotalFiat: String = "$0.00"
-  @Published private(set) var isSwapSupported: Bool
   @Published private(set) var userAssets: [AssetViewModel] = []
   @Published private(set) var userNFTs: [NFTAssetViewModel] = []
   /// Sections of transactions for display. Each section represents one date.
@@ -216,9 +215,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.assetManager = userAssetManager
-    self._isSwapSupported = .init(
-      wrappedValue: account.coin == .eth || account.coin == .sol
-    )
 
     self.setupObservers()
 
@@ -295,18 +291,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       let networksForAccount = networksForAccountCoin.filter {
         // .fil coin type has two different keyring ids
         $0.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
-      }
-      for network in networksForAccount {
-        // Defaults to checking `eth` & `sol` coin type, but
-        // we can provide additional local check against user's
-        // custom networks with swap service
-        let isSwapSupportedForNetwork = await swapService.isSwapSupported(
-          chainId: network.chainId
-        )
-        if isSwapSupportedForNetwork && !self.isSwapSupported {
-          self.isSwapSupported = isSwapSupportedForNetwork
-          break
-        }
       }
 
       // Include user deleted for case user sent an NFT

@@ -318,13 +318,13 @@ GURL SwapService::GetGate3StatusURL() {
   return GetGate3URL().Resolve("/api/swap/v1/status");
 }
 
-void SwapService::IsSwapSupported(const std::string& chain_id,
-                                  IsSwapSupportedCallback callback) {
-  std::move(callback).Run(IsNetworkSupportedByZeroEx(chain_id) ||
-                          IsNetworkSupportedByJupiter(chain_id) ||
-                          IsNetworkSupportedByLiFi(chain_id) ||
-                          IsNetworkSupportedBySquid(chain_id) ||
-                          IsNetworkSupportedByNearIntents(chain_id));
+// static
+bool SwapService::IsChainIdSupportedBySwap(const std::string& chain_id) {
+  return IsNetworkSupportedByZeroEx(chain_id) ||
+         IsNetworkSupportedByJupiter(chain_id) ||
+         IsNetworkSupportedByLiFi(chain_id) ||
+         IsNetworkSupportedBySquid(chain_id) ||
+         IsNetworkSupportedByNearIntents(chain_id);
 }
 
 // Method to fetch a quote for a swap or a bridge transaction.

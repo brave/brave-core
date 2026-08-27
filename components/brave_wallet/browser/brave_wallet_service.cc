@@ -2122,16 +2122,6 @@ void BraveWalletService::DiscoverEthAllowances(
       std::move(callback));
 }
 
-void BraveWalletService::GetAnkrSupportedChainIds(
-    GetAnkrSupportedChainIdsCallback callback) {
-  std::vector<std::string> chain_ids;
-  for (const auto& entry : kAnkrBlockchains) {
-    chain_ids.push_back(std::string(entry.first));
-  }
-
-  std::move(callback).Run(std::move(chain_ids));
-}
-
 void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
   std::move(callback).Run(delegate_->IsPrivateWindow());
 }

@@ -436,26 +436,6 @@ export class MockedWalletApiProxy {
         errors: [mockSignMessageError],
       }
     },
-    getAnkrSupportedChainIds: async () => {
-      return {
-        chainIds: [
-          BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-          BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
-          BraveWallet.BASE_MAINNET_CHAIN_ID,
-          BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
-          BraveWallet.MAINNET_CHAIN_ID,
-          BraveWallet.FANTOM_MAINNET_CHAIN_ID,
-          BraveWallet.FLARE_MAINNET_CHAIN_ID,
-          BraveWallet.GNOSIS_CHAIN_ID,
-          BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-          BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-          BraveWallet.POLYGON_ZKEVM_CHAIN_ID,
-          BraveWallet.ROLLUX_MAINNET_CHAIN_ID,
-          BraveWallet.SYSCOIN_MAINNET_CHAIN_ID,
-          BraveWallet.ZK_SYNC_ERA_CHAIN_ID,
-        ],
-      }
-    },
     getNetworkForAccountOnActiveOrigin: async (
       account: BraveWallet.AccountId,
     ) => {
@@ -770,10 +750,16 @@ export class MockedWalletApiProxy {
       return { success: true }
     },
     getAllNetworks: async () => {
-      return { networks: this.networks }
-    },
-    getHiddenNetworks: async () => {
-      return { chainIds: [] }
+      return {
+        allNetworks: {
+          networks: this.networks,
+          customChainIds: [],
+          hiddenChainIds: [],
+          ankrChainIds: [],
+          swapChainIds: [],
+          offRampChainIds: [],
+        },
+      }
     },
     getDefaultChainId: async (coin) => {
       return { chainId: this.chainIdsForCoins[coin] }

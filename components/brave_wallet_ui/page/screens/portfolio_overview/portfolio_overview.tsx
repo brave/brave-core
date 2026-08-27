@@ -50,9 +50,7 @@ import {
 } from '../../../utils/pricing-utils'
 import { getBalance } from '../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
-import {
-  networkEntityAdapter, //
-} from '../../../common/slices/entities/network.entity'
+import { getNetworkId } from '../../../common/slices/entities/network.entity'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { getIsRewardsToken } from '../../../utils/rewards_utils'
 import {
@@ -249,7 +247,7 @@ export const PortfolioOverview = () => {
     && externalRewardsNetwork
     && externalRewardsAccount
     && !filteredOutPortfolioNetworkKeys.includes(
-      networkEntityAdapter.selectId(externalRewardsNetwork).toString(),
+      getNetworkId(externalRewardsNetwork),
     )
 
   const accountsListWithRewards = React.useMemo(() => {
@@ -271,9 +269,7 @@ export const PortfolioOverview = () => {
   // filteredOutPortfolioNetworkKeys pref and visible networks.
   const visibleTokensForFilteredChains = React.useMemo(() => {
     return userTokensWithRewards.filter((token) =>
-      visiblePortfolioNetworkIds.includes(
-        networkEntityAdapter.selectId(token).toString(),
-      ),
+      visiblePortfolioNetworkIds.includes(getNetworkId(token)),
     )
   }, [userTokensWithRewards, visiblePortfolioNetworkIds])
 

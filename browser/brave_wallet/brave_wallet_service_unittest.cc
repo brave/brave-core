@@ -2950,22 +2950,6 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
-  service_->GetAnkrSupportedChainIds(
-      base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
-        std::vector<std::string> expected_chains = {
-            mojom::kArbitrumMainnetChainId, mojom::kAvalancheMainnetChainId,
-            mojom::kBaseMainnetChainId,     mojom::kBnbSmartChainMainnetChainId,
-            mojom::kMainnetChainId,         mojom::kFantomMainnetChainId,
-            mojom::kFlareMainnetChainId,    mojom::kGnosisChainId,
-            mojom::kOptimismMainnetChainId, mojom::kPolygonMainnetChainId,
-            mojom::kPolygonZKEVMChainId,    mojom::kRolluxMainnetChainId,
-            mojom::kSyscoinMainnetChainId,  mojom::kZkSyncEraChainId};
-        EXPECT_THAT(chains,
-                    testing::UnorderedElementsAreArray(expected_chains));
-      }));
-}
-
 TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
   SetupWallet();
 

@@ -17,10 +17,6 @@ class MockSwapService: BraveWalletSwapService {
     completion(nil, .init(message: "Error", kind: .unknown), "Error")
   }
 
-  func isSwapSupported(chainId: String, completion: @escaping (Bool) -> Void) {
-    completion(true)
-  }
-
   func transaction(
     params: BraveWallet.SwapTransactionParamsUnion,
     completion: @escaping (BraveWallet.SwapTransactionUnion?, BraveWallet.SwapErrorUnion?, String)

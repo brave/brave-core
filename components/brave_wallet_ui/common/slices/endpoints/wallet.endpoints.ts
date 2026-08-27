@@ -31,7 +31,10 @@ import {
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { AddAccountArgs } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
-import { networkEntityAdapter } from '../entities/network.entity'
+import {
+  networkEntityAdapter,
+  networkSelectors,
+} from '../entities/network.entity'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -614,10 +617,8 @@ async function createDefaultAccounts({
   const accountsRegistry = await cache.getAccountsRegistry()
   const { accounts: hiddenAccounts } = await keyringService.getHiddenAccounts()
 
-  const visibleNetworks = getEntitiesListFromEntityState(
-    networksRegistry,
-    networksRegistry.visibleIds,
-  )
+  const visibleNetworks =
+    networkSelectors.selectVisibleNetworks(networksRegistry)
 
   const networkKeyrings: number[] = []
   const networksWithUniqueKeyrings = []

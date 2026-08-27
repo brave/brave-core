@@ -7,7 +7,7 @@
 import { BraveWallet, WalletState } from '../../constants/types'
 
 // mocks
-import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
+import { getNetworkId } from '../../common/slices/entities/network.entity'
 
 export const mockWalletState: WalletState = {
   addUserAssetError: false,
@@ -18,37 +18,29 @@ export const mockWalletState: WalletState = {
   isZCashEnabled: true,
   isAnkrBalancesFeatureEnabled: false,
   allowedNewWalletAccountTypeNetworkIds: [
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.FILECOIN_MAINNET,
-      coin: BraveWallet.CoinType.FIL,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.FILECOIN_TESTNET,
-      coin: BraveWallet.CoinType.FIL,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.BITCOIN_MAINNET,
-      coin: BraveWallet.CoinType.BTC,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.BITCOIN_TESTNET,
-      coin: BraveWallet.CoinType.BTC,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.Z_CASH_MAINNET,
-      coin: BraveWallet.CoinType.ZEC,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.Z_CASH_TESTNET,
-      coin: BraveWallet.CoinType.ZEC,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.SOLANA_MAINNET,
-      coin: BraveWallet.CoinType.SOL,
     }),
-    networkEntityAdapter.selectId({
+    getNetworkId({
       chainId: BraveWallet.MAINNET_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH,
     }),
   ],
   isWalletCreated: false,

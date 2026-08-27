@@ -11,6 +11,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/fixed_flat_set.h"
 #include "brave/brave_domains/urls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -146,6 +147,20 @@ inline constexpr auto kAnkrBlockchains =
          {mojom::kRolluxMainnetChainId, "rollux"},
          {mojom::kSyscoinMainnetChainId, "syscoin"},
          {mojom::kZkSyncEraChainId, "zksync_era"}});
+
+inline constexpr auto kOffRampChains =
+    base::MakeFixedFlatSet<std::string_view>({
+        mojom::kMainnetChainId,
+        mojom::kPolygonMainnetChainId,
+        mojom::kBnbSmartChainMainnetChainId,
+        mojom::kAvalancheMainnetChainId,
+        mojom::kFantomMainnetChainId,
+        mojom::kCeloMainnetChainId,
+        mojom::kOptimismMainnetChainId,
+        mojom::kArbitrumMainnetChainId,
+        mojom::kSolanaMainnet,
+        mojom::kBitcoinMainnet,
+    });
 
 inline constexpr auto kEthSupportedNftInterfaces =
     std::to_array<std::string_view>({

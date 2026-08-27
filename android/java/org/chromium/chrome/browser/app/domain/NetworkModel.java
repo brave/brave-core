@@ -57,20 +57,14 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<Pair<String, List<NetworkInfo>>> mMediatorPairChainAndNetwork;
     private final MediatorLiveData<NetworkInfo> mMediatorNeedToCreateAccountForNetwork;
     private final MediatorLiveData<NetworkInfo> mMediatorDefaultNetwork;
-    private final MediatorLiveData<String[]> mMediatorCustomNetworkIds;
-    private final MediatorLiveData<List<NetworkInfo>> mMediatorPrimaryNetworks;
-    private final MediatorLiveData<List<NetworkInfo>> mMediatorSecondaryNetworks;
 
     public final LiveData<String> mChainId;
     private final MutableLiveData<NetworkLists> mMutableNetworkLists;
-    public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Pair<String, List<NetworkInfo>>> mPairChainAndNetwork;
     public final LiveData<List<NetworkInfo>> mDefaultCoinCryptoNetworks;
     public final LiveData<List<NetworkInfo>> mCryptoNetworks;
     public final LiveData<NetworkInfo> mDefaultNetwork;
-    public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
-    public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
     public final LiveData<NetworkLists> mNetworkLists;
 
     @SuppressWarnings("NoStreams")
@@ -97,13 +91,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mDefaultNetwork = mMediatorDefaultNetwork;
         mMediatorNeedToCreateAccountForNetwork = new MediatorLiveData<>();
         mNeedToCreateAccountForNetwork = mMediatorNeedToCreateAccountForNetwork;
-        mMediatorCustomNetworkIds = new MediatorLiveData<>();
-        mMediatorCustomNetworkIds.postValue(new String[0]);
-        mCustomNetworkIds = mMediatorCustomNetworkIds;
-        mMediatorPrimaryNetworks = new MediatorLiveData<>();
-        mPrimaryNetworks = mMediatorPrimaryNetworks;
-        mMediatorSecondaryNetworks = new MediatorLiveData<>();
-        mSecondaryNetworks = mMediatorSecondaryNetworks;
         jsonRpcService.addObserver(this);
         mMutableNetworkLists = new MutableLiveData<>();
         mNetworkLists = mMutableNetworkLists;
@@ -146,39 +133,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
                                                         .filter(n -> n.coin == coinType)
                                                         .collect(Collectors.toList())));
                             });
-                });
-
-        mMediatorCustomNetworkIds.addSource(
-                mSharedData.getCoinTypeLd(),
-                coinType -> {
-                    mJsonRpcService.getCustomNetworks(
-                            coinType, mMediatorCustomNetworkIds::postValue);
-                });
-        mMediatorPrimaryNetworks.addSource(
-                mCryptoNetworks,
-                networkInfos -> {
-                    List<NetworkInfo> primaryNws = new ArrayList<>();
-                    for (NetworkInfo networkInfo : networkInfos) {
-                        if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
-                                networkInfo.chainId)) {
-                            primaryNws.add(networkInfo);
-                        }
-                    }
-                    mMediatorPrimaryNetworks.postValue(primaryNws);
-                });
-        mMediatorSecondaryNetworks.addSource(
-                mCryptoNetworks,
-                networkInfos -> {
-                    List<NetworkInfo> secondaryNws = new ArrayList<>();
-                    for (NetworkInfo networkInfo : networkInfos) {
-                        if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
-                                        networkInfo.chainId)
-                                && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
-                                        networkInfo.chainId)) {
-                            secondaryNws.add(networkInfo);
-                        }
-                    }
-                    mMediatorSecondaryNetworks.postValue(secondaryNws);
                 });
     }
 
@@ -261,9 +215,9 @@ public class NetworkModel implements JsonRpcServiceObserver {
             return;
         }
         jsonRpcService.getAllNetworks(
-                networks -> {
+                allNetworks -> {
                     List<NetworkInfo> networkInfoList = new ArrayList<>();
-                    networkInfoList.addAll(Arrays.asList(networks));
+                    networkInfoList.addAll(Arrays.asList(allNetworks.networks));
                     networkInfoList.sort(NetworkUtils.sSortNetworkByPriority);
                     callback.call(networkInfoList);
                 });

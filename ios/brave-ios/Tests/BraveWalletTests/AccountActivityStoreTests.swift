@@ -195,13 +195,12 @@ class AccountActivityStoreTests: XCTestCase {
       completion(true, self.mockAssetPrices)
     }
 
+    rpcService.swapSupportedChainIds = [
+      BraveWallet.MainnetChainId,
+      BraveWallet.SolanaMainnet,
+    ]
+
     let swapService = BraveWallet.TestSwapService()
-    swapService._isSwapSupported = { chainId, completion in
-      let isSupported =
-        chainId == BraveWallet.MainnetChainId
-        || chainId == BraveWallet.SolanaMainnet
-      completion(isSupported)
-    }
 
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }

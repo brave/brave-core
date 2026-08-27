@@ -259,13 +259,7 @@ export const TokenLists = ({
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
       return getSortedFungibleTokensList(filteredAssetList).filter(
-        (asset) =>
-          networkEntityAdapter
-            .selectId({
-              chainId: asset.asset.chainId,
-              coin: asset.asset.coin,
-            })
-            .toString() === networkEntityAdapter.selectId(network).toString(),
+        (asset) => asset.asset.chainId === network.chainId,
       )
     },
     [filteredAssetList, getSortedFungibleTokensList],

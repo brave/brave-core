@@ -35,39 +35,41 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     .mockFilecoinTestnet,
     .mockBitcoinTestnet,
   ]
+  var swapSupportedChainIds: [String] = []
 
   override init() {
     super.init()
     self._addObserver = { _ in }
     self._allNetworks = { [weak self] completion in
       guard let self else {
-        completion(Self.allKnownNetworks)
+        completion(
+          .init(
+            networks: Self.allKnownNetworks,
+            customChainIds: [],
+            hiddenChainIds: [],
+            ankrChainIds: [],
+            swapChainIds: [],
+            offRampChainIds: []
+          )
+        )
         return
       }
-      completion(Self.allKnownNetworks + self.allCustomNetworks)
-    }
-    self._hiddenNetworks = { [weak self] _, completion in
-      guard let self else {
-        completion([])
-        return
-      }
-      completion(self.hiddenNetworks.map(\.chainId))
+      completion(
+        .init(
+          networks: Self.allKnownNetworks + self.allCustomNetworks,
+          customChainIds: self.allCustomNetworks.map(\.chainId),
+          hiddenChainIds: self.hiddenNetworks.map(\.chainId),
+          ankrChainIds: [],
+          swapChainIds: self.swapSupportedChainIds,
+          offRampChainIds: []
+        )
+      )
     }
     self._addHiddenNetwork = { _, _, completion in
       completion(true)
     }
     self._removeHiddenNetwork = { _, _, completion in
       completion(true)
-    }
-    self._knownNetworks = { coin, completion in
-      completion(Self.allKnownNetworks.filter({ $0.coin == coin }).map(\.chainId))
-    }
-    self._customNetworks = { [weak self] _, completion in
-      guard let self else {
-        completion([])
-        return
-      }
-      completion(self.allCustomNetworks.map(\.chainId))
     }
     self._addChain = { [weak self] network, completion in
       guard let self else {

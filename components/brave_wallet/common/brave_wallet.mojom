@@ -1165,7 +1165,7 @@ interface BlockchainRegistry {
       => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Sell UI
-  GetSellTokens(OffRampProvider provider, string chain_id)
+  GetSellTokens(OffRampProvider provider, array<string> chain_ids)
       => (array<BlockchainToken> tokens);
 
   // Get currencies list
@@ -1434,9 +1434,6 @@ interface SwapService {
       => (SwapTransactionUnion? response,
           SwapErrorUnion? error,
           string error_string);
-
-  // Obtains whether the given chain id supports swap
-  IsSwapSupported(string chain_id) => (bool result);
 
   GetStatus(Gate3SwapStatusParams params) => (Gate3SwapStatus? response,
                                               Gate3SwapError? error,
@@ -1825,6 +1822,15 @@ struct NftIdentifier {
   string token_id;
 };
 
+struct AllNetworks {
+  array<NetworkInfo> networks;
+  array<string> custom_chain_ids;
+  array<string> hidden_chain_ids;
+  array<string> ankr_chain_ids;
+  array<string> swap_chain_ids;
+  array<string> off_ramp_chain_ids;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1850,13 +1856,7 @@ interface JsonRpcService {
   GetNetwork(CoinType coin, url.mojom.Origin? origin)
       => (NetworkInfo network);
 
-  GetAllNetworks() => (array<NetworkInfo> networks);
-
-  GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
-
-  GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
-
-  GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
+  GetAllNetworks() => (AllNetworks all_networks);
 
   AddHiddenNetwork(CoinType coin, string chain_id) => (bool success);
 
@@ -3215,8 +3215,6 @@ interface BraveWalletService {
   // transacted and tries next one if it is(prefs are changed).
   GenerateReceiveAddress(AccountId account_id)
       => (string? address, string? error_message);
-
-  GetAnkrSupportedChainIds() => (array<string> chain_ids);
 
   IsPrivateWindow() => (bool is_private_window);
 

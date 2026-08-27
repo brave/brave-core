@@ -23,9 +23,7 @@ import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult,
 } from '../../../common/slices/entities/blockchain-token.entity'
-import {
-  networkEntityAdapter, //
-} from '../../../common/slices/entities/network.entity'
+import { networkSelectors } from '../../../common/slices/entities/network.entity'
 import {
   filterTransactionsBySearchValue,
   makeSearchableTransaction,
@@ -90,7 +88,7 @@ export const TransactionsScreen = (props: Props) => {
   const [searchValue, setSearchValue] = React.useState<string>('')
 
   // route params
-  const { address, chainId, chainCoinType } = React.useMemo(() => {
+  const { address, chainId } = React.useMemo(() => {
     const searchParams = new URLSearchParams(history.location.search)
     return {
       address: searchParams.get('address'),
@@ -127,16 +125,8 @@ export const TransactionsScreen = (props: Props) => {
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   const specificNetworkFromParam =
-    chainId
-    && chainId !== AllNetworksOption.chainId
-    && chainCoinType !== undefined
-    && networksRegistry
-      ? networksRegistry.entities[
-          networkEntityAdapter.selectId({
-            chainId,
-            coin: chainCoinType,
-          })
-        ]
+    chainId && chainId !== AllNetworksOption.chainId
+      ? networkSelectors.selectById(networksRegistry, chainId)
       : undefined
 
   const foundNetworkFromParam = chainId

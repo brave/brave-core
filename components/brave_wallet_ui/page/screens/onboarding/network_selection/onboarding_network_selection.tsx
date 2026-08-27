@@ -33,7 +33,7 @@ import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 
 // queries
 import {
-  useGetAllKnownNetworksQuery,
+  useGetNetworksQuery,
   useHideNetworksMutation,
   useRestoreNetworksMutation,
 } from '../../../../common/slices/api.slice'
@@ -157,7 +157,7 @@ export const OnboardingNetworkSelection = () => {
 
   // queries
   const { data: networks = [], isLoading: isLoadingNetworks } =
-    useGetAllKnownNetworksQuery()
+    useGetNetworksQuery()
 
   // mutations
   const [hideNetworks] = useHideNetworksMutation()

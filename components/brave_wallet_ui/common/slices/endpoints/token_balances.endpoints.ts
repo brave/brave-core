@@ -323,13 +323,14 @@ export const tokenBalancesEndpoints = ({
           const { data: api, cache } = baseQuery(undefined)
 
           const {
-            braveWalletService,
             jsonRpcService,
             bitcoinWalletService,
             zcashWalletService,
             cardanoWalletService,
             polkadotWalletService,
           } = api
+
+          const networksRegistry = await cache.getNetworksRegistry()
 
           const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
@@ -402,11 +403,8 @@ export const tokenBalancesEndpoints = ({
             arg.useAnkrBalancesFeature ? [] : arg.networks
 
           if (arg.useAnkrBalancesFeature) {
-            const { chainIds: ankrSupportedChainIds } =
-              await braveWalletService.getAnkrSupportedChainIds()
-
             for (const network of arg.networks) {
-              if (ankrSupportedChainIds.includes(network.chainId)) {
+              if (networksRegistry.ankrChainIds.includes(network.chainId)) {
                 ankrSupportedNetworks.push(network)
               } else {
                 nonAnkrSupportedNetworks.push(network)
@@ -450,7 +448,7 @@ export const tokenBalancesEndpoints = ({
                 await eachLimit(
                   nonAnkrSupportedAccountNetworks,
                   3,
-                  async (network: BraveWallet.NetworkInfo) => {
+                  async (network: BalanceNetwork) => {
                     assert(coinTypesMapping[network.coin] !== undefined)
                     try {
                       const tokens = arg.isSpamRegistry
@@ -462,10 +460,7 @@ export const tokenBalancesEndpoints = ({
                         : getEntitiesListFromEntityState(
                             userTokensRegistry,
                             userTokensRegistry.idsByChainId[
-                              getNetworkId({
-                                coin: network.coin,
-                                chainId: network.chainId,
-                              })
+                              getNetworkId(network)
                             ],
                           )
 
@@ -1035,7 +1030,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   await eachLimit(
     nativeTokenArgs,
     2,
-    async (token: BraveWallet.BlockchainToken) => {
+    async (token: GetBlockchainTokenIdArg) => {
       const balance = await fetchAccountTokenCurrentBalance({
         arg: {
           accountId: arg.accountId,
@@ -1098,7 +1093,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   await eachLimit(
     nonNativeTokens,
     10,
-    async (token: BraveWallet.BlockchainToken) => {
+    async (token: GetBlockchainTokenIdArg) => {
       const result = await fetchAccountTokenCurrentBalance({
         arg: {
           accountId: arg.accountId,
