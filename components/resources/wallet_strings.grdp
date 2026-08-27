@@ -1217,6 +1217,7 @@
   <message name="IDS_BRAVE_WALLET_WATCH_ONLY" desc="Label to indicate that an asset is watch-only. This means that the asset is not owned by the user or it cannot be transferred">Watch-only</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
   <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
+  <message name="IDS_BRAVE_WALLET_ZCASH_MIGRATION_BANNER_DESCRIPTION" desc="ZCash migration banner description">Brave is currently migrating to Zcash NU6.3. During this migration, Zcash functionality will be limited to unshielding and transparent-to-transparent sending.</message>
   <message name="IDS_BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT" desc="Switch to a shielded account button text">Switch to a shielded account</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ACCOUNT" desc="Shield account button text">Shield account</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ACCOUNT_ALERT_DESCRIPTION" desc="Shield account alert description">Enable shielding to enhance transaction privacy.</message>

@@ -55,6 +55,13 @@ export const SyncAlertWrapper = styled(Row)`
   }
 `
 
+export const ZCashMigrationBannerWrapper = styled(Column)`
+  padding: 0px 32px 16px 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 16px 16px 0px 16px;
+  }
+`
+
 export const SyncAlert = styled(Alert)`
   width: 100%;
 `
