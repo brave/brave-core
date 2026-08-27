@@ -10,12 +10,19 @@
 #include <string_view>
 
 #include "base/callback_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/metric_log_type.h"
 
 class PrefRegistrySimple;
 class PrefService;
+class ProfileAttributesStorage;
+class ProfileManager;
+
+namespace p3a {
+class P3AService;
+}  // namespace p3a
 
 namespace serp_metrics {
 
@@ -38,7 +45,7 @@ class SerpMetricsP3A {
 
   // Registers P3A rotation and metric-cycled callbacks. Must be called on the
   // UI thread after `P3AService` is initialized.
-  void Init();
+  void Init(p3a::P3AService* p3a_service, ProfileManager* profile_manager);
 
   // Invoked via P3AService rotation callback.
   void OnRotation(p3a::MetricLogType log_type);
@@ -52,6 +59,7 @@ class SerpMetricsP3A {
   base::Time GetLastReportedTime(std::string_view dict_key) const;
 
   const raw_ref<PrefService> local_state_;
+  raw_ptr<ProfileAttributesStorage> profile_attributes_storage_ = nullptr;
   base::CallbackListSubscription rotation_subscription_;
   base::CallbackListSubscription metric_cycled_subscription_;
 };

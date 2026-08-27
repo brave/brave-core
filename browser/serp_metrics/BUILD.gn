@@ -25,6 +25,7 @@ static_library("serp_metrics") {
 
   public_deps = [
     "//base",
+    "//brave/components/p3a",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics/time_period_storage",
     "//chrome/browser/profiles:profile",
@@ -35,7 +36,6 @@ static_library("serp_metrics") {
   deps = [
     "//brave/browser:browser_process",
     "//brave/components/constants",
-    "//brave/components/p3a",
     "//brave/components/p3a_utils",
     "//brave/components/serp_metrics:features",
     "//brave/components/serp_metrics:prefs",

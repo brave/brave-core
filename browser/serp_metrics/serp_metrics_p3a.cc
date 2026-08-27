@@ -19,14 +19,12 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -76,13 +74,18 @@ SerpMetricsP3A::SerpMetricsP3A(PrefService& local_state)
 
 SerpMetricsP3A::~SerpMetricsP3A() = default;
 
-void SerpMetricsP3A::Init() {
+void SerpMetricsP3A::Init(p3a::P3AService* p3a_service,
+                          ProfileManager* profile_manager) {
+  if (profile_manager) {
+    profile_attributes_storage_ =
+        &profile_manager->GetProfileAttributesStorage();
+  }
+
   if (!base::FeatureList::IsEnabled(kSerpMetricsFeature) ||
       !kSerpMetricsP3A.Get()) {
     return;
   }
 
-  p3a::P3AService* p3a_service = g_brave_browser_process->p3a_service();
   if (!p3a_service) {
     CHECK_IS_TEST();
     return;
@@ -119,11 +122,10 @@ void SerpMetricsP3A::OnMetricCycled(const std::string& histogram_name) {
 }
 
 void SerpMetricsP3A::ReportMetrics() {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  CHECK(profile_manager);
+  CHECK(profile_attributes_storage_);
 
-  SerpMetricsAllProfilesAggregator aggregator(
-      &local_state_.get(), profile_manager->GetProfileAttributesStorage());
+  SerpMetricsAllProfilesAggregator aggregator(&local_state_.get(),
+                                              *profile_attributes_storage_);
 
   const size_t brave_count = aggregator.GetSearchCountForYesterday(
       SerpMetricType::kBrave, GetLastReportedTime(kBraveSerpDictKey));

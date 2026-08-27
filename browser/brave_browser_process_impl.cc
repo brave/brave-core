@@ -317,7 +317,8 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  process_misc_metrics()->serp_metrics_p3a()->Init();
+  process_misc_metrics()->serp_metrics_p3a()->Init(p3a_service(),
+                                                   profile_manager());
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   resource_component();
