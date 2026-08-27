@@ -2459,6 +2459,15 @@
 -PKIMetadataComponentChromeRootStoreMtcMetadataTest.EndToEnd/1
 -PKIMetadataComponentChromeRootStoreMtcMetadataTest.Revocation/1
 
+# Known upstream flake: 10.5% flake rate for TakesScreenshot_AddsIframeInfoToAPC
+# (127k+ verdicts) and 12.3% for the _IframeHasNoBorderAndLowOpacity variant
+# (91k+ verdicts) over 30 days per LUCI Analysis. Filtered on all platforms
+# because the upstream flake rate is not platform specific. No Brave
+# chromium_src overrides or patches touch the page context fetcher or the APC
+# iframe info path. https://github.com/brave/brave-browser/issues/58217
+-IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC
+-IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC_IframeHasNoBorderAndLowOpacity
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
