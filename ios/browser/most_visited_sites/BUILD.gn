@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("most_visited_sites") {
+  sources = [
+    "most_visited_sites_bridge.h",
+    "most_visited_sites_bridge_impl.h",
+    "most_visited_sites_bridge_impl.mm",
+    "most_visited_sites_factory_bridge.h",
+    "most_visited_sites_factory_bridge.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/profile",
+    "//components/ntp_tiles",
+    "//ios/chrome/browser/ntp_tiles/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
+    "//net",
+    "//url",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}
