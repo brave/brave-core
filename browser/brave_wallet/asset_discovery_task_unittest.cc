@@ -249,9 +249,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
  protected:
   // Stops account creation from kicking off a discovery run. Explicit
   // DiscoverAssetsOnAllSupportedChains() calls are unaffected.
-  void SetAutoDiscoveryEnabled(bool enabled) {
-    wallet_service_->asset_discovery_manager()->auto_discovery_enabled_ =
-        enabled;
+  void DisableAutoDiscoveryForTesting() {
+    wallet_service_->asset_discovery_manager()->auto_discovery_enabled_ = false;
   }
 
   void SetUp() override {
@@ -283,7 +282,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     // These tests drive AssetDiscoveryTask directly, so keep the manager from
     // starting a run of its own when SetUpPolkadotAccounts() adds account or
     // when any other index-based account is added.
-    SetAutoDiscoveryEnabled(false);
+    DisableAutoDiscoveryForTesting();
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
