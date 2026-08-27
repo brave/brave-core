@@ -1999,6 +1999,72 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HotRestoreClosedContainerTab) {
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       HotRestoreClosedWebUIContainerTab) {
+  const GURL url("https://a.test/simple.html");
+
+  // Open a container tab.
+  NavigateParams container_params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  container_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  container_params.storage_partition_config =
+      content::StoragePartitionConfig::Create(
+          browser()->GetProfile(), kContainersStoragePartitionDomain,
+          kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&container_params);
+
+  content::WebContents* container_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(container_web_contents);
+
+  // Open a WebUI tab from it, inheriting the container's storage partition -
+  // this mirrors opening "Site Settings" from a container tab's page info.
+  const GURL webui_url(chrome::kChromeUIVersionURL);
+  NavigateParams webui_params(browser(), webui_url, ui::PAGE_TRANSITION_LINK);
+  webui_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  webui_params.source_site_instance =
+      container_web_contents->GetPrimaryMainFrame()->GetSiteInstance();
+  ui_test_utils::NavigateToURL(&webui_params);
+
+  content::WebContents* webui_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(webui_web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(webui_web_contents));
+  ASSERT_EQ(webui_url, webui_web_contents->GetLastCommittedURL());
+
+  // Sanity check: the WebUI tab did inherit the container's partition, so the
+  // restore below is actually exercising the container path.
+  content::StoragePartitionConfig webui_config =
+      webui_web_contents->GetPrimaryMainFrame()
+          ->GetStoragePartition()
+          ->GetConfig();
+  ASSERT_EQ(kContainersStoragePartitionDomain, webui_config.partition_domain());
+  ASSERT_EQ(kTestContainerId, webui_config.partition_name());
+
+  // Close the WebUI tab and reopen it.
+  chrome::CloseTab(browser());
+
+  ui_test_utils::TabAddedWaiter wait_for_new_tab(browser());
+  chrome::RestoreTab(browser());
+  wait_for_new_tab.Wait();
+
+  content::WebContents* reopened_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(reopened_web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(reopened_web_contents));
+  EXPECT_EQ(webui_url, reopened_web_contents->GetLastCommittedURL());
+
+  // The restored WebUI tab must still end up in the container's storage
+  // partition, even though MaybeSetContainerSiteInstance() does not eagerly
+  // assign it a SiteInstance the way it does for non-WebUI restores.
+  content::StoragePartitionConfig reopened_config =
+      reopened_web_contents->GetPrimaryMainFrame()
+          ->GetStoragePartition()
+          ->GetConfig();
+  EXPECT_EQ(kContainersStoragePartitionDomain,
+            reopened_config.partition_domain());
+  EXPECT_EQ(kTestContainerId, reopened_config.partition_name());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        PRE_CrossSiteNavigationPersistence) {
   const GURL url_a("https://a.test/simple.html");
   const GURL url_b("https://b.test/simple.html");
