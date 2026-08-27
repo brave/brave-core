@@ -5,6 +5,8 @@
 
 #include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator.h"
 
+#include <optional>
+
 #include "base/files/file_path.h"
 #include "base/time/time.h"
 #include "brave/browser/serp_metrics/profile_attributes_time_period_store_factory.h"
@@ -78,10 +80,13 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
 
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
-  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave));
-  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kGoogle));
-  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kOther));
-  EXPECT_EQ(0U, aggregator.GetSearchCountForStalePeriod());
+  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave,
+                                                      std::nullopt));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kGoogle,
+                                                      std::nullopt));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kOther,
+                                                      std::nullopt));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForStalePeriod(std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -108,9 +113,12 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
 
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
-  EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave));
-  EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(SerpMetricType::kGoogle));
-  EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(SerpMetricType::kOther));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave,
+                                                      std::nullopt));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(SerpMetricType::kGoogle,
+                                                      std::nullopt));
+  EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(SerpMetricType::kOther,
+                                                      std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -137,7 +145,7 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
 
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
-  EXPECT_EQ(3U, aggregator.GetSearchCountForStalePeriod());
+  EXPECT_EQ(3U, aggregator.GetSearchCountForStalePeriod(std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -152,8 +160,9 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
 
-  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave));
-  EXPECT_EQ(0U, aggregator.GetSearchCountForStalePeriod());
+  EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave,
+                                                      std::nullopt));
+  EXPECT_EQ(0U, aggregator.GetSearchCountForStalePeriod(std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -191,9 +200,12 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
 
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
-  EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave));
-  EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(SerpMetricType::kGoogle));
-  EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(SerpMetricType::kOther));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(SerpMetricType::kBrave,
+                                                      std::nullopt));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(SerpMetricType::kGoogle,
+                                                      std::nullopt));
+  EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(SerpMetricType::kOther,
+                                                      std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -231,7 +243,7 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
 
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
-  EXPECT_EQ(6U, aggregator.GetSearchCountForStalePeriod());
+  EXPECT_EQ(6U, aggregator.GetSearchCountForStalePeriod(std::nullopt));
 }
 
 }  // namespace serp_metrics

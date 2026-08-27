@@ -38,9 +38,9 @@ class SerpMetricsAllProfilesAggregator {
 
   virtual size_t GetSearchCountForYesterday(
       SerpMetricType type,
-      std::optional<base::Time> last_report_time = std::nullopt) const;
+      std::optional<base::Time> last_report_time) const;
   virtual size_t GetSearchCountForStalePeriod(
-      std::optional<base::Time> last_report_time = std::nullopt) const;
+      std::optional<base::Time> last_report_time) const;
 
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
