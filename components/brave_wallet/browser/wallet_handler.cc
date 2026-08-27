@@ -37,8 +37,9 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
       keyring_service->IsWalletBackedUpSync(), IsBitcoinEnabled(),
       IsBitcoinImportEnabled(), IsBitcoinLedgerEnabled(), IsZCashEnabled(),
       IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled(),
-      IsZCashShieldedTransactionsEnabled(), IsCardanoEnabled(),
-      GetEnabledCoins(), IsCardanoDAppSupportEnabled(), IsPolkadotEnabled()));
+      IsZCashShieldedTransactionsEnabled(), IsZCashIronwoodEnabled(),
+      IsCardanoEnabled(), GetEnabledCoins(), IsCardanoDAppSupportEnabled(),
+      IsPolkadotEnabled()));
 }
 
 }  // namespace brave_wallet
