@@ -54,6 +54,11 @@ class FakeWebStateWithInterfaceBinder : public FakeWebState {
 // Origin and host of the fixture's child frame, standing in for AI Chat's
 // chrome-untrusted:// conversation-entries iframe.
 constexpr char kChildHost[] = "test-child";
+// The poll loop's own JavaScript. Every facade re-arms on its frame, and a
+// retry can land at any point, so it is noise for tests that care about what
+// MojoFacade delivers to a frame.
+constexpr char kPollScript[] =
+    "return await Mojo.internal.fetchNextMessageFromJS();";
 constexpr char kChildOriginSpec[] = "chrome-untrusted://test-child";
 
 }  // namespace
@@ -195,15 +200,28 @@ class MojoFacadeTest : public WebTest {
     EXPECT_EQ(MOJO_RESULT_OK, result);
   }
 
+  // Last JavaScript call on `frame` that isn't the poll loop re-arming.
+  std::string LastDeliveredJavaScriptCall(FakeWebFrame* frame) {
+    const std::vector<std::u16string>& history =
+        frame->GetJavaScriptCallHistory();
+    for (auto it = history.rbegin(); it != history.rend(); ++it) {
+      std::string call = base::UTF16ToUTF8(*it);
+      if (call != kPollScript) {
+        return call;
+      }
+    }
+    return std::string();
+  }
+
   std::string WaitForLastJavaScriptCallOnFrame(FakeWebFrame* frame) {
     EXPECT_TRUE(WaitUntilConditionOrTimeout(
         kWaitForJSCompletionTimeout, /*run_message_loop=*/true, ^bool {
-          return !frame->GetLastJavaScriptCall().empty();
+          return !LastDeliveredJavaScriptCall(frame).empty();
         }));
 
-    const auto last_js_call = frame->GetLastJavaScriptCall();
+    std::string last_js_call = LastDeliveredJavaScriptCall(frame);
     frame->ClearJavaScriptCallHistory();
-    return base::UTF16ToUTF8(last_js_call);
+    return last_js_call;
   }
 
   // `buffer` is the JSON array of bytes the watched pipe is expected to
@@ -402,10 +420,12 @@ TEST_F(MojoFacadeTest, WatchIsErasedWhenOwningFrameDisappears) {
   frames_manager()->RemoveWebFrame(frame_id);
 
   // The pending notification must be dropped along with the frame, rather
-  // than landing on the main frame.
+  // than landing on the main frame. A short wait is enough: the watcher had
+  // already posted before the frame went away, so a notification that was
+  // going to arrive would do so within a few run loop turns.
   EXPECT_FALSE(WaitUntilConditionOrTimeout(
-      kWaitForJSCompletionTimeout, /*run_message_loop=*/true, ^bool {
-        return !main_frame()->GetLastJavaScriptCall().empty();
+      base::Milliseconds(500), /*run_message_loop=*/true, ^bool {
+        return !LastDeliveredJavaScriptCall(main_frame()).empty();
       }));
 }
 
