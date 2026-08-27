@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
+index 84936569a0db06789a7b4e246a90c3ec076a4ce2..2d656b31722b1713d9696b3ea8921eeaa73d2f4e 100644
+--- a/chrome/browser/ui/webui/history/history_ui.cc
++++ b/chrome/browser/ui/webui/history/history_ui.cc
+@@ -88,8 +88,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
+   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+       profile, chrome::kChromeUIHistoryHost);
+ 
+-  source->AddBoolean("replaceSyncPromosWithSignInPromos",
+-                     syncer::IsReplaceSyncPromosWithSignInPromosEnabled());
++  source->AddBoolean("replaceSyncPromosWithSignInPromos", false);
+ 
+ #if !BUILDFLAG(IS_CHROMEOS)
+   source->AddBoolean("unoPhase2FollowUp",
