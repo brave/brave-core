@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
@@ -119,6 +120,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
+    private static final String PREF_SPONSORED_ADS_ENABLED = "sponsored_ads_enabled";
     private static final String PREF_SURVEY_PANELIST = "survey_panelist";
     private static final String PREF_SURVEY_PANELIST_LEARN_MORE = "survey_panelist_learn_more";
     public static final String PREF_APP_LINKS = "app_links";
@@ -196,6 +198,7 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SEND_P3A,
         PREF_SEND_CRASH_REPORTS,
         PREF_BRAVE_STATS_USAGE_PING,
+        PREF_SPONSORED_ADS_ENABLED,
         PREF_SURVEY_PANELIST,
         PREF_SURVEY_PANELIST_LEARN_MORE,
         PREF_USAGE_STATS,
@@ -231,6 +234,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private @Nullable ChromeSwitchPreference mSendP3A;
     private @Nullable ChromeSwitchPreference mSendCrashReports;
     private @Nullable ChromeSwitchPreference mBraveStatsUsagePing;
+    private @Nullable ChromeSwitchPreference mSponsoredAdsEnabled;
     private ChromeSwitchPreference mSurveyPanelist;
     private BraveTextButtonPreference mSurveyPanelistLearnMore;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
@@ -430,6 +434,16 @@ public class BravePrivacySettings extends PrivacySettings {
             mBraveStatsUsagePing =
                     (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_USAGE_PING);
             mBraveStatsUsagePing.setOnPreferenceChangeListener(this);
+        }
+
+        // Hide Sponsored Ads setting if Brave Rewards is disabled by policy
+        if (BraveRewardsPolicy.isDisabledByPolicy(getProfile())) {
+            removePreferenceIfPresent(PREF_SPONSORED_ADS_ENABLED);
+            mSponsoredAdsEnabled = null;
+        } else {
+            mSponsoredAdsEnabled =
+                    (ChromeSwitchPreference) findPreference(PREF_SPONSORED_ADS_ENABLED);
+            mSponsoredAdsEnabled.setOnPreferenceChangeListener(this);
         }
 
         boolean surveyPanelistEnabled =
@@ -682,6 +696,8 @@ public class BravePrivacySettings extends PrivacySettings {
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.STATS_REPORTING_ENABLED, (boolean) newValue);
+        } else if (PREF_SPONSORED_ADS_ENABLED.equals(key)) {
+            UserPrefs.get(getProfile()).setBoolean(BravePref.SPONSORED_ENABLED, (boolean) newValue);
         } else if (PREF_SURVEY_PANELIST.equals(key)) {
             UserPrefs.get(getProfile())
                     .setBoolean(
@@ -892,6 +908,11 @@ public class BravePrivacySettings extends PrivacySettings {
                     BraveLocalState.get().getBoolean(BravePref.STATS_REPORTING_ENABLED));
         }
 
+        if (mSponsoredAdsEnabled != null) {
+            mSponsoredAdsEnabled.setChecked(
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.SPONSORED_ENABLED));
+        }
+
         mSurveyPanelist.setChecked(
                 UserPrefs.get(getProfile())
                         .getBoolean(BravePref.NEW_TAB_PAGE_SPONSORED_IMAGES_SURVEY_PANELIST));
@@ -1076,6 +1097,9 @@ public class BravePrivacySettings extends PrivacySettings {
                     if (BraveLocalState.get()
                             .isManagedPreference(BravePref.STATS_REPORTING_ENABLED)) {
                         indexData.removeEntryForKey(frag, PREF_BRAVE_STATS_USAGE_PING);
+                    }
+                    if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_SPONSORED_ADS_ENABLED);
                     }
 
                     // Dynamic summaries for dialog prefs

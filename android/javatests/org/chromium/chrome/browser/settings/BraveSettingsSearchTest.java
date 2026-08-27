@@ -243,6 +243,9 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Solana Name Service");
         assertSearchResult("Solana Name Service");
 
+        clearAndTypeIntoSearch("Enable Sponsored Ads");
+        assertSearchResult("Enable Sponsored Ads");
+
         // Disabled — see https://github.com/brave/brave-browser/issues/57186
         // typeIntoSearch("Safe Browsing");
         // assertSearchResult("Safe Browsing");
@@ -251,6 +254,21 @@ public class BraveSettingsSearchTest {
         // Brave Shields & privacy => Lock Private tabs when you leave Brave
         // clearAndTypeIntoSearch("Lock Private tabs");
         // assertSearchResult("Lock Private tabs");
+    }
+
+    /**
+     * Verifies that the Sponsored Ads entry is not searchable when Brave Rewards is disabled by
+     * policy.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testSponsoredAdsNotSearchable_RewardsDisabledByPolicy() {
+        BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Enable Sponsored Ads");
+        assertSearchResultEmpty();
     }
 
     /**
