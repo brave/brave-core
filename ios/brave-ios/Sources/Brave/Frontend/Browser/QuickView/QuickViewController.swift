@@ -934,19 +934,12 @@ extension QuickViewController: TabPolicyDecider {
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
-    guard let url = request.url,
-      !url.isInternalURL(for: .readermode)
-    else { return .allow }
-
-    let isBlockedDomain = url.isInternalURL(for: .blocked)
-    let isBlockedHTTP = url.isInternalURL(for: .httpBlocked)
-    let isBasicAuth = url.isInternalURL(for: .basicAuth)
-    if isBlockedDomain || isBlockedHTTP || isBasicAuth || url.isWalletWebUIURL
-      || url == URL.WebUI.aiChat
-    {
+    guard let url = request.url else { return .allow }
+    if let internalURL = InternalURL(url), !internalURL.isReaderModePage {
       handleUnsupportedRequest(request, tab.isPrivate)
       return .cancel
     }
+
     return .allow
   }
 
