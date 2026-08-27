@@ -117,17 +117,17 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
-  </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GROK_4_3_BEDROCK" desc="AI Chat intro message for the Grok 4.3 model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.3, a model created by xAI to be performant and applicable to many use cases. Grok 4.3 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GROK_4_3_BEDROCK" desc="AI Chat intro message for the Grok 4.6 model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.6, xAI's frontier reasoning model on Amazon Bedrock Mantle. Grok 4.6 is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_5_4_BEDROCK" desc="AI Chat intro message for the GPT 5.4 model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.4, a model created by OpenAI to be performant and applicable to many use cases. GPT 5.4 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_5_6_LUNA_BEDROCK" desc="AI Chat intro message for the GPT 5.6 Luna model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Luna, OpenAI's fast, low-latency model on Amazon Bedrock Mantle. GPT 5.6 Luna is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_5_4_BEDROCK" desc="AI Chat intro message for the GPT 5.6 Terra model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Terra, OpenAI's balanced production model on Amazon Bedrock Mantle. GPT 5.6 Terra is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_MISTRAL_LARGE" desc="AI Chat intro message for the Mistral Large model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Mistral Large, a model created by Mistral to be performant and applicable to many use cases. Mistral Large is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -594,9 +594,6 @@
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model" formatter_data="webui=AiChat">
     Conversation and text generation
   </message>
-  <message name="IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE" desc="A description for claude-3-haiku model" formatter_data="webui=AiChat">
-    Fast • Search • Tools
-  </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE" desc="A description for claude-3-sonnet model" formatter_data="webui=AiChat">
     Search • Vision • Tools
   </message>
@@ -611,6 +608,9 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE" desc="A description for glm-4-7-flash model" formatter_data="webui=AiChat">
     Fast • Search
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_GPT_5_6_LUNA_BEDROCK_SUBTITLE" desc="A description for gpt-5-6-luna-bedrock model" formatter_data="webui=AiChat">
+    Fast • Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_GPT_5_4_BEDROCK_SUBTITLE" desc="A description for gpt-5-4-bedrock model" formatter_data="webui=AiChat">
     Search • Vision

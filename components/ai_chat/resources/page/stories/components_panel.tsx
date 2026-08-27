@@ -237,7 +237,7 @@ const SAMPLE_SKILLS: Mojom.Skill[] = [
     id: 'translate-mode',
     shortcut: 'translate',
     prompt: 'Translate the following text to English',
-    model: 'claude-3-haiku',
+    model: 'automatic',
     createdTime: { internalValue: BigInt(Date.now() * 1000) },
     lastUsed: { internalValue: BigInt(Date.now() * 1000) },
   },

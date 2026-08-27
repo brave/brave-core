@@ -131,32 +131,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Anthropic";
-      options->name = kClaudeHaikuModelName;
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = kFreemiumAccess;
-      options->max_associated_content_length = 180000;
-      options->long_conversation_warning_character_limit = 320000;
-
-      auto model = mojom::Model::New();
-      model->key = kClaudeHaikuModelKey;
-      model->display_name = "Claude Haiku";
-      model->vision_support = true;
-      model->supports_tools = true;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::CONTENT_AGENT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
-      model->is_suggested_model = false;
-      model->is_near_model = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    {
-      auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Anthropic";
       options->name = kClaudeSonnetModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
@@ -263,19 +237,21 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // GPT 5.4
+    // GPT 5.6 Luna
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "OpenAI";
-      options->name = "bedrock-openai.gpt-5.4";
+      options->name = "bedrock-openai.gpt-5.6-luna";
       options->category = mojom::ModelCategory::CHAT;
-      options->access = mojom::ModelAccess::PREMIUM;
-      options->max_associated_content_length = 1088000;
-      options->long_conversation_warning_character_limit = 870400;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 1200000;
+      options->long_conversation_warning_character_limit = 960000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-gpt-5-4-bedrock";
-      model->display_name = "GPT 5.4";
+      model->key = "chat-gpt-5-6-luna-bedrock";
+      model->display_name = "GPT 5.6 Luna";
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
@@ -289,7 +265,33 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Grok 4.3
+    // GPT 5.6 Terra
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "OpenAI";
+      options->name = "bedrock-openai.gpt-5.6-terra";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 1088000;
+      options->long_conversation_warning_character_limit = 870400;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-gpt-5-4-bedrock";
+      model->display_name = "GPT 5.6 Terra";
+      model->vision_support = true;
+      model->supports_tools = false;
+      model->supported_capabilities = {
+          mojom::ConversationCapability::CHAT,
+          mojom::ConversationCapability::DEEP_RESEARCH};
+      model->is_suggested_model = false;
+      model->is_near_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Grok 4.6
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "xAI";
@@ -301,7 +303,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-grok-4-3-bedrock";
-      model->display_name = "Grok 4.3";
+      model->display_name = "Grok 4.6";
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
@@ -607,7 +609,7 @@ ModelService::ModelService(PrefService* prefs_service,
     // First set to an equivalent model that is available to all users. When
     // we are told about premium status, we can switch to the premium
     // equivalent.
-    SetDefaultModelKey(kClaudeHaikuModelKey);
+    SetDefaultModelKey(kChatAutomaticModelKey);
     is_migrating_claude_instant_ = true;
   }
 
@@ -663,7 +665,7 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
     // Migrate old model keys to "chat-automatic"
-    constexpr std::array<const char*, 12> kOldModelKeys = {
+    constexpr std::array<const char*, 13> kOldModelKeys = {
         // Added: June 6, 2024. Checks can be removed eventually
         "chat-default",
         // Added: May 28, 2025. Checks can be removed eventually
@@ -682,6 +684,8 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
         "chat-qwen-3-coder-480b",
         // Added: July 22, 2026. Checks can be removed eventually
         "chat-basic",
+        // Added: Aug 21, 2026. Checks can be removed eventually
+        "chat-claude-haiku",
     };
 
     if (auto* default_model_value =
@@ -838,9 +842,6 @@ ModelService::GetModelsWithSubtitles() {
       if (model->key == "chat-claude-instant") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
-      } else if (model->key == "chat-claude-haiku") {
-        model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE);
       } else if (model->key == "chat-claude-sonnet") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
@@ -856,6 +857,9 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-glm-4-7-flash") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE);
+      } else if (model->key == "chat-gpt-5-6-luna-bedrock") {
+        model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
+            IDS_CHAT_UI_CHAT_GPT_5_6_LUNA_BEDROCK_SUBTITLE);
       } else if (model->key == "chat-gpt-5-4-bedrock") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GPT_5_4_BEDROCK_SUBTITLE);

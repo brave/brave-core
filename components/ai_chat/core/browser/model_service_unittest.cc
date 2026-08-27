@@ -162,10 +162,10 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey) {
   // new claude.
   ModelService::MigrateProfilePrefs(&pref_service_);
   // Verify uses non-premium version
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   // Verify uses premium version
-  EXPECT_CALL(*observer_,
-              OnDefaultModelChanged("chat-claude-haiku", "chat-claude-sonnet"))
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
+                                                "chat-claude-sonnet"))
       .Times(1);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
@@ -180,13 +180,13 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
   // new claude.
   ModelService::MigrateProfilePrefs(&pref_service_);
   // Verify uses non-premium version
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   // Verify keeps non-premium version
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Inactive);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -205,13 +205,13 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
        MigrateToPremiumDefaultModel_UserModified) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
-                                                "chat-claude-haiku"))
+                                                "chat-claude-sonnet"))
       .Times(1);
-  GetService()->SetDefaultModelKey("chat-claude-haiku");
+  GetService()->SetDefaultModelKey("chat-claude-sonnet");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -275,10 +275,10 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
   GetService()->SetDefaultModelKey(kChatAutomaticModelKey);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), kChatAutomaticModelKey);
   EXPECT_CALL(*observer_, OnDefaultModelChanged(kChatAutomaticModelKey,
-                                                "chat-claude-haiku"))
+                                                "chat-claude-sonnet"))
       .Times(1);
-  GetService()->SetDefaultModelKey("chat-claude-haiku");
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-haiku");
+  GetService()->SetDefaultModelKey("chat-claude-sonnet");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
@@ -430,7 +430,7 @@ TEST_F(ModelServiceTest,
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, kClaudeHaikuModelKey}});
+      {{features::kAIModelsDefaultKey.name, kChatAutomaticModelKey}});
 
   // APIRequestHelper posts to the thread pool at construction time.
   base::test::TaskEnvironment task_environment;
@@ -438,7 +438,7 @@ TEST_F(ModelServiceTest,
                                                 /*url_loader_factory=*/nullptr,
                                                 /*credential_manager=*/nullptr);
   ASSERT_TRUE(engine);
-  EXPECT_EQ(engine->GetModelName(), kClaudeHaikuModelName);
+  EXPECT_EQ(engine->GetModelName(), "automatic");
 }
 
 TEST_F(ModelServiceTest,

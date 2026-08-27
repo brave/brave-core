@@ -1549,14 +1549,14 @@ TEST_P(AIChatServiceUnitTest,
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, kClaudeHaikuModelKey}});
+      {{features::kAIModelsDefaultKey.name, kChatAutomaticModelKey}});
 
   model_service_->SetDefaultModelKeyWithoutValidationForTesting(
       "this-model-key-does-not-exist");
 
   auto engine = ai_chat_service_->GetDefaultAIEngine();
   ASSERT_TRUE(engine);
-  EXPECT_EQ(engine->GetModelName(), kClaudeHaikuModelName);
+  EXPECT_EQ(engine->GetModelName(), "automatic");
 }
 
 TEST_P(AIChatServiceUnitTest,

@@ -4400,12 +4400,6 @@ class ConversationHandlerUnitTest_AutoScreenshot
 // empty/whitespace-only
 TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
        AutoScreenshotOnEmptyContent) {
-#if BUILDFLAG(IS_IOS)
-  // Set a vision support model to prevent model switching
-  // Remove this model switch once iOS set automatic as default
-  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
-      kClaudeHaikuModelKey);
-#endif
   const EmptyContentTestData& test_data = GetParam();
 
   // Mock associated content to return the test content
@@ -4563,12 +4557,6 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
 
 // Test that screenshots are appended to existing uploaded files
 TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
-#if BUILDFLAG(IS_IOS)
-  // Set a vision support model to prevent model switching
-  // Remove this model switch once iOS set automatic as default
-  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
-      kClaudeHaikuModelKey);
-#endif
   // Mock associated content to return empty text content
   associated_content_->SetTextContent("");
 
@@ -4740,11 +4728,6 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 // Test that auto-screenshots apply MAX_IMAGES limit and trigger UI state change
 TEST_F(ConversationHandlerUnitTest,
        OnAutoScreenshotsTaken_AppliesMaxImagesLimit) {
-#if BUILDFLAG(IS_IOS)
-  // Set a vision support model to prevent model switching
-  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
-      kClaudeHaikuModelKey);
-#endif
   // Mock associated content to return empty text content to trigger
   // auto-screenshots
   associated_content_->SetTextContent("");
@@ -4829,11 +4812,6 @@ TEST_F(ConversationHandlerUnitTest,
 // MAX_IMAGES
 TEST_F(ConversationHandlerUnitTest,
        OnAutoScreenshotsTaken_NoLimitWhenUnderMax) {
-#if BUILDFLAG(IS_IOS)
-  // Set a vision support model to prevent model switching
-  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
-      kClaudeHaikuModelKey);
-#endif
   // Mock associated content to return empty text content to trigger
   // auto-screenshots
   associated_content_->SetTextContent("");
@@ -4912,12 +4890,6 @@ TEST_F(ConversationHandlerUnitTest,
 // percentage doesn't change (optimization test)
 TEST_F(ConversationHandlerUnitTest,
        OnAutoScreenshotsTaken_SamePercentageNoUIUpdate) {
-#if BUILDFLAG(IS_IOS)
-  // Set a vision support model to prevent model switching
-  model_service_->SetDefaultModelKeyWithoutValidationForTesting(
-      kClaudeHaikuModelKey);
-#endif
-
   // Simulate that we already have a visual content percentage set to 66
   // This mimics the state after a previous auto-screenshot operation
   // Currently autoscreenshots won't be triggered twice if there are already
@@ -5610,28 +5582,28 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         // Unmodeled skill + image, starting non-vision: switch to vision.
         SkillImageUploadScenario{"UnmodeledFromNonVision", kNonVisionModelKey,
-                                 std::nullopt, kClaudeHaikuModelKey, true},
+                                 std::nullopt, kChatAutomaticModelKey, true},
         // Unmodeled skill + image, already on vision: no switch.
-        SkillImageUploadScenario{"UnmodeledFromVision", kClaudeHaikuModelKey,
-                                 std::nullopt, kClaudeHaikuModelKey, false},
+        SkillImageUploadScenario{"UnmodeledFromVision", kChatAutomaticModelKey,
+                                 std::nullopt, kChatAutomaticModelKey, false},
         // Pinned non-vision + image, on vision: vision wins, no switch
         // (validates the no-double-switch path).
         SkillImageUploadScenario{"PinnedNonVisionFromVision",
-                                 kClaudeHaikuModelKey, kNonVisionModelKey,
-                                 kClaudeHaikuModelKey, false},
+                                 kChatAutomaticModelKey, kNonVisionModelKey,
+                                 kChatAutomaticModelKey, false},
         // Pinned non-vision + image, on non-vision: switch once to vision
         // (NOT to the pinned non-vision model).
         SkillImageUploadScenario{"PinnedNonVisionFromNonVision",
                                  kNonVisionModelKey, kNonVisionModelKey,
-                                 kClaudeHaikuModelKey, true},
+                                 kChatAutomaticModelKey, true},
         // Pinned vision equals current + image: no switch.
         SkillImageUploadScenario{"PinnedVisionEqualsCurrent",
-                                 kClaudeHaikuModelKey, kClaudeHaikuModelKey,
-                                 kClaudeHaikuModelKey, false},
+                                 kChatAutomaticModelKey, kChatAutomaticModelKey,
+                                 kChatAutomaticModelKey, false},
         // Pinned vision different from current + image: switch to pin once.
         SkillImageUploadScenario{"PinnedVisionDifferentFromCurrent",
-                                 kNonVisionModelKey, kClaudeHaikuModelKey,
-                                 kClaudeHaikuModelKey, true}),
+                                 kNonVisionModelKey, kChatAutomaticModelKey,
+                                 kChatAutomaticModelKey, true}),
     [](const testing::TestParamInfo<SkillImageUploadScenario>& info) {
       return std::string(info.param.test_name);
     });
