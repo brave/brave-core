@@ -53,14 +53,6 @@ RegisterStyleOverride(
 const kCustomProfileImageRowId = 'customProfileImageRow'
 
 function createCustomProfileImageSection(): DocumentFragment {
-  const previewLabel = loadTimeData.getString(
-    BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_PREVIEW_LABEL,
-  )
-  const selectedPreviewLabel = loadTimeData.getStringF(
-    BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL,
-    previewLabel,
-  )
-
   const section = document.createDocumentFragment()
   render(
     html`
@@ -83,11 +75,15 @@ function createCustomProfileImageSection(): DocumentFragment {
             replace-label=${loadTimeData.getString(
               BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REPLACE_ACTION,
             )}
+            replace-tooltip=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP,
+            )}
             remove-label=${loadTimeData.getString(
               BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REMOVE_ACTION,
             )}
-            selected-preview-label=${selectedPreviewLabel}
-            preview-label=${previewLabel}
+            selected-preview-label=${loadTimeData.getString(
+              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL,
+            )}
             upload-tooltip=${loadTimeData.getString(
               BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
             )}

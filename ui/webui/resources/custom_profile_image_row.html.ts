@@ -27,7 +27,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               class="selected"
               role="img"
-              aria-label="${this.selectedPreviewLabel || this.previewLabel}"
+              aria-label="${this.selectedPreviewLabel}"
             >
               ${this.localPreviewUrl_
                 ? html`<img
@@ -53,7 +53,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               class="no-overlap"
               iron-icon="cr:add"
               title="${this.uploadTooltip || nothing}"
-              aria-label="${this.uploadTooltip || this.previewLabel}"
+              aria-label="${this.uploadTooltip}"
               @click="${this.onUploadClick_}"
             ></cr-icon-button>
           `}

@@ -269,18 +269,15 @@ function braveManageProfileFeatureEnabledTests() {
       row.replaceLabel,
     )
     assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP'),
+      row.replaceTooltip,
+    )
+    assertEquals(
       loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_ACTION'),
       row.removeLabel,
     )
     assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_PREVIEW_LABEL'),
-      row.previewLabel,
-    )
-    assertEquals(
-      loadTimeData.getStringF(
-        'CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL',
-        row.previewLabel,
-      ),
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL'),
       row.selectedPreviewLabel,
     )
     assertEquals(
@@ -366,7 +363,8 @@ function braveManageProfileFeatureEnabledTests() {
     )
     assertEquals('CR-BUTTON', replaceButton.tagName)
     assertEquals(row.replaceLabel, replaceButton.textContent.trim())
-    assertEquals(row.replaceLabel, replaceButton.getAttribute('aria-label'))
+    assertEquals(row.replaceTooltip, replaceButton.getAttribute('title'))
+    assertEquals(row.replaceTooltip, replaceButton.getAttribute('aria-label'))
     assertEquals(
       'CR-BUTTON',
       getRequiredElement<HTMLElement>(row.shadowRoot, '#removeButton').tagName,
