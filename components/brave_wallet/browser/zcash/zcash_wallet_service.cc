@@ -16,7 +16,9 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_ironwood_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_ironwood_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
@@ -839,8 +841,22 @@ void ZCashWalletService::MaybeInitAutoSyncManagers() {
 void ZCashWalletService::CreateShieldAllTransaction(
     mojom::AccountIdPtr account_id,
     CreateTransactionCallback callback) {
-  std::move(callback).Run(
-      base::unexpected("Shield all funds is not supported"));
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  if (!IsZCashIronwoodEnabled()) {
+    std::move(callback).Run(
+        base::unexpected("Shield all funds is not supported"));
+    return;
+  }
+
+  auto zcash_account_info = keyring_service_->GetZCashAccountInfo(account_id);
+  if (!zcash_account_info || !zcash_account_info->orchard_internal_address) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  CreateTransparentToIronwoodTransaction(
+      std::move(account_id), *zcash_account_info->orchard_internal_address,
+      kZCashFullAmount, std::nullopt, std::move(callback));
 }
 
 void ZCashWalletService::CreateOrchardToTransparentTransaction(
@@ -887,8 +903,38 @@ void ZCashWalletService::CreateTransparentToIronwoodTransaction(
     uint64_t amount,
     std::optional<OrchardMemo> memo,
     CreateTransactionCallback callback) {
-  std::move(callback).Run(
-      base::unexpected("Transparent to Ironwood transaction is not supported"));
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  if (!IsZCashIronwoodEnabled()) {
+    std::move(callback).Run(base::unexpected(
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR)));
+    return;
+  }
+  auto receiver_addr = GetOrchardRawBytes(
+      address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+  if (!receiver_addr) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_transparent_to_ironwood_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateTransparentToIronwoodTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), *receiver_addr, std::move(memo),
+              amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateTransparentToIronwoodTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateTransparentToIronwoodTransactionTaskDone(
+    ZCashCreateTransparentToIronwoodTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_transparent_to_ironwood_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
 }
 
 void ZCashWalletService::CreateIronwoodToIronwoodTransaction(
@@ -897,8 +943,38 @@ void ZCashWalletService::CreateIronwoodToIronwoodTransaction(
     uint64_t amount,
     std::optional<OrchardMemo> memo,
     CreateTransactionCallback callback) {
-  std::move(callback).Run(
-      base::unexpected("Ironwood to Ironwood transaction is not supported"));
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  if (!IsZCashIronwoodEnabled()) {
+    std::move(callback).Run(base::unexpected(
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR)));
+    return;
+  }
+  auto receiver_addr = GetOrchardRawBytes(
+      address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+  if (!receiver_addr) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_ironwood_to_ironwood_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateIronwoodToIronwoodTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), *receiver_addr, std::move(memo),
+              amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateIronwoodToIronwoodTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateIronwoodToIronwoodTransactionTaskDone(
+    ZCashCreateIronwoodToIronwoodTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_ironwood_to_ironwood_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
 }
 
 void ZCashWalletService::CreateOrchardToIronwoodTransaction(
@@ -925,7 +1001,7 @@ void ZCashWalletService::CreateShieldAllTransactionTaskDone(
     ShieldAllFundsCallback callback,
     base::expected<ZCashTransaction, std::string> transaction) {
   if (!transaction.has_value()) {
-    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    std::move(callback).Run(std::nullopt, transaction.error());
     return;
   }
   SignAndPostTransaction(

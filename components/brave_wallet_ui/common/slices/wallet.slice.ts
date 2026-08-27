@@ -35,6 +35,7 @@ const defaultState: WalletState = {
   isAnkrBalancesFeatureEnabled: false,
   isRefreshingNetworksAndTokens: false,
   isZCashShieldedTransactionsEnabled: false,
+  isZCashIronwoodEnabled: false,
   isCardanoEnabled: false,
   isCardanoDappSupportEnabled: false,
   isPolkadotEnabled: false,
@@ -87,6 +88,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           payload.walletInfo.isAnkrBalancesFeatureEnabled
         state.isZCashShieldedTransactionsEnabled =
           payload.walletInfo.isZCashShieldedTransactionsEnabled
+        state.isZCashIronwoodEnabled = payload.walletInfo.isZCashIronwoodEnabled
         state.isCardanoEnabled = payload.walletInfo.isCardanoEnabled
         state.isCardanoDappSupportEnabled =
           payload.walletInfo.isCardanoDappSupportEnabled
