@@ -118,6 +118,7 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
 
+  // Opting in fetches a component from Google without using Tor.
   if (profile->IsTor()) {
     return false;
   }
