@@ -292,8 +292,11 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
 }
 #endif
 
-// Arithmetic is answered locally, so the operands never reach the suggest
-// server. Unlike the checks below, this applies on every platform.
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+// Arithmetic is only answered locally when `IsQueryPotentiallyPrivate` returns
+// true when evaluating the query. This fallback behavior lets a calculation
+// happen versus just dropping the query. Everything else will be sent/processed
+// by the search suggestions server.
 TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
   const auto has_calculator_match = [&]() {
     return std::ranges::any_of(provider_->matches(), [](const auto& match) {
@@ -301,18 +304,33 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
     });
   };
 
+  const auto sent_to_suggest = [&](const std::string& input) {
+    return test_url_loader_factory_.IsPending(
+        base::StrCat({kSuggestionUrlHost, base::EscapePath(input)}));
+  };
+
+  // "95007804" is 8 digits, so the query is withheld and we answer it.
   ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
-  EXPECT_EQ(0, test_url_loader_factory_.NumPending());
+  EXPECT_FALSE(sent_to_suggest("9500+7804"));
   EXPECT_TRUE(has_calculator_match());
 
-  // Expressions we can't answer exactly fall through to the suggest server
-  // instead of showing an approximation.
-  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"10 / 3"));
-  EXPECT_EQ(1, test_url_loader_factory_.NumPending());
+  // One digit shorter, so the server still answers it as it always has.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+780"));
+  EXPECT_TRUE(sent_to_suggest("9500+780"));
+  EXPECT_FALSE(has_calculator_match());
+
+  // Withheld, but not something we can answer exactly: no calculator row
+  // rather than an approximate one.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678 / 7"));
+  EXPECT_FALSE(sent_to_suggest("12345678 / 7"));
+  EXPECT_FALSE(has_calculator_match());
+
+  // Withheld and not arithmetic at all.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678"));
+  EXPECT_FALSE(sent_to_suggest("12345678"));
   EXPECT_FALSE(has_calculator_match());
 }
 
-#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
 TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with

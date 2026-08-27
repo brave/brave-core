@@ -11,7 +11,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/brave_search_suggestion_parser.h"
 #include "brave/components/omnibox/buildflags/buildflags.h"
@@ -26,6 +25,7 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
 #include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
 #endif
 
@@ -102,6 +102,7 @@ void BraveSearchProvider::UpdateMatches() {
 
 std::optional<std::u16string> BraveSearchProvider::MaybeEvaluateLocally(
     const AutocompleteInput& input) const {
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
   if (input.IsZeroSuggest() || input.type() == metrics::OmniboxInputType::URL) {
     return std::nullopt;
   }
@@ -113,7 +114,19 @@ std::optional<std::u16string> BraveSearchProvider::MaybeEvaluateLocally(
     return std::nullopt;
   }
 
+  // Only step in and provide local calculations for queries that would fail the
+  // `IsQueryPotentiallyPrivate` check due to having a long number in the query.
+  // If the query doesn't meet that criteria, we're safe to pass it along to the
+  // search suggestions API.
+  if (!search_suggestions::HasLongNumberInQuery(
+          base::UTF16ToUTF8(omnibox::SanitizeTextForPaste(input.text())))) {
+    return std::nullopt;
+  }
+
   return omnibox::EvaluateArithmeticExpression(input.text());
+#else
+  return std::nullopt;
+#endif
 }
 
 void BraveSearchProvider::DoHistoryQuery(bool minimal_changes) {

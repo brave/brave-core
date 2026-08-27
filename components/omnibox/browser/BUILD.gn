@@ -7,23 +7,26 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
-source_set("arithmetic_evaluator") {
-  sources = [
-    "arithmetic_evaluator.cc",
-    "arithmetic_evaluator.h",
-  ]
+# Only reachable from the strict query check, which stands in for the suggest
+# results it withholds.
+if (enable_strict_query_check_for_search_suggestions) {
+  source_set("arithmetic_evaluator") {
+    sources = [
+      "arithmetic_evaluator.cc",
+      "arithmetic_evaluator.h",
+    ]
 
-  deps = [
-    "//base",
-    "//base:i18n",
-  ]
+    deps = [
+      "//base",
+      "//base:i18n",
+    ]
+  }
 }
 
 source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "//brave/components/omnibox/browser/arithmetic_evaluator_unittest.cc",
     "//brave/components/omnibox/browser/brave_bookmark_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.cc",
     "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h",
@@ -53,7 +56,6 @@ source_set("unit_tests") {
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
-    "//brave/components/omnibox/browser:arithmetic_evaluator",
     "//brave/components/omnibox/buildflags",
     "//brave/components/search_engines",
     "//components/bookmarks/browser",
@@ -88,7 +90,14 @@ source_set("unit_tests") {
   }
 
   if (enable_strict_query_check_for_search_suggestions) {
-    deps += [ "//brave/components/omnibox/browser/search_suggestions" ]
+    sources += [
+      "//brave/components/omnibox/browser/arithmetic_evaluator_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/components/omnibox/browser:arithmetic_evaluator",
+      "//brave/components/omnibox/browser/search_suggestions",
+    ]
   }
 
   if (enable_commander) {
