@@ -305,16 +305,29 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('empty', row.state)
     assertTrue(row.hideTitle)
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
-    assertEquals('CR-ICON-BUTTON', preview.tagName)
-    assertEquals('cr:add', preview.getAttribute('iron-icon'))
+    assertEquals('LEO-BUTTON', preview.tagName)
+    assertEquals('plain-faint', preview.getAttribute('kind'))
+    assertEquals('jumbo', preview.getAttribute('size'))
+    assertTrue(preview.hasAttribute('fab'))
     assertEquals(row.uploadTooltip, preview.getAttribute('title'))
-    assertEquals(row.uploadTooltip, preview.getAttribute('aria-label'))
+    assertEquals(
+      row.uploadTooltip,
+      getRequiredElement<HTMLElement>(preview, '#previewLabel').textContent,
+    )
+    const plusIcon = getRequiredElement<HTMLElement>(
+      preview,
+      '#plusIcon',
+    )
+    assertEquals('LEO-ICON', plusIcon.tagName)
+    assertEquals('plus-add', plusIcon.getAttribute('name'))
 
     const uploadButton = getRequiredElement<HTMLElement>(
       row.shadowRoot,
       '#uploadButton',
     )
-    assertEquals('CR-BUTTON', uploadButton.tagName)
+    assertEquals('LEO-BUTTON', uploadButton.tagName)
+    assertEquals('filled', uploadButton.getAttribute('kind'))
+    assertEquals('small', uploadButton.getAttribute('size'))
     assertEquals(row.titleLabel, uploadButton.textContent.trim())
     assertEquals(
       'image/*',
@@ -349,26 +362,30 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals(createdUrls[0], getPreviewUrl(row))
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
     assertEquals(row.selectedPreviewLabel, preview.getAttribute('aria-label'))
-    assertEquals(
-      'CR-ICON',
-      getRequiredElement<HTMLElement>(
-        row.shadowRoot,
-        '#selectedIndicator',
-      ).tagName,
+    const selectedIndicator = getRequiredElement<HTMLElement>(
+      row.shadowRoot,
+      '#selectedIndicator',
     )
+    assertEquals('LEO-ICON', selectedIndicator.tagName)
+    assertEquals('check-normal', selectedIndicator.getAttribute('name'))
 
     const replaceButton = getRequiredElement<HTMLElement>(
       row.shadowRoot,
       '#uploadButton',
     )
-    assertEquals('CR-BUTTON', replaceButton.tagName)
+    assertEquals('LEO-BUTTON', replaceButton.tagName)
+    assertEquals('filled', replaceButton.getAttribute('kind'))
+    assertEquals('small', replaceButton.getAttribute('size'))
     assertEquals(row.replaceLabel, replaceButton.textContent.trim())
     assertEquals(row.replaceTooltip, replaceButton.getAttribute('title'))
     assertEquals(row.replaceTooltip, replaceButton.getAttribute('aria-label'))
-    assertEquals(
-      'CR-BUTTON',
-      getRequiredElement<HTMLElement>(row.shadowRoot, '#removeButton').tagName,
+    const removeButton = getRequiredElement<HTMLElement>(
+      row.shadowRoot,
+      '#removeButton',
     )
+    assertEquals('LEO-BUTTON', removeButton.tagName)
+    assertEquals('outline', removeButton.getAttribute('kind'))
+    assertEquals('small', removeButton.getAttribute('size'))
     assertDeepEquals([], revokedUrls)
   })
 
@@ -378,7 +395,7 @@ function braveManageProfileFeatureEnabledTests() {
     await settleRow(row)
 
     const actions = getRequiredElement<HTMLElement>(row.shadowRoot, '#actions')
-    assertEquals('10px', getComputedStyle(actions).gap)
+    assertEquals('12px', getComputedStyle(actions).gap)
   })
 
   test('ReplacesImageAndChangesPreviewUrl', async function() {

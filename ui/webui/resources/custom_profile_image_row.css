@@ -8,40 +8,41 @@
  * #css_wrapper_metadata_end */
 
 :host {
-  color: var(--cr-primary-text-color, currentColor);
+  color: var(--leo-color-text-primary);
   display: block;
   width: 100%;
 }
 
 #row {
-  --avatar-size: var(--icon-size, 66px);
-  --selected-border: 4px;
+  --avatar-size: var(--icon-size, var(--leo-spacing-6xl));
+  --selected-border: var(--leo-spacing-s);
 
   align-items: center;
   box-sizing: border-box;
-  column-gap: var(--icon-grid-gap, 22px);
+  column-gap: var(--icon-grid-gap, var(--leo-spacing-2xl));
   display: grid;
   grid-template-areas:
     'title title'
     'preview actions';
-  grid-template-columns: calc(var(--avatar-size) + 2px) auto;
+  grid-template-columns:
+    calc(var(--avatar-size) + var(--leo-spacing-xs)) auto;
   justify-content: start;
   min-height: 0;
-  padding-block-start: 4px;
-  padding-inline-start: 3px;
-  row-gap: 18px;
+  padding-block-start: var(--leo-spacing-s);
+  padding-inline-start: var(--leo-spacing-s);
+  row-gap: var(--leo-spacing-xl);
   width: 100%;
 }
 
 #preview {
-  --avatar-selected-color: rgba(var(--google-blue-600-rgb), 0.4);
+  --avatar-selected-color: var(--leo-color-divider-interactive);
 
   align-items: center;
-  background: var(--cr-hover-background-color, rgba(0, 0, 0, 0.06));
-  border: 1px solid var(--google-grey-300);
-  border-radius: 100%;
+  background: var(--leo-color-container-highlight);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-full);
   box-sizing: content-box;
-  color: var(--cr-secondary-text-color, currentColor);
+  color: var(--leo-color-icon-default);
   display: inline-flex;
   height: var(--avatar-size);
   justify-content: center;
@@ -50,10 +51,10 @@
   width: var(--avatar-size);
 }
 
-cr-icon-button#preview {
-  --cr-icon-button-fill-color: var(--cr-secondary-text-color, currentColor);
-  --cr-icon-button-icon-size: 24px;
-  --cr-icon-button-size: var(--avatar-size);
+leo-button#preview {
+  --leo-button-color: var(--leo-color-icon-default);
+
+  flex: none;
 }
 
 #preview.selected {
@@ -61,26 +62,33 @@ cr-icon-button#preview {
 }
 
 #previewImage {
-  border-radius: 100%;
+  border-radius: var(--leo-radius-full);
   height: 100%;
   object-fit: cover;
   width: 100%;
 }
 
 #plusIcon {
-  --iron-icon-fill-color: var(--cr-secondary-text-color, currentColor);
-  --iron-icon-height: 24px;
-  --iron-icon-width: 24px;
+  --iron-icon-fill-color: var(--leo-color-icon-default);
+  --iron-icon-height: var(--leo-icon-l);
+  --iron-icon-width: var(--leo-icon-l);
+  --leo-icon-color: var(--leo-color-icon-default);
+  --leo-icon-size: var(--leo-icon-l);
+}
+
+#previewLabel {
+  clip-path: inset(100%);
+  position: fixed;
 }
 
 #selectedIndicator {
-  --checkmark-size: 21px;
-  --iron-icon-fill-color: white;
-  --iron-icon-height: var(--checkmark-size);
-  --iron-icon-width: var(--checkmark-size);
+  --checkmark-size: var(--leo-icon-m);
+  --leo-icon-color: var(--leo-color-schemes-on-primary);
+  --leo-icon-height: var(--checkmark-size);
+  --leo-icon-width: var(--checkmark-size);
 
-  background: var(--google-blue-600);
-  border-radius: 100%;
+  background: var(--leo-color-icon-interactive);
+  border-radius: var(--leo-radius-full);
   height: var(--checkmark-size);
   inset-inline-end: -1px;
   padding: 1px;
@@ -89,27 +97,18 @@ cr-icon-button#preview {
   width: var(--checkmark-size);
 }
 
-@media (prefers-color-scheme: dark) {
-  #selectedIndicator {
-    --iron-icon-fill-color: var(--google-grey-900);
-
-    background: var(--google-blue-300);
-  }
-}
-
 #actions {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--leo-spacing-l);
   justify-content: flex-start;
 }
 
 #fileError {
-  color: var(--cr-error-text-color, var(--google-red-600));
-  font-size: 12px;
+  color: var(--leo-color-systemfeedback-error-text);
+  font: var(--leo-font-small-regular);
   grid-column: 1 / -1;
-  line-height: 16px;
 }
 
 #row.title-hidden {
@@ -118,10 +117,8 @@ cr-icon-button#preview {
 }
 
 #row #title {
+  font: var(--leo-font-heading-h3);
   grid-area: title;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 28px;
 }
 
 #row #preview {
@@ -132,11 +129,9 @@ cr-icon-button#preview {
   grid-area: actions;
 }
 
-#row #actions cr-button {
-  --cr-button-height: 40px;
-  --leo-button-padding: 0 26px;
+#row #actions leo-button {
+  --leo-button-padding: 0 var(--leo-spacing-2xl);
 
-  font-size: 16px;
-  font-weight: 500;
+  flex: none;
   min-width: 104px;
 }

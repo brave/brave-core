@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import '//resources/cr_elements/cr_button/cr_button.js'
+import '//resources/brave/leo.bundle.js'
 import '//resources/cr_elements/cr_icon/cr_icon.js'
-import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
 import '//resources/cr_elements/icons.html.js'
 
 import {html, nothing} from '//resources/lit/v3_0/lit.rollup.js'
@@ -40,22 +39,30 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
                     icon="cr:add"
                     aria-hidden="true"
                   ></cr-icon>`}
-              <cr-icon
+              <leo-icon
                 id="selectedIndicator"
-                icon="cr:check"
+                name="check-normal"
                 aria-hidden="true"
-              ></cr-icon>
+              ></leo-icon>
             </div>
           `
         : html`
-            <cr-icon-button
+            <leo-button
               id="preview"
-              class="no-overlap"
-              iron-icon="cr:add"
+              kind="plain-faint"
+              size="jumbo"
+              fab
               title="${this.uploadTooltip}"
-              aria-label="${this.uploadTooltip}"
               @click="${this.onUploadClick_}"
-            ></cr-icon-button>
+            >
+              <leo-icon
+                id="plusIcon"
+                name="plus-add"
+                slot="icon-before"
+                aria-hidden="true"
+              ></leo-icon>
+              <span id="previewLabel">${this.uploadTooltip}</span>
+            </leo-button>
           `}
 
       ${this.shouldRenderTitle_()
@@ -63,25 +70,29 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
         : nothing}
 
       <div id="actions">
-        <cr-button
+        <leo-button
           id="uploadButton"
           class="action-button"
+          kind="filled"
+          size="small"
           title="${this.getUploadButtonTooltip_()}"
           aria-label="${this.getUploadButtonTooltip_()}"
           @click="${this.onUploadClick_}"
         >
           ${this.isSaved_() ? this.replaceLabel : this.titleLabel}
-        </cr-button>
+        </leo-button>
         ${this.isSaved_()
           ? html`
-              <cr-button
+              <leo-button
                 id="removeButton"
+                kind="outline"
+                size="small"
                 title="${this.removeTooltip}"
                 aria-label="${this.removeTooltip}"
                 @click="${this.onRemoveClick_}"
               >
                 ${this.removeLabel}
-              </cr-button>
+              </leo-button>
             `
           : nothing}
       </div>
