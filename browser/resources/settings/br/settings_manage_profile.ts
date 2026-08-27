@@ -67,7 +67,6 @@ function createCustomProfileImageSection(): DocumentFragment {
         <div class="content">
           <br-custom-profile-image-row
             id=${kCustomProfileImageRowId}
-            state="empty"
             hide-title
             title-label=${loadTimeData.getString(
               BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,

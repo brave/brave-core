@@ -4,8 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '//resources/brave/leo.bundle.js'
-import '//resources/cr_elements/cr_icon/cr_icon.js'
-import '//resources/cr_elements/icons.html.js'
 
 import {html, nothing} from '//resources/lit/v3_0/lit.rollup.js'
 
@@ -15,7 +13,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
   return html`
     <section
       id="row"
-      class="state-${this.state}
+      class="state-${this.getState_()}
         ${this.shouldRenderTitle_() ? '' : 'title-hidden'}"
       aria-labelledby="${this.shouldRenderTitle_() ? 'title' : nothing}"
       aria-label="${this.shouldRenderTitle_() ? nothing : this.titleLabel}"
@@ -28,17 +26,11 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               role="img"
               aria-label="${this.selectedPreviewLabel}"
             >
-              ${this.localPreviewUrl_
-                ? html`<img
-                    id="previewImage"
-                    alt=""
-                    src="${this.localPreviewUrl_}"
-                  />`
-                : html`<cr-icon
-                    id="plusIcon"
-                    icon="cr:add"
-                    aria-hidden="true"
-                  ></cr-icon>`}
+              <img
+                id="previewImage"
+                alt=""
+                src="${this.localPreviewUrl_}"
+              />
               <leo-icon
                 id="selectedIndicator"
                 name="check-normal"

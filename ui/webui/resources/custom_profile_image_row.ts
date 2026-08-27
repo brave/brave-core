@@ -4,10 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js'
-import type {
-  CSSResultGroup,
-  PropertyValues,
-} from '//resources/lit/v3_0/lit.rollup.js'
+import type {CSSResultGroup} from '//resources/lit/v3_0/lit.rollup.js'
 
 import {getCss} from './custom_profile_image_row.css.js'
 import {getHtml} from './custom_profile_image_row.html.js'
@@ -31,7 +28,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
 
   static override get properties() {
     return {
-      state: {type: String, reflect: true},
       hideTitle: {type: Boolean, attribute: 'hide-title'},
       invalidImageLabel: {type: String, attribute: 'invalid-image-label'},
       replaceLabel: {type: String, attribute: 'replace-label'},
@@ -49,7 +45,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
     }
   }
 
-  accessor state: CustomProfileImageState = 'empty'
   accessor hideTitle: boolean = false
   accessor invalidImageLabel: string = ''
   accessor replaceLabel: string = ''
@@ -64,8 +59,16 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
 
   private uploadAttemptId_: number = 0
 
+  get state(): CustomProfileImageState {
+    return this.getState_()
+  }
+
   protected isSaved_(): boolean {
-    return this.state === 'saved-active'
+    return !!this.localPreviewUrl_
+  }
+
+  protected getState_(): CustomProfileImageState {
+    return this.isSaved_() ? 'saved-active' : 'empty'
   }
 
   protected shouldRenderTitle_(): boolean {
@@ -79,14 +82,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
   override disconnectedCallback() {
     this.clearLocalPreview_()
     super.disconnectedCallback()
-  }
-
-  override willUpdate(changedProperties: PropertyValues<this>) {
-    super.willUpdate(changedProperties)
-
-    if (this.state !== 'empty' && this.state !== 'saved-active') {
-      throw new Error(`Unsupported custom profile image state: ${this.state}`)
-    }
   }
 
   protected onUploadClick_() {
@@ -110,7 +105,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
     ++this.uploadAttemptId_
     this.hasValidationError_ = false
     this.revokeLocalPreviewUrl_()
-    this.state = 'empty'
   }
 
   private async replaceLocalPreview_(file: File) {
@@ -139,7 +133,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
     this.revokeLocalPreviewUrl_()
     this.localPreviewUrl_ = previewUrl
     this.hasValidationError_ = false
-    this.state = 'saved-active'
   }
 
   private showValidationError_(uploadAttemptId: number) {

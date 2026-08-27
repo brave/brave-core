@@ -69,9 +69,6 @@ leo-button#preview {
 }
 
 #plusIcon {
-  --iron-icon-fill-color: var(--leo-color-icon-default);
-  --iron-icon-height: var(--leo-icon-l);
-  --iron-icon-width: var(--leo-icon-l);
   --leo-icon-color: var(--leo-color-icon-default);
   --leo-icon-size: var(--leo-icon-l);
 }
