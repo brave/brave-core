@@ -1,18 +1,27 @@
 diff --git a/content/browser/websockets/websocket_connector_impl.cc b/content/browser/websockets/websocket_connector_impl.cc
-index cbcaed4ff457263538c75c5a6f5d33646c259c36..49a2b246b5435b7336687c7391d711613b5f09f4 100644
+index cbcaed4ff457263538c75c5a6f5d33646c259c36..9a43804b7c404368a772e38b3c50bc3eba45282f 100644
 --- a/content/browser/websockets/websocket_connector_impl.cc
 +++ b/content/browser/websockets/websocket_connector_impl.cc
+@@ -64,7 +64,7 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
+           policy_exception_justification:
+             "Not implemented. WebSocket is a core web platform API."
+         })");
+-}
++}  // namespace
+ 
+ WebSocketConnectorImpl::WebSocketConnectorImpl(
+     const content::GlobalRenderFrameHostId& frame_id,
 @@ -130,10 +130,12 @@ void WebSocketConnectorImpl::Connect(
        options.options, std::move(throttling_profile_id),
        network_restrictions_id_);
  
 -  if (GetContentClient()->browser()->WillInterceptWebSocket(frame)) {
 +  if (GetContentClient()->browser()->WillInterceptWebSocket(
-+          frame_id_.child_id, frame_id_.frame_routing_id)) {
++          frame_id_.child_id.value(), frame_id_.frame_routing_id)) {
      GetContentClient()->browser()->CreateWebSocket(
 -        frame, std::move(factory), url, isolation_info_.site_for_cookies(),
 -        user_agent, std::move(handshake_client), std::move(options));
-+        frame_id_.child_id, frame_id_.frame_routing_id, origin_,
++        frame_id_.child_id.value(), frame_id_.frame_routing_id, origin_,
 +        std::move(factory), url, isolation_info_.site_for_cookies(), user_agent,
 +        std::move(handshake_client), std::move(options));
      return;
