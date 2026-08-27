@@ -99,11 +99,13 @@ bool GetOptionalString(const base::Value* value,
   return true;
 }
 
-bool GetOptionalBool(const base::Value* value, std::optional<bool>* field) {
+bool GetEnabledState(const base::Value* value,
+                     RemoteMetricConfig::EnabledState* field) {
   if (!value || !value->is_bool()) {
     return false;
   }
-  *field = value->GetBool();
+  *field = value->GetBool() ? RemoteMetricConfig::EnabledState::kTrue
+                            : RemoteMetricConfig::EnabledState::kFalse;
   return true;
 }
 
@@ -140,12 +142,12 @@ RemoteMetricConfig& RemoteMetricConfig::operator=(const RemoteMetricConfig&) =
 void RemoteMetricConfig::RegisterJSONConverter(
     base::JSONValueConverter<RemoteMetricConfig>* converter) {
   converter->RegisterCustomValueField(
-      "ephemeral", &RemoteMetricConfig::ephemeral, &GetOptionalBool);
+      "ephemeral", &RemoteMetricConfig::ephemeral, &GetEnabledState);
   converter->RegisterCustomValueField("nebula", &RemoteMetricConfig::nebula,
-                                      &GetOptionalBool);
+                                      &GetEnabledState);
   converter->RegisterCustomValueField(
       "disable_country_strip", &RemoteMetricConfig::disable_country_strip,
-      &GetOptionalBool);
+      &GetEnabledState);
   converter->RegisterCustomValueField(
       "attributes", &RemoteMetricConfig::attributes,
       &GetMetricAttributes<std::tuple_size_v<MetricAttributes>>);
@@ -154,7 +156,7 @@ void RemoteMetricConfig::RegisterJSONConverter(
       &GetMetricAttributes<std::tuple_size_v<MetricAttributesToAppend>>);
   converter->RegisterCustomValueField(
       "record_activation_date", &RemoteMetricConfig::record_activation_date,
-      &GetOptionalBool);
+      &GetEnabledState);
   converter->RegisterCustomValueField(
       "activation_metric_name", &RemoteMetricConfig::activation_metric_name,
       &GetOptionalString);
@@ -164,7 +166,7 @@ void RemoteMetricConfig::RegisterJSONConverter(
                                       &RemoteMetricConfig::custom_attributes,
                                       &GetCustomAttributes);
   converter->RegisterCustomValueField("priority", &RemoteMetricConfig::priority,
-                                      &GetOptionalBool);
+                                      &GetEnabledState);
 }
 
 }  // namespace p3a
