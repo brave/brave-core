@@ -6,25 +6,54 @@
 """
 Update the auto-generated filter files for flaky upstream tests.
 
-For each upstream test suite that Brave runs, finds tests whose flake
-rate in Chromium's LUCI Analysis data exceeds the threshold over the
-lookback period and writes them to
-test/filters/generated/<suite>-<config>.filter, where <config> is a
-platform ("linux") or a platform-sanitizer combination ("linux-asan").
-Flake rates are computed per config from the matching upstream bots, so
-a test only flaky on e.g. Linux ASan bots is only filtered there. The
-files are picked up automatically by `npm run test` (see
-build/commands/lib/testUtils.js).
-
-Candidate tests are discovered through failure clusters
-(Clusters.QueryClusterSummaries), then each candidate's flake rate is
-computed from its full test history (TestHistory.QueryStats). The
-cluster API only returns the top 200 clusters per query, so the lookback
-period is additionally sliced into weekly windows to widen discovery.
-
 Usage:
     python3 script/update-upstream-flake-filters.py [suite ...] \\
         [--days 30] [--min-flake-rate 1.0]
+
+N.B.: The generated list of flaky tests is not exhaustive because the
+discovery APIs we are using (see below) cap the number of result items.
+
+The script works as follows:
+
+For each upstream test suite that Brave runs (browser_tests, unit_tests, etc.),
+the script finds tests whose flake rate in Chromium's LUCI Analysis data
+exceeds the threshold over the lookback period and writes them to
+test/filters/generated/<suite>-<config>.filter, where <config> is a platform
+("linux") or a platform-sanitizer combination ("linux-asan"). Flake rates are
+computed per config from the matching upstream bots, so a test only flaky on
+e.g. Linux ASan bots is only filtered there. The files are picked up
+automatically by `pnpm run test` (see build/commands/lib/testUtils.js).
+
+Candidate test discovery uses the following clustering APIs. For more
+information on LUCI's data model, see docs/luci.md.
+
+1.  `Clusters.QueryClusterSummaries` returns the clusters with the most
+    failures, filtered to failures of the suite. The API caps this at the top
+    200 clusters, so the script queries the whole lookback period plus each week
+    of it separately to widen the net.
+2.  For a single-test cluster, the test ID can be read off the cluster title.
+    For clusters spanning several tests (parameterized tests, rule clusters),
+    `Clusters.QueryClusterFailures` lists recent failures inside the cluster,
+    and the script collects the test IDs with the most failures from them.
+
+Any test with a meaningful flake rate must fail regularly, so it is expected to
+surface in one of these clusters: in its test name cluster, or, if a bug is
+already filed on it, in the bug's rule cluster.
+
+The check then computes the flake rate of each test found during discovery:
+
+3.  `TestHistory.QueryStats` returns the candidate's verdict counts over the
+    lookback period, broken down by day and variant.
+4.  `TestHistory.QueryVariants` maps each variant to its builder and OS. The
+    script uses this to group the verdict counts into the configurations Brave
+    tests (platform x sanitizer), dropping bots for configurations Brave never
+    runs (ChromeOS, Android, iOS, ...).
+
+For each configuration, the rate of failed or flaky verdicts among all
+meaningful verdicts (passed, failed or flaky) is computed. Tests at or above the
+threshold (default: 1% over 30 days, with at least 10 meaningful verdicts) are
+written to `test/filters/generated/<suite>-<configuration>.filter`. Note that
+this includes tests that consistently fail upstream, not only flaky ones.
 """
 
 import argparse

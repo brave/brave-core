@@ -56,6 +56,11 @@ resources outside this repository, go to:
 - [WebUI Strings Overview](./webui_strings_explainer.md) - Including strings in
   a Web UI frontend.
 
+### Chromium
+
+- [LUCI](luci.md) - How Chromium's LUCI stores test results (verdicts, variants,
+  clusters) and attributes test failures.
+
 ## Creating Documentation
 
 > [!IMPORTANT]
