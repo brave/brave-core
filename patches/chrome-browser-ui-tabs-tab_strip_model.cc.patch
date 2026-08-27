@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf90838f84646 100644
+index 6aa150b0cd9989571e8c331cdabb7fca0615c942..b0e3a95f0ec00c551ab4834c72ba54d75815a082 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
-@@ -184,7 +184,7 @@ std::unique_ptr<TabGroupModel> TabGroupModelFactory::Create() {
+@@ -183,7 +183,7 @@ std::unique_ptr<TabGroupModel> TabGroupModelFactory::Create() {
  
  DetachedTabCollection::DetachedTabCollection(
      std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -11,7 +11,7 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
      std::optional<int> active_index,
      bool pinned)
      : collection_(std::move(collection)),
-@@ -558,6 +558,14 @@ TabStripModel::DetachTabsAndCollectionsForInsertion(
+@@ -557,6 +557,14 @@ TabStripModel::DetachTabsAndCollectionsForInsertion(
        owned_tabs_and_collections.emplace_back(
            DetachSplitTabForInsertion(tab_interface->GetSplit().value()));
      } else {
@@ -26,7 +26,7 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
        owned_tabs_and_collections.emplace_back(DetachTabWithReasonAt(
            index, TabRemovedReason::kInsertedIntoOtherTabStrip,
            tabs::TabInterface::DetachReason::kInsertIntoOtherWindow));
-@@ -1865,6 +1873,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+@@ -1878,6 +1886,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
    if (ui::PageTransitionTypeIncludingQualifiersIs(transition,
                                                    ui::PAGE_TRANSITION_TYPED) &&
        index == count()) {
@@ -34,7 +34,23 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
      // Also, any tab opened at the end of the TabStrip with a "TYPED"
      // transition inherit opener as well. This covers the cases where the user
      // creates a New Tab (e.g. Ctrl+T, or clicks the New Tab button), or types
-@@ -2680,6 +2689,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2594,6 +2603,15 @@ bool TabStripModel::IsContextMenuCommandEnabled(
+   }
+ 
+   switch (command_id) {
++    case CommandRestoreTab:
++    case CommandBookmarkAllTabs:
++    case CommandShowVerticalTabs:
++    case CommandToggleTabMuted:
++    case CommandBringAllTabsToThisWindow:
++    case CommandCloseDuplicateTabs:
++    case CommandOpenInContainer:
++    case CommandRenameTab:
++      NOTREACHED();
+     case CommandNewTabToRight:
+     case CommandCloseTab:
+       return true;
+@@ -2697,6 +2715,15 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
      return;
    }
    switch (command_id) {
@@ -50,7 +66,7 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
      case CommandNewTabToRight: {
        base::UmaHistogramCounts1000(
            "Tab.ContextMenu.NewTabToRight.SelectedTabsCount",
-@@ -4235,7 +4253,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
+@@ -4275,7 +4302,7 @@ void TabStripModel::MoveTabRelative(TabRelativeDirection direction) {
  
  std::pair<std::optional<int>, std::optional<int>>
  TabStripModel::GetAdjacentTabsAfterSelectedMove(
@@ -59,7 +75,7 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
      int destination_index) {
    const int pinned_tab_count = IndexOfFirstNonPinnedTab();
    const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
-@@ -4708,8 +4726,10 @@ void TabStripModel::InsertTabAtIndexImpl(
+@@ -4755,8 +4782,10 @@ void TabStripModel::InsertTabAtIndexImpl(
    }
  
    tabs::TabInterface* old_active_tab = GetActiveTab();
