@@ -265,10 +265,26 @@ class Parser {
   int depth_ = 0;
 };
 
-// '-' and '/' are used to delimit card numbers, phone numbers, SSN, and dates.
-// They should only be counted as operators with spaces around them -- otherwise
-// "1234-5678-9012-3456" would be answered as "= -13912". '+', '*' and '^' are
-// unambiguous anywhere.
+// Whether something an operator could apply to ends at `pos`, which is what
+// separates a binary operator from a leading sign.
+bool HasLeftOperand(std::u16string_view text, size_t pos) {
+  while (pos > 0) {
+    const char16_t c = text[--pos];
+    if (base::IsUnicodeWhitespace(c)) {
+      continue;
+    }
+    return base::IsAsciiDigit(c) || c == u')';
+  }
+  return false;
+}
+
+// Every operator must be binary, because a leading sign on a bare number is
+// how phone numbers are written: "+15551234567" is not a calculation, and it
+// is exactly the kind of input this path exists to keep off the network.
+//
+// '-' and '/' additionally need spaces around them, since they also delimit
+// card numbers, SSNs and dates -- otherwise "1234-5678-9012-3456" would be
+// answered as "= -13912".
 //
 // This only decides whether evaluating is worth attempting; the parser is what
 // decides whether the text is actually an expression.
@@ -276,11 +292,13 @@ bool LooksLikeArithmetic(std::u16string_view text) {
   for (size_t i = 0; i < text.size(); ++i) {
     const char16_t c = text[i];
     if (c == u'+' || c == u'*' || c == u'^') {
-      return true;
+      if (HasLeftOperand(text, i)) {
+        return true;
+      }
     }
     if ((c == u'-' || c == u'/') && i > 0 && i + 1 < text.size() &&
         base::IsUnicodeWhitespace(text[i - 1]) &&
-        base::IsUnicodeWhitespace(text[i + 1])) {
+        base::IsUnicodeWhitespace(text[i + 1]) && HasLeftOperand(text, i)) {
       return true;
     }
   }

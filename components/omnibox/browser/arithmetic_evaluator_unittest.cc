@@ -91,6 +91,13 @@ TEST(ArithmeticEvaluatorTest, DeclinesFormattedIdentifiers) {
   EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"9/11"));
   EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"12/25/2024"));
 
+  // A leading sign is how international dialling codes are written, so an
+  // operator only counts when it has something on its left to apply to.
+  // Without this, "+15551234567" would be restated as "= 15,551,234,567".
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"+15551234567"));
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"+1 555 123 4567"));
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"+442071234567"));
+
   // Input with spaces, the same operators are unambiguous.
   EXPECT_EQ(Integer(250000), EvaluateArithmeticExpression(u"1000000 / 4"));
   EXPECT_EQ(Integer(-4444), EvaluateArithmeticExpression(u"1234 - 5678"));
@@ -101,11 +108,14 @@ TEST(ArithmeticEvaluatorTest, DeclinesFormattedIdentifiers) {
 TEST(ArithmeticEvaluatorTest, HandlesLongOperatorRuns) {
   constexpr size_t kRunLength = 100000;
 
-  // Unary signs are folded iteratively, so a run of them is just a sign. Note
-  // every case here needs an unambiguous operator to get past
-  // `LooksLikeArithmetic`: a run of '-' alone is an identifier, not a sum.
-  EXPECT_EQ(Integer(1), EvaluateArithmeticExpression(
-                            std::u16string(kRunLength, u'+') + u"1"));
+  // A run of signs with nothing to add to is not a calculation, so these are
+  // turned away by `LooksLikeArithmetic` before the parser sees them.
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(
+                              std::u16string(kRunLength, u'+') + u"1"));
+  EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"-+-5"));
+
+  // With a binary operator present the run is reached, and folded iteratively
+  // rather than by recursing per sign.
   EXPECT_EQ(Integer(-1), EvaluateArithmeticExpression(
                              std::u16string(kRunLength - 1, u'-') + u"1+0"));
 
@@ -119,7 +129,6 @@ TEST(ArithmeticEvaluatorTest, HandlesLongOperatorRuns) {
                              std::u16string(kRunLength - 1, u'-') + u"4+4-4"));
   EXPECT_EQ(Integer(-4), EvaluateArithmeticExpression(u"-4+4-4"));
   EXPECT_EQ(Integer(8), EvaluateArithmeticExpression(u"4 - -4"));
-  EXPECT_EQ(Integer(5), EvaluateArithmeticExpression(u"-+-5"));
 
   // Nesting constructs are depth-bounded instead.
   EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(
