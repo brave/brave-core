@@ -5,10 +5,17 @@
 
 #include "ios/web/webui/mojo_facade.h"
 
-#include "base/logging.h"
+#include "base/time/time.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+namespace web {
+// Spacing between retries of a poll that came back empty, used by the
+// mojo_facade.mm plaster. Defined ahead of the include below so upstream's
+// body can see it.
+inline constexpr base::TimeDelta kPollRetryDelay = base::Milliseconds(25);
+}  // namespace web
 
 #include <ios/web/webui/mojo_facade.mm>
 
@@ -52,10 +59,12 @@ bool MojoFacade::IsBindInterfaceAllowedForFrame(const base::DictValue& args) {
 
 // A frame whose document can't run scripts any more never recovers, and
 // upstream re-posts the poll on every failure, so the loop has to give up on
-// its own. The allowance is for genuinely transient failures; a live frame
-// resets it as soon as one poll carries a message.
+// its own. The allowance covers a page whose mojo_api.js hasn't run yet,
+// which fails every poll until it has; paired with kPollRetryDelay it spans
+// about a second. A live frame resets it as soon as one poll carries a
+// message.
 bool MojoFacade::ShouldRetryPoll() {
-  static constexpr int kMaxConsecutivePollFailures = 3;
+  static constexpr int kMaxConsecutivePollFailures = 40;
   return ++consecutive_poll_failures_ <= kMaxConsecutivePollFailures;
 }
 
@@ -74,35 +83,6 @@ void MojoFacade::ReportUnknownPipe(const char* operation,
       "MojoFacade", "host",
       served_host_.empty() ? std::string("main") : served_host_);
   base::debug::DumpWithoutCrashing();
-}
-
-// TEMPORARY diagnostics. Revert before landing. `facade` distinguishes two
-// facades polling one frame (which clobbers the single resolver slot JS keeps
-// for fetchNextMessageFromJS) from one facade cycling normally.
-namespace {
-std::string HostLabel(const std::string& served_host) {
-  return served_host.empty() ? std::string("MAIN") : served_host;
-}
-}  // namespace
-
-void MojoFacade::LogPollStart() {
-  LOG(ERROR) << "[mojo] poll-start facade=" << this
-             << " host=" << HostLabel(served_host_)
-             << " frame=" << GetMainFrameId()
-             << " awaiting=" << is_awaiting_message_;
-}
-
-void MojoFacade::LogPollDone(const std::string& web_frame_id,
-                             const base::Value* value,
-                             NSError* error) {
-  LOG(ERROR) << "[mojo] poll-done  facade=" << this
-             << " host=" << HostLabel(served_host_)
-             << " reported=" << web_frame_id << " error="
-             << (error ? base::SysNSStringToUTF8(error.description)
-                       : std::string("none"))
-             << " value="
-             << (value ? base::WriteJson(*value).value_or("<unconvertible>")
-                       : std::string("<null>"));
 }
 
 }  // namespace web

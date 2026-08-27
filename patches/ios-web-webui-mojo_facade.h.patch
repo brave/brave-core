@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
-index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..a87cfff441cca3093624310386817f41bcebcf78 100644
+index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..5d23b666ba35e3f352cd3425b2cac75aa508ebbb 100644
 --- a/ios/web/webui/mojo_facade.h
 +++ b/ios/web/webui/mojo_facade.h
 @@ -35,7 +35,8 @@ class MojoFacade : public web::WebStateObserver,
@@ -12,7 +12,7 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..a87cfff441cca3093624310386817f41
    ~MojoFacade() override;
  
    // A listener that polls for messages from a content page to be processed by
-@@ -58,6 +59,35 @@ class MojoFacade : public web::WebStateObserver,
+@@ -58,6 +59,29 @@ class MojoFacade : public web::WebStateObserver,
                           const base::DictValue* message,
                           base::OnceCallback<void(int, std::string)> completion);
  
@@ -38,12 +38,6 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..a87cfff441cca3093624310386817f41
 +  std::string served_host_;
 +  // Polls in a row that carried no message.
 +  int consecutive_poll_failures_ = 0;
-+
-+  // TEMPORARY diagnostics. Revert before landing.
-+  void LogPollStart();
-+  void LogPollDone(const std::string& web_frame_id,
-+                   const base::Value* value,
-+                   NSError* error);
 +
   private:
    // Callback for AwaitNextMessage completion.

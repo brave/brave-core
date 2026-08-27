@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..be36d44938a855428dd83d865e52ecf5c799a883 100644
+index cbc39d0594174bb896c7f79198325959c7d304be..cc7962fa32ea71666f20d8d4613961af1ec883dd 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,22 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -28,31 +28,20 @@ index cbc39d0594174bb896c7f79198325959c7d304be..be36d44938a855428dd83d865e52ecf5
    if (main_frame) {
      main_frame_ = main_frame->AsWeakPtr();
      if (!web_state_->IsLoading() && web_state_->GetInterfaceBinderForMainFrame()
-@@ -89,6 +97,7 @@ std::string MojoFacade::GetMainFrameId() const {
- }
- 
- void MojoFacade::AwaitNextMessage() {
-+  LogPollStart();
-   DCHECK_CURRENTLY_ON(WebThread::UI);
- 
-   if (is_awaiting_message_) {
-@@ -116,6 +125,7 @@ void MojoFacade::AwaitNextMessage() {
- void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
-                                              const base::Value* value,
-                                              NSError* error) {
-+  LogPollDone(web_frame_id, value, error);
-   DCHECK_CURRENTLY_ON(WebThread::UI);
- 
-   is_awaiting_message_ = false;
-@@ -124,13 +134,14 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+@@ -124,13 +132,16 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
        !web_state_->IsBeingDestroyed() && GetMainFrameId() == web_frame_id;
  
    if (error || !is_same_frame || !value) {
 -    if (error && is_same_frame) {
+-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+-          FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessage,
+-                                    weak_ptr_factory_.GetWeakPtr()));
 +    if (is_same_frame && ShouldRetryPoll()) {
-       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-           FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessage,
-                                     weak_ptr_factory_.GetWeakPtr()));
++      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
++          FROM_HERE,
++          base::BindOnce(&MojoFacade::AwaitNextMessage,
++                         weak_ptr_factory_.GetWeakPtr()),
++          kPollRetryDelay);
      }
      return;
    }

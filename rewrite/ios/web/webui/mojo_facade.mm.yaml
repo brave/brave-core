@@ -111,6 +111,20 @@ substitutions:
       replace: 'if (is_same_frame && ShouldRetryPoll()) {'
 
   - description: |-
+      Space out poll retries instead of re-posting immediately.
+
+      The first polls of a page routinely fail with "ReferenceError: Can't
+      find variable: Mojo", because the loop starts before the page's copy of
+      mojo_api.js has run. Retrying immediately is no help there: each
+      attempt fails at once and only spends the allowance ShouldRetryPoll
+      keeps, so on a slower load the WebUI gives up before its own script is
+      ready. A short delay makes each retry a real second chance.
+    regex:
+      re_pattern:
+        'PostTask\(\s*FROM_HERE,\s*base::BindOnce\(&MojoFacade::AwaitNextMessage,\s*weak_ptr_factory_\.GetWeakPtr\(\)\)\);'
+      replace: 'PostDelayedTask(\n          FROM_HERE,\n          base::BindOnce(&MojoFacade::AwaitNextMessage,\n                         weak_ptr_factory_.GetWeakPtr()),\n          kPollRetryDelay);'
+
+  - description: |-
       A poll that delivered a message clears the consecutive-failure count.
     regex:
       re_pattern: |-
@@ -145,20 +159,6 @@ substitutions:
             ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
             return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
           }
-
-  - description: |-
-      TEMPORARY diagnostic: trace the poll loop. Revert before landing.
-    preempt_function_impl:
-      function_name: MojoFacade::AwaitNextMessage
-      code: |-
-        LogPollStart();
-
-  - description: |-
-      TEMPORARY diagnostic: trace poll completions. Revert before landing.
-    preempt_function_impl:
-      function_name: MojoFacade::OnAwaitNextMessageCompleted
-      code: |-
-        LogPollDone(web_frame_id, value, error);
 
   - description: |-
       Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
