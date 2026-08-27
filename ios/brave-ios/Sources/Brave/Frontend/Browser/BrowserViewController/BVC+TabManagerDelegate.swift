@@ -352,11 +352,14 @@ extension BrowserViewController: TabManagerDelegate {
       updateToolbarUsingTabManager(tabManager)
     }
     tab.addObserver(self)
-    tab.addPolicyDecider(self)
     tab.delegate = self
     tab.downloadDelegate = self
     tab.certificateStore = profile.certStore
     attachTabHelpers(to: tab)
+    /// Add BVC as the last TabPolicyDecider, so it only executes on requests
+    /// that all other policy deciders have decided to allow. This is for
+    /// legacy logic that hasn't been migrated to it's own TabPolicyDecider yet
+    tab.addPolicyDecider(self)
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
 
