@@ -124,7 +124,6 @@ source_set("browser_tests") {
   if (toolkit_views) {
     sources += [ "widevine_permission_request_browsertest.cc" ]
     deps += [
-      "//brave/browser/ui",
       "//brave/browser/widevine",
       "//brave/components/tor/buildflags",
       "//brave/components/widevine:constants",
