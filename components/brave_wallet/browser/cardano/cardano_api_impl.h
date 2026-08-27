@@ -20,6 +20,9 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
 
+// CIP-30 DataSign error code: the user declined the sign request.
+inline constexpr int kDataSignUserDeclined = 3;
+
 class CardanoApiImpl final : public mojom::CardanoApi {
  public:
   CardanoApiImpl(BraveWalletService& brave_wallet_service,

@@ -82,9 +82,10 @@ class CardanoTxManagerUnitTest : public testing::Test {
         json_rpc_service_.get(), nullptr, nullptr,
         cardano_wallet_service_.get(), nullptr, *keyring_service_, &prefs_,
         CreateTxStorageForTest(temp_dir_.GetPath()),
-        base::BindRepeating([](const url::Origin&, const mojom::AccountIdPtr&) {
-          return true;
-        }));
+        base::BindRepeating(
+            [](bool* permission_granted, const url::Origin&,
+               const mojom::AccountIdPtr&) { return *permission_granted; },
+            &permission_granted_));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 
@@ -123,6 +124,7 @@ class CardanoTxManagerUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  bool permission_granted_ = true;
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;
   std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   std::unique_ptr<TxService> tx_service_;

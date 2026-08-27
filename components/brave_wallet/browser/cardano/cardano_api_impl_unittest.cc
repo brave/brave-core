@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -522,15 +523,15 @@ TEST_F(CardanoApiImplTest,
   service_delegate()->permission_granted = false;
   brave_wallet_service()->OnContentSettingChanged(
       ContentSettingsPattern(), ContentSettingsPattern(),
-      ContentSettingsType::BRAVE_CARDANO);
+      ContentSettingsTypeSet(ContentSettingsType::BRAVE_CARDANO));
 
   auto& signature = future.Get<0>();
   auto& error = future.Get<1>();
 
   EXPECT_EQ(signature, std::nullopt);
   ASSERT_TRUE(error);
-  // kDataSignUserDeclined: the drained request is rejected without signing.
-  EXPECT_EQ(error->code, 3);
+  // The drained request is rejected without signing.
+  EXPECT_EQ(error->code, kDataSignUserDeclined);
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
@@ -1407,6 +1408,60 @@ TEST_F(CardanoApiImplTest, SignTx_Declined) {
                      future.GetCallback());
 
   waiter.WaitAndProcess(false);
+
+  auto& signed_tx = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_FALSE(signed_tx);
+  EXPECT_EQ(error, mojom::CardanoProviderErrorBundle::New(
+                       -3, WalletUserRejectedRequestErrorMessage(), nullptr));
+}
+
+TEST_F(CardanoApiImplTest,
+       SignTx_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
+
+  auto unsigned_tx_bytes =
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  bool request_queued = false;
+  auto subscription =
+      brave_wallet_service()->RegisterSignTransactionRequestAddedCallback(
+          base::BindRepeating([&] { request_queued = true; }));
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), true,
+                     future.GetCallback());
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return request_queued; }));
+  ASSERT_EQ(brave_wallet_service()
+                ->GetPendingSignCardanoTransactionRequestsSync()
+                .size(),
+            1u);
+
+  // Simulate permission revocation while the request is still queued and
+  // trigger the drain manually (the test delegate doesn't observe HCSM).
+  service_delegate()->permission_granted = false;
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsTypeSet(ContentSettingsType::BRAVE_CARDANO));
 
   auto& signed_tx = future.Get<0>();
   auto& error = future.Get<1>();

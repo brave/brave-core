@@ -374,6 +374,10 @@ static_library("browser") {
     "//url",
   ]
 
+  if (use_blink) {
+    deps += [ ":permission_utils" ]
+  }
+
   public_deps = [
     ":utils",
     "//brave/components/api_request_helper",

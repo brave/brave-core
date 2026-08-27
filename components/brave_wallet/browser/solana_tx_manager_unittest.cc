@@ -127,9 +127,10 @@ class SolanaTxManagerUnitTest : public testing::Test {
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
         *keyring_service_, &prefs_, CreateTxStorageForTest(temp_dir_.GetPath()),
-        base::BindRepeating([](const url::Origin&, const mojom::AccountIdPtr&) {
-          return true;
-        }));
+        base::BindRepeating(
+            [](bool* permission_granted, const url::Origin&,
+               const mojom::AccountIdPtr&) { return *permission_granted; },
+            &permission_granted_));
 
     CreateWallet();
 
@@ -676,6 +677,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  bool permission_granted_ = true;
   std::unique_ptr<TxService> tx_service_;
   mojom::AccountIdPtr sol_account_;
   mojom::AccountIdPtr to_account_;
@@ -2259,6 +2261,53 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
   ASSERT_TRUE(tx_meta);
   ASSERT_TRUE(tx_meta->swap_info());
   EXPECT_EQ(tx_meta->swap_info(), swap_info);
+}
+
+TEST_F(SolanaTxManagerUnitTest,
+       RejectUnapprovedTransactionsWithoutPermission_RejectsPendingTx) {
+  const auto& from_account = sol_account();
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  account_metas.push_back(mojom::SolanaAccountMeta::New(from_account->address,
+                                                        nullptr, true, true));
+  account_metas.push_back(
+      mojom::SolanaAccountMeta::New(to_account, nullptr, false, true));
+
+  auto instruction = mojom::SolanaInstruction::New(
+      mojom::kSolanaSystemProgramId, std::move(account_metas),
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}, nullptr);
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(std::move(instruction));
+
+  auto solana_tx_data = mojom::SolanaTxData::New(
+      "", 0, from_account->address, to_account, "", 10000000, 0,
+      mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
+      mojom::SolanaMessageVersion::kLegacy,
+      mojom::SolanaMessageHeader::New(1, 0, 1),
+      std::vector<std::string>(
+          {from_account->address, to_account, mojom::kSolanaSystemProgramId}),
+      std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
+      nullptr, nullptr);
+
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
+                 false, last_valid_block_height1_);
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      add_tx_future;
+  solana_tx_manager()->AddUnapprovedSolanaTransaction(
+      mojom::kSolanaMainnet, std::move(solana_tx_data), from_account,
+      GetOrigin(), nullptr, add_tx_future.GetCallback());
+  auto [added, tx_meta_id, add_error] = add_tx_future.Take();
+  ASSERT_FALSE(tx_meta_id.empty());
+
+  ASSERT_EQ(solana_tx_manager()->GetTxForTesting(tx_meta_id)->status(),
+            mojom::TransactionStatus::Unapproved);
+
+  permission_granted_ = false;
+
+  tx_service_->RejectUnapprovedTransactionsWithoutPermission();
+
+  EXPECT_EQ(solana_tx_manager()->GetTxForTesting(tx_meta_id)->status(),
+            mojom::TransactionStatus::Rejected);
 }
 
 }  // namespace brave_wallet

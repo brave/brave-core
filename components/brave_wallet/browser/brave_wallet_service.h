@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -94,6 +95,9 @@ class BraveWalletService : public KeyedService,
       HostContentSettingsMap* host_content_settings_map = nullptr);
 
   ~BraveWalletService() override;
+
+  // KeyedService:
+  void Shutdown() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
   BraveWalletService& operator=(const BraveWalletService&) = delete;
@@ -187,8 +191,6 @@ class BraveWalletService : public KeyedService,
       const std::vector<mojom::AccountIdPtr>& accounts);
   bool HasPermissionSync(const url::Origin& origin,
                          const mojom::AccountIdPtr& account);
-  bool HasPermissionForPendingRequest(const url::Origin& origin,
-                                      const mojom::AccountIdPtr& account_id);
   void HasPermission(std::vector<mojom::AccountIdPtr> accounts,
                      HasPermissionCallback callback) override;
   void ResetPermission(mojom::AccountIdPtr account_id,
@@ -211,6 +213,8 @@ class BraveWalletService : public KeyedService,
       GetPendingSignMessageErrorsCallback callback) override;
   void GetPendingSignSolTransactionsRequests(
       GetPendingSignSolTransactionsRequestsCallback callback) override;
+  std::vector<mojom::SignSolTransactionsRequestPtr>
+  GetPendingSignSolTransactionsRequestsSync() const;
   void GetPendingSignCardanoTransactionRequests(
       GetPendingSignCardanoTransactionRequestsCallback callback) override;
   std::vector<mojom::SignCardanoTransactionRequestPtr>
@@ -298,25 +302,10 @@ class BraveWalletService : public KeyedService,
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
   // content_settings::Observer:
-  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
-                               const ContentSettingsPattern& secondary_pattern,
-                               ContentSettingsType content_type) override;
-
-  void DrainSignMessageRequestsWithoutPermission();
-  void DrainSignSolTransactionsRequestsWithoutPermission();
-  void DrainSignCardanoTransactionRequestsWithoutPermission();
-
-  // Moves pending requests whose origin no longer has wallet permission out
-  // of |pending_requests| before running their callbacks, so that re-entrant
-  // mutation from a callback cannot invalidate iteration. |get_account_id|
-  // returns the account a pending request is bound to, and |drain_callback|
-  // rejects a drained request's callback as if the user declined it.
-  template <typename PendingDeque,
-            typename GetAccountId,
-            typename DrainCallback>
-  void DrainPendingRequestsWithoutPermission(PendingDeque& pending_requests,
-                                             GetAccountId get_account_id,
-                                             DrainCallback drain_callback);
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
 
   // KeyringServiceObserverBase:
   void WalletRestored() override;
@@ -424,6 +413,25 @@ class BraveWalletService : public KeyedService,
   bool HasPendingDecryptRequestForOrigin(const url::Origin& origin) const;
   bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
       const url::Origin& origin) const;
+
+  bool HasPermissionForPendingRequest(const url::Origin& origin,
+                                      const mojom::AccountIdPtr& account_id);
+
+  void DrainSignMessageRequestsWithoutPermission();
+  void DrainSignSolTransactionsRequestsWithoutPermission();
+  void DrainSignCardanoTransactionRequestsWithoutPermission();
+
+  // Moves pending requests whose origin no longer has wallet permission out
+  // of |pending_requests| before running their callbacks, so that re-entrant
+  // mutation from a callback cannot invalidate iteration. |get_account_id|
+  // returns the account a pending request is bound to, and |drain_callback|
+  // rejects a drained request's callback as if the user declined it.
+  template <typename PendingDeque,
+            typename GetAccountId,
+            typename DrainCallback>
+  void DrainPendingRequestsWithoutPermission(PendingDeque& pending_requests,
+                                             GetAccountId get_account_id,
+                                             DrainCallback drain_callback);
 
   void OnDefaultEthereumWalletChanged();
   void OnDefaultSolanaWalletChanged();

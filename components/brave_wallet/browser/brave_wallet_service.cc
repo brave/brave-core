@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
@@ -44,6 +45,7 @@
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -59,6 +61,11 @@
 
 namespace brave_wallet {
 
+namespace {
+// Brave mirrors chrome:// with its own scheme.
+constexpr char kBraveWalletUiScheme[] = "brave";
+constexpr char kChromeWalletUiScheme[] = "chrome";
+}  // namespace
 // DEPRECATED 01/2024. For migration only.
 std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
     std::string_view key);
@@ -293,11 +300,8 @@ BraveWalletService::BraveWalletService(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
       profile_prefs, CreateTxStorage(*delegate_),
-      base::BindRepeating(
-          static_cast<bool (BraveWalletService::*)(const url::Origin&,
-                                                   const mojom::AccountIdPtr&)>(
-              &BraveWalletService::HasPermissionForPendingRequest),
-          base::Unretained(this)));
+      base::BindRepeating(&BraveWalletService::HasPermissionForPendingRequest,
+                          base::Unretained(this)));
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
@@ -362,6 +366,12 @@ BraveWalletService::BraveWalletService(
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
 
 BraveWalletService::~BraveWalletService() {
+  if (host_content_settings_map_) {
+    host_content_settings_map_->RemoveObserver(this);
+  }
+}
+
+void BraveWalletService::Shutdown() {
   if (host_content_settings_map_) {
     host_content_settings_map_->RemoveObserver(this);
   }
@@ -1005,11 +1015,30 @@ bool BraveWalletService::HasPermissionSync(const url::Origin& origin,
 bool BraveWalletService::HasPermissionForPendingRequest(
     const url::Origin& origin,
     const mojom::AccountIdPtr& account_id) {
-  if (origin.scheme() != url::kHttpScheme &&
-      origin.scheme() != url::kHttpsScheme) {
+  // Coins without a site-permission concept (e.g. BTC, FIL) have nothing to
+  // revoke, so pending requests/transactions for them are never drained.
+  if (!CoinTypeToPermissionType(account_id->coin)) {
     return true;
   }
-  return HasPermissionSync(origin, account_id);
+
+  // Requests initiated by the wallet UI itself have no web origin to
+  // re-check.
+  if (origin.opaque()) {
+    return true;
+  }
+
+  if (origin.scheme() == url::kHttpScheme ||
+      origin.scheme() == url::kHttpsScheme) {
+    return HasPermissionSync(origin, account_id);
+  }
+
+  // Trusted wallet WebUI origins (wallet page, panel/side panel). Anything
+  // else fails closed: no permission can be present, so queued requests are
+  // drained.
+  return (origin.scheme() == kChromeWalletUiScheme ||
+          origin.scheme() == kBraveWalletUiScheme) &&
+         (origin.host() == kWalletPageHost ||
+          origin.host() == kWalletPanelHost);
 }
 
 void BraveWalletService::HasPermission(
@@ -1218,17 +1247,16 @@ void BraveWalletService::NotifySignMessageErrorProcessed(
 
 void BraveWalletService::GetPendingSignSolTransactionsRequests(
     GetPendingSignSolTransactionsRequestsCallback callback) {
-  std::vector<mojom::SignSolTransactionsRequestPtr> requests;
-  if (sign_sol_transactions_requests_.empty()) {
-    std::move(callback).Run(std::move(requests));
-    return;
-  }
+  std::move(callback).Run(GetPendingSignSolTransactionsRequestsSync());
+}
 
+std::vector<mojom::SignSolTransactionsRequestPtr>
+BraveWalletService::GetPendingSignSolTransactionsRequestsSync() const {
+  std::vector<mojom::SignSolTransactionsRequestPtr> requests;
   for (const auto& pending : sign_sol_transactions_requests_) {
     requests.push_back(pending.request.Clone());
   }
-
-  std::move(callback).Run(std::move(requests));
+  return requests;
 }
 
 void BraveWalletService::GetPendingSignCardanoTransactionRequests(
@@ -1304,10 +1332,10 @@ void BraveWalletService::OnActiveOriginChanged(
 void BraveWalletService::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsType content_type) {
-  if (content_type != ContentSettingsType::BRAVE_ETHEREUM &&
-      content_type != ContentSettingsType::BRAVE_SOLANA &&
-      content_type != ContentSettingsType::BRAVE_CARDANO) {
+    ContentSettingsTypeSet content_type_set) {
+  if (!content_type_set.Contains(ContentSettingsType::BRAVE_ETHEREUM) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_SOLANA) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_CARDANO)) {
     return;
   }
   tx_service_->RejectUnapprovedTransactionsWithoutPermission();
@@ -1323,6 +1351,10 @@ void BraveWalletService::DrainPendingRequestsWithoutPermission(
     DrainCallback drain_callback) {
   std::vector<typename PendingDeque::value_type> to_drain;
   for (auto it = pending_requests.begin(); it != pending_requests.end();) {
+    if (!it->request->origin_info) {
+      ++it;
+      continue;
+    }
     auto origin =
         url::Origin::Create(GURL(it->request->origin_info->origin_spec));
     if (HasPermissionForPendingRequest(origin, get_account_id(*it))) {

@@ -455,10 +455,10 @@ class EthTxManagerUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  bool permission_granted_ = true;
   std::unique_ptr<TxService> tx_service_;
   raw_ptr<TxStorage> tx_storage_ptr_ = nullptr;
   std::vector<uint8_t> data_;
-  bool permission_granted_ = true;
 };
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {

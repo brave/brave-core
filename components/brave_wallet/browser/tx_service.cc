@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -64,6 +65,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       json_rpc_service_(json_rpc_service),
       tx_storage_(std::move(tx_storage)),
       origin_permission_checker_(std::move(origin_permission_checker)) {
+  CHECK(!origin_permission_checker_.is_null());
   account_resolver_delegate_ =
       std::make_unique<AccountResolverDelegateImpl>(keyring_service);
 
@@ -746,9 +748,6 @@ TxStorage* TxService::GetTxStorageForTesting() {
 
 bool TxService::HasOriginPermission(const url::Origin& origin,
                                     const mojom::AccountIdPtr& account_id) {
-  if (!origin_permission_checker_) {
-    return false;
-  }
   return origin_permission_checker_.Run(origin, account_id);
 }
 
@@ -767,7 +766,8 @@ void TxService::RejectUnapprovedTransactionsWithoutPermission() {
       if (HasOriginPermission(origin, tx->from_account_id)) {
         continue;
       }
-      tx_manager.second->RejectTransaction(tx->id, base::BindOnce([](bool) {}));
+      // Fire-and-forget: the callback result is intentionally ignored.
+      tx_manager.second->RejectTransaction(tx->id, base::DoNothing());
     }
   }
 }
