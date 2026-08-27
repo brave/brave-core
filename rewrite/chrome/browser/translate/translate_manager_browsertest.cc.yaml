@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Fully qualify `features::kImmersiveReadAnything`.
+
+      It is not clear how this is building fine in upstream but failing with
+      brave, as no `chromium_src` uses are involved, so we are patching it for
+      the moment.
+    regex:
+      pattern: 'features::kImmersiveReadAnything'
+      replace: '::features::kImmersiveReadAnything'
