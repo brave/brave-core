@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/translate/translate_manager_browsertest.cc b/chrome/browser/translate/translate_manager_browsertest.cc
+index 8641d0073e050f94cd740c4d7123bfc619865b75..7b766adca55b06de5b3ab88fb9e88bd992f3a45b 100644
+--- a/chrome/browser/translate/translate_manager_browsertest.cc
++++ b/chrome/browser/translate/translate_manager_browsertest.cc
+@@ -404,7 +404,7 @@ class TranslateManagerBrowserTest : public InProcessBrowserTest {
+ 
+   virtual void InitFeatures() {
+     scoped_feature_list_.InitWithFeatures(
+-        {toast_features::kTranslateToast, features::kImmersiveReadAnything},
++        {toast_features::kTranslateToast, ::features::kImmersiveReadAnything},
+         {});
+   }
+ 
