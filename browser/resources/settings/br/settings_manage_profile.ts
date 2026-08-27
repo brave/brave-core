@@ -14,7 +14,7 @@ import 'chrome://resources/brave/custom_profile_image_row.js'
 
 import {html, render} from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
-import {BraveSettingsStrings} from '../brave_generated_resources_webui_strings.js'
+import {CustomProfileImageStrings} from '../brave_generated_resources_webui_strings.js'
 import {loadTimeData} from '../i18n_setup.js'
 // </if>
 
@@ -61,37 +61,13 @@ function createCustomProfileImageSection(): DocumentFragment {
       >
         <h1 class="cr-title-text">
           ${loadTimeData.getString(
-            BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_TITLE,
+            CustomProfileImageStrings.CUSTOM_PROFILE_IMAGE_TITLE,
           )}
         </h1>
         <div class="content">
           <br-custom-profile-image-row
             id=${kCustomProfileImageRowId}
             hide-title
-            title-label=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,
-            )}
-            replace-label=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REPLACE_ACTION,
-            )}
-            replace-tooltip=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP,
-            )}
-            remove-label=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REMOVE_ACTION,
-            )}
-            selected-preview-label=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL,
-            )}
-            upload-tooltip=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
-            )}
-            remove-tooltip=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP,
-            )}
-            invalid-image-label=${loadTimeData.getString(
-              BraveSettingsStrings.CUSTOM_PROFILE_IMAGE_INVALID_IMAGE,
-            )}
           ></br-custom-profile-image-row>
         </div>
       </div>

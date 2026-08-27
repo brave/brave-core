@@ -5,8 +5,10 @@
 
 import '//resources/brave/leo.bundle.js'
 
+import {loadTimeData} from '//resources/js/load_time_data.js'
 import {html, nothing} from '//resources/lit/v3_0/lit.rollup.js'
 
+import {CustomProfileImageStrings as S} from './brave_generated_resources_webui_strings.js'
 import type {BrCustomProfileImageRowElement} from './custom_profile_image_row.js'
 
 export function getHtml(this: BrCustomProfileImageRowElement) {
@@ -22,7 +24,9 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               class="selected"
               role="img"
-              aria-label="${this.selectedPreviewLabel}"
+              aria-label="${loadTimeData.getString(
+                S.CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL,
+              )}"
             >
               <img
                 id="previewImage"
@@ -42,7 +46,9 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               kind="plain-faint"
               size="jumbo"
               fab
-              title="${this.uploadTooltip}"
+              title="${loadTimeData.getString(
+                S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
+              )}"
               @click="${this.onUploadClick_}"
             >
               <leo-icon
@@ -51,11 +57,19 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
                 slot="icon-before"
                 aria-hidden="true"
               ></leo-icon>
-              <span id="previewLabel">${this.uploadTooltip}</span>
+              <span id="previewLabel"
+                >${loadTimeData.getString(
+                  S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
+                )}</span
+              >
             </leo-button>
           `}
 
-      <div id="title">${this.titleLabel}</div>
+      <div id="title"
+        >${loadTimeData.getString(
+          S.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,
+        )}</div
+      >
 
       <div id="actions">
         <leo-button
@@ -63,11 +77,23 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
           class="action-button"
           kind="filled"
           size="small"
-          title="${this.getUploadButtonTooltip_()}"
-          aria-label="${this.getUploadButtonTooltip_()}"
+          title="${loadTimeData.getString(
+            this.isSaved_()
+              ? S.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP
+              : S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
+          )}"
+          aria-label="${loadTimeData.getString(
+            this.isSaved_()
+              ? S.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP
+              : S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
+          )}"
           @click="${this.onUploadClick_}"
         >
-          ${this.isSaved_() ? this.replaceLabel : this.titleLabel}
+          ${loadTimeData.getString(
+            this.isSaved_()
+              ? S.CUSTOM_PROFILE_IMAGE_REPLACE_ACTION
+              : S.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,
+          )}
         </leo-button>
         ${this.isSaved_()
           ? html`
@@ -75,11 +101,17 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
                 id="removeButton"
                 kind="outline"
                 size="small"
-                title="${this.removeTooltip}"
-                aria-label="${this.removeTooltip}"
+                title="${loadTimeData.getString(
+                  S.CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP,
+                )}"
+                aria-label="${loadTimeData.getString(
+                  S.CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP,
+                )}"
                 @click="${this.onRemoveClick_}"
               >
-                ${this.removeLabel}
+                ${loadTimeData.getString(
+                  S.CUSTOM_PROFILE_IMAGE_REMOVE_ACTION,
+                )}
               </leo-button>
             `
           : nothing}
@@ -87,7 +119,11 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
 
       ${this.hasValidationError_
         ? html`
-            <div id="fileError" role="alert">${this.invalidImageLabel}</div>
+            <div id="fileError" role="alert"
+              >${loadTimeData.getString(
+                S.CUSTOM_PROFILE_IMAGE_INVALID_IMAGE,
+              )}</div
+            >
           `
         : nothing}
 

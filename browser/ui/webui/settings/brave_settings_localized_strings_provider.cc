@@ -1503,6 +1503,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddLocalizedStrings(webui::kBraveSettingsStrings);
+  html_source->AddLocalizedStrings(webui::kCustomProfileImageStrings);
 
   html_source->AddBoolean(
       "customProfileImageEnabled",

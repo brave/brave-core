@@ -260,39 +260,6 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('7', themePicker.getAttribute('columns'))
     assertEquals('7', avatarSelector.getAttribute('columns'))
 
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION'),
-      row.titleLabel,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_ACTION'),
-      row.replaceLabel,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP'),
-      row.replaceTooltip,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_ACTION'),
-      row.removeLabel,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL'),
-      row.selectedPreviewLabel,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
-      row.uploadTooltip,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP'),
-      row.removeTooltip,
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_INVALID_IMAGE'),
-      row.invalidImageLabel,
-    )
-
     const title = getRequiredElement<HTMLElement>(
       customSection!,
       '.cr-title-text',
@@ -310,16 +277,22 @@ function braveManageProfileFeatureEnabledTests() {
     )
     assertEquals('title', rowContainer.getAttribute('aria-labelledby'))
     const rowTitle = getRequiredElement<HTMLElement>(row.shadowRoot, '#title')
-    assertEquals(row.titleLabel, rowTitle.textContent.trim())
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION'),
+      rowTitle.textContent.trim(),
+    )
     assertEquals('none', getComputedStyle(rowTitle).display)
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
     assertEquals('LEO-BUTTON', preview.tagName)
     assertEquals('plain-faint', preview.getAttribute('kind'))
     assertEquals('jumbo', preview.getAttribute('size'))
     assertTrue(preview.hasAttribute('fab'))
-    assertEquals(row.uploadTooltip, preview.getAttribute('title'))
     assertEquals(
-      row.uploadTooltip,
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
+      preview.getAttribute('title'),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
       getRequiredElement<HTMLElement>(preview, '#previewLabel').textContent,
     )
     const plusIcon = getRequiredElement<HTMLElement>(
@@ -336,7 +309,18 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('LEO-BUTTON', uploadButton.tagName)
     assertEquals('filled', uploadButton.getAttribute('kind'))
     assertEquals('small', uploadButton.getAttribute('size'))
-    assertEquals(row.titleLabel, uploadButton.textContent.trim())
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION'),
+      uploadButton.textContent.trim(),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
+      uploadButton.getAttribute('title'),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
+      uploadButton.getAttribute('aria-label'),
+    )
     assertEquals(
       'image/*',
       getRequiredElement<HTMLInputElement>(row.shadowRoot, '#fileInput').accept,
@@ -369,7 +353,10 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('saved-active', row.state)
     assertEquals(createdUrls[0], getPreviewUrl(row))
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
-    assertEquals(row.selectedPreviewLabel, preview.getAttribute('aria-label'))
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL'),
+      preview.getAttribute('aria-label'),
+    )
     const selectedIndicator = getRequiredElement<HTMLElement>(
       row.shadowRoot,
       '#selectedIndicator',
@@ -384,9 +371,18 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('LEO-BUTTON', replaceButton.tagName)
     assertEquals('filled', replaceButton.getAttribute('kind'))
     assertEquals('small', replaceButton.getAttribute('size'))
-    assertEquals(row.replaceLabel, replaceButton.textContent.trim())
-    assertEquals(row.replaceTooltip, replaceButton.getAttribute('title'))
-    assertEquals(row.replaceTooltip, replaceButton.getAttribute('aria-label'))
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_ACTION'),
+      replaceButton.textContent.trim(),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP'),
+      replaceButton.getAttribute('title'),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP'),
+      replaceButton.getAttribute('aria-label'),
+    )
     const removeButton = getRequiredElement<HTMLElement>(
       row.shadowRoot,
       '#removeButton',
@@ -394,6 +390,18 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('LEO-BUTTON', removeButton.tagName)
     assertEquals('outline', removeButton.getAttribute('kind'))
     assertEquals('small', removeButton.getAttribute('size'))
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_ACTION'),
+      removeButton.textContent.trim(),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP'),
+      removeButton.getAttribute('title'),
+    )
+    assertEquals(
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP'),
+      removeButton.getAttribute('aria-label'),
+    )
     assertDeepEquals([], revokedUrls)
   })
 
@@ -444,7 +452,7 @@ function braveManageProfileFeatureEnabledTests() {
     assertDeepEquals([], createdUrls)
     assertDeepEquals([], revokedUrls)
     assertEquals(
-      row.invalidImageLabel,
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_INVALID_IMAGE'),
       getRequiredElement(row.shadowRoot, '#fileError').textContent,
     )
   })
@@ -463,7 +471,7 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals('saved-active', row.state)
     assertEquals(firstPreviewUrl, getPreviewUrl(row))
     assertEquals(
-      row.invalidImageLabel,
+      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_INVALID_IMAGE'),
       getRequiredElement(row.shadowRoot, '#fileError').textContent,
     )
     assertDeepEquals([createdUrls[1]], revokedUrls)

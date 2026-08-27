@@ -33,31 +33,12 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
         attribute: 'hide-title',
         reflect: true,
       },
-      invalidImageLabel: {type: String, attribute: 'invalid-image-label'},
-      replaceLabel: {type: String, attribute: 'replace-label'},
-      replaceTooltip: {type: String, attribute: 'replace-tooltip'},
-      removeLabel: {type: String, attribute: 'remove-label'},
-      removeTooltip: {type: String, attribute: 'remove-tooltip'},
-      selectedPreviewLabel: {
-        type: String,
-        attribute: 'selected-preview-label',
-      },
-      titleLabel: {type: String, attribute: 'title-label'},
-      uploadTooltip: {type: String, attribute: 'upload-tooltip'},
       hasValidationError_: {type: Boolean, state: true},
       localPreviewUrl_: {type: String, state: true},
     }
   }
 
   accessor hideTitle: boolean = false
-  accessor invalidImageLabel: string = ''
-  accessor replaceLabel: string = ''
-  accessor replaceTooltip: string = ''
-  accessor removeLabel: string = ''
-  accessor removeTooltip: string = ''
-  accessor selectedPreviewLabel: string = ''
-  accessor titleLabel: string = ''
-  accessor uploadTooltip: string = ''
   protected accessor hasValidationError_: boolean = false
   protected accessor localPreviewUrl_: string = ''
 
@@ -73,10 +54,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
 
   protected getState_(): CustomProfileImageState {
     return this.isSaved_() ? 'saved-active' : 'empty'
-  }
-
-  protected getUploadButtonTooltip_(): string {
-    return this.isSaved_() ? this.replaceTooltip : this.uploadTooltip
   }
 
   override disconnectedCallback() {
