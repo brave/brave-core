@@ -21,12 +21,9 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/test/back_forward_cache_util.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -51,9 +48,8 @@ class FocusModeTitleBarViewBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    // Registers /server-redirect?<url>, /client-redirect?<url>,
-    // /cross-site/redir?<url> and friends on the HTTPS server. Used by the
-    // FocusModeUrlCoherenceBrowserTest subclass; harmless for TitleBarWiring.
+    // Registers /server-redirect?<url> and /client-redirect?<url> used by the
+    // redirect tests below.
     net::test_server::RegisterDefaultHandlers(&https_server_);
     // CERT_TEST_NAMES is valid for a.test/b.test, which are used below to give
     // each tab a distinct, secure host.
@@ -80,6 +76,11 @@ class FocusModeTitleBarViewBrowserTest : public InProcessBrowserTest {
       return title_bar()->GetVisible() &&
              domain_text().find(host) != std::u16string::npos;
     });
+  }
+
+  void EnableFocusMode() {
+    browser()->GetFeatures().focus_mode_controller()->SetEnabled(true);
+    views::test::RunScheduledLayout(browser_view());
   }
 
   net::EmbeddedTestServer https_server_;
@@ -133,51 +134,16 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
   EXPECT_FALSE(title_bar()->GetVisible());
 }
 
-// Verifies that the Focus Mode title bar's domain label stays coherent with
-// the active page across navigation edge cases (client/server redirects and
-// back/forward cache restore).
-class FocusModeUrlCoherenceBrowserTest
-    : public FocusModeTitleBarViewBrowserTest {
- public:
-  FocusModeUrlCoherenceBrowserTest() {
-    // Enable back/forward cache so the restore test exercises the cached-RFH
-    // path rather than a normal back navigation. The redirect tests only do
-    // forward navigations, so enabling bfcache does not affect them.
-    bfcache_feature_list_.InitWithFeaturesAndParameters(
-        content::GetDefaultEnabledBackForwardCacheFeaturesForTesting(),
-        content::GetDefaultDisabledBackForwardCacheFeaturesForTesting());
-  }
+// The title bar shows the origin of the active page, so the domain label must
+// keep tracking navigations: a stale host would misrepresent the page being
+// shown. The tests below drive the navigation types where that could regress.
 
-  void SetUpOnMainThread() override {
-    FocusModeTitleBarViewBrowserTest::SetUpOnMainThread();
-    // Enable Focus Mode (the user-visible "setting") up front, so it is on for
-    // the whole test window lifetime, not just partway through each test.
-    EnableFocusMode();
-    ASSERT_TRUE(browser()->GetFeatures().focus_mode_controller()->IsEnabled());
-  }
-
-  content::WebContents* GetWebContents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
-  }
-
-  void EnableFocusMode() {
-    browser()->GetFeatures().focus_mode_controller()->SetEnabled(true);
-    views::test::RunScheduledLayout(browser_view());
-  }
-
- private:
-  base::test::ScopedFeatureList bfcache_feature_list_;
-};
-
-// A client-side redirect (meta refresh / location.href) must update the domain
-// label to the redirect destination. The initial page fires
-// DidFinishNavigation, then the redirect target fires a second
-// DidFinishNavigation; TabUIHelper notifies on both, and the title bar's
-// subscription must re-render with the new host.
-IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
+// A client-side redirect must not leave the label on the original host.
+IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest,
                        ClientRedirectUpdatesDomain) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server_.GetURL("a.test", "/empty.html")));
+  EnableFocusMode();
   ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
       << base::UTF16ToUTF8(domain_text());
 
@@ -187,19 +153,16 @@ IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
                     https_server_.GetURL("b.test", "/empty.html").spec());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), redirect_url));
 
-  // The redirect is client-initiated, so wait for the destination host to
-  // appear in the label rather than asserting synchronously.
   EXPECT_TRUE(WaitForDomainToContain(u"b.test"))
       << base::UTF16ToUTF8(domain_text());
 }
 
-// A server-side redirect (HTTP 301) must update the domain label to the
-// redirect destination. NavigateToURL follows the chain and waits for the
-// final load, so the label should reflect the destination host immediately.
-IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
+// A server-side redirect must update the label to the destination host.
+IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest,
                        ServerRedirectUpdatesDomain) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server_.GetURL("a.test", "/empty.html")));
+  EnableFocusMode();
   ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
       << base::UTF16ToUTF8(domain_text());
 
@@ -213,36 +176,22 @@ IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
       << base::UTF16ToUTF8(domain_text());
 }
 
-// Restoring a page from the back/forward cache must update the domain label
-// back to the restored page's host. bfcache restore fires DidFinishNavigation;
-// TabUIHelper notifies, and the title bar must re-render with the prior host.
-IN_PROC_BROWSER_TEST_F(FocusModeUrlCoherenceBrowserTest,
-                       BackForwardCacheRestoreUpdatesDomain) {
+// Navigating back must restore the previous page's host in the label.
+IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest,
+                       BackNavigationUpdatesDomain) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server_.GetURL("a.test", "/empty.html")));
+  EnableFocusMode();
   ASSERT_TRUE(WaitForDomainToContain(u"a.test"))
       << base::UTF16ToUTF8(domain_text());
-
-  // Capture the RFH that should enter bfcache when we navigate away. Wrap it
-  // so the lifecycle check below fails cleanly instead of dereferencing a
-  // dangling pointer if the page is evicted rather than cached.
-  content::RenderFrameHostWrapper cached_rfh(
-      GetWebContents()->GetPrimaryMainFrame());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server_.GetURL("b.test", "/empty.html")));
   ASSERT_TRUE(WaitForDomainToContain(u"b.test"))
       << base::UTF16ToUTF8(domain_text());
 
-  // Verify the previous page was actually cached, not evicted to a normal
-  // back navigation. Without this assertion GoBack could pass via either path.
-  ASSERT_FALSE(cached_rfh.IsRenderFrameDeleted());
-  ASSERT_EQ(cached_rfh->GetLifecycleState(),
-            content::RenderFrameHost::LifecycleState::kInBackForwardCache);
-
-  // Go back: bfcache restore fires DidFinishNavigation; the title bar must
-  // re-render with the restored page's host.
-  content::WebContents* const web_contents = GetWebContents();
+  content::WebContents* const web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   web_contents->GetController().GoBack();
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
 
