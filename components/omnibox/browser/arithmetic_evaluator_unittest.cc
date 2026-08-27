@@ -56,8 +56,8 @@ TEST(ArithmeticEvaluatorTest, EvaluatesTerminatingFractions) {
   EXPECT_EQ(Decimal(0.25, 2), EvaluateArithmeticExpression(u"2^-2"));
 }
 
-// Anything we can't answer exactly falls through to the caller's normal
-// behavior, which for the omnibox means asking the suggest server as before.
+// Anything we can't answer exactly produces no local calculator result; the
+// caller continues with its normal privacy-preserving behavior.
 TEST(ArithmeticEvaluatorTest, DeclinesWhatItCannotAnswerExactly) {
   // Non-terminating decimal.
   EXPECT_EQ(std::nullopt, EvaluateArithmeticExpression(u"10 / 3"));

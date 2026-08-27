@@ -95,6 +95,7 @@ source_set("unit_tests") {
     ]
 
     deps += [
+      "//base:i18n",
       "//brave/components/omnibox/browser:arithmetic_evaluator",
       "//brave/components/omnibox/browser/search_suggestions",
     ]
