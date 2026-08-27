@@ -5,6 +5,7 @@
 
 #include "ios/web/webui/mojo_facade.h"
 
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
@@ -68,21 +69,18 @@ bool MojoFacade::ShouldRetryPoll() {
   return ++consecutive_poll_failures_ <= kMaxConsecutivePollFailures;
 }
 
-// Records what this facade knew when a message named a pipe id it doesn't
-// hold, so a report says which of these it was: the table was empty
-// (something cleared it out from under the live JS context), the table was
-// populated but missing the id (the handle was consumed, or never created),
-// or the id belongs to a different frame.
+// Reports what this facade knew when a message named a pipe id it doesn't
+// hold, so a dump says which of these it was: the table was empty (something
+// cleared it out from under the live JS context), the table was populated but
+// missing the id (the handle was consumed, or never created), or the id
+// belongs to a different frame.
 void MojoFacade::ReportUnknownPipe(const char* operation,
                                    std::optional<int> pipe_id) {
-  SCOPED_CRASH_KEY_STRING32("MojoFacade", "operation", operation);
-  SCOPED_CRASH_KEY_NUMBER("MojoFacade", "pipe_id", pipe_id.value_or(-1));
-  SCOPED_CRASH_KEY_NUMBER("MojoFacade", "live_pipes",
-                          static_cast<int>(pipes_.size()));
-  SCOPED_CRASH_KEY_STRING32(
-      "MojoFacade", "host",
-      served_host_.empty() ? std::string("main") : served_host_);
-  base::debug::DumpWithoutCrashing();
+  DUMP_WILL_BE_NOTREACHED()
+      << operation << " named pipe id " << pipe_id.value_or(-1)
+      << ", which is not held by the facade for host "
+      << (served_host_.empty() ? std::string("<main frame>") : served_host_)
+      << ", holding " << pipes_.size() << " pipe(s)";
 }
 
 }  // namespace web

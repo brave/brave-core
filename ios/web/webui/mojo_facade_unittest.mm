@@ -54,7 +54,7 @@ class FakeWebStateWithInterfaceBinder : public FakeWebState {
 // Origin and host of the fixture's child frame, standing in for AI Chat's
 // chrome-untrusted:// conversation-entries iframe.
 constexpr char kChildHost[] = "test-child";
-const GURL kChildOrigin("chrome-untrusted://test-child");
+constexpr char kChildOriginSpec[] = "chrome-untrusted://test-child";
 
 }  // namespace
 
@@ -76,7 +76,8 @@ class MojoFacadeTest : public WebTest {
     auto main_frame = FakeWebFrame::CreateMainWebFrame();
     // ServesFrame() matches on the frame's security origin host, so the
     // child needs one for its facade to find it.
-    auto child_frame = FakeWebFrame::CreateChildWebFrame(kChildOrigin);
+    auto child_frame =
+        FakeWebFrame::CreateChildWebFrame(GURL(kChildOriginSpec));
 
     main_frame_ = main_frame.get();
     child_frame_ = child_frame.get();
@@ -456,7 +457,8 @@ class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
     auto frame = FakeWebFrame::Create("originTestFrameId",
                                       /*is_main_frame=*/false, origin);
     frames_manager()->AddWebFrame(std::move(frame));
-    origin_facade_ = std::make_unique<MojoFacade>(&web_state(), origin.host());
+    origin_facade_ =
+        std::make_unique<MojoFacade>(&web_state(), origin.GetHost());
     return origin_facade_.get();
   }
 
