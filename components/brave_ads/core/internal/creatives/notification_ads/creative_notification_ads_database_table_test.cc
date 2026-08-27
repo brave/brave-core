@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
-#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -36,20 +35,15 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
   const database::table::CreativeNotificationAds database_table;
 
   // Act & Assert
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    base::test::TestFuture<bool, SegmentList, CreativeNotificationAdList>
-        test_future;
-    database_table.GetForSegments(
-        /*segments=*/{"technology & computing"},
-        test_future.GetCallback<bool, const SegmentList&,
-                                CreativeNotificationAdList>());
-    const auto [success, segments, creative_ads] = test_future.Take();
-    if (!success || creative_ads.empty()) {
-      return false;
-    }
-    EXPECT_THAT(creative_ads, ::testing::SizeIs(2));
-    return true;
-  }));
+  base::test::TestFuture<bool, SegmentList, CreativeNotificationAdList>
+      test_future;
+  database_table.GetForSegments(
+      /*segments=*/{"technology & computing"},
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNotificationAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_ads, ::testing::SizeIs(2));
 }
 
 }  // namespace brave_ads
