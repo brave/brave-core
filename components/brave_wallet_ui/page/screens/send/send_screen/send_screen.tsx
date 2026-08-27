@@ -106,6 +106,7 @@ import {
   SelectAddressButton, //
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
+import { ZCashMigrationBanner } from '../../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
 
 type SendAmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'
@@ -736,6 +737,14 @@ export const SendScreen = React.memo(() => {
           fullWidth={true}
           fullHeight={true}
         >
+          {tokenFromParams?.coin === BraveWallet.CoinType.ZEC && (
+            <Column
+              fullWidth={true}
+              padding='16px 16px 0px 16px'
+            >
+              <ZCashMigrationBanner />
+            </Column>
+          )}
           <FromAsset
             onInputChange={handleFromAssetValueChange}
             onClickSelectToken={openSelectTokenModal}
