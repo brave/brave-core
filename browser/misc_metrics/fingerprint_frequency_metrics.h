@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
@@ -92,6 +93,9 @@ class FingerprintFrequencyMetrics : public PagePercentageMetrics,
   void ExecuteRendererForTesting(
       base::OnceCallback<void(base::DictValue)> callback);
 
+  // Overrides how long an execution may run before it is abandoned.
+  void SetExecutionTimeoutForTesting(base::TimeDelta timeout);
+
  private:
   void StartExecution();
   void RunScriptInRenderer();
@@ -105,6 +109,7 @@ class FingerprintFrequencyMetrics : public PagePercentageMetrics,
   base::OneShotTimer timeout_timer_;
 
   std::optional<base::DictValue> fake_renderer_results_for_testing_;
+  std::optional<base::TimeDelta> execution_timeout_for_testing_;
   base::OnceCallback<void(base::DictValue)> result_callback_for_testing_;
 
   raw_ptr<Profile> profile_;
