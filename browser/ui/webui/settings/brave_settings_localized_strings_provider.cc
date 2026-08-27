@@ -11,9 +11,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/custom_profile_image_buildflags.h"
-#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
-#include "brave/browser/ui/webui/custom_profile_image/features.h"
-#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -60,6 +57,10 @@
 #include "extensions/common/extension_urls.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#include "brave/browser/ui/webui/custom_profile_image/features.h"
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_validator.h"
