@@ -89,22 +89,28 @@ struct MetricConfig {
 // This struct is used to store the remote configuration for a metric.
 // The remote configuration is provided by the component updater.
 struct RemoteMetricConfig {
+  enum class EnabledState {
+    kUnspecified,
+    kFalse,
+    kTrue,
+  };
+
   RemoteMetricConfig();
   ~RemoteMetricConfig();
 
   RemoteMetricConfig(const RemoteMetricConfig&);
   RemoteMetricConfig& operator=(const RemoteMetricConfig&);
 
-  std::optional<bool> ephemeral;
-  std::optional<bool> nebula;
-  std::optional<bool> disable_country_strip;
+  EnabledState ephemeral = EnabledState::kUnspecified;
+  EnabledState nebula = EnabledState::kUnspecified;
+  EnabledState disable_country_strip = EnabledState::kUnspecified;
   std::optional<MetricAttributes> attributes;
   std::optional<MetricAttributesToAppend> append_attributes;
-  std::optional<bool> record_activation_date;
+  EnabledState record_activation_date = EnabledState::kUnspecified;
   std::optional<std::string> activation_metric_name;
   std::optional<MetricLogType> cadence;
   std::optional<RemoteCustomAttributes> custom_attributes;
-  std::optional<bool> priority;
+  EnabledState priority = EnabledState::kUnspecified;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<RemoteMetricConfig>* converter);
