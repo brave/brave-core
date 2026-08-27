@@ -41,6 +41,11 @@ class Tool {
   // Description for the Assistant to understand the purpose of the tool
   virtual std::string_view Description() const = 0;
 
+  // What to show the user. Default to Name()/Description(), which tools should
+  // override if those are mangled or augmented for the Assistant's benefit.
+  virtual std::string_view DisplayName() const;
+  virtual std::string_view DisplayDescription() const;
+
   // Type of the tool, usually left as default "function"
   virtual std::string_view Type() const;
 

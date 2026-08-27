@@ -160,6 +160,13 @@ struct AssociatedContent {
   bool tools_attached;
 };
 
+// A tool exposed by a piece of associated content, as the content registered
+// it - i.e. for display to the user, not the mangled model-facing variant.
+struct ContentToolInfo {
+  string name;
+  string description;
+};
+
 struct UploadedFile {
   string filename;
   uint32 filesize;

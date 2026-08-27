@@ -1983,6 +1983,12 @@ void ConversationHandler::SetToolsAttached(mojom::AssociatedContentPtr content,
   associated_content_manager_->SetToolsAttached(content->uuid, tools_attached);
 }
 
+void ConversationHandler::GetContentTools(const std::string& content_uuid,
+                                          GetContentToolsCallback callback) {
+  associated_content_manager_->GetContentToolInfos(content_uuid,
+                                                   std::move(callback));
+}
+
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {
   // A ToolProvider's task state has changed. Propogate this to the
   // conversation's task state.

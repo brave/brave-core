@@ -668,6 +668,45 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_TRUE(manager->GetTools().empty());
 }
 
+TEST_F(AssociatedContentManagerUnitTest, GetContentToolInfos_DescribesTools) {
+  NiceMock<MockAssociatedContent> content;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MockTool>>(
+                "browse_store", "Browse OR navigate to store collections."));
+            tools.push_back(std::make_unique<NiceMock<MockTool>>(
+                "cancel_cart", "Remove all items from the cart."));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<std::vector<mojom::ContentToolInfoPtr>> infos;
+  manager->GetContentToolInfos(content.uuid(), infos.GetCallback());
+  const auto& result = infos.Get();
+  ASSERT_EQ(2u, result.size());
+  EXPECT_EQ("browse_store", result[0]->name);
+  EXPECT_EQ("Browse OR navigate to store collections.", result[0]->description);
+  EXPECT_EQ("cancel_cart", result[1]->name);
+  EXPECT_EQ("Remove all items from the cart.", result[1]->description);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetContentToolInfos_UnknownContentIsEmpty) {
+  // The dialog can outlive the content it was opened for, e.g. if the user
+  // detaches the tab while it's open.
+  NiceMock<MockAssociatedContent> content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<std::vector<mojom::ContentToolInfoPtr>> infos;
+  manager->GetContentToolInfos("not-an-attached-content", infos.GetCallback());
+  EXPECT_TRUE(infos.Get().empty());
+}
+
 TEST_F(AssociatedContentManagerUnitTest,
        AddContent_TriggersUpdateAndNotifiesConversation) {
   // Test that removed content doesn't appear in the cached contents map

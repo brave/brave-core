@@ -80,6 +80,14 @@ class AssociatedContentManager : public ToolProvider,
   // detaching via the tools pill.
   void SetToolsAttached(std::string_view content_uuid, bool tools_attached);
 
+  // Fetches the tools the content with |content_uuid| exposes, described for
+  // display to the user. Empty if there's no such content. Capped at the same
+  // limit as the tools handed to the LLM, so the UI doesn't overpromise.
+  using GetContentToolInfosCallback =
+      base::OnceCallback<void(std::vector<mojom::ContentToolInfoPtr>)>;
+  void GetContentToolInfos(std::string_view content_uuid,
+                           GetContentToolInfosCallback callback);
+
   // Clears all content from the conversation.
   void ClearContent();
 

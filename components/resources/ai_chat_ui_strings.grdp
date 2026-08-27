@@ -693,6 +693,18 @@
   <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_REMOVE_LABEL" desc="Accessible label for the button that removes an attached page's tools" formatter_data="webui=AiChat">
     Remove tools
   </message>
+  <message name="IDS_CHAT_UI_TOOLS_ATTACHMENT_VIEW_LABEL" desc="Accessible label for the button, shown as a pill above the chat input, that opens a dialog listing the tools an attached website provides. The placeholder is the title of the website" formatter_data="webui=AiChat">
+    View tools provided by <ph name="SITE_TITLE">$1<ex>Liquid Death</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_TITLE" desc="Title of the dialog that lists the tools an attached website provides to Leo" formatter_data="webui=AiChat">
+    Available website tools
+  </message>
+  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the website tools dialog. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
+    Available tools (<ph name="TOOL_COUNT">$1<ex>10</ex></ph>)
+  </message>
+  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_EMPTY" desc="Message shown in the website tools dialog when the website is no longer providing any tools" formatter_data="webui=AiChat">
+    This site isn't providing any tools right now.
+  </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>
