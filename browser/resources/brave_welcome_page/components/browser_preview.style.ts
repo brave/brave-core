@@ -8,11 +8,8 @@ import { scoped } from '$web-common/scoped_css'
 
 const tabbar = color.desktopbrowser.tabbar
 
-// Colors from the browser's own color provider, exposed to WebUI by
-// chrome://theme/colors.css. Using them keeps the preview in step with the
-// window behind it, including the tint applied by the selected color theme.
-// The Nala fallbacks are the browser's default values, and apply wherever
-// colors.css is unavailable (e.g. Storybook).
+// Browser chrome colors, provided by chrome://theme/colors.css. The Nala
+// fallbacks apply where that stylesheet is unavailable (e.g. Storybook).
 const browserColor = {
   toolbar: `var(--color-toolbar, ${color.desktopbrowser.chromeBackgroundDesktop})`,
   frame: `var(--color-frame-active, ${tabbar.background})`,
@@ -173,7 +170,6 @@ export const style = scoped.css`
   }
 
   &.horizontal {
-    /* Horizontal tabs sit on the window frame rather than the toolbar. */
     .top-bar {
       background: ${browserColor.frame};
     }
@@ -211,8 +207,6 @@ export const style = scoped.css`
   }
 
   &.vertical {
-    /* The vertical tab strip takes the toolbar color, as it does in the
-     * browser. */
     .tab-strip {
       flex: 0 0 auto;
       width: 244px;
