@@ -1,15 +1,7 @@
-// Copyright 2016 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 // Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-
-// <if expr="is_win or is_macosx or is_linux">
-// Load Brave's Settings overrides before the upstream test imports lazy_load.js,
-// which defines replaceable Chromium custom elements.
 import {
   loadTimeData,
   Router,
