@@ -5,6 +5,7 @@
 
 #include "ios/web/webui/mojo_facade.h"
 
+#include "base/logging.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
