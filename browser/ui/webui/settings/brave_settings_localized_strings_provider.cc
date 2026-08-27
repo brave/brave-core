@@ -1512,7 +1512,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 #else
       false
 #endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
-);
+  );
 
   // We add strings regardless of the FeatureFlag state to prevent crash
 
