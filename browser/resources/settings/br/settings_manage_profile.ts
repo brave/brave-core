@@ -146,11 +146,11 @@ function customizeManageProfileTemplate(templateContent: DocumentFragment) {
   }
 
   const sectionParent = profileAvatarSection.parentElement
-  if (!sectionParent || themeColorSection.parentElement !== sectionParent) {
+  if (themeColorSection.parentElement !== sectionParent) {
     throw new Error('[Settings] Manage Profile sections changed structure')
   }
 
-  sectionParent.insertBefore(
+  sectionParent!.insertBefore(
     createCustomProfileImageSection(),
     profileAvatarSection,
   )
