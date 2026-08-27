@@ -5,8 +5,8 @@
 
 #include "components/autofill/core/browser/autofill_browser_util.h"
 
-#include "components/autofill/core/browser/foundations/test_autofill_client.h"
 #include "base/test/task_environment.h"
+#include "components/autofill/core/browser/foundations/test_autofill_client.h"
 #include "components/autofill/core/common/form_data.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
