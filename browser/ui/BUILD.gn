@@ -142,6 +142,8 @@ source_set("ui") {
     public_deps += [
       "//chrome/browser/ui/views/extensions:extensions_menu_entry_view",
       "//chrome/browser/ui/views/extensions:extensions_menu_item_view",
+      "//chrome/browser/ui/views/tabs:tab_container",
+      "//chrome/browser/ui/views/tabs:tab_group",
       "//chrome/browser/ui/views/tabs/hovercard",
     ]
   }
