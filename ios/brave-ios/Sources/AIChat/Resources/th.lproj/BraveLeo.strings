@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "สวัสดี ฉันชื่อ Leo ผมคือผู้ช่วย AI ของ Brave ผมทำงานด้วย %@ ถามทุกสิ่งกับผมได้เลย แล้วผมจะพยายามตอบคำถามให้ดีที่สุด";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Llama 3.1 8B ซึ่งเป็นโมเดลที่สร้างโดย Meta เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Llama โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "การแชทด้วยวัตถุประสงค์ทั่วไป";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Qwen VL 30B ซึ่งเป็นโมเดลที่สร้างโดย Alibaba Cloud เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Qwen โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง";
 
 /* The model's purpose - Describes what it can do best */

@@ -91,6 +91,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "Sil";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "Şifreyi Sil";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "Kaydedilenler";
 
@@ -102,6 +105,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Şifreleri kaydetmeyi öner";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "Parola Ekle";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "Bu parola senkronizasyon zincirinizden ve cihazınızdan kaldırılacak.";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Şifre Girin";

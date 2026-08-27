@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Hej, jag heter Leo! Jag är en AI-assistent från Brave. Jag drivs av %@. Fråga mig vad som helst, så ska jag göra mitt bästa för att svara.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Llama 3.1 8B, en modell skapad av Meta för att vara effektiv och mångsidig. Llama arrangeras av Brave genom vår egna säkra infrastruktur.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Allmän chatt";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen VL 30B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen arrangeras av Brave genom vår egna säkra infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
