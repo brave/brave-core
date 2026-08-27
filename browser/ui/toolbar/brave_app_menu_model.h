@@ -72,6 +72,10 @@ class BraveAppMenuModel : public AppMenuModel {
   // About brave, help center and report broken site items.
   void BuildHelpSubMenu();
 
+  // Insert Screenshot menu in Save and Share submenu after Save Page As... menu
+  // item.
+  void BuildSaveAndShareSubmenu();
+
   // We relocate some upstream items. Need to remove them before adding them
   // to another location.
   void RemoveUpstreamMenus();

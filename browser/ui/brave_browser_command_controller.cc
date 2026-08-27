@@ -20,6 +20,9 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -120,6 +123,7 @@ bool IsBraveOverrideCommands(int id) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
       IDC_TOGGLE_VERTICAL_TABS,
+      IDC_SHARING_HUB_SCREENSHOT,
   });
   return kOverrideCommands.contains(id);
 }
@@ -709,6 +713,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_VERTICAL_TABS:
       brave::ToggleVerticalTabStrip(&*browser_);
       break;
+    case IDC_SHARING_HUB_SCREENSHOT: {
+      auto* browser_view =
+          BraveBrowserView::GetBrowserViewForBrowser(&*browser_);
+      auto* toolbar =
+          views::AsViewClass<BraveToolbarView>(browser_view->toolbar());
+      if (auto* screenshot_button = toolbar->screenshot_button()) {
+        screenshot_button->ShowBubbleAndRevealButtonTemporarily();
+      } else {
+        chrome::ScreenshotCapture(&*browser_);
+      }
+      break;
+    }
     case IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE:
       brave::ToggleWindowTitleVisibilityForVerticalTabs(&*browser_);
       break;

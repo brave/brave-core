@@ -404,6 +404,30 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
 }
 #endif
 
+IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, ShareAndSaveSubmenuTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel model(browser_view->toolbar(), browser());
+  model.Init();
+
+  ui::SimpleMenuModel* save_and_share_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model
+              .GetIndexOfCommandId(
+                  BraveAppMenuModel::kSaveAndShareMenuPlaceholder)
+              .value()));
+  ASSERT_TRUE(save_and_share_model);
+
+  // Check that the Screenshot menu item is present in the Save and Share
+  // submenu after "Save Page As..." menu item.
+  const auto screenshot_index =
+      save_and_share_model->GetIndexOfCommandId(IDC_SHARING_HUB_SCREENSHOT);
+  const auto save_page_as_index =
+      save_and_share_model->GetIndexOfCommandId(IDC_SAVE_PAGE);
+  ASSERT_TRUE(screenshot_index.has_value());
+  ASSERT_TRUE(save_page_as_index.has_value());
+  EXPECT_EQ(screenshot_index.value(), save_page_as_index.value() + 1);
+}
+
 void CheckMenuIcons(ui::MenuModel* menu,
                     int submenu_depth,
                     std::u16string path = u"") {

@@ -32,7 +32,7 @@ class ScreenshotButton : public ToolbarButton {
   // the "show screenshot button" pref is off), it is temporarily made
   // visible for the lifetime of the bubble and hidden again once the bubble
   // closes.
-  void ShowBubbleForAccelerator();
+  void ShowBubbleAndRevealButtonTemporarily();
 
  private:
   void ButtonPressed();
