@@ -32,6 +32,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_destroyer.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -275,8 +276,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
   }
 
   auto request = pending_requests_.emplace(
-      pending_requests_.end(), std::move(web_contents), headers, profile_,
-      otr_profile, low_latency_required, std::move(callback));
+      pending_requests_.end(), std::move(web_contents), headers, otr_profile,
+      low_latency_required, std::move(callback));
   request->view_manager = std::move(view_manager);
 
   if (should_render) {
@@ -302,7 +303,6 @@ void BackupResultsServiceImpl::FetchBackupResults(
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
-    Profile* original_profile,
     Profile* otr_profile,
     bool low_latency_required,
     BackupResultsCallback callback)
@@ -310,14 +310,13 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
       callback(std::move(callback)),
       low_latency_required(low_latency_required),
       web_contents(std::move(web_contents)),
-      original_profile(original_profile),
       otr_profile(otr_profile) {}
 
 BackupResultsServiceImpl::PendingRequest::~PendingRequest() {
   web_contents = nullptr;
   auto* profile_to_destroy = otr_profile.get();
   otr_profile = nullptr;
-  original_profile->DestroyOffTheRecordProfile(profile_to_destroy);
+  ProfileDestroyer::DestroyOTRProfileWhenAppropriate(profile_to_destroy);
 }
 
 BackupResultsServiceImpl::PendingRequestList::iterator
