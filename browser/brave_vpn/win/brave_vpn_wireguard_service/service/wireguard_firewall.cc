@@ -758,7 +758,7 @@ std::wstring GetTunnelInterfaceAlias(const base::FilePath& config) {
   return config.BaseName().RemoveExtension().value();
 }
 
-void RequestTunnelShutdown() {
+bool RequestTunnelShutdown() {
   // Called from the interface change callback. ControlService() returns once
   // tunnel.dll's control handler has moved the service to STOP_PENDING rather
   // than waiting for the tunnel to be fully down, so this does not deadlock
@@ -767,20 +767,23 @@ void RequestTunnelShutdown() {
   if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed, error: " << std::hex
             << ::GetLastError();
-    return;
+    return false;
   }
   ScopedScHandle service(
       ::OpenService(scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
                     SERVICE_STOP));
   if (!service.is_valid()) {
     VLOG(1) << "::OpenService failed, error: " << std::hex << ::GetLastError();
-    return;
+    return false;
   }
   SERVICE_STATUS status = {};
   if (!::ControlService(service.Get(), SERVICE_CONTROL_STOP, &status)) {
     VLOG(1) << "::ControlService failed to stop the tunnel, error: " << std::hex
             << ::GetLastError();
+    return false;
   }
+
+  return true;
 }
 
 }  // namespace brave_vpn::wireguard

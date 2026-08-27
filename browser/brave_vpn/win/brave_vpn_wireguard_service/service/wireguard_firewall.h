@@ -121,9 +121,9 @@ class TunnelInterfaceWatcher {
 std::wstring GetTunnelInterfaceAlias(const base::FilePath& config);
 
 // Asks the SCM to stop the WireGuard tunnel service, which makes tunnel.dll
-// tear the tunnel down and return from WireGuardTunnelService(). Used to fail
-// closed when the firewall cannot be installed.
-void RequestTunnelShutdown();
+// tear the tunnel down and return from WireGuardTunnelService().
+// Returns true if the stop signal was successfully sent to the SCM.
+bool RequestTunnelShutdown();
 
 }  // namespace brave_vpn::wireguard
 

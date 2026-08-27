@@ -22,6 +22,7 @@
 #include "base/logging.h"
 #include "base/memory/raw_ref.h"
 #include "base/path_service.h"
+#include "base/process/process.h"
 #include "base/rand_util.h"
 #include "base/scoped_native_library.h"
 #include "base/strings/utf_string_conversions.h"
@@ -149,6 +150,36 @@ std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {
 // install the WireGuardNT driver, which is not a sub-second operation.
 constexpr base::TimeDelta kFirewallInstallTimeout = base::Seconds(30);
 
+constexpr base::TimeDelta kTeardownTimeout = base::Seconds(15);
+
+class TeardownWatchdog : public base::PlatformThread::Delegate {
+ public:
+  TeardownWatchdog() = default;
+  TeardownWatchdog(const TeardownWatchdog&) = delete;
+  TeardownWatchdog& operator=(const TeardownWatchdog&) = delete;
+
+  void ThreadMain() override {
+    base::PlatformThread::Sleep(kTeardownTimeout);
+    LOG(ERROR) << "Tunnel service failed to exit within " << kTeardownTimeout
+               << ", forcing process termination to drop WFP firewall";
+    base::Process::TerminateCurrentProcessImmediately(1);
+  }
+};
+
+void InitiateTeardown() {
+  if (!wireguard::RequestTunnelShutdown()) {
+    LOG(ERROR)
+        << "RequestTunnelShutdown failed, terminating process immediately";
+    base::Process::TerminateCurrentProcessImmediately(1);
+  }
+
+  // The stop signal was sent, but tunnel.dll's stop handler only moves the
+  // service to STOP_PENDING. If tunnel_proc() hangs, the process never exits.
+  // Arm a deadline to guarantee the WFP session is dropped.
+  static TeardownWatchdog* watchdog = new TeardownWatchdog();
+  base::PlatformThread::CreateNonJoinable(0, watchdog);
+}
+
 // Owns the firewall for the lifetime of the tunnel. The global filters are
 // already installed by the time this is constructed; PermitTunnel() completes
 // the policy and runs on an OS worker thread from TunnelInterfaceWatcher.
@@ -168,7 +199,7 @@ class ScopedFirewallHolder {
       // connection.
       VLOG(1) << "Failed to complete the WireGuard firewall, stopping tunnel";
       firewall_->WithdrawTemporaryDns();
-      wireguard::RequestTunnelShutdown();
+      InitiateTeardown();
     }
     settled_.Signal();
   }
@@ -238,7 +269,7 @@ class FirewallWatchdog : public base::PlatformThread::Delegate {
     // service control manager fails to stop the tunnel process.
     holder_->WithdrawTemporaryDns();
 
-    wireguard::RequestTunnelShutdown();
+    InitiateTeardown();
   }
 
   const raw_ref<ScopedFirewallHolder> holder_;
