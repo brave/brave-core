@@ -52,7 +52,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               class="no-overlap"
               iron-icon="cr:add"
-              title="${this.uploadTooltip || nothing}"
+              title="${this.uploadTooltip}"
               aria-label="${this.uploadTooltip}"
               @click="${this.onUploadClick_}"
             ></cr-icon-button>
@@ -66,8 +66,8 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
         <cr-button
           id="uploadButton"
           class="action-button"
-          title="${this.getUploadButtonTooltip_() || nothing}"
-          aria-label="${this.getUploadButtonTooltip_() || nothing}"
+          title="${this.getUploadButtonTooltip_()}"
+          aria-label="${this.getUploadButtonTooltip_()}"
           @click="${this.onUploadClick_}"
         >
           ${this.isSaved_() ? this.replaceLabel : this.titleLabel}
@@ -76,8 +76,8 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
           ? html`
               <cr-button
                 id="removeButton"
-                title="${this.removeTooltip || nothing}"
-                aria-label="${this.removeTooltip || nothing}"
+                title="${this.removeTooltip}"
+                aria-label="${this.removeTooltip}"
                 @click="${this.onRemoveClick_}"
               >
                 ${this.removeLabel}
