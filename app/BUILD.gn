@@ -179,7 +179,6 @@ source_set("unit_tests") {
     "//components/performance_manager",
     "//components/permissions",
     "//components/personal_context/core:features",
-    "//components/plus_addresses/core/common:features",
     "//components/privacy_sandbox",
     "//components/private_ai:features",
     "//components/private_insights",
