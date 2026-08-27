@@ -51,49 +51,39 @@ class FakeWebStateWithInterfaceBinder : public FakeWebState {
   InterfaceBinder interface_binder_{this};
 };
 
-// Reaches the facades a main-frame facade spawns for the sub-frames of its
-// WebState, which are otherwise only visible to the class itself.
-class TestMojoFacade : public MojoFacade {
- public:
-  using MojoFacade::MojoFacade;
-
-  MojoFacade* SubFrameFacade(const std::string& frame_id) {
-    auto it = sub_frame_facades_.find(frame_id);
-    return it == sub_frame_facades_.end() ? nullptr : it->second.get();
-  }
-};
+// Origin and host of the fixture's child frame, standing in for AI Chat's
+// chrome-untrusted:// conversation-entries iframe.
+constexpr char kChildHost[] = "test-child";
+const GURL kChildOrigin("chrome-untrusted://test-child");
 
 }  // namespace
 
 // Frame type enum for parameterized tests.
 enum class FrameType { kMainFrame, kChildFrame };
 
-// A test fixture for MojoFacade's per-frame behaviour. Copies the helper
+// A test fixture for MojoFacade's per-host behaviour. Copies the helper
 // methods from //ios/web/webui/mojo_facade_unittest.mm, adding a child frame
-// alongside the main one and a facade to serve it, so the same request flow
-// can be exercised for either frame.
-//
-// The child's facade is built directly rather than left to the main facade's
-// own spawning, which only happens once an interface is registered (see
-// SubFrameFacadeIsCreatedAndDestroyedWithItsFrame) and would otherwise leave
-// stray polling calls in the frames' JavaScript history.
+// alongside the main one and a facade bound to that frame's host, mirroring
+// the second WebUIIOS Brave creates for a chrome-untrusted:// frame.
 class MojoFacadeTest : public WebTest {
  protected:
   MojoFacadeTest() {
     auto web_frames_manager = std::make_unique<web::FakeWebFramesManager>();
     frames_manager_ = web_frames_manager.get();
     web_state_.SetWebFramesManager(std::move(web_frames_manager));
-    facade_ = std::make_unique<TestMojoFacade>(&web_state_);
+    facade_ = std::make_unique<MojoFacade>(&web_state_);
 
     auto main_frame = FakeWebFrame::CreateMainWebFrame();
-    auto child_frame = FakeWebFrame::CreateChildWebFrame();
+    // ServesFrame() matches on the frame's security origin host, so the
+    // child needs one for its facade to find it.
+    auto child_frame = FakeWebFrame::CreateChildWebFrame(kChildOrigin);
 
     main_frame_ = main_frame.get();
     child_frame_ = child_frame.get();
     frames_manager_->AddWebFrame(std::move(main_frame));
     frames_manager_->AddWebFrame(std::move(child_frame));
 
-    child_facade_ = std::make_unique<MojoFacade>(&web_state_, child_frame_);
+    child_facade_ = std::make_unique<MojoFacade>(&web_state_, kChildHost);
 
     main_frame_->ClearJavaScriptCallHistory();
     child_frame_->ClearJavaScriptCallHistory();
@@ -102,7 +92,7 @@ class MojoFacadeTest : public WebTest {
   FakeWebFrame* main_frame() { return main_frame_; }
   FakeWebFrame* child_frame() { return child_frame_; }
   // The facade serving the main frame, which also owns the sub-frame facades.
-  TestMojoFacade* facade() { return facade_.get(); }
+  MojoFacade* facade() { return facade_.get(); }
   MojoFacade* child_facade() { return child_facade_.get(); }
   FakeWebStateWithInterfaceBinder& web_state() { return web_state_; }
   FakeWebFramesManager* frames_manager() { return frames_manager_; }
@@ -234,7 +224,7 @@ class MojoFacadeTest : public WebTest {
   raw_ptr<web::FakeWebFramesManager> frames_manager_;
   raw_ptr<FakeWebFrame> main_frame_;
   raw_ptr<FakeWebFrame> child_frame_;
-  std::unique_ptr<TestMojoFacade> facade_;
+  std::unique_ptr<MojoFacade> facade_;
   std::unique_ptr<MojoFacade> child_facade_;
 };
 
@@ -418,24 +408,41 @@ TEST_F(MojoFacadeTest, WatchIsErasedWhenOwningFrameDisappears) {
       }));
 }
 
-// Tests that the main frame's facade gives each sub-frame a facade of its own
-// and drops it with the frame.
-TEST_F(MojoFacadeTest, SubFrameFacadeIsCreatedAndDestroyedWithItsFrame) {
-  web_state().GetInterfaceBinderForMainFrame()->AddInterface(
-      "FakeInterface",
-      base::BindRepeating([](mojo::GenericPendingReceiver*) {}));
+// Tests that a facade bound to a host serves that host's frame and leaves
+// the main frame to the facade that has no host, rather than both polling the
+// main frame as they did when every WebUIIOS built a host-less facade.
+TEST_F(MojoFacadeTest, EachFacadeServesItsOwnHostsFrame) {
+  uint32_t main_handle0, main_handle1;
+  CreateMessagePipeWithIds(facade(), 1, 2, &main_handle0, &main_handle1);
 
-  // Only WebUI origins get a facade, so give the frame one.
-  auto frame = FakeWebFrame::Create("abcdef01", /*is_main_frame=*/false,
-                                    GURL("chrome-untrusted://test-host"));
-  const std::string frame_id = frame->GetFrameId();
-  frames_manager()->AddWebFrame(std::move(frame));
+  const int kMainCallbackId = 99;
+  const int kChildCallbackId = 101;
+  WatchHandle(facade(), main_handle0, kMainCallbackId);
 
-  ASSERT_NE(nullptr, facade()->SubFrameFacade(frame_id));
+  uint32_t child_handle0, child_handle1;
+  CreateMessagePipeWithIds(child_facade(), 1, 2, &child_handle0,
+                           &child_handle1);
+  WatchHandle(child_facade(), child_handle0, kChildCallbackId);
 
-  frames_manager()->RemoveWebFrame(frame_id);
+  // Each frame's JS counter starts at 1, so both facades hand out the same
+  // ids. They must stay in separate tables.
+  ASSERT_EQ(main_handle0, child_handle0);
 
-  EXPECT_EQ(nullptr, facade()->SubFrameFacade(frame_id));
+  WriteMessage(facade(), main_handle1, "QUJDRA==");         // "ABCD"
+  WriteMessage(child_facade(), child_handle1, "RUZHSA==");  // "EFGH"
+
+  // Each notification is delivered to the frame whose host owns the pipe.
+  EXPECT_EQ(GetExpectedWatchCallbackScript(main_handle0, kMainCallbackId,
+                                           "[65,66,67,68]"),
+            WaitForLastJavaScriptCallOnFrame(main_frame()));
+  EXPECT_EQ(GetExpectedWatchCallbackScript(child_handle0, kChildCallbackId,
+                                           "[69,70,71,72]"),
+            WaitForLastJavaScriptCallOnFrame(child_frame()));
+
+  CloseHandle(facade(), main_handle0);
+  CloseHandle(facade(), main_handle1);
+  CloseHandle(child_facade(), child_handle0);
+  CloseHandle(child_facade(), child_handle1);
 }
 
 // Tests the chrome-untrusted:// per-origin interface allowlist gate on
@@ -443,15 +450,14 @@ TEST_F(MojoFacadeTest, SubFrameFacadeIsCreatedAndDestroyedWithItsFrame) {
 // brave/chromium_src/ios/web/public/web_state.h).
 class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
  protected:
-  // Adds a frame with the given origin and returns the facade the main
-  // frame's facade spawns for it. Not the fixture's main/child frame, since
-  // those have no origin set.
+  // Adds a frame with the given origin and returns a facade bound to its
+  // host, as the WebUIIOS created for that host would own.
   MojoFacade* AddFrameWithOrigin(const GURL& origin) {
     auto frame = FakeWebFrame::Create("originTestFrameId",
                                       /*is_main_frame=*/false, origin);
-    const std::string frame_id = frame->GetFrameId();
     frames_manager()->AddWebFrame(std::move(frame));
-    return facade()->SubFrameFacade(frame_id);
+    origin_facade_ = std::make_unique<MojoFacade>(&web_state(), origin.host());
+    return origin_facade_.get();
   }
 
   // Attempts Mojo.bindInterface for `interface_name` from `facade`'s frame,
@@ -497,6 +503,7 @@ class MojoFacadeBindInterfaceOriginTest : public MojoFacadeTest {
             &interface_bound_));
   }
 
+  std::unique_ptr<MojoFacade> origin_facade_;
   bool interface_bound_ = false;
 };
 

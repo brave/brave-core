@@ -1,29 +1,26 @@
 diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
-index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..ada49c1cb6bee171886825fa9c4068dc2bd67c87 100644
+index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..a87cfff441cca3093624310386817f41bcebcf78 100644
 --- a/ios/web/webui/mojo_facade.h
 +++ b/ios/web/webui/mojo_facade.h
-@@ -35,7 +35,7 @@ class MojoFacade : public web::WebStateObserver,
+@@ -35,7 +35,8 @@ class MojoFacade : public web::WebStateObserver,
   public:
    // Constructs MojoFacade. The calling code must retain ownership of
    // `web_state`, which cannot be null.
 -  explicit MojoFacade(WebState* web_state);
-+  explicit MojoFacade(WebState* web_state, WebFrame* frame = nullptr);
++  explicit MojoFacade(WebState* web_state,
++                      const std::string& webui_host = std::string());
    ~MojoFacade() override;
  
    // A listener that polls for messages from a content page to be processed by
-@@ -58,6 +58,44 @@ class MojoFacade : public web::WebStateObserver,
+@@ -58,6 +59,35 @@ class MojoFacade : public web::WebStateObserver,
                           const base::DictValue* message,
                           base::OnceCallback<void(int, std::string)> completion);
  
 + protected:
-+  // Whether this facade serves the main frame, and so owns the
-+  // per-sub-frame facades below.
-+  bool IsMainFrameFacade() const;
-+  // Whether `frame` is the frame this facade serves.
++  // Whether `frame` is the frame this facade serves, which is the one
++  // whose security origin host matches served_host_. An empty
++  // served_host_ means the main frame, as upstream assumes.
 +  bool ServesFrame(WebFrame* frame) const;
-+  // Gives `frame` a facade of its own if it needs one, and makes sure
-+  // it is polling. Does nothing unless IsMainFrameFacade().
-+  void EnsureSubFrameFacade(WebFrame* frame);
 +  // Gates Mojo.bindInterface from a chrome-untrusted:// frame against
 +  // InterfaceBinder::IsAllowedForOrigin. See
 +  // brave/chromium_src/ios/web/public/web_state.h for the allowlist.
@@ -37,6 +34,8 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..ada49c1cb6bee171886825fa9c4068dc
 +  // stops being asked.
 +  bool ShouldRetryPoll();
 +
++  // Host of the WebUI this facade serves, empty for the main frame.
++  std::string served_host_;
 +  // Polls in a row that carried no message.
 +  int consecutive_poll_failures_ = 0;
 +
@@ -45,13 +44,6 @@ index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..ada49c1cb6bee171886825fa9c4068dc
 +  void LogPollDone(const std::string& web_frame_id,
 +                   const base::Value* value,
 +                   NSError* error);
-+
-+  // Id of the frame this facade serves, empty for the main frame,
-+  // whose identity can change over the WebState's life.
-+  std::string served_frame_id_;
-+  // Facades for the sub-frames of this WebState, keyed by frame id.
-+  // Empty unless IsMainFrameFacade().
-+  std::map<std::string, std::unique_ptr<MojoFacade>> sub_frame_facades_;
 +
   private:
    // Callback for AwaitNextMessage completion.

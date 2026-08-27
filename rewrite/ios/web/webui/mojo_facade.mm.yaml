@@ -5,90 +5,59 @@
 
 substitutions:
   - description: |-
-      Serve the frame handed to the constructor, defaulting to the main one.
+      Serve the frame belonging to this facade's WebUI host.
 
       Every use of main_frame_ in this file means "the frame this facade
       talks to" rather than "the main frame of the WebState": the poll loop
       it drives, the frame it compares against when a poll completes, the
       frame it delivers watch callbacks to, and the frame whose
-      disappearance tears its state down. Seeding it with the frame passed
-      in is therefore all a sub-frame facade needs to be correct.
+      disappearance tears its state down. Pointing it at the frame matching
+      served_host_ is therefore all a facade for a chrome-untrusted:// WebUI
+      needs to stop competing with the main frame's facade. See the
+      mojo_facade.h plaster for why more than one facade exists at all.
     regex:
       re_pattern:
         'MojoFacade::MojoFacade\(WebState\* web_state\)\s*:
         web_state_\(web_state\) \{'
       re_flags: [DOTALL]
       replace: |-
-        MojoFacade::MojoFacade(WebState* web_state, WebFrame* frame)
+        MojoFacade::MojoFacade(WebState* web_state, const std::string& webui_host)
             : web_state_(web_state) {
-          served_frame_id_ = frame ? frame->GetFrameId() : std::string();
+          served_host_ = webui_host;
 
   - description: |-
-      Take the frame to serve from the constructor argument.
+      Adopt the frame this facade's host names, rather than the main frame.
     regex:
       re_pattern: |-
         WebFrame\* main_frame =
               web_state_->GetPageWorldWebFramesManager\(\)->GetMainWebFrame\(\);
       replace: |-
-        WebFrame* main_frame =
-              frame ? frame
-                    : web_state_->GetPageWorldWebFramesManager()
-                          ->GetMainWebFrame();
-
-  - description: |-
-      Track the served frame, not whichever frame happens to be the main one.
-
-      For the main-frame facade ServesFrame() is exactly
-      WebFrame::IsMainFrame(), so upstream's behaviour is unchanged there.
-    regex:
-      re_pattern: 'if \(web_frame && web_frame->IsMainFrame\(\)\) \{'
-      replace: 'if (web_frame && ServesFrame(web_frame)) {'
-
-  - description: |-
-      Give each new sub-frame a facade of its own.
-    after_function_impl:
-      function_name: MojoFacade::WebFrameBecameAvailable
-      code: |-
-        EnsureSubFrameFacade(web_frame);
-
-  - description: |-
-      Drop a sub-frame's facade along with the frame.
-
-      Erasing here destroys a facade from inside a WebFramesManager
-      notification, which base::ObserverList supports: the facade being
-      destroyed is a different observer from the one being notified, and its
-      destructor's RemoveObserver() on an entry not currently being visited
-      is well defined.
-    after_function_impl:
-      function_name: MojoFacade::WebFrameBecameUnavailable
-      code: |-
-        sub_frame_facades_.erase(frame_id);
-
-  - description: |-
-      Service sub-frames that already existed when the page finished loading.
-
-      A sub-frame present in the document (AI Chat's conversation-entries
-      iframe among them) becomes available while the WebState is still
-      loading, before anything has registered an interface, so
-      WebFrameBecameAvailable alone never gives it a facade. Frames of the
-      previous document don't linger: each is erased by its own
-      WebFrameBecameUnavailable when a navigation tears them down.
-    after_function_impl:
-      function_name: MojoFacade::PageLoaded
-      code: |-
-        if (load_completion_status == PageLoadCompletionStatus::SUCCESS) {
+        WebFrame* main_frame = nullptr;
           for (WebFrame* frame :
                web_state_->GetPageWorldWebFramesManager()->GetAllWebFrames()) {
-            EnsureSubFrameFacade(frame);
+            if (ServesFrame(frame)) {
+              main_frame = frame;
+              break;
+            }
           }
-        }
 
   - description: |-
-      Drop the sub-frame facades before the WebState they point at goes.
-    preempt_function_impl:
-      function_name: MojoFacade::WebStateDestroyed
-      code: |-
-        sub_frame_facades_.clear();
+      Track the served frame, and start polling as soon as it turns up.
+
+      A frame whose WebUI was created before it existed (the WebUI is built
+      from the navigation, the frame registers later) would otherwise never
+      be polled: upstream only ever starts the loop from the constructor and
+      from PageLoaded, both of which can run before the frame appears.
+    regex:
+      re_pattern: |-
+        if \(web_frame && web_frame->IsMainFrame\(\)\) \{
+            main_frame_ = web_frame->AsWeakPtr\(\);
+          \}
+      replace: |-
+        if (web_frame && ServesFrame(web_frame)) {
+            main_frame_ = web_frame->AsWeakPtr();
+            AwaitNextMessage();
+          }
 
   - description: |-
       Stop discarding live pipes when the page finishes loading.
@@ -102,9 +71,8 @@ substitutions:
       stale, and writing to it later hits CHECK(pipe.is_valid()).
 
       The correctly timed reset already exists in WebFrameBecameUnavailable,
-      which fires when the main frame goes away, i.e. when the JS context
-      that minted those ids is actually gone. What PageLoaded is needed for
-      is restarting the poll loop, which the rest of this block does.
+      which fires when the served frame goes away, i.e. when the JS context
+      that minted those ids is actually gone.
     regex:
       re_pattern: 'pipes_\.clear\(\);\n    watchers_\.clear\(\);\n    last_watch_id_ = 0;\n    '
       replace: ''
@@ -116,10 +84,7 @@ substitutions:
       hands it over, so a poll that never completes takes that message with
       it, permanently. Invalidating the weak pointers here drops the
       in-flight poll's completion silently, and the replacement poll
-      overwrites sendNextMessagePromiseResolver in JS, which is what makes
-      WebKit report "Completion handler for function call is no longer
-      reachable" on the abandoned one. is_awaiting_message_ is only ever
-      cleared by that completion, so the loop can also wedge shut.
+      overwrites sendNextMessagePromiseResolver in JS.
 
       AwaitNextMessage() already no-ops when a poll is running, so calling
       it unguarded is all this needs to do. A frame that genuinely went away
@@ -135,16 +100,12 @@ substitutions:
       Keep polling a frame that hands back nothing.
 
       A completion with neither a value nor an error ends the poll loop for
-      good, because only the error branch re-arms. That happens whenever a
-      poll is abandoned, and a frame whose loop stops is never asked for a
-      message again, so its WebUI simply stops working.
-
-      Retrying can't be unconditional either: upstream re-posts on every
-      error with no bound, so a frame whose document can no longer run
-      scripts (a detached iframe, or the about:blank document one briefly
-      has before it navigates) spins a PostTask loop forever. ShouldRetryPoll
-      gives up after a few consecutive failures, and the counter resets on
-      the first completion that carries a message.
+      good, because only the error branch re-arms. Retrying can't be
+      unconditional either: upstream re-posts on every error with no bound,
+      so a frame whose document can no longer run scripts spins a PostTask
+      loop forever. ShouldRetryPoll gives up after a few consecutive
+      failures, and the counter resets on the first completion that carries
+      a message.
     regex:
       re_pattern: 'if \(error && is_same_frame\) \{'
       replace: 'if (is_same_frame && ShouldRetryPoll()) {'
@@ -171,9 +132,7 @@ substitutions:
       sibling call site and made it non-fatal in 62168f0dc5969 ([iOS] Make
       MojoFacade::HandleMojoBindInterface non-fatal), cherry-picked into the
       8010 branch this rebase targets, without touching this one. A WebUI
-      page shouldn't be able to take the browser down either way, and the
-      crash keys say whether the table was empty, populated but missing the
-      id, or belongs to another frame.
+      page shouldn't be able to take the browser down either way.
     regex:
       re_pattern: |-
         CHECK\(pipe_id\.has_value\(\)\);

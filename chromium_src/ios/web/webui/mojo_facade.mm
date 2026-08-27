@@ -20,73 +20,14 @@
 // pulls in transitively.
 namespace web {
 
-// A facade constructed without a frame serves the main frame. Its identity
-// can change over the WebState's life (a new document brings a new main
-// frame), so it's tracked by IsMainFrame() rather than by id.
-bool MojoFacade::IsMainFrameFacade() const {
-  return served_frame_id_.empty();
-}
-
+// A facade built without a host serves the main frame, which is what
+// upstream assumes when only one WebUI exists per WebState. Brave's
+// per-host WebUIs each name the frame they belong to.
 bool MojoFacade::ServesFrame(WebFrame* frame) const {
-  return IsMainFrameFacade() ? frame->IsMainFrame()
-                             : frame->GetFrameId() == served_frame_id_;
-}
-
-// TEMPORARY diagnostics. Revert before landing. `facade` distinguishes two
-// facades polling one frame (which clobbers the single resolver slot JS keeps
-// for fetchNextMessageFromJS) from one facade cycling normally.
-namespace {
-std::string FrameLabel(const std::string& served_frame_id) {
-  return served_frame_id.empty() ? std::string("MAIN") : served_frame_id;
-}
-}  // namespace
-
-void MojoFacade::LogPollStart() {
-  LOG(ERROR) << "[mojo] poll-start facade=" << this
-             << " frame=" << FrameLabel(served_frame_id_)
-             << " awaiting=" << is_awaiting_message_
-             << " failures=" << consecutive_poll_failures_;
-}
-
-void MojoFacade::LogPollDone(const std::string& web_frame_id,
-                             const base::Value* value,
-                             NSError* error) {
-  LOG(ERROR) << "[mojo] poll-done  facade=" << this
-             << " frame=" << FrameLabel(served_frame_id_)
-             << " reported=" << web_frame_id << " error="
-             << (error ? base::SysNSStringToUTF8(error.description)
-                       : std::string("none"))
-             << " value="
-             << (value ? base::WriteJson(*value).value_or("<unconvertible>")
-                       : std::string("<null>"));
-}
-
-void MojoFacade::EnsureSubFrameFacade(WebFrame* frame) {
-  if (!IsMainFrameFacade() || !frame || frame->IsMainFrame()) {
-    return;
+  if (served_host_.empty()) {
+    return frame->IsMainFrame();
   }
-  // TEMPORARY diagnostic. Revert before landing.
-  LOG(ERROR) << "[mojo] ensure frame=" << frame->GetFrameId()
-             << " origin=" << frame->GetSecurityOrigin().Serialize();
-  // Only WebUI documents ever speak mojo. Polling anything else would spin
-  // forever, since a frame without mojo_api.js throws on every poll and
-  // OnAwaitNextMessageCompleted retries on error.
-  const GURL origin = frame->GetSecurityOrigin().GetURL();
-  if (!origin.SchemeIs(kChromeUIScheme) &&
-      !origin.SchemeIs(kChromeUIUntrustedScheme)) {
-    return;
-  }
-  if (!web_state_->GetInterfaceBinderForMainFrame()
-           ->HasRegisteredInterfaces()) {
-    return;
-  }
-  std::unique_ptr<MojoFacade>& facade = sub_frame_facades_[frame->GetFrameId()];
-  if (!facade) {
-    facade = std::make_unique<MojoFacade>(web_state_, frame);
-  }
-  // The constructor only polls if the WebState isn't mid-load, which it may
-  // well have been when the frame first appeared.
-  facade->AwaitNextMessage();
+  return frame->GetSecurityOrigin().host() == served_host_;
 }
 
 // Gates Mojo.bindInterface calls from chrome-untrusted:// origins against
@@ -130,9 +71,38 @@ void MojoFacade::ReportUnknownPipe(const char* operation,
   SCOPED_CRASH_KEY_NUMBER("MojoFacade", "live_pipes",
                           static_cast<int>(pipes_.size()));
   SCOPED_CRASH_KEY_STRING32(
-      "MojoFacade", "frame",
-      served_frame_id_.empty() ? std::string("main") : served_frame_id_);
+      "MojoFacade", "host",
+      served_host_.empty() ? std::string("main") : served_host_);
   base::debug::DumpWithoutCrashing();
+}
+
+// TEMPORARY diagnostics. Revert before landing. `facade` distinguishes two
+// facades polling one frame (which clobbers the single resolver slot JS keeps
+// for fetchNextMessageFromJS) from one facade cycling normally.
+namespace {
+std::string HostLabel(const std::string& served_host) {
+  return served_host.empty() ? std::string("MAIN") : served_host;
+}
+}  // namespace
+
+void MojoFacade::LogPollStart() {
+  LOG(ERROR) << "[mojo] poll-start facade=" << this
+             << " host=" << HostLabel(served_host_)
+             << " frame=" << GetMainFrameId()
+             << " awaiting=" << is_awaiting_message_;
+}
+
+void MojoFacade::LogPollDone(const std::string& web_frame_id,
+                             const base::Value* value,
+                             NSError* error) {
+  LOG(ERROR) << "[mojo] poll-done  facade=" << this
+             << " host=" << HostLabel(served_host_)
+             << " reported=" << web_frame_id << " error="
+             << (error ? base::SysNSStringToUTF8(error.description)
+                       : std::string("none"))
+             << " value="
+             << (value ? base::WriteJson(*value).value_or("<unconvertible>")
+                       : std::string("<null>"));
 }
 
 }  // namespace web
