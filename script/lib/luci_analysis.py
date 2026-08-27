@@ -207,6 +207,42 @@ def get_test_verdicts(test_id, days):
     return all_verdicts
 
 
+# Flake rate thresholds used to classify upstream flakiness. See
+# docs/best-practices/testing-upstream-failures.md.
+KNOWN_FLAKE_RATE = 0.05
+OCCASIONAL_FLAKE_RATE = 0.01
+MIN_MEANINGFUL_VERDICTS = 10
+
+
+def classify_flakiness(flake_rate, meaningful_verdicts):
+    """Classify a flake rate into a verdict and recommendation.
+
+    Args:
+        flake_rate: (failed + flaky) / meaningful verdicts.
+        meaningful_verdicts: Number of passed + failed + flaky verdicts.
+
+    Returns:
+        Tuple of (verdict, recommendation) strings.
+    """
+    if meaningful_verdicts < MIN_MEANINGFUL_VERDICTS:
+        return ("insufficient_data",
+                "Cannot determine -- insufficient upstream"
+                " data for this test in the"
+                " lookback period.")
+    if flake_rate >= KNOWN_FLAKE_RATE:
+        return ("known_upstream_flake", "Safe to filter -- this test has a"
+                " confirmed flakiness pattern"
+                " in Chromium upstream.")
+    if flake_rate >= OCCASIONAL_FLAKE_RATE:
+        return ("occasional_upstream_failures",
+                "Consider filtering -- test shows some"
+                " upstream instability. Document"
+                " findings in filter comment.")
+    return ("stable_upstream", "Investigate Brave-specific causes --"
+            " test appears stable in"
+            " Chromium upstream.")
+
+
 def analyze_stats(stats_groups):
     """Analyze raw stats groups into an aggregate summary.
 
@@ -284,27 +320,8 @@ def analyze_stats(stats_groups):
     else:
         flake_rate = 0.0
 
-    # Determine verdict
-    if meaningful_verdicts < 10:
-        verdict = "insufficient_data"
-        recommendation = ("Cannot determine -- insufficient upstream"
-                          " data for this test in the"
-                          " lookback period.")
-    elif flake_rate >= 0.05:
-        verdict = "known_upstream_flake"
-        recommendation = ("Safe to filter -- this test has a"
-                          " confirmed flakiness pattern"
-                          " in Chromium upstream.")
-    elif flake_rate >= 0.01:
-        verdict = "occasional_upstream_failures"
-        recommendation = ("Consider filtering -- test shows some"
-                          " upstream instability. Document"
-                          " findings in filter comment.")
-    else:
-        verdict = "stable_upstream"
-        recommendation = ("Investigate Brave-specific causes --"
-                          " test appears stable in"
-                          " Chromium upstream.")
+    verdict, recommendation = classify_flakiness(flake_rate,
+                                                 meaningful_verdicts)
 
     # Sort daily data by date
     daily_data.sort(key=lambda d: d["date"])
@@ -361,26 +378,8 @@ def analyze_verdicts(verdicts):
     else:
         flake_rate = 0.0
 
-    if meaningful_verdicts < 10:
-        verdict = "insufficient_data"
-        recommendation = ("Cannot determine -- insufficient upstream"
-                          " data for this test in the"
-                          " lookback period.")
-    elif flake_rate >= 0.05:
-        verdict = "known_upstream_flake"
-        recommendation = ("Safe to filter -- this test has a"
-                          " confirmed flakiness pattern"
-                          " in Chromium upstream.")
-    elif flake_rate >= 0.01:
-        verdict = "occasional_upstream_failures"
-        recommendation = ("Consider filtering -- test shows some"
-                          " upstream instability. Document"
-                          " findings in filter comment.")
-    else:
-        verdict = "stable_upstream"
-        recommendation = ("Investigate Brave-specific causes --"
-                          " test appears stable in"
-                          " Chromium upstream.")
+    verdict, recommendation = classify_flakiness(flake_rate,
+                                                 meaningful_verdicts)
 
     return {
         "total_verdicts": total_verdicts,
