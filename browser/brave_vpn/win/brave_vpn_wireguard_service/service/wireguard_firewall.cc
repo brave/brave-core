@@ -470,22 +470,47 @@ DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
 
 // Phase one only. tunnel.dll has to resolve the endpoint hostname before there
 // is a tunnel to resolve it through, and on Windows that query is issued by the
-// DNS Client service rather than by us, so no app-based permit would cover it.
-// AddTunnelFilters() withdraws this and hands over to AddBlockDns().
+// DNS Client service rather than by us.
+// This is strictly narrowed to svchost.exe to prevent any other apps
+// from leaking plaintext DNS during the connect window.
 DWORD AddTemporaryPermitDns(HANDLE engine,
                             const BaseObjects& base_objects,
                             std::vector<UINT64>* filter_ids) {
   constexpr uint16_t kDnsPort = 53;
 
-  std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+  // 1. Add App ID condition: %SystemRoot%\System32\svchost.exe
+  base::FilePath system_dir;
+  if (!base::PathService::Get(base::DIR_SYSTEM, &system_dir)) {
+    VLOG(1) << "Failed to get system directory";
+    return ERROR_PATH_NOT_FOUND;
+  }
+  base::FilePath svchost_path = system_dir.Append(L"svchost.exe");
+
+  FWP_BYTE_BLOB* app_id = nullptr;
+  auto result =
+      FwpmGetAppIdFromFileName0(svchost_path.value().c_str(), &app_id);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmGetAppIdFromFileName0 failed for svchost.exe, error: "
+            << std::hex << result;
+    return result;
+  }
+  ScopedFwpmMemory scoped_app_id(app_id);
+
+  // 2. Both conditions must be met (WFP applies an implicit AND)
+  std::array<FWPM_FILTER_CONDITION0, 2u> conditions = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
-                             {FWP_UINT16, {.uint16 = kDnsPort}}}};
+                             {FWP_UINT16, {.uint16 = kDnsPort}}},
+      FWPM_FILTER_CONDITION0{FWPM_CONDITION_ALE_APP_ID,
+                             FWP_MATCH_EQUAL,
+                             {FWP_BYTE_BLOB_TYPE, {.byteBlob = app_id}}}};
+
   for (const auto& layer : GetOutboundLayers()) {
     UINT64 filter_id = 0;
-    auto result = AddFilter(engine, base_objects, layer, FWP_ACTION_PERMIT,
-                            kWeightPermitTemporaryDns, conditions,
-                            L"Permit DNS while connecting", &filter_id);
+    result = AddFilter(engine, base_objects, layer, FWP_ACTION_PERMIT,
+                       kWeightPermitTemporaryDns, conditions,
+                       L"Permit DNS for DNS Client service while connecting",
+                       &filter_id);
     if (result != ERROR_SUCCESS) {
       return result;
     }
