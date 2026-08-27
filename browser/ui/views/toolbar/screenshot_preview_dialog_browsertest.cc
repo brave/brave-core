@@ -106,11 +106,12 @@ IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
                        DownloadButton_RunsOnDownloadAndClosesWidget) {
   PreviewWidgetWaiter widget_waiter;
   base::test::TestFuture<std::vector<uint8_t>> on_download;
+  base::test::TestFuture<std::vector<uint8_t>> on_copy;
   base::test::TestFuture<void> on_cancel;
 
   std::vector<uint8_t> png = MakeTestPng();
   ShowScreenshotPreviewDialog(browser()->GetWindow()->GetNativeWindow(), png,
-                              on_download.GetCallback(),
+                              on_download.GetCallback(), on_copy.GetCallback(),
                               on_cancel.GetCallback());
 
   views::Widget* widget = widget_waiter.Wait();
@@ -120,6 +121,7 @@ IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
   widget->widget_delegate()->AsDialogDelegate()->AcceptDialog();
 
   EXPECT_EQ(on_download.Get(), png);
+  EXPECT_FALSE(on_copy.IsReady());
   EXPECT_FALSE(on_cancel.IsReady());
   destruction_waiter.Wait();
 }
@@ -128,11 +130,12 @@ IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
                        EscapeKey_RunsOnCancelAndClosesWidget) {
   PreviewWidgetWaiter widget_waiter;
   base::test::TestFuture<std::vector<uint8_t>> on_download;
+  base::test::TestFuture<std::vector<uint8_t>> on_copy;
   base::test::TestFuture<void> on_cancel;
 
   ShowScreenshotPreviewDialog(browser()->GetWindow()->GetNativeWindow(),
                               MakeTestPng(), on_download.GetCallback(),
-                              on_cancel.GetCallback());
+                              on_copy.GetCallback(), on_cancel.GetCallback());
 
   views::Widget* widget = widget_waiter.Wait();
   ASSERT_TRUE(widget);
@@ -142,6 +145,7 @@ IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
 
   EXPECT_TRUE(on_cancel.Wait());
   EXPECT_FALSE(on_download.IsReady());
+  EXPECT_FALSE(on_copy.IsReady());
   destruction_waiter.Wait();
 }
 
@@ -149,11 +153,12 @@ IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
                        CloseButton_RunsOnCancelAndClosesWidget) {
   PreviewWidgetWaiter widget_waiter;
   base::test::TestFuture<std::vector<uint8_t>> on_download;
+  base::test::TestFuture<std::vector<uint8_t>> on_copy;
   base::test::TestFuture<void> on_cancel;
 
   ShowScreenshotPreviewDialog(browser()->GetWindow()->GetNativeWindow(),
                               MakeTestPng(), on_download.GetCallback(),
-                              on_cancel.GetCallback());
+                              on_copy.GetCallback(), on_cancel.GetCallback());
 
   views::Widget* widget = widget_waiter.Wait();
   ASSERT_TRUE(widget);
@@ -163,6 +168,31 @@ IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
 
   EXPECT_TRUE(on_cancel.Wait());
   EXPECT_FALSE(on_download.IsReady());
+  EXPECT_FALSE(on_copy.IsReady());
+  destruction_waiter.Wait();
+}
+
+IN_PROC_BROWSER_TEST_F(ScreenshotPreviewDialogBrowserTest,
+                       CopyButton_RunsOnCopyAndClosesWidget) {
+  PreviewWidgetWaiter widget_waiter;
+  base::test::TestFuture<std::vector<uint8_t>> on_download;
+  base::test::TestFuture<std::vector<uint8_t>> on_copy;
+  base::test::TestFuture<void> on_cancel;
+
+  std::vector<uint8_t> png = MakeTestPng();
+  ShowScreenshotPreviewDialog(browser()->GetWindow()->GetNativeWindow(), png,
+                              on_download.GetCallback(), on_copy.GetCallback(),
+                              on_cancel.GetCallback());
+
+  views::Widget* widget = widget_waiter.Wait();
+  ASSERT_TRUE(widget);
+  WidgetDestructionWaiter destruction_waiter(widget);
+
+  widget->widget_delegate()->AsDialogDelegate()->CancelDialog();
+
+  EXPECT_EQ(on_copy.Get(), png);
+  EXPECT_FALSE(on_download.IsReady());
+  EXPECT_FALSE(on_cancel.IsReady());
   destruction_waiter.Wait();
 }
 

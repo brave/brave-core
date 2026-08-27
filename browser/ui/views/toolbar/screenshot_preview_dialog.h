@@ -17,12 +17,14 @@ namespace screenshot {
 // Shows a modal dialog previewing the captured `png` in a scroll view,
 // taking ownership of it for the dialog's lifetime. Invokes `on_download`
 // with `png` handed back if the user clicks the Download button, or
-// `on_cancel` if they dismiss the dialog (Esc or closing the window).
-// Exactly one of the two is run, exactly once.
+// `on_copy` if they click the Copy to clipboard button, or `on_cancel`
+// if they dismiss the dialog (Esc or closing the window).
+// Exactly one of the three is run, exactly once.
 void ShowScreenshotPreviewDialog(
     gfx::NativeWindow parent,
     std::vector<uint8_t> png,
     base::OnceCallback<void(std::vector<uint8_t>)> on_download,
+    base::OnceCallback<void(std::vector<uint8_t>)> on_copy,
     base::OnceClosure on_cancel);
 
 }  // namespace screenshot

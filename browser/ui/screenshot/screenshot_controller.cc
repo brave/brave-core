@@ -32,6 +32,7 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkRect.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
@@ -339,15 +340,31 @@ void ScreenshotController::OnEncoded(std::optional<std::vector<uint8_t>> png) {
 
 void ScreenshotController::ShowPreviewDialog(std::vector<uint8_t> png) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // The dialog takes ownership of `png` for display and hands the same bytes
-  // back to ShowSaveDialog() via `on_download` if the user confirms, so
-  // there's never a need for a second copy here.
+  // The dialog takes ownership of `png` for display.
+  // `on_download`: user clicked Download -> proceed to ShowSaveDialog()
+  // `on_copy`: user clicked Copy -> copy to clipboard and finish
+  // `on_cancel`: user closed the dialog -> finish with error
   preview_dialog_shower_.Run(
       parent_window_getter_.Run(), std::move(png),
       base::BindOnce(&ScreenshotController::ShowSaveDialog,
                      weak_factory_.GetWeakPtr()),
+      base::BindOnce(&ScreenshotController::CopyToClipboard,
+                     weak_factory_.GetWeakPtr()),
       base::BindOnce(&ScreenshotController::FinishWithError,
                      weak_factory_.GetWeakPtr(), Error::kUserCancelled));
+}
+
+void ScreenshotController::CopyToClipboard(std::vector<uint8_t> png) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  SkBitmap bitmap = gfx::PNGCodec::Decode(png);
+  ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
+  clipboard_writer.WriteImage(bitmap);
+  auto cb = std::move(pending_callback_);
+  Reset();
+  if (cb) {
+    std::move(cb).Run(base::FilePath());  // No path to return for clipboard
+                                          // copy, but still signal success.
+  }
 }
 
 void ScreenshotController::ShowSaveDialog(std::vector<uint8_t> png) {
