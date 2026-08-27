@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ship kSyncAutofillValuableMetadata disabled.
+
+      Doing a manual replacement because `DEFINE_SYNC_AUTOFILL_AI_FEATURE` can
+      expand in different ways depending on the build flags.
+    regex:
+      pattern: 'DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);'
+      replace:
+        'BASE_FEATURE(kSyncAutofillValuableMetadata,
+        base::FEATURE_DISABLED_BY_DEFAULT);'
+
+  - description: |-
+      Override IsReplaceSyncPromosWithSignInPromosEnabled to be always false.
+
+      Brave has no Google sign-in, so the sign-in promo variants of the sync UI
+      never apply. On `brave://history/syncedTabs` they showed a `sign in and
+      sync history` banner and cleared the list of tabs from other devices on
+      every identity state update.
+
+      This prevents showing sign-in promo on History => Tabs from other devices
+      page, as Brave has no Google sign-in.
+    preempt_function_impl:
+      function_name: IsReplaceSyncPromosWithSignInPromosEnabled
+      return_if: '(true)'
+      return_value: 'false'
