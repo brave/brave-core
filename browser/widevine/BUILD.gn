@@ -57,14 +57,21 @@ source_set("widevine_cdm_component_installer_unittest") {
 
   sources = [ "widevine_cdm_component_installer_unittest.cc" ]
   deps = [
+    ":widevine",
     "//base",
+    "//base/test:test_support",
     "//brave/common",
+    "//brave/components/widevine:constants",
+    "//chrome/browser/component_updater",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
+    "//components/component_updater",
+    "//components/component_updater:test_support",
     "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",
     "//content/public/browser",
+    "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
     "//third_party/widevine/cdm:buildflags",
@@ -118,6 +125,7 @@ source_set("browser_tests") {
     sources += [ "widevine_permission_request_browsertest.cc" ]
     deps += [
       "//brave/browser/widevine",
+      "//brave/components/tor/buildflags",
       "//brave/components/widevine:constants",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",

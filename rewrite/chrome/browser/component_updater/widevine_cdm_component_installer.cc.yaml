@@ -4,6 +4,20 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  # Upstream allows plaintext because the CRX payload is signature verified.
+  # Require TLS anyway, so the request doesn't announce on the wire that this
+  # user is installing Widevine.
+  - description: 'Always fetch the Widevine CDM over HTTPS.'
+    regex:
+      pattern: |-
+        bool WidevineCdmComponentInstallerPolicy::RequiresNetworkEncryption() const {
+          return false;
+        }
+      replace: |-
+        bool WidevineCdmComponentInstallerPolicy::RequiresNetworkEncryption() const {
+          return true;
+        }
+
   - description: 'Let callers observe when Widevine CDM registration finishes.'
     regex:
       pattern:

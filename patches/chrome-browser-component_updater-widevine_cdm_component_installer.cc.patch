@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/component_updater/widevine_cdm_component_installer.cc b/chrome/browser/component_updater/widevine_cdm_component_installer.cc
-index 198513af0e71a7b65babdc88810957e5122c61f5..2c1d35f1ead63213cf4d1470afc1967c64178d17 100644
+index 198513af0e71a7b65babdc88810957e5122c61f5..99a592b46559ae13f19be21b1f9d3f9fe0963d7a 100644
 --- a/chrome/browser/component_updater/widevine_cdm_component_installer.cc
 +++ b/chrome/browser/component_updater/widevine_cdm_component_installer.cc
+@@ -282,7 +282,7 @@ bool WidevineCdmComponentInstallerPolicy::
+ }
+ 
+ bool WidevineCdmComponentInstallerPolicy::RequiresNetworkEncryption() const {
+-  return false;
++  return true;
+ }
+ 
+ update_client::CrxInstaller::Result
 @@ -436,10 +436,15 @@ void WidevineCdmComponentInstallerPolicy::UpdateCdmPath(
  #endif
  }

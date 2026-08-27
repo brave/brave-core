@@ -115,10 +115,16 @@ bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // Users on non-x64 Linux may still install Widevine manually and enable it in
   // brave://settings.
 #else
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+
+  // Opting in fetches a component from Google without using Tor.
+  if (profile->IsTor()) {
+    return false;
+  }
+
   // If the user already opted in, don't offer it.
-  PrefService* prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
+  PrefService* prefs = profile->GetPrefs();
   if (IsWidevineEnabled() || !prefs->GetBoolean(kAskEnableWidvine)) {
     return false;
   }
@@ -181,16 +187,17 @@ void BraveDrmTabHelper::OnEvent(const update_client::CrxUpdateItem& item) {
 #if BUILDFLAG(IS_LINUX)
     // Ask restart instead of reloading. Widevine is only usable after
     // restarting on linux. This restart permission request is only shown if
-    // this tab asks widevine explicitely.
-    if (is_widevine_requested_) {
-      PrefService* prefs =
-          Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-              ->GetPrefs();
+    // this tab asks widevine explicitly. Tor windows never take part in the
+    // Widevine install flow, so they don't get the restart prompt either.
+    Profile* profile =
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+    if (is_widevine_requested_ && !profile->IsTor()) {
       permissions::PermissionRequestManager::FromWebContents(web_contents())
-          ->AddRequest(web_contents()->GetPrimaryMainFrame(),
-                       std::make_unique<WidevinePermissionRequest>(
-                           prefs, web_contents()->GetLastCommittedURL(),
-                           /*for_restart=*/true));
+          ->AddRequest(
+              web_contents()->GetPrimaryMainFrame(),
+              std::make_unique<WidevinePermissionRequest>(
+                  profile->GetPrefs(), web_contents()->GetLastCommittedURL(),
+                  /*for_restart=*/true));
     }
 #else
     // When widevine is ready to use, only active tab that requests widevine is
