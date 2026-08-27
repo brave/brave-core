@@ -13,10 +13,8 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
   return html`
     <section
       id="row"
-      class="state-${this.getState_()}
-        ${this.shouldRenderTitle_() ? '' : 'title-hidden'}"
-      aria-labelledby="${this.shouldRenderTitle_() ? 'title' : nothing}"
-      aria-label="${this.shouldRenderTitle_() ? nothing : this.titleLabel}"
+      class="state-${this.getState_()}"
+      aria-labelledby="title"
     >
       ${this.isSaved_()
         ? html`
@@ -57,9 +55,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
             </leo-button>
           `}
 
-      ${this.shouldRenderTitle_()
-        ? html`<div id="title">${this.titleLabel}</div>`
-        : nothing}
+      <div id="title">${this.titleLabel}</div>
 
       <div id="actions">
         <leo-button

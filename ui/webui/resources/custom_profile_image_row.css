@@ -108,9 +108,13 @@ leo-button#preview {
   grid-column: 1 / -1;
 }
 
-#row.title-hidden {
+:host([hide-title]) #row {
   grid-template-areas: 'preview actions';
   row-gap: 0;
+}
+
+:host([hide-title]) #title {
+  display: none;
 }
 
 #row #title {

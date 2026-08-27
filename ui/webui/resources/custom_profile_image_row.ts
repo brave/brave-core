@@ -28,7 +28,11 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
 
   static override get properties() {
     return {
-      hideTitle: {type: Boolean, attribute: 'hide-title'},
+      hideTitle: {
+        type: Boolean,
+        attribute: 'hide-title',
+        reflect: true,
+      },
       invalidImageLabel: {type: String, attribute: 'invalid-image-label'},
       replaceLabel: {type: String, attribute: 'replace-label'},
       replaceTooltip: {type: String, attribute: 'replace-tooltip'},
@@ -69,10 +73,6 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
 
   protected getState_(): CustomProfileImageState {
     return this.isSaved_() ? 'saved-active' : 'empty'
-  }
-
-  protected shouldRenderTitle_(): boolean {
-    return !this.hideTitle
   }
 
   protected getUploadButtonTooltip_(): string {

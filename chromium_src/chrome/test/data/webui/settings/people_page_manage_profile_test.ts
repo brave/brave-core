@@ -304,6 +304,14 @@ function braveManageProfileFeatureEnabledTests() {
 
     assertEquals('empty', row.state)
     assertTrue(row.hideTitle)
+    const rowContainer = getRequiredElement<HTMLElement>(
+      row.shadowRoot,
+      '#row',
+    )
+    assertEquals('title', rowContainer.getAttribute('aria-labelledby'))
+    const rowTitle = getRequiredElement<HTMLElement>(row.shadowRoot, '#title')
+    assertEquals(row.titleLabel, rowTitle.textContent.trim())
+    assertEquals('none', getComputedStyle(rowTitle).display)
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
     assertEquals('LEO-BUTTON', preview.tagName)
     assertEquals('plain-faint', preview.getAttribute('kind'))
