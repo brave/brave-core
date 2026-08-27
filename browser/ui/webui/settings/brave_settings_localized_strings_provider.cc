@@ -1502,12 +1502,16 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddLocalizedStrings(webui::kBraveSettingsStrings);
-#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+
   html_source->AddBoolean(
       "customProfileImageEnabled",
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
       base::FeatureList::IsEnabled(
-          custom_profile_image::features::kBraveCustomProfileImage));
+          custom_profile_image::features::kBraveCustomProfileImage)
+#else
+      false
 #endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+);
 
   // We add strings regardless of the FeatureFlag state to prevent crash
 
