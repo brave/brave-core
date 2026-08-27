@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 
-#include <optional>
+#include <cstddef>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -43,12 +43,18 @@ class ClientStateManager final {
   GetTextClassificationProbabilitiesHistory() const;
 
  private:
-  void SaveState();
-
-  void LoadCallback(ResultCallback callback,
-                    const std::optional<std::string>& json);
-
-  [[nodiscard]] bool FromJson(const std::string& json);
+  void GetAllPurchaseIntentSignalHistoryCallback(
+      ResultCallback callback,
+      bool success,
+      const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history);
+  void GetAllTextClassificationProbabilitiesCallback(
+      ResultCallback callback,
+      bool success,
+      const TextClassificationProbabilityList&
+          text_classification_probabilities);
+  void SaveTextClassificationProbabilitiesToHistoryCallback(
+      size_t maximum_entries,
+      bool success);
 
   ClientInfo client_;
 

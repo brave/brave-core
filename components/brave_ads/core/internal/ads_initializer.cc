@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -44,6 +45,19 @@ void AdsInitializer::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
                                                   bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  MigrateClientState(base::BindOnce(&AdsInitializer::MigrateClientStateCallback,
+                                    weak_factory_.GetWeakPtr(),
+                                    std::move(wallet), std::move(callback)));
+}
+
+void AdsInitializer::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
+                                                ResultCallback callback,
+                                                bool success) {
+  if (!success) {
+    BLOG(0, "Failed to migrate client state");
     return std::move(callback).Run(/*success=*/false);
   }
 

@@ -10,17 +10,27 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
-#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
 namespace {
+
 constexpr size_t kMaximumPurchaseIntentSignalHistoryEntriesPerSegment = 100;
+
+void LogPruneTextClassificationProbabilitiesToMaximumEntries(bool success) {
+  if (!success) {
+    return BLOG(0, "Failed to prune text classification probabilities");
+  }
+
+  BLOG(9, "Successfully pruned text classification probabilities");
+}
+
 }  // namespace
 
 ClientStateManager::ClientStateManager() = default;
@@ -35,10 +45,11 @@ ClientStateManager& ClientStateManager::GetInstance() {
 void ClientStateManager::LoadState(ResultCallback callback) {
   BLOG(3, "Loading client state");
 
-  GetAdsClient().Load(
-      kClientJsonFilename,
-      base::BindOnce(&ClientStateManager::LoadCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  database::table::PurchaseIntentSignalHistory
+      purchase_intent_signal_history_database_table;
+  purchase_intent_signal_history_database_table.GetAll(base::BindOnce(
+      &ClientStateManager::GetAllPurchaseIntentSignalHistoryCallback,
+      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
@@ -58,7 +69,17 @@ void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
     client_.purchase_intent_signal_history.at(segment).pop_back();
   }
 
-  SaveState();
+  database::table::PurchaseIntentSignalHistory
+      purchase_intent_signal_history_database_table;
+  purchase_intent_signal_history_database_table.SaveForSegment(
+      segment, client_.purchase_intent_signal_history.at(segment),
+      base::BindOnce([](bool success) {
+        if (!success) {
+          return BLOG(0, "Failed to save purchase intent signal history");
+        }
+
+        BLOG(9, "Successfully saved purchase intent signal history");
+      }));
 }
 
 const PurchaseIntentSignalHistoryMap&
@@ -80,7 +101,13 @@ void ClientStateManager::AppendTextClassificationProbabilitiesToHistory(
     client_.text_classification_probabilities.resize(maximum_entries);
   }
 
-  SaveState();
+  database::table::TextClassificationProbabilities
+      text_classification_probabilities_database_table;
+  text_classification_probabilities_database_table.Save(
+      probabilities, base::Time::Now(),
+      base::BindOnce(&ClientStateManager::
+                         SaveTextClassificationProbabilitiesToHistoryCallback,
+                     weak_factory_.GetWeakPtr(), maximum_entries));
 }
 
 const TextClassificationProbabilityList&
@@ -92,56 +119,55 @@ ClientStateManager::GetTextClassificationProbabilitiesHistory() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ClientStateManager::SaveState() {
-  if (!is_initialized_) {
-    return;
+void ClientStateManager::GetAllPurchaseIntentSignalHistoryCallback(
+    ResultCallback callback,
+    bool success,
+    const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history) {
+  if (!success) {
+    BLOG(0, "Failed to load purchase intent signal history");
+    return std::move(callback).Run(/*success=*/false);
   }
 
-  BLOG(9, "Saving client state");
+  client_.purchase_intent_signal_history = purchase_intent_signal_history;
 
-  GetAdsClient().Save(kClientJsonFilename, client_.ToJson(),
-                      base::BindOnce([](bool success) {
-                        if (!success) {
-                          return BLOG(0, "Failed to save client state");
-                        }
-
-                        BLOG(9, "Successfully saved client state");
-                      }));
+  database::table::TextClassificationProbabilities
+      text_classification_probabilities_database_table;
+  text_classification_probabilities_database_table.GetAll(base::BindOnce(
+      &ClientStateManager::GetAllTextClassificationProbabilitiesCallback,
+      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ClientStateManager::LoadCallback(ResultCallback callback,
-                                      const std::optional<std::string>& json) {
-  CHECK(!is_initialized_);
-  is_initialized_ = true;
-
-  if (!json) {
-    BLOG(3, "Client state does not exist, creating default state");
-
-    client_ = {};
-
-    SaveState();
-  } else if (!FromJson(*json)) {
-    BLOG(0, "Failed to parse client state, resetting to default state");
-
-    client_ = {};
-
-    SaveState();
-  } else {
-    BLOG(3, "Successfully loaded client state");
+void ClientStateManager::GetAllTextClassificationProbabilitiesCallback(
+    ResultCallback callback,
+    bool success,
+    const TextClassificationProbabilityList&
+        text_classification_probabilities) {
+  if (!success) {
+    BLOG(0, "Failed to load text classification probabilities");
+    return std::move(callback).Run(/*success=*/false);
   }
 
+  client_.text_classification_probabilities = text_classification_probabilities;
+
+  BLOG(3, "Successfully loaded client state");
+  is_initialized_ = true;
   std::move(callback).Run(/*success=*/true);
 }
 
-bool ClientStateManager::FromJson(const std::string& json) {
-  ClientInfo client;
-  if (!client.FromJson(json)) {
-    return false;
+void ClientStateManager::SaveTextClassificationProbabilitiesToHistoryCallback(
+    size_t maximum_entries,
+    bool success) {
+  if (!success) {
+    return BLOG(0, "Failed to save text classification probabilities");
   }
 
-  client_ = client;
+  BLOG(9, "Successfully saved text classification probabilities");
 
-  return true;
+  database::table::TextClassificationProbabilities
+      text_classification_probabilities_database_table;
+  text_classification_probabilities_database_table.PruneToMaximumEntries(
+      maximum_entries,
+      base::BindOnce(&LogPruneTextClassificationProbabilitiesToMaximumEntries));
 }
 
 }  // namespace brave_ads
