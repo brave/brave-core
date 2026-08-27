@@ -1441,7 +1441,7 @@ TEST_F(CardanoApiImplTest,
   bool request_queued = false;
   auto subscription =
       brave_wallet_service()->RegisterSignTransactionRequestAddedCallback(
-          base::BindRepeating([&] { request_queued = true; }));
+          base::BindLambdaForTesting([&] { request_queued = true; }));
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
