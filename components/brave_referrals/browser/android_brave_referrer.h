@@ -8,12 +8,15 @@
 
 #include <jni.h>
 
+#include <string>
+
 #include "base/android/scoped_java_ref.h"
 #include "net/base/completion_once_callback.h"
 
 namespace android_brave_referrer {
 
-using InitReferrerCallback = base::OnceCallback<void()>;
+using InitReferrerCallback =
+    base::OnceCallback<void(const std::string& gbraid)>;
 
 class BraveReferrer {
  public:
@@ -24,7 +27,7 @@ class BraveReferrer {
   BraveReferrer& operator=(const BraveReferrer&) = delete;
 
   void InitReferrer(InitReferrerCallback init_referrer_callback);
-  void OnReferrerReady(JNIEnv* env);
+  void OnReferrerReady(JNIEnv* env, const std::string& gbraid);
 
  private:
   base::android::ScopedJavaGlobalRef<jobject> java_obj_;
