@@ -2275,7 +2275,8 @@ TEST_F(SolanaTxManagerUnitTest,
 
   auto instruction = mojom::SolanaInstruction::New(
       mojom::kSolanaSystemProgramId, std::move(account_metas),
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}, nullptr);
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}),
+      nullptr);
   std::vector<mojom::SolanaInstructionPtr> instructions;
   instructions.push_back(std::move(instruction));
 
