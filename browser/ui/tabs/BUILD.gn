@@ -120,10 +120,7 @@ if (!is_android) {
   }
 
   source_set("tab_menu") {
-    sources = [
-      "brave_tab_menu_model_factory.cc",
-      "brave_tab_menu_model_factory.h",
-    ]
+    sources = []
 
     deps = [
       "//base",
