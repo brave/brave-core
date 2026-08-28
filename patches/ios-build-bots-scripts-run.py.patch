@@ -1,0 +1,13 @@
+diff --git a/ios/build/bots/scripts/run.py b/ios/build/bots/scripts/run.py
+index 6e8a80f27dc70eaa64f5413d147249f61fee3f95..ea437c32bc1192457a53655e024342f3f1f63889 100755
+--- a/ios/build/bots/scripts/run.py
++++ b/ios/build/bots/scripts/run.py
+@@ -679,7 +679,7 @@ def main(args):
+   logging.basicConfig(
+       format='[%(asctime)s:%(levelname)s] %(message)s',
+       level=logging.DEBUG,
+-      datefmt='%I:%M:%S')
++      datefmt='%H:%M:%S')
+ 
+   test_runner.defaults_delete('com.apple.CoreSimulator',
+                               'FramebufferServerRendererPolicy')
