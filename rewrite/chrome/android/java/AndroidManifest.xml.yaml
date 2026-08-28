@@ -1,0 +1,164 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Disable READ_CONTACTS.'
+    regex:
+      re_pattern:
+        '^([ \t]*)(<uses-permission-sdk-23
+        android:name="android\.permission\.READ_CONTACTS"[^>]*/>)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        <!--
+        \1\2
+        -->
+
+  - description: |
+      Only request FOREGROUND_SERVICE_CAMERA on desktop Android.
+
+      The feature that would use it (background media capturing) is off by
+      default and unused by Brave, and Google requires a declaration with a
+      demo video for any app using this permission.
+    regex:
+      re_pattern:
+        '^([ \t]*)(<uses-permission
+        android:name="android\.permission\.FOREGROUND_SERVICE_CAMERA"\s*/>)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1{% if is_desktop_android == "true" %}
+        \1\2
+        \1{% endif %}
+
+  - description: |
+      Disable FOREGROUND_SERVICE_MEDIA_PROJECTION.
+
+      Brave does not build desktop Android, the only target that would use
+      this, and Google requires a declaration with a demo video for any app
+      using this permission.
+    regex:
+      re_pattern:
+        '^([ \t]*)(<uses-permission
+        android:name="android\.permission\.FOREGROUND_SERVICE_MEDIA_PROJECTION"\s*/>)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        <!--
+        \1\2
+        -->
+
+  - description: |
+      Drop mediaProjection from MediaCaptureNotificationService's foreground
+      service type, to match FOREGROUND_SERVICE_MEDIA_PROJECTION being disabled
+      above.
+    regex:
+      pattern: 'android:foregroundServiceType="camera|microphone|mediaProjection|mediaPlayback"'
+      replace: 'android:foregroundServiceType="camera|microphone|mediaPlayback"'
+
+  - description: |
+      Disable GET_ACCOUNTS, MANAGE_ACCOUNTS and USE_CREDENTIALS.
+
+      Brave does not integrate with Android's account manager.
+    count: 3
+    regex:
+      re_pattern:
+        '^([ \t]*)(<uses-permission
+        android:name="android\.permission\.(?:GET_ACCOUNTS|MANAGE_ACCOUNTS|USE_CREDENTIALS)"\s*/>)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        <!--
+        \1\2
+        -->
+
+  - description: |
+      Disable NFC.
+
+      The only reason for this permission was WebNFC, which Brave disables in
+      BraveContentRendererClient.
+    regex:
+      re_pattern:
+        '^([ \t]*)(<uses-permission
+        android:name="android\.permission\.NFC"\s*/>)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        <!--
+        \1\2
+        -->
+
+  - description: |
+      Cap READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE at API 32.
+
+      Beyond API 32, scoped storage replaces the need for the broad legacy
+      permission.
+    count: 2
+    regex:
+      re_pattern:
+        '(<uses-permission
+        android:name="android\.permission\.(?:READ|WRITE)_EXTERNAL_STORAGE")\s*/>'
+      replace: '\1 android:maxSdkVersion="32"/>'
+
+  - description: |
+      Disable CURRENT_ACCOUNT_ACCESS.
+
+      This permission gated access to Google's "Google Now" account
+      integration, which Brave does not use.
+    regex:
+      re_pattern:
+        '^([ \t]*)(<uses-permission
+        android:name="com\.google\.android\.apps\.now\.CURRENT_ACCOUNT_ACCESS"\s*/>)$'
+      re_flags: [MULTILINE]
+      replace: |-
+        <!--
+        \1\2
+        -->
+
+  - description: |
+      Add BIND_GET_INSTALL_REFERRER_SERVICE.
+
+      Needed to receive the install referrer broadcast from the Google Play
+      Store.
+    regex:
+      re_pattern: '^([ \t]*)(\{% block extra_uses_permissions %\})$'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1<uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+        \1\2
+
+  - description: |
+      Include Brave's intent filters in the IntentDispatcher alias.
+
+      Keeps Brave-specific intent filters in their own file rather than
+      growing this one.
+    regex:
+      re_pattern:
+        '^([ \t]*)(<meta-data android:name="android\.app\.searchable")'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1{% include "//brave/android/java/AndroidManifest_intent_filters.xml" %}
+        \1\2
+
+  - description: |
+      Disable the Quick Action Search widget.
+
+      Brave does not ship this widget or its dino variant.
+    regex:
+      re_pattern:
+        '(<!-- Quick Action Search widget -->\n)(.*?)(\n([ \t]*)<!-- Bookmarks
+        widget -->)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1\4<!--
+        \2
+        \4-->\3
+
+  - description: |
+      Include Brave's own AndroidManifest.xml.
+
+      Lets Brave declare additional application-level manifest entries
+      without further patching this file.
+    regex:
+      re_pattern: '^([ \t]*)(\{% block extra_application_definitions %\})$'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1{% include "//brave/android/java/AndroidManifest.xml" %}
+        \1\2
