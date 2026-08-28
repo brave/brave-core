@@ -63,6 +63,7 @@ PsstReporterServiceFactory::PsstReporterServiceFactory()
           "PsstReporterService",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOriginalOnly)
+              .WithGuest(ProfileSelection::kOwnInstance)
               .Build()) {}
 
 PsstReporterServiceFactory::~PsstReporterServiceFactory() = default;
