@@ -63,6 +63,11 @@ void Tool::UserPermissionGranted(const std::string& tool_use_id) {
   // Default: no-op. Tools can override if they need to track permission state.
 }
 
+void Tool::SetUserPermission(mojom::ToolPermission permission) {
+  // Default: no-op. Only tools which raise their own challenge have anything
+  // to skip.
+}
+
 std::optional<std::string> Tool::GetPermissionChallengeDescription(
     const mojom::ToolUseEvent& tool_use) const {
   return std::nullopt;

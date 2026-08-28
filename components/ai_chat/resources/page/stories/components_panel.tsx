@@ -219,16 +219,19 @@ const SAMPLE_CONTENT_TOOLS: Mojom.ToolInfo[] = [
       + ' an invoice). With navigate=false (default), returns invoice data'
       + ' without changing the page — use this only when the user is asking a'
       + ' question about their invoices, not asking to view one.',
+    permission: Mojom.ToolPermission.kAsk,
   },
   {
     name: 'create_invoice',
     description: 'Create a new draft invoice for a given customer and amount.',
+    permission: Mojom.ToolPermission.kAlwaysAllow,
   },
   {
     name: 'send_invoice',
     description:
       'Email an existing draft invoice to its customer. Verifies the invoice'
       + ' has a customer and at least one line item first.',
+    permission: Mojom.ToolPermission.kNeverAllow,
   },
 ]
 

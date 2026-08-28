@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
+import Dropdown from '@brave/leo/react/dropdown'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
@@ -19,10 +20,32 @@ interface Props {
   onClose: () => void
 }
 
+// Leo's Dropdown deals in strings, so the enum is stringified on the way in
+// and parsed back out.
+const PERMISSION_OPTIONS = [
+  {
+    permission: Mojom.ToolPermission.kAlwaysAllow,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW,
+  },
+  {
+    permission: Mojom.ToolPermission.kAsk,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ASK,
+  },
+  {
+    permission: Mojom.ToolPermission.kNeverAllow,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_NEVER_ALLOW,
+  },
+] as const
+
+const DEFAULT_PERMISSION_OPTION = PERMISSION_OPTIONS.find(
+  (option) => option.permission === Mojom.ToolPermission.kAsk,
+)!
+
 function ToolItem(props: {
   tool: Mojom.ToolInfo
   isExpanded: boolean
   onToggle: () => void
+  onPermissionChange: (permission: Mojom.ToolPermission) => void
 }) {
   const [isClamped, setIsClamped] = React.useState(false)
   const descriptionRef = React.useRef<HTMLSpanElement>(null)
@@ -42,8 +65,36 @@ function ToolItem(props: {
     return () => observer.disconnect()
   }, [props.tool.description, props.isExpanded])
 
+  const selected =
+    PERMISSION_OPTIONS.find(
+      (option) => option.permission === props.tool.permission,
+    ) ?? DEFAULT_PERMISSION_OPTION
+
   return (
     <li className={styles.tool}>
+      <div className={styles.toolHeader}>
+        <span className={styles.toolName}>{props.tool.name}</span>
+        <Dropdown
+          size='small'
+          className={styles.toolPermission}
+          value={String(selected.permission)}
+          // The dialog scrolls, which would clip an absolutely positioned menu.
+          positionStrategy='fixed'
+          onChange={(e: { value: string }) =>
+            props.onPermissionChange(Number(e.value))
+          }
+        >
+          <div slot='value'>{getLocale(selected.label)}</div>
+          {PERMISSION_OPTIONS.map((option) => (
+            <leo-option
+              key={option.permission}
+              value={String(option.permission)}
+            >
+              {getLocale(option.label)}
+            </leo-option>
+          ))}
+        </Dropdown>
+      </div>
       <button
         type='button'
         disabled={!isClamped}
@@ -51,7 +102,6 @@ function ToolItem(props: {
         className={styles.toolToggle}
         onClick={props.onToggle}
       >
-        <span className={styles.toolName}>{props.tool.name}</span>
         {/* The clamp needs its own element: a button lays its content out in
             an anonymous box, which -webkit-box doesn't survive. */}
         <span
@@ -75,6 +125,8 @@ export default function WebsiteToolsModal(props: Props) {
   // Placeholder data means the page hasn't answered yet.
   const { getContentToolsData: tools, isPlaceholderData: isLoading } =
     conversation.api.useGetContentTools(props.content.uuid)
+  const { setContentToolPermission } =
+    conversation.api.useSetContentToolPermission()
   // Only one description is expanded at a time, to keep the list scannable.
   const [expandedToolName, setExpandedToolName] = React.useState<string | null>(
     null,
@@ -126,6 +178,13 @@ export default function WebsiteToolsModal(props: Props) {
                     setExpandedToolName((expanded) =>
                       expanded === tool.name ? null : tool.name,
                     )
+                  }
+                  onPermissionChange={(permission) =>
+                    setContentToolPermission([
+                      props.content.uuid,
+                      tool.name,
+                      permission,
+                    ])
                   }
                 />
               ))}

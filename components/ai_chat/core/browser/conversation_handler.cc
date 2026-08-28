@@ -1994,6 +1994,14 @@ void ConversationHandler::GetContentTools(const std::string& content_uuid,
   associated_content_manager_->GetToolInfos(content_uuid, std::move(callback));
 }
 
+void ConversationHandler::SetContentToolPermission(
+    const std::string& content_uuid,
+    const std::string& tool_name,
+    mojom::ToolPermission permission) {
+  associated_content_manager_->SetToolPermission(content_uuid, tool_name,
+                                                 permission);
+}
+
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {
   // A ToolProvider's task state has changed. Propogate this to the
   // conversation's task state.
