@@ -1608,7 +1608,8 @@ public class BytecodeTest {
                         ActionRegistry.class,
                         OneshotSupplier.class,
                         GlicButtonDelegate.class,
-                        boolean.class));
+                        boolean.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
