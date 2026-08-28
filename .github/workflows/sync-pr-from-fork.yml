@@ -54,6 +54,7 @@ jobs:
               --field ref="refs/heads/$contribHeadRefName" --field sha="$COMMIT_HASH"
           fi
 
+          ci_pr_title="CI run for contributor PR #$pr_number"
           ci_prs=$(gh pr list -H "$contribHeadRefName" --json number)
           ci_pr_count=$($JQ 'length' <<<"$ci_prs")
           if (( ci_pr_count > 1 )); then
@@ -62,17 +63,29 @@ jobs:
           fi
           ci_pr_number=$($JQ '.[0].number // ""' <<<"$ci_prs")
           if [[ -z "$ci_pr_number" ]]; then
-            gh pr create \
+            ci_pr_url=$(gh pr create \
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
-              --title "CI run for contributor PR #$pr_number" \
+              --title "$ci_pr_title" \
               --body \
           "## Description
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
-          **This PR should not be merged.**"
+          **This PR should not be merged.**")
             ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
+
+            if ! pr_body=$(gh pr view "$pr_number" --json body -q '.body // ""'); then
+              echo "Failed to get body for PR #$pr_number"
+              exit 1
+            fi
+            if ! gh pr edit "$pr_number" --body \
+          "$pr_body
+
+          Resolves $ci_pr_url"; then
+              echo "Failed to add CI PR link to PR #$pr_number"
+              exit 1
+            fi
           fi
 
           gh api --method PUT "repos/${GITHUB_REPOSITORY}/issues/${ci_pr_number:?}/labels" \
