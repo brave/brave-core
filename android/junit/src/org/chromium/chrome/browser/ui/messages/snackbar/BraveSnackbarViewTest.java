@@ -119,12 +119,12 @@ public class BraveSnackbarViewTest {
                         .setAction(NOTICE_ACTION, /* actionData= */ null);
         BraveSnackbarView view = createView(notice);
         view.setActionBelowMessage(
-                android.R.drawable.ic_menu_close_clear_cancel, "Close", () -> {});
+                notice, android.R.drawable.ic_menu_close_clear_cancel, "Close", () -> {});
 
         // A notification snackbar takes the view over and restructures it for custom text.
         Snackbar recentTab = makeSnackbar(RECENT_TAB_MESSAGE, Snackbar.TYPE_NOTIFICATION);
         view.update(recentTab);
-        view.setCustomText(RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
+        view.setCustomText(recentTab, RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
 
         // Dismissing it hands the view back to the notice.
         view.update(notice);
@@ -139,12 +139,68 @@ public class BraveSnackbarViewTest {
         assertNull(findViewWithText(snackbarLayout, RECENT_TAB_TITLE));
     }
 
+    /**
+     * A snackbar queued behind the one being shown must not restyle it. The New Tab Takeover notice
+     * is enqueued while the recent-tab snackbar is up (it is persistent, so it waits for the
+     * notification snackbar to go away), and used to move its close button onto that snackbar.
+     */
+    @Test
+    public void actionBelowMessageNotAppliedToTheShowingSnackbar() {
+        Snackbar recentTab = makeSnackbar(RECENT_TAB_MESSAGE, Snackbar.TYPE_NOTIFICATION);
+        BraveSnackbarView view = createView(recentTab);
+        view.setCustomText(recentTab, RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
+
+        Snackbar notice =
+                makeSnackbar(NOTICE_MESSAGE, Snackbar.TYPE_PERSISTENT)
+                        .setAction(NOTICE_ACTION, /* actionData= */ null);
+        view.setActionBelowMessage(
+                notice, android.R.drawable.ic_menu_close_clear_cancel, "Close", () -> {});
+
+        // The recent-tab snackbar is untouched by the queued notice.
+        LinearLayout snackbarLayout = (LinearLayout) view.getViewForTesting();
+        assertNotNull(findViewWithText(snackbarLayout, RECENT_TAB_TITLE));
+        assertNull(findViewWithText(snackbarLayout, NOTICE_ACTION));
+
+        // The notice gets its layout once it takes the view over.
+        view.update(notice);
+
+        assertNull(findViewWithText(snackbarLayout, RECENT_TAB_TITLE));
+        TextView actionButton = findViewWithText(snackbarLayout, NOTICE_ACTION);
+        assertNotNull(actionButton);
+        assertSame(snackbarLayout, actionButton.getParent().getParent());
+    }
+
+    /**
+     * A view does not survive every dismissal — SnackbarManager rebuilds it when a snackbar is
+     * swiped away — so a layout requested while its snackbar was queued must reach the view that
+     * finally shows it. The New Tab Takeover notice used to appear in the stock layout, without its
+     * close button, after the recent-tab snackbar in front of it was swiped away.
+     */
+    @Test
+    public void requestedLayoutAppliedToAViewBuiltLater() {
+        Snackbar notice =
+                makeSnackbar(NOTICE_MESSAGE, Snackbar.TYPE_PERSISTENT)
+                        .setAction(NOTICE_ACTION, /* actionData= */ null);
+        // The notice is queued behind another snackbar, so the request only reaches the manager.
+        mManager.setActionBelowMessage(
+                notice, android.R.drawable.ic_menu_close_clear_cancel, "Close", () -> {});
+
+        // The snackbar in front of it is swiped away and a fresh view is built for the notice.
+        BraveSnackbarView view = createView(notice);
+
+        LinearLayout snackbarLayout = (LinearLayout) view.getViewForTesting();
+        assertEquals(LinearLayout.VERTICAL, snackbarLayout.getOrientation());
+        TextView actionButton = findViewWithText(snackbarLayout, NOTICE_ACTION);
+        assertNotNull(actionButton);
+        assertSame(snackbarLayout, actionButton.getParent().getParent());
+    }
+
     /** The custom-text layout must not leak into an unrelated snackbar. */
     @Test
     public void customTextRevertedForAnotherSnackbar() {
         Snackbar recentTab = makeSnackbar(RECENT_TAB_MESSAGE, Snackbar.TYPE_NOTIFICATION);
         BraveSnackbarView view = createView(recentTab);
-        view.setCustomText(RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
+        view.setCustomText(recentTab, RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
 
         LinearLayout snackbarLayout = (LinearLayout) view.getViewForTesting();
         assertEquals(LinearLayout.VERTICAL, snackbarLayout.getOrientation());
@@ -166,7 +222,7 @@ public class BraveSnackbarViewTest {
     public void customTextReappliedForItsOwnSnackbar() {
         Snackbar recentTab = makeSnackbar(RECENT_TAB_MESSAGE, Snackbar.TYPE_NOTIFICATION);
         BraveSnackbarView view = createView(recentTab);
-        view.setCustomText(RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
+        view.setCustomText(recentTab, RECENT_TAB_TITLE, RECENT_TAB_PAGE_TITLE, RECENT_TAB_URL);
 
         LinearLayout snackbarLayout = (LinearLayout) view.getViewForTesting();
         view.update(makeSnackbar(NOTICE_MESSAGE, Snackbar.TYPE_NOTIFICATION));
