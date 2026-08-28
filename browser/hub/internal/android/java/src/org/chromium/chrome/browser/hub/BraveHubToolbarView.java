@@ -29,6 +29,9 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
+import org.chromium.chrome.browser.ui.actions.button.FullButtonData;
+
+import java.util.List;
 
 /**
  * Brave's extension for {@link HubToolbarView}. Here we control what elements should be visible in
@@ -40,6 +43,7 @@ public class BraveHubToolbarView extends HubToolbarView
     private Button mActionButton;
     private Button mShredButton;
     private FrameLayout mMenuButton;
+    private FrameLayout mPaneSwitcherCard;
     private boolean mIsIncognitoSelected = true;
     private @Nullable FirstPartyStorageCleanerInterface mFpCleaner;
     private final @NonNull HubColorMixerRegistrationHelper mButtonColorMixerHelper =
@@ -56,6 +60,7 @@ public class BraveHubToolbarView extends HubToolbarView
         mShredButton =
                 findViewById(org.chromium.chrome.browser.brave_shields.R.id.shred_data_button);
         mMenuButton = findViewById(R.id.menu_button_wrapper);
+        mPaneSwitcherCard = findViewById(R.id.pane_switcher_card);
         registerButtonColorBlend(mShredButton);
 
         mShredButton.setOnClickListener(
@@ -86,6 +91,19 @@ public class BraveHubToolbarView extends HubToolbarView
         if (mFpCleaner != null) {
             mFpCleaner.removeShredButtonVisibilityObserver(this);
         }
+    }
+
+    @Override
+    void setPaneSwitcherButtonData(
+            @Nullable List<FullButtonData> buttonDataList, int selectedIndex) {
+        super.setPaneSwitcherButtonData(buttonDataList, selectedIndex);
+
+        // Upstream hides the pane switcher itself when there is a single pane, but keeps the card
+        // hosting it, so the card's rounded background and padding are left over as a stray sliver
+        // in the middle of the toolbar. Upstream always has at least two panes; Brave is down to
+        // one when tab groups are disabled and there are no incognito tabs.
+        mPaneSwitcherCard.setVisibility(
+                buttonDataList != null && buttonDataList.size() > 1 ? View.VISIBLE : View.GONE);
     }
 
     @Override

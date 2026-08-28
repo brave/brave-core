@@ -301,6 +301,7 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/hub:java",
       "//chrome/browser/hub/internal:java",
+      "//chrome/browser/ui/android/actions:java",
     ]
   }
 
