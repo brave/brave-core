@@ -46,6 +46,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "build/blink_buildflags.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -1010,7 +1011,7 @@ bool BraveWalletService::HasPermissionSync(const url::Origin& origin,
 bool BraveWalletService::HasPermissionForPendingRequest(
     const url::Origin& origin,
     const mojom::AccountIdPtr& account_id) {
-#if BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(USE_BLINK)
   // iOS has no wallet site-permission model (no blink permission types) and
   // never observes content settings, so there is nothing to revoke.
   return true;

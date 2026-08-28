@@ -353,6 +353,7 @@ static_library("browser") {
     "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/services/brave_wallet/public/proto:zcash_proto",
     "//brave/net/base:utils",
+    "//build:blink_buildflags",
     "//components/cbor",
     "//components/component_updater",
     "//components/content_settings/core/browser",
