@@ -5,13 +5,10 @@
 
 substitutions:
   - description: |-
-      Embed Brave's bottom bar sources into the upstream component.
+      Build Brave's bottom bar button manager into the upstream component.
 
       BottomBarCoordinator constructs BraveBottomBarButtonManager, so a target of
       its own would have to be depended on by the component it depends on.
-    regex:
-      re_pattern: |-
-        (android_library\("java"\) \{\n  sources = \[.+?\n  \]\n)
-      re_flags: [DOTALL]
-      replace: |
-        \1  sources += brave_bottombar_java_sources
+    add_sources:
+      target: java
+      sources: //brave/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarButtonManager.java

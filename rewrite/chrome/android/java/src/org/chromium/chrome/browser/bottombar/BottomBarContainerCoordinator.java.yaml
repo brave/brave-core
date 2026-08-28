@@ -4,23 +4,20 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |-
-      Import Brave's bottom bar coordinator.
-
-      The import is added rather than repointed because the upstream one stays in
-      use by the field declaration BraveBottomBarCoordinator is assigned to. It
-      goes at the end of the bottombar imports, where it sorts, so that imports
-      upstream adds to the block do not land after it.
+  - description:
+      'Add Brave imports beneath the bottom bar container package declaration.'
     regex:
-      re_pattern: |-
-        ((?:import org\.chromium\.chrome\.browser\.ui\.bottombar\.\w+;\n)+)
-      replace: |
-        \1import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarCoordinator;
+      re_pattern: '^(package [^;]+;\n)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+        import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarCoordinator;
   - description: |-
       Instantiate Brave's bottom bar coordinator.
 
       BraveBottomBarCoordinator gives the bottom bar the button set Brave's own
-      bottom navigation controls used to show.
+      bottom navigation controls used to show. The upstream import stays in use by
+      the field declaration it is assigned to.
     regex:
       re_pattern: |-
         new (BottomBarCoordinator\()
