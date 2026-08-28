@@ -2237,26 +2237,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   EXPECT_LE(contents_bounds_right.right(), vertical_tab_bounds_right.x());
 }
 
-// Regression test: When Chromium's upstream vertical tabs feature is active,
+// Regression test: When Chromium's upstream vertical tabs are active,
 // TabStrip::Initialize() is never called so tab_container_ remains null.
 // BraveTabStrip::UpdateOrientation() was crashing by accessing the null
 // tab_container_ via SetAvailableWidthCallback() during startup.
-class UpstreamVerticalTabsCrashTest : public InProcessBrowserTest {
- public:
-  UpstreamVerticalTabsCrashTest() {
-    scoped_feature_list_.InitAndEnableFeature(tabs::kVerticalTabs);
-  }
-  ~UpstreamVerticalTabsCrashTest() override = default;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
+using UpstreamVerticalTabsCrashTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   // Simulate the user choosing "Side" in Tab strip position settings,
-  // then opening a new window. verifies no crash when kVerticalTabs is active
-  // and kVerticalTabsEnabled is set, since tab_container_ may be null in that
-  // configuration.
+  // then opening a new window. Verifies no crash when kVerticalTabsEnabled is
+  // set, since tab_container_ may be null in that configuration.
   browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kVerticalTabsEnabled,
                                                   true);
   Browser* new_browser = CreateBrowser(browser()->GetProfile());

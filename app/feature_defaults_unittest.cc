@@ -297,9 +297,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillValuableMetadata,
-#if !BUILDFLAG(IS_ANDROID)
-      &tabs::kVerticalTabsLaunch,
-#endif  // !BUILDFLAG(IS_ANDROID)
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
