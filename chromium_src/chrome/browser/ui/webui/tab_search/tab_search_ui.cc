@@ -75,6 +75,10 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
       "tabOrganizationWindowCreatedMessage",
       l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_WINDOW_CREATED_MESSAGE));
 
+  update_data.Set("tabOrganizationNoMatchingTabsMessage",
+                  l10n_util::GetStringUTF16(
+                      IDS_BRAVE_ORGANIZE_TAB_NO_MATCHING_TABS_MESSAGE));
+
   update_data.Set(
       "tabOrganizationSendTabDataMessage",
       l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_SEND_TAB_DATA_MESSAGE));
