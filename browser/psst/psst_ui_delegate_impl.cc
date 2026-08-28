@@ -7,8 +7,10 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 
 namespace {
@@ -22,14 +24,17 @@ namespace psst {
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
     PsstReporterService* psst_reporter_service,
+    brave_origin::BraveOriginService* brave_origin_service,
     PrefService* prefs,
     std::unique_ptr<PsstUiPresenter> ui_presenter)
     : ui_presenter_(std::move(ui_presenter)),
       psst_settings_service_(psst_settings_service),
       psst_reporter_service_(psst_reporter_service),
+      brave_origin_service_(brave_origin_service),
       prefs_(prefs) {
   CHECK(psst_settings_service_);
   CHECK(psst_reporter_service_);
+  CHECK(brave_origin_service_);
   CHECK(ui_presenter_);
   CHECK(prefs_);
   psst_settings_service_->AddObserver(this);
@@ -194,7 +199,12 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
 }
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
-  psst_settings_service_->SetPsstEnabled(false);
+  if (brave_origin_service_->IsPolicyControlledByBraveOrigin(
+          policy::key::kPsstEnabled)) {
+    brave_origin_service_->SetPolicyValue(policy::key::kPsstEnabled, false);
+  } else {
+    psst_settings_service_->SetPsstEnabled(false);
+  }
   ui_presenter_->HideInfoBar();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
                                           base::NullCallback(),
