@@ -2300,7 +2300,7 @@ public class BytecodeTest {
                         Context.class,
                         LayoutUpdateHost.class,
                         LayoutRenderHost.class,
-                        BrowserControlsStateProvider.class,
+                        BrowserControlsVisibilityManager.class,
                         LayoutManager.class,
                         ToolbarThemeColorProvider.class,
                         NonNullObservableSupplier.class,

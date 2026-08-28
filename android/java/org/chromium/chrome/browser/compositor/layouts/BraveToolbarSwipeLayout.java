@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ControlContainer;
@@ -30,7 +30,7 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
             Context context,
             LayoutUpdateHost updateHost,
             LayoutRenderHost renderHost,
-            BrowserControlsStateProvider browserControlsStateProvider,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager,
             LayoutManager layoutManager,
             ToolbarThemeColorProvider toolbarColorProvider,
             NonNullObservableSupplier<Integer> bottomControlsOffsetSupplier,
@@ -41,7 +41,7 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
                 context,
                 updateHost,
                 renderHost,
-                browserControlsStateProvider,
+                browserControlsVisibilityManager,
                 layoutManager,
                 toolbarColorProvider,
                 bottomControlsOffsetSupplier,
