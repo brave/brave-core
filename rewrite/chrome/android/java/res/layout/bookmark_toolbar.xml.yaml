@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use BraveBookmarkToolbar.
+
+      Adds the Import/Export bookmarks menu entries.
+    regex:
+      pattern: '<org.chromium.chrome.browser.bookmarks.BookmarkToolbar'
+      replace: '<org.chromium.chrome.browser.bookmarks.BraveBookmarkToolbar'
+
+  - description: 'Drop android:focusable from the toolbar root view.'
+    regex:
+      re_pattern: 'android:focusable="[^"]*"\s*'
+      replace: ''
