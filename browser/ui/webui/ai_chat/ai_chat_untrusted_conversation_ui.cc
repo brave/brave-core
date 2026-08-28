@@ -361,7 +361,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     ai_chat::MaybeMoveFullPageChatToSidePanel(web_ui_->GetWebContents());
 #if !BUILDFLAG(IS_ANDROID)
     Browser* browser =
-        ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
+        ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents())
+            ->GetBrowserForMigrationOnly();
     browser->OpenURL(
         {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
          ui::PAGE_TRANSITION_LINK, false},
