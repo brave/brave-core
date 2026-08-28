@@ -96,6 +96,19 @@ export default function createConversationApi(
           // },
           mutationResponse: (result) => result.turn,
         },
+        // A mutation rather than an action so the dialog updates without a
+        // refetch - re-asking the page for its tools could return a different
+        // list mid-interaction.
+        setContentToolPermission: {
+          mutationResponse: () => {},
+          onMutate: ([contentUuid, toolName, permission]) => {
+            api.getContentTools.update(contentUuid, (tools) =>
+              tools.map((tool) =>
+                tool.name === toolName ? { ...tool, permission } : tool,
+              ),
+            )
+          },
+        },
         setTemporary: {
           // Instead of allow setTemporary as a pass through via actions,
           // we intercept it via a mutation so we can handle onMutate

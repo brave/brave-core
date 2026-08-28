@@ -99,6 +99,12 @@ class Tool {
   // before UseTool is called.
   virtual void UserPermissionGranted(const std::string& tool_use_id);
 
+  // A decision the user has already made about this tool, so that
+  // RequiresUserInteractionBeforeHandling() can skip the challenge it would
+  // otherwise raise. kNeverAllow tools are withheld from the model by whoever
+  // provides them, so implementors only need to handle kAsk and kAlwaysAllow.
+  virtual void SetUserPermission(mojom::ToolPermission permission);
+
   // Returns a human-readable, markdown-formatted description of what this
   // tool use is asking permission for (e.g. naming a site-registered WebMCP
   // tool and its origin instead of a mangled, model-facing tool name).

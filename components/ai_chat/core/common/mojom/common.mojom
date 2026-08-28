@@ -163,11 +163,22 @@ struct AssociatedContent {
   bool tools_attached;
 };
 
+// The user's choice for a website-provided tool. Only affects the client's own
+// permission check - a challenge raised by the server's alignment check is
+// always shown, whatever this says. kNeverAllow withholds the tool from the
+// model entirely rather than failing it when called.
+enum ToolPermission {
+  kAsk,
+  kAlwaysAllow,
+  kNeverAllow,
+};
+
 // Describes a tool for display to the user - its name and description as they
 // were registered, rather than the mangled model-facing variants.
 struct ToolInfo {
   string name;
   string description;
+  ToolPermission permission;
 };
 
 struct UploadedFile {

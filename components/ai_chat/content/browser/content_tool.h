@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-shared.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "third_party/blink/public/mojom/content_extraction/script_tools.mojom-forward.h"
 
@@ -38,6 +39,7 @@ class ContentTool : public Tool {
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
   void UserPermissionGranted(const std::string& tool_use_id) override;
+  void SetUserPermission(mojom::ToolPermission permission) override;
   std::optional<std::string> GetPermissionChallengeDescription(
       const mojom::ToolUseEvent& tool_use) const override;
 
@@ -45,7 +47,11 @@ class ContentTool : public Tool {
                UseToolCallback callback) override;
 
  private:
+  // Granted for this tool use loop only, by answering a permission challenge.
   bool user_permission_granted_ = false;
+  // Never kNeverAllow: those tools are withheld from the model by
+  // AssociatedContentManager and so never reach here.
+  mojom::ToolPermission user_permission_ = mojom::ToolPermission::kAsk;
 
   content::WeakDocumentPtr rfh_;
   // As registered by the page. |name_| and |description_| are the model-facing

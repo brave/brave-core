@@ -456,6 +456,11 @@ interface ConversationHandler {
   // Gets the tools the associated content with |content_uuid| currently
   // exposes, for the tools pill's dialog. Empty if it's no longer associated.
   GetContentTools(string content_uuid) => (array<ToolInfo> tools);
+
+  // Applies to every tool of that name from the content's origin, for the
+  // lifetime of this conversation.
+  SetContentToolPermission(string content_uuid, string tool_name,
+                           ToolPermission permission);
 };
 
 interface ConversationUI {

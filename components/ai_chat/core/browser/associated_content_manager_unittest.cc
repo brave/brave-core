@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <map>
 #include <memory>
 #include <set>
 #include <string>
@@ -692,6 +693,178 @@ TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_DescribesTools) {
   EXPECT_EQ("Browse OR navigate to store collections.", result[0]->description);
   EXPECT_EQ("cancel_cart", result[1]->name);
   EXPECT_EQ("Remove all items from the cart.", result[1]->description);
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_ReportsToolPermissions) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("browse_store"));
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> initial;
+  manager->GetToolInfos(content.uuid(), initial.GetCallback());
+  ASSERT_EQ(2u, initial.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, initial.Get()[0]->permission);
+  EXPECT_EQ(mojom::ToolPermission::kAsk, initial.Get()[1]->permission);
+
+  manager->SetToolPermission(content.uuid(), "browse_store",
+                             mojom::ToolPermission::kAlwaysAllow);
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> updated;
+  manager->GetToolInfos(content.uuid(), updated.GetCallback());
+  ASSERT_EQ(2u, updated.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAlwaysAllow, updated.Get()[0]->permission);
+  EXPECT_EQ(mojom::ToolPermission::kNeverAllow, updated.Get()[1]->permission);
+
+  // Blocked tools stay listed in the dialog, so the choice can be undone.
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kAsk);
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> reset;
+  manager->GetToolInfos(content.uuid(), reset.GetCallback());
+  ASSERT_EQ(2u, reset.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, reset.Get()[1]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_NeverAllowWithholdsToolFromGenerationLoop) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("browse_store"));
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+
+  auto tools = manager->GetTools();
+  ASSERT_EQ(1u, tools.size());
+  EXPECT_EQ("browse_store", std::string(tools[0]->Name()));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_AppliesChoiceToToolsForGenerationLoop) {
+  // Tools are rebuilt for every generation loop, so the manager has to
+  // reapply the user's choice to each fresh instance.
+  std::map<std::string, mojom::ToolPermission> applied;
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&applied](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            for (const char* name : {"browse_store", "cancel_cart"}) {
+              auto tool = std::make_unique<NiceMock<MockTool>>(name);
+              ON_CALL(*tool, SetUserPermission)
+                  .WillByDefault(
+                      [&applied, name](mojom::ToolPermission permission) {
+                        applied[name] = permission;
+                      });
+              tools.push_back(std::move(tool));
+            }
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolPermission(content.uuid(), "browse_store",
+                             mojom::ToolPermission::kAlwaysAllow);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+
+  EXPECT_THAT(applied,
+              ::testing::UnorderedElementsAre(
+                  std::pair<const std::string, mojom::ToolPermission>(
+                      "browse_store", mojom::ToolPermission::kAlwaysAllow),
+                  std::pair<const std::string, mojom::ToolPermission>(
+                      "cancel_cart", mojom::ToolPermission::kAsk)));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_IsScopedToTheContentsOrigin) {
+  // Two sites can each expose a tool of the same name, and a choice about one
+  // must not silently apply to the other.
+  NiceMock<MockAssociatedContent> first_content;
+  first_content.SetUrl(GURL("https://example.com/cart"));
+  NiceMock<MockAssociatedContent> second_content;
+  second_content.SetUrl(GURL("https://other.example/cart"));
+  for (auto* content : {&first_content, &second_content}) {
+    EXPECT_CALL(*content, GetContentTools)
+        .WillRepeatedly(
+            [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+              std::vector<std::unique_ptr<Tool>> tools;
+              tools.push_back(
+                  std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+              std::move(cb).Run(std::move(tools));
+            });
+  }
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+  manager->SetToolPermission(first_content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> second_infos;
+  manager->GetToolInfos(second_content.uuid(), second_infos.GetCallback());
+  ASSERT_EQ(1u, second_infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, second_infos.Get()[0]->permission);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+  EXPECT_EQ(1u, manager->GetTools().size());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_UnknownContentIsIgnored) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolPermission("not-an-attached-content", "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
 }
 
 TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_UnknownContentIsEmpty) {
