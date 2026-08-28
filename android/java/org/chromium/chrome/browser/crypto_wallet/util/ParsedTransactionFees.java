@@ -27,16 +27,16 @@ import java.math.BigInteger;
 @NullMarked
 public class ParsedTransactionFees {
     // Strings are initialized to empty string instead of null, as the default value from mojo
-    private final String gasLimit;
-    private final String gasPrice;
-    private final String maxPriorityFeePerGas;
-    private final String maxFeePerGas;
-    private final double gasFee;
-    private final double gasFeeFiat;
-    private final boolean isEIP1559Transaction;
-    @Nullable private final String missingGasLimitError;
-    private final double gasPremium;
-    private final double gasFeeCap;
+    private final String mGasLimit;
+    private final String mGasPrice;
+    private final String mMaxPriorityFeePerGas;
+    private final String mMaxFeePerGas;
+    private final double mGasFee;
+    private final double mGasFeeFiat;
+    private final boolean mIsEIP1559Transaction;
+    @Nullable private final String mMissingGasLimitError;
+    private final double mGasPremium;
+    private final double mGasFeeCap;
 
     protected ParsedTransactionFees(
             String gasLimit,
@@ -49,57 +49,57 @@ public class ParsedTransactionFees {
             @Nullable String missingGasLimitError,
             double gasPremium,
             double gasFeeCap) {
-        this.gasLimit = gasLimit;
-        this.gasPrice = gasPrice;
-        this.maxPriorityFeePerGas = maxPriorityFeePerGas;
-        this.maxFeePerGas = maxFeePerGas;
-        this.gasFee = gasFee;
-        this.gasFeeFiat = gasFeeFiat;
-        this.isEIP1559Transaction = isEIP1559Transaction;
-        this.missingGasLimitError = missingGasLimitError;
-        this.gasPremium = gasPremium;
-        this.gasFeeCap = gasFeeCap;
+        mGasLimit = gasLimit;
+        mGasPrice = gasPrice;
+        mMaxPriorityFeePerGas = maxPriorityFeePerGas;
+        mMaxFeePerGas = maxFeePerGas;
+        mGasFee = gasFee;
+        mGasFeeFiat = gasFeeFiat;
+        mIsEIP1559Transaction = isEIP1559Transaction;
+        mMissingGasLimitError = missingGasLimitError;
+        mGasPremium = gasPremium;
+        mGasFeeCap = gasFeeCap;
     }
 
     public String getGasLimit() {
-        return this.gasLimit;
+        return mGasLimit;
     }
 
     public String getGasPrice() {
-        return this.gasPrice;
+        return mGasPrice;
     }
 
     public String getMaxPriorityFeePerGas() {
-        return this.maxPriorityFeePerGas;
+        return mMaxPriorityFeePerGas;
     }
 
     public String getMaxFeePerGas() {
-        return this.maxFeePerGas;
+        return mMaxFeePerGas;
     }
 
     public double getGasFee() {
-        return this.gasFee;
+        return mGasFee;
     }
 
     public double getGasFeeFiat() {
-        return this.gasFeeFiat;
+        return mGasFeeFiat;
     }
 
     public boolean getIsEIP1559Transaction() {
-        return this.isEIP1559Transaction;
+        return mIsEIP1559Transaction;
     }
 
     @Nullable
     public String getMissingGasLimitError() {
-        return this.missingGasLimitError;
+        return mMissingGasLimitError;
     }
 
     public double getGasPremium() {
-        return this.gasPremium;
+        return mGasPremium;
     }
 
     public double getGasFeeCap() {
-        return this.gasFeeCap;
+        return mGasFeeCap;
     }
 
     @Nullable
