@@ -180,6 +180,27 @@ void InitiateTeardown() {
   base::PlatformThread::CreateNonJoinable(0, watchdog);
 }
 
+// Clears the failure actions so the SCM does not attempt to restart the service
+// if we deliberately abort the startup process (e.g., firewall installation
+// fails).
+void DisableServiceRestarts() {
+  ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
+  if (!scm.is_valid()) {
+    return;
+  }
+  ScopedScHandle service(
+      ::OpenService(scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
+                    SERVICE_CHANGE_CONFIG));
+  if (!service.is_valid()) {
+    return;
+  }
+
+  SERVICE_FAILURE_ACTIONS failure_actions = {0};
+  // cActions = 0 explicitly removes any restart behaviors (SC_ACTION_NONE).
+  ::ChangeServiceConfig2(service.Get(), SERVICE_CONFIG_FAILURE_ACTIONS,
+                         &failure_actions);
+}
+
 // Owns the firewall for the lifetime of the tunnel. The global filters are
 // already installed by the time this is constructed; PermitTunnel() completes
 // the policy and runs on an OS worker thread from TunnelInterfaceWatcher.
@@ -500,6 +521,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!installed_firewall) {
       VLOG(1) << "Unable to install the firewall, refusing to connect "
                  "unprotected";
+      DisableServiceRestarts();
       return S_FALSE;
     }
 
@@ -514,6 +536,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!watcher) {
       VLOG(1) << "Unable to watch for the tunnel adapter, refusing to connect "
                  "without a firewall";
+      DisableServiceRestarts();
       return S_FALSE;
     }
 
@@ -521,6 +544,7 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!watchdog.Start()) {
       VLOG(1) << "Unable to start the firewall watchdog, refusing to connect "
                  "without a way to detect an unprotected tunnel";
+      DisableServiceRestarts();
       return S_FALSE;
     }
 
@@ -529,20 +553,11 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
         brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
 
     // Owns the tunnel's whole lifetime: it returns only once the tunnel is
-    // down. If it ever failed to return -- an upstream bug, since its stop
-    // handler only moves the service to STOP_PENDING and returns -- the process
-    // would stay alive, and because our WFP session is dynamic that leaves
-    // block-all in force with nothing permitting the tunnel. The user would
-    // have no connectivity at all until the service is killed or the machine
-    // rebooted; RemoveExistingWireguardService() does not help, as it gives up
-    // after 2s and only marks the service for deletion.
-    //
-    // If a report ever points here, the fix is a deadline armed by
-    // RequestTunnelShutdown() that terminates the process. Note that it has to
-    // account for the failure actions from SetServiceFailureActions(): with
-    // dwResetPeriod == 0 every termination looks like a first failure, so a
-    // naive implementation restarts forever, and the IKEv2 fallback counter
-    // will not stop it because only browser-initiated connects increment it.
+    // down. If it ever fails to return (e.g., an upstream bug where tunnel.dll
+    // hangs after moving the service to STOP_PENDING), InitiateTeardown() and
+    // its TeardownWatchdog guarantee that the process is terminated within
+    // 15 seconds. This ensures the dynamic WFP session is destroyed and the
+    // user's connectivity is restored.
     auto result = tunnel_proc(config_path.value().c_str());
     VLOG(1) << "Tunnel stopped, result: " << result;
     watchdog.Stop();
