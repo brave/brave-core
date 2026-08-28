@@ -104,9 +104,7 @@ class NewTabPageViewController: UIViewController {
       return nil
     }
 
-    if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section))
-      as? NewTabCenteredCollectionViewCell<BraveShieldStatsView>
-    {
+    if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) {
       return cell.contentView.convert(cell.contentView.frame, to: view)
     }
     return nil
@@ -390,7 +388,7 @@ class NewTabPageViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    collectionView.reloadData()
+    collectionView.collectionViewLayout.invalidateLayout()
 
     // Make sure that imageView has a frame calculated before we attempt
     // to use it.
@@ -430,6 +428,12 @@ class NewTabPageViewController: UIViewController {
       != traitCollection.verticalSizeClass
     {
       calculateBackgroundCenterPoints()
+    }
+
+    if previousTraitCollection?.horizontalSizeClass
+      != traitCollection.horizontalSizeClass
+    {
+      collectionView.reloadData()
     }
   }
 
