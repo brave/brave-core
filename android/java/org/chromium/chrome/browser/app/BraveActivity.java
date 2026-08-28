@@ -654,11 +654,11 @@ public abstract class BraveActivity extends ChromeActivity
      * @return true if the launch was handed over and this activity should not start.
      */
     private boolean maybeRedirectLaunchToYouTubePictureInPictureWindow(Intent intent) {
-        // Only a bare launcher tap, and never one Brave sent itself: the new window flows use
-        // trusted intents and really do mean to open another window.
+        // Launcher taps only. Upstream already routes stray VIEW intents to an existing window
+        // from maybeDispatchIntentInExistingActivity, and its own new window intents carry no
+        // action at all (MultiWindowUtils#createNewWindowIntent), so neither reaches this.
         if (!Intent.ACTION_MAIN.equals(intent.getAction())
-                || !intent.hasCategory(Intent.CATEGORY_LAUNCHER)
-                || IntentHandler.wasIntentSenderChrome(intent)) {
+                || !intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
             return false;
         }
 
