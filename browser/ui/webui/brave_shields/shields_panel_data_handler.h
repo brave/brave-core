@@ -31,10 +31,6 @@ namespace brave_shields {
 class BraveShieldsSettingsService;
 }  // namespace brave_shields
 
-namespace brave_shields {
-class BraveShieldsSettingsService;
-}
-
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
       public brave_shields::BraveShieldsTabHelper::Observer,
