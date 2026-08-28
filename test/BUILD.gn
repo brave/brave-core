@@ -1652,6 +1652,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveTabsAndTabGroupsSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/settings/search/BraveAutofillOptionsSearchIndexTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/sync/BraveManageSyncSettingsTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/toolbar/BraveToolbarManagerTest.java",
     ]
 
     deps = [
@@ -1710,6 +1711,7 @@ if (is_android) {
       "//chrome/browser/ui/android/extensions:java",
       "//chrome/browser/ui/android/favicon:java",
       "//chrome/browser/ui/android/layouts:java",
+      "//chrome/browser/ui/android/layouts/test:java",
       "//chrome/browser/ui/android/logo:java",
       "//chrome/browser/ui/android/multiwindow:java",
       "//chrome/browser/ui/android/native_page:java",

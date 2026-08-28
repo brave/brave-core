@@ -52,6 +52,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
@@ -178,6 +179,33 @@ public class BraveToolbarManager extends ToolbarManager
     private Runnable mOpenGridTabSwitcherHandler;
     private final MonotonicObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
     private final Supplier<ShareDelegate> mShareDelegateSupplier;
+
+    // Hub layout state provider and observer for hiding the toolbar when the hub is shown.
+    // See https://github.com/brave/brave-browser/issues/57997.
+    private boolean mIsHubHiding;
+    private @Nullable LayoutStateProvider mHubLayoutStateProvider;
+    private final LayoutStateProvider.LayoutStateObserver mHubLayoutStateObserver =
+            new LayoutStateProvider.LayoutStateObserver() {
+                @Override
+                public void onStartedShowing(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = false;
+                }
+
+                @Override
+                public void onFinishedShowing(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = false;
+                }
+
+                @Override
+                public void onStartedHiding(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = true;
+                }
+
+                @Override
+                public void onFinishedHiding(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = false;
+                }
+            };
 
     public BraveToolbarManager(
             AppCompatActivity activity,
@@ -486,6 +514,15 @@ public class BraveToolbarManager extends ToolbarManager
         }
     }
 
+    @Override
+    public void beginFuseboxInput(AutocompleteInput input) {
+        // Hub exposes the bottom search accelerator before its hide animation completes.
+        // Starting input in that interval can leave Hub and omnibox UI visible together.
+        if (mIsHubHiding) return;
+
+        super.beginFuseboxInput(input);
+    }
+
     // The 3rd parameter at ToolbarManager.initializeWithNativ is
     // OnClickListener newTabClickHandler, but at
     // ChromeTabbedActivity.initializeToolbarManager
@@ -522,6 +559,7 @@ public class BraveToolbarManager extends ToolbarManager
                 contextMenuPopulatorFactory,
                 selectionDropdownMenuDelegate);
 
+        registerHubLayoutObserver();
         mOpenGridTabSwitcherHandler = openGridTabSwitcherHandler;
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
@@ -561,6 +599,7 @@ public class BraveToolbarManager extends ToolbarManager
 
     @Override
     public void destroy() {
+        unregisterHubLayoutObserver();
         super.destroy();
         HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
     }
@@ -571,6 +610,26 @@ public class BraveToolbarManager extends ToolbarManager
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility(hasFocus);
         }
+    }
+
+    private void registerHubLayoutObserver() {
+        mLayoutStateProviderSupplier.onAvailable(
+                mCallbackController.makeCancelable(this::setHubLayoutStateProvider));
+    }
+
+    private void setHubLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
+        if (mHubLayoutStateProvider != null) return;
+
+        mHubLayoutStateProvider = layoutStateProvider;
+        layoutStateProvider.addObserver(mHubLayoutStateObserver);
+    }
+
+    private void unregisterHubLayoutObserver() {
+        if (mHubLayoutStateProvider != null) {
+            mHubLayoutStateProvider.removeObserver(mHubLayoutStateObserver);
+            mHubLayoutStateProvider = null;
+        }
+        mIsHubHiding = false;
     }
 
     private void recordNewTabClick() {
