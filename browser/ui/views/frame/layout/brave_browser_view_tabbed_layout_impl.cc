@@ -208,8 +208,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   // vertical tab strip when it's on the right. This is because sidebar is laid
   // out depending on the contents_layout->bounds.
   if (views().vertical_tab_strip_host && delegate().ShouldShowVerticalTabs()) {
-    // Both vertical tab impls should not be enabled together.
-    CHECK(!tabs::IsVerticalTabsFeatureEnabled());
     contents_layout->bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
