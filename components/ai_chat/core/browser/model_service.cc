@@ -146,7 +146,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::CONTENT_AGENT,
           mojom::ConversationCapability::DEEP_RESEARCH};
-      model->is_suggested_model = true;
+      model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -369,7 +369,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Qwen 3.5 122B
+    // Qwen 3.8 Flash Next
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Alibaba Cloud";
@@ -381,13 +381,13 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-qwen-3-235b";
-      model->display_name = "Qwen 3.5 122B";
+      model->display_name = "Qwen 3.8 Flash Next";
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
           mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
-      model->is_suggested_model = false;
+      model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
