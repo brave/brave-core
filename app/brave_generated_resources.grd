@@ -180,6 +180,9 @@
       <!-- Brave App Management strings -->
       <part file="brave_app_management.grdp" />
 
+      <!-- Custom profile image strings -->
+      <part file="custom_profile_image_strings.grdp" />
+
       <!--Add new items to the appropriate sections below -->
 
       <!-- Profile menu -->

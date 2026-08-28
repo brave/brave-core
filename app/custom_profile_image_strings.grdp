@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_TITLE" desc="Heading for the custom profile image section." formatter_data="webui=CustomProfileImage">
+    Custom profile image
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION" desc="Label for the empty custom profile image upload button." formatter_data="webui=CustomProfileImage">
+    Upload custom image
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_REPLACE_ACTION" desc="Label for the custom profile image replace button." formatter_data="webui=CustomProfileImage">
+    Replace
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP" desc="Tooltip and accessibility label for the custom profile image replace button." formatter_data="webui=CustomProfileImage">
+    Replace custom profile image
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_REMOVE_ACTION" desc="Label for the custom profile image remove button." formatter_data="webui=CustomProfileImage">
+    Remove
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL" desc="Accessibility label for a selected custom profile image preview." formatter_data="webui=CustomProfileImage">
+    Custom profile image preview, selected
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP" desc="Tooltip and accessibility label for the custom profile image upload control." formatter_data="webui=CustomProfileImage">
+    Upload a custom profile image
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP" desc="Tooltip and accessibility label for the custom profile image remove button." formatter_data="webui=CustomProfileImage">
+    Remove custom profile image
+  </message>
+  <message name="IDS_CUSTOM_PROFILE_IMAGE_INVALID_IMAGE" desc="Error shown when a selected custom profile image cannot be used." formatter_data="webui=CustomProfileImage">
+    Brave can't use this file. Choose another image and try again.
+  </message>
+</grit-part>
