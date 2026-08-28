@@ -5,7 +5,11 @@
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_firewall.h"
 
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
 #include <fwpmu.h>
+#include <iphlpapi.h>
 
 #include <array>
 #include <ios>
@@ -400,10 +404,12 @@ DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
 }
 
 DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
+  // ========================================================================
+  // 1. Install statically known local network prefixes (RFC1918, Link-local)
+  // ========================================================================
   const std::array<GUID, 2u> v4_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V4,
                                           FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4};
   for (const auto& prefix : kLocalIpv4Prefixes) {
-    // WFP stores a pointer for FWP_V4_ADDR_MASK, so this must outlive the add.
     FWP_V4_ADDR_AND_MASK addr_and_mask = {};
     addr_and_mask.addr = prefix.address;
     addr_and_mask.mask = Ipv4Netmask(prefix.prefix_length);
@@ -414,7 +420,7 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
         {FWP_V4_ADDR_MASK, {.v4AddrMask = &addr_and_mask}}}};
     auto result = AddFilterToLayers(
         engine, base_objects, v4_layers, FWP_ACTION_PERMIT,
-        kWeightPermitLocalNetwork, conditions, L"Permit local network");
+        kWeightPermitLocalNetwork, conditions, L"Permit static local IPv4");
     if (result != ERROR_SUCCESS) {
       return result;
     }
@@ -433,9 +439,93 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
         {FWP_V6_ADDR_MASK, {.v6AddrMask = &addr_and_mask}}}};
     auto result = AddFilterToLayers(
         engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
-        kWeightPermitLocalNetwork, conditions, L"Permit local network");
+        kWeightPermitLocalNetwork, conditions, L"Permit static local IPv6");
     if (result != ERROR_SUCCESS) {
       return result;
+    }
+  }
+
+  // ========================================================================
+  // 2. Install dynamically assigned on-link prefixes (SLAAC Global Unicast)
+  // ========================================================================
+  ULONG out_buf_len = 15000;
+  std::vector<uint8_t> buffer(out_buf_len);
+
+  // We only need the prefixes, skip heavy unicast/multicast address lists
+  ULONG flags = GAA_FLAG_INCLUDE_PREFIX | GAA_FLAG_SKIP_UNICAST |
+                GAA_FLAG_SKIP_ANYCAST | GAA_FLAG_SKIP_MULTICAST |
+                GAA_FLAG_SKIP_DNS_SERVER;
+
+  DWORD ret = GetAdaptersAddresses(
+      AF_UNSPEC, flags, nullptr,
+      reinterpret_cast<PIP_ADAPTER_ADDRESSES>(buffer.data()), &out_buf_len);
+  if (ret == ERROR_BUFFER_OVERFLOW) {
+    buffer.resize(out_buf_len);
+    ret = GetAdaptersAddresses(
+        AF_UNSPEC, flags, nullptr,
+        reinterpret_cast<PIP_ADAPTER_ADDRESSES>(buffer.data()), &out_buf_len);
+  }
+
+  if (ret == NO_ERROR) {
+    // WFP filter structures store pointers to masks, so the memory must
+    // outlive the AddFilterToLayers calls in this block.
+    std::vector<FWP_V4_ADDR_AND_MASK> dynamic_v4_masks;
+    std::vector<FWP_V6_ADDR_AND_MASK> dynamic_v6_masks;
+
+    PIP_ADAPTER_ADDRESSES adapter =
+        reinterpret_cast<PIP_ADAPTER_ADDRESSES>(buffer.data());
+
+    for (; adapter; adapter = adapter->Next) {
+      if (adapter->IfType == IF_TYPE_SOFTWARE_LOOPBACK ||
+          adapter->IfType == IF_TYPE_TUNNEL) {
+        continue;
+      }
+
+      for (PIP_ADAPTER_PREFIX prefix = adapter->FirstPrefix; prefix;
+           prefix = prefix->Next) {
+        // Protect against a /0 route defeating the kill-switch
+        if (prefix->PrefixLength == 0) {
+          continue;
+        }
+
+        if (prefix->Address.lpSockaddr->sa_family == AF_INET) {
+          sockaddr_in* sa4 =
+              reinterpret_cast<sockaddr_in*>(prefix->Address.lpSockaddr);
+          FWP_V4_ADDR_AND_MASK mask = {};
+          // ntohl is required because sa4->sin_addr is network byte order,
+          // but WFP expects host byte order.
+          mask.addr = ntohl(sa4->sin_addr.s_addr);
+          mask.mask = Ipv4Netmask(prefix->PrefixLength);
+          dynamic_v4_masks.push_back(mask);
+        } else if (prefix->Address.lpSockaddr->sa_family == AF_INET6) {
+          sockaddr_in6* sa6 =
+              reinterpret_cast<sockaddr_in6*>(prefix->Address.lpSockaddr);
+          FWP_V6_ADDR_AND_MASK mask = {};
+          base::span(mask.addr).copy_from(sa6->sin6_addr.s6_addr);
+          mask.prefixLength = prefix->PrefixLength;
+          dynamic_v6_masks.push_back(mask);
+        }
+      }
+    }
+
+    for (auto& mask : dynamic_v4_masks) {
+      std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+          FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_ADDRESS,
+                                 FWP_MATCH_EQUAL,
+                                 {FWP_V4_ADDR_MASK, {.v4AddrMask = &mask}}}};
+      AddFilterToLayers(engine, base_objects, v4_layers, FWP_ACTION_PERMIT,
+                        kWeightPermitLocalNetwork, conditions,
+                        L"Permit dynamic local IPv4");
+    }
+
+    for (auto& mask : dynamic_v6_masks) {
+      std::array<FWPM_FILTER_CONDITION0, 1u> conditions = {
+          FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_ADDRESS,
+                                 FWP_MATCH_EQUAL,
+                                 {FWP_V6_ADDR_MASK, {.v6AddrMask = &mask}}}};
+      AddFilterToLayers(engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
+                        kWeightPermitLocalNetwork, conditions,
+                        L"Permit dynamic local IPv6");
     }
   }
 
