@@ -28,29 +28,20 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
-bool BraveWalletRenderFrameObserver::IsPageValid() {
-  GURL url = render_frame()->GetWebFrame()->GetDocument().Url();
-  // There could be empty, invalid and "about:blank" URLs,
-  // they should fallback to the main frame rules
-  if (url.is_empty() || !url.is_valid() || url.spec() == "about:blank") {
-    url = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
-              .GetURL();
-  }
-  return url.SchemeIsHTTPOrHTTPS();
-}
-
 bool BraveWalletRenderFrameObserver::CanCreateProvider() {
-  if (!IsPageValid()) {
+  auto* web_frame = render_frame()->GetWebFrame();
+
+  if (!GURL(web_frame->GetDocument().Url()).SchemeIsHTTPOrHTTPS()) {
     return false;
   }
 
   // Wallet provider objects should only be created in secure contexts
-  if (!render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
+  if (!web_frame->GetDocument().IsSecureContext()) {
     return false;
   }
 
   // Scripts can't be executed on provisional frames
-  if (render_frame()->GetWebFrame()->IsProvisional()) {
+  if (web_frame->IsProvisional()) {
     return false;
   }
 

@@ -29,7 +29,6 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
-  bool IsPageValid();
   bool CanCreateProvider();
 
   GetDynamicParamsCallback get_dynamic_params_callback_;
