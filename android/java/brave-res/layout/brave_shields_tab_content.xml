@@ -443,15 +443,14 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 7. Enable paste (action) -->
+            <!-- 7. Enable paste (toggle action) -->
             <LinearLayout
                 android:id="@+id/enable_paste_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?android:attr/selectableItemBackground">
@@ -463,6 +462,13 @@
                     android:layout_weight="1"
                     android:text="@string/enable_paste"
                     android:textColor="?attr/colorOnSurface"/>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/enable_paste_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:contentDescription="@string/enable_paste"/>
 
             </LinearLayout>
 

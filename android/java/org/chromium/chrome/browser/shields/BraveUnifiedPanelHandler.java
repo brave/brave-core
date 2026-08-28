@@ -192,6 +192,7 @@ public class BraveUnifiedPanelHandler {
     // Advanced options switches (no Forget Me in new design)
     private SwitchCompat mBlockScriptsSwitch;
     private SwitchCompat mFingerprintingSwitch;
+    private SwitchCompat mEnablePasteSwitch;
 
     // Observer for notifying toolbar of shields changes (icon update, page reload)
     private @Nullable BraveShieldsMenuObserver mMenuObserver;
@@ -488,6 +489,7 @@ public class BraveUnifiedPanelHandler {
         // Advanced options switches
         mBlockScriptsSwitch = popupView.findViewById(R.id.scripts_toggle);
         mFingerprintingSwitch = popupView.findViewById(R.id.fingerprinting_toggle);
+        mEnablePasteSwitch = popupView.findViewById(R.id.enable_paste_toggle);
 
         // Report broken site section
         mReportBrokenSiteSection = popupView.findViewById(R.id.report_broken_site_section);
@@ -558,7 +560,10 @@ public class BraveUnifiedPanelHandler {
 
         View enablePasteItem = mAdvancedOptionsContent.findViewById(R.id.enable_paste_item);
         if (enablePasteItem != null) {
-            enablePasteItem.setOnClickListener(v -> forcePaste());
+            enablePasteItem.setOnClickListener(v -> mEnablePasteSwitch.performClick());
+        }
+        if (mEnablePasteSwitch != null) {
+            mEnablePasteSwitch.setOnClickListener(v -> onEnablePasteClicked());
         }
 
         View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
@@ -602,18 +607,28 @@ public class BraveUnifiedPanelHandler {
         }
     }
 
-    private void forcePaste() {
+    private boolean forcePaste() {
         if (mCurrentTab == null) {
-            return;
+            return false;
         }
 
         WebContents webContents = mCurrentTab.getWebContents();
         if (webContents == null) {
-            return;
+            return false;
         }
 
         BraveForcePasteHelper.forcePaste(webContents);
         hide();
+        return true;
+    }
+
+    private void onEnablePasteClicked() {
+        if (mEnablePasteSwitch != null && !mEnablePasteSwitch.isChecked()) {
+            return;
+        }
+        if (!forcePaste() && mEnablePasteSwitch != null) {
+            mEnablePasteSwitch.setChecked(false);
+        }
     }
 
     private void resetSiteToShieldsDefaults() {
@@ -708,6 +723,11 @@ public class BraveUnifiedPanelHandler {
                 mFingerprintingSwitch.setEnabled(false);
                 mFingerprintingSwitch.setChecked(false);
             }
+        }
+
+        if (mEnablePasteSwitch != null) {
+            mEnablePasteSwitch.setEnabled(shieldsEnabled);
+            mEnablePasteSwitch.setChecked(false);
         }
     }
 
