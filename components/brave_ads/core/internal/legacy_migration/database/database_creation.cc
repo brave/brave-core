@@ -23,6 +23,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -78,6 +80,14 @@ void Create(RunDBTransactionCallback callback) {
 
   table::Dayparts dayparts_database_table;
   dayparts_database_table.Create(mojom_db_transaction);
+
+  table::PurchaseIntentSignalHistory
+      purchase_intent_signal_history_database_table;
+  purchase_intent_signal_history_database_table.Create(mojom_db_transaction);
+
+  table::TextClassificationProbabilities
+      text_classification_probabilities_database_table;
+  text_classification_probabilities_database_table.Create(mojom_db_transaction);
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));

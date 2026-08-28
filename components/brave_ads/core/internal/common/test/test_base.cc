@@ -280,14 +280,16 @@ void TestBase::SetUpDefaultAdsServiceState(
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  // Both the database+token path and the client state path are async; the
-  // barrier closure fires `initialized_callback` once both have completed.
-  auto barrier_closure =
-      base::BarrierClosure(/*num_closures=*/2, std::move(initialized_callback));
-
+  // Token state and client state are both database-backed, so both loads
+  // must wait until the database has been created or opened (and, if
+  // necessary, migrated) before they can query their tables. The barrier
+  // closure fires `initialized_callback` once both have completed.
   GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(base::BindOnce(
-      [](const base::RepeatingClosure& barrier_closure, bool success) {
+      [](base::OnceClosure initialized_callback, bool success) {
         ASSERT_TRUE(success) << "Failed to create or open database";
+
+        auto barrier_closure = base::BarrierClosure(
+            /*num_closures=*/2, std::move(initialized_callback));
 
         GlobalState::GetInstance()->GetTokenStateManager().LoadState(
             base::BindOnce(
@@ -297,17 +299,17 @@ void TestBase::SetUpDefaultAdsServiceState(
                   barrier_closure.Run();
                 },
                 barrier_closure));
-      },
-      barrier_closure));
 
-  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-  // from using JSON state to a more efficient data approach.
-  GlobalState::GetInstance()->GetClientStateManager().LoadState(base::BindOnce(
-      [](const base::RepeatingClosure& barrier_closure, bool success) {
-        ASSERT_TRUE(success) << "Failed to load client state";
-        barrier_closure.Run();
+        GlobalState::GetInstance()->GetClientStateManager().LoadState(
+            base::BindOnce(
+                [](const base::RepeatingClosure& barrier_closure,
+                   bool success) {
+                  ASSERT_TRUE(success) << "Failed to load client state";
+                  barrier_closure.Run();
+                },
+                barrier_closure));
       },
-      barrier_closure));
+      std::move(initialized_callback)));
 }
 
 void TestBase::SetUpIntegrationTest() {

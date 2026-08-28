@@ -6,31 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_INFO_H_
 
-#include <string>
-
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
 
 namespace brave_ads {
 
+// In-memory cache of client state backed by the
+// `purchase_intent_signal_history` and `text_classification_probabilities`
+// database tables.
 struct ClientInfo final {
-  ClientInfo();
-
-  ClientInfo(const ClientInfo&);
-  ClientInfo& operator=(const ClientInfo&);
-
-  ClientInfo(ClientInfo&&) noexcept;
-  ClientInfo& operator=(ClientInfo&&) noexcept;
-
-  ~ClientInfo();
-
-  base::DictValue ToDict() const;
-  [[nodiscard]] bool FromDict(const base::DictValue& dict);
-
-  std::string ToJson() const;
-  [[nodiscard]] bool FromJson(const std::string& json);
-
   TextClassificationProbabilityList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
 };

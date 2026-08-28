@@ -13,8 +13,8 @@
 namespace brave_ads {
 
 // Runs the multi-step initialization pipeline (database open, client state
-// load, confirmation state migration and load) and signals completion via
-// `ResultCallback`.
+// migration and load, confirmation state migration and load) and signals
+// completion via `ResultCallback`.
 class AdsInitializer {
  public:
   AdsInitializer();
@@ -33,9 +33,13 @@ class AdsInitializer {
                                     ResultCallback callback,
                                     bool success);
 
+  void MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
+                                  ResultCallback callback,
+                                  bool success);
   void LoadClientStateCallback(mojom::WalletInfoPtr wallet,
                                ResultCallback callback,
                                bool success);
+
   void MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                         ResultCallback callback,
                                         bool success);
