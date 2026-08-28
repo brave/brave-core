@@ -937,8 +937,7 @@ public class Utils {
             final Context context,
             @StringRes final int stringRes,
             final View.OnClickListener onClickListener) {
-        String htmlString =
-                String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
+        String htmlString = String.format(context.getString(stringRes), "<a href=\"\">", "</a>");
         SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
