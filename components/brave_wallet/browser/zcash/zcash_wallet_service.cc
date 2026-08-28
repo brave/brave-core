@@ -17,6 +17,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_ironwood_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_ironwood_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_ironwood_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
@@ -843,8 +845,8 @@ void ZCashWalletService::CreateShieldAllTransaction(
     CreateTransactionCallback callback) {
   CHECK(IsZCashShieldedTransactionsEnabled());
   if (!IsZCashIronwoodEnabled()) {
-    std::move(callback).Run(
-        base::unexpected("Shield all funds is not supported"));
+    std::move(callback).Run(base::unexpected(
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR)));
     return;
   }
 
@@ -983,8 +985,38 @@ void ZCashWalletService::CreateOrchardToIronwoodTransaction(
     uint64_t amount,
     std::optional<OrchardMemo> memo,
     CreateTransactionCallback callback) {
-  std::move(callback).Run(
-      base::unexpected("Orchard to Ironwood transaction is not supported"));
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  if (!IsZCashIronwoodEnabled()) {
+    std::move(callback).Run(base::unexpected(
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR)));
+    return;
+  }
+  auto receiver_addr = GetOrchardRawBytes(
+      address_to, IsZCashTestnetKeyring(account_id->keyring_id));
+  if (!receiver_addr) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_orchard_to_ironwood_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateOrchardToIronwoodTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), *receiver_addr, std::move(memo),
+              amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateOrchardToIronwoodTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateOrchardToIronwoodTransactionTaskDone(
+    ZCashCreateOrchardToIronwoodTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_orchard_to_ironwood_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
 }
 
 void ZCashWalletService::CreateIronwoodToTransparentTransaction(
@@ -992,8 +1024,39 @@ void ZCashWalletService::CreateIronwoodToTransparentTransaction(
     const std::string& address_to,
     uint64_t amount,
     CreateTransactionCallback callback) {
-  std::move(callback).Run(
-      base::unexpected("Ironwood to Transparent transaction is not supported"));
+  CHECK(IsZCashShieldedTransactionsEnabled());
+  if (!IsZCashIronwoodEnabled()) {
+    std::move(callback).Run(base::unexpected(
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR)));
+    return;
+  }
+
+  bool testnet = IsZCashTestnetKeyring(account_id->keyring_id);
+  auto validation_result =
+      ValidateTransparentRecipientAddress(testnet, address_to);
+  if (!validation_result.has_value()) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_ironwood_to_transparent_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateIronwoodToTransparentTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), address_to, amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateIronwoodToTransparentTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateIronwoodToTransparentTransactionTaskDone(
+    ZCashCreateIronwoodToTransparentTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_ironwood_to_transparent_transaction_tasks_.erase(task));
+  std::move(callback).Run(result);
 }
 
 void ZCashWalletService::CreateShieldAllTransactionTaskDone(
