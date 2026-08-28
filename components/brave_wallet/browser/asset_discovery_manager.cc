@@ -108,6 +108,15 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
   supported_chains.push_back(
       mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet));
 
+  if (IsPolkadotAssetDiscoveryEnabled()) {
+    for (std::string chain_id :
+         {mojom::kPolkadotMainnetAssetHub, mojom::kPolkadotTestnetAssetHub,
+          mojom::kPolkadotPaseoAssetHub}) {
+      supported_chains.push_back(
+          mojom::ChainId::New(mojom::CoinType::DOT, std::move(chain_id)));
+    }
+  }
+
   return supported_chains;
 }
 
@@ -165,11 +174,17 @@ void AssetDiscoveryManager::FinishTask() {
 
 void AssetDiscoveryManager::AccountsAdded(
     std::vector<mojom::AccountInfoPtr> added_accounts) {
+  if (!auto_discovery_enabled_) {
+    return;
+  }
+
   std::vector<mojom::AccountIdPtr> accounts;
   for (const auto& account : added_accounts) {
     auto& account_id = account->account_id;
     if (account->account_id->coin == mojom::CoinType::ETH ||
-        account->account_id->coin == mojom::CoinType::SOL) {
+        account->account_id->coin == mojom::CoinType::SOL ||
+        (account->account_id->coin == mojom::CoinType::DOT &&
+         IsPolkadotAssetDiscoveryEnabled())) {
       accounts.push_back(account_id.Clone());
     }
   }

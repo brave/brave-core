@@ -28,6 +28,8 @@ extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;
 extern const base::FeatureParam<bool> kZCashIronwoodEnabled;
 
 BASE_DECLARE_FEATURE(kBraveWalletPolkadotFeature);
+// Discovers pallet_assets tokens held by Polkadot accounts.
+extern const base::FeatureParam<bool> kPolkadotAssetDiscovery;
 
 #if !defined(OFFICIAL_BUILD)
 BASE_DECLARE_FEATURE(kBraveWalletDebugFeature);
