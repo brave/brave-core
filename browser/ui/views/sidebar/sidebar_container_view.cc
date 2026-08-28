@@ -105,7 +105,7 @@ class SidebarContainerView::BrowserWindowEventObserver
   const raw_ref<SidebarContainerView> host_;
 };
 
-SidebarContainerView::SidebarContainerView(Browser* browser)
+SidebarContainerView::SidebarContainerView(BrowserWindowInterface* browser)
     : views::AnimationDelegateViews(this),
       browser_(browser),
       browser_window_event_observer_(

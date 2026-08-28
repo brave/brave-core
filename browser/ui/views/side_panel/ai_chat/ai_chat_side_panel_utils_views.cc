@@ -16,7 +16,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_list/tab_list_interface.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -39,7 +38,8 @@
 
 namespace ai_chat {
 
-Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
+BrowserWindowInterface* GetBrowserForWebContents(
+    content::WebContents* web_contents) {
   if (!web_contents) {
     return nullptr;
   }
@@ -59,7 +59,7 @@ void ClosePanel(content::WebContents* web_contents) {
     return;
   }
 
-  Browser* browser = GetBrowserForWebContents(web_contents);
+  BrowserWindowInterface* browser = GetBrowserForWebContents(web_contents);
   if (!browser) {
     return;
   }
@@ -74,7 +74,7 @@ void ClosePanelIfChatActive(content::WebContents* web_contents) {
     return;
   }
 
-  Browser* browser = GetBrowserForWebContents(web_contents);
+  BrowserWindowInterface* browser = GetBrowserForWebContents(web_contents);
   if (!browser) {
     return;
   }
