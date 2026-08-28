@@ -2392,6 +2392,25 @@ extension Strings {
         comment: "Description to explain the send crash reports toggle"
       )
 
+    public static let sponsoredAdsEnabledTitle =
+      NSLocalizedString(
+        "settings.sponsoredAdsEnabledTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Enable Sponsored Ads",
+        comment: "Title of the settings toggle that enables Sponsored Ads"
+      )
+
+    public static let sponsoredAdsEnabledDescription =
+      NSLocalizedString(
+        "settings.sponsoredAdsEnabledDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value:
+          "Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.",
+        comment: "Description under the settings toggle that enables Sponsored Ads"
+      )
+
     public static let surveyPanelistTitle =
       NSLocalizedString(
         "settings.surveyPanelistTitle",

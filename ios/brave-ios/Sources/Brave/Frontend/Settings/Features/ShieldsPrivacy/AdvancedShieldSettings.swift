@@ -155,6 +155,14 @@ import os
     }
   }
 
+  /// Hide the Sponsored Ads toggle when Rewards is disabled by policy or in
+  /// an unsupported region, because it would have no effect. This matches
+  /// `AdsServiceImplIOS` logic when it is not started if Rewards is not
+  /// supported.
+  var isSponsoredAdsSupported: Bool {
+    BraveRewardsAPI.isSupported(prefs)
+  }
+
   /// If we should write Shields setting changes to content settings.
   private var shouldWriteToContentSettings: Bool {
     // If Shields content settings feature flag is enabled, we should always
