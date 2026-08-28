@@ -84,8 +84,6 @@ using ScopedFwpmMemory = base::ScopedGeneric<void*, FwpmMemoryTraits>;
 constexpr uint8_t kUdpProtocol = IPPROTO_UDP;
 constexpr uint16_t kDhcpV4ClientPort = 68;
 constexpr uint16_t kDhcpV4ServerPort = 67;
-constexpr uint16_t kDhcpV6ClientPort = 546;
-constexpr uint16_t kDhcpV6ServerPort = 547;
 constexpr uint32_t kIpv4Broadcast = 0xffffffff;
 
 struct Ipv4Prefix {
@@ -277,11 +275,16 @@ DWORD AddPermitTunnelService(HANDLE engine, const BaseObjects& base_objects) {
 // address, but not the responses from one that answers from a public address,
 // so these match on the DHCP port pairs instead.
 //
-// Mirrors tunnel.dll's own permitDHCPIPv4/permitDHCPIPv6: outbound is
-// restricted to the broadcast address rather than allowing any destination on
-// port 67, because nothing stops another local process from binding port 68 on
-// Windows. A unicast renewal that goes unanswered falls back to a broadcast
-// rebind, which this covers.
+// Mirrors tunnel.dll's own permitDHCPIPv4: outbound is restricted to the
+// broadcast address rather than allowing any destination on port 67, because
+// nothing stops another local process from binding port 68 on Windows. A
+// unicast renewal that goes unanswered falls back to a broadcast rebind,
+// which this covers.
+//
+// Note: DHCPv6 only ever talks to multicast or link-local addresses, which
+// are natively covered by AddPermitLocalNetwork(). A dedicated v6 port rule
+// is omitted to prevent attackers from binding local port 546 and bypassing
+// the kill-switch to reach public IPv6 addresses.
 DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
   std::array<FWPM_FILTER_CONDITION0, 4u> v4_request = {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
@@ -316,30 +319,9 @@ DWORD AddPermitDhcp(HANDLE engine, const BaseObjects& base_objects) {
       FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
                              FWP_MATCH_EQUAL,
                              {FWP_UINT16, {.uint16 = kDhcpV4ServerPort}}}};
-  result = AddFilter(engine, base_objects, FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4,
-                     FWP_ACTION_PERMIT, kWeightPermitInfrastructure,
-                     v4_response, L"Permit DHCP response");
-  if (result != ERROR_SUCCESS) {
-    return result;
-  }
-
-  // DHCPv6 only ever talks to multicast or link-local addresses, which the
-  // local network permits already cover, so the port pair is all that is left
-  // to pin down.
-  std::array<FWPM_FILTER_CONDITION0, 3u> v6 = {
-      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_PROTOCOL,
-                             FWP_MATCH_EQUAL,
-                             {FWP_UINT8, {.uint8 = kUdpProtocol}}},
-      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_LOCAL_PORT,
-                             FWP_MATCH_EQUAL,
-                             {FWP_UINT16, {.uint16 = kDhcpV6ClientPort}}},
-      FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_PORT,
-                             FWP_MATCH_EQUAL,
-                             {FWP_UINT16, {.uint16 = kDhcpV6ServerPort}}}};
-  const std::array<GUID, 2u> v6_layers = {FWPM_LAYER_ALE_AUTH_CONNECT_V6,
-                                          FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V6};
-  return AddFilterToLayers(engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
-                           kWeightPermitInfrastructure, v6, L"Permit DHCPv6");
+  return AddFilter(engine, base_objects, FWPM_LAYER_ALE_AUTH_RECV_ACCEPT_V4,
+                   FWP_ACTION_PERMIT, kWeightPermitInfrastructure, v4_response,
+                   L"Permit DHCP response");
 }
 
 DWORD AddPermitLoopback(HANDLE engine, const BaseObjects& base_objects) {
