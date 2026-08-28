@@ -67,8 +67,16 @@ class FingerprintFrequencyMetricsBrowserTest : public PlatformBrowserTest {
   std::unique_ptr<FingerprintFrequencyMetrics> metrics_;
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/58513): Enable this test
+// once fixed.
+#if BUILDFLAG(IS_ANDROID)
+#define NON_ANDROID_TEST(test) DISABLED_##test
+#else
+#define NON_ANDROID_TEST(test) test
+#endif
+
 IN_PROC_BROWSER_TEST_F(FingerprintFrequencyMetricsBrowserTest,
-                       AcceptLanguagesChangeAltersHash) {
+                       NON_ANDROID_TEST(AcceptLanguagesChangeAltersHash)) {
   base::DictValue first = ExecuteRenderer();
   ASSERT_TRUE(first.FindInt(kLanguagesKey));
   ASSERT_TRUE(first.FindInt(kScreenSizeKey));
