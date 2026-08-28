@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -32,14 +34,18 @@ size_t GetPurchaseIntentSignalHistorySegmentCount() {
   return purchase_intent_signal_history.size();
 }
 
-size_t GetTextClassificationProbabilitiesVisitCount() {
+TextClassificationProbabilityList GetTextClassificationProbabilitiesHistory() {
   base::test::TestFuture<bool, TextClassificationProbabilityList> test_future;
   database::table::TextClassificationProbabilities().GetAll(
       test_future
           .GetCallback<bool, const TextClassificationProbabilityList&>());
   const auto [success, text_classification_probabilities] = test_future.Take();
   EXPECT_TRUE(success);
-  return text_classification_probabilities.size();
+  return text_classification_probabilities;
+}
+
+size_t GetTextClassificationProbabilitiesVisitCount() {
+  return GetTextClassificationProbabilitiesHistory().size();
 }
 
 }  // namespace
@@ -63,6 +69,32 @@ TEST_F(BraveAdsLegacyClientMigrationTest,
   // Assert
   EXPECT_EQ(2U, GetPurchaseIntentSignalHistorySegmentCount());
   EXPECT_EQ(2U, GetTextClassificationProbabilitiesVisitCount());
+}
+
+TEST_F(BraveAdsLegacyClientMigrationTest,
+       MigratePrunesTextClassificationProbabilitiesToMaximumEntries) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kTextClassificationFeature, {{"page_probabilities_history_size", "1"}});
+
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      kClientWithPurchaseIntentAndTextClassificationJsonFilename,
+      kClientJsonFilename));
+
+  EXPECT_CALL(ads_client_mock_, Remove(kClientJsonFilename, ::testing::_));
+
+  // Act
+  base::test::TestFuture<bool> test_future;
+  MigrateClientState(test_future.GetCallback());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert: the fixture's newest visit is
+  // {"technology & computing": 0.5, "travel": 0.25}, and the oldest visit is
+  // {"travel": 0.75}. Only the newest should survive pruning.
+  EXPECT_THAT(GetTextClassificationProbabilitiesHistory(),
+              ::testing::ElementsAreArray({TextClassificationProbabilityMap{
+                  {"technology & computing", 0.5}, {"travel", 0.25}}}));
 }
 
 TEST_F(BraveAdsLegacyClientMigrationTest, MigrateWithNoData) {

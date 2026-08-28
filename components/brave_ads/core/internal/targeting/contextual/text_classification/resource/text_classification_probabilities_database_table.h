@@ -10,6 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_page_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -47,6 +48,12 @@ class TextClassificationProbabilities final : public TableInterface {
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
+
+ private:
+  void MigrateToV59(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV60(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+
+  TextClassificationPageProbabilities page_probabilities_database_table_;
 };
 
 }  // namespace brave_ads::database::table
