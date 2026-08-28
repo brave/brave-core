@@ -5,11 +5,11 @@
 
 substitutions:
   - description: |
-      Fully qualify `features::kImmersiveReadAnything`.
+      Fully qualify `features::kReadAnythingImprovedUi`.
 
       It is not clear how this is building fine in upstream but failing with
       brave, as no `chromium_src` uses are involved, so we are patching it for
       the moment.
     regex:
-      pattern: 'features::kImmersiveReadAnything'
-      replace: '::features::kImmersiveReadAnything'
+      pattern: 'features::kReadAnythingImprovedUi'
+      replace: '::features::kReadAnythingImprovedUi'
