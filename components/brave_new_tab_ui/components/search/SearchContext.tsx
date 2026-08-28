@@ -107,6 +107,7 @@ class SearchPage implements PageInterface {
   setAimButtonConfig(text: string, tooltip: string, a11yLabel: string, iconUrl: Url): void { }
   resetPopupToInitialState(): void { }
   onScreenshotMenuClosed(): void { }
+  setShowFre(show: boolean): void { }
 }
 
 export const search = new SearchPage()
