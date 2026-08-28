@@ -32,16 +32,8 @@ BraveContentsViewUtil::CreateContentsOutlineBorder(
 }
 
 // static
-int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
-  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-             browser)
-             ? kRoundedCornersContentsViewMargin
-             : 0;
-}
-
-// static
 int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
-    const Browser* browser) {
+    const BrowserWindowInterface* browser) {
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser)
              ? kRoundedCornersContentsViewMargin

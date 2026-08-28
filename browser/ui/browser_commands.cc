@@ -148,7 +148,8 @@ namespace brave {
 
 namespace {
 
-bool CanTakeTabs(const Browser* from, const Browser* to) {
+bool CanTakeTabs(const BrowserWindowInterface* from,
+                 const BrowserWindowInterface* to) {
   return from != to && from->GetType() == Browser::TYPE_NORMAL &&
          !UnloadController::From(from)->is_attempting_to_close_browser() &&
          !from->IsDeleteScheduled() && to->GetProfile() == from->GetProfile();
@@ -409,7 +410,7 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
       !prefs->GetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow));
 }
 
-void ToggleVerticalTabStrip(Browser* browser) {
+void ToggleVerticalTabStrip(BrowserWindowInterface* browser) {
   if (!tabs::utils::IsVerticalTabToggleEnabled(browser)) {
     return;
   }
@@ -797,7 +798,7 @@ void CloseGroup(Browser* browser) {
   tsm->CloseAllTabsInGroup(*group_id);
 }
 
-bool CanBringAllTabs(Browser* browser) {
+bool CanBringAllTabs(BrowserWindowInterface* browser) {
   if (!base::FeatureList::IsEnabled(tabs::kBraveBringAllTabsToThisWindow)) {
     return false;
   }
@@ -809,13 +810,13 @@ bool CanBringAllTabs(Browser* browser) {
   bool result = false;
   GlobalBrowserCollection::GetInstance()->ForEach(
       [browser, &result](BrowserWindowInterface* from) {
-        result = CanTakeTabs(from->GetBrowserForMigrationOnly(), browser);
+        result = CanTakeTabs(from, browser);
         return !result;
       });
   return result;
 }
 
-void BringAllTabs(Browser* browser) {
+void BringAllTabs(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -893,7 +894,7 @@ void BringAllTabs(Browser* browser) {
   }
 }
 
-bool HasDuplicatesOfActiveTab(Browser* browser) {
+bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
@@ -920,7 +921,7 @@ bool HasDuplicatesOfActiveTab(Browser* browser) {
   return false;
 }
 
-void CloseDuplicatesOfActiveTab(Browser* browser) {
+void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser) {
   auto* tsm = browser->tab_strip_model();
   auto url = tsm->GetActiveWebContents()->GetVisibleURL();
 

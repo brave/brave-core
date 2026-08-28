@@ -151,7 +151,7 @@ constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
 
 std::optional<bool> g_download_confirm_return_allow_for_testing;
 
-bool IsUnsupportedCommand(int command_id, Browser* browser) {
+bool IsUnsupportedCommand(int command_id, BrowserWindowInterface* browser) {
   return IsRunningInForcedAppMode() &&
          !IsCommandAllowedInAppMode(
              command_id,
@@ -343,7 +343,8 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
   return browser_view && browser_view->multi_contents_view()->IsInSplitView();
 }
 
-BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
+BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
+    : BrowserView(browser) {
   CHECK(multi_contents_view_);
 
   // Upstream doesn't set icon because kFeatureTitleBar is not supported by
@@ -956,7 +957,7 @@ void BraveBrowserView::OnTabStripModelChanged(
     if (focus_mode_title_bar_view_ &&
         focus_mode_title_bar_view_->GetVisible()) {
       focus_mode_title_bar_view_->SetTab(
-          browser()->tab_strip_model()->GetActiveTab());
+          browser()->GetTabStripModel()->GetActiveTab());
     }
   }
 }

@@ -75,7 +75,7 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
                                 const GURL& url);
 
 void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
-void ToggleVerticalTabStrip(Browser* browser);
+void ToggleVerticalTabStrip(BrowserWindowInterface* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleVerticalTabStripExpanded(Browser* browser);
 
@@ -126,11 +126,11 @@ void CloseUngroupedTabs(Browser* browser);
 void CloseTabsNotInCurrentGroup(Browser* browser);
 void CloseGroup(Browser* browser);
 
-bool CanBringAllTabs(Browser* browser);
-void BringAllTabs(Browser* browser);
+bool CanBringAllTabs(BrowserWindowInterface* browser);
+void BringAllTabs(BrowserWindowInterface* browser);
 
-bool HasDuplicatesOfActiveTab(Browser* browser);
-void CloseDuplicatesOfActiveTab(Browser* browser);
+bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser);
+void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 bool HasAnyDuplicateTabs(Browser* browser);
 void CloseAllDuplicateTabs(Browser* browser);
 bool CanCloseTabsToLeft(Browser* browser);
