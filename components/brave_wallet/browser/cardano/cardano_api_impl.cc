@@ -47,6 +47,7 @@ constexpr char kNotImplemented[] = "Not implemented";
 // DataSignErrorCode
 [[maybe_unused]] constexpr int kDataSignProofGeneration = 1;
 [[maybe_unused]] constexpr int kDataSignAddressNotPK = 2;
+constexpr int kDataSignUserDeclined = 3;
 
 // TxSendErrorCode
 [[maybe_unused]] constexpr int kTxSendRefused = 1;

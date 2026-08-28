@@ -61,11 +61,6 @@
 
 namespace brave_wallet {
 
-namespace {
-// Brave mirrors chrome:// with its own scheme.
-constexpr char kBraveWalletUiScheme[] = "brave";
-constexpr char kChromeWalletUiScheme[] = "chrome";
-}  // namespace
 // DEPRECATED 01/2024. For migration only.
 std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
     std::string_view key);
@@ -1035,10 +1030,12 @@ bool BraveWalletService::HasPermissionForPendingRequest(
   // Trusted wallet WebUI origins (wallet page, panel/side panel). Anything
   // else fails closed: no permission can be present, so queued requests are
   // drained.
-  return (origin.scheme() == kChromeWalletUiScheme ||
-          origin.scheme() == kBraveWalletUiScheme) &&
-         (origin.host() == kWalletPageHost ||
-          origin.host() == kWalletPanelHost);
+  return origin.IsSameOriginWith(
+             url::Origin::Create(GURL(kBraveUIWalletURL))) ||
+         origin.IsSameOriginWith(
+             url::Origin::Create(GURL(kBraveUIWalletAccountCreationURL))) ||
+         origin.IsSameOriginWith(
+             url::Origin::Create(GURL(kBraveUIWalletPanelURL)));
 }
 
 void BraveWalletService::HasPermission(

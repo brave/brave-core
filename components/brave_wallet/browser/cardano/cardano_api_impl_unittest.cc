@@ -530,8 +530,8 @@ TEST_F(CardanoApiImplTest,
 
   EXPECT_EQ(signature, std::nullopt);
   ASSERT_TRUE(error);
-  // The drained request is rejected without signing.
-  EXPECT_EQ(error->code, kDataSignUserDeclined);
+  // kDataSignUserDeclined: the drained request is rejected without signing.
+  EXPECT_EQ(error->code, 3);
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {

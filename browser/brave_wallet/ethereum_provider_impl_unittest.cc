@@ -105,8 +105,8 @@ void GetErrorCodeMessage(base::Value formed_response,
 std::tuple<std::string, mojom::ProviderError, std::string>
 ParseSignMessageResponse(mojom::EthereumProviderResponsePtr response) {
   std::string signature;
-  if (response->formed_response.type() == base::Value::Type::STRING) {
-    signature = response->formed_response.GetString();
+  if (const auto* signature_string = response->formed_response.GetIfString()) {
+    signature = *signature_string;
   }
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
