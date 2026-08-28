@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "chrome/browser/download/chrome_download_manager_delegate.h"
 
 class Profile;
@@ -40,10 +39,9 @@ class BraveDownloadManagerDelegate : public ChromeDownloadManagerDelegate {
 
  protected:
   // Marks the download as completed once the iptc metadata is stripped. Virtual
-  // for testing purposes.
-  virtual void OnImageMetadataStripped(
-      uint32_t download_id,
-      image_metadata_stripper::StrippingResultCode result);
+  // for testing purposes. |stripped| is true only when FBMD IPTC metadata was
+  // actually removed; the download is completed either way.
+  virtual void OnImageMetadataStripped(uint32_t download_id, bool stripped);
 
  private:
   // ChromeDownloadManagerDelegate override.

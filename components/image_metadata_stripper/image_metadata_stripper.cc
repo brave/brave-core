@@ -15,7 +15,76 @@
 
 namespace image_metadata_stripper {
 
-StrippingResultCode RemoveIptcMetadata(const base::FilePath& file_path) {
+namespace {
+
+// This enum lets the client know the result of their stripping request.
+enum class StrippingResultCode {
+  // The input file does not exist.
+  kFileNotFound,
+  // Initial file read failed to check for metadata.
+  kFileReadFailed,
+  // File rewrite failed with the stripped out metadata.
+  kFileWriteFailed,
+
+  // Metadata was not found.
+  kMetadataNotFound,
+  // Metadata was found but not able to be stripped.
+  kStrippingFailed,
+  // Metadata was found and stripped.
+  kStripped,
+};
+
+constexpr std::string_view GetStrippingClient(StrippingClient client) {
+  switch (client) {
+    case StrippingClient::kDownloadManager:
+      return "Download manager";
+    case StrippingClient::kFileSelect:
+      return "File selector";
+  }
+  NOTREACHED();
+}
+
+void LogStrippingResult(const StrippingClient client,
+                        const StrippingResultCode result) {
+  const auto tag = GetStrippingClient(client);
+
+  switch (result) {
+    case image_metadata_stripper::StrippingResultCode::kFileNotFound: {
+      DVLOG(1) << tag << ";Stripping skipped as the file does not exist.";
+      return;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kFileReadFailed: {
+      DVLOG(1) << tag << ";Failed to read the file to check for metadata.";
+      return;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kFileWriteFailed: {
+      DVLOG(1) << tag << ";Failed to rewrite the file without the metadata.";
+      return;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kMetadataNotFound: {
+      DVLOG(1) << tag
+               << ";Stripping ignored as FBMD metadata may not be present.";
+      return;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kStrippingFailed: {
+      DVLOG(1) << tag << ";Failed to strip image metadata from file.";
+      return;
+    }
+
+    case image_metadata_stripper::StrippingResultCode::kStripped: {
+      DVLOG(1) << tag << ";FBMD found and stripped from image metadata.";
+      return;
+    }
+  }
+  NOTREACHED();
+}
+
+StrippingResultCode RemoveIptcMetadataInternal(
+    const base::FilePath& file_path) {
   if (!base::PathExists(file_path)) {
     DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;
     return StrippingResultCode::kFileNotFound;
@@ -45,6 +114,17 @@ StrippingResultCode RemoveIptcMetadata(const base::FilePath& file_path) {
   }
 
   return StrippingResultCode::kStripped;
+}
+
+}  // namespace
+
+bool RemoveIptcMetadata(const StrippingClient client,
+                        const base::FilePath& file_path) {
+  const StrippingResultCode result = RemoveIptcMetadataInternal(file_path);
+
+  LogStrippingResult(client, result);
+
+  return result == StrippingResultCode::kStripped;
 }
 
 }  // namespace image_metadata_stripper

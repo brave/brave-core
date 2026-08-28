@@ -13,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/location.h"
-#include "base/logging.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -22,46 +21,6 @@
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/download_manager.h"
-
-namespace {
-
-void LogStrippingResult(
-    const image_metadata_stripper::StrippingResultCode result) {
-  // Debug logs.
-  switch (result) {
-    case image_metadata_stripper::StrippingResultCode::kFileNotFound: {
-      DVLOG(1) << "Stripping skipped as the download file does not exist.";
-      return;
-    }
-
-    case image_metadata_stripper::StrippingResultCode::kFileReadFailed: {
-      DVLOG(1) << "Failed to read the download file to check for metadata.";
-      return;
-    }
-
-    case image_metadata_stripper::StrippingResultCode::kFileWriteFailed: {
-      DVLOG(1) << "Failed to rewrite the download file without the metadata.";
-      return;
-    }
-
-    case image_metadata_stripper::StrippingResultCode::kMetadataNotFound: {
-      DVLOG(1) << "Stripping ignored as FBMD metadata may not be present.";
-      return;
-    }
-
-    case image_metadata_stripper::StrippingResultCode::kStrippingFailed: {
-      DVLOG(1) << "Failed to strip image metadata from download file.";
-      return;
-    }
-
-    case image_metadata_stripper::StrippingResultCode::kStripped: {
-      DVLOG(1) << "FBMD found and stripped from image metadata.";
-      return;
-    }
-  }
-  NOTREACHED();
-}
-}  // namespace
 
 // Factory used by the plastered download_core_service_impl.cc construction
 // site. Keeping the Brave header out of chrome/browser/download avoids pulling
@@ -139,18 +98,16 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&image_metadata_stripper::RemoveIptcMetadata,
+                     image_metadata_stripper::StrippingClient::kDownloadManager,
                      item->GetFullPath()),
       base::BindOnce(&BraveDownloadManagerDelegate::OnImageMetadataStripped,
                      weak_ptr_factory_.GetWeakPtr(), item->GetId()));
   return false;
 }
 
-void BraveDownloadManagerDelegate::OnImageMetadataStripped(
-    uint32_t download_id,
-    image_metadata_stripper::StrippingResultCode result) {
+void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
+                                                           bool /*stripped*/) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  LogStrippingResult(result);
 
   // The download may have been removed while the stripping task was running, so
   // the item and its keyed state have to be looked up again.
