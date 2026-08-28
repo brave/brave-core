@@ -41,9 +41,7 @@ class BraveDownloadManagerDelegate : public ChromeDownloadManagerDelegate {
  protected:
   // Marks the download as completed once the iptc metadata is stripped. Virtual
   // for testing purposes.
-  virtual void OnImageMetadataStripped(
-      uint32_t download_id,
-      image_metadata_stripper::StrippingResultCode result);
+  virtual void OnImageMetadataStripped(uint32_t download_id, bool result);
 
  private:
   // ChromeDownloadManagerDelegate override.
