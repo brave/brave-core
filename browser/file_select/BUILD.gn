@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("file_select") {
+  sources = [
+    "brave_file_select_image_metadata_stripper.cc",
+    "brave_file_select_image_metadata_stripper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
+    "//content/public/browser",
+  ]
+
+  public_deps = [ "//third_party/blink/public/mojom:mojom_platform" ]
+}

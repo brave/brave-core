@@ -11,6 +11,7 @@
 
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/components/image_metadata_stripper/internal/jpeg_iptc_metadata_stripper.h"
 
 namespace image_metadata_stripper {
