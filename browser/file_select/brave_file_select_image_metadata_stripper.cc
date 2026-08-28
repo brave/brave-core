@@ -38,6 +38,8 @@ bool IsStrippableImagePath(const base::FilePath& path) {
          path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
 }
 
+// Returns true if any of the items in the |list| could be a candidate for
+// stripping metadata.
 bool HasStrippableImage(
     const std::vector<blink::mojom::FileChooserFileInfoPtr>& list) {
   return std::ranges::any_of(
@@ -95,7 +97,17 @@ StripResult StripListOnBlockingThread(
     // Re-write the file path of the original upload file, with our temporary's
     // file path. This keeps the overall |list| untouched which is then moved
     // directly to the result.
+    // TODO(https://github.com/brave/brave-browser/issues/5238): On macOS the
+    // file control shows the temp basename (e.g.
+    // .com.brave.Browser.channelNameHere.XXXXXX). From LLM it seems the reason
+    // to be the following: LayoutThemeMac::DisplayNameForFile uses
+    // NSFileManager displayNameAtPath of the backing path so even setting
+    // display_name / File.name is not enough. See
+    // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/
+    // renderer/core/layout/layout_theme_mac.mm;l=60 for details.
+    // Need to figure out how to handle this issue.
     info->get_native_file()->file_path = temp;
+
     // Mark the temporary file for deletion later via the upstream's
     // DeleteTemporaryFiles method.
     result.temp_files.push_back(std::move(temp));
@@ -104,6 +116,7 @@ StripResult StripListOnBlockingThread(
   return result;
 }
 
+// The callback which gets fired after all the stripping was completed.
 void OnStripComplete(
     std::vector<base::FilePath>& temporary_files,
     base::OnceCallback<void(std::vector<blink::mojom::FileChooserFileInfoPtr>)>
