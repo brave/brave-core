@@ -131,7 +131,7 @@ public class BraveToolbarManagerTest {
         CallbackHelper templateUrlServiceLoaded = new CallbackHelper();
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
-                    Profile profile = mActivityTestRule.getActivity().getCurrentProfile();
+                    Profile profile = mActivityTestRule.getActivity().getActivityTab().getProfile();
                     assertFalse("The test must use a regular profile.", profile.isOffTheRecord());
 
                     mTemplateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
