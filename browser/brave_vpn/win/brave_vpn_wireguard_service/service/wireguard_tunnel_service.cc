@@ -284,7 +284,7 @@ class FirewallWatchdog : public base::PlatformThread::Delegate {
     LOG(ERROR) << "WireGuard firewall was not installed within "
                << kFirewallInstallTimeout << ", disconnecting";
     brave_vpn::RunWireGuardCommandForUsers(
-        brave_vpn::kBraveVpnWireguardServiceNotifyFirewallErrorSwitchName);
+        brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
 
     // Ensure the temporary DNS permit is destroyed even if the
     // service control manager fails to stop the tunnel process.
@@ -521,6 +521,8 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!installed_firewall) {
       VLOG(1) << "Unable to install the firewall, refusing to connect "
                  "unprotected";
+      brave_vpn::RunWireGuardCommandForUsers(
+          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
       DisableServiceRestarts();
       return S_FALSE;
     }
@@ -536,6 +538,8 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!watcher) {
       VLOG(1) << "Unable to watch for the tunnel adapter, refusing to connect "
                  "without a firewall";
+      brave_vpn::RunWireGuardCommandForUsers(
+          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
       DisableServiceRestarts();
       return S_FALSE;
     }
@@ -544,6 +548,8 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!watchdog.Start()) {
       VLOG(1) << "Unable to start the firewall watchdog, refusing to connect "
                  "without a way to detect an unprotected tunnel";
+      brave_vpn::RunWireGuardCommandForUsers(
+          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
       DisableServiceRestarts();
       return S_FALSE;
     }
@@ -568,6 +574,8 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     VLOG(1) << "Failed to activate tunnel service ("
             << tunnel_lib.GetError()->code
             << "): " << tunnel_lib.GetError()->ToString();
+    brave_vpn::RunWireGuardCommandForUsers(
+        brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
   }
   return S_FALSE;
 }
