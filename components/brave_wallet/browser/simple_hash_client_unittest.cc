@@ -182,20 +182,22 @@ class SimpleHashClientUnitTest : public testing::Test {
 
 TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // Empty address yields empty URL
-  EXPECT_EQ(
-      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
-          "", test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt),
-      GURL(""));
+  EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+                "", test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt,
+                false, false),
+            GURL(""));
 
   // Empty chains yields empty URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000", {}, std::nullopt),
+                "0x0000000000000000000000000000000000000000", {}, std::nullopt,
+                false, false),
             GURL());
 
   // One valid chain yields correct URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
                 "0x0000000000000000000000000000000000000000",
-                test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt),
+                test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt,
+                false, false),
             GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
                  "owners?chains=ethereum&wallet_addresses="
                  "0x0000000000000000000000000000000000000000"));
@@ -207,7 +209,7 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
                     EthMainnetChainId(),
                     mojom::ChainId::New(mojom::CoinType::ETH,
                                         mojom::kOptimismMainnetChainId)),
-                std::nullopt),
+                std::nullopt, false, false),
             GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
                  "owners?chains=ethereum%2Coptimism&wallet_addresses="
                  "0x0000000000000000000000000000000000000000"));
@@ -218,7 +220,7 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
           "0x0000000000000000000000000000000000000000",
           test::MakeVectorFromArgs(mojom::ChainId::New(
               mojom::CoinType::ETH, "chain ID not supported by SimpleHash")),
-          std::nullopt),
+          std::nullopt, false, false),
       GURL());
 
   // One valid chain with cursor yields correct URL
@@ -226,7 +228,7 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   EXPECT_EQ(
       simple_hash_client_->GetSimpleHashNftsByWalletUrl(
           "0x0000000000000000000000000000000000000000",
-          test::MakeVectorFromArgs(EthMainnetChainId()), cursor),
+          test::MakeVectorFromArgs(EthMainnetChainId()), cursor, false, false),
       GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
            "owners?chains=ethereum&wallet_addresses="
            "0x0000000000000000000000000000000000000000&cursor=example_cursor"));
@@ -239,10 +241,29 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
               EthMainnetChainId(),
               mojom::ChainId::New(mojom::CoinType::ETH,
                                   mojom::kOptimismMainnetChainId)),
-          cursor),
+          cursor, false, false),
       GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
            "owners?chains=ethereum%2Coptimism&wallet_addresses="
            "0x0000000000000000000000000000000000000000&cursor=example_cursor"));
+
+  // skip_spam asks gate3 to exclude spam
+  EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+                "0x0000000000000000000000000000000000000000",
+                test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt,
+                true, false),
+            GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
+                 "owners?chains=ethereum&wallet_addresses="
+                 "0x0000000000000000000000000000000000000000&spam=exclude"));
+
+  // only_spam asks gate3 for spam only, and leaves the cursor last
+  EXPECT_EQ(
+      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+          "0x0000000000000000000000000000000000000000",
+          test::MakeVectorFromArgs(EthMainnetChainId()), cursor, false, true),
+      GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
+           "owners?chains=ethereum&wallet_addresses="
+           "0x0000000000000000000000000000000000000000&spam=only"
+           "&cursor=example_cursor"));
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
@@ -970,7 +991,7 @@ TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
   url = GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "owners?chains=ethereum%2Coptimism&wallet_addresses="
-      "0x0000000000000000000000000000000000000000");
+      "0x0000000000000000000000000000000000000000&spam=exclude");
   responses[url] = json;
   SetInterceptors(responses);
   TestFetchAllNFTsFromSimpleHash(
@@ -1004,7 +1025,7 @@ TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
   GURL next_url = GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "owners?chains=ethereum%2Coptimism&wallet_addresses="
-      "0x0000000000000000000000000000000000000000&cursor=abc123");
+      "0x0000000000000000000000000000000000000000&spam=exclude&cursor=abc123");
   json2 = R"({
     "next": null,
     "previous": null,
@@ -1114,7 +1135,7 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   url = GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "owners?chains=ethereum&wallet_addresses="
-      "0x0000000000000000000000000000000000000000");
+      "0x0000000000000000000000000000000000000000&spam=exclude");
   responses[url] = json;
   SetInterceptors(responses);
 
@@ -1127,7 +1148,7 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   url = GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "owners?chains=ethereum&wallet_addresses="
-      "0x0000000000000000000000000000000000000000&cursor=abc123");
+      "0x0000000000000000000000000000000000000000&spam=exclude&cursor=abc123");
   json = R"({
     "next": null,
     "next_cursor": "def456",
@@ -1157,7 +1178,7 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   url = GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "owners?chains=ethereum&wallet_addresses="
-      "0x0000000000000000000000000000000000000000");
+      "0x0000000000000000000000000000000000000000&spam=only");
   std::string json2 = R"({
     "next": null,
     "previous": null,

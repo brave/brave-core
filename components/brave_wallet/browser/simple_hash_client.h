@@ -163,7 +163,9 @@ class SimpleHashClient {
   static GURL GetSimpleHashNftsByWalletUrl(
       const std::string& account_address,
       const std::vector<mojom::ChainIdPtr>& chain_ids,
-      const std::optional<std::string>& cursor);
+      const std::optional<std::string>& cursor,
+      bool skip_spam,
+      bool only_spam);
 
   static GURL GetNftsUrl(
       const std::vector<mojom::NftIdentifierPtr>& nft_identifiers);

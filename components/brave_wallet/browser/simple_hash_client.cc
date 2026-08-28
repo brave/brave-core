@@ -239,7 +239,8 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
     bool skip_spam,
     bool only_spam,
     FetchNFTsFromSimpleHashCallback callback) {
-  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor);
+  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor,
+                                          skip_spam, only_spam);
   if (!url.is_valid()) {
     std::move(callback).Run({}, std::nullopt);
     return;
@@ -1201,7 +1202,9 @@ SimpleHashClient::ParseMetadatas(const base::DictValue& dict) {
 GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     const std::string& account_address,
     const std::vector<mojom::ChainIdPtr>& chain_ids,
-    const std::optional<std::string>& cursor) {
+    const std::optional<std::string>& cursor,
+    bool skip_spam,
+    bool only_spam) {
   if (chain_ids.empty() || account_address.empty()) {
     return GURL();
   }
@@ -1229,6 +1232,14 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
   GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/owners");
   url = net::AppendQueryParameter(url, "chains", chain_ids_param);
   url = net::AppendQueryParameter(url, "wallet_addresses", account_address);
+
+  // Filter spam upstream so discovery doesn't resolve metadata for NFTs that
+  // get dropped anyway. No param means gate3's default of "all".
+  if (skip_spam) {
+    url = net::AppendQueryParameter(url, "spam", "exclude");
+  } else if (only_spam) {
+    url = net::AppendQueryParameter(url, "spam", "only");
+  }
 
   // If cursor is provided, add it as a query parameter
   if (cursor) {
