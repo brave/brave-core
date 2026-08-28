@@ -272,31 +272,23 @@ export const SendScreen = React.memo(() => {
       || getZCashTransactionTypeResult.txType
         === BraveWallet.ZCashTxType.kUnshieldingIronwood)
   const isUnsupportedIronwoodTransaction =
-    tokenFromParams?.coin === BraveWallet.CoinType.ZEC
-    && ((isZCashIronwoodEnabled
-      && (getZCashTransactionTypeResult.txType
+    !isZCashIronwoodEnabled
+    && tokenFromParams?.coin === BraveWallet.CoinType.ZEC
+    && (tokenFromParams.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+      || getZCashTransactionTypeResult.error
+        === BraveWallet.ZCashAddressError.kInvalidRecipientType
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kShieldingIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kTransparentToIronwood
+      || getZCashTransactionTypeResult.txType
         === BraveWallet.ZCashTxType.kOrchardToIronwood
-        || getZCashTransactionTypeResult.txType
-          === BraveWallet.ZCashTxType.kIronwoodToTransparent
-        || getZCashTransactionTypeResult.txType
-          === BraveWallet.ZCashTxType.kUnshieldingIronwood))
-      || (!isZCashIronwoodEnabled
-        && (tokenFromParams.zcashTokenType
-          === BraveWallet.ZCashTokenType.kIronwood
-          || getZCashTransactionTypeResult.error
-            === BraveWallet.ZCashAddressError.kInvalidRecipientType
-          || getZCashTransactionTypeResult.txType
-            === BraveWallet.ZCashTxType.kShieldingIronwood
-          || getZCashTransactionTypeResult.txType
-            === BraveWallet.ZCashTxType.kTransparentToIronwood
-          || getZCashTransactionTypeResult.txType
-            === BraveWallet.ZCashTxType.kOrchardToIronwood
-          || getZCashTransactionTypeResult.txType
-            === BraveWallet.ZCashTxType.kIronwoodToIronwood
-          || getZCashTransactionTypeResult.txType
-            === BraveWallet.ZCashTxType.kIronwoodToTransparent
-          || getZCashTransactionTypeResult.txType
-            === BraveWallet.ZCashTxType.kUnshieldingIronwood)))
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kIronwoodToIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kIronwoodToTransparent
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kUnshieldingIronwood)
   // memos & computed
   const sendAmountValidationError: SendAmountValidationErrorType | undefined =
     React.useMemo(() => {

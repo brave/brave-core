@@ -723,4 +723,13 @@ TEST(ZCashTransactionUtilsUnitTest,
                 .ValueOrDie());
 }
 
+TEST(ZCashTransactionUtilsUnitTest, CalculateZCashTxFee_OrchardToIronwood) {
+  // The legacy Orchard and Ironwood outputs belong to separate bundles.
+  // Actions = legacy spends(2) + change(1) + Ironwood minimum(2).
+  EXPECT_EQ(25000u,
+            CalculateZCashTxFee(0u, 2u, ZCashTargetOutputType::kIronwood,
+                                /*orchard_cross_address_disabled=*/true)
+                .ValueOrDie());
+}
+
 }  // namespace brave_wallet
