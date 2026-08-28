@@ -5,19 +5,29 @@
 
 #include "brave/components/brave_vpn/app/v2/agent/browser_registry.h"
 
+#include <stddef.h>
+
 #include <memory>
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
+#include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
-#include "base/notimplemented.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/process/process_handle.h"
 #include "base/sequence_checker.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_impl.h"
+#include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 #include "build/build_config.h"
 #include "components/named_mojo_ipc_server/named_mojo_ipc_server.h"
 
@@ -31,6 +41,12 @@ namespace {
 // newest. Bumped only when support for older browsers is deliberately dropped,
 // which makes every such bump a compatibility break worth reviewing.
 constexpr uint32_t kMinSupportedProtocolVersion = 1;
+
+// How long an accepted connection may stay silent before the agent stops
+// holding the peer reference it captured. Prevents a connection that never
+// calls BindBrowserHost() from pinning a process handle for the life of the
+// agent.
+constexpr base::TimeDelta kCapturedPeerIdleTimeout = base::Seconds(10);
 
 named_mojo_ipc_server::EndpointOptions GetEndpointOptions(
     mojo::NamedPlatformChannel::ServerName server_name) {
@@ -46,6 +62,10 @@ named_mojo_ipc_server::EndpointOptions GetEndpointOptions(
 #endif  // BUILDFLAG(IS_WIN)
   return endpoint_options;
 }
+
+bool IsCapturedPeerExpired(base::TimeTicks captured_at, base::TimeTicks now) {
+  return now - captured_at > kCapturedPeerIdleTimeout;
+}
 }  // namespace
 
 BrowserRegistry::BrowserRegistry(
@@ -54,13 +74,18 @@ BrowserRegistry::BrowserRegistry(
                        brave_vpn::mojom::BrowserHostProvider>>(
           GetEndpointOptions(std::move(server_name)),
           base::BindRepeating(&BrowserRegistry::OnBrowserConnecting,
-                              base::Unretained(this)))) {
+                              base::Unretained(this)))),
+      identity_factory_(CreateBrowserIdentityFactory()) {
+  CHECK(identity_factory_);
   StartHostServer();
 }
 
 BrowserRegistry::BrowserRegistry(
-    std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server)
-    : host_server_(std::move(host_server)) {
+    std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server,
+    std::unique_ptr<BrowserIdentityFactory> identity_factory)
+    : host_server_(std::move(host_server)),
+      identity_factory_(std::move(identity_factory)) {
+  CHECK(identity_factory_);
   StartHostServer();
 }
 
@@ -68,8 +93,10 @@ BrowserRegistry::~BrowserRegistry() = default;
 
 // static
 std::unique_ptr<BrowserRegistry> BrowserRegistry::CreateForTesting(  // IN-TEST
-    std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server) {
-  return base::WrapUnique(new BrowserRegistry(std::move(host_server)));
+    std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server,
+    std::unique_ptr<BrowserIdentityFactory> identity_factory) {
+  return base::WrapUnique(
+      new BrowserRegistry(std::move(host_server), std::move(identity_factory)));
 }
 
 void BrowserRegistry::StartHostServer() {
@@ -82,9 +109,95 @@ void BrowserRegistry::StartHostServer() {
 brave_vpn::mojom::BrowserHostProvider* BrowserRegistry::OnBrowserConnecting(
     const named_mojo_ipc_server::ConnectionInfo& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  RemoveExpiredPeers();
 
-  VLOG(1) << "New browser connecting (pid " << info.pid << ")";
+  // Runs synchronously on the IPC sequence, so nothing blocking belongs here.
+  // The only jobs are to reject peers that are cheap to rule out, and to pin
+  // the peer so the expensive check later inspects the process that actually
+  // connected rather than whatever holds its pid by then.
+  scoped_refptr<BrowserIdentity> identity = identity_factory_->Capture(info);
+  if (!identity) {
+    return nullptr;
+  }
+
+  const base::ProcessId pid = identity->pid();
+  auto it = peers_.find(pid);
+  if (it != peers_.end() && !it->second.identity->IsSameProcess(*identity)) {
+    // Same pid, different process: the previous occupant exited and the pid was
+    // reused. Any connection still relying on the old entry must not be
+    // verified against this new process.
+    VLOG(1) << "Dropping stale accept-time identity for reused pid " << pid;
+    peers_.erase(it);
+    it = peers_.end();
+  }
+  if (it == peers_.end()) {
+    it = peers_
+             .emplace(pid, Peer{.identity = std::move(identity),
+                                .captured_at = base::TimeTicks::Now()})
+             .first;
+  }
+
+  VLOG(1) << "New browser connecting: "
+          << it->second.identity->GetDescription();
   return &host_provider_;
+}
+
+scoped_refptr<BrowserIdentity> BrowserRegistry::ResolveBrowserIdentity(
+    mojo::ReceiverId receiver_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_EQ(receiver_id, host_server_->current_receiver());
+
+  // Already bound: a browser may drop its host and authenticate again on the
+  // same connection, possibly long after the accept-time entry expired.
+  if (auto* bound = base::FindOrNull(identities_, receiver_id)) {
+    return *bound;
+  }
+
+  // Capturing the dispatching peer is how its pid is read; the identity itself
+  // is discarded, since the accept-time one is what pins the process.
+  scoped_refptr<BrowserIdentity> dispatching =
+      identity_factory_->Capture(host_server_->current_connection_info());
+  if (!dispatching) {
+    return nullptr;
+  }
+
+  // Must be on the accept-time entry list.
+  auto connecting = peers_.find(dispatching->pid());
+  if (connecting == peers_.end()) {
+    // The capture is gone: it aged out and was swept, or this connection was
+    // never accepted; there is nothing to verify against.
+    return nullptr;
+  }
+
+  // Check for expiry so a capture is never usable past its deadline no matter
+  // when storage is actually reclaimed.
+  if (IsCapturedPeerExpired(connecting->second.captured_at,
+                            base::TimeTicks::Now())) {
+    peers_.erase(connecting);
+    return nullptr;
+  }
+
+  // Same pid is not the same process. A peer whose connection outlives its own
+  // capture cannot be allowed to resolve against a capture taken for whoever
+  // inherited its pid afterwards. Refusing here is not a verdict about this
+  // peer, so it reads as retryable.
+  if (!connecting->second.identity->IsSameProcess(*dispatching)) {
+    VLOG(1) << "Refusing " << dispatching->GetDescription()
+            << ": the capture held for that pid belongs to another process ("
+            << connecting->second.identity->GetDescription() << ")";
+    peers_.erase(connecting);
+    return nullptr;
+  }
+
+  // The accept-time entry is deliberately left in place. A browser process
+  // holds one connection per profile, and at launch those may arrive together:
+  // all of them are captured under the same pid before any of them dispatches.
+  // Consuming the entry here would resolve the first profile and leave every
+  // other one unresolvable, which reads to the browser as rejected and takes
+  // those profiles to "unavailable" state for the life of the process.
+  scoped_refptr<BrowserIdentity> identity = connecting->second.identity;
+  identities_[receiver_id] = identity;
+  return identity;
 }
 
 void BrowserRegistry::Authenticate(
@@ -129,26 +242,41 @@ void BrowserRegistry::Authenticate(
     return;
   }
 
+  scoped_refptr<BrowserIdentity> identity = ResolveBrowserIdentity(receiver_id);
+  if (!identity) {
+    // No capture for this connection: it was never accepted, its peer could not
+    // be pinned just now, its pid resolves to another process's capture, or the
+    // capture expired. None is a verdict about the peer, so this is retryable
+    // rather than terminal.
+    VLOG(1) << "Refusing browser " << receiver_id
+            << ": no accept-time identity for the connection (expires "
+            << kCapturedPeerIdleTimeout << " after connect)";
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback),
+                                  mojom::BrowserAuthResult::kInconclusive));
+    return;
+  }
+
   pending_auth_.insert(receiver_id);
   PendingAuth pending{.receiver_id = receiver_id,
+                      .identity = identity,
                       .browser_endpoint = std::move(browser_endpoint),
                       .host = std::move(host),
                       .reply = std::move(callback)};
 
-  // TODO(https://github.com/brave/brave-browser/issues/54623)
-  // Real peer verification will be asynchronous (inspecting the peer process,
-  // checking signatures), so the hop is posted even while it is a no-op, and
-  // nothing past this point may read dispatch state.
-  NOTIMPLEMENTED_LOG_ONCE()
-      << "Peer verification: accepting every browser for now";
-
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BrowserRegistry::OnPeerVerified,
-                                weak_factory_.GetWeakPtr(), std::move(pending),
-                                /*verified=*/true));
+  // Verification blocks, so it does not belong on the IPC sequence.
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&BrowserIdentity::Verify, std::move(identity)),
+      base::BindOnce(&BrowserRegistry::OnPeerVerified,
+                     weak_factory_.GetWeakPtr(), std::move(pending)));
 }
 
-void BrowserRegistry::OnPeerVerified(PendingAuth pending, bool verified) {
+void BrowserRegistry::OnPeerVerified(
+    PendingAuth pending,
+    BrowserIdentity::VerificationResult result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const mojo::ReceiverId receiver_id = pending.receiver_id;
@@ -160,14 +288,23 @@ void BrowserRegistry::OnPeerVerified(PendingAuth pending, bool verified) {
     VLOG(1) << "Browser " << receiver_id << " went away during verification";
     // The pipe is already closed, so this reply goes nowhere; run it anyway
     // rather than dropping a response callback.
-    std::move(pending.reply).Run(mojom::BrowserAuthResult::kRejected);
+    std::move(pending.reply).Run(mojom::BrowserAuthResult::kInconclusive);
     return;
   }
 
-  if (!verified) {
-    VLOG(1) << "Browser " << receiver_id << " failed verification";
-    std::move(pending.reply).Run(mojom::BrowserAuthResult::kRejected);
-    return;
+  switch (result) {
+    case BrowserIdentity::VerificationResult::kAccepted:
+      break;
+    case BrowserIdentity::VerificationResult::kRejected:
+      VLOG(1) << "Browser " << receiver_id
+              << " failed verification: " << pending.identity->GetDescription();
+      std::move(pending.reply).Run(mojom::BrowserAuthResult::kRejected);
+      return;
+    case BrowserIdentity::VerificationResult::kInconclusive:
+      VLOG(1) << "Browser " << receiver_id << " could not be verified: "
+              << pending.identity->GetDescription();
+      std::move(pending.reply).Run(mojom::BrowserAuthResult::kInconclusive);
+      return;
   }
 
   host_sessions_[receiver_id] = std::make_unique<BrowserHostImpl>(
@@ -175,8 +312,25 @@ void BrowserRegistry::OnPeerVerified(PendingAuth pending, bool verified) {
       base::BindOnce(&BrowserRegistry::OnHostDisconnected,
                      weak_factory_.GetWeakPtr(), receiver_id));
 
-  VLOG(1) << "Browser " << receiver_id << " authenticated";
+  // Nothing is removed from |peers_| here on purpose: sibling profiles of this
+  // same browser process may still be waiting to dispatch, and they resolve
+  // through that entry.
+  VLOG(1) << "Browser " << receiver_id
+          << " authenticated: " << pending.identity->GetDescription();
   std::move(pending.reply).Run(mojom::BrowserAuthResult::kAccepted);
+}
+
+void BrowserRegistry::RemoveExpiredPeers() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  const base::TimeTicks now = base::TimeTicks::Now();
+  const size_t reclaimed = base::EraseIf(peers_, [now](const auto& entry) {
+    return IsCapturedPeerExpired(entry.second.captured_at, now);
+  });
+  if (reclaimed) {
+    VLOG(1) << "Removed " << reclaimed
+            << " accept-time captures (expired after "
+            << kCapturedPeerIdleTimeout << ")";
+  }
 }
 
 void BrowserRegistry::OnHostProviderDisconnected() {
@@ -191,6 +345,7 @@ void BrowserRegistry::OnHostProviderDisconnected() {
   // too, and abandons any verification still in flight.
   host_sessions_.erase(receiver_id);
   pending_auth_.erase(receiver_id);
+  identities_.erase(receiver_id);
 }
 
 void BrowserRegistry::OnHostDisconnected(mojo::ReceiverId id) {

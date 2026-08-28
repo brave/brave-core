@@ -183,7 +183,9 @@ INSTANTIATE_TEST_SUITE_P(
         BrowserAuthResultParam{mojom::BrowserAuthResult::kVersionMismatch,
                                "VersionMismatch"},
         BrowserAuthResultParam{mojom::BrowserAuthResult::kHostAlreadyRequested,
-                               "HostAlreadyRequested"}),
+                               "HostAlreadyRequested"},
+        BrowserAuthResultParam{mojom::BrowserAuthResult::kInconclusive,
+                               "Inconclusive"}),
     [](const testing::TestParamInfo<BrowserAuthResultParam>& info) {
       return std::string(info.param.name);
     });
