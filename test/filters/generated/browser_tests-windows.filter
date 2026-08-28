@@ -1,0 +1,2331 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream browser_tests tests with a flake rate >= 1.0% on
+## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32783 passed, 27 failed, 433 flaky).
+-AccountsPolicyManagerBrowserTest.ProfileSigninAllowedPrefChanged_Managed
+
+# 7.3% flake rate over 30 days per LUCI Analysis (30976 passed, 26 failed, 2413 flaky).
+-ActiveUserEmailBrowserTest.GetActiveUser/0
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32190 passed, 26 failed, 1177 flaky).
+-ActiveUserEmailBrowserTest.GetActiveUser/16
+
+# 3.5% flake rate over 30 days per LUCI Analysis (32140 passed, 25 failed, 1135 flaky).
+-ActiveUserEmailBrowserTest.GetActiveUser/4
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32733 passed, 25 failed, 548 flaky).
+-ActiveUserEmailBrowserTest.GetActiveUser_URLUnsupportedByURLF/10
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32846 passed, 26 failed, 571 flaky).
+-ActiveUserEmailBrowserTest.GetActiveUser_URLUnsupportedByURLF/11
+
+# 10.0% flake rate over 30 days per LUCI Analysis (29994 passed, 23 failed, 3318 flaky).
+-ActiveUserEmailBrowserTest.GetActiveUser_URLUnsupportedByURLF/3
+
+# 2.6% flake rate over 30 days per LUCI Analysis (32433 passed, 40 failed, 828 flaky).
+-ActorAttemptLoginToolFederatedTest.FederatedLoginClicksProviderButtonWithPopup
+
+# 7.0% flake rate over 30 days per LUCI Analysis (31104 passed, 27 failed, 2302 flaky).
+-ActorClickToolValidationBrowserTest.ClickTool_DirectActivation_FailsWhenTargetIsNoLongerOccludedAtExecution
+
+# 14.0% flake rate over 30 days per LUCI Analysis (28716 passed, 741 failed, 3930 flaky).
+-ActorKeyedServiceBrowserTest.BuildActionsResultWithExtraInformation
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32986 passed, 26 failed, 329 flaky).
+-ActorLoadAndExtractContentToolTimeoutBrowserTest.Timeout
+
+# 79.5% flake rate over 30 days per LUCI Analysis (6825 passed, 30 failed, 26375 flaky).
+-ActorToolAgnosticBrowserTest.EnsureFocusSimulatedWhenActing
+
+# 6.3% flake rate over 30 days per LUCI Analysis (31164 passed, 30 failed, 2050 flaky).
+-ActorTypeToolBrowserTest.TypeTool_FocusMovesFocus
+
+# 7.2% flake rate over 30 days per LUCI Analysis (15452 passed, 10 failed, 1192 flaky).
+-AimUserAgentTabHelperBrowserTest.ApplyAndClearUserAgentOverride
+
+# 10.3% flake rate over 30 days per LUCI Analysis (29982 passed, 27 failed, 3409 flaky).
+-All/AppBannerManagerBrowserTest.RemovingManifestFromCompleteStateUpdatesResult/0
+
+# 8.9% flake rate over 30 days per LUCI Analysis (30322 passed, 25 failed, 2928 flaky).
+-All/AppBannerManagerBrowserTest.RemovingManifestFromCompleteStateUpdatesResult/1
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32181 passed, 47 failed, 1143 flaky).
+-All/BrowserAppMenuButtonDumpAccessibilityEventsTest.AppMenuButtonExpandCollapseStateChanged/uia_ViewsAXEnabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-All/BrowsingDataRemoverBrowserTestP.SessionStorageDeletion/kDefault
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-All/BrowsingDataRemoverBrowserTestP.SessionStorageDeletion/kLastHour
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32250 passed, 24 failed, 1024 flaky).
+-All/ButtonDumpAccessibilityEventsTest.ButtonFocus/ia2_ViewsAXDisabled
+
+# 2.4% flake rate over 30 days per LUCI Analysis (32587 passed, 37 failed, 763 flaky).
+-All/ButtonDumpAccessibilityEventsTest.ButtonFocus/uia_ViewsAXDisabled
+
+# 2.4% flake rate over 30 days per LUCI Analysis (32632 passed, 40 failed, 759 flaky).
+-All/ButtonDumpAccessibilityEventsTest.ButtonFocus/uia_ViewsAXEnabled
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32863 passed, 35 failed, 431 flaky).
+-All/ChromeBackForwardCacheBrowserWithEmbedPdfTest.DoesNotCachePageWithEmbeddedHtmlMutatedIntoPdf/guestview_embed
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32988 passed, 35 failed, 444 flaky).
+-All/ChromeBackForwardCacheBrowserWithEmbedPdfTest.DoesNotCachePageWithEmbeddedHtmlMutatedIntoPdf/guestview_object
+
+# 3.0% flake rate over 30 days per LUCI Analysis (32 passed, 0 failed, 1 flaky).
+-All/ChromeBackForwardCacheBrowserWithEmbedPdfTest.DoesNotCachePageWithEmbeddedPdfAppendedOnPageLoaded/guestview_object
+
+# 5.0% flake rate over 30 days per LUCI Analysis (31707 passed, 28 failed, 1647 flaky).
+-All/ChromeKeepAliveCategoryRequestBrowserTest.ReceiveRedirectAfterPageUnload/GET
+
+# 4.3% flake rate over 30 days per LUCI Analysis (31832 passed, 30 failed, 1408 flaky).
+-All/ChromeKeepAliveCategoryRequestBrowserTest.ReceiveRedirectAfterPageUnload/POST
+
+# 5.7% flake rate over 30 days per LUCI Analysis (31482 passed, 30 failed, 1866 flaky).
+-All/ChromeKeepAliveCategoryRequestBrowserTest.ReceiveResponseAfterPageUnload/GET
+
+# 4.2% flake rate over 30 days per LUCI Analysis (31934 passed, 30 failed, 1363 flaky).
+-All/ChromeKeepAliveCategoryRequestBrowserTest.ReceiveResponseAfterPageUnload/POST
+
+# 5.1% flake rate over 30 days per LUCI Analysis (31580 passed, 29 failed, 1678 flaky).
+-All/ChromeKeepAliveURLBrowserTest.ReceiveRedirectAfterPageUnload/GET
+
+# 4.7% flake rate over 30 days per LUCI Analysis (31865 passed, 29 failed, 1529 flaky).
+-All/ChromeKeepAliveURLBrowserTest.ReceiveRedirectAfterPageUnload/POST
+
+# 4.8% flake rate over 30 days per LUCI Analysis (31802 passed, 29 failed, 1566 flaky).
+-All/ChromeKeepAliveURLBrowserTest.ReceiveResponseAfterPageUnload/GET
+
+# 4.0% flake rate over 30 days per LUCI Analysis (32022 passed, 29 failed, 1317 flaky).
+-All/ChromeKeepAliveURLBrowserTest.ReceiveResponseAfterPageUnload/POST
+
+# 1.2% flake rate over 30 days per LUCI Analysis (32904 passed, 24 failed, 377 flaky).
+-All/CreateAppShortcutDialogTest.InvokeUi_default/1
+
+# 1.4% flake rate over 30 days per LUCI Analysis (62186 passed, 111 failed, 801 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/ConsumerDark
+
+# 1.4% flake rate over 30 days per LUCI Analysis (62364 passed, 125 failed, 785 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/ConsumerManagedDevice
+
+# 1.3% flake rate over 30 days per LUCI Analysis (62327 passed, 117 failed, 676 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/ConsumerSimpleExplicitBrowserSignin
+
+# 1.3% flake rate over 30 days per LUCI Analysis (62145 passed, 116 failed, 675 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/EntepriseManagedDevice
+
+# 1.0% flake rate over 30 days per LUCI Analysis (62586 passed, 111 failed, 539 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/EnterpriseManagedIntercepted
+
+# 1.1% flake rate over 30 days per LUCI Analysis (62478 passed, 104 failed, 621 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/EnterpriseManagedInterceptedDark
+
+# 1.2% flake rate over 30 days per LUCI Analysis (62371 passed, 122 failed, 648 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/EnterpriseSimple
+
+# 7.8% flake rate over 30 days per LUCI Analysis (58128 passed, 1215 failed, 3720 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/ProfileSwitchExplicitBrowserSignin
+
+# 6.1% flake rate over 30 days per LUCI Analysis (59256 passed, 1628 failed, 2211 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/ProfileSwitchGraphicUpdateEnterprise
+
+# 7.0% flake rate over 30 days per LUCI Analysis (58659 passed, 2313 failed, 2128 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/ProfileSwitchGraphicUpdateEnterpriseDark
+
+# 1.3% flake rate over 30 days per LUCI Analysis (62375 passed, 121 failed, 722 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/SecondaryProfileSupervisedIntercepted
+
+# 1.2% flake rate over 30 days per LUCI Analysis (62431 passed, 131 failed, 624 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/SecondaryProfileSupervisedInterceptedFromPrimaryEnterprize
+
+# 3.8% flake rate over 30 days per LUCI Analysis (60853 passed, 567 failed, 1844 flaky).
+-All/DiceWebSigninInterceptionBubblePixelTest.InvokeUi_default/SupervisedUserProfileSwitchExplicitBrowserSignin
+
+# 1.7% flake rate over 30 days per LUCI Analysis (4674 passed, 4 failed, 77 flaky).
+-All/DictationKeyedServiceBrowserTest.ToggleStreamAndCommit/0
+
+# 69.6% flake rate over 30 days per LUCI Analysis (7 passed, 15 failed, 1 flaky).
+-All/DumpAccessibilityEventsMenuTest.MenuNested/ia2_ViewsAXEnabled
+
+# 65.2% flake rate over 30 days per LUCI Analysis (8 passed, 15 failed, 0 flaky).
+-All/DumpAccessibilityEventsMenuTest.MenuShowHide/ia2_ViewsAXEnabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 26 failed, 0 flaky).
+-All/ExecutionEngineOriginGatingParamBrowserTest.NavigationConfirmation/PromptToConfirmNavigation
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32594 passed, 31 failed, 699 flaky).
+-All/ExecutionEngineOriginGatingParamBrowserTest.NavigationConfirmation/UserConfirmDisabled
+
+# 11.3% flake rate over 30 days per LUCI Analysis (29594 passed, 27 failed, 3758 flaky).
+-All/HistorySyncOptinHelperLaunchContextParamBrowserTest.WaitsForSyncServiceStartupThenSkipsHistorySyncScreenIfSyncDisabledByPolicy/InPicker
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32982 passed, 26 failed, 487 flaky).
+-All/HostedOrWebAppTest.CtrlClickLink/HostedApp
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32788 passed, 32 failed, 507 flaky).
+-All/IsolatedWebAppFocusBrowserTest.IwaChildWindowCanFocusItselfWithNoUserActivation/PermissionDeclared_Denied
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32746 passed, 32 failed, 560 flaky).
+-All/IsolatedWebAppFocusBrowserTest.IwaChildWindowCanFocusItselfWithNoUserActivation/PermissionDeclared_Granted
+
+# 7.5% flake rate over 30 days per LUCI Analysis (30874 passed, 32 failed, 2461 flaky).
+-All/IsolatedWebAppFocusBrowserTest.IwaPopupWindowCanFocusItselfWithNoUserActivation/PermissionDeclared_Granted
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32985 passed, 32 failed, 393 flaky).
+-All/IsolatedWebAppFocusBrowserTest.IwaPopupWindowCanFocusItselfWithNoUserActivation/PermissionUndeclared_Granted
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32897 passed, 32 failed, 420 flaky).
+-All/IsolatedWebAppFocusBrowserTest.OutOfScopePopupWithPermissionCannotFocusWithoutActivation/PermissionDeclared_Denied
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32958 passed, 32 failed, 331 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowCanFocusItselfWithNoUserActivation/PermissionDeclared_Denied
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32802 passed, 32 failed, 420 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowCanFocusItselfWithNoUserActivation/PermissionDeclared_Granted
+
+# 9.9% flake rate over 30 days per LUCI Analysis (30063 passed, 32 failed, 3262 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowCannotFocusParentWithoutUserActivation/PermissionUndeclared_Granted
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32690 passed, 32 failed, 641 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowCannotFocusSiblingWithoutUserActivation/PermissionDeclared_Denied
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32784 passed, 32 failed, 547 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowCannotFocusSiblingWithoutUserActivation/PermissionUndeclared_Denied
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32747 passed, 33 failed, 631 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowCannotFocusSiblingWithoutUserActivation/PermissionUndeclared_Granted
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32983 passed, 33 failed, 388 flaky).
+-All/IsolatedWebAppFocusBrowserTest.WindowFocusNoUserActivation/PermissionDeclared_Granted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 932 failed, 0 flaky).
+-All/LabelDumpAccessibilityEventsTest.SetText/ia2_ViewsAXDisabled
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32261 passed, 33 failed, 1012 flaky).
+-All/LabelDumpAccessibilityEventsTest.SetText/ia2_ViewsAXEnabled
+
+# 5.4% flake rate over 30 days per LUCI Analysis (31550 passed, 31 failed, 1775 flaky).
+-All/LensOverlayControllerBrowserPDFContextualizationTest.PartialPdfIncludedInRequest/0
+
+# 22.1% flake rate over 30 days per LUCI Analysis (25914 passed, 250 failed, 7095 flaky).
+-All/LensOverlayControllerBrowserPDFContextualizationTest.QueryFlowRestartsOnSearchboxFocus/0
+
+# 26.7% flake rate over 30 days per LUCI Analysis (24383 passed, 342 failed, 8549 flaky).
+-All/LensOverlayControllerBrowserPDFContextualizationTest.QueryFlowRestartsOnSearchboxFocus/1
+
+# 8.8% flake rate over 30 days per LUCI Analysis (30381 passed, 30 failed, 2885 flaky).
+-All/LensOverlayControllerBrowserPDFTest.OnScrollToMessage_PDFNotOnMainTab/1
+
+# 6.5% flake rate over 30 days per LUCI Analysis (31073 passed, 26 failed, 2151 flaky).
+-All/LoadingPredictorNetworkIsolationKeyBrowserTest.LoadingPredictorWithRedirects/0
+
+# 6.3% flake rate over 30 days per LUCI Analysis (31344 passed, 28 failed, 2080 flaky).
+-All/LoadingPredictorNetworkIsolationKeyBrowserTest.LoadingPredictorWithRedirects/1
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32863 passed, 23 failed, 460 flaky).
+-All/MLPromotionInstallDialogBrowserTest.MlInstallGuardrailIgnoredUserInstallCancelled/Detailed_Install_Dialog
+
+# 21.5% flake rate over 30 days per LUCI Analysis (26241 passed, 30 failed, 7147 flaky).
+-All/MLPromotionInstallDialogBrowserTest.MlInstallShownAccepted/Simple_Install_Dialog
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32555 passed, 122 failed, 611 flaky).
+-All/MediaEngagementAutoplayBrowserTest.PreloadedDataAndHighVisits/0
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32641 passed, 124 failed, 608 flaky).
+-All/MediaEngagementAutoplayBrowserTest.PreloadedDataAndHighVisits/1
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32605 passed, 122 failed, 612 flaky).
+-All/MediaEngagementAutoplayBrowserTest.UsePreloadedData_Allowed/0
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32638 passed, 127 failed, 613 flaky).
+-All/MediaEngagementAutoplayBrowserTest.UsePreloadedData_Allowed/1
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32611 passed, 121 failed, 614 flaky).
+-All/MediaEngagementAutoplayBrowserTest.UsePreloadedData_Denied/0
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32589 passed, 131 failed, 602 flaky).
+-All/MediaEngagementAutoplayBrowserTest.UsePreloadedData_Denied/1
+
+# 9.8% flake rate over 30 days per LUCI Analysis (30076 passed, 26 failed, 3240 flaky).
+-All/MediaItemUIDeviceSelectorViewDumpAccessibilityEventsTest.HideDevices/ia2_ViewsAXDisabled
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32443 passed, 35 failed, 878 flaky).
+-All/MemorySaverBubbleViewSavingsTest.ShowsCorrectLabelsForDifferentSavings/0
+
+# 8.9% flake rate over 30 days per LUCI Analysis (30346 passed, 141 failed, 2820 flaky).
+-All/NetworkRequestMetricsBrowserTest.CancelDuringBody/2
+
+# 8.0% flake rate over 30 days per LUCI Analysis (30730 passed, 114 failed, 2562 flaky).
+-All/NetworkRequestMetricsBrowserTest.InterruptedCancelDuringBody/2
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32675 passed, 35 failed, 569 flaky).
+-All/OmniboxAimPopupKeepOpenBrowserTest.ActivationChangedAfterFileSelectionClosedPreservesPopup/1
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32836 passed, 35 failed, 542 flaky).
+-All/OmniboxAimPopupKeepOpenBrowserTest.FileSelectionFocusRestorationPreventsPopupClose/1
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32824 passed, 33 failed, 489 flaky).
+-All/OmniboxAimPopupKeepOpenBrowserTest.FocusMovingElsewhereCancelsRestorationState/1
+
+# 12.1% flake rate over 30 days per LUCI Analysis (29212 passed, 162 failed, 3850 flaky).
+-All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/0
+
+# 12.5% flake rate over 30 days per LUCI Analysis (29148 passed, 193 failed, 3969 flaky).
+-All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/1
+
+# 19.7% flake rate over 30 days per LUCI Analysis (26807 passed, 27 failed, 6562 flaky).
+-All/OpticalCharacterRecognizerTest.Create/OCR_Enabled_Library_Available
+
+# 4.9% flake rate over 30 days per LUCI Analysis (25476 passed, 22 failed, 1277 flaky).
+-All/OutOfTurnNavigationBrowserTest.InterleavedAction_OutOfTurnNavigation/NavConfirmationAllowed
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32416 passed, 52 failed, 857 flaky).
+-All/PDFExtensionAccessibilityTextExtractionTest.OverlappingAnnots/1
+
+# 6.4% flake rate over 30 days per LUCI Analysis (31214 passed, 52 failed, 2086 flaky).
+-All/PDFExtensionAccessibilityTreeDumpTest.Images/OOPIF_uia
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32912 passed, 37 failed, 386 flaky).
+-All/PDFExtensionBasicPrintingTest.ContextMenuPrintCommandExtensionMainFrame/GUESTVIEW_BROWSER
+
+# 2.4% flake rate over 30 days per LUCI Analysis (32550 passed, 36 failed, 774 flaky).
+-All/PDFExtensionBasicPrintingTest.ContextMenuPrintCommandExtensionMainFrame/GUESTVIEW_SERVICE
+
+# 8.6% flake rate over 30 days per LUCI Analysis (30460 passed, 36 failed, 2830 flaky).
+-All/PDFExtensionBasicPrintingTest.ContextMenuPrintCommandExtensionMainFrame/OOPIF_SERVICE
+
+# 8.8% flake rate over 30 days per LUCI Analysis (30421 passed, 29 failed, 2917 flaky).
+-All/PDFExtensionContentSettingJSTest.Beep/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 38 failed, 0 flaky).
+-All/PDFExtensionContentSettingJSTest.NoBeepCsp/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-All/PDFExtensionContentSettingJSTest.NoBeepCsp/1
+
+# 4.9% flake rate over 30 days per LUCI Analysis (31770 passed, 31 failed, 1606 flaky).
+-All/PDFExtensionIsolatedContentTest.Jitless/GUESTVIEW_SITE_ISOLATED
+
+# 3.5% flake rate over 30 days per LUCI Analysis (32208 passed, 30 failed, 1134 flaky).
+-All/PDFExtensionJSInk2SaveTest.Ink2Save/1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (32252 passed, 29 failed, 1061 flaky).
+-All/PDFExtensionJSInk2SaveToDriveBeforeUnloadTest.UploadFinished/0
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32919 passed, 29 failed, 352 flaky).
+-All/PDFExtensionJSInk2Test.Ink2BottomToolbarDropdown/1
+
+# 1.0% flake rate over 30 days per LUCI Analysis (33153 passed, 33 failed, 308 flaky).
+-All/PDFExtensionJSInk2TextTest.Ink2TextBoxViewport/1
+
+# 3.8% flake rate over 30 days per LUCI Analysis (32046 passed, 31 failed, 1244 flaky).
+-All/PDFExtensionJSSaveToDriveTest.SaveToDrive/0
+
+# 2.9% flake rate over 30 days per LUCI Analysis (32414 passed, 30 failed, 929 flaky).
+-All/PDFExtensionJSSaveToDriveTest.SaveToDrive/1
+
+# 2.9% flake rate over 30 days per LUCI Analysis (32334 passed, 32 failed, 927 flaky).
+-All/PDFExtensionJSSaveToDriveTest.SaveToDriveBubble/0
+
+# 3.9% flake rate over 30 days per LUCI Analysis (32045 passed, 33 failed, 1276 flaky).
+-All/PDFExtensionJSSaveToDriveTest.SaveToDriveBubble/1
+
+# 12.8% flake rate over 30 days per LUCI Analysis (29148 passed, 32 failed, 4237 flaky).
+-All/PDFExtensionJSTest.Fullscreen/0
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32941 passed, 33 failed, 424 flaky).
+-All/PDFExtensionJSTest.ViewerThumbnail/1
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32944 passed, 29 failed, 349 flaky).
+-All/PDFExtensionJSTest.ZoomManager/1
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32758 passed, 29 failed, 515 flaky).
+-All/PDFExtensionPrintingTest.BasicPrintCommand/GUESTVIEW_SERVICE
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32793 passed, 32 failed, 529 flaky).
+-All/PDFExtensionPrintingTest.BasicPrintCommand/OOPIF_SERVICE
+
+# 9.2% flake rate over 30 days per LUCI Analysis (30234 passed, 38 failed, 3017 flaky).
+-All/PDFExtensionPrintingTest.ContextMenuPrintCommandEmbeddedExtensionMainFrame/OOPIF_SERVICE
+
+# 8.3% flake rate over 30 days per LUCI Analysis (30600 passed, 30 failed, 2751 flaky).
+-All/PDFExtensionSameSiteProcessTest.SameSitePdfContentFramesInSameProcess/0
+
+# 27.0% flake rate over 30 days per LUCI Analysis (24364 passed, 36 failed, 8998 flaky).
+-All/PDFExtensionSaveInBlocksLargeFileTest.UsingDownloadButton/1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (32259 passed, 31 failed, 1073 flaky).
+-All/PDFExtensionSaveInBlocksLargeFileTest.UsingDownloadButton/3
+
+# 24.8% flake rate over 30 days per LUCI Analysis (25103 passed, 32 failed, 8253 flaky).
+-All/PDFExtensionSaveInBlocksTest.BasicUsingContextMenu/1
+
+# 6.0% flake rate over 30 days per LUCI Analysis (31337 passed, 32 failed, 1963 flaky).
+-All/PDFExtensionSaveInBlocksTest.BasicUsingContextMenu/3
+
+# 28.4% flake rate over 30 days per LUCI Analysis (23844 passed, 32 failed, 9438 flaky).
+-All/PDFExtensionSaveInBlocksTest.BasicUsingDownloadButton/1
+
+# 4.0% flake rate over 30 days per LUCI Analysis (31997 passed, 32 failed, 1312 flaky).
+-All/PDFExtensionSaveInBlocksTest.BasicUsingDownloadButton/3
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32563 passed, 30 failed, 641 flaky).
+-All/PDFExtensionTest.EnsurePDFFromLocalFileLoads/0
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32386 passed, 31 failed, 880 flaky).
+-All/PDFExtensionTest.LoadPdfFromExtension/0
+
+# 5.5% flake rate over 30 days per LUCI Analysis (31606 passed, 31 failed, 1801 flaky).
+-All/PDFExtensionTest.MetricsPDFLoadStatusLoadedPdfWithPdfium/0
+
+# 28.9% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 11 flaky).
+-All/PDFExtensionTest.PdfZoomWithoutBubble/0
+
+# 17.5% flake rate over 30 days per LUCI Analysis (33 passed, 0 failed, 7 flaky).
+-All/PDFExtensionTest.PdfZoomWithoutBubble/1
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32818 passed, 29 failed, 445 flaky).
+-All/PDFExtensionTestWithRendererSideContentDecoding.CompressedPdf/1
+
+# 7.5% flake rate over 30 days per LUCI Analysis (30893 passed, 30 failed, 2467 flaky).
+-All/PDFExtensionWebUICodeCacheJSTest.Basic/0
+
+# 14.2% flake rate over 30 days per LUCI Analysis (28645 passed, 30 failed, 4695 flaky).
+-All/PDFPluginDisabledTest.IframePdfPlaceholderWithCSP/0
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32601 passed, 51 failed, 703 flaky).
+-All/PdfOcrUmaTest.CheckOpenedWithScreenReader/OOPIF_Disabled
+
+# 6.8% flake rate over 30 days per LUCI Analysis (30671 passed, 52 failed, 2184 flaky).
+-All/PdfSearchifyIntegrationTest.HelloWorld/OcrService_Enabled_Library_Available_GuestView
+
+# 9.7% flake rate over 30 days per LUCI Analysis (29809 passed, 54 failed, 3136 flaky).
+-All/PdfSearchifyIntegrationTest.HelloWorld/OcrService_Enabled_Library_Available_OOPIF
+
+# 11.2% flake rate over 30 days per LUCI Analysis (29201 passed, 51 failed, 3614 flaky).
+-All/PdfSearchifyIntegrationTest.NoOcrResultOnBlankImagePdf/OcrService_Enabled_Library_Available_GuestView
+
+# 8.8% flake rate over 30 days per LUCI Analysis (30023 passed, 53 failed, 2840 flaky).
+-All/PdfSearchifyIntegrationTest.NoOcrResultOnBlankImagePdf/OcrService_Enabled_Library_Available_OOPIF
+
+# 11.7% flake rate over 30 days per LUCI Analysis (29066 passed, 53 failed, 3808 flaky).
+-All/PdfSearchifyIntegrationTest.ThreePagePDF/OcrService_Enabled_Library_Available_GuestView
+
+# 15.6% flake rate over 30 days per LUCI Analysis (27801 passed, 54 failed, 5071 flaky).
+-All/PdfSearchifyIntegrationTest.ThreePagePDF/OcrService_Enabled_Library_Available_OOPIF
+
+# 24.9% flake rate over 30 days per LUCI Analysis (25070 passed, 25 failed, 8270 flaky).
+-All/ReportingBrowserTestMoreContextData.CrashReportHiddenPage/1
+
+# 14.9% flake rate over 30 days per LUCI Analysis (28394 passed, 31 failed, 4948 flaky).
+-All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadInProgress/0
+
+# 15.7% flake rate over 30 days per LUCI Analysis (28055 passed, 28 failed, 5206 flaky).
+-All/SaveToDriveEventDispatcherBrowserTest.Notify/0
+
+# 2.9% flake rate over 30 days per LUCI Analysis (32379 passed, 27 failed, 947 flaky).
+-All/SessionRestoreAcrossStagesTest.Restore/clear_only_To_write_both_read_prefer_encrypted
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32869 passed, 27 failed, 394 flaky).
+-All/SessionRestoreAcrossStagesTest.Restore/write_both_read_only_clear_To_clear_only
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32810 passed, 26 failed, 561 flaky).
+-All/SessionRestoreAcrossStagesTest.Restore/write_both_read_only_clear_To_write_encrypted_read_prefer_encrypted
+
+# 2.6% flake rate over 30 days per LUCI Analysis (32438 passed, 24 failed, 832 flaky).
+-All/SessionRestoreAcrossStagesTest.Restore/write_both_read_prefer_encrypted_To_write_encrypted_read_prefer_encrypted
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32783 passed, 26 failed, 560 flaky).
+-All/SessionRestoreAcrossStagesTest.Restore/write_encrypted_read_prefer_encrypted_To_write_both_read_prefer_encrypted
+
+# 5.9% flake rate over 30 days per LUCI Analysis (31336 passed, 26 failed, 1949 flaky).
+-All/SessionRestoreWithEncryptionTest.ActiveTabIsRestored/clear_only
+
+# 3.5% flake rate over 30 days per LUCI Analysis (32282 passed, 29 failed, 1149 flaky).
+-All/SessionRestoreWithEncryptionTest.BasicRestore/clear_only
+
+# 7.9% flake rate over 30 days per LUCI Analysis (30639 passed, 28 failed, 2614 flaky).
+-All/SessionRestoreWithEncryptionTest.BasicRestore/write_both_read_only_clear
+
+# 53.3% flake rate over 30 days per LUCI Analysis (7 passed, 8 failed, 0 flaky).
+-All/SubresourceFilterBrowserTestWithV4V5Param.PopupWithDocWriteAbortedLoadAndOpenerClosed_FilterChecked/0
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32547 passed, 26 failed, 793 flaky).
+-All/SystemAccessProcessPrintBrowserTest.StartBasicPrintPdfConversionFails/OopSandboxed_GdiEmf
+
+# 3.9% flake rate over 30 days per LUCI Analysis (31998 passed, 26 failed, 1276 flaky).
+-All/SystemAccessProcessPrintBrowserTest.StartBasicPrintPdfConversionFails/OopUnsandboxed_GdiEmf
+
+# 6.1% flake rate over 30 days per LUCI Analysis (31301 passed, 29 failed, 2002 flaky).
+-All/SystemAccessProcessPrintBrowserTest.StartPrintingPdfConversionFails/OopSandboxed_GdiEmf
+
+# 7.8% flake rate over 30 days per LUCI Analysis (30738 passed, 29 failed, 2580 flaky).
+-All/SystemAccessProcessPrintBrowserTest.StartPrintingPdfConversionFails/OopUnsandboxed_GdiEmf
+
+# 5.6% flake rate over 30 days per LUCI Analysis (31475 passed, 29 failed, 1845 flaky).
+-All/TabCapturePerformanceTest.Performance/3
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 82 failed, 0 flaky).
+-All/TabCollectionNodeBrowserTest.PinnedContainerDragAxesUpdatesOnCollapseStateChanged/Horizontal
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32783 passed, 27 failed, 541 flaky).
+-All/TabRestoreAcrossStagesTest.Restore/clear_only_To_write_both_read_prefer_encrypted
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32748 passed, 25 failed, 468 flaky).
+-All/TabRestoreAcrossStagesTest.Restore/write_both_read_only_clear_To_clear_only
+
+# 1.0% flake rate over 30 days per LUCI Analysis (33001 passed, 26 failed, 314 flaky).
+-All/TabRestoreAcrossStagesTest.Restore/write_both_read_prefer_encrypted_To_clear_only
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32937 passed, 27 failed, 438 flaky).
+-All/TabRestoreAcrossStagesTest.Restore/write_both_read_prefer_encrypted_To_write_both_read_only_clear
+
+# 1.2% flake rate over 30 days per LUCI Analysis (33029 passed, 27 failed, 368 flaky).
+-All/TabRestoreWithEncryptionTest.BasicRestore/write_both_read_prefer_encrypted
+
+# 5.6% flake rate over 30 days per LUCI Analysis (31581 passed, 27 failed, 1859 flaky).
+-All/TabRestoreWithEncryptionTest.BasicRestore/write_encrypted_read_prefer_encrypted
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32777 passed, 26 failed, 489 flaky).
+-All/TabRestoreWithEncryptionTest.LargeSessionRestore/write_both_read_only_clear
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32710 passed, 26 failed, 554 flaky).
+-All/TabRestoreWithEncryptionTest.LargeSessionRestore/write_both_read_prefer_encrypted
+
+# 8.3% flake rate over 30 days per LUCI Analysis (30580 passed, 25 failed, 2752 flaky).
+-All/TailoredSecurityDesktopDialogManagerTest.DisabledDialogCancelButtonRecordsUserAction/LightTheme
+
+# 5.4% flake rate over 30 days per LUCI Analysis (31609 passed, 26 failed, 1762 flaky).
+-All/TailoredSecurityDesktopDialogManagerTest.DisabledDialogRecordsUserActionOnShow/LightTheme
+
+# 13.2% flake rate over 30 days per LUCI Analysis (28936 passed, 25 failed, 4394 flaky).
+-All/TailoredSecurityDesktopDialogManagerTest.EnabledDialogCancelButtonIncrementsSettingsHistogram/LightTheme
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32859 passed, 26 failed, 427 flaky).
+-All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/ia2_ViewsAXDisabled
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32734 passed, 40 failed, 608 flaky).
+-All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/uia_ViewsAXDisabled
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32931 passed, 44 failed, 376 flaky).
+-All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/uia_ViewsAXEnabled
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32617 passed, 25 failed, 726 flaky).
+-All/UserPolicyOidcSigninServiceTest.UninitializedStorePolicyRecovery/0
+
+# 37.7% flake rate over 30 days per LUCI Analysis (38 passed, 23 failed, 0 flaky).
+-All/WatermarkBrowserTest.WatermarkClearedAfterNavigation/0
+
+# 51.1% flake rate over 30 days per LUCI Analysis (22 passed, 23 failed, 0 flaky).
+-All/WatermarkBrowserTest.WatermarkClearedAfterNavigation/1
+
+# 37.1% flake rate over 30 days per LUCI Analysis (39 passed, 23 failed, 0 flaky).
+-All/WatermarkBrowserTest.WatermarkClearedAfterNavigation/2
+
+# 37.1% flake rate over 30 days per LUCI Analysis (39 passed, 23 failed, 0 flaky).
+-All/WatermarkBrowserTest.WatermarkClearedAfterNavigation/3
+
+# 50.0% flake rate over 30 days per LUCI Analysis (23 passed, 23 failed, 0 flaky).
+-All/WatermarkBrowserTest.WatermarkClearedAfterNavigation/4
+
+# 37.7% flake rate over 30 days per LUCI Analysis (38 passed, 23 failed, 0 flaky).
+-All/WatermarkBrowserTest.WatermarkClearedAfterNavigation/5
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 32 failed, 0 flaky).
+-All/WebAppBrowserTest.WindowOffsetsClampedToScreen/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 27 failed, 0 flaky).
+-All/WebRtcScreenCaptureBrowserTestWithPicker.ScreenCaptureVideo/Standard_Accept
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 25 failed, 0 flaky).
+-All/WebRtcScreenCaptureBrowserTestWithPicker.ScreenCaptureVideoAndAudio/Standard_Accept
+
+# 1.2% flake rate over 30 days per LUCI Analysis (32916 passed, 32 failed, 377 flaky).
+-All/WebUIToolbarButtonPressAndDragTest.PressAndDragDown/Back
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32971 passed, 27 failed, 350 flaky).
+-All/WebUIToolbarButtonPressAndDragTest.PressAndDragDown/Forward
+
+# 50.0% flake rate over 30 days per LUCI Analysis (23 passed, 23 failed, 0 flaky).
+-AppMenuBrowserTest.InvokeUi_bookmarks
+
+# 37.7% flake rate over 30 days per LUCI Analysis (38 passed, 23 failed, 0 flaky).
+-AppMenuBrowserTest.InvokeUi_extensions
+
+# 50.0% flake rate over 30 days per LUCI Analysis (23 passed, 23 failed, 0 flaky).
+-AppMenuBrowserTest.InvokeUi_find_and_edit
+
+# 50.0% flake rate over 30 days per LUCI Analysis (23 passed, 23 failed, 0 flaky).
+-AppMenuBrowserTest.InvokeUi_history
+
+# 4.2% flake rate over 30 days per LUCI Analysis (530 passed, 23 failed, 0 flaky).
+-AppMenuBrowserTest.InvokeUi_main_guest
+
+# 51.1% flake rate over 30 days per LUCI Analysis (22 passed, 23 failed, 0 flaky).
+-AppMenuBrowserTest.InvokeUi_profile_menu_in_app_menu_signed_out
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32521 passed, 28 failed, 885 flaky).
+-AppModeTest.EnableAppModeTest
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 25 failed, 0 flaky).
+-AppWindowAPITest.TestRestoreGeometryCacheChange
+
+# 13.4% flake rate over 30 days per LUCI Analysis (28927 passed, 49 failed, 4422 flaky).
+-AriaNotifyUIABrowserTest.AriaNotifyRaisesUIANotificationEvent
+
+# 3.3% flake rate over 30 days per LUCI Analysis (52143 passed, 59 failed, 1720 flaky).
+-AtMemorySuggestions/AtMemoryCreatePopupRowViewTest.SuggestionRowUiTest/AtMemory_no_connection_ContentSelected
+
+# 12.1% flake rate over 30 days per LUCI Analysis (29340 passed, 27 failed, 4014 flaky).
+-AttemptOtpFillingToolBrowserTest.ToolFailsWhenTabIsNull
+
+# 7.4% flake rate over 30 days per LUCI Analysis (30854 passed, 32 failed, 2451 flaky).
+-AutoPictureInPictureTabHelperBrowserTest.OverlaySettingViewIsShownForDocumentPip
+
+# 12.6% flake rate over 30 days per LUCI Analysis (29150 passed, 35 failed, 4174 flaky).
+-AutoPictureInPictureTabHelperBrowserTest.PromptResultRecorded_VideoConferencingAllowOnce
+
+# 19.5% flake rate over 30 days per LUCI Analysis (26871 passed, 26 failed, 6463 flaky).
+-AutocompleteDictionaryPreloadBrowserTest.DoNotPreloadDictionayUnderMemoryPressure
+
+# 5.1% flake rate over 30 days per LUCI Analysis (37 passed, 2 failed, 0 flaky).
+-AvatarToolbarButtonPromoBrowserTest.PromoNotShownIfMaxShownCountReached/4
+
+# 29.1% flake rate over 30 days per LUCI Analysis (23668 passed, 26 failed, 9671 flaky).
+-BookmarksTest.List
+
+# 6.1% flake rate over 30 days per LUCI Analysis (31385 passed, 30 failed, 2006 flaky).
+-BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundToDifferentKeys/PrototypeError
+
+# 3.7% flake rate over 30 days per LUCI Analysis (32040 passed, 28 failed, 1197 flaky).
+-BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundToDifferentKeys/PrototypeInvalidInput
+
+# 7.3% flake rate over 30 days per LUCI Analysis (30879 passed, 29 failed, 2415 flaky).
+-BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundToDifferentKeys/StandardError
+
+# 6.1% flake rate over 30 days per LUCI Analysis (31359 passed, 28 failed, 2019 flaky).
+-BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundToDifferentKeys/StandardInvalidInput
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32814 passed, 28 failed, 495 flaky).
+-BoundSessionOAuthMultiloginPrototypeTest.ReuseExistingSession
+
+# 2.1% flake rate over 30 days per LUCI Analysis (32716 passed, 29 failed, 683 flaky).
+-BoundSessionOAuthMultiloginSecondaryPartitionTest.StartsNewBoundSessionSecondaryPartition
+
+# 1.0% flake rate over 30 days per LUCI Analysis (16335 passed, 8 failed, 160 flaky).
+-BrowserCommandControllerBrowserTest.GroupAllUngroupedTabsUserMetricActionEmitted
+
+# 9.3% flake rate over 30 days per LUCI Analysis (30201 passed, 26 failed, 3061 flaky).
+-BrowserCommandControllerBrowserTestRefreshOnly.ExecuteShowSyncSettings
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32811 passed, 25 failed, 522 flaky).
+-BrowserSwitcherServiceTest.ExternalFirstFetchFailsButSecondWorks
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32266 passed, 36 failed, 991 flaky).
+-BrowsingDataHistoryRemoverBrowserTest.StorageRemovedFromDisk/HistoryDatabaseWalDisabled
+
+# 2.1% flake rate over 30 days per LUCI Analysis (32682 passed, 40 failed, 659 flaky).
+-BrowsingDataHistoryRemoverBrowserTest.StorageRemovedFromDisk/HistoryDatabaseWalEnabled
+
+# 6.3% flake rate over 30 days per LUCI Analysis (30858 passed, 27 failed, 2036 flaky).
+-CDM_10/ECKEncryptedMediaTest.MultipeCdmTypes/0
+
+# 5.7% flake rate over 30 days per LUCI Analysis (31016 passed, 27 failed, 1865 flaky).
+-CDM_11/ECKEncryptedMediaTest.MultipeCdmTypes/0
+
+# 6.1% flake rate over 30 days per LUCI Analysis (30911 passed, 26 failed, 1976 flaky).
+-CDM_12/ECKEncryptedMediaTest.MultipeCdmTypes/0
+
+# 36.5% flake rate over 30 days per LUCI Analysis (40 passed, 23 failed, 0 flaky).
+-CaptionBubbleBrowserTest.InvokeUi_default
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-CapturableToBrowserTabApp/NavCaptureTestWithAppBLaunched.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureOff_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 28 failed, 0 flaky).
+-CapturableToBrowserTabApp/NavCaptureTestWithAppBLaunched.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureOff_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 9.4% flake rate over 30 days per LUCI Analysis (30171 passed, 31 failed, 3090 flaky).
+-CaptureHandleBrowserTestPrerender.EmptyConfigForCrossDocumentNavigations
+
+# 18.6% flake rate over 30 days per LUCI Analysis (27064 passed, 28 failed, 6157 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/DecreaseZoomLevel
+
+# 14.0% flake rate over 30 days per LUCI Analysis (28687 passed, 28 failed, 4626 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/ForwardWheel
+
+# 16.4% flake rate over 30 days per LUCI Analysis (27911 passed, 27 failed, 5448 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/ForwardWheelNull
+
+# 18.6% flake rate over 30 days per LUCI Analysis (27104 passed, 27 failed, 6157 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/GetSupportedZoomLevels
+
+# 17.6% flake rate over 30 days per LUCI Analysis (27446 passed, 28 failed, 5849 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/GetZoomLevel
+
+# 18.9% flake rate over 30 days per LUCI Analysis (27106 passed, 29 failed, 6292 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/IncreaseZoomLevel
+
+# 15.4% flake rate over 30 days per LUCI Analysis (28270 passed, 28 failed, 5105 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadAfterCscAction/ResetZoomLevel
+
+# 14.7% flake rate over 30 days per LUCI Analysis (28402 passed, 27 failed, 4857 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/DecreaseZoomLevel
+
+# 16.3% flake rate over 30 days per LUCI Analysis (27951 passed, 28 failed, 5402 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/ForwardWheel
+
+# 17.3% flake rate over 30 days per LUCI Analysis (27505 passed, 28 failed, 5722 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/ForwardWheelNull
+
+# 16.4% flake rate over 30 days per LUCI Analysis (27817 passed, 26 failed, 5436 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/GetSupportedZoomLevels
+
+# 17.8% flake rate over 30 days per LUCI Analysis (27398 passed, 28 failed, 5925 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/GetZoomLevel
+
+# 15.8% flake rate over 30 days per LUCI Analysis (28129 passed, 28 failed, 5239 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/IncreaseZoomLevel
+
+# 14.7% flake rate over 30 days per LUCI Analysis (28415 passed, 27 failed, 4870 flaky).
+-CapturedSurfaceControlIndicatorTest.IndicatorStateRetainedAfterShareThisTabInsteadNoCscBefore/ResetZoomLevel
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32808 passed, 28 failed, 480 flaky).
+-ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest/92
+
+# 20.5% flake rate over 30 days per LUCI Analysis (31 passed, 4 failed, 4 flaky).
+-ChromeAimEligibilityServiceOAuthBrowserTest.OTRRequestIsNotDropped
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32652 passed, 27 failed, 720 flaky).
+-ChromeComposeClientBrowserTest.TestProactiveNudgeEngagementIsRecorded
+
+# 21.1% flake rate over 30 days per LUCI Analysis (13976 passed, 117 failed, 3612 flaky).
+-ChromeComposeClientBrowserTest.TestShouldTriggerProactiveNudgeBlockedBySegmentation
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32527 passed, 27 failed, 715 flaky).
+-ChromeComposeClientBrowserTest.TextFieldChangeThresholdHidesProactiveNudge
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32951 passed, 33 failed, 480 flaky).
+-ChromeDelayLoadHookTest.ObserveDelayLoadFailure
+
+# 4.0% flake rate over 30 days per LUCI Analysis (28091 passed, 22 failed, 1143 flaky).
+-ChromeLabsButtonTest.DotIndicatorTest
+
+# 3.0% flake rate over 30 days per LUCI Analysis (28339 passed, 23 failed, 866 flaky).
+-ChromeLabsButtonTest.ShowAndHideChromeLabsBubbleOnPress
+
+# 4.1% flake rate over 30 days per LUCI Analysis (32027 passed, 30 failed, 1324 flaky).
+-ChromeMimeHandlerViewTest.RejectPointLock/MPArch
+
+# 7.7% flake rate over 30 days per LUCI Analysis (30756 passed, 28 failed, 2545 flaky).
+-ChromeNavigationBrowserTest.NoopenerCorrectlyFocusesNewTab
+
+# 25.6% flake rate over 30 days per LUCI Analysis (29 passed, 4 failed, 6 flaky).
+-ChromeNavigationBrowserTest.TopLevelDataURLNavigationWithDocumentIsolationPolicy
+
+# 8.5% flake rate over 30 days per LUCI Analysis (30506 passed, 29 failed, 2798 flaky).
+-ChromeRenderProcessHostBackgroundingTest.MultipleTabs
+
+# 4.3% flake rate over 30 days per LUCI Analysis (31837 passed, 25 failed, 1405 flaky).
+-ChromeURLDataManagerWebUITrustedTypesTest.NoTrustedTypesViolation/chrome___quota_internals
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32922 passed, 26 failed, 450 flaky).
+-ChromeURLDataManagerWebUITrustedTypesTest.TrustedTypesEnabled/chrome___quota_internals
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32917 passed, 27 failed, 394 flaky).
+-Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/5
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 51 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 53 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 54 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 44 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 65 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 59 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 54 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 54 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 78 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 44 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 35 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppANavigateExistingAppBFocusExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 32 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 43 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 36 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 30 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 25 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 28 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 39 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 48 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 30 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 49 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 51 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 52 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 42 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 54 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 53 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 58 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 44 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 44 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 55 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 43 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 48 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 49 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 48 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 35 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 53 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/FocusExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 57 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 54 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 71 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 35 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 36 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 35 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 42 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 39 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 49 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 36 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 33 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 43 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaButton_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 43 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 51 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 50 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 39 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 59 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 47 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaButton_LeftClick_WithoutOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithOpener_TargetFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 48 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 54 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_AppAStandaloneAppBBrowser_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 32 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 45 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_BothStandalone_CaptureForSpecifiedClientMode_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithOpener_TargetNoFrame
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2A_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2B_Direct_ViaButton_LeftClick_WithoutOpener_TargetSelf
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/NavigateNew_BothStandalone_CaptureForSpecifiedClientMode_Tab_ScopeA2X_Direct_ViaButton_LeftClick_WithoutOpener_TargetNoFrame
+
+# 9.0% flake rate over 30 days per LUCI Analysis (30364 passed, 28 failed, 2968 flaky).
+-ContentAnalysisDelegateBrowserTest.BlockTextAndAllowImage/0
+
+# 5.5% flake rate over 30 days per LUCI Analysis (31487 passed, 28 failed, 1804 flaky).
+-ContentAnalysisDelegateBrowserTest.Throttled/0
+
+# 25.1% flake rate over 30 days per LUCI Analysis (25050 passed, 29 failed, 8353 flaky).
+-ContentAnalysisDelegateBrowserTest.Throttled/1
+
+# 13.4% flake rate over 30 days per LUCI Analysis (28894 passed, 28 failed, 4443 flaky).
+-ContentAnalysisDelegateDefaultActionSettingBrowserTest.DefaultAction/0
+
+# 13.8% flake rate over 30 days per LUCI Analysis (28677 passed, 28 failed, 4549 flaky).
+-ContentAnalysisDelegateDefaultActionSettingBrowserTest.DefaultAction/4
+
+# 3.8% flake rate over 30 days per LUCI Analysis (32116 passed, 28 failed, 1250 flaky).
+-ContentAnalysisDelegateDefaultActionSettingBrowserTest.DefaultAction/9
+
+# 9.6% flake rate over 30 days per LUCI Analysis (30122 passed, 28 failed, 3180 flaky).
+-ContentAnalysisDelegateFilesBrowserTest.FilesAndDirUpload/0
+
+# 11.5% flake rate over 30 days per LUCI Analysis (29565 passed, 28 failed, 3820 flaky).
+-ContentAnalysisDelegateFilesBrowserTest.FilesAndDirUpload/1
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32674 passed, 29 failed, 609 flaky).
+-ContentAnalysisDialogBehaviorBrowserTest.Test/4
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32983 passed, 26 failed, 409 flaky).
+-ContentAnalysisDialogCustomRuleMessageUiTest.InvokeUi_default/3
+
+# 64.7% flake rate over 30 days per LUCI Analysis (12 passed, 21 failed, 1 flaky).
+-ContextualTasksBrowserTest.App
+
+# 5.9% flake rate over 30 days per LUCI Analysis (31363 passed, 333 failed, 1622 flaky).
+-ContextualTasksLensInteractionBrowserTest.OverlayClosesOnNavigation
+
+# 11.3% flake rate over 30 days per LUCI Analysis (29520 passed, 30 failed, 3733 flaky).
+-ControlledFrameContextMenusTest.ClickEvent
+
+# 5.1% flake rate over 30 days per LUCI Analysis (31612 passed, 33 failed, 1658 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsBecauseEmbedderDoesNotHavePermissionsPolicy
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32544 passed, 32 failed, 738 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsBecauseEmbedderPermissionsPolicyMissingEmbedderOrigin
+
+# 3.2% flake rate over 30 days per LUCI Analysis (32298 passed, 32 failed, 1029 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsBecauseEmbedderPermissionsPolicyMissingRequestingOrigin
+
+# 2.8% flake rate over 30 days per LUCI Analysis (32464 passed, 32 failed, 905 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsBecauseNoEmbedderContentSettings
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32549 passed, 33 failed, 737 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsBecauseNotAllow
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32528 passed, 30 failed, 725 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/FailsWhenEmbeddedOriginPermissionStateIsAllowed
+
+# 2.4% flake rate over 30 days per LUCI Analysis (32582 passed, 33 failed, 755 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/Succeeds
+
+# 3.7% flake rate over 30 days per LUCI Analysis (32046 passed, 33 failed, 1202 flaky).
+-ControlledFramePermissionRequestTest.ClipboardReadWrite/SucceedsWhenEmbeddedOriginPermissionStateIsDenied
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32555 passed, 30 failed, 742 flaky).
+-ControlledFramePermissionRequestTest.ClipboardSanitizedWrite/FailsBecauseEmbedderDoesNotHavePermissionsPolicy
+
+# 3.2% flake rate over 30 days per LUCI Analysis (32292 passed, 32 failed, 1021 flaky).
+-ControlledFramePermissionRequestTest.ClipboardSanitizedWrite/FailsBecauseEmbedderPermissionsPolicyMissingEmbedderOrigin
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32671 passed, 33 failed, 588 flaky).
+-ControlledFramePermissionRequestTest.ClipboardSanitizedWrite/FailsBecauseEmbedderPermissionsPolicyMissingRequestingOrigin
+
+# 4.0% flake rate over 30 days per LUCI Analysis (32004 passed, 31 failed, 1309 flaky).
+-ControlledFramePermissionRequestTest.ClipboardSanitizedWrite/FailsBecauseNotAllow
+
+# 2.4% flake rate over 30 days per LUCI Analysis (32500 passed, 32 failed, 753 flaky).
+-ControlledFramePermissionRequestTest.ClipboardSanitizedWrite/Succeeds
+
+# 3.4% flake rate over 30 days per LUCI Analysis (32175 passed, 32 failed, 1096 flaky).
+-ControlledFramePermissionRequestTest.ClipboardSanitizedWrite/SucceedsWhenEmbeddedOriginPermissionStateIsDenied
+
+# 7.8% flake rate over 30 days per LUCI Analysis (30688 passed, 30 failed, 2580 flaky).
+-ControlledFrameServiceWorkerAutoPreloadTest.WebRequestOnErrorOccurredNavigation/OptimizationDisabled
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32788 passed, 29 failed, 543 flaky).
+-ControlledFrameServiceWorkerAutoPreloadTest.WebRequestOnErrorOccurredNavigation/OptimizationEnabled
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32603 passed, 29 failed, 711 flaky).
+-ControlledFrameWptBrowserTest.Run/camera
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32912 passed, 30 failed, 421 flaky).
+-ControlledFrameWptBrowserTest.Run/geolocation
+
+# 46.3% flake rate over 30 days per LUCI Analysis (17870 passed, 28 failed, 15378 flaky).
+-CrComponentsComposeboxTest.ComposeboxInput
+
+# 19.2% flake rate over 30 days per LUCI Analysis (26888 passed, 49 failed, 6355 flaky).
+-CrComponentsComposeboxTest.ContextualActionMenu
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32946 passed, 28 failed, 343 flaky).
+-CrComponentsHistoryClustersTest.Cluster
+
+# 26.6% flake rate over 30 days per LUCI Analysis (24449 passed, 858 failed, 7988 flaky).
+-CrComponentsSearchboxTest.SearchboxIconTest
+
+# 13.1% flake rate over 30 days per LUCI Analysis (28942 passed, 26 failed, 4331 flaky).
+-CrElementsTest.CrToast
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32692 passed, 34 failed, 611 flaky).
+-CrashRecoveryBrowserTest.DoubleReloadWithError
+
+# 22.8% flake rate over 30 days per LUCI Analysis (25739 passed, 23 failed, 7572 flaky).
+-CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.EscapeClosesDialogTest
+
+# 3.3% flake rate over 30 days per LUCI Analysis (32226 passed, 31 failed, 1076 flaky).
+-DataSharingSDKDelegateDesktopBrowserTest.ReadGroupLoadsWebContents
+
+# 5.8% flake rate over 30 days per LUCI Analysis (31385 passed, 27 failed, 1889 flaky).
+-DefaultBrowserManagerWinBrowserTest.ClickAcceptTriggersSetterAndMetric
+
+# 15.0% flake rate over 30 days per LUCI Analysis (28341 passed, 120 failed, 4877 flaky).
+-DefaultBrowserManagerWinBrowserTest.NoNotificationWhenChromeRemainsDefault
+
+# 37.7% flake rate over 30 days per LUCI Analysis (38 passed, 23 failed, 0 flaky).
+-DesktopMediaPickerViewsBrowserTest.InvokeUi_LongTitle
+
+# 3.7% flake rate over 30 days per LUCI Analysis (32175 passed, 26 failed, 1195 flaky).
+-DestroyProfileOnBrowserClose/ProfileManagerBrowserTest.EphemeralProfile/1
+
+# 21.9% flake rate over 30 days per LUCI Analysis (26072 passed, 35 failed, 7297 flaky).
+-DevToolsTest.TestDispatchKeyEventShowsAutoFill
+
+# 1.5% flake rate over 30 days per LUCI Analysis (25530 passed, 25 failed, 367 flaky).
+-DictationKeyedServiceBrowserTest.ToggleStreamAndCommit
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32910 passed, 27 failed, 401 flaky).
+-DictationOnboardingInteractiveTest.ResponsiveAfterTabSwitching
+
+# 2.5% flake rate over 30 days per LUCI Analysis (61593 passed, 82 failed, 1515 flaky).
+-DocumentPictureInPicturePixelTest.InvokeUi_default
+
+# 10.5% flake rate over 30 days per LUCI Analysis (29855 passed, 30 failed, 3456 flaky).
+-DocumentPictureInPictureWindowControllerBrowserTest.CreateTwice
+
+# 5.9% flake rate over 30 days per LUCI Analysis (31286 passed, 30 failed, 1933 flaky).
+-DocumentPictureInPictureWindowControllerBrowserTest.CreationAndVisibilityAndActivation
+
+# 5.9% flake rate over 30 days per LUCI Analysis (31429 passed, 25 failed, 1932 flaky).
+-DownloadDisplayControllerTest.Fullscreen_DoesNotShowDetailsForInProgressOnExitFullscreen
+
+# 3.8% flake rate over 30 days per LUCI Analysis (3072 passed, 3 failed, 117 flaky).
+-EnableLinkCapturingInfobarBrowserTest.AppLaunched/V2DefaultOffMigrationDisabled
+
+# 1.3% flake rate over 30 days per LUCI Analysis (3157 passed, 3 failed, 37 flaky).
+-EnableLinkCapturingInfobarBrowserTest.AppLaunched/V2DefaultOnMigrationDisabled
+
+# 7.9% flake rate over 30 days per LUCI Analysis (2950 passed, 3 failed, 251 flaky).
+-EnableLinkCapturingInfobarBrowserTest.BarRemoved/V2DefaultOffMigrationDisabled
+
+# 1.8% flake rate over 30 days per LUCI Analysis (3136 passed, 3 failed, 55 flaky).
+-EnableLinkCapturingInfobarBrowserTest.RecordUserActionCancelled/V2DefaultOffMigrationDisabled
+
+# 2.1% flake rate over 30 days per LUCI Analysis (3127 passed, 3 failed, 65 flaky).
+-EnableLinkCapturingInfobarBrowserTest.RecordUserActionCancelled/V2DefaultOffMigrationEnabled
+
+# 4.6% flake rate over 30 days per LUCI Analysis (3044 passed, 3 failed, 144 flaky).
+-EnableLinkCapturingInfobarBrowserTest.RecordUserActionCancelled/V2DefaultOnMigrationDisabled
+
+# 2.4% flake rate over 30 days per LUCI Analysis (3116 passed, 3 failed, 75 flaky).
+-EnableLinkCapturingInfobarBrowserTest.RecordUserActionCancelled/V2DefaultOnMigrationEnabled
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32873 passed, 46 failed, 461 flaky).
+-EnterpriseSkillsProviderBrowserTest.StressTestWithRealServer
+
+# 4.0% flake rate over 30 days per LUCI Analysis (48 passed, 2 failed, 0 flaky).
+-EnterpriseWebrtcApiTest.IncognitoSessionIsIndependent
+
+# 9.7% flake rate over 30 days per LUCI Analysis (14805 passed, 7 failed, 1580 flaky).
+-EventRouterLegacyDispatchExploitTest.AddFilteredListenerForMainThread_WebRequestFromContentScriptProcess
+
+# 10.1% flake rate over 30 days per LUCI Analysis (14750 passed, 5 failed, 1661 flaky).
+-EventRouterLegacyDispatchExploitTest.AddFilteredListenerForMainThread_WebRequestProtocolMismatch
+
+# 11.6% flake rate over 30 days per LUCI Analysis (14539 passed, 7 failed, 1898 flaky).
+-EventRouterPerContextDispatchExploitTest.AddFilteredListenerForMainThread_WebRequestFromContentScriptProcess
+
+# 8.4% flake rate over 30 days per LUCI Analysis (15061 passed, 7 failed, 1377 flaky).
+-EventRouterPerContextDispatchExploitTest.AddFilteredListenerForMainThread_WebRequestProtocolMismatch
+
+# 39.7% flake rate over 30 days per LUCI Analysis (20081 passed, 27 failed, 13183 flaky).
+-ExecutionEnginePixelBrowserTest.DropdownCapturedWhenActing
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-ExtensionActiveTabTest.ActiveTab
+
+# 22.9% flake rate over 30 days per LUCI Analysis (17850 passed, 31 failed, 5278 flaky).
+-ExtensionApiTabPrerenderingTest.PrerenderingIntoANewTab
+
+# 1.3% flake rate over 30 days per LUCI Analysis (33037 passed, 31 failed, 412 flaky).
+-ExtensionApiTabTest.Move
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32537 passed, 28 failed, 727 flaky).
+-ExtensionApiTabTest.RemoveMultiple
+
+# 16.1% flake rate over 30 days per LUCI Analysis (28052 passed, 33 failed, 5357 flaky).
+-ExtensionApiTest.ChromeRuntimeOpenOptionsPage
+
+# 10.7% flake rate over 30 days per LUCI Analysis (29727 passed, 27 failed, 3528 flaky).
+-ExtensionApiTest.ExtensionTerminatedForRapidReloads
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32941 passed, 27 failed, 345 flaky).
+-ExtensionCspApiTest.ServiceWorkerIsConstrainedByMV3CSPEvenIfSandboxed
+
+# 3.7% flake rate over 30 days per LUCI Analysis (32115 passed, 33 failed, 1218 flaky).
+-ExtensionInstallDialogPictureInPictureInputProtectorTest.KeyEventsAreProtected
+
+# 2.9% flake rate over 30 days per LUCI Analysis (32347 passed, 25 failed, 936 flaky).
+-ExtensionInstallDialogViewTest.InstallButtonDelay
+
+# 11.3% flake rate over 30 days per LUCI Analysis (29547 passed, 27 failed, 3731 flaky).
+-ExtensionPolicyTest.CorruptedNonWebstoreExtensionRepaired
+
+# 12.6% flake rate over 30 days per LUCI Analysis (29153 passed, 26 failed, 4167 flaky).
+-ExtensionPolicyTest.CorruptedNonWebstoreExtensionWithoutHashesRemained
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32873 passed, 100 failed, 386 flaky).
+-ExtensionPostInstallDialogViewUtilsBrowserTest.InvokeUi_default
+
+# 91.3% flake rate over 30 days per LUCI Analysis (2 passed, 21 failed, 0 flaky).
+-ExtensionSidePanelBrowserTest.WindowCloseCalledWhenLoading
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 33 failed, 0 flaky).
+-ExtensionWebRequestApiTest.WebRequestTypes
+
+# 2.6% flake rate over 30 days per LUCI Analysis (61474 passed, 70 failed, 1601 flaky).
+-FirstRunDefaultBrowserPixelTest.InvokeUi_default/DarkTheme
+
+# 1.1% flake rate over 30 days per LUCI Analysis (62452 passed, 72 failed, 613 flaky).
+-FirstRunDefaultBrowserPixelTest.InvokeUi_default/LightTheme
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60695 passed, 72 failed, 2389 flaky).
+-FirstRunDefaultBrowserPixelTest.InvokeUi_default/LightThemeSmallWindowRefresh
+
+# 1.3% flake rate over 30 days per LUCI Analysis (62444 passed, 72 failed, 736 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/DarkThemeDefaultBrowser
+
+# 2.8% flake rate over 30 days per LUCI Analysis (61353 passed, 72 failed, 1703 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/LightThemeDefaultBrowserSoundDisabled
+
+# 4.7% flake rate over 30 days per LUCI Analysis (60154 passed, 71 failed, 2919 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/LightThemeGoogleLens
+
+# 3.6% flake rate over 30 days per LUCI Analysis (60829 passed, 265 failed, 1974 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/RtlLanguageDefaultBrowser
+
+# 2.7% flake rate over 30 days per LUCI Analysis (61389 passed, 1467 failed, 261 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/RtlLanguageGemini
+
+# 2.3% flake rate over 30 days per LUCI Analysis (61738 passed, 1428 failed, 51 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/RtlLanguageGeminiSoundDisabled
+
+# 1.1% flake rate over 30 days per LUCI Analysis (62438 passed, 74 failed, 632 flaky).
+-FirstRunFeatureShowcasePixelTest.InvokeUi_default/SmallWindowGemini
+
+# 1.9% flake rate over 30 days per LUCI Analysis (61863 passed, 71 failed, 1117 flaky).
+-FirstRunFinishOrContinuePixelTest.InvokeUi_default/SoundDisabledShowMoreTipsButton
+
+# 2.4% flake rate over 30 days per LUCI Analysis (61653 passed, 67 failed, 1435 flaky).
+-FirstRunIntroPixelTest.InvokeUi_default/RevampSoundDisabled
+
+# 21.7% flake rate over 30 days per LUCI Analysis (26156 passed, 30 failed, 7213 flaky).
+-FlagsUiBrowserTest.App
+
+# 5.3% flake rate over 30 days per LUCI Analysis (36 passed, 1 failed, 1 flaky).
+-ForceUpdateOff/DevtoolsPanelForceUpdateTest.NavigateToDevtoolsPanel/0
+
+# 7.9% flake rate over 30 days per LUCI Analysis (35 passed, 0 failed, 3 flaky).
+-ForceUpdateOn/DevtoolsPanelForceUpdateTest.NavigateToDevtoolsPanel/0
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32899 passed, 31 failed, 421 flaky).
+-FromGwsAbandonedPageLoadMetricsObserverBrowserTest.CancelledByRenderProcessGone
+
+# 10.3% flake rate over 30 days per LUCI Analysis (29880 passed, 31 failed, 3398 flaky).
+-FromGwsAbandonedPageLoadMetricsObserverBrowserTest.TabHiddenBeforeCommitAndFinishNavigation
+
+# 37.1% flake rate over 30 days per LUCI Analysis (21019 passed, 31 failed, 12385 flaky).
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.NonSRPRedirectToSRP_Hidden
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32769 passed, 31 failed, 526 flaky).
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchCancelledByRenderProcessGone
+
+# 42.8% flake rate over 30 days per LUCI Analysis (19067 passed, 32 failed, 14246 flaky).
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
+
+# 14.2% flake rate over 30 days per LUCI Analysis (28577 passed, 30 failed, 4713 flaky).
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHiddenMultipleTimes
+
+# 7.2% flake rate over 30 days per LUCI Analysis (30973 passed, 31 failed, 2377 flaky).
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHiddenThenStopped_NonSRPRedirectToSRP
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32715 passed, 37 failed, 622 flaky).
+-GlicActorAttemptOtpFillingBrowserTest.testOptInAccepted
+
+# 11.6% flake rate over 30 days per LUCI Analysis (7588 passed, 7 failed, 987 flaky).
+-GlicApiTest.testActivateTabWithUrl/Default
+
+# 2.8% flake rate over 30 days per LUCI Analysis (8366 passed, 7 failed, 238 flaky).
+-GlicApiTest.testCloseAndOpenWhileOpening/Default
+
+# 2.4% flake rate over 30 days per LUCI Analysis (8405 passed, 7 failed, 198 flaky).
+-GlicApiTest.testClosePanel/Default
+
+# 3.8% flake rate over 30 days per LUCI Analysis (8277 passed, 7 failed, 322 flaky).
+-GlicApiTest.testGetPinCandidatesWithPanelClosed/Default
+
+# 4.8% flake rate over 30 days per LUCI Analysis (8180 passed, 7 failed, 409 flaky).
+-GlicApiTest.testPanelActive/Default
+
+# 1.7% flake rate over 30 days per LUCI Analysis (14884 passed, 17 failed, 245 flaky).
+-GlicApiTest.testPopupOpens/Default
+
+# 2.1% flake rate over 30 days per LUCI Analysis (8398 passed, 8 failed, 172 flaky).
+-GlicApiTest.testSetMinimumWidgetSize/Default
+
+# 16.7% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 5 flaky).
+-GlicApiTestWithFastTimeout.testNavigateToBadPage/Default
+
+# 32.7% flake rate over 30 days per LUCI Analysis (22435 passed, 27 failed, 10860 flaky).
+-GlicButtonThemeTest.CustomThemeFallback
+
+# 3.2% flake rate over 30 days per LUCI Analysis (32261 passed, 49 failed, 1032 flaky).
+-GlicDragAndDropPolicyTest.testWebToGlicDragDlpBlocked
+
+# 4.2% flake rate over 30 days per LUCI Analysis (31972 passed, 36 failed, 1356 flaky).
+-GlicDragAndDropPolicyTest.testWebToGlicDragMaterialization
+
+# 4.0% flake rate over 30 days per LUCI Analysis (31997 passed, 41 failed, 1278 flaky).
+-GlicDragAndDropPolicyTest.testWebToGlicDragMaterializationFromDetached
+
+# 38.1% flake rate over 30 days per LUCI Analysis (39 passed, 23 failed, 1 flaky).
+-GlobalErrorBubbleTest.InvokeUi_ExtensionGlobalError
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32670 passed, 25 failed, 632 flaky).
+-GlobalErrorServiceBrowserTest.BubbleViewDismissedOnRemove
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32770 passed, 27 failed, 497 flaky).
+-HeadlessModeCommandBrowserTest_MAYBE_DumpDomWithBeforeUnloadPreventDefault.DumpDomWithBeforeUnloadPreventDefault
+
+# 9.9% flake rate over 30 days per LUCI Analysis (30042 passed, 26 failed, 3284 flaky).
+-HintsFetcherBrowserTest.HintsFetcher_NavigationFetch_FetchWithNewlyRegisteredOptType
+
+# 13.1% flake rate over 30 days per LUCI Analysis (28999 passed, 25 failed, 4365 flaky).
+-HintsFetcherSearchPageDisabledBrowserTest.HintsFetcherStillFetchesNavigations
+
+# 1.7% flake rate over 30 days per LUCI Analysis (32706 passed, 29 failed, 535 flaky).
+-HistoryListTest.SharedMenuClosesOnFocusout
+
+# 7.3% flake rate over 30 days per LUCI Analysis (30991 passed, 28 failed, 2424 flaky).
+-HistorySyncOptinUIWindowPixelTest.InvokeUi_default/Rtl
+
+# 5.2% flake rate over 30 days per LUCI Analysis (31588 passed, 28 failed, 1708 flaky).
+-HistoryTest.LinkClick
+
+# 6.7% flake rate over 30 days per LUCI Analysis (31061 passed, 30 failed, 2205 flaky).
+-HistoryTest.OverflowMenu
+
+# 1.2% flake rate over 30 days per LUCI Analysis (33011 passed, 27 failed, 365 flaky).
+-HttpsUpgradesSafeBrowsingTest.SafeBrowsingBlock_ShouldNotTriggerHFM
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 46 failed, 0 flaky).
+-HungRendererDialogViewBrowserTest.InvokeUi_Default
+
+# 20.5% flake rate over 30 days per LUCI Analysis (26494 passed, 2043 failed, 4772 flaky).
+-IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC
+
+# 29.7% flake rate over 30 days per LUCI Analysis (21666 passed, 3113 failed, 6056 flaky).
+-IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC_IframeHasNoBorderAndLowOpacity
+
+# 4.6% flake rate over 30 days per LUCI Analysis (31831 passed, 47 failed, 1501 flaky).
+-ImageAnnotationBrowserTest.AnnotateImageInAccessibilityTree
+
+# 16.0% flake rate over 30 days per LUCI Analysis (28009 passed, 43 failed, 5285 flaky).
+-ImageAnnotationBrowserTest.ImageUrl
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32284 passed, 46 failed, 991 flaky).
+-ImageAnnotationBrowserTest.LazyLoadingImages
+
+# 5.5% flake rate over 30 days per LUCI Analysis (31564 passed, 27 failed, 1809 flaky).
+-InMemoryApp/NetworkContextConfigurationManagedProxySettingsBrowserTest.MaxConnectionsPerManagedProxyForWebSocket/0
+
+# 6.0% flake rate over 30 days per LUCI Analysis (31011 passed, 29 failed, 1952 flaky).
+-InMemoryApp/NetworkContextConfigurationProxySettingsBrowserTest.MaxConnectionsPerProxyForWebSocket/0
+
+# 70.0% flake rate over 30 days per LUCI Analysis (12 passed, 8 failed, 20 flaky).
+-InitialWebUIMetricsMappingBrowserTest.NormalRendererMetricsAreNotMapped
+
+# 54.0% flake rate over 30 days per LUCI Analysis (15336 passed, 31 failed, 17960 flaky).
+-InitialWebUINavigationTimelineBrowserTest.RecordNavigationTimelineUKM
+
+# 15.0% flake rate over 30 days per LUCI Analysis (28383 passed, 25 failed, 5001 flaky).
+-InitialWebUIPageLoadMetricsObserverBrowserTest.VerifyForegroundToBackgroundBeforeFirstPaint
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32789 passed, 26 failed, 509 flaky).
+-IsolatedWebAppLinkCapturingDefaultBehaviorBrowserTest.LinkCaptureAfterUpdateWithScopeExtensions
+
+# 24.3% flake rate over 30 days per LUCI Analysis (23375 passed, 24 failed, 7474 flaky).
+-IwaDevHandlerUpdateManifestBrowserTest.InstallAppFromUpdateManifestCustomChannel_Success
+
+# 24.3% flake rate over 30 days per LUCI Analysis (23410 passed, 25 failed, 7508 flaky).
+-IwaDevHandlerUpdateManifestBrowserTest.InstallAppFromUpdateManifest_Success
+
+# 2.6% flake rate over 30 days per LUCI Analysis (37 passed, 0 failed, 1 flaky).
+-LcpBreakdownTimingsTest.ManualLazyLoadingImage
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 48 failed, 0 flaky).
+-LeftClickToBrowserTabFromFocusOrNavigateExisting/NavigationCapturingTestWithExtraBrowserTabB.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureOn_Tab_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetSelf
+
+# 37.1% flake rate over 30 days per LUCI Analysis (39 passed, 23 failed, 0 flaky).
+-LegacyPromptEmbeddedPermissionPromptUiTest.InvokeUi_microphone
+
+# 13.1% flake rate over 30 days per LUCI Analysis (28951 passed, 26 failed, 4347 flaky).
+-LensOverlayControllerBrowserTest.CorrectAnalyticsAndRequestIdSentWithGen204s
+
+# 11.7% flake rate over 30 days per LUCI Analysis (29459 passed, 27 failed, 3882 flaky).
+-LensOverlayControllerBrowserTest.SaveAsImageBackgroundCheck
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 38 failed, 0 flaky).
+-LocalNetworkAccessCountersBrowserTest.FetchNullIpAddressFromDocument
+
+# 2.8% flake rate over 30 days per LUCI Analysis (32430 passed, 41 failed, 884 flaky).
+-LocationBarViewAddContextButtonBrowserTest.AddContextButtonVisibilityAndClick
+
+# 5.0% flake rate over 30 days per LUCI Analysis (31571 passed, 25 failed, 1649 flaky).
+-ManagedUserAndManagedDevice/DeviceTrustBrowserTestWithPermanentConsent.ConsentDialogWithPolicyAndAttestation/6
+
+# 3.4% flake rate over 30 days per LUCI Analysis (1917 passed, 68 failed, 0 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/DarkThemeOld
+
+# 3.8% flake rate over 30 days per LUCI Analysis (1932 passed, 76 failed, 1 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/DarkThemeRefreshed
+
+# 35.2% flake rate over 30 days per LUCI Analysis (1939 passed, 1053 failed, 0 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/DarkThemeRevamped
+
+# 10.9% flake rate over 30 days per LUCI Analysis (1913 passed, 217 failed, 18 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/RegularOld
+
+# 4.1% flake rate over 30 days per LUCI Analysis (1925 passed, 72 failed, 11 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/RegularRefreshed
+
+# 22.7% flake rate over 30 days per LUCI Analysis (1688 passed, 255 failed, 241 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/RegularRevamped
+
+# 3.1% flake rate over 30 days per LUCI Analysis (1933 passed, 62 failed, 0 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/RtlOld
+
+# 34.7% flake rate over 30 days per LUCI Analysis (1831 passed, 874 failed, 98 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/RtlRefreshed
+
+# 25.5% flake rate over 30 days per LUCI Analysis (1674 passed, 324 failed, 248 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/RtlRevamped
+
+# 3.8% flake rate over 30 days per LUCI Analysis (1939 passed, 77 failed, 0 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/SmallWindowOld
+
+# 6.1% flake rate over 30 days per LUCI Analysis (1920 passed, 124 failed, 0 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/SmallWindowRefreshed
+
+# 36.1% flake rate over 30 days per LUCI Analysis (1925 passed, 1075 failed, 12 flaky).
+-ManagedUserProfileNoticeUIWindowPixelTest.InvokeUi_default/SmallWindowRevamped
+
+# 1.9% flake rate over 30 days per LUCI Analysis (5974 passed, 58 failed, 56 flaky).
+-MediaFoundationEncryptedMediaTest.FallbackTest_KeySystemNotSupported
+
+# 1.0% flake rate over 30 days per LUCI Analysis (6030 passed, 63 failed, 0 flaky).
+-MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCencVideo_Success
+
+# 1.0% flake rate over 30 days per LUCI Analysis (6030 passed, 63 failed, 0 flaky).
+-MediaFoundationEncryptedMediaTest.ProtectedContentIdSettingAllowed
+
+# 1.0% flake rate over 30 days per LUCI Analysis (6032 passed, 58 failed, 6 flaky).
+-MediaFoundationEncryptedMediaTest.ProtectedContentIdSettingDisallowed
+
+# 4.3% flake rate over 30 days per LUCI Analysis (31824 passed, 107 failed, 1313 flaky).
+-MemorySaverBubbleViewTest.ShouldCollapseChipAfterNavigatingTabsWithDialogOpen
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32794 passed, 24 failed, 458 flaky).
+-MetricsReportingStateTests/MetricsReportingStateTestParameterized.ChangeMetricsReportingState/2
+
+# 1.0% flake rate over 30 days per LUCI Analysis (33073 passed, 30 failed, 318 flaky).
+-MetricsServiceBrowserTest.CrashRenderersInRust
+
+# 8.6% flake rate over 30 days per LUCI Analysis (30527 passed, 31 failed, 2824 flaky).
+-ModelExecutionEnabledBrowserTest.ModelExecutionSuccess_WithMetricsConsent
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32538 passed, 31 failed, 747 flaky).
+-MultiContentsViewWebContentsReLayoutBrowserTest.EnterAndExitFullscreenInSplitTabShouldResizeTwoTimes
+
+# 1.0% flake rate over 30 days per LUCI Analysis (33004 passed, 25 failed, 309 flaky).
+-MultipleTabSharingUIViewsBrowserTest.NormalModeCapturerDoesNotProduceInfobarInGuestModeTabOpenedBeforeCapture
+
+# 3.0% flake rate over 30 days per LUCI Analysis (32345 passed, 27 failed, 974 flaky).
+-NavigationEntryRemoverTest.AddWindow
+
+# 8.7% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 2 flaky).
+-NavigationEntryRemoverTest.RecentTabWindowDeletion
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32469 passed, 27 failed, 873 flaky).
+-NavigationEntryRemoverTest.TwoWindowsDeletion
+
+# 10.9% flake rate over 30 days per LUCI Analysis (29708 passed, 191 failed, 3457 flaky).
+-NavigationPredictorPreconnectClientBrowserTestWithSearch.PreconnectSearchWithFeature
+
+# 48.8% flake rate over 30 days per LUCI Analysis (17103 passed, 28 failed, 16241 flaky).
+-NewTabPageAppTest.RealboxNext
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32506 passed, 26 failed, 794 flaky).
+-NewTabPageHandlerManagedTest.SetCustomFooterLabel/0
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32709 passed, 164 failed, 432 flaky).
+-NewTabPagePageLoadMetricsBrowserTest.MetricsAreRecordedForNTP
+
+# 10.8% flake rate over 30 days per LUCI Analysis (56420 passed, 60 failed, 6761 flaky).
+-NewTabPageTest.ComposeboxContextMenu
+
+# 3.4% flake rate over 30 days per LUCI Analysis (61129 passed, 68 failed, 2051 flaky).
+-NewTabPageTest.RealboxSearchbox
+
+# 3.5% flake rate over 30 days per LUCI Analysis (32145 passed, 27 failed, 1133 flaky).
+-NoStartupWindowTest.DontInitSessionServiceForApps
+
+# 66.7% flake rate over 30 days per LUCI Analysis (11 passed, 15 failed, 7 flaky).
+-NoStatePrefetchBrowserTest.ServiceWorkerIntercept
+
+# 30.8% flake rate over 30 days per LUCI Analysis (27 passed, 12 failed, 0 flaky).
+-NoStatePrefetchBrowserTestWithEsbBlockV8.ServiceWorkerInterceptWithEsb
+
+# 5.5% flake rate over 30 days per LUCI Analysis (31504 passed, 56 failed, 1778 flaky).
+-OmniboxAimPopupBrowserTest.ActivePermissionPromptPreventsPopupClose
+
+# 7.2% flake rate over 30 days per LUCI Analysis (31033 passed, 32 failed, 2383 flaky).
+-OmniboxAimPopupBrowserTest.ClearEventuallyDetaches
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-OmniboxContextMenuControllerPecBrowserTest.VerifyTabEnablementWhenMaxInputsReached
+
+# 98.3% flake rate over 30 days per LUCI Analysis (1 passed, 58 failed, 0 flaky).
+-OmniboxPopupViewViewsTest.EmitTopChromeWebUIMetricsNative
+
+# 97.8% flake rate over 30 days per LUCI Analysis (1 passed, 45 failed, 0 flaky).
+-OmniboxPopupViewViewsTest.ResultToContentReadyOnFirstShow
+
+# 98.4% flake rate over 30 days per LUCI Analysis (1 passed, 63 failed, 0 flaky).
+-OmniboxPopupViewViewsTest.ResultToContentReadyPerShow
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 38 failed, 0 flaky).
+-OnDeviceTranslationBrowserTest.ExceedMaxPendingTaskCount
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-OnDeviceTranslationCrossOriginBrowserTest.ServiceCountLimitIsolatedPerProfile
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32269 passed, 27 failed, 1005 flaky).
+-OnDiskApp/NetworkContextConfigurationManagedProxySettingsBrowserTest.MaxConnectionsPerManagedProxyForWebSocket/0
+
+# 4.2% flake rate over 30 days per LUCI Analysis (31496 passed, 27 failed, 1356 flaky).
+-OnDiskApp/NetworkContextConfigurationProxySettingsBrowserTest.MaxConnectionsPerProxyForWebSocket/0
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32637 passed, 31 failed, 571 flaky).
+-PDFExtensionJSInk2BeforeUnloadTest.Stroke
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32846 passed, 30 failed, 443 flaky).
+-PDFExtensionJSInk2BeforeUnloadTest.Undo
+
+# 1.2% flake rate over 30 days per LUCI Analysis (33012 passed, 31 failed, 374 flaky).
+-PDFTestFiles/PDFExtensionLoadTest.Load/OOPIF_0
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32333 passed, 30 failed, 989 flaky).
+-PDFTestFiles/PDFExtensionLoadTest.Load/OOPIF_8
+
+# 4.0% flake rate over 30 days per LUCI Analysis (32013 passed, 40 failed, 1304 flaky).
+-PageContentAnnotationsServiceBatchVisitTest.NoModelExecutionWithoutFullBatch
+
+# 37.1% flake rate over 30 days per LUCI Analysis (39 passed, 23 failed, 0 flaky).
+-PageInfoBubbleViewMerchantTrustDialogBrowserTest.InvokeUi_MerchantTrustAndAboutThisSite
+
+# 31.6% flake rate over 30 days per LUCI Analysis (22773 passed, 61 failed, 10478 flaky).
+-PageSettledMonitorChromeBrowserTest.WaitOnNetworkFetch
+
+# 7.1% flake rate over 30 days per LUCI Analysis (30952 passed, 25 failed, 2330 flaky).
+-PageStabilityMetricsMinWaitTest.PaintDelayed
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32847 passed, 26 failed, 436 flaky).
+-PageStabilityMetricsTest.MojoDisconnected
+
+# 1.2% flake rate over 30 days per LUCI Analysis (32959 passed, 26 failed, 363 flaky).
+-PageStabilityMetricsTest.Paint
+
+# 2.6% flake rate over 30 days per LUCI Analysis (32460 passed, 839 failed, 27 flaky).
+-PasswordChangeUIControllerBrowserTest.PrivacyNoticeDialogAccepted
+
+# 2.6% flake rate over 30 days per LUCI Analysis (32485 passed, 839 failed, 19 flaky).
+-PasswordChangeUIControllerBrowserTest.PrivacyNoticeDialogCancelled
+
+# 31.6% flake rate over 30 days per LUCI Analysis (26 passed, 2 failed, 10 flaky).
+-PasswordRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe/PasswordTrackedElementsEnabled
+
+# 12.7% flake rate over 30 days per LUCI Analysis (29119 passed, 84 failed, 4152 flaky).
+-PasswordsFallbackWithUIInteractionsTest.SuggestPasswordTriggersPasswordGenerationAndRecordsMetrics
+
+# 8.6% flake rate over 30 days per LUCI Analysis (30469 passed, 25 failed, 2837 flaky).
+-PasswordsPrivateDelegateImplMockTaskEnvironmentTest.AuthenticationTimeMetric
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32239 passed, 30 failed, 1178 flaky).
+-PaymentRequestMetricsTest.NotShownBackgroundTab
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32686 passed, 30 failed, 591 flaky).
+-PermissionElementBrowserTest.CombinedPermissionAndDeviceStatusesGranted
+
+# 41.1% flake rate over 30 days per LUCI Analysis (33 passed, 23 failed, 0 flaky).
+-PermissionRequestChipBrowserUiTest.InvokeUi_geolocation
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 33 failed, 0 flaky).
+-PersistentBackground/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredParallel/0
+
+# 1.2% flake rate over 30 days per LUCI Analysis (14817 passed, 7 failed, 175 flaky).
+-PersistentBackground/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchDisabled_LegacyDispatch
+
+# 1.2% flake rate over 30 days per LUCI Analysis (14834 passed, 7 failed, 170 flaky).
+-PersistentBackground/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchDisabled_PerContextDispatch
+
+# 1.4% flake rate over 30 days per LUCI Analysis (14827 passed, 7 failed, 205 flaky).
+-PersistentBackground/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchEnabled_LegacyDispatch
+
+# 1.2% flake rate over 30 days per LUCI Analysis (14859 passed, 7 failed, 168 flaky).
+-PersistentBackground/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchEnabled_PerContextDispatch
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 39 failed, 0 flaky).
+-PersistentBackground/SubresourceWebBundlesWebRequestApiTest.RequestIntercepted/0
+
+# 3.8% flake rate over 30 days per LUCI Analysis (31974 passed, 28 failed, 1251 flaky).
+-PersistentBackground/TtsApiTest.LangMatching/0
+
+# 2.9% flake rate over 30 days per LUCI Analysis (32322 passed, 781 failed, 172 flaky).
+-PersistentBackgroundIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32565 passed, 710 failed, 116 flaky).
+-PersistentBackgroundIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 38 failed, 0 flaky).
+-PersistentBackgroundIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredParallel/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestIntercepted/0
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32558 passed, 37 failed, 804 flaky).
+-PlatformAppBrowserTest.TouchpadPinchSyntheticWheelEvents
+
+# 4.1% flake rate over 30 days per LUCI Analysis (31913 passed, 32 failed, 1331 flaky).
+-PopupTrackerBrowserTest.PopupRedirectsTwice_RedirectCountTwo
+
+# 4.8% flake rate over 30 days per LUCI Analysis (22466 passed, 1114 failed, 17 flaky).
+-PortForwardingTest.LoadPageWithStyleAnsScript
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32693 passed, 26 failed, 627 flaky).
+-PrepopulatedEnginesExtendedCrossRegionsBrowserTest.Dse/FeatureDisabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 38 failed, 0 flaky).
+-PresentationReceiverWindowControllerBrowserTest.NavigationClosesWindow
+
+# 33.9% flake rate over 30 days per LUCI Analysis (22063 passed, 80 failed, 11231 flaky).
+-PrewarmedWebUINavigationTimelineBrowserTest.RecordNavigationTimelineUKMPrewarmedProcessReused
+
+# 12.5% flake rate over 30 days per LUCI Analysis (29151 passed, 27 failed, 4129 flaky).
+-PrintPreviewScalingSettingsTest.InputNotDisabledOnValidityChange
+
+# 1.2% flake rate over 30 days per LUCI Analysis (32977 passed, 30 failed, 381 flaky).
+-ProactivePersonalizationHintsFetcherBrowserTest.ActiveTabFetchesWithAccessToken
+
+# 21.3% flake rate over 30 days per LUCI Analysis (26256 passed, 1043 failed, 6059 flaky).
+-ProactivePersonalizationHintsFetcherBrowserTest.FetchingUrlFetchesWithAccessToken
+
+# 11.9% flake rate over 30 days per LUCI Analysis (29386 passed, 28 failed, 3945 flaky).
+-ProactivePersonalizationHintsFetcherBrowserTest.OnNavigationFetchesWithAccessToken
+
+# 1.1% flake rate over 30 days per LUCI Analysis (33037 passed, 30 failed, 350 flaky).
+-ProactivePersonalizationNoAllowedTypesHintsFetcherBrowserTest.ActiveTabDoesNotFetchWithAccessToken
+
+# 19.4% flake rate over 30 days per LUCI Analysis (26880 passed, 1026 failed, 5448 flaky).
+-ProactivePersonalizationNoAllowedTypesHintsFetcherBrowserTest.FetchingUrlDoesNotFetchWithAccessToken
+
+# 11.9% flake rate over 30 days per LUCI Analysis (29441 passed, 30 failed, 3928 flaky).
+-ProactivePersonalizationNoAllowedTypesHintsFetcherBrowserTest.OnNavigationDoesNotFetchAccessToken
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-ProcessManagerBrowserTest.NestedURLNavigationsViaNoOpenerPopupBlocked
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 38 failed, 0 flaky).
+-ProcessesApiTest.Processes
+
+# 6.8% flake rate over 30 days per LUCI Analysis (31050 passed, 23 failed, 2235 flaky).
+-ProfileBrowserCollectionTest.ForEachIteratesOverAllBrowsers/ActivationOrder
+
+# 2.4% flake rate over 30 days per LUCI Analysis (32519 passed, 25 failed, 768 flaky).
+-ProfileBrowserCollectionTest.ForEachIteratesOverAllBrowsers/CreationOrder
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32727 passed, 25 failed, 595 flaky).
+-ProfileBrowserCollectionTest.ForEachResilientToBrowserDestruction/CreationOrder
+
+# 2.9% flake rate over 30 days per LUCI Analysis (32484 passed, 27 failed, 939 flaky).
+-ProfileBrowserCollectionTest.ForEachStopsWhenCallbackReturnsFalse/ActivationOrder
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32602 passed, 26 failed, 796 flaky).
+-ProfileBrowserCollectionTest.ForEachStopsWhenCallbackReturnsFalse/CreationOrder
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32159 passed, 28 failed, 1182 flaky).
+-ProfileMainNetworkContext/NetworkContextConfigurationManagedProxySettingsBrowserTest.MaxConnectionsPerManagedProxyForWebSocket/0
+
+# 3.9% flake rate over 30 days per LUCI Analysis (31678 passed, 28 failed, 1244 flaky).
+-ProfileMainNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.MaxConnectionsPerProxyForWebSocket/0
+
+# 3.4% flake rate over 30 days per LUCI Analysis (32174 passed, 26 failed, 1116 flaky).
+-ProfileManagementDisclaimerServiceBrowserFocusBrowserTest.Test/Managed_EnforcedByPolicy_Cancel
+
+# 1.1% flake rate over 30 days per LUCI Analysis (32990 passed, 25 failed, 334 flaky).
+-ProfileManagerDestroyProfileBrowserTest.DestroyEphemeralProfileOnBrowserClose
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32546 passed, 28 failed, 884 flaky).
+-ProfileMenuClickTest_GuestProfileButtonNotAvailable_SignedInSupervised_ReplaceSyncPromosDisabled.ProfileMenuClickTest_GuestProfileButtonNotAvailable_SignedInSupervised_ReplaceSyncPromosDisabled/3
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32849 passed, 26 failed, 499 flaky).
+-ProfileMenuClickTest_MultipleProfiles.ProfileMenuClickTest_MultipleProfiles/1
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32808 passed, 25 failed, 484 flaky).
+-ProfileMenuClickTest_MultipleProfiles.ProfileMenuClickTest_MultipleProfiles/3
+
+# 1.2% flake rate over 30 days per LUCI Analysis (32941 passed, 25 failed, 388 flaky).
+-ProfileMenuClickTest_MultipleProfiles.ProfileMenuClickTest_MultipleProfiles/9
+
+# 6.3% flake rate over 30 days per LUCI Analysis (31295 passed, 28 failed, 2070 flaky).
+-ProfileMenuSigninAccessPointTest.DefaultSigninAccessPoint
+
+# 6.1% flake rate over 30 days per LUCI Analysis (31364 passed, 27 failed, 1998 flaky).
+-ProfileMenuSigninAccessPointTest.SigninAccessPointFromAvatarPromo
+
+# 5.0% flake rate over 30 days per LUCI Analysis (59958 passed, 68 failed, 3092 flaky).
+-ProfileMenuViewPixelTest.InvokeUi_default/BatchUploadPrimaryPromo
+
+# 6.9% flake rate over 30 days per LUCI Analysis (58788 passed, 67 failed, 4310 flaky).
+-ProfileMenuViewPixelTest.InvokeUi_default/SignedIn_AccountManaged
+
+# 5.8% flake rate over 30 days per LUCI Analysis (59490 passed, 68 failed, 3628 flaky).
+-ProfileMenuViewPixelTest.InvokeUi_default/WebSignedIn
+
+# 1.1% flake rate over 30 days per LUCI Analysis (62610 passed, 65 failed, 625 flaky).
+-ProfileMenuViewPixelTest.InvokeUi_default/WebSignedIn_PlaceholderIcon_DarkTheme
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32793 passed, 26 failed, 519 flaky).
+-ProfilePickerCreationFlowBrowserTest.CreateSignedInProfileOpenLink
+
+# 1.1% flake rate over 30 days per LUCI Analysis (62476 passed, 61 failed, 648 flaky).
+-ProfilePickerSigninToolbarUIPixelTest.InvokeUi_default/RTLAddNewProfileRevampEnabled
+
+# 1.0% flake rate over 30 days per LUCI Analysis (62486 passed, 68 failed, 573 flaky).
+-ProfilePickerUIPixelTest.InvokeUi_default/GlicRegularPortraitMode
+
+# 4.7% flake rate over 30 days per LUCI Analysis (60195 passed, 2469 failed, 473 flaky).
+-ProfilePickerUIPixelTest.InvokeUi_default/RefreshedUI
+
+# 1.8% flake rate over 30 days per LUCI Analysis (62088 passed, 74 failed, 1041 flaky).
+-ProfilePickerUIPixelTest.InvokeUi_default/SingleProfileManagedGradientRing
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32578 passed, 25 failed, 718 flaky).
+-ReadAnythingControllerBrowserTest.CloseIrmInSplitView_ClosesOnActiveSide
+
+# 1.4% flake rate over 30 days per LUCI Analysis (32804 passed, 25 failed, 446 flaky).
+-ReadAnythingControllerBrowserTest.OnDistillationStateChanged_EmptyContentInImmersive_TogglesToSidePanel
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32946 passed, 26 failed, 423 flaky).
+-ReadAnythingControllerBrowserTest.OnDistillationStateChanged_WithContentInImmersive_StaysImmersive
+
+# 2.8% flake rate over 30 days per LUCI Analysis (32455 passed, 26 failed, 896 flaky).
+-ReadAnythingMochaTest.LineSpacing
+
+# 13.6% flake rate over 30 days per LUCI Analysis (28844 passed, 27 failed, 4522 flaky).
+-ReadAnythingMochaTest.SelectionController
+
+# 1.7% flake rate over 30 days per LUCI Analysis (31760 passed, 200 failed, 342 flaky).
+-ReadAnythingMochaTest.SettingsMenu
+
+# 7.3% flake rate over 30 days per LUCI Analysis (30864 passed, 24 failed, 2424 flaky).
+-RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionFocusTab
+
+# 8.1% flake rate over 30 days per LUCI Analysis (30691 passed, 27 failed, 2677 flaky).
+-RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionManageSharing
+
+# 8.9% flake rate over 30 days per LUCI Analysis (30409 passed, 26 failed, 2942 flaky).
+-RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionOpenTabGroupEditDialog
+
+# 8.9% flake rate over 30 days per LUCI Analysis (30429 passed, 26 failed, 2934 flaky).
+-RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionReopenTab
+
+# 1.4% flake rate over 30 days per LUCI Analysis (5660 passed, 3 failed, 80 flaky).
+-RecentTabsSubMenuModelTest.RecentlyClosedWindowWithGroupsAndSplits
+
+# 4.8% flake rate over 30 days per LUCI Analysis (5479 passed, 4 failed, 275 flaky).
+-RecentTabsSubMenuModelTest.RecentlyClosedWindowWithSplit
+
+# 4.6% flake rate over 30 days per LUCI Analysis (5488 passed, 2 failed, 260 flaky).
+-RecentTabsSubMenuModelTest.RecentlyClosedWindowWithSplitAndRegularTabs
+
+# 6.0% flake rate over 30 days per LUCI Analysis (31336 passed, 26 failed, 1967 flaky).
+-RestartSessionStorageTest.SessionStorage/ClearDiskStateEnabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 41 failed, 0 flaky).
+-RightClickFocusAndNavigateExisting/NavCaptureTestWithAppBLaunched.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureOn_AppWnd_ScopeA2B_Direct_ViaLink_RightClick_WithoutOpener_TargetBlank
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 29 failed, 0 flaky).
+-RightClickFocusAndNavigateExisting/NavCaptureTestWithAppBLaunched.VerifyNavCapture/NavigateExisting_BothStandalone_CaptureOn_Tab_ScopeA2B_Direct_ViaLink_RightClick_WithoutOpener_TargetBlank
+
+# 3.3% flake rate over 30 days per LUCI Analysis (32290 passed, 27 failed, 1065 flaky).
+-SafeBrowsingNetworkContext/NetworkContextConfigurationManagedProxySettingsBrowserTest.MaxConnectionsPerManagedProxyForWebSocket/0
+
+# 5.5% flake rate over 30 days per LUCI Analysis (31245 passed, 29 failed, 1798 flaky).
+-SafeBrowsingNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.MaxConnectionsPerProxyForWebSocket/0
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32860 passed, 34 failed, 386 flaky).
+-SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_ShowsLoadingView/WalletBrandingV2Disabled
+
+# 2.2% flake rate over 30 days per LUCI Analysis (13420 passed, 7 failed, 300 flaky).
+-SavedTabGroupBar/SavedTabGroupBarBrowserTest.SavedTabGroupButtonContextMenuHighlight/0
+
+# 3.0% flake rate over 30 days per LUCI Analysis (13298 passed, 7 failed, 399 flaky).
+-SavedTabGroupBar/SavedTabGroupBarBrowserTest.SavedTabGroupButtonContextMenuHighlight/1
+
+# 18.4% flake rate over 30 days per LUCI Analysis (31 passed, 0 failed, 7 flaky).
+-SearchApiTest.Normal
+
+# 2.6% flake rate over 30 days per LUCI Analysis (32560 passed, 31 failed, 841 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.HungRequestCanBeServed
+
+# 2.8% flake rate over 30 days per LUCI Analysis (32339 passed, 29 failed, 915 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.OmniboxEditTriggersPrefetch
+
+# 2.8% flake rate over 30 days per LUCI Analysis (32457 passed, 32 failed, 908 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.OmniboxNavigateToMatchingEntryStreaming
+
+# 2.5% flake rate over 30 days per LUCI Analysis (32458 passed, 31 failed, 816 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.PrefetchFallbackFromError
+
+# 3.2% flake rate over 30 days per LUCI Analysis (32230 passed, 30 failed, 1022 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.PrefetchFallbackSecureSecurityState
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32531 passed, 30 failed, 737 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.PrefetchSecureSecurityState
+
+# 3.4% flake rate over 30 days per LUCI Analysis (32252 passed, 31 failed, 1112 flaky).
+-SearchPrefetchServiceEnabledBrowserTest.PrefetchServedBeforeHeaders
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32210 passed, 30 failed, 1163 flaky).
+-SearchPrefetchServiceNavigationPrefetchBrowserTest.DSEDoesNotAllowPrefetch
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32773 passed, 30 failed, 486 flaky).
+-SearchPrefetchServiceNavigationPrefetchBrowserTest.NavigationPrefetchIsServedForOmniboxOpenSelection
+
+# 27.1% flake rate over 30 days per LUCI Analysis (24269 passed, 30 failed, 8988 flaky).
+-SearchPreloadUnifiedBrowserTest.NavigationFailsAfterPrefetchServedTheResponse
+
+# 30.0% flake rate over 30 days per LUCI Analysis (23297 passed, 31 failed, 9951 flaky).
+-SecurePaymentConfirmationActivationlessShowTest.ActivationlessShow
+
+# 10.4% flake rate over 30 days per LUCI Analysis (29938 passed, 27 failed, 3443 flaky).
+-SegmentationPlatformTest.ReceiveModelUpdateFromOptimizationGuide
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32955 passed, 26 failed, 406 flaky).
+-SegmentationPlatformTest.ReceiveNullModelUpdateFromOptimizationGuide
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32819 passed, 31 failed, 487 flaky).
+-SendTabToSelfToolbarIconControllerAutoOpenTest.AutoOpenOnRestart
+
+# 15.4% flake rate over 30 days per LUCI Analysis (33 passed, 0 failed, 6 flaky).
+-SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe/PasswordTrackedElementsDisabled
+
+# 4.3% flake rate over 30 days per LUCI Analysis (22 passed, 1 failed, 0 flaky).
+-SensitivePaymentRedactionMultiSourcePageContextFetcherBrowserTest.BasicRedactionInIframe/PasswordTrackedElementsEnabled
+
+# 2.1% flake rate over 30 days per LUCI Analysis (32623 passed, 28 failed, 683 flaky).
+-ServiceWorker/ExecuteScriptApiTest.ExecuteScriptFrameAfterLoad/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 39 failed, 0 flaky).
+-ServiceWorker/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredParallel/0
+
+# 1.3% flake rate over 30 days per LUCI Analysis (14872 passed, 7 failed, 186 flaky).
+-ServiceWorker/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchDisabled_LegacyDispatch
+
+# 1.1% flake rate over 30 days per LUCI Analysis (14977 passed, 7 failed, 158 flaky).
+-ServiceWorker/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchDisabled_PerContextDispatch
+
+# 1.2% flake rate over 30 days per LUCI Analysis (14876 passed, 7 failed, 167 flaky).
+-ServiceWorker/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchEnabled_LegacyDispatch
+
+# 1.2% flake rate over 30 days per LUCI Analysis (14873 passed, 6 failed, 168 flaky).
+-ServiceWorker/ExtensionWebRequestApiDispatchModeTestWithContextType.WebRequestBlocking/BackgroundResourceFetchEnabled_PerContextDispatch
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 40 failed, 0 flaky).
+-ServiceWorker/SubresourceWebBundlesWebRequestApiTest.RequestIntercepted/0
+
+# 32.9% flake rate over 30 days per LUCI Analysis (22368 passed, 73 failed, 10874 flaky).
+-ServiceWorker/WebRequestPersistentListenersTest.TestListenersArePersistent/BackgroundResourceFetchDisabled
+
+# 38.5% flake rate over 30 days per LUCI Analysis (20533 passed, 76 failed, 12778 flaky).
+-ServiceWorker/WebRequestPersistentListenersTest.TestListenersArePersistent/BackgroundResourceFetchEnabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-ServiceWorkerIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredParallel/0
+
+# 5.3% flake rate over 30 days per LUCI Analysis (31571 passed, 29 failed, 1755 flaky).
+-ServiceWorkerLifetimeKeepaliveBrowsertest.ShutdownWithActiveMessagePipe_BetweenExtensionsInDifferentContexts
+
+# 7.8% flake rate over 30 days per LUCI Analysis (30681 passed, 92 failed, 2509 flaky).
+-ServiceWorkerTest.UpdateWithoutSkipWaiting
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 37 failed, 0 flaky).
+-ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestIntercepted/0
+
+# 4.0% flake rate over 30 days per LUCI Analysis (32062 passed, 155 failed, 1195 flaky).
+-SettingsPerformancePageTest.TabDiscardExceptionList
+
+# 8.7% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 2 flaky).
+-SettingsSiteDetailsTest.SiteDetails
+
+# 52.0% flake rate over 30 days per LUCI Analysis (10115 passed, 14 failed, 10939 flaky).
+-SettingsTest.PaymentsPageCardDialogs
+
+# 73.2% flake rate over 30 days per LUCI Analysis (5623 passed, 14 failed, 15355 flaky).
+-SettingsTest.PaymentsPageIban
+
+# 9.7% flake rate over 30 days per LUCI Analysis (30125 passed, 27 failed, 3227 flaky).
+-SidePanelCustomizeChromeTest.Themes
+
+# 25.6% flake rate over 30 days per LUCI Analysis (24819 passed, 26 failed, 8532 flaky).
+-SkillsBrowserTest.UserSkillsPage
+
+# 69.2% flake rate over 30 days per LUCI Analysis (12 passed, 23 failed, 4 flaky).
+-SocketApiTest.SocketTCPExtension
+
+# 8.7% flake rate over 30 days per LUCI Analysis (30470 passed, 32 failed, 2878 flaky).
+-StorageAccessAPIBrowserTest.ThirdPartyCookiesIFrameRequestsAccess_CrossSiteIframe_UnrelatedSites
+
+# 8.8% flake rate over 30 days per LUCI Analysis (30462 passed, 28 failed, 2898 flaky).
+-SubframeTaskBrowserTest.TaskManagerHungSubframe
+
+# 10.3% flake rate over 30 days per LUCI Analysis (29980 passed, 31 failed, 3430 flaky).
+-SubframeTaskBrowserTest.TaskManagerShowsSubframeTasks
+
+# 51.7% flake rate over 30 days per LUCI Analysis (1928 passed, 2058 failed, 8 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/DarkTheme
+
+# 3.7% flake rate over 30 days per LUCI Analysis (1941 passed, 75 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/DarkThemeRefresh
+
+# 4.5% flake rate over 30 days per LUCI Analysis (1943 passed, 92 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/ManagedAccount
+
+# 4.4% flake rate over 30 days per LUCI Analysis (1917 passed, 72 failed, 16 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/ManagedAccountRefresh
+
+# 3.7% flake rate over 30 days per LUCI Analysis (1937 passed, 75 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/Promo
+
+# 5.1% flake rate over 30 days per LUCI Analysis (1939 passed, 105 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/PromoRefresh
+
+# 3.7% flake rate over 30 days per LUCI Analysis (1937 passed, 75 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/Regular
+
+# 4.3% flake rate over 30 days per LUCI Analysis (1932 passed, 87 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/RegularRefresh
+
+# 3.3% flake rate over 30 days per LUCI Analysis (1933 passed, 66 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/RegularWithRestrictionsWithRestrictedUser
+
+# 23.6% flake rate over 30 days per LUCI Analysis (1922 passed, 582 failed, 12 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/RegularWithRestrictionsWithRestrictedUserRefresh
+
+# 5.3% flake rate over 30 days per LUCI Analysis (1935 passed, 108 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/RegularWithRestrictionsWithUnrestrictedUser
+
+# 6.9% flake rate over 30 days per LUCI Analysis (1929 passed, 134 failed, 9 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/RegularWithRestrictionsWithUnrestrictedUserRefresh
+
+# 24.3% flake rate over 30 days per LUCI Analysis (1846 passed, 511 failed, 80 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/Rtl
+
+# 3.7% flake rate over 30 days per LUCI Analysis (1928 passed, 75 failed, 0 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/RtlRefresh
+
+# 4.9% flake rate over 30 days per LUCI Analysis (1917 passed, 85 failed, 14 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/SigninInterceptStyle
+
+# 4.0% flake rate over 30 days per LUCI Analysis (1935 passed, 79 failed, 2 flaky).
+-SyncConfirmationUIDialogPixelTest.InvokeUi_default/SigninInterceptStyleRefresh
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32723 passed, 27 failed, 604 flaky).
+-SyncConfirmationUITest.RecordConsentWithEscapedHtmlCharacters/plAccept
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32348 passed, 27 failed, 1014 flaky).
+-SyncConfirmationUITest.RecordConsentWithEscapedHtmlCharacters/plInterceptGoToSettings
+
+# 1.3% flake rate over 30 days per LUCI Analysis (62302 passed, 73 failed, 733 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/DarkTheme
+
+# 1.6% flake rate over 30 days per LUCI Analysis (62200 passed, 995 failed, 26 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/ManagedAccountRefresh
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60617 passed, 2468 failed, 17 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/ManagedAccountRefreshFirstRun
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60642 passed, 2468 failed, 13 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/ManagedAccountRevamp
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60624 passed, 2476 failed, 8 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/ManagedAccountRevampFirstRun
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60714 passed, 2475 failed, 45 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularRefresh
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60656 passed, 2466 failed, 16 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularRefreshFirstRun
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60671 passed, 2473 failed, 15 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularRevamp
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60571 passed, 2466 failed, 0 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularRevampFirstRun
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60650 passed, 2472 failed, 58 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithRestrictedUserRefresh
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60691 passed, 2472 failed, 13 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithRestrictedUserRefreshFirstRun
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60554 passed, 2468 failed, 19 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithRestrictedUserRevamp
+
+# 4.2% flake rate over 30 days per LUCI Analysis (60355 passed, 2449 failed, 193 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithRestrictedUserRevampFirstRun
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60739 passed, 2473 failed, 10 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithUnrestrictedUserRefresh
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60710 passed, 2471 failed, 20 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithUnrestrictedUserRefreshFirstRun
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60695 passed, 2471 failed, 37 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithUnrestrictedUserRevamp
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60751 passed, 2483 failed, 23 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RegularWithRestrictionsWithUnrestrictedUserRevampFirstRun
+
+# 1.5% flake rate over 30 days per LUCI Analysis (62273 passed, 75 failed, 842 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/Rtl
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60513 passed, 2450 failed, 13 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RtlRefresh
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60445 passed, 2448 failed, 9 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RtlRefreshFirstRun
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60663 passed, 2463 failed, 6 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RtlRevamp
+
+# 3.9% flake rate over 30 days per LUCI Analysis (60618 passed, 2464 failed, 7 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/RtlRevampFirstRun
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60490 passed, 2472 failed, 24 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/SmallWindowRefresh
+
+# 5.0% flake rate over 30 days per LUCI Analysis (59982 passed, 2477 failed, 656 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/SmallWindowRefreshFirstRun
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60507 passed, 2473 failed, 29 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/SmallWindowRevamp
+
+# 4.0% flake rate over 30 days per LUCI Analysis (60731 passed, 2482 failed, 48 flaky).
+-SyncConfirmationUIWindowPixelTest.InvokeUi_default/SmallWindowRevampFirstRun
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32304 passed, 26 failed, 1008 flaky).
+-SystemNetworkContext/NetworkContextConfigurationManagedProxySettingsBrowserTest.MaxConnectionsPerManagedProxyForWebSocket/0
+
+# 3.3% flake rate over 30 days per LUCI Analysis (31870 passed, 26 failed, 1078 flaky).
+-SystemNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.MaxConnectionsPerProxyForWebSocket/0
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32749 passed, 31 failed, 505 flaky).
+-SystemNetworkContextManagerWithFirstPartySetComponentBrowserTest.ReloadsFirstPartySetsAfterCrash
+
+# 9.0% flake rate over 30 days per LUCI Analysis (30274 passed, 31 failed, 2978 flaky).
+-TLS13EarlyDataPolicyEnabledByDefaultTest.DisableWithNewOTPProfile/1
+
+# 44.7% flake rate over 30 days per LUCI Analysis (21 passed, 11 failed, 6 flaky).
+-TLS13EarlyDataPolicyTest.EnableWithRestart/0
+
+# 64.9% flake rate over 30 days per LUCI Analysis (13 passed, 20 failed, 4 flaky).
+-TLS13EarlyDataPolicyTest.EnableWithRestart/1
+
+# 48.7% flake rate over 30 days per LUCI Analysis (20 passed, 16 failed, 3 flaky).
+-TLS13EarlyDataPolicyTest.TLS13EarlyDataPolicyEnable/0
+
+# 61.5% flake rate over 30 days per LUCI Analysis (15 passed, 18 failed, 6 flaky).
+-TLS13EarlyDataPolicyTest.TLS13EarlyDataPolicyEnable/1
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32878 passed, 51 failed, 453 flaky).
+-TabGroupSyncDelegateBrowserTest.RemoveLastTabFromSyncKeepsGroupAndAddsPendingNTP
+
+# 1.9% flake rate over 30 days per LUCI Analysis (32697 passed, 42 failed, 582 flaky).
+-TabGroupSyncDelegateBrowserTest.TabRemovalsFromSyncDontCauseZeroTabStateInLocal
+
+# 20.4% flake rate over 30 days per LUCI Analysis (26491 passed, 23 failed, 6762 flaky).
+-TabGroupSyncNavigationIntegrationTest.TabStateClearedOnUserInput
+
+# 5.3% flake rate over 30 days per LUCI Analysis (31567 passed, 26 failed, 1740 flaky).
+-TabResourceUsageCollectorBrowserTest.RefreshMemoryForOneWebContents
+
+# 18.9% flake rate over 30 days per LUCI Analysis (27018 passed, 31 failed, 6257 flaky).
+-TabRestoreTest.RestoreGroupWithUnloadHandlerRejected
+
+# 4.5% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 1 flaky).
+-TabRestoreTest.TabsFromRestoredWindowsAreLoadedGradually
+
+# 10.9% flake rate over 30 days per LUCI Analysis (29731 passed, 402 failed, 3232 flaky).
+-TabSearchPageHandlerTest.RemoveSplit_NTP
+
+# 10.0% flake rate over 30 days per LUCI Analysis (30003 passed, 26 failed, 3306 flaky).
+-TabSearchTest.Item
+
+# 7.7% flake rate over 30 days per LUCI Analysis (30800 passed, 31 failed, 2542 flaky).
+-TabUsageScenarioTrackerDiscardBrowserTest.TabDiscard/RetainedWebContents
+
+# 19.6% flake rate over 30 days per LUCI Analysis (26792 passed, 26 failed, 6515 flaky).
+-TabViewTest.IconDataChanged
+
+# 2.2% flake rate over 30 days per LUCI Analysis (28487 passed, 23 failed, 623 flaky).
+-TestCases/QuietUiPreignoreTest.PermissionRequestsForAllQuietUiReasonsGetPreignored/GeolocationForTriggeredDueToAbusiveContent
+
+# 25.8% flake rate over 30 days per LUCI Analysis (24689 passed, 66 failed, 8517 flaky).
+-ThirdPartyMetricsObserverBrowserTest.OpaqueOriginSubframe
+
+# 30.3% flake rate over 30 days per LUCI Analysis (23258 passed, 26 failed, 10071 flaky).
+-TransientKeepAlivePolicyBrowserTest.ProcessIsReused
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 15 failed, 0 flaky).
+-TranslateManagerBrowserTest.PageTranslationAboutBlank
+
+# 4.3% flake rate over 30 days per LUCI Analysis (31999 passed, 32 failed, 1395 flaky).
+-UkmBrowserTest.InstallDateProviderPopulatesSystemProfile
+
+# 4.3% flake rate over 30 days per LUCI Analysis (31997 passed, 27 failed, 1399 flaky).
+-UnloadTest.BrowserListDoubleCloseBeforeUnloadCancel
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32282 passed, 29 failed, 992 flaky).
+-UserRemoteCommandsServiceTest.ExtensionUpdateCheck/1
+
+# 3.8% flake rate over 30 days per LUCI Analysis (32139 passed, 81 failed, 1173 flaky).
+-VerticalTabStripRegionViewTest.ExpandOnHoverEnabledChanged
+
+# 3.4% flake rate over 30 days per LUCI Analysis (32237 passed, 28 failed, 1097 flaky).
+-VideoPictureInPictureWindowControllerBrowserTest.VideoWithNoAudioPausedWhenHiddenResumesPlayback
+
+# 20.8% flake rate over 30 days per LUCI Analysis (26411 passed, 24 failed, 6892 flaky).
+-WebAppBrowserFrameViewWinTest.NoThemeColor
+
+# 61.5% flake rate over 30 days per LUCI Analysis (15 passed, 23 failed, 1 flaky).
+-WebAppEngagementBrowserTest.CommandLineWindowByAppId
+
+# 60.0% flake rate over 30 days per LUCI Analysis (16 passed, 23 failed, 1 flaky).
+-WebAppEngagementBrowserTest.CommandLineWindowByUrl
+
+# 6.6% flake rate over 30 days per LUCI Analysis (31219 passed, 25 failed, 2183 flaky).
+-WebAppFrameToolbarBrowserTest_WindowControlsOverlay.DraggableRegionsIgnoredForOwnedWidgets
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 67 failed, 0 flaky).
+-WebAppInstallDialogBrowserTest.InvokeUi_InstallOptions/kOther_kDetailed
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 67 failed, 0 flaky).
+-WebAppInstallDialogBrowserTest.InvokeUi_InstallOptions/kOther_kDiy
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 64 failed, 0 flaky).
+-WebAppInstallDialogBrowserTest.InvokeUi_InstallOptions/kOther_kSimple
+
+# 11.2% flake rate over 30 days per LUCI Analysis (29608 passed, 33 failed, 3684 flaky).
+-WebAppNavigationCapturingIntentPickerBrowserTest.NavigateExisting
+
+# 7.4% flake rate over 30 days per LUCI Analysis (30873 passed, 27 failed, 2430 flaky).
+-WebAuthenticationProxyApiTest.RemoteSessionStateChange
+
+# 1.1% flake rate over 30 days per LUCI Analysis (33057 passed, 32 failed, 341 flaky).
+-WebNavigationApiTest.Crash
+
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-WebUIAppMenuBrowserTest.CheckAppMenuShowingStateSync
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32820 passed, 25 failed, 525 flaky).
+-WebUIBrowserTest.CloseTabDoesNotMakeRemainingTabBlank
+
+# 4.4% flake rate over 30 days per LUCI Analysis (31898 passed, 27 failed, 1435 flaky).
+-WebUIBrowserTest.DevToolsWindowDoesNotCrash
+
+# 1.0% flake rate over 30 days per LUCI Analysis (33006 passed, 23 failed, 316 flaky).
+-WebUIBrowserTest.FullscreenEnterAndExit
+
+# 3.9% flake rate over 30 days per LUCI Analysis (2770 passed, 3 failed, 108 flaky).
+-WebUILocationBarBrowserTest.PageActionBookmarkBubbleHighlight
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32694 passed, 518 failed, 165 flaky).
+-WebUIReloadButtonBrowserTest.ClickReloadButton
+
+# 2.0% flake rate over 30 days per LUCI Analysis (32666 passed, 29 failed, 636 flaky).
+-WebUIToolbarProcessOverheadExperimentBrowserTest.Basic
+
+# 3.1% flake rate over 30 days per LUCI Analysis (32316 passed, 31 failed, 996 flaky).
+-WebUIToolbarWebViewBrowserTest.ExtensionAnchoring
+
+# 1.6% flake rate over 30 days per LUCI Analysis (32772 passed, 26 failed, 507 flaky).
+-WebUIToolbarWebViewHomeButtonBrowserTest.DragAndDropHomeButtonAndUndo
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32778 passed, 27 failed, 581 flaky).
+-WebUIToolbarWebViewHomeButtonBrowserTest.DragAndDropHomeButtonAndUndoFromNTP
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32856 passed, 27 failed, 489 flaky).
+-WebUIToolbarWebViewHomeButtonBrowserTest.DropFileOnHomeButtonAndUndo
+
+# 2.4% flake rate over 30 days per LUCI Analysis (41 passed, 0 failed, 1 flaky).
+-WebUIToolbarWebViewPixelBrowserTest.CheckHomeButtonColor
+
+# 3.4% flake rate over 30 days per LUCI Analysis (32200 passed, 24 failed, 1112 flaky).
+-WebUIUrlNoConsoleErrorsTest.NoConsoleErrors/chrome___quota_internals
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 39 failed, 0 flaky).
+-WebUIWebViewBrowserTest.ContentScriptIsInjectedAfterTerminateAndReloadWebView
+
+# 2.1% flake rate over 30 days per LUCI Analysis (32738 passed, 26 failed, 675 flaky).
+-WinIA2/TabStripDumpAccessibilityEventsTest.BrowserRootViewClassNameGuard/ia2_ViewsAXDisabled
+
+# 2.1% flake rate over 30 days per LUCI Analysis (32596 passed, 30 failed, 660 flaky).
+-WinIA2/TabStripDumpAccessibilityEventsTest.BrowserRootViewClassNameGuard/ia2_ViewsAXEnabled
+
+# 2.2% flake rate over 30 days per LUCI Analysis (32676 passed, 25 failed, 710 flaky).
+-WinIA2/TabStripDumpAccessibilityEventsTest.WindowActivationFiresSelectionForJaws/ia2_ViewsAXDisabled
+
+# 3.2% flake rate over 30 days per LUCI Analysis (32322 passed, 30 failed, 1037 flaky).
+-WinIA2/TabStripDumpAccessibilityEventsTest.WindowActivationFiresSelectionForJaws/ia2_ViewsAXEnabled
+
+# 3.0% flake rate over 30 days per LUCI Analysis (32426 passed, 44 failed, 952 flaky).
+-WinIA2/TabStripDumpAccessibilityEventsTest.WindowActivationFiresSelectionOnNewTab/ia2_ViewsAXDisabled
+
+# 3.7% flake rate over 30 days per LUCI Analysis (32146 passed, 58 failed, 1166 flaky).
+-WinIA2/TabStripDumpAccessibilityEventsTest.WindowActivationFiresSelectionOnNewTab/ia2_ViewsAXEnabled
+
+# 12.0% flake rate over 30 days per LUCI Analysis (29294 passed, 31 failed, 3947 flaky).
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithoutBootstrappedEnclave/0
+
+# 1.0% flake rate over 30 days per LUCI Analysis (32987 passed, 29 failed, 320 flaky).
+-XSLTPolicyBrowserTest.PolicyIsFollowed/PolicyFalse_FeatureEnabled_OriginTrialPresent
+
+# 18.9% flake rate over 30 days per LUCI Analysis (27029 passed, 25 failed, 6280 flaky).
+-ZoomControllerBrowserTest.RestoredPageScaleFromNavigation
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32559 passed, 25 failed, 734 flaky).
+-_/DesktopCaptureApiMediaPickerWithOptionsTest.FromServiceWorker/13

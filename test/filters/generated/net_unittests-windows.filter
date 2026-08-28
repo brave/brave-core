@@ -1,0 +1,48 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream net_unittests tests with a flake rate >= 1.0% on
+## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-BbrSenderTest.ShallowDrain
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-CubicBytesTest.AboveOrigin
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-HttpStreamFactoryJobControllerTest.ResumeMainJobImmediatelyOnStreamFailed
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-NetworkQualityEstimatorTest.TestTCPSocketRTT
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-OgHttp2AdapterTest.ClientHandlesInvalidTrailers
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-QuicSentPacketManagerTest.RetransmitTwiceThenAckPreviousBeforeSend
+
+# 25.0% flake rate over 30 days per LUCI Analysis (7765 passed, 0 failed, 2585 flaky).
+-RegistrationTest.AttestationKeyGenerationFailure
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/RFCv1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/RFCv2
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/draft29
+
+# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionNonPreconnect/RFCv1
+
+# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionNonPreconnect/RFCv2
+
+# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionPreconnect/RFCv1
+
+# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionPreconnect/RFCv2

@@ -1,0 +1,42 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream components_unittests tests with a flake rate >= 1.0% on
+## windows-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 6.3% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 19 flaky).
+-All/MultilingualSpellCheckTest.MultilingualSpellCheckSuggestions/0
+
+# 5.3% flake rate over 30 days per LUCI Analysis (287 passed, 0 failed, 16 flaky).
+-MediaItemUIDetailedViewTest.ProgressViewCheck
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.CloseReceiver_RemoteDisconnected/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.DeleteNamedMojoServer_RemoteDisconnected/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.DisconnectHandler/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.IpcServerRestarted_NewIpcsCanBeMade/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.ParallelIpcs/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.RemoteProcessTerminated_ConnectionRemoved/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.SendEcho/Isolated
+
+# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
+-NamedMojoIpcServerTest.StopServer_RemoteDisconnected/Isolated
+
+# 1.3% flake rate over 30 days per LUCI Analysis (299 passed, 0 failed, 4 flaky).
+-TabGroupChangeNotifierImplTest.TestTabSelection
+
+# 10.9% flake rate over 30 days per LUCI Analysis (270 passed, 0 failed, 33 flaky).
+-WebDatabaseMigrationTest.VersionXxSqlFilesAreGolden

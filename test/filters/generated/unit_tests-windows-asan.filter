@@ -1,0 +1,192 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream unit_tests tests with a flake rate >= 1.0% on
+## windows-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 24.5% flake rate over 30 days per LUCI Analysis (225 passed, 0 failed, 73 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/2
+
+# 25.8% flake rate over 30 days per LUCI Analysis (221 passed, 0 failed, 77 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/6
+
+# 5.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 15 flaky).
+-All/IntentPickerBubbleViewLayoutTest.CancelDialog/V2DefaultOn
+
+# 5.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 15 flaky).
+-All/IntentPickerBubbleViewLayoutTest.RememberCheckbox/V2DefaultOn
+
+# 21.5% flake rate over 30 days per LUCI Analysis (234 passed, 0 failed, 64 flaky).
+-All/PermissionContextBasePermissionsPolicyGeolocationTest.RequestPermission/1
+
+# 18.8% flake rate over 30 days per LUCI Analysis (242 passed, 0 failed, 56 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginPermissionDelegation/0
+
+# 17.1% flake rate over 30 days per LUCI Analysis (247 passed, 0 failed, 51 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginPermissionDelegation/1
+
+# 21.5% flake rate over 30 days per LUCI Analysis (234 passed, 0 failed, 64 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginSearch/1
+
+# 18.8% flake rate over 30 days per LUCI Analysis (242 passed, 0 failed, 56 flaky).
+-All/PermissionSubscriptionGeolocationTest.ChangeAfterUnsubscribeOnlyNotifiesActiveSubscribers/0
+
+# 17.1% flake rate over 30 days per LUCI Analysis (247 passed, 0 failed, 51 flaky).
+-All/PermissionSubscriptionGeolocationTest.ChangeAfterUnsubscribeOnlyNotifiesActiveSubscribers/1
+
+# 12.4% flake rate over 30 days per LUCI Analysis (261 passed, 0 failed, 37 flaky).
+-All/PermissionSubscriptionGeolocationTest.ChangeWithoutPermissionChangeDoesNotNotify/1
+
+# 23.2% flake rate over 30 days per LUCI Analysis (229 passed, 0 failed, 69 flaky).
+-All/PermissionSubscriptionGeolocationTest.DifferentTypeChangeDoesNotNotify/0
+
+# 13.4% flake rate over 30 days per LUCI Analysis (258 passed, 0 failed, 40 flaky).
+-All/PermissionSubscriptionGeolocationTest.NewValueCorrectlyPassed/1
+
+# 14.1% flake rate over 30 days per LUCI Analysis (256 passed, 0 failed, 42 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeAfterShutdown/1
+
+# 38.6% flake rate over 30 days per LUCI Analysis (183 passed, 0 failed, 115 flaky).
+-AuthControllerTest.CookieSyncOnTokenChange_Disabled_PrimaryAccountChanged
+
+# 49.7% flake rate over 30 days per LUCI Analysis (150 passed, 0 failed, 148 flaky).
+-AuthControllerTest.SkipCookieSyncOnOpen_Enabled
+
+# 10.7% flake rate over 30 days per LUCI Analysis (266 passed, 0 failed, 32 flaky).
+-AutomatedTestPasswordHandling/ChromePasswordManagerClientAutomatedTest.SavingDependsOnAutomation/0
+
+# 22.8% flake rate over 30 days per LUCI Analysis (230 passed, 0 failed, 68 flaky).
+-AutomatedTestPasswordHandling/ChromePasswordManagerClientAutomatedTest.SavingDependsOnAutomation/1
+
+# 40.9% flake rate over 30 days per LUCI Analysis (176 passed, 0 failed, 122 flaky).
+-AutomationManifestTest.DesktopFalse
+
+# 4.4% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 13 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.TestWithChangePwdUrlArg/GenerationOffExecutionOffSavingOnDisabledByPolicy
+
+# 7.4% flake rate over 30 days per LUCI Analysis (276 passed, 0 failed, 22 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.TestWithChangePwdUrlArg/GenerationOffExecutionOnSavingOffDisabledByPolicy
+
+# 2.7% flake rate over 30 days per LUCI Analysis (290 passed, 0 failed, 8 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.TestWithNoArgs/GenerationOnExecutionOnSavingOffDisabledByPolicy
+
+# 9.1% flake rate over 30 days per LUCI Analysis (271 passed, 0 failed, 27 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOffExecutionOffSavingOn
+
+# 16.1% flake rate over 30 days per LUCI Analysis (250 passed, 0 failed, 48 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOffSavingOffDisabledByPolicy
+
+# 17.8% flake rate over 30 days per LUCI Analysis (245 passed, 0 failed, 53 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOff
+
+# 8.1% flake rate over 30 days per LUCI Analysis (274 passed, 0 failed, 24 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceyWithPrefOff/GenerationOffExecutionOffSavingOffDisabledByPolicy
+
+# 9.1% flake rate over 30 days per LUCI Analysis (271 passed, 0 failed, 27 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceyWithPrefOff/GenerationOnExecutionOffSavingOnDisabledByPolicy
+
+# 3.4% flake rate over 30 days per LUCI Analysis (288 passed, 0 failed, 10 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceyWithPrefOff/GenerationOnExecutionOnSavingOffDisabledByPolicy
+
+# 4.7% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 14 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceyWithPrefOff/GenerationOnExecutionOnSavingOn
+
+# 1.0% flake rate over 30 days per LUCI Analysis (295 passed, 0 failed, 3 flaky).
+-ChromeBrowsingDataRemoverDelegateTest.ClearHttpAuthCache_RemovePasswords
+
+# 1.3% flake rate over 30 days per LUCI Analysis (294 passed, 0 failed, 4 flaky).
+-ChromeBrowsingDataRemoverDelegateTest.ClearNewTabPageLocalStorage
+
+# 1.7% flake rate over 30 days per LUCI Analysis (293 passed, 0 failed, 5 flaky).
+-ChromeDownloadManagerDelegateTest.MaybeDangerousContent
+
+# 20.1% flake rate over 30 days per LUCI Analysis (238 passed, 0 failed, 60 flaky).
+-ContextualCueingHelperTest.TabHelperStartsUp
+
+# 14.4% flake rate over 30 days per LUCI Analysis (255 passed, 0 failed, 43 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesMatch_Succeeds
+
+# 6.7% flake rate over 30 days per LUCI Analysis (278 passed, 0 failed, 20 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesNoMatch_Skipped
+
+# 16.4% flake rate over 30 days per LUCI Analysis (249 passed, 0 failed, 49 flaky).
+-ContextualCueingPageDataTest.BasicAndPdfPageCountCondition
+
+# 18.5% flake rate over 30 days per LUCI Analysis (243 passed, 0 failed, 55 flaky).
+-ContextualCueingPageDataTest.PdfPageCountPasses
+
+# 15.1% flake rate over 30 days per LUCI Analysis (253 passed, 0 failed, 45 flaky).
+-ContextualCueingPageDataTest.StaticCueHasNoAnchoredMessageText
+
+# 2.0% flake rate over 30 days per LUCI Analysis (292 passed, 0 failed, 6 flaky).
+-DevToolsUIDataSourceWithTaskEnvTest.GotDataCallbackOwnsDevToolsDataSource
+
+# 35.2% flake rate over 30 days per LUCI Analysis (193 passed, 0 failed, 105 flaky).
+-DigitalIdentityLowRiskOriginsServiceNotAvailableTest.IsLowRiskOrigin_ServiceNotAvailable
+
+# 5.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 15 flaky).
+-DrivePickerHostControllerTest.PickerCoversBrowserContents
+
+# 1.0% flake rate over 30 days per LUCI Analysis (295 passed, 0 failed, 3 flaky).
+-FromGWSPageLoadMetricsObserverTest.CloseBeforeCommit
+
+# 8.4% flake rate over 30 days per LUCI Analysis (273 passed, 0 failed, 25 flaky).
+-GeminiHandlerTest.AcceptConsent
+
+# 20.1% flake rate over 30 days per LUCI Analysis (238 passed, 0 failed, 60 flaky).
+-GeolocationPermissionContextDelegateTests.TabContentSettingIsUpdated
+
+# 41.9% flake rate over 30 days per LUCI Analysis (173 passed, 0 failed, 125 flaky).
+-IOSPromosUtilsTest.IsUserActive16OnIOS_NoIOSDevice
+
+# 5.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 15 flaky).
+-IntentPickerBubbleViewListTest.LabelsPtrVectorSize
+
+# 4.0% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 12 flaky).
+-IsolatedWebAppChromeBrowsingDataRemoverDelegateTest.ClearData
+
+# 5.7% flake rate over 30 days per LUCI Analysis (281 passed, 0 failed, 17 flaky).
+-IsolatedWebAppPolicyManagerOnDemandUpdatePreloadedTest.ComponentUpdateTriggeredWhenEmptyPolicyChangesToNonEmpty
+
+# 4.0% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 12 flaky).
+-IsolatedWebAppUpdateManagerUpdateTest.StopsNonStartedUpdateApplyTasksIfIwaIsUninstalled
+
+# 1.0% flake rate over 30 days per LUCI Analysis (295 passed, 0 failed, 3 flaky).
+-LocalPrinterHandlerDefaultWithServiceTest.GetDefaultPrinterTerminatedService
+
+# 9.1% flake rate over 30 days per LUCI Analysis (271 passed, 0 failed, 27 flaky).
+-LocalPrinterHandlerDefaultWithServiceTest.GetPrintersInvalidPrinterDataFails
+
+# 4.7% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 14 flaky).
+-PageInfoPreviewsCoordinatorDeathTest.NeitherCameraNorMic
+
+# 7.7% flake rate over 30 days per LUCI Analysis (275 passed, 0 failed, 23 flaky).
+-PasswordChangePageStabilityWaiterTest.DisconnectDuringNavigation
+
+# 1.0% flake rate over 30 days per LUCI Analysis (295 passed, 0 failed, 3 flaky).
+-PlatformNotificationServiceTest_WebApps.IncomingCallWebApp
+
+# 4.4% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 13 flaky).
+-SafeBrowsingEnvironmentDataCollectionWinTest.CollectDlls
+
+# 2.0% flake rate over 30 days per LUCI Analysis (292 passed, 0 failed, 6 flaky).
+-ShareOperationUnitTest.WithoutTitle
+
+# 4.0% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 12 flaky).
+-ShareServiceUnitTest.PortableDocumentFormat
+
+# 1.0% flake rate over 30 days per LUCI Analysis (295 passed, 0 failed, 3 flaky).
+-SharingDialogViewTest.AppPressed
+
+# 5.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 15 flaky).
+-SharingDialogViewTest.FootnoteNoOrigin
+
+# 6.4% flake rate over 30 days per LUCI Analysis (279 passed, 0 failed, 19 flaky).
+-ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithInvalidItemId
+
+# 3.0% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 9 flaky).
+-ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithInvalidItemIdType
+
+# 5.0% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 15 flaky).
+-ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithMoreThanOneItem

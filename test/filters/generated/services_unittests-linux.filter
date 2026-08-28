@@ -1,0 +1,144 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## linux bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 7.0% flake rate over 30 days per LUCI Analysis (42112 passed, 14 failed, 3134 flaky).
+-All/SnooperNodeTest.ContinuousAudioFlowAdaptsToSkew/Surround5_1ToSurround5_1
+
+# 1.4% flake rate over 30 days per LUCI Analysis (47072 passed, 0 failed, 691 flaky).
+-All/SnooperNodeTest.HandlesBackwardsInput/Surround5_1ToSurround5_1
+
+# 2.2% flake rate over 30 days per LUCI Analysis (46740 passed, 0 failed, 1046 flaky).
+-All/SnooperNodeTest.HandlesMissingInput/Stereo44100_64ToStereo48000_480
+
+# 6.9% flake rate over 30 days per LUCI Analysis (44486 passed, 3 failed, 3284 flaky).
+-All/SnooperNodeTest.HandlesMissingInput/Stereo48kToMono8k
+
+# 12.9% flake rate over 30 days per LUCI Analysis (41586 passed, 9 failed, 6170 flaky).
+-All/SnooperNodeTest.HandlesMissingInput/Stereo64ToStereo480
+
+# 7.1% flake rate over 30 days per LUCI Analysis (44438 passed, 18 failed, 3392 flaky).
+-All/SnooperNodeTest.HandlesSeekedRenderTimes/StereoToStereo
+
+# 16.7% flake rate over 30 days per LUCI Analysis (39762 passed, 29 failed, 7965 flaky).
+-All/SnooperNodeTest.StereoIsMixedCorrectly/Stereo64ToStereo480
+
+# 46.3% flake rate over 30 days per LUCI Analysis (1108 passed, 69 failed, 885 flaky).
+-CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
+
+# 6.6% flake rate over 30 days per LUCI Analysis (44686 passed, 18 failed, 3121 flaky).
+-CoordinatorImplTest.DumpsArentAddedToTraceUnlessRequested
+
+# 15.3% flake rate over 30 days per LUCI Analysis (854 passed, 0 failed, 154 flaky).
+-HeapProfilingDataSourceTest.CloneTraceDumpsReport
+
+# 45.4% flake rate over 30 days per LUCI Analysis (11822 passed, 1 failed, 9824 flaky).
+-HeapProfilingDataSourceTest.EmitSamples
+
+# 18.8% flake rate over 30 days per LUCI Analysis (17561 passed, 13 failed, 4052 flaky).
+-HeapProfilingDataSourceTest.MultipleInstances
+
+# 15.2% flake rate over 30 days per LUCI Analysis (24820 passed, 7 failed, 4440 flaky).
+-HistogramSamplesDataSourceTest.EmitsProcessAndThreadTrackDescriptors
+
+# 1.3% flake rate over 30 days per LUCI Analysis (28885 passed, 2 failed, 387 flaky).
+-HistogramSamplesDataSourceTest.FilterHistogramNamesForPrivacy
+
+# 20.3% flake rate over 30 days per LUCI Analysis (23322 passed, 16 failed, 5907 flaky).
+-HistogramSamplesDataSourceTest.MultipleHistogramSamples
+
+# 13.2% flake rate over 30 days per LUCI Analysis (25403 passed, 0 failed, 3877 flaky).
+-HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
+
+# 6.6% flake rate over 30 days per LUCI Analysis (44774 passed, 14 failed, 3129 flaky).
+-ImageDecoderImplTest.DecodeImageSizeLimit
+
+# 17.5% flake rate over 30 days per LUCI Analysis (39478 passed, 35 failed, 8338 flaky).
+-MemoryTracingIntegrationTest.GenerationChangeDoesntReenterMDM
+
+# 1.0% flake rate over 30 days per LUCI Analysis (47408 passed, 0 failed, 493 flaky).
+-MemoryTracingIntegrationTest.InitializedAfterStartOfTracing
+
+# 36.7% flake rate over 30 days per LUCI Analysis (30326 passed, 103 failed, 17462 flaky).
+-MemoryTracingIntegrationTest.TestBackgroundTracingSetup
+
+# 1.3% flake rate over 30 days per LUCI Analysis (47190 passed, 0 failed, 636 flaky).
+-MemoryTracingIntegrationTest.TestWhitelistingMDP
+
+# 6.2% flake rate over 30 days per LUCI Analysis (44891 passed, 3 failed, 2939 flaky).
+-MemoryTracingIntegrationTest.TraceConfigExpectationsWhenIsCoordinator
+
+# 6.5% flake rate over 30 days per LUCI Analysis (44739 passed, 27 failed, 3098 flaky).
+-NetworkContextTest.EnableNetworkErrorLoggingWithStore
+
+# 4.6% flake rate over 30 days per LUCI Analysis (45669 passed, 20 failed, 2206 flaky).
+-NetworkContextTest.EnableReportingWithStore
+
+# 12.0% flake rate over 30 days per LUCI Analysis (42200 passed, 0 failed, 5734 flaky).
+-NetworkServiceBoostIOThreadTest.DoesNotBoostIOThreadWhenFeatureIsOff
+
+# 1.1% flake rate over 30 days per LUCI Analysis (44977 passed, 488 failed, 0 flaky).
+-PrefetchURLLoaderClientTest.ConsumeRemovesFromCache
+
+# 1.1% flake rate over 30 days per LUCI Analysis (44887 passed, 488 failed, 0 flaky).
+-PrefetchURLLoaderClientTest.DelegateDirectly
+
+# 1.1% flake rate over 30 days per LUCI Analysis (44980 passed, 488 failed, 0 flaky).
+-PrefetchURLLoaderClientTest.RecordAndReplay
+
+# 1.1% flake rate over 30 days per LUCI Analysis (44957 passed, 488 failed, 0 flaky).
+-PrefetchURLLoaderClientTest.ReplayAfterResponse
+
+# 7.9% flake rate over 30 days per LUCI Analysis (44126 passed, 0 failed, 3771 flaky).
+-ProxyResolverV8Test.BadReturnType
+
+# 32.7% flake rate over 30 days per LUCI Analysis (32266 passed, 109 failed, 15541 flaky).
+-ProxyResolverV8Test.Direct
+
+# 35.7% flake rate over 30 days per LUCI Analysis (30787 passed, 95 failed, 16987 flaky).
+-ProxyResolverV8Test.IPv6HostnamesNotBracketed
+
+# 32.7% flake rate over 30 days per LUCI Analysis (32169 passed, 49 failed, 15615 flaky).
+-ScopedTraceTest.MultipleAddSteps
+
+# 6.6% flake rate over 30 days per LUCI Analysis (44684 passed, 17 failed, 3122 flaky).
+-ScopedTraceTest.PassScopedTraceToFunc
+
+# 10.9% flake rate over 30 days per LUCI Analysis (42661 passed, 33 failed, 5189 flaky).
+-ScopedTraceTest.SingleScopeWithoutStep
+
+# 17.0% flake rate over 30 days per LUCI Analysis (39682 passed, 31 failed, 8115 flaky).
+-TracingObserverProtoTest.AddOsDumpToTraceIfEnabled
+
+# 35.7% flake rate over 30 days per LUCI Analysis (30802 passed, 102 failed, 16995 flaky).
+-TracingObserverProtoTest.AddOsDumpToTraceIfEnabled_When_TraceLog_Disabled
+
+# 44.3% flake rate over 30 days per LUCI Analysis (11060 passed, 62 failed, 8727 flaky).
+-TracingSampleProfilerTest.CustomSamplingInterval
+
+# 45.2% flake rate over 30 days per LUCI Analysis (26244 passed, 102 failed, 21535 flaky).
+-TracingSampleProfilerTest.JoinRunningTracing
+
+# 8.7% flake rate over 30 days per LUCI Analysis (43658 passed, 0 failed, 4182 flaky).
+-TracingSampleProfilerTest.OnSampleCompleted
+
+# 26.2% flake rate over 30 days per LUCI Analysis (35353 passed, 69 failed, 12464 flaky).
+-TracingSampleProfilerTest.SamplingChildThread
+
+# 51.5% flake rate over 30 days per LUCI Analysis (22927 passed, 67 failed, 24313 flaky).
+-TracingScenarioSystemBackendTest.ScenarioConfigWithoutSystemBackend
+
+# 33.8% flake rate over 30 days per LUCI Analysis (15527 passed, 0 failed, 7926 flaky).
+-TracingServiceTest.PerfettoClientConsumer
+
+# 5.0% flake rate over 30 days per LUCI Analysis (22282 passed, 0 failed, 1170 flaky).
+-TracingServiceTest.TracingServiceInstantiate
+
+# 6.0% flake rate over 30 days per LUCI Analysis (23452 passed, 1485 failed, 0 flaky).
+-UDPSocketTest.JoinMulticastGroup
+
+# 2.0% flake rate over 30 days per LUCI Analysis (2060 passed, 5 failed, 36 flaky).
+-WebTransportTest.EchoOnBidirectionalStream

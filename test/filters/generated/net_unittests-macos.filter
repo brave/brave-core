@@ -1,0 +1,477 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream net_unittests tests with a flake rate >= 1.0% on
+## macos bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 1 flaky).
+-BidirectionalStreamTest.ClientAuthRequestIgnored
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 580 failed, 2 flaky).
+-BidirectionalStreamTest.DeleteStreamAfterSendData
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 585 failed, 0 flaky).
+-BidirectionalStreamTest.DeleteStreamDuringOnDataRead
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-BidirectionalStreamTest.DeleteStreamDuringOnHeadersReceived
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 585 failed, 0 flaky).
+-BidirectionalStreamTest.DeleteStreamDuringOnTrailersReceived
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 583 failed, 0 flaky).
+-BidirectionalStreamTest.DeleteStreamDuringReadData
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 585 failed, 0 flaky).
+-BidirectionalStreamTest.TestBuffering
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 585 failed, 0 flaky).
+-BidirectionalStreamTest.TestBufferingWithTrailers
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 583 failed, 0 flaky).
+-BidirectionalStreamTest.TestCoalesceSmallDataBuffers
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 583 failed, 0 flaky).
+-BidirectionalStreamTest.TestCompleteAsyncRead
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 585 failed, 0 flaky).
+-BidirectionalStreamTest.TestHonorAlternativeServiceHeader
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 582 failed, 2 flaky).
+-BidirectionalStreamTest.TestInterleaveReadDataAndSendData
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17391 passed, 585 failed, 0 flaky).
+-BidirectionalStreamTest.TestNetLogContainEntries
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 584 failed, 0 flaky).
+-BidirectionalStreamTest.TestReadDataAfterClose
+
+# 2.3% flake rate over 30 days per LUCI Analysis (17563 passed, 2 failed, 411 flaky).
+-CertNetFetcherURLRequestTest.CancelAll
+
+# 2.4% flake rate over 30 days per LUCI Analysis (17539 passed, 2 failed, 434 flaky).
+-CertNetFetcherURLRequestTest.ParallelFetchDuplicates
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.DestinationDisconnect
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.DestinationTcpConnectionError
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.OpenTunnel
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.OpenTunnelToIpv4LiteralDestination
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.OpenTunnelToIpv6LiteralDestination
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 579 failed, 1 flaky).
+-ConnectTunnelTest.OpenTunnelWithMalformedRequest
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 581 failed, 0 flaky).
+-ConnectTunnelTest.OpenTunnelWithUnacceptableDestination
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.ReceiveFromDestination
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectTunnelTest.SendToDestination
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectUdpTunnelTest.OpenTunnel
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectUdpTunnelTest.OpenTunnelToIpv4LiteralTarget
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectUdpTunnelTest.OpenTunnelToIpv6LiteralTarget
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 581 failed, 0 flaky).
+-ConnectUdpTunnelTest.OpenTunnelWithMalformedRequest
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 581 failed, 0 flaky).
+-ConnectUdpTunnelTest.OpenTunnelWithUnacceptableTarget
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectUdpTunnelTest.ReceiveFromTarget
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 582 failed, 0 flaky).
+-ConnectUdpTunnelTest.SendToTarget
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 583 failed, 0 flaky).
+-DedicatedWebTransportHttp3HeadersTest.AdditionalHeadersCasingAndDuplicates
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17387 passed, 583 failed, 5 flaky).
+-DedicatedWebTransportHttp3Test.CloseReason
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 583 failed, 0 flaky).
+-DedicatedWebTransportHttp3Test.Connect
+
+# 3.2% flake rate over 30 days per LUCI Analysis (16077 passed, 532 failed, 2 flaky).
+-DedicatedWebTransportHttp3Test.DrainingAfterConnectionFailureIsIgnored
+
+# 3.2% flake rate over 30 days per LUCI Analysis (16073 passed, 538 failed, 0 flaky).
+-DedicatedWebTransportHttp3Test.SessionDraining
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 583 failed, 0 flaky).
+-DedicatedWebTransportHttp3Test.SubprotocolHeader
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 582 failed, 0 flaky).
+-HttpHeaderBlockTest.AddHeaders
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17398 passed, 579 failed, 0 flaky).
+-HttpHeaderBlockTest.AppendHeaders
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17398 passed, 579 failed, 0 flaky).
+-HttpHeaderBlockTest.UpperCaseNames
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-QuicEndToEndTest.CryptoHandshakeCompleteMetrics
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-QuicEndToEndTest.EnableMLKEM
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-QuicEndToEndTest.LargeGetWithNoPacketLoss
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-QuicEndToEndTest.LargePostWithNoPacketLoss
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-QuicEndToEndTest.LargePostWithPacketLoss
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17389 passed, 586 failed, 0 flaky).
+-QuicEndToEndTest.ServerHandshakePaddingMetrics
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17389 passed, 586 failed, 0 flaky).
+-QuicEndToEndTest.ServerHandshakePaddingMetricsNoServerSupport
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17389 passed, 586 failed, 0 flaky).
+-QuicEndToEndTest.ServerHandshakePaddingMetricsServerSupportFeatureDisabled
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17389 passed, 586 failed, 0 flaky).
+-QuicEndToEndTest.ServerHandshakePaddingMetricsZeroPadding
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 584 failed, 0 flaky).
+-QuicEndToEndTest.UberTest
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 578 failed, 1 flaky).
+-QuicMemoryCacheBackendTest.AddSimpleResponseGetResponse
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 578 failed, 1 flaky).
+-QuicMemoryCacheBackendTest.DefaultResponse
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 582 failed, 0 flaky).
+-QuicMemoryCacheBackendTest.Echo
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 579 failed, 1 flaky).
+-QuicMemoryCacheBackendTest.ReadsCacheDir
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 582 failed, 0 flaky).
+-QuicMemoryCacheBackendTest.UsesOriginalUrl
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 582 failed, 0 flaky).
+-QuicMemoryCacheBackendTest.UsesOriginalUrlOnly
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17402 passed, 577 failed, 1 flaky).
+-QuicVersion/WebSocketQuicStreamAdapterTest.OnHeadersReceivedThenDisconnect/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17399 passed, 581 failed, 0 flaky).
+-QuicVersion/WebSocketQuicStreamAdapterTest.OnHeadersReceivedThenDisconnect/RFCv2
+
+# 15.9% flake rate over 30 days per LUCI Analysis (15112 passed, 2 failed, 2863 flaky).
+-RegistrationTest.AttestationKeyGenerationFailure
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 582 failed, 2 flaky).
+-SpdySessionTest.ResumeAfterUnstallSession
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 583 failed, 0 flaky).
+-SpdySessionTest.ResumeAfterUnstallStream
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 580 failed, 4 flaky).
+-SpdySessionTest.ResumeByPriorityAfterSendWindowSizeIncrease
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 582 failed, 1 flaky).
+-SpdySessionTest.ResumeSessionWithStalledStream
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17392 passed, 583 failed, 3 flaky).
+-SpdySessionTest.SendWindowSizeIncreaseWithDeletedStreams
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 579 failed, 5 flaky).
+-SpdySessionTest.StallSessionStreamResumeAfterUnstallSessionStream
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17396 passed, 577 failed, 5 flaky).
+-SpdySessionTest.StallSessionStreamResumeAfterUnstallStreamSession
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 583 failed, 0 flaky).
+-SpdySessionTest.StallStreamSessionResumeAfterUnstallSessionStream
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 581 failed, 3 flaky).
+-SpdySessionTest.StallStreamSessionResumeAfterUnstallStreamSession
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17396 passed, 582 failed, 0 flaky).
+-SpdyStreamTest.ResumeAfterSendWindowSizeAdjustBidirectional
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 581 failed, 2 flaky).
+-SpdyStreamTest.ResumeAfterSendWindowSizeAdjustRequestResponse
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 579 failed, 4 flaky).
+-SpdyStreamTest.ResumeAfterSendWindowSizeIncreaseBidirectional
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17397 passed, 579 failed, 2 flaky).
+-SpdyStreamTest.ResumeAfterSendWindowSizeIncreaseRequestResponse
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17396 passed, 577 failed, 5 flaky).
+-SpdyStreamTest.SendDataAfterOpen
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17401 passed, 575 failed, 2 flaky).
+-SpdyStreamTest.SendLargeDataAfterOpenBidirectional
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17400 passed, 578 failed, 0 flaky).
+-SpdyStreamTest.SendLargeDataAfterOpenRequestResponse
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 584 failed, 0 flaky).
+-SpdyStreamTest.StreamError
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 584 failed, 0 flaky).
+-SpdyStreamTest.Trailers
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17394 passed, 584 failed, 0 flaky).
+-SpdyStreamTestWithMockClock.EarlyHints
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17396 passed, 578 failed, 4 flaky).
+-SpdyStreamTestWithMockClock.InformationalHeaders
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17395 passed, 579 failed, 4 flaky).
+-SpdyStreamTestWithMockClock.NonInformationalResponseStart
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.AsyncFinRead/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17390 passed, 582 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.AsyncFinRead/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 579 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.CoalesceDataBuffersNotHeadersFrame/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.CoalesceDataBuffersNotHeadersFrame/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamAfterReadData/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17390 passed, 578 failed, 4 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamAfterReadData/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 579 failed, 2 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamDuringOnDataRead/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17390 passed, 581 failed, 1 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamDuringOnDataRead/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamDuringOnHeadersReceived/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamDuringOnHeadersReceived/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamDuringOnTrailersReceived/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.DeleteStreamDuringOnTrailersReceived/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.EarlyDataOverrideRequest/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 578 failed, 1 flaky).
+-Version/BidirectionalStreamQuicImplTest.EarlyDataOverrideRequest/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.GetRequest/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 578 failed, 3 flaky).
+-Version/BidirectionalStreamQuicImplTest.GetRequest/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 578 failed, 2 flaky).
+-Version/BidirectionalStreamQuicImplTest.InterleaveReadDataAndSendData/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 579 failed, 1 flaky).
+-Version/BidirectionalStreamQuicImplTest.InterleaveReadDataAndSendData/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.LoadTimingTwoRequests/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.LoadTimingTwoRequests/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17390 passed, 582 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.PostRequest/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17390 passed, 582 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.PostRequest/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.SendDataCoalesceDataBufferAndHeaderFrame/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17393 passed, 579 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.SendDataCoalesceDataBufferAndHeaderFrame/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.SendvDataCoalesceDataBuffersAndHeaderFrame/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.SendvDataCoalesceDataBuffersAndHeaderFrame/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17391 passed, 581 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.ServerSendsRstAfterReadData/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 0 flaky).
+-Version/BidirectionalStreamQuicImplTest.ServerSendsRstAfterReadData/RFCv2
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.DelayedResponseStart/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.DelayedResponseStart/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.DelayedResponseStart/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.DelayedResponseStart/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestGetRequest/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestGetRequest/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestGetRequest/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestGetRequest/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestTwoRequests/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestTwoRequests/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestTwoRequests/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicTest.TestTwoRequests/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRequestWrongCertExistingAltServiceQuicSession/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRequestWrongCertExistingAltServiceQuicSession/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRequestWrongCertExistingAltServiceQuicSession/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRequestWrongCertExistingAltServiceQuicSession/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRightCert/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRightCert/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRightCert/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceRightCert/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertExistingNonAltServiceQuicSession/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertExistingNonAltServiceQuicSession/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertExistingNonAltServiceQuicSession/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertExistingNonAltServiceQuicSession/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttempt/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttempt/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttempt/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttempt/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttemptReverseOrder/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttemptReverseOrder/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttemptReverseOrder/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17394 passed, 585 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.AltServiceWrongCertSimultaneousNonAltServiceQuicAttemptReverseOrder/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCert/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCert/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCert/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCert/RFCv2_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCertReverseOrder/RFCv1_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCertReverseOrder/RFCv1_AND_HEv3
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCertReverseOrder/RFCv2_AND_HEv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17393 passed, 586 failed, 0 flaky).
+-Version/URLRequestQuicWithTcpTest.TwoAltServiceRequestsOneWrongCertReverseOrder/RFCv2_AND_HEv3
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 580 failed, 1 flaky).
+-VersionIncludeStreamDependencySequence/HttpStreamFactoryBidirectionalQuicTest.RequestBidirectionalStreamImplHttpJobFailsQuicJobSucceeds/RFCv1
+
+# 3.3% flake rate over 30 days per LUCI Analysis (17388 passed, 584 failed, 1 flaky).
+-VersionIncludeStreamDependencySequence/HttpStreamFactoryBidirectionalQuicTest.RequestBidirectionalStreamImplHttpJobFailsQuicJobSucceeds/RFCv2
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17392 passed, 581 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/HttpStreamFactoryBidirectionalQuicTest.RequestBidirectionalStreamImplQuicAlternative/RFCv1
+
+# 3.2% flake rate over 30 days per LUCI Analysis (17390 passed, 581 failed, 2 flaky).
+-VersionIncludeStreamDependencySequence/HttpStreamFactoryBidirectionalQuicTest.RequestBidirectionalStreamImplQuicAlternative/RFCv2
+
+# 3.4% flake rate over 30 days per LUCI Analysis (28 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionNonPreconnect/RFCv1
+
+# 3.4% flake rate over 30 days per LUCI Analysis (28 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionNonPreconnect/RFCv2
+
+# 3.4% flake rate over 30 days per LUCI Analysis (28 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionPreconnect/RFCv1
+
+# 3.4% flake rate over 30 days per LUCI Analysis (28 passed, 1 failed, 0 flaky).
+-VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionPreconnect/RFCv2

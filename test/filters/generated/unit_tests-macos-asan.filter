@@ -1,0 +1,168 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream unit_tests tests with a flake rate >= 1.0% on
+## macos-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 5.6% flake rate over 30 days per LUCI Analysis (618 passed, 0 failed, 37 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/0
+
+# 9.3% flake rate over 30 days per LUCI Analysis (594 passed, 0 failed, 61 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/1
+
+# 11.8% flake rate over 30 days per LUCI Analysis (578 passed, 0 failed, 77 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/2
+
+# 13.4% flake rate over 30 days per LUCI Analysis (567 passed, 0 failed, 88 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/3
+
+# 13.9% flake rate over 30 days per LUCI Analysis (564 passed, 0 failed, 91 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/4
+
+# 15.1% flake rate over 30 days per LUCI Analysis (556 passed, 0 failed, 99 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/5
+
+# 17.4% flake rate over 30 days per LUCI Analysis (541 passed, 0 failed, 114 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/6
+
+# 25.4% flake rate over 30 days per LUCI Analysis (488 passed, 0 failed, 166 flaky).
+-All/PermissionContextBasePermissionsPolicyGeolocationTest.RequestPermission/0
+
+# 26.5% flake rate over 30 days per LUCI Analysis (481 passed, 0 failed, 173 flaky).
+-All/PermissionContextBasePermissionsPolicyGeolocationTest.RequestPermission/1
+
+# 23.7% flake rate over 30 days per LUCI Analysis (499 passed, 0 failed, 155 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginPermissionDelegation/0
+
+# 22.0% flake rate over 30 days per LUCI Analysis (510 passed, 0 failed, 144 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginPermissionDelegation/1
+
+# 25.4% flake rate over 30 days per LUCI Analysis (488 passed, 0 failed, 166 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginSearch/0
+
+# 26.5% flake rate over 30 days per LUCI Analysis (481 passed, 0 failed, 173 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginSearch/1
+
+# 20.6% flake rate over 30 days per LUCI Analysis (519 passed, 0 failed, 135 flaky).
+-All/PermissionManagerTest.SubscribeWithPermissionDelegation/0
+
+# 19.9% flake rate over 30 days per LUCI Analysis (524 passed, 0 failed, 130 flaky).
+-All/PermissionManagerTest.SubscribeWithPermissionDelegation/1
+
+# 16.2% flake rate over 30 days per LUCI Analysis (548 passed, 0 failed, 106 flaky).
+-All/PermissionSubscriptionGeolocationTest.ChangeAfterUnsubscribeDoesNotNotify/0
+
+# 5.4% flake rate over 30 days per LUCI Analysis (619 passed, 0 failed, 35 flaky).
+-All/PermissionSubscriptionGeolocationTest.ChangeWithoutPermissionChangeDoesNotNotify/0
+
+# 7.0% flake rate over 30 days per LUCI Analysis (608 passed, 0 failed, 46 flaky).
+-All/PermissionSubscriptionGeolocationTest.DifferentTypeChangeDoesNotNotify/0
+
+# 5.2% flake rate over 30 days per LUCI Analysis (620 passed, 0 failed, 34 flaky).
+-All/PermissionSubscriptionGeolocationTest.DifferentTypeChangeDoesNotNotify/1
+
+# 13.0% flake rate over 30 days per LUCI Analysis (569 passed, 0 failed, 85 flaky).
+-All/PermissionSubscriptionGeolocationTest.NewValueCorrectlyPassed/0
+
+# 8.1% flake rate over 30 days per LUCI Analysis (601 passed, 0 failed, 53 flaky).
+-All/PermissionSubscriptionGeolocationTest.NewValueCorrectlyPassed/1
+
+# 10.4% flake rate over 30 days per LUCI Analysis (586 passed, 0 failed, 68 flaky).
+-All/PermissionSubscriptionGeolocationTest.SameTypeChangeNotifies/0
+
+# 8.1% flake rate over 30 days per LUCI Analysis (601 passed, 0 failed, 53 flaky).
+-All/PermissionSubscriptionGeolocationTest.SameTypeChangeNotifies/1
+
+# 11.6% flake rate over 30 days per LUCI Analysis (578 passed, 0 failed, 76 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeAfterShutdown/0
+
+# 18.2% flake rate over 30 days per LUCI Analysis (535 passed, 0 failed, 119 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeAfterShutdown/1
+
+# 16.2% flake rate over 30 days per LUCI Analysis (548 passed, 0 failed, 106 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscriptionDestroyedCleanlyWithoutUnsubscribe/0
+
+# 13.8% flake rate over 30 days per LUCI Analysis (564 passed, 0 failed, 90 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscriptionDestroyedCleanlyWithoutUnsubscribe/1
+
+# 1.5% flake rate over 30 days per LUCI Analysis (645 passed, 9 failed, 1 flaky).
+-AperitifTest.InitializerOrder
+
+# 2.7% flake rate over 30 days per LUCI Analysis (637 passed, 0 failed, 18 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOffSavingOffDisabledByPolicy
+
+# 4.4% flake rate over 30 days per LUCI Analysis (626 passed, 0 failed, 29 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOffSavingOn
+
+# 5.8% flake rate over 30 days per LUCI Analysis (617 passed, 0 failed, 38 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOff
+
+# 8.2% flake rate over 30 days per LUCI Analysis (601 passed, 0 failed, 54 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOffDisabledByPolicy
+
+# 10.2% flake rate over 30 days per LUCI Analysis (588 passed, 0 failed, 67 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOn
+
+# 2.1% flake rate over 30 days per LUCI Analysis (641 passed, 0 failed, 14 flaky).
+-CastMediaNotificationItemTest.MediaPositionUpdate
+
+# 24.0% flake rate over 30 days per LUCI Analysis (498 passed, 0 failed, 157 flaky).
+-ContextualCueingHelperTest.TabHelperStartsUp
+
+# 8.9% flake rate over 30 days per LUCI Analysis (597 passed, 0 failed, 58 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesEmpty_MatchesAnyType
+
+# 6.3% flake rate over 30 days per LUCI Analysis (614 passed, 0 failed, 41 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesMatch_Succeeds
+
+# 4.6% flake rate over 30 days per LUCI Analysis (625 passed, 0 failed, 30 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesNoMatch_Skipped
+
+# 22.1% flake rate over 30 days per LUCI Analysis (510 passed, 0 failed, 145 flaky).
+-ContextualCueingPageDataTest.Basic
+
+# 17.9% flake rate over 30 days per LUCI Analysis (538 passed, 0 failed, 117 flaky).
+-ContextualCueingPageDataTest.BasicAndPdfPageCountCondition
+
+# 20.5% flake rate over 30 days per LUCI Analysis (521 passed, 0 failed, 134 flaky).
+-ContextualCueingPageDataTest.NonPdfPageFails
+
+# 18.9% flake rate over 30 days per LUCI Analysis (531 passed, 0 failed, 124 flaky).
+-ContextualCueingPageDataTest.PdfPageCountPasses
+
+# 11.9% flake rate over 30 days per LUCI Analysis (577 passed, 0 failed, 78 flaky).
+-ContextualCueingPageDataTest.StaticCueHasNoAnchoredMessageText
+
+# 24.0% flake rate over 30 days per LUCI Analysis (498 passed, 0 failed, 157 flaky).
+-GeolocationPermissionContextDelegateTests.TabContentSettingIsUpdated
+
+# 1.1% flake rate over 30 days per LUCI Analysis (647 passed, 0 failed, 7 flaky).
+-IndigoServiceTest.LoadConfigFromCommandLine
+
+# 10.4% flake rate over 30 days per LUCI Analysis (586 passed, 0 failed, 68 flaky).
+-PasswordChangePageStabilityWaiterTest.DisconnectDuringNavigation
+
+# 2.9% flake rate over 30 days per LUCI Analysis (635 passed, 0 failed, 19 flaky).
+-PopupSearchBarViewTest.KeyPressedFromTextfieldPassedToDelegateFirst
+
+# 1.7% flake rate over 30 days per LUCI Analysis (643 passed, 0 failed, 11 flaky).
+-PriceTrackingViewTest.ToggleRecordTracked
+
+# 4.0% flake rate over 30 days per LUCI Analysis (309 passed, 0 failed, 13 flaky).
+-ShortcutsVersioningMacTest.RebuildShortcutsOnOsVersionChange
+
+# 2.4% flake rate over 30 days per LUCI Analysis (638 passed, 0 failed, 16 flaky).
+-ShortcutsVersioningMacTest.RebuildShortcutsOnVersionChange
+
+# 3.5% flake rate over 30 days per LUCI Analysis (631 passed, 0 failed, 23 flaky).
+-VideoOverlayWindowViewsTest.ControlsNeverHideWhileProgressBarIsDragged
+
+# 3.1% flake rate over 30 days per LUCI Analysis (634 passed, 0 failed, 20 flaky).
+-VideoOverlayWindowViewsTest.PlaybackControlsContainerVisibility
+
+# 3.4% flake rate over 30 days per LUCI Analysis (632 passed, 0 failed, 22 flaky).
+-VideoOverlayWindowViewsTest.ProgressBarSeeksVideo
+
+# 1.4% flake rate over 30 days per LUCI Analysis (645 passed, 0 failed, 9 flaky).
+-WebAppDatabaseTest.DowngradeCorruptionRecovery

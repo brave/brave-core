@@ -1,0 +1,195 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream unit_tests tests with a flake rate >= 1.0% on
+## macos-ubsan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+-AILanguageModelManifestTest.CanCreateAndCreateWithManifestGemma4
+
+# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+-AISummarizerManifestTest.CanCreateAndCreateWithManifestSpeedPreference
+
+# 21.4% flake rate over 30 days per LUCI Analysis (22 passed, 0 failed, 6 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/3
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/4
+
+# 21.4% flake rate over 30 days per LUCI Analysis (22 passed, 0 failed, 6 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/5
+
+# 25.0% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 7 flaky).
+-All/ChromePasswordManagerClientSchemeTest.SavingAndFillingOnDifferentSchemes/6
+
+# 28.6% flake rate over 30 days per LUCI Analysis (20 passed, 0 failed, 8 flaky).
+-All/PermissionContextBasePermissionsPolicyGeolocationTest.RequestPermission/0
+
+# 25.0% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 7 flaky).
+-All/PermissionContextBasePermissionsPolicyGeolocationTest.RequestPermission/1
+
+# 25.0% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 7 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginPermissionDelegation/0
+
+# 25.0% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 7 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginPermissionDelegation/1
+
+# 28.6% flake rate over 30 days per LUCI Analysis (20 passed, 0 failed, 8 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginSearch/0
+
+# 25.0% flake rate over 30 days per LUCI Analysis (21 passed, 0 failed, 7 flaky).
+-All/PermissionManagerTest.GetCanonicalOriginSearch/1
+
+# 21.4% flake rate over 30 days per LUCI Analysis (22 passed, 0 failed, 6 flaky).
+-All/PermissionManagerTest.SubscribeWithPermissionDelegation/0
+
+# 28.6% flake rate over 30 days per LUCI Analysis (20 passed, 0 failed, 8 flaky).
+-All/PermissionManagerTest.SubscribeWithPermissionDelegation/1
+
+# 10.7% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 3 flaky).
+-All/PermissionSubscriptionGeolocationTest.ChangeAfterUnsubscribeDoesNotNotify/0
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-All/PermissionSubscriptionGeolocationTest.NewValueCorrectlyPassed/0
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-All/PermissionSubscriptionGeolocationTest.NewValueCorrectlyPassed/1
+
+# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 2 flaky).
+-All/PermissionSubscriptionGeolocationTest.SameTypeChangeNotifies/0
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-All/PermissionSubscriptionGeolocationTest.SameTypeChangeNotifies/1
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeAfterShutdown/0
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeAfterShutdown/1
+
+# 28.6% flake rate over 30 days per LUCI Analysis (20 passed, 0 failed, 8 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscriptionDestroyedCleanlyWithoutUnsubscribe/0
+
+# 28.6% flake rate over 30 days per LUCI Analysis (20 passed, 0 failed, 8 flaky).
+-All/PermissionSubscriptionGeolocationTest.SubscriptionDestroyedCleanlyWithoutUnsubscribe/1
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-All/WebAppUninstallCommandSourceTest.RunTestForUninstallSource/5
+
+# 10.7% flake rate over 30 days per LUCI Analysis (25 passed, 3 failed, 0 flaky).
+-AperitifTest.InitializerOrder
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-AppServiceProxyPreferredAppsTest.PreferredAppsSetSupportedLinksPublisher
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOff
+
+# 10.7% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 3 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOffDisabledByPolicy
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-Availability/ChromePasswordChangeServiceAvailabilityTest.UserEnrollmentIntoPasswordChangeServiceWithPrefOn/GenerationOnExecutionOnSavingOn
+
+# 17.9% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 5 flaky).
+-ContextualCueingHelperTest.TabHelperStartsUp
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesEmpty_MatchesAnyType
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-ContextualCueingPageDataTest.AllowedMimeTypesMatch_Succeeds
+
+# 17.9% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 5 flaky).
+-ContextualCueingPageDataTest.Basic
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-ContextualCueingPageDataTest.BasicAndPdfPageCountCondition
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-ContextualCueingPageDataTest.NonPdfPageFails
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
+-ContextualCueingPageDataTest.PdfPageCountPasses
+
+# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 2 flaky).
+-ContextualCueingPageDataTest.StaticCueHasNoAnchoredMessageText
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-FetchManifestAndInstallCommandTest.SuccessWithFallbackInstallNoManifest
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-FetchManifestAndInstallCommandTest.SuccessWithoutReparent
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-FetchManifestAndInstallCommandTest.WriteDataToDisk
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-FileHandlingSubManagerConfigureAndExecuteTest.PartialExtensionMatch
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-FileHandlingSubManagerConfigureAndExecuteTest.Uninstall
+
+# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 2 flaky).
+-FileHandlingSubManagerConfigureTest.Uninstall
+
+# 17.9% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 5 flaky).
+-GeolocationPermissionContextDelegateTests.TabContentSettingIsUpdated
+
+# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 2 failed, 0 flaky).
+-IndigoToolbarTest.HoverCloseButtonInCompactDoesNotExpand
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-ProtocolHandlingConfigureTest.ConfigureProtocolHandlerDisallowed
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-RunOnOsLoginCommandTest.SetRunOnOsLoginModes
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-RunOnOsLoginSubManagerExecuteTest.InstallAndExecuteWindowedRunOnOsLogin
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-ShortcutMenuHandlingSubManagerExecuteTest.InstallWritesCorrectData
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-SiteSettingsHandlerIsolatedWebAppTest.GetOriginPermissionsSubApp
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconAbsent_StartUrlAbsent_ManifestIdAbsent_DisplayModekStandalone_ManifestIconsAbsent
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconAbsent_StartUrlAbsent_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsicon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconAbsent_StartUrlAbsent_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconIconPathSpecified_StartUrlSpecified_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconSK_ColorBLUE_StartUrlAbsent_ManifestIdAbsent_DisplayModeAbsent_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconSK_ColorBLUE_StartUrlAbsent_ManifestIdSpecified_DisplayModeAbsent_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconSK_ColorBLUE_StartUrlAbsent_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconSK_ColorBLUE_StartUrlSpecified_ManifestIdSpecified_DisplayModeAbsent_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconAbsent_StartUrlAbsent_ManifestIdAbsent_DisplayModekStandalone_ManifestIconsAbsent
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconIconPathSpecified_StartUrlSpecified_ManifestIdAbsent_DisplayModeAbsent_ManifestIconsicon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconSK_ColorBLUE_StartUrlAbsent_ManifestIdAbsent_DisplayModekStandalone_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconSK_ColorBLUE_StartUrlSpecified_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsnot_found_icon
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-WebAppPolicyForceUnregistrationTest.ManifestWildcardDoNotAffectOsIntegration

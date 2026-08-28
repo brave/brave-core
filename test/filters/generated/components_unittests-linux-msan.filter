@@ -1,0 +1,33 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream components_unittests tests with a flake rate >= 1.0% on
+## linux-msan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 3.4% flake rate over 30 days per LUCI Analysis (719 passed, 0 failed, 25 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/10
+
+# 4.8% flake rate over 30 days per LUCI Analysis (708 passed, 0 failed, 36 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/11
+
+# 4.8% flake rate over 30 days per LUCI Analysis (708 passed, 0 failed, 36 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/12
+
+# 3.4% flake rate over 30 days per LUCI Analysis (719 passed, 0 failed, 25 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/13
+
+# 1.1% flake rate over 30 days per LUCI Analysis (736 passed, 0 failed, 8 flaky).
+-GaiaCookieManagerServiceTest.GaiaCookieLastListAccountsDataSaved
+
+# 10.1% flake rate over 30 days per LUCI Analysis (669 passed, 0 failed, 75 flaky).
+-HintsManagerTest.OptimizationFiltersAreOnlyLoadedIfTypeIsRegistered
+
+# 5.8% flake rate over 30 days per LUCI Analysis (701 passed, 0 failed, 43 flaky).
+-PredictionServiceTest.ResponsesAreCorrect
+
+# 1.1% flake rate over 30 days per LUCI Analysis (86 passed, 0 failed, 1 flaky).
+-PrivacyPassTest.TokenRequestInboundBatchFromBytesErrors
+
+# 1.1% flake rate over 30 days per LUCI Analysis (738 passed, 0 failed, 8 flaky).
+-TabGroupSyncServiceImplTest.MoveTab

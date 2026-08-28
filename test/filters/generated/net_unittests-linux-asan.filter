@@ -1,0 +1,9 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream net_unittests tests with a flake rate >= 1.0% on
+## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 9.4% flake rate over 30 days per LUCI Analysis (665 passed, 0 failed, 69 flaky).
+-HttpCacheTest.GenerateCacheKeyUploadDataIdentifier

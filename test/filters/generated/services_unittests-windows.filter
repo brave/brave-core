@@ -1,0 +1,27 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 69.6% flake rate over 30 days per LUCI Analysis (7 passed, 0 failed, 16 flaky).
+-CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
+
+# 99.0% flake rate over 30 days per LUCI Analysis (87 passed, 1 failed, 8378 flaky).
+-HeapProfilingDataSourceTest.EmitSamples
+
+# 26.3% flake rate over 30 days per LUCI Analysis (8465 passed, 0 failed, 3028 flaky).
+-HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
+
+# 8.1% flake rate over 30 days per LUCI Analysis (17242 passed, 1 failed, 1527 flaky).
+-NetworkContextTest.PreconnectMax
+
+# 1.3% flake rate over 30 days per LUCI Analysis (18533 passed, 1 failed, 236 flaky).
+-PlatformSensorProviderTestWinrt.SensorCreationReturnCheck
+
+# 30.5% flake rate over 30 days per LUCI Analysis (13039 passed, 0 failed, 5734 flaky).
+-TracingServiceTest.PerfettoClientConsumer
+
+# 3.1% flake rate over 30 days per LUCI Analysis (18191 passed, 0 failed, 581 flaky).
+-TracingServiceTest.TracingServiceInstantiate

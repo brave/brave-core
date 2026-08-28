@@ -1,0 +1,9 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## macos-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 script/update-upstream-flake-filters.py
+
+# 1.5% flake rate over 30 days per LUCI Analysis (640 passed, 0 failed, 10 flaky).
+-SoundsManagerTest.Stop
