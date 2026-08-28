@@ -521,12 +521,12 @@ extension Strings.Shields {
       "Text for a button in a blocked page info screen that takes you back where you came from"
   )
 
-  public static let domainBlockedBackToSafetyAction = NSLocalizedString(
-    "DomainBlockedBackToSafetyAction",
+  public static let backToSafetyButtonTitle = NSLocalizedString(
+    "BackToSafetyButtonTitle",
     bundle: .module,
     value: "Back to safety",
     comment:
-      "Text for a button in a blocked page info screen that takes you back where you came from or back to home screen"
+      "Text for a button in a blocked page or a page not secure info screen that takes you back where you came from or back to home screen"
   )
 }
 

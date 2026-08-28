@@ -52,7 +52,7 @@ public class BlockedDomainHandler: InternalSchemeResponse {
       )
       .replacingOccurrences(
         of: "%go_back_action%",
-        with: Strings.Shields.domainBlockedBackToSafetyAction
+        with: Strings.Shields.backToSafetyButtonTitle
       )
       .replacingOccurrences(
         of: "%message_handler%",
