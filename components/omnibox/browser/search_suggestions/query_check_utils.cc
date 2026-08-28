@@ -82,25 +82,6 @@ bool HasEmailInQuery(const std::string& query) {
   return RE2::PartialMatch(query, *regex.get());
 }
 
-bool HasLongNumberInQuery(const std::string& query) {
-  std::string updated_query = query;
-  RE2::GlobalReplace(&updated_query, "[^A-Za-z0-9]", "");
-  RE2::GlobalReplace(&updated_query, "[A-Za-z]+", " ");
-
-  const std::vector<std::string_view> numbers = base::SplitStringPiece(
-      updated_query, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
-
-  constexpr int kMaxAllowedNumberLength = 7;
-  for (const auto& number : numbers) {
-    if (number.length() > kMaxAllowedNumberLength) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 bool HasValidWordCountInQuery(const std::string& query) {
   std::vector<std::string_view> words_in_query = base::SplitStringPiece(
       query, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -269,6 +250,25 @@ bool IsPotentiallyLeakingUrlInformation(const std::string& query) {
 }  // namespace
 
 namespace search_suggestions {
+
+bool HasLongNumberInQuery(const std::string& query) {
+  std::string updated_query = query;
+  RE2::GlobalReplace(&updated_query, "[^A-Za-z0-9]", "");
+  RE2::GlobalReplace(&updated_query, "[A-Za-z]+", " ");
+
+  const std::vector<std::string_view> numbers = base::SplitStringPiece(
+      updated_query, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitResult::SPLIT_WANT_NONEMPTY);
+
+  constexpr int kMaxAllowedNumberLength = 7;
+  for (const auto& number : numbers) {
+    if (number.length() > kMaxAllowedNumberLength) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 bool IsSuspiciousQuery(const std::string& query) {
   if (!HasValidWordCountInQuery(query)) {

@@ -20,6 +20,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/buildflags/buildflags.h"
@@ -33,6 +34,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/autocomplete_match_type.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/remote_suggestions_service.h"
 #include "components/omnibox/browser/search_provider.h"
@@ -46,6 +48,7 @@
 #include "third_party/metrics_proto/omnibox_event.pb.h"
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
 #include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
 #endif
 
@@ -292,6 +295,58 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
 #endif
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+// Arithmetic is only answered locally when `IsQueryPotentiallyPrivate` returns
+// true when evaluating the query. This fallback behavior lets a calculation
+// happen versus just dropping the query. Everything else will be sent/processed
+// by the search suggestions server.
+TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
+  const auto has_calculator_match = [&]() {
+    return std::ranges::any_of(provider_->matches(), [](const auto& match) {
+      return match.type == AutocompleteMatchType::CALCULATOR;
+    });
+  };
+
+  const auto sent_to_suggest = [&](const std::string& input) {
+    return test_url_loader_factory_.IsPending(
+        base::StrCat({kSuggestionUrlHost, base::EscapePath(input)}));
+  };
+
+  // "95007804" is 8 digits, so the query is withheld and we answer it.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
+  EXPECT_FALSE(sent_to_suggest("9500+7804"));
+  EXPECT_TRUE(has_calculator_match());
+
+  // One digit shorter, so the server still answers it as it always has.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+780"));
+  EXPECT_TRUE(sent_to_suggest("9500+780"));
+  EXPECT_FALSE(has_calculator_match());
+
+  // Withheld, but not something we can answer exactly: no calculator row
+  // rather than an approximate one.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678 / 7"));
+  EXPECT_FALSE(sent_to_suggest("12345678 / 7"));
+  EXPECT_FALSE(has_calculator_match());
+
+  // Withheld and not arithmetic at all.
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"12345678"));
+  EXPECT_FALSE(sent_to_suggest("12345678"));
+  EXPECT_FALSE(has_calculator_match());
+}
+
+// With the kill switch off, a withheld query gets no answer, as it did before
+// the local calculator existed.
+TEST_F(BraveSearchProviderTest, ArithmeticIsNotAnsweredWhenFeatureDisabled) {
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(omnibox::kBraveLocalCalculator);
+
+  ASSERT_NO_FATAL_FAILURE(QueryForInput(u"9500+7804"));
+  EXPECT_FALSE(test_url_loader_factory_.IsPending(
+      base::StrCat({kSuggestionUrlHost, base::EscapePath("9500+7804")})));
+  EXPECT_FALSE(std::ranges::any_of(provider_->matches(), [](const auto& match) {
+    return match.type == AutocompleteMatchType::CALCULATOR;
+  }));
+}
+
 TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
 #if BUILDFLAG(IS_MAC)
   // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with

@@ -5,19 +5,28 @@
 
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 
+#include <vector>
+
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/omnibox/browser/brave_search_suggestion_parser.h"
 #include "brave/components/omnibox/buildflags/buildflags.h"
+#include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_match_type.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 #include "components/omnibox/browser/omnibox_text_util.h"
 #include "components/omnibox/browser/search_provider.h"
+#include "components/omnibox/browser/search_suggestion_parser.h"
+#include "components/omnibox/common/omnibox_feature_configs.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
 #include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
 #endif
 
@@ -56,7 +65,75 @@ bool IsQuerySafeToSearchSuggestions(const std::u16string& query) {
 
 }  // namespace
 
+BraveSearchProvider::BraveSearchProvider(AutocompleteProviderClient* client,
+                                         AutocompleteProviderListener* listener)
+    : SearchProvider(client, listener) {}
+
 BraveSearchProvider::~BraveSearchProvider() = default;
+
+void BraveSearchProvider::Start(const AutocompleteInput& input,
+                                bool minimal_changes) {
+  // Everything else keys off `calculator_answer_`, so leaving it empty is all
+  // it takes to fall back to the upstream behaviour.
+  calculator_answer_.reset();
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+  if (base::FeatureList::IsEnabled(omnibox::kBraveLocalCalculator)) {
+    // Evaluated up front because `SearchProvider::Start()` consults
+    // `IsQueryPotentiallyPrivate()` while deciding whether to query suggest.
+    calculator_answer_ = MaybeEvaluateLocally(input);
+  }
+#endif
+
+  SearchProvider::Start(input, minimal_changes);
+}
+
+void BraveSearchProvider::UpdateMatches() {
+  if (calculator_answer_) {
+    // Upstream calls this from several places for one input, so replace rather
+    // than append -- otherwise the answer would be listed once per call.
+    std::erase_if(default_results_.suggest_results, [](const auto& result) {
+      return result.type() == AutocompleteMatchType::CALCULATOR;
+    });
+    // Injected as a suggest result rather than a match so that the usual
+    // conversion (BaseSearchProvider::CreateSearchSuggestion) fills in the
+    // destination URL, search terms, classifications and dedup keys.
+    default_results_.suggest_results.push_back(
+        omnibox::MakeCalculatorSuggestResult(
+            /*expression=*/input_.text(), *calculator_answer_,
+            /*input_text=*/input_.text(), /*entity_info=*/{},
+            omnibox_feature_configs::CalcProvider::Get().score,
+            /*from_keyword=*/false));
+  }
+
+  SearchProvider::UpdateMatches();
+}
+
+#if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
+std::optional<std::u16string> BraveSearchProvider::MaybeEvaluateLocally(
+    const AutocompleteInput& input) const {
+  if (input.IsZeroSuggest() || input.type() == metrics::OmniboxInputType::URL) {
+    return std::nullopt;
+  }
+
+  // In keyword mode the user picked an engine explicitly, and a keyword
+  // suggest request is still sent even for a private query -- its response
+  // would rebuild `matches_` and drop anything we added here.
+  if (input.in_keyword_mode()) {
+    return std::nullopt;
+  }
+
+  // Only step in and provide local calculations for queries that would fail the
+  // `IsQueryPotentiallyPrivate` check due to having a long number in the query.
+  // If the query doesn't meet that criteria, we're safe to pass it along to the
+  // search suggestions API.
+  if (!search_suggestions::HasLongNumberInQuery(
+          base::UTF16ToUTF8(omnibox::SanitizeTextForPaste(input.text())))) {
+    return std::nullopt;
+  }
+
+  return omnibox::EvaluateArithmeticExpression(input.text());
+}
+#endif
 
 void BraveSearchProvider::DoHistoryQuery(bool minimal_changes) {
   if (!client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {
@@ -67,6 +144,13 @@ void BraveSearchProvider::DoHistoryQuery(bool minimal_changes) {
 }
 
 bool BraveSearchProvider::IsQueryPotentiallyPrivate() const {
+  // Answered locally in `UpdateMatches()`, so the operands never need to leave
+  // the browser. Deliberately ahead of everything else: when we can do the
+  // arithmetic ourselves there is no reason to ask anyone.
+  if (calculator_answer_) {
+    return true;
+  }
+
   if (SearchProvider::IsQueryPotentiallyPrivate()) {
     return true;
   }

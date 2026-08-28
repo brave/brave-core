@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_SUGGESTION_PARSER_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_SUGGESTION_PARSER_H_
 
+#include <string>
+
 #include "components/omnibox/browser/search_suggestion_parser.h"
 
 class AutocompleteInput;
@@ -16,6 +18,18 @@ bool ParseSuggestResults(const base::ListValue& root_list,
                          const AutocompleteInput& input,
                          bool is_keyword_result,
                          SearchSuggestionParser::Results* results);
+
+// Builds the suggestion for a calculator answer, in the shape
+// //components/omnibox renders a server-provided one. Shared by the Brave
+// Search calculator vertical and by answers BraveSearchProvider computes
+// locally, so the two stay presented identically.
+SearchSuggestionParser::SuggestResult MakeCalculatorSuggestResult(
+    const std::u16string& expression,
+    const std::u16string& answer,
+    const std::u16string& input_text,
+    EntityInfo entity_info,
+    int relevance,
+    bool from_keyword);
 
 }  // namespace omnibox
 

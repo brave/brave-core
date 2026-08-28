@@ -78,6 +78,8 @@ if (enable_commander) {
 }
 
 if (enable_strict_query_check_for_search_suggestions) {
-  brave_components_omnibox_browser_deps +=
-      [ "//brave/components/omnibox/browser/search_suggestions" ]
+  brave_components_omnibox_browser_deps += [
+    "//brave/components/omnibox/browser:arithmetic_evaluator",
+    "//brave/components/omnibox/browser/search_suggestions",
+  ]
 }

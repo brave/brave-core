@@ -7,6 +7,22 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
+# Only reachable from the strict query check, which stands in for the suggest
+# results it withholds.
+if (enable_strict_query_check_for_search_suggestions) {
+  source_set("arithmetic_evaluator") {
+    sources = [
+      "arithmetic_evaluator.cc",
+      "arithmetic_evaluator.h",
+    ]
+
+    deps = [
+      "//base",
+      "//base:i18n",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -42,7 +58,6 @@ source_set("unit_tests") {
     "//brave/components/l10n/common:test_support",
     "//brave/components/omnibox/buildflags",
     "//brave/components/search_engines",
-    "//chrome/browser/history",
     "//components/bookmarks/browser",
     "//components/bookmarks/test",
     "//components/omnibox/browser",
@@ -61,8 +76,12 @@ source_set("unit_tests") {
     deps += [ "//brave/components/ai_chat/core/common" ]
   }
 
+  # This target isn't built on iOS, but GN still defines it there and resolves
+  # these labels, and //chrome/... asserts it isn't reachable from an iOS
+  # build. Keep every //chrome dep in here.
   if (!is_ios) {
     deps += [
+      "//chrome/browser/history",
       "//chrome/browser/search_engines",
       "//chrome/test:test_support",
       "//content/test:test_support",
@@ -71,7 +90,15 @@ source_set("unit_tests") {
   }
 
   if (enable_strict_query_check_for_search_suggestions) {
-    deps += [ "//brave/components/omnibox/browser/search_suggestions" ]
+    sources += [
+      "//brave/components/omnibox/browser/arithmetic_evaluator_unittest.cc",
+    ]
+
+    deps += [
+      "//base:i18n",
+      "//brave/components/omnibox/browser:arithmetic_evaluator",
+      "//brave/components/omnibox/browser/search_suggestions",
+    ]
   }
 
   if (enable_commander) {
