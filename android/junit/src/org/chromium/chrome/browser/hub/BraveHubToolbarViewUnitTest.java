@@ -139,6 +139,7 @@ public class BraveHubToolbarViewUnitTest {
     }
 
     @Test
+    @DisableFeatures({BraveFeatureList.BRAVE_SHRED})
     public void testPaneSwitcherCardHiddenWhenSwitcherIsHidden() {
         View paneSwitcherCard = mToolbarContainer.findViewById(R.id.pane_switcher_card);
 
