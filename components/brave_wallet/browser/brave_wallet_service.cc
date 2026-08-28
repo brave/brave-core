@@ -1010,6 +1010,11 @@ bool BraveWalletService::HasPermissionSync(const url::Origin& origin,
 bool BraveWalletService::HasPermissionForPendingRequest(
     const url::Origin& origin,
     const mojom::AccountIdPtr& account_id) {
+#if BUILDFLAG(IS_IOS)
+  // iOS has no wallet site-permission model (no blink permission types) and
+  // never observes content settings, so there is nothing to revoke.
+  return true;
+#else
   // Coins without a site-permission concept (e.g. BTC, FIL) have nothing to
   // revoke, so pending requests/transactions for them are never drained.
   if (!CoinTypeToPermissionType(account_id->coin)) {
@@ -1036,6 +1041,7 @@ bool BraveWalletService::HasPermissionForPendingRequest(
              url::Origin::Create(GURL(kBraveUIWalletAccountCreationURL))) ||
          origin.IsSameOriginWith(
              url::Origin::Create(GURL(kBraveUIWalletPanelURL)));
+#endif
 }
 
 void BraveWalletService::HasPermission(
