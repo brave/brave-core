@@ -42,7 +42,7 @@ namespace {
   CHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) \
       << "This must be called on a background thread."
 
-constexpr base::ByteSize kMediaChunkSize = base::MiBU(1);  // 1MB
+constexpr base::ByteSize kMediaChunkSize = base::MiB(1);  // 1MB
 
 class RefCountedMemMap : public base::RefCountedMemory {
  public:
@@ -50,7 +50,7 @@ class RefCountedMemMap : public base::RefCountedMemory {
     base::File file = base::File(
         path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
     if (!file.IsValid() ||
-        file.GetLength() > static_cast<int64_t>(base::MiBU(100).InBytes())) {
+        file.GetLength() > static_cast<int64_t>(base::MiB(100).InBytes())) {
       // In order to avoid OOM crash, limits the file size to 100MB.
       return;
     }
