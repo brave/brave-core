@@ -6,13 +6,12 @@
 import {
   RegisterPolymerTemplateModifications,
   RegisterStyleOverride,
+  html as braveHtml,
 } from 'chrome://resources/brave/polymer_overriding.js'
 import {html as polymerHtml} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 // <if expr="enable_custom_profile_image">
 import 'chrome://resources/brave/custom_profile_image_row.js'
-
-import {html, render} from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
 import {CustomProfileImageStrings} from '../brave_generated_resources_webui_strings.js'
 import {loadTimeData} from '../i18n_setup.js'
@@ -50,31 +49,19 @@ RegisterStyleOverride(
 )
 
 // <if expr="enable_custom_profile_image">
-const kCustomProfileImageRowId = 'customProfileImageRow'
-
-function createCustomProfileImageSection(): DocumentFragment {
-  const section = document.createDocumentFragment()
-  render(
-    html`
-      <div
-        class="cr-row manage-profile-section custom-profile-image-section"
-      >
-        <h1 class="cr-title-text">
-          ${loadTimeData.getString(
-            CustomProfileImageStrings.CUSTOM_PROFILE_IMAGE_TITLE,
-          )}
-        </h1>
-        <div class="content">
-          <br-custom-profile-image-row
-            id=${kCustomProfileImageRowId}
-            hide-title
-          ></br-custom-profile-image-row>
-        </div>
+function createCustomProfileImageSection() {
+  return braveHtml`
+    <div class="cr-row manage-profile-section custom-profile-image-section">
+      <h1 class="cr-title-text">
+        ${loadTimeData.getString(
+          CustomProfileImageStrings.CUSTOM_PROFILE_IMAGE_TITLE,
+        )}
+      </h1>
+      <div class="content">
+        <br-custom-profile-image-row hide-title></br-custom-profile-image-row>
       </div>
-    `,
-    section,
-  )
-  return section
+    </div>
+  `
 }
 // </if>
 
