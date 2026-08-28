@@ -35,3 +35,14 @@ source_set("service") {
     "runtimeobject.lib",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "wireguard_firewall_unittest.cc" ]
+  deps = [
+    ":service",
+    "//base",
+    "//testing/gtest",
+  ]
+}
