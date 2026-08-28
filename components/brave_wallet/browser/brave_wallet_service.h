@@ -29,6 +29,8 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -42,6 +44,7 @@ namespace network {
 class SharedURLLoaderFactory;
 }
 
+class HostContentSettingsMap;
 class PrefService;
 
 namespace brave_wallet {
@@ -57,7 +60,8 @@ class SwapService;
 class MeldIntegrationService;
 class SimulationService;
 class BraveWalletIpfsService;
-struct PendingSignMessageRequest;
+template <typename Request, typename Callback>
+struct PendingRequest;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
 
@@ -65,7 +69,8 @@ class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public KeyringServiceObserverBase,
                            public TxServiceObserverBase,
-                           public BraveWalletServiceDelegate::Observer {
+                           public BraveWalletServiceDelegate::Observer,
+                           public content_settings::Observer {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using SignMessageRequestCallback =
@@ -86,9 +91,13 @@ class BraveWalletService : public KeyedService,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
       PrefService* profile_prefs,
-      PrefService* local_state);
+      PrefService* local_state,
+      HostContentSettingsMap* host_content_settings_map = nullptr);
 
   ~BraveWalletService() override;
+
+  // KeyedService:
+  void Shutdown() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
   BraveWalletService& operator=(const BraveWalletService&) = delete;
@@ -204,9 +213,11 @@ class BraveWalletService : public KeyedService,
       GetPendingSignMessageErrorsCallback callback) override;
   void GetPendingSignSolTransactionsRequests(
       GetPendingSignSolTransactionsRequestsCallback callback) override;
+  std::vector<mojom::SignSolTransactionsRequestPtr>
+  GetPendingSignSolTransactionsRequestsSync() const;
   void GetPendingSignCardanoTransactionRequests(
       GetPendingSignCardanoTransactionRequestsCallback callback) override;
-  const base::circular_deque<mojom::SignCardanoTransactionRequestPtr>&
+  std::vector<mojom::SignCardanoTransactionRequestPtr>
   GetPendingSignCardanoTransactionRequestsSync() const;
 
   void NotifySignSolTransactionsRequestProcessed(
@@ -289,6 +300,12 @@ class BraveWalletService : public KeyedService,
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
+
+  // content_settings::Observer:
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
 
   // KeyringServiceObserverBase:
   void WalletRestored() override;
@@ -397,6 +414,25 @@ class BraveWalletService : public KeyedService,
   bool HasPendingGetEncryptionPublicKeyRequestForOrigin(
       const url::Origin& origin) const;
 
+  bool HasPermissionForPendingRequest(const url::Origin& origin,
+                                      const mojom::AccountIdPtr& account_id);
+
+  void DrainSignMessageRequestsWithoutPermission();
+  void DrainSignSolTransactionsRequestsWithoutPermission();
+  void DrainSignCardanoTransactionRequestsWithoutPermission();
+
+  // Moves pending requests whose origin no longer has wallet permission out
+  // of |pending_requests| before running their callbacks, so that re-entrant
+  // mutation from a callback cannot invalidate iteration. |get_account_id|
+  // returns the account a pending request is bound to, and |drain_callback|
+  // rejects a drained request's callback as if the user declined it.
+  template <typename PendingDeque,
+            typename GetAccountId,
+            typename DrainCallback>
+  void DrainPendingRequestsWithoutPermission(PendingDeque& pending_requests,
+                                             GetAccountId get_account_id,
+                                             DrainCallback drain_callback);
+
   void OnDefaultEthereumWalletChanged();
   void OnDefaultSolanaWalletChanged();
   void OnDefaultCardanoWalletChanged();
@@ -458,17 +494,21 @@ class BraveWalletService : public KeyedService,
   int sign_sol_transactions_id_ = 0;
   int sign_cardano_transactions_id_ = 0;
 
+  using PendingSignMessageRequest =
+      PendingRequest<mojom::SignMessageRequestPtr, SignMessageRequestCallback>;
+  using PendingSignSolTransactionsRequest =
+      PendingRequest<mojom::SignSolTransactionsRequestPtr,
+                     SignSolTransactionsRequestCallback>;
+  using PendingSignCardanoTransactionRequest =
+      PendingRequest<mojom::SignCardanoTransactionRequestPtr,
+                     SignCardanoTransactionRequestCallback>;
+
   base::circular_deque<PendingSignMessageRequest> sign_message_requests_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
-  base::circular_deque<mojom::SignSolTransactionsRequestPtr>
+  base::circular_deque<PendingSignSolTransactionsRequest>
       sign_sol_transactions_requests_;
-  base::circular_deque<SignSolTransactionsRequestCallback>
-      sign_sol_transactions_callbacks_;
-
-  base::circular_deque<mojom::SignCardanoTransactionRequestPtr>
+  base::circular_deque<PendingSignCardanoTransactionRequest>
       sign_cardano_transaction_requests_;
-  base::circular_deque<SignCardanoTransactionRequestCallback>
-      sign_cardano_transaction_callbacks_;
 
   base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
       add_suggest_token_callbacks_;
@@ -505,6 +545,7 @@ class BraveWalletService : public KeyedService,
   mojo::Receiver<brave_wallet::mojom::TxServiceObserver>
       tx_service_observer_receiver_{this};
   PrefChangeRegistrar pref_change_registrar_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
 };
 

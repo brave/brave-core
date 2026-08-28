@@ -353,6 +353,7 @@ static_library("browser") {
     "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/services/brave_wallet/public/proto:zcash_proto",
     "//brave/net/base:utils",
+    "//build:blink_buildflags",
     "//components/cbor",
     "//components/component_updater",
     "//components/content_settings/core/browser",
@@ -373,6 +374,10 @@ static_library("browser") {
     "//ui/base/clipboard",
     "//url",
   ]
+
+  if (use_blink) {
+    deps += [ ":permission_utils" ]
+  }
 
   public_deps = [
     ":utils",
@@ -894,6 +899,7 @@ source_set("unit_tests") {
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/mojom",
     "//components/component_updater:test_support",
+    "//components/content_settings/core/browser",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

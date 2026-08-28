@@ -16,13 +16,17 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -36,7 +40,10 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
@@ -52,6 +59,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 using testing::_;
 
@@ -89,6 +98,17 @@ class MockEventsListener : public mojom::SolanaEventsListener {
   mojo::Receiver<mojom::SolanaEventsListener> observer_receiver_{this};
 };
 
+class TestSolanaServiceDelegate : public TestBraveWalletServiceDelegate {
+ public:
+  bool HasPermission(mojom::CoinType coin,
+                     const url::Origin& origin,
+                     const std::string& account) override {
+    return permission_granted;
+  }
+
+  bool permission_granted = true;
+};
+
 }  // namespace
 
 class SolanaProviderImplUnitTest : public testing::Test {
@@ -123,10 +143,11 @@ class SolanaProviderImplUnitTest : public testing::Test {
               R"({"jsonrpc": "2.0", "id": 1, "result": { "value": true }})");
         }));
 
+    auto service_delegate = std::make_unique<TestSolanaServiceDelegate>();
+    service_delegate_ = service_delegate.get();
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        url_loader_factory_.GetSafeWeakWrapper(),
-        TestBraveWalletServiceDelegate::Create(), profile_.GetPrefs(),
-        &local_state_);
+        url_loader_factory_.GetSafeWeakWrapper(), std::move(service_delegate),
+        profile_.GetPrefs(), &local_state_);
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
@@ -269,6 +290,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   void AddSolanaPermission(const mojom::AccountIdPtr& account_id) {
     EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+        blink::PermissionType::BRAVE_SOLANA, browser_context(), GetOrigin(),
+        account_id->address));
+  }
+
+  void ResetSolanaPermission(const mojom::AccountIdPtr& account_id) {
+    EXPECT_TRUE(permissions::BraveWalletPermissionContext::ResetPermission(
         blink::PermissionType::BRAVE_SOLANA, browser_context(), GetOrigin(),
         account_id->address));
   }
@@ -497,6 +524,10 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
  protected:
   raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<TestSolanaServiceDelegate> service_delegate_ = nullptr;
+  BraveWalletService* brave_wallet_service() {
+    return brave_wallet_service_.get();
+  }
 };
 
 TEST_F(SolanaProviderImplUnitTest, Connect) {
@@ -892,6 +923,136 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(requests[2]->sign_data->get_solana_sign_data()->message,
             "0x4252415645");
   EXPECT_EQ(requests[3]->sign_data->get_solana_sign_data()->message, "BRAVE");
+}
+
+TEST_F(SolanaProviderImplUnitTest,
+       SignMessage_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
+  CreateWallet();
+  auto added_account = AddAccount();
+  SetSelectedAccount(added_account->account_id);
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddSolanaPermission(added_account->account_id);
+  Connect(std::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(IsConnected());
+
+  base::test::TestFuture<mojom::SolanaProviderError, const std::string&,
+                         base::DictValue>
+      future;
+  provider_->SignMessage({1, 2, 3, 4}, std::nullopt, future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !brave_wallet_service()->GetPendingSignMessageRequestsSync().empty();
+  }));
+
+  // Revoke the site's authorization while the request is still queued.
+  // Clear HCSM, flip the service delegate's permission and trigger the
+  // drain manually (the test delegate doesn't observe HCSM).
+  ResetSolanaPermission(added_account->account_id);
+  service_delegate_->permission_granted = false;
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsTypeSet(ContentSettingsType::BRAVE_SOLANA));
+
+  auto [error, error_message, result] = future.Take();
+  std::string signature;
+  const std::string* sig = result.FindString("signature");
+  if (sig) {
+    signature = *sig;
+  }
+
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(SolanaProviderImplUnitTest,
+       PermissionChangeQueueUntouched_NegativeCase) {
+  // Covers the negative paths of the permission-revocation drains:
+  // - an unrelated content settings type must not trigger any drain;
+  // - a wallet permission change while the origin is still permitted must
+  //   leave queued requests alone.
+  CreateWallet();
+  auto added_account = AddAccount();
+  SetSelectedAccount(added_account->account_id);
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddSolanaPermission(added_account->account_id);
+  Connect(std::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(IsConnected());
+
+  base::test::TestFuture<mojom::SolanaProviderError, const std::string&,
+                         base::DictValue>
+      future;
+  provider_->SignMessage({1, 2, 3, 4}, std::nullopt, future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !brave_wallet_service()->GetPendingSignMessageRequestsSync().empty();
+  }));
+
+  // A change of an unrelated content settings type early-returns.
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsTypeSet(ContentSettingsType::COOKIES));
+  ASSERT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
+            1u);
+
+  // A wallet-type change while the origin is still permitted drains nothing.
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsTypeSet(ContentSettingsType::BRAVE_SOLANA));
+  ASSERT_EQ(brave_wallet_service()->GetPendingSignMessageRequestsSync().size(),
+            1u);
+}
+
+TEST_F(SolanaProviderImplUnitTest,
+       SignTransaction_PermissionRevokedWhileQueued_RejectedBeforeSigning) {
+  CreateWallet();
+  auto added_account = AddAccount();
+  SetSelectedAccount(added_account->account_id);
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddSolanaPermission(added_account->account_id);
+  Connect(std::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(IsConnected());
+
+  SolanaInstruction instruction(
+      mojom::kSolanaSystemProgramId,
+      {SolanaAccountMeta(added_account->address, std::nullopt, true, true),
+       SolanaAccountMeta(added_account->address, std::nullopt, false, true)},
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
+  auto msg = SolanaMessage::CreateLegacyMessage(
+      "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, added_account->address,
+      {instruction});
+  ASSERT_TRUE(msg);
+  auto encoded_serialized_msg = Base58Encode(*msg->Serialize(nullptr));
+
+  base::test::TestFuture<mojom::SolanaProviderError, const std::string&,
+                         const std::vector<uint8_t>&,
+                         mojom::SolanaMessageVersion>
+      future;
+  provider_->SignTransaction(
+      mojom::SolanaSignTransactionParam::New(
+          encoded_serialized_msg, std::vector<mojom::SignaturePubkeyPairPtr>()),
+      future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !brave_wallet_service()
+                ->GetPendingSignSolTransactionsRequestsSync()
+                .empty();
+  }));
+
+  // Revoke the site's authorization while the request is still queued and
+  // trigger the drain manually (the test delegate doesn't observe HCSM).
+  ResetSolanaPermission(added_account->account_id);
+  service_delegate_->permission_granted = false;
+  brave_wallet_service()->OnContentSettingChanged(
+      ContentSettingsPattern(), ContentSettingsPattern(),
+      ContentSettingsTypeSet(ContentSettingsType::BRAVE_SOLANA));
+
+  auto [error, error_message, result, version] = future.Take();
+
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
 TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {
