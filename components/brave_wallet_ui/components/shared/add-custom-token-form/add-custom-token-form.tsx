@@ -10,9 +10,10 @@ import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '$web-common/locale'
+import { isValidPolkadotAssetId } from '../../../utils/asset-utils'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, PolkadotAssetHubChainIds } from '../../../constants/types'
 
 // hooks
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
@@ -155,7 +156,7 @@ export const AddCustomTokenForm = (props: Props) => {
         logo: iconURL,
         tokenId: '',
         isCompressed: false,
-        isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
+        isErc20: customAssetsNetwork.coin === BraveWallet.CoinType.ETH,
         isErc721: false,
         isErc1155: false,
         splTokenProgram: BraveWallet.SPLTokenProgram.kUnknown,
@@ -306,10 +307,31 @@ export const AddCustomTokenForm = (props: Props) => {
   const tokenSymbolError = !tokenInfo?.symbol
   const tokenDecimalsError = decimals === '' || Number(decimals) === 0
   const customAssetsNetworkError = !tokenInfo?.chainId
+  const isPolkadotAsset = customAssetsNetwork?.coin === BraveWallet.CoinType.DOT
+
+  const unsupportedNetworkError = Boolean(
+    customAssetsNetwork
+      && customAssetsNetwork.coin === BraveWallet.CoinType.DOT
+      && !PolkadotAssetHubChainIds.includes(customAssetsNetwork.chainId),
+  )
+
   const tokenContractAddressError =
-    tokenInfo?.contractAddress === ''
-    || (tokenInfo?.coin !== BraveWallet.CoinType.SOL
-      && !tokenContractAddress?.toLowerCase().startsWith('0x'))
+    !tokenContractAddress
+    || (isPolkadotAsset
+      ? !isValidPolkadotAssetId(tokenContractAddress)
+      : customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL
+        && !tokenContractAddress.toLowerCase().startsWith('0x'))
+
+  const addressFieldLabel = isPolkadotAsset
+    ? getLocale(S.BRAVE_WALLET_TOKEN_ASSET_ID)
+    : customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+      ? getLocale(S.BRAVE_WALLET_TOKEN_MINT_ADDRESS)
+      : getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)
+
+  // 1984 is USDT on Asset Hub.
+  const addressFieldPlaceholder = isPolkadotAsset
+    ? '1984'
+    : '0x099689220846644F87D1137665CDED7BF3422747'
 
   const buttonDisabled =
     isTokenInfoLoading
@@ -318,15 +340,22 @@ export const AddCustomTokenForm = (props: Props) => {
     || tokenDecimalsError
     || tokenContractAddressError
     || customAssetsNetworkError
+    || unsupportedNetworkError
 
   // memos
   const formErrors = React.useMemo(() => {
     return [
       customAssetsNetworkError
         && getLocale(S.BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR),
+      unsupportedNetworkError
+        && getLocale(S.BRAVE_WALLET_UNSUPPORTED_NETWORK_FOR_CUSTOM_ASSET_ERROR),
       tokenNameError && getLocale(S.BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR),
       tokenContractAddressError
-        && getLocale(S.BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR),
+        && getLocale(
+          isPolkadotAsset
+            ? S.BRAVE_WALLET_INVALID_TOKEN_ASSET_ID_ERROR
+            : S.BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR,
+        ),
       tokenSymbolError
         && getLocale(S.BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR),
       tokenDecimalsError
@@ -334,10 +363,12 @@ export const AddCustomTokenForm = (props: Props) => {
     ]
   }, [
     customAssetsNetworkError,
+    unsupportedNetworkError,
     tokenNameError,
     tokenContractAddressError,
     tokenSymbolError,
     tokenDecimalsError,
+    isPolkadotAsset,
   ])
 
   // render
@@ -364,17 +395,13 @@ export const AddCustomTokenForm = (props: Props) => {
             <Input
               value={tokenContractAddress}
               onInput={handleTokenAddressChanged}
-              placeholder={'0x099689220846644F87D1137665CDED7BF3422747'}
+              placeholder={addressFieldPlaceholder}
             >
               <Row
                 gap='4px'
                 justifyContent='flex-start'
               >
-                <InputLabel>
-                  {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
-                    ? getLocale(S.BRAVE_WALLET_TOKEN_MINT_ADDRESS)
-                    : getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)}
-                </InputLabel>
+                <InputLabel>{addressFieldLabel}</InputLabel>
               </Row>
             </Input>
           </FormColumn>
