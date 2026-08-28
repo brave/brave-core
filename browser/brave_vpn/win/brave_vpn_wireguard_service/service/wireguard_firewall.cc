@@ -569,12 +569,8 @@ DWORD AddTemporaryPermitDns(HANDLE engine,
   constexpr uint16_t kDnsPort = 53;
 
   // 1. Add App ID condition: %SystemRoot%\System32\svchost.exe
-  base::FilePath system_dir;
-  if (!base::PathService::Get(base::DIR_SYSTEM, &system_dir)) {
-    VLOG(1) << "Failed to get system directory";
-    return ERROR_PATH_NOT_FOUND;
-  }
-  base::FilePath svchost_path = system_dir.Append(L"svchost.exe");
+  base::FilePath svchost_path =
+      base::PathService::CheckedGet(base::DIR_SYSTEM).Append(L"svchost.exe");
 
   FWP_BYTE_BLOB* app_id = nullptr;
   auto result =
