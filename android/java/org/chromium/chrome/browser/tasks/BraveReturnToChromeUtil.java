@@ -29,7 +29,8 @@ import org.chromium.url.GURL;
 public final class BraveReturnToChromeUtil {
 
     // Inactivity threshold for variants B and D: 1 hour in milliseconds
-    private static final long INACTIVITY_THRESHOLD_MS_VARIANT_B_D = 60 * 60 * 1000L; // 1 hour
+    private static final long INACTIVITY_THRESHOLD_MS_VARIANT_B_D =
+            12 * 60 * 60 * 1000L; // 12 hours
     // Inactivity threshold for variant C: 2 hours in milliseconds
     private static final long INACTIVITY_THRESHOLD_MS_VARIANT_C = 2 * 60 * 60 * 1000L; // 2 hours
 
@@ -189,7 +190,7 @@ public final class BraveReturnToChromeUtil {
      * <p>Note: unlike upstream's shouldShowNtpAsHomeSurfaceAtStartup which bails out on activity
      * recreate (isFromRecreate check), we intentionally allow the NTP to show in recreate scenarios
      * (e.g., rotation, process death restore, foldable transitions). This is because our
-     * inactivity-based NTP logic should still apply — if the user was away for 1+ hours, we want
+     * inactivity-based NTP logic should still apply — if the user was away for 12+ hours, we want
      * the NTP shown regardless of whether the activity was recreated on return.
      */
     public static boolean setInitialOverviewStateOnResumeWithNtp(

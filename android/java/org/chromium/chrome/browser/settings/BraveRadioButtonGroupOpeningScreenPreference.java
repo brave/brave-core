@@ -28,7 +28,7 @@ public class BraveRadioButtonGroupOpeningScreenPreference extends Preference
     private static final int OPTIONS_SIZE = 3;
 
     // Inactivity hours by variant
-    private static final int INACTIVITY_HOURS_VARIANT_B_D = 1;
+    private static final int INACTIVITY_HOURS_VARIANT_B_D = 12;
     private static final int INACTIVITY_HOURS_VARIANT_C = 2;
 
     private int mSetting;
