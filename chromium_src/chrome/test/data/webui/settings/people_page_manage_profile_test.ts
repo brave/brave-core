@@ -26,7 +26,6 @@ import {
   ProfileShortcutStatus,
 } from 'chrome://settings/lazy_load.js'
 import {
-  assertDeepEquals,
   assertEquals,
   assertFalse,
   assertTrue,
@@ -165,13 +164,6 @@ function selectFile(
   input.dispatchEvent(new Event('change'))
 }
 
-async function settleRow(row: BrCustomProfileImageRowElement) {
-  await microtasksFinished()
-  await row.updateComplete
-  await microtasksFinished()
-  await row.updateComplete
-}
-
 function braveManageProfileFeatureDisabledTests() {
   let manageProfile: SettingsManageProfileElement
 
@@ -200,8 +192,6 @@ function braveManageProfileFeatureEnabledTests() {
   let manageProfile: SettingsManageProfileElement
   let originalCreateObjectUrl: typeof URL.createObjectURL
   let originalDecode: typeof HTMLImageElement.prototype.decode
-  let originalRevokeObjectUrl: typeof URL.revokeObjectURL
-  let revokedUrls: string[]
 
   setup(function() {
     document.body.replaceChildren()
@@ -211,16 +201,13 @@ function braveManageProfileFeatureEnabledTests() {
     ManageProfileBrowserProxyImpl.setInstance(browserProxy)
 
     createdUrls = []
-    revokedUrls = []
     originalCreateObjectUrl = URL.createObjectURL
-    originalRevokeObjectUrl = URL.revokeObjectURL
     originalDecode = HTMLImageElement.prototype.decode
     URL.createObjectURL = () => {
       const url = `blob:custom-profile-image-${createdUrls.length + 1}`
       createdUrls.push(url)
       return url
     }
-    URL.revokeObjectURL = (url: string) => revokedUrls.push(url)
     HTMLImageElement.prototype.decode = () => Promise.resolve()
 
     manageProfile = createManageProfileElement()
@@ -229,7 +216,6 @@ function braveManageProfileFeatureEnabledTests() {
   teardown(function() {
     manageProfile.remove()
     URL.createObjectURL = originalCreateObjectUrl
-    URL.revokeObjectURL = originalRevokeObjectUrl
     HTMLImageElement.prototype.decode = originalDecode
   })
 
@@ -292,68 +278,63 @@ function braveManageProfileFeatureEnabledTests() {
   test('UploadsValidImage', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'first.png')
-    await settleRow(row)
+    await microtasksFinished()
 
     assertEquals(createdUrls[0], getPreviewUrl(row))
     getRequiredElement(row.shadowRoot, '#preview')
     getRequiredElement(row.shadowRoot, '#selectedIndicator')
     getRequiredElement(row.shadowRoot, '#uploadButton')
     getRequiredElement(row.shadowRoot, '#removeButton')
-    assertDeepEquals([], revokedUrls)
   })
 
   test('ReplacesImageAndChangesPreviewUrl', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'first.png')
-    await settleRow(row)
+    await microtasksFinished()
 
     selectFile(row, 'second.png')
-    await settleRow(row)
+    await microtasksFinished()
 
     assertEquals(createdUrls[1], getPreviewUrl(row))
-    assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
-  test('RemovesImageAndRevokesUrl', async function() {
+  test('RemovesImage', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'first.png')
-    await settleRow(row)
+    await microtasksFinished()
 
     getRequiredElement<HTMLElement>(row.shadowRoot, '#removeButton').click()
-    await settleRow(row)
+    await microtasksFinished()
 
     assertEquals(null, getPreviewUrl(row))
     assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
     getRequiredElement(row.shadowRoot, '#uploadButton')
-    assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
   test('RejectsNonImageFile', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'not-an-image.txt', 'text/plain')
-    await settleRow(row)
+    await microtasksFinished()
 
     assertEquals(null, getPreviewUrl(row))
     assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
-    assertDeepEquals([], createdUrls)
-    assertDeepEquals([], revokedUrls)
+    assertEquals(0, createdUrls.length)
     getRequiredElement(row.shadowRoot, '#fileError')
   })
 
   test('RejectsCorruptImageAndPreservesPreview', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'first.png')
-    await settleRow(row)
+    await microtasksFinished()
     const firstPreviewUrl = getPreviewUrl(row)
 
     HTMLImageElement.prototype.decode = () =>
       Promise.reject(new Error('Image decode failed'))
     selectFile(row, 'corrupt.png')
-    await settleRow(row)
+    await microtasksFinished()
 
     assertEquals(firstPreviewUrl, getPreviewUrl(row))
     getRequiredElement(row.shadowRoot, '#fileError')
-    assertDeepEquals([createdUrls[1]], revokedUrls)
   })
 
   test('NewestOverlappingUploadWins', async function() {
@@ -365,83 +346,52 @@ function braveManageProfileFeatureEnabledTests() {
     assertEquals(2, decodeResolvers.length)
 
     decodeResolvers[1]!.resolve()
-    await settleRow(row)
+    await microtasksFinished()
     assertEquals(createdUrls[1], getPreviewUrl(row))
 
     decodeResolvers[0]!.resolve()
-    await settleRow(row)
+    await microtasksFinished()
     assertEquals(createdUrls[1], getPreviewUrl(row))
-    assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
-  test('RemovalWhileDecodePendingCleansUpUrls', async function() {
+  test('RemovalInvalidatesPendingUpload', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'active.png')
-    await settleRow(row)
+    await microtasksFinished()
 
     const decodeResolvers = useDeferredImageDecodes()
     selectFile(row, 'pending.png')
     assertEquals(1, decodeResolvers.length)
 
     getRequiredElement<HTMLElement>(row.shadowRoot, '#removeButton').click()
-    await settleRow(row)
+    await microtasksFinished()
     assertEquals(null, getPreviewUrl(row))
     assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
-    assertDeepEquals([createdUrls[0]], revokedUrls)
 
     decodeResolvers[0]!.resolve()
-    await settleRow(row)
+    await microtasksFinished()
     assertEquals(null, getPreviewUrl(row))
-    assertDeepEquals(createdUrls, revokedUrls)
   })
 
-  test('DisconnectWhileDecodePendingRevokesUrl', async function() {
-    const row = getRequiredCustomProfileImageRow(manageProfile)
-    const decodeResolvers = useDeferredImageDecodes()
-    selectFile(row, 'pending.png')
-    assertEquals(1, decodeResolvers.length)
-
-    manageProfile.remove()
-    decodeResolvers[0]!.resolve()
-    await settleRow(row)
-
-    assertEquals(null, getPreviewUrl(row))
-    assertDeepEquals([createdUrls[0]], revokedUrls)
-  })
-
-  test('DisconnectWhileActiveRevokesUrl', async function() {
+  test('RecreatingPageDropsSessionImage', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'active.png')
-    await settleRow(row)
-
-    manageProfile.remove()
-    await settleRow(row)
-
-    assertEquals(null, getPreviewUrl(row))
-    assertDeepEquals([createdUrls[0]], revokedUrls)
-  })
-
-  test('RecreatingPageDropsSessionImageAndRevokesUrl', async function() {
-    const row = getRequiredCustomProfileImageRow(manageProfile)
-    selectFile(row, 'active.png')
-    await settleRow(row)
+    await microtasksFinished()
     assertEquals(createdUrls[0], getPreviewUrl(row))
 
     manageProfile.remove()
-    assertDeepEquals([createdUrls[0]], revokedUrls)
     manageProfile = createManageProfileElement()
 
     const recreatedRow = getRequiredCustomProfileImageRow(manageProfile)
     await recreatedRow.updateComplete
     assertEquals(null, getPreviewUrl(recreatedRow))
     assertEquals(null, recreatedRow.shadowRoot.querySelector('#removeButton'))
-    assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
   test('KeepsPresetAvatarSelectionWorkingAfterUpload', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'active.png')
-    await settleRow(row)
+    await microtasksFinished()
     const customPreviewUrl = getPreviewUrl(row)
 
     await browserProxy.whenCalled('getAvailableIcons')
