@@ -90,6 +90,13 @@ public final class WalletConstants {
                     TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION,
                     TransactionType.SOLANA_SWAP);
 
+    /** Solana transfers of an SPL token, with or without the associated account creation. */
+    public static List<Integer> SOLANA_SPL_TRANSACTION_TYPES =
+            Arrays.asList(
+                    TransactionType.SOLANA_SPL_TOKEN_TRANSFER,
+                    TransactionType
+                            .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION);
+
     public static List<Integer> SOLANA_DAPPS_TRANSACTION_TYPES =
             Arrays.asList(
                     TransactionType.SOLANA_DAPP_SIGN_TRANSACTION,
