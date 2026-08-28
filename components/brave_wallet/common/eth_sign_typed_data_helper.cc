@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 #include <algorithm>
+#include <cmath>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -338,6 +339,9 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
     const std::string* value_str = value.GetIfString();
     uint256_t encoded_value = 0;
     if (value_double) {
+      if (std::trunc(*value_double) != *value_double) {
+        return std::nullopt;
+      }
       encoded_value = (uint256_t)(uint64_t)*value_double;
       if (encoded_value > (uint256_t)kMaxSafeInteger) {
         return std::nullopt;
@@ -379,6 +383,9 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
     const std::string* value_str = value.GetIfString();
     int256_t encoded_value = 0;
     if (value_double) {
+      if (std::trunc(*value_double) != *value_double) {
+        return std::nullopt;
+      }
       encoded_value = (int256_t)(int64_t)*value_double;
       if (encoded_value > (int256_t)kMaxSafeInteger) {
         return std::nullopt;
