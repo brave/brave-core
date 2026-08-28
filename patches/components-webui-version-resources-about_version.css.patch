@@ -1,5 +1,5 @@
 diff --git a/components/webui/version/resources/about_version.css b/components/webui/version/resources/about_version.css
-index 33e926a18ce3c9356a3af5c96e406f720fba31f5..4cef90adb27f6b2e8dc9bc09607d8eed4d5d355e 100644
+index 5b7c6b03bf496988401e0b0d961f5beed5067563..6c17f3b8c050f5c3e50bf8efbc6897c62e90900d 100644
 --- a/components/webui/version/resources/about_version.css
 +++ b/components/webui/version/resources/about_version.css
 @@ -39,6 +39,7 @@ body {
@@ -10,7 +10,7 @@ index 33e926a18ce3c9356a3af5c96e406f720fba31f5..4cef90adb27f6b2e8dc9bc09607d8eed
    padding-top: 10px;
    word-break: break-word;
  }
-@@ -131,3 +132,6 @@ body {
+@@ -135,3 +136,6 @@ html[webui-rounded-icons] #copy-to-clipboard-icon {
    position: fixed;
    width: 1px;
  }

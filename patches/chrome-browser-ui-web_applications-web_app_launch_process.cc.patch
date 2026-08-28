@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/web_applications/web_app_launch_process.cc b/chrome/browser/ui/web_applications/web_app_launch_process.cc
-index 62876051d3c536786bf8ea10c36ed36b9098b86e..8ae453e49307f53cb3d64d8f2a53a0e7be200939 100644
+index 00654664a03e69059db0c544649bdc1fde6643a0..d08accae50a1fa9f34869c634a3fdadfcf542e5e 100644
 --- a/chrome/browser/ui/web_applications/web_app_launch_process.cc
 +++ b/chrome/browser/ui/web_applications/web_app_launch_process.cc
 @@ -318,8 +318,7 @@ content::WebContents* WebAppLaunchProcess::Run() {

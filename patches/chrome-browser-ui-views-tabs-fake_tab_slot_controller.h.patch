@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h b/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
-index b93d5fb544e8aba1daf8b07a71d15b12323f5d4c..d7024ed432b458de5b69b38b58682438508a1d9e 100644
+index a5f90597a4d4688bf22a70b65eac68f64ad166db..9cace58f373636ecf68d6086673226d3990d6eca 100644
 --- a/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
 +++ b/chrome/browser/ui/views/tabs/fake_tab_slot_controller.h
-@@ -101,6 +101,48 @@ class FakeTabSlotController : public TabSlotController {
+@@ -100,6 +100,48 @@ class FakeTabSlotController : public TabSlotController {
    BrowserWindowInterface* GetBrowserWindowInterface() override;
    TabGroup* GetTabGroup(const tab_groups::TabGroupId& group_id) const override;
  

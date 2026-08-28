@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 2507a1f96bf0366f8303bcb729edfebb29cad369..35d3b71a56db27ebe58938234118bda2d38fdbd9 100644
+index 83a9d79657f90cffcd95793e947d9ed69d0e8768..17c20da3b8e3e5133365f1e10ca3143e8523c4c4 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 @@ -89,6 +89,7 @@ class FrameGrabHandle : public views::View {
@@ -64,7 +64,7 @@ index 2507a1f96bf0366f8303bcb729edfebb29cad369..35d3b71a56db27ebe58938234118bda2
    const int top_inset = extra_vertical_space / 2;
    const int bottom_inset =
        extra_vertical_space - top_inset +
-@@ -1080,13 +1081,16 @@ void HorizontalTabStripRegionViewNew::UpdateButtonBorders() {
+@@ -1078,13 +1079,16 @@ void HorizontalTabStripRegionViewNew::UpdateButtonBorders() {
    tab_strip_action_container_->UpdateButtonBorders(border_insets);
  }
  

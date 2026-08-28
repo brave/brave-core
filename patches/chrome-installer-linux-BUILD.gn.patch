@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3464ce393 100644
+index b3b233d16abe096b16ae7a26202b28e925a44f91..4047c77d1c13aa5d5ec7bf6180635b4fddb7d5b8 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -18,6 +18,7 @@ import("//third_party/angle/gni/angle.gni")
@@ -10,7 +10,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  
  if (bundle_widevine_cdm) {
    import("//media/cdm/library_cdm/cdm_paths.gni")
-@@ -94,6 +95,7 @@ if (build_with_internal_optimization_guide) {
+@@ -103,6 +104,7 @@ if (build_with_internal_optimization_guide) {
    }
  }
  
@@ -18,7 +18,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -201,6 +203,7 @@ action("merge_rpm_dependencies") {
+@@ -210,6 +212,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -26,7 +26,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -216,6 +219,7 @@ strip_binary("strip_chrome_management_service") {
+@@ -225,6 +228,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -34,7 +34,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  }
  
  # On ChromeOS, system services depend on real ANGLE libraries rather than dummy
-@@ -369,6 +373,7 @@ copy("common_packaging_files") {
+@@ -378,6 +382,7 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -42,7 +42,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  }
  
  copy("deb_packaging_files") {
-@@ -469,6 +474,7 @@ group("installer_deps") {
+@@ -486,6 +491,7 @@ group("installer_deps") {
      "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -50,7 +50,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
    if (bundle_widevine_cdm) {
      public_deps += [ "//third_party/widevine/cdm" ]
    }
-@@ -536,11 +542,14 @@ group("installer_deps") {
+@@ -553,11 +559,14 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -66,7 +66,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -549,7 +558,7 @@ template("linux_package") {
+@@ -566,7 +575,7 @@ template("linux_package") {
      script = "debian/build.py"
  
      inputs = packaging_files
@@ -75,7 +75,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  
      args = [
        "-a",
-@@ -586,7 +595,7 @@ template("linux_package") {
+@@ -603,7 +612,7 @@ template("linux_package") {
        script = "rpm/build.py"
  
        inputs = packaging_files
@@ -84,7 +84,7 @@ index f7b8679690f69ed401e61e04dc371f7117693054..4323d2845ff09d76764de93f096e79c3
  
        args = [
          "-a",
-@@ -634,3 +643,6 @@ linux_package("unstable") {
+@@ -651,3 +660,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }
