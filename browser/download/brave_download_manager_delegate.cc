@@ -105,8 +105,8 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
   return false;
 }
 
-void BraveDownloadManagerDelegate::OnImageMetadataStripped(
-    uint32_t download_id) {
+void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
+                                                           bool /*stripped*/) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   // The download may have been removed while the stripping task was running, so

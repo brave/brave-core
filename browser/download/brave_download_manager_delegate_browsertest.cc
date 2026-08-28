@@ -105,8 +105,9 @@ class TestBraveDownloadManagerDelegate : public BraveDownloadManagerDelegate {
   }
 
  protected:
-  void OnImageMetadataStripped(uint32_t download_id) override {
-    BraveDownloadManagerDelegate::OnImageMetadataStripped(download_id);
+  void OnImageMetadataStripped(uint32_t download_id, bool stripped) override {
+    BraveDownloadManagerDelegate::OnImageMetadataStripped(download_id,
+                                                          stripped);
     if (on_image_metadata_stripped_callback_) {
       std::move(on_image_metadata_stripped_callback_).Run();
     }
