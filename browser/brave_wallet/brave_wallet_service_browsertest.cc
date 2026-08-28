@@ -124,14 +124,6 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
     incognito_browser_ = nullptr;
   }
 
-  void TestIsPrivateWindow(BraveWalletService* wallet_service,
-                           bool expected_result) {
-    base::MockCallback<base::OnceCallback<void(bool)>> callback;
-    EXPECT_CALL(callback, Run(expected_result)).Times(1);
-
-    wallet_service->IsPrivateWindow(callback.Get());
-  }
-
   BraveWalletService* wallet_service() {
     return BraveWalletServiceFactory::GetServiceForContext(
         browser()->GetProfile());
@@ -222,13 +214,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
-  TestIsPrivateWindow(wallet_service(), false);
-  wallet_service()->SetPrivateWindowsEnabled(true);
-  TestIsPrivateWindow(incognito_wallet_service(), true);
-  TestIsPrivateWindow(wallet_service(), false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, DisplayTxNotification) {

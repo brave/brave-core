@@ -2006,10 +2006,6 @@ void BraveWalletService::GetAnkrSupportedChainIds(
   std::move(callback).Run(std::move(chain_ids));
 }
 
-void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
-  std::move(callback).Run(delegate_->IsPrivateWindow());
-}
-
 void BraveWalletService::GetTransactionSimulationOptInStatus(
     GetTransactionSimulationOptInStatusCallback callback) {
   std::move(callback).Run(GetTransactionSimulationOptInStatusSync());

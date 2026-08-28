@@ -454,6 +454,9 @@ interface PanelHandler {
   // and we need to call ConnectToSite or CancelConnectToSite based on user
   // decision.
   RequestPermission(AccountId account_id) => (bool success);
+  
+  // Check if the attached web contents is in private window.
+  IsPrivateWindow() => (bool is_private_window);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -3212,8 +3215,6 @@ interface BraveWalletService {
       => (string? address, string? error_message);
 
   GetAnkrSupportedChainIds() => (array<string> chain_ids);
-
-  IsPrivateWindow() => (bool is_private_window);
 
   GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
 

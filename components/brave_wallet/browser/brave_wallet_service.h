@@ -276,8 +276,6 @@ class BraveWalletService : public KeyedService,
   void GetAnkrSupportedChainIds(
       GetAnkrSupportedChainIdsCallback callback) override;
 
-  void IsPrivateWindow(IsPrivateWindowCallback callback) override;
-
   void GetTransactionSimulationOptInStatus(
       GetTransactionSimulationOptInStatusCallback callback) override;
   mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatusSync();
