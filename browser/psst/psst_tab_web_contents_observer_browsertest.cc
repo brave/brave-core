@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -21,6 +22,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -36,6 +38,7 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/infobars/confirm_infobar.h"
@@ -47,6 +50,7 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -635,8 +639,15 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Returns the PSST location bar page action icon view for the active browser
   // window, or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionView() {
+    return GetPsstPageActionViewForBrowser(browser());
+  }
+
+  // Returns the PSST location bar page action icon view for `target_browser`,
+  // or nullptr if it can't be resolved.
+  IconLabelBubbleView* GetPsstPageActionViewForBrowser(
+      Browser* target_browser) {
     BrowserView* const browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
+        BrowserView::GetBrowserViewForBrowser(target_browser);
     if (!browser_view || !browser_view->toolbar_button_provider()) {
       return nullptr;
     }
@@ -1158,6 +1169,48 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   // The background must actually change between color modes rather than
   // staying fixed.
   EXPECT_NE(light_actual, dark_actual);
+}
+
+// PSST must not be available in a guest profile. Guest profiles are
+// off-the-record, so PsstTabWebContentsObserver::MaybeCreateForWebContents()
+// never creates a tab helper for them, and hence no infobar or location bar
+// icon can ever appear.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       NotAvailableInGuestProfile) {
+  ASSERT_TRUE(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+
+  Browser* const guest_browser = CreateGuestBrowser();
+  ASSERT_TRUE(guest_browser);
+  Profile* const guest_profile = guest_browser->GetProfile();
+  ASSERT_TRUE(guest_profile->IsOffTheRecord());
+  EXPECT_TRUE(guest_profile->GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  content::WebContents* const guest_web_contents =
+      guest_browser->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(guest_web_contents);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  ASSERT_TRUE(content::NavigateToURL(guest_web_contents, url));
+
+  // No PSST tab helper is ever created for an off-the-record profile, so
+  // nothing exists that could show the infobar or the location bar icon.
+  auto* const tab_interface =
+      tabs::TabInterface::GetFromContents(guest_web_contents);
+  ASSERT_TRUE(tab_interface);
+  auto* const brave_tab_features =
+      tabs::BraveTabFeatures::FromTabFeatures(tab_interface->GetTabFeatures());
+  ASSERT_TRUE(brave_tab_features);
+  EXPECT_FALSE(brave_tab_features->psst_web_contents_observer());
+
+  auto* const guest_infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(guest_web_contents);
+  ASSERT_TRUE(guest_infobar_manager);
+  EXPECT_FALSE(GetPsstInfobar(guest_infobar_manager));
+
+  IconLabelBubbleView* const psst_view =
+      GetPsstPageActionViewForBrowser(guest_browser);
+  ASSERT_TRUE(psst_view);
+  EXPECT_FALSE(psst_view->GetVisible());
 }
 
 }  // namespace psst
