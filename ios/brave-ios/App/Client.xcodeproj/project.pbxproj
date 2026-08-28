@@ -80,6 +80,9 @@
 		44A8A3792BADE6DC004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A3782BADE6DC004D1BF1 /* PrivacyInfo.xcprivacy */; };
 		44A8A37B2BADE8D2004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A37A2BADE8D2004D1BF1 /* PrivacyInfo.xcprivacy */; };
 		44A8A37D2BADE919004D1BF1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A37C2BADE919004D1BF1 /* PrivacyInfo.xcprivacy */; };
+		5E4C29EF3040B2930081E1DE /* LeoVoiceInputControlWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4C29ED3040B2930081E1DE /* LeoVoiceInputControlWidget.swift */; };
+		5E4C29F03040B2930081E1DE /* ShortcutControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4C29EE3040B2930081E1DE /* ShortcutControlIntent.swift */; };
+		5E4C29F23040B2930081E1DE /* ShortcutControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4C29EE3040B2930081E1DE /* ShortcutControlIntent.swift */; };
 		5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */; };
 		5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F926647A234D4EF400359492 /* CoreNFC.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 7DDE6307292FEC9500B8B585 /* SDWebImage */; };
@@ -438,6 +441,8 @@
 		59B691D621B6964D00E9388E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59B691DE21B6965C00E9388E /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59B691E921B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5E4C29ED3040B2930081E1DE /* LeoVoiceInputControlWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeoVoiceInputControlWidget.swift; sourceTree = "<group>"; };
+		5E4C29EE3040B2930081E1DE /* ShortcutControlIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutControlIntent.swift; sourceTree = "<group>"; };
 		5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
 		7D2697692E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
 		7D26976A2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -805,6 +810,8 @@
 				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
 				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
 				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
+				5E4C29ED3040B2930081E1DE /* LeoVoiceInputControlWidget.swift */,
+				5E4C29EE3040B2930081E1DE /* ShortcutControlIntent.swift */,
 				CA0391F4271E143F000EB13C /* FavoritesWidget.swift */,
 				CA0391F3271E143F000EB13C /* ShortcutsWidget.swift */,
 				CA0391F6271E143F000EB13C /* StatsWidget.swift */,
@@ -1397,6 +1404,8 @@
 				CA0391FB271E143F000EB13C /* StatsWidget.swift in Sources */,
 				2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */,
 				CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */,
+				5E4C29EF3040B2930081E1DE /* LeoVoiceInputControlWidget.swift in Sources */,
+				5E4C29F03040B2930081E1DE /* ShortcutControlIntent.swift in Sources */,
 				27E0E2142CA0162D001DA292 /* WidgetAccentable.swift in Sources */,
 				27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */,
 				441A6360272445F9001492C3 /* StatDataModel.swift in Sources */,
@@ -1419,6 +1428,7 @@
 				CABDE77F2A55DD1C00A388A4 /* AppState.swift in Sources */,
 				CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */,
 				CAAE653D287C9FCF00FA44A3 /* CPTemplateApplicationSceneDelegate.swift in Sources */,
+				5E4C29F23040B2930081E1DE /* ShortcutControlIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2277,6 +2287,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2490,6 +2501,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3591,6 +3603,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3676,6 +3689,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3762,6 +3776,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3846,6 +3861,7 @@
 				CURRENT_PROJECT_VERSION = "";
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

@@ -210,6 +210,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: scene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
+      handlePendingWidgetShortcutIfNeeded(browserViewController: browserViewController)
     }
   }
 
@@ -479,6 +480,7 @@ extension SceneDelegate {
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: sceneState.windowScene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
+      handlePendingWidgetShortcutIfNeeded(browserViewController: browserViewController)
     }
   }
 
@@ -491,6 +493,11 @@ extension SceneDelegate {
       quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
       quickActions.launchedShortcutItem = nil
     }
+  }
+
+  private func handlePendingWidgetShortcutIfNeeded(browserViewController: BrowserViewController) {
+    guard let shortcut = PendingWidgetIntentAction.consume() else { return }
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
   }
 
   private func sendDAUPingIfNeeded() {
