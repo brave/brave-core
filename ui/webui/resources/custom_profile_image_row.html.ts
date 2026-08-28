@@ -12,7 +12,7 @@ import {CustomProfileImageStrings as S} from './brave_generated_resources_webui_
 import type {BrCustomProfileImageRowElement} from './custom_profile_image_row.js'
 
 export function getHtml(this: BrCustomProfileImageRowElement) {
-  return html`
+  return html`<!--_html_template_start_-->
     <section id="row" aria-labelledby="title">
       ${this.hasPreview_()
         ? html`
@@ -20,9 +20,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               class="selected"
               role="img"
-              aria-label="${loadTimeData.getString(
-                S.CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL,
-              )}"
+              aria-label="$i18n{CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL}"
             >
               <img
                 id="previewImage"
@@ -112,5 +110,5 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
         @change="${this.onFileChange_}"
       />
     </section>
-  `
+    <!--_html_template_end_-->`
 }
