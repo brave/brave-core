@@ -26,6 +26,7 @@
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
+class Browser;
 enum class TabChangeType;
 
 namespace content {

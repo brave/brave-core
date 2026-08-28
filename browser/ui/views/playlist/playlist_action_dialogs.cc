@@ -237,7 +237,7 @@ void ShowPlaylistAddBubble(content::WebContents* contents) {
   auto* browser_view = FindBrowserViewFromWebContents(contents);
   CHECK(browser_view);
 
-  auto* tab_strip_model = browser_view->browser()->tab_strip_model();
+  auto* tab_strip_model = browser_view->browser()->GetTabStripModel();
   auto* playlist_tab_helper = PlaylistTabHelper::FromWebContents(
       tab_strip_model->GetActiveWebContents());
   if (playlist_tab_helper->found_items().empty()) {
