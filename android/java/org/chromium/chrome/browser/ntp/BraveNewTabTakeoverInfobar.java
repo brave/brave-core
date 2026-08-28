@@ -130,6 +130,7 @@ public class BraveNewTabTakeoverInfobar {
         // button. Like the old infobar, closing dismisses the snackbar and suppresses future
         // displays so the notice is not shown again.
         braveSnackbarManager.setActionBelowMessage(
+                snackbar,
                 R.drawable.ic_close,
                 activity.getString(R.string.close),
                 () -> {
