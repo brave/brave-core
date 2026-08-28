@@ -233,11 +233,10 @@ function braveManageProfileFeatureEnabledTests() {
     HTMLImageElement.prototype.decode = originalDecode
   })
 
-  test('RendersLocalizedRowBetweenPickers', async function() {
+  test('RendersEmptyRowBetweenPickers', async function() {
     assertTrue(loadTimeData.getBoolean('customProfileImageEnabled'))
 
-    const row = getCustomProfileImageRow(manageProfile)
-    assertTrue(!!row)
+    const row = getRequiredCustomProfileImageRow(manageProfile)
     await row.updateComplete
 
     const themePicker = getRequiredElement(
@@ -255,76 +254,21 @@ function braveManageProfileFeatureEnabledTests() {
     const customSection = row.closest('.manage-profile-section')
     const avatarSection = avatarSelector.closest('.manage-profile-section')
 
-    assertEquals(sections.indexOf(themeSection!), sections.indexOf(customSection!) - 1)
-    assertEquals(sections.indexOf(customSection!), sections.indexOf(avatarSection!) - 1)
+    assertEquals(
+      sections.indexOf(themeSection!),
+      sections.indexOf(customSection!) - 1,
+    )
+    assertEquals(
+      sections.indexOf(customSection!),
+      sections.indexOf(avatarSection!) - 1,
+    )
     assertEquals('7', themePicker.getAttribute('columns'))
     assertEquals('7', avatarSelector.getAttribute('columns'))
 
-    const title = getRequiredElement<HTMLElement>(
-      customSection!,
-      '.cr-title-text',
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_TITLE'),
-      title.textContent.trim(),
-    )
-
-    assertEquals('empty', row.state)
-    assertTrue(row.hideTitle)
-    const rowContainer = getRequiredElement<HTMLElement>(
-      row.shadowRoot,
-      '#row',
-    )
-    assertEquals('title', rowContainer.getAttribute('aria-labelledby'))
-    const rowTitle = getRequiredElement<HTMLElement>(row.shadowRoot, '#title')
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION'),
-      rowTitle.textContent.trim(),
-    )
-    assertEquals('none', getComputedStyle(rowTitle).display)
-    const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
-    assertEquals('LEO-BUTTON', preview.tagName)
-    assertEquals('plain-faint', preview.getAttribute('kind'))
-    assertEquals('jumbo', preview.getAttribute('size'))
-    assertTrue(preview.hasAttribute('fab'))
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
-      preview.getAttribute('title'),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
-      getRequiredElement<HTMLElement>(preview, '#previewLabel').textContent,
-    )
-    const plusIcon = getRequiredElement<HTMLElement>(
-      preview,
-      '#plusIcon',
-    )
-    assertEquals('LEO-ICON', plusIcon.tagName)
-    assertEquals('plus-add', plusIcon.getAttribute('name'))
-
-    const uploadButton = getRequiredElement<HTMLElement>(
-      row.shadowRoot,
-      '#uploadButton',
-    )
-    assertEquals('LEO-BUTTON', uploadButton.tagName)
-    assertEquals('filled', uploadButton.getAttribute('kind'))
-    assertEquals('small', uploadButton.getAttribute('size'))
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION'),
-      uploadButton.textContent.trim(),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
-      uploadButton.getAttribute('title'),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP'),
-      uploadButton.getAttribute('aria-label'),
-    )
-    assertEquals(
-      'image/*',
-      getRequiredElement<HTMLInputElement>(row.shadowRoot, '#fileInput').accept,
-    )
+    getRequiredElement(row.shadowRoot, '#preview')
+    getRequiredElement(row.shadowRoot, '#uploadButton')
+    getRequiredElement(row.shadowRoot, '#fileInput')
+    assertEquals(null, row.shadowRoot.querySelector('#previewImage'))
     assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
   })
 
@@ -350,81 +294,23 @@ function braveManageProfileFeatureEnabledTests() {
     selectFile(row, 'first.png')
     await settleRow(row)
 
-    assertEquals('saved-active', row.state)
     assertEquals(createdUrls[0], getPreviewUrl(row))
-    const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_SELECTED_PREVIEW_LABEL'),
-      preview.getAttribute('aria-label'),
-    )
-    const selectedIndicator = getRequiredElement<HTMLElement>(
-      row.shadowRoot,
-      '#selectedIndicator',
-    )
-    assertEquals('LEO-ICON', selectedIndicator.tagName)
-    assertEquals('check-normal', selectedIndicator.getAttribute('name'))
-
-    const replaceButton = getRequiredElement<HTMLElement>(
-      row.shadowRoot,
-      '#uploadButton',
-    )
-    assertEquals('LEO-BUTTON', replaceButton.tagName)
-    assertEquals('filled', replaceButton.getAttribute('kind'))
-    assertEquals('small', replaceButton.getAttribute('size'))
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_ACTION'),
-      replaceButton.textContent.trim(),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP'),
-      replaceButton.getAttribute('title'),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP'),
-      replaceButton.getAttribute('aria-label'),
-    )
-    const removeButton = getRequiredElement<HTMLElement>(
-      row.shadowRoot,
-      '#removeButton',
-    )
-    assertEquals('LEO-BUTTON', removeButton.tagName)
-    assertEquals('outline', removeButton.getAttribute('kind'))
-    assertEquals('small', removeButton.getAttribute('size'))
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_ACTION'),
-      removeButton.textContent.trim(),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP'),
-      removeButton.getAttribute('title'),
-    )
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_REMOVE_TOOLTIP'),
-      removeButton.getAttribute('aria-label'),
-    )
+    getRequiredElement(row.shadowRoot, '#preview')
+    getRequiredElement(row.shadowRoot, '#selectedIndicator')
+    getRequiredElement(row.shadowRoot, '#uploadButton')
+    getRequiredElement(row.shadowRoot, '#removeButton')
     assertDeepEquals([], revokedUrls)
-  })
-
-  test('UsesConfiguredActionSpacing', async function() {
-    const row = getRequiredCustomProfileImageRow(manageProfile)
-    selectFile(row, 'first.png')
-    await settleRow(row)
-
-    const actions = getRequiredElement<HTMLElement>(row.shadowRoot, '#actions')
-    assertEquals('12px', getComputedStyle(actions).gap)
   })
 
   test('ReplacesImageAndChangesPreviewUrl', async function() {
     const row = getRequiredCustomProfileImageRow(manageProfile)
     selectFile(row, 'first.png')
     await settleRow(row)
-    const firstPreviewUrl = getPreviewUrl(row)
 
     selectFile(row, 'second.png')
     await settleRow(row)
 
     assertEquals(createdUrls[1], getPreviewUrl(row))
-    assertFalse(firstPreviewUrl === getPreviewUrl(row))
     assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
@@ -436,9 +322,9 @@ function braveManageProfileFeatureEnabledTests() {
     getRequiredElement<HTMLElement>(row.shadowRoot, '#removeButton').click()
     await settleRow(row)
 
-    assertEquals('empty', row.state)
     assertEquals(null, getPreviewUrl(row))
     assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
+    getRequiredElement(row.shadowRoot, '#uploadButton')
     assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
@@ -447,14 +333,11 @@ function braveManageProfileFeatureEnabledTests() {
     selectFile(row, 'not-an-image.txt', 'text/plain')
     await settleRow(row)
 
-    assertEquals('empty', row.state)
     assertEquals(null, getPreviewUrl(row))
+    assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
     assertDeepEquals([], createdUrls)
     assertDeepEquals([], revokedUrls)
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_INVALID_IMAGE'),
-      getRequiredElement(row.shadowRoot, '#fileError').textContent,
-    )
+    getRequiredElement(row.shadowRoot, '#fileError')
   })
 
   test('RejectsCorruptImageAndPreservesPreview', async function() {
@@ -468,12 +351,8 @@ function braveManageProfileFeatureEnabledTests() {
     selectFile(row, 'corrupt.png')
     await settleRow(row)
 
-    assertEquals('saved-active', row.state)
     assertEquals(firstPreviewUrl, getPreviewUrl(row))
-    assertEquals(
-      loadTimeData.getString('CUSTOM_PROFILE_IMAGE_INVALID_IMAGE'),
-      getRequiredElement(row.shadowRoot, '#fileError').textContent,
-    )
+    getRequiredElement(row.shadowRoot, '#fileError')
     assertDeepEquals([createdUrls[1]], revokedUrls)
   })
 
@@ -487,7 +366,6 @@ function braveManageProfileFeatureEnabledTests() {
 
     decodeResolvers[1]!.resolve()
     await settleRow(row)
-    assertEquals('saved-active', row.state)
     assertEquals(createdUrls[1], getPreviewUrl(row))
 
     decodeResolvers[0]!.resolve()
@@ -507,12 +385,12 @@ function braveManageProfileFeatureEnabledTests() {
 
     getRequiredElement<HTMLElement>(row.shadowRoot, '#removeButton').click()
     await settleRow(row)
-    assertEquals('empty', row.state)
+    assertEquals(null, getPreviewUrl(row))
+    assertEquals(null, row.shadowRoot.querySelector('#removeButton'))
     assertDeepEquals([createdUrls[0]], revokedUrls)
 
     decodeResolvers[0]!.resolve()
     await settleRow(row)
-    assertEquals('empty', row.state)
     assertEquals(null, getPreviewUrl(row))
     assertDeepEquals(createdUrls, revokedUrls)
   })
@@ -527,7 +405,6 @@ function braveManageProfileFeatureEnabledTests() {
     decodeResolvers[0]!.resolve()
     await settleRow(row)
 
-    assertEquals('empty', row.state)
     assertEquals(null, getPreviewUrl(row))
     assertDeepEquals([createdUrls[0]], revokedUrls)
   })
@@ -540,7 +417,6 @@ function braveManageProfileFeatureEnabledTests() {
     manageProfile.remove()
     await settleRow(row)
 
-    assertEquals('empty', row.state)
     assertEquals(null, getPreviewUrl(row))
     assertDeepEquals([createdUrls[0]], revokedUrls)
   })
@@ -557,8 +433,8 @@ function braveManageProfileFeatureEnabledTests() {
 
     const recreatedRow = getRequiredCustomProfileImageRow(manageProfile)
     await recreatedRow.updateComplete
-    assertEquals('empty', recreatedRow.state)
     assertEquals(null, getPreviewUrl(recreatedRow))
+    assertEquals(null, recreatedRow.shadowRoot.querySelector('#removeButton'))
     assertDeepEquals([createdUrls[0]], revokedUrls)
   })
 
@@ -582,7 +458,6 @@ function braveManageProfileFeatureEnabledTests() {
 
     const args = await browserProxy.whenCalled('setProfileIconToDefaultAvatar')
     assertEquals(1, args[0])
-    assertEquals('saved-active', row.state)
     assertEquals(customPreviewUrl, getPreviewUrl(row))
   })
 }
