@@ -11,6 +11,12 @@ import {CustomProfileImageStrings as S} from './brave_generated_resources_webui_
 import {getCss} from './custom_profile_image_row.css.js'
 import {getHtml} from './custom_profile_image_row.html.js'
 
+export interface BrCustomProfileImageRowElement {
+  $: {
+    fileInput: HTMLInputElement
+  }
+}
+
 /** Shared custom-profile image control with a session-only local preview. */
 export class BrCustomProfileImageRowElement extends CrLitElement {
   static get is() {
@@ -69,7 +75,7 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
   }
 
   protected onUploadClick_() {
-    this.shadowRoot.querySelector<HTMLInputElement>('#fileInput')!.click()
+    this.$.fileInput.click()
   }
 
   protected onRemoveClick_() {
