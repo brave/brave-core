@@ -87,10 +87,6 @@ function customizeManageProfileTemplate(templateContent: DocumentFragment) {
     return
   }
 
-  if (templateContent.querySelector(`#${kCustomProfileImageRowId}`)) {
-    return
-  }
-
   const themeColorSection = themeColorPicker.closest(
     '.manage-profile-section',
   )
