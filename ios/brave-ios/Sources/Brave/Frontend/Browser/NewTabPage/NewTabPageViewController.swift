@@ -890,15 +890,13 @@ class NewTabPageViewController: UIViewController {
     if case .loading = feedDataSource.state {
       return
     }
-    let todayStart =
-      collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
     newContentAvailableDismissTimer = nil
     feedOverlayView.newContentAvailableButton.isLoading = true
     loadFeedContents { [weak self] in
       guard let self = self else { return }
       self.feedOverlayView.hideNewContentAvailableButton()
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        self.collectionView.setContentOffset(CGPoint(x: 0, y: todayStart), animated: true)
+        self.scrollToBraveNews()
       }
     }
   }
@@ -1061,13 +1059,12 @@ extension NewTabPageViewController {
         )
       // Show the header as Brave News feeds appear
       // Offset of where Brave News starts
-      let todayStart =
-        collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
-        - scrollView.adjustedContentInset.top - scrollView.adjustedContentInset.bottom
+      let braveNewsStart =
+        layout.layoutAttributesForItem(at: IndexPath(item: 0, section: newsSection))?.frame.minY
+        ?? collectionView.frame.height
+      let todayStart = braveNewsStart - scrollView.adjustedContentInset.top
       // Offset of where the header should begin becoming visible
-      let alphaInStart =
-        (collectionView.frame.height - scrollView.adjustedContentInset.top
-          - scrollView.adjustedContentInset.bottom) / 2.0
+      let alphaInStart = todayStart / 2.0
       let value = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
       let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
       feedOverlayView.headerView.alpha = alpha
@@ -1098,7 +1095,7 @@ extension NewTabPageViewController {
         }
       }
 
-      if scrollView.contentOffset.y >= todayStart {
+      if value >= todayStart {
         recordBraveNewsUsageP3A()
       }
     }
