@@ -112,6 +112,7 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -203,6 +204,7 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
@@ -626,6 +628,77 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         super.onNightModeStateChanged();
+    }
+
+    @Override
+    protected boolean isStartedUpCorrectly(Intent intent) {
+        if (maybeRedirectLaunchToYouTubePictureInPictureWindow(intent)) {
+            return false;
+        }
+        return super.isStartedUpCorrectly(intent);
+    }
+
+    /**
+     * Hands a launcher tap to the window that owns a Brave YouTube Picture-in-Picture session,
+     * rather than letting it open a second window holding someone else's tabs.
+     *
+     * <p>PiP pins the browser task, leaving the launcher nothing to resume. Where the OS reads
+     * ChromeTabbedActivity as {@code singleInstancePerTask} (Samsung, via the {@code
+     * android.activity.launch_mode} meta-data) it answers by creating a second task, and {@code
+     * MultiInstanceManagerApi31#allocInstanceId} gives that unmapped task a different window id: a
+     * stale or empty set of tabs, while the real session sits behind the PiP window.
+     *
+     * <p>Fronting the PiP window unpins it, and aborting this activity drops the task it would have
+     * used.
+     *
+     * @return true if the launch was handed over and this activity should not start.
+     */
+    private boolean maybeRedirectLaunchToYouTubePictureInPictureWindow(Intent intent) {
+        // Only a bare launcher tap, and never one Brave sent itself: the new window flows use
+        // trusted intents and really do mean to open another window.
+        if (!Intent.ACTION_MAIN.equals(intent.getAction())
+                || !intent.hasCategory(Intent.CATEGORY_LAUNCHER)
+                || IntentHandler.wasIntentSenderChrome(intent)) {
+            return false;
+        }
+
+        // The bytecode rewrite re-parents only ChromeTabbedActivity onto BraveActivity, so this
+        // instanceof picks out exactly the browser windows. isInPictureInPictureMode() goes first
+        // because it just reads a field; the other call would build a controller for every window.
+        BraveActivity pictureInPictureActivity = null;
+        for (Activity activity : ApplicationStatus.getRunningActivities()) {
+            if (activity == this || !(activity instanceof BraveActivity braveActivity)) {
+                continue;
+            }
+            if (!braveActivity.isInPictureInPictureMode()
+                    || !braveActivity.isYouTubePictureInPictureActive()) {
+                // An ordinary window is still alive, so the launcher had something to resume
+                // and this launch really is a request for another one.
+                return false;
+            }
+            pictureInPictureActivity = braveActivity;
+        }
+        if (pictureInPictureActivity == null) {
+            return false;
+        }
+
+        // Last, because it copies the whole shared-preference map. Only a task that never hosted
+        // a window can be the one Android just made for this launch. A window being recreated or
+        // restored reuses its own task and reaches here looking like a launcher tap too, since
+        // IntentHandler#rewriteFromHistoryIntent swaps in a synthetic MAIN/LAUNCHER intent;
+        // redirecting that would strand the user and remove the restored window's task.
+        if (BraveMultiWindowUtils.isTaskMappedToInstance(ApplicationStatus.getTaskId(this))) {
+            return false;
+        }
+
+        // Cannot select ourselves: this activity has no tab model selector yet, so it resolves
+        // to no window id.
+        final int windowId =
+                TabWindowManagerSingleton.getInstance().getIdForWindow(pictureInPictureActivity);
+        if (windowId == TabWindowManager.INVALID_WINDOW_ID) {
+            return false;
+        }
+        return MultiWindowUtils.launchIntentInInstance(intent, windowId);
     }
 
     @Override
