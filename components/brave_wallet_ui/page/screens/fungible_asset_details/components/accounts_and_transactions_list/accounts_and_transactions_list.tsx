@@ -58,7 +58,6 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetRewardsInfoQuery,
-  useGetSelectedChainQuery,
 } from '../../../../../common/slices/api.slice'
 import {
   TokenBalancesRegistry, //
@@ -113,10 +112,7 @@ export const AccountsAndTransactionsList = ({
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
-  const { data: selectedNetwork } = useGetSelectedChainQuery()
-  const { data: selectedAssetNetwork } = useGetNetworkQuery(
-    selectedAsset ?? skipToken,
-  )
+  const { data: assetNetwork } = useGetNetworkQuery(selectedAsset ?? skipToken)
   const {
     data: { balance: rewardsBalance, rewardsAccount } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
@@ -401,7 +397,7 @@ export const AccountsAndTransactionsList = ({
                               tokenBalancesRegistry,
                             )
                       }
-                      selectedNetwork={selectedAssetNetwork || selectedNetwork}
+                      assetNetwork={assetNetwork}
                       showSellModal={() => onShowSellModal(account)}
                       isSellSupported={checkIsAssetSellSupported(selectedAsset)}
                       hideBalances={hidePortfolioBalances}
