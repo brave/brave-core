@@ -1825,7 +1825,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/OmniboxViewHolderFactory",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory",
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory", // presubmit: ignore-long-line
                         OmniboxResourceProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -2814,6 +2814,14 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
                         "mContainerView"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
+                        "mSnackbarSwipeHandler"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
+                        "mIsAnimating"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager",
