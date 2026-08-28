@@ -5,7 +5,6 @@
 
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -29,20 +28,15 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
-void BraveWalletRenderFrameObserver::DidStartNavigation(
-    const GURL& url,
-    std::optional<blink::WebNavigationType> navigation_type) {
-  url_ = url;
-}
-
 bool BraveWalletRenderFrameObserver::IsPageValid() {
+  GURL url = render_frame()->GetWebFrame()->GetDocument().Url();
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
-  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank") {
-    url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
-               .GetURL();
+  if (url.is_empty() || !url.is_valid() || url.spec() == "about:blank") {
+    url = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
+              .GetURL();
   }
-  return url_.SchemeIsHTTPOrHTTPS();
+  return url.SchemeIsHTTPOrHTTPS();
 }
 
 bool BraveWalletRenderFrameObserver::CanCreateProvider() {
