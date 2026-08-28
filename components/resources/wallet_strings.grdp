@@ -1121,6 +1121,9 @@
   <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered" formatter_data="webui=Wallet">Token symbol is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered" formatter_data="webui=Wallet">Token decimals of precision value is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address" formatter_data="webui=Wallet">Mint address</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_ASSET_ID" desc="A title that will be displayed on top of the text field for users to input the custom Polkadot token asset ID" formatter_data="webui=Wallet">Asset ID</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_TOKEN_ASSET_ID_ERROR" desc="Error explaining that an invalid or empty Polkadot token asset ID has been entered as a form value" formatter_data="webui=Wallet">Invalid or empty token asset ID</message>
+  <message name="IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK_FOR_CUSTOM_ASSET_ERROR" desc="Error explaining that the selected network cannot hold custom assets" formatter_data="webui=Wallet">Custom assets aren't supported on this network</message>
   <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value" formatter_data="webui=Wallet">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR" desc="Error message explaining that fee estimates are unavailable for the current pending transaction" formatter_data="webui=Wallet">Unable to fetch fee estimates</message>
 

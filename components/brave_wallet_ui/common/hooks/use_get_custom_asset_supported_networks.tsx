@@ -5,16 +5,25 @@
 
 import * as React from 'react'
 import { useGetVisibleNetworksQuery } from '../slices/api.slice'
-import { CustomAssetSupportedCoinTypes } from '../../constants/types'
+import {
+  BraveWallet,
+  CustomAssetSupportedCoinTypes,
+  PolkadotAssetHubChainIds,
+} from '../../constants/types'
 
-export function useGetCustomAssetSupportedNetworks() {
+export function useGetCustomAssetSupportedNetworks(
+  supportedCoinTypes: BraveWallet.CoinType[] = CustomAssetSupportedCoinTypes,
+) {
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
 
   return React.useMemo(
     () =>
-      networkList.filter((network) =>
-        CustomAssetSupportedCoinTypes.includes(network.coin),
+      networkList.filter(
+        (network) =>
+          supportedCoinTypes.includes(network.coin)
+          && (network.coin !== BraveWallet.CoinType.DOT
+            || PolkadotAssetHubChainIds.includes(network.chainId)),
       ),
-    [networkList],
+    [networkList, supportedCoinTypes],
   )
 }

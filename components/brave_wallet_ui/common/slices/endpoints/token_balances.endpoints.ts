@@ -51,6 +51,7 @@ import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
 import {
   blockchainTokenEntityAdaptorInitialState, //
 } from '../entities/blockchain-token.entity'
+import { Uint128ToBigInt } from '../../../utils/polkadot-utils'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -792,14 +793,8 @@ async function fetchAccountCurrentNativeBalance({
         )
       }
 
-      // Convert uint128 to string: (high << 64) + low
-      const high = BigInt(account.data.free.high)
-      const low = BigInt(account.data.free.low)
-      const balance = (high << BigInt(64)) + low
-
-      const normalizedBalance = Amount.normalize(balance.toString())
-
-      return normalizedBalance
+      const balance = Uint128ToBigInt(account.data.free) ?? BigInt(0)
+      return Amount.normalize(balance.toString())
     }
 
     default: {
@@ -924,6 +919,32 @@ async function fetchAccountTokenCurrentBalance({
       }
 
       return Amount.normalize(balance.totalBalance.toString())
+    }
+
+    case BraveWallet.CoinType.DOT: {
+      // The asset id is stored as the (decimal) contract address.
+      const { assetAccounts, errorMessage } =
+        await polkadotWalletService.getAssetAccountBalances(
+          accountId,
+          [Number(token.contractAddress)],
+          token.chainId,
+        )
+
+      if (errorMessage || assetAccounts === null) {
+        throw new Error(
+          `getAssetAccountBalances (DOT) error: ${
+            errorMessage || 'Unknown error'
+          }`,
+        )
+      }
+
+      const assetAccount = assetAccounts[0]
+      if (!assetAccount) {
+        return Amount.zero().format()
+      }
+
+      const balance = Uint128ToBigInt(assetAccount.balance) ?? BigInt(0)
+      return Amount.normalize(balance.toString())
     }
 
     // Other network type tokens
@@ -1088,6 +1109,59 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         })
       }
+    }
+
+    return
+  }
+
+  if (arg.coin === CoinTypes.DOT) {
+    const assetTokens = arg.tokens.filter((token) => !isNativeAsset(token))
+
+    if (assetTokens.length) {
+      const assetIds = assetTokens.map((token) => Number(token.contractAddress))
+      const { assetAccounts, errorMessage } =
+        await polkadotWalletService.getAssetAccountBalances(
+          arg.accountId,
+          assetIds,
+          arg.chainId,
+        )
+
+      if (errorMessage || assetAccounts === null) {
+        throw new Error(
+          `getAssetAccountBalances (DOT) error: ${
+            errorMessage || 'Unknown error'
+          }`,
+        )
+      }
+
+      // Balances are returned positionally, one per requested asset id. Bail
+      // out rather than misattribute them to the wrong tokens.
+      if (assetAccounts.length !== assetIds.length) {
+        throw new Error(
+          'getAssetAccountBalances (DOT) returned '
+            + `${assetAccounts.length} balances for ${assetIds.length} assets`,
+        )
+      }
+
+      assetTokens.forEach((token, index) => {
+        const assetAccount = assetAccounts[index]
+        if (!assetAccount) {
+          return
+        }
+
+        const balance = Uint128ToBigInt(assetAccount.balance) ?? BigInt(0)
+        if (balance > BigInt(0)) {
+          onBalance({
+            accountId: arg.accountId,
+            chainId: arg.chainId,
+            contractAddress: token.contractAddress,
+            balance: Amount.normalize(balance.toString()),
+            coinType: arg.coin,
+            tokenId: '',
+            zcashTokenType: token.zcashTokenType,
+          })
+        }
+      })
     }
 
     return

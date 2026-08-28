@@ -294,6 +294,7 @@ export interface SendCardanoTransactionParams extends BaseTransactionParams {
 
 export interface SendPolkadotTransactionParams extends BaseTransactionParams {
   sendingMaxAmount: boolean
+  assetId: number | undefined
 }
 
 /**
@@ -672,6 +673,21 @@ export const DAppSupportedCoinTypes = [
 export const CustomAssetSupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
   BraveWallet.CoinType.ETH,
+  BraveWallet.CoinType.DOT,
+]
+
+// NFTs aren't supported on every chain that supports custom fungible assets.
+export const CustomNftSupportedCoinTypes = [
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH,
+]
+
+// Only Asset Hub parachains run `pallet_assets`. The relay chains have no
+// custom assets, so an asset added there could never be sent.
+export const PolkadotAssetHubChainIds = [
+  BraveWallet.POLKADOT_MAINNET_ASSET_HUB,
+  BraveWallet.POLKADOT_TESTNET_ASSET_HUB,
+  BraveWallet.POLKADOT_PASEO_ASSET_HUB,
 ]
 
 export const DAppSupportedPrimaryChains = [

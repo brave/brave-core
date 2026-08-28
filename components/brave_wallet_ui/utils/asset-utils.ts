@@ -21,6 +21,14 @@ import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { getBalance } from './balance-utils'
 
+// `pallet_assets` keys assets by a `u32` id, which we store as its decimal
+// string representation in `contractAddress`.
+const kMaxPolkadotAssetId = 4294967295
+
+export const isValidPolkadotAssetId = (assetId: string) => {
+  return /^\d+$/.test(assetId) && Number(assetId) <= kMaxPolkadotAssetId
+}
+
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
     return (

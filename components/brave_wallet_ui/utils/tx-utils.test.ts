@@ -8,6 +8,7 @@ import {
   mockAccount,
   mockCardanoAccount,
   mockNetwork,
+  mockPolkadotMainnetNetwork,
   mockSolanaAccount,
 } from '../common/constants/mocks'
 import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../common/constants/magics'
@@ -39,8 +40,12 @@ import {
   mockZecSendTransaction,
 } from '../stories/mock-data/mock-transaction-info'
 import { mockCardanoMainnetNetwork } from '../stories/mock-data/mock-networks'
-import { mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
+import {
+  mockEthAccount,
+  mockPolkadotAccount,
+} from '../stories/mock-data/mock-wallet-accounts'
 import Amount from './amount'
+import { bigIntToUint128 } from './polkadot-utils'
 import {
   accountHasInsufficientFundsForGas,
   accountHasInsufficientFundsForTransaction,
@@ -120,6 +125,104 @@ const mockCardanoSendTokenTransaction: SerializableTransactionInfo = {
     },
   },
 }
+
+const mockPolkadotAssetId = 1984
+
+const mockPolkadotAssetToken = {
+  // DOT asset tokens are keyed by their (decimal) asset id.
+  contractAddress: String(mockPolkadotAssetId),
+  name: 'Brave Bucks',
+  symbol: 'XBBC',
+  // Deliberately different from the network's 10 decimals.
+  decimals: 12,
+  visible: true,
+  tokenId: '',
+  coingeckoId: '',
+  chainId: mockPolkadotMainnetNetwork.chainId,
+  coin: BraveWallet.CoinType.DOT,
+  isCompressed: false,
+  isErc20: false,
+  isErc721: false,
+  isErc1155: false,
+  splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
+  isNft: false,
+  isSpam: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+  logo: '',
+} as BraveWallet.BlockchainToken
+
+const mockPolkadotNativeToken = {
+  ...mockPolkadotAssetToken,
+  contractAddress: '',
+  name: 'Polkadot',
+  symbol: 'DOT',
+  decimals: mockPolkadotMainnetNetwork.decimals,
+} as BraveWallet.BlockchainToken
+
+/**
+ * Polkadot has no dedicated token txType — both a native send and a
+ * `pallet_assets` transfer are `Other`, discriminated only by `assetId`.
+ */
+const makePolkadotTransaction = ({
+  amount,
+  fee,
+  assetId,
+  sendingMaxAmount = false,
+  chainId = mockPolkadotMainnetNetwork.chainId,
+}: {
+  amount: bigint
+  fee: bigint
+  assetId?: number
+  sendingMaxAmount?: boolean
+  chainId?: string
+}): SerializableTransactionInfo => ({
+  id: 'polkadot-send-tx',
+  chainId,
+  fromAccountId: mockPolkadotAccount.accountId,
+  txHash: '',
+  txStatus: BraveWallet.TransactionStatus.Unapproved,
+  txType: BraveWallet.TransactionType.Other,
+  txParams: [],
+  txArgs: [],
+  createdTime: { microseconds: 0 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
+  originInfo: undefined,
+  effectiveRecipient: '',
+  isRetriable: false,
+  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
+  txDataUnion: {
+    ethTxData1559: undefined,
+    ethTxData: undefined,
+    solanaTxData: undefined,
+    filTxData: undefined,
+    btcTxData: undefined,
+    zecTxData: undefined,
+    cardanoTxData: undefined,
+    polkadotTxData: {
+      to: 'mockPolkadotRecipient',
+      amount: bigIntToUint128(amount),
+      fee: bigIntToUint128(fee),
+      sendingMaxAmount,
+      assetId: assetId === undefined ? undefined : { id: assetId },
+      signaturePayload: undefined,
+    },
+  },
+})
+
+/** 1 XBBC @ 12 decimals. */
+const mockPolkadotAssetSendTransaction = makePolkadotTransaction({
+  amount: BigInt(1_000_000_000_000),
+  fee: BigInt(1_000_000),
+  assetId: mockPolkadotAssetId,
+})
+
+/** 1 DOT @ 10 decimals. */
+const mockPolkadotSendTransaction = makePolkadotTransaction({
+  amount: BigInt(10_000_000_000),
+  fee: BigInt(1_000_000),
+})
 
 describe('Check Transaction Status Strings Value', () => {
   test('Transaction ID 0 should return Unapproved', () => {
@@ -733,6 +836,124 @@ describe('check for insufficient funds errors', () => {
       expect(insufficientFundsForGasError).toBeFalsy()
     })
   })
+
+  describe('Polkadot', () => {
+    it(
+      'should be false for a max-amount asset send even when the asset '
+        + 'balance exceeds the native balance',
+      () => {
+        // A max asset send: amount equals the full asset balance. The native
+        // fee is paid in DOT and must NOT be added to the asset amount, nor
+        // compared against the (smaller) native balance. This reproduces the
+        // reported bug where max asset sends were wrongly blocked.
+        const assetBalance = BigInt(5_000_000_000_000) // 5 XBBC @ 12 decimals
+        const tx = makePolkadotTransaction({
+          amount: assetBalance,
+          fee: BigInt(1_000_000),
+          assetId: mockPolkadotAssetId,
+          sendingMaxAmount: true,
+        })
+
+        const insufficientFundsError =
+          accountHasInsufficientFundsForTransaction({
+            // 0.01 DOT — smaller in raw units than the asset balance
+            accountNativeBalance: '100000000',
+            accountTokenBalance: assetBalance.toString(),
+            gasFee: '1000000',
+            sourceAmount: Amount.empty(),
+            sourceTokenBalance: '',
+            tx,
+            txAccount: mockPolkadotAccount,
+          })
+
+        expect(insufficientFundsError).toBeFalsy()
+      },
+    )
+
+    it('should be true when the asset send amount exceeds the asset balance', () => {
+      const tx = makePolkadotTransaction({
+        amount: BigInt(6_000_000_000_000), // 6 XBBC
+        fee: BigInt(1_000_000),
+        assetId: mockPolkadotAssetId,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '100000000000',
+        accountTokenBalance: '5000000000000', // only 5 XBBC
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeTruthy()
+    })
+
+    it('should treat asset id 0 as an asset send', () => {
+      // 0 is a valid `pallet_assets` id and must not be mistaken for a native
+      // send, which would compare the amount against the native balance.
+      const tx = makePolkadotTransaction({
+        amount: BigInt(5_000_000_000_000),
+        fee: BigInt(1_000_000),
+        assetId: 0,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '100000000', // far less than the amount
+        accountTokenBalance: '5000000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+    })
+
+    it('should compare a native DOT send against the native balance + fee', () => {
+      // No asset_id: falls through to the native balance + gasFee check. For a
+      // max native send the backend subtracts the fee, so amount + fee equals
+      // the balance exactly and is not insufficient.
+      const tx = makePolkadotTransaction({
+        amount: BigInt(9_999_000_000), // balance (10000000000) - fee (1000000)
+        fee: BigInt(1_000_000),
+        sendingMaxAmount: true,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '10000000000', // 1 DOT @ 10 decimals
+        accountTokenBalance: '10000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+    })
+
+    it('should be true when a native DOT send exceeds the balance', () => {
+      const tx = makePolkadotTransaction({
+        amount: BigInt(10_000_000_000),
+        fee: BigInt(1_000_000),
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '10000000000', // amount + fee overruns this
+        accountTokenBalance: '10000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeTruthy()
+    })
+  })
 })
 
 describe('getIsRevokeApprovalTx', () => {
@@ -967,6 +1188,162 @@ describe('Cardano send token transfer formatting', () => {
         txNetwork: { symbol: 'ADA' },
       }),
     ).toBe('MIN')
+  })
+})
+
+describe('Polkadot send transfer formatting', () => {
+  it('findTransactionToken resolves the asset by its id', () => {
+    expect(
+      findTransactionToken(mockPolkadotAssetSendTransaction, [
+        mockPolkadotNativeToken,
+        mockPolkadotAssetToken,
+      ]),
+    ).toBe(mockPolkadotAssetToken)
+  })
+
+  it('findTransactionToken resolves asset id 0', () => {
+    // 0 is a valid `pallet_assets` id and must not read as "no asset".
+    const zeroIdToken = {
+      ...mockPolkadotAssetToken,
+      contractAddress: '0',
+      symbol: 'XZERO',
+    } as BraveWallet.BlockchainToken
+
+    expect(
+      findTransactionToken(
+        makePolkadotTransaction({
+          amount: BigInt(1),
+          fee: BigInt(1),
+          assetId: 0,
+        }),
+        [mockPolkadotNativeToken, zeroIdToken],
+      ),
+    ).toBe(zeroIdToken)
+  })
+
+  it('findTransactionToken does not match an asset id on another chain', () => {
+    // Unlike every other coin's contract address, an asset id is a small
+    // integer that is only unique within a chain, so an identically numbered
+    // asset on a different Polkadot chain must not be picked up.
+    const otherChainAssetToken = {
+      ...mockPolkadotAssetToken,
+      chainId: BraveWallet.POLKADOT_TESTNET,
+      symbol: 'NOTMINE',
+    } as BraveWallet.BlockchainToken
+
+    expect(
+      findTransactionToken(mockPolkadotAssetSendTransaction, [
+        otherChainAssetToken,
+        mockPolkadotAssetToken,
+      ]),
+    ).toBe(mockPolkadotAssetToken)
+
+    expect(
+      findTransactionToken(mockPolkadotAssetSendTransaction, [
+        otherChainAssetToken,
+      ]),
+    ).toBeUndefined()
+  })
+
+  it('findTransactionToken resolves the native asset for a native send', () => {
+    expect(
+      findTransactionToken(mockPolkadotSendTransaction, [
+        mockPolkadotAssetToken,
+        mockPolkadotNativeToken,
+      ]),
+    ).toBe(mockPolkadotNativeToken)
+  })
+
+  it('getTransactionTransferredToken returns the asset, not native DOT', () => {
+    expect(
+      getTransactionTransferredToken({
+        tx: mockPolkadotAssetSendTransaction,
+        txNetwork: mockPolkadotMainnetNetwork,
+        token: mockPolkadotAssetToken,
+        sourceToken: undefined,
+      }),
+    ).toBe(mockPolkadotAssetToken)
+  })
+
+  it('getTransactionTransferredValue uses the asset decimals', () => {
+    // The asset has 12 decimals while the network has 10, so falling back to
+    // the network decimals would overstate the amount by 100x.
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: mockPolkadotAssetSendTransaction,
+      token: mockPolkadotAssetToken,
+      sourceToken: undefined,
+      txAccount: mockPolkadotAccount,
+      txNetwork: mockPolkadotMainnetNetwork,
+    })
+    expect(wei.format()).toBe('1000000000000')
+    expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionTransferredValue uses network decimals for a native send', () => {
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: mockPolkadotSendTransaction,
+      token: mockPolkadotNativeToken,
+      sourceToken: undefined,
+      txAccount: mockPolkadotAccount,
+      txNetwork: mockPolkadotMainnetNetwork,
+    })
+    expect(wei.format()).toBe('10000000000')
+    expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionTransferredValue handles amounts above 64 bits', () => {
+    // uint128 is carried as a { high, low } pair; anything that only reads
+    // `low` silently truncates here.
+    const amount = (BigInt(1) << BigInt(64)) + BigInt(5)
+    const { wei } = getTransactionTransferredValue({
+      tx: makePolkadotTransaction({
+        amount,
+        fee: BigInt(1_000_000),
+        assetId: mockPolkadotAssetId,
+      }),
+      token: mockPolkadotAssetToken,
+      sourceToken: undefined,
+      txAccount: mockPolkadotAccount,
+      txNetwork: mockPolkadotMainnetNetwork,
+    })
+    expect(wei.format()).toBe(amount.toString())
+  })
+
+  it('getTransactionFormattedSendCurrencyTotal uses the asset symbol', () => {
+    expect(
+      getTransactionFormattedSendCurrencyTotal({
+        normalizedTransferredValue: '1',
+        tx: mockPolkadotAssetSendTransaction,
+        token: mockPolkadotAssetToken,
+        sourceToken: undefined,
+        txNetwork: mockPolkadotMainnetNetwork,
+      }),
+    ).toBe('1 XBBC')
+  })
+
+  it('getTransactionTokenSymbol returns the asset ticker', () => {
+    // A DOT asset transfer has txType === Other and no dedicated token txType,
+    // so the symbol must come from the resolved asset rather than falling
+    // through to the native network symbol.
+    expect(
+      getTransactionTokenSymbol({
+        tx: mockPolkadotAssetSendTransaction,
+        token: mockPolkadotAssetToken,
+        sourceToken: undefined,
+        txNetwork: mockPolkadotMainnetNetwork,
+      }),
+    ).toBe('XBBC')
+  })
+
+  it('getTransactionTokenSymbol returns the network symbol for a native send', () => {
+    expect(
+      getTransactionTokenSymbol({
+        tx: mockPolkadotSendTransaction,
+        token: undefined,
+        sourceToken: undefined,
+        txNetwork: mockPolkadotMainnetNetwork,
+      }),
+    ).toBe('DOT')
   })
 })
 

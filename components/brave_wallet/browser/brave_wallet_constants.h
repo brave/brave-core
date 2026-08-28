@@ -46,8 +46,6 @@ inline constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
 inline constexpr char kCoinbaseAppId[] = "8072ff71-8469-4fef-9404-7c905e2359c9";
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
-
-
 // 0x swap constants
 inline constexpr char kZeroExBaseAPIURL[] = "https://api.0x.wallet.brave.com";
 inline constexpr char kEVMFeeRecipient[] =
