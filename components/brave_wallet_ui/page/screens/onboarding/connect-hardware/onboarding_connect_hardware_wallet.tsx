@@ -69,7 +69,9 @@ export const OnboardingConnectHardwareWallet = () => {
 
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}
+      title={getLocale(
+        S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET_SELECT_BLOCKCHAIN,
+      )}
       padding='56px 0 0'
       showBackButton={false}
     >

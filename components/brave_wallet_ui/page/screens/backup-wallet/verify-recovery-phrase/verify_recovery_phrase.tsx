@@ -131,7 +131,9 @@ export const VerifyRecoveryPhrase = () => {
           justifyContent='center'
           alignItems='center'
         >
-          <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
+          <Title>
+            {getLocale(S.BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_TITLE)}
+          </Title>
           <VerificationProgress
             steps={numberOfVerificationSteps}
             currentStep={currentStep}
@@ -154,7 +156,7 @@ export const VerifyRecoveryPhrase = () => {
             : history.push(WalletRoutes.BackupRecoveryPhrase)
         }
       >
-        {getLocale('braveWalletVerifyRecoveryPhraseGoBack')}
+        {getLocale(S.BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_GO_BACK)}
       </BackButton>
 
       <Column
@@ -165,13 +167,13 @@ export const VerifyRecoveryPhrase = () => {
           isDisabled={enteredPhrase === ''}
           onClick={onContinue}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
         <SkipButton
           kind='plain-faint'
           onClick={onSkipBackup}
         >
-          {getLocale('braveWalletButtonSkip')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_SKIP)}
         </SkipButton>
       </Column>
     </OnboardingContentLayout>

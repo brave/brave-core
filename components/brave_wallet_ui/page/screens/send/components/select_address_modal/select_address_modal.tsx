@@ -510,7 +510,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     return (
       <PopupModal
         onClose={onClose}
-        title={getLocale('braveWalletChooseRecipient')}
+        title={getLocale(S.BRAVE_WALLET_CHOOSE_RECIPIENT)}
         width='560px'
         height='90vh'
         ref={forwardedRef}
@@ -534,18 +534,20 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                 textSize='12px'
                 isBold={true}
               >
-                {getLocale('braveWalletSendTo')}
+                {getLocale(S.BRAVE_WALLET_SEND_TO)}
               </LabelText>
             </Row>
             <AddressInput
               value={searchValue}
               onInput={(e) => setSearchValue(e.value)}
-              placeholder={getLocale('braveWalletAddressOrDomainPlaceholder')}
+              placeholder={getLocale(
+                S.BRAVE_WALLET_ADDRESS_OR_DOMAIN_PLACEHOLDER,
+              )}
               type='text'
               disabled={isGeneratingAddress}
             >
               <Row slot='right-icon'>
-                <Tooltip text={getLocale('braveWalletPasteFromClipboard')}>
+                <Tooltip text={getLocale(S.BRAVE_WALLET_PASTE_FROM_CLIPBOARD)}>
                   <PasteButton onClick={onPaste}>
                     <Icon name='copy-plain-text' />
                   </PasteButton>
@@ -582,7 +584,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                       textSize='12px'
                       isBold={true}
                     >
-                      {getLocale('braveWalletMyAddresses')}
+                      {getLocale(S.BRAVE_WALLET_MY_ADDRESSES)}
                     </LabelText>
                   </Row>
                   {filteredAccounts.map((account) => (
@@ -612,7 +614,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                     isBold={false}
                     textColor='secondary'
                   >
-                    {getLocale('braveWalletSearchingForDomain')}
+                    {getLocale(S.BRAVE_WALLET_SEARCHING_FOR_DOMAIN)}
                   </Text>
                 </Row>
               )}

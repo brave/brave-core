@@ -49,10 +49,10 @@ export const ConfirmationError = (props: Props) => {
       transactionDetails?.sameAddressError,
       transactionDetails?.missingGasLimitError,
       insufficientFundsForGasError
-        ? getLocale('braveWalletSwapInsufficientFundsForGas')
+        ? getLocale(S.BRAVE_WALLET_SWAP_INSUFFICIENT_FUNDS_FOR_GAS)
         : undefined,
       !insufficientFundsForGasError && insufficientFundsError
-        ? getLocale('braveWalletSwapInsufficientBalance')
+        ? getLocale(S.BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE)
         : undefined,
     ].filter((error): error is string => Boolean(error))
   }, [transactionDetails, insufficientFundsForGasError, insufficientFundsError])
@@ -96,7 +96,7 @@ export const ConfirmationError = (props: Props) => {
               size='tiny'
               onClick={onClickBuy}
             >
-              {getLocale('braveWalletBuyAsset').replace(
+              {getLocale(S.BRAVE_WALLET_BUY_ASSET).replace(
                 '$1',
                 nativeAsset?.symbol ?? '',
               )}

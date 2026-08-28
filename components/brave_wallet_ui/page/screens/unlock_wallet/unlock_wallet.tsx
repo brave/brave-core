@@ -119,13 +119,13 @@ export const UnlockWallet = () => {
           textSize='22px'
           textColor='primary'
         >
-          {getLocale('braveWalletDoubleTapScreen')}
+          {getLocale(S.BRAVE_WALLET_DOUBLE_TAP_SCREEN)}
         </Text>
         <Text
           textSize='16px'
           textColor='tertiary'
         >
-          {getLocale('braveWalletUnlockAndroidDescription')}
+          {getLocale(S.BRAVE_WALLET_UNLOCK_ANDROID_DESCRIPTION)}
         </Text>
       </AndroidLockScreenWrapper>
     )
@@ -135,8 +135,8 @@ export const UnlockWallet = () => {
     <StyledWrapper>
       {isPanel && <BraveLogo />}
       <PageIcon />
-      <Title>{getLocale('braveWalletUnlockWallet')}</Title>
-      <Description>{getLocale('braveWalletLockScreenTitle')}</Description>
+      <Title>{getLocale(S.BRAVE_WALLET_UNLOCK_WALLET)}</Title>
+      <Description>{getLocale(S.BRAVE_WALLET_LOCK_SCREEN_TITLE)}</Description>
       <InputColumn fullWidth={true}>
         <Row
           justifyContent='flex-start'
@@ -147,14 +147,14 @@ export const UnlockWallet = () => {
             textSize='12px'
             isBold={true}
           >
-            {getLocale('braveWalletInputLabelPassword')}
+            {getLocale(S.BRAVE_WALLET_INPUT_LABEL_PASSWORD)}
           </InputLabel>
         </Row>
         <PasswordInput
-          placeholder={getLocale('braveWalletEnterYourPassword')}
+          placeholder={getLocale(S.BRAVE_WALLET_ENTER_YOUR_PASSWORD)}
           onChange={handlePasswordChanged}
           onKeyDown={handleKeyDown}
-          error={getLocale('braveWalletLockScreenError')}
+          error={getLocale(S.BRAVE_WALLET_LOCK_SCREEN_ERROR)}
           hasError={hasIncorrectPassword}
           autoFocus={true}
           value={password}
@@ -166,13 +166,13 @@ export const UnlockWallet = () => {
           kind='filled'
           size={isPanel ? 'medium' : 'large'}
         >
-          {getLocale('braveWalletLockScreenButton')}
+          {getLocale(S.BRAVE_WALLET_LOCK_SCREEN_BUTTON)}
         </UnlockButton>
         <Button
           onClick={onShowRestore}
           kind='plain'
         >
-          {getLocale('braveWalletWelcomeRestoreButton')}
+          {getLocale(S.BRAVE_WALLET_WELCOME_RESTORE_BUTTON)}
         </Button>
       </InputColumn>
     </StyledWrapper>

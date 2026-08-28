@@ -147,18 +147,18 @@ export function ConfirmSwapTransaction() {
 
   const contractAddressTitle = React.useMemo(() => {
     if (provider === BraveWallet.SwapProvider.kNearIntents) {
-      return getLocale('braveWalletSwapDepositAddress')
+      return getLocale(S.BRAVE_WALLET_SWAP_DEPOSIT_ADDRESS)
     }
 
     if (sourceToken?.coin === BraveWallet.CoinType.ETH) {
-      return getLocale('braveWalletNFTDetailContractAddress')
+      return getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)
     }
 
     if (sourceToken?.coin === BraveWallet.CoinType.SOL) {
-      return getLocale('braveWalletSwapProgramAddress')
+      return getLocale(S.BRAVE_WALLET_SWAP_PROGRAM_ADDRESS)
     }
 
-    return getLocale('braveWalletNFTDetailContractAddress')
+    return getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)
   }, [provider, sourceToken])
 
   if (
@@ -180,8 +180,8 @@ export function ConfirmSwapTransaction() {
         <ConfirmationHeader
           title={
             isBridgeTx
-              ? getLocale('braveWalletConfirmBridge')
-              : getLocale('braveWalletConfirmSwap')
+              ? getLocale(S.BRAVE_WALLET_CONFIRM_BRIDGE)
+              : getLocale(S.BRAVE_WALLET_CONFIRM_SWAP)
           }
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
@@ -275,7 +275,7 @@ export function ConfirmSwapTransaction() {
                   <>
                     <Row justifyContent='space-between'>
                       <ConfirmationInfoLabel textColor='secondary'>
-                        {getLocale('braveWalletSwapProvider')}
+                        {getLocale(S.BRAVE_WALLET_SWAP_PROVIDER)}
                       </ConfirmationInfoLabel>
                       <Row
                         width='unset'
@@ -327,7 +327,7 @@ export function ConfirmSwapTransaction() {
                     <Tooltip
                       text={
                         isContractAddressCopied
-                          ? getLocale('braveWalletButtonCopied')
+                          ? getLocale(S.BRAVE_WALLET_BUTTON_COPIED)
                           : ''
                       }
                     >
@@ -379,7 +379,7 @@ export function ConfirmSwapTransaction() {
       </StyledWrapper>
       <BottomSheet
         isOpen={showTransactionDetails}
-        title={getLocale('braveWalletDetails')}
+        title={getLocale(S.BRAVE_WALLET_DETAILS)}
         onClose={() => setShowTransactionDetails(false)}
       >
         <PendingTransactionDetails
@@ -389,7 +389,7 @@ export function ConfirmSwapTransaction() {
       </BottomSheet>
       <BottomSheet
         isOpen={showAdvancedTransactionSettings}
-        title={getLocale('braveWalletAdvancedTransactionSettings')}
+        title={getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
         onClose={() => setShowAdvancedTransactionSettings(false)}
       >
         <AdvancedTransactionSettings

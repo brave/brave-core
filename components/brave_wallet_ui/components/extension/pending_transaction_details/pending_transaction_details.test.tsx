@@ -49,10 +49,10 @@ describe('PendingTransactionDetails', () => {
       )
 
       // Check locale exists
-      expect(screen.getByText('braveWalletInput:')).toBeInTheDocument()
-      expect(screen.getAllByText('braveWalletOutput:')).toHaveLength(2)
-      expect(screen.getAllByText('braveWalletValue:')).toHaveLength(3)
-      expect(screen.getAllByText('braveWalletAddress:')).toHaveLength(3)
+      expect(screen.getByText('BRAVE_WALLET_INPUT:')).toBeInTheDocument()
+      expect(screen.getAllByText('BRAVE_WALLET_OUTPUT:')).toHaveLength(2)
+      expect(screen.getAllByText('BRAVE_WALLET_VALUE:')).toHaveLength(3)
+      expect(screen.getAllByText('BRAVE_WALLET_ADDRESS:')).toHaveLength(3)
 
       // Check specific values
       expect(screen.getAllByText('0')).toHaveLength(2)
@@ -81,7 +81,7 @@ describe('PendingTransactionDetails', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText('braveWalletSolanaMaxRetries'),
+          screen.getByText(S.BRAVE_WALLET_SOLANA_MAX_RETRIES),
         ).toBeInTheDocument()
       })
 
@@ -131,10 +131,10 @@ describe('PendingTransactionDetails', () => {
       )
 
       expect(
-        screen.getByText('braveWalletTransactionDetailBoxFunction:'),
+        screen.getByText('BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION:'),
       ).toBeInTheDocument()
       expect(
-        screen.getByText('braveWalletTransactionTypeNameTokenTransfer'),
+        screen.getByText(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER),
       ).toBeInTheDocument()
       expect(screen.getByText('address:')).toBeInTheDocument()
       expect(screen.getByText('0x123')).toBeInTheDocument()

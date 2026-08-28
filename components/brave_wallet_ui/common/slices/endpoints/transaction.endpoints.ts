@@ -459,7 +459,9 @@ export const transactionEndpoints = ({
           const { braveWalletService, panelHandler } = api
 
           if (!isHardwareAccount(arg.request.fromAccountId)) {
-            const errorString = getLocale('braveWalletHardwareAccountNotFound')
+            const errorString = getLocale(
+              S.BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR,
+            )
 
             braveWalletService.notifySignSolTransactionsRequestProcessed(
               false,

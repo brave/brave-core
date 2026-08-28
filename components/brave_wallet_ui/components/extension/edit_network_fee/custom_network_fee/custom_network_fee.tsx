@@ -282,7 +282,7 @@ export function CustomNetworkFee(props: Props) {
         textColor='tertiary'
         textAlign='left'
       >
-        {getLocale('braveWalletEditGasDescription')}
+        {getLocale(S.BRAVE_WALLET_EDIT_GAS_DESCRIPTION)}
       </Description>
       <Card
         width='100%'
@@ -297,11 +297,11 @@ export function CustomNetworkFee(props: Props) {
               padding='8px 0px'
             >
               <SectionLabel textColor='secondary'>
-                {getLocale('braveWalletEditGasBaseFee')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_BASE_FEE)}
               </SectionLabel>
               <SectionLabel textColor='primary'>
                 {new Amount(baseFeePerGas).divideByDecimals(9).format()}{' '}
-                {getLocale('braveWalletEditGasGwei')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_GWEI)}
               </SectionLabel>
             </Row>
             <VerticalDivider />
@@ -309,7 +309,7 @@ export function CustomNetworkFee(props: Props) {
         )}
         <Row justifyContent='space-between'>
           <SectionLabel textColor='secondary'>
-            {getLocale('braveWalletEditGasLimit')}
+            {getLocale(S.BRAVE_WALLET_EDIT_GAS_LIMIT)}
           </SectionLabel>
           <InputWrapper
             width='140px'
@@ -333,7 +333,7 @@ export function CustomNetworkFee(props: Props) {
               textColor='error'
               textAlign='left'
             >
-              {getLocale('braveWalletEditGasLimitError')}
+              {getLocale(S.BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR)}
             </InputLabel>
           </Row>
         )}
@@ -342,7 +342,7 @@ export function CustomNetworkFee(props: Props) {
           <>
             <Row justifyContent='space-between'>
               <SectionLabel textColor='secondary'>
-                {getLocale('braveWalletGasPrice')}
+                {getLocale(S.BRAVE_WALLET_GAS_PRICE)}
               </SectionLabel>
               <InputWrapper
                 width='140px'
@@ -358,7 +358,7 @@ export function CustomNetworkFee(props: Props) {
                   data-testid='gas-price-input'
                 />
                 <InputLabel textColor='tertiary'>
-                  {getLocale('braveWalletEditGasGwei')}
+                  {getLocale(S.BRAVE_WALLET_EDIT_GAS_GWEI)}
                 </InputLabel>
               </InputWrapper>
             </Row>
@@ -368,7 +368,7 @@ export function CustomNetworkFee(props: Props) {
                   textColor='error'
                   textAlign='left'
                 >
-                  {getLocale('braveWalletEditGasZeroGasPriceWarning')}
+                  {getLocale(S.BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING)}
                 </InputLabel>
               </Row>
             )}
@@ -378,7 +378,7 @@ export function CustomNetworkFee(props: Props) {
           <>
             <Row justifyContent='space-between'>
               <SectionLabel textColor='secondary'>
-                {getLocale('braveWalletGasTipLimit')}
+                {getLocale(S.BRAVE_WALLET_GAS_TIP_LIMIT)}
               </SectionLabel>
               <InputWrapper
                 width='140px'
@@ -394,14 +394,14 @@ export function CustomNetworkFee(props: Props) {
                   onChange={handleMaxPriorityFeePerGasInputChanged}
                 />
                 <InputLabel textColor='tertiary'>
-                  {getLocale('braveWalletEditGasGwei')}
+                  {getLocale(S.BRAVE_WALLET_EDIT_GAS_GWEI)}
                 </InputLabel>
               </InputWrapper>
             </Row>
             <VerticalDivider />
             <Row justifyContent='space-between'>
               <SectionLabel textColor='secondary'>
-                {getLocale('braveWalletGasPriceLimit')}
+                {getLocale(S.BRAVE_WALLET_GAS_PRICE_LIMIT)}
               </SectionLabel>
               <InputWrapper
                 width='140px'
@@ -418,7 +418,7 @@ export function CustomNetworkFee(props: Props) {
                   data-testid='gas-price-limit-input'
                 />
                 <InputLabel textColor='tertiary'>
-                  {getLocale('braveWalletEditGasGwei')}
+                  {getLocale(S.BRAVE_WALLET_EDIT_GAS_GWEI)}
                 </InputLabel>
               </InputWrapper>
             </Row>
@@ -428,7 +428,9 @@ export function CustomNetworkFee(props: Props) {
                   textColor='error'
                   textAlign='left'
                 >
-                  {getLocale('braveWalletGasFeeLimitLowerThanBaseFeeWarning')}
+                  {getLocale(
+                    S.BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING,
+                  )}
                 </InputLabel>
               </Row>
             )}
@@ -439,7 +441,7 @@ export function CustomNetworkFee(props: Props) {
               padding='8px 0px'
             >
               <SectionLabel textColor='secondary'>
-                {getLocale('braveWalletEditGasEstimatedNetworkFee')}
+                {getLocale(S.BRAVE_WALLET_EDIT_GAS_ESTIMATED_NETWORK_FEE)}
               </SectionLabel>
               <Column alignItems='flex-end'>
                 <SectionLabel textColor='primary'>
@@ -461,7 +463,7 @@ export function CustomNetworkFee(props: Props) {
                 size='tiny'
                 onClick={onBack}
               >
-                {getLocale('braveWalletUseDefault')}
+                {getLocale(S.BRAVE_WALLET_USE_DEFAULT)}
               </Button>
             </Row>
           </>
@@ -472,7 +474,7 @@ export function CustomNetworkFee(props: Props) {
           isDisabled={isUpdateButtonDisabled}
           onClick={onClickUpdate}
         >
-          {getLocale('braveWalletUpdate')}
+          {getLocale(S.BRAVE_WALLET_REVIEW_UPDATE)}
         </Button>
       </Row>
     </StyledWrapper>

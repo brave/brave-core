@@ -116,7 +116,7 @@ export function SelectAccountItem({
           <PossibleToolTip
             text={
               showSwitchAccountsLink
-                ? getLocale('braveWalletClickToSwitch')
+                ? getLocale(S.BRAVE_WALLET_CLICK_TO_SWITCH)
                 : accountName
             }
             isAddress={!showSwitchAccountsLink}

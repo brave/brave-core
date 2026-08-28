@@ -30,13 +30,13 @@ export function TransactionQueueSteps({
         textColor='secondary'
         variant='default.semibold'
       >
-        {transactionQueueNumber} {getLocale('braveWalletQueueOf')}{' '}
+        {transactionQueueNumber} {getLocale(S.BRAVE_WALLET_QUEUE_OF)}{' '}
         {transactionsQueueLength}
       </QueueStepText>
       <QueueStepButton onClick={queueNextTransaction}>
         {transactionQueueNumber === transactionsQueueLength
-          ? getLocale('braveWalletQueueFirst')
-          : getLocale('braveWalletQueueNext')}
+          ? getLocale(S.BRAVE_WALLET_QUEUE_FIRST)
+          : getLocale(S.BRAVE_WALLET_QUEUE_NEXT)}
       </QueueStepButton>
     </QueueStepRow>
   )

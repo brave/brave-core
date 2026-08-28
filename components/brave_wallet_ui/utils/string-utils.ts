@@ -131,21 +131,21 @@ export const removeDoubleSpaces = (val: string) => val.replace(/ +(?= )/g, '')
 export const getWalletLocationTitle = (location: string) => {
   /** Buy crypto */
   if (location.includes(WalletRoutes.BuyPageStart)) {
-    return getLocale('braveWalletBuyCryptoButton')
+    return getLocale(S.BRAVE_WALLET_BUY_CRYPTO_BUTTON)
   }
   /** Deposit crypto */
   if (location.includes(WalletRoutes.DepositPageStart)) {
-    return getLocale('braveWalletDepositFundsTitle')
+    return getLocale(S.BRAVE_WALLET_DEPOSIT_FUNDS_TITLE)
   }
   /** Swap */
   if (location === WalletRoutes.Swap) {
-    return getLocale('braveWalletSwap')
+    return getLocale(S.BRAVE_WALLET_SWAP)
   }
   if (location === WalletRoutes.Send) {
-    return getLocale('braveWalletSend')
+    return getLocale(S.BRAVE_WALLET_SEND)
   }
   /** Wallet */
-  return getLocale('braveWalletTitle')
+  return getLocale(S.BRAVE_WALLET_TITLE)
 }
 
 export const endsWithAny = (extensions: string[], url: string) => {

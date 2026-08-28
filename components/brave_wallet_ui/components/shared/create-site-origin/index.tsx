@@ -14,7 +14,7 @@ export const CreateSiteOrigin = (props: Props) => {
   const { originSpec, eTldPlusOne } = props
 
   if (originSpec === 'chrome://wallet') {
-    return <span>{getLocale('braveWalletPanelTitle')}</span>
+    return <span>{getLocale(S.BRAVE_WALLET_PANEL_TITLE)}</span>
   }
 
   if (eTldPlusOne) {

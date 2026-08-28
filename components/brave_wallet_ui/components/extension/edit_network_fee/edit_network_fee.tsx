@@ -103,8 +103,8 @@ export function EditNetworkFee(props: Props) {
       isOpen={isOpen}
       title={
         suggestedOrCustom === 'suggested'
-          ? getLocale('braveWalletNetworkFee')
-          : getLocale('braveWalletCustomFeeAmount')
+          ? getLocale(S.BRAVE_WALLET_NETWORK_FEE)
+          : getLocale(S.BRAVE_WALLET_CUSTOM_FEE_AMOUNT)
       }
       onClose={onCancel}
     >

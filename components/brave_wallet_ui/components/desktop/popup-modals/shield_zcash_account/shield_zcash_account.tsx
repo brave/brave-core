@@ -130,8 +130,8 @@ export const ShieldZCashAccountModal = (props: Props) => {
     <PopupModal
       title={
         existingShieldBirthday
-          ? getLocale('braveWalletResetShieldedAccountBirthday')
-          : getLocale('braveWalletSwitchToShieldedAccount')
+          ? getLocale(S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY)
+          : getLocale(S.BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT)
       }
       onClose={onClose}
       width='520px'
@@ -180,8 +180,10 @@ export const ShieldZCashAccountModal = (props: Props) => {
           textAlign='left'
         >
           {existingShieldBirthday
-            ? getLocale('braveWalletResetShieldedAccountBirthdayDescription')
-            : getLocale('braveWalletAccountNotShieldedDescription')}
+            ? getLocale(
+                S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY_DESCRIPTION,
+              )
+            : getLocale(S.BRAVE_WALLET_ACCOUNT_NOT_SHIELDED_DESCRIPTION)}
         </Text>
         {!existingShieldBirthday && (
           <Text
@@ -190,7 +192,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
             textColor='primary'
             textAlign='left'
           >
-            {getLocale('braveWalletAccountShieldedDescription')}
+            {getLocale(S.BRAVE_WALLET_ACCOUNT_SHIELDED_DESCRIPTION)}
           </Text>
         )}
         <AdvancedSettingsWrapper fullWidth={true}>
@@ -209,7 +211,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
                   textSize='14px'
                   isBold={true}
                 >
-                  {getLocale('braveWalletAdvancedTransactionSettings')}
+                  {getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
                 </Text>
               </Row>
               <CollapseIcon
@@ -231,7 +233,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
                   isBold={false}
                   textAlign='left'
                 >
-                  {getLocale('braveWalletShieldedAccountBirthdayBlock')}
+                  {getLocale(S.BRAVE_WALLET_SHIELDED_ACCOUNT_BIRTHDAY_BLOCK)}
                 </Text>
                 <Input
                   size='small'
@@ -252,11 +254,12 @@ export const ShieldZCashAccountModal = (props: Props) => {
                     isBold={false}
                   >
                     {birthdayBlockIsToLow
-                      ? getLocale('braveWalletAccountBirthdayTooLow').replace(
-                          '$1',
-                          MIN_ACCOUNT_BIRTHDAY_BLOCK.toString(),
-                        )
-                      : getLocale('braveWalletAccountBirthdayTooHigh').replace(
+                      ? getLocale(
+                          S.BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_LOW,
+                        ).replace('$1', MIN_ACCOUNT_BIRTHDAY_BLOCK.toString())
+                      : getLocale(
+                          S.BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_HIGH,
+                        ).replace(
                           '$1',
                           chainTipStatus?.chainTip.toString() ?? '',
                         )}
@@ -275,7 +278,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
           onClick={onClose}
           kind='outline'
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
         <Button
           onClick={
@@ -290,8 +293,8 @@ export const ShieldZCashAccountModal = (props: Props) => {
           }
         >
           {existingShieldBirthday
-            ? getLocale('braveWalletResetShieldedAccountBirthday')
-            : getLocale('braveWalletShieldAccount')}
+            ? getLocale(S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY)
+            : getLocale(S.BRAVE_WALLET_SHIELD_ACCOUNT)}
         </Button>
       </Row>
     </PopupModal>

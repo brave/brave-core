@@ -8,18 +8,18 @@ import { DAppConnectedPermissionsOption } from '../constants/types'
 
 export const DAppPermittedOptions: DAppConnectedPermissionsOption[] = [
   {
-    name: 'braveWalletConnectPermissionBalanceAndActivity',
+    name: S.BRAVE_WALLET_CONNECT_PERMISSION_BALANCE_AND_ACTIVITY,
   },
   {
-    name: 'braveWalletConnectPermissionRequestApproval',
+    name: S.BRAVE_WALLET_CONNECT_PERMISSION_REQUEST_APPROVAL,
   },
   {
-    name: 'braveWalletConnectPermissionAddress',
+    name: S.BRAVE_WALLET_CONNECT_PERMISSION_ADDRESS,
   },
 ]
 
 export const DAppNotPermittedOptions: DAppConnectedPermissionsOption[] = [
   {
-    name: 'braveWalletConnectPermissionMoveFunds',
+    name: S.BRAVE_WALLET_CONNECT_PERMISSION_MOVE_FUNDS,
   },
 ]

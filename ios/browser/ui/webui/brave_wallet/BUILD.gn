@@ -34,6 +34,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/ui/webui:data_sources",
     "//brave/ios/web/webui",

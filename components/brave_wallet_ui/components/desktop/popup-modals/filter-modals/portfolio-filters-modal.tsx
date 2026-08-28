@@ -146,7 +146,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
     const minAmount = new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
       .formatAsFiat(defaultFiatCurrency)
       .split('.')[0]
-    return getLocale('braveWalletHideSmallBalancesDescription').replace(
+    return getLocale(S.BRAVE_WALLET_SMALL_BALANCES_DESCRIPTION).replace(
       '$1',
       minAmount,
     )
@@ -194,8 +194,8 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
       onClose={onClose}
       title={
         showNftFilters
-          ? getLocale('braveWalletPortfolioNftsFiltersTitle')
-          : getLocale('braveWalletPortfolioFiltersTitle')
+          ? getLocale(S.BRAVE_WALLET_PORTFOLIO_NFTS_FILTERS_TITLE)
+          : getLocale(S.BRAVE_WALLET_PORTFOLIO_FILTERS_TITLE)
       }
       width='500px'
     >
@@ -207,9 +207,11 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
           {showNftFilters ? (
             <>
               <FilterToggleSection
-                title={getLocale('braveWalletShowNetworkLogoOnNftsTitle')}
+                title={getLocale(
+                  S.BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE,
+                )}
                 description={getLocale(
-                  'braveWalletShowNetworkLogoOnNftsDescription',
+                  S.BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION,
                 )}
                 icon='web3'
                 isSelected={showNetworkLogo}
@@ -217,9 +219,9 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
               />
 
               <FilterToggleSection
-                title={getLocale('braveWalletGroupByCollection')}
+                title={getLocale(S.BRAVE_WALLET_GROUP_BY_COLLECTION)}
                 description={getLocale(
-                  'braveWalletPortfolioGroupByDescription',
+                  S.BRAVE_WALLET_PORTFOLIO_GROUP_BY_DESCRIPTION,
                 )}
                 icon='stack'
                 isSelected={groupNftsByCollectionToggle}
@@ -229,7 +231,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
               />
 
               <FilterToggleSection
-                title={getLocale('braveWalletHideNotOwnedNfTs')}
+                title={getLocale(S.BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS)}
                 description={''}
                 icon='web3'
                 isSelected={hideUnownedNftsToggle}
@@ -238,8 +240,8 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
 
               {/* Disabled until Spam NFTs feature is implemented in core */}
               {/* <FilterToggleSection
-                title={getLocale('braveWalletShowSpamNftsTitle')}
-                description={getLocale('braveWalletShowSpamNftsDescription')}
+                title={getLocale(S.BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE)}
+                description={getLocale(S.BRAVE_WALLET_SHOW_SPAM_NFTS_DESCRIPTION)}
                 icon='shield-star'
                 isSelected={true}
                 setIsSelected={
@@ -250,9 +252,9 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
           ) : (
             <>
               <FilterDropdownSection
-                title={getLocale('braveWalletPortfolioGroupByTitle')}
+                title={getLocale(S.BRAVE_WALLET_PORTFOLIO_GROUP_BY_TITLE)}
                 description={getLocale(
-                  'braveWalletPortfolioGroupByDescription',
+                  S.BRAVE_WALLET_PORTFOLIO_GROUP_BY_DESCRIPTION,
                 )}
                 icon='stack'
                 dropdownOptions={GroupAssetsByOptions}
@@ -260,8 +262,8 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
                 onSelectOption={setSelectedGroupAssetsByOption}
               />
               <FilterDropdownSection
-                title={getLocale('braveWalletSortAssets')}
-                description={getLocale('braveWalletSortAssetsDescription')}
+                title={getLocale(S.BRAVE_WALLET_SORT_ASSETS)}
+                description={getLocale(S.BRAVE_WALLET_SORT_ASSETS_DESCRIPTION)}
                 icon='sort-desc'
                 dropdownOptions={AssetFilterOptions}
                 selectedOptionId={selectedAssetFilterOption}
@@ -269,7 +271,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
               />
 
               <FilterToggleSection
-                title={getLocale('braveWalletHideSmallBalances')}
+                title={getLocale(S.BRAVE_WALLET_SMALL_BALANCES)}
                 description={hideSmallBalancesDescription}
                 icon='eye-on'
                 isSelected={hideSmallBalances}
@@ -301,11 +303,11 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
           onClick={onClose}
           kind='outline'
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
         <HorizontalSpace space='16px' />
         <Button onClick={onSaveChanges}>
-          {getLocale('braveWalletButtonSaveChanges')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_SAVE_CHANGES)}
         </Button>
       </ButtonRow>
     </PopupModal>

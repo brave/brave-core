@@ -99,8 +99,8 @@ export const OnboardingCreatePassword = ({
   // render
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletCreatePasswordTitle')}
-      subTitle={getLocale('braveWalletCreatePasswordDescription')}
+      title={getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_TITLE)}
+      subTitle={getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION)}
     >
       <Column
         width='100%'
@@ -126,7 +126,7 @@ export const OnboardingCreatePassword = ({
           onClick={nextStep}
           isDisabled={!isValid}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </NextButtonRow>
     </OnboardingContentLayout>

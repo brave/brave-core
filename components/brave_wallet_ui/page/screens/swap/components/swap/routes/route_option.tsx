@@ -174,7 +174,7 @@ const Gate3StepSource = ({
             isBold={false}
             textColor='tertiary'
           >
-            {getLocale('braveWalletSwapRouteToFromVia')
+            {getLocale(S.BRAVE_WALLET_SWAP_ROUTE_TO_FROM_VIA)
               .replace('$1', destinationSymbol)
               .replace('$2', sourceSymbol)}
           </Text>
@@ -309,8 +309,8 @@ export const RouteOption = (props: Props) => {
               >
                 {getLocale(
                   tag === 'CHEAPEST'
-                    ? 'braveWalletCheapest'
-                    : 'braveWalletFastest',
+                    ? S.BRAVE_WALLET_CHEAPEST
+                    : S.BRAVE_WALLET_FASTEST,
                 )}
               </Label>
             ))}
@@ -420,7 +420,7 @@ export const RouteOption = (props: Props) => {
               && [...option.sources].reverse().map((source, index) => {
                 const lpIcon = getLPIcon(source)
                 const exchangeViaProvider = formatLocale(
-                  'braveWalletExchangeViaProvider',
+                  S.BRAVE_WALLET_EXCHANGE_VIA_PROVIDER,
                   {
                     $1: (
                       <Text
@@ -530,7 +530,7 @@ export const RouteOption = (props: Props) => {
                   isBold={false}
                   textColor='secondary'
                 >
-                  {getLocale('braveWalletOnNetwork').replace(
+                  {getLocale(S.BRAVE_WALLET_ON_NETWORK).replace(
                     '$1',
                     fromTokensNetwork?.chainName ?? '',
                   )}

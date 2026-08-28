@@ -422,7 +422,7 @@ export const SendScreen = React.memo(() => {
         } catch (error) {
           console.error('Btc send failed:', error)
           setTransactionProcessFailedMessage(
-            getLocale('braveWalletProcessTransactionErrorMessage').replace(
+            getLocale(S.BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE).replace(
               '$1',
               tokenFromParams.symbol,
             ),
@@ -562,7 +562,7 @@ export const SendScreen = React.memo(() => {
         } catch (error) {
           console.error('Zec send failed:', error)
           setTransactionProcessFailedMessage(
-            getLocale('braveWalletProcessTransactionErrorMessage').replace(
+            getLocale(S.BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE).replace(
               '$1',
               tokenFromParams.symbol,
             ),
@@ -588,7 +588,7 @@ export const SendScreen = React.memo(() => {
         } catch (error) {
           console.error('Cardano send failed:', error)
           setTransactionProcessFailedMessage(
-            getLocale('braveWalletProcessTransactionErrorMessage').replace(
+            getLocale(S.BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE).replace(
               '$1',
               tokenFromParams.symbol,
             ),
@@ -715,11 +715,11 @@ export const SendScreen = React.memo(() => {
           isSidePanel ? (
             <DefaultPanelHeader
               expandRoute={WalletRoutes.Send}
-              title={getLocale('braveWalletSend')}
+              title={getLocale(S.BRAVE_WALLET_SEND)}
             />
           ) : isMobileOrPanel ? (
             <PanelActionHeader
-              title={getLocale('braveWalletSend')}
+              title={getLocale(S.BRAVE_WALLET_SEND)}
               expandRoute={WalletRoutes.Send}
             />
           ) : undefined
@@ -771,7 +771,7 @@ export const SendScreen = React.memo(() => {
                     textSize='14px'
                     isBold={false}
                   >
-                    {getLocale('braveWalletSwapTo')}
+                    {getLocale(S.BRAVE_WALLET_SWAP_TO)}
                   </ToText>
                 </ToRow>
                 <InputRow
@@ -811,7 +811,9 @@ export const SendScreen = React.memo(() => {
                     padding='16px 0px 0px 0px'
                   >
                     <AlertMessage type='info'>
-                      {getLocale('braveWalletShieldingFundsAlertDescription')}
+                      {getLocale(
+                        S.BRAVE_WALLET_SHIELDING_FUNDS_ALERT_DESCRIPTION,
+                      )}
                     </AlertMessage>
                   </Row>
                 )}
@@ -821,7 +823,9 @@ export const SendScreen = React.memo(() => {
                     padding='16px 0px 0px 0px'
                   >
                     <AlertMessage type='info'>
-                      {getLocale('braveWalletUnshieldingFundsAlertDescription')}
+                      {getLocale(
+                        S.BRAVE_WALLET_UNSHIELDING_FUNDS_ALERT_DESCRIPTION,
+                      )}
                     </AlertMessage>
                   </Row>
                 )}
@@ -916,23 +920,23 @@ function getReviewButtonText(
   isUnshieldingFunds?: boolean,
 ) {
   if (sendAmountValidationError === 'fromAmountDecimalsOverflow') {
-    return 'braveWalletDecimalPlacesError'
+    return S.BRAVE_WALLET_DECIMAL_PLACES_ERROR
   }
   if (sendAmountValidationError === 'fromAmountADAValueToLow') {
-    return 'braveWalletMinOneAdaError'
+    return S.BRAVE_WALLET_MIN_ONE_ADA_ERROR
   }
   if (insufficientFundsError) {
-    return 'braveWalletNotEnoughFunds'
+    return S.BRAVE_WALLET_NOT_ENOUGH_FUNDS
   }
   if (isAccountSyncing) {
-    return 'braveWalletAccountIsSyncing'
+    return S.BRAVE_WALLET_ACCOUNT_IS_SYNCING
   }
   if (isShieldingFunds) {
-    return 'braveWalletReviewShield'
+    return S.BRAVE_WALLET_REVIEW_SHIELD
   }
   if (isUnshieldingFunds) {
-    return 'braveWalletReviewUnshield'
+    return S.BRAVE_WALLET_REVIEW_UNSHIELD
   }
 
-  return 'braveWalletReviewSend'
+  return S.BRAVE_WALLET_REVIEW_SEND
 }

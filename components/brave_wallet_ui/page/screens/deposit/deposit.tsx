@@ -122,15 +122,15 @@ import {
 const zcashAddressOptions: zcashAddressOptionType[] = [
   {
     addressType: 'unified',
-    label: 'braveWalletUnified',
+    label: S.BRAVE_WALLET_UNIFIED,
   },
   {
     addressType: 'shielded',
-    label: 'braveWalletShielded',
+    label: S.BRAVE_WALLET_SHIELDED,
   },
   {
     addressType: 'transparent',
-    label: 'braveWalletTransparent',
+    label: S.BRAVE_WALLET_TRANSPARENT,
   },
 ]
 
@@ -163,17 +163,17 @@ export const Deposit = () => {
             isSidePanel ? (
               <DefaultPanelHeader
                 expandRoute={WalletRoutes.DepositPage}
-                title={getLocale('braveWalletDepositCryptoButton')}
+                title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
               />
             ) : isMobileOrPanel ? (
               <PanelActionHeader
-                title={getLocale('braveWalletDepositCryptoButton')}
+                title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
                 expandRoute={WalletRoutes.DepositPage}
                 onBack={history.goBack}
               />
             ) : (
               <PageTitleHeader
-                title={getLocale('braveWalletDepositCryptoButton')}
+                title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
                 onBack={history.goBack}
                 showBackButton={true}
               />
@@ -194,16 +194,16 @@ export const Deposit = () => {
             isSidePanel ? (
               <DefaultPanelHeader
                 expandRoute={WalletRoutes.DepositPage}
-                title={getLocale('braveWalletDepositCryptoButton')}
+                title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
               />
             ) : isMobileOrPanel ? (
               <PanelActionHeader
-                title={getLocale('braveWalletDepositCryptoButton')}
+                title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
                 expandRoute={WalletRoutes.DepositPage}
               />
             ) : (
               <PageTitleHeader
-                title={getLocale('braveWalletDepositCryptoButton')}
+                title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
               />
             )
           }
@@ -466,7 +466,7 @@ function AssetSelection() {
         >
           <SearchAndDropdownWrapper alignItems='flex-start'>
             <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
+              placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
               action={onSearchValueChange}
               value={searchValue}
               isV2={false}
@@ -511,8 +511,8 @@ function AssetSelection() {
           size={isMobileOrPanel ? 'medium' : 'large'}
         >
           {selectedAsset
-            ? getLocale('braveWalletButtonContinue')
-            : getLocale('braveWalletBuySelectAsset')}
+            ? getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)
+            : getLocale(S.BRAVE_WALLET_BUY_SELECT_ASSET)}
         </Button>
       </Row>
     </>
@@ -608,15 +608,15 @@ function DepositAccount() {
 
     // ERC-based tokens
     if (isErc) {
-      return getLocale('braveWalletDepositErc')
+      return getLocale(S.BRAVE_WALLET_DEPOSIT_ERC)
     }
 
     // Solana assets
     if (isSolOrSpl) {
-      return getLocale('braveWalletDepositSolSplTokens')
+      return getLocale(S.BRAVE_WALLET_DEPOSIT_SOL_SPL_TOKENS)
     }
 
-    return getLocale('braveWalletDepositX').replace(
+    return getLocale(S.BRAVE_WALLET_DEPOSIT_X).replace(
       '$1',
       selectedAsset?.symbol ?? '',
     )
@@ -732,12 +732,12 @@ function DepositAccount() {
       >
         <SearchWrapper>
           <SelectHeader
-            title={getLocale('braveWalletSelectAccount')}
+            title={getLocale(S.BRAVE_WALLET_SELECT_ACCOUNT)}
             onBack={closeAccountSearch}
             hasAddButton={false}
           />
           <SearchBar
-            placeholder={getLocale('braveWalletSearchAccount')}
+            placeholder={getLocale(S.BRAVE_WALLET_SEARCH_ACCOUNT)}
             action={onSearchTextChanged}
           />
           <ScrollContainer>
@@ -782,7 +782,7 @@ function DepositAccount() {
 
         {selectedAssetNetwork && (
           <Description>
-            {getLocale('braveWalletDepositOnlySendOnXNetwork').replace(
+            {getLocale(S.BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK).replace(
               '$1',
               selectedAssetNetwork.chainName,
             )}
@@ -827,7 +827,7 @@ function DepositAccount() {
 
       <Column gap={'4px'}>
         <AddressTextLabel>
-          {getLocale('braveWalletAddress')}
+          {getLocale(S.BRAVE_WALLET_ADDRESS)}
           {':'}
         </AddressTextLabel>
 

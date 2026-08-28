@@ -47,11 +47,11 @@ export const NftMorePopup = (props: Props) => {
         <>
           <leo-menu-item onClick={onEditNft}>
             <Icon name='edit-pencil' />
-            {getLocale('braveNftsTabEdit')}
+            {getLocale(S.BRAVE_WALLET_NFTS_TAB_EDIT)}
           </leo-menu-item>
           <leo-menu-item onClick={onHideNft}>
             <Icon name='eye-off' />
-            {getLocale('braveNftsTabHide')}
+            {getLocale(S.BRAVE_WALLET_NFTS_TAB_HIDE)}
           </leo-menu-item>
         </>
       )}
@@ -60,13 +60,13 @@ export const NftMorePopup = (props: Props) => {
         // show mark as not junk if a token is junk/spam
         <leo-menu-item onClick={onUnSpam}>
           <Icon name='junk-false' />
-          {getLocale('braveWalletNftUnspam')}
+          {getLocale(S.BRAVE_WALLET_NFT_UNSPAM)}
         </leo-menu-item>
       ) : (
         // show mark as spam option if a token is not marked as junk
         <leo-menu-item onClick={onMarkAsSpam}>
           <Icon name='junk-true' />
-          {getLocale('braveWalletNftMoveToSpam')}
+          {getLocale(S.BRAVE_WALLET_NFT_MOVE_TO_SPAM)}
         </leo-menu-item>
       )}
 
@@ -74,14 +74,14 @@ export const NftMorePopup = (props: Props) => {
       {isTokenHidden && !isTokenSpam && (
         <leo-menu-item onClick={onUnHideNft}>
           <Icon name='eye-on' />
-          {getLocale('braveNftsTabUnhide')}
+          {getLocale(S.BRAVE_WALLET_NFTS_TAB_UNHIDE)}
         </leo-menu-item>
       )}
 
       {/* remove option */}
       <leo-menu-item onClick={onRemoveNft}>
         <Icon name='trash' />
-        {getLocale('braveNftsTabRemove')}
+        {getLocale(S.BRAVE_WALLET_NFTS_TAB_REMOVE)}
       </leo-menu-item>
     </ButtonMenu>
   )

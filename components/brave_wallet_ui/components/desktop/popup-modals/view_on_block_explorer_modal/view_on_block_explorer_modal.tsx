@@ -71,7 +71,7 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
 
     return (
       <PopupModal
-        title={getLocale('braveWalletTransactionExplorer')}
+        title={getLocale(S.BRAVE_WALLET_TRANSACTION_EXPLORER)}
         onClose={onClose}
         width='520px'
         ref={forwardedRef}
@@ -121,7 +121,7 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
               textColor='primary'
               textSize='14px'
             >
-              {getLocale('braveWalletViewAddressOn')}
+              {getLocale(S.BRAVE_WALLET_VIEW_ADDRESS_ON)}
             </Text>
           </Row>
           <ScrollableColumn>

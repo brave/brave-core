@@ -16,7 +16,7 @@ export const CopiedToClipboardConfirmation: React.FC<{}> = () => {
   return (
     <CopiedToClipboardContainer>
       <GreenCheckmark />
-      <p>{getLocale('braveWalletCopiedToClipboard')}</p>
+      <p>{getLocale(S.BRAVE_WALLET_COPIED_TO_CLIPBOARD)}</p>
     </CopiedToClipboardContainer>
   )
 }

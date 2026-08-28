@@ -598,12 +598,12 @@ export const usePendingTransactions = () => {
   const transactionTitle = React.useMemo(
     (): string =>
       isShieldingFunds
-        ? getLocale('braveWalletShielding')
+        ? getLocale(S.BRAVE_WALLET_SHIELDING)
         : isSolanaDappTransaction
-          ? getLocale('braveWalletApproveTransaction')
+          ? getLocale(S.BRAVE_WALLET_APPROVE_TRANSACTION)
           : transactionDetails?.isSwap
-            ? getLocale('braveWalletSwap')
-            : getLocale('braveWalletSend'),
+            ? getLocale(S.BRAVE_WALLET_SWAP)
+            : getLocale(S.BRAVE_WALLET_SEND),
     [isShieldingFunds, isSolanaDappTransaction, transactionDetails?.isSwap],
   )
 

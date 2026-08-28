@@ -89,7 +89,7 @@ export function DecryptMessageRequestPanel(props: Props) {
       <Column fullWidth={true}>
         <Row padding='18px'>
           <HeaderText textColor='primary'>
-            {getLocale('braveWalletReadEncryptedMessageDecryptButton')}
+            {getLocale(S.BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON)}
           </HeaderText>
         </Row>
         <Column
@@ -120,7 +120,7 @@ export function DecryptMessageRequestPanel(props: Props) {
             </URLText>
           </Column>
           <Title textColor='primary'>
-            {getLocale('braveWalletReadEncryptedMessageTitle')}
+            {getLocale(S.BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE)}
           </Title>
           {isDecrypted ? (
             <MessageContainer
@@ -129,7 +129,7 @@ export function DecryptMessageRequestPanel(props: Props) {
             >
               <Row padding='8px'>
                 <MessageContainerTitle textColor='tertiary'>
-                  {getLocale('braveWalletSignTransactionMessageTitle')}
+                  {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE)}
                 </MessageContainerTitle>
               </Row>
               <MessageBox
@@ -158,7 +158,9 @@ export function DecryptMessageRequestPanel(props: Props) {
                   kind='plain'
                   size='small'
                 >
-                  {getLocale('braveWalletReadEncryptedMessageDecryptButton')}
+                  {getLocale(
+                    S.BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON,
+                  )}
                 </Button>
               </div>
             </DecryptMessageBox>
@@ -173,10 +175,10 @@ export function DecryptMessageRequestPanel(props: Props) {
           kind='outline'
           onClick={onCancel}
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
         <Button onClick={onAllow}>
-          {getLocale('braveWalletReadEncryptedMessageButton')}
+          {getLocale(S.BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON)}
         </Button>
       </Row>
     </StyledWrapper>

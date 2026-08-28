@@ -205,7 +205,7 @@ export const QuoteInfo = (props: Props) => {
       return ''
     }
 
-    return getLocale('braveWalletExchangeFor')
+    return getLocale(S.BRAVE_WALLET_EXCHANGE_FOR)
       .replace('$1', `1 ${selectedQuoteOption.fromToken.symbol}`)
       .replace(
         '$2',
@@ -250,20 +250,20 @@ export const QuoteInfo = (props: Props) => {
 
   const coinGeckoDeltaText: string = React.useMemo(() => {
     if (coinGeckoDelta.gte(0)) {
-      return getLocale('braveSwapCoinGeckoCheaper').replace(
+      return getLocale(S.BRAVE_SWAP_COINGECKO_CHEAPER).replace(
         '$1',
         coinGeckoDelta.format(2),
       )
     }
 
     if (coinGeckoDelta.gte(-1)) {
-      return getLocale('braveSwapCoinGeckoWithin').replace(
+      return getLocale(S.BRAVE_SWAP_COINGECKO_WITHIN).replace(
         '$1',
         coinGeckoDelta.times(-1).format(2),
       )
     }
 
-    return getLocale('braveSwapCoinGeckoExpensive').replace(
+    return getLocale(S.BRAVE_SWAP_COINGECKO_EXPENSIVE).replace(
       '$1',
       coinGeckoDelta.times(-1).format(2),
     )
@@ -385,7 +385,7 @@ export const QuoteInfo = (props: Props) => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveSwapMinimumReceivedAfterSlippage')}
+              {getLocale(S.BRAVE_SWAP_MINIMUM_RECEIVED_AFTER_SLIPPAGE)}
             </Text>
             <Text
               textSize='12px'
@@ -404,7 +404,7 @@ export const QuoteInfo = (props: Props) => {
             textColor='secondary'
             textAlign='left'
           >
-            {getLocale('braveWalletMaxSlippage')}
+            {getLocale(S.BRAVE_WALLET_MAX_SLIPPAGE)}
           </Text>
           <Row width='unset'>
             <Text
@@ -448,7 +448,7 @@ export const QuoteInfo = (props: Props) => {
                   textSize='12px'
                   textColor='secondary'
                 >
-                  {getLocale('braveSwapNetworkFee')}
+                  {getLocale(S.BRAVE_SWAP_NETWORK_FEE)}
                 </Text>
                 <Text
                   textSize='12px'
@@ -475,7 +475,7 @@ export const QuoteInfo = (props: Props) => {
                     textColor='secondary'
                     textAlign='left'
                   >
-                    {getLocale('braveWalletRoute')}
+                    {getLocale(S.BRAVE_WALLET_ROUTE)}
                   </Text>
                   <Row
                     width='unset'
@@ -503,7 +503,7 @@ export const QuoteInfo = (props: Props) => {
                   textSize='12px'
                   textColor='secondary'
                 >
-                  {getLocale('braveWalletExchangeRate')}
+                  {getLocale(S.BRAVE_WALLET_EXCHANGE_RATE)}
                 </Text>
                 <Text
                   textSize='12px'
@@ -521,7 +521,7 @@ export const QuoteInfo = (props: Props) => {
                   textSize='12px'
                   textColor='secondary'
                 >
-                  {getLocale('braveWalletEstTime')}
+                  {getLocale(S.BRAVE_WALLET_EST_TIME)}
                 </Text>
                 <Text
                   textSize='12px'
@@ -543,11 +543,11 @@ export const QuoteInfo = (props: Props) => {
                   textColor='secondary'
                   textAlign='left'
                 >
-                  {getLocale('braveSwapPriceImpact')}
+                  {getLocale(S.BRAVE_SWAP_PRICE_IMPACT)}
                 </Text>
                 <InfoIconTooltip
                   placement='right'
-                  text={getLocale('braveWalletPriceImpactDescription')}
+                  text={getLocale(S.BRAVE_WALLET_PRICE_IMPACT_DESCRIPTION)}
                   maxContentWidth={isPanel ? '200px' : undefined}
                 />
               </Row>
@@ -577,7 +577,7 @@ export const QuoteInfo = (props: Props) => {
                   textColor='secondary'
                   textAlign='left'
                 >
-                  {getLocale('braveWalletRecipient')}
+                  {getLocale(S.BRAVE_WALLET_RECIPIENT)}
                 </Text>
                 <Button onClick={() => setShowAccountSelector(true)}>
                   <Text
@@ -599,7 +599,7 @@ export const QuoteInfo = (props: Props) => {
                   textSize='12px'
                   textColor='secondary'
                 >
-                  {getLocale('braveSwapBraveFee')}
+                  {getLocale(S.BRAVE_SWAP_BRAVE_FEE)}
                 </Text>
                 <Row
                   width='unset'
@@ -611,7 +611,7 @@ export const QuoteInfo = (props: Props) => {
                         textSize='10px'
                         isBold={true}
                       >
-                        {getLocale('braveSwapFree')}
+                        {getLocale(S.BRAVE_SWAP_FREE)}
                       </FreeText>
                     </Bubble>
                   ) : (
@@ -649,7 +649,7 @@ export const QuoteInfo = (props: Props) => {
                   textSize='12px'
                   textColor='secondary'
                 >
-                  {getLocale('braveSwapNetworkFee')}
+                  {getLocale(S.BRAVE_SWAP_NETWORK_FEE)}
                 </Text>
                 <Text
                   textSize='12px'

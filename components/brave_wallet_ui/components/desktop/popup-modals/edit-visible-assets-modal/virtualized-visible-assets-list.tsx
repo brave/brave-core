@@ -108,7 +108,7 @@ const ListItem = (props: ListItemProps) => {
             textSize='14px'
             textColor='secondary'
           >
-            {getLocale('braveWalletDidntFindAssetEndOfList')}
+            {getLocale(S.BRAVE_WALLET_DIDNT_FIND_ASSET_END_OF_LIST)}
           </Text>
           <VerticalSpace space='14px' />
           <Button
@@ -118,7 +118,7 @@ const ListItem = (props: ListItemProps) => {
             <Row>
               <AddIcon />
               <AddButtonText>
-                {getLocale('braveWalletWatchlistAddCustomAsset')}
+                {getLocale(S.BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET)}
               </AddButtonText>
             </Row>
           </Button>

@@ -396,12 +396,12 @@ export const Nfts = ({
     return [
       {
         id: 'collected',
-        label: getLocale('braveNftsTabCollected'),
+        label: getLocale(S.BRAVE_WALLET_NFTS_TAB_COLLECTED),
         labelSummary: totalNftsFound,
       },
       {
         id: 'hidden',
-        label: getLocale('braveNftsTabHidden'),
+        label: getLocale(S.BRAVE_WALLET_NFTS_TAB_HIDDEN),
         labelSummary: totalNftsFound,
       },
     ]
@@ -529,7 +529,7 @@ export const Nfts = ({
                 showSearchBar={showSearchBar}
               >
                 <SearchBar
-                  placeholder={getLocale('braveWalletSearchText')}
+                  placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
                   action={onSearchValueChange}
                   value={searchValue}
                   isV2={true}

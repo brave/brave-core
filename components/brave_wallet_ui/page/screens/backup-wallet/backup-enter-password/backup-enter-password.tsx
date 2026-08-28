@@ -97,8 +97,8 @@ export const BackupEnterPassword: React.FC = () => {
   return (
     <OnboardingContentLayout
       showBackButton
-      title={getLocale('braveWalletEnterAPasswordToContinue')}
-      subTitle={getLocale('braveWalletEnterYourPasswordToStartBackup')}
+      title={getLocale(S.BRAVE_WALLET_ENTER_A_PASSWORD_TO_CONTINUE)}
+      subTitle={getLocale(S.BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP)}
     >
       <Column
         fullWidth
@@ -107,18 +107,18 @@ export const BackupEnterPassword: React.FC = () => {
       >
         <Row justifyContent='flex-start'>
           <InputLabel htmlFor='password'>
-            {getLocale('braveWalletInputLabelPassword')}{' '}
+            {getLocale(S.BRAVE_WALLET_INPUT_LABEL_PASSWORD)}{' '}
           </InputLabel>
         </Row>
         <InputLabel></InputLabel>
         <PasswordInput
           key='password'
-          placeholder={getLocale('braveWalletEnterYourPassword')}
+          placeholder={getLocale(S.BRAVE_WALLET_ENTER_YOUR_PASSWORD)}
           onChange={onPasswordChange}
           onKeyDown={handlePasswordKeyDown}
           hasError={!!password && !isCorrectPassword}
           value={password}
-          error={getLocale('braveWalletLockScreenError')}
+          error={getLocale(S.BRAVE_WALLET_LOCK_SCREEN_ERROR)}
           autoFocus
           name='password'
         />
@@ -129,7 +129,7 @@ export const BackupEnterPassword: React.FC = () => {
           onClick={onSubmit}
           isDisabled={!password || !isCorrectPassword}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </NextButtonRow>
     </OnboardingContentLayout>

@@ -73,7 +73,7 @@ const reduceFileName = (address: string) => {
 }
 
 const filPrivateKeyFormatDescription = formatLocale(
-  'braveWalletFilImportPrivateKeyFormatDescription',
+  S.BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION,
   {
     $1: (content) => (
       <a
@@ -153,11 +153,11 @@ export const ImportAccountModal = () => {
       : !file
   const isDisabled = hasAccountNameError || hasImportTypeError
   const modalTitle = selectedAccountType
-    ? getLocale('braveWalletCreateAccountImportAccount').replace(
+    ? getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_IMPORT_ACCOUNT).replace(
         '$1',
         selectedAccountType.name,
       )
-    : getLocale('braveWalletImportAccount')
+    : getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT)
 
   // methods
   const onClickClose = React.useCallback(() => {
@@ -214,7 +214,7 @@ export const ImportAccountModal = () => {
   const showSuccessAlert = React.useCallback(() => {
     showAlert({
       type: 'success',
-      content: getLocale('braveWalletAccountImportedSuccessfully'),
+      content: getLocale(S.BRAVE_WALLET_ACCOUNT_IMPORTED_SUCCESSFULLY),
       actions: [],
     })
   }, [])
@@ -381,7 +381,7 @@ export const ImportAccountModal = () => {
           <Column gap='16px'>
             {isDAppCoin && (
               <Alert type='warning'>
-                {getLocale('braveWalletImportAccountDisclaimer')}
+                {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_DISCLAIMER)}
               </Alert>
             )}
 
@@ -391,7 +391,7 @@ export const ImportAccountModal = () => {
             {selectedAccountType.coin === BraveWallet.CoinType.BTC && (
               <Alert type='warning'>
                 {getLocale(
-                  'braveWalletBtcImportPrivateKeyFormatDescription',
+                  S.BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION,
                 ).replace(
                   '$1',
                   selectedAccountType.fixedNetwork
@@ -403,7 +403,7 @@ export const ImportAccountModal = () => {
             )}
             {selectedAccountType.coin === BraveWallet.CoinType.DOT && (
               <Alert type='warning'>
-                {getLocale('braveWalletPolkadotImportJsonDescription')}
+                {getLocale(S.BRAVE_WALLET_POLKADOT_IMPORT_JSON_DESCRIPTION)}
               </Alert>
             )}
           </Column>
@@ -434,16 +434,20 @@ export const ImportAccountModal = () => {
                   size='small'
                 >
                   <SegmentedControlItem value='key'>
-                    {getLocale('braveWalletImportAccountKey')}
+                    {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_KEY)}
                   </SegmentedControlItem>
                   <SegmentedControlItem value='file'>
-                    {getLocale('braveWalletImportAccountFile')}
+                    {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_FILE)}
                   </SegmentedControlItem>
                 </SegmentedControl>
                 <NetworkDescription textColor='tertiary'>
                   {importOption === 'key'
-                    ? getLocale('braveWalletImportAccountPrivateKeyDescription')
-                    : getLocale('braveWalletImportAccountJsonFileDescription')}
+                    ? getLocale(
+                        S.BRAVE_WALLET_IMPORT_ACCOUNT_PRIVATE_KEY_DESCRIPTION,
+                      )
+                    : getLocale(
+                        S.BRAVE_WALLET_IMPORT_ACCOUNT_JSON_FILE_DESCRIPTION,
+                      )}
                 </NetworkDescription>
               </>
             )}
@@ -453,19 +457,19 @@ export const ImportAccountModal = () => {
                 textColor='error'
                 variant='small.regular'
               >
-                {getLocale('braveWalletImportAccountError')}
+                {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_ERROR)}
               </Text>
             )}
 
             {!isPolkadotImport && importOption === 'key' ? (
               <Input
-                placeholder={getLocale('braveWalletImportAccountKey')}
+                placeholder={getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_KEY)}
                 onBlur={clearClipboard}
                 type='password'
                 onInput={handlePrivateKeyChanged}
                 onKeyDown={handleKeyDown}
               >
-                {getLocale('braveWalletImportAccountPlaceholder')}
+                {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_PLACEHOLDER)}
               </Input>
             ) : (
               <>
@@ -476,7 +480,7 @@ export const ImportAccountModal = () => {
                   width='100%'
                 >
                   <JsonFileLabel textColor='primary'>
-                    {getLocale('braveWalletUploadJsonFile')}
+                    {getLocale(S.BRAVE_WALLET_UPLOAD_JSON_FILE)}
                   </JsonFileLabel>
                   <Row
                     justifyContent='flex-start'
@@ -487,13 +491,13 @@ export const ImportAccountModal = () => {
                       size='small'
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      {getLocale('braveWalletImportAccountUploadButton')}
+                      {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_BUTTON)}
                     </ImportButton>
                     <FileNameText textColor='tertiary'>
                       {file
                         ? reduceFileName(file[0].name)
                         : getLocale(
-                            'braveWalletImportAccountUploadPlaceholder',
+                            S.BRAVE_WALLET_IMPORT_ACCOUNT_UPLOAD_PLACEHOLDER,
                           )}
                     </FileNameText>
                   </Row>
@@ -507,26 +511,26 @@ export const ImportAccountModal = () => {
                   />
                 </Column>
                 <Input
-                  placeholder={getLocale('braveWalletInputLabelPassword')}
+                  placeholder={getLocale(S.BRAVE_WALLET_INPUT_LABEL_PASSWORD)}
                   onInput={handlePasswordChanged}
                   onKeyDown={handleKeyDown}
                   onBlur={clearClipboard}
                   type='password'
                   ref={passwordInputRef}
                 >
-                  {getLocale('braveWalletEnterPasswordIfApplicable')}
+                  {getLocale(S.BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE)}
                 </Input>
               </>
             )}
             <Input
               value={accountName}
-              placeholder={getLocale('braveWalletAccountName')}
+              placeholder={getLocale(S.BRAVE_WALLET_ACCOUNT_NAME)}
               onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
               showErrors={hasAccountNameError}
               maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
             >
-              {getLocale('braveWalletAddAccountPlaceholder')}
+              {getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER)}
             </Input>
           </Column>
           <Row gap='16px'>
@@ -534,14 +538,14 @@ export const ImportAccountModal = () => {
               onClick={onClickClose}
               kind='outline'
             >
-              {getLocale('braveWalletButtonCancel')}
+              {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
             </Button>
             <Button
               onClick={onClickCreateAccount}
               isDisabled={isDisabled}
               kind='filled'
             >
-              {getLocale('braveWalletImportAccount')}
+              {getLocale(S.BRAVE_WALLET_IMPORT_ACCOUNT)}
             </Button>
           </Row>
         </CreateAccountWrapper>

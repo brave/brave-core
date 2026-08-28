@@ -102,7 +102,7 @@ export const AssetListItem = ({
   const assetSymbol = getAssetSymbol(asset)
   const networkDescription =
     currencyCode !== ''
-      ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+      ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
           .replace('$1', assetSymbol ?? '')
           .replace('$2', chainName ?? '')
       : chainName
@@ -264,11 +264,11 @@ export const SelectAsset = (props: SelectAssetProps) => {
     return (
       <>
         <DialogTitle slot='title'>
-          {getLocale('braveWalletSelectAsset')}
+          {getLocale(S.BRAVE_WALLET_SELECT_ASSET)}
         </DialogTitle>
         <SearchAndNetworkFilterRow margin='24px 0 8px 0'>
           <SearchBar
-            placeholder={getLocale('braveWalletSearchTokens')}
+            placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TOKENS)}
             action={updateSearchValue}
             autoFocus={true}
             value={searchText}
@@ -294,7 +294,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
           )}
           {searchResults.length === 0 && !isLoadingAssets ? (
             <Column height='100%'>
-              {getLocale('braveWalletNoAvailableAssets')}
+              {getLocale(S.BRAVE_WALLET_NO_AVAILABLE_ASSETS)}
             </Column>
           ) : (
             <>
@@ -302,7 +302,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
                 justifyContent='flex-start'
                 padding='16px'
               >
-                <ListTitle>{getLocale('braveWalletAsset')}</ListTitle>
+                <ListTitle>{getLocale(S.BRAVE_WALLET_ASSETS)}</ListTitle>
               </Row>
               <AutoSizer style={AutoSizerStyle}>
                 {function ({

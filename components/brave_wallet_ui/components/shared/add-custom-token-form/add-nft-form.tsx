@@ -195,12 +195,13 @@ export const AddNftForm = (props: Props) => {
   const formErrors = React.useMemo(() => {
     return [
       tokenContractAddressError
-        && getLocale('braveWalletInvalidTokenContractAddressError'),
+        && getLocale(S.BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR),
       customAssetsNetworkError
-        && getLocale('braveWalletNetworkIsRequiredError'),
-      tokenNameError && getLocale('braveWalletTokenNameIsRequiredError'),
-      tokenSymbolError && getLocale('braveWalletTokenSymbolIsRequiredError'),
-      tokenIdError && getLocale('braveWalletWatchListTokenIdError'),
+        && getLocale(S.BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR),
+      tokenNameError && getLocale(S.BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR),
+      tokenSymbolError
+        && getLocale(S.BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR),
+      tokenIdError && getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR),
     ]
   }, [
     tokenContractAddressError,
@@ -395,20 +396,22 @@ export const AddNftForm = (props: Props) => {
         {!selectedAsset && (
           <FullWidthFormColumn>
             <DescriptionRow>
-              {getLocale('braveWalletAddNftModalDescription')}
+              {getLocale(S.BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION)}
             </DescriptionRow>
           </FullWidthFormColumn>
         )}
 
         <FullWidthFormColumn>
           <NetworksDropdown
-            placeholder={getLocale('braveWalletSelectNetwork')}
+            placeholder={getLocale(S.BRAVE_WALLET_SELECT_NETWORK)}
             networks={networkList}
             onSelectNetwork={onSelectCustomNetwork}
             selectedNetwork={customAssetsNetwork}
             showAllNetworksOption={false}
             label={
-              <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
+              <InputLabel>
+                {getLocale(S.BRAVE_WALLET_SELECT_NETWORK)}
+              </InputLabel>
             }
           />
         </FullWidthFormColumn>
@@ -417,7 +420,7 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={tokenContractAddress}
             onInput={handleTokenAddressChanged}
-            placeholder={getLocale('braveWalletExempliGratia').replace(
+            placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
             )}
@@ -428,12 +431,12 @@ export const AddNftForm = (props: Props) => {
             >
               <InputLabel>
                 {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
-                  ? getLocale('braveWalletTokenMintAddress')
-                  : getLocale('braveWalletNFTDetailContractAddress')}
+                  ? getLocale(S.BRAVE_WALLET_TOKEN_MINT_ADDRESS)
+                  : getLocale(S.BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS)}
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletWhatIsAnNftContractAddress')}
+                text={getLocale(S.BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS)}
               />
             </Row>
           </Input>
@@ -450,7 +453,7 @@ export const AddNftForm = (props: Props) => {
                 }
                 onInput={handleTokenIDChanged}
                 type='number'
-                placeholder={getLocale('braveWalletExempliGratia').replace(
+                placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
                   '$1',
                   '1234',
                 )}
@@ -460,11 +463,11 @@ export const AddNftForm = (props: Props) => {
                   justifyContent='flex-start'
                 >
                   <InputLabel>
-                    {getLocale('braveWalletNFTDetailTokenID')}
+                    {getLocale(S.BRAVE_WALLET_NFT_DETAIL_TOKEN_ID)}
                   </InputLabel>
                   <InfoIconTooltip
                     placement='bottom'
-                    text={getLocale('braveWalletWhatIsAnNftTokenId')}
+                    text={getLocale(S.BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID)}
                   />
                 </Row>
               </Input>
@@ -476,7 +479,7 @@ export const AddNftForm = (props: Props) => {
             value={customTokenName}
             onInput={handleTokenNameChanged}
             type='text'
-            placeholder={getLocale('braveWalletExempliGratia').replace(
+            placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               'Pudgy Penguin #1234',
             )}
@@ -486,11 +489,11 @@ export const AddNftForm = (props: Props) => {
               justifyContent='flex-start'
             >
               <InputLabel>
-                {getLocale('braveWalletWatchListTokenName')}
+                {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_NAME)}
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletNftNameFieldExplanation')}
+                text={getLocale(S.BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION)}
               />
             </Row>
 
@@ -511,7 +514,7 @@ export const AddNftForm = (props: Props) => {
               !hasGetTokenInfoError && !!matchedTokenInfo?.symbol
             }
             type='text'
-            placeholder={getLocale('braveWalletExempliGratia').replace(
+            placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               'PPG',
             )}
@@ -521,11 +524,11 @@ export const AddNftForm = (props: Props) => {
               justifyContent='flex-start'
             >
               <InputLabel>
-                {getLocale('braveWalletWatchListTokenSymbol')}
+                {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_SYMBOL)}
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletNftSymbolFieldExplanation')}
+                text={getLocale(S.BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION)}
               />
             </Row>
             <div slot='left-icon'>
@@ -543,7 +546,7 @@ export const AddNftForm = (props: Props) => {
               textAlign='left'
               variant='small.regular'
             >
-              {getLocale('braveWalletWatchListTokenIdError')}
+              {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR)}
             </ErrorText>
           )}
 
@@ -553,7 +556,7 @@ export const AddNftForm = (props: Props) => {
             textAlign='left'
             variant='small.regular'
           >
-            {getLocale('braveWalletWatchListError')}
+            {getLocale(S.BRAVE_WALLET_WATCH_LIST_ERROR)}
           </ErrorText>
         ) : (
           <Column
@@ -594,7 +597,7 @@ export const AddNftForm = (props: Props) => {
                       variant='small.regular'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletFetchNftMetadataError')}
+                      {getLocale(S.BRAVE_WALLET_FETCH_NFT_METADATA_ERROR)}
                     </ErrorText>
                   </Column>
                 ) : (
@@ -653,7 +656,7 @@ export const AddNftForm = (props: Props) => {
 
                         {!userOwnsNft && (
                           <Alert type='info'>
-                            {getLocale('braveWalletUnownedNftAlert')}
+                            {getLocale(S.BRAVE_WALLET_UNOWNED_NFT_ALERT)}
                           </Alert>
                         )}
                       </Column>
@@ -673,7 +676,7 @@ export const AddNftForm = (props: Props) => {
           onClick={onClickCancel}
           kind='plain-faint'
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </Button>
 
         <Tooltip
@@ -693,10 +696,10 @@ export const AddNftForm = (props: Props) => {
               }
             >
               {!userOwnsNft
-                ? getLocale('braveWalletWatchThisNft')
+                ? getLocale(S.BRAVE_WALLET_WATCH_THIS_NFT)
                 : selectedAsset
-                  ? getLocale('braveWalletButtonSaveChanges')
-                  : getLocale('braveWalletWatchListAdd')}
+                  ? getLocale(S.BRAVE_WALLET_BUTTON_SAVE_CHANGES)
+                  : getLocale(S.BRAVE_WALLET_WATCH_LIST_ADD)}
             </Button>
           </Row>
         </Tooltip>

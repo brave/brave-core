@@ -106,7 +106,7 @@ export const SelectAccount = (props: SelectAccountProps) => {
     return (
       <>
         <DialogTitle slot='title'>
-          {getLocale('braveWalletSelectAccount')}
+          {getLocale(S.BRAVE_WALLET_SELECT_ACCOUNT)}
         </DialogTitle>
 
         <ScrollableColumn

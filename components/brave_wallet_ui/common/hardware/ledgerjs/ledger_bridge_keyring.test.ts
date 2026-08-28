@@ -69,7 +69,7 @@ test('unlock bridge error123', async () => {
   let result: HardwareOperationResult = await keyring.unlock()
   let expectedResult: HardwareOperationResult = {
     success: false,
-    error: getLocale('braveWalletBridgeNotReady'),
+    error: getLocale(S.BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR),
     code: 0,
   }
   expect(result).toEqual(expectedResult)
@@ -78,7 +78,7 @@ test('unlock bridge error123', async () => {
   result = await keyring.unlock()
   expectedResult = {
     success: false,
-    error: getLocale('braveWalletBridgeCommandInProgress'),
+    error: getLocale(S.BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR),
     code: 1,
   }
   expect(result).toEqual(expectedResult)

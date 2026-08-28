@@ -44,19 +44,21 @@ export const GettingStarted = () => {
       fullWidth={true}
       gap='32px'
     >
-      <Title>{getLocale('braveWalletLetsGetStarted')}</Title>
+      <Title>{getLocale(S.BRAVE_WALLET_LETS_GET_STARTED)}</Title>
       <CardsWrapper gap='16px'>
         <Card onClick={onClickBuyCrypto}>
           <Icon name='coins-alt1' />
           <Column alignItems='flex-start'>
             <CardTitle textAlign='left'>
-              {getLocale('braveWalletBuyCryptoButton')}
+              {getLocale(S.BRAVE_WALLET_BUY_CRYPTO_BUTTON)}
             </CardTitle>
             <CardDescription
               textColor='tertiary'
               textAlign='left'
             >
-              {getLocale('braveWalletLetsGetStartedBuyCryptoDescription')}
+              {getLocale(
+                S.BRAVE_WALLET_LETS_GET_STARTED_BUY_CRYPTO_DESCRIPTION,
+              )}
             </CardDescription>
           </Column>
         </Card>
@@ -64,13 +66,15 @@ export const GettingStarted = () => {
           <Icon name='qr-code-alternative' />
           <Column alignItems='flex-start'>
             <CardTitle textAlign='left'>
-              {getLocale('braveWalletDepositFundsTitle')}
+              {getLocale(S.BRAVE_WALLET_DEPOSIT_FUNDS_TITLE)}
             </CardTitle>
             <CardDescription
               textColor='tertiary'
               textAlign='left'
             >
-              {getLocale('braveWalletLetsGetStartedDepositCryptoDescription')}
+              {getLocale(
+                S.BRAVE_WALLET_LETS_GET_STARTED_DEPOSIT_CRYPTO_DESCRIPTION,
+              )}
             </CardDescription>
           </Column>
         </Card>

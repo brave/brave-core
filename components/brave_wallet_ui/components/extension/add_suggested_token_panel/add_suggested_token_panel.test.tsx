@@ -34,22 +34,22 @@ describe('AddSuggestedTokenPanel', () => {
 
       // Panel Title
       expect(
-        screen.getByText('braveWalletAddSuggestedTokenTitle'),
+        screen.getByText(S.BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE),
       ).toBeInTheDocument()
 
       // Panel Description
       expect(
-        screen.getByText('braveWalletAddSuggestedTokenDescription'),
+        screen.getByText(S.BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION),
       ).toBeInTheDocument()
 
       // Token Description
       expect(
-        screen.getByText('braveWalletPortfolioAssetNetworkDescription'),
+        screen.getByText(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION),
       ).toBeInTheDocument()
 
       // Buttons
-      expect(screen.getByText('braveWalletButtonCancel')).toBeInTheDocument()
-      expect(screen.getByText('braveWalletAddToken')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_BUTTON_CANCEL)).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_ADD_TOKEN)).toBeInTheDocument()
     })
   })
 })

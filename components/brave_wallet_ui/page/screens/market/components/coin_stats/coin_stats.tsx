@@ -45,13 +45,13 @@ export const CoinStats = (props: Props) => {
         variant='default.semibold'
         textAlign='left'
       >
-        {getLocale('braveWalletInformation')}
+        {getLocale(S.BRAVE_WALLET_INFORMATION)}
       </DividerText>
       <SubDivider />
       <Row>
         <StatWrapper>
           <StatValue>{marketCapRank}</StatValue>
-          <StatLabel>{getLocale('braveWalletRankStat')}</StatLabel>
+          <StatLabel>{getLocale(S.BRAVE_WALLET_RANK_STAT)}</StatLabel>
         </StatWrapper>
 
         <StatWrapper>
@@ -59,7 +59,7 @@ export const CoinStats = (props: Props) => {
             <Currency>$</Currency>
             {formattedVolume}
           </StatValue>
-          <StatLabel>{getLocale('braveWalletVolumeStat')}</StatLabel>
+          <StatLabel>{getLocale(S.BRAVE_WALLET_VOLUME_STAT)}</StatLabel>
         </StatWrapper>
 
         <StatWrapper>
@@ -67,7 +67,7 @@ export const CoinStats = (props: Props) => {
             <Currency>$</Currency>
             {formattedMarketCap}
           </StatValue>
-          <StatLabel>{getLocale('braveWalletMarketCapStat')}</StatLabel>
+          <StatLabel>{getLocale(S.BRAVE_WALLET_MARKET_CAP_STAT)}</StatLabel>
         </StatWrapper>
       </Row>
     </StyledWrapper>

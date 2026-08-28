@@ -195,7 +195,7 @@ export const ConnectWithSite = (props: Props) => {
                       <AddAcountIcon name='plus-add' />
                     </IconCircle>
                     <AddAccountText variant='default.semibold'>
-                      {getLocale('braveWalletAddAccount')}
+                      {getLocale(S.BRAVE_WALLET_ADD_ACCOUNT)}
                     </AddAccountText>
                   </Row>
                   <AddAcountIcon name='arrow-right' />
@@ -209,7 +209,7 @@ export const ConnectWithSite = (props: Props) => {
                   variant='default.semibold'
                   textColor='primary'
                 >
-                  {getLocale('braveWalletConnectWithSite')}
+                  {getLocale(S.BRAVE_WALLET_CONNECT_WITH_SITE)}
                 </Text>
               </Row>
               {accountsToConnect.map((account) => (
@@ -247,11 +247,11 @@ export const ConnectWithSite = (props: Props) => {
                 variant='small.semibold'
                 textAlign='left'
               >
-                {getLocale('braveWalletPermissionDuration')}
+                {getLocale(S.BRAVE_WALLET_PERMISSION_DURATION)}
               </SectionLabel>
               {isPrivateWindow ? (
                 <DurationLabel>
-                  {getLocale('braveWalletPermissionUntilClose')}
+                  {getLocale(S.BRAVE_WALLET_PERMISSION_UNTIL_CLOSE)}
                 </DurationLabel>
               ) : (
                 <PermissionDurationDropdown
@@ -266,7 +266,7 @@ export const ConnectWithSite = (props: Props) => {
                 variant='small.semibold'
                 textAlign='left'
               >
-                {getLocale('braveWalletConnectPermittedLabel')}
+                {getLocale(S.BRAVE_WALLET_CONNECT_PERMITTED_LABEL)}
               </SectionLabel>
               {DAppPermittedOptions.map(
                 (option: DAppConnectedPermissionsOption, index) => (
@@ -302,7 +302,7 @@ export const ConnectWithSite = (props: Props) => {
                 variant='small.semibold'
                 textAlign='left'
               >
-                {getLocale('braveWalletConnectNotPermittedLabel')}
+                {getLocale(S.BRAVE_WALLET_CONNECT_NOT_PERMITTED_LABEL)}
               </SectionLabel>
               {DAppNotPermittedOptions.map(
                 (option: DAppConnectedPermissionsOption, index) => (
@@ -346,7 +346,7 @@ export const ConnectWithSite = (props: Props) => {
           kind='outline'
           onClick={onCancel}
         >
-          {getLocale('braveWalletButtonCancel')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
         </NavButton>
         <HorizontalSpace space='16px' />
         <NavButton
@@ -356,8 +356,8 @@ export const ConnectWithSite = (props: Props) => {
           onClick={onNext}
         >
           {isReadyToConnect
-            ? getLocale('braveWalletAddAccountConnect')
-            : getLocale('braveWalletConnectWithSiteNext')}
+            ? getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_CONNECT)
+            : getLocale(S.BRAVE_WALLET_CONNECT_WITH_SITE_NEXT)}
         </NavButton>
       </ButtonRow>
     </StyledWrapper>

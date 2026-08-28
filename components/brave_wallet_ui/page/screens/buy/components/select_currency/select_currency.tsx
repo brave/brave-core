@@ -74,7 +74,7 @@ export const CurrencyListItem = ({
         gap='16px'
       >
         {isSelected && (
-          <SelectedLabel>{getLocale('braveWalletSelected')}</SelectedLabel>
+          <SelectedLabel>{getLocale(S.BRAVE_WALLET_SELECTED)}</SelectedLabel>
         )}
         <CurrencyCode>{currency.currencyCode}</CurrencyCode>
       </Row>
@@ -116,14 +116,14 @@ export const SelectCurrency = (props: SelectCurrencyProps) => {
     return (
       <>
         <DialogTitle slot='title'>
-          {getLocale('braveWalletSelectCurrency')}
+          {getLocale(S.BRAVE_WALLET_SELECT_CURRENCY)}
         </DialogTitle>
         <Row
           padding='24px 0 0 0'
           slot='subtitle'
         >
           <SearchInput
-            placeholder={getLocale('braveWalletSearchCurrency')}
+            placeholder={getLocale(S.BRAVE_WALLET_SEARCH_CURRENCY)}
             onInput={(e) => setSearchText(e.value)}
           >
             <Icon
@@ -142,7 +142,7 @@ export const SelectCurrency = (props: SelectCurrencyProps) => {
               justifyContent='center'
               alignItems='center'
             >
-              {getLocale('braveWalletNoAvailableCurrencies')}
+              {getLocale(S.BRAVE_WALLET_NO_AVAILABLE_CURRENCIES)}
             </Row>
           ) : (
             <ScrollableColumn>

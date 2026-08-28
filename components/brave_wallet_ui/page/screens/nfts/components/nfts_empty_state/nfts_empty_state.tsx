@@ -34,13 +34,17 @@ export const NftsEmptyState = ({ onImportNft }: Props) => {
       <EmptyStateImage
         src={isDarkMode ? EmptyStateGraphicDark : EmptyStateGraphicLight}
       />
-      <Heading>{getLocale('braveNftsTabEmptyStateHeading')}</Heading>
-      <SubHeading>{getLocale('braveNftsTabEmptyStateSubHeading')}</SubHeading>
+      <Heading>
+        {getLocale(S.BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_HEADING)}
+      </Heading>
+      <SubHeading>
+        {getLocale(S.BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING)}
+      </SubHeading>
       <ImportButton onClick={onImportNft}>
-        {getLocale('braveNftsTabImportNft')}
+        {getLocale(S.BRAVE_WALLET_NFTS_TAB_IMPORT_NFT)}
       </ImportButton>
       <DisclaimerText>
-        {getLocale('braveNftsTabEmptyStateDisclaimer')}
+        {getLocale(S.BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER)}
       </DisclaimerText>
     </StyledWrapper>
   )

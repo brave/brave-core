@@ -7,13 +7,13 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "brave/ios/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
@@ -32,7 +32,7 @@ UntrustedMarketUI::UntrustedMarketUI(web::WebUIIOS* web_ui, const GURL& url)
                                          kMarketDisplayGenerated,
                                          IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
 
-  untrusted_source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
+  untrusted_source->AddLocalizedStrings(webui::kWalletStrings);
 
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
 

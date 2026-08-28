@@ -308,8 +308,8 @@ export const OnboardingNetworkSelection = () => {
   // render
   return (
     <OnboardingContentLayout
-      title={getLocale('braveWalletSupportedNetworks')}
-      subTitle={getLocale('braveWalletChooseChainsToUse')}
+      title={getLocale(S.BRAVE_WALLET_SUPPORTED_NETWORKS)}
+      subTitle={getLocale(S.BRAVE_WALLET_CHOOSE_CHAINS_TO_USE)}
       padding='44px 0 0'
     >
       <Column
@@ -338,7 +338,7 @@ export const OnboardingNetworkSelection = () => {
               isBold={false}
               color={leo.color.text.primary}
             >
-              {getLocale('braveWalletShowTestnets')}
+              {getLocale(S.BRAVE_WALLET_SHOW_TESTNETS)}
             </Text>
           </Checkbox>
         </Row>
@@ -359,7 +359,7 @@ export const OnboardingNetworkSelection = () => {
               <>
                 {filteredFeaturedNetworks.length > 0 ? (
                   <GroupingText>
-                    {getLocale('braveWalletFeatured')}
+                    {getLocale(S.BRAVE_WALLET_FEATURED)}
                   </GroupingText>
                 ) : null}
 
@@ -379,7 +379,9 @@ export const OnboardingNetworkSelection = () => {
                   alignItems='center'
                   justifyContent='space-between'
                 >
-                  <GroupingText>{getLocale('braveWalletPopular')}</GroupingText>
+                  <GroupingText>
+                    {getLocale(S.BRAVE_WALLET_POPULAR)}
+                  </GroupingText>
                   {networks && (
                     <SelectAllText
                       onClick={() => {
@@ -392,8 +394,8 @@ export const OnboardingNetworkSelection = () => {
                     >
                       {getLocale(
                         areAllChainsSelected
-                          ? 'braveWalletDeselectAll'
-                          : 'braveWalletSelectAll',
+                          ? S.BRAVE_WALLET_DESELECT_ALL
+                          : S.BRAVE_WALLET_SELECT_ALL,
                       )}
                     </SelectAllText>
                   )}
@@ -421,7 +423,7 @@ export const OnboardingNetworkSelection = () => {
           disabled={visibleSelectedChainIds.length === 0}
         >
           {visibleSelectedChainIds.length
-            ? getLocale('braveWalletContinueWithXItems')
+            ? getLocale(S.BRAVE_WALLET_CONTINUE_WITH_X_ITEMS)
                 .replace(
                   '$1', // Number of items
                   visibleSelectedChainIds.length.toString(),
@@ -429,14 +431,14 @@ export const OnboardingNetworkSelection = () => {
                 .replace(
                   '$2', // Item name (maybe plural)
                   visibleSelectedChainIds.length > 1
-                    ? getLocale('braveWalletNetworks')
-                    : getLocale('braveWalletAllowAddNetworkNetworkPanelTitle'),
+                    ? getLocale(S.BRAVE_WALLET_NETWORKS)
+                    : getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE),
                 )
-            : getLocale('braveWalletButtonContinue')}
+            : getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </NextButtonRow>
       <MutedLinkText onClick={openNetworkSettings}>
-        {getLocale('braveWalletAddNetworksAnytimeInSettings')}
+        {getLocale(S.BRAVE_WALLET_ADD_NETWORKS_ANYTIME_IN_SETTINGS)}
       </MutedLinkText>
     </OnboardingContentLayout>
   )

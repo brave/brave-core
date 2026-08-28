@@ -31,11 +31,11 @@ export const ActivityPageHeader = (props: Props) => {
         textColor='primary'
         variant='heading.h1'
       >
-        {getLocale('braveWalletActivity')}
+        {getLocale(S.BRAVE_WALLET_ACTIVITY)}
       </HeaderTitle>
       <SearchBarWrapper alignItems='flex-start'>
         <SearchBar
-          placeholder={getLocale('braveWalletSearchText')}
+          placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
           action={onSearchValueChange}
           value={searchValue}
           isV2={true}

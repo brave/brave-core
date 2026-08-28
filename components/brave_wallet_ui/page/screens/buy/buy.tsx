@@ -125,7 +125,7 @@ export const Buy = () => {
   )
   const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const isStorybook = isComponentInStorybook()
-  const pageTitle = getLocale('braveWalletBuyAsset').replace(
+  const pageTitle = getLocale(S.BRAVE_WALLET_BUY_ASSET).replace(
     '$1',
     getAssetSymbol(selectedMeldAsset),
   )
@@ -164,17 +164,17 @@ export const Buy = () => {
         >
           <ControlPanel width='100%'>
             <SelectAssetButton
-              labelText={getLocale('braveWalletAsset')}
+              labelText={getLocale(S.BRAVE_WALLET_ASSETS)}
               selectedAsset={selectedMeldAsset}
               onClick={() => setIsAssetDialogOpen(true)}
             />
             <SelectAccountButton
-              labelText={getLocale('braveWalletSubviewAccount')}
+              labelText={getLocale(S.BRAVE_WALLET_SUBVIEW_ACCOUNT)}
               selectedAccount={selectedAccount}
               onClick={() => setIsAccountDialogOpen(true)}
             />
             <AmountButton
-              labelText={getLocale('braveWalletSwapFrom')}
+              labelText={getLocale(S.BRAVE_WALLET_SWAP_FROM)}
               currencyCode={
                 selectedCurrency?.currencyCode || defaultFiatCurrency
               }
@@ -199,7 +199,7 @@ export const Buy = () => {
             >
               <SearchBarWrapper width='100%'>
                 <SearchInput
-                  placeholder={getLocale('braveWalletSearchText')}
+                  placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
                   value={searchTerm}
                   onInput={(e) => onSearch(e.value)}
                   size='small'
@@ -274,7 +274,7 @@ export const Buy = () => {
               >
                 <Loader />
                 <LoaderText>
-                  {getLocale('braveWalletGettingBestPrices')}
+                  {getLocale(S.BRAVE_WALLET_GETTING_BEST_PRICES)}
                 </LoaderText>
               </Column>
             ) : (
@@ -293,7 +293,7 @@ export const Buy = () => {
                       textColor='primary'
                       isBold={true}
                     >
-                      {getLocale('braveWalletNoProviderFound').replace(
+                      {getLocale(S.BRAVE_WALLET_NO_PROVIDER_FOUND).replace(
                         '$1',
                         getAssetSymbol(selectedMeldAsset),
                       )}
@@ -303,7 +303,9 @@ export const Buy = () => {
                       textColor='secondary'
                       isBold={false}
                     >
-                      {getLocale('braveWalletTrySearchingForDifferentAsset')}
+                      {getLocale(
+                        S.BRAVE_WALLET_TRY_SEARCHING_FOR_DIFFERENT_ASSET,
+                      )}
                     </Text>
                   </Column>
                 ) : (
@@ -322,7 +324,7 @@ export const Buy = () => {
                           textColor='primary'
                           isBold={true}
                         >
-                          {getLocale('braveWalletNoResultsFound').replace(
+                          {getLocale(S.BRAVE_WALLET_NO_RESULTS_FOUND).replace(
                             '$1',
                             searchTerm,
                           )}
@@ -332,7 +334,7 @@ export const Buy = () => {
                           textColor='secondary'
                           isBold={false}
                         >
-                          {getLocale('braveWalletTryDifferentKeywords')}
+                          {getLocale(S.BRAVE_WALLET_TRY_DIFFERENT_KEYWORDS)}
                         </Text>
                       </Column>
                     ) : (

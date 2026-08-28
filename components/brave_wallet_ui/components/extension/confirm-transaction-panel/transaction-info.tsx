@@ -88,8 +88,8 @@ export const TransactionInfo = ({
     || isZCashTransaction
     || isBitcoinTransaction
     || isCardanoTransaction
-      ? 'braveWalletConfirmTransactionTransactionFee'
-      : 'braveWalletConfirmTransactionGasFee'
+      ? S.BRAVE_WALLET_CONFIRM_TRANSACTION_TRANSACTION_FEE
+      : S.BRAVE_WALLET_CONFIRM_TRANSACTION_GAS_FEE
 
   const memoText = String.fromCharCode(...(transactionDetails.zcashMemo ?? []))
 
@@ -104,7 +104,7 @@ export const TransactionInfo = ({
                 textColor='secondary'
                 variant='small.semibold'
               >
-                {getLocale('braveWalletTransactionGasPremium')}
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_GAS_PREMIUM)}
               </Text>
               <TransactionTypeText
                 textColor='tertiary'
@@ -124,7 +124,7 @@ export const TransactionInfo = ({
                 textColor='secondary'
                 variant='small.semibold'
               >
-                {getLocale('braveWalletTransactionGasLimit')}
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_GAS_LIMIT)}
               </Text>
               <TransactionTypeText
                 textColor='tertiary'
@@ -144,7 +144,7 @@ export const TransactionInfo = ({
                 textColor='secondary'
                 variant='small.semibold'
               >
-                {getLocale('braveWalletTransactionGasFeeCap')}
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_GAS_FEE_CAP)}
               </Text>
               <TransactionTypeText
                 textColor='tertiary'
@@ -166,14 +166,14 @@ export const TransactionInfo = ({
           >
             {getLocale(
               isERC20Approve
-                ? 'braveWalletAllowSpendTransactionFee'
+                ? S.BRAVE_WALLET_ALLOW_SPEND_TRANSACTION_FEE
                 : feeLocale,
             )}
           </Text>
 
           {onToggleEditGas && (
             <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
+              {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON)}
             </EditButton>
           )}
         </SectionRow>
@@ -184,7 +184,7 @@ export const TransactionInfo = ({
           textColor='error'
           variant='small.regular'
         >
-          {getLocale('braveWalletTransactionHasFeeEstimatesError')}
+          {getLocale(S.BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR)}
         </TransactionText>
       ) : isLoadingGasFee ? (
         <FeeSkeleton />
@@ -225,7 +225,7 @@ export const TransactionInfo = ({
               textColor='secondary'
               variant='small.semibold'
             >
-              {getLocale('braveWalletConfirmTransactionTotal')}{' '}
+              {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL)}{' '}
               {!isFilecoinTransaction && getLocale(feeLocale)}
             </Text>
           </WarningBoxTitleRow>
@@ -240,7 +240,7 @@ export const TransactionInfo = ({
               textColor='error'
               variant='small.regular'
             >
-              {getLocale('braveWalletTransactionHasFeeEstimatesError')}
+              {getLocale(S.BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR)}
             </TransactionText>
           ) : isLoadingGasFee ? (
             <FeeSkeleton />
@@ -277,7 +277,7 @@ export const TransactionInfo = ({
           textColor='error'
           variant='small.regular'
         >
-          {getLocale('braveWalletSwapInsufficientFundsForGas')}
+          {getLocale(S.BRAVE_WALLET_SWAP_INSUFFICIENT_FUNDS_FOR_GAS)}
         </TransactionText>
       )}
       {!insufficientFundsForGasError && insufficientFundsError && (
@@ -285,7 +285,7 @@ export const TransactionInfo = ({
           textColor='error'
           variant='small.regular'
         >
-          {getLocale('braveWalletSwapInsufficientBalance')}
+          {getLocale(S.BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE)}
         </TransactionText>
       )}
 
@@ -297,14 +297,14 @@ export const TransactionInfo = ({
             textColor='secondary'
             variant='small.semibold'
           >
-            {getLocale('braveWalletAllowSpendCurrentAllowance')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CURRENT_ALLOWANCE)}
           </Text>
           <TransactionTypeText
             textColor='tertiary'
             variant='small.semibold'
           >
             {isCurrentAllowanceUnlimited
-              ? getLocale('braveWalletTransactionApproveUnlimited')
+              ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
               : currentTokenAllowance}{' '}
             {transactionDetails.symbol}
           </TransactionTypeText>
@@ -315,14 +315,14 @@ export const TransactionInfo = ({
             textColor='secondary'
             variant='small.semibold'
           >
-            {getLocale('braveWalletAllowSpendProposedAllowance')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_PROPOSED_ALLOWANCE)}
           </Text>
           <TransactionTypeText
             textColor='tertiary'
             variant='small.semibold'
           >
             {transactionDetails.isApprovalUnlimited
-              ? getLocale('braveWalletTransactionApproveUnlimited')
+              ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
               : new Amount(transactionDetails.valueExact).formatAsAsset(
                   undefined,
                   transactionDetails.symbol,
@@ -338,7 +338,7 @@ export const TransactionInfo = ({
             textColor='secondary'
             variant='small.semibold'
           >
-            {getLocale('braveWalletMemo')}
+            {getLocale(S.BRAVE_WALLET_MEMO)}
           </Text>
           <TransactionTypeText
             textColor='tertiary'

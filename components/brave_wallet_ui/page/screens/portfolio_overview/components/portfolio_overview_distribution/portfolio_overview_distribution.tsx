@@ -124,7 +124,7 @@ export function PortfolioOverviewDistribution({ data }: Props) {
       alignItems='flex-start'
     >
       <Title textColor='tertiary'>
-        {getLocale('braveWalletPortfolioAssetsDistributionTitle')}
+        {getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSETS_DISTRIBUTION_TITLE)}
       </Title>
       <Row
         gap='8px'
@@ -139,7 +139,7 @@ export function PortfolioOverviewDistribution({ data }: Props) {
           const label =
             item.kind === 'asset'
               ? item.token.symbol
-              : getLocale('braveWalletTransactionTypeNameOther')
+              : getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER)
           const percentage = item.value.toFixed()
           return (
             <Segment

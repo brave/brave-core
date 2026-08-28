@@ -68,21 +68,21 @@ export const EditAllowance = (props: Props) => {
 
   const formattedProposedAllowance = React.useMemo(() => {
     return isApprovalUnlimited
-      ? getLocale('braveWalletTransactionApproveUnlimited')
+      ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
       : proposedAllowance
   }, [proposedAllowance, isApprovalUnlimited])
 
   return (
     <Panel
       navAction={onCancel}
-      title={getLocale('braveWalletEditPermissionsTitle')}
+      title={getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_TITLE)}
     >
       <StyledWrapper>
         <Description
           textColor='secondary'
           variant='small.regular'
         >
-          {getLocale('braveWalletEditPermissionsDescription').replace(
+          {getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_DESCRIPTION).replace(
             '$1',
             approvalTarget,
           )}
@@ -101,7 +101,9 @@ export const EditAllowance = (props: Props) => {
                   textColor='primary'
                   variant='small.regular'
                 >
-                  {getLocale('braveWalletEditPermissionsProposedAllowance')}
+                  {getLocale(
+                    S.BRAVE_WALLET_EDIT_PERMISSIONS_PROPOSED_ALLOWANCE,
+                  )}
                 </AllowanceTitle>
                 <Text
                   textColor='primary'
@@ -117,7 +119,7 @@ export const EditAllowance = (props: Props) => {
                   textColor='primary'
                   variant='small.regular'
                 >
-                  {getLocale('braveWalletEditPermissionsCustomAllowance')}
+                  {getLocale(S.BRAVE_WALLET_EDIT_PERMISSIONS_CUSTOM_ALLOWANCE)}
                 </AllowanceTitle>
                 <Input
                   placeholder={`0 ${symbol}`}
@@ -133,12 +135,12 @@ export const EditAllowance = (props: Props) => {
         <ButtonRow>
           <NavButton
             buttonType='secondary'
-            text={getLocale('braveWalletButtonCancel')}
+            text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
             onSubmit={onCancel}
           />
           <NavButton
             buttonType='primary'
-            text={getLocale('braveWalletAccountSettingsSave')}
+            text={getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE)}
             onSubmit={onClickSave}
             disabled={isSaveButtonDisabled}
           />

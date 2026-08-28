@@ -31,7 +31,7 @@ export const ExploreWeb3Header = () => {
 
   return isPanel || isMobile ? (
     <DefaultPanelHeader
-      title={getLocale('braveWalletTopNavExplore')}
+      title={getLocale(S.BRAVE_WALLET_TOP_NAV_EXPLORE)}
       expandRoute={WalletRoutes.Explore}
     />
   ) : (
@@ -43,7 +43,7 @@ export const ExploreWeb3Header = () => {
         textColor='primary'
         variant='heading.h1'
       >
-        {getLocale('braveWalletTopNavExplore')}
+        {getLocale(S.BRAVE_WALLET_TOP_NAV_EXPLORE)}
       </HeaderTitle>
     </Row>
   )

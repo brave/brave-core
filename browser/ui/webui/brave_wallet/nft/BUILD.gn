@@ -18,6 +18,7 @@ source_set("nft") {
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings",
     "//chrome/browser/profiles",
     "//content/public/browser",
     "//ui/webui",

@@ -176,7 +176,7 @@ export const NetworkFilterSelector = ({
                 variant='small.regular'
                 textAlign='left'
               >
-                {getLocale('braveWalletNetworkFilterSecondary')}
+                {getLocale(S.BRAVE_WALLET_NETWORK_FILTER_SECONDARY)}
               </SecondaryNetworkText>
               {secondaryNetworks.map((network) => (
                 <NetworkFilterItem
@@ -200,7 +200,7 @@ export const NetworkFilterSelector = ({
                 variant='small.regular'
                 textAlign='left'
               >
-                {getLocale('braveWalletNetworkFilterTestNetworks')}
+                {getLocale(S.BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS)}
               </SecondaryNetworkText>
               {testNetworks.map((network) => (
                 <NetworkFilterItem

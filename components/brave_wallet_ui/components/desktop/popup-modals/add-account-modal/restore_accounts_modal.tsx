@@ -67,7 +67,7 @@ export const RestoreAccountsModal = () => {
 
   return (
     <PopupModal
-      title={getLocale('braveWalletAccountsRestore')}
+      title={getLocale(S.BRAVE_WALLET_ACCOUNTS_RESTORE)}
       onClose={onClose}
       width='480px'
     >
@@ -119,14 +119,14 @@ export const RestoreAccountsModal = () => {
             kind='plain-faint'
             onClick={onClose}
           >
-            {getLocale('braveWalletButtonCancel')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
           </Button>
           <Button
             kind='filled'
             isDisabled={selectedAccountKeys.size === 0}
             onClick={onRestoreSelectedAccounts}
           >
-            {getLocale('braveWalletAccountsRestore')}
+            {getLocale(S.BRAVE_WALLET_ACCOUNTS_RESTORE)}
           </Button>
         </FooterRow>
       </ContentColumn>

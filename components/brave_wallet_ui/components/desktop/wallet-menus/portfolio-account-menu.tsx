@@ -34,18 +34,18 @@ export const PortfolioAccountMenu = (props: Props) => {
       {onClickSell && (
         <leo-menu-item onClick={onClickSell}>
           <Icon name='usd-circle' />
-          {getLocale('braveWalletSell')}
+          {getLocale(S.BRAVE_WALLET_SELL)}
         </leo-menu-item>
       )}
       {onClickViewOnExplorer && (
         <leo-menu-item onClick={onClickViewOnExplorer}>
           <Icon name='launch' />
-          {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+          {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL)}
         </leo-menu-item>
       )}
       <leo-menu-item onClick={onClickDeposit}>
         <Icon name='money-bag-coins' />
-        {getLocale('braveWalletDepositCryptoButton')}
+        {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
       </leo-menu-item>
     </ButtonMenu>
   )

@@ -33,7 +33,7 @@ export const AutoDiscoveryEmptyState = ({
   onRefresh,
 }: Props) => {
   const emptyStateActions = formatLocale(
-    'braveWalletAutoDiscoveryEmptyStateActions',
+    S.BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_ACTIONS,
     {
       $1: (content) => (
         <ActionButton onClick={onRefresh}>{content}</ActionButton>
@@ -54,19 +54,19 @@ export const AutoDiscoveryEmptyState = ({
             textColor='secondary'
             variant='default.regular'
           >
-            {getLocale('braveWalletAutoDiscoveryEmptyStateRefresh')}...
+            {getLocale(S.BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH)}...
           </Text>
         </>
       ) : (
         <>
           <Heading>
-            {getLocale('braveWalletAutoDiscoveryEmptyStateHeading')}
+            {getLocale(S.BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_HEADING)}
           </Heading>
           <Text
             textColor='tertiary'
             variant='small.regular'
           >
-            {getLocale('braveWalletAutoDiscoveryEmptyStateSubHeading')}
+            {getLocale(S.BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_SUB_HEADING)}
           </Text>
           <Row
             margin='48px 0 8px 0'
@@ -76,7 +76,7 @@ export const AutoDiscoveryEmptyState = ({
               textColor='tertiary'
               variant='small.regular'
             >
-              {getLocale('braveWalletAutoDiscoveryEmptyStateFooter')}
+              {getLocale(S.BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_FOOTER)}
             </Text>
           </Row>
           <Text

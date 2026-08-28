@@ -32,13 +32,13 @@ const PasswordStrengthDetails = ({
   return (
     <>
       <PasswordStrengthHeading>
-        {getLocale('braveWalletPasswordStrengthTooltipHeading')}
+        {getLocale(S.BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING)}
       </PasswordStrengthHeading>
 
       <CriteriaCheckContainer>
         {isLongEnough ? <GreenCheckmarkIcon /> : <CloseCircleIcon />}
         <PasswordStrengthText isStrong={isLongEnough}>
-          {getLocale('braveWalletPasswordStrengthTooltipIsLongEnough')}
+          {getLocale(S.BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH)}
         </PasswordStrengthText>
       </CriteriaCheckContainer>
     </>

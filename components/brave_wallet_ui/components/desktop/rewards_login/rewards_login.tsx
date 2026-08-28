@@ -35,7 +35,7 @@ export const RewardsLogin = ({ provider }: Props) => {
   // Computed
   const providerName = getRewardsProviderName(provider)
   const loginDescription = getLocale(
-    'braveWalletBraveRewardsLoggedOutDescription',
+    S.BRAVE_WALLET_BRAVE_REWARDS_LOGGED_OUT_DESCRIPTION,
   ).replace('$1', providerName)
 
   // Methods
@@ -74,7 +74,7 @@ export const RewardsLogin = ({ provider }: Props) => {
           kind='plain'
           size='tiny'
         >
-          {getLocale('braveWalletLogIn')}
+          {getLocale(S.BRAVE_WALLET_LOG_IN)}
         </Button>
       </ButtonWrapper>
     </LoginWrapper>

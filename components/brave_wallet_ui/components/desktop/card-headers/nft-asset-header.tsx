@@ -70,7 +70,9 @@ export const NftAssetHeader = ({
         </HeaderTitle>
       </Row>
       {onSend && (
-        <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>
+        <SendButton onClick={onSend}>
+          {getLocale(S.BRAVE_WALLET_SEND)}
+        </SendButton>
       )}
     </Row>
   )

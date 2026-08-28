@@ -40,7 +40,7 @@ export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
           textAlign='left'
           isBold={false}
         >
-          {getLocale('braveWalletOrdinalsWarningMessage')}
+          {getLocale(S.BRAVE_WALLET_ORDINALS_WARNING_MESSAGE)}
         </Text>
         <CheckboxWrapper>
           <Checkbox
@@ -53,7 +53,7 @@ export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
               textAlign='left'
               isBold={false}
             >
-              {getLocale('braveWalletUserUnderstandsLabel')}
+              {getLocale(S.BRAVE_WALLET_USER_UNDERSTANDS_LABEL)}
             </Text>
           </Checkbox>
         </CheckboxWrapper>

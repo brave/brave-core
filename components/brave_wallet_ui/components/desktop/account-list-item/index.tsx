@@ -353,7 +353,7 @@ export const AccountListItem = ({
         ? {
             ...option,
             id: 'hide',
-            name: 'braveWalletAccountsHide',
+            name: S.BRAVE_WALLET_ACCOUNTS_HIDE,
             icon: 'eye-off',
           }
         : option,
@@ -423,7 +423,7 @@ export const AccountListItem = ({
                     <>
                       <VerticalSpacer space='4px' />
                       <BraveRewardsIndicator>
-                        {getLocale('braveWalletBraveRewardsTitle')}
+                        {getLocale(S.BRAVE_WALLET_BRAVE_REWARDS_TITLE)}
                       </BraveRewardsIndicator>
                       <VerticalSpacer space='4px' />
                     </>
@@ -457,7 +457,7 @@ export const AccountListItem = ({
                       textColor='warning'
                       variant='default.regular'
                     >
-                      {getLocale('braveWalletOutOfSyncTitle')}
+                      {getLocale(S.BRAVE_WALLET_OUT_OF_SYNC_TITLE)}
                     </Text>
                   </Row>
                 )}

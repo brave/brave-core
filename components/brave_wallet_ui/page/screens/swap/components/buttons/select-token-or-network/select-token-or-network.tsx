@@ -110,7 +110,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
                 : '18px'
             }
           >
-            {text ?? getLocale('braveSwapSelectToken')}
+            {text ?? getLocale(S.BRAVE_SWAP_SELECT_TOKEN)}
           </Text>
         </HiddenResponsiveRow>
       </Row>

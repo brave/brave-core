@@ -187,7 +187,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 <>
                   <VerticalSpacer space='6px' />
                   <BraveRewardsIndicator>
-                    {getLocale('braveWalletBraveRewardsTitle')}
+                    {getLocale(S.BRAVE_WALLET_BRAVE_REWARDS_TITLE)}
                   </BraveRewardsIndicator>
                 </>
               )}
@@ -249,7 +249,7 @@ export const PortfolioAccountItem = (props: Props) => {
 
       {showDepositModal && (
         <PopupModal
-          title={getLocale('braveWalletDepositCryptoButton')}
+          title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
           onClose={() => setShowDepositModal(false)}
           ref={depositModalRef}
         >

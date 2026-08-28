@@ -43,12 +43,15 @@ export const AccountsMenu = ({ children, hiddenAccounts }: Props) => {
       {children}
       {CreateAccountOptions.filter((option) => {
         // Filter out hardware wallet item on Android.
-        if (isMobile && option.name === 'braveWalletConnectHardwareWallet') {
+        if (
+          isMobile
+          && option.name === S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET
+        ) {
           return false
         }
         // Show restore route only when we have hidden accounts.
         if (
-          option.name === 'braveWalletWelcomeRestoreButton'
+          option.name === S.BRAVE_WALLET_WELCOME_RESTORE_BUTTON
           && hiddenAccounts.length === 0
         ) {
           return false

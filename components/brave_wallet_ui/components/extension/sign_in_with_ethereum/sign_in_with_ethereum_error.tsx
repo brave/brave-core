@@ -89,7 +89,7 @@ export const SignInWithEthereumError = () => {
     >
       <Row padding='18px 0px'>
         <ErrorTitle textColor='primary'>
-          {getLocale('braveWalletSecurityRiskDetected')}
+          {getLocale(S.BRAVE_WALLET_SECURITY_RISK_DETECTED)}
         </ErrorTitle>
       </Row>
       <ErrorBox
@@ -127,7 +127,7 @@ export const SignInWithEthereumError = () => {
       </ErrorBox>
       <Row padding='16px'>
         <Button onClick={onClickClose}>
-          {getLocale('braveWalletButtonClose')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CLOSE)}
         </Button>
       </Row>
     </ErrorWrapper>

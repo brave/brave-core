@@ -79,31 +79,33 @@ export const RecoveryPhraseExplainer = () => {
         onSkip={skipBackup}
       />
       <OnboardingContentLayout
-        title={getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+        title={getLocale(
+          S.BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE,
+        )}
         subTitle=''
         showBackButton={!isOnboarding}
       >
         <Subtitle>
           {getLocale(
-            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription',
+            S.BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION,
           )}
         </Subtitle>
         <VerticalSpace space='14px' />
         <BackupInstructions>
-          {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
+          {getLocale(S.BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT)}
         </BackupInstructions>
         <ExampleRecoveryPhrase
           src={isDarkMode ? ExamplePhraseDark : ExamplePhraseLight}
         />
         <Column gap='24px'>
           <ContinueButton onClick={onContinue}>
-            {getLocale('braveWalletButtonVerifyPhrase')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_GOT_IT)}
           </ContinueButton>
           <SkipButton
             kind='plain-faint'
             onClick={() => setIsSkipWarningOpen(true)}
           >
-            {getLocale('braveWalletButtonSkip')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_SKIP)}
           </SkipButton>
         </Column>
       </OnboardingContentLayout>

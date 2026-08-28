@@ -69,8 +69,8 @@ export const OnboardingSelectWalletDevice = () => {
   }
 
   const pageTitle = selectedHardwareWallet
-    ? getLocale('braveWalletAuthorizeHardwareWallet')
-    : getLocale('braveWalletConnectHardwareTitle')
+    ? getLocale(S.BRAVE_WALLET_AUTHORIZE_HARDWARE_WALLET)
+    : getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TITLE)
 
   return (
     <OnboardingContentLayout

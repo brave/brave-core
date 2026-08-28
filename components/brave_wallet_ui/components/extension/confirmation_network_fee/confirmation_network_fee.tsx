@@ -49,7 +49,7 @@ export function ConfirmationNetworkFee(props: Props) {
     <>
       <Row justifyContent='space-between'>
         <ConfirmationInfoLabel textColor='secondary'>
-          {getLocale('braveWalletTransactionDetailNetwork')}
+          {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_NETWORK)}
         </ConfirmationInfoLabel>
         <ConfirmationInfoLabel textColor='primary'>
           {transactionsNetwork?.chainName ?? ''}
@@ -66,7 +66,7 @@ export function ConfirmationNetworkFee(props: Props) {
             textColor='secondary'
             textAlign='left'
           >
-            {getLocale('braveWalletAllowSpendTransactionFee')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_TRANSACTION_FEE)}
           </ConfirmationInfoLabel>
           {onClickEditNetworkFee && (
             <Button
@@ -78,7 +78,7 @@ export function ConfirmationNetworkFee(props: Props) {
                 name='tune'
                 slot='icon-before'
               />
-              {getLocale('braveWalletAllowSpendEditButton')}
+              {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON)}
             </Button>
           )}
         </Column>

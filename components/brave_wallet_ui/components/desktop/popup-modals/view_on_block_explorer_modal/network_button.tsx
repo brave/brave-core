@@ -49,7 +49,7 @@ export const NetworkButton = (props: Props) => {
           textColor='primary'
           textSize='14px'
         >
-          {getLocale('braveWalletNetworkExplorer').replace(
+          {getLocale(S.BRAVE_WALLET_NETWORK_EXPLORER).replace(
             '$1',
             network.chainName,
           )}
@@ -95,7 +95,7 @@ export const PolkadotNetworkButton = (props: PolkadotNetworkButtonProps) => {
           textColor='primary'
           textSize='14px'
         >
-          {getLocale('braveWalletNetworkExplorer').replace(
+          {getLocale(S.BRAVE_WALLET_NETWORK_EXPLORER).replace(
             '$1',
             network.chainName,
           )}

@@ -40,7 +40,7 @@ export const PortfolioOverviewHeader = () => {
   return isPanel || isMobile ? (
     <DefaultPanelHeader
       expandRoute={WalletRoutes.PortfolioAssets}
-      title={getLocale('braveWalletTopNavPortfolio')}
+      title={getLocale(S.BRAVE_WALLET_TOP_NAV_PORTFOLIO)}
     />
   ) : (
     <Row
@@ -51,7 +51,7 @@ export const PortfolioOverviewHeader = () => {
         textColor='primary'
         variant='heading.h1'
       >
-        {getLocale('braveWalletTopNavPortfolio')}
+        {getLocale(S.BRAVE_WALLET_TOP_NAV_PORTFOLIO)}
       </HeaderTitle>
       {/* ToDo: Route to Add Token or Add NFT, to be handled in https://github.com/brave/brave-browser/issues/37258 */}
       <MenuButton onClick={() => history.push(WalletRoutes.AddAssetModal)}>

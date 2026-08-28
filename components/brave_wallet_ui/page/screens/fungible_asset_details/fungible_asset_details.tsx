@@ -498,33 +498,33 @@ export const FungibleAssetDetails = () => {
           <ButtonRow>
             {foundMeldBuyToken && !isRewardsToken && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletBuy')}
+                text={getLocale(S.BRAVE_WALLET_BUY)}
                 icon='coins-alt1'
                 onClick={onClickBuy}
               />
             )}
             <FungibleAssetActionButton
-              text={getLocale('braveWalletSend')}
+              text={getLocale(S.BRAVE_WALLET_SEND)}
               icon='send'
               onClick={onClickSend}
             />
             {isSwapSupported && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletSwap')}
+                text={getLocale(S.BRAVE_WALLET_SWAP)}
                 icon='currency-exchange'
                 onClick={() => onClickSwapOrBridge('swap')}
               />
             )}
             {!isIOS && isBridgeSupported && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletBridge')}
+                text={getLocale(S.BRAVE_WALLET_BRIDGE)}
                 icon='web3-bridge'
                 onClick={() => onClickSwapOrBridge('bridge')}
               />
             )}
             {isSelectedAssetDepositSupported && (
               <FungibleAssetActionButton
-                text={getLocale('braveWalletAccountsDeposit')}
+                text={getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
                 icon='money-bag-coins'
                 onClick={onClickDeposit}
               />

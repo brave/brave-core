@@ -22,12 +22,12 @@ export function getGate3EffectiveStatus(
     case BraveWallet.Gate3SwapStatusCode.kPending:
       return {
         status: BraveWallet.TransactionStatus.Submitted,
-        label: getLocale('braveWalletSwapPending'),
+        label: getLocale(S.BRAVE_WALLET_SWAP_PENDING),
       }
     case BraveWallet.Gate3SwapStatusCode.kProcessing:
       return {
         status: BraveWallet.TransactionStatus.Submitted,
-        label: getLocale('braveWalletSwapProcessing'),
+        label: getLocale(S.BRAVE_WALLET_SWAP_PROCESSING),
       }
     case BraveWallet.Gate3SwapStatusCode.kSuccess:
       return {
@@ -44,7 +44,7 @@ export function getGate3EffectiveStatus(
     case BraveWallet.Gate3SwapStatusCode.kRefunded:
       return {
         status: BraveWallet.TransactionStatus.Error,
-        label: getLocale('braveWalletSwapRefunded'),
+        label: getLocale(S.BRAVE_WALLET_SWAP_REFUNDED),
       }
     default:
       return undefined

@@ -247,31 +247,31 @@ export const keyringIdForNewAccount = (
 export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
   switch (accountId.coin) {
     case BraveWallet.CoinType.ETH:
-      return getLocale('braveWalletETHAccountDescription')
+      return getLocale(S.BRAVE_WALLET_ETH_ACCOUNT_DESCRIPTION)
     case BraveWallet.CoinType.SOL:
-      return getLocale('braveWalletSOLAccountDescription')
+      return getLocale(S.BRAVE_WALLET_SOL_ACCOUNT_DESCRIPTION)
     case BraveWallet.CoinType.FIL:
-      return getLocale('braveWalletFILAccountDescription')
+      return getLocale(S.BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION)
     case BraveWallet.CoinType.BTC:
       if (BitcoinTestnetKeyringIds.includes(accountId.keyringId)) {
-        return getLocale('braveWalletBTCTestnetAccountDescription')
+        return getLocale(S.BRAVE_WALLET_BTC_TESTNET_ACCOUNT_DESCRIPTION)
       }
-      return getLocale('braveWalletBTCMainnetAccountDescription')
+      return getLocale(S.BRAVE_WALLET_BTC_MAINNET_ACCOUNT_DESCRIPTION)
     case BraveWallet.CoinType.ZEC:
       if (ZCashTestnetKeyringIds.includes(accountId.keyringId)) {
-        return getLocale('braveWalletZECTestnetAccountDescription')
+        return getLocale(S.BRAVE_WALLET_ZEC_TESTNET_ACCOUNT_DESCRIPTION)
       }
-      return getLocale('braveWalletZECAccountDescription')
+      return getLocale(S.BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION)
     case BraveWallet.CoinType.ADA:
       if (CardanoTestnetKeyringIds.includes(accountId.keyringId)) {
-        return getLocale('braveWalletCardanoTestnetAccountDescription')
+        return getLocale(S.BRAVE_WALLET_CARDANO_TESTNET_ACCOUNT_DESCRIPTION)
       }
-      return getLocale('braveWalletCardanoAccountDescription')
+      return getLocale(S.BRAVE_WALLET_CARDANO_ACCOUNT_DESCRIPTION)
     case BraveWallet.CoinType.DOT:
       if (PolkadotTestnetKeyringIds.includes(accountId.keyringId)) {
-        return getLocale('braveWalletPolkadotTestnetAccountDescription')
+        return getLocale(S.BRAVE_WALLET_POLKADOT_TESTNET_ACCOUNT_DESCRIPTION)
       }
-      return getLocale('braveWalletPolkadotMainnetAccountDescription')
+      return getLocale(S.BRAVE_WALLET_POLKADOT_MAINNET_ACCOUNT_DESCRIPTION)
     default:
       assertNotReached(`Unknown coin ${accountId.coin}`)
   }

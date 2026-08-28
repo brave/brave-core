@@ -218,14 +218,14 @@ export const SignPanel = (props: Props) => {
               variant='default.semibold'
             >
               {signMessageQueueInfo.queueNumber}{' '}
-              {getLocale('braveWalletQueueOf')}{' '}
+              {getLocale(S.BRAVE_WALLET_QUEUE_OF)}{' '}
               {signMessageQueueInfo.queueLength}
             </QueueStepText>
             <QueueStepButton onClick={onQueueNextSignMessage}>
               {signMessageQueueInfo.queueNumber
               === signMessageQueueInfo.queueLength
-                ? getLocale('braveWalletQueueFirst')
-                : getLocale('braveWalletQueueNext')}
+                ? getLocale(S.BRAVE_WALLET_QUEUE_FIRST)
+                : getLocale(S.BRAVE_WALLET_QUEUE_NEXT)}
             </QueueStepButton>
           </QueueStepRow>
         )}
@@ -250,7 +250,7 @@ export const SignPanel = (props: Props) => {
         textColor='primary'
         variant='large.semibold'
       >
-        {getLocale('braveWalletSignTransactionTitle')}
+        {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_TITLE)}
       </PanelTitle>
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
@@ -260,17 +260,17 @@ export const SignPanel = (props: Props) => {
               textColor='error'
               variant='small.semibold'
             >
-              {getLocale('braveWalletSignWarningTitle')}
+              {getLocale(S.BRAVE_WALLET_SIGN_WARNING_TITLE)}
             </Text>
           </WarningTitleRow>
           <WarningText
             textColor='error'
             variant='small.regular'
           >
-            {getLocale('braveWalletSignWarning')}
+            {getLocale(S.BRAVE_WALLET_SIGN_WARNING)}
           </WarningText>
           <LearnMoreButton onClick={onClickLearnMore}>
-            {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON)}
           </LearnMoreButton>
         </WarningBox>
       )}
@@ -281,8 +281,8 @@ export const SignPanel = (props: Props) => {
               isSelected={true}
               text={
                 ethSignTypedData
-                  ? getLocale('braveWalletDetails')
-                  : getLocale('braveWalletSignTransactionMessageTitle')
+                  ? getLocale(S.BRAVE_WALLET_DETAILS)
+                  : getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE)
               }
             />
           </TabRow>
@@ -297,15 +297,17 @@ export const SignPanel = (props: Props) => {
                   textColor='primary'
                   variant='small.semibold'
                 >
-                  {getLocale('braveWalletNonAsciiCharactersInMessageWarning')}
+                  {getLocale(
+                    S.BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING,
+                  )}
                 </Text>
               </WarningTitleRow>
               <LearnMoreButton
                 onClick={() => setRenderUnicode((prev) => !prev)}
               >
                 {renderUnicode
-                  ? getLocale('braveWalletViewDecodedMessage')
-                  : getLocale('braveWalletViewEncodedMessage')}
+                  ? getLocale(S.BRAVE_WALLET_VIEW_DECODED_MESSAGE)
+                  : getLocale(S.BRAVE_WALLET_VIEW_ENCODED_MESSAGE)}
               </LearnMoreButton>
             </WarningBox>
           )}
@@ -354,7 +356,7 @@ export const SignPanel = (props: Props) => {
       <SignPanelButtonRow>
         <NavButton
           buttonType='secondary'
-          text={getLocale('braveWalletButtonCancel')}
+          text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
           onSubmit={onCancel}
           disabled={isDisabled}
         />
@@ -362,8 +364,8 @@ export const SignPanel = (props: Props) => {
           buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
           text={
             signStep === SignDataSteps.SignData
-              ? getLocale('braveWalletSignTransactionButton')
-              : getLocale('braveWalletButtonContinue')
+              ? getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_BUTTON)
+              : getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)
           }
           onSubmit={
             signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign

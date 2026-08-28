@@ -177,7 +177,7 @@ export const TransactionDetailBox = ({
       <CodeSnippet>
         <code>
           <CodeSnippetText>
-            {getLocale('braveWalletConfirmTransactionNoData')}
+            {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_NO_DATA)}
           </CodeSnippetText>
         </code>
       </CodeSnippet>
@@ -195,7 +195,7 @@ export const TransactionDetailBox = ({
                 textColor='tertiary'
                 variant='small.regular'
               >
-                {getLocale('braveWalletSolanaMaxRetries')}:
+                {getLocale(S.BRAVE_WALLET_SOLANA_MAX_RETRIES)}:
               </Text>
               <DetailText
                 textColor='primary'
@@ -212,7 +212,7 @@ export const TransactionDetailBox = ({
                 textColor='tertiary'
                 variant='small.regular'
               >
-                {getLocale('braveWalletSolanaPreflightCommitment')}:
+                {getLocale(S.BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT)}:
               </Text>
               <DetailText
                 textColor='primary'
@@ -229,7 +229,7 @@ export const TransactionDetailBox = ({
                 textColor='tertiary'
                 variant='small.regular'
               >
-                {getLocale('braveWalletSolanaSkipPreflight')}:
+                {getLocale(S.BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT)}:
               </Text>
               <DetailText
                 textColor='primary'
@@ -248,7 +248,7 @@ export const TransactionDetailBox = ({
             textColor='tertiary'
             variant='small.regular'
           >
-            {getLocale('braveWalletTransactionDetailBoxFunction')}:
+            {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION)}:
           </Text>
           <DetailText
             textColor='primary'

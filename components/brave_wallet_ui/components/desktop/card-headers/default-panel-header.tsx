@@ -99,7 +99,7 @@ export const DefaultPanelHeader = (props: Props) => {
             variant='heading.h4'
             textColor='primary'
           >
-            {getLocale('braveWalletTitle')}
+            {getLocale(S.BRAVE_WALLET_TITLE)}
           </Text>
           {title && (
             <>

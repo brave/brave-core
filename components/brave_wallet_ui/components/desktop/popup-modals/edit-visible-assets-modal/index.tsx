@@ -305,8 +305,8 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     <PopupModal
       title={
         showAddCustomToken
-          ? getLocale('braveWalletWatchlistAddCustomAsset')
-          : getLocale('braveWalletAccountsEditVisibleAssets')
+          ? getLocale(S.BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET)
+          : getLocale(S.BRAVE_WALLET_ACCOUNTS_EDIT_VISIBLE_ASSETS)
       }
       onClose={onClose}
       width='500px'
@@ -330,18 +330,18 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
               isBold={true}
             >
               {hash === WalletRoutes.AvailableAssetsHash
-                ? getLocale('braveWalletAvailableAssets')
-                : getLocale('braveWalletMyAssets')}
+                ? getLocale(S.BRAVE_WALLET_AVAILABLE_ASSETS)
+                : getLocale(S.BRAVE_WALLET_MY_ASSETS)}
             </Text>
             {hash === WalletRoutes.AvailableAssetsHash && (
               <NoAssetButton onClick={toggleShowAddCustomToken}>
-                {getLocale('braveWalletWatchlistAddCustomAsset')}
+                {getLocale(S.BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET)}
               </NoAssetButton>
             )}
           </TitleRow>
           <PaddedRow marginBottom={8}>
             <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
+              placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
               action={updateSearchValue}
               autoFocus={true}
               value={searchValue}
@@ -385,7 +385,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                       textColor='primary'
                       isBold={true}
                     >
-                      {getLocale('braveWalletAssetNotFound')}
+                      {getLocale(S.BRAVE_WALLET_ASSET_NOT_FOUND)}
                     </Text>
                     <VerticalSpace space='12px' />
                     <Text
@@ -393,7 +393,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                       textColor='tertiary'
                       isBold={false}
                     >
-                      {getLocale('braveWalletDidntFindAssetInList')}
+                      {getLocale(S.BRAVE_WALLET_DIDNT_FIND_ASSET_IN_LIST)}
                     </Text>
                     <VerticalSpace space='16px' />
                     <Button
@@ -407,7 +407,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                       <Row width='unset'>
                         <AddIcon />
                         <AddButtonText>
-                          {getLocale('braveWalletWatchlistAddCustomAsset')}
+                          {getLocale(S.BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET)}
                         </AddButtonText>
                       </Row>
                     </Button>
@@ -438,11 +438,11 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
             onClick={onClose}
             kind='outline'
           >
-            {getLocale('braveWalletButtonCancel')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
           </Button>
           <HorizontalSpace space='16px' />
           <Button onClick={onClickDone}>
-            {getLocale('braveWalletButtonSaveChanges')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_SAVE_CHANGES)}
           </Button>
         </ButtonRow>
       )}

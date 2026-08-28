@@ -396,14 +396,14 @@ export const MarketAssetDetails = () => {
             {foundMeldBuyToken && (
               <div>
                 <Button onClick={onSelectBuy}>
-                  {getLocale('braveWalletBuy')}
+                  {getLocale(S.BRAVE_WALLET_BUY)}
                 </Button>
               </div>
             )}
             {isSelectedAssetDepositSupported && (
               <div>
                 <Button onClick={onSelectDeposit}>
-                  {getLocale('braveWalletAccountsDeposit')}
+                  {getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
                 </Button>
               </div>
             )}

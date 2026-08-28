@@ -151,7 +151,7 @@ export const RecoveryInput = ({
           as='button'
           onClick={onClickPasteFromClipboard}
         >
-          {getLocale('braveWalletPasteFromClipboard')}
+          {getLocale(S.BRAVE_WALLET_PASTE_FROM_CLIPBOARD)}
         </WalletLink>
       </PhraseCardBottomRow>
     </>

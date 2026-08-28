@@ -135,11 +135,11 @@ export const ConnectionSection = (props: Props) => {
 
   const connectionStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {
-      return getLocale('braveWalletPanelBlocked')
+      return getLocale(S.BRAVE_WALLET_PANEL_BLOCKED)
     }
     return isConnected
-      ? getLocale('braveWalletPanelConnected')
-      : getLocale('braveWalletNotConnected')
+      ? getLocale(S.BRAVE_WALLET_PANEL_CONNECTED)
+      : getLocale(S.BRAVE_WALLET_NOT_CONNECTED)
   }, [isConnected, isPermissionDenied])
 
   // Methods
@@ -360,10 +360,10 @@ export const ConnectionSection = (props: Props) => {
               }
             >
               {isPermissionDenied
-                ? getLocale('braveWalletUnblock')
+                ? getLocale(S.BRAVE_WALLET_UNBLOCK)
                 : isConnected
-                  ? getLocale('braveWalletSitePermissionsDisconnect')
-                  : getLocale('braveWalletAddAccountConnect')}
+                  ? getLocale(S.BRAVE_WALLET_SITE_PERMISSIONS_DISCONNECT)
+                  : getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_CONNECT)}
             </Button>
           </Row>
         </ControlsWrapper>
@@ -371,7 +371,7 @@ export const ConnectionSection = (props: Props) => {
       <BottomSheet
         isOpen={showAccounts}
         onClose={() => setShowAccounts(false)}
-        title={getLocale('braveWalletChangeAccount')}
+        title={getLocale(S.BRAVE_WALLET_CHANGE_ACCOUNT)}
       >
         <DAppConnectionAccounts
           coin={coin}
@@ -381,7 +381,7 @@ export const ConnectionSection = (props: Props) => {
       <BottomSheet
         isOpen={showNetworks}
         onClose={() => setShowNetworks(false)}
-        title={getLocale('braveWalletChangeNetwork')}
+        title={getLocale(S.BRAVE_WALLET_CHANGE_NETWORK)}
       >
         <DAppConnectionNetworks
           accountId={effectiveSelectedAccountId}

@@ -80,7 +80,7 @@ export const suggestNewAccountName = (
   const accountTypeLength = matchingAccounts.length + 1
   return `${network.symbolName} ${getLocale(
     SupportedTestNetworks.includes(network.chainId)
-      ? 'braveWalletTestNetworkAccount'
-      : 'braveWalletSubviewAccount',
+      ? S.BRAVE_WALLET_TEST_NETWORK_ACCOUNT
+      : S.BRAVE_WALLET_SUBVIEW_ACCOUNT,
   )} ${accountTypeLength}`
 }

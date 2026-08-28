@@ -88,7 +88,9 @@ describe('getRewardsBATToken', () => {
 
 describe('getRewardsAccountName', () => {
   it('Should return Uphold account as name', () => {
-    expect(getRewardsAccountName('uphold')).toEqual('braveWalletRewardsAccount')
+    expect(getRewardsAccountName('uphold')).toEqual(
+      S.BRAVE_WALLET_REWARDS_ACCOUNT,
+    )
   })
   it('Should return empty string', () => {
     expect(getRewardsAccountName(undefined)).toEqual('')
@@ -122,7 +124,7 @@ describe('getRewardsProviderName', () => {
 describe('getRewardsTokenDescription', () => {
   it('Should return empty string', () => {
     expect(getRewardsTokenDescription('uphold')).toEqual(
-      'braveWalletBraveRewardsDescription',
+      S.BRAVE_WALLET_BRAVE_REWARDS_DESCRIPTION,
     )
   })
   it('Should return empty string for empty provider name', () => {

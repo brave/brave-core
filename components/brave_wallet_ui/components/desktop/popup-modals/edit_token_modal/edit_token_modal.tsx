@@ -27,7 +27,7 @@ interface Props {
 export const EditTokenModal = ({ token, onClose }: Props) => {
   return (
     <PopupModal
-      title={getLocale('braveWalletEditToken')}
+      title={getLocale(S.BRAVE_WALLET_EDIT_TOKEN)}
       onClose={onClose}
       width='584px'
       showDivider={true}

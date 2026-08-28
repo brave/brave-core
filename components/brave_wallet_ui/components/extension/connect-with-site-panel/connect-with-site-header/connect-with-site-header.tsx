@@ -71,7 +71,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
           textColor='primary'
           variant='large.semibold'
         >
-          {getLocale('braveWalletConnectWallet')}
+          {getLocale(S.BRAVE_WALLET_CONNECT_WALLET)}
         </Text>
         <HorizontalSpace space='24px' />
       </TitleWrapper>
@@ -164,7 +164,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
             justifyContent='flex-start'
           >
             <InfoIcon name='info-filled' />
-            {getLocale('braveWalletConnectTrustWarning')}
+            {getLocale(S.BRAVE_WALLET_CONNECT_TRUST_WARNING)}
           </MessageBox>
         </Column>
       </StyledWrapper>

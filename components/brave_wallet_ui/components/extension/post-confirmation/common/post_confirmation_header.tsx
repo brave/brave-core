@@ -37,7 +37,7 @@ export const PostConfirmationHeader = (props: Props) => {
               slot='icon-before'
               name='help-outline'
             />
-            {getLocale('braveWalletGetHelp')}
+            {getLocale(S.BRAVE_WALLET_GET_HELP)}
           </LeoButton>
         </div>
       )}

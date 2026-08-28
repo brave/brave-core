@@ -176,10 +176,10 @@ export function ConfirmSendTransaction() {
         <ConfirmationHeader
           title={
             isShieldingFunds
-              ? getLocale('braveWalletConfirmShield')
+              ? getLocale(S.BRAVE_WALLET_CONFIRM_SHIELD)
               : isUnshieldingFunds
-                ? getLocale('braveWalletConfirmUnshield')
-                : getLocale('braveWalletConfirmSend')
+                ? getLocale(S.BRAVE_WALLET_CONFIRM_UNSHIELD)
+                : getLocale(S.BRAVE_WALLET_CONFIRM_SEND)
           }
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
@@ -204,7 +204,7 @@ export function ConfirmSendTransaction() {
                   account={fromAccount}
                 />
                 <Title textColor='primary'>
-                  {getLocale('braveWalletPanelTitle')}
+                  {getLocale(S.BRAVE_WALLET_PANEL_TITLE)}
                 </Title>
               </>
             ) : (
@@ -276,7 +276,7 @@ export function ConfirmSendTransaction() {
                       textColor='secondary'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletConfirmTransactionTotal')}
+                      {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL)}
                     </ConfirmationInfoLabel>
                     <ConfirmationInfoLabel
                       textColor='primary'
@@ -290,7 +290,7 @@ export function ConfirmSendTransaction() {
                       textColor='tertiary'
                       textAlign='left'
                     >
-                      {getLocale('braveWalletConfirmTransactionAmountFee')}
+                      {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_FEE)}
                     </ConfirmationInfoText>
                     <ConfirmationInfoText
                       textColor='tertiary'
@@ -313,7 +313,7 @@ export function ConfirmSendTransaction() {
                           textColor='secondary'
                           textAlign='left'
                         >
-                          {getLocale('braveWalletMemo')}
+                          {getLocale(S.BRAVE_WALLET_MEMO)}
                         </ConfirmationInfoLabel>
                       </Row>
                       <Row justifyContent='flex-start'>
@@ -367,7 +367,7 @@ export function ConfirmSendTransaction() {
       {/* Transaction details */}
       <BottomSheet
         isOpen={showTransactionDetails}
-        title={getLocale('braveWalletDetails')}
+        title={getLocale(S.BRAVE_WALLET_DETAILS)}
         onClose={() => setShowTransactionDetails(false)}
       >
         <PendingTransactionDetails
@@ -379,7 +379,7 @@ export function ConfirmSendTransaction() {
       {/* Advanced transaction settings */}
       <BottomSheet
         isOpen={showAdvancedTransactionSettings}
-        title={getLocale('braveWalletAdvancedTransactionSettings')}
+        title={getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
         onClose={() => setShowAdvancedTransactionSettings(false)}
       >
         <AdvancedTransactionSettings

@@ -35,21 +35,21 @@ export const AssetDetailsMenu = (props: Props) => {
       {children}
       <leo-menu-item onClick={onClickTokenDetails}>
         <Icon name='info-outline' />
-        {getLocale('braveWalletPortfolioTokenDetailsMenuLabel')}
+        {getLocale(S.BRAVE_WALLET_PORTFOLIO_TOKEN_DETAILS_MENU_LABEL)}
       </leo-menu-item>
       {onClickEditToken && (
         <leo-menu-item onClick={onClickEditToken}>
           <Icon name='edit-pencil' />
-          {getLocale('braveWalletAllowSpendEditButton')}
+          {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON)}
         </leo-menu-item>
       )}
       <leo-menu-item onClick={onClickViewOnExplorer}>
         <Icon name='launch' />
-        {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+        {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL)}
       </leo-menu-item>
       <leo-menu-item onClick={onClickHideToken}>
         <Icon name='trash' />
-        {getLocale('braveWalletPortfolioHideTokenMenuLabel').replace(
+        {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_HIDE_TOKEN_LABEL).replace(
           '$1',
           assetSymbol,
         )}

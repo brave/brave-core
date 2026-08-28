@@ -92,7 +92,7 @@ export const OnboardingContentLayout = ({
           justifyContent='flex-start'
         >
           <BraveIcon />
-          <WalletTitle>{getLocale('braveWalletTitle')}</WalletTitle>
+          <WalletTitle>{getLocale(S.BRAVE_WALLET_TITLE)}</WalletTitle>
         </Row>
       </TitleSection>
       <ContentWrapper>

@@ -68,18 +68,18 @@ export const CancelTransaction = (props: Props) => {
         padding='0px 24px'
         gap='8px'
       >
-        <Title>{getLocale('braveWalletTransactionCancel')}</Title>
+        <Title>{getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}</Title>
         <Text
           textSize='14px'
           textColor='primary'
           isBold={false}
         >
-          {getLocale('braveWalletCancelTransactionDescription')}
+          {getLocale(S.BRAVE_WALLET_CANCEL_TRANSACTION_DESCRIPTION)}
         </Text>
       </Column>
       <Row padding='16px'>
         <CancelButton onClick={onClickCancelTransaction}>
-          {getLocale('braveWalletTransactionCancel')}
+          {getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}
         </CancelButton>
       </Row>
     </Wrapper>

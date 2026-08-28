@@ -41,7 +41,7 @@ export const AccountsHeader = ({ hiddenAccounts }: Props) => {
 
   return isPanel || isMobile ? (
     <DefaultPanelHeader
-      title={getLocale('braveWalletTopNavAccounts')}
+      title={getLocale(S.BRAVE_WALLET_TOP_NAV_ACCOUNTS)}
       expandRoute={WalletRoutes.Accounts}
     />
   ) : (
@@ -53,7 +53,7 @@ export const AccountsHeader = ({ hiddenAccounts }: Props) => {
         textColor='primary'
         variant='heading.h1'
       >
-        {getLocale('braveWalletTopNavAccounts')}
+        {getLocale(S.BRAVE_WALLET_TOP_NAV_ACCOUNTS)}
       </HeaderTitle>
       <AccountsMenu hiddenAccounts={hiddenAccounts}>
         <MenuButton slot='anchor-content'>

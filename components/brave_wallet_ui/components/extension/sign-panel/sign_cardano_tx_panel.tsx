@@ -125,7 +125,7 @@ const CardanoTxDetailsTokens = ({
   <>
     {tokens?.map((token) => (
       <DetailColumn key={token.tokenId}>
-        <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+        <LabelText>{getLocale(S.BRAVE_WALLET_TOKEN)}:</LabelText>
         <DetailText>
           {token.tokenId}:{token.value}
         </DetailText>
@@ -147,12 +147,12 @@ const CardanoTxDetailsUtxoItem = ({
       <DetailText>{`${utxo.txHash}:${utxo.index}`}</DetailText>
     </DetailColumn>
     <DetailColumn>
-      <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
       <DetailText>{utxo.value ?? 'N/A'}</DetailText>
     </DetailColumn>
     <CardanoTxDetailsTokens tokens={utxo.tokens} />
     <DetailColumn>
-      <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
       <DetailText>{utxo.address ?? 'N/A'}</DetailText>
     </DetailColumn>
     <VerticalDivider />
@@ -171,12 +171,12 @@ const CardanoTxDetailsOutputItem = ({
       <LabelText>{label}:</LabelText>
     </DetailColumn>
     <DetailColumn>
-      <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
       <DetailText>{output.value}</DetailText>
     </DetailColumn>
     <CardanoTxDetailsTokens tokens={output.tokens} />
     <DetailColumn>
-      <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
       <DetailText>{output.address}</DetailText>
     </DetailColumn>
     <VerticalDivider />
@@ -192,7 +192,7 @@ const CardanoTxDetailInputs = ({
     {inputs?.map((input, index) => (
       <CardanoTxDetailsUtxoItem
         key={'input' + index}
-        label={getLocale('braveWalletInput')}
+        label={getLocale(S.BRAVE_WALLET_INPUT)}
         utxo={input}
       />
     ))}
@@ -208,7 +208,7 @@ const CardanoTxDetailOutputs = ({
     {outputs?.map((output, index) => (
       <CardanoTxDetailsOutputItem
         key={'output' + index}
-        label={getLocale('braveWalletOutput')}
+        label={getLocale(S.BRAVE_WALLET_OUTPUT)}
         output={output}
       />
     ))}
@@ -225,7 +225,7 @@ const CardanoTxDetailMint = ({
   }
   return (
     <DetailColumn gap='8px'>
-      <LabelText>{getLocale('braveWalletMint')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_MINT)}:</LabelText>
       <CardanoTxDetailsTokens tokens={mint} />
       <VerticalDivider />
     </DetailColumn>
@@ -243,13 +243,13 @@ const CardanoTxDetailWithdrawals = ({
         gap='8px'
         key={'withdrawal' + index}
       >
-        <LabelText>{getLocale('braveWalletWithdrawals')}:</LabelText>
+        <LabelText>{getLocale(S.BRAVE_WALLET_WITHDRAWALS)}:</LabelText>
         <DetailColumn>
-          <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+          <LabelText>{getLocale(S.BRAVE_WALLET_ADDRESS)}:</LabelText>
           <DetailText>{withdrawal.address}</DetailText>
         </DetailColumn>
         <DetailColumn>
-          <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+          <LabelText>{getLocale(S.BRAVE_WALLET_VALUE)}:</LabelText>
           <DetailText>{withdrawal.value}</DetailText>
         </DetailColumn>
         <VerticalDivider />
@@ -268,7 +268,7 @@ const CardanoTxDetailScriptDataHash = ({
   }
   return (
     <DetailColumn>
-      <LabelText>{getLocale('braveWalletScriptDataHash')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_SCRIPT_DATA_HASH)}:</LabelText>
       <DetailText>{scriptDataHash}</DetailText>
     </DetailColumn>
   )
@@ -283,7 +283,7 @@ const CardanoTxDetailCollateral = ({
     {collateral?.map((input, index) => (
       <CardanoTxDetailsUtxoItem
         key={'collateral' + index}
-        label={getLocale('braveWalletCollateral')}
+        label={getLocale(S.BRAVE_WALLET_COLLATERAL)}
         utxo={input}
       />
     ))}
@@ -300,9 +300,9 @@ const CardanoTxDetailCollateralReturn = ({
   }
   return (
     <DetailColumn gap='8px'>
-      <LabelText>{getLocale('braveWalletCollateralReturn')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_COLLATERAL_RETURN)}:</LabelText>
       <CardanoTxDetailsOutputItem
-        label={getLocale('braveWalletCollateralReturn')}
+        label={getLocale(S.BRAVE_WALLET_COLLATERAL_RETURN)}
         output={collateralReturn}
       />
     </DetailColumn>
@@ -319,7 +319,7 @@ const CardanoTxDetailTotalCollateral = ({
   }
   return (
     <DetailColumn>
-      <LabelText>{getLocale('braveWalletTotalCollateral')}:</LabelText>
+      <LabelText>{getLocale(S.BRAVE_WALLET_TOTAL_COLLATERAL)}:</LabelText>
       <DetailText>{totalCollateral}</DetailText>
     </DetailColumn>
   )
@@ -429,7 +429,7 @@ export const SignCardanoTxPanel = ({
         textColor='primary'
         variant='large.semibold'
       >
-        {getLocale('braveWalletSignTransactionTitle')}
+        {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_TITLE)}
       </PanelTitle>
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
@@ -439,17 +439,17 @@ export const SignCardanoTxPanel = ({
               textColor='error'
               variant='small.semibold'
             >
-              {getLocale('braveWalletSignWarningTitle')}
+              {getLocale(S.BRAVE_WALLET_SIGN_WARNING_TITLE)}
             </Text>
           </WarningTitleRow>
           <WarningText
             textColor='error'
             variant='small.regular'
           >
-            {getLocale('braveWalletSignWarning')}
+            {getLocale(S.BRAVE_WALLET_SIGN_WARNING)}
           </WarningText>
           <LearnMoreButton onClick={onClickLearnMore}>
-            {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON)}
           </LearnMoreButton>
         </WarningBox>
       )}
@@ -485,7 +485,7 @@ export const SignCardanoTxPanel = ({
         <SignPanelButtonRow>
           <NavButton
             buttonType='secondary'
-            text={getLocale('braveWalletButtonCancel')}
+            text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
             onSubmit={onCancelSign}
             disabled={isSigningDisabled}
           />
@@ -493,8 +493,8 @@ export const SignCardanoTxPanel = ({
             buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
             text={
               signStep === SignDataSteps.SignData
-                ? getLocale('braveWalletSignTransactionButton')
-                : getLocale('braveWalletButtonContinue')
+                ? getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_BUTTON)
+                : getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)
             }
             onSubmit={
               signStep === SignDataSteps.SignRisk
