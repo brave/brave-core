@@ -7,6 +7,7 @@ import BraveShared
 import BraveUI
 import LinkPresentation
 import Shared
+import SwiftUI
 
 // MARK: - ActivityTypeValue
 
@@ -32,8 +33,13 @@ final class ShieldsActivityItemSourceProvider {
 
     let statsView = UIView(frame: CGRect(size: backgroundImage.size)).then {
       let backgroundImageView = UIImageView(image: backgroundImage)
-      let statsInfoView = BraveShieldStatsView()
-      statsInfoView.isPrivateBrowsing = isPrivateBrowsing
+      let statsInfoView = UIHostingController(
+        rootView: StatsNTPWidget(
+          isPrivateBrowsing: isPrivateBrowsing,
+          openPrivacyHubPressed: {},
+          hidePrivacyHubPressed: {}
+        )
+      ).view!
 
       $0.addSubview(backgroundImageView)
       $0.addSubview(statsInfoView)
