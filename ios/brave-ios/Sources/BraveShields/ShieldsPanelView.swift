@@ -70,8 +70,7 @@ public struct ShieldsPanelView: View {
     Section {
       HStack {
         Text("\(viewModel.stats.total)")
-          .font(.title2)
-          .fontWeight(.semibold)
+          .font(.title2.weight(.semibold))
         Text(Strings.Shields.trackersAdsAndMoreBlocked)
           .font(.footnote)
       }
@@ -111,22 +110,23 @@ public struct ShieldsPanelView: View {
           isPrivateBrowsing: viewModel.isPrivateBrowsing
         )
         .padding(8)
-        .frame(width: faviconCircleSize, height: faviconCircleSize, alignment: .center)
-        .background(Color(braveSystemName: .pageBackground), in: .circle)
-        .shadow(radius: 1.5, x: 0, y: 1)
+        .frame(width: faviconCircleSize, height: faviconCircleSize)
+        .background(
+          Color(braveSystemName: .pageBackground)
+            .shadow(.drop(color: Color(braveSystemName: .elevationSecondary), radius: 2, y: 1))
+            .shadow(.drop(color: Color(braveSystemName: .elevationSecondary), radius: 3, y: 1)),
+          in: .circle
+        )
         VStack(alignment: .leading) {
           URLElidedText(text: displayHost)
-            .font(.title2)
-            .fontWeight(.semibold)
+            .font(.title2.weight(.semibold))
             .foregroundStyle(viewModel.shieldsEnabled ? .primary : .secondary)
-          Group {
-            Text(
-              LocalizedStringKey(
-                viewModel.shieldsEnabled
-                  ? Strings.Shields.shieldsUpForSite : Strings.Shields.shieldsDownForSite
-              )
+          Text(
+            LocalizedStringKey(
+              viewModel.shieldsEnabled
+                ? Strings.Shields.shieldsUpForSite : Strings.Shields.shieldsDownForSite
             )
-          }
+          )
           .font(.footnote)
           .foregroundStyle(.secondary)
         }
