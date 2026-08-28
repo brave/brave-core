@@ -144,7 +144,10 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/features.h"
+#include "components/policy/policy_constants.h"
 #endif
 
 namespace {
@@ -313,8 +316,18 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
               profile));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  bool is_managed_by_brave_origin = false;
+  if (brave_origin_service) {
+    is_managed_by_brave_origin =
+        brave_origin_service->IsPolicyControlledByBraveOrigin(
+            policy::key::kPsstEnabled);
+  }
+
   html_source->AddBoolean("isPsstEnabled", base::FeatureList::IsEnabled(
-                                               psst::features::kEnablePsst));
+                                               psst::features::kEnablePsst) &&
+                                               is_managed_by_brave_origin);
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(

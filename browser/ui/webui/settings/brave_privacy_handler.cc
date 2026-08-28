@@ -45,8 +45,10 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/features.h"
+#include "components/policy/policy_constants.h"
 #endif
 
 BravePrivacyHandler::BravePrivacyHandler() {
@@ -131,11 +133,23 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isRequestOTRFeatureEnabled",
       base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTRTab));
 #endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  bool is_managed_by_brave_origin = false;
+  if (brave_origin_service) {
+    is_managed_by_brave_origin =
+        brave_origin_service->IsPolicyControlledByBraveOrigin(
+            policy::key::kPsstEnabled);
+  }
+#endif
+
   data_source->AddBoolean(
       "isPsstFeatureEnabled",
 #if BUILDFLAG(ENABLE_PSST)
       base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
-          !profile->GetPrefs()->IsManagedPreference(psst::prefs::kPsstEnabled));
+          !is_managed_by_brave_origin);
 #else
       false);
 #endif
