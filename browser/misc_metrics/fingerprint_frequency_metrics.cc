@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
@@ -97,6 +98,9 @@ void FingerprintFrequencyMetrics::ReportAllMetrics() {
   if (!HasReportIntervalElapsed()) {
     base::Time frame_start =
         local_state_->GetTime(kMiscMetricsFingerprintReportFrameStartTime);
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Report interval has not "
+                  "elapsed, rescheduling report for "
+               << frame_start + kReportInterval;
     report_timer_.Start(FROM_HERE, frame_start + kReportInterval, this,
                         &FingerprintFrequencyMetrics::ReportAllMetrics);
     return;
@@ -139,16 +143,22 @@ void FingerprintFrequencyMetrics::StartExecution() {
       local_state_->GetTime(kMiscMetricsFingerprintLastExecutionTime);
   base::TimeDelta interval = features::kFingerprintInputRendererInterval.Get();
   if (!last_execution.is_null() && (now - last_execution) < interval) {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Interval has not elapsed "
+                  "since last execution, rescheduling";
     renderer_timer_.Start(FROM_HERE, last_execution + interval, this,
                           &FingerprintFrequencyMetrics::StartExecution);
     return;
   }
 
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Starting scheduled execution";
   local_state_->SetTime(kMiscMetricsFingerprintLastExecutionTime, now);
   renderer_timer_.Start(FROM_HERE, now + interval, this,
                         &FingerprintFrequencyMetrics::StartExecution);
 
   if (fake_renderer_results_for_testing_) {
+    LOG(ERROR)
+        << "FingerprintFrequencyMetrics: Using fake renderer results for "
+           "testing";
     HandleResult(base::Value(fake_renderer_results_for_testing_->Clone()));
     return;
   }
@@ -158,9 +168,14 @@ void FingerprintFrequencyMetrics::StartExecution() {
 
 void FingerprintFrequencyMetrics::RunScriptInRenderer() {
   if (web_contents_) {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: WebContents already exists, "
+                  "skipping execution";
     return;
   }
 
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Starting renderer execution and "
+                "loading version page "
+             << chrome::kChromeUIVersionURL;
   content::WebContents::CreateParams create_params(profile_);
   web_contents_ = content::WebContents::Create(create_params);
   Observe(web_contents_.get());
@@ -179,22 +194,47 @@ void FingerprintFrequencyMetrics::RunScriptInRenderer() {
 
   timeout_timer_.Start(
       FROM_HERE, execution_timeout_for_testing_.value_or(kExecutionTimeout),
-      base::BindOnce(&FingerprintFrequencyMetrics::Cleanup,
+      base::BindOnce(&FingerprintFrequencyMetrics::OnTimeout,
                      base::Unretained(this)));
+}
+
+void FingerprintFrequencyMetrics::OnTimeout() {
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Renderer execution timed out "
+                "(injector bound: "
+             << injector_.is_bound()
+             << ", web contents: " << (web_contents_ != nullptr) << ")";
+  Cleanup();
 }
 
 void FingerprintFrequencyMetrics::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (render_frame_host->GetParent() || injector_.is_bound()) {
+  if (render_frame_host->GetParent()) {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Ignoring subframe load ("
+               << validated_url << ")";
+    return;
+  }
+  if (injector_.is_bound()) {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Injector already bound, "
+                  "ignoring main frame load ("
+               << validated_url << ")";
     return;
   }
 
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Version page loaded ("
+             << validated_url << "), injecting fingerprint stability script";
+
   render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(&injector_);
+  injector_.set_disconnect_handler(base::BindOnce([]() {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Script injector pipe "
+                  "disconnected before result was received";
+  }));
 
   std::string script =
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
           IDR_MISC_METRICS_FINGERPRINT_STABILITY_JS);
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Loaded script resource, size="
+             << script.size();
 
   injector_->RequestAsyncExecuteScript(
       content::ISOLATED_WORLD_ID_GLOBAL, base::UTF8ToUTF16(script),
@@ -207,10 +247,23 @@ void FingerprintFrequencyMetrics::DidFinishLoad(
 void FingerprintFrequencyMetrics::HandleResult(base::Value result) {
   timeout_timer_.Stop();
 
-  if (!result.is_dict()) {
+  if (const std::string* error = result.GetIfString()) {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Script reported an error: "
+               << *error;
     Cleanup();
     return;
   }
+
+  if (!result.is_dict()) {
+    LOG(ERROR) << "FingerprintFrequencyMetrics: Result is not a dictionary, "
+                  "type="
+               << static_cast<int>(result.type());
+    Cleanup();
+    return;
+  }
+
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Received fingerprint hashes from "
+                "renderer";
 
   const base::DictValue& new_hashes = result.GetDict();
   const base::DictValue& previous_hashes =
@@ -236,6 +289,8 @@ void FingerprintFrequencyMetrics::HandleResult(base::Value result) {
 }
 
 void FingerprintFrequencyMetrics::Cleanup() {
+  LOG(ERROR) << "FingerprintFrequencyMetrics: Stopping renderer execution and "
+                "cleaning up";
   Observe(nullptr);
   injector_.reset();
   if (web_contents_) {

@@ -10,9 +10,9 @@
 
 namespace misc_metrics::features {
 
-BASE_FEATURE(kFingerprintInputMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kFingerprintInputMetrics, base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<base::TimeDelta> kFingerprintInputRendererInterval{
-    &kFingerprintInputMetrics, "renderer_interval", base::Hours(10)};
+    &kFingerprintInputMetrics, "renderer_interval", base::Minutes(1)};
 
 }  // namespace misc_metrics::features

@@ -99,6 +99,7 @@ class FingerprintFrequencyMetrics : public PagePercentageMetrics,
  private:
   void StartExecution();
   void RunScriptInRenderer();
+  void OnTimeout();
   void HandleResult(base::Value result);
   void Cleanup();
 
