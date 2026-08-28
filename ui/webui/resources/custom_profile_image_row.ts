@@ -3,14 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import {loadTimeData} from '//resources/js/load_time_data.js'
 import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js'
 import type {CSSResultGroup} from '//resources/lit/v3_0/lit.rollup.js'
 
+import {CustomProfileImageStrings as S} from './brave_generated_resources_webui_strings.js'
 import {getCss} from './custom_profile_image_row.css.js'
 import {getHtml} from './custom_profile_image_row.html.js'
-
-/** States supported by the custom profile image row. */
-export type CustomProfileImageState = 'empty' | 'saved-active'
 
 /** Shared custom-profile image control with a session-only local preview. */
 export class BrCustomProfileImageRowElement extends CrLitElement {
@@ -44,16 +43,24 @@ export class BrCustomProfileImageRowElement extends CrLitElement {
 
   private uploadAttemptId_: number = 0
 
-  get state(): CustomProfileImageState {
-    return this.getState_()
+  protected hasPreview_(): boolean {
+    return this.localPreviewUrl_ !== ''
   }
 
-  protected isSaved_(): boolean {
-    return !!this.localPreviewUrl_
+  protected actionLabel_(): string {
+    return loadTimeData.getString(
+      this.hasPreview_()
+        ? S.CUSTOM_PROFILE_IMAGE_REPLACE_ACTION
+        : S.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,
+    )
   }
 
-  protected getState_(): CustomProfileImageState {
-    return this.isSaved_() ? 'saved-active' : 'empty'
+  protected actionTooltip_(): string {
+    return loadTimeData.getString(
+      this.hasPreview_()
+        ? S.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP
+        : S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
+    )
   }
 
   override disconnectedCallback() {

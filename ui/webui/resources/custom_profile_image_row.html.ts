@@ -13,12 +13,8 @@ import type {BrCustomProfileImageRowElement} from './custom_profile_image_row.js
 
 export function getHtml(this: BrCustomProfileImageRowElement) {
   return html`
-    <section
-      id="row"
-      class="state-${this.getState_()}"
-      aria-labelledby="title"
-    >
-      ${this.isSaved_()
+    <section id="row" aria-labelledby="title">
+      ${this.hasPreview_()
         ? html`
             <div
               id="preview"
@@ -46,9 +42,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               kind="plain-faint"
               size="jumbo"
               fab
-              title="${loadTimeData.getString(
-                S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
-              )}"
+              title="${this.actionTooltip_()}"
               @click="${this.onUploadClick_}"
             >
               <leo-icon
@@ -57,11 +51,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
                 slot="icon-before"
                 aria-hidden="true"
               ></leo-icon>
-              <span id="previewLabel"
-                >${loadTimeData.getString(
-                  S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
-                )}</span
-              >
+              <span id="previewLabel">${this.actionTooltip_()}</span>
             </leo-button>
           `}
 
@@ -77,25 +67,13 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
           class="action-button"
           kind="filled"
           size="small"
-          title="${loadTimeData.getString(
-            this.isSaved_()
-              ? S.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP
-              : S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
-          )}"
-          aria-label="${loadTimeData.getString(
-            this.isSaved_()
-              ? S.CUSTOM_PROFILE_IMAGE_REPLACE_TOOLTIP
-              : S.CUSTOM_PROFILE_IMAGE_UPLOAD_TOOLTIP,
-          )}"
+          title="${this.actionTooltip_()}"
+          aria-label="${this.actionTooltip_()}"
           @click="${this.onUploadClick_}"
         >
-          ${loadTimeData.getString(
-            this.isSaved_()
-              ? S.CUSTOM_PROFILE_IMAGE_REPLACE_ACTION
-              : S.CUSTOM_PROFILE_IMAGE_UPLOAD_ACTION,
-          )}
+          ${this.actionLabel_()}
         </leo-button>
-        ${this.isSaved_()
+        ${this.hasPreview_()
           ? html`
               <leo-button
                 id="removeButton"
