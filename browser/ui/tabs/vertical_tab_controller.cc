@@ -12,6 +12,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 // static
@@ -48,9 +49,9 @@ bool VerticalTabController::SupportsBraveVerticalTabs() const {
     return false;
   }
 
-  if (tabs::IsVerticalTabsFeatureEnabled()) {
-    // In case that Chromium's vertical tabs feature is enabled, we should not
-    // show Brave's vertical tabs.
+  if (prefs_->GetBoolean(prefs::kVerticalTabsEnabled)) {
+    // In case that Chromium's vertical tabs are enabled, we should not show
+    // Brave's vertical tabs.
     return false;
   }
 
