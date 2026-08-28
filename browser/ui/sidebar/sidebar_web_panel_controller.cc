@@ -17,7 +17,7 @@ namespace sidebar {
 SidebarWebPanelController::SidebarWebPanelController(BrowserView& browser_view)
     : browser_view_(browser_view) {
   CHECK(IsWebPanelFeatureEnabled());
-  browser_view_->browser()->tab_strip_model()->AddObserver(this);
+  browser_view_->browser()->GetTabStripModel()->AddObserver(this);
 }
 
 SidebarWebPanelController::~SidebarWebPanelController() {
