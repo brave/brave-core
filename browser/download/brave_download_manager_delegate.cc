@@ -105,10 +105,9 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
   return false;
 }
 
-void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
-                                                           bool result) {
+void BraveDownloadManagerDelegate::OnImageMetadataStripped(
+    uint32_t download_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DVLOG(1) << "Download manager stripping result: " << result;
 
   // The download may have been removed while the stripping task was running, so
   // the item and its keyed state have to be looked up again.
