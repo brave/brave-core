@@ -93,7 +93,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
       }
     )");
 
-constexpr base::ByteSize kMaxResponseSize = base::MiBU(5);
+constexpr base::ByteSize kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
 constexpr base::TimeDelta kLoadAfterRestoreTimeout = base::Seconds(12);
 

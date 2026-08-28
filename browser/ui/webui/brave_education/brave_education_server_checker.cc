@@ -23,7 +23,7 @@ namespace brave_education {
 
 namespace {
 
-constexpr base::ByteSize kMaxDownload = base::MiBU(1);
+constexpr base::ByteSize kMaxDownload = base::MiB(1);
 constexpr base::TimeDelta kTimeoutDuration = base::Seconds(2);
 
 constexpr auto kTrafficAnnotation =
