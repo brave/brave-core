@@ -17,29 +17,21 @@ class FilePath;
 
 namespace brave {
 
-// Strips tracking metadata (e.g. Facebook FBMD IPTC identifiers) from the JPEG
-// files a user picked for upload. This is the file-picker counterpart to the
-// download-completion strip in BraveDownloadManagerDelegate.
-//
-// The user's original files are never modified: each strippable image is copied
-// to a temporary file which is then scrubbed, and the corresponding entry
-// in |list| is rewritten to point at the sanitized copy (its display name is
-// left unchanged, so the site still sees the original filename). Any temporary
-// copies created are appended to `temporary_files`, so the existing
-// FileSelectHelper teardown deletes them once the upload completes.
-//
-// Returns true when stripping has been started asynchronously and the caller
-// took no ownership decision: the interposition now owns `list` and will run
-// `notify` on the UI thread with the sanitized list once stripping finishes.
-// The caller must return immediately without notifying its listener.
-//
-// Returns false when there is nothing to do (feature disabled, already run, or
-// no strippable image selected); |list| is left untouched and the caller should
-// proceed to notify it synchronously as usual.
-//
-// |already_processed| guards against re-entrancy: the caller is expected to be
-// re-invoked with the sanitized list via |notify| callback, and this flag lets
-// the strip run exactly once before falling through to the upstream path.
+// A method which is called when the browser is about to hand over the selected
+// files via `NotifyListenerAndEnd`. This method is responsible for stripping
+// out the flagged metadata from the uploaded jpeg image.
+// For cases where it's clear no metadata needs to be stripped it returns false
+// to continue with the synchronous execution of `NotifyListenerAndEnd` path;
+// and true otherwise where it runs the metadata removal and call the
+// `NotifyListenerAndEnd` asynchronously via |notify| callback to join back with
+// the regular execution.
+// The method does not actually strip any metadata from
+// the original file while uploading instead it create a temporary file and that
+// gets uploaded. This temporary file path gets added to the |temporary_files|
+// list to flag it for deletion once the upload is complete.
+// |already_processed| helps to avoid looping between `NotifyListenerAndEnd`
+// and `MaybeStripImageMetadataForUpload` by letting `NotifyListenerAndEnd` know
+// that the stripping work has been scheduled.
 bool MaybeStripImageMetadataForUpload(
     bool& already_processed,
     std::vector<base::FilePath>& temporary_files,

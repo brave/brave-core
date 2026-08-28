@@ -26,6 +26,13 @@ namespace brave {
 
 namespace {
 
+struct StripResult {
+  std::vector<blink::mojom::FileChooserFileInfoPtr> list;
+  std::vector<base::FilePath> temp_files;
+};
+
+// TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
+// more investigation whether FBMD is present or not. So, tackling only jpeg.
 bool IsStrippableImagePath(const base::FilePath& path) {
   return path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
          path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
@@ -40,14 +47,15 @@ bool HasStrippableImage(
       });
 }
 
-struct StripResult {
-  std::vector<blink::mojom::FileChooserFileInfoPtr> list;
-  std::vector<base::FilePath> temp_files;
-};
-
-// Copies each strippable image to a temporary file,
-// scrubs the copy, and rewrites the entry to point at it. On any failure the
-// original path is left in place so a bad copy is never uploaded.
+// Algorithm:
+// 1) Iterate over each item in the |list|.
+// 2) If the "ith" item is not strippable, continue with 1.
+// 3) If the "ith" is stripppable then:
+//    3.a) Copy the contents of "ith" item into a temporary file.
+//    3.b) Try and strip the metadata from the temporary file.
+//         3.b.1) If failed: Delete the temporary file and go to Step 1.
+//         3.b.2) Otherwise, mark the temporay file for upload and then later
+//         for deletion.
 StripResult StripListOnBlockingThread(
     std::vector<blink::mojom::FileChooserFileInfoPtr> list) {
   StripResult result;
@@ -71,16 +79,25 @@ StripResult StripListOnBlockingThread(
                   "temporary file.";
     }
 
-    const auto resultCode = RemoveIptcMetadata(
+    // We try and remove the iptc metadata from the file.
+    const bool success = RemoveIptcMetadata(
         image_metadata_stripper::StrippingClient::kFileSelect, temp);
-
-    if (resultCode != image_metadata_stripper::StrippingResultCode::kStripped) {
-      DVLOG(1) << "Upload strip failed; keeping original: " << src;
-      base::DeleteFile(temp);
+    if (!success) {
+      DVLOG(1) << "No stripping occured; keeping original: " << src;
+      // The gaurd helps to schedule the delete to upstream's delete lifecycle
+      // if ever our own attempt to delete the temporary file failed.
+      if (!base::DeleteFile(temp)) {
+        result.temp_files.push_back(std::move(temp));
+      }
       continue;
     }
 
+    // Re-write the file path of the original upload file, with our temporary's
+    // file path. This keeps the overall |list| untouched which is then moved
+    // directly to the result.
     info->get_native_file()->file_path = temp;
+    // Mark the temporary file for deletion later via the upstream's
+    // DeleteTemporaryFiles method.
     result.temp_files.push_back(std::move(temp));
   }
   result.list = std::move(list);
@@ -93,8 +110,8 @@ void OnStripComplete(
         notify,
     StripResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  // Hand the temporary copies to FileSelectHelper so they are deleted once the
-  // upload finishes, via its existing DeleteTemporaryFiles() teardown.
+  // Update the |temporary_files| list to mark the deletion of our newly created
+  // tmp files.
   for (auto& temp : result.temp_files) {
     temporary_files.push_back(std::move(temp));
   }
@@ -111,23 +128,25 @@ bool MaybeStripImageMetadataForUpload(
         notify) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  // Base level checks.
   if (!base::FeatureList::IsEnabled(
-          image_metadata_stripper::features::kStripImageMetadataV1) ||
-      !HasStrippableImage(list)) {
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
     return false;
   }
 
-  // Second pass, re-entered with the sanitized list: let the upstream path run.
+  if (!HasStrippableImage(list)) {
+    return false;
+  }
+
+  // A flag to ensure we don't have infinite loops between the caller and
+  // callee once the metadata removal task get posted and the instruction
+  // pointer returns back to the caller.
   if (already_processed) {
     return false;
   }
 
   already_processed = true;
 
-  // I/O-blocking copy + scrub off the UI thread. `notify` keeps the
-  // FileSelectHelper alive across the hop, so the `temporary_files` reference
-  // handed to the reply stays valid.
+  // Stripping begins.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,

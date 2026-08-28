@@ -8,7 +8,7 @@ substitutions:
       Strip tracking metadata from uploaded images.
 
       NotifyListenerAndEnd is the point where the chosen files are
-      handed to the listener. Therefore we override this point to select the picked
+      handed to the renderer. Therefore we override this point to select the picked
       JPEG files, and pass to our metadata stripping pipeline.
     preempt_function_impl:
       function_name: FileSelectHelper::NotifyListenerAndEnd
