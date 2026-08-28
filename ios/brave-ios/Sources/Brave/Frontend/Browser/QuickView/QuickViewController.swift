@@ -128,6 +128,7 @@ class QuickViewController: UIViewController {
       tab.addPolicyDecider(braveShieldsHelper)
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
+      tab.blockedDomainTabHelper = .init(tab: tab)
     }
     tab.protectionStats = .init(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
@@ -138,6 +139,7 @@ class QuickViewController: UIViewController {
       self?.showReaderModeBar()
     }
     tab.historyTabHelper = .init(tab: tab, historyAPI: historyAPI)
+    tab.addPolicyDecider(self)
     tab.createWebView()
     tab.delegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
@@ -754,6 +756,7 @@ extension QuickViewController: TabObserver {
       let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(tab: tab)
     {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
+      tab.blockedDomainTabHelper = .init(tab: tab)
     }
   }
 
@@ -922,5 +925,27 @@ extension QuickViewController: KeyboardHelperDelegate {
     }
     animator.addCompletion { _ in self.toolbarVisibilityViewModel.isEnabled = true }
     animator.startAnimation()
+  }
+}
+
+extension QuickViewController: TabPolicyDecider {
+  func tab(
+    _ tab: some TabState,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    guard let url = request.url else { return .allow }
+    if let internalURL = InternalURL(url), !internalURL.isReaderModePage {
+      handleUnsupportedRequest(request, tab.isPrivate)
+      return .cancel
+    }
+
+    return .allow
+  }
+
+  private func handleUnsupportedRequest(_ request: URLRequest, _ isPrivate: Bool) {
+    dismiss(animated: true) {
+      self.onOpenInNewTab?(request, isPrivate)
+    }
   }
 }
