@@ -36,6 +36,7 @@
 
 #preview {
   --avatar-selected-color: var(--leo-color-divider-interactive);
+  --leo-button-color: var(--leo-color-icon-default);
 
   align-items: center;
   background: var(--leo-color-container-highlight);
@@ -49,12 +50,6 @@
   padding: 0;
   position: relative;
   width: var(--avatar-size);
-}
-
-leo-button#preview {
-  --leo-button-color: var(--leo-color-icon-default);
-
-  flex: none;
 }
 
 #preview.selected {
@@ -79,19 +74,17 @@ leo-button#preview {
 }
 
 #selectedIndicator {
-  --checkmark-size: var(--leo-icon-m);
   --leo-icon-color: var(--leo-color-schemes-on-primary);
-  --leo-icon-height: var(--checkmark-size);
-  --leo-icon-width: var(--checkmark-size);
+  --leo-icon-size: var(--leo-icon-m);
 
   background: var(--leo-color-icon-interactive);
   border-radius: var(--leo-radius-full);
-  height: var(--checkmark-size);
+  height: var(--leo-icon-m);
   inset-inline-end: -1px;
   padding: 1px;
   position: absolute;
   top: -1px;
-  width: var(--checkmark-size);
+  width: var(--leo-icon-m);
 }
 
 #actions {

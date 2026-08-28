@@ -64,7 +64,6 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
       <div id="actions">
         <leo-button
           id="uploadButton"
-          class="action-button"
           kind="filled"
           size="small"
           title="${this.actionTooltip_()}"
