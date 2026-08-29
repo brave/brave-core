@@ -254,11 +254,10 @@ void BraveBrowserCommandController::UpdateContainerCommands() {
   const size_t container_count =
       containers_service ? containers_service->GetContainers().size() : 0;
 
-  for (int id = IDC_NEW_TAB_IN_CONTAINER_1;
-       id <= IDC_NEW_TAB_IN_CONTAINER_9; ++id) {
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
     const int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
-    UpdateCommandEnabled(
-        id, index < static_cast<int>(container_count));
+    UpdateCommandEnabled(id, index < static_cast<int>(container_count));
   }
 }
 #endif
