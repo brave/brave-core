@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Badge desktop shortcuts with the Brave product logo.
+
+      Brave builds take the Chromium-branding path of this file, so the badge
+      resources named here resolve to the Chromium logo. Brave's own unscaled
+      logos come from brave_unscaled_resources.grd, which is exported by our
+      chrome/grit/chrome_unscaled_resources.h override, already included here.
+    count: 5 # The 16px logo serves both the 8px and the 16px badge.
+    regex:
+      re_pattern: 'IDR_PRODUCT_LOGO_(\d+)_SHORTCUTS'
+      replace: 'IDR_BRAVE_PRODUCT_LOGO_\1_SHORTCUTS'
