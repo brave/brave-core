@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/bottombar/BUILD.gn b/chrome/browser/ui/android/bottombar/BUILD.gn
+index 88096dc11b937584ac16551f818edac1c3920feb..eecd57dfdb9f877cf5b7ccdfc070e85ea4501e6b 100644
+--- a/chrome/browser/ui/android/bottombar/BUILD.gn
++++ b/chrome/browser/ui/android/bottombar/BUILD.gn
+@@ -58,6 +58,7 @@ android_library("metrics_java") {
+ 
+ android_library("java") {
+   sources = [
++    "//brave/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarButtonManager.java",
+     "java/src/org/chromium/chrome/browser/ui/bottombar/AiModeActionCoordinator.java",
+     "java/src/org/chromium/chrome/browser/ui/bottombar/AppMenuActionButtonBinder.java",
+     "java/src/org/chromium/chrome/browser/ui/bottombar/BottomBar.java",

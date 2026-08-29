@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      List Brave's bottom bar actions at the end of the @IntDef.
+
+      Anchored on the end of the list rather than on upstream's last entry, so
+      that entries upstream adds keep their place ahead of Brave's.
+    regex:
+      re_pattern: |-
+        (@IntDef\(\{.+?,\n)(\}\))
+      re_flags: [DOTALL]
+      replace: |-
+        \1    ActionId.BRAVE_BOOKMARK,
+            ActionId.BRAVE_SEARCH,
+        \2
+  - description: |-
+      Define Brave's bottom bar actions at the end of the interface.
+
+      Brave's bottom bar shows a bookmark button in the container upstream shares
+      between Glic and AI Mode, and a search accelerator in the centre container
+      in place of upstream's new tab button. Brave ids start well above upstream's
+      so that new upstream actions never collide with them.
+    regex:
+      re_pattern: |-
+        (public @interface ActionId \{.+?;\n)(\})
+      re_flags: [DOTALL]
+      replace: |-
+        \1    int BRAVE_BOOKMARK = 100;
+            int BRAVE_SEARCH = 101;
+        \2

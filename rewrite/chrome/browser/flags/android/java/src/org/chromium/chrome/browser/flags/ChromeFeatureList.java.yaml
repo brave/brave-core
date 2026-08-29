@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show the bottom bar on the NTP by default.
+
+      Brave's New Tab Page keeps the real address bar rather than replacing it
+      with a fakebox, so there is no reason to take the bottom bar away there.
+      Options of the flag that set `disable_on_ntp` themselves still win, this
+      only moves the value the plain "Enabled" option falls back to.
+    regex:
+      re_pattern: |-
+        (newBooleanCachedFeatureParam\(ANDROID_BOTTOM_BAR, "disable_on_ntp", )true\)
+      replace: |-
+        \1false)
