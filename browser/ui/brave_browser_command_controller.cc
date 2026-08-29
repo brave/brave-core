@@ -246,6 +246,23 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
              : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveBrowserCommandController::UpdateContainerCommands() {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+  const size_t container_count =
+      containers_service ? containers_service->GetContainers().size() : 0;
+
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1;
+       id <= IDC_NEW_TAB_IN_CONTAINER_9; ++id) {
+    const int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+    UpdateCommandEnabled(
+        id, index < static_cast<int>(container_count));
+  }
+}
+#endif
+
 void BraveBrowserCommandController::InitBraveCommandState() {
   // Sync, Rewards, and Wallet pages don't work in tor(guest) sessions.
   // They also don't work in private windows but they are redirected
@@ -384,10 +401,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER,
                        containers_service != nullptr);
 
-  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
-       ++id) {
-    UpdateCommandEnabled(id, containers_service != nullptr);
+  if (containers_service) {
+    containers_service_observation_.Observe(containers_service);
   }
+
+  UpdateContainerCommands();
 #endif
 
   if (browser_->is_type_normal()) {
@@ -400,6 +418,12 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandForFocusMode();
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveBrowserCommandController::OnContainersListChanged() {
+  UpdateContainerCommands();
+}
+#endif
 
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
   BrowserCommandController::UpdateCommandsForFullscreenMode();
@@ -830,7 +854,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
 
       auto* containers_service =
-          ContainersServiceFactory::GetForProfile(browser_->profile());
+          ContainersServiceFactory::GetForProfile(browser_->GetProfile());
 
       if (!containers_service) {
         break;
