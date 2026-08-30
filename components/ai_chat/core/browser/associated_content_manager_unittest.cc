@@ -735,4 +735,35 @@ TEST_F(AssociatedContentManagerUnitTest,
             mojom::ContentType::VideoTranscript);
 }
 
+// Content is attached before it can offer tools: a workspace only registers
+// them once its hidden page has loaded, long after it was attached.
+TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsAttachedAfterTheFact) {
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetUrl(GURL("https://example.com"));
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  ASSERT_FALSE(conversation_->associated_content[0]->tools_attached);
+
+  associated_content.set_tools_attached(true);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_TRUE(conversation_->associated_content[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsBeingDetached) {
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetUrl(GURL("https://example.com"));
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content);
+  associated_content.set_tools_attached(true);
+  ASSERT_TRUE(conversation_->associated_content[0]->tools_attached);
+
+  associated_content.set_tools_attached(false);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_FALSE(conversation_->associated_content[0]->tools_attached);
+}
+
 }  // namespace ai_chat

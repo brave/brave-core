@@ -66,6 +66,7 @@ class AssociatedContentDelegate {
     virtual void OnRequestArchive(AssociatedContentDelegate* delegate) {}
     virtual void OnNewPage(AssociatedContentDelegate* delegate) {}
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
+    virtual void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) {}
   };
 
   AssociatedContentDelegate();
@@ -113,9 +114,8 @@ class AssociatedContentDelegate {
   // not persisted. Content is attached when it is first found to expose tools,
   // and can subsequently be overridden by the user.
   bool tools_attached() const { return tools_attached_; }
-  void set_tools_attached(bool tools_attached) {
-    tools_attached_ = tools_attached;
-  }
+  // Notifies observers when the value changes.
+  void set_tools_attached(bool tools_attached);
 
   // Get current cache of content, if available. Do not perform any fresh
   // fetch for the content.
