@@ -256,15 +256,86 @@ export const normalizeCitationSpacing = (text: string): string =>
   })
 
 /**
- * Rewrites LaTeX-style math delimiters into the `$$` form that remark-math
- * recognizes:
+ * Decides whether the text between a pair of single `$` delimiters is a math
+ * expression rather than prose that happens to sit between two dollar amounts.
+ *
+ * Single-dollar text math is left off in remark-math (see MATH_REMARK_OPTIONS)
+ * because it has no way to tell the two apart: in "costs $5 and $10 total" it
+ * reads "5 and " as an expression. These rules do the separating instead, so
+ * that the `$a$` and `$180^\circ$` models routinely emit still render:
+ * - A padded, empty or multi-line span is prose. Money is nearly always
+ *   followed by a space, which puts one at the end of the span.
+ * - A bare amount is money, not an expression.
+ * - A span left dangling on a dash is the first half of a range, so it is money
+ *   too. An expression never ends on an operator with nothing to apply it to.
+ * - Whatever is left has to carry a math construct or no whitespace at all;
+ *   prose caught between two amounts always contains a space.
+ */
+const isLikelyMath = (tex: string): boolean => {
+  if (!tex || /^\s|\s$/.test(tex) || /[\n$]/.test(tex)) return false
+  // Bare amounts: "5", "1,000.00".
+  if (/^[\d.,\s+-]*$/.test(tex)) return false
+  // The opening half of a range, joined by a hyphen, en dash or em dash: the
+  // "5-" in "$5-$10", the "100k-" in "$100k-$150k", the "100–" in "$100–$150".
+  if (/[-\u2013\u2014]$/.test(tex)) return false
+  return /[\\^_{}=<>|~+*/-]/.test(tex) || !/\s/.test(tex)
+}
+
+/**
+ * Rewrites the inline `$…$` spans that `isLikelyMath` accepts into `$$…$$`.
+ *
+ * This is a hand-rolled scan rather than a `String.replace` because rejecting a
+ * span has to be cheap to undo. `replace` resumes after whatever the pattern
+ * matched, so in "costs $5 and $10. For side $a$" declining "5 and " would
+ * still have consumed the `$` before "10" and `$a$` would never be considered.
+ * Here a rejected span's closing `$` is retried as the next opening one.
+ */
+const convertSingleDollarMath = (segment: string): string => {
+  // A `$` that belongs to a `$$` pair, or is escaped as `\$`, is not one of
+  // these delimiters.
+  const isDelimiter = (i: number) =>
+    segment[i] === '$'
+    && segment[i - 1] !== '$'
+    && segment[i + 1] !== '$'
+    && segment[i - 1] !== '\\'
+  const findDelimiter = (from: number) => {
+    for (let i = from; i < segment.length; i++) {
+      if (isDelimiter(i)) return i
+    }
+    return -1
+  }
+
+  let result = ''
+  let cursor = 0
+  let searchFrom = 0
+  for (;;) {
+    const open = findDelimiter(searchFrom)
+    if (open === -1) break
+    const close = findDelimiter(open + 1)
+    if (close === -1) break
+    const tex = segment.slice(open + 1, close)
+    if (!isLikelyMath(tex)) {
+      searchFrom = close
+      continue
+    }
+    result += `${segment.slice(cursor, open)}$$${tex}$$`
+    cursor = close + 1
+    searchFrom = cursor
+  }
+  return result + segment.slice(cursor)
+}
+
+/**
+ * Rewrites the math delimiters models emit into the `$$` form that remark-math
+ * is configured to recognize:
  * - `\[ … \]` on a line of its own becomes a `$$` fence (display math).
  * - `\( … \)`, and `\[ … \]` that sits inline within a line, become `$$…$$`.
+ * - `$ … $` becomes `$$…$$` when it looks like an expression rather than a
+ *   pair of dollar amounts (see isLikelyMath).
  *
- * `$$` is used for inline math rather than `$…$` because single-dollar text
- * math is deliberately disabled (see MATH_REMARK_OPTIONS) so that prose about
- * prices — "costs $5 and $10" — isn't silently rendered as math. Normalizing
- * to `$$` keeps `\(…\)` working without reintroducing that ambiguity.
+ * Everything is normalized onto `$$` so that remark-math only ever has to
+ * handle one delimiter, and the price-versus-math judgement lives here in one
+ * readable place rather than in the parser.
  *
  * This has to run on the raw string rather than as a remark plugin: CommonMark
  * treats `\(` and `\[` as character escapes and drops the backslash, so by the
@@ -272,7 +343,7 @@ export const normalizeCitationSpacing = (text: string): string =>
  * ordinary parens and brackets. Code blocks and inline code are skipped so
  * LaTeX or regex samples are preserved verbatim.
  *
- * Both patterns require their closing delimiter, so a half-streamed expression
+ * Every pattern requires its closing delimiter, so a half-streamed expression
  * is left alone until it completes rather than flickering as broken math.
  */
 export const normalizeMathDelimiters = (text: string): string =>
@@ -297,9 +368,14 @@ export const normalizeMathDelimiters = (text: string): string =>
         : toInline(tex)
     }
 
-    return segment
+    // The backslash forms run first because `replaceDisplay` resolves offsets
+    // against `segment`. Converting single dollars last is safe: the `$$` these
+    // produce are pairs, which are never treated as single-dollar delimiters.
+    const withBackslashFormsConverted = segment
       .replace(/\\\[([\s\S]+?)\\\]/g, replaceDisplay)
       .replace(/\\\(([\s\S]+?)\\\)/g, (_match, tex: string) => toInline(tex))
+
+    return convertSingleDollarMath(withBackslashFormsConverted)
   })
 
 /**

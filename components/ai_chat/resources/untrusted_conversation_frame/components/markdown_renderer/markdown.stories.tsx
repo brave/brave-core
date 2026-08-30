@@ -223,8 +223,10 @@ the message: $$\\frac{1}{$$
   )
 }
 
-// `\(…\)` and `\[…\]` are rewritten to `$$` before the markdown is parsed,
-// because CommonMark strips the backslashes before any plugin can see them.
+// Everything models emit is normalized onto `$$` before the markdown is
+// parsed: `\(…\)` and `\[…\]` because CommonMark strips the backslashes before
+// any plugin can see them, and `$…$` because remark-math cannot tell it apart
+// from prices on its own.
 export const WithLatexStyleMathDelimiters = () => {
   return (
     <MockContext>
@@ -237,7 +239,18 @@ Many models emit \\(…\\) for inline math, so the area of a circle is
 
 \\[x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\\]
 
-Prices still aren't math: this costs $5 and that costs $10.
+## Single-dollar Delimiters
+
+For a triangle with sides $a$, $b$ and $c$ opposite angles $A$, $B$ and $C$,
+the angles sum to $180^\\circ$. Solving with $\\sin^{-1}$ gives a result
+between $0^\\circ$ and $90^\\circ$.
+
+## Not Math
+
+Prices still aren't math: this costs $5 and that costs $10, a $1,000.00 laptop
+is more than a $250 one, and the range is $5-$10.
+
+Nor are shell variables: set $HOME and $PATH first.
 `)}
         shouldShowTextCursor={false}
       />

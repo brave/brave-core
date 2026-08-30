@@ -10,6 +10,7 @@ import { unified } from 'unified'
 import { visit } from 'unist-util-visit'
 import type { Root } from 'mdast'
 import { allowedElements } from './index'
+import { normalizeMathDelimiters } from '../conversation_entries/conversation_entries_utils'
 import {
   MATH_BLOCK_TAG,
   MATH_INLINE_TAG,
@@ -177,7 +178,9 @@ describe('math markdown pipeline', () => {
     ])
   })
 
-  // Single-dollar text math is disabled precisely so this does not happen.
+  // Single-dollar text math is disabled at the parser precisely so this does
+  // not happen. `normalizeMathDelimiters` is what decides when a single-dollar
+  // span is an expression; see the end-to-end describe below.
   it('does not treat prose about prices as math', () => {
     expect(mathTagsIn('It costs $5 and $10 in total.')).toEqual([])
   })
@@ -202,6 +205,54 @@ describe('math markdown pipeline', () => {
     expect(mathTagsIn('- an item with $$x^2$$ in it')).toEqual([
       MATH_INLINE_TAG,
     ])
+  })
+
+  // A real Leo answer, verbatim, run through the same two steps
+  // AssistantResponse applies. Models write inline math as `$…$` far more often
+  // than as `$$…$$`, so this covers the delimiter the parser cannot accept
+  // directly, mixed in with prose the normalizer has to leave alone.
+  describe('end to end, as AssistantResponse renders it', () => {
+    const RESPONSE = [
+      'For a triangle with sides $a$, $b$, and $c$ opposite to angles $A$,',
+      '$B$, and $C$ respectively, the law is expressed as:',
+      '',
+      '$$ \\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C} $$',
+      '',
+      'Since the sum of angles in a triangle is always $180^\\circ$, you can',
+      'find the third angle immediately.',
+      '',
+      'When solving for an angle using the inverse sine function',
+      '($\\sin^{-1}$), the result will always be between $0^\\circ$ and',
+      '$90^\\circ$. Tutoring for this costs $30 and $45 per hour.',
+    ].join('\n')
+
+    const normalized = normalizeMathDelimiters(RESPONSE)
+
+    it('renders every inline expression as math', () => {
+      expect(texIn(normalized)).toEqual([
+        'a',
+        'b',
+        'c',
+        'A',
+        'B',
+        'C',
+        '\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}',
+        '180^\\circ',
+        '\\sin^{-1}',
+        '0^\\circ',
+        '90^\\circ',
+      ])
+    })
+
+    it('uses display mode only for the equation on its own line', () => {
+      expect(
+        mathTagsIn(normalized).filter((t) => t === MATH_BLOCK_TAG),
+      ).toEqual([MATH_BLOCK_TAG])
+    })
+
+    it('leaves the hourly rates as prose', () => {
+      expect(normalized).toContain('costs $30 and $45 per hour')
+    })
   })
 })
 
