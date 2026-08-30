@@ -27,10 +27,10 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/workspace_folder_chooser.h"
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
-#include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/browser/workspace_content_factory.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -430,7 +430,33 @@ void AIChatUIPageHandler::OnWorkspaceFolderChosen(
   auto* service = AIChatServiceFactory::GetForBrowserContext(context);
   auto* conversation =
       service ? service->GetConversation(conversation_uuid) : nullptr;
-  if (!conversation) {
+  auto* factory = service ? service->GetWorkspaceContentFactory() : nullptr;
+  if (!conversation || !factory) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // Built through the same factory a conversation uses to restore a workspace,
+  // so a newly picked folder and a reloaded one produce identical content.
+  factory->CreateWorkspaceContent(
+      *selected, /*uuid=*/std::nullopt,
+      base::BindOnce(&AIChatUIPageHandler::OnWorkspaceContentCreated,
+                     weak_ptr_factory_.GetWeakPtr(), conversation_uuid,
+                     std::move(callback), *selected));
+}
+
+void AIChatUIPageHandler::OnWorkspaceContentCreated(
+    std::string conversation_uuid,
+    ShowWorkspaceFolderPickerCallback callback,
+    base::FilePath selected,
+    std::unique_ptr<ai_chat::AssociatedContentDelegate> content) {
+  // The conversation may have gone away while the folder was being checked.
+  auto* service = owner_web_contents_
+                      ? AIChatServiceFactory::GetForBrowserContext(
+                            owner_web_contents_->GetBrowserContext())
+                      : nullptr;
+  auto* conversation =
+      service ? service->GetConversation(conversation_uuid) : nullptr;
+  if (!content || !conversation) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -438,10 +464,8 @@ void AIChatUIPageHandler::OnWorkspaceFolderChosen(
   // |kAllowedContentSchemes|, so attach it directly via the manager rather than
   // AIChatService::AssociateOwnedContent (which would reject the scheme).
   conversation->associated_content_manager()->AddOwnedContent(
-      std::make_unique<ai_chat::WorkspaceAssociatedContent>(
-          *selected, context,
-          base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers)));
-  std::move(callback).Run(selected->AsUTF8Unsafe());
+      std::move(content));
+  std::move(callback).Run(selected.AsUTF8Unsafe());
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {

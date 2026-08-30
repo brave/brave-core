@@ -263,7 +263,10 @@ ConversationHandler::ConversationHandler(
   if (initial_state.has_value() && !initial_state.value()->entries.empty()) {
     mojom::ConversationArchivePtr conversation_data =
         std::move(initial_state.value());
-    if (!conversation_data->associated_content.empty()) {
+    // Note: workspaces archive no text, so they are absent from
+    // |conversation_data| and restored from the metadata instead.
+    if (!conversation_data->associated_content.empty() ||
+        !metadata_->associated_content.empty()) {
       associated_content_manager_->LoadArchivedContent(metadata_,
                                                        conversation_data);
     }
@@ -327,6 +330,10 @@ void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
   associated_content_manager_->LoadArchivedContent(metadata_,
                                                    conversation_data);
+}
+
+WorkspaceContentFactory* ConversationHandler::GetWorkspaceContentFactory() {
+  return ai_chat_service_->GetWorkspaceContentFactory();
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {

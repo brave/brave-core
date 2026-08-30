@@ -14,12 +14,14 @@
 
 #include "base/base64.h"
 #include "base/files/file_path.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -30,6 +32,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -342,6 +345,16 @@ class AIChatUIPageHandlerWorkspaceTest : public AIChatUIPageHandlerTest {
     scoped_feature_list_.InitAndEnableFeature(features::kAIChatWorkspaceTools);
   }
 
+ protected:
+  // Workspace content is only built for a folder that actually exists.
+  base::FilePath CreateWorkspaceFolder() {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    EXPECT_TRUE(temp_dir_.CreateUniqueTempDir());
+    return temp_dir_.GetPath();
+  }
+
+  base::ScopedTempDir temp_dir_;
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -355,7 +368,7 @@ TEST_F(AIChatUIPageHandlerWorkspaceTest,
   page_handler()->ShowWorkspaceFolderPicker(
       conversation->get_conversation_uuid(), future.GetCallback());
 
-  const base::FilePath folder(FILE_PATH_LITERAL("/tmp/workspace"));
+  const base::FilePath folder = CreateWorkspaceFolder();
   ASSERT_TRUE(last_dialog());
   last_dialog()->SelectFolder(folder);
 
@@ -370,6 +383,14 @@ TEST_F(AIChatUIPageHandlerWorkspaceTest,
   auto* workspace_content =
       static_cast<WorkspaceAssociatedContent*>(delegates[0]);
   EXPECT_EQ(folder, workspace_content->folder_path());
+
+  // The type and folder must reach the metadata; that is what gets persisted
+  // and later used to restore the workspace.
+  auto associated =
+      conversation->associated_content_manager()->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_EQ(mojom::ContentType::Workspace, associated[0]->content_type);
+  EXPECT_EQ(folder, LeoWorkspaceFolderFromURL(associated[0]->url));
 
   // The workspace page's WebContents is owned by the conversation, which
   // outlives the test harness. Drop it here so the harness doesn't report a

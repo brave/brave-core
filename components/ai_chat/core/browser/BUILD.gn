@@ -114,6 +114,7 @@ static_library("browser") {
     "types.h",
     "utils.cc",
     "utils.h",
+    "workspace_content_factory.h",
   ]
 
   if (is_android) {

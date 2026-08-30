@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -93,6 +94,10 @@ class AssociatedContentDelegate {
   using GetContentToolsCallback =
       base::OnceCallback<void(std::vector<std::unique_ptr<Tool>>)>;
   virtual void GetContentTools(GetContentToolsCallback callback);
+
+  // The kind of content this represents. Persisted, and used to decide how to
+  // restore it when the conversation is loaded from storage.
+  virtual mojom::ContentType GetContentType() const;
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();

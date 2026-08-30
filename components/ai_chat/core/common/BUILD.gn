@@ -86,6 +86,7 @@ source_set("test_support") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "ai_chat_urls_unittest.cc",
     "pref_names_unittest.cc",
     "prefs_unittest.cc",
     "proto_conversion_unittest.cc",

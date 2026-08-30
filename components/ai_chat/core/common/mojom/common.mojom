@@ -116,10 +116,15 @@ enum ModelAccess {
   PREMIUM,
 };
 
-// Type of content that is extracted
+// Type of content that is extracted.
+// Note: persisted as raw integers, in both the database and the sync proto, so
+// these may only ever be appended to.
 enum ContentType {
   PageContent,
   VideoTranscript,
+  // A local folder picked for Leo's workspace tools. Contributes tools rather
+  // than text.
+  Workspace,
 };
 
 enum UploadedFileType {

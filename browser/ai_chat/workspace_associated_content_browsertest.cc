@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -19,8 +20,10 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -61,7 +64,8 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<WorkspaceAssociatedContent> CreateContent(
       const base::FilePath& folder) {
     return std::make_unique<WorkspaceAssociatedContent>(
-        folder, browser()->GetProfile(), base::DoNothing());
+        folder, /*uuid=*/std::nullopt, browser()->GetProfile(),
+        base::DoNothing());
   }
 
   ContentSetting GetSetting(const GURL& url, ContentSettingsType type) {
@@ -82,25 +86,48 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
   EXPECT_EQ(folder, content->folder_path());
 
-  // Each workspace gets its own chrome-untrusted://leo-workspace/<uuid> URL so
-  // conversations don't share a document.
+  // The content URL carries the folder, which is what lets the workspace be
+  // reattached after a reload.
   const GURL url = content->url();
   EXPECT_TRUE(url.SchemeIs(content::kChromeUIUntrustedScheme));
   EXPECT_EQ(kAIChatLeoWorkspaceUIHost, url.host());
-  EXPECT_FALSE(content->uuid().empty());
-  EXPECT_EQ("/" + content->uuid(), url.path());
+  EXPECT_EQ(folder, LeoWorkspaceFolderFromURL(url));
+  EXPECT_EQ(mojom::ContentType::Workspace, content->GetContentType());
 
   // The page is a headless tool host: it must never be visible to the user.
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(web_contents);
   EXPECT_EQ(content::Visibility::HIDDEN, web_contents->GetVisibility());
 
+  // Each workspace gets its own page so conversations don't share a document.
+  // Crucially the folder is *not* in that URL: the page must not be able to
+  // read it, nor rewrite it into one the user never picked.
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+  const GURL page_url = web_contents->GetLastCommittedURL();
+  EXPECT_FALSE(content->uuid().empty());
+  EXPECT_EQ("/" + content->uuid(), page_url.path());
+  EXPECT_FALSE(page_url.has_query());
+  EXPECT_FALSE(LeoWorkspaceFolderFromURL(page_url));
 
   // Once loaded, the delegate is a live tool host, so the next generation loop
   // harvests whatever the page registered.
   EXPECT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+}
+
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       RestoresUnderThePersistedIdentityAndFolder) {
+  const base::FilePath folder = CreateWorkspaceFolder();
+  auto original = CreateContent(folder);
+
+  // Reloading rebuilds the workspace from the persisted uuid and folder, so
+  // both have to survive the round trip.
+  auto restored = std::make_unique<WorkspaceAssociatedContent>(
+      LeoWorkspaceFolderFromURL(original->url()).value(), original->uuid(),
+      browser()->GetProfile(), base::DoNothing());
+
+  EXPECT_EQ(original->uuid(), restored->uuid());
+  EXPECT_EQ(folder, restored->folder_path());
+  EXPECT_EQ(original->url(), restored->url());
 }
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,

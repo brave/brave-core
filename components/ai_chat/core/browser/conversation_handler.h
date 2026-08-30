@@ -64,6 +64,7 @@ class AIChatFeedbackAPI;
 class AIChatService;
 class AIChatCredentialManager;
 class AssociatedContentManager;
+class WorkspaceContentFactory;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -162,6 +163,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void RemoveObserver(Observer* observer);
 
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
+
+  // Owned by the service. Null where workspaces are unavailable.
+  WorkspaceContentFactory* GetWorkspaceContentFactory();
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();

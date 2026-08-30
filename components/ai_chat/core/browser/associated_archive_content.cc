@@ -13,16 +13,20 @@
 
 namespace ai_chat {
 
-AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
-                                                   std::string text_content,
-                                                   std::u16string title,
-                                                   bool is_video,
-                                                   std::string uuid) {
+AssociatedArchiveContent::AssociatedArchiveContent(
+    GURL url,
+    std::string text_content,
+    std::u16string title,
+    mojom::ContentType content_type,
+    std::string uuid)
+    : content_type_(content_type) {
   DVLOG(1) << "Made archive for content at: " << url.spec() << "\n"
            << "title: " << title << "text: " << text_content;
   set_uuid(std::move(uuid));
   set_url(std::move(url));
-  set_cached_page_content(PageContent(std::move(text_content), is_video));
+  set_cached_page_content(
+      PageContent(std::move(text_content),
+                  content_type == mojom::ContentType::VideoTranscript));
   SetTitle(std::move(title));
 }
 
@@ -30,6 +34,10 @@ AssociatedArchiveContent::~AssociatedArchiveContent() = default;
 
 void AssociatedArchiveContent::GetContent(GetPageContentCallback callback) {
   std::move(callback).Run(cached_page_content());
+}
+
+mojom::ContentType AssociatedArchiveContent::GetContentType() const {
+  return content_type_;
 }
 
 }  // namespace ai_chat

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <ranges>
 #include <string>
 #include <utility>
@@ -16,6 +17,7 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
@@ -26,6 +28,8 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/workspace_content_factory.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 
 namespace ai_chat {
 
@@ -50,9 +54,19 @@ void AssociatedContentManager::LoadArchivedContent(
            << " metadata size: " << metadata->associated_content.size()
            << ", archive size: " << archive->associated_content.size();
 
-  // Remove all owned content - it should be reloaded from the DB.
+  // Remove all owned content - it should be reloaded from the DB. Workspaces
+  // are the exception: they are live, so rebuilding one the metadata still
+  // lists would needlessly drop its running tools.
   for (int i = owned_content_.size() - 1; i >= 0; --i) {
-    RemoveContent(owned_content_[i].get(), /*notify_updated=*/false);
+    auto* content = owned_content_[i].get();
+    if (content->GetContentType() == mojom::ContentType::Workspace &&
+        std::ranges::any_of(metadata->associated_content,
+                            [content](const auto& persisted) {
+                              return persisted->uuid == content->uuid();
+                            })) {
+      continue;
+    }
+    RemoveContent(content, /*notify_updated=*/false);
   }
 
   for (size_t i = 0; i < archive->associated_content.size(); ++i) {
@@ -66,11 +80,15 @@ void AssociatedContentManager::LoadArchivedContent(
     }
 
     auto* content = content_it->get();
-    bool is_video =
-        (content->content_type == mojom::ContentType::VideoTranscript);
+    // Restored as live content below. Archiving one here would take its uuid
+    // and leave an inert attachment in its place.
+    if (content->content_type == mojom::ContentType::Workspace) {
+      continue;
+    }
     owned_content_.push_back(std::make_unique<AssociatedArchiveContent>(
         content->url, archive_content->content,
-        base::UTF8ToUTF16(content->title), is_video, content->uuid));
+        base::UTF8ToUTF16(content->title), content->content_type,
+        content->uuid));
     AddContent(owned_content_.back().get(), /*notify_updated=*/false);
 
     // Be sure to record the turn that this content is associated with.
@@ -78,7 +96,66 @@ void AssociatedContentManager::LoadArchivedContent(
         archive_content->conversation_turn_uuid;
   }
 
+  // A workspace archives no text, so it is absent from |archive| entirely and
+  // is restored from the metadata, which records its folder in the URL.
+  //
+  // Copy first: attaching content notifies the conversation, which rewrites the
+  // very metadata vector being iterated here.
+  std::vector<mojom::AssociatedContentPtr> workspaces;
+  for (const auto& content : metadata->associated_content) {
+    if (content->content_type == mojom::ContentType::Workspace) {
+      workspaces.push_back(content->Clone());
+    }
+  }
+  for (const auto& workspace : workspaces) {
+    RestoreWorkspaceContent(*workspace);
+  }
+
   conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::RestoreWorkspaceContent(
+    const mojom::AssociatedContent& content) {
+  // Already attached, e.g. a sync update reloading a still-live workspace.
+  if (std::ranges::any_of(content_delegates_, [&content](const auto* delegate) {
+        return delegate->uuid() == content.uuid;
+      })) {
+    return;
+  }
+
+  WorkspaceContentFactory* factory =
+      conversation_->GetWorkspaceContentFactory();
+  std::optional<base::FilePath> folder = LeoWorkspaceFolderFromURL(content.url);
+  if (!factory || !folder) {
+    // Workspaces are unavailable here, or the URL was cleared by a "clear
+    // browsing data" pass. Leave it off rather than attaching an inert one.
+    DVLOG(1) << __func__ << " skipping workspace " << content.uuid;
+    return;
+  }
+
+  factory->CreateWorkspaceContent(
+      *folder, content.uuid,
+      base::BindOnce(&AssociatedContentManager::OnWorkspaceContentRestored,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     content.conversation_turn_uuid));
+}
+
+void AssociatedContentManager::OnWorkspaceContentRestored(
+    std::optional<std::string> conversation_turn_uuid,
+    std::unique_ptr<AssociatedContentDelegate> content) {
+  // The folder has been moved or deleted since the conversation was last used.
+  if (!content) {
+    return;
+  }
+
+  // Keep it on the turn it was originally sent with, so re-persisting the
+  // conversation doesn't move it to a later one.
+  if (conversation_turn_uuid) {
+    content_uuid_to_conversation_turns_[content->uuid()] =
+        *conversation_turn_uuid;
+  }
+
+  AddOwnedContent(std::move(content));
 }
 
 void AssociatedContentManager::CreateArchiveContent(
@@ -86,7 +163,9 @@ void AssociatedContentManager::CreateArchiveContent(
   DVLOG(1) << __func__;
   auto content_uuid = to_archive->uuid();
   auto text_content = to_archive->cached_page_content().content;
-  auto is_video = to_archive->cached_page_content().is_video;
+  // Archiving preserves what the content is, not just its text: a workspace
+  // persisted as a plain page would never be reattached again.
+  auto content_type = to_archive->GetContentType();
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
@@ -98,7 +177,7 @@ void AssociatedContentManager::CreateArchiveContent(
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
   owned_content_.emplace_back(std::make_unique<AssociatedArchiveContent>(
-      delegate->url(), std::move(text_content), delegate->title(), is_video,
+      delegate->url(), std::move(text_content), delegate->title(), content_type,
       delegate->uuid()));
   *it = owned_content_.back().get();
   content_observations_.AddObservation(*it);
@@ -311,9 +390,7 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->content_id = delegate->content_id();
     content->url = delegate->url();
     content->title = base::UTF16ToUTF8(delegate->title());
-    content->content_type = cached_page_content.is_video
-                                ? mojom::ContentType::VideoTranscript
-                                : mojom::ContentType::PageContent;
+    content->content_type = delegate->GetContentType();
 
     const uint32_t content_length =
         cached_page_content.content.length() + kAdditionalCharsPerContent;

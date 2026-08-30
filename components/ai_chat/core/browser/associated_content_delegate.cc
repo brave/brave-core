@@ -79,6 +79,11 @@ void AssociatedContentDelegate::set_tools_attached(bool tools_attached) {
   observers_.Notify(&Observer::OnToolsAttachedChanged, this);
 }
 
+mojom::ContentType AssociatedContentDelegate::GetContentType() const {
+  return cached_page_content_.is_video ? mojom::ContentType::VideoTranscript
+                                       : mojom::ContentType::PageContent;
+}
+
 void AssociatedContentDelegate::NotifyNewPage() {
   for (auto& observer : observers_) {
     observer.OnNewPage(this);

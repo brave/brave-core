@@ -68,6 +68,7 @@ class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
 class MemoryStorageTool;
+class WorkspaceContentFactory;
 
 bool CanAssociateContent(AssociatedContentDelegate* delegate);
 
@@ -241,6 +242,14 @@ class AIChatService : public KeyedService,
 
   bool GetIsContentAgentAllowed() const;
   void SetIsContentAgentAllowed(bool is_allowed);
+
+  // Builds (and restores) Leo workspace content. Like the content agent
+  // configuration above, this is installed by the embedding layer rather than
+  // passed to the constructor, since workspaces are experimental and
+  // unavailable on most platforms. Null when unavailable.
+  WorkspaceContentFactory* GetWorkspaceContentFactory();
+  void SetWorkspaceContentFactory(
+      std::unique_ptr<WorkspaceContentFactory> factory);
 
   bool HasUserOptedIn();
   bool IsPremiumStatus();
@@ -478,6 +487,9 @@ class AIChatService : public KeyedService,
   // Whether conversations can utilize content agent capabilities. For now,
   // this is profile-specific.
   bool is_content_agent_allowed_ = false;
+
+  // Null unless the embedder installed one.
+  std::unique_ptr<WorkspaceContentFactory> workspace_content_factory_;
 
   // Background task runner for the database and sync bridge. Created
   // synchronously the first time MaybeInitStorage() succeeds so that a

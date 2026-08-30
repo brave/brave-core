@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 
+#include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -12,8 +14,8 @@
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
-#include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/content_tool.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -40,16 +42,25 @@ namespace ai_chat {
 
 WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     base::FilePath folder_path,
+    std::optional<std::string> uuid,
     content::BrowserContext* browser_context,
     base::OnceCallback<void(content::WebContents*)> attach_tab_helpers)
     : folder_path_(std::move(folder_path)) {
-  std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
-  GURL url(base::StrCat({kAIChatLeoWorkspaceUIURL, uuid}));
-  DVLOG(2) << __func__ << " creating workspace content at " << url.spec()
-           << " for folder " << folder_path_;
+  // A new workspace keeps the uuid the base class generated for it.
+  if (uuid) {
+    set_uuid(std::move(*uuid));
+  }
 
-  set_uuid(uuid);
-  set_url(url);
+  // The page URL carries only the uuid, so each workspace gets its own
+  // document. The folder is deliberately kept out of it: the page must not be
+  // able to see, let alone rewrite, which folder it was given. |folder_path_|
+  // stays browser-side and is the only thing used to mint the handle.
+  GURL page_url(base::StrCat(
+      {kAIChatLeoWorkspaceUIURL, AssociatedContentDelegate::uuid()}));
+
+  DVLOG(2) << __func__ << " creating workspace page at " << page_url.spec()
+           << " for folder " << folder_path_;
+  set_url(LeoWorkspaceContentURL(folder_path_));
   SetTitle(u"Workspace");
 
   // Hidden, headless background WebContents that hosts the workspace page.
@@ -61,7 +72,7 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
 
   // Load eagerly so the page can receive its handle and register tools before
   // the user sends a message.
-  content::NavigationController::LoadURLParams load_params(url);
+  content::NavigationController::LoadURLParams load_params(page_url);
   load_params.transition_type = ui::PAGE_TRANSITION_AUTO_TOPLEVEL;
   web_contents_->GetController().LoadURLWithParams(load_params);
 }
@@ -72,6 +83,10 @@ void WorkspaceAssociatedContent::GetContent(GetPageContentCallback callback) {
   // Headless tool host: there is no page text to contribute to the
   // conversation. The value of this content is its tools, not its content.
   std::move(callback).Run(PageContent());
+}
+
+mojom::ContentType WorkspaceAssociatedContent::GetContentType() const {
+  return mojom::ContentType::Workspace;
 }
 
 void WorkspaceAssociatedContent::GetContentTools(

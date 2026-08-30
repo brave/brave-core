@@ -10,6 +10,7 @@
 #include <string_view>
 
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -28,18 +29,24 @@ namespace ai_chat {
 // management.
 class AssociatedArchiveContent : public AssociatedContentDelegate {
  public:
+  // |content_type| is carried through so archiving doesn't change what the
+  // content is - it is persisted, and drives how the content is restored.
   AssociatedArchiveContent(GURL url,
                            std::string text_content,
                            std::u16string title,
-                           bool is_video,
+                           mojom::ContentType content_type,
                            std::string uuid);
   ~AssociatedArchiveContent() override;
   AssociatedArchiveContent(const AssociatedArchiveContent&) = delete;
   AssociatedArchiveContent& operator=(const AssociatedArchiveContent&) = delete;
 
   void GetContent(GetPageContentCallback callback) override;
+  mojom::ContentType GetContentType() const override;
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr();
+
+ private:
+  const mojom::ContentType content_type_;
 };
 
 }  // namespace ai_chat

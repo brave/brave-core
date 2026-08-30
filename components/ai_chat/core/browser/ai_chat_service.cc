@@ -48,6 +48,7 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/browser/workspace_content_factory.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -1437,6 +1438,15 @@ bool AIChatService::GetIsContentAgentAllowed() const {
 
 void AIChatService::SetIsContentAgentAllowed(bool is_allowed) {
   is_content_agent_allowed_ = is_allowed;
+}
+
+WorkspaceContentFactory* AIChatService::GetWorkspaceContentFactory() {
+  return workspace_content_factory_.get();
+}
+
+void AIChatService::SetWorkspaceContentFactory(
+    std::unique_ptr<WorkspaceContentFactory> factory) {
+  workspace_content_factory_ = std::move(factory);
 }
 
 bool AIChatService::HasUserOptedIn() {

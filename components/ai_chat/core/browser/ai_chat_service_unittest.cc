@@ -53,6 +53,8 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/browser/workspace_content_factory.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -382,6 +384,15 @@ class AIChatServiceUnitTest : public testing::Test,
   void WaitForSyncBridgeReady() {
     ASSERT_TRUE(base::test::RunUntil(
         [&] { return !ai_chat_service_->ai_chat_db_.is_null(); }));
+    base::RunLoop run_loop;
+    ai_chat_service_->db_task_runner_->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  // Drains the database sequence, so writes queued before this call have
+  // landed.
+  void FlushDatabase() {
     base::RunLoop run_loop;
     ai_chat_service_->db_task_runner_->PostTaskAndReply(
         FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
@@ -1708,6 +1719,115 @@ TEST_P(AIChatServiceUnitTest, DeleteSkill) {
 
   auto all_skills = prefs::GetSkillsFromPrefs(prefs_);
   EXPECT_TRUE(all_skills.empty());
+}
+
+namespace {
+
+// Stands in for WorkspaceAssociatedContent, which needs a WebContents.
+class FakeWorkspaceContent : public AssociatedContentDelegate {
+ public:
+  FakeWorkspaceContent(const base::FilePath& folder,
+                       std::optional<std::string> uuid) {
+    if (uuid) {
+      set_uuid(std::move(*uuid));
+    }
+    set_url(LeoWorkspaceContentURL(folder));
+    SetTitle(u"Workspace");
+  }
+
+  // AssociatedContentDelegate:
+  void GetContent(GetPageContentCallback callback) override {
+    std::move(callback).Run(PageContent());
+  }
+  mojom::ContentType GetContentType() const override {
+    return mojom::ContentType::Workspace;
+  }
+};
+
+class FakeWorkspaceContentFactory : public WorkspaceContentFactory {
+ public:
+  void CreateWorkspaceContent(
+      const base::FilePath& folder_path,
+      std::optional<std::string> uuid,
+      CreateWorkspaceContentCallback callback) override {
+    last_folder_ = folder_path;
+    std::move(callback).Run(
+        std::make_unique<FakeWorkspaceContent>(folder_path, std::move(uuid)));
+  }
+
+  const base::FilePath& last_folder() const { return last_folder_; }
+
+ private:
+  base::FilePath last_folder_;
+};
+
+}  // namespace
+
+// Reopening a conversation after a restart should reattach a live workspace
+// for the folder it was created with.
+TEST_P(AIChatServiceUnitTest, WorkspaceContentIsRestoredAfterRestart) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+
+  const base::FilePath folder(FILE_PATH_LITERAL("/home/user/project"));
+
+  auto factory = std::make_unique<FakeWorkspaceContentFactory>();
+  ai_chat_service_->SetWorkspaceContentFactory(std::move(factory));
+
+  std::string conversation_uuid;
+  {
+    ConversationHandler* handler = CreateConversation();
+    conversation_uuid = handler->get_conversation_uuid();
+    auto client = CreateConversationClient(handler);
+
+    handler->associated_content_manager()->AddOwnedContent(
+        std::make_unique<FakeWorkspaceContent>(folder, std::nullopt));
+
+    handler->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+    auto content =
+        handler->associated_content_manager()->GetAssociatedContent();
+    ASSERT_EQ(1u, content.size());
+    EXPECT_EQ(mojom::ContentType::Workspace, content[0]->content_type);
+
+    DisconnectConversationClient(client.get());
+    WaitForConversationUnload();
+  }
+
+  // Let the writes land before the "restart".
+  FlushDatabase();
+  ResetService();
+
+  auto restored_factory = std::make_unique<FakeWorkspaceContentFactory>();
+  auto* restored_factory_ptr = restored_factory.get();
+  ai_chat_service_->SetWorkspaceContentFactory(std::move(restored_factory));
+
+  base::RunLoop run_loop;
+  ConversationHandler* restored = nullptr;
+  ai_chat_service_->GetConversation(
+      conversation_uuid,
+      base::BindLambdaForTesting([&](ConversationHandler* handler) {
+        restored = handler;
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+  ASSERT_TRUE(restored);
+
+  // Restoring a workspace is asynchronous: the folder is checked on disk
+  // first.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !restored->associated_content_manager()
+                ->GetContentDelegatesForTesting()
+                .empty();
+  }));
+
+  EXPECT_EQ(folder, restored_factory_ptr->last_folder());
+
+  auto delegates =
+      restored->associated_content_manager()->GetContentDelegatesForTesting();
+  ASSERT_EQ(1u, delegates.size());
+  EXPECT_EQ(mojom::ContentType::Workspace, delegates[0]->GetContentType());
 }
 
 }  // namespace ai_chat

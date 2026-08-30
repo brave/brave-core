@@ -191,11 +191,16 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       base::OnceCallback<void(mojom::UploadedFilePtr)> callback,
       std::optional<std::string> extracted_text);
 
-  // Attaches the chosen workspace folder to `conversation_uuid` (if any) and
-  // replies to the WebUI with the selected path.
+  // Builds workspace content for the chosen folder, attaches it to
+  // `conversation_uuid` if it still exists, and replies with the path.
   void OnWorkspaceFolderChosen(std::string conversation_uuid,
                                ShowWorkspaceFolderPickerCallback callback,
                                std::optional<base::FilePath> selected);
+  void OnWorkspaceContentCreated(
+      std::string conversation_uuid,
+      ShowWorkspaceFolderPickerCallback callback,
+      base::FilePath selected,
+      std::unique_ptr<ai_chat::AssociatedContentDelegate> content);
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;

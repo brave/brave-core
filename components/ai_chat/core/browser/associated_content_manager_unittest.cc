@@ -4,13 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -22,8 +25,11 @@
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/workspace_content_factory.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -766,6 +772,194 @@ TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsBeingDetached) {
 
   ASSERT_EQ(1u, conversation_->associated_content.size());
   EXPECT_FALSE(conversation_->associated_content[0]->tools_attached);
+}
+
+namespace {
+
+// Stands in for WorkspaceAssociatedContent, which needs a WebContents.
+class FakeWorkspaceContent : public AssociatedContentDelegate {
+ public:
+  FakeWorkspaceContent(const base::FilePath& folder,
+                       std::optional<std::string> uuid) {
+    if (uuid) {
+      set_uuid(std::move(*uuid));
+    }
+    set_url(LeoWorkspaceContentURL(folder));
+    SetTitle(u"Workspace");
+  }
+
+  // AssociatedContentDelegate:
+  void GetContent(GetPageContentCallback callback) override {
+    std::move(callback).Run(PageContent());
+  }
+  mojom::ContentType GetContentType() const override {
+    return mojom::ContentType::Workspace;
+  }
+};
+
+// Records what the manager asked for, so tests can check the folder and
+// identity survived the round trip through the metadata.
+class FakeWorkspaceContentFactory : public WorkspaceContentFactory {
+ public:
+  void CreateWorkspaceContent(
+      const base::FilePath& folder_path,
+      std::optional<std::string> uuid,
+      CreateWorkspaceContentCallback callback) override {
+    ++create_count_;
+    last_folder_ = folder_path;
+    last_uuid_ = uuid;
+    std::move(callback).Run(folder_exists_
+                                ? std::make_unique<FakeWorkspaceContent>(
+                                      folder_path, std::move(uuid))
+                                : nullptr);
+  }
+
+  void set_folder_exists(bool exists) { folder_exists_ = exists; }
+  int create_count() const { return create_count_; }
+  const base::FilePath& last_folder() const { return last_folder_; }
+  const std::optional<std::string>& last_uuid() const { return last_uuid_; }
+
+ private:
+  bool folder_exists_ = true;
+  int create_count_ = 0;
+  base::FilePath last_folder_;
+  std::optional<std::string> last_uuid_;
+};
+
+}  // namespace
+
+class AssociatedContentManagerWorkspaceTest
+    : public AssociatedContentManagerUnitTest {
+ public:
+  void SetUp() override {
+    AssociatedContentManagerUnitTest::SetUp();
+    auto factory = std::make_unique<FakeWorkspaceContentFactory>();
+    workspace_factory_ = factory.get();
+    ai_chat_service_->SetWorkspaceContentFactory(std::move(factory));
+  }
+
+ protected:
+  static constexpr char kWorkspaceUuid[] = "workspace-uuid";
+  static constexpr char kTurnUuid[] = "turn-uuid";
+
+  // The metadata row persisting a workspace produces: folder in the URL, and
+  // nothing in the archive.
+  void AddPersistedWorkspace(const base::FilePath& folder) {
+    auto content = mojom::AssociatedContent::New();
+    content->uuid = kWorkspaceUuid;
+    content->content_type = mojom::ContentType::Workspace;
+    content->url = LeoWorkspaceContentURL(folder);
+    content->title = "Workspace";
+    content->conversation_turn_uuid = kTurnUuid;
+    conversation_->associated_content.push_back(std::move(content));
+  }
+
+  void LoadWithEmptyArchive() {
+    auto archive = mojom::ConversationArchive::New();
+    conversation_handler_->associated_content_manager()->LoadArchivedContent(
+        conversation_.get(), archive);
+  }
+
+  std::vector<AssociatedContentDelegate*> delegates() {
+    return conversation_handler_->associated_content_manager()
+        ->GetContentDelegatesForTesting();
+  }
+
+  raw_ptr<FakeWorkspaceContentFactory> workspace_factory_ = nullptr;
+};
+
+TEST_F(AssociatedContentManagerWorkspaceTest, RestoresWorkspaceFromMetadata) {
+  const base::FilePath folder(FILE_PATH_LITERAL("/home/user/project"));
+  AddPersistedWorkspace(folder);
+
+  LoadWithEmptyArchive();
+
+  // Recovered from the metadata alone; a workspace has no archive entry.
+  EXPECT_EQ(1, workspace_factory_->create_count());
+  EXPECT_EQ(folder, workspace_factory_->last_folder());
+  EXPECT_EQ(kWorkspaceUuid, workspace_factory_->last_uuid());
+
+  ASSERT_EQ(1u, delegates().size());
+  EXPECT_EQ(kWorkspaceUuid, delegates()[0]->uuid());
+  EXPECT_EQ(mojom::ContentType::Workspace, delegates()[0]->GetContentType());
+
+  // It stays on the turn it was originally sent with.
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_EQ(kTurnUuid,
+            conversation_->associated_content[0]->conversation_turn_uuid);
+}
+
+TEST_F(AssociatedContentManagerWorkspaceTest, SkipsWorkspaceWhenFolderIsGone) {
+  AddPersistedWorkspace(base::FilePath(FILE_PATH_LITERAL("/home/user/gone")));
+  workspace_factory_->set_folder_exists(false);
+
+  LoadWithEmptyArchive();
+
+  // A folder that has gone away must not come back as an inert attachment.
+  EXPECT_EQ(1, workspace_factory_->create_count());
+  EXPECT_TRUE(delegates().empty());
+}
+
+TEST_F(AssociatedContentManagerWorkspaceTest, SkipsWorkspaceWithNoFolderInURL) {
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = kWorkspaceUuid;
+  content->content_type = mojom::ContentType::Workspace;
+  // A "clear browsing data" pass nulls the URL, leaving nothing to reattach to.
+  content->url = GURL();
+  content->conversation_turn_uuid = kTurnUuid;
+  conversation_->associated_content.push_back(std::move(content));
+
+  LoadWithEmptyArchive();
+
+  EXPECT_EQ(0, workspace_factory_->create_count());
+  EXPECT_TRUE(delegates().empty());
+}
+
+TEST_F(AssociatedContentManagerWorkspaceTest, SkipsWorkspaceWithNoFactory) {
+  // Platforms without workspace support simply don't reattach them.
+  workspace_factory_ = nullptr;
+  ai_chat_service_->SetWorkspaceContentFactory(nullptr);
+  AddPersistedWorkspace(
+      base::FilePath(FILE_PATH_LITERAL("/home/user/project")));
+
+  LoadWithEmptyArchive();
+
+  EXPECT_TRUE(delegates().empty());
+}
+
+TEST_F(AssociatedContentManagerWorkspaceTest, ArchivingPreservesWorkspaceType) {
+  const base::FilePath folder(FILE_PATH_LITERAL("/home/user/project"));
+  conversation_handler_->associated_content_manager()->AddOwnedContent(
+      std::make_unique<FakeWorkspaceContent>(folder, kWorkspaceUuid));
+  ASSERT_EQ(1u, delegates().size());
+  auto* workspace = delegates()[0];
+
+  // Archiving must not change *what* the content is: a workspace downgraded
+  // to a plain page here could never be reattached again.
+  conversation_handler_->associated_content_manager()->CreateArchiveContent(
+      workspace);
+
+  auto content = conversation_handler_->associated_content_manager()
+                     ->GetAssociatedContent();
+  ASSERT_EQ(1u, content.size());
+  EXPECT_EQ(mojom::ContentType::Workspace, content[0]->content_type);
+  EXPECT_EQ(folder, LeoWorkspaceFolderFromURL(content[0]->url));
+}
+
+TEST_F(AssociatedContentManagerWorkspaceTest, KeepsLiveWorkspaceOnReload) {
+  AddPersistedWorkspace(
+      base::FilePath(FILE_PATH_LITERAL("/home/user/project")));
+  LoadWithEmptyArchive();
+  ASSERT_EQ(1u, delegates().size());
+  auto* restored = delegates()[0];
+
+  // A workspace owns a page holding a directory handle, so a second load
+  // (e.g. a sync update) must leave the running one alone.
+  LoadWithEmptyArchive();
+
+  EXPECT_EQ(1, workspace_factory_->create_count());
+  ASSERT_EQ(1u, delegates().size());
+  EXPECT_EQ(restored, delegates()[0]);
 }
 
 }  // namespace ai_chat

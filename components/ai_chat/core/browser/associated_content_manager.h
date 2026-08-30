@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -143,6 +144,14 @@ class AssociatedContentManager : public ToolProvider,
 
  private:
   void DetachContent();
+
+  // Rebuilds the Leo workspace described by |content|, whose URL records its
+  // folder. Asynchronous because checking that folder touches the disk. Does
+  // nothing if it is already attached or has no usable folder.
+  void RestoreWorkspaceContent(const mojom::AssociatedContent& content);
+  void OnWorkspaceContentRestored(
+      std::optional<std::string> conversation_turn_uuid,
+      std::unique_ptr<AssociatedContentDelegate> content);
 
   // Attaches |delegate| when the tools it exposes are non-empty (and detaches
   // it otherwise), so its tools are surfaced (via the tools pill) before any

@@ -10,11 +10,13 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 #include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/ai_chat/workspace_content_factory_impl.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -130,6 +132,13 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   // the AIChatService constructor.
   service->SetIsContentAgentAllowed(is_actor_allowed);
 #endif
+
+  // Likewise experimental, and only available in layers that can host a
+  // WebContents.
+  if (base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    service->SetWorkspaceContentFactory(
+        std::make_unique<WorkspaceContentFactoryImpl>(context));
+  }
 
   return service;
 }

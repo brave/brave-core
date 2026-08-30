@@ -2746,8 +2746,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
 
   auto delegate = std::make_unique<AssociatedArchiveContent>(
       GURL("https://example.com"), "This is the way - page contents",
-      u"The way",
-      /*is_video=*/false, "my-uuid");
+      u"The way", mojom::ContentType::PageContent, "my-uuid");
   conversation_handler_->associated_content_manager()->AddContent(
       delegate.get(), /*notify_updated=*/true,
       /*detach_existing_content=*/true);

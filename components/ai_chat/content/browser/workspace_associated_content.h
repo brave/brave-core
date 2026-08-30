@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_WORKSPACE_ASSOCIATED_CONTENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -34,11 +35,18 @@ namespace ai_chat {
 // its lifetime (and the page's) is tied to the conversation that owns the
 // delegate. Tool discovery reuses the same AIPageContentAgent harvest as tab
 // content (see GetContentTools).
+//
+// Its associated content URL records the folder (see LeoWorkspaceContentURL),
+// which is what allows the workspace to be reattached on reload.
 class WorkspaceAssociatedContent : public AssociatedContentDelegate,
                                    public content::WebContentsObserver {
  public:
+  // Pass the persisted |uuid| when restoring, so the workspace updates its
+  // existing row rather than accumulating a new one on every reload; nullopt
+  // for a newly created one.
   WorkspaceAssociatedContent(
       base::FilePath folder_path,
+      std::optional<std::string> uuid,
       content::BrowserContext* browser_context,
       base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
   ~WorkspaceAssociatedContent() override;
@@ -51,6 +59,7 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
   void GetContentTools(GetContentToolsCallback callback) override;
+  mojom::ContentType GetContentType() const override;
 
   content::WebContents* GetWebContentsForTesting() {
     return web_contents_.get();
