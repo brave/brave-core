@@ -122,8 +122,8 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 
   void OnEncoded(std::optional<std::vector<uint8_t>> png);
   // Shows the preview dialog for `png`; proceeds to ShowSaveDialog() if the
-  // user clicks Download, copies to clipboard via OnCopiedToClipboard() if
-  // they click Copy, or finishes with kUserCancelled otherwise.
+  // user clicks Download, copies to clipboard via CopyToClipboard() if they
+  // click Copy, or finishes with kUserCancelled otherwise.
   void ShowPreviewDialog(std::vector<uint8_t> png);
   void ShowSaveDialog(std::vector<uint8_t> png);
   void ShowSaveDialogWithPath(const base::FilePath& default_path);

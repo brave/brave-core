@@ -359,7 +359,7 @@ void ScreenshotController::CopyToClipboard(std::vector<uint8_t> png) {
   SkBitmap bitmap = gfx::PNGCodec::Decode(png);
   ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
   clipboard_writer.WriteImage(bitmap);
-  auto cb = std::move(pending_callback_);
+  ResultCallback cb = std::move(pending_callback_);
   Reset();
   if (cb) {
     std::move(cb).Run(base::FilePath());  // No path to return for clipboard
