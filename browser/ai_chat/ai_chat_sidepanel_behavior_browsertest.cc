@@ -617,13 +617,24 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   ASSERT_TRUE(coordinator);
   coordinator->Show(SidePanelEntry::Id::kChatUI);
 
+  // `Show` creates the panel's WebContents and navigates it to the AI Chat
+  // WebUI asynchronously, so wait for that navigation to commit and finish
+  // before running any script in the panel. Script evaluated in the initial
+  // empty document is lost when the WebUI navigation replaces it: the pending
+  // promise `VerifyElementState` waits on is destroyed with the document, so
+  // `EvalJs` returns an error instead of a value. `IsLoading` is what makes
+  // this a post-commit wait (it stays true from navigation start until after
+  // commit); `GetWebUI` alone can already be set while the navigation is only
+  // starting.
   content::WebContents* panel_contents = nullptr;
   ASSERT_TRUE(base::test::RunUntil([&]() {
     panel_contents = ai_chat::GetSidePanelWebContents(browser());
     return IsSidePanelOpen(browser()) && panel_contents != nullptr &&
-           VerifyElementState("sidepanel-main", true,
-                              panel_contents->GetPrimaryMainFrame(), FROM_HERE);
+           panel_contents->GetWebUI() != nullptr &&
+           !panel_contents->IsLoading();
   }));
+  ASSERT_TRUE(VerifyElementState("sidepanel-main", /*expect_exist=*/true,
+                                 panel_contents->GetPrimaryMainFrame()));
 
   auto* tab_strip = browser()->tab_strip_model();
   const int initial_tab_count = tab_strip->count();
@@ -665,6 +676,11 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
             TabStripModel::kNoTab);
 
   // The side panel has closed to avoid showing the same conversation twice.
+  // Unlike the wait above, the element check belongs inside the poll here: the
+  // conversation's contents is not renavigated by the move, it only swaps the
+  // `data-testid` on its existing root element, and `VerifyElementState`
+  // observes childList mutations rather than attribute changes. Re-running it
+  // is what re-queries for the new id.
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return !IsSidePanelOpen(browser()) &&
            VerifyElementState("standalone-main", true,
