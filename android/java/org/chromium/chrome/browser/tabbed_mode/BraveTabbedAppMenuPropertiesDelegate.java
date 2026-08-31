@@ -64,6 +64,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler.AppMenuItemType;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
@@ -383,12 +384,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             mBraveAppMenuDelegate);
         }
 
-        // Hide bookmark button if bottom toolbar is enabled and address bar is on top.
+        // Hide the bookmark button when the controls at the bottom already carry one - Brave's
+        // bottom toolbar with the address bar on top, or the bottom bar, which always has one.
+        boolean hasBookmarkButtonAtBottom =
+                (BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                                && BottomToolbarConfiguration.isToolbarTopAnchored())
+                        || BottomBarConfigUtils.isBottomBarEnabled(mBraveContext);
         View bookmarkWrapper = view.findViewById(R.id.button_wrapper_bookmark);
         MaterialButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
-        if (bookmarkButton != null
-                && BottomToolbarConfiguration.isBraveBottomControlsEnabled()
-                && BottomToolbarConfiguration.isToolbarTopAnchored()) {
+        if (bookmarkButton != null && hasBookmarkButtonAtBottom) {
             if (bookmarkWrapper != null) bookmarkWrapper.setVisibility(View.GONE);
         }
 
@@ -430,7 +434,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
     @Override
     public @Nullable View buildFooterView(AppMenuHandler appMenuHandler) {
-        if (isMenuButtonInBottomToolbar() && shouldShowPageMenu()) {
+        if (isMenuButtonAtBottom() && shouldShowPageMenu()) {
             View footer =
                     LayoutInflater.from(mBraveContext).inflate(R.layout.icon_row_menu_footer, null);
 
@@ -441,8 +445,18 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         return null;
     }
 
-    private boolean isMenuButtonInBottomToolbar() {
-        return BraveMenuButtonCoordinator.isMenuFromBottom();
+    /**
+     * Whether the app menu opens from the bottom of the screen. The icon row then moves from the
+     * top of the menu into a footer at its bottom, next to the button that opened it.
+     */
+    private boolean isMenuButtonAtBottom() {
+        return BraveMenuButtonCoordinator.isMenuFromBottom() || isMenuButtonInBottomBar();
+    }
+
+    /** Whether the app menu button is the one upstream's bottom bar holds. */
+    private boolean isMenuButtonInBottomBar() {
+        return BottomBarConfigUtils.isBottomBarEnabled(mBraveContext)
+                && BottomBarConfigUtils.shouldIncludeAppMenuButton();
     }
 
     private void maybeReplaceIcons(MVCListAdapter.ModelList modelList) {
@@ -1088,7 +1102,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
     @Override
     public boolean shouldShowIconRow() {
-        if (isMenuButtonInBottomToolbar()) {
+        if (isMenuButtonAtBottom()) {
             return false;
         }
 
