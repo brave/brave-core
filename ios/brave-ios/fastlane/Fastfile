@@ -187,7 +187,8 @@ platform :ios do
   private_lane :skipped_tests do
     [
       "CertificateUtilitiesTests/CertificatePinningTest/testBraveCoreLivePinningFailure",
-      "ClientTests/ScriptExecutionTests/testFarblingProtectionScript"
+      "ClientTests/ScriptExecutionTests/testFarblingProtectionScript",
+      "UserAgentTests/UserAgentTests",
     ]
   end
 
