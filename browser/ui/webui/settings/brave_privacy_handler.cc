@@ -9,7 +9,9 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -45,10 +47,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/brave_origin/brave_origin_service_factory.h"
-#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/features.h"
-#include "components/policy/policy_constants.h"
 #endif
 
 BravePrivacyHandler::BravePrivacyHandler() {

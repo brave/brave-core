@@ -144,10 +144,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/brave_origin/brave_origin_service_factory.h"
-#include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/psst/core/common/features.h"
-#include "components/policy/policy_constants.h"
 #endif
 
 namespace {
