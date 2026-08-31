@@ -976,7 +976,18 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Save security codes");
 
         clearAndTypeIntoSearch("Card benefits");
-        assertSearchResult("Card benefits");
+        // Two indexed entries share this title, both under the "Payment methods" category: the
+        // preference on the Payment methods page that opens the card benefits page, and the
+        // enable toggle on the card benefits page itself. Upstream labels both with
+        // IDS_AUTOFILL_SETTINGS_PAGE_CARD_BENEFITS_LABEL on purpose, so the summary is the only
+        // thing that tells them apart. Both are asserted: the toggle only became searchable once
+        // the parent entry was given a fragment, so checking it guards that from regressing.
+        assertSearchResultWithSummary(
+                "Card benefits",
+                "Choose whether you see your card benefits at checkout (bank terms apply)");
+        assertSearchResultWithSummary(
+                "Card benefits",
+                "Show available card benefits and rewards at checkout. Issuer terms apply.");
 
         clearAndTypeIntoSearch("Check out faster with autofill");
         assertSearchResult("Check out faster with autofill");
@@ -1469,20 +1480,69 @@ public class BraveSettingsSearchTest {
                         });
     }
 
+    /**
+     * Asserts that one search result carries both the given title and summary.
+     *
+     * <p>Needed when several results share a title. {@link #assertOneOfSearchResultsIs} cannot
+     * separate those, because {@code SearchResultsPreferenceFragment} groups results by top-level
+     * settings category rather than by the page each one lives on, so same-named entries from a
+     * page and its sub-page land under one header. The summary is what distinguishes them.
+     */
+    private void assertSearchResultWithSummary(String title, String summary) {
+        onViewWaiting(allOf(withId(R.id.recycler_view), inSearchResultsPane()))
+                .check(
+                        (view, e) -> {
+                            if (e != null) throw e;
+                            ViewGroup rv = (ViewGroup) view;
+                            for (int i = 0; i < rv.getChildCount(); i++) {
+                                View child = rv.getChildAt(i);
+                                // Section headers are plain TextView children; results are
+                                // ViewGroups holding a title and a summary.
+                                if (!(child instanceof ViewGroup)) continue;
+                                android.widget.TextView titleView =
+                                        findTextViewByEntryName((ViewGroup) child, "title");
+                                android.widget.TextView summaryView =
+                                        findTextViewByEntryName((ViewGroup) child, "summary");
+                                if (titleView == null || summaryView == null) continue;
+                                if (titleView.getText().toString().equalsIgnoreCase(title)
+                                        && summaryView
+                                                .getText()
+                                                .toString()
+                                                .equalsIgnoreCase(summary)) {
+                                    return; // found
+                                }
+                            }
+                            throw new junit.framework.AssertionFailedError(
+                                    "No search result with title '"
+                                            + title
+                                            + "' and summary '"
+                                            + summary
+                                            + "'");
+                        });
+    }
+
     /** Recursively finds the first TextView whose resource entry name is "title". */
     private static android.widget.TextView findTitleTextView(ViewGroup parent) {
+        return findTextViewByEntryName(parent, "title");
+    }
+
+    /** Recursively finds the first TextView whose resource entry name equals {@code entryName}. */
+    private static android.widget.TextView findTextViewByEntryName(
+            ViewGroup parent, String entryName) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof android.widget.TextView) {
                 try {
-                    if ("title".equals(child.getResources().getResourceEntryName(child.getId()))) {
+                    if (entryName.equals(
+                            child.getResources().getResourceEntryName(child.getId()))) {
                         return (android.widget.TextView) child;
                     }
                 } catch (Exception ignored) {
-                    // ID not resolvable — not the title view.
+                    // ID not resolvable — not the view we're after.
                 }
             } else if (child instanceof ViewGroup) {
-                android.widget.TextView result = findTitleTextView((ViewGroup) child);
+                android.widget.TextView result =
+                        findTextViewByEntryName((ViewGroup) child, entryName);
                 if (result != null) return result;
             }
         }
