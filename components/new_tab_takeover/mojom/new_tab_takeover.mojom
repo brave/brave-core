@@ -5,11 +5,18 @@
 
 module new_tab_takeover.mojom;
 
+import "ui/gfx/geometry/mojom/geometry.mojom";
 import "url/mojom/url.mojom";
 import "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom";
 import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 
+interface NewTabTakeoverPage {
+  SetSafeArea(gfx.mojom.RectF safe_area);
+};
+
 interface NewTabTakeover {
+  SetPage(pending_remote<NewTabTakeoverPage> page);
+
   SetSponsoredRichMediaAdEventHandler(
       pending_receiver<ntp_background_images.mojom.SponsoredRichMediaAdEventHandler> event_handler);
 
