@@ -24,7 +24,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     openWalletHomeHandler: (() -> Void)?,
     scanAddressQRCodeHandler: ((@escaping (String) -> Void) -> Void)?
   ) {
-    if !tab.isChromiumTab || !(FeatureList.kBraveWalletWebUIIOS?.enabled ?? false) {
+    if !tab.isChromiumTab {
       return nil
     }
     self.tab = tab
