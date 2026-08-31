@@ -596,6 +596,11 @@ public class BraveToolbarManager extends ToolbarManager
 
     @Override
     public @Nullable View getMenuButtonView() {
+        // ToolbarManager.destroy() nulls mMenuButtonCoordinator, but the ToolbarManager supplier
+        // keeps handing us out afterwards: ModalDialogManager.destroy() dismisses the remaining
+        // dialogs later in onDestroy() and that reaches here via
+        // ChromeTabModalPresenter.setMenuButtonEnabled().
+        if (mMenuButtonCoordinator == null) return null;
         if (mMenuButtonCoordinator.getMenuButton() != null) {
             return super.getMenuButtonView();
         }
