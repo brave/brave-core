@@ -84,21 +84,18 @@ struct CustomScriptletView: View {
       )
       .disabled(isSaving)
       .alert(
+        Strings.dismissChangesConfirmationTitle,
         isPresented: $showCancelAlert,
-        content: {
-          return Alert(
-            title: Text(Strings.dismissChangesConfirmationTitle),
-            message: Text(Strings.dismissChangesConfirmationMessage),
-            primaryButton: .destructive(
-              Text(Strings.dismissChangesButtonTitle),
-              action: {
-                dismiss()
-              }
-            ),
-            secondaryButton: .cancel(
-              Text(Strings.cancelButtonTitle)
-            )
-          )
+        actions: {
+          Button(Strings.dismissChangesButtonTitle, role: .destructive) {
+            dismiss()
+          }
+          Button(Strings.cancelButtonTitle, role: .cancel) {
+            showCancelAlert = false
+          }
+        },
+        message: {
+          Text(Strings.dismissChangesConfirmationMessage)
         }
       )
     }

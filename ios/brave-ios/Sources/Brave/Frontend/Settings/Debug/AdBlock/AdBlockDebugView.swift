@@ -329,7 +329,7 @@ private struct CustomScriptletSectionView: View {
           CustomScriptletView()
         }
       }
-      // This button is single item, if added to ForEach blow it will cause
+      // This button is single item, if added to ForEach below it will cause
       // multiple presentation issue
       .fullScreenCover(item: $editingCustomScriptlet) { scriptlet in
         NavigationStack {

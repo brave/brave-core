@@ -788,7 +788,7 @@ extension Strings.Shields {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Don’t paste code here that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer.",
+      "Don’t paste code here that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your device.",
     comment: "A warning shown in an empty custom scriptlet editor"
   )
 }
