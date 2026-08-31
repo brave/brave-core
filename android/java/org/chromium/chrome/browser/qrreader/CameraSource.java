@@ -726,7 +726,16 @@ public class CameraSource {
     private Camera createCamera() {
         int requestedCameraId = getIdForRequestedCamera(mFacing);
         if (requestedCameraId == -1) {
-            throw new RuntimeException("Could not find requested camera.");
+            // Devices without a back facing camera, such as Chromebooks and front camera only
+            // tablets, can still scan with the camera they do have.
+            int fallbackFacing =
+                    mFacing == CAMERA_FACING_BACK ? CAMERA_FACING_FRONT : CAMERA_FACING_BACK;
+            requestedCameraId = getIdForRequestedCamera(fallbackFacing);
+            if (requestedCameraId == -1) {
+                throw new RuntimeException("Could not find requested camera.");
+            }
+            Log.i(TAG, "Requested camera is not available, falling back to " + fallbackFacing);
+            mFacing = fallbackFacing;
         }
         Camera camera = Camera.open(requestedCameraId);
 
