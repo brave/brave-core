@@ -27,5 +27,5 @@ substitutions:
       page, as Brave has no Google sign-in.
     preempt_function_impl:
       function_name: IsReplaceSyncPromosWithSignInPromosEnabled
-      return_if: '(true)'
-      return_value: 'false'
+      code: |-
+        if ((true)) return false;
