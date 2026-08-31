@@ -269,28 +269,4 @@ public struct WalletConstants {
 
   /// Solana Transacation Instruction Type Name
   static let solanaTxInstructionTypeNameAssignWithSeed: String = "AssignWithSeed"
-
-  /// All supported chains by Meld
-  static var supportedChainsForMeld: [String] {
-    var result = [
-      "FIL",
-      "ETH",
-      "SOLANA",
-      "FTM",
-      "BSC",
-      "POLYGON",
-      "OPTIMISM",
-      "AURORA",
-      "CELO",
-      "ARBITRUM",
-      "AVAXC",
-    ]
-    if FeatureList.kBraveWalletBitcoinFeature?.enabled == true {
-      result.append("BTC")
-    }
-    if FeatureList.kBraveWalletZCashFeature?.enabled == true {
-      result.append("ZEC")
-    }
-    return result
-  }
 }
