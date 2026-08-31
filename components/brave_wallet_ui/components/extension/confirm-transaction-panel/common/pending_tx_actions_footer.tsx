@@ -46,6 +46,7 @@ interface Props {
   isAccountSyncing?: boolean
   isShieldingFunds?: boolean
   isUnshieldingFunds?: boolean
+  isMigratingFunds?: boolean
 }
 
 type Warning = TransactionWarning
@@ -64,6 +65,7 @@ export function PendingTransactionActionsFooter({
   isAccountSyncing,
   isShieldingFunds,
   isUnshieldingFunds,
+  isMigratingFunds,
 }: Props) {
   // selectors
   const submittingTransaction = useUnsafeUISelector(
@@ -135,7 +137,9 @@ export function PendingTransactionActionsFooter({
               ? getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
               : isUnshieldingFunds
                 ? getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
-                : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
+                : isMigratingFunds
+                  ? getLocale(S.BRAVE_WALLET_MIGRATE_ZEC)
+                  : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
         </Button>
       ),
       rejectButton: (
@@ -158,6 +162,7 @@ export function PendingTransactionActionsFooter({
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
   ])
 
   // effects

@@ -594,6 +594,9 @@ export const usePendingTransactions = () => {
       === BraveWallet.ZCashTxType.kUnshieldingOrchard
     || getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kUnshieldingIronwood
+  const isMigratingFunds =
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kMigratingIronwood
 
   const transactionTitle = React.useMemo(
     (): string =>
@@ -601,14 +604,17 @@ export const usePendingTransactions = () => {
         ? getLocale(S.BRAVE_WALLET_SHIELDING)
         : isUnshieldingFunds
           ? getLocale(S.BRAVE_WALLET_UNSHIELDING)
-          : isSolanaDappTransaction
-            ? getLocale(S.BRAVE_WALLET_APPROVE_TRANSACTION)
-            : transactionDetails?.isSwap
-              ? getLocale(S.BRAVE_WALLET_SWAP)
-              : getLocale(S.BRAVE_WALLET_SEND),
+          : isMigratingFunds
+            ? getLocale(S.BRAVE_WALLET_MIGRATING)
+            : isSolanaDappTransaction
+              ? getLocale(S.BRAVE_WALLET_APPROVE_TRANSACTION)
+              : transactionDetails?.isSwap
+                ? getLocale(S.BRAVE_WALLET_SWAP)
+                : getLocale(S.BRAVE_WALLET_SEND),
     [
       isShieldingFunds,
       isUnshieldingFunds,
+      isMigratingFunds,
       isSolanaDappTransaction,
       transactionDetails?.isSwap,
     ],
@@ -798,6 +804,7 @@ export const usePendingTransactions = () => {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
     canEditNetworkFee,
   }
 }

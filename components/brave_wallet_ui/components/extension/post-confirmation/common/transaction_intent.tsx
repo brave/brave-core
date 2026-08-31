@@ -116,6 +116,9 @@ export const TransactionIntent = (props: Props) => {
       === BraveWallet.ZCashTxType.kUnshieldingOrchard
     || getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kUnshieldingIronwood
+  const isMigratingFunds =
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kMigratingIronwood
 
   // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
@@ -324,11 +327,17 @@ export const TransactionIntent = (props: Props) => {
     if (transactionConfirmed && isUnshieldingFunds) {
       return S.BRAVE_WALLET_AMOUNT_HAS_BEEN_UNSHIELDED
     }
+    if (transactionConfirmed && isMigratingFunds) {
+      return S.BRAVE_WALLET_AMOUNT_HAS_BEEN_MIGRATED
+    }
     if (isShieldingFunds) {
       return S.BRAVE_WALLET_SHIELDING_AMOUNT
     }
     if (isUnshieldingFunds) {
       return S.BRAVE_WALLET_UNSHIELDING_AMOUNT
+    }
+    if (isMigratingFunds) {
+      return S.BRAVE_WALLET_MIGRATING_AMOUNT
     }
     if (transactionConfirmed) {
       return S.BRAVE_WALLET_AMOUNT_SENT_TO_ACCOUNT
@@ -344,6 +353,7 @@ export const TransactionIntent = (props: Props) => {
     isSOLSwapOrBridge,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
     isSolanaATACreation,
   ])
 

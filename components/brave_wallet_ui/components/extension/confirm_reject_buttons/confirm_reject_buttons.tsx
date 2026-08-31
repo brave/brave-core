@@ -23,6 +23,7 @@ export interface Props {
   isAccountSyncing?: boolean
   isShieldingFunds?: boolean
   isUnshieldingFunds?: boolean
+  isMigratingFunds?: boolean
 }
 
 export const ConfirmRejectButtons = (props: Props) => {
@@ -33,6 +34,7 @@ export const ConfirmRejectButtons = (props: Props) => {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
   } = props
 
   // selectors
@@ -84,7 +86,9 @@ export const ConfirmRejectButtons = (props: Props) => {
             ? getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
             : isUnshieldingFunds
               ? getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
-              : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
+              : isMigratingFunds
+                ? getLocale(S.BRAVE_WALLET_MIGRATE_ZEC)
+                : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
       </Button>
     </Row>
   )
