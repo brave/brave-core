@@ -12,6 +12,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/tabs/hovercard/fade_label_view.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -71,6 +72,7 @@ class BraveTabCardView
     container_label_->SetBackground(views::CreateRoundedRectBackground(
         container_card_data->container_background_color,
         /*corner_radius=*/10));
+    container_label_->SetEnabledTextColors(SK_ColorWHITE);
 
     // Override bottom margin of a label right before the container_label_
     auto* label_before_container_label =
