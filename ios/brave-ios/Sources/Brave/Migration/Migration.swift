@@ -32,6 +32,7 @@ public class BraveProfileMigrations {
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
     migrateShowNewFavoritesPreference()
+    migrateSponsoredAdsEnabledPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -171,6 +172,23 @@ public class BraveProfileMigrations {
         Preferences.NewTabPage.topSitesMode.value = TopSitesMode.none
       }
     }
+  }
+
+  /// Migrates deprecated `backgroundMediaTypeRaw` to `kBraveAdsSponsoredEnabledPrefName`.
+  /// Must run after `Preferences.migrateBackgroundSponsoredImages()`, which
+  /// migrates `backgroundMediaTypeRaw` from the older
+  /// `backgroundSponsoredImages` pref.
+  private func migrateSponsoredAdsEnabledPreference() {
+    Preferences.DeprecatedPreferences.backgroundMediaTypeRaw.migrate { rawValue in
+      profileController.profile.prefs.set(
+        BraveProfileMigrations.isSponsoredAdsEnabled(forBackgroundMediaTypeRawValue: rawValue),
+        forPath: kBraveAdsSponsoredEnabledPrefName
+      )
+    }
+  }
+
+  static func isSponsoredAdsEnabled(forBackgroundMediaTypeRawValue rawValue: Int) -> Bool {
+    rawValue != DeprecatedBackgroundMediaType.defaultImages.rawValue
   }
 }
 
@@ -366,6 +384,14 @@ private enum DeprecatedYoutubeHighQualityPreference: String {
   case off
 }
 
+private enum DeprecatedBackgroundMediaType: Int {
+  case defaultImages = 0
+  case sponsoredImages = 1
+  // Video NTT was removed, but existing users' stored
+  // preference may still have this value.
+  case sponsoredImagesAndVideos = 2
+}
+
 extension Preferences {
   fileprivate final class DeprecatedPreferences {
     static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
@@ -391,6 +417,13 @@ extension Preferences {
     static let backgroundSponsoredImages = Option<Bool>(
       key: "newtabpage.background-sponsored-images",
       default: true
+    )
+
+    /// Used to specify the type of background media to display.
+    /// Superseded by the `kSponsoredEnabled` PrefService pref.
+    static let backgroundMediaTypeRaw = Option<Int>(
+      key: "newtabpage.background-media-type",
+      default: DeprecatedBackgroundMediaType.sponsoredImages.rawValue
     )
 
     /// Specifies whether the bookmark button is present on toolbar
@@ -679,8 +712,9 @@ extension Preferences {
 
     // Migrate old Background Sponsored Images setting
     DeprecatedPreferences.backgroundSponsoredImages.migrate { isEnabled in
-      Preferences.NewTabPage.backgroundMediaType =
+      let backgroundMediaType: DeprecatedBackgroundMediaType =
         isEnabled ? .sponsoredImages : .defaultImages
+      DeprecatedPreferences.backgroundMediaTypeRaw.value = backgroundMediaType.rawValue
     }
 
     Migration.backgroundSponsoredImagesCompleted.value = true
