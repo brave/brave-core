@@ -67,6 +67,7 @@ class AssociatedContentDelegate {
     virtual void OnNewPage(AssociatedContentDelegate* delegate) {}
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
     virtual void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) {}
+    virtual void OnContentToolsChanged(AssociatedContentDelegate* delegate) {}
   };
 
   AssociatedContentDelegate();
@@ -93,6 +94,10 @@ class AssociatedContentDelegate {
   using GetContentToolsCallback =
       base::OnceCallback<void(std::vector<std::unique_ptr<Tool>>)>;
   virtual void GetContentTools(GetContentToolsCallback callback);
+
+  // Called by AssociatedContentManager when this content is attached to a
+  // conversation.
+  virtual void OnAssociatedWithConversation() {}
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
@@ -126,6 +131,8 @@ class AssociatedContentDelegate {
  protected:
   // Content has navigated
   virtual void OnNewPage(int64_t navigation_id);
+
+  void NotifyContentToolsChanged();
 
   void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
   void NotifyNewPage();

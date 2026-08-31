@@ -13,6 +13,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
@@ -136,6 +137,7 @@ class AssociatedContentManager : public ToolProvider,
   void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
   void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) override;
+  void OnContentToolsChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;
@@ -144,17 +146,21 @@ class AssociatedContentManager : public ToolProvider,
  private:
   void DetachContent();
 
-  // Attaches |delegate| when the tools it exposes are non-empty (and detaches
-  // it otherwise), so its tools are surfaced (via the tools pill) before any
-  // generation occurs. Invoked with the result of GetContentTools().
+  void DetectContentTools(AssociatedContentDelegate* delegate);
   void OnContentToolsDetected(base::WeakPtr<AssociatedContentDelegate> delegate,
                               std::vector<std::unique_ptr<Tool>> tools);
+
+  // Whether |uuid| is staged and the user hasn't overridden its attachment.
+  bool IsEligibleForAutoToolsUpdate(const std::string& uuid) const;
 
   raw_ptr<ConversationHandler> conversation_;
 
   std::vector<std::unique_ptr<Tool>> tools_;
   std::vector<AssociatedContentDelegate*> content_delegates_;
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
+
+  // uuids whose tools attachment the user explicitly set.
+  base::flat_set<std::string> tools_attachment_overridden_;
 
   // Used for ownership - still stored in the above array.
   // This includes:
