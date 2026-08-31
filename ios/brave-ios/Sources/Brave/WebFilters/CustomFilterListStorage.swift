@@ -46,6 +46,8 @@ struct CustomScriptlet: Identifiable, Hashable {
     case invalidName
     /// The scriptlet has no javascript
     case emptyContent
+    /// Failed to save the custom scriptlet
+    case failedToSave
 
     var errorDescription: String? {
       switch self {
@@ -57,6 +59,8 @@ struct CustomScriptlet: Identifiable, Hashable {
         )
       case .emptyContent:
         return Strings.Shields.customScriptletEmptyContentError
+      case .failedToSave:
+        return Strings.Shields.customScriptletFailedToSaveError
       }
     }
   }
@@ -313,10 +317,17 @@ struct CustomScriptlet: Identifiable, Hashable {
   }
 
   /// Save the given custom scriptlet, update engine resources and clear the
-  /// engine caches so it takes effect.
-  ///
-  /// An existing scriptlet with the same name is replaced.
-  public func save(customScriptlet: CustomScriptlet) async throws {
+  /// engine caches so it takes effect. Removes previous scriptlet, but doesn't
+  /// throw if failing to remove, only save failures.
+  /// - parameter customScriptlet: The CustomScriptlet to save
+  /// - parameter previousName: The previous name of the scriptlet (if
+  /// renaming) to remove when saving
+  public func save(
+    customScriptlet: CustomScriptlet,
+    replacing previousName: String? = nil
+  )
+    async throws
+  {
     guard CustomScriptlet.isValidName(customScriptlet.name) else {
       throw CustomScriptletError.invalidName
     }
@@ -330,14 +341,36 @@ struct CustomScriptlet: Identifiable, Hashable {
       try await AsyncFileManager.default.removeItem(at: fileURL)
     }
     _ = try await getOrCreateCustomScriptletsFolder()
-    await AsyncFileManager.default.createUTF8File(
+    let savedSuccessfully = await AsyncFileManager.default.createUTF8File(
       atPath: fileURL.path,
       contents: customScriptlet.content
     )
 
+    if let previousName, previousName != customScriptlet.name,
+      CustomScriptlet.isValidName(previousName)
+    {
+      let previousFileURL = folderURL.appending(path: previousName)
+      do {
+        if await AsyncFileManager.default.fileExists(atPath: previousFileURL.path) {
+          try await AsyncFileManager.default.removeItem(at: previousFileURL)
+        }
+        // Only remove if successful above so it reflects what's found on disk
+        customScriptlets.removeAll(where: { $0.name == previousName })
+      } catch {
+        ContentBlockerManager.log.error(
+          "Failed to remove renamed custom scriptlet `\(previousName)`: \(error.localizedDescription)"
+        )
+      }
+    }
+
     customScriptlets.removeAll(where: { $0.name == customScriptlet.name })
     customScriptlets.append(customScriptlet)
     customScriptlets.sort(by: { $0.name < $1.name })
+    if !savedSuccessfully {
+      // Throw after updating `customScriptlets` as the existing scriptlet
+      // was already removed
+      throw CustomScriptletError.emptyContent
+    }
     await AdBlockGroupsManager.shared.didUpdateCustomScriptlets()
   }
 

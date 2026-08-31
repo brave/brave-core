@@ -743,6 +743,14 @@ extension Strings.Shields {
     comment:
       "An error message telling the user that the custom scriptlet they are trying to save has no content"
   )
+  /// An error message telling the user that a scriptlet has no content
+  public static let customScriptletFailedToSaveError = NSLocalizedString(
+    "customScriptletFailedToSaveError",
+    bundle: .module,
+    value: "Failed to save custom scriptlet",
+    comment:
+      "An error message telling the user that the custom scriptlet failed to save to disk"
+  )
 }
 
 // MARK: - Custom scriptlets

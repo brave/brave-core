@@ -73,7 +73,7 @@ import os
 
   /// Load any cache data so its ready right during launch
   func loadResourcesFromCache() async {
-    if let resourcesInfo = getCachedResourcesInfo() {
+    if let resourcesInfo = await getCachedResourcesInfo() {
       // We need this for all filter lists so we can't compile anything until we download it
       self.resourcesInfo = resourcesInfo
 
@@ -153,11 +153,11 @@ import os
   }
 
   /// Inform this manager of updates to the resources so our engines can be updated
-  func didUpdateResourcesComponent(resourcesFileURL: URL) {
+  func didUpdateResourcesComponent(resourcesFileURL: URL) async {
     let folderSubPath = AdblockService.extractRelativePath(fromComponentURL: resourcesFileURL)
     Preferences.AppState.lastAdBlockResourcesFilePath.value = folderSubPath
     Preferences.AppState.lastAdBlockResourcesFolderPath.value = nil
-    let resourcesInfo = getResourcesInfo(fromFileURL: resourcesFileURL)
+    let resourcesInfo = await getResourcesInfo(fromFileURL: resourcesFileURL)
     updateIfNeeded(resourcesInfo: resourcesInfo)
   }
 
@@ -509,11 +509,11 @@ import os
     )
   }
 
-  private func getCachedResourcesInfo() -> GroupedAdBlockEngine.ResourcesInfo? {
+  private func getCachedResourcesInfo() async -> GroupedAdBlockEngine.ResourcesInfo? {
     let cachedFileURL: URL
     if let resourcesFolderURL = AdblockService.makeAbsoluteURL(
       forComponentPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
-    ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
+    ), await AsyncFileManager.default.fileExists(atPath: resourcesFolderURL.path) {
       // This is a legacy storage when we were gettting the component folder URL not the file URL
       cachedFileURL = resourcesFolderURL.appendingPathComponent(
         "resources.json",
@@ -521,20 +521,20 @@ import os
       )
     } else if let resourcesFileURL = AdblockService.makeAbsoluteURL(
       forComponentPath: Preferences.AppState.lastAdBlockResourcesFilePath.value
-    ), FileManager.default.fileExists(atPath: resourcesFileURL.path) {
+    ), await AsyncFileManager.default.fileExists(atPath: resourcesFileURL.path) {
       cachedFileURL = resourcesFileURL
     } else {
       return nil
     }
 
-    return getResourcesInfo(fromFileURL: cachedFileURL)
+    return await getResourcesInfo(fromFileURL: cachedFileURL)
   }
 
   /// Rebuild the resources info so the user's custom scriptlets are picked up by the engines.
   ///
   /// The scriptlets only live in the resources so the engines don't need to be recompiled.
   func didUpdateCustomScriptlets() async {
-    guard let resourcesInfo = getCachedResourcesInfo() else { return }
+    guard let resourcesInfo = await getCachedResourcesInfo() else { return }
     self.resourcesInfo = resourcesInfo
 
     for engineType in GroupedAdBlockEngine.EngineType.allCases {
@@ -553,9 +553,11 @@ import os
   private func writeAugmentedResources(
     from sourceURL: URL,
     customScriptlets: [CustomScriptlet]
-  ) -> URL? {
+  ) async -> URL? {
     guard
-      let data = try? Data(contentsOf: sourceURL),
+      let data = await AsyncFileManager.default.contents(
+        atPath: sourceURL.path(percentEncoded: false)
+      ),
       var entries = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]]
     else {
       return nil
@@ -587,8 +589,18 @@ import os
     )
 
     do {
-      try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
-      try augmentedData.write(to: augmentedFileURL, options: .atomic)
+      try await AsyncFileManager.default.createDirectory(
+        at: folderURL,
+        withIntermediateDirectories: true
+      )
+      guard
+        await AsyncFileManager.default.createFile(
+          atPath: augmentedFileURL.path(percentEncoded: false),
+          contents: augmentedData
+        )
+      else {
+        return nil
+      }
       return augmentedFileURL
     } catch {
       return nil
@@ -596,7 +608,9 @@ import os
   }
 
   /// Convert the given folder URL to a `ResourcesInfo` object
-  private func getResourcesInfo(fromFileURL fileURL: URL) -> GroupedAdBlockEngine.ResourcesInfo {
+  private func getResourcesInfo(
+    fromFileURL fileURL: URL
+  ) async -> GroupedAdBlockEngine.ResourcesInfo {
     let version = fileURL.deletingLastPathComponent().lastPathComponent
 
     // Inject an entry for each of the user's custom scriptlets so they are available
@@ -604,7 +618,7 @@ import os
     // custom scriptlets or if augmentation fails.
     let customScriptlets = CustomFilterListStorage.shared.customScriptlets
     if !customScriptlets.isEmpty,
-      let augmentedFileURL = writeAugmentedResources(
+      let augmentedFileURL = await writeAugmentedResources(
         from: fileURL,
         customScriptlets: customScriptlets
       )

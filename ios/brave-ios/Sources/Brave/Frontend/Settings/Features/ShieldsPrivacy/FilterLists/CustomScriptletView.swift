@@ -212,14 +212,9 @@ struct CustomScriptletView: View {
           customScriptlet: CustomScriptlet(
             name: fullCustomScriptletName,
             content: customScriptletContent
-          )
+          ),
+          replacing: editingScriptlet?.name
         )
-        // Remove the old file if the scriptlet was renamed
-        if let editingScriptlet, editingScriptlet.name != fullCustomScriptletName {
-          try await CustomFilterListStorage.shared.deleteCustomScriptlet(
-            named: editingScriptlet.name
-          )
-        }
         dismiss()
       } catch {
         saveError = SaveError(message: error.localizedDescription)
