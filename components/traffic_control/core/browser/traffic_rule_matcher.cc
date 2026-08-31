@@ -11,7 +11,6 @@
 #include <string_view>
 #include <utility>
 
-#include "base/containers/map_util.h"
 #include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -34,7 +33,6 @@ void TrafficRuleMatcher::Rebuild(std::vector<mojom::TrafficRulePtr> rules) {
   rules_ = std::move(rules);
 
   url_matcher::URLMatcherConditionSet::Vector all_conditions;
-  base::MatcherStringPattern::ID next_id(0);
 
   for (size_t rule_index = 0; rule_index < rules_.size(); ++rule_index) {
     const auto& rule = rules_[rule_index];
@@ -60,12 +58,13 @@ void TrafficRuleMatcher::Rebuild(std::vector<mojom::TrafficRulePtr> rules) {
         continue;
       }
 
-      ++next_id;
+      const base::MatcherStringPattern::ID pattern_id =
+          pattern_id_to_rule_index_.size();
       all_conditions.push_back(url_matcher::util::CreateConditionSet(
-          url_matcher_.get(), next_id, components.scheme, components.host,
+          url_matcher_.get(), pattern_id, components.scheme, components.host,
           components.match_subdomains, components.port, components.path,
           components.query, /*allow=*/true));
-      pattern_id_to_rule_index_[next_id] = rule_index;
+      pattern_id_to_rule_index_.push_back(rule_index);
     }
   }
 
@@ -88,11 +87,12 @@ TrafficRuleMatcher::FindMatchingRule(const GURL& url) const {
 
   std::optional<size_t> best_index;
   for (const base::MatcherStringPattern::ID pattern_id : matches) {
-    if (const size_t* rule_index =
-            base::FindOrNull(pattern_id_to_rule_index_, pattern_id)) {
-      if (!best_index || *rule_index < *best_index) {
-        best_index = *rule_index;
-      }
+    if (pattern_id >= pattern_id_to_rule_index_.size()) {
+      continue;
+    }
+    const size_t rule_index = pattern_id_to_rule_index_[pattern_id];
+    if (!best_index || rule_index < *best_index) {
+      best_index = rule_index;
     }
   }
 

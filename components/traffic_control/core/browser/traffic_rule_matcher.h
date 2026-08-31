@@ -9,8 +9,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/containers/flat_map.h"
-#include "base/substring_set_matcher/matcher_string_pattern.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom-forward.h"
 
@@ -46,9 +44,9 @@ class TrafficRuleMatcher {
 
  private:
   std::unique_ptr<url_matcher::URLMatcher> url_matcher_;
-  // Condition-set ID → index into |rules_|.
-  base::flat_map<base::MatcherStringPattern::ID, size_t>
-      pattern_id_to_rule_index_;
+  // Condition-set ID is the index into this vector; value is the index into
+  // |rules_|.
+  std::vector<size_t> pattern_id_to_rule_index_;
   std::vector<mojom::TrafficRulePtr> rules_;
 };
 
