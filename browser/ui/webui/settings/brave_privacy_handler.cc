@@ -24,6 +24,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"

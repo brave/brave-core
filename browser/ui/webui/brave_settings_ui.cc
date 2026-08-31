@@ -59,6 +59,7 @@
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/policy/policy_constants.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/sync/base/command_line_switches.h"
