@@ -22,6 +22,10 @@ import {
   getAssetIdKey,
   type GetBlockchainTokenIdArg,
 } from '../../../utils/asset-utils'
+import {
+  isValidEVMAddress,
+  isValidSolanaAddress,
+} from '../../../utils/address-utils'
 
 // hooks
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
@@ -107,6 +111,19 @@ export const AddNftForm = (props: Props) => {
     BraveWallet.NetworkInfo | undefined
   >(selectedAssetNetwork)
 
+  // Gate every lookup on a syntactically valid address so partial or wrong-
+  // coin input never reaches the RPC / gate3 (brave/brave-browser#58531).
+  // Deliberately an approximate sync check so the form stays keystroke-
+  // responsive; SimpleHashClient::GetNftsUrl is the authoritative validator.
+  const isContractAddressValid = React.useMemo(() => {
+    if (!customAssetsNetwork) {
+      return false
+    }
+    return customAssetsNetwork.coin === BraveWallet.CoinType.SOL
+      ? isValidSolanaAddress(tokenContractAddress)
+      : isValidEVMAddress(tokenContractAddress)
+  }, [customAssetsNetwork, tokenContractAddress])
+
   // mutations
   const [addUserToken] = useAddUserTokenMutation()
   const [updateUserToken] = useUpdateUserTokenMutation()
@@ -118,7 +135,7 @@ export const AddNftForm = (props: Props) => {
     isError: hasGetTokenInfoError,
   } = useGetTokenInfo(
     customAssetsNetwork
-      && tokenContractAddress
+      && isContractAddressValid
       && (customAssetsNetwork.coin === BraveWallet.CoinType.ETH
         ? !!customTokenID
         : true)
@@ -137,7 +154,7 @@ export const AddNftForm = (props: Props) => {
 
   const metadataLookupArg: GetBlockchainTokenIdArg | undefined =
     React.useMemo(() => {
-      if (!customAssetsNetwork || !tokenContractAddress) {
+      if (!customAssetsNetwork || !isContractAddressValid) {
         return undefined
       }
 
@@ -155,7 +172,12 @@ export const AddNftForm = (props: Props) => {
         isNft: true,
         zcashTokenType: BraveWallet.ZCashTokenType.kNone,
       }
-    }, [customAssetsNetwork, tokenContractAddress, customTokenID])
+    }, [
+      customAssetsNetwork,
+      isContractAddressValid,
+      tokenContractAddress,
+      customTokenID,
+    ])
 
   // TODO: need symbol in response in order to simplify adding SOL NFTs
   const {
@@ -179,10 +201,13 @@ export const AddNftForm = (props: Props) => {
   const tokenSymbolError = !customTokenSymbol
   const tokenIdError =
     selectedAssetNetwork?.coin === BraveWallet.CoinType.ETH && !customTokenID
-  const tokenContractAddressError =
-    tokenContractAddress === ''
-    || (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL
-      && !tokenContractAddress.toLowerCase().startsWith('0x'))
+  const tokenContractAddressError = !isContractAddressValid
+  // Hold the inline error back until a network is picked and something has
+  // been typed, so an untouched form is not pre-filled with red.
+  const showContractAddressError =
+    !!customAssetsNetwork
+    && tokenContractAddress !== ''
+    && !isContractAddressValid
 
   const buttonDisabled =
     isTokenInfoLoading
@@ -420,6 +445,7 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={tokenContractAddress}
             onInput={handleTokenAddressChanged}
+            showErrors={showContractAddressError}
             placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
               '$1',
               '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
@@ -439,6 +465,15 @@ export const AddNftForm = (props: Props) => {
                 text={getLocale(S.BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS)}
               />
             </Row>
+
+            <ErrorText
+              slot='errors'
+              textColor='error'
+              textAlign='left'
+              variant='small.regular'
+            >
+              {getLocale(S.BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR)}
+            </ErrorText>
           </Input>
         </FullWidthFormColumn>
 
