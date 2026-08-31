@@ -114,27 +114,6 @@ extension KeyringStore {
   }
 }
 
-extension AssetDetailStore {
-  static var previewStore: AssetDetailStore {
-    .init(
-      assetRatioService: MockAssetRatioService(),
-      keyringService: MockKeyringService(),
-      rpcService: MockJsonRpcService(),
-      walletService: MockBraveWalletService(),
-      txService: MockTxService(),
-      blockchainRegistry: MockBlockchainRegistry(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI(),
-      swapService: MockSwapService(),
-      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
-      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
-      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
-      userAssetManager: TestableWalletUserAssetManager(),
-      assetDetailType: .blockchainToken(.previewToken)
-    )
-  }
-}
-
 extension AccountActivityStore {
   static var previewStore: AccountActivityStore {
     .init(

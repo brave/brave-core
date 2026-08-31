@@ -329,7 +329,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     userAssetManager.setupObservers()
 
     accountActivityStore?.setupObservers()
-    assetDetailStore?.setupObservers()
     nftDetailStore?.setupObservers()
     confirmationStore?.setupObservers()
   }
@@ -350,41 +349,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     userAssetManager.tearDown()
 
     accountActivityStore?.tearDown()
-    assetDetailStore?.tearDown()
     nftDetailStore?.tearDown()
     confirmationStore?.tearDown()
-  }
-
-  private var assetDetailStore: AssetDetailStore?
-  func assetDetailStore(for assetDetailType: AssetDetailType) -> AssetDetailStore {
-    if let store = assetDetailStore, store.assetDetailType.id == assetDetailType.id {
-      return store
-    }
-    let store = AssetDetailStore(
-      assetRatioService: assetRatioService,
-      keyringService: keyringService,
-      rpcService: rpcService,
-      walletService: walletService,
-      txService: txService,
-      blockchainRegistry: blockchainRegistry,
-      solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
-      swapService: swapService,
-      bitcoinWalletService: bitcoinWalletService,
-      zcashWalletService: zcashWalletService,
-      meldIntegrationService: meldIntegrationService,
-      userAssetManager: userAssetManager,
-      assetDetailType: assetDetailType
-    )
-    assetDetailStore = store
-    return store
-  }
-
-  func closeAssetDetailStore(for assetDetailType: AssetDetailType) {
-    if let store = assetDetailStore, store.assetDetailType.id == assetDetailType.id {
-      assetDetailStore?.tearDown()
-      assetDetailStore = nil
-    }
   }
 
   private var accountActivityStore: AccountActivityStore?
