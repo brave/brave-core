@@ -6,7 +6,7 @@
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
-  'settings-payments-section': (templateContent) => {
+  'settings-payments-page': (templateContent) => {
     const manageLink = templateContent.querySelector('#manageLink')
     if (!manageLink) {
       console.error('[Brave Settings Overrides] Could not find manage payments link')
