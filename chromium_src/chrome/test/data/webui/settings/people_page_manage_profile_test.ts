@@ -280,11 +280,12 @@ function braveManageProfileFeatureEnabledTests() {
     await row.updateComplete
 
     const preview = getRequiredElement<HTMLElement>(row.shadowRoot, '#preview')
+    assertTrue(preview.hasAttribute('fab'))
     const button = getRequiredElement<HTMLButtonElement>(
       preview.shadowRoot!,
       'button',
     )
-    assertEquals('pointer', getComputedStyle(preview).cursor)
+    assertEquals('pointer', getComputedStyle(button).cursor)
     assertEquals(preview.clientWidth, button.offsetWidth)
     assertEquals(preview.clientHeight, button.offsetHeight)
   })

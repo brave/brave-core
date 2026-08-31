@@ -41,6 +41,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               kind="plain-faint"
               size="jumbo"
+              fab
               title="${this.actionTooltip_()}"
               aria-label="${this.actionTooltip_()}"
               @click="${this.onUploadClick_}"

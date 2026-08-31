@@ -39,7 +39,7 @@
   --leo-button-color: var(--leo-color-icon-default);
   --leo-button-padding: calc(
     (var(--avatar-size) - var(--leo-icon-l)) / 2
-  ) 0;
+  );
 
   align-items: center;
   background: var(--leo-color-container-highlight);
@@ -47,7 +47,6 @@
   border-radius: var(--leo-radius-full);
   box-sizing: content-box;
   color: var(--leo-color-icon-default);
-  cursor: pointer;
   display: inline-flex;
   height: var(--avatar-size);
   justify-content: center;
