@@ -44,15 +44,15 @@ public class BraveRewards: PreferencesObserver {
     Preferences.BraveNews.isEnabled.observe(from: self)
 
     ads.notifySponsoredImagesIsEnabledPreferenceDidChange(
-      Preferences.NewTabPage.backgroundMediaType.isSponsored
+      Preferences.BraveAds.sponsoredEnabled.value
     )
-    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
+    Preferences.BraveAds.sponsoredEnabled.observe(from: self)
   }
 
   public func preferencesDidChange(for key: String) {
     ads.notifyBraveNewsIsEnabledPreferenceDidChange(Preferences.BraveNews.isEnabled.value)
     ads.notifySponsoredImagesIsEnabledPreferenceDidChange(
-      Preferences.NewTabPage.backgroundMediaType.isSponsored
+      Preferences.BraveAds.sponsoredEnabled.value
     )
   }
 

@@ -47,7 +47,7 @@ class NewTabPageBackground: PreferencesObserver {
     }
 
     Preferences.NewTabPage.backgroundImages.observe(from: self)
-    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
+    Preferences.BraveAds.sponsoredEnabled.observe(from: self)
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
 
     recordSponsoredMediaTypeP3A()
@@ -85,7 +85,7 @@ class NewTabPageBackground: PreferencesObserver {
 
     var answer = Answer.disabled
     if Preferences.NewTabPage.backgroundImages.value
-      && Preferences.NewTabPage.backgroundMediaType.isSponsored
+      && Preferences.BraveAds.sponsoredEnabled.value
     {
       answer = .images
     }

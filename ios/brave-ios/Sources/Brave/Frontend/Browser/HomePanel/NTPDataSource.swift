@@ -84,7 +84,7 @@ public class NTPDataSource {
 
   func shouldAttemptSponsoredMedia() -> Bool {
     return
-      Preferences.NewTabPage.backgroundMediaType.isSponsored
+      Preferences.BraveAds.sponsoredEnabled.value
       && Preferences.NewTabPage.backgroundRotationCounter.value
         == service.initialCountToBrandedWallpaper
       && !privateBrowsingManager.isPrivateBrowsing

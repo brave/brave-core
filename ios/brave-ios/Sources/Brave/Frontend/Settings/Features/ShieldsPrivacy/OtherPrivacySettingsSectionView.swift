@@ -185,10 +185,8 @@ struct OtherPrivacySettingsSectionView: View {
           title: Strings.Settings.sponsoredAdsEnabledTitle,
           subtitle: Strings.Settings.sponsoredAdsEnabledDescription,
           toggle: Binding(
-            get: { Preferences.NewTabPage.backgroundMediaType.isSponsored },
-            set: {
-              Preferences.NewTabPage.backgroundMediaType = $0 ? .sponsoredImages : .defaultImages
-            }
+            get: { Preferences.BraveAds.sponsoredEnabled.value },
+            set: { Preferences.BraveAds.sponsoredEnabled.value = $0 }
           )
         )
       }

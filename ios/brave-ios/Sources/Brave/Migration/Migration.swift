@@ -217,6 +217,7 @@ public class Migration {
     Preferences.migrateAdAndTrackingProtection()
     Preferences.migrateHTTPSUpgradeLevel()
     Preferences.migrateBackgroundSponsoredImages()
+    Preferences.migrateSponsoredAdsEnabled()
     Preferences.migrateBookmarksButtonInToolbar()
     Preferences.migrateShortcutsButtonOniPad()
     Preferences.migrateReaderModeStyle()
@@ -373,6 +374,12 @@ extension Preferences {
       default: true
     )
 
+    /// Deprecated: superseded by `Preferences.BraveAds.sponsoredEnabled`.
+    static let backgroundMediaTypeRaw = Option<Int>(
+      key: "newtabpage.background-media-type",
+      default: 1  // formerly sponsoredImages
+    )
+
     /// Specifies whether the bookmark button is present on toolbar
     static let showBookmarkToolbarShortcut = Option<Bool>(
       key: "general.show-bookmark-toolbar-shortcut",
@@ -441,7 +448,7 @@ extension Preferences {
   }
 
   /// Migration preferences
-  fileprivate final class Migration {
+  final class Migration {
     static let completed = Option<Bool>(key: "migration.completed", default: false)
 
     /// A new preference key will be introduced in 1.44.x, indicates if Wallet Preferences migration has completed
@@ -482,6 +489,11 @@ extension Preferences {
 
     static let backgroundSponsoredImagesCompleted = Option<Bool>(
       key: "migration.newtabpage-background-sponsored-images",
+      default: false
+    )
+
+    static let sponsoredAdsEnabledMigrationCompleted = Option<Bool>(
+      key: "migration.brave-ads-sponsored-enabled",
       default: false
     )
 
@@ -648,16 +660,30 @@ extension Preferences {
     Preferences.Migration.walletProviderAccountRequestCompleted.value = true
   }
 
-  fileprivate class func migrateBackgroundSponsoredImages() {
+  class func migrateBackgroundSponsoredImages() {
     guard !Migration.backgroundSponsoredImagesCompleted.value else { return }
 
     // Migrate old Background Sponsored Images setting
     DeprecatedPreferences.backgroundSponsoredImages.migrate { isEnabled in
-      Preferences.NewTabPage.backgroundMediaType =
-        isEnabled ? .sponsoredImages : .defaultImages
+      Preferences.BraveAds.sponsoredEnabled.value = isEnabled
     }
 
     Migration.backgroundSponsoredImagesCompleted.value = true
+  }
+
+  class func migrateSponsoredAdsEnabled() {
+    guard !Migration.sponsoredAdsEnabledMigrationCompleted.value else { return }
+
+    DeprecatedPreferences.backgroundMediaTypeRaw.migrate { rawValue in
+      // DeprecatedPreferences.backgroundMediaTypeRaw values:
+      // 0 = default images only (Sponsored ads off)
+      // 1 = sponsored images (Sponsored ads on)
+      // 2 = sponsored images and videos (Sponsored ads on)
+      // Anything non-zero means Sponsored ads are enabled.
+      Preferences.BraveAds.sponsoredEnabled.value = rawValue != 0
+    }
+
+    Migration.sponsoredAdsEnabledMigrationCompleted.value = true
   }
 
   fileprivate class func migrateBookmarksButtonInToolbar() {

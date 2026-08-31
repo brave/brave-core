@@ -482,7 +482,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
-    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
+    Preferences.BraveAds.sponsoredEnabled.observe(from: self)
     Preferences.Shields.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
@@ -2962,6 +2962,8 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
+    guard Preferences.BraveAds.sponsoredEnabled.value else { return }
+
     // do not show if NTP is occluded by search
     guard !isSearchContainerVisible,
       rewards.ads.shouldDisplayNewTabTakeoverInfobar()
@@ -3047,7 +3049,7 @@ extension BrowserViewController: PreferencesObserver {
       }
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
-    case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
+    case Preferences.BraveAds.sponsoredEnabled.key:
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
       if Preferences.Privacy.screenTimeEnabled.value, !ProcessInfo.processInfo.isiOSAppOnVisionOS {

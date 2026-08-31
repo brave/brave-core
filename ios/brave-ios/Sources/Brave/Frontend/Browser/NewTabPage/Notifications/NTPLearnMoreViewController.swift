@@ -84,7 +84,7 @@ extension NTPLearnMoreViewController: NTPLearnMoreViewDelegate {
   }
 
   func hideSponsoredImagesTapped() {
-    Preferences.NewTabPage.backgroundMediaType = .defaultImages
+    Preferences.BraveAds.sponsoredEnabled.value = false
     self.close()
   }
 

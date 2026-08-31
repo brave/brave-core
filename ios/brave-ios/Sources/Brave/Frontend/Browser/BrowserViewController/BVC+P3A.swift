@@ -368,11 +368,11 @@ extension BrowserViewController {
       case ntpAndPush = 3
     }
     var answer: Answer = .none
-    if rewards.ads.isEnabled && Preferences.NewTabPage.backgroundMediaType.isSponsored {
+    if rewards.ads.isEnabled && Preferences.BraveAds.sponsoredEnabled.value {
       answer = .ntpAndPush
     } else if rewards.ads.isEnabled {
       answer = .pushOnly
-    } else if Preferences.NewTabPage.backgroundMediaType.isSponsored {
+    } else if Preferences.BraveAds.sponsoredEnabled.value {
       answer = .ntpOnly
     }
     UmaHistogramEnumeration("Brave.Rewards.AdTypesEnabled", sample: answer)

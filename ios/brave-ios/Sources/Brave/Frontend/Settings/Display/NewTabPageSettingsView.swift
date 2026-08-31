@@ -16,9 +16,7 @@ struct NewTabPageSettingsView: View {
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
   @ObservedObject private var showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
 
-  // This is observed to ensure the view updates correctly, but we instead access
-  // Preferences.NewTabPage.backgroundMediaType which accesses backgroundMediaTypeRaw
-  @ObservedObject private var backgroundMediaTypeRaw = Preferences.NewTabPage.backgroundMediaTypeRaw
+  @ObservedObject private var sponsoredEnabled = Preferences.BraveAds.sponsoredEnabled
 
   var body: some View {
     Form {
@@ -27,10 +25,7 @@ struct NewTabPageSettingsView: View {
         if backgroundImages.value, isSponsoredBackgroundsSupported {
           NavigationLink {
             BackgroundMediaTypePicker(
-              selection: Binding(
-                get: { Preferences.NewTabPage.backgroundMediaType },
-                set: { Preferences.NewTabPage.backgroundMediaType = $0 }
-              )
+              isSponsoredImagesEnabled: $sponsoredEnabled.value
             )
             .environment(
               \.openURL,
@@ -41,11 +36,10 @@ struct NewTabPageSettingsView: View {
             )
           } label: {
             LabeledContent {
-              switch Preferences.NewTabPage.backgroundMediaType {
-              case .defaultImages:
-                Text(Strings.NTP.settingsDefaultImagesOnly)
-              case .sponsoredImages:
+              if sponsoredEnabled.value {
                 Text(Strings.NTP.settingsSponsoredImagesSelection)
+              } else {
+                Text(Strings.NTP.settingsDefaultImagesOnly)
               }
             } label: {
               Text(Strings.NTP.settingsBackgroundImageSubMenu)
@@ -68,22 +62,22 @@ struct NewTabPageSettingsView: View {
   }
 
   private struct BackgroundMediaTypePicker: View {
-    @Binding var selection: BackgroundMediaType
+    @Binding var isSponsoredImagesEnabled: Bool
 
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
       Form {
         Section {
-          Picker("", selection: $selection) {
+          Picker("", selection: $isSponsoredImagesEnabled) {
             Text(Strings.NTP.settingsDefaultImagesOnly)
-              .tag(BackgroundMediaType.defaultImages)
+              .tag(false)
             Text(Strings.NTP.settingsSponsoredImagesSelection)
-              .tag(BackgroundMediaType.sponsoredImages)
+              .tag(true)
           }
           .pickerStyle(.inline)
           .labelsHidden()
-          .onChange(of: selection, initial: false) {
+          .onChange(of: isSponsoredImagesEnabled, initial: false) {
             dismiss()
           }
         } header: {
