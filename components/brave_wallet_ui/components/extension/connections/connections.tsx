@@ -63,7 +63,7 @@ export const Connections = () => {
       useDarkBackground={true}
       isConnection={true}
       cardHeader={
-        <DefaultPanelHeader title={getLocale('braveWalletConnections')} />
+        <DefaultPanelHeader title={getLocale(S.BRAVE_WALLET_CONNECTIONS)} />
       }
     >
       <Column

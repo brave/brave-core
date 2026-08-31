@@ -99,7 +99,7 @@ export const WalletNav = () => {
                 textColor='primary'
                 variant='heading.h4'
               >
-                {getLocale('braveWalletTitle')}
+                {getLocale(S.BRAVE_WALLET_TITLE)}
               </Text>
             </Header>
             <NavigationMenu>

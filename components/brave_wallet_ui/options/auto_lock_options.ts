@@ -8,19 +8,31 @@ import { AutoLockOption } from '../constants/types'
 
 export const autoLockOptions: AutoLockOption[] = [
   {
-    label: getLocale('braveWalletAutoLockDurationMinutes').replace('$1', '5'),
+    label: getLocale(S.BRAVE_WALLET_AUTO_LOCK_DURATION_MINUTES).replace(
+      '$1',
+      '5',
+    ),
     minutes: 5,
   },
   {
-    label: getLocale('braveWalletAutoLockDurationMinutes').replace('$1', '10'),
+    label: getLocale(S.BRAVE_WALLET_AUTO_LOCK_DURATION_MINUTES).replace(
+      '$1',
+      '10',
+    ),
     minutes: 10,
   },
   {
-    label: getLocale('braveWalletAutoLockDurationHours').replace('$1', '1'),
+    label: getLocale(S.BRAVE_WALLET_AUTO_LOCK_DURATION_HOURS).replace(
+      '$1',
+      '1',
+    ),
     minutes: 60,
   },
   {
-    label: getLocale('braveWalletAutoLockDurationHours').replace('$1', '3'),
+    label: getLocale(S.BRAVE_WALLET_AUTO_LOCK_DURATION_HOURS).replace(
+      '$1',
+      '3',
+    ),
     minutes: 180,
   },
 ]

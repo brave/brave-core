@@ -33,7 +33,7 @@ export const SelectSendOptionButtons = (props: Props) => {
         isSelected={selectedSendOption === SendPageTabHashes.token}
         onClick={() => onClick('#token')}
       >
-        <ButtonText>{getLocale('braveWalletAccountsAssets')}</ButtonText>
+        <ButtonText>{getLocale(S.BRAVE_WALLET_ACCOUNTS_ASSETS)}</ButtonText>
         <LineIndicator
           isSelected={selectedSendOption === SendPageTabHashes.token}
         />
@@ -42,7 +42,7 @@ export const SelectSendOptionButtons = (props: Props) => {
         isSelected={selectedSendOption === SendPageTabHashes.nft}
         onClick={() => onClick('#nft')}
       >
-        <ButtonText>{getLocale('braveWalletTopNavNFTS')}</ButtonText>
+        <ButtonText>{getLocale(S.BRAVE_WALLET_TOP_NAV_N_F_T_S)}</ButtonText>
         <LineIndicator
           isSelected={selectedSendOption === SendPageTabHashes.nft}
         />

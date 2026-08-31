@@ -48,13 +48,15 @@ export function EthSignTypedData(props: Props) {
               textColor='error'
               variant='small.semibold'
             >
-              {getLocale('braveWalletNonAsciiCharactersInMessageWarning')}
+              {getLocale(
+                S.BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING,
+              )}
             </Text>
           </WarningTitleRow>
           <LearnMoreButton onClick={() => setRenderUnicode((prev) => !prev)}>
             {renderUnicode
-              ? getLocale('braveWalletViewDecodedMessage')
-              : getLocale('braveWalletViewEncodedMessage')}
+              ? getLocale(S.BRAVE_WALLET_VIEW_DECODED_MESSAGE)
+              : getLocale(S.BRAVE_WALLET_VIEW_ENCODED_MESSAGE)}
           </LearnMoreButton>
         </WarningBox>
       )}
@@ -68,7 +70,7 @@ export function EthSignTypedData(props: Props) {
             textColor='secondary'
             variant='small.semibold'
           >
-            {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
+            {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN)}:
           </MessageHeader>
           <MessageText
             textColor='secondary'
@@ -83,7 +85,7 @@ export function EthSignTypedData(props: Props) {
             textColor='secondary'
             variant='small.semibold'
           >
-            {getLocale('braveWalletSignTransactionMessageTitle')}:
+            {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE)}:
           </MessageHeader>
           <MessageText
             textColor='secondary'

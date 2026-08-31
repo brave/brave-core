@@ -8,37 +8,37 @@ import { AccountButtonOptionsObjectType } from '../constants/types'
 export const AccountDetailsMenuOptions: AccountButtonOptionsObjectType[] = [
   {
     id: 'edit',
-    name: 'braveWalletAllowSpendEditButton',
+    name: S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON,
     icon: 'edit-pencil',
   },
   {
     id: 'explorer',
-    name: 'braveWalletTransactionExplorer',
+    name: S.BRAVE_WALLET_TRANSACTION_EXPLORER,
     icon: 'web3-blockexplorer',
   },
   {
     id: 'deposit',
-    name: 'braveWalletAccountsDeposit',
+    name: S.BRAVE_WALLET_ACCOUNTS_DEPOSIT,
     icon: 'money-bag-coins',
   },
   {
     id: 'privateKey',
-    name: 'braveWalletAccountsExport',
+    name: S.BRAVE_WALLET_ACCOUNTS_EXPORT,
     icon: 'key',
   },
   {
     id: 'hide',
-    name: 'braveWalletAccountsHide',
+    name: S.BRAVE_WALLET_ACCOUNTS_HIDE,
     icon: 'eye-off',
   },
   {
     id: 'remove',
-    name: 'braveWalletAccountsRemove',
+    name: S.BRAVE_WALLET_ACCOUNTS_REMOVE,
     icon: 'trash',
   },
   {
     id: 'resetBirthday',
-    name: 'braveWalletResetShieldedAccountBirthday',
+    name: S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY,
     icon: 'calendar',
   },
 ]

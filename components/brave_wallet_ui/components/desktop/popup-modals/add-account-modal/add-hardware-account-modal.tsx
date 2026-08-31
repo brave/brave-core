@@ -82,7 +82,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   // render
   return (
     <PopupModal
-      title={getLocale('braveWalletAddAccountImportHardware')}
+      title={getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE)}
       onClose={closeModal}
     >
       {selectedAccountType && (

@@ -149,7 +149,7 @@ export const ToAsset = (props: Props) => {
       ? millisecondToString(timeUntilNextQuote)
       : ''
 
-  const newQuote = formatLocale('braveWalletNewQuoteIn', {
+  const newQuote = formatLocale(S.BRAVE_WALLET_NEW_QUOTE_IN, {
     $1: (
       <Text
         textSize='12px'
@@ -180,7 +180,7 @@ export const ToAsset = (props: Props) => {
           textSize='14px'
           isBold={false}
         >
-          {getLocale('braveWalletReceiveEstimate')}
+          {getLocale(S.BRAVE_WALLET_RECEIVE_ESTIMATE)}
         </ReceiveAndQuoteText>
         <Row width='unset'>
           {!isFetchingQuote && timeUntilNextQuote !== undefined && (
@@ -220,7 +220,7 @@ export const ToAsset = (props: Props) => {
             onClick={onClickSelectToken}
             token={token}
             selectedSendOption={selectedSendOption}
-            placeholderText={getLocale('braveWalletChooseAsset')}
+            placeholderText={getLocale(S.BRAVE_WALLET_CHOOSE_ASSET)}
             disabled={buttonDisabled}
           />
         </Row>
@@ -244,7 +244,7 @@ export const ToAsset = (props: Props) => {
             textSize='14px'
             isBold={false}
           >
-            {getLocale('braveWalletPortfolioAssetNetworkDescription')
+            {getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
               .replace('$1', '')
               .replace('$2', network.chainName)}
           </NetworkAndFiatText>

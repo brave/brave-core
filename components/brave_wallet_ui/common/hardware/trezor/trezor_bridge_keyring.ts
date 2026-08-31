@@ -103,7 +103,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     if (!data.payload.success) {
       const response: Unsuccessful = data.payload as Unsuccessful
       const error =
-        response.payload?.error ?? getLocale('braveWalletUnlockError')
+        response.payload?.error ?? getLocale(S.BRAVE_WALLET_UNLOCK_ERROR)
       const code = response.payload?.code ?? ''
       return { success: false, error: error, code: code }
     }
@@ -265,7 +265,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       if (unsuccess.code && unsuccess.code === 'Method_InvalidParameter') {
         return {
           success: false,
-          error: getLocale('braveWalletTrezorSignTypedDataError'),
+          error: getLocale(S.BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR),
           code: undefined,
         }
       }
@@ -410,25 +410,23 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   private readonly createErrorFromCode = (
     code: TrezorErrorsCodes,
   ): HardwareOperationError => {
-    const deviceName = getLocale('braveWalletConnectHardwareTrezor')
+    const deviceName = getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_TREZOR)
 
     switch (code) {
       case TrezorErrorsCodes.BridgeNotReady:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeNotReady').replace(
-            '$1',
-            deviceName,
-          ),
+          error: getLocale(
+            S.BRAVE_WALLET_HARDWARE_BRIDGE_NOT_READY_ERROR,
+          ).replace('$1', deviceName),
           code: code,
         }
       case TrezorErrorsCodes.CommandInProgress:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeCommandInProgress').replace(
-            '$1',
-            deviceName,
-          ),
+          error: getLocale(
+            S.BRAVE_WALLET_HARDWARE_COMMAND_IN_PROGRESS_ERROR,
+          ).replace('$1', deviceName),
           code: code,
         }
     }

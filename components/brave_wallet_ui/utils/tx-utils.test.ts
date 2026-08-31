@@ -124,48 +124,48 @@ const mockCardanoSendTokenTransaction: SerializableTransactionInfo = {
 describe('Check Transaction Status Strings Value', () => {
   test('Transaction ID 0 should return Unapproved', () => {
     expect(getTransactionStatusString(0)).toEqual(
-      'braveWalletTransactionStatusUnapproved',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_UNAPPROVED,
     )
   })
   test('Transaction ID 1 should return Approved', () => {
     expect(getTransactionStatusString(1)).toEqual(
-      'braveWalletTransactionStatusApproved',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_APPROVED,
     )
   })
 
   test('Transaction ID 2 should return Rejected', () => {
     expect(getTransactionStatusString(2)).toEqual(
-      'braveWalletTransactionStatusRejected',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_REJECTED,
     )
   })
 
   test('Transaction ID 3 should return Submitted', () => {
     expect(getTransactionStatusString(3)).toEqual(
-      'braveWalletTransactionStatusSubmitted',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED,
     )
   })
 
   test('Transaction ID 4 should return Confirmed', () => {
     expect(getTransactionStatusString(4)).toEqual(
-      'braveWalletTransactionStatusConfirmed',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED,
     )
   })
 
   test('Transaction ID 5 should return Error', () => {
     expect(getTransactionStatusString(5)).toEqual(
-      'braveWalletTransactionStatusError',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_ERROR,
     )
   })
 
   test('Transaction ID 6 should return Dropped', () => {
     expect(getTransactionStatusString(6)).toEqual(
-      'braveWalletTransactionStatusDropped',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_DROPPED,
     )
   })
 
   test('Transaction ID 7 should return Signed', () => {
     expect(getTransactionStatusString(7)).toEqual(
-      'braveWalletTransactionStatusSigned',
+      S.BRAVE_WALLET_TRANSACTION_STATUS_SIGNED,
     )
   })
 
@@ -975,40 +975,48 @@ describe('getTransactionTypeName', () => {
     {
       txType: BraveWallet.TransactionType.ERC1155SafeTransferFrom,
       expectedString: getLocale(
-        'braveWalletTransactionTypeNameSafeTransferFrom',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM,
       ),
     },
 
     {
       txType: BraveWallet.TransactionType.ERC20Approve,
-      expectedString: getLocale('braveWalletTransactionTypeNameErc20Approve'),
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_ERC_20_APPROVE,
+      ),
     },
 
     {
       txType: BraveWallet.TransactionType.ERC20Transfer,
-      expectedString: getLocale('braveWalletTransactionTypeNameTokenTransfer'),
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER,
+      ),
     },
 
     {
       txType: BraveWallet.TransactionType.ERC721SafeTransferFrom,
       expectedString: getLocale(
-        'braveWalletTransactionTypeNameSafeTransferFrom',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM,
       ),
     },
 
     {
       txType: BraveWallet.TransactionType.ERC721TransferFrom,
-      expectedString: getLocale('braveWalletTransactionTypeNameNftTransfer'),
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_NFT_TRANSFER,
+      ),
     },
 
     {
       txType: BraveWallet.TransactionType.ETHFilForwarderTransfer,
-      expectedString: getLocale('braveWalletTransactionTypeNameForwardFil'),
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_FORWARD_FIL,
+      ),
     },
 
     {
       txType: BraveWallet.TransactionType.ETHSend,
-      expectedString: getLocale('braveWalletTransactionIntentSend').replace(
+      expectedString: getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
         '$1',
         'ETH',
       ),
@@ -1016,38 +1024,40 @@ describe('getTransactionTypeName', () => {
 
     {
       txType: BraveWallet.TransactionType.ETHSwap,
-      expectedString: getLocale('braveWalletSwap'),
+      expectedString: getLocale(S.BRAVE_WALLET_SWAP),
     },
 
     {
       txType: BraveWallet.TransactionType.Other,
-      expectedString: getLocale('braveWalletTransactionTypeNameOther'),
+      expectedString: getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER),
     },
 
     {
       txType: BraveWallet.TransactionType.SolanaCompressedNftTransfer,
       expectedString: getLocale(
-        'braveWalletTransactionTypeNameCompressedNftTransfer',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_COMPRESSED_NFT_TRANSFER,
       ),
     },
 
     {
       txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
       expectedString: getLocale(
-        'braveWalletTransactionTypeNameSignAndSendDappTransaction',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_AND_SEND_DAPP_TRANSACTION,
       ),
     },
 
     {
       txType: BraveWallet.TransactionType.SolanaDappSignTransaction,
       expectedString: getLocale(
-        'braveWalletTransactionTypeNameSignDappTransaction',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_DAPP_TRANSACTION,
       ),
     },
 
     {
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
-      expectedString: getLocale('braveWalletTransactionTypeNameTokenTransfer'),
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER,
+      ),
     },
 
     {
@@ -1055,18 +1065,18 @@ describe('getTransactionTypeName', () => {
         BraveWallet.TransactionType
           .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
       expectedString: getLocale(
-        'braveWalletTransactionTypeNameSplTokenTransferWithAssociatedTokenAccountCreation',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
       ),
     },
 
     {
       txType: BraveWallet.TransactionType.SolanaSwap,
-      expectedString: getLocale('braveWalletSwap'),
+      expectedString: getLocale(S.BRAVE_WALLET_SWAP),
     },
 
     {
       txType: BraveWallet.TransactionType.SolanaSystemTransfer,
-      expectedString: getLocale('braveWalletTransactionIntentSend').replace(
+      expectedString: getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
         '$1',
         'SOL',
       ),
@@ -1080,7 +1090,7 @@ describe('getTransactionTypeName', () => {
 
   test('should return "Other" for unknown tx type', () => {
     expect(getTransactionTypeName(999)).toBe(
-      getLocale('braveWalletTransactionTypeNameOther'),
+      getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER),
     )
   })
 })

@@ -340,18 +340,18 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   const formattedSendFiatValue =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
       ? isTxApprovalUnlimited
-        ? getLocale('braveWalletTransactionApproveUnlimited')
+        ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
         : computedSendFiatAmount
       : computedSendFiatAmount
 
   const txTypeLocale =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
-      ? 'braveWalletApprovalTransactionIntent'
+      ? S.BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT
       : isBridgeTx
-        ? 'braveWalletBridge'
+        ? S.BRAVE_WALLET_BRIDGE
         : isSwapTx
-          ? 'braveWalletSwap'
-          : 'braveWalletTransactionSent'
+          ? S.BRAVE_WALLET_SWAP
+          : S.BRAVE_WALLET_TRANSACTION_SENT
 
   const formattedSourceAmount = sourceToken
     ? sourceAmount
@@ -393,7 +393,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   const txCurrencyTotal =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
       ? getIsTxApprovalUnlimited(transaction)
-        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${
+        ? `${getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)} ${
             //
             sendToken?.symbol ?? ''
           }`
@@ -482,7 +482,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   textAlign='left'
                 >
                   {isSolanaSwap
-                    ? getLocale('braveWalletSolanaSwap')
+                    ? getLocale(S.BRAVE_WALLET_SOLANA_SWAP)
                     : getLocale(txTypeLocale)}
                 </TransactionTypeText>
                 {isBridgeOrSwap && (
@@ -528,7 +528,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                               isBold={true}
                               textAlign='left'
                             >
-                              {getLocale('braveWalletOnNetwork').replace(
+                              {getLocale(S.BRAVE_WALLET_ON_NETWORK).replace(
                                 '$1',
                                 destinationNetwork?.chainName ?? '',
                               )}
@@ -636,7 +636,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textAlign='left'
                 textSize='14px'
               >
-                {getLocale('braveWalletMemo')}
+                {getLocale(S.BRAVE_WALLET_MEMO)}
               </SectionLabel>
               <SectionInfoText
                 textAlign='left'
@@ -656,7 +656,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textAlign='left'
                 textSize='14px'
               >
-                {getLocale('braveWalletTransactionDetailHash')}
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_DETAIL_HASH)}
               </SectionLabel>
               <Row justifyContent='space-between'>
                 <SectionInfoText
@@ -706,7 +706,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             textAlign='left'
             textSize='14px'
           >
-            {getLocale('braveWalletFrom')}
+            {getLocale(S.BRAVE_WALLET_FROM)}
           </SectionLabel>
           <Row justifyContent='space-between'>
             <Column alignItems='flex-start'>
@@ -749,7 +749,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textAlign='left'
                 textSize='14px'
               >
-                {getLocale('braveWalletSwapTo')}
+                {getLocale(S.BRAVE_WALLET_SWAP_TO)}
               </SectionLabel>
               <Row justifyContent='space-between'>
                 <Column alignItems='flex-start'>
@@ -795,7 +795,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             textAlign='left'
             textSize='14px'
           >
-            {getLocale('braveWalletConfirmTransactionTransactionFee')}
+            {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_TRANSACTION_FEE)}
           </SectionLabel>
           <Row width='unset'>
             <SectionInfoText
@@ -824,7 +824,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textAlign='left'
                 textSize='14px'
               >
-                {getLocale('braveWalletSwapProviderStatus')}
+                {getLocale(S.BRAVE_WALLET_SWAP_PROVIDER_STATUS)}
               </SectionLabel>
               {swapStatus?.internalStatus ? (
                 <InternalStatusText>
@@ -847,7 +847,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 onClick={onClickCancelTransaction}
                 kind='outline'
               >
-                {getLocale('braveWalletTransactionCancel')}
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_CANCEL)}
               </Button>
             </Row>
             <HorizontalSpace space='16px' />
@@ -855,7 +855,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
               <Button onClick={onClickSpeedupTransaction}>
                 <Row>
                   <SpeedupIcon />
-                  {getLocale('braveWalletTransactionSpeedup')}
+                  {getLocale(S.BRAVE_WALLET_TRANSACTION_SPEEDUP)}
                 </Row>
               </Button>
             </Row>
@@ -870,7 +870,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             >
               <Row>
                 <RetryIcon />
-                {getLocale('braveWalletTransactionRetry')}
+                {getLocale(S.BRAVE_WALLET_TRANSACTION_RETRY)}
               </Row>
             </Button>
           </Row>

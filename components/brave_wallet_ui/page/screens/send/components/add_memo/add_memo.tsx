@@ -55,7 +55,7 @@ export const AddMemo = (props: Props) => {
         <MemoInput
           value={memoText}
           onInput={(e) => onUpdateMemoText(e.value)}
-          placeholder={getLocale('braveWalletEnterAMessage')}
+          placeholder={getLocale(S.BRAVE_WALLET_ENTER_A_MESSAGE)}
           showErrors={memoText.length > MAX_ZCASH_MEMO_LENGTH}
         >
           <Text
@@ -63,7 +63,7 @@ export const AddMemo = (props: Props) => {
             isBold={true}
             textColor='primary'
           >
-            {getLocale('braveWalletMessageOptional')}
+            {getLocale(S.BRAVE_WALLET_MESSAGE_OPTIONAL)}
           </Text>
           <span slot='extra'>
             {memoTextLength}/{MAX_ZCASH_MEMO_LENGTH}
@@ -75,7 +75,7 @@ export const AddMemo = (props: Props) => {
             slot='errors'
             textAlign='left'
           >
-            {getLocale('braveWalletMemoLengthError')}
+            {getLocale(S.BRAVE_WALLET_MEMO_LENGTH_ERROR)}
           </Text>
         </MemoInput>
       )}
@@ -89,8 +89,8 @@ export const AddMemo = (props: Props) => {
           slot='icon-before'
         />
         {showMemoTextInput
-          ? getLocale('braveWalletRemoveMemo')
-          : getLocale('braveWalletAddMemo')}
+          ? getLocale(S.BRAVE_WALLET_REMOVE_MEMO)
+          : getLocale(S.BRAVE_WALLET_ADD_MEMO)}
       </Button>
     </Column>
   )

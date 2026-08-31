@@ -50,8 +50,10 @@ export const SelectRecoveryPhraseLength = (props: Props) => {
     <OnboardingContentLayout
       showBackButton={true}
       centerContent={true}
-      title={getLocale('braveWalletSelectRecoveryPhraseLengthTitle')}
-      subTitle={getLocale('braveWalletSelectRecoveryPhraseLengthDescription')}
+      title={getLocale(S.BRAVE_WALLET_SELECT_RECOVERY_PHRASE_LENGTH_TITLE)}
+      subTitle={getLocale(
+        S.BRAVE_WALLET_SELECT_RECOVERY_PHRASE_LENGTH_DESCRIPTION,
+      )}
     >
       <Column
         fullWidth={true}
@@ -77,10 +79,10 @@ export const SelectRecoveryPhraseLength = (props: Props) => {
                   textColor='primary'
                   variant='large.semibold'
                 >
-                  {getLocale('braveWalletTwelveWords')}
+                  {getLocale(S.BRAVE_WALLET_TWELVE_WORDS)}
                 </Text>
                 <Label color='primary'>
-                  {getLocale('braveWalletRecommended')}
+                  {getLocale(S.BRAVE_WALLET_RECOMMENDED)}
                 </Label>
               </Row>
               <Text
@@ -88,7 +90,7 @@ export const SelectRecoveryPhraseLength = (props: Props) => {
                 variant='default.regular'
                 textAlign='left'
               >
-                {getLocale('braveWalletTwelveWordsDescription')}
+                {getLocale(S.BRAVE_WALLET_TWELVE_WORDS_DESCRIPTION)}
               </Text>
             </Column>
           </OptionButton>
@@ -107,14 +109,14 @@ export const SelectRecoveryPhraseLength = (props: Props) => {
                 textColor='primary'
                 variant='large.semibold'
               >
-                {getLocale('braveWalletTwentyFourWords')}
+                {getLocale(S.BRAVE_WALLET_TWENTY_FOUR_WORDS)}
               </Text>
               <Text
                 textColor='tertiary'
                 variant='default.regular'
                 textAlign='left'
               >
-                {getLocale('braveWalletTwentyFourWordsDescription')}
+                {getLocale(S.BRAVE_WALLET_TWENTY_FOUR_WORDS_DESCRIPTION)}
               </Text>
             </Column>
           </OptionButton>
@@ -123,7 +125,7 @@ export const SelectRecoveryPhraseLength = (props: Props) => {
           isDisabled={!selectedLength}
           onClick={onContinue}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </Button>
       </Column>
     </OnboardingContentLayout>

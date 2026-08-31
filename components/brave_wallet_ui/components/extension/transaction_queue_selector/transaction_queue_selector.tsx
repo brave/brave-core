@@ -45,7 +45,7 @@ export function TransactionQueueSelector(props: Props) {
         kind='plain'
         slot='anchor-content'
       >
-        {getLocale('braveWalletPendingTransactionsNumber').replace(
+        {getLocale(S.BRAVE_WALLET_PENDING_TRANSACTIONS_NUMBER).replace(
           '$1',
           transactionsQueueLength.toString(),
         )}
@@ -56,7 +56,7 @@ export function TransactionQueueSelector(props: Props) {
       </Button>
       <leo-menu-item onClick={queueNextTransaction}>
         <Icon name='carat-right' />
-        {getLocale('braveWalletNextTransaction')}
+        {getLocale(S.BRAVE_WALLET_NEXT_TRANSACTION)}
       </leo-menu-item>
       <leo-menu-item onClick={queuePreviousTransaction}>
         <Row
@@ -64,7 +64,7 @@ export function TransactionQueueSelector(props: Props) {
           gap='8px'
         >
           <Icon name='carat-left' />
-          {getLocale('braveWalletPreviousTransaction')}
+          {getLocale(S.BRAVE_WALLET_PREVIOUS_TRANSACTION)}
         </Row>
       </leo-menu-item>
       <leo-menu-item onClick={rejectAllTransactions}>
@@ -73,7 +73,7 @@ export function TransactionQueueSelector(props: Props) {
           gap='8px'
         >
           <Icon name='close-circle' />
-          {getLocale('braveWalletRejectTransactions').replace(
+          {getLocale(S.BRAVE_WALLET_REJECT_TRANSACTIONS).replace(
             '$1',
             transactionsQueueLength.toString(),
           )}

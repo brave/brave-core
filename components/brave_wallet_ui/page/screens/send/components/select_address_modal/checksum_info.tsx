@@ -36,7 +36,7 @@ export const ChecksumInfo = () => {
           textColor='primary'
           isBold={true}
         >
-          {getLocale('braveWalletChecksumModalTitle')}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_TITLE)}
         </Text>
         <VerticalSpacer space={16} />
         <Text
@@ -44,7 +44,7 @@ export const ChecksumInfo = () => {
           textColor='secondary'
           isBold={false}
         >
-          {getLocale('braveWalletChecksumModalDescription')}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION)}
         </Text>
       </Column>
       <VerticalSpacer space={24} />
@@ -59,7 +59,7 @@ export const ChecksumInfo = () => {
           textColor='primary'
           isBold={true}
         >
-          {getLocale('braveWalletChecksumModalStepOneTitle')}{' '}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_TITLE)}{' '}
           <Link
             href='https://etherscan.io'
             target='_blank'
@@ -75,7 +75,7 @@ export const ChecksumInfo = () => {
           isBold={false}
           textAlign='left'
         >
-          {getLocale('braveWalletChecksumModalStepOneDescription')}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_DESCRIPTION)}
         </Text>
         <VerticalSpacer space={24} />
         <Text
@@ -83,7 +83,7 @@ export const ChecksumInfo = () => {
           textColor='primary'
           isBold={true}
         >
-          {getLocale('braveWalletChecksumModalStepTwoTitle')}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_TITLE)}
         </Text>
         <VerticalSpacer space={8} />
         <Text
@@ -92,7 +92,7 @@ export const ChecksumInfo = () => {
           isBold={false}
           textAlign='left'
         >
-          {getLocale('braveWalletChecksumModalStepTwoDescription')}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_DESCRIPTION)}
         </Text>
         <VerticalSpacer space={8} />
         <InfoGraphic src={ChecksumInfoGraphic} />
@@ -108,13 +108,13 @@ export const ChecksumInfo = () => {
           textColor='secondary'
           isBold={true}
         >
-          {getLocale('braveWalletChecksumModalNeedHelp')}{' '}
+          {getLocale(S.BRAVE_WALLET_CHECKSUM_MODAL_NEED_HELP)}{' '}
           <Link
             href='https://support.brave.app/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ'
             target='_blank'
             rel='noopener noreferrer'
           >
-            {getLocale('braveWalletHelpCenter')}
+            {getLocale(S.BRAVE_WALLET_HELP_CENTER)}
           </Link>
         </Text>
       </Column>

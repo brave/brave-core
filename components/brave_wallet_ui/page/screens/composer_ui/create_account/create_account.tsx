@@ -109,7 +109,7 @@ export const CreateAccountTab = ({
         variant='default.semibold'
       >
         {network
-          ? getLocale('braveWalletCreateAccountDescription').replace(
+          ? getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION).replace(
               '$1',
               network.symbolName,
             )
@@ -120,12 +120,12 @@ export const CreateAccountTab = ({
         <NavButton
           buttonType='secondary'
           onSubmit={onCancel}
-          text={getLocale('braveWalletCreateAccountNo')}
+          text={getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_NO)}
         />
         <NavButton
           buttonType='primary'
           onSubmit={onCreateAccount}
-          text={getLocale('braveWalletCreateAccountYes')}
+          text={getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_YES)}
         />
       </ButtonRow>
     </StyledWrapper>

@@ -145,14 +145,14 @@ export const NFTGridViewItem = ({
         <IconWrapper>
           {isTokenSpam && (
             <JunkMarker>
-              {getLocale('braveWalletNftJunk')}
+              {getLocale(S.BRAVE_WALLET_NFT_JUNK)}
               <JunkIcon />
             </JunkMarker>
           )}
           {isWatchOnly && (
             <WatchOnlyMarker>
               {
-                getLocale('braveWalletWatchOnly') //
+                getLocale(S.BRAVE_WALLET_WATCH_ONLY) //
               }
             </WatchOnlyMarker>
           )}

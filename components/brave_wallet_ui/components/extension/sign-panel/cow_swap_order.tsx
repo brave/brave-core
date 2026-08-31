@@ -123,7 +123,7 @@ export function SignCowSwapOrder(props: Props) {
         />
       </TopRow>
 
-      <HeaderTitle>{getLocale('braveWalletSwapReviewHeader')}</HeaderTitle>
+      <HeaderTitle>{getLocale(S.BRAVE_WALLET_SWAP_REVIEW_HEADER)}</HeaderTitle>
 
       <Origin originInfo={data.originInfo} />
 
@@ -166,33 +166,35 @@ export function SignCowSwapOrder(props: Props) {
       <NetworkFeeAndDetailsContainer>
         <NetworkFeeContainer>
           <NetworkFeeTitle>
-            {getLocale('braveWalletNetworkFees')}
+            {getLocale(S.BRAVE_WALLET_NETWORK_FEES)}
           </NetworkFeeTitle>
           <NetworkFeeValue>
             <CreateNetworkIcon
               network={network}
               marginRight={0}
             />
-            {getLocale('braveSwapFree')}
+            {getLocale(S.BRAVE_SWAP_FREE)}
           </NetworkFeeValue>
         </NetworkFeeContainer>
         <TextButton onClick={() => setShowDetails(!showDetails)}>
           {showDetails
-            ? getLocale('braveWalletSignTransactionEIP712MessageHideDetails')
-            : getLocale('braveWalletDetails')}
+            ? getLocale(
+                S.BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS,
+              )
+            : getLocale(S.BRAVE_WALLET_DETAILS)}
         </TextButton>
       </NetworkFeeAndDetailsContainer>
 
       <SignPanelButtonRow>
         <NavButton
           buttonType='secondary'
-          text={getLocale('braveWalletButtonCancel')}
+          text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
           onSubmit={onCancel}
           disabled={isDisabled}
         />
         <NavButton
           buttonType='sign'
-          text={getLocale('braveWalletSignTransactionButton')}
+          text={getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_BUTTON)}
           onSubmit={onSignIn}
           disabled={isDisabled}
         />

@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
@@ -35,11 +34,11 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
 
@@ -60,18 +59,16 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPanelHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  for (const auto& str : brave_wallet::kLocalizedStrings) {
-    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
-    source->AddString(str.name, l10n_str);
-  }
+  source->AddLocalizedStrings(webui::kWalletStrings);
   auto plural_string_handler = std::make_unique<PluralStringHandler>();
   plural_string_handler->AddLocalizedString(
-      "braveWalletExchangeNamePlusSteps",
+      "BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS",
       IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
   plural_string_handler->AddLocalizedString(
-      "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
+      "BRAVE_WALLET_PENDING_TRANSACTIONS",
+      IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
   plural_string_handler->AddLocalizedString(
-      "braveWalletHardwareWalletAccountConnectedSuccessfully",
+      "BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY",
       IDS_BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
   webui::SetupWebUIDataSource(source, base::span(kBraveWalletPanelGenerated),

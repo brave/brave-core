@@ -278,13 +278,15 @@ export const HardwareWalletAccountsList = ({
                 justifyContent='space-between'
                 slot='label'
               >
-                <DropdownLabel>{getLocale('braveWalletHDPath')}</DropdownLabel>
+                <DropdownLabel>
+                  {getLocale(S.BRAVE_WALLET_H_D_PATH)}
+                </DropdownLabel>
                 <HelpLink
                   href='https://support.brave.app/hc/categories/360001062531-Wallet'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  {getLocale('braveWalletHelpCenter')}
+                  {getLocale(S.BRAVE_WALLET_HELP_CENTER)}
                 </HelpLink>
               </Row>
               {dropdownItems}
@@ -306,12 +308,12 @@ export const HardwareWalletAccountsList = ({
             textColor='secondary'
             variant='small.regular'
           >
-            {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}
+            {getLocale(S.BRAVE_WALLET_SWITCH_H_D_PATH_TEXT_HARDWARE_WALLET)}
           </DisclaimerText>
         </DisclaimerWrapper>
       )}
       <SearchBar
-        placeholder={getLocale('braveWalletSearchScannedAccounts')}
+        placeholder={getLocale(S.BRAVE_WALLET_SEARCH_SCANNED_ACCOUNTS)}
         action={filterAccountList}
         isV2
       />
@@ -324,7 +326,7 @@ export const HardwareWalletAccountsList = ({
 
         {accounts.length > 0 && filteredAccountList.length === 0 && (
           <NoSearchResultText>
-            {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+            {getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND)}
           </NoSearchResultText>
         )}
 
@@ -333,9 +335,9 @@ export const HardwareWalletAccountsList = ({
           && filteredAccountList.length > 0 && (
             <AccountListContainer>
               <AccountListHeader>
-                <div>{getLocale('braveWalletSubviewAccount')}</div>
-                <div>{getLocale('braveWalletBalance')}</div>
-                <div>{getLocale('braveWalletAddAccountConnect')}</div>
+                <div>{getLocale(S.BRAVE_WALLET_SUBVIEW_ACCOUNT)}</div>
+                <div>{getLocale(S.BRAVE_WALLET_BALANCE)}</div>
+                <div>{getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_CONNECT)}</div>
               </AccountListHeader>
               <AccountListContent>
                 {filteredAccountList.map((account) => {
@@ -367,14 +369,14 @@ export const HardwareWalletAccountsList = ({
           }
         >
           {isLoadingMore
-            ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
-            : getLocale('braveWalletLoadMoreAccountsHardwareWallet')}
+            ? getLocale(S.BRAVE_WALLET_LOADING_MORE_ACCOUNTS_HARDWARE_WALLET)
+            : getLocale(S.BRAVE_WALLET_LOAD_MORE_ACCOUNTS_HARDWARE_WALLET)}
         </ContinueButton>
         <ContinueButton
           onClick={onAddAccounts}
           isDisabled={!accounts.find((acc) => acc.shouldAddToWallet)}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </ButtonsContainer>
     </>

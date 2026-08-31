@@ -84,7 +84,7 @@ export const OriginInfoCard = (props: Props) => {
           textAlign={orientation === 'horizontal' ? 'left' : undefined}
         >
           {isBraveWallet
-            ? getLocale('braveWalletPanelTitle')
+            ? getLocale(S.BRAVE_WALLET_PANEL_TITLE)
             : origin.eTldPlusOne}
         </OriginName>
         {!isBraveWallet && (

@@ -300,7 +300,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     const formattedSendFiatValue =
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
         ? isTxApprovalUnlimited
-          ? getLocale('braveWalletTransactionApproveUnlimited')
+          ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
           : computedSendFiatAmount
         : computedSendFiatAmount
 
@@ -313,18 +313,18 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const transactionTypeLocale =
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
-        ? 'braveWalletApprovalTransactionIntent'
+        ? S.BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT
         : isBridge
-          ? 'braveWalletBridge'
+          ? S.BRAVE_WALLET_BRIDGE
           : isSwap
-            ? 'braveWalletSwap'
-            : 'braveWalletTransactionSent'
+            ? S.BRAVE_WALLET_SWAP
+            : S.BRAVE_WALLET_TRANSACTION_SENT
 
     const intentLabel =
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
       || isSwapOrBridge
-        ? 'braveWalletOn'
-        : 'braveWalletFrom'
+        ? S.BRAVE_WALLET_ON
+        : S.BRAVE_WALLET_FROM
 
     const intentAddress =
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
@@ -338,7 +338,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const isNonFungibleToken = txToken?.isNft || txToken?.isErc721
     const formattedApprovalAmount = isTxApprovalUnlimited
-      ? getLocale('braveWalletTransactionApproveUnlimited')
+      ? getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)
       : formattedSendCurrencyTotal
     const formattedSourceAmount = sourceToken
       ? sourceAmount
@@ -477,7 +477,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                         isBold={true}
                         textAlign='left'
                       >
-                        {getLocale('braveWalletSolanaSwap')}
+                        {getLocale(S.BRAVE_WALLET_SOLANA_SWAP)}
                       </TokenNameText>
                     ) : (
                       <>
@@ -515,7 +515,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               textAlign='left'
                             >
                               {isBridge && destinationNetwork
-                                ? getLocale('braveWalletOnNetwork').replace(
+                                ? getLocale(S.BRAVE_WALLET_ON_NETWORK).replace(
                                     '$1',
                                     destinationNetwork.chainName,
                                   )

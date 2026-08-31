@@ -68,7 +68,7 @@ export const ConfirmRejectButtons = (props: Props) => {
         disabled={isTransactionConfirmedOrSubmitting}
         isDisabled={isTransactionConfirmedOrSubmitting}
       >
-        {getLocale('braveWalletAllowSpendRejectButton')}
+        {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_REJECT_BUTTON)}
       </Button>
       <Button
         kind='filled'
@@ -79,12 +79,12 @@ export const ConfirmRejectButtons = (props: Props) => {
         isLoading={isTransactionConfirmedOrSubmitting}
       >
         {isAccountSyncing
-          ? getLocale('braveWalletSyncing')
+          ? getLocale(S.BRAVE_WALLET_SYNCING)
           : isShieldingFunds
-            ? getLocale('braveWalletShieldZEC')
+            ? getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
             : isUnshieldingFunds
-              ? getLocale('braveWalletUnshieldZEC')
-              : getLocale('braveWalletAllowSpendConfirmButton')}
+              ? getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
+              : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
       </Button>
     </Row>
   )

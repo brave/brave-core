@@ -34,7 +34,7 @@ export function ConfirmationFooterActions(props: Props) {
               name='settings'
               slot='icon-before'
             />
-            {getLocale('braveWalletAdvancedTransactionSettings')}
+            {getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
           </Button>
         )}
       </div>
@@ -49,7 +49,7 @@ export function ConfirmationFooterActions(props: Props) {
               name='info-outline'
               slot='icon-before'
             />
-            {getLocale('braveWalletDetails')}
+            {getLocale(S.BRAVE_WALLET_DETAILS)}
           </Button>
         )}
       </div>

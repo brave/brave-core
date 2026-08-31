@@ -33,7 +33,7 @@ export const PasswordInputNala = ({
     <FullWidthInput
       onInput={onChange}
       onKeyDown={onKeyDown}
-      placeholder={getLocale('braveWalletEnterYourPassword')}
+      placeholder={getLocale(S.BRAVE_WALLET_ENTER_YOUR_PASSWORD)}
       showErrors={!!password && !isCorrectPassword}
       value={password}
       type={showPassword ? 'text' : 'password'}
@@ -41,7 +41,7 @@ export const PasswordInputNala = ({
     >
       <div>
         {/* Label */}
-        {getLocale('braveWalletInputLabelPassword')}
+        {getLocale(S.BRAVE_WALLET_INPUT_LABEL_PASSWORD)}
       </div>
 
       <LockIcon slot='left-icon' />
@@ -66,7 +66,7 @@ export const PasswordInputNala = ({
           textSize='16px'
           textColor='error'
         >
-          {getLocale('braveWalletLockScreenError')}
+          {getLocale(S.BRAVE_WALLET_LOCK_SCREEN_ERROR)}
         </Text>
       </Row>
     </FullWidthInput>

@@ -42,7 +42,7 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
         <LockIcon />
       </LockIconContainer>
       <SettingDescription>
-        {getLocale('braveWalletAutoLockTitle')}
+        {getLocale(S.BRAVE_WALLET_AUTO_LOCK_TITLE)}
       </SettingDescription>
       <DurationDropdown
         mode='filled'

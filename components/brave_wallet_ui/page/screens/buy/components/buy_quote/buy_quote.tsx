@@ -150,7 +150,7 @@ export const BuyQuote = ({
                 <div slot='icon-before'>
                   <Icon name='thumb-up' />
                 </div>
-                {getLocale('braveWalletBestOption')}
+                {getLocale(S.BRAVE_WALLET_BEST_OPTION)}
               </BestOptionLabel>
             ) : null}
             <PaymentMethodsWrapper>
@@ -182,7 +182,7 @@ export const BuyQuote = ({
                 gap='8px'
               >
                 <QuoteDetailsLabel>
-                  {getLocale('braveWalletExchangeRateWithFees')}
+                  {getLocale(S.BRAVE_WALLET_EXCHANGE_RATE_WITH_FEES)}
                 </QuoteDetailsLabel>
                 <QuoteDetailsValue>
                   ≈ {formattedExchangeRate} {sourceCurrencyCode} /{' '}
@@ -194,7 +194,7 @@ export const BuyQuote = ({
                 gap='8px'
               >
                 <QuoteDetailsLabel>
-                  {getLocale('braveWalletPriceCurrency').replace(
+                  {getLocale(S.BRAVE_WALLET_PRICE_CURRENCY).replace(
                     '$1',
                     sourceCurrencyCode ?? '',
                   )}
@@ -208,7 +208,7 @@ export const BuyQuote = ({
                 gap='8px'
               >
                 <QuoteDetailsLabel>
-                  {getLocale('braveWalletFees')}
+                  {getLocale(S.BRAVE_WALLET_FEES)}
                 </QuoteDetailsLabel>
                 <QuoteDetailsValue>
                   {formattedTotalFee} {sourceCurrencyCode}
@@ -220,7 +220,7 @@ export const BuyQuote = ({
                 gap='8px'
               >
                 <QuoteTotal>
-                  {getLocale('braveWalletConfirmTransactionTotal')}
+                  {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL)}
                 </QuoteTotal>
                 <QuoteTotal>
                   {formattedSourceAmount} {sourceCurrencyCode}
@@ -232,7 +232,7 @@ export const BuyQuote = ({
             isLoading={isCreatingWidget}
             onClick={() => onBuy(quote)}
           >
-            {getLocale('braveWalletBuyWithProvider').replace(
+            {getLocale(S.BRAVE_WALLET_BUY_WITH_PROVIDER).replace(
               '$1',
               formattedProviderName,
             )}

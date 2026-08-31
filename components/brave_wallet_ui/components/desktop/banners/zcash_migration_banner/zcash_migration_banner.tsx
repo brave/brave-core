@@ -20,13 +20,13 @@ export function ZCashMigrationBanner() {
   }
   return (
     <Alert type='warning'>
-      {getLocale('braveWalletZCashMigrationBannerDescription')}
+      {getLocale(S.BRAVE_WALLET_ZCASH_MIGRATION_BANNER_DESCRIPTION)}
       <Button
         kind='plain-faint'
         size='tiny'
         onClick={onClickLearnMore}
       >
-        {getLocale('braveWalletLearnMore')}
+        {getLocale(S.BRAVE_WALLET_LEARN_MORE)}
       </Button>
     </Alert>
   )

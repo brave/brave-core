@@ -62,7 +62,7 @@ export const Banner = (props: Props) => {
             onClick={onDismiss}
             size='tiny'
           >
-            {getLocale('braveWalletDismissButton')}
+            {getLocale(S.BRAVE_WALLET_DISMISS_BUTTON)}
           </Button>
         </Row>
       </Alert>

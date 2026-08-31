@@ -83,7 +83,7 @@ export const DAppConnectionAccounts = (props: Props) => {
               isBold={true}
               textColor='tertiary'
             >
-              {getLocale('braveWalletConnectedAccounts')}
+              {getLocale(S.BRAVE_WALLET_CONNECTED_ACCOUNTS)}
             </Text>
           </Row>
 
@@ -112,7 +112,7 @@ export const DAppConnectionAccounts = (props: Props) => {
               isBold={true}
               textColor='tertiary'
             >
-              {getLocale('braveWalletAvailableAccounts')}
+              {getLocale(S.BRAVE_WALLET_AVAILABLE_ACCOUNTS)}
             </Text>
           </Row>
 

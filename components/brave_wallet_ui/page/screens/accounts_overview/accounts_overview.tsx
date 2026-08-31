@@ -250,7 +250,7 @@ export const AccountsOverview = () => {
           textColor='secondary'
           textAlign='left'
         >
-          {getLocale('braveWalletAccounts')}
+          {getLocale(S.BRAVE_WALLET_ACCOUNTS)}
         </Text>
       </Row>
       <AccountsListWrapper
@@ -283,7 +283,7 @@ export const AccountsOverview = () => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletAccountsSecondary')}
+              {getLocale(S.BRAVE_WALLET_ACCOUNTS_SECONDARY)}
             </Text>
           </Row>
           <AccountsListWrapper
@@ -318,7 +318,7 @@ export const AccountsOverview = () => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletConnectedHardwareWallets')}
+              {getLocale(S.BRAVE_WALLET_CONNECTED_HARDWARE_WALLETS)}
             </Text>
           </Row>
           <Column
@@ -343,7 +343,7 @@ export const AccountsOverview = () => {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletConnectedAccounts')}
+              {getLocale(S.BRAVE_WALLET_CONNECTED_ACCOUNTS)}
             </Text>
           </Row>
           <AccountsListWrapper

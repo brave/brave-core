@@ -142,7 +142,7 @@ export const SellAssetModal = (props: Props) => {
 
   return (
     <PopupModal
-      title={`${getLocale('braveWalletSell')} ${selectedAsset.name}`}
+      title={`${getLocale(S.BRAVE_WALLET_SELL)} ${selectedAsset.name}`}
       onClose={onCloseSellModal}
       width='512px'
       ref={sellAssetModalRef}
@@ -164,7 +164,7 @@ export const SellAssetModal = (props: Props) => {
                   textColor='tertiary'
                   marginRight={8}
                 >
-                  {getLocale('braveWalletBalance')}
+                  {getLocale(S.BRAVE_WALLET_BALANCE)}
                 </Text>
                 <Text
                   textSize='12px'
@@ -183,10 +183,10 @@ export const SellAssetModal = (props: Props) => {
                   onClick={() => setPresetAmountValue(0.5)}
                   marginRight={4}
                 >
-                  {getLocale('braveWalletSendHalf')}
+                  {getLocale(S.BRAVE_WALLET_SEND_HALF)}
                 </PresetButton>
                 <PresetButton onClick={() => setPresetAmountValue(1)}>
-                  {getLocale('braveWalletSendMax')}
+                  {getLocale(S.BRAVE_WALLET_SEND_MAX)}
                 </PresetButton>
               </Row>
             </Row>
@@ -223,7 +223,7 @@ export const SellAssetModal = (props: Props) => {
                 textColor='primary'
                 textAlign='left'
               >
-                {getLocale('braveWalletNotEnoughBalance').replace(
+                {getLocale(S.BRAVE_WALLET_NOT_ENOUGH_BALANCE).replace(
                   '$1',
                   selectedAsset.symbol,
                 )}
@@ -236,7 +236,7 @@ export const SellAssetModal = (props: Props) => {
           isDisabled={isSellButtonDisabled}
           onClick={openSellAssetLink}
         >
-          {getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')}
+          {getLocale(S.BRAVE_WALLET_SELL_WITH_PROVIDER).replace('$1', 'Ramp')}
         </Button>
       </StyledWrapper>
     </PopupModal>

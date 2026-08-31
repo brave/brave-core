@@ -143,8 +143,8 @@ export const Swap = () => {
     : getDominantColorFromImageURL(toToken?.logo ?? '')
 
   const title = isBridge
-    ? getLocale('braveWalletBridge')
-    : getLocale('braveWalletSwap')
+    ? getLocale(S.BRAVE_WALLET_BRIDGE)
+    : getLocale(S.BRAVE_WALLET_SWAP)
 
   // render
   return (
@@ -255,7 +255,9 @@ export const Swap = () => {
                         justifyContent='flex-start'
                         gap='4px'
                       >
-                        {getLocale('braveWalletProviderNotSupported').replace(
+                        {getLocale(
+                          S.BRAVE_WALLET_PROVIDER_NOT_SUPPORTED,
+                        ).replace(
                           '$1',
                           SwapProviderNameMapping[selectedProvider],
                         )}
@@ -265,7 +267,7 @@ export const Swap = () => {
                             size='tiny'
                             onClick={() => setShowSwapProviders(true)}
                           >
-                            {getLocale('braveWalletChangeProvider')}
+                            {getLocale(S.BRAVE_WALLET_CHANGE_PROVIDER)}
                           </AlertMessageButton>
                         </div>
                       </AlertMessageWrapper>

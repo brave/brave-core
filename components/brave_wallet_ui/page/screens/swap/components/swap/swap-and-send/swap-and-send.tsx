@@ -98,7 +98,7 @@ export const SwapAndSend = (props: Props) => {
         horizontalPadding={16}
       >
         <Row>
-          <Text textSize='14px'>{getLocale('braveSwapSwapAndSend')}</Text>
+          <Text textSize='14px'>{getLocale(S.BRAVE_SWAP_SWAP_AND_SEND)}</Text>
           <Flash
             name='flash'
             size={16}
@@ -108,7 +108,7 @@ export const SwapAndSend = (props: Props) => {
             textSize='14px'
             textColor='tertiary'
           >
-            {getLocale('braveSwapNoExtraFees')}
+            {getLocale(S.BRAVE_SWAP_NO_EXTRA_FEES)}
           </Text>
         </Row>
         <StandardSwitch
@@ -163,7 +163,7 @@ export const SwapAndSend = (props: Props) => {
                     <HorizontalSpacer size={32} />
                     <StandardInput
                       placeholder={getLocale(
-                        'braveSwapAddressInputePlaceholder',
+                        S.BRAVE_SWAP_ADDRESS_INPUT_PLACEHOLDER,
                       )}
                       onChange={handleOnSetToAnotherAddress}
                       value={toAnotherAddress}
@@ -181,7 +181,7 @@ export const SwapAndSend = (props: Props) => {
                           <HorizontalSpacer size={32} />
                           <StandardCheckbox
                             id='confirm-address'
-                            label={getLocale('braveSwapConfirmAddress')}
+                            label={getLocale(S.BRAVE_SWAP_CONFIRM_ADDRESS)}
                             isChecked={userConfirmedAddress}
                             onChange={onCheckUserConfirmedAddress}
                             key='confirm-address'

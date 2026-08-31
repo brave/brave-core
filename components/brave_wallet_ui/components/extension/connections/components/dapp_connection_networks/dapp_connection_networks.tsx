@@ -97,7 +97,7 @@ export const DAppConnectionNetworks = (props: Props) => {
               isBold={true}
               textColor='tertiary'
             >
-              {getLocale('braveWalletPrimaryNetworks')}
+              {getLocale(S.BRAVE_WALLET_PRIMARY_NETWORKS)}
             </Text>
           </Row>
           {primaryNetworks.map((network: BraveWallet.NetworkInfo) => (
@@ -126,7 +126,7 @@ export const DAppConnectionNetworks = (props: Props) => {
               isBold={true}
               textColor='tertiary'
             >
-              {getLocale('braveWalletNetworkFilterSecondary')}
+              {getLocale(S.BRAVE_WALLET_NETWORK_FILTER_SECONDARY)}
             </Text>
           </Row>
           {secondaryNetworks.map((network: BraveWallet.NetworkInfo) => (
@@ -155,7 +155,7 @@ export const DAppConnectionNetworks = (props: Props) => {
               isBold={true}
               textColor='tertiary'
             >
-              {getLocale('braveWalletNetworkFilterTestNetworks')}
+              {getLocale(S.BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS)}
             </Text>
           </Row>
           {testNetworks.map((network: BraveWallet.NetworkInfo) => (

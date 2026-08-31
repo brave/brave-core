@@ -35,7 +35,7 @@ describe('buy quote option', () => {
 
     // Test Text
     expect(screen.getByText('Transak')).toBeInTheDocument()
-    expect(screen.getByText('braveWalletBestOption')).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_BEST_OPTION)).toBeInTheDocument()
 
     // Test Styles
     const styledWrapper = container.querySelector(

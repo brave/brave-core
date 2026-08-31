@@ -111,8 +111,8 @@ export const Banners = () => {
           }}
           onClick={openWalletSettings}
           bannerType='warning'
-          buttonText={getLocale('braveWalletWalletPopupSettings')}
-          description={getLocale('braveWalletDefaultWalletBanner')}
+          buttonText={getLocale(S.BRAVE_WALLET_WALLET_POPUP_SETTINGS)}
+          description={getLocale(S.BRAVE_WALLET_DEFAULT_WALLET_BANNER)}
         />
       )}
       {!isCheckingWalletBackupStatus
@@ -124,8 +124,8 @@ export const Banners = () => {
             }}
             onClick={onShowBackup}
             bannerType='error'
-            buttonText={getLocale('braveWalletBackupButton')}
-            description={getLocale('braveWalletBackupWarningText')}
+            buttonText={getLocale(S.BRAVE_WALLET_BACKUP_BUTTON)}
+            description={getLocale(S.BRAVE_WALLET_BACKUP_WARNING_TEXT)}
           />
         )}
     </>

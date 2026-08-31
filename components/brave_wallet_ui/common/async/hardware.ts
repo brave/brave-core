@@ -91,7 +91,7 @@ export async function signTrezorTransaction(
   if (!nonce || !nonce.nonce) {
     return {
       success: false,
-      error: getLocale('braveWalletApproveTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -99,7 +99,7 @@ export async function signTrezorTransaction(
   if (!txInfo.txDataUnion.ethTxData1559) {
     return {
       success: false,
-      error: getLocale('braveWalletApproveTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -116,7 +116,7 @@ export async function signTrezorTransaction(
   if (!signed.success) {
     const error = signed.error
       ? signed.error
-      : getLocale('braveWalletSignOnDeviceError')
+      : getLocale(S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR)
     if (signed.code === TrezorErrorsCodes.CommandInProgress) {
       return {
         success: false,
@@ -137,7 +137,7 @@ export async function signTrezorTransaction(
   if (!result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -155,7 +155,7 @@ export async function signLedgerEthereumTransaction(
   if (!nonce || !nonce.nonce) {
     return {
       success: false,
-      error: getLocale('braveWalletApproveTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -164,7 +164,9 @@ export async function signLedgerEthereumTransaction(
   if (!hexMessage) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError'),
+      error: getLocale(
+        S.BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR,
+      ),
       code: undefined,
     }
   }
@@ -174,7 +176,9 @@ export async function signLedgerEthereumTransaction(
   if (!signed.success) {
     return {
       success: false,
-      error: signed.error ?? getLocale('braveWalletSignOnDeviceError'),
+      error:
+        signed.error
+        ?? getLocale(S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR),
       code: signed.code ?? '',
     }
   }
@@ -185,7 +189,7 @@ export async function signLedgerEthereumTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -202,7 +206,9 @@ export async function signLedgerFilecoinTransaction(
   if (!jsonMessage) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError'),
+      error: getLocale(
+        S.BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR,
+      ),
       code: undefined,
     }
   }
@@ -211,7 +217,9 @@ export async function signLedgerFilecoinTransaction(
   if (!signed.success) {
     return {
       success: false,
-      error: signed.error ?? getLocale('braveWalletSignOnDeviceError'),
+      error:
+        signed.error
+        ?? getLocale(S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR),
       code: signed.code ?? '',
     }
   }
@@ -223,7 +231,7 @@ export async function signLedgerFilecoinTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -241,7 +249,9 @@ export async function signLedgerSolanaTransaction(
   if (!message) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError'),
+      error: getLocale(
+        S.BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR,
+      ),
       code: undefined,
     }
   }
@@ -249,7 +259,9 @@ export async function signLedgerSolanaTransaction(
   if (!signed.success) {
     return {
       success: false,
-      error: signed.error ?? getLocale('braveWalletSignOnDeviceError'),
+      error:
+        signed.error
+        ?? getLocale(S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR),
       code: signed.code ?? '',
     }
   }
@@ -262,7 +274,7 @@ export async function signLedgerSolanaTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -280,7 +292,9 @@ export async function signLedgerBitcoinTransaction(
   if (!data) {
     return {
       success: false,
-      error: getLocale('braveWalletNoMessageToSignError'),
+      error: getLocale(
+        S.BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR,
+      ),
       code: undefined,
     }
   }
@@ -299,7 +313,9 @@ export async function signLedgerBitcoinTransaction(
   if (!signed.success) {
     return {
       success: false,
-      error: signed.error ?? getLocale('braveWalletSignOnDeviceError'),
+      error:
+        signed.error
+        ?? getLocale(S.BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR),
       code: signed.code ?? '',
     }
   }
@@ -311,7 +327,7 @@ export async function signLedgerBitcoinTransaction(
   if (!result || !result.status) {
     return {
       success: false,
-      error: getLocale('braveWalletProcessTransactionError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR),
       code: undefined,
     }
   }
@@ -332,7 +348,7 @@ export async function signEthMessageWithHardwareKeyring(
       if (!signTypedData.domainHash || !signTypedData.primaryHash) {
         return {
           success: false,
-          error: getLocale('braveWalletUnknownInternalError'),
+          error: getLocale(S.BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR),
           code: undefined,
         }
       }
@@ -345,7 +361,7 @@ export async function signEthMessageWithHardwareKeyring(
     if (!standardSignData) {
       return {
         success: false,
-        error: getLocale('braveWalletUnknownInternalError'),
+        error: getLocale(S.BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR),
         code: undefined,
       }
     }
@@ -355,7 +371,7 @@ export async function signEthMessageWithHardwareKeyring(
       if (!signTypedData.domainHash || !signTypedData.primaryHash) {
         return {
           success: false,
-          error: getLocale('braveWalletUnknownInternalError'),
+          error: getLocale(S.BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR),
           code: undefined,
         }
       }
@@ -372,7 +388,7 @@ export async function signEthMessageWithHardwareKeyring(
     if (!standardSignData) {
       return {
         success: false,
-        error: getLocale('braveWalletUnknownInternalError'),
+        error: getLocale(S.BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR),
         code: undefined,
       }
     }
@@ -382,13 +398,13 @@ export async function signEthMessageWithHardwareKeyring(
     // https://github.com/solana-labs/solana/issues/21366.
     return {
       success: false,
-      error: getLocale('braveWalletHardwareOperationUnsupportedError'),
+      error: getLocale(S.BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR),
       code: undefined,
     }
   }
   return {
     success: false,
-    error: getLocale('braveWalletUnknownKeyringError'),
+    error: getLocale(S.BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR),
     code: undefined,
   }
 }

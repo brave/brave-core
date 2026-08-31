@@ -285,7 +285,7 @@ export const AssetGroupContainer = (props: Props) => {
                   {externalRewardsDescription}
                 </RewardsText>
                 <BraveRewardsIndicator>
-                  {getLocale('braveWalletBraveRewardsTitle')}
+                  {getLocale(S.BRAVE_WALLET_BRAVE_REWARDS_TITLE)}
                 </BraveRewardsIndicator>
               </RewardsProviderContainer>
             </Row>
@@ -418,9 +418,9 @@ export const AssetGroupContainer = (props: Props) => {
                     textAlign='left'
                   >
                     {!chainTipStatus
-                      ? getLocale('braveWalletOutOfSyncTitle')
+                      ? getLocale(S.BRAVE_WALLET_OUT_OF_SYNC_TITLE)
                       : getLocale(
-                          'braveWalletOutOfSyncBlocksBehindTitle',
+                          S.BRAVE_WALLET_OUT_OF_SYNC_BLOCKS_BEHIND_TITLE,
                         ).replace('$1', blocksBehind.toLocaleString())}
                   </InfoText>
                 </Row>
@@ -430,7 +430,7 @@ export const AssetGroupContainer = (props: Props) => {
                     size='tiny'
                     onClick={onStartShieldSync}
                   >
-                    {getLocale('braveWalletSyncAccountButton')}
+                    {getLocale(S.BRAVE_WALLET_SYNC_ACCOUNT_BUTTON)}
                   </Button>
                 </div>
               </InfoBar>

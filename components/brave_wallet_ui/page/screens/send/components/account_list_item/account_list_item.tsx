@@ -80,7 +80,7 @@ export const AccountListItem = (props: Props) => {
             {account.name}
           </NameAndBalanceText>
           {isSelected && (
-            <DisabledLabel>{getLocale('braveWalletFrom')}</DisabledLabel>
+            <DisabledLabel>{getLocale(S.BRAVE_WALLET_FROM)}</DisabledLabel>
           )}
           {isShielded && <ShieldedLabel />}
         </Row>

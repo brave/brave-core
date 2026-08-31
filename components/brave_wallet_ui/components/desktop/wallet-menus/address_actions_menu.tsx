@@ -66,7 +66,7 @@ export const AddressActionsMenu = (props: Props) => {
     copyToClipboard(account.address)
     showAlert({
       type: 'success',
-      content: getLocale('braveWalletButtonCopied'),
+      content: getLocale(S.BRAVE_WALLET_BUTTON_COPIED),
       actions: [],
     })
   }
@@ -77,20 +77,20 @@ export const AddressActionsMenu = (props: Props) => {
         <Button slot='anchor-content'>{children}</Button>
         <leo-menu-item onClick={handleCopyAddress}>
           <Icon name='copy' />
-          {getLocale('braveWalletButtonCopy')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_COPY)}
         </leo-menu-item>
         <leo-menu-item onClick={() => setShowDepositModal(true)}>
           <Icon name='qr-code-alternative' />
-          {getLocale('braveWalletDepositCryptoButton')}
+          {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
         </leo-menu-item>
         <leo-menu-item onClick={() => setShowViewOnExplorerModal(true)}>
           <Icon name='web3-blockexplorer' />
-          {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+          {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL)}
         </leo-menu-item>
       </ButtonMenu>
       {showDepositModal && (
         <PopupModal
-          title={getLocale('braveWalletDepositCryptoButton')}
+          title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
           onClose={() => setShowDepositModal(false)}
           ref={depositModalRef}
         >

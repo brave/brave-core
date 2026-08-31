@@ -19,7 +19,7 @@ export const BackButton = ({ onSubmit }: Props) => {
   return (
     <StyledWrapper onClick={onSubmit}>
       <BackIcon />
-      {getLocale('braveWalletBack')}
+      {getLocale(S.BRAVE_WALLET_BACK)}
     </StyledWrapper>
   )
 }

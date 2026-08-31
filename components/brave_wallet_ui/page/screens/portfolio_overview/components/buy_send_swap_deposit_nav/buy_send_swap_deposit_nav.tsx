@@ -81,7 +81,7 @@ export const BuySendSwapDepositNav = () => {
             textColor='primary'
             variant='small.semibold'
           >
-            {getLocale('braveWalletButtonMore')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_MORE)}
           </Text>
         </Column>
       </PortfolioActionsMoreMenu>

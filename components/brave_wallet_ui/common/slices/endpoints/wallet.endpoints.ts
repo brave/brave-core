@@ -378,7 +378,7 @@ export const walletEndpoints = ({
 
           // was the provided import password correct?
           const checkExistingPasswordError =
-            errorMessage === getLocale('braveWalletImportPasswordError')
+            errorMessage === getLocale(S.BRAVE_WALLET_IMPORT_PASSWORD_ERROR)
               ? errorMessage || undefined
               : undefined
 

@@ -133,12 +133,12 @@ export const FilterNetworksSection = ({
           textSize='16px'
           isBold={true}
         >
-          {getLocale('braveWalletSelectNetworks')}
+          {getLocale(S.BRAVE_WALLET_SELECT_NETWORKS)}
         </Title>
         <SelectAllButton onClick={onSelectOrDeselectAllNetworks}>
           {isSelectAll
-            ? getLocale('braveWalletSelectAll')
-            : getLocale('braveWalletDeselectAll')}
+            ? getLocale(S.BRAVE_WALLET_SELECT_ALL)
+            : getLocale(S.BRAVE_WALLET_DESELECT_ALL)}
         </SelectAllButton>
       </Row>
 
@@ -148,7 +148,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={primaryNetworks}
-          title={getLocale('braveWalletPrimaryNetworks')}
+          title={getLocale(S.BRAVE_WALLET_PRIMARY_NETWORKS)}
           marginBottom={8}
         />
       )}
@@ -159,7 +159,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={secondaryNetworks}
-          title={getLocale('braveWalletNetworkFilterSecondary')}
+          title={getLocale(S.BRAVE_WALLET_NETWORK_FILTER_SECONDARY)}
           marginBottom={8}
         />
       )}
@@ -170,7 +170,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={testNetworks}
-          title={getLocale('braveWalletNetworkFilterTestNetworks')}
+          title={getLocale(S.BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS)}
           marginBottom={8}
         />
       )}
@@ -181,7 +181,7 @@ export const FilterNetworksSection = ({
           isNetworkFilteredOut={isNetworkFilteredOut}
           onCheckNetwork={onCheckNetwork}
           networks={[providerNetwork]}
-          title={getLocale('braveWalletPlatforms')}
+          title={getLocale(S.BRAVE_WALLET_PLATFORMS)}
           marginBottom={0}
         />
       )}

@@ -241,7 +241,7 @@ export const AccountDetailsHeader = (props: Props) => {
         ? {
             ...option,
             id: 'hide',
-            name: 'braveWalletAccountsHide',
+            name: S.BRAVE_WALLET_ACCOUNTS_HIDE,
             icon: 'eye-off',
           }
         : option,
@@ -326,7 +326,7 @@ export const AccountDetailsHeader = (props: Props) => {
               data-key='account-balance-column'
             >
               <AccountsNetworkText>
-                {getLocale('braveWalletAccountBalance')}
+                {getLocale(S.BRAVE_WALLET_ACCOUNT_BALANCE)}
               </AccountsNetworkText>
               {accountsFiatValue.isUndefined() ? (
                 <LoadingSkeleton

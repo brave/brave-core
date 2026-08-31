@@ -45,7 +45,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
             textSize='18px'
             isBold={true}
           >
-            {getLocale('braveSwapPrivacyPolicy')}
+            {getLocale(S.BRAVE_SWAP_PRIVACY_POLICY)}
           </Text>
           <IconButton onClick={onClose}>
             <Icon
@@ -66,7 +66,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
             textAlign='left'
             isBold={true}
           >
-            {getLocale('braveSwapPrivacyDescription')}
+            {getLocale(S.BRAVE_SWAP_PRIVACY_DESCRIPTION)}
           </Text>
           <VerticalSpacer size={10} />
           <Section
@@ -88,7 +88,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               textAlign='left'
               isBold={true}
             >
-              {getLocale('braveSwapV2Disclaimer')
+              {getLocale(S.BRAVE_SWAP_V2_DISCLAIMER)
                 .replaceAll('$1', '0x')
                 .replace('$2', 'EVM')
                 .replace('$3', 'Ethereum')}
@@ -98,7 +98,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               target='_blank'
               href='https://www.0x.org/privacy'
             >
-              {getLocale('braveSwapV2Privacy').replace('$1', '0x')}
+              {getLocale(S.BRAVE_SWAP_V2_PRIVACY).replace('$1', '0x')}
             </Link>
           </Section>
           <VerticalSpacer size={20} />
@@ -121,7 +121,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               textAlign='left'
               isBold={true}
             >
-              {getLocale('braveSwapV2Disclaimer')
+              {getLocale(S.BRAVE_SWAP_V2_DISCLAIMER)
                 .replaceAll('$1', 'Jupiter')
                 .replace('$2', 'Solana')
                 .replace('$3', 'Solana')}
@@ -131,7 +131,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               target='_blank'
               href='https://docs.jup.ag/legal/privacy-policy'
             >
-              {getLocale('braveSwapV2Privacy').replace('$1', 'Jupiter')}
+              {getLocale(S.BRAVE_SWAP_V2_PRIVACY).replace('$1', 'Jupiter')}
             </Link>
           </Section>
           <VerticalSpacer size={20} />

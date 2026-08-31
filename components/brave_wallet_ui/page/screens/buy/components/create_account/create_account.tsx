@@ -127,7 +127,7 @@ export const CreateAccount = (props: Props) => {
     return (
       <>
         <DialogTitle slot='title'>
-          {getLocale('braveWalletCreateAccountButton')}
+          {getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_BUTTON)}
         </DialogTitle>
         <Column
           gap='16px'
@@ -143,7 +143,7 @@ export const CreateAccount = (props: Props) => {
             isBold={true}
           >
             {token
-              ? getLocale('braveWalletCreateAccountToBuyTitle').replace(
+              ? getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_TITLE).replace(
                   '$1',
                   token.name ?? '',
                 )
@@ -155,7 +155,7 @@ export const CreateAccount = (props: Props) => {
             isBold={false}
           >
             {token
-              ? getLocale('braveWalletCreateAccountToBuyDescription')
+              ? getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION)
                   .replace('$1', token.currencyCode ?? '')
                   .replace('$2', token.name ?? '')
               : ''}
@@ -164,7 +164,7 @@ export const CreateAccount = (props: Props) => {
         <Row margin='0px 0px 46px 0px'>
           <Input
             value={accountName}
-            placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+            placeholder={getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER)}
             onInput={handleAccountNameChanged}
             onKeyDown={handleKeyDown}
             maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
@@ -174,7 +174,7 @@ export const CreateAccount = (props: Props) => {
               textColor='primary'
               isBold={true}
             >
-              {getLocale('braveWalletAccountName')}
+              {getLocale(S.BRAVE_WALLET_ACCOUNT_NAME)}
             </Text>
           </Input>
         </Row>
@@ -183,14 +183,14 @@ export const CreateAccount = (props: Props) => {
             kind='outline'
             onClick={onClose}
           >
-            {getLocale('braveWalletButtonCancel')}
+            {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
           </Button>
           <Button
             kind='filled'
             onClick={onClickCreateAccount}
             isDisabled={accountName === ''}
           >
-            {getLocale('braveWalletCreateAccountButton')}
+            {getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_BUTTON)}
           </Button>
         </Row>
       </>

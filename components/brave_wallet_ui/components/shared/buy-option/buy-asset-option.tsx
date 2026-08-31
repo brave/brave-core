@@ -100,7 +100,7 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
     // memos
     const networkDescription: string = React.useMemo(() => {
       if (tokenNetwork && !isPanel) {
-        return getLocale('braveWalletPortfolioAssetNetworkDescription')
+        return getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
           .replace('$1', token.symbol)
           .replace('$2', tokenNetwork.chainName ?? '')
       }

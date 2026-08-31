@@ -73,7 +73,7 @@ export const MaxSlippage = (props: Props) => {
           isBold={true}
           textColor='primary'
         >
-          {getLocale('braveWalletMaxSlippage')}
+          {getLocale(S.BRAVE_WALLET_MAX_SLIPPAGE)}
         </Text>
       </Row>
       <Column
@@ -87,7 +87,7 @@ export const MaxSlippage = (props: Props) => {
           textColor='primary'
           textAlign='left'
         >
-          {getLocale('braveWalletMaxSlippageDescription')}
+          {getLocale(S.BRAVE_WALLET_SLIPPAGE_DESCRIPTION)}
         </Text>
         <VerticalSpace space='8px' />
         <Text
@@ -96,7 +96,7 @@ export const MaxSlippage = (props: Props) => {
           textColor='primary'
           textAlign='left'
         >
-          {getLocale('braveWalletSuggestedValues')}
+          {getLocale(S.BRAVE_WALLET_SUGGESTED_VALUES)}
         </Text>
         <VerticalSpace space='8px' />
         <Text
@@ -105,7 +105,7 @@ export const MaxSlippage = (props: Props) => {
           textColor='primary'
           textAlign='left'
         >
-          {getLocale('braveWalletMainstreamAssetPairs').replace(
+          {getLocale(S.BRAVE_WALLET_MAINSTREAM_ASSET_PAIRS).replace(
             '$1',
             MAINSTREAM_ASSET_PAIRS_SLIPPAGE,
           )}
@@ -116,7 +116,7 @@ export const MaxSlippage = (props: Props) => {
           textColor='primary'
           textAlign='left'
         >
-          {getLocale('braveWalletStablecoinPairs').replace(
+          {getLocale(S.BRAVE_WALLET_STABLECOIN_PAIRS).replace(
             '$1',
             STABLECOIN_PAIRS_SLIPPAGE,
           )}
@@ -128,7 +128,7 @@ export const MaxSlippage = (props: Props) => {
           textColor='primary'
           textAlign='left'
         >
-          {getLocale('braveWalletOthers').replace('$1', OTHERS_SLIPPAGE)}
+          {getLocale(S.BRAVE_WALLET_OTHERS).replace('$1', OTHERS_SLIPPAGE)}
         </Text>
       </Column>
       <Row gap='12px'>
@@ -145,7 +145,7 @@ export const MaxSlippage = (props: Props) => {
               textSize='12px'
               textColor='primary'
             >
-              {getLocale('braveWalletSuggested')}
+              {getLocale(S.BRAVE_WALLET_SUGGESTED)}
             </Text>
             <Text
               isBold={true}
@@ -177,7 +177,7 @@ export const MaxSlippage = (props: Props) => {
               textSize='12px'
               textColor='primary'
             >
-              {getLocale('braveWalletCustom')}
+              {getLocale(S.BRAVE_WALLET_CUSTOM)}
             </Text>
             <Row width='unset'>
               <CustomInput
@@ -210,7 +210,7 @@ export const MaxSlippage = (props: Props) => {
             slippageOption === 'custom' && customSlippageTolerance === ''
           }
         >
-          {getLocale('braveWalletUpdate')}
+          {getLocale(S.BRAVE_WALLET_REVIEW_UPDATE)}
         </Button>
       </Row>
     </Column>

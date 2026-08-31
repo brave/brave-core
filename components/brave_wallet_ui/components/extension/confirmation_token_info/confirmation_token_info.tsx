@@ -74,6 +74,7 @@ type TokenInfoLabel =
   | 'send'
   | 'to'
   | 'shield'
+  | 'unshield'
   | 'fee'
   | 'swapSource'
   | 'swapDestination'
@@ -132,24 +133,26 @@ export function ConfirmationTokenInfo(props: Props) {
   const getLabelText = (label: TokenInfoLabel) => {
     switch (label) {
       case 'fee':
-        return getLocale('braveWalletEstimatedFee')
+        return getLocale(S.BRAVE_WALLET_ESTIMATED_FEE)
       case 'send':
-        return getLocale('braveWalletSend')
+        return getLocale(S.BRAVE_WALLET_SEND)
       case 'swapSource':
-        return getLocale('braveWalletSpend')
+        return getLocale(S.BRAVE_WALLET_SPEND)
       case 'swapDestination':
-        return getLocale('braveWalletReceiveEstimate')
+        return getLocale(S.BRAVE_WALLET_RECEIVE_ESTIMATE)
       case 'swapDestinationMin':
-        return getLocale('braveWalletReceiveMinimum')
+        return getLocale(S.BRAVE_WALLET_RECEIVE_MINIMUM)
       case 'shield':
-        return getLocale('braveWalletShielding')
+        return getLocale(S.BRAVE_WALLET_SHIELDING)
+      case 'unshield':
+        return getLocale(S.BRAVE_WALLET_UNSHIELDING)
       default:
-        return getLocale('braveWalletReceive')
+        return getLocale(S.BRAVE_WALLET_RECEIVE)
     }
   }
 
   const ataCreationLocale = getLocale(
-    'braveWalletConfirmTransactionAccountCreationFee',
+    S.BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE,
   )
 
   // Memos
@@ -212,7 +215,7 @@ export function ConfirmationTokenInfo(props: Props) {
           justifyContent='flex-start'
         >
           <ConfirmationInfoLabel textColor='secondary'>
-            {getLocale('braveWalletSwapTo')}
+            {getLocale(S.BRAVE_WALLET_SWAP_TO)}
           </ConfirmationInfoLabel>
           <AddressText
             textColor='primary'
@@ -253,7 +256,7 @@ export function ConfirmationTokenInfo(props: Props) {
               textColor='secondary'
               textAlign='left'
             >
-              {getLocale('braveWalletSwapTo')}
+              {getLocale(S.BRAVE_WALLET_SWAP_TO)}
             </ConfirmationInfoLabel>
             <Row gap='16px'>
               <Tooltip text={receiveAddress ?? ''}>
@@ -284,7 +287,9 @@ export function ConfirmationTokenInfo(props: Props) {
                   <LearnMoreButton
                     onClick={openAssociatedTokenAccountSupportArticleTab}
                   >
-                    {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+                    {getLocale(
+                      S.BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON,
+                    )}
                   </LearnMoreButton>
                 </span>
               </WarningTooltipContent>
@@ -336,7 +341,7 @@ export function ConfirmationTokenInfo(props: Props) {
           <Tooltip
             text={
               isAddressCopied
-                ? getLocale('braveWalletButtonCopied')
+                ? getLocale(S.BRAVE_WALLET_BUTTON_COPIED)
                 : displayAddress
             }
           >
@@ -373,7 +378,7 @@ export function ConfirmationTokenInfo(props: Props) {
             textColor='success'
             textAlign='left'
           >
-            {getLocale('braveWalletOnNetwork').replace(
+            {getLocale(S.BRAVE_WALLET_ON_NETWORK).replace(
               '$1',
               network?.chainName ?? '',
             )}

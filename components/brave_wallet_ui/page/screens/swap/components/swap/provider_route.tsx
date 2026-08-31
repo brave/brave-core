@@ -43,7 +43,7 @@ export const ProviderRoute = (props: Props) => {
   const { result: stepsLocale } = usePromise(
     async () =>
       PluralStringProxyImpl.getInstance().getPluralString(
-        'braveWalletExchangeNamePlusSteps',
+        S.BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS,
         sourcesLength,
       ),
     [sourcesLength],

@@ -59,7 +59,7 @@ export const AdvancedTransactionSettings = (props: Props) => {
   return (
     <Panel
       navAction={onCancel}
-      title={getLocale('braveWalletAdvancedTransactionSettings')}
+      title={getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
     >
       <StyledWrapper>
         <FormColumn>
@@ -67,11 +67,11 @@ export const AdvancedTransactionSettings = (props: Props) => {
             textColor='secondary'
             variant='default.regular'
           >
-            {getLocale('braveWalletEditNonce')}
+            {getLocale(S.BRAVE_WALLET_EDIT_NONCE)}
           </InputLabel>
           <Input
             placeholder={getLocale(
-              'braveWalletAdvancedTransactionSettingsPlaceholder',
+              S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS_PLACEHOLDER,
             )}
             type='number'
             value={customNonce}
@@ -81,19 +81,19 @@ export const AdvancedTransactionSettings = (props: Props) => {
             textColor='tertiary'
             variant='small.regular'
           >
-            {getLocale('braveWalletEditGasZeroGasPriceWarning')}
+            {getLocale(S.BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING)}
           </InfoText>
         </FormColumn>
         <ButtonRow>
           <NavButton
             buttonType='secondary'
             needsTopMargin={true}
-            text={getLocale('braveWalletButtonCancel')}
+            text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
             onSubmit={onCancel}
           />
           <NavButton
             buttonType='primary'
-            text={getLocale('braveWalletAccountSettingsSave')}
+            text={getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE)}
             onSubmit={onSave}
           />
         </ButtonRow>

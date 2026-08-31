@@ -66,13 +66,13 @@ export const EmptyTokenListState = (props: Props) => {
         textSize='16px'
         isBold={true}
       >
-        {getLocale('braveWalletNoAvailableAssets')}
+        {getLocale(S.BRAVE_WALLET_NO_AVAILABLE_ASSETS)}
       </Title>
       <Description
         textSize='14px'
         isBold={false}
       >
-        {getLocale('braveWalletNoAvailableAssetsDescription')}
+        {getLocale(S.BRAVE_WALLET_NO_AVAILABLE_ASSETS_DESCRIPTION)}
       </Description>
       <VerticalSpace space='24px' />
       <Row marginBottom={4}>
@@ -81,7 +81,7 @@ export const EmptyTokenListState = (props: Props) => {
             kind='outline'
             onClick={onBuy}
           >
-            {getLocale('braveWalletBuyCryptoButton')}
+            {getLocale(S.BRAVE_WALLET_BUY_CRYPTO_BUTTON)}
           </Button>
         </ButtonWrapper>
         <HorizontalSpace space='12px' />
@@ -90,7 +90,7 @@ export const EmptyTokenListState = (props: Props) => {
             kind='outline'
             onClick={onDeposit}
           >
-            {getLocale('braveWalletDepositCryptoButton')}
+            {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
           </Button>
         </ButtonWrapper>
       </Row>
@@ -98,13 +98,13 @@ export const EmptyTokenListState = (props: Props) => {
         textSize='12px'
         isBold={false}
       >
-        {getLocale('braveWalletWelcomeDividerText')}
+        {getLocale(S.BRAVE_WALLET_WELCOME_DIVIDER_TEXT)}
       </Description>
       <Button
         kind='plain'
         onClick={() => history.push(WalletRoutes.AddAssetModal)}
       >
-        {getLocale('braveWalletWatchlistAddCustomAsset')}
+        {getLocale(S.BRAVE_WALLET_WATCHLIST_ADD_CUSTOM_ASSET)}
       </Button>
     </StyledWrapper>
   )

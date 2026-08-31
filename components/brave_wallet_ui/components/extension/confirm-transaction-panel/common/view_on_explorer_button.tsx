@@ -42,7 +42,7 @@ export function InlineViewOnBlockExplorerIconButton({
 
   return (
     <InlineAddressButton
-      title={getLocale('braveWalletTransactionExplorer')}
+      title={getLocale(S.BRAVE_WALLET_TRANSACTION_EXPLORER)}
       onClick={onClickViewOnBlockExplorer(urlType, address, id)}
     >
       <LaunchIcon />

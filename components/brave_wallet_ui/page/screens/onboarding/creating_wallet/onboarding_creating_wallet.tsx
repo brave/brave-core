@@ -33,7 +33,7 @@ export const OnboardingCreatingWallet = () => {
       >
         <LoadingIcon />
         <CreatingWalletText>
-          {getLocale('braveWalletCreatingWallet')}
+          {getLocale(S.BRAVE_WALLET_CREATING_WALLET)}
         </CreatingWalletText>
       </Column>
     </OnboardingContentLayout>

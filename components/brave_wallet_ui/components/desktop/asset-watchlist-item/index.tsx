@@ -94,7 +94,7 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
               variant='small.regular'
               textAlign='left'
             >
-              {getLocale('braveWalletPortfolioAssetNetworkDescription')
+              {getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
                 .replace('$1', token.symbol)
                 .replace('$2', tokensNetwork?.chainName ?? '')}
             </Text>

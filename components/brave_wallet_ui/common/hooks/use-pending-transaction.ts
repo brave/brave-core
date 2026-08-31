@@ -598,13 +598,20 @@ export const usePendingTransactions = () => {
   const transactionTitle = React.useMemo(
     (): string =>
       isShieldingFunds
-        ? getLocale('braveWalletShielding')
-        : isSolanaDappTransaction
-          ? getLocale('braveWalletApproveTransaction')
-          : transactionDetails?.isSwap
-            ? getLocale('braveWalletSwap')
-            : getLocale('braveWalletSend'),
-    [isShieldingFunds, isSolanaDappTransaction, transactionDetails?.isSwap],
+        ? getLocale(S.BRAVE_WALLET_SHIELDING)
+        : isUnshieldingFunds
+          ? getLocale(S.BRAVE_WALLET_UNSHIELDING)
+          : isSolanaDappTransaction
+            ? getLocale(S.BRAVE_WALLET_APPROVE_TRANSACTION)
+            : transactionDetails?.isSwap
+              ? getLocale(S.BRAVE_WALLET_SWAP)
+              : getLocale(S.BRAVE_WALLET_SEND),
+    [
+      isShieldingFunds,
+      isUnshieldingFunds,
+      isSolanaDappTransaction,
+      transactionDetails?.isSwap,
+    ],
   )
 
   const isLoadingGasFee = React.useMemo(() => {

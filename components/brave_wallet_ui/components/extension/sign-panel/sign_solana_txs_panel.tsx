@@ -141,7 +141,7 @@ export const SignSolanaTxsPanel = ({
         textColor='primary'
         variant='large.semibold'
       >
-        {getLocale('braveWalletSignTransactionTitle')}
+        {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_TITLE)}
       </PanelTitle>
       {signStep === SignDataSteps.SignRisk && (
         <WarningBox warningType='danger'>
@@ -151,17 +151,17 @@ export const SignSolanaTxsPanel = ({
               textColor='error'
               variant='small.semibold'
             >
-              {getLocale('braveWalletSignWarningTitle')}
+              {getLocale(S.BRAVE_WALLET_SIGN_WARNING_TITLE)}
             </Text>
           </WarningTitleRow>
           <WarningText
             textColor='error'
             variant='small.regular'
           >
-            {getLocale('braveWalletSignWarning')}
+            {getLocale(S.BRAVE_WALLET_SIGN_WARNING)}
           </WarningText>
           <LearnMoreButton onClick={onClickLearnMore}>
-            {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON)}
           </LearnMoreButton>
         </WarningBox>
       )}
@@ -170,7 +170,7 @@ export const SignSolanaTxsPanel = ({
           <TabRow>
             <PanelTab
               isSelected={true}
-              text={getLocale('braveWalletDetails')}
+              text={getLocale(S.BRAVE_WALLET_DETAILS)}
             />
           </TabRow>
           <MessageBox>
@@ -196,7 +196,7 @@ export const SignSolanaTxsPanel = ({
       <SignPanelButtonRow>
         <NavButton
           buttonType='secondary'
-          text={getLocale('braveWalletButtonCancel')}
+          text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
           onSubmit={onCancelSign}
           disabled={isSigningDisabled}
         />
@@ -204,8 +204,8 @@ export const SignSolanaTxsPanel = ({
           buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
           text={
             signStep === SignDataSteps.SignData
-              ? getLocale('braveWalletSignTransactionButton')
-              : getLocale('braveWalletButtonContinue')
+              ? getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_BUTTON)
+              : getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)
           }
           onSubmit={
             signStep === SignDataSteps.SignRisk ? onAcceptSigningRisks : onSign

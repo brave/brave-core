@@ -185,7 +185,7 @@ export const SelectAccount = (props: Props) => {
           textSize='22px'
           textColor='primary'
         >
-          {getLocale('braveWalletChooseAccount')}
+          {getLocale(S.BRAVE_WALLET_CHOOSE_ACCOUNT)}
         </Text>
       </Column>
       <ScrollableColumn
@@ -268,7 +268,7 @@ export const SelectAccount = (props: Props) => {
           size='large'
           isDisabled={!selectedAccount}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </Button>
       </Row>
     </Column>

@@ -37,10 +37,10 @@ export const PasswordStrengthBar: React.FC<Props> = ({ criteria }) => {
       />
       <BarMessage criteria={criteria}>
         {strongPasswordCrtieriaPercentComplete === 100
-          ? getLocale('braveWalletPasswordIsStrong')
+          ? getLocale(S.BRAVE_WALLET_PASSWORD_IS_STRONG)
           : strongPasswordCrtieriaPercentComplete < 50
-            ? getLocale('braveWalletPasswordIsWeak')
-            : getLocale('braveWalletPasswordIsMediumStrength')}
+            ? getLocale(S.BRAVE_WALLET_PASSWORD_IS_WEAK)
+            : getLocale(S.BRAVE_WALLET_PASSWORD_IS_MEDIUM_STRENGTH)}
       </BarMessage>
     </BarAndMessageContainer>
   )

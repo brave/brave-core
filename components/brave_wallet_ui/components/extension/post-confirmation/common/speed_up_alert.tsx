@@ -52,14 +52,14 @@ export const SpeedUpAlert = (props: Props) => {
 
   return (
     <Alert type='info'>
-      {getLocale('braveWalletTransactionTakingLongTime')}
+      {getLocale(S.BRAVE_WALLET_TRANSACTION_TAKING_LONG_TIME)}
       <div slot='content-after'>
         <Button
           onClick={onClickSpeedUpTransaction}
           kind='outline'
           size='tiny'
         >
-          {getLocale('braveWalletTransactionSpeedup')}
+          {getLocale(S.BRAVE_WALLET_TRANSACTION_SPEEDUP)}
         </Button>
       </div>
     </Alert>

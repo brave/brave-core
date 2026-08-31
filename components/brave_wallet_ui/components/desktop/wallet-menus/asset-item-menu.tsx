@@ -239,53 +239,53 @@ export const AssetItemMenu = (props: Props) => {
         {foundMeldBuyToken && (
           <leo-menu-item onClick={onClickBuy}>
             <Icon name='coins-alt1' />
-            {getLocale('braveWalletBuy')}
+            {getLocale(S.BRAVE_WALLET_BUY)}
           </leo-menu-item>
         )}
         {!isAssetsBalanceZero && (
           <leo-menu-item onClick={onClickSend}>
             <Icon name='send' />
-            {getLocale('braveWalletSend')}
+            {getLocale(S.BRAVE_WALLET_SEND)}
           </leo-menu-item>
         )}
         {isSwapSupported && (
           <leo-menu-item onClick={() => onClickSwapOrBridge('swap')}>
             <Icon name='currency-exchange' />
-            {getLocale('braveWalletSwap')}
+            {getLocale(S.BRAVE_WALLET_SWAP)}
           </leo-menu-item>
         )}
         {!isIOS && isBridgeSupported && (
           <leo-menu-item onClick={() => onClickSwapOrBridge('bridge')}>
             <Icon name='web3-bridge' />
-            {getLocale('braveWalletBridge')}
+            {getLocale(S.BRAVE_WALLET_BRIDGE)}
           </leo-menu-item>
         )}
         <leo-menu-item onClick={onClickDeposit}>
           <Icon name='money-bag-coins' />
-          {getLocale('braveWalletAccountsDeposit')}
+          {getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
         </leo-menu-item>
         {isSellSupported && (
           <leo-menu-item onClick={onClickSell}>
             <Icon name='usd-circle' />
-            {getLocale('braveWalletSell')}
+            {getLocale(S.BRAVE_WALLET_SELL)}
           </leo-menu-item>
         )}
         {onClickEditToken && (
           <leo-menu-item onClick={onClickEditToken}>
             <Icon name='edit-pencil' />
-            {getLocale('braveWalletAllowSpendEditButton')}
+            {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON)}
           </leo-menu-item>
         )}
         <leo-menu-item onClick={onClickHide}>
           <Icon name='eye-off' />
-          {getLocale('braveWalletConfirmHidingToken')}
+          {getLocale(S.BRAVE_WALLET_CONFIRM_HIDING_TOKEN)}
         </leo-menu-item>
         {canShieldFunds && (
           <>
             <hr />
             <leo-menu-item onClick={onClickShieldFunds}>
               <Icon name='shield-done' />
-              {getLocale('braveWalletShieldFunds')}
+              {getLocale(S.BRAVE_WALLET_SHIELD_FUNDS)}
             </leo-menu-item>
           </>
         )}
@@ -294,7 +294,7 @@ export const AssetItemMenu = (props: Props) => {
             <hr />
             <leo-menu-item onClick={onClickUnshieldFunds}>
               <Icon name='shield-disable' />
-              {getLocale('braveWalletUnshieldFunds')}
+              {getLocale(S.BRAVE_WALLET_UNSHIELD_FUNDS)}
             </leo-menu-item>
           </>
         )}

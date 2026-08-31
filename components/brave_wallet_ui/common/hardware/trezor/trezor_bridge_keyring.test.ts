@@ -326,7 +326,7 @@ test('Unlock device fail', () => {
   expect(hardwareKeyring.isUnlocked()).toStrictEqual(false)
   return expect(hardwareKeyring.unlock()).resolves.toStrictEqual({
     success: false,
-    error: getLocale('braveWalletUnlockError'),
+    error: getLocale(S.BRAVE_WALLET_UNLOCK_ERROR),
     code: '',
   })
 })
@@ -355,13 +355,13 @@ test('Extract accounts from locked device', () => {
     hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme),
   ).resolves.toStrictEqual({
     success: false,
-    error: getLocale('braveWalletUnlockError'),
+    error: getLocale(S.BRAVE_WALLET_UNLOCK_ERROR),
     code: '',
   })
 })
 
 test('Extracting accounts from unlocked device fail to access bridge', () => {
-  const expectedError = getLocale('braveWalletCreateBridgeError')
+  const expectedError = getLocale(S.BRAVE_WALLET_HARDWARE_CREATE_BRIDGE_ERROR)
   const expectedCode = 'test_code'
   const response = {
     success: false,
@@ -726,7 +726,7 @@ test('Sign typed message api not supported', () => {
       'primaryType',
     ),
   ).resolves.toStrictEqual({
-    error: getLocale('braveWalletTrezorSignTypedDataError'),
+    error: getLocale(S.BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR),
     success: signMessagePayload.success,
     code: undefined,
   })

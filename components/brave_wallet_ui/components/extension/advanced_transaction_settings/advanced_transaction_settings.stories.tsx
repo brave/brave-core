@@ -24,7 +24,7 @@ export const _AdvancedTransactionSettings = {
     return (
       <BottomSheet
         isOpen={true}
-        title={getLocale('braveWalletAdvancedTransactionSettings')}
+        title={getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
         onClose={() => alert('Close Clicked')}
       >
         <AdvancedTransactionSettings

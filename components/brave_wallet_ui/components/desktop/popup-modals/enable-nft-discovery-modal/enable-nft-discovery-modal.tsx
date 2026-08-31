@@ -36,7 +36,7 @@ const LEARN_MORE_LINK =
   'https://github.com/brave/brave-browser/wiki/NFT-Discovery'
 
 const enableNftAutoDiscovery = formatLocale(
-  'braveWalletEnableNftAutoDiscoveryModalDescription',
+  S.BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION,
   {
     $1: (content) => <Underline>{content}</Underline>,
     $2: (content) => (
@@ -70,7 +70,7 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
         padding='32px 40px'
       >
         <Header>
-          {getLocale('braveWalletEnableNftAutoDiscoveryModalHeader')}
+          {getLocale(S.BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER)}
         </Header>
         <Description>{enableNftAutoDiscovery}</Description>
         <ButtonRow>
@@ -78,10 +78,10 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
             onClick={onCancel}
             kind='plain'
           >
-            {getLocale('braveWalletEnableNftAutoDiscoveryModalCancel')}
+            {getLocale(S.BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CANCEL)}
           </Button>
           <Button onClick={onConfirm}>
-            {getLocale('braveWalletEnableNftAutoDiscoveryModalConfirm')}
+            {getLocale(S.BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CONFIRM)}
           </Button>
         </ButtonRow>
       </Column>

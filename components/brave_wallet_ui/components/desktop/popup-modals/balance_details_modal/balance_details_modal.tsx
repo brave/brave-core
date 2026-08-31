@@ -43,7 +43,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
 
     return (
       <PopupModal
-        title={getLocale('braveWalletDetails')}
+        title={getLocale(S.BRAVE_WALLET_DETAILS)}
         onClose={onClose}
         width='560px'
         ref={forwardedRef}
@@ -63,14 +63,14 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 gap='4px'
               >
                 <SectionText textSize='14px'>
-                  {getLocale('braveWalletAvailable')}:
+                  {getLocale(S.BRAVE_WALLET_AVAILABLE)}:
                 </SectionText>
                 <Tooltip
                   mode='default'
                   placement='top'
                 >
                   <TooltipContent slot='content'>
-                    {getLocale('braveWalletAvailableBalanceDescription')}
+                    {getLocale(S.BRAVE_WALLET_AVAILABLE_BALANCE_DESCRIPTION)}
                   </TooltipContent>
                   <InfoIcon />
                 </Tooltip>
@@ -99,14 +99,14 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 gap='4px'
               >
                 <SectionText textSize='14px'>
-                  {getLocale('braveWalletPending')}:
+                  {getLocale(S.BRAVE_WALLET_PENDING)}:
                 </SectionText>
                 <Tooltip
                   mode='default'
                   placement='top'
                 >
                   <TooltipContent slot='content'>
-                    {getLocale('braveWalletPendingBalanceDescription')}
+                    {getLocale(S.BRAVE_WALLET_PENDING_BALANCE_DESCRIPTION)}
                   </TooltipContent>
                   <InfoIcon />
                 </Tooltip>
@@ -138,14 +138,14 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                   textSize='14px'
                   isBold={true}
                 >
-                  {getLocale('braveWalletConfirmTransactionTotal')}:
+                  {getLocale(S.BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL)}:
                 </SectionText>
                 <Tooltip
                   mode='default'
                   placement='top'
                 >
                   <TooltipContent slot='content'>
-                    {getLocale('braveWalletTotalBalanceDescription')}
+                    {getLocale(S.BRAVE_WALLET_TOTAL_BALANCE_DESCRIPTION)}
                   </TooltipContent>
                   <InfoIcon />
                 </Tooltip>

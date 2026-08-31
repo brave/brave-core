@@ -84,7 +84,7 @@ export const _PendingTransactionDetails = {
     return (
       <BottomSheet
         isOpen={true}
-        title={getLocale('braveWalletDetails')}
+        title={getLocale(S.BRAVE_WALLET_DETAILS)}
         onClose={() => alert('Close Clicked')}
       >
         <PendingTransactionDetails

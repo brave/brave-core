@@ -164,7 +164,7 @@ export const PortfolioAssetItem = ({
 
     if (tokensNetwork && !isPanel) {
       return token.symbol !== ''
-        ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+        ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
             .replace('$1', token.symbol)
             .replace('$2', tokensNetwork.chainName ?? '')
         : tokensNetwork.chainName
@@ -349,7 +349,7 @@ export const PortfolioAssetItem = ({
                   isBold={false}
                   textAlign='left'
                 >
-                  {getLocale('braveWalletUnavailableBalances')}
+                  {getLocale(S.BRAVE_WALLET_UNAVAILABLE_BALANCES)}
                 </InfoText>
               </Row>
               <div>
@@ -358,7 +358,7 @@ export const PortfolioAssetItem = ({
                   size='tiny'
                   onClick={() => setShowBalanceDetailsModal(true)}
                 >
-                  {getLocale('braveWalletAllowSpendDetailsButton')}
+                  {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_DETAILS_BUTTON)}
                 </LeoButton>
               </div>
             </InfoBar>

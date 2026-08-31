@@ -39,7 +39,7 @@ export const RewardsMenu = () => {
   } = useGetRewardsInfoQuery()
 
   // Computed
-  const providerButtonText = getLocale('braveWalletViewOn').replace(
+  const providerButtonText = getLocale(S.BRAVE_WALLET_VIEW_ON).replace(
     '$1',
     providerName,
   )
@@ -79,7 +79,7 @@ export const RewardsMenu = () => {
       </leo-menu-item>
       <leo-menu-item onClick={onClickRewardsSettings}>
         <Icon name='product-bat-outline' />
-        {getLocale('braveWalletRewardsSettings')}
+        {getLocale(S.BRAVE_WALLET_REWARDS_SETTINGS)}
       </leo-menu-item>
     </ButtonMenu>
   )

@@ -98,23 +98,23 @@ export const TransactionFailedOrCanceled = (props: Props) => {
   // Memos
   const sendSwapOrBridgeLocale = React.useMemo(() => {
     if (isBridge) {
-      return 'braveWalletBridge'
+      return S.BRAVE_WALLET_BRIDGE
     }
     if (isSwap) {
-      return 'braveWalletSwap'
+      return S.BRAVE_WALLET_SWAP
     }
-    return 'braveWalletSend'
+    return S.BRAVE_WALLET_SEND
   }, [isBridge, isSwap])
 
   // Title for swap failures/refunds
   const failureTitle = React.useMemo(() => {
     if (isSolanaATACreation) {
-      return getLocale('braveWalletTransactionFailedTitle')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_FAILED_TITLE)
     }
     if (isSwapRefunded) {
-      return getLocale('braveWalletSwapRefunded')
+      return getLocale(S.BRAVE_WALLET_SWAP_REFUNDED)
     }
-    return getLocale('braveWalletUnableToSendSwapOrBridge').replace(
+    return getLocale(S.BRAVE_WALLET_UNABLE_TO_SEND_SWAP_OR_BRIDGE).replace(
       '$1',
       getLocale(sendSwapOrBridgeLocale).toLocaleLowerCase(),
     )
@@ -175,10 +175,10 @@ export const TransactionFailedOrCanceled = (props: Props) => {
           kind='outline'
           onClick={onClose}
         >
-          {getLocale('braveWalletButtonClose')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CLOSE)}
         </LeoButton>
         <LeoButton onClick={onClickRetryTransaction}>
-          {getLocale('braveWalletButtonRetry')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_RETRY)}
         </LeoButton>
       </Row>
     </Wrapper>

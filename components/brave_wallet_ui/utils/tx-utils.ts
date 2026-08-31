@@ -190,21 +190,21 @@ export const getLocaleKeyForTxStatus = (
 ) => {
   switch (status) {
     case BraveWallet.TransactionStatus.Unapproved:
-      return 'braveWalletTransactionStatusUnapproved'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_UNAPPROVED
     case BraveWallet.TransactionStatus.Approved:
-      return 'braveWalletTransactionStatusApproved'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_APPROVED
     case BraveWallet.TransactionStatus.Rejected:
-      return 'braveWalletTransactionStatusRejected'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_REJECTED
     case BraveWallet.TransactionStatus.Submitted:
-      return 'braveWalletTransactionStatusSubmitted'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED
     case BraveWallet.TransactionStatus.Confirmed:
-      return 'braveWalletTransactionStatusConfirmed'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED
     case BraveWallet.TransactionStatus.Error:
-      return 'braveWalletTransactionStatusError'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_ERROR
     case BraveWallet.TransactionStatus.Dropped:
-      return 'braveWalletTransactionStatusDropped'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_DROPPED
     case BraveWallet.TransactionStatus.Signed:
-      return 'braveWalletTransactionStatusSigned'
+      return S.BRAVE_WALLET_TRANSACTION_STATUS_SIGNED
     default:
       return ''
   }
@@ -1504,7 +1504,7 @@ export const getTransactionIntent = ({
   // ERC20 Approve
   if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     return (
-      toProperCase(getLocale('braveWalletApprovalTransactionIntent'))
+      toProperCase(getLocale(S.BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT))
       + ' '
       + (token?.symbol ?? '')
     )
@@ -1512,7 +1512,7 @@ export const getTransactionIntent = ({
 
   // ERC20 Transfer
   if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
-    return getLocale('braveWalletTransactionIntentSend').replace(
+    return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
       '$1',
       new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol),
     )
@@ -1523,7 +1523,7 @@ export const getTransactionIntent = ({
     tx.txType === BraveWallet.TransactionType.ERC721TransferFrom
     || tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
   ) {
-    return getLocale('braveWalletTransactionIntentSend').replace(
+    return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
       '$1',
       `${token?.symbol ?? ''} ${erc721TokenId}`,
     )
@@ -1532,13 +1532,13 @@ export const getTransactionIntent = ({
   // Solana Dapps
   if (isSolanaDappTransaction(tx)) {
     return tx.txType === BraveWallet.TransactionType.SolanaSwap
-      ? getLocale('braveWalletSwap')
-      : getLocale('braveWalletTransactionIntentDappInteraction')
+      ? getLocale(S.BRAVE_WALLET_SWAP)
+      : getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_DAPP_INTERACTION)
   }
 
   // SPL
   if (isSolanaSplTransaction(tx)) {
-    return getLocale('braveWalletTransactionIntentSend').replace(
+    return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
       '$1',
       new Amount(normalizedTransferredValue).formatAsAsset(6, token?.symbol),
     )
@@ -1551,7 +1551,7 @@ export const getTransactionIntent = ({
     && sourceToken
     && destinationToken
   ) {
-    return getLocale('braveWalletTransactionIntentSwap')
+    return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SWAP)
       .replace(
         '$1',
         sourceAmount
@@ -1575,7 +1575,7 @@ export const getTransactionIntent = ({
     && sourceToken
     && destinationToken
   ) {
-    return getLocale('braveWalletTransactionIntentBridge')
+    return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_BRIDGE)
       .replace(
         '$1',
         sourceAmount
@@ -1593,7 +1593,7 @@ export const getTransactionIntent = ({
   }
 
   // default / other
-  return getLocale('braveWalletTransactionIntentSend').replace(
+  return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
     '$1',
     new Amount(normalizedTransferredValue).formatAsAsset(
       6,
@@ -1903,7 +1903,7 @@ export const parseTransactionWithoutPrices = ({
   const erc721TokenId = getTransactionErc721TokenId(tx)
 
   const missingGasLimitError = isMissingGasLimit
-    ? getLocale('braveWalletMissingGasLimitError')
+    ? getLocale(S.BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR)
     : undefined
 
   const approvalTargetLabel = getAddressLabel(approvalTarget, accounts)
@@ -1914,7 +1914,7 @@ export const parseTransactionWithoutPrices = ({
     tx,
     tokensList,
   )
-    ? getLocale('braveWalletContractAddressError')
+    ? getLocale(S.BRAVE_WALLET_CONTRACT_ADDRESS_ERROR)
     : undefined
 
   const decimals = getTransactionDecimals({
@@ -1931,7 +1931,7 @@ export const parseTransactionWithoutPrices = ({
     tx,
     transactionAccount,
   )
-    ? getLocale('braveWalletSameAddressError')
+    ? getLocale(S.BRAVE_WALLET_SAME_ADDRESS_ERROR)
     : undefined
 
   const symbol = getTransactionTokenSymbol({
@@ -2176,61 +2176,70 @@ export function hasSystemProgramAssignInstruction(
 export function getTransactionTypeName(txType: BraveWallet.TransactionType) {
   switch (txType) {
     case BraveWallet.TransactionType.ERC1155SafeTransferFrom:
-      return getLocale('braveWalletTransactionTypeNameSafeTransferFrom')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM)
 
     case BraveWallet.TransactionType.ERC20Approve:
-      return getLocale('braveWalletTransactionTypeNameErc20Approve')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_ERC_20_APPROVE)
 
     case BraveWallet.TransactionType.ERC20Transfer:
-      return getLocale('braveWalletTransactionTypeNameTokenTransfer')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER)
 
     case BraveWallet.TransactionType.ERC721SafeTransferFrom:
-      return getLocale('braveWalletTransactionTypeNameSafeTransferFrom')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM)
 
     case BraveWallet.TransactionType.ERC721TransferFrom:
-      return getLocale('braveWalletTransactionTypeNameNftTransfer')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_NFT_TRANSFER)
 
     case BraveWallet.TransactionType.ETHFilForwarderTransfer:
-      return getLocale('braveWalletTransactionTypeNameForwardFil')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_FORWARD_FIL)
 
     case BraveWallet.TransactionType.ETHSend:
-      return getLocale('braveWalletTransactionIntentSend').replace('$1', 'ETH')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
+        '$1',
+        'ETH',
+      )
 
     case BraveWallet.TransactionType.ETHSwap:
-      return getLocale('braveWalletSwap')
+      return getLocale(S.BRAVE_WALLET_SWAP)
 
     case BraveWallet.TransactionType.Other:
-      return getLocale('braveWalletTransactionTypeNameOther')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER)
 
     case BraveWallet.TransactionType.SolanaCompressedNftTransfer:
-      return getLocale('braveWalletTransactionTypeNameCompressedNftTransfer')
+      return getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_COMPRESSED_NFT_TRANSFER,
+      )
 
     case BraveWallet.TransactionType.SolanaDappSignAndSendTransaction:
       return getLocale(
-        'braveWalletTransactionTypeNameSignAndSendDappTransaction',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_AND_SEND_DAPP_TRANSACTION,
       )
 
     case BraveWallet.TransactionType.SolanaDappSignTransaction:
-      return getLocale('braveWalletTransactionTypeNameSignDappTransaction')
+      return getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_DAPP_TRANSACTION,
+      )
 
     case BraveWallet.TransactionType.SolanaSPLTokenTransfer:
-      return getLocale('braveWalletTransactionTypeNameTokenTransfer')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER)
 
     case BraveWallet.TransactionType
       .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation:
       return getLocale(
-        'braveWalletTransactionTypeNameSplTokenTransfer'
-          + 'WithAssociatedTokenAccountCreation',
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
       )
 
     case BraveWallet.TransactionType.SolanaSwap:
-      return getLocale('braveWalletSwap')
+      return getLocale(S.BRAVE_WALLET_SWAP)
 
     case BraveWallet.TransactionType.SolanaSystemTransfer:
-      return getLocale('braveWalletTransactionIntentSend').replace('$1', 'SOL')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
+        '$1',
+        'SOL',
+      )
 
     default:
-      return getLocale('braveWalletTransactionTypeNameOther')
+      return getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER)
   }
 }
 

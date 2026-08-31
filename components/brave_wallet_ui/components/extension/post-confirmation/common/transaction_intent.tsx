@@ -208,26 +208,26 @@ export const TransactionIntent = (props: Props) => {
   }, [transactionsToken, normalizedTransferredValue])
 
   const formattedApprovalAmount = isTxApprovalUnlimited
-    ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${
+    ? `${getLocale(S.BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED)} ${
         transactionsToken?.symbol ?? ''
       }`
     : formattedSendAmount
 
   const sendSwapOrBridgeLocale = React.useMemo(() => {
     if (isBridge) {
-      return getLocale('braveWalletBridge').toLocaleLowerCase()
+      return getLocale(S.BRAVE_WALLET_BRIDGE).toLocaleLowerCase()
     }
     if (isSwap) {
-      return getLocale('braveWalletSwap').toLocaleLowerCase()
+      return getLocale(S.BRAVE_WALLET_SWAP).toLocaleLowerCase()
     }
-    return getLocale('braveWalletSend').toLocaleLowerCase()
+    return getLocale(S.BRAVE_WALLET_SEND).toLocaleLowerCase()
   }, [isBridge, isSwap])
 
   const swappingOrBridgingLocale = React.useMemo(() => {
     if (isBridge) {
-      return getLocale('braveWalletBridging')
+      return getLocale(S.BRAVE_WALLET_BRIDGING)
     }
-    return getLocale('braveWalletSwapping')
+    return getLocale(S.BRAVE_WALLET_SWAPPING)
   }, [isBridge])
 
   const firstDuringValue = React.useMemo(() => {
@@ -289,51 +289,51 @@ export const TransactionIntent = (props: Props) => {
 
   const descriptionLocale = React.useMemo(() => {
     if (isSolanaATACreation && transactionFailed) {
-      return 'braveWalletFailedToCreateAssociatedTokenAccount'
+      return S.BRAVE_WALLET_FAILED_TO_CREATE_ASSOCIATED_TOKEN_ACCOUNT
     }
     if (isSolanaATACreation && transactionConfirmed) {
-      return 'braveWalletAssociatedTokenAccountCreated'
+      return S.BRAVE_WALLET_ASSOCIATED_TOKEN_ACCOUNT_CREATED
     }
     if (isSolanaATACreation) {
-      return 'braveWalletCreatingAssociatedTokenAccount'
+      return S.BRAVE_WALLET_CREATING_ASSOCIATED_TOKEN_ACCOUNT
     }
     if (transactionFailed && isSOLSwapOrBridge) {
-      return 'braveWalletErrorAttemptingToTransactOnNetwork'
+      return S.BRAVE_WALLET_ERROR_ATTEMPTING_TO_TRANSACT_ON_NETWORK
     }
     if (transactionFailed) {
-      return 'braveWalletErrorAttemptingToTransact'
+      return S.BRAVE_WALLET_ERROR_ATTEMPTING_TO_TRANSACT
     }
     if (isSOLSwapOrBridge) {
-      return 'braveWalletSwappingOrBridgingOnNetwork'
+      return S.BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK
     }
     if (isSwapOrBridge && transactionConfirmed) {
-      return 'braveWalletAmountAddedToAccount'
+      return S.BRAVE_WALLET_AMOUNT_ADDED_TO_ACCOUNT
     }
     if (isBridge) {
-      return 'braveWalletBridgingAmountToNetwork'
+      return S.BRAVE_WALLET_BRIDGING_AMOUNT_TO_NETWORK
     }
     if (isSwap) {
-      return 'braveWalletSwappingAmountToAmountOnNetwork'
+      return S.BRAVE_WALLET_SWAPPING_AMOUNT_TO_ACCOUNT_ON_NETWORK
     }
     if (isERC20Approval) {
-      return 'braveWalletApprovingAmountOnExchange'
+      return S.BRAVE_WALLET_APPROVING_AMOUNT_ON_EXCHANGE
     }
     if (transactionConfirmed && isShieldingFunds) {
-      return 'braveWalletAmountHasBeenShielded'
+      return S.BRAVE_WALLET_AMOUNT_HAS_BEEN_SHIELDED
     }
     if (transactionConfirmed && isUnshieldingFunds) {
-      return 'braveWalletAmountHasBeenUnshielded'
+      return S.BRAVE_WALLET_AMOUNT_HAS_BEEN_UNSHIELDED
     }
     if (isShieldingFunds) {
-      return 'braveWalletShieldingAmount'
+      return S.BRAVE_WALLET_SHIELDING_AMOUNT
     }
     if (isUnshieldingFunds) {
-      return 'braveWalletUnshieldingAmount'
+      return S.BRAVE_WALLET_UNSHIELDING_AMOUNT
     }
     if (transactionConfirmed) {
-      return 'braveWalletAmountSentToAccount'
+      return S.BRAVE_WALLET_AMOUNT_SENT_TO_ACCOUNT
     }
-    return 'braveWalletSendingAmountToAccount'
+    return S.BRAVE_WALLET_SENDING_AMOUNT_TO_ACCOUNT
   }, [
     transactionFailed,
     isSwapOrBridge,
@@ -363,12 +363,12 @@ export const TransactionIntent = (props: Props) => {
 
     // Success: "The amount of 100 USDC has been added to your account 0x123 on Polygon"
     if (swapSuccess) {
-      return getLocale('braveWalletAmountAddedToAccount')
+      return getLocale(S.BRAVE_WALLET_AMOUNT_ADDED_TO_ACCOUNT)
         .replace('$1', formattedDestinationAmount)
         .replace(
           '$2',
           `${recipientLabel} ${getLocale(
-            'braveWalletSwappingOrBridgingOnNetwork',
+            S.BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK,
           )
             .replace('$1', '')
             .replace('$2', destNetworkName ?? '')
@@ -379,19 +379,19 @@ export const TransactionIntent = (props: Props) => {
     // Non-terminal & Failed states share the same format, only the action word differs
     // Failed: "Swap/Bridge", Non-terminal: "Swapping/Bridging"
     const actionLocale = isBridge
-      ? getLocale(swapFailed ? 'braveWalletBridge' : 'braveWalletBridging')
-      : getLocale(swapFailed ? 'braveWalletSwap' : 'braveWalletSwapping')
+      ? getLocale(swapFailed ? S.BRAVE_WALLET_BRIDGE : S.BRAVE_WALLET_BRIDGING)
+      : getLocale(swapFailed ? S.BRAVE_WALLET_SWAP : S.BRAVE_WALLET_SWAPPING)
 
     if (isBridge) {
       // "{action} 0.5 ETH on Ethereum to USDC on Polygon"
       const sourceWithNetwork = `${formattedSourceAmount} ${getLocale(
-        'braveWalletSwappingOrBridgingOnNetwork',
+        S.BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK,
       )
         .replace('$1', '')
         .replace('$2', txNetwork?.chainName ?? '')
         .trim()}`
       const destWithNetwork = `${destinationToken?.symbol ?? ''} ${getLocale(
-        'braveWalletSwappingOrBridgingOnNetwork',
+        S.BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK,
       )
         .replace('$1', '')
         .replace('$2', bridgeToNetwork?.chainName ?? '')
@@ -400,7 +400,7 @@ export const TransactionIntent = (props: Props) => {
     }
 
     // "{action} 0.5 ETH to USDC on Ethereum"
-    const onNetwork = getLocale('braveWalletSwappingOrBridgingOnNetwork')
+    const onNetwork = getLocale(S.BRAVE_WALLET_SWAPPING_OR_BRIDGING_ON_NETWORK)
       .replace('$1', '')
       .replace('$2', txNetwork?.chainName ?? '')
       .trim()

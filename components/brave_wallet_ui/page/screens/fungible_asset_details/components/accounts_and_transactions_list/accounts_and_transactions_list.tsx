@@ -245,7 +245,7 @@ export const AccountsAndTransactionsList = ({
             textColor='primary'
             textSize='16px'
           >
-            {getLocale('braveWalletAccounts')}
+            {getLocale(S.BRAVE_WALLET_ACCOUNTS)}
           </Text>
           <div>
             <LoadingSkeleton
@@ -332,7 +332,7 @@ export const AccountsAndTransactionsList = ({
                       textColor='primary'
                       textSize='16px'
                     >
-                      {getLocale('braveWalletAccounts')}
+                      {getLocale(S.BRAVE_WALLET_ACCOUNTS)}
                     </Text>
                     {!isRewardsToken && (
                       <Row
@@ -416,7 +416,7 @@ export const AccountsAndTransactionsList = ({
                     textSize='16px'
                     isBold={true}
                   >
-                    {getLocale('braveWalletNoAccountsWithABalance')}
+                    {getLocale(S.BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE)}
                   </Text>
                   <VerticalSpacer space={10} />
                   <Text
@@ -424,7 +424,9 @@ export const AccountsAndTransactionsList = ({
                     textColor='tertiary'
                     isBold={false}
                   >
-                    {getLocale('braveWalletNoAccountsWithABalanceDescription')}
+                    {getLocale(
+                      S.BRAVE_WALLET_NO_ACCOUNTS_WITH_A_BALANCE_DESCRIPTION,
+                    )}
                   </Text>
                 </Column>
               )}
@@ -456,7 +458,7 @@ export const AccountsAndTransactionsList = ({
                     textSize='16px'
                     isBold={true}
                   >
-                    {getLocale('braveWalletNoTransactionsYet')}
+                    {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET)}
                   </Text>
                   <VerticalSpacer space={10} />
                   <Text
@@ -464,7 +466,7 @@ export const AccountsAndTransactionsList = ({
                     textColor='tertiary'
                     isBold={false}
                   >
-                    {getLocale('braveWalletNoTransactionsYetDescription')}
+                    {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION)}
                   </Text>
                 </Column>
               )}

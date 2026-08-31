@@ -299,7 +299,7 @@ export const useBuy = () => {
       && extractedCurrencyCode
     ) {
       setAmountError(
-        getLocale('braveWalletMinimumAmount').replace(
+        getLocale(S.BRAVE_WALLET_MINIMUM_AMOUNT).replace(
           '$1',
           formattedAmountWithCurrency,
         ),
@@ -312,7 +312,7 @@ export const useBuy = () => {
       && extractedCurrencyCode
     ) {
       setAmountError(
-        getLocale('braveWalletMaximumAmount').replace(
+        getLocale(S.BRAVE_WALLET_MAXIMUM_AMOUNT).replace(
           '$1',
           formattedAmountWithCurrency,
         ),

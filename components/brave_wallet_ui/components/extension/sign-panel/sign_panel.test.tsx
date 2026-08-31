@@ -109,20 +109,22 @@ describe('SignTypedDataPanel', () => {
 
       // Panel Title
       expect(
-        screen.getByText('braveWalletSignTransactionTitle'),
+        screen.getByText(S.BRAVE_WALLET_SIGN_TRANSACTION_TITLE),
       ).toBeInTheDocument()
 
       // Warning Title
       expect(
-        screen.getByText('braveWalletSignWarningTitle'),
+        screen.getByText(S.BRAVE_WALLET_SIGN_WARNING_TITLE),
       ).toBeInTheDocument()
 
       // Warning Text
-      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_SIGN_WARNING)).toBeInTheDocument()
 
       // Buttons
-      expect(screen.getByText('braveWalletButtonCancel')).toBeInTheDocument()
-      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_BUTTON_CANCEL)).toBeInTheDocument()
+      expect(
+        screen.getByText(S.BRAVE_WALLET_BUTTON_CONTINUE),
+      ).toBeInTheDocument()
     })
   })
 
@@ -143,10 +145,12 @@ describe('SignTypedDataPanel', () => {
       expect(container).toBeVisible()
 
       expect(
-        screen.getByText('braveWalletSignWarningTitle'),
+        screen.getByText(S.BRAVE_WALLET_SIGN_WARNING_TITLE),
       ).toBeInTheDocument()
-      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
-      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+      expect(screen.getByText(S.BRAVE_WALLET_SIGN_WARNING)).toBeInTheDocument()
+      expect(
+        screen.getByText(S.BRAVE_WALLET_BUTTON_CONTINUE),
+      ).toBeInTheDocument()
     })
   })
 
@@ -170,18 +174,18 @@ describe('SignTypedDataPanel', () => {
     })
     // Panel Title
     expect(
-      screen.getByText('braveWalletSignTransactionTitle'),
+      screen.getByText(S.BRAVE_WALLET_SIGN_TRANSACTION_TITLE),
     ).toBeInTheDocument()
 
     // Warning Title should not be present
     expect(
-      screen.queryByText('braveWalletSignWarningTitle'),
+      screen.queryByText(S.BRAVE_WALLET_SIGN_WARNING_TITLE),
     ).not.toBeInTheDocument()
 
     // Buttons
-    expect(screen.getByText('braveWalletButtonCancel')).toBeInTheDocument()
+    expect(screen.getByText(S.BRAVE_WALLET_BUTTON_CANCEL)).toBeInTheDocument()
     expect(
-      screen.getByText('braveWalletSignTransactionButton'),
+      screen.getByText(S.BRAVE_WALLET_SIGN_TRANSACTION_BUTTON),
     ).toBeInTheDocument()
   })
 })

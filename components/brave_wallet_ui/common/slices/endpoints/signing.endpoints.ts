@@ -167,7 +167,7 @@ export const signingEndpoints = ({
               false,
               arg.request.id,
               null,
-              getLocale('braveWalletHardwareAccountNotFound'),
+              getLocale(S.BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR),
             )
 
             const hasPendingRequests = await getHasPendingRequests()

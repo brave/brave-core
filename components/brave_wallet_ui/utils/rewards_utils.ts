@@ -23,8 +23,7 @@ export const getRewardsProviderName = (provider?: string) => {
     return ''
   }
 
-  const capitalized = provider.charAt(0).toUpperCase() + provider.slice(1)
-  const localeString = `braveWallet${capitalized}`
+  const localeString = `BRAVE_WALLET_${provider.toUpperCase()}`
   try {
     const foundLocale = getLocale(localeString)
     // If getLocale returns the string it was passed, that means
@@ -40,7 +39,7 @@ export const getRewardsAccountName = (provider?: string) => {
   if (!provider) {
     return ''
   }
-  return getLocale('braveWalletRewardsAccount').replace(
+  return getLocale(S.BRAVE_WALLET_REWARDS_ACCOUNT).replace(
     '$1',
     getRewardsProviderName(provider),
   )
@@ -52,7 +51,7 @@ export const getRewardsTokenDescription = (
   if (!provider) {
     return ''
   }
-  return getLocale('braveWalletBraveRewardsDescription').replace(
+  return getLocale(S.BRAVE_WALLET_BRAVE_REWARDS_DESCRIPTION).replace(
     '$1',
     getRewardsProviderName(provider),
   )

@@ -91,12 +91,12 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   switch (currentStep) {
     case 'phrase':
-      title = getLocale('braveWalletRestoreMyBraveWallet')
-      subTitle = getLocale('braveWalletRestoreMyBraveWalletInstructions')
+      title = getLocale(S.BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET)
+      subTitle = getLocale(S.BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET_INSTRUCTIONS)
       break
     case 'password':
-      title = getLocale('braveWalletCreatePasswordTitle')
-      subTitle = getLocale('braveWalletCreatePasswordDescription')
+      title = getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_TITLE)
+      subTitle = getLocale(S.BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION)
       break
     default:
       title = ''
@@ -222,7 +222,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   key={index}
                   mode='filled'
                   placeholder={getLocale(
-                    'braveWalletRecoveryPhraseWord',
+                    S.BRAVE_WALLET_RECOVERY_PHRASE_WORD,
                   ).replace('$1', `#${index + 1}`)}
                   value={phraseWords[index] || ''}
                   size='small'
@@ -245,7 +245,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             kind='plain'
             onClick={onRecoveryPhraseLengthChange}
           >
-            {getLocale('braveWalletRestoreAlternateLength').replace(
+            {getLocale(S.BRAVE_WALLET_RESTORE_ALTERNATE_LENGTH).replace(
               '$1',
               alternateRecoveryPhraseLength.toString(),
             )}
@@ -269,7 +269,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   }
                 >
                   <CheckboxText>
-                    {getLocale('braveWalletRestoreLegacyCheckBox')}
+                    {getLocale(S.BRAVE_WALLET_RESTORE_LEGACY_CHECK_BOX)}
                   </CheckboxText>
                 </Checkbox>
               </Column>
@@ -282,7 +282,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                 <div slot='icon'>
                   <Icon name='metamask-color' />
                 </div>
-                {getLocale('braveWalletMetamaskDetected')}
+                {getLocale(S.BRAVE_WALLET_METAMASK_DETECTED)}
                 <div slot='content-after'>
                   <Button
                     kind='plain'
@@ -291,7 +291,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                       history.push(WalletRoutes.OnboardingImportMetaMask)
                     }
                   >
-                    {getLocale('braveWalletUsePassword')}
+                    {getLocale(S.BRAVE_WALLET_USE_PASSWORD)}
                   </Button>
                 </div>
               </InfoAlert>
@@ -326,7 +326,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
               padding='16px 0 0'
               type='error'
             >
-              {getLocale('braveWalletRestoreWalletError')}
+              {getLocale(S.BRAVE_WALLET_RESTORE_WALLET_ERROR)}
             </InfoAlert>
           )}
         </Column>
@@ -345,7 +345,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           }
           onClick={onContinue}
         >
-          {getLocale('braveWalletButtonContinue')}
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
         </ContinueButton>
       </Column>
     </OnboardingContentLayout>

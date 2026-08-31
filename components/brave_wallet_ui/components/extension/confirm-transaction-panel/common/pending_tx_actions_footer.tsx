@@ -97,10 +97,10 @@ export function PendingTransactionActionsFooter({
       transactionDetails?.sameAddressError,
       transactionDetails?.missingGasLimitError,
       insufficientFundsForGasError
-        ? getLocale('braveWalletSwapInsufficientFundsForGas')
+        ? getLocale(S.BRAVE_WALLET_SWAP_INSUFFICIENT_FUNDS_FOR_GAS)
         : undefined,
       !insufficientFundsForGasError && insufficientFundsError
-        ? getLocale('braveWalletSwapInsufficientBalance')
+        ? getLocale(S.BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE)
         : undefined,
     ]
       .filter((warning): warning is string => Boolean(warning))
@@ -130,12 +130,12 @@ export function PendingTransactionActionsFooter({
           isLoading={isTransactionConfirmedOrSubmitting}
         >
           {isAccountSyncing
-            ? getLocale('braveWalletSyncing')
+            ? getLocale(S.BRAVE_WALLET_SYNCING)
             : isShieldingFunds
-              ? getLocale('braveWalletShieldZEC')
+              ? getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
               : isUnshieldingFunds
-                ? getLocale('braveWalletUnshieldZEC')
-                : getLocale('braveWalletAllowSpendConfirmButton')}
+                ? getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
+                : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
         </Button>
       ),
       rejectButton: (
@@ -145,7 +145,7 @@ export function PendingTransactionActionsFooter({
           disabled={isTransactionConfirmedOrSubmitting}
           isDisabled={isTransactionConfirmedOrSubmitting}
         >
-          {getLocale('braveWalletAllowSpendRejectButton')}
+          {getLocale(S.BRAVE_WALLET_ALLOW_SPEND_REJECT_BUTTON)}
         </Button>
       ),
     }
@@ -192,7 +192,7 @@ export function PendingTransactionActionsFooter({
       {rejectAllTransactions && transactionsQueueLength > 1 && (
         <Row padding={rejectAllButtonRowPadding}>
           <QueueStepButton onClick={rejectAllTransactions}>
-            {getLocale('braveWalletQueueRejectAll').replace(
+            {getLocale(S.BRAVE_WALLET_QUEUE_REJECT_ALL).replace(
               '$1',
               transactionsQueueLength.toString(),
             )}

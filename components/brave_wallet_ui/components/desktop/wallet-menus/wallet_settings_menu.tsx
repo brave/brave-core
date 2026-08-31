@@ -172,7 +172,7 @@ export const WalletSettingsMenu = (props: Props) => {
   const accountSettingsOptions = React.useMemo(() => {
     if (isMobile) {
       return CreateAccountOptions.filter(
-        (option) => option.name !== 'braveWalletConnectHardwareWallet',
+        (option) => option.name !== S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET,
       )
     }
     return CreateAccountOptions
@@ -190,25 +190,25 @@ export const WalletSettingsMenu = (props: Props) => {
         }}
       >
         <Icon name='lock' />
-        {getLocale('braveWalletWalletPopupLock')}
+        {getLocale(S.BRAVE_WALLET_WALLET_POPUP_LOCK)}
       </leo-menu-item>
 
       <leo-menu-item onClick={onClickBackup}>
         <Icon name='safe' />
-        {getLocale('braveWalletWalletPopupBackup')}
+        {getLocale(S.BRAVE_WALLET_WALLET_POPUP_BACKUP)}
       </leo-menu-item>
 
       {showConnectedSitesItem && (
         <leo-menu-item onClick={onClickConnectedSites}>
           <Icon name='link-normal' />
-          {getLocale('braveWalletWalletPopupConnectedSites')}
+          {getLocale(S.BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES)}
         </leo-menu-item>
       )}
 
       {showOpenWalletSettingsItem && (
         <leo-menu-item onClick={openWalletSettings}>
           <Icon name='settings' />
-          {getLocale('braveWalletWalletPopupSettings')}
+          {getLocale(S.BRAVE_WALLET_WALLET_POPUP_SETTINGS)}
         </leo-menu-item>
       )}
 
@@ -216,7 +216,7 @@ export const WalletSettingsMenu = (props: Props) => {
         || walletLocation === WalletRoutes.PortfolioAssets
         || walletLocation === WalletRoutes.PortfolioActivity) && (
         <>
-          <leo-title>{getLocale('braveWalletPortfolioSettings')}</leo-title>
+          <leo-title>{getLocale(S.BRAVE_WALLET_PORTFOLIO_SETTINGS)}</leo-title>
           <leo-menu-item
             id='toggle'
             onClick={onToggleHideBalances}
@@ -227,7 +227,7 @@ export const WalletSettingsMenu = (props: Props) => {
               width='unset'
             >
               <Icon name='eye-on' />
-              {getLocale('braveWalletWalletPopupHideBalances')}
+              {getLocale(S.BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES)}
             </Row>
             <Toggle
               checked={!hidePortfolioBalances}
@@ -246,7 +246,7 @@ export const WalletSettingsMenu = (props: Props) => {
               width='unset'
             >
               <Icon name='graph' />
-              {getLocale('braveWalletWalletPopupShowGraph')}
+              {getLocale(S.BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH)}
             </Row>
             <Toggle
               checked={!hidePortfolioGraph}
@@ -265,7 +265,7 @@ export const WalletSettingsMenu = (props: Props) => {
               width='unset'
             >
               <Icon name='pie-chart-2' />
-              {getLocale('braveWalletDistribution')}
+              {getLocale(S.BRAVE_WALLET_DISTRIBUTION)}
             </Row>
             <Toggle
               checked={!hidePortfolioDistribution}
@@ -284,7 +284,7 @@ export const WalletSettingsMenu = (props: Props) => {
               width='unset'
             >
               <Icon name='nft' />
-              {getLocale('braveWalletWalletNFTsTab')}
+              {getLocale(S.BRAVE_WALLET_WALLET_NFTS_TAB)}
             </Row>
             <Toggle
               checked={!hidePortfolioNFTsTab}
@@ -297,7 +297,7 @@ export const WalletSettingsMenu = (props: Props) => {
 
       {walletLocation === WalletRoutes.Accounts && isMobileOrPanel && (
         <>
-          <leo-title>{getLocale('braveWalletAccountSettings')}</leo-title>
+          <leo-title>{getLocale(S.BRAVE_WALLET_ACCOUNT_SETTINGS)}</leo-title>
           {accountSettingsOptions.map((option) => (
             <leo-menu-item
               key={option.name}
@@ -312,7 +312,7 @@ export const WalletSettingsMenu = (props: Props) => {
       <hr />
       <leo-menu-item onClick={onClickHelpCenter}>
         <Icon name='help-outline' />
-        {getLocale('braveWalletHelpCenter')}
+        {getLocale(S.BRAVE_WALLET_HELP_CENTER)}
       </leo-menu-item>
     </ButtonMenu>
   )

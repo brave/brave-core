@@ -50,16 +50,20 @@ export const OnboardingImportOrRestoreWallet = () => {
           <OnboardingStepsNavigation preventSkipAhead />
 
           <div>
-            <Title>{getLocale('braveWalletImportOrRestoreWalletTitle')}</Title>
+            <Title>
+              {getLocale(S.BRAVE_WALLET_IMPORT_OR_RESTORE_WALLET_TITLE)}
+            </Title>
             <Description>
-              {getLocale('braveWalletImportOrRestoreDescription')}
+              {getLocale(S.BRAVE_WALLET_IMPORT_OR_RESTORE_DESCRIPTION)}
             </Description>
           </div>
 
           <CardButton to={WalletRoutes.OnboardingRestoreWallet}>
             <CardButtonTextContainer>
-              <p>{getLocale('braveWalletRestoreMyBraveWallet')}</p>
-              <p>{getLocale('braveWalletRestoreMyBraveWalletDescription')}</p>
+              <p>{getLocale(S.BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET)}</p>
+              <p>
+                {getLocale(S.BRAVE_WALLET_RESTORE_MY_BRAVE_WALLET_DESCRIPTION)}
+              </p>
             </CardButtonTextContainer>
             <BraveWalletIcon />
           </CardButton>
@@ -67,8 +71,10 @@ export const OnboardingImportOrRestoreWallet = () => {
           {importableWallets?.isMetaMaskInitialized && (
             <CardButton to={WalletRoutes.OnboardingImportMetaMask}>
               <CardButtonTextContainer>
-                <p>{getLocale('braveWalletImportFromMetaMask')}</p>
-                <p>{getLocale('braveWalletImportFromMetaMaskDescription')}</p>
+                <p>{getLocale(S.BRAVE_WALLET_IMPORT_FROM_META_MASK)}</p>
+                <p>
+                  {getLocale(S.BRAVE_WALLET_IMPORT_FROM_META_MASK_DESCRIPTION)}
+                </p>
               </CardButtonTextContainer>
               <MetaMaskIcon />
             </CardButton>
@@ -76,7 +82,7 @@ export const OnboardingImportOrRestoreWallet = () => {
 
           <LinkRow>
             <WalletLink to={WalletRoutes.OnboardingNewWalletCreatePassword}>
-              {getLocale('braveWalletCreateWalletInsteadLink')}
+              {getLocale(S.BRAVE_WALLET_CREATE_WALLET_INSTEAD_LINK)}
             </WalletLink>
           </LinkRow>
         </StyledWrapper>

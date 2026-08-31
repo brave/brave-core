@@ -649,7 +649,7 @@ export const TokenLists = ({
             textSize='16px'
             isBold={true}
           >
-            {getLocale('braveWalletAccountsAssets')}
+            {getLocale(S.BRAVE_WALLET_ACCOUNTS_ASSETS)}
           </Text>
         )}
         <Row width={showSearchBar ? '100%' : 'unset'}>
@@ -659,7 +659,7 @@ export const TokenLists = ({
               showSearchBar={showSearchBar}
             >
               <SearchBar
-                placeholder={getLocale('braveWalletSearchText')}
+                placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
                 action={onSearchValueChange}
                 value={searchValue}
                 isV2={true}

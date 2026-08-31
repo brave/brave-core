@@ -223,7 +223,7 @@ export const TransactionsScreen = (props: Props) => {
             style={{ minWidth: '100%' }}
           >
             <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
+              placeholder={getLocale(S.BRAVE_WALLET_SEARCH_TEXT)}
               action={(e) => setSearchValue(e.target.value)}
               value={searchValue}
               isV2={true}
@@ -257,10 +257,10 @@ export const TransactionsScreen = (props: Props) => {
                   textSize='18px'
                   isBold
                 >
-                  {getLocale('braveWalletNoTransactionsYet')}
+                  {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET)}
                 </Text>
                 <Text textSize='14px'>
-                  {getLocale('braveWalletNoTransactionsYetDescription')}
+                  {getLocale(S.BRAVE_WALLET_NO_TRANSACTIONS_YET_DESCRIPTION)}
                 </Text>
               </Column>
             )}
@@ -280,7 +280,9 @@ export const TransactionsScreen = (props: Props) => {
                   padding={isPanel ? '32px 0px 64px 0px' : '0px'}
                 >
                   <Text textSize='14px'>
-                    {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+                    {getLocale(
+                      S.BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND,
+                    )}
                   </Text>
                 </Column>
               )}
