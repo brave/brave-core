@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave का AI असिस्टेंट हूँ। मैं %@ द्वारा पावर्ड हूँ। मुझसे कुछ भी पूछें और मैं जवाब देने की पूरी कोशिश करूँगा।";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "सामान्य विषय की चैट";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Qwen VL 30B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के माध्यम से Brave द्वारा होस्ट किया जाता है।";
 
 /* The model's purpose - Describes what it can do best */

@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "היי, אני Leo, עוזר AI מאת Brave. אני מופעל באמצעות %@. אפשר לשאול אותי כל דבר, ואעשה כמיטב יכולתי לענות.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Llama 3.1 8B, מודל שנוצר על ידי Meta לשימוש ויישום במגוון תרחישים. Llama מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "צ'אט למטרות כלליות";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen VL 30B, מודל שנוצר על ידי Alibaba Cloud להיות יעיל ויישים למקרים שימוש רבים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
