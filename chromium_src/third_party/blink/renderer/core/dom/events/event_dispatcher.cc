@@ -6,8 +6,12 @@
 #include "base/feature_list.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
+#include "third_party/blink/renderer/core/dom/events/event_target.h"
+#include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/events/mouse_event.h"
+#include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace blink {
 namespace {
@@ -27,6 +31,16 @@ bool ShouldBypassDefaultPreventedForContextMenu(Event* event) {
     return false;
   }
   if (auto* context_mouse_event = DynamicTo<MouseEvent>(event)) {
+    // Don't force context menu when the target element is a <canvas> - pages
+    // (e.g. games, drawing apps) legitimately suppress it on self-drawn
+    // surfaces. <embed>/<object> (e.g. the PDF plugin) could be added to this
+    // exception in the future if unwanted menu overrides are reported there -
+    // intentionally excluded for now.
+    if (auto* target = event->target() ? event->target()->ToNode() : nullptr) {
+      if (IsA<HTMLCanvasElement>(target)) {
+        return false;
+      }
+    }
     return context_mouse_event->shiftKey();
   }
   return false;
