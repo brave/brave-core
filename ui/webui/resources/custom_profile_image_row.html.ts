@@ -41,14 +41,13 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
               id="preview"
               kind="plain-faint"
               size="jumbo"
-              fab
               title="${this.actionTooltip_()}"
+              aria-label="${this.actionTooltip_()}"
               @click="${this.onUploadClick_}"
             >
               <leo-icon
                 id="plusIcon"
                 name="plus-add"
-                slot="icon-before"
                 aria-hidden="true"
               ></leo-icon>
               <span id="previewLabel">${this.actionTooltip_()}</span>
