@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "chrome/android/chrome_jni_headers/BraveRewardsNativeWorker_jni.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
@@ -997,16 +998,16 @@ void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
 static void JNI_BraveRewardsNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& jcaller) {
-  // Profile may be null when the process is started by AlarmManager for a
-  // retention notification before the browser is fully initialized. In this
-  // case we skip creating the native object, which leaves the Java native
-  // pointer at 0 and causes getInstance() to reset the singleton so it can
-  // be re-created on the next call.
-  Profile* profile = ProfileManager::GetActiveUserProfile();
-  if (!profile) {
+  // The process can be started by AlarmManager just to deliver a retention
+  // notification broadcast: the native library is loaded, but full browser
+  // startup hasn't run, so there is no browser process to get a profile from.
+  // Skipping the native object leaves the Java native pointer at 0, which makes
+  // getInstance() reset the singleton so it can be re-created on the next call.
+  if (!g_browser_process || !g_browser_process->profile_manager()) {
     return;
   }
-  new BraveRewardsNativeWorker(env, jcaller, *profile);
+  new BraveRewardsNativeWorker(env, jcaller,
+                               *ProfileManager::GetActiveUserProfile());
 }
 
 }  // namespace android
