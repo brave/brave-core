@@ -31,6 +31,9 @@ public class BraveProfileMigrations {
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
+    BraveProfileMigrations.migrateSponsoredAdsEnabledPreference(
+      prefs: profileController.profile.prefs
+    )
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -158,6 +161,19 @@ public class BraveProfileMigrations {
         defaultWallet(from: value).rawValue,
         forPath: kDefaultCardanoWallet
       )
+    }
+  }
+
+  /// Migrates deprecated `backgroundMediaTypeRaw` to `kBraveAdsSponsoredEnabledPrefName`.
+  /// Must run after `Preferences.migrateBackgroundSponsoredImages()`, which
+  /// migrates `backgroundMediaTypeRaw` from the older
+  /// `backgroundSponsoredImages` pref.
+  static func migrateSponsoredAdsEnabledPreference(prefs: any PrefService) {
+    Preferences.DeprecatedPreferences.backgroundMediaTypeRaw.migrate { rawValue in
+      // 0 = default images only
+      // 1 = sponsored images
+      // 2 = sponsored images and videos
+      prefs.set(rawValue != 0, forPath: kBraveAdsSponsoredEnabledPrefName)
     }
   }
 }
@@ -379,6 +395,12 @@ extension Preferences {
     static let backgroundSponsoredImages = Option<Bool>(
       key: "newtabpage.background-sponsored-images",
       default: true
+    )
+
+    /// Deprecated, superseded by the `kSponsoredEnabled` PrefService pref.
+    static let backgroundMediaTypeRaw = Option<Int>(
+      key: "newtabpage.background-media-type",
+      default: 1  // formerly sponsoredImages
     )
 
     /// Specifies whether the bookmark button is present on toolbar
@@ -667,8 +689,7 @@ extension Preferences {
 
     // Migrate old Background Sponsored Images setting
     DeprecatedPreferences.backgroundSponsoredImages.migrate { isEnabled in
-      Preferences.NewTabPage.backgroundMediaType =
-        isEnabled ? .sponsoredImages : .defaultImages
+      DeprecatedPreferences.backgroundMediaTypeRaw.value = isEnabled ? 1 : 0
     }
 
     Migration.backgroundSponsoredImagesCompleted.value = true

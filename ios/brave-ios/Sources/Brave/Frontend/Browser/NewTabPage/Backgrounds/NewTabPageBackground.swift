@@ -19,6 +19,8 @@ import UIKit
 class NewTabPageBackground: PreferencesObserver {
   /// The source of new tab page backgrounds
   private let dataSource: NTPDataSource
+  private let prefs: any PrefService
+  private let prefsChangeRegistrar: PrefChangeRegistrar
   /// The current background image & possibly sponsor
   private(set) var currentBackground: NTPWallpaper? {
     didSet {
@@ -40,15 +42,19 @@ class NewTabPageBackground: PreferencesObserver {
   /// while the New Tab Page is active
   var changed: (() -> Void)?
   /// Create a background holder given a source of all NTP background images
-  init(dataSource: NTPDataSource) {
+  init(dataSource: NTPDataSource, prefs: any PrefService) {
     self.dataSource = dataSource
+    self.prefs = prefs
+    self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: prefs)
     dataSource.newBackground { [weak self] background in
       self?.currentBackground = background
     }
 
     Preferences.NewTabPage.backgroundImages.observe(from: self)
-    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
+    prefsChangeRegistrar.addObserver(forPath: kBraveAdsSponsoredEnabledPrefName) { [weak self] _ in
+      self?.handlePreferencesChange()
+    }
 
     recordSponsoredMediaTypeP3A()
   }
@@ -60,6 +66,10 @@ class NewTabPageBackground: PreferencesObserver {
   private var timer: Timer?
 
   func preferencesDidChange(for key: String) {
+    handlePreferencesChange()
+  }
+
+  private func handlePreferencesChange() {
     // Debounce multiple changes to preferences, since toggling bg images
     // cause sponsored images to also be toggled at the same time
     timer?.invalidate()
@@ -85,7 +95,7 @@ class NewTabPageBackground: PreferencesObserver {
 
     var answer = Answer.disabled
     if Preferences.NewTabPage.backgroundImages.value
-      && Preferences.NewTabPage.backgroundMediaType.isSponsored
+      && prefs.boolean(forPath: kBraveAdsSponsoredEnabledPrefName)
     {
       answer = .images
     }

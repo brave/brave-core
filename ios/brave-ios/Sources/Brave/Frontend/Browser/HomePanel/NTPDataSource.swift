@@ -46,6 +46,8 @@ enum NTPWallpaper {
 public class NTPDataSource {
   private var rewards: BraveRewards?
 
+  private let prefs: any PrefService
+
   private(set) var privateBrowsingManager: PrivateBrowsingManager
 
   // Data is static to avoid duplicate loads
@@ -62,10 +64,12 @@ public class NTPDataSource {
   public init(
     service: NTPBackgroundImagesService,
     rewards: BraveRewards?,
+    prefs: any PrefService,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.service = service
     self.rewards = rewards
+    self.prefs = prefs
     self.privateBrowsingManager = privateBrowsingManager
 
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
@@ -84,7 +88,7 @@ public class NTPDataSource {
 
   func shouldAttemptSponsoredMedia() -> Bool {
     return
-      Preferences.NewTabPage.backgroundMediaType.isSponsored
+      prefs.boolean(forPath: kBraveAdsSponsoredEnabledPrefName)
       && Preferences.NewTabPage.backgroundRotationCounter.value
         == service.initialCountToBrandedWallpaper
       && !privateBrowsingManager.isPrivateBrowsing
