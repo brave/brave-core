@@ -13,6 +13,11 @@ public class ShieldsPanelViewModel: ObservableObject {
   private let tab: any TabState
 
   @Published public var stats: TrackingProtectionPageStats
+  /// The requests blocked on the current page. Only used for debugging.
+  ///
+  /// Deliberately not `@Published`: blocked requests are appended on every
+  /// blocked request, and only the debug view subscribes to them.
+  public let blockedRequests: AnyPublisher<[BlockedRequestInfo], Never>
   @Published public var shieldsEnabled: Bool {
     didSet {
       guard !isUpdatingState else { return }
@@ -65,9 +70,11 @@ public class ShieldsPanelViewModel: ObservableObject {
   public init(
     tab: some TabState,
     stats: some Publisher<TrackingProtectionPageStats, Never>,
+    blockedRequests: AnyPublisher<[BlockedRequestInfo], Never>,
     isAdvancedControlsEnabled: Bool
   ) {
     self.tab = tab
+    self.blockedRequests = blockedRequests
     self.shieldsEnabled =
       tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
       ?? true

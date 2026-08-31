@@ -41,31 +41,6 @@ enum BlockingStrength: String {
   static let allOptions: [BlockingStrength] = [.basic, .strict]
 }
 
-struct BlockedRequestInfo: Hashable, Identifiable {
-  enum Location: String {
-    case contentBlocker
-    case requestBlocking
-
-    var display: String {
-      switch self {
-      case .contentBlocker:
-        return Strings.Shields.contentBlocker
-      case .requestBlocking:
-        return Strings.Shields.requestBlocking
-      }
-    }
-  }
-  let requestURL: URL
-  let sourceURL: URL
-  let resourceType: AdblockEngine.ResourceType
-  let isAggressive: Bool
-  let location: Location
-
-  var id: String {
-    "\(requestURL)\(sourceURL)\(resourceType.rawValue)\(isAggressive)\(location.rawValue)"
-  }
-}
-
 class ContentBlockerHelper: ObservableObject {
   private(set) weak var tab: (any TabState)?
 

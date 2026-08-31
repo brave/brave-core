@@ -48,6 +48,8 @@ struct ShieldsPanelView: View {
       tab: tab,
       stats: tab.contentBlocker?.$stats.eraseToAnyPublisher()
         ?? Just(.init()).eraseToAnyPublisher(),
+      blockedRequests: tab.contentBlocker?.$blockedRequests.map(Array.init)
+        .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
       isAdvancedControlsEnabled: isAdvancedControlsEnabled
     )
     self.actionCallback = callback
@@ -274,12 +276,12 @@ struct ShieldsPanelView: View {
         .padding(.vertical, 4)
       }
     }
-    if FeatureList.kBraveIOSDebugAdblock.enabled, let contentBlocker = tab.contentBlocker {
+    if FeatureList.kBraveIOSDebugAdblock.enabled {
       ShieldSettingRow {
         NavigationLink {
           AdblockBlockedRequestsView(
             url: url.baseDomain ?? url.absoluteDisplayString,
-            contentBlockerHelper: contentBlocker
+            blockedRequests: viewModel.blockedRequests
           )
         } label: {
           ShieldSettingsNavigationWrapper {
