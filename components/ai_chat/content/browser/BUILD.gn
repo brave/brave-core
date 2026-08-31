@@ -31,6 +31,10 @@ static_library("browser") {
     "page_content_fetcher.h",
     "workspace_associated_content.cc",
     "workspace_associated_content.h",
+    "workspace_content_registry.cc",
+    "workspace_content_registry.h",
+    "workspace_content_url_loader_factory.cc",
+    "workspace_content_url_loader_factory.h",
   ]
 
   if (enable_pdf) {
@@ -99,6 +103,8 @@ source_set("unit_tests") {
     "content_tool_unittest.cc",
     "page_content_blocks_unittest.cc",
     "page_content_fetcher_unittest.cc",
+    "workspace_content_registry_unittest.cc",
+    "workspace_content_url_loader_factory_unittest.cc",
   ]
 
   deps = [

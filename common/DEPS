@@ -8,6 +8,8 @@ include_rules += chrome_common_deps["include_rules"]
 include_rules += [
   "+chrome/common",
   "+components/grit",
+  "+brave/components/ai_chat/core/common/buildflags",
+  "+brave/components/ai_chat/core/common/constants.h",
   "+brave/components/constants",
 ]
 

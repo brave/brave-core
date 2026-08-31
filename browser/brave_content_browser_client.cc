@@ -126,6 +126,7 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
+#include "content/public/browser/child_process_security_policy.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/render_frame_host.h"
@@ -134,6 +135,7 @@
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_browser_interface_broker_registry.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/common/content_client.h"
@@ -231,7 +233,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/content/browser/workspace_content_url_loader_factory.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
@@ -582,6 +586,100 @@ void BraveContentBrowserClient::RenderProcessWillLaunch(
   }
 
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
+}
+
+bool BraveContentBrowserClient::IsHandledURL(const GURL& url) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Claiming the scheme here is what keeps it out of reach of ordinary web
+  // content: ChildProcessSecurityPolicyImpl::CanRequestURL() ends in
+  // `return !IsHandledURL(url)`, so a scheme the embedder does not claim is
+  // requestable by every renderer. It also stops NavigationRequest treating
+  // these URLs as an external protocol.
+  if (url.SchemeIs(ai_chat::kLeoWorkspaceContentScheme)) {
+    return true;
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+  return ChromeContentBrowserClient::IsHandledURL(url);
+}
+
+void BraveContentBrowserClient::OnRendererProcessLockedStateUpdated(
+    content::RenderProcessHost* host,
+    const GURL& site_url) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // The scheme is not web-safe, so no renderer may commit it by default. Only
+  // processes already locked to a workspace origin get commit rights.
+  //
+  // Note this grant is scheme-wide, not per-uuid: what keeps one workspace out
+  // of another is the process lock, which CanCommitURL() checks (via
+  // CanAccessMaybeOpaqueOrigin) before consulting this grant. Each uuid is its
+  // own site, so under site isolation each preview gets its own lock.
+  if (site_url.SchemeIs(ai_chat::kLeoWorkspaceContentScheme)) {
+    content::ChildProcessSecurityPolicy::GetInstance()->GrantCommitScheme(
+        host->GetDeprecatedID(), ai_chat::kLeoWorkspaceContentScheme);
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+  ChromeContentBrowserClient::OnRendererProcessLockedStateUpdated(host,
+                                                                  site_url);
+}
+
+mojo::PendingRemote<network::mojom::URLLoaderFactory>
+BraveContentBrowserClient::CreateNonNetworkNavigationURLLoaderFactory(
+    const std::string& scheme,
+    content::FrameTreeNodeId frame_tree_node_id) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (scheme == ai_chat::kLeoWorkspaceContentScheme) {
+    content::WebContents* web_contents =
+        content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+    if (web_contents) {
+      // Not pinned to a uuid: the frame is navigating *to* a workspace, so its
+      // current origin says nothing about which one is legitimate. Who may
+      // reach this factory at all is decided by CanRequestURL() (see
+      // BraveContentBrowserClient::IsHandledURL()), and what may commit by
+      // the process lock.
+      return ai_chat::CreateWorkspaceContentURLLoaderFactory(
+          web_contents->GetBrowserContext(), /*restrict_to_uuid=*/std::nullopt);
+    }
+    return {};
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  return ChromeContentBrowserClient::CreateNonNetworkNavigationURLLoaderFactory(
+      scheme, frame_tree_node_id);
+}
+
+void BraveContentBrowserClient::RegisterNonNetworkSubresourceURLLoaderFactories(
+    int render_process_id,
+    int render_frame_id,
+    const std::optional<url::Origin>& request_initiator_origin,
+    NonNetworkURLLoaderFactoryMap* factories) {
+  ChromeContentBrowserClient::RegisterNonNetworkSubresourceURLLoaderFactories(
+      render_process_id, render_frame_id, request_initiator_origin, factories);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Only frames that are themselves workspace content get the factory;
+  // otherwise any frame could pull a workspace's files as subresources.
+  if (!request_initiator_origin || request_initiator_origin->scheme() !=
+                                       ai_chat::kLeoWorkspaceContentScheme) {
+    return;
+  }
+
+  content::RenderFrameHost* frame =
+      content::RenderFrameHost::FromID(render_process_id, render_frame_id);
+  if (!frame) {
+    return;
+  }
+
+  // Pinned to the frame's own workspace. Without this a preview could fetch
+  // another workspace's files by uuid: the commit-scheme grant covers the whole
+  // scheme, so CanRequestURL() would allow it, and this origin deliberately
+  // runs model-authored script under 'unsafe-inline'/'unsafe-eval', so
+  // renderer-side CSP is not a boundary worth relying on.
+  factories->emplace(
+      ai_chat::kLeoWorkspaceContentScheme,
+      ai_chat::CreateWorkspaceContentURLLoaderFactory(
+          frame->GetBrowserContext(), request_initiator_origin->host()));
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 void BraveContentBrowserClient::

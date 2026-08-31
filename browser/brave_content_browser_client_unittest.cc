@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/skus/common/skus_utils.h"
 #include "build/build_config.h"
@@ -20,6 +21,10 @@
 #include "base/test/scoped_os_info_override_win.h"
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/constants.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(IS_WIN)
 static base::test::ScopedOSInfoOverride* g_scoped_win_version = nullptr;
@@ -52,6 +57,29 @@ TEST_F(BraveContentBrowserClientTest, IsolatedWebAppsAreDisabled) {
   BraveContentBrowserClient client;
   EXPECT_FALSE(client.AreIsolatedWebAppsEnabled(&profile_));
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+TEST_F(BraveContentBrowserClientTest, LeoWorkspaceSchemeIsHandled) {
+  BraveContentBrowserClient client;
+
+  // ChildProcessSecurityPolicyImpl::CanRequestURL() ends in
+  // `return !IsHandledURL(url)`, so claiming the scheme here is what stops
+  // every renderer being able to request workspace URLs. It also keeps
+  // NavigationRequest from classifying them as an external protocol.
+  EXPECT_TRUE(client.IsHandledURL(
+      GURL("brave-leo-workspace://6b1b3f1e-0b7a-4f27-9a2f-2f2b9d4e5a10/"
+           "index.html")));
+
+  // Unrelated schemes still get Chromium's answer.
+  ChromeContentBrowserClient chrome_client;
+  for (const char* url : {"https://example.com/", "chrome://settings/",
+                          "about:blank", "wyciwyg://0/http://example.com/"}) {
+    EXPECT_EQ(chrome_client.IsHandledURL(GURL(url)),
+              client.IsHandledURL(GURL(url)))
+        << url;
+  }
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 TEST_F(BraveContentBrowserClientTest, GetOriginsRequiringDedicatedProcess) {
   ChromeContentBrowserClient chrome_client;

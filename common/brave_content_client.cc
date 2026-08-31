@@ -12,11 +12,17 @@
 #include "base/logging.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/version.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/constants/url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/flags_ui_resources.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/constants.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_LINUX)
 #include "base/files/file_path.h"
@@ -45,8 +51,9 @@ void CreateDefaultWidevineCdmHintFile() {
   base::FilePath hint_file_path;
   CHECK(base::PathService::Get(chrome::FILE_COMPONENT_WIDEVINE_CDM_HINT,
                                &hint_file_path));
-  if (base::PathExists(hint_file_path))
+  if (base::PathExists(hint_file_path)) {
     return;
+  }
 
   base::FilePath widevine_root_dir_path;
   CHECK(base::PathService::Get(chrome::DIR_COMPONENT_UPDATED_WIDEVINE_CDM,
@@ -90,6 +97,25 @@ void BraveContentClient::AddAdditionalSchemes(Schemes* schemes) {
   schemes->secure_schemes.push_back(content::kBraveUIScheme);
   schemes->cors_enabled_schemes.push_back(content::kBraveUIScheme);
   schemes->savable_schemes.push_back(content::kBraveUIScheme);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Leo workspace previews. Runs in every process before any URL is parsed;
+  // otherwise these would parse as non-standard and land in opaque origins.
+  //
+  // |standard| makes each uuid an origin, |secure| makes those origins
+  // trustworthy (without it there is no storage, and previews count as mixed
+  // content when embedded).
+  //
+  // Deliberately not |cors_enabled|, so previews cannot issue fetch()/XHR at
+  // all rather than being refused by connect-src; and not |service_worker|,
+  // since such a worker would be registered by model-authored script.
+  //
+  // Being standard also means GURL canonicalises the path the way it does for
+  // http(s): backslashes become slashes and dot segments are collapsed before
+  // any of our code sees the URL.
+  schemes->standard_schemes.push_back(ai_chat::kLeoWorkspaceContentScheme);
+  schemes->secure_schemes.push_back(ai_chat::kLeoWorkspaceContentScheme);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 void BraveContentClient::AddContentDecryptionModules(

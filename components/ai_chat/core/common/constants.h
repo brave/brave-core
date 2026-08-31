@@ -58,6 +58,18 @@ inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
 inline constexpr char kAIChatLeoWorkspaceUIURL[] =
     "chrome-untrusted://leo-workspace/";
 
+// Serves Leo workspace folders, one origin per workspace:
+// brave-leo-workspace://<workspace-uuid>/<path relative to the folder>.
+//
+// A dedicated scheme, rather than a path under one chrome-untrusted:// host, is
+// what gives each workspace its own process lock, storage and CSP 'self'. A
+// WebUI scheme could not: SiteInfo collapses the process lock for WebUI hosts
+// of the form <a>.<b> down to <b>, so all workspaces would share one lock.
+//
+// Not web-safe. Commit rights are granted per-process in
+// BraveContentBrowserClient::OnRendererProcessLockedStateUpdated().
+inline constexpr char kLeoWorkspaceContentScheme[] = "brave-leo-workspace";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

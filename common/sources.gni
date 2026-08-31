@@ -43,6 +43,8 @@ if (!is_ios) {
   ]
 
   brave_chrome_common_deps += [
+    "//brave/components/ai_chat/core/common:constants",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
     "//chrome/common:channel_info",
