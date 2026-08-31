@@ -79,7 +79,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   // (e.g. in unit tests that don't register the browser's action items), so
   // guard on ActionExists() to avoid operating on an unregistered page action
   // model.
-  if (base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
+  if (!profile->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(features::kPageActionsMigration) &&
       base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
       page_action_controller()->ActionExists(kActionShowPsstIcon)) {
     psst_action_controller_ =

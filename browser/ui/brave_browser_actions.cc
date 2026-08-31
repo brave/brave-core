@@ -139,7 +139,8 @@ void BraveBrowserActions::InitializeBrowserActions() {
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+  if (!profile_->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     root_action_item_->AddChild(
         actions::ActionItem::Builder(
             base::BindRepeating(

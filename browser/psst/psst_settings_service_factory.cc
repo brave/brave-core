@@ -32,9 +32,7 @@ PsstSettingsServiceFactory::PsstSettingsServiceFactory()
     : ProfileKeyedServiceFactory(
           "PsstSettingsService",
           ProfileSelections::Builder()
-              // this should match HostContentSettingsMapFactory
-              .WithRegular(ProfileSelection::kOwnInstance)
-              .WithGuest(ProfileSelection::kOwnInstance)
+              .WithRegular(ProfileSelection::kOriginalOnly)
               .Build()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
 }

@@ -21,6 +21,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -36,6 +37,7 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/infobars/confirm_infobar.h"
@@ -47,6 +49,7 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -635,8 +638,15 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Returns the PSST location bar page action icon view for the active browser
   // window, or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionView() {
+    return GetPsstPageActionViewForBrowser(browser());
+  }
+
+  // Returns the PSST location bar page action icon view for `target_browser`,
+  // or nullptr if it can't be resolved.
+  IconLabelBubbleView* GetPsstPageActionViewForBrowser(
+      Browser* target_browser) {
     BrowserView* const browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
+        BrowserView::GetBrowserViewForBrowser(target_browser);
     if (!browser_view || !browser_view->toolbar_button_provider()) {
       return nullptr;
     }
@@ -644,6 +654,38 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         browser_view->toolbar_button_provider()->GetPageActionViewInterface(
             kActionShowPsstIcon),
         kActionShowPsstIcon);
+  }
+
+  // Navigates `otr_browser`'s active tab to a PSST-matching URL and verifies
+  // that PSST is entirely absent: no tab helper, no infobar and no location bar
+  // page action.
+  void ExpectPsstUnavailableInOffTheRecordBrowser(Browser* otr_browser) {
+    ASSERT_TRUE(otr_browser);
+    ASSERT_TRUE(otr_browser->GetProfile()->IsOffTheRecord());
+
+    content::WebContents* const otr_web_contents =
+        otr_browser->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(otr_web_contents);
+
+    const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+    ASSERT_TRUE(content::NavigateToURL(otr_web_contents, url));
+
+    auto* const tab_interface =
+        tabs::TabInterface::GetFromContents(otr_web_contents);
+    ASSERT_TRUE(tab_interface);
+    auto* const brave_tab_features = tabs::BraveTabFeatures::FromTabFeatures(
+        tab_interface->GetTabFeatures());
+    ASSERT_TRUE(brave_tab_features);
+    EXPECT_FALSE(brave_tab_features->psst_web_contents_observer());
+
+    auto* const otr_infobar_manager =
+        infobars::ContentInfoBarManager::FromWebContents(otr_web_contents);
+    ASSERT_TRUE(otr_infobar_manager);
+    EXPECT_FALSE(GetPsstInfobar(otr_infobar_manager));
+
+    // The PSST action item isn't registered for off-the-record windows, so the
+    // location bar has no view for it at all, not even a hidden one.
+    EXPECT_FALSE(GetPsstPageActionViewForBrowser(otr_browser));
   }
 
   // Navigates to `url` and waits for the PSST icon to appear in the location
@@ -1158,6 +1200,29 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   // The background must actually change between color modes rather than
   // staying fixed.
   EXPECT_NE(light_actual, dark_actual);
+}
+
+// PSST is unavailable off-the-record, so opening a guest window must neither
+// show any PSST UI nor crash while setting up the tab's features.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       NotAvailableInGuestProfile) {
+  Browser* const guest_browser = CreateGuestBrowser();
+  ASSERT_TRUE(guest_browser);
+  // The pref is on by default even where the feature can't run, so the profile
+  // type is what has to be checked.
+  EXPECT_TRUE(
+      guest_browser->GetProfile()->GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  ASSERT_NO_FATAL_FAILURE(
+      ExpectPsstUnavailableInOffTheRecordBrowser(guest_browser));
+}
+
+// Same as above for incognito, which is the off-the-record profile of a regular
+// profile rather than its own profile type.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       NotAvailableInIncognitoProfile) {
+  ASSERT_NO_FATAL_FAILURE(
+      ExpectPsstUnavailableInOffTheRecordBrowser(CreateIncognitoBrowser()));
 }
 
 }  // namespace psst
