@@ -18,15 +18,11 @@ namespace traffic_control {
 namespace {
 
 bool IsValidUrlFilterLine(std::string_view filter) {
-  std::string scheme;
-  std::string host;
-  bool match_subdomains = false;
-  uint16_t port = 0;
-  std::string path;
-  std::string query;
-  return url_matcher::util::FilterToComponents(std::string(filter), &scheme,
-                                               &host, &match_subdomains, &port,
-                                               &path, &query);
+  url_matcher::util::FilterComponents components;
+  return url_matcher::util::FilterToComponents(
+      std::string(filter), &components.scheme, &components.host,
+      &components.match_subdomains, &components.port, &components.path,
+      &components.query);
 }
 
 }  // namespace

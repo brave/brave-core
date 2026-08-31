@@ -9,9 +9,13 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/types/optional_ref.h"
+#include "brave/components/traffic_control/core/browser/traffic_rule_matcher.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 
+class GURL;
 class PrefService;
 
 namespace traffic_control {
@@ -30,8 +34,21 @@ class TrafficControlService : public KeyedService {
 
   std::vector<mojom::TrafficRulePtr> GetRules() const;
 
+  // Returns the first matching enabled rule for |url|, or empty if the feature
+  // pref is off or nothing matches. The reference is valid until the next
+  // matcher rebuild.
+  base::optional_ref<const mojom::TrafficRule> FindMatchingRule(
+      const GURL& url) const;
+
+  // KeyedService:
+  void Shutdown() override;
+
  private:
+  void RebuildMatcher();
+
   raw_ptr<PrefService> prefs_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
+  TrafficRuleMatcher matcher_;
 };
 
 }  // namespace traffic_control
