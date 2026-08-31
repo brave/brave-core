@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_TAKEOVER_ANDROID_NEW_TAB_TAKEOVER_UI_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -14,7 +15,10 @@
 #include "brave/components/new_tab_takeover/mojom/new_tab_takeover.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "ui/gfx/geometry/rect_f.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
 namespace ntp_background_images {
@@ -49,8 +53,12 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<new_tab_takeover::mojom::NewTabTakeover>
           pending_receiver);
 
+  void SetSafeArea(const gfx::RectF& safe_area);
+
  private:
   // new_tab_takeover::mojom::NewTabTakeover:
+  void SetPage(mojo::PendingRemote<new_tab_takeover::mojom::NewTabTakeoverPage>
+                   page) override;
   void SetSponsoredRichMediaAdEventHandler(
       mojo::PendingReceiver<
           ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
@@ -61,6 +69,10 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
 
   mojo::Receiver<new_tab_takeover::mojom::NewTabTakeover>
       new_tab_takeover_receiver_{this};
+
+  mojo::Remote<new_tab_takeover::mojom::NewTabTakeoverPage> page_;
+
+  std::optional<gfx::RectF> safe_area_;
 
   const raw_ref<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;  // Not owned.
