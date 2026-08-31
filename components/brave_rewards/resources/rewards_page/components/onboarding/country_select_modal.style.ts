@@ -43,7 +43,7 @@ export const style = scoped.css`
   .selector {
     margin-bottom: 16px;
 
-    select {
+    leo-dropdown {
       width: 100%;
       color: ${color.text.primary};
       font: ${font.default.regular};
