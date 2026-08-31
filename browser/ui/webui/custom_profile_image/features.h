@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_CUSTOM_PROFILE_IMAGE_FEATURES_H_
 
 #include "base/feature.h"
-#include "brave/browser/ui/custom_profile_image_buildflags.h"
+#include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE));
 
