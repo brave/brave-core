@@ -34,7 +34,7 @@ import org.chromium.base.Log;
 import java.io.IOException;
 
 public class CameraSourcePreview extends ViewGroup {
-    private static final String TAG = CameraSourcePreview.class.getSimpleName();
+    private static final String TAG = "CameraSourcePreview";
 
     /** Listener for window focus changes. */
     public interface WindowFocusListener {
