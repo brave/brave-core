@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Bok, ja sam Leo. Ja sam pomoćnik potpomognut umjetnom inteligencijom (AI) kojeg je osmislilo društvo Brave. Pokreće me model %@. Pitajte me bilo što, a ja ću se potruditi odgovoriti.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Llama 3.1 8B, koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama je smještena u Braveu putem naše vlastite sigurne infrastrukture.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Opće čavrljanje";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Qwen VL 30B, koji je kreirao Alibaba Cloud za izvedbu i primjenu u raznim vrstama uporabe. Qwen je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */

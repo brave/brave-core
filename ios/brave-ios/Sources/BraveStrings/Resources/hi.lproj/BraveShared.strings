@@ -91,6 +91,9 @@
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "हटाएं";
 
+/* Label for the button used to confirm delete action for the current password. */
+"autofill.managePasswords.deleteManagePasswordConfrimButtonTitle" = "पासवर्ड मिटाएं";
+
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "सेव कर लिया गया है";
 
@@ -102,6 +105,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "पासवर्ड सेव करने का ऑफर दें";
+
+/* Navigation title when creating a new saved login from password management */
+"autofill.managePasswords.passwordDetail.addCredentialTitle" = "पासवर्ड जोड़ें";
+
+/* Alert message warning the user that deleting the password will remove it from their sync chain and device */
+"autofill.managePasswords.passwordDetail.deleteConfirmMessage" = "यह पासवर्ड आपकी सिंक चेन और आपके डिवाइस से हटा दिया जाएगा।";
 
 /* Placeholder for the password field when adding or editing a login */
 "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "पासवर्ड एंटर करें";
