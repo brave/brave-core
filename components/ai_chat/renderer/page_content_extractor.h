@@ -17,12 +17,17 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
+#include "v8/include/cppgc/persistent.h"
 
 namespace base {
 class TimeTicks;
 class Value;
 }  // namespace base
+namespace brave {
+class AIChatToolChangeListener;
+}  // namespace brave
 namespace content {
 class RenderFrame;
 }  // namespace content
@@ -62,6 +67,8 @@ class PageContentExtractor
       const std::string& input_json,
       mojom::PageContentExtractor::ExecuteContentToolCallback callback)
       override;
+  void SetContentToolsListener(
+      mojo::PendingRemote<mojom::ContentToolsListener> listener) override;
 
   base::WeakPtr<PageContentExtractor> GetWeakPtr();
 
@@ -82,11 +89,22 @@ class PageContentExtractor
 
   // RenderFrameObserver implementation:
   void OnDestruct() override;
+  void DidCreateNewDocument() override;
 
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);
 
+  // Idempotently attaches |tool_change_listener_| to the current document
+  // while |content_tools_listener_| is subscribed, and detaches it otherwise.
+  void UpdateToolChangeListener();
+
   mojo::Receiver<mojom::PageContentExtractor> receiver_{this};
+
+  // Browser-side subscriber for WebMCP tool changes, if any.
+  mojo::Remote<mojom::ContentToolsListener> content_tools_listener_;
+
+  // Held via Persistent because this class is not garbage-collected.
+  cppgc::Persistent<brave::AIChatToolChangeListener> tool_change_listener_;
 
   int32_t global_world_id_;
   int32_t isolated_world_id_;

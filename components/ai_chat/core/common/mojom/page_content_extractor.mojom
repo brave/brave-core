@@ -31,6 +31,13 @@ struct PageContent {
   PageContentType type;
 };
 
+// Implemented in the browser process to observe WebMCP tool registrations.
+interface ContentToolsListener {
+  // The set of tools the page exposes via document.modelContext may have
+  // changed.
+  OnContentToolsChanged();
+};
+
 // Allows the browser process to request extraction events for a particular
 // RenderFrame.
 interface PageContentExtractor {
@@ -48,4 +55,9 @@ interface PageContentExtractor {
   // Execute a content tool registered on the page by name. Returns the tool
   // result string, or null on failure.
   ExecuteContentTool(string name, string input_json) => (string? result);
+
+  // Subscribes |listener| to the document's `toolchange` events. Pass null to
+  // unsubscribe. The subscription is re-established on subsequent documents in
+  // this RenderFrame until cleared.
+  SetContentToolsListener(pending_remote<ContentToolsListener>? listener);
 };
