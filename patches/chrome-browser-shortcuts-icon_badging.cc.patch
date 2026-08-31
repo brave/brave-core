@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/shortcuts/icon_badging.cc b/chrome/browser/shortcuts/icon_badging.cc
-index 35cd2cb10bf55167b95372a08df6bf20f0f10fb2..366c9f3634a14fadee5b5f2a5ff73e4392f7bf4c 100644
+index 35cd2cb10bf55167b95372a08df6bf20f0f10fb2..8bdd5944e906b809c5473522259a9d705e1fe136 100644
 --- a/chrome/browser/shortcuts/icon_badging.cc
 +++ b/chrome/browser/shortcuts/icon_badging.cc
 @@ -185,11 +185,11 @@ static_assert(static_cast<int>(kChromeForTestingBrandedResourceMap.size()) ==
@@ -19,3 +19,12 @@ index 35cd2cb10bf55167b95372a08df6bf20f0f10fb2..366c9f3634a14fadee5b5f2a5ff73e43
  
  static_assert(static_cast<int>(kChromiumResourceMap.size()) ==
                    resource_map_size,
+@@ -232,7 +232,7 @@ gfx::ImageSkia GetMaskForBadging(ShortcutSize icon_size) {
+   // Set white mask for the loaded icon.
+   gfx::ImageSkia masked_badge =
+       gfx::ImageSkiaOperations::CreateImageWithCircleBackground(
+-          image->width() / kWhiteMaskFactor, SK_ColorWHITE, *image);
++          image->width() / kWhiteMaskFactor, SK_ColorTRANSPARENT, *image);
+ 
+   int badge_size_int = ToInt(badge_size);
+   // Maintain the badging ratio of 1/4th for sizes < 128, and 1/8th

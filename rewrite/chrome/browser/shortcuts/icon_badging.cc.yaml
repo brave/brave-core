@@ -15,3 +15,15 @@ substitutions:
     regex:
       re_pattern: 'IDR_PRODUCT_LOGO_(\d+)_SHORTCUTS'
       replace: 'IDR_BRAVE_PRODUCT_LOGO_\1_SHORTCUTS'
+
+  - description: |
+      Stop drawing a white backdrop behind the shortcut badge.
+
+      The white circle exists to keep a dark Chromium logo legible over the
+      site icon. The Brave lion is a solid orange shape that reads on its own,
+      and the circle only surrounds it with a halo. Keeping the circle while
+      making it transparent preserves the padding upstream relies on to inset
+      the badge from the icon's corner.
+    regex:
+      re_pattern: '(CreateImageWithCircleBackground\([^;]*?)SK_ColorWHITE'
+      replace: '\1SK_ColorTRANSPARENT'
