@@ -32,6 +32,7 @@ constexpr char kContentAgentCapability[] = "content_agent";
 constexpr char kDeepResearchCapability[] = "deep_research";
 constexpr char kFilesCapability[] = "files";
 constexpr char kSummaryCapability[] = "summary";
+constexpr char kMathMlCapability[] = "math_ml";
 
 constexpr auto kStringToAccessMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ModelAccess>({
@@ -54,6 +55,7 @@ constexpr auto kStringToCapabilityMap =
         {kDeepResearchCapability, mojom::ConversationCapability::DEEP_RESEARCH},
         {kFilesCapability, mojom::ConversationCapability::FILES},
         {kSummaryCapability, mojom::ConversationCapability::SUMMARY},
+        {kMathMlCapability, mojom::ConversationCapability::MATH_ML},
     });
 
 constexpr auto kCapabilityToStringMap =
@@ -63,6 +65,7 @@ constexpr auto kCapabilityToStringMap =
         {mojom::ConversationCapability::DEEP_RESEARCH, kDeepResearchCapability},
         {mojom::ConversationCapability::FILES, kFilesCapability},
         {mojom::ConversationCapability::SUMMARY, kSummaryCapability},
+        {mojom::ConversationCapability::MATH_ML, kMathMlCapability},
     });
 
 struct ParsedCapabilities {

@@ -217,6 +217,7 @@ source_set("unit_tests") {
     "tools/chart_code_plugin_unittest.cc",
     "tools/memory_storage_tool_unittest.cc",
     "tools/tool_input_properties_unittest.cc",
+    "tools/tool_unittest.cc",
     "utils_unittest.cc",
   ]
 

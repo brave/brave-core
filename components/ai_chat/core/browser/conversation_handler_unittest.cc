@@ -6972,26 +6972,30 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     ConversationCapabilitySet expected_capabilities;
   };
 
+  // MATH_ML is unconditional, so it's expected in every case.
   const std::vector<TestCase> test_paramss = {
       {
           "Chat",
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/false,
-          {mojom::ConversationCapability::CHAT},
+          {mojom::ConversationCapability::CHAT,
+           mojom::ConversationCapability::MATH_ML},
       },
       {
           "ChatWithDeepResearch",
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/true,
           {mojom::ConversationCapability::CHAT,
-           mojom::ConversationCapability::DEEP_RESEARCH},
+           mojom::ConversationCapability::DEEP_RESEARCH,
+           mojom::ConversationCapability::MATH_ML},
       },
       {
           "ContentAgent",
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/false,
           {mojom::ConversationCapability::CHAT,
-           mojom::ConversationCapability::CONTENT_AGENT},
+           mojom::ConversationCapability::CONTENT_AGENT,
+           mojom::ConversationCapability::MATH_ML},
       },
       {
           "ContentAgentWithDeepResearch",
@@ -6999,7 +7003,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           /*deep_research_enabled=*/true,
           {mojom::ConversationCapability::CHAT,
            mojom::ConversationCapability::CONTENT_AGENT,
-           mojom::ConversationCapability::DEEP_RESEARCH},
+           mojom::ConversationCapability::DEEP_RESEARCH,
+           mojom::ConversationCapability::MATH_ML},
       },
   };
 

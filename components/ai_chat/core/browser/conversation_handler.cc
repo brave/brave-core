@@ -190,6 +190,8 @@ void ConversationHandler::BuildCapabilitiesSet() {
     conversation_capabilities_.insert(
         mojom::ConversationCapability::DEEP_RESEARCH);
   }
+  // All clients can render MathML.
+  conversation_capabilities_.insert(mojom::ConversationCapability::MATH_ML);
 }
 
 ConversationHandler::ConversationHandler(

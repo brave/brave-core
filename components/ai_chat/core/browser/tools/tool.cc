@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
@@ -45,7 +46,9 @@ bool Tool::IsSupportedByModel(
   // Implementors should add any extra checks in an override.
   return model.supports_tools &&
          std::ranges::all_of(conversation_capabilities, [&](auto capability) {
-           return std::ranges::contains(model.supported_capabilities,
+           // Server hints say nothing about model suitability.
+           return kServerHintCapabilities.contains(capability) ||
+                  std::ranges::contains(model.supported_capabilities,
                                         capability);
          });
 }
