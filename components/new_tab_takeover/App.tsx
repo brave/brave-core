@@ -8,6 +8,7 @@ import * as NTPBackgroundMediaMojom from 'gen/brave/components/ntp_background_im
 import * as NewTabTakeoverMojom from 'gen/brave/components/new_tab_takeover/mojom/new_tab_takeover.mojom.m.js'
 import * as BraveAdsMojom from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
+import type { RectF } from 'gen/ui/webui/resources/tsc/mojo/ui/gfx/geometry/mojom/geometry.mojom-webui'
 
 import {
   SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground
@@ -47,6 +48,7 @@ export default function App(props: React.PropsWithChildren) {
   const [sponsoredRichMediaAdEventHandler, setSponsoredRichMediaAdEventHandler] = React.useState<NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote | null>(null)
   const [newTabTakeover, setNewTabTakeover] = React.useState<NewTabTakeoverMojom.NewTabTakeoverRemote | null>(null)
   const [richMediaHasLoaded, setRichMediaHasLoaded] = React.useState(false)
+  const [safeArea, setSafeArea] = React.useState<RectF | undefined>()
 
   const getCurrentWallpaper = React.useCallback(async () => {
     if (!newTabTakeover || !placementId || !creativeInstanceId) {
@@ -77,14 +79,22 @@ export default function App(props: React.PropsWithChildren) {
     const newTabTakeover = NewTabTakeoverMojom.NewTabTakeover.getRemote();
     setNewTabTakeover(newTabTakeover)
 
+    const pageCallbackRouter = new NewTabTakeoverMojom.NewTabTakeoverPageCallbackRouter()
+    pageCallbackRouter.setSafeArea.addListener((safeArea: RectF) => {
+      setSafeArea(safeArea)
+    })
+    newTabTakeover.setPage(pageCallbackRouter.$.bindNewPipeAndPassRemote())
+
     const sponsoredRichMediaAdEventHandler = new NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote()
     newTabTakeover.setSponsoredRichMediaAdEventHandler(sponsoredRichMediaAdEventHandler.$.bindNewPipeAndPassReceiver())
     setSponsoredRichMediaAdEventHandler(sponsoredRichMediaAdEventHandler)
 
     return () => {
+      pageCallbackRouter.$.close()
       setSponsoredRichMediaBackgroundInfo(null)
       setNewTabTakeover(null)
       setSponsoredRichMediaAdEventHandler(null)
+      setSafeArea(undefined)
     }
   }, [])
 
@@ -98,6 +108,7 @@ export default function App(props: React.PropsWithChildren) {
         <SponsoredRichMediaBackground
           sponsoredRichMediaBackgroundInfo={sponsoredRichMediaBackgroundInfo}
           richMediaHasLoaded={richMediaHasLoaded}
+          safeArea={safeArea}
           onLoaded={() => setRichMediaHasLoaded(true)}
           onEventReported={(adEventType) => {
             sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
