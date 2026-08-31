@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/extend.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -61,6 +62,14 @@ bool HasStrippableImage(
 StripResult StripListOnBlockingThread(
     std::vector<blink::mojom::FileChooserFileInfoPtr> list) {
   StripResult result;
+  auto temp_file_deletor = [&result](const base::FilePath& temp) {
+    // The gaurd helps to schedule the delete to upstream's delete lifecycle
+    // if ever our own attempt to delete the temporary file failed.
+    if (!base::DeleteFile(temp)) {
+      result.temp_files.push_back(std::move(temp));
+    }
+  };
+
   for (auto& info : list) {
     if (!info || !info->is_native_file()) {
       continue;
@@ -79,6 +88,8 @@ StripResult StripListOnBlockingThread(
     if (!base::CopyFile(src, temp)) {
       DVLOG(1) << "Upload strip skipped; Failed to copy the image file to a "
                   "temporary file.";
+      temp_file_deletor(temp);
+      continue;
     }
 
     // We try and remove the iptc metadata from the file.
@@ -86,11 +97,7 @@ StripResult StripListOnBlockingThread(
         image_metadata_stripper::StrippingClient::kFileSelect, temp);
     if (!success) {
       DVLOG(1) << "No stripping occured; keeping original: " << src;
-      // The gaurd helps to schedule the delete to upstream's delete lifecycle
-      // if ever our own attempt to delete the temporary file failed.
-      if (!base::DeleteFile(temp)) {
-        result.temp_files.push_back(std::move(temp));
-      }
+      temp_file_deletor(temp);
       continue;
     }
 
@@ -99,10 +106,10 @@ StripResult StripListOnBlockingThread(
     // directly to the result.
     // TODO(https://github.com/brave/brave-browser/issues/5238): On macOS the
     // file control shows the temp basename (e.g.
-    // .com.brave.Browser.channelNameHere.XXXXXX). From LLM it seems the reason
-    // to be the following: LayoutThemeMac::DisplayNameForFile uses
-    // NSFileManager displayNameAtPath of the backing path so even setting
-    // display_name / File.name is not enough. See
+    // .com.brave.Browser.channelNameHere.XXXXXX).
+    // LayoutThemeMac::DisplayNameForFile uses NSFileManager displayNameAtPath
+    // of the backing path so even setting display_name / File.name is not
+    // enough. See
     // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/
     // renderer/core/layout/layout_theme_mac.mm;l=60 for details.
     // Need to figure out how to handle this issue.
@@ -124,10 +131,8 @@ void OnStripComplete(
     StripResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // Update the |temporary_files| list to mark the deletion of our newly created
-  // tmp files.
-  for (auto& temp : result.temp_files) {
-    temporary_files.push_back(std::move(temp));
-  }
+  // temp files.
+  base::Extend(temporary_files, std::move(result.temp_files));
   std::move(notify).Run(std::move(result.list));
 }
 
