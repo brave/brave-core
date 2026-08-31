@@ -101,7 +101,7 @@ hooks = [
     'pattern': '.',
     # Required for download_cryptography below. Specifically, newer versions of
     # pip are required for obtaining binary wheels on Arm64 macOS.
-    'action': ['python3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '--no-warn-script-location', 'pip'],
+    'action': ['python3', '-m', 'ensurepip', '--upgrade'],
   },
   {
     'name': 'download_cryptography',
