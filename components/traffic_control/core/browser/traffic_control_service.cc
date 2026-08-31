@@ -44,6 +44,10 @@ TrafficControlService::FindMatchingRule(const GURL& url) const {
   return matcher_.FindMatchingRule(url);
 }
 
+void TrafficControlService::Shutdown() {
+  pref_change_registrar_.RemoveAll();
+}
+
 void TrafficControlService::RebuildMatcher() {
   matcher_.Rebuild(GetRulesFromPrefs(*prefs_));
 }

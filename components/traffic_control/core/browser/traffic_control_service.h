@@ -40,6 +40,9 @@ class TrafficControlService : public KeyedService {
   base::optional_ref<const mojom::TrafficRule> FindMatchingRule(
       const GURL& url) const;
 
+  // KeyedService:
+  void Shutdown() override;
+
  private:
   void RebuildMatcher();
 
