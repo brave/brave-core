@@ -116,6 +116,8 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   friend class AssociatedWebContentsContentUnitTest;
 
   // content::WebContentsObserver
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
@@ -178,6 +180,10 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   // pending_navigation. This matches the default value of |content_id()|  which
   // this may be used as.
   int pending_navigation_id_ = -1;
+
+  // Whether the navigation about to commit is a reload. Set in
+  // ReadyToCommitNavigation() and consumed by NavigationEntryCommitted().
+  bool pending_navigation_is_reload_ = false;
 
   std::u16string previous_page_title_;
   bool is_page_loaded_ = false;
