@@ -18,7 +18,6 @@
 #include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 namespace line_chart {

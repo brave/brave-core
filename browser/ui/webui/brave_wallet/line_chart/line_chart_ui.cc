@@ -14,7 +14,6 @@
 #include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)

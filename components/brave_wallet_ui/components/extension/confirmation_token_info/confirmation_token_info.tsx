@@ -74,6 +74,7 @@ type TokenInfoLabel =
   | 'send'
   | 'to'
   | 'shield'
+  | 'unshield'
   | 'fee'
   | 'swapSource'
   | 'swapDestination'
@@ -143,6 +144,8 @@ export function ConfirmationTokenInfo(props: Props) {
         return getLocale(S.BRAVE_WALLET_RECEIVE_MINIMUM)
       case 'shield':
         return getLocale(S.BRAVE_WALLET_SHIELDING)
+      case 'unshield':
+        return getLocale(S.BRAVE_WALLET_UNSHIELDING)
       default:
         return getLocale(S.BRAVE_WALLET_RECEIVE)
     }

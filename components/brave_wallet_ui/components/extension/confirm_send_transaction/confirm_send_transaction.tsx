@@ -223,7 +223,13 @@ export function ConfirmSendTransaction() {
                 {/* Send token and amount */}
                 <ConfirmationTokenInfo
                   token={transactionDetails.token}
-                  label={isShieldingFunds ? 'shield' : 'send'}
+                  label={
+                    isShieldingFunds
+                      ? 'shield'
+                      : isUnshieldingFunds
+                        ? 'unshield'
+                        : 'send'
+                  }
                   valueExact={transactionDetails.valueExact}
                   fiatValue={transactionDetails.fiatValue}
                   network={transactionsNetwork}
