@@ -1322,17 +1322,6 @@ bool BraveBrowserView::UpdateToolbarSecurityState() {
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
-  if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
-                      command_id == IDC_SHARING_HUB_SCREENSHOT) {
-    auto* brave_toolbar_view = views::AsViewClass<BraveToolbarView>(toolbar());
-    if (auto* screenshot_button = brave_toolbar_view->screenshot_button()) {
-      screenshot_button->ShowBubbleForAccelerator();
-      return true;
-    }
-    // Brave's screenshot feature is disabled; fall through to upstream's
-    // Sharing Hub screenshot bubble below.
-  }
-
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser()->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {

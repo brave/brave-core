@@ -33,7 +33,7 @@ ScreenshotButton::~ScreenshotButton() {
   SetCallback(PressedCallback());
 }
 
-void ScreenshotButton::ShowBubbleForAccelerator() {
+void ScreenshotButton::ShowBubbleAndRevealButtonTemporarily() {
   if (!GetVisible()) {
     SetVisible(true);
     hide_after_bubble_closes_ = true;

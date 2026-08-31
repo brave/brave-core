@@ -30,6 +30,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -310,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
 // temporarily reveal the screenshot toolbar button when it's hidden by the
 // "show screenshot button" pref, hiding it again once the bubble closes.
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
-                       ScreenshotAcceleratorShowsBubbleAndTogglesButton) {
+                       ScreenshotCommandShowsBubbleAndTogglesButton) {
   ASSERT_FALSE(
       browser()->GetProfile()->GetPrefs()->GetBoolean(kShowScreenshotButton));
 
@@ -334,6 +335,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   // again since it was only shown for the shortcut.
   EXPECT_TRUE(browser_view()->AcceleratorPressed(screenshot_accelerator));
   ASSERT_TRUE(base::test::RunUntil([&]() { return !button->GetVisible(); }));
+
+  // Other paths that trigger the same command should also show the bubble and
+  // reveal the button temporarily.
+  browser()->command_controller()->ExecuteCommand(IDC_SHARING_HUB_SCREENSHOT);
+  EXPECT_TRUE(button->GetVisible());
 }
 
 // If the user has the screenshot button permanently shown via the pref, the
