@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; }
+    #target { position: fixed; inset: 0; background: #fff; }
+    #cvs { position: fixed; left: 0; top: 0; width: 200px; height: 200px; background: #f00; }
+  </style>
+</head>
+<body>
+  <div id="target">div</div>
+  <canvas id="cvs" width="200" height="200"></canvas>
+  <script>
+    // The feature's bypass only has an observable effect if the page suppresses
+    // the context menu via preventDefault(), so this page always does.
+    document.addEventListener('contextmenu', (e) => e.preventDefault(), true);
+  </script>
+</body>
+</html>
