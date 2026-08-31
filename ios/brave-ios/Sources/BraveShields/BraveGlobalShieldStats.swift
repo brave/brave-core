@@ -2,62 +2,48 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Combine
 import Foundation
 import Preferences
 import Strings
 
-open class BraveGlobalShieldStats {
+@Observable
+public class BraveGlobalShieldStats {
   public static let shared = BraveGlobalShieldStats()
-  public static let didUpdateNotification = "BraveGlobalShieldStatsDidUpdate"
 
-  @Published public var adblock: Int = 0 {
+  public var adblock: Int = 0 {
     didSet {
       Preferences.BlockStats.adsCount.value = adblock
-      postUpdateNotification()
     }
   }
 
   public var trackingProtection: Int = 0 {
     didSet {
       Preferences.BlockStats.trackersCount.value = trackingProtection
-      postUpdateNotification()
     }
   }
 
   public var scripts: Int = 0 {
     didSet {
       Preferences.BlockStats.scriptsCount.value = scripts
-      postUpdateNotification()
     }
   }
 
   public var images: Int = 0 {
     didSet {
       Preferences.BlockStats.imagesCount.value = images
-      postUpdateNotification()
     }
   }
 
   public var safeBrowsing: Int = 0 {
     didSet {
       Preferences.BlockStats.phishingCount.value = safeBrowsing
-      postUpdateNotification()
     }
   }
 
   public var fpProtection: Int = 0 {
     didSet {
       Preferences.BlockStats.fingerprintingCount.value = fpProtection
-      postUpdateNotification()
     }
-  }
-
-  private func postUpdateNotification() {
-    NotificationCenter.default.post(
-      name: Notification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
-      object: nil
-    )
   }
 
   fileprivate init() {
@@ -69,10 +55,10 @@ open class BraveGlobalShieldStats {
     safeBrowsing = Preferences.BlockStats.phishingCount.value
   }
 
-  fileprivate let millisecondsPerItem: Int = 50
   public let averageBytesSavedPerItem = 30485
 
   public var timeSaved: String {
+    let millisecondsPerItem: Int = 50
     let estimatedMillisecondsSaved = (adblock + trackingProtection) * millisecondsPerItem
     let hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
     let minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
