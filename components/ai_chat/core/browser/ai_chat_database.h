@@ -20,6 +20,10 @@
 #include "sql/database.h"
 #include "sql/init_status.h"
 
+namespace sql {
+class Statement;
+}  // namespace sql
+
 namespace syncer {
 class MetadataBatch;
 }  // namespace syncer
@@ -59,6 +63,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual mojom::ConversationArchivePtr GetConversationData(
       std::string_view conversation_uuid);
 
+  // Gets all conversation entries belonging to the thread with the provided
+  // uuid.
+  virtual std::vector<mojom::ConversationTurnPtr> GetConversationThreadEntries(
+      std::string_view thread_uuid);
+
   // Returns new ID for the provided entry and any provided associated content
   virtual bool AddConversation(mojom::ConversationPtr conversation,
                                std::vector<std::string> contents,
@@ -76,6 +85,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
       mojom::ConversationTurnPtr entry,
       std::optional<std::string> editing_id = std::nullopt);
 
+  // Adds a new thread's metadata to the database. A no-op if the thread's
+  // uuid already exists.
+  virtual bool AddConversationThread(mojom::ThreadPtr thread);
+
   virtual bool UpdateToolUseEvent(std::string_view entry_uuid,
                                   size_t event_order,
                                   mojom::ToolUseEventPtr tool_use_event);
@@ -92,6 +105,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual bool UpdateConversationTokenInfo(std::string_view conversation_uuid,
                                            uint64_t total_tokens,
                                            uint64_t trimmed_tokens);
+
+  // Updates the token information of the thread with the provided UUID
+  virtual bool UpdateThreadTokenInfo(std::string_view thread_uuid,
+                                     uint64_t total_tokens,
+                                     uint64_t trimmed_tokens);
 
   // Deletes the conversation with the provided UUID
   virtual bool DeleteConversation(std::string_view conversation_uuid);
@@ -142,7 +160,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   sql::InitStatus InitInternal();
 
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
-      std::string_view conversation_id);
+      sql::Statement& statement);
+  std::vector<mojom::ThreadPtr> GetConversationThreads(
+      std::string_view conversation_uuid);
   std::vector<mojom::ContentArchivePtr> GetArchiveContentsForConversation(
       std::string_view conversation_uuid);
 
