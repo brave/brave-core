@@ -333,8 +333,10 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
           [](GetFocusTabsCallback callback,
              std::vector<GenerationResult> results) {
             // Merge the results and call callback with tab IDs or error.
+            // No tab matching the topic is a valid answer, not a failure.
             std::move(callback).Run(
-                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(
+                    results, EmptyResult::kIsValid));
           },
           std::move(callback)));
 

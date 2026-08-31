@@ -87,6 +87,17 @@ export function getHtml(this: TabFocusPageElement) {
                 ${this.getSubmitButtonLabel_()}
               </leo-button>
             </div>
+            ${this.noMatchingTabs_
+              ? html`
+                  <leo-alert
+                    id="noMatchingTabs"
+                    type="info"
+                    hideIcon="{true}"
+                  >
+                    ${this.getNoMatchingTabsMessage_()}
+                  </leo-alert>
+                `
+              : ''}
             ${this.undoTopic_ !== ''
               ? html`
                   <leo-alert

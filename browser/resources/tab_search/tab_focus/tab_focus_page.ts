@@ -46,6 +46,7 @@ export class TabFocusPageElement extends CrLitElement {
       undoTopic_: { type: String },
       isLoadingTopics: { type: Boolean },
       errorMessage: { type: String },
+      noMatchingTabs_: { type: Boolean },
       needsPremium: { type: Boolean },
       showFRE_: { type: Boolean },
     }
@@ -54,6 +55,7 @@ export class TabFocusPageElement extends CrLitElement {
   protected accessor topics_: string[] = []
   protected accessor topic = ''
   protected accessor undoTopic_ = ''
+  protected accessor noMatchingTabs_ = false
   protected accessor showFRE_ = loadTimeData.getBoolean(
     'showTabOrganizationFRE',
   )
@@ -98,6 +100,7 @@ export class TabFocusPageElement extends CrLitElement {
 
   private getFocusTabs_(topic: string) {
     this.undoTopic_ = ''
+    this.noMatchingTabs_ = false
     this.apiProxy_.getFocusTabs(topic).then(({ windowCreated, error }) => {
       if (error) {
         this.errorMessage = error.message
@@ -109,8 +112,15 @@ export class TabFocusPageElement extends CrLitElement {
       this.errorMessage = ''
       if (windowCreated) {
         this.undoTopic_ = topic
+      } else {
+        // The request succeeded, no open tab was a close enough match.
+        this.noMatchingTabs_ = true
       }
     })
+  }
+
+  protected getNoMatchingTabsMessage_() {
+    return loadTimeData.getString('tabOrganizationNoMatchingTabsMessage')
   }
 
   private maybeUpdateSuggestedTopics_ = () => {

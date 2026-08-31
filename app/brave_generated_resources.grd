@@ -1582,6 +1582,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_ORGANIZE_TAB_WINDOW_CREATED_MESSAGE" desc="Message shown when a new window is created">
         New window created for <ph name="TOPIC">$1<ex>Social media</ex></ph>
       </message>
+      <message name="IDS_BRAVE_ORGANIZE_TAB_NO_MATCHING_TABS_MESSAGE" desc="Message shown when no open tab matches the topic the user asked for">
+        No tabs matched that topic. Try describing it differently.
+      </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_SEND_TAB_DATA_MESSAGE" desc="Description of how tab data is shared with Leo">
         This feature sends data about your open tabs to Leo, Brave's AI-powered browser assistant.
       </message>
