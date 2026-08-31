@@ -367,12 +367,15 @@ extension BrowserViewController {
       case pushOnly = 2
       case ntpAndPush = 3
     }
+    let isSponsoredAdsEnabled = profileController.profile.prefs.boolean(
+      forPath: kBraveAdsSponsoredEnabledPrefName
+    )
     var answer: Answer = .none
-    if rewards.ads.isEnabled && Preferences.NewTabPage.backgroundMediaType.isSponsored {
+    if rewards.ads.isEnabled && isSponsoredAdsEnabled {
       answer = .ntpAndPush
     } else if rewards.ads.isEnabled {
       answer = .pushOnly
-    } else if Preferences.NewTabPage.backgroundMediaType.isSponsored {
+    } else if isSponsoredAdsEnabled {
       answer = .ntpOnly
     }
     UmaHistogramEnumeration("Brave.Rewards.AdTypesEnabled", sample: answer)

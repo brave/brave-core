@@ -188,7 +188,7 @@ class NewTabPageViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager,
       profilePrefs: profilePrefs
     )
-    background = NewTabPageBackground(dataSource: dataSource)
+    background = NewTabPageBackground(dataSource: dataSource, prefs: profilePrefs)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)

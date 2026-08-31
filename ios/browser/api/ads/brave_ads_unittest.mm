@@ -716,3 +716,21 @@ TEST_F(BraveAdsTest,
   // Act & Assert
   EXPECT_FALSE([ads_ registerAdsResourcesForCountryCode:@"zz"]);
 }
+
+TEST_F(BraveAdsTest, ClearsNewTabPageShowBackgroundImagePrefOnInit) {
+  // Arrange
+  profile_prefs()->SetBoolean(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
+
+  // Act
+  BraveAds* ads = [[BraveAds alloc]
+      initWithStateStoragePath:base::SysUTF8ToNSString(
+                                   temp_dir_.GetPath().value())];
+
+  // Assert
+  EXPECT_NSNE(nil, ads);
+  EXPECT_FALSE(profile_prefs()->HasPrefPath(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
+  EXPECT_TRUE(profile_prefs()->GetBoolean(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
+}
