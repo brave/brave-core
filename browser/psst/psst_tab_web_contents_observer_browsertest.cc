@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -657,6 +656,38 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         kActionShowPsstIcon);
   }
 
+  // Navigates `otr_browser`'s active tab to a PSST-matching URL and verifies
+  // that PSST is entirely absent: no tab helper, no infobar and no location bar
+  // page action.
+  void ExpectPsstUnavailableInOffTheRecordBrowser(Browser* otr_browser) {
+    ASSERT_TRUE(otr_browser);
+    ASSERT_TRUE(otr_browser->GetProfile()->IsOffTheRecord());
+
+    content::WebContents* const otr_web_contents =
+        otr_browser->tab_strip_model()->GetActiveWebContents();
+    ASSERT_TRUE(otr_web_contents);
+
+    const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+    ASSERT_TRUE(content::NavigateToURL(otr_web_contents, url));
+
+    auto* const tab_interface =
+        tabs::TabInterface::GetFromContents(otr_web_contents);
+    ASSERT_TRUE(tab_interface);
+    auto* const brave_tab_features = tabs::BraveTabFeatures::FromTabFeatures(
+        tab_interface->GetTabFeatures());
+    ASSERT_TRUE(brave_tab_features);
+    EXPECT_FALSE(brave_tab_features->psst_web_contents_observer());
+
+    auto* const otr_infobar_manager =
+        infobars::ContentInfoBarManager::FromWebContents(otr_web_contents);
+    ASSERT_TRUE(otr_infobar_manager);
+    EXPECT_FALSE(GetPsstInfobar(otr_infobar_manager));
+
+    // The PSST action item isn't registered for off-the-record windows, so the
+    // location bar has no view for it at all, not even a hidden one.
+    EXPECT_FALSE(GetPsstPageActionViewForBrowser(otr_browser));
+  }
+
   // Navigates to `url` and waits for the PSST icon to appear in the location
   // bar.
   void NavigateAndWaitForPsstIconVisible(const GURL& url) {
@@ -1171,46 +1202,27 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_NE(light_actual, dark_actual);
 }
 
-// PSST must not be available in a guest profile. Guest profiles are
-// off-the-record, so PsstTabWebContentsObserver::MaybeCreateForWebContents()
-// never creates a tab helper for them, and hence no infobar or location bar
-// icon can ever appear.
+// PSST is unavailable off-the-record, so opening a guest window must neither
+// show any PSST UI nor crash while setting up the tab's features.
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        NotAvailableInGuestProfile) {
-  ASSERT_TRUE(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
-
   Browser* const guest_browser = CreateGuestBrowser();
   ASSERT_TRUE(guest_browser);
-  Profile* const guest_profile = guest_browser->GetProfile();
-  ASSERT_TRUE(guest_profile->IsOffTheRecord());
-  EXPECT_TRUE(guest_profile->GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+  // The pref is on by default even where the feature can't run, so the profile
+  // type is what has to be checked.
+  EXPECT_TRUE(
+      guest_browser->GetProfile()->GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 
-  content::WebContents* const guest_web_contents =
-      guest_browser->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(guest_web_contents);
+  ASSERT_NO_FATAL_FAILURE(
+      ExpectPsstUnavailableInOffTheRecordBrowser(guest_browser));
+}
 
-  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
-  ASSERT_TRUE(content::NavigateToURL(guest_web_contents, url));
-
-  // No PSST tab helper is ever created for an off-the-record profile, so
-  // nothing exists that could show the infobar or the location bar icon.
-  auto* const tab_interface =
-      tabs::TabInterface::GetFromContents(guest_web_contents);
-  ASSERT_TRUE(tab_interface);
-  auto* const brave_tab_features =
-      tabs::BraveTabFeatures::FromTabFeatures(tab_interface->GetTabFeatures());
-  ASSERT_TRUE(brave_tab_features);
-  EXPECT_FALSE(brave_tab_features->psst_web_contents_observer());
-
-  auto* const guest_infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(guest_web_contents);
-  ASSERT_TRUE(guest_infobar_manager);
-  EXPECT_FALSE(GetPsstInfobar(guest_infobar_manager));
-
-  IconLabelBubbleView* const psst_view =
-      GetPsstPageActionViewForBrowser(guest_browser);
-  ASSERT_TRUE(psst_view);
-  EXPECT_FALSE(psst_view->GetVisible());
+// Same as above for incognito, which is the off-the-record profile of a regular
+// profile rather than its own profile type.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       NotAvailableInIncognitoProfile) {
+  ASSERT_NO_FATAL_FAILURE(
+      ExpectPsstUnavailableInOffTheRecordBrowser(CreateIncognitoBrowser()));
 }
 
 }  // namespace psst
