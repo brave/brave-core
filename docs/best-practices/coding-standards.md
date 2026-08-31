@@ -1351,28 +1351,62 @@ target produces it.
 
 <a id="CS-071"></a>
 
-## ✅ Use Security Origins (Not URLs) for Security Decisions on sites
+## ✅ Use Security Origins (Not URLs) for Security Decisions on Sites
 
-Chromium sometimes loads remote content under an opaque ("null-like") security
-origin — e.g. `<iframe sandbox>`, fenced frames — to reduce platform privileges
-(no cookies, etc.). That is distinct from _inferred_ origin cases such as
-`about:blank` or `blob:` frames. Opaque origins break the usual assumption that
-the security origin identifies the party controlling the content. Brave privacy
-interventions often need that controlling party, so they can still apply
-protections below what the platform grants.
+**When extending or limiting capabilities for a site, decide from `url::Origin`
+/ `SecurityOrigin` — never from a raw `GURL`.** Tie the decision to the exact
+`RenderFrameHost` under consideration, and read its origin with
+`GetLastCommittedOrigin()`:
 
-**For determining a frame's origin for Brave privacy interventions** — content
-filtering rules, scriptlet injection, content-settings-tied interventions
-(fingerprinting level, adblock aggressiveness), and same-site checks for
-cosmetic filtering at the default adblocking level — use this algorithm:
+```cpp
+// ✅ CORRECT - origin of the frame you are deciding about
+const url::Origin& origin = render_frame_host->GetLastCommittedOrigin();
+```
 
-1. If the frame has a non-opaque security origin, use that.
-2. Else if it is a network-loaded frame, use the origin the content was loaded
-   from.
-3. Else (locally set content such as `about:srcdoc`), use the security origin of
-   the parent frame.
+Converting a `GURL` to an origin is often **not** the origin you expect. See
+Chromium's
+[origin-vs-url guide](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/security/origin-vs-url.md)
+for the gotchas.
 
-See also the
-[Chromium origin-vs-url guide](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/security/origin-vs-url.md).
+```cpp
+// ⚠️ DANGEROUS - GURL → origin is frequently the wrong origin
+url::Origin::Create(url);
+url::SchemeHostPort(url);
+```
+
+Origins come in three kinds. Start from `GetLastCommittedOrigin()`, then apply
+the extra rules for opaque and inherited cases.
+
+### Non-opaque origins
+
+The usual case: the frame has a tuple origin such as
+`https://www.example.com:8080`. Use that origin (or `SecurityOrigin`) directly.
+
+### Opaque origins
+
+Assigned to `file://`, `data:`, and sandboxed frames (`<iframe sandbox>`).
+Querying can yield a **null** origin, so there is often little to key a policy
+on.
+
+These frames already run with limited capabilities — **default to restricted**.
+If a decision is still required:
+
+- **Network request:** use the request's `initiator_origin`. See this
+  [example change](https://github.com/brave/brave-core/pull/38539/changes#diff-6b02a30e91fdb3e3be80924c66018e9e434a29122f9f6846e2d6f043a05a9c69R84).
+- **Otherwise:** walk up to the nearest ancestor frame with a non-opaque origin
+  and use that.
+
+### Inherited origins
+
+`blob:`, `about:blank`, and `about:srcdoc` **inherit** the embedder frame's
+origin. `GetLastCommittedOrigin()` on that `RenderFrameHost` therefore returns
+the embedder's origin — which is the origin you should use.
+
+[brave-browser#56048](https://github.com/brave/brave-browser/issues/56048) is an
+example of getting this wrong: any embedder of a `blob:` URL could bypass
+farbling because the decision was not based on the embedder's origin.
+
+`about:blank` and `about:srcdoc` can themselves be opaque if they were embedded
+in an opaque-origin context.
 
 ---
