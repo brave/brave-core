@@ -66,17 +66,6 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
           self.dismiss(animated: true) {
             self.delegate?.openDestinationURL(actionURL)
           }
-        },
-        handlePanelActionInNativeUI: { [unowned self] destination in
-          let walletHostingController = WalletHostingViewController(
-            walletStore: walletStore,
-            webImageDownloader: webImageDownloader,
-            presentingContext: .walletAction(destination)
-          )
-          walletHostingController.delegate = self.delegate
-          self.dismiss(animated: true) {
-            self.present(walletHostingController, animated: true)
-          }
         }
       )
       if UIDevice.current.userInterfaceIdiom == .pad {

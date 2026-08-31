@@ -31,8 +31,6 @@ public protocol BraveWalletDelegate: AnyObject {
 
 /// The context of which wallet is being presented. Controls what content is shown when the wallet is unlocked
 public enum PresentingContext {
-  /// The default context shows the main wallet view which includes portfolio, buy/send/swap, etc.
-  case `default`(_ selectedTab: CryptoTab)
   /// Shows the user any pending requests made by webpages such as transaction confirmations, adding networks, switch networks, add tokens, sign message, etc.
   case pendingRequests
   /// Shows when a webpage wants to connect with the users wallet
@@ -44,10 +42,6 @@ public enum PresentingContext {
   case panelUnlockOrSetup
   /// Shows the user available wallet accounts to use
   case accountSelection
-  /// Shows the user transaction history of current selected account and network
-  case transactionHistory
-  /// Shows the user one of the three transaction action screens 1. Buy 2. Send 3. Swap 4. Deposit
-  case walletAction(_ destination: WalletActionDestination)
   /// Shows the user the wallet settings screen
   case settings
   /// Shows when the users want to edit connected account the the webpage
@@ -73,7 +67,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   public init(
     walletStore: WalletStore,
     webImageDownloader: WebImageDownloaderType,
-    presentingContext: PresentingContext = .default(.portfolio),
+    presentingContext: PresentingContext,
     onUnlock: (() -> Void)? = nil
   ) {
     gesture = WalletInteractionGestureRecognizer(

@@ -96,3 +96,9 @@ struct LoadingNFTView: View {
       }
   }
 }
+
+// https://www.fivestars.blog/articles/swiftui-share-layout-information/
+struct SizePreferenceKey: PreferenceKey {
+  static var defaultValue: CGSize = .zero
+  static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
+}

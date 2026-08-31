@@ -34,28 +34,6 @@ extension View {
     }
   }
 
-  func applyRegularNavigationAppearance() -> some View {
-    introspectViewController(customize: { vc in
-      vc.navigationItem.do {
-        let appearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.backgroundColor = UIColor(braveSystemName: .containerBackground)
-          return appearance
-        }()
-        $0.standardAppearance = appearance
-        $0.compactAppearance = appearance
-        $0.scrollEdgeAppearance = appearance
-      }
-    })
-  }
-
   func transparentUnlessScrolledNavigationAppearance() -> some View {
     introspectViewController(customize: { vc in
       vc.navigationItem.do {

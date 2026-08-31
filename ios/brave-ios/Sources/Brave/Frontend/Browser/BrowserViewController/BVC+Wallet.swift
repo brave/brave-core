@@ -208,7 +208,7 @@ extension BrowserViewController: BraveWalletDelegate {
     walletHostingController.delegate = self
 
     switch presentWalletWithContext {
-    case .default, .settings:
+    case .settings:
       // Dismiss Wallet Panel first, then present Wallet
       self.dismiss(animated: true) { [weak self] in
         self?.present(walletHostingController, animated: true)

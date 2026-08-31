@@ -51,6 +51,7 @@ struct EditNonceView: View {
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)
       }
+      .listRowBackground(Color.clear)
     }
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)

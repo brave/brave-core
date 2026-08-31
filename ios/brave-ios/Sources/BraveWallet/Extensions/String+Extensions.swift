@@ -69,18 +69,4 @@ extension String {
     let hashString = hash.map { String(format: "%02hhx", $0) }.joined()
     return hashString
   }
-
-  var qrCodeImage: UIImage? {
-    guard let data = self.data(using: .utf8) else { return nil }
-    let context = CIContext()
-    let filter = CIFilter.qrCodeGenerator()
-    filter.message = data
-    filter.correctionLevel = "H"
-    if let image = filter.outputImage,
-      let cgImage = context.createCGImage(image, from: image.extent)
-    {
-      return UIImage(cgImage: cgImage)
-    }
-    return nil
-  }
 }

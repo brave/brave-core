@@ -69,82 +69,6 @@ struct AccountsView: View {
     .navigationTitle(Strings.Wallet.accountsPageTitle)
     .navigationBarTitleDisplayMode(.inline)
     .background(Color(braveSystemName: .containerBackground))
-    .background(
-      NavigationLink(
-        isActive: Binding(
-          get: { selectedAccountActivity != nil },
-          set: {
-            if !$0 {
-              selectedAccountActivity = nil
-              if let selectedAccountActivity {
-                cryptoStore.closeAccountActivityStore(for: selectedAccountActivity)
-              }
-            }
-          }
-        ),
-        destination: {
-          if let account = selectedAccountActivity {
-            AccountActivityView(
-              store: cryptoStore.accountActivityStore(
-                for: account,
-                isWalletPanel: false
-              ),
-              cryptoStore: cryptoStore,
-              keyringStore: keyringStore,
-              walletActionDestination: $walletActionDestination
-            )
-          }
-        },
-        label: {
-          EmptyView()
-        }
-      )
-    )
-    .background(
-      Color.clear
-        .sheet(
-          isPresented: Binding(
-            get: { selectedAccountForEdit != nil },
-            set: { if !$0 { selectedAccountForEdit = nil } }
-          )
-        ) {
-          if let account = selectedAccountForEdit {
-            AccountDetailsView(
-              keyringStore: keyringStore,
-              account: account,
-              editMode: true
-            )
-          }
-        }
-    )
-    .background(
-      Color.clear
-        .sheet(
-          isPresented: Binding(
-            get: { selectedAccountForExport != nil },
-            set: { if !$0 { selectedAccountForExport = nil } }
-          )
-        ) {
-          if let account = selectedAccountForExport {
-            NavigationView {
-              AccountPrivateKeyView(
-                keyringStore: keyringStore,
-                account: account
-              )
-              .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                  Button {
-                    selectedAccountForExport = nil
-                  } label: {
-                    Text(Strings.cancelButtonTitle)
-                      .foregroundColor(Color(braveSystemName: .textInteractive))
-                  }
-                }
-              }
-            }
-          }
-        }
-    )
     .onAppear {
       store.update()
     }
@@ -296,35 +220,6 @@ private struct AccountCardView: View {
     }
   }
 
-  private var bottomSectionContent: some View {
-    HStack {
-      if isLoading && tokensWithBalances.isEmpty {
-        RoundedRectangle(cornerRadius: 4)
-          .fill(Color(white: 0.9))
-          .frame(width: 48, height: 24)
-          .redacted(reason: .placeholder)
-          .shimmer(true)
-        Spacer()
-        Text("$0.00")
-          .font(.title3.weight(.medium))
-          .foregroundColor(Color(braveSystemName: .textPrimary))
-          .redacted(reason: .placeholder)
-          .shimmer(true)
-      } else {
-        MultipleAssetIconsView(
-          tokens: tokensWithBalances,
-          iconSize: 24,
-          maxIconSize: 32
-        )
-        Spacer()
-        Text(balance)
-          .font(.title3.weight(.medium))
-          .foregroundColor(Color(braveSystemName: .textPrimary))
-      }
-    }
-    .padding(contentPadding)
-  }
-
   var body: some View {
     Button {
       action(.viewDetails)
@@ -332,11 +227,6 @@ private struct AccountCardView: View {
       VStack(spacing: 0) {
         topSectionContent()
           .background(colorScheme == .dark ? Color.black.opacity(0.5) : Color.white.opacity(0.5))
-
-        bottomSectionContent
-          .background(
-            colorScheme == .dark ? Color.black.opacity(0.4) : Color.clear
-          )
       }
       .background(
         RoundedRectangle(cornerRadius: 8)

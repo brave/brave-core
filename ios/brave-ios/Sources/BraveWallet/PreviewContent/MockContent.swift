@@ -11,6 +11,14 @@ import Foundation
 #if DEBUG
 
 extension BraveWallet.BlockchainToken {
+  /// Returns a copy of the `BlockchainToken` with the given `visible` flag and `isSpam` flag.
+  func copy(asVisibleAsset isVisible: Bool, isSpam: Bool = false) -> Self {
+    (self.copy() as! Self).then {
+      $0.visible = isVisible
+      $0.isSpam = isSpam
+    }
+  }
+
   static let previewToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "",
     name: "Ethereum",

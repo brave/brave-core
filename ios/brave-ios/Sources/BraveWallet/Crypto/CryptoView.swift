@@ -77,17 +77,6 @@ public struct CryptoView: View {
         if let store = walletStore.cryptoStore {
           Group {
             switch presentingContext {
-            case .`default`(let selectedTab):
-              if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-                EmptyView()
-              } else {
-                CryptoContainerView(
-                  keyringStore: keyringStore,
-                  cryptoStore: store,
-                  toolbarDismissContent: dismissButtonToolbarContents,
-                  selectedTab: selectedTab
-                )
-              }
             case .pendingRequests:
               RequestContainerView(
                 keyringStore: keyringStore,
@@ -97,21 +86,14 @@ public struct CryptoView: View {
                   dismissAction()
                 },
                 onViewInActivity: {
-                  if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-                    openWalletURLAction?(.webUI.wallet.activity)
-                  } else {
-                    store.selectedTab = .activity
-                  }
+                  openWalletURLAction?(.webUI.wallet.activity)
                 }
               )
               .onDisappear {
                 // onDisappear allows us to catch all cases (swipe, cancel, confirm/approve/sign)
                 store.isPresentingPendingRequest = false
                 store.prepare()
-                // dismiss the whole view if WebUI is enalbed
-                if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-                  dismissAction()
-                }
+                dismissAction()
               }
             case .requestPermissions(let request, let onPermittedAccountsUpdated):
               NewSiteConnectionView(
@@ -143,82 +125,6 @@ public struct CryptoView: View {
                 )
               }
               .navigationViewStyle(.stack)
-            case .transactionHistory:
-              NavigationView {
-                AccountTransactionListView(
-                  activityStore: store.accountActivityStore(
-                    for: walletStore.keyringStore.selectedAccount,
-                    isWalletPanel: true
-                  ),
-                  networkStore: store.networkStore
-                )
-                .onDisappear {
-                  store.closeAccountActivityStore(for: walletStore.keyringStore.selectedAccount)
-                }
-                .toolbar {
-                  dismissButtonToolbarContents
-                }
-              }
-              .navigationViewStyle(.stack)
-            case .walletAction(let destination):
-              switch destination.kind {
-              case .buy:
-                BuyTokenView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  buyTokenStore: store.openBuyTokenStore(destination.initialToken),
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              case .send:
-                SendTokenView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  sendTokenStore: store.openSendTokenStore(destination.initialToken),
-                  completion: { success in
-                    if success {
-                      store.closeWalletActionStores()
-                      dismissAction()
-                    }
-                  },
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              case .swap:
-                SwapCryptoView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  swapTokensStore: store.openSwapTokenStore(destination.initialToken),
-                  completion: { success in
-                    if success {
-                      store.closeWalletActionStores()
-                      dismissAction()
-                    }
-                  },
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              case .deposit(let query):
-                DepositTokenView(
-                  keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  depositTokenStore: store.openDepositTokenStore(
-                    prefilledToken: destination.initialToken,
-                    prefilledAccount: destination.initialAccount
-                  ),
-                  prefilledQuery: query,
-                  onDismiss: {
-                    store.closeWalletActionStores()
-                    dismissAction()
-                  }
-                )
-              }
             case .settings:
               NavigationView {
                 Web3SettingsView(
@@ -339,7 +245,6 @@ public struct CryptoView: View {
         appRatingRequestAction?()
       })
     )
-    .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { oldValue, newValue in
       guard newValue == .crypto else { return }
       switch presentingContext {
@@ -348,20 +253,13 @@ public struct CryptoView: View {
         // 2. wallet is unlocked from wallet webui
         // 3. onboarding is completed from wallet webui
         dismissAction()
-      case .default:
-        // wallet is unlocked from menu
-        if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-          // need to open wallet webui
-          openWalletURLAction?(.webUI.wallet.home)
-        }
       default:
-        break
+        openWalletURLAction?(.webUI.wallet.home)
       }
     }
     .onChange(of: keyringStore.isWalletWebUIBackedUp) { oldValue, newValue in
       // back up wallet from wallet webui
-      if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
-        case .webUI(let action) = presentingContext,
+      if case .webUI(let action) = presentingContext,
         action == .backup,
         !oldValue,
         newValue
@@ -373,109 +271,5 @@ public struct CryptoView: View {
 
   private func dismissAction() {
     presentationMode.dismiss()
-  }
-}
-
-private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
-  var keyringStore: KeyringStore
-  @ObservedObject var cryptoStore: CryptoStore
-  var toolbarDismissContent: DismissContent
-  var selectedTab: CryptoTab
-  @ToolbarContentBuilder
-  // This toolbar content is for `PendingRequestView` which is presented on top of full screen wallet
-  private var pendingRequestToolbarDismissContent: some ToolbarContent {
-    ToolbarItemGroup(placement: .cancellationAction) {
-      Button {
-        cryptoStore.isPresentingPendingRequest = false
-      } label: {
-        Image("wallet-dismiss", bundle: .module)
-          .renderingMode(.template)
-          .foregroundColor(Color(braveSystemName: .iconInteractive))
-      }
-    }
-  }
-
-  var body: some View {
-    CryptoTabsView(
-      cryptoStore: cryptoStore,
-      keyringStore: keyringStore,
-      toolbarDismissContent: toolbarDismissContent
-    )
-    .background(
-      Color.clear
-        .sheet(item: $cryptoStore.walletActionDestination) { action in
-          switch action.kind {
-          case .buy:
-            BuyTokenView(
-              keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              buyTokenStore: cryptoStore.openBuyTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.walletActionDestination = nil }
-            )
-          case .send:
-            SendTokenView(
-              keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.walletActionDestination = nil }
-            )
-          case .swap:
-            SwapCryptoView(
-              keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.walletActionDestination = nil }
-            )
-          case .deposit(let query):
-            DepositTokenView(
-              keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              depositTokenStore: cryptoStore.openDepositTokenStore(
-                prefilledToken: action.initialToken,
-                prefilledAccount: action.initialAccount
-              ),
-              prefilledQuery: query,
-              onDismiss: { cryptoStore.walletActionDestination = nil }
-            )
-          }
-        }
-    )
-    .background(
-      Color.clear
-        .sheet(isPresented: $cryptoStore.isPresentingPendingRequest) {
-          if cryptoStore.pendingRequest != nil {
-            RequestContainerView(
-              keyringStore: keyringStore,
-              cryptoStore: cryptoStore,
-              toolbarDismissContent: pendingRequestToolbarDismissContent,
-              onDismiss: {
-                cryptoStore.isPresentingPendingRequest = false
-              },
-              onViewInActivity: {
-                cryptoStore.selectedTab = .activity
-              }
-            )
-            .onDisappear {
-              cryptoStore.prepare()
-            }
-          }
-        }
-    )
-    .environment(
-      \.walletActionDestination,
-      Binding(
-        get: { [weak cryptoStore] in cryptoStore?.walletActionDestination },
-        set: { [weak cryptoStore] destination in
-          if cryptoStore?.isPresentingAssetSearch == true {
-            cryptoStore?.isPresentingAssetSearch = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-              cryptoStore?.walletActionDestination = destination
-            }
-          } else {
-            cryptoStore?.walletActionDestination = destination
-          }
-        }
-      )
-    )
   }
 }

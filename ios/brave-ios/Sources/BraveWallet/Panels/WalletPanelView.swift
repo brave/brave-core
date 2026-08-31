@@ -373,11 +373,7 @@ struct WalletPanelView: View {
 
   private var fullscreenButton: some View {
     Button {
-      if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-        openWalletURL(.webUI.wallet.home)
-      } else {
-        presentWalletWithContext(.default(.portfolio))
-      }
+      openWalletURL(.webUI.wallet.home)
     } label: {
       Image(braveSystemName: "leo.expand")
         .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -580,11 +576,7 @@ struct WalletPanelView: View {
             Color(braveSystemName: .textPrimary).opacity(0.6)
               .frame(width: pixelLength)
             Button {
-              if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-                openWalletURL(.webUI.wallet.activity)
-              } else {
-                presentWalletWithContext(.transactionHistory)
-              }
+              openWalletURL(.webUI.wallet.activity)
             } label: {
               Image(braveSystemName: "leo.history")
                 .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -608,11 +600,6 @@ struct WalletPanelView: View {
       Color(.systemGroupedBackground)
         .ignoresSafeArea()
     )
-    .onChange(of: cryptoStore.selectedTab) { _, tab in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-        presentWalletWithContext(.default(tab))
-      }
-    }
     .onChange(of: cryptoStore.pendingRequest) { _, newValue in
       if newValue != nil {
         // Slight delay to allow dismissal of unlock modal before presenting pending request modal.

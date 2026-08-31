@@ -390,9 +390,6 @@ extension BraveWalletJsonRpcService {
         } else {
           return Preferences.Wallet.isZcashTestnetEnabled.value
         }
-      } else if network.coin == .ada {
-        return FeatureList.kBraveWalletWebUIIOS?.enabled == true
-          && FeatureList.kBraveWalletCardanoEnabled?.enabled == true
       }
       if respectHiddenNetworksPreference {
         // filter out hidden networks

@@ -9,6 +9,41 @@ import DesignSystem
 import Strings
 import SwiftUI
 
+struct TransactionSection: Equatable, Identifiable {
+  var id: Date { date }
+  let date: Date
+
+  let transactions: [ParsedTransaction]
+}
+
+enum TransactionFollowUpAction {
+  case retry
+  case cancel
+  case speedUp
+
+  var buttonTitle: String {
+    switch self {
+    case .retry:
+      return Strings.Wallet.retryTransactionButtonTitle
+    case .cancel:
+      return Strings.Wallet.cancelTransactionButtonTitle
+    case .speedUp:
+      return Strings.Wallet.speedUpTransactionButtonTitle
+    }
+  }
+
+  var braveSystemImage: String {
+    switch self {
+    case .retry:
+      return "leo.refresh"
+    case .cancel:
+      return "leo.close"
+    case .speedUp:
+      return "leo.network.speed-fast"
+    }
+  }
+}
+
 struct TransactionStatusView: View {
   @ObservedObject var txStatusStore: TransactionStatusStore
   let networkStore: NetworkStore
