@@ -34,7 +34,7 @@ import org.chromium.base.Log;
 import java.io.IOException;
 
 public class CameraSourcePreview extends ViewGroup {
-    private static final String TAG = CameraSourcePreview.class.getSimpleName();
+    private static final String TAG = "CameraSourcePreview";
 
     /** Listener for window focus changes. */
     public interface WindowFocusListener {
@@ -104,8 +104,11 @@ public class CameraSourcePreview extends ViewGroup {
     @RequiresPermission("Manifest.permission.CAMERA")
     private void startIfReady() throws IOException, SecurityException {
         if (mStartRequested && mSurfaceAvailable) {
-            mCameraSource.start(mSurfaceView.getHolder());
+            // The request is cleared before starting, so that a start which throws is not
+            // retried on every layout pass and window focus change. Callers restart the camera
+            // source when it makes sense to try again, for instance on resume.
             mStartRequested = false;
+            mCameraSource.start(mSurfaceView.getHolder());
         }
     }
 
@@ -117,11 +120,8 @@ public class CameraSourcePreview extends ViewGroup {
                 mCameraExist = true;
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG,"Do not have permission to start the camera", se);
-            } catch (RuntimeException e) {
-                mCameraExist = false;
-                Log.e(TAG, "Could not start camera source.", e);
-            } catch (IOException e) {
+                Log.e(TAG, "Do not have permission to start the camera", se);
+            } catch (IOException | RuntimeException e) {
                 mCameraExist = false;
                 Log.e(TAG, "Could not start camera source.", e);
             }
@@ -190,10 +190,13 @@ public class CameraSourcePreview extends ViewGroup {
 
         try {
             startIfReady();
-        } catch (IOException e) {
-            Log.e(TAG, "Could not start camera source.", e);
         } catch (SecurityException se) {
             Log.e(TAG, "Does not have permission to start the camera.", se);
+        } catch (IOException | RuntimeException e) {
+            // Opening the camera throws a plain RuntimeException when the device has no camera
+            // which satisfies the request. A layout pass must not bring the browser down over it.
+            mCameraExist = false;
+            Log.e(TAG, "Could not start camera source.", e);
         }
     }
 
