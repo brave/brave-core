@@ -59,6 +59,7 @@
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/policy/policy_constants.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/sync/base/command_line_switches.h"
@@ -313,8 +314,18 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
               profile));
 #endif
 #if BUILDFLAG(ENABLE_PSST)
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  bool is_managed_by_brave_origin = false;
+  if (brave_origin_service) {
+    is_managed_by_brave_origin =
+        brave_origin_service->IsPolicyControlledByBraveOrigin(
+            policy::key::kPsstEnabled);
+  }
+
   html_source->AddBoolean("isPsstEnabled", base::FeatureList::IsEnabled(
-                                               psst::features::kEnablePsst));
+                                               psst::features::kEnablePsst) &&
+                                               is_managed_by_brave_origin);
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
