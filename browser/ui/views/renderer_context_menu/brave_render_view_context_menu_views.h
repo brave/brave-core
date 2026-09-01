@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_RENDERER_CONTEXT_MENU_BRAVE_RENDER_VIEW_CONTEXT_MENU_VIEWS_H_
 #define BRAVE_BROWSER_UI_VIEWS_RENDERER_CONTEXT_MENU_BRAVE_RENDER_VIEW_CONTEXT_MENU_VIEWS_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/renderer_context_menu/render_view_context_menu_views.h"
 
 class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
@@ -17,7 +19,7 @@ class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
       const BraveRenderViewContextMenuViews&) = delete;
 
   // Factory function to create an instance.
-  static RenderViewContextMenuViews* Create(
+  static std::unique_ptr<RenderViewContextMenuViews> Create(
       // Non-const reference passed in the parent class upstream
       // NOLINTNEXTLINE(runtime/references)
       content::RenderFrameHost& render_frame_host,

@@ -1,19 +1,19 @@
 diff --git a/components/sync/engine/cycle/data_type_tracker.cc b/components/sync/engine/cycle/data_type_tracker.cc
-index 90dc73a3e7637ffcad9796ff2016d4b3cb0b3d22..a4b7a14b2dfbead751e6574c64c15afe73df0204 100644
+index ff93f79beea846a3250d0c6d242a76f201d14df1..438c11d7d05ca40b50ee3faf8e99f0b19a60571e 100644
 --- a/components/sync/engine/cycle/data_type_tracker.cc
 +++ b/components/sync/engine/cycle/data_type_tracker.cc
-@@ -122,6 +122,7 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(DataType data_type) {
-     case GEMINI_THREAD:
+@@ -123,6 +123,7 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(DataType data_type) {
      case THEMES_ANDROID:
      case NOTEBOOK:
+     case JOURNEY:
 +    case AI_CHAT_CONVERSATION:
        return kMediumLocalChangeNudgeDelay;
      case UNSPECIFIED:
        NOTREACHED();
-@@ -203,6 +204,7 @@ bool CanGetCommitsFromExtensions(DataType data_type) {
-     case GEMINI_THREAD:
+@@ -205,6 +206,7 @@ bool CanGetCommitsFromExtensions(DataType data_type) {
      case THEMES_ANDROID:
      case NOTEBOOK:
+     case JOURNEY:
 +    case AI_CHAT_CONVERSATION:
        return false;
      case UNSPECIFIED:

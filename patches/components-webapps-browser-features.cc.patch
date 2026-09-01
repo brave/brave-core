@@ -1,8 +1,8 @@
 diff --git a/components/webapps/browser/features.cc b/components/webapps/browser/features.cc
-index 16eaea48ded5c98261a5d1d81b417bb3254dabff..ad0389d835ae02ef68a77e1a7a44e116f787255b 100644
+index 3fd6898e280ee2c91364188217f099e63552e7d4..25f8d379319005d643c3044b989e0cb86ada14f1 100644
 --- a/components/webapps/browser/features.cc
 +++ b/components/webapps/browser/features.cc
-@@ -20,11 +20,7 @@ BASE_FEATURE(kAndroidAutoMintedTWA, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -27,11 +27,7 @@ BASE_FEATURE(kAlwaysShowInstallDisambiguationDialog,
  // Do not remove this feature flag, since it serves as a kill-switch for the ML
  // promotion model. Kill switches are required for all ML model-backed features.
  BASE_FEATURE(kWebAppsEnableMLModelForPromotion,

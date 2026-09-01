@@ -1,8 +1,8 @@
 diff --git a/services/device/public/cpp/device_features.cc b/services/device/public/cpp/device_features.cc
-index 8ab64b7ba03efecd887bfb7c54862d6d9b519573..937938f42a7f268324363b7a247a7d01c652b344 100644
+index 4fa3c76757f1d4a9750723ddc9a1c166d5508ccd..797136c41ac20b48e2fb7fea3bc4e11786811d2b 100644
 --- a/services/device/public/cpp/device_features.cc
 +++ b/services/device/public/cpp/device_features.cc
-@@ -13,8 +13,9 @@ namespace features {
+@@ -18,8 +18,9 @@ namespace features {
  BASE_FEATURE(kGenericSensorExtraClasses, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables an Allow/Ask/Block set of default permissions for sensors.
@@ -13,7 +13,7 @@ index 8ab64b7ba03efecd887bfb7c54862d6d9b519573..937938f42a7f268324363b7a247a7d01
  
  // Enables browser-side privacy mitigations for generic sensors.
  BASE_FEATURE(kSensorPrivacyMitigations, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -107,9 +108,11 @@ const base::FeatureParam<int> kWinSystemLocationPermissionPollingParam{
+@@ -109,9 +110,11 @@ BASE_FEATURE(kSerialUsbDisplayNameWin, base::FEATURE_ENABLED_BY_DEFAULT);
  // the operating system's location API or our network-based provider
  // as the source of location data for Geolocation API.
  #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)

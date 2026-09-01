@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f45681bad 100644
+index d147085a8d66b8b03a9c611486db760c0a2919c3..cb3eed0c4b59c42adaa3a57598faa5f35944b5f8 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
-@@ -599,6 +599,7 @@ void PermissionRequestManager::OnVisibilityChanged(
+@@ -604,6 +604,7 @@ void PermissionRequestManager::OnVisibilityChanged(
    }
    bool prior_tab_is_active_ = tab_is_active_;
    tab_is_active_ = visibility != content::Visibility::HIDDEN;
@@ -10,7 +10,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
    if (prior_tab_is_active_ != tab_is_active_) {
      OnTabActiveChanged();
    }
-@@ -614,6 +615,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
+@@ -619,6 +620,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
    GURL origin = requests_.front()->requesting_origin();
    if (DCHECK_IS_ON()) {
      for (const auto& request : requests_) {
@@ -18,7 +18,16 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
        DCHECK_EQ(origin, request->requesting_origin());
      }
    }
-@@ -981,7 +983,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
+@@ -910,7 +912,7 @@ bool PermissionRequestManager::RecreateView() {
+   // has an initiated permission prompt. If a flow model is not created even
+   // though a permission prompt has been requested, it will cause a crash.
+   if (PermissionUtil::ShouldCurrentRequestUsePermissionElementSecondaryUI(
+-          this, web_contents())) {
++          this, web_contents()) && BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW) {
+     if (!embedded_prompt_flow_model_) {
+       embedded_prompt_flow_model_ =
+           std::make_unique<EmbeddedPermissionPromptFlowModel>(web_contents(),
+@@ -1046,7 +1048,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
    // only after the camera request is resolved. This is caused by code in
    // PermissionBubbleMediaAccessHandler and UserMediaClient. We probably don't
    // need two permission queues, so resolve the duplication.
@@ -27,7 +36,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
        IsRequestInProgress()) {
      return;
    }
-@@ -1119,7 +1121,7 @@ void PermissionRequestManager::ShowPrompt() {
+@@ -1184,7 +1186,7 @@ void PermissionRequestManager::ShowPrompt() {
      return;
    }
  
@@ -36,7 +45,7 @@ index 2fa053c79b98011d7233caed9b05c11236096bae..2cdabe473b485255957ce37a96d5209f
    DCHECK(current_request_ui_to_use_);
  
    if (!tab_is_active_) {
-@@ -2032,7 +2034,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+@@ -2092,7 +2094,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
      return;
    }
  

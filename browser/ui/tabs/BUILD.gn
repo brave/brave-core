@@ -4,8 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -25,7 +29,14 @@ source_set("tabs_public") {
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 
-  deps = [ "//brave/components/containers/buildflags" ]
+  deps = [
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/containers/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
+  ]
 }
 
 if (!is_android) {
@@ -68,6 +79,23 @@ if (!is_android) {
         "//brave/browser/psst",
         "//brave/components/psst/core/common",
       ]
+    }
+
+    if (enable_speedreader) {
+      deps += [ "//brave/components/speedreader/common" ]
+    }
+
+    if (enable_brave_wayback_machine) {
+      deps += [ "//brave/components/brave_wayback_machine" ]
+    }
+
+    if (enable_playlist_webui) {
+      # This is necessary for the time being, because
+      # PlaylistPageActionController lives in //brave/browser/ui as it needs
+      # PlaylistBubblesController dependency (and the rest of the Playlist
+      # bubble UI). A leaf node dependency will be added in the future to avoid
+      # this.
+      deps += [ "//brave/browser/ui" ]
     }
   }
 
@@ -207,5 +235,9 @@ source_set("browser_tests") {
       ":tab_menu",
       ":tab_model",
     ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//chrome/browser/ui/views/tabs/tab" ]
   }
 }

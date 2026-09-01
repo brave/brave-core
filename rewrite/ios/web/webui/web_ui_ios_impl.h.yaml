@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let a WebUIIOSImpl know which host it was created for.
+
+      Brave keeps one of these per host rather than one per WebState (see
+      brave/chromium_src/ios/web/web_state/web_state_impl_realized_web_state.h),
+      and the MojoFacade each one owns needs the host to find the frame it
+      serves. Without it every facade falls back to the main frame and they
+      compete over its message stream.
+    regex:
+      re_pattern: 'explicit WebUIIOSImpl\(WebState\* web_state\);'
+      replace: |-
+        explicit WebUIIOSImpl(WebState* web_state,
+                                const std::string& webui_host = std::string());

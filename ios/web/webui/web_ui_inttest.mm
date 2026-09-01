@@ -46,11 +46,11 @@ const char kWebUIPage2Text[] = "WebUI 2 page";
 
 class TestWebClient : public web::FakeWebClient {
  public:
-  void AddAdditionalSchemes(Schemes* schemes) const override {
-    FakeWebClient::AddAdditionalSchemes(schemes);
-    schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
-  }
-
+  // FakeWebClient::AddAdditionalSchemes() already registers
+  // kChromeUIUntrustedScheme (see chromium_src/ios/web/public/test/fakes/
+  // fake_web_client.mm); registering it again here would make
+  // WKWebViewConfigurationProvider set a duplicate URL scheme handler and
+  // throw.
   bool IsAppSpecificURL(const GURL& url) const override {
     return FakeWebClient::IsAppSpecificURL(url) ||
            url.SchemeIs(kChromeUIUntrustedScheme);

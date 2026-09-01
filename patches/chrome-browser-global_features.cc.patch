@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/global_features.cc b/chrome/browser/global_features.cc
-index c33576775b5c0856391021ce6df677f60c8886d8..83732ef301f8ee275d77128912f6e3fc2ef182c1 100644
+index 0b349d5149d03673f512037a70d17a26831861a1..7bb5998f38ac138ff275b8a334b99f638b17963c 100644
 --- a/chrome/browser/global_features.cc
 +++ b/chrome/browser/global_features.cc
-@@ -83,6 +83,7 @@
+@@ -82,6 +82,7 @@
  #include "chrome/browser/on_device_translation/installer_impl.h"
  #endif  // BUILDFLAG(ENABLE_ON_DEVICE_TRANSLATION)
  
@@ -10,7 +10,7 @@ index c33576775b5c0856391021ce6df677f60c8886d8..83732ef301f8ee275d77128912f6e3fc
  namespace {
  
  // This is the generic entry point for test code to stub out browser
-@@ -101,7 +102,7 @@ std::unique_ptr<GlobalFeatures> GlobalFeatures::CreateGlobalFeatures() {
+@@ -100,7 +101,7 @@ std::unique_ptr<GlobalFeatures> GlobalFeatures::CreateGlobalFeatures() {
      return GetFactory().Run();
    }
    // Constructor is protected.

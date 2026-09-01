@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/pdf/manifest.json b/chrome/browser/resources/pdf/manifest.json
-index 04e1e8868ef79c343da291711aab5cfce7aafdd8..598af3db866268c036cfac23c5eced6824ba0f79 100644
+index f1e84d4470a7498849880ff79ceac74049ebe0ac..6566317886c7bec92d1e3fd489c82d96d4a84ae8 100644
 --- a/chrome/browser/resources/pdf/manifest.json
 +++ b/chrome/browser/resources/pdf/manifest.json
 @@ -8,6 +8,7 @@
@@ -10,9 +10,9 @@ index 04e1e8868ef79c343da291711aab5cfce7aafdd8..598af3db866268c036cfac23c5eced68
      "chrome://resources/",
      "chrome://webui-test/",
      "contentSettings",
-@@ -20,7 +21,7 @@
-   "mime_types": [
-     "application/pdf"
+@@ -21,7 +22,7 @@
+     "application/pdf",
+     "text/pdf"
    ],
 -  "content_security_policy": "script-src 'self' blob: filesystem: chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
 +  "content_security_policy": "script-src 'self' blob: filesystem: chrome://brave-resources chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",

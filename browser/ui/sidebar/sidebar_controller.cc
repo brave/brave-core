@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/prefs/pref_service.h"
 
 namespace sidebar {
@@ -294,8 +295,8 @@ SidebarWebPanelController* SidebarController::GetWebPanelController() {
   }
 
   if (!web_panel_controller_) {
-    web_panel_controller_ =
-        std::make_unique<SidebarWebPanelController>(browser_->GetBrowserView());
+    web_panel_controller_ = std::make_unique<SidebarWebPanelController>(
+        *BrowserView::GetBrowserViewForBrowser(browser_));
   }
 
   return web_panel_controller_.get();

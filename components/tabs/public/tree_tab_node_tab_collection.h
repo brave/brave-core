@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_TAB_COLLECTION_H_
 #define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_TAB_COLLECTION_H_
 
+#include <concepts>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <variant>
 
 #include "base/callback_list.h"
@@ -69,10 +71,26 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
 
   TreeTabNodeTabCollection(
       const tree_tab::TreeTabNodeId& tree_tab_node_id,
-      std::unique_ptr<tabs::TabInterface> current_tab,
+      ScopedTab current_tab,
       base::RepeatingCallback<void(TreeTabNode&)> on_create,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
+
+  // Convenience overload for a freshly-created concrete tab (e.g. a test
+  // fake), forwarding into the ScopedTab constructor above.
+  template <typename T>
+    requires std::derived_from<T, TabInterface>
+  TreeTabNodeTabCollection(
+      const tree_tab::TreeTabNodeId& tree_tab_node_id,
+      std::unique_ptr<T> current_tab,
+      base::RepeatingCallback<void(TreeTabNode&)> on_create,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move)
+      : TreeTabNodeTabCollection(tree_tab_node_id,
+                                 ScopedTab(current_tab.release()),
+                                 std::move(on_create),
+                                 std::move(on_remove),
+                                 std::move(on_move)) {}
 
   // Overload that wraps an existing TabCollection (e.g. SplitTabCollection)
   // as the current value of this tree node. Used when creating a split from

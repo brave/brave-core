@@ -155,8 +155,8 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
   }
 
   auto* browser = GetBrowserView()->browser();
-  if (auto overridden_result = browser->browser_window_features()
-                                   ->brave_non_client_hit_test_helper()
+  if (auto overridden_result = browser->GetFeatures()
+                                   .brave_non_client_hit_test_helper()
                                    ->NonClientHitTest(GetBrowserView(), point);
       overridden_result != HTNOWHERE) {
     return overridden_result;

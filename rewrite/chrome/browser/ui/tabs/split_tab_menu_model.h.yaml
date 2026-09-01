@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add kToggleLinkState for linking/unlinking tabs in split view.
+    add_enum_entries:
+      enum_name: CommandId
+      max_value: kMaxValue
+      entries: kToggleLinkState
+
+  - description: |
+      Let BraveSplitTabMenuModel reach SplitTabMenuModel's private members.
+
+      BraveSplitTabMenuModel subclasses SplitTabMenuModel and calls
+      GetSplitTabId() and tab_strip_model_ directly.
+    add_friend:
+      class_name: SplitTabMenuModel
+      friend_type: class BraveSplitTabMenuModel
+
+  - description: |
+      Friend the browser test that calls SplitTabMenuModel::GetCommandIdInt().
+    regex:
+      re_pattern: '(friend class BraveSplitTabMenuModel;)'
+      replace: |-
+        \1
+          FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,
+                                   SplitViewMenuCustomizationTest);
+
+  - description: |
+      Expose GetCommandIdEnum/GetCommandIdInt as protected statics.
+
+      BraveSplitTabMenuModel and its browser test need to convert between
+      CommandId and its underlying int without duplicating the ID-offset
+      logic.
+    add_to_protected:
+      class_name: SplitTabMenuModel
+      code: |-
+        static CommandId GetCommandIdEnum(int command_id);
+        static int GetCommandIdInt(CommandId command_id);
+
+  - description: |
+      Make GetReversePositionIcon virtual.
+
+      BraveSplitTabMenuModel overrides it to show a swap icon while linked.
+    make_virtual:
+      class_name: SplitTabMenuModel
+      method_name: GetReversePositionIcon

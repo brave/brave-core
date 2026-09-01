@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't eagerly create OptimizationGuideGlobalState on every startup just
+      to log VRAM/model metrics upstream doesn't consume here. That
+      construction unconditionally registers the on-device model component
+      with the component updater, making it show up on brave://components
+      even when nothing uses on-device model execution. Real consumers
+      (OptimizationGuideKeyedService) still create it lazily, behind their
+      own feature checks, when actually needed.
+    preempt_function_impl:
+      function_name: ChromeBrowserMainExtraPartsOptimizationGuide::PostBrowserStart
+      return_if: '(true)'

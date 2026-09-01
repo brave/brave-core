@@ -1,8 +1,8 @@
 diff --git a/mojo/public/tools/mojom/mojom_parser.py b/mojo/public/tools/mojom/mojom_parser.py
-index 80165184c3cb265f0d50d67603368571e5ae5b6e..cd0f08f5d83813a689594d81c614b98928f81dd0 100755
+index 557da1bcb141b812c0b17d0ed4988826ec70a892..323fc100e62c3fcf110bf64e078a1a25bd85cf30 100755
 --- a/mojo/public/tools/mojom/mojom_parser.py
 +++ b/mojo/public/tools/mojom/mojom_parser.py
-@@ -502,6 +502,7 @@ already present in the provided output root.""")
+@@ -563,6 +563,7 @@ already present in the provided output root.""",
    logging.info('Finished')
  
  

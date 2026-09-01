@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d866efca19 100644
+index 36b777784f45f99e198ee531293df11ee8cd0388..bd644045f859ccb39063baf4959052c19ac99480 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -297,6 +297,7 @@
@@ -10,7 +10,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "stable",
        origin_trial_feature_name: "AdInterestGroupAPI",
        implied_by: ["Fledge", "Parakeet"],
-@@ -412,6 +413,7 @@
+@@ -407,6 +408,7 @@
      },
      {
        name: "AIPromptAPI",
@@ -18,7 +18,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        public: true,
        status: {
          "Win": "stable",
-@@ -439,6 +441,7 @@
+@@ -434,6 +436,7 @@
      },
      {
        name: "AIPromptAPIMultimodalInput",
@@ -26,7 +26,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -493,7 +496,7 @@
+@@ -488,7 +491,7 @@
        origin_trial_feature_name: "AIProofreaderAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -35,7 +35,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -508,7 +511,7 @@
+@@ -503,7 +506,7 @@
        origin_trial_feature_name: "AIRewriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -44,7 +44,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -517,6 +520,7 @@
+@@ -512,6 +515,7 @@
      },
      {
        name: "AISummarizationAPI",
@@ -52,7 +52,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: {
          "Win": "stable",
          "Mac": "stable",
-@@ -544,7 +548,7 @@
+@@ -539,7 +543,7 @@
        origin_trial_feature_name: "AIWriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -61,7 +61,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -1341,7 +1345,7 @@
+@@ -1292,7 +1296,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -70,7 +70,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -1432,6 +1436,7 @@
+@@ -1375,6 +1379,7 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
@@ -78,7 +78,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        public: true,
        status: "stable",
      },
-@@ -2999,6 +3004,7 @@
+@@ -2948,6 +2953,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -86,7 +86,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "experimental",
      },
      {
-@@ -3013,6 +3019,7 @@
+@@ -2962,6 +2968,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -94,7 +94,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: {"default": "stable"},
      },
      {
-@@ -3147,6 +3154,7 @@
+@@ -3080,6 +3087,7 @@
      },
      {
        name: "Fledge",
@@ -102,7 +102,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "stable",
        public: true,
      },
-@@ -3851,7 +3859,7 @@
+@@ -3791,7 +3799,7 @@
          "Android": "test",
          "default": "",
        },
@@ -111,7 +111,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4228,6 +4236,7 @@
+@@ -4149,6 +4157,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -119,7 +119,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4672,6 +4681,7 @@
+@@ -4620,6 +4629,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -127,7 +127,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4852,6 +4862,7 @@
+@@ -4792,6 +4802,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -135,7 +135,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "stable",
      },
      {
-@@ -5091,6 +5102,7 @@
+@@ -5023,6 +5034,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -143,7 +143,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "stable",
      },
      {
-@@ -6567,7 +6579,7 @@
+@@ -6440,7 +6452,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -152,7 +152,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6756,6 +6768,7 @@
+@@ -6615,6 +6627,7 @@
      },
      {
        name: "UserMediaElement",
@@ -160,7 +160,7 @@ index 08261356c8edf6a05f4e7e38988df209aa7a4714..0e818a44cad143416c78e9d155c979d8
        status: "stable",
        public: true,
      },
-@@ -7564,5 +7577,10 @@
+@@ -7420,5 +7433,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

@@ -16,7 +16,7 @@ substitutions:
       value: base::FEATURE_ENABLED_BY_DEFAULT
 
   - description: |-
-        Disables kTLSTrustAnchorIDs by default.
+      Disables kTLSTrustAnchorIDs by default.
     set_feature_flag_default_state:
       feature_name: kTLSTrustAnchorIDs
       value: base::FEATURE_DISABLED_BY_DEFAULT

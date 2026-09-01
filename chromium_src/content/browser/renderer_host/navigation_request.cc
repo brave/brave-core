@@ -34,3 +34,27 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 }  // namespace
 
 #include <content/browser/renderer_host/navigation_request.cc>
+
+namespace content {
+
+bool NavigationHandle::HasBypassRedirectChecksForNextRedirect(
+    FrameTreeNodeId frame_tree_node_id,
+    int64_t navigation_id) {
+  FrameTreeNode* frame_tree_node =
+      FrameTreeNode::GloballyFindByID(frame_tree_node_id);
+  if (!frame_tree_node) {
+    return false;
+  }
+  NavigationRequest* request = frame_tree_node->navigation_request();
+  if (!request || request->GetNavigationId() != navigation_id) {
+    return false;
+  }
+
+  // Only peek: the flag is consumed by NavigationURLLoaderImpl once the
+  // redirect reaches it, so put it back.
+  const bool bypass = request->ConsumeBypassRedirectChecksForNextRedirect();
+  request->SetBypassRedirectChecksForNextRedirect(bypass);
+  return bypass;
+}
+
+}  // namespace content

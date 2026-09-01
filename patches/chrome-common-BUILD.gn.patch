@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index a45216bc2d63e728576b1d44f1dccf86198eccae..92c5d76fa8e879fa72a77565c0b8428ca50b1341 100644
+index 983c39cbaf7dac122b59eaf07147a76208b2bf3d..cf1a2f118b6186d4e244df80cb15565ce4f5b693 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -90,6 +90,7 @@ source_set("channel_info") {
+@@ -104,6 +104,7 @@ source_set("channel_info") {
    } else if (is_posix) {
      sources += [ "channel_info_posix.cc" ]
    }
@@ -10,7 +10,7 @@ index a45216bc2d63e728576b1d44f1dccf86198eccae..92c5d76fa8e879fa72a77565c0b8428c
  }
  
  source_set("ini_parser") {
-@@ -277,6 +278,7 @@ static_library("common_lib") {
+@@ -290,6 +291,7 @@ static_library("common_lib") {
      public_deps += [ "//components/cdm/common" ]
    }
  
@@ -18,7 +18,7 @@ index a45216bc2d63e728576b1d44f1dccf86198eccae..92c5d76fa8e879fa72a77565c0b8428c
    if (enable_extensions_core) {
      public_deps += [
        "//chrome/common/extensions",
-@@ -473,6 +475,7 @@ static_library("non_code_constants") {
+@@ -485,6 +487,7 @@ static_library("non_code_constants") {
    if (is_win) {
      sources += [ "chrome_icon_resources_win.h" ]
    }
@@ -26,7 +26,7 @@ index a45216bc2d63e728576b1d44f1dccf86198eccae..92c5d76fa8e879fa72a77565c0b8428c
  }
  
  component("chrome_features") {
-@@ -579,6 +582,7 @@ static_library("constants") {
+@@ -591,6 +594,7 @@ static_library("constants") {
      "//third_party/widevine/cdm:buildflags",
    ]
  

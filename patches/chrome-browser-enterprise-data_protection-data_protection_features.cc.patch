@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/enterprise/data_protection/data_protection_features.cc b/chrome/browser/enterprise/data_protection/data_protection_features.cc
-index 97d15ea44d8d0a65a280f010c33dcbd653421954..f486550ccc024c19cb01c430f078479cef38f401 100644
+index d4e92f03e973ddd08da31b65a9266da5f4320547..f5a09375328dc35bba9682efccb725a4bd55f54f 100644
 --- a/chrome/browser/enterprise/data_protection/data_protection_features.cc
 +++ b/chrome/browser/enterprise/data_protection/data_protection_features.cc
 @@ -8,9 +8,11 @@

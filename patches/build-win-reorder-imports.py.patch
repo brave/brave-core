@@ -1,11 +1,11 @@
 diff --git a/build/win/reorder-imports.py b/build/win/reorder-imports.py
-index 88851609d4be06eea3365bcef1191b4d285560f8..d78ce61726e700178982f031343759b2b8df682e 100755
+index 11602df2777ec3fdecb319bce04110488f329b32..16b4eaa160c86d10f9f3d98ebd17b0842efb4b8c 100755
 --- a/build/win/reorder-imports.py
 +++ b/build/win/reorder-imports.py
-@@ -93,5 +93,6 @@ def main(argv):
-     parser.error('Please provide and input and output directory')
-   return reorder_imports(opts.input, opts.output, opts.arch)
+@@ -114,5 +114,6 @@ def main(argv):
+     return reorder_imports(opts.input, opts.output, opts.arch)
+ 
  
 +from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  if __name__ == "__main__":
-   sys.exit(main(sys.argv[1:]))
+     sys.exit(main(sys.argv[1:]))

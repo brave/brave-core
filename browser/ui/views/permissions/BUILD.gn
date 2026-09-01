@@ -11,6 +11,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//chrome/browser/ui/views/permissions",
     "//chrome/test:test_support",
     "//testing/gmock",
     "//testing/gtest",

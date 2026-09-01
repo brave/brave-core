@@ -16,6 +16,6 @@ substitutions:
   - description: |
       Append Brave deps to `source_set("impl")`.
     regex:
-      re_pattern: '(source_set\("impl"\).*?\bdeps\s*=\s*\[\])'
+      re_pattern: '(source_set\("impl"\).*?\bdeps\s*=\s*\[.*?\])'
       re_flags: [DOTALL]
       replace: '\1\n  deps += brave_chrome_browser_ui_web_applications_deps'

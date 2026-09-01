@@ -22,7 +22,7 @@ enum class SidePanelEntryId;
 
 namespace sidebar {
 
-bool CanUseSidebar(Browser* browser);
+bool CanUseSidebar(BrowserWindowInterface* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
 bool IsWebPanelFeatureEnabled();
 

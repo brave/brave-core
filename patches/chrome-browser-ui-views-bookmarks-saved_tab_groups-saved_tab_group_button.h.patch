@@ -1,14 +1,15 @@
 diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h
-index 44edb11d1d421d4b7177c6728079a3e9be76a722..6ef5b710110255effb331dd58feb4c9710de2862 100644
+index 65f593122431fd5af433b42425377894e483954d..84a145b4cc98ce5e1bc74e5f1785134e72a1e728 100644
 --- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h
 +++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h
-@@ -96,12 +96,13 @@ class SavedTabGroupButton : public views::MenuButton,
+@@ -96,13 +96,14 @@ class SavedTabGroupButton : public views::MenuButton,
    const base::Uuid guid() const { return guid_; }
  
   private:
 +  friend class BraveSavedTabGroupButton;
-   FRIEND_TEST_ALL_PREFIXES(SavedTabGroupBarUnitTest, AccessibleName);
-   FRIEND_TEST_ALL_PREFIXES(SavedTabGroupBarUnitTest, TooltipText);
+   FRIEND_TEST_ALL_PREFIXES(SavedTabGroupBarComponentBrowserTest,
+                            AccessibleName);
+   FRIEND_TEST_ALL_PREFIXES(SavedTabGroupBarComponentBrowserTest, TooltipText);
  
    std::u16string GetAccessibleNameForButton() const;
    void SetTextProperties(const SavedTabGroup& group);

@@ -1,8 +1,25 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 5fdb24398562e7f74063356cb368589beeabc9bf..68c928e706811b2edd73e76e67a27324df008b6e 100644
+index e96b67aaa07fd50fe657d4db13ff74add7119e04..cc2a17c5c041c84a3e1d3a3b3543b9f796f31f7f 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
-@@ -65,6 +65,7 @@ grit_strings("components_locale_settings") {
+@@ -132,7 +132,7 @@ grit_strings("components_branded_strings") {
+   source = "../components_${branding_path_product}_strings.grd"
+   inputs = process_file_template(
+           xtb_locales,
+-          [ "components_${branding_path_product}_strings_{{source_name_part}}.xtb" ])
++          [ "components_chromium_strings_{{source_name_part}}.xtb" ])
+   outputs = [ "grit/components_branded_strings.h" ]
+ }
+ 
+@@ -145,6 +145,7 @@ grit_strings("components_locale_settings") {
+                    "en-XA",
+                    "ur",
+                  ]
++  _xtb_locales -= brave_extended_locales_exclusions
+   if (is_android) {
+     _xtb_locales -= [ "cy" ]
+   }
+@@ -190,6 +191,7 @@ grit_strings("components_locale_settings") {
    if (is_android) {
      create_android_resources = true
    }
