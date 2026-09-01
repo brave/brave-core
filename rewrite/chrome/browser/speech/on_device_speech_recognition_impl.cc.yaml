@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Both function bodies open with a BUILDFLAG(IS_ANDROID) conditional that
+# tree-sitter cannot parse, so blank parse-blocking macros before AST matching.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Treat `kDictation` as `kCommand`, so both qualities Brave serves take the
+      SODA code path, where `BraveSodaInstaller` reports Brave's own model's
+      availability. `kConversation` is left alone, so upstream's gate still
+      rejects a quality Brave does not serve.
+    preempt_function_impl:
+      function_name: OnDeviceSpeechRecognitionImpl::Available
+      code: |-
+        if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
+          quality = media::mojom::SpeechRecognitionQuality::kCommand;
+        }
+
+  - description: |
+      The same rewrite as `Available`'s, for the same reason: the SODA code
+      path is where `BraveSodaInstaller` installs Brave's own model.
+    preempt_function_impl:
+      function_name: OnDeviceSpeechRecognitionImpl::Install
+      code: |-
+        if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
+          quality = media::mojom::SpeechRecognitionQuality::kCommand;
+        }
