@@ -1272,7 +1272,7 @@ GURL SimpleHashClient::GetNftsUrl(
     if (*coin == mojom::CoinType::SOL) {
       // Skip mints that are not base58-encoded pubkeys, so one bad stored NFT
       // does not fail the whole batch. Callers treat identifiers missing from
-      // the response as balance 0 / no metadata. ETH below stays all-or-
+      // the response as balance 0 / no metadata. The ETH branch stays all-or-
       // nothing: a malformed token id is a caller bug, not stale prefs data.
       if (!SolanaAddress::FromBase58(nft_identifier->contract_address)) {
         continue;
