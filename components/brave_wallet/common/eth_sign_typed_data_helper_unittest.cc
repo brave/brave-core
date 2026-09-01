@@ -486,6 +486,9 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
+  constexpr uint64_t kMaxSafeInt =
+      9007199254740991;  // 2^53 - 1, Number.MAX_SAFE_INTEGER
+
   // types won't matter here
   std::unique_ptr<EthSignTypedDataHelper> helper =
       EthSignTypedDataHelper::Create(base::DictValue(),
@@ -632,7 +635,10 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField("uint8", base::Value(256)));
   // exceeds Number.MAX_SAFE_INTEGER
   EXPECT_FALSE(helper->EncodeField(
-      "uint256", base::Value(static_cast<double>(9007199254740991) + 1)));
+      "uint256", base::Value(static_cast<double>(kMaxSafeInt) + 1)));
+  EXPECT_FALSE(helper->EncodeField("uint256", base::Value(1e300)));
+  // negative values are invalid for unsigned integer fields
+  EXPECT_FALSE(helper->EncodeField("uint256", base::Value(-1)));
   // fractional values are invalid for integer fields
   EXPECT_FALSE(helper->EncodeField("uint256", base::Value(0.9)));
   {
@@ -755,7 +761,12 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField("int8", base::Value(128)));
   // exceeds Number.MAX_SAFE_INTEGER
   EXPECT_FALSE(helper->EncodeField(
-      "int256", base::Value(static_cast<double>(9007199254740991) + 1)));
+      "int256", base::Value(static_cast<double>(kMaxSafeInt) + 1)));
+  EXPECT_FALSE(helper->EncodeField(
+      "int256", base::Value(-static_cast<double>(kMaxSafeInt) - 1)));
+  EXPECT_FALSE(helper->EncodeField("int256", base::Value(1e300)));
+  EXPECT_FALSE(helper->EncodeField("int256", base::Value(-1e300)));
+
   // fractional values are invalid for integer fields
   EXPECT_FALSE(helper->EncodeField("int256", base::Value(-0.9)));
   {
