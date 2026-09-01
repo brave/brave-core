@@ -69,7 +69,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
                        ContentSettingsInheritanceInIncognito) {
   const GURL url("https://a.test/");
 
-  Browser* incognito_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser();
   auto* normal_host_content_settings =
       HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile());
   auto* incognito_host_content_settings =

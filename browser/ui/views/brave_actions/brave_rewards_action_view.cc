@@ -265,8 +265,8 @@ gfx::Rect BraveRewardsActionView::GetAnchorBoundsInScreen() const {
   if (!GetVisible()) {
     // If the button is currently hidden, then anchor the bubble to the
     // location bar instead.
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(
-        browser_window_interface_->GetBrowserForMigrationOnly());
+    auto* browser_view =
+        BrowserView::GetBrowserViewForBrowser(browser_window_interface_);
     DCHECK(browser_view);
     return browser_view->GetLocationBarView()->GetAnchorBoundsInScreen();
   }

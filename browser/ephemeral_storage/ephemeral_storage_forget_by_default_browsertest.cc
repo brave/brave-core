@@ -203,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        ForgetFirstPartyInheritedInIncognito) {
-  Browser* incognito_browser = CreateIncognitoBrowser(nullptr);
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(nullptr);
   EXPECT_EQ(
       brave_shields::GetCookieControlType(
           HostContentSettingsMapFactory::GetForProfile(

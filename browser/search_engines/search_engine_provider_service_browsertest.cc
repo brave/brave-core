@@ -119,10 +119,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // https://github.com/brave/brave-browser/issues/1452
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        MultiplePrivateWindowTest) {
-  Browser* private_window_1 = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_window_1 = CreateIncognitoBrowser();
   CloseBrowserSynchronously(private_window_1);
 
-  Browser* private_window_2 = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_window_2 = CreateIncognitoBrowser();
   CloseBrowserSynchronously(private_window_2);
 }
 
@@ -208,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
 #if BUILDFLAG(ENABLE_TOR)
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   Profile* tor_profile = tor_browser->GetProfile();
   EXPECT_TRUE(tor_profile->IsTor());

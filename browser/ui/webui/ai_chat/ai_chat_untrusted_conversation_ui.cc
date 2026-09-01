@@ -71,7 +71,6 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
 #else
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -360,9 +359,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     // conversation via `AIChatFullPageLinkObserver`.
     ai_chat::MaybeMoveFullPageChatToSidePanel(web_ui_->GetWebContents());
 #if !BUILDFLAG(IS_ANDROID)
-    Browser* browser =
-        ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents())
-            ->GetBrowserForMigrationOnly();
+    BrowserWindowInterface* browser =
+        ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
     browser->OpenURL(
         {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
          ui::PAGE_TRANSITION_LINK, false},

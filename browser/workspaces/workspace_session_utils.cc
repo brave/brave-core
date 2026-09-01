@@ -190,8 +190,7 @@ void RestoreBrowserSessionCommandsForWorkspace(
     params.initial_visible_on_all_workspaces_state =
         window->visible_on_all_workspaces;
     params.should_trigger_session_restore = false;
-    Browser* browser =
-        CreateBrowserWindow(std::move(params))->GetBrowserForMigrationOnly();
+    BrowserWindowInterface* browser = CreateBrowserWindow(std::move(params));
     if (!browser) {
       continue;
     }
