@@ -26,8 +26,10 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "build/build_config.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -51,6 +53,44 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
                             mojom::PremiumInfo::New());
   }
   MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
+};
+
+// Stands in for an open conversation UI, recording the tool lists the browser
+// pushes to it.
+class TestConversationUI : public mojom::ConversationUI {
+ public:
+  explicit TestConversationUI(ConversationHandler* handler) {
+    handler->Bind(receiver_.BindNewPipeAndPassRemote());
+  }
+  ~TestConversationUI() override = default;
+
+  const std::vector<mojom::ToolInfoPtr>& tools() const { return tools_; }
+
+  // mojom::ConversationUI:
+  void OnContentToolsChanged(const std::string& content_uuid,
+                             std::vector<mojom::ToolInfoPtr> tools) override {
+    tools_ = std::move(tools);
+  }
+  void OnConversationHistoryUpdate(mojom::ConversationTurnPtr entry) override {}
+  void OnAPIRequestInProgress(bool in_progress) override {}
+  void OnAPIResponseError(mojom::APIError error,
+                          mojom::APIErrorDetailsPtr details) override {}
+  void OnTaskStateChanged(mojom::TaskState task_state) override {}
+  void OnModelDataChanged(const std::string& conversation_model_key,
+                          const std::string& default_model_key,
+                          std::vector<mojom::ModelPtr> all_models) override {}
+#if BUILDFLAG(IS_IOS)
+  void OnSuggestedQuestionsChanged(
+      const std::vector<std::string>& questions,
+      mojom::SuggestionGenerationStatus status) override {}
+#endif
+  void OnAssociatedContentInfoChanged(
+      std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+  void OnConversationDeleted() override {}
+
+ private:
+  std::vector<mojom::ToolInfoPtr> tools_;
+  mojo::Receiver<mojom::ConversationUI> receiver_{this};
 };
 
 }  // namespace
@@ -865,6 +905,56 @@ TEST_F(AssociatedContentManagerUnitTest,
   manager->GetToolInfos(content.uuid(), infos.GetCallback());
   ASSERT_EQ(1u, infos.Get().size());
   EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_IsPushedToEveryBoundUI) {
+  // The choice is conversation-wide, so a UI that didn't make it mustn't be
+  // left showing the tool's old permission.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  TestConversationUI acting_ui(conversation_handler_.get());
+  TestConversationUI other_ui(conversation_handler_.get());
+
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+  task_environment_.RunUntilIdle();
+
+  for (const auto* ui : {&acting_ui, &other_ui}) {
+    ASSERT_EQ(1u, ui->tools().size());
+    EXPECT_EQ("cancel_cart", ui->tools()[0]->name);
+    EXPECT_EQ(mojom::ToolPermission::kNeverAllow, ui->tools()[0]->permission);
+  }
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_UnstoredChoiceIsNotPushed) {
+  // Nothing was recorded, so there's nothing for the UIs to reflect - pushing
+  // would tell them the choice took effect.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  TestConversationUI ui(conversation_handler_.get());
+
+  manager->SetToolPermission("not-an-attached-content", "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+  task_environment_.RunUntilIdle();
+
+  EXPECT_TRUE(ui.tools().empty());
 }
 
 TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_UnknownContentIsEmpty) {

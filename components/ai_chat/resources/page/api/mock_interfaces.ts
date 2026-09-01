@@ -123,7 +123,6 @@ export function createMockConversationHandler(
     getScreenshots: () => Promise.resolve({ screenshots: [] }),
     clearErrorAndGetFailedMessage: () => Promise.resolve({ turn: emptyTurn }),
     setTemporary: () => Promise.resolve({}),
-    setContentToolPermission: () => {},
     stopGenerationAndMaybeGetHumanEntry: () =>
       Promise.resolve({ humanEntry: null }),
     rateMessage: () => Promise.resolve({ ratingId: null }),
@@ -138,6 +137,7 @@ export function createMockConversationHandler(
     resumeTask: () => {},
     stopTask: () => {},
     setToolsAttached: () => {},
+    setContentToolPermission: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,

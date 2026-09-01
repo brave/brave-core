@@ -360,6 +360,14 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   }
 }
 
+void ConversationHandler::OnContentToolsChanged(
+    const std::string& content_uuid,
+    std::vector<mojom::ToolInfoPtr> tools) {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnContentToolsChanged(content_uuid, mojo::Clone(tools));
+  }
+}
+
 bool ConversationHandler::IsAnyClientConnected() {
   return !receivers_.empty() || !conversation_ui_handlers_.empty();
 }

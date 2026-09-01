@@ -165,6 +165,11 @@ class AssociatedContentManager : public ToolProvider,
                           GetToolInfosCallback callback,
                           std::vector<std::unique_ptr<Tool>> tools);
 
+  // Invoked with the result of GetToolInfos(), to push the list every UI bound
+  // to this conversation should now be showing.
+  void NotifyContentToolsChanged(const std::string& content_uuid,
+                                 std::vector<mojom::ToolInfoPtr> tools);
+
   mojom::ToolPermission GetToolPermission(const url::Origin& origin,
                                           std::string_view tool_name) const;
 

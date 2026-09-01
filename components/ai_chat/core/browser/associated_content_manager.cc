@@ -290,10 +290,23 @@ void AssociatedContentManager::SetToolPermission(
     if (origin_it->second.empty()) {
       tool_permissions_.erase(origin_it);
     }
-    return;
+  } else {
+    tool_permissions_[origin][std::string(tool_name)] = permission;
   }
 
-  tool_permissions_[origin][std::string(tool_name)] = permission;
+  // The choice is conversation-wide, so tell every UI bound to the
+  // conversation rather than leaving the one it was made from to update
+  // itself.
+  GetToolInfos(content_uuid,
+               base::BindOnce(
+                   &AssociatedContentManager::NotifyContentToolsChanged,
+                   weak_ptr_factory_.GetWeakPtr(), std::string(content_uuid)));
+}
+
+void AssociatedContentManager::NotifyContentToolsChanged(
+    const std::string& content_uuid,
+    std::vector<mojom::ToolInfoPtr> tools) {
+  conversation_->OnContentToolsChanged(content_uuid, std::move(tools));
 }
 
 mojom::ToolPermission AssociatedContentManager::GetToolPermission(

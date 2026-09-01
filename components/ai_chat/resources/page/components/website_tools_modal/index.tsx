@@ -125,8 +125,6 @@ export default function WebsiteToolsModal(props: Props) {
   // Placeholder data means the page hasn't answered yet.
   const { getContentToolsData: tools, isPlaceholderData: isLoading } =
     conversation.api.useGetContentTools(props.content.uuid)
-  const { setContentToolPermission } =
-    conversation.api.useSetContentToolPermission()
   // Only one description is expanded at a time, to keep the list scannable.
   const [expandedToolName, setExpandedToolName] = React.useState<string | null>(
     null,
@@ -180,11 +178,11 @@ export default function WebsiteToolsModal(props: Props) {
                     )
                   }
                   onPermissionChange={(permission) =>
-                    setContentToolPermission([
+                    conversation.api.conversationHandler.setContentToolPermission(
                       props.content.uuid,
                       tool.name,
                       permission,
-                    ])
+                    )
                   }
                 />
               ))}

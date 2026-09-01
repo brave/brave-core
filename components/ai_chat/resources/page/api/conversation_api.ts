@@ -36,6 +36,7 @@ export default function createConversationApi(
         'resumeTask',
         'stopTask',
         'setToolsAttached',
+        'setContentToolPermission',
       ]),
     },
 
@@ -95,19 +96,6 @@ export default function createConversationApi(
           //   api.getState.update({ error: Mojom.APIError.None });
           // },
           mutationResponse: (result) => result.turn,
-        },
-        // A mutation rather than an action so the dialog updates without a
-        // refetch - re-asking the page for its tools could return a different
-        // list mid-interaction.
-        setContentToolPermission: {
-          mutationResponse: () => {},
-          onMutate: ([contentUuid, toolName, permission]) => {
-            api.getContentTools.update(contentUuid, (tools) =>
-              tools.map((tool) =>
-                tool.name === toolName ? { ...tool, permission } : tool,
-              ),
-            )
-          },
         },
         setTemporary: {
           // Instead of allow setTemporary as a pass through via actions,
@@ -185,6 +173,13 @@ export default function createConversationApi(
 
           onAssociatedContentInfoChanged: (associatedContent) => {
             api.getState.update({ associatedContent })
+          },
+
+          // Pushed by the browser when it changes a content's tools, so the
+          // dialog settles on the browser's list without re-asking the page
+          // itself - that could return a different list mid-interaction.
+          onContentToolsChanged: (contentUuid, tools) => {
+            api.getContentTools.update(contentUuid, tools)
           },
 
           // This event is subscribable by the UI

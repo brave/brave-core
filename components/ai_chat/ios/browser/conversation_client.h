@@ -49,6 +49,9 @@ class ConversationClient : public mojom::ConversationUI,
       mojom::SuggestionGenerationStatus status) override;
   void OnAssociatedContentInfoChanged(
       std::vector<mojom::AssociatedContentPtr> site_info) override;
+  // No-op: iOS has no UI for website tool permissions.
+  void OnContentToolsChanged(const std::string& content_uuid,
+                             std::vector<mojom::ToolInfoPtr> tools) override {}
   void OnConversationDeleted() override;
 
   // mojom::ServiceObserver

@@ -140,13 +140,45 @@ describe('WebsiteToolsModal', () => {
       'browse_store',
       Mojom.ToolPermission.kAlwaysAllow,
     )
-    // Updated without asking the page for its tools again.
+  })
+
+  it('shows a permission change the browser pushed', async () => {
+    // The choice is conversation-wide, so a dialog open in another view has to
+    // reflect it too - without asking the page for its tools again, which
+    // could answer with a different list mid-interaction.
+    const getContentTools = jest.fn(() => Promise.resolve({ tools: TOOLS }))
+    const observerRef: { current?: Mojom.ConversationUIInterface } = {}
+
+    const { container } = await renderModal(
+      <MockContext
+        conversationHandler={{ getContentTools }}
+        conversationUIObserverRef={observerRef}
+      >
+        <WebsiteToolsModal
+          content={CONTENT}
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+    })
+
+    await act(async () => {
+      observerRef.current!.onContentToolsChanged('content-uuid', [
+        { ...TOOLS[0], permission: Mojom.ToolPermission.kAlwaysAllow },
+        TOOLS[1],
+      ])
+    })
+
     await waitFor(() => {
       expect(container.querySelectorAll('leo-dropdown')[0]).toHaveProperty(
         'value',
         String(Mojom.ToolPermission.kAlwaysAllow),
       )
     })
+    expect(getContentTools).toHaveBeenCalledTimes(1)
   })
 
   it('counts the tools it lists', async () => {
