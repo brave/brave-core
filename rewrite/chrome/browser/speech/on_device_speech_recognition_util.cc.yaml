@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The function body opens with a BUILDFLAG(IS_ANDROID) conditional that
+# tree-sitter cannot parse, so blank parse-blocking macros before AST matching.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Let Brave answer on-device speech availability, because Brave ships its
+      own model instead of the SODA and optimization guide models upstream's
+      body consults.
+
+      `GetBraveOnDeviceSpeechRecognitionAvailabilityStatus` is defined in the
+      chromium_src override of this source.
+    preempt_function_impl:
+      function_name: GetOnDeviceSpeechRecognitionAvailabilityStatus
+      code: |-
+        return GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(language, quality);
+
+  - description: |
+      Answer the asynchronous overload from Brave's policy as well.
+
+      `SpeechRecognition.available()` reaches on-device availability through
+      this overload, while `SpeechRecognition.start()` reaches it through the
+      synchronous one above, so both have to be answered or the two entry
+      points disagree about the same model. Brave's answer needs nothing
+      asynchronous, so it goes straight to the callback.
+    preempt_function_impl:
+      function_name: GetOnDeviceSpeechRecognitionAvailabilityStatusAsync
+      code: |-
+        std::move(callback).Run(
+            GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(language, quality));
+        return;
