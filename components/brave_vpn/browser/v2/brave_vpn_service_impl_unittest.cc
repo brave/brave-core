@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
@@ -35,6 +36,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
+#include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent_launcher.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace brave_vpn::v2 {
@@ -80,6 +82,9 @@ class BraveVpnServiceImplTest : public testing::Test {
     ASSERT_EQ(service_->agent_client_->state(),
               AgentClient::State::kDisconnected);
     ReplaceAgentClientWithFake();
+    // Replace the real agent launcher with one that does not launch anything
+    // but captures a callback and counts launch attempts.
+    ReplaceAgentLauncherWithFake();
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   }
 
@@ -102,8 +107,21 @@ class BraveVpnServiceImplTest : public testing::Test {
     service_->agent_client_->AddObserver(service_.get());
   }
 
+  void ReplaceAgentLauncherWithFake() {
+    service_->agent_launcher_ =
+        std::make_unique<FakeAgentLauncher>(&launch_record_);
+  }
+
   void UpdateAgentConnection(mojom::PurchasedState state) {
     service_->UpdateAgentConnection(state);
+  }
+  void NotifyAgentNotRunning() { service_->OnAgentNotRunning(); }
+  void NotifyAgentDisconnected() { service_->OnAgentDisconnected(); }
+  void NotifyAgentUnavailable(mojom::BrowserAuthResult result) {
+    service_->OnAgentUnavailable(result);
+  }
+  void NotifyAgentLaunchFailed(AgentLauncher::LaunchError error) {
+    service_->OnAgentLaunchFailed(error);
   }
 
   AgentClient* agent_client() { return service_->agent_client_.get(); }
@@ -119,6 +137,7 @@ class BraveVpnServiceImplTest : public testing::Test {
   int skus_bind_count_ = 0;
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   FakeAgent fake_agent_;
+  FakeAgentLauncher::Record launch_record_;
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   // Declared last so it is destroyed before the prefs, the fake SKUS
   // service, and the fake agent it points at.
@@ -174,6 +193,12 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   // The agent client is gone; the mapping must not dereference it.
   UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
   UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
+
+  NotifyAgentNotRunning();
+  NotifyAgentDisconnected();
+  NotifyAgentUnavailable(mojom::BrowserAuthResult::kInconclusive);
+  NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kLaunchFailed);
+  EXPECT_EQ(launch_record_.launch_count, 0);
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -218,6 +243,61 @@ TEST_F(BraveVpnServiceImplTest, PolicyDisabledKeepsAgentDisconnected) {
   CreateService();
   UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
   EXPECT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
+}
+
+TEST_F(BraveVpnServiceImplTest, AgentNotRunningLaunchesAgent) {
+  CreateService();
+  ASSERT_EQ(launch_record_.launch_count, 0);
+
+  NotifyAgentNotRunning();
+
+  EXPECT_EQ(launch_record_.launch_count, 1);
+  EXPECT_TRUE(launch_record_.last_failure_callback);
+}
+
+// Only a missing agent justifies a launch. A refusal means the agent is right
+// there and said no; a disconnect means it was there a moment ago. Starting a
+// second instance in either case would be wrong.
+TEST_F(BraveVpnServiceImplTest, OnlyMissingAgentTriggersLaunch) {
+  CreateService();
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+
+  NotifyAgentDisconnected();
+  NotifyAgentUnavailable(mojom::BrowserAuthResult::kRejected);
+
+  EXPECT_EQ(launch_record_.launch_count, 0);
+}
+
+// A launch that never happened leaves nothing to connect to, so the retry loop
+// stops. The next user-initiated connect starts a fresh sequence, which is the
+// only way back.
+TEST_F(BraveVpnServiceImplTest, AgentLaunchFailureStopsRetrying) {
+  CreateService();
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  ASSERT_EQ(agent_client()->state(), AgentClient::State::kConnecting);
+
+  NotifyAgentNotRunning();
+  ASSERT_TRUE(launch_record_.last_failure_callback);
+  std::move(launch_record_.last_failure_callback)
+      .Run(AgentLauncher::LaunchError::kAppNotFound);
+
+  EXPECT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
+}
+
+// The launcher is gone after Shutdown(), but the failure callback is bound to
+// the still-live service, so it can arrive afterwards and must not dereference
+// the agent client.
+TEST_F(BraveVpnServiceImplTest, LaunchFailureAfterShutdownDoesNotCrash) {
+  CreateService();
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  NotifyAgentNotRunning();
+  ASSERT_TRUE(launch_record_.last_failure_callback);
+
+  ShutdownService();
+
+  // Must not crash.
+  std::move(launch_record_.last_failure_callback)
+      .Run(AgentLauncher::LaunchError::kLaunchFailed);
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

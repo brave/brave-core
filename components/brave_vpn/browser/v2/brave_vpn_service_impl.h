@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -19,6 +20,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 #include "brave/components/brave_vpn/browser/v2/agent/agent_client.h"
+#include "brave/components/brave_vpn/browser/v2/agent/agent_launcher.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace network {
@@ -149,6 +151,9 @@ class BraveVpnServiceImpl : public BraveVpnService
   void OnAgentUnavailable(
       std::optional<mojom::BrowserAuthResult> result) override;
   void OnAgentNotRunning() override;
+
+  // Called when the agent process fails to launch.
+  void OnAgentLaunchFailed(AgentLauncher::LaunchError error);
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -166,10 +171,12 @@ class BraveVpnServiceImpl : public BraveVpnService
   std::unique_ptr<SkusServiceClient> skus_client_;
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::unique_ptr<AgentClient> agent_client_;
+  std::unique_ptr<AgentLauncher> agent_launcher_;
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   std::unique_ptr<PurchasedStateManager> purchased_state_manager_;
 
   [[maybe_unused]] mojom::ConnectionState connection_state_;
+  base::WeakPtrFactory<BraveVpnServiceImpl> weak_factory_{this};
 };
 
 }  // namespace brave_vpn::v2

@@ -11,9 +11,20 @@ static_library("agent") {
   sources = [
     "agent_client.cc",
     "agent_client.h",
+    "agent_launcher.cc",
+    "agent_launcher.h",
+    "agent_launcher_internal.h",
     "browser_endpoint_impl.cc",
     "browser_endpoint_impl.h",
   ]
+
+  if (is_mac) {
+    sources += [ "agent_launcher_mac.mm" ]
+  } else if (is_linux) {
+    sources += [ "agent_launcher_linux.cc" ]
+  } else if (is_win) {
+    sources += [ "agent_launcher_win.cc" ]
+  }
 
   public_deps = [
     "//base",
@@ -37,6 +48,8 @@ source_set("test_support") {
   sources = [
     "test/fake_agent.cc",
     "test/fake_agent.h",
+    "test/fake_agent_launcher.cc",
+    "test/fake_agent_launcher.h",
   ]
 
   public_deps = [
