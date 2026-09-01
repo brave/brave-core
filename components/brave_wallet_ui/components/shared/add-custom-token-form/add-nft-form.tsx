@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
@@ -71,6 +72,24 @@ const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, {
   marginRight: 0,
 })
 
+function isValidContractAddressForCoin(
+  coin: BraveWallet.CoinType | undefined,
+  address: string,
+): boolean {
+  switch (coin) {
+    case undefined:
+      return false
+    case BraveWallet.CoinType.SOL:
+      return isValidSolanaAddress(address)
+    case BraveWallet.CoinType.ETH:
+      return isValidEVMAddress(address)
+    default:
+      // Networks are limited to CustomAssetSupportedCoinTypes, so a new NFT
+      // coin must be handled above rather than silently validated as EVM.
+      assertNotReached(`Unsupported custom NFT coin ${coin}`)
+  }
+}
+
 interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
   contractAddress: string
@@ -115,11 +134,10 @@ export const AddNftForm = (props: Props) => {
   // coin input never reaches the RPC / gate3 (brave/brave-browser#58531).
   // Deliberately an approximate sync check so the form stays keystroke-
   // responsive; SimpleHashClient::GetNftsUrl is the authoritative validator.
-  const isContractAddressValid = !customAssetsNetwork
-    ? false
-    : customAssetsNetwork.coin === BraveWallet.CoinType.SOL
-      ? isValidSolanaAddress(tokenContractAddress)
-      : isValidEVMAddress(tokenContractAddress)
+  const isContractAddressValid = isValidContractAddressForCoin(
+    customAssetsNetwork?.coin,
+    tokenContractAddress,
+  )
 
   // mutations
   const [addUserToken] = useAddUserTokenMutation()
