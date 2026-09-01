@@ -1123,6 +1123,7 @@ source_set("ui") {
     deps += [
       "//chrome/app/theme:chrome_unscaled_resources_grit",
       "//chrome/browser:shell_integration_linux",
+      "//chrome/browser/ui/views:chrome_views_delegate",
     ]
   }
 
