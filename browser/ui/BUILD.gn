@@ -650,6 +650,7 @@ source_set("ui") {
       "//brave/browser/ui/commander:fuzzy_finder",
       "//brave/components/commander/browser",
       "//chrome/browser/ui:accelerator_utils_headers",
+      "//chrome/browser/ui:tab_ui_helper",
       "//chrome/browser/ui/location_bar",
       "//chrome/browser/ui/window_metadata",
     ]
@@ -1618,6 +1619,7 @@ source_set("browser_tests") {
       "//chrome/browser/devtools:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:tab_ui_helper",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/startup",
       "//chrome/browser/ui/webui:profile_helper",
