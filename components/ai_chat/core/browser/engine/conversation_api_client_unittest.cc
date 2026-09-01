@@ -258,6 +258,8 @@ class TestConversationAPIClient : public ConversationAPIClient {
   MockAPIRequestHelper* GetMockAPIRequestHelper() {
     return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
   }
+
+  using ConversationAPIClient::CreateJSONRequestBody;
 };
 
 class ConversationAPIClientUnitTest : public testing::Test {
@@ -306,6 +308,28 @@ class ConversationAPIClientUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::optional<CredentialCacheEntry> credential_ = std::nullopt;
 };
+
+TEST_F(ConversationAPIClientUnitTest, CreateJSONRequestBody_Capabilities) {
+  // CreateJSONRequestBody CHECKs on a capability missing from
+  // kCapabilityStringMap.
+  std::string body = client_->CreateJSONRequestBody(
+      {}, std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */,
+      {mojom::ConversationCapability::CHAT,
+       mojom::ConversationCapability::CONTENT_AGENT,
+       mojom::ConversationCapability::DEEP_RESEARCH,
+       mojom::ConversationCapability::MATH_ML},
+      std::nullopt /* model_name */, /*is_sse_enabled=*/true);
+
+  auto dict = base::test::ParseJsonDict(body);
+  const base::ListValue* capabilities = dict.FindList("brave_capability");
+  ASSERT_TRUE(capabilities);
+  EXPECT_EQ(capabilities->size(), 4u);
+  EXPECT_TRUE(capabilities->contains("chat"));
+  EXPECT_TRUE(capabilities->contains("content_agent"));
+  EXPECT_TRUE(capabilities->contains("deep_research"));
+  EXPECT_TRUE(capabilities->contains("math_ml"));
+}
 
 class ConversationAPIClientUnitTest_ContentBlocks
     : public ConversationAPIClientUnitTest,
