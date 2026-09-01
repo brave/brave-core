@@ -1,0 +1,13 @@
+diff --git a/components/user_education/views/help_bubble_view.cc b/components/user_education/views/help_bubble_view.cc
+index fc1a842d468a81977bc45096273ff920633dd644..8ee7be819f307d48df29adabc15bb6c702cbda60 100644
+--- a/components/user_education/views/help_bubble_view.cc
++++ b/components/user_education/views/help_bubble_view.cc
+@@ -141,6 +141,8 @@ class MdIPHBubbleButton : public views::MdTextButton {
+             background_color, stroke_color, GetCornerRadii())));
+   }
+ 
++  void UpdateTextColor() override {}
++
+  private:
+   const raw_ptr<const HelpBubbleDelegate> delegate_;
+   bool is_default_button_;
