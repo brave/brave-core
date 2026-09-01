@@ -40,7 +40,7 @@ constexpr char kTestPage[] = R"(data:text/html,
         <canvas width="200" height="200"
                 style="position:absolute;inset:0"></canvas>
         <div id="opaque"
-             style="position:absolute;inset:0;background:#fff"></div>
+             style="position:absolute;inset:0;background:white"></div>
       </div>
       <div id="plain" style="width:200px;height:200px"></div>
       <script>
@@ -76,6 +76,17 @@ class ForceContextMenuOnShiftRightClickBrowserTest
   }
 
   void ShiftRightClickOn(std::string_view id) {
+    // GetCenterCoordinatesOfElementWithId() CHECK-fails on a missing element,
+    // which reads as a browser crash rather than a test failure. A truncated
+    // test page is the likely cause, so say so.
+    if (!content::EvalJs(
+             web_contents(),
+             content::JsReplace("!!document.getElementById($1)", id))
+             .ExtractBool()) {
+      ADD_FAILURE() << "no #" << id << " on the page; is it truncated?";
+      return;
+    }
+
     const gfx::PointF center =
         content::GetCenterCoordinatesOfElementWithId(web_contents(), id);
     content::SimulateMouseClickAt(web_contents(),
