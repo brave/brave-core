@@ -58,4 +58,9 @@ bool ContentBrowserClient::ShouldUseDefaultHostZoomMapForStoragePartition(
   return false;
 }
 
+mojo::PendingRemote<local_ai::mojom::AsrSession>
+ContentBrowserClient::GetAsrSession() {
+  return {};
+}
+
 }  // namespace content
