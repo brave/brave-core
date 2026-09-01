@@ -348,7 +348,7 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  /// Reclaims space if needed and enqueues a download when none is already in flight.
+  /// Reclaims space if needed and enqueues a download when the item is not already cached or in flight.
   /// Returns `true` when a new download task was registered.
   @MainActor
   @discardableResult
@@ -363,7 +363,15 @@ public class PlaylistManager: NSObject {
     if !isOutOfSpaceRetry {
       itemsRetriedAfterOutOfSpace.remove(itemId)
     }
+
+    // Check first otherwise reclaim may evict this item's cache, then redownload it.
+    guard await cacheState(for: itemId) == .invalid else { return false }
     await reclaimSpaceIfNeeded()
+    if let cachedURL = await cacheManager.localAsset(for: itemId)?.url,
+      await AsyncFileManager.default.fileExists(atPath: cachedURL.path)
+    {
+      return false
+    }
 
     guard pendingDownloadTasks[itemId] == nil,
       cacheManager.downloadTask(for: itemId) == nil
