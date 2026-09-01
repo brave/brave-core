@@ -10,31 +10,42 @@ tests in the Chromium project, and to analyze the results.
 
 import http.client
 import json
+import threading
 import time
-import urllib.request
-import urllib.error
 from datetime import datetime, timedelta, timezone
 
-LUCI_ANALYSIS_HOST = "https://analysis.api.luci.app"
+LUCI_ANALYSIS_HOST = "analysis.api.luci.app"
 TEST_HISTORY_SERVICE = "luci.analysis.v1.TestHistory"
 CLUSTERS_SERVICE = "luci.analysis.v1.Clusters"
 CHROMIUM_PROJECT = "chromium"
-_ALLOWED_SCHEMES = ("https://", )
+
+_thread_local = threading.local()
 
 
 class LuciAnalysisError(Exception):
     """Raised when a LUCI Analysis API request fails."""
 
 
-def _safe_urlopen(req, **kwargs):
-    """Wrapper around urllib.request.urlopen that validates URL scheme.
+def _get_connection():
+    """Return this thread's persistent API connection.
 
-    Prevents file:// and other dangerous schemes from being used.
+    Reusing connections avoids a TLS handshake per request, which adds
+    up over the thousands of requests of a filter update.
     """
-    url = req.full_url if isinstance(req, urllib.request.Request) else req
-    if not any(url.startswith(s) for s in _ALLOWED_SCHEMES):
-        raise ValueError(f"URL scheme not allowed: {url}")
-    return urllib.request.urlopen(req, **kwargs)  # nosemgrep
+    connection = getattr(_thread_local, "connection", None)
+    if connection is None:
+        connection = http.client.HTTPSConnection(LUCI_ANALYSIS_HOST,
+                                                 timeout=30)
+        _thread_local.connection = connection
+    return connection
+
+
+def _drop_connection():
+    """Close this thread's connection so the next request opens a new one."""
+    connection = getattr(_thread_local, "connection", None)
+    if connection is not None:
+        connection.close()
+        _thread_local.connection = None
 
 
 def prpc_request(service, method, body):
@@ -52,48 +63,47 @@ def prpc_request(service, method, body):
     Raises:
         LuciAnalysisError on auth, network or parse errors.
     """
-    url = f"{LUCI_ANALYSIS_HOST}/prpc/{service}/{method}"
+    path = f"/prpc/{service}/{method}"
     data = json.dumps(body).encode("utf-8")
-
-    req = urllib.request.Request(
-        url,
-        data=data,
-        headers={
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        },
-        method="POST",
-    )
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
 
     max_attempts = 3
     for attempt in range(1, max_attempts + 1):
+        connection = _get_connection()
         try:
-            with _safe_urlopen(req, timeout=30) as resp:
-                raw = resp.read()
-            break
-        except urllib.error.HTTPError as e:
-            if e.code == 403:
-                raise LuciAnalysisError(
-                    "403 Forbidden from LUCI Analysis API. The API may"
-                    " require authentication for this query.") from e
-            if e.code == 404:
-                raise LuciAnalysisError(f"404 Not Found for method {method}.") \
-                    from e
-            # Retry transient server errors.
-            if e.code >= 500 and attempt < max_attempts:
-                time.sleep(2**attempt)
-                continue
-            raise LuciAnalysisError(
-                f"HTTP {e.code} from LUCI Analysis API: {e.reason}") from e
-        # OSError covers URLError as well as errors raised while reading
-        # the response (timeouts, connection resets), which urllib does
-        # not wrap. HTTPException covers e.g. IncompleteRead.
+            connection.request("POST", path, body=data, headers=headers)
+            response = connection.getresponse()
+            status = response.status
+            reason = response.reason
+            raw = response.read()
+        # OSError covers timeouts and connection resets; HTTPException
+        # covers e.g. a keep-alive connection that the server has
+        # meanwhile closed (RemoteDisconnected) or truncated reads.
         except (OSError, http.client.HTTPException) as e:
+            _drop_connection()
             if attempt < max_attempts:
                 time.sleep(2**attempt)
                 continue
             raise LuciAnalysisError(
                 f"Could not reach LUCI Analysis API: {e}") from e
+
+        if status == 200:
+            break
+        if status == 403:
+            raise LuciAnalysisError(
+                "403 Forbidden from LUCI Analysis API. The API may"
+                " require authentication for this query.")
+        if status == 404:
+            raise LuciAnalysisError(f"404 Not Found for method {method}.")
+        # Retry transient server errors and rate limiting.
+        if (status >= 500 or status == 429) and attempt < max_attempts:
+            time.sleep(2**attempt)
+            continue
+        raise LuciAnalysisError(
+            f"HTTP {status} from LUCI Analysis API: {reason}")
 
     # Strip the pRPC XSSI prefix. The prefix is )]}' followed by a newline.
     # Find the first newline and skip everything up to and including it.

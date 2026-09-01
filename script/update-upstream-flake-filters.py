@@ -89,7 +89,7 @@ EXCLUDED_BUILDER_KEYWORDS = ("chromeos", "chromium os", "fuchsia", "ios",
 # individually.
 MAX_VARIANTS_PER_CLUSTER = 100
 
-STATS_WORKERS = 8
+STATS_WORKERS = 32
 
 
 def log(message):
@@ -210,29 +210,38 @@ def collect_candidate_test_ids(suite, days):
                 summary["title"]
 
     test_ids = set()
+    multi_test_clusters = []
     for (algorithm, cluster_id), title in sorted(clusters.items()):
         if algorithm.startswith("testname") and not is_like_pattern(title):
             # The title is the verbatim test ID.
             if suite_marker in title:
                 test_ids.add(normalize_test_id(title))
             continue
+        multi_test_clusters.append((algorithm, cluster_id, title))
 
-        # The cluster groups multiple test IDs (a parameterized test
-        # family, or a bug rule matching failures from any number of
-        # tests). Enumerate its recent failures to get exact IDs.
+    # The remaining clusters group multiple test IDs (a parameterized
+    # test family, or a bug rule matching failures from any number of
+    # tests). Enumerate their recent failures to get exact IDs.
+    def enumerate_cluster(cluster):
+        algorithm, cluster_id, title = cluster
         failure_counts = Counter()
         for failure in query_cluster_failures(algorithm, cluster_id):
             test_id = failure.get("testId", "")
             if suite_marker in test_id:
                 failure_counts[normalize_test_id(test_id)] += int(
                     failure.get("count", 1))
-        top = failure_counts.most_common(MAX_VARIANTS_PER_CLUSTER)
-        dropped = len(failure_counts) - len(top)
-        if dropped > 0:
-            log(f"  Note: cluster '{title[:80]}' has "
-                f"{len(failure_counts)} recently failing variants; only "
-                f"checking the top {len(top)} by failure count.")
-        test_ids.update(test_id for test_id, _ in top)
+        return title, failure_counts
+
+    with ThreadPoolExecutor(max_workers=STATS_WORKERS) as executor:
+        for title, failure_counts in executor.map(enumerate_cluster,
+                                                  multi_test_clusters):
+            top = failure_counts.most_common(MAX_VARIANTS_PER_CLUSTER)
+            dropped = len(failure_counts) - len(top)
+            if dropped > 0:
+                log(f"  Note: cluster '{title[:80]}' has "
+                    f"{len(failure_counts)} recently failing variants; only "
+                    f"checking the top {len(top)} by failure count.")
+            test_ids.update(test_id for test_id, _ in top)
 
     return sorted(test_ids)
 
