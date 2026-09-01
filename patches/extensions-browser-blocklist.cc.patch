@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/blocklist.cc b/extensions/browser/blocklist.cc
+index 7dae85306825cc55e6b31ed2e32b3befbcbb502d..b294479fc37c25332e1851a233d580f93e1834ef 100644
+--- a/extensions/browser/blocklist.cc
++++ b/extensions/browser/blocklist.cc
+@@ -191,6 +191,7 @@ Blocklist::~Blocklist() = default;
+ 
+ void Blocklist::GetBlocklistedIDs(const std::set<ExtensionId>& ids,
+                                   GetBlocklistedIDsCallback callback) {
++  callback = base::BindOnce(&MergeBraveMalwareIDs, ids, std::move(callback));
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
+   if (ids.empty() || !GetDatabaseManager().get()) {

@@ -14,6 +14,7 @@
 #include "base/feature_list.h"
 #include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
 #include "brave/components/extension_malware_blocklist/common/features.h"
+#include "chrome/browser/browser_process.h"
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 BraveGlobalFeatures::BraveGlobalFeatures() {
@@ -30,8 +31,24 @@ BraveGlobalFeatures::~BraveGlobalFeatures() = default;
 
 BraveGlobalFeatures* BraveGlobalFeatures::FromGlobalFeatures(
     GlobalFeatures* global_features) {
+  if (!global_features || !global_features->IsBraveGlobalFeatures()) {
+    return nullptr;
+  }
   return static_cast<BraveGlobalFeatures*>(global_features);
 }
+
+bool BraveGlobalFeatures::IsBraveGlobalFeatures() const {
+  return true;
+}
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+// static
+extension_malware_blocklist::ExtensionMalwareBlocklist*
+BraveGlobalFeatures::GetExtensionMalwareBlocklist() {
+  auto* features = FromGlobalFeatures(g_browser_process->GetFeatures());
+  return features ? features->extension_malware_blocklist() : nullptr;
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 GlobalFeatures* CreateBraveGlobalFeatures() {
   return new BraveGlobalFeatures();

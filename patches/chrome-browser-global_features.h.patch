@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/global_features.h b/chrome/browser/global_features.h
+index 6aef02dc73a85c71a0a0227b2fa1f80d6590a59a..d8f1e95ba06bf1717f6a472a9dab1433cd7a62bf 100644
+--- a/chrome/browser/global_features.h
++++ b/chrome/browser/global_features.h
+@@ -223,6 +223,8 @@ class GlobalFeatures {
+     return tab_drag_session_manager_.get();
+   }
+ 
++  virtual bool IsBraveGlobalFeatures() const;
++
+  protected:
+   GlobalFeatures();
+ 

@@ -102,6 +102,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/brave_extension_service_factory.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 #endif
 
@@ -254,6 +255,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  extensions::BraveExtensionServiceFactory::GetInstance();
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
   BraveShieldsSettingsServiceFactory::GetInstance();

@@ -126,16 +126,15 @@ group("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = []
-  deps = []
+  sources = [ "brave_global_features_unittest.cc" ]
+  deps = [
+    "//base",
+    "//brave/browser",
+    "//brave/browser:brave_global_features",
+    "//testing/gtest",
+  ]
 
   if (is_win) {
     sources += [ "default_protocol_handler_utils_win_unittest.cc" ]
-
-    deps += [
-      "//base",
-      "//brave/browser",
-      "//testing/gtest",
-    ]
   }
 }

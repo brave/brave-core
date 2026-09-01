@@ -9,13 +9,21 @@
 #include <tuple>
 
 #include "base/check.h"
+#include "brave/browser/brave_global_features.h"
 #include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
+#include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
 #include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
 
 namespace extensions {
 
 BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
   AddAPIProvider(std::make_unique<BraveExtensionsBrowserAPIProvider>());
+}
+
+bool BraveExtensionsBrowserClientImpl::IsOnBraveMalwareExtensionList(
+    const ExtensionId& extension_id) const {
+  auto* blocklist = BraveGlobalFeatures::GetExtensionMalwareBlocklist();
+  return blocklist && blocklist->IsMalware(extension_id);
 }
 
 }  // namespace extensions

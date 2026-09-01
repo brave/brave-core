@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let the embedder augment the extension blocklist with Brave's own list.
+
+      `//extensions/browser` cannot depend on `//brave/components`, so Blocklist
+      reaches the Brave-distributed malware list through this client instead.
+      BraveExtensionsBrowserClientImpl overrides it; the default returns false,
+      so upstream and other embedders are unaffected.
+    add_to_public:
+      class_name: ExtensionsBrowserClient
+      code: |-
+        virtual bool IsOnBraveMalwareExtensionList(
+            const ExtensionId& extension_id) const;

@@ -1,0 +1,14 @@
+diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
+index a66f7a36c1bd0cfa735b663c7842faaae0eba2bb..7a5c6c244d6c2b5c2544f07fc78048940a398195 100644
+--- a/extensions/browser/extensions_browser_client.h
++++ b/extensions/browser/extensions_browser_client.h
+@@ -706,6 +706,9 @@ class ExtensionsBrowserClient {
+       content::WebContents* web_contents,
+       std::unique_ptr<InstallPromptData> prompt);
+ 
++  virtual bool IsOnBraveMalwareExtensionList(
++      const ExtensionId& extension_id) const;
++
+  protected:
+   std::unique_ptr<ExtensionAssetsManager> assets_manager_;
+ 

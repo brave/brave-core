@@ -13,3 +13,12 @@ substitutions:
     regex:
       re_pattern: '(namespace {)'
       replace: 'GlobalFeatures* CreateBraveGlobalFeatures();\n\1'
+
+  - description: 'Default for the BraveGlobalFeatures type tag'
+    regex:
+      pattern: 'GlobalFeatures::~GlobalFeatures() = default;'
+      replace: |-
+        GlobalFeatures::~GlobalFeatures() = default;
+        bool GlobalFeatures::IsBraveGlobalFeatures() const {
+          return false;
+        }
