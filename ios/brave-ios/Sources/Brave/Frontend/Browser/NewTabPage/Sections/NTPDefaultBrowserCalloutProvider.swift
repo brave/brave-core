@@ -7,16 +7,12 @@ import BraveUI
 import Foundation
 import Preferences
 import Shared
+import SwiftUI
 import UIKit
 
 class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
-  private var defaultCalloutView = DefaultBrowserCalloutView()
   private let isBackgroundNTPSI: Bool
-
-  private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<
-    DefaultBrowserCalloutView
-  >
 
   // MARK: Lifecycle
   init(isBackgroundNTPSI: Bool) {
@@ -36,13 +32,21 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     _ collectionView: UICollectionView,
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(for: indexPath) as DefaultBrowserCalloutCell
-    cell.view.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-    cell.view.closeHaandler = { [weak self] in
-      Preferences.General.defaultBrowserCalloutDismissed.value = true
-      self?.sectionDidChange?()
-
-    }
+    let cell =
+      collectionView.dequeueReusableCell(for: indexPath) as DefaultBrowserCalloutNTPWidgetCell
+    cell.contentConfiguration = UIHostingConfiguration {
+      DefaultBrowserCalloutView(
+        openSettings: { [unowned self] in
+          openSettings()
+        },
+        dismiss: { [unowned self] in
+          Preferences.General.defaultBrowserCalloutDismissed.value = true
+          sectionDidChange?()
+        }
+      )
+      .frame(maxWidth: 640)
+      .fixedSize(horizontal: false, vertical: true)
+    }.margins(.all, 0)
     return cell
   }
 
@@ -51,10 +55,8 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath
   ) -> CGSize {
-
     var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
-    size.height = defaultCalloutView.systemLayoutSizeFitting(size).height
-
+    size.height = 60
     return size
   }
 
@@ -66,12 +68,11 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     if !shouldShowCallout() {
       return .zero
     }
-
     return UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
   }
 
   func registerCells(to collectionView: UICollectionView) {
-    collectionView.register(DefaultBrowserCalloutCell.self)
+    collectionView.register(DefaultBrowserCalloutNTPWidgetCell.self)
   }
 
   func shouldShowCallout() -> Bool {
@@ -102,7 +103,7 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     return defaultBrowserDisplayCriteria && defaultBrowserTimeConstraintCriteria
   }
 
-  @objc func openSettings() {
+  private func openSettings() {
     guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
       return
     }
@@ -112,56 +113,74 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
   }
 }
 
-private class DefaultBrowserCalloutView: SpringButton {
-
-  var closeHaandler: (() -> Void)?
-
-  private let closeButton = UIButton().then {
-    $0.setImage(
-      UIImage(named: "close_tab_bar", in: .module, compatibleWith: nil)!.template,
-      for: .normal
-    )
-    $0.tintColor = .lightGray
-    $0.contentEdgeInsets = UIEdgeInsets(equalInset: 4)
-    $0.accessibilityLabel = Strings.defaultBrowserCalloutCloseAccesabilityLabel
+private class DefaultBrowserCalloutNTPWidgetCell: UICollectionViewCell, CollectionViewReusable {
+  override func preferredLayoutAttributesFitting(
+    _ layoutAttributes: UICollectionViewLayoutAttributes
+  ) -> UICollectionViewLayoutAttributes {
+    let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+    attributes.size.height =
+      systemLayoutSizeFitting(
+        layoutAttributes.size,
+        withHorizontalFittingPriority: .required,
+        verticalFittingPriority: .fittingSizeLevel
+      ).height
+    return attributes
   }
+}
 
-  private let label = UILabel().then {
-    $0.text = Strings.setDefaultBrowserCalloutTitle
-    $0.textColor = UIColor.white
-    $0.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
-    $0.numberOfLines = 0
-    $0.preferredMaxLayoutWidth = 280
-    $0.textAlignment = .center
-  }
+private struct DefaultBrowserCalloutView: View {
+  var openSettings: () -> Void
+  var dismiss: () -> Void
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    clipsToBounds = true
-    layer.cornerRadius = 8
-    layer.cornerCurve = .continuous
-    backgroundColor = UIColor(white: 0.0, alpha: 0.25)
-
-    addSubview(label)
-    addSubview(closeButton)
-
-    closeButton.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
-
-    label.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(10)
-      $0.leading.equalToSuperview().offset(24)
-      $0.trailing.equalTo(closeButton).inset(20)
+  var body: some View {
+    Button {
+      openSettings()
+    } label: {
+      HStack(alignment: .top) {
+        HStack {
+          Image(braveSystemName: "leo.set.as-default")
+            .font(.title3)
+            .padding(8)
+            .background(Color.black.opacity(0.3), in: .rect(cornerRadius: 8, style: .continuous))
+          Text(LocalizedStringKey(Strings.setDefaultBrowserCalloutTitle))
+            .font(.footnote)
+        }
+        .accessibilityElement()
+        .foregroundStyle(.white)
+        Spacer()
+        Button {
+          dismiss()
+        } label: {
+          Label(Strings.close, braveSystemImage: "leo.close")
+            .foregroundStyle(.white.opacity(0.5))
+            .labelStyle(.iconOnly)
+        }
+        .font(.callout)
+      }
+      .padding()
     }
-
-    closeButton.snp.makeConstraints {
-      $0.top.equalToSuperview().inset(2)
-      $0.trailing.equalToSuperview().inset(8)
-    }
+    .buttonStyle(NewTabPageButtonStyle())
+    .colorScheme(.dark)
+    .dynamicTypeSize(.xSmall..<DynamicTypeSize.xLarge)
   }
+}
 
-  @objc func closeTab() {
-    closeHaandler?()
+struct NewTabPageButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content
+            .glassEffect(.regular.interactive(isEnabled), in: .rect(cornerRadius: 16))
+        } else {
+          content
+            .background(.thinMaterial, in: .rect(cornerRadius: 16))
+            .animation(.spring(response: 0.3, dampingFraction: 0.8)) { content in
+              content.scaleEffect(configuration.isPressed ? 0.95 : 1)
+            }
+        }
+      }
   }
-
 }
