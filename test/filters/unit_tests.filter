@@ -272,28 +272,6 @@
 -SiteSettingsHelperIsolatedWebAppTest.AutomaticFullscreenVisibility
 -SiteSettingsHelperIsolatedWebAppTest.IsolatedWebAppsUseAppNameAsDisplayName
 
-# Upstream Chromium test: CHECK failure in UpdateKeyDistributionInfo due to
-# race condition in async component loading. LoadKeyDistributionData posts
-# thread pool tasks and the TestFuture can receive a stale notification.
-# No Brave modifications in isolated_web_apps or key_distribution areas.
-# 0.7% upstream flake rate over 30 days per LUCI Analysis.
-# https://github.com/brave/brave-browser/issues/52733
--IsolatedWebAppUpdateManagerUpdateTest.SkipsUpdateDiscoveryTaskForNotAllowlistedIwa
-
-# Upstream Chromium test: intermittent timing failure in IWA retry logic
-# using MOCK_TIME + BackoffEntry. Expected 2 install tasks but got 3 due to
-# retry firing earlier than expected. No Brave modifications in IWA policy area.
-# Flakes on all platforms (6% upstream flake rate per LUCI Analysis).
-# https://github.com/brave/brave-browser/issues/52658
--IsolatedWebAppRetryTest.RetryTriggeredWhenAllTasksDone
-
-# Upstream Chromium test: same IWA retry timing flake. Expected 1 install task
-# but got 2 due to retry firing earlier than expected.
-# Known upstream flake (8.1% flake rate per LUCI Analysis, 30-day lookback).
-# No Brave modifications in IWA policy area.
-# https://github.com/brave/brave-browser/issues/52780
--IsolatedWebAppRetryTest.FirstInstallFailsRetrySucceeds
-
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
 -AccountExtensionTrackerSyncToSigninMigrationTest.ShouldNotMigrateAccountExtensionInstalledSignedIn
@@ -437,13 +415,6 @@
 # https://github.com/brave/brave-browser/issues/52742
 -ProfileTokenWebSigninInterceptorTest.InterceptionCreatesEphemeralProfileIfAcceptedWithNoId
 -ProfileTokenWebSigninInterceptorTest.InterceptionCreatesNewProfileIfAccepted
-
-# Flaky upstream tests
--FirstRunTest.CreateSentinelIfNeeded_SkippedIfSuppressed
-
-# These tests are flaky both for us and upstream.
-# https://github.com/brave/brave-browser/issues/56768
--FullStreamUIPolicyTest.*
 
 # This test fails because we use our own preferences for showing the bookmarks
 # bar
@@ -715,7 +686,6 @@
 # See https://github.com/brave/brave-browser/issues/52476
 # Upstream commit: https://chromium.googlesource.com/chromium/src/+/41015f71bcdd352f79f965e10a982b598d8e9557
 -ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
--ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityRefreshNavigationThrottleTest.FetchEligibilityOnAimSearchUrl
@@ -796,9 +766,6 @@
 -ManifestV2HandlerUnitTest.ProfileMetrics_ExtensionLocationsAreProperlyGrouped
 -ManifestV2HandlerUnitTest.ProfileMetrics_ExtensionsThatAreDisabledForOtherReasonsEmitOther
 -ManifestV2HandlerUnitTest.ShouldBlockInstallation_UserInstalledExtensions
-
-# Flaky on our CI and upstream
--IndigoToolbarTest.ExpandCollapseInteractions
 
 # These tests assume kSensorsAllowAskBlockPermissionModel's upstream default
 # (disabled), under which the sensors content setting icon stays hidden while

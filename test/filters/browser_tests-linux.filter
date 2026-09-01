@@ -62,16 +62,6 @@
 -WindowManagementTest.ScreenDetailedOnChange
 -WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
 
-# Chromium test: race between document.cookie setter (CookieJar mojo pipe, async
-# with AsyncSetCookie) and cookieStore.get() (CookieStore API, separate mojo pipe).
-# These use independent RestrictedCookieManager pipes with no ordering guarantee.
-# Brave's ephemeral storage checks (FillEphemeralStorageParams,
-# IsEphemeralCookieAccessible) add processing overhead that widens the race window.
-# Stable upstream: 0.2% flake rate over 30 days per LUCI Analysis.
-# https://github.com/brave/brave-browser/issues/55325
--All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/0
--All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
-
 # Chromium test: intermittent RunLoop timeout in DevTools paused debugger focus
 # mechanism. The test relies on an async chain (DebuggerPaused event → SourcesPanel
 # module loading → bringToFront IPC) that sometimes doesn't complete before the
@@ -96,39 +86,12 @@
 # into the shortcut name but our shortcut starts with "brave-".
 -ShortcutSubManagerBrowserTest.CleanUpEphemeralProfileDeletesShortcuts
 
-# Chromium test: fixture sets kGlicActorPageStabilityTimeout to 30s but doesn't
-# set kActorObservationDelayTimeout (defaults to 10s). On slow CI, the 10s
-# overall timeout fires while still in kWaitForPageStability, causing the state
-# to skip kWaitForLoadCompletion and jump directly to kDone. 0.5% upstream flake
-# rate over 30 days per LUCI Analysis. No Brave chromium_src overrides affect
-# the ObservationDelayController code path.
-# https://github.com/brave/brave-browser/issues/54159
--ObservationDelayControllerTest.UsePageStabilityForSameDocumentNavigation
-
 # Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
 # breaking this test's canvas-based video playback detection. The test only
-# compiles on Linux non-sanitizer builds (#if BUILDFLAG(IS_LINUX)).
-# Upstream stable: 640x480 0.6%, 3840x2160 0.3% flake rate (30-day LUCI).
+# compiles on Linux non-sanitizer builds (#if BUILDFLAG(IS_LINUX)). The
+# 3840x2160 variant passes. Upstream stable: 0.6% flake rate (30-day LUCI).
 # https://github.com/brave/brave-browser/issues/54521
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
--All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
-
-# This Chromium test fails because the Glic WebUI creates its webview
-# asynchronously via JavaScript, and Brave's environment doesn't fully support
-# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
--GuestUtilBrowserTest.OnGuestAdded_Glic
-
-# Chromium test: ApplyDefaultSearchChangeForTesting(FROM_EXTENSION) on Linux
-# leaves default_search_provider_ null (extension DSEs unsupported on Linux)
-# while default_search_provider_source_ stays FROM_EXTENSION. Brave's
-# DefaultSearchManager override causes MaybeShowDialog() to record the
-# histogram twice with differing conditions (kControlledByPolicy and
-# kExtensionControlled), failing the ExpectUniqueSample assertion.
-# Already disabled on Windows in upstream source; upstream TODO crbug.com/429600559
-# acknowledges the broken extension DSE test setup.
-# Stable upstream: 0.3% flake rate over 30 days per LUCI Analysis.
-# https://github.com/brave/brave-browser/issues/54542
--SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
 
 # This test is flakey upstream due to https://issues.chromium.org/issues/511552103
 -All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/linux_ViewsAXEnabled
