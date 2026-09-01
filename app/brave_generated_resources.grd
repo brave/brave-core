@@ -638,6 +638,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_DOWNLOAD_BUTTON" desc="Label of the button in the screenshot preview dialog that proceeds to save the screenshot">
         Download
       </message>
+      <message name="IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_COPY_BUTTON" desc="Label of the button in the screenshot preview dialog that copies the screenshot to clipboard">
+        Copy to clipboard
+      </message>
 
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">

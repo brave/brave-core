@@ -72,13 +72,17 @@ class ScreenshotPreviewDialogDelegate : public views::DialogDelegate {
     SetModalType(ui::mojom::ModalType::kWindow);
     SetTitle(
         l10n_util::GetStringUTF16(IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_TITLE));
-    // Only the Download action is a button; dismissal happens via the frame's
-    // close (X) control or Esc, both surfaced as a non-accept ClosedReason to
-    // ScreenshotPreviewDialogHolder::OnClosed() below.
-    SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk));
+    // Add both Download and Copy to clipboard buttons.
+    // Download button is mapped to the OK button, Copy to clipboard is mapped
+    // to the Cancel button.
+    SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk) |
+               static_cast<int>(ui::mojom::DialogButton::kCancel));
     SetButtonLabel(ui::mojom::DialogButton::kOk,
                    l10n_util::GetStringUTF16(
                        IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_DOWNLOAD_BUTTON));
+    SetButtonLabel(ui::mojom::DialogButton::kCancel,
+                   l10n_util::GetStringUTF16(
+                       IDS_BRAVE_SCREENSHOT_PREVIEW_DIALOG_COPY_BUTTON));
     SetShowCloseButton(true);
 
     // Same content margins Chrome's own screenshot-captured bubble uses
@@ -104,10 +108,12 @@ class ScreenshotPreviewDialogHolder {
       gfx::NativeWindow parent,
       std::vector<uint8_t> png,
       base::OnceCallback<void(std::vector<uint8_t>)> on_download,
+      base::OnceCallback<void(std::vector<uint8_t>)> on_copy,
       base::OnceClosure on_cancel)
       : delegate_(
             std::make_unique<ScreenshotPreviewDialogDelegate>(std::move(png))),
         on_download_(std::move(on_download)),
+        on_copy_(std::move(on_copy)),
         on_cancel_(std::move(on_cancel)) {
     widget_.reset(views::DialogDelegate::CreateDialogWidget(
         delegate_.get(), gfx::NativeWindow(),
@@ -125,6 +131,8 @@ class ScreenshotPreviewDialogHolder {
     widget_.reset();
     if (reason == views::Widget::ClosedReason::kAcceptButtonClicked) {
       std::move(on_download_).Run(delegate_->TakePng());
+    } else if (reason == views::Widget::ClosedReason::kCancelButtonClicked) {
+      std::move(on_copy_).Run(delegate_->TakePng());
     } else {
       std::move(on_cancel_).Run();
     }
@@ -134,6 +142,7 @@ class ScreenshotPreviewDialogHolder {
   std::unique_ptr<ScreenshotPreviewDialogDelegate> delegate_;
   std::unique_ptr<views::Widget> widget_;
   base::OnceCallback<void(std::vector<uint8_t>)> on_download_;
+  base::OnceCallback<void(std::vector<uint8_t>)> on_copy_;
   base::OnceClosure on_cancel_;
 };
 
@@ -143,9 +152,11 @@ void ShowScreenshotPreviewDialog(
     gfx::NativeWindow parent,
     std::vector<uint8_t> png,
     base::OnceCallback<void(std::vector<uint8_t>)> on_download,
+    base::OnceCallback<void(std::vector<uint8_t>)> on_copy,
     base::OnceClosure on_cancel) {
-  new ScreenshotPreviewDialogHolder(
-      parent, std::move(png), std::move(on_download), std::move(on_cancel));
+  new ScreenshotPreviewDialogHolder(parent, std::move(png),
+                                    std::move(on_download), std::move(on_copy),
+                                    std::move(on_cancel));
 }
 
 }  // namespace screenshot
