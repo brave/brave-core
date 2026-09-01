@@ -1638,6 +1638,8 @@ void AIChatService::CreateTabOrganizationEngineIfNeeded() {
 
 void AIChatService::OnTabOrganizationModelPrefChanged() {
   tab_organization_engine_.reset();
+  // Topics are model-specific, so don't serve the previous model's.
+  cached_focus_topics_.clear();
 }
 
 void AIChatService::OnSuggestedTopicsReceived(
