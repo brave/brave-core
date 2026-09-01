@@ -30,7 +30,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
   /// A single resource reported by the page.
   struct BlockedResource {
     let resourceURL: String
-    let resourceType: AdblockEngine.ResourceType
+    let resourceType: AdblockResourceType
   }
 
   private enum BlockedType: Hashable {
@@ -69,7 +69,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
     securityOrigin: URL
   ) {
     let blockedResources = resources.compactMap { resource -> BlockedResource? in
-      guard let resourceType = AdblockEngine.ResourceType(rawValue: resource.resourceType)
+      guard let resourceType = AdblockResourceType(rawValue: resource.resourceType)
       else {
         return nil
       }
@@ -196,7 +196,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
     requestURL: URL,
     sourceURL: URL,
     enabledRuleTypes: Set<ContentBlockerManager.GenericBlocklistType>,
-    resourceType: AdblockEngine.ResourceType,
+    resourceType: AdblockResourceType,
     isAdBlockEnabled: Bool,
     isAdBlockModeAggressive: Bool
   ) async -> BlockedType? {

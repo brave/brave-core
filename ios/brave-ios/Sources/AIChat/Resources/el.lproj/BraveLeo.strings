@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Γεια σας, είμαι το Leo. Είμαι βοηθός AI από την Brave. Υποστηρίζομαι από το %@. Ρωτήστε με οτιδήποτε και θα κάνω ό,τι μπορώ για να απαντήσω.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Llama 3.1 8B, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Συνομιλία γενικών θεμάτων";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen VL 30B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */

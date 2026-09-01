@@ -15,7 +15,7 @@ import WebKit
 class RequestBlockingContentScriptHandler: TabContentScript {
   struct RequestBlockingDTO: Decodable {
     struct RequestBlockingDTOData: Decodable, Hashable {
-      let resourceType: AdblockEngine.ResourceType
+      let resourceType: AdblockResourceType
       let resourceURL: String
     }
 

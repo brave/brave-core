@@ -114,15 +114,6 @@ class TabBrowserData: NSObject, TabObserver {
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
 
-  /// This is the request that was upgraded to HTTPS
-  /// This allows us to rollback the upgrade when we encounter a 4xx+
-  var upgradedHTTPSRequest: URLRequest?
-
-  /// This is a timer that's started on HTTPS upgrade
-  /// If the upgrade hasn't completed within 3s, it is cancelled
-  /// and we fallback to HTTP or cancel the request (strict vs. standard)
-  var upgradeHTTPSTimeoutTimer: Timer?
-
   /// This is the url for the current request
   var currentRequestURL: URL? {
     willSet {

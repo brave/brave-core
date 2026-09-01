@@ -61,13 +61,6 @@
       }
     },
     {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "AIChatTests",
-        "name" : "AIChatTests"
-      }
-    },
-    {
       "skippedTests" : [
         "CertificatePinningTest\/testSelfSignedRootAllowed2()"
       ],
@@ -162,13 +155,6 @@
         "containerPath" : "container:..",
         "identifier" : "PlaylistUITests",
         "name" : "PlaylistUITests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "BraveUITests",
-        "name" : "BraveUITests"
       }
     }
   ],

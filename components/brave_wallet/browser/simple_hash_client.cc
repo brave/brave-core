@@ -11,8 +11,10 @@
 
 #include "base/check_op.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/types/optional_util.h"
@@ -23,6 +25,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -544,6 +547,11 @@ void SimpleHashClient::OnGetNfts(
   // and make another api request
   if (nft_identifiers.size() > 0) {
     GURL url = SimpleHashClient::GetNftsUrl(nft_identifiers);
+    if (!url.is_valid()) {
+      std::move(callback).Run(std::move(nfts_so_far));
+      return;
+    }
+
     std::vector<mojom::NftIdentifierPtr> nft_identifiers_remaining;
     if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
       for (size_t i = kSimpleHashMaxBatchSize; i < nft_identifiers.size();
@@ -1252,38 +1260,47 @@ GURL SimpleHashClient::GetNftsUrl(
     return GURL();
   }
 
-  std::string query_params;
-  size_t max_items =
-      std::min({nft_identifiers.size(), size_t(kSimpleHashMaxBatchSize)});
-  for (size_t i = 0; i < max_items; i++) {
+  const size_t max_items =
+      std::min(nft_identifiers.size(), kSimpleHashMaxBatchSize);
+  std::vector<std::string> nft_id_params;
+  nft_id_params.reserve(max_items);
+  for (const auto& nft_identifier :
+       base::span(nft_identifiers).first(max_items)) {
     std::optional<std::string> simple_hash_chain_id =
-        ChainIdToSimpleHashChainId(nft_identifiers[i]->chain_id);
+        ChainIdToSimpleHashChainId(nft_identifier->chain_id);
     if (!simple_hash_chain_id) {
       return GURL();
     }
 
     if (*coin == mojom::CoinType::SOL) {
-      query_params +=
-          *simple_hash_chain_id + "." + nft_identifiers[i]->contract_address;
+      // Skip mints that are not base58-encoded pubkeys, so one bad stored NFT
+      // does not fail the whole batch. Callers treat identifiers missing from
+      // the response as balance 0 / no metadata. The ETH branch stays all-or-
+      // nothing: a malformed token id is a caller bug, not stale prefs data.
+      if (!SolanaAddress::FromBase58(nft_identifier->contract_address)) {
+        continue;
+      }
+      nft_id_params.push_back(base::StrCat(
+          {*simple_hash_chain_id, ".", nft_identifier->contract_address}));
     } else {
       DCHECK_EQ(*coin, mojom::CoinType::ETH);
       uint256_t token_id_uint256;
-      if (!HexValueToUint256(nft_identifiers[i]->token_id, &token_id_uint256)) {
+      if (!HexValueToUint256(nft_identifier->token_id, &token_id_uint256)) {
         return GURL();
       }
-      std::string token_id_base10 = Uint256ValueToBase10(token_id_uint256);
-      query_params += *simple_hash_chain_id + "." +
-                      nft_identifiers[i]->contract_address + "." +
-                      token_id_base10;
-    }
-    if (i <
-        max_items - 1) {  // Check to ensure we do not append a comma at the end
-      query_params += ",";
+      nft_id_params.push_back(base::StrCat(
+          {*simple_hash_chain_id, ".", nft_identifier->contract_address, ".",
+           Uint256ValueToBase10(token_id_uint256)}));
     }
   }
 
+  if (nft_id_params.empty()) {
+    return GURL();
+  }
+
   GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/assets");
-  url = net::AppendQueryParameter(url, "nft_ids", query_params);
+  url = net::AppendQueryParameter(url, "nft_ids",
+                                  base::JoinString(nft_id_params, ","));
   return url;
 }
 

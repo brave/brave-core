@@ -13,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -135,9 +134,10 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
       web::WebStatePolicyDecider::RequestInfo request_info,
       web::WebStatePolicyDecider::PolicyDecisionCallback callback) override {
     id<BraveWebViewNavigationDelegate> delegate = web_view_.navigationDelegate;
-    if ([delegate respondsToSelector:@selector
-                  (webView:
-                      decidePolicyForBraveNavigationAction:decisionHandler:)]) {
+    if ([delegate
+            respondsToSelector:@selector(
+                                   webView:decidePolicyForBraveNavigationAction:
+                                   decisionHandler:)]) {
       BraveNavigationAction* navigationAction =
           [[BraveNavigationAction alloc] initWithRequest:request
                                              requestInfo:request_info];
@@ -387,14 +387,13 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
 
-  if (ai_chat::features::IsAIChatWebUIEnabled()) {
-    ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
-    ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
-        ->SetBridge(self.aiChatUIHandler);
-    ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
-    ai_chat::AIChatTabHelper::FromWebState(self.webState)
-        ->SetPageFetcher(self.aiChatUIHandler);
-  }
+  ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
+  ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
+      ->SetBridge(self.aiChatUIHandler);
+  ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
+  ai_chat::AIChatTabHelper::FromWebState(self.webState)
+      ->SetPageFetcher(self.aiChatUIHandler);
+
   brave_wallet::PageHandlerBridgeHolder::CreateForWebState(self.webState);
   brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
@@ -575,9 +574,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
                       proposedCredential:(NSURLCredential*)proposedCredential
                        completionHandler:(void (^)(NSString* username,
                                                    NSString* password))handler {
-  SEL selector = @selector(webView:
-      didRequestHTTPAuthForProtectionSpace:proposedCredential:completionHandler
-                                          :);
+  SEL selector = @selector(webView:didRequestHTTPAuthForProtectionSpace:
+                           proposedCredential:completionHandler:);
   if ([self.navigationDelegate respondsToSelector:selector]) {
     [self.navigationDelegate webView:self
         didRequestHTTPAuthForProtectionSpace:protectionSpace
@@ -612,8 +610,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 
   if (navigation->HasCommitted() && navigation->IsSameDocument() &&
       !navigation->GetError() &&
-      [self.navigationDelegate respondsToSelector:@selector
-                               (webViewDidCommitSameDocumentNavigation:)]) {
+      [self.navigationDelegate
+          respondsToSelector:@selector(
+                                 webViewDidCommitSameDocumentNavigation:)]) {
     [self.navigationDelegate webViewDidCommitSameDocumentNavigation:self];
   }
 }
@@ -621,8 +620,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 #pragma mark - FaviconDriverObserverBridge
 
 - (void)faviconDriverDidUpdateFavicon:(favicon::FaviconDriver*)driver {
-  if ([self.UIDelegate respondsToSelector:@selector(webView:
-                                              didUpdateFaviconStatus:)]) {
+  if ([self.UIDelegate
+          respondsToSelector:@selector(webView:didUpdateFaviconStatus:)]) {
     [self.UIDelegate webView:self didUpdateFaviconStatus:self.faviconStatus];
   }
 }
@@ -676,14 +675,13 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)setAiChatUIHandler:
     (id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>)bridge {
   _aiChatUIHandler = bridge;
-  if (ai_chat::features::IsAIChatWebUIEnabled()) {
-    ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
-    ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
-        ->SetBridge(bridge);
-    ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
-    ai_chat::AIChatTabHelper::FromWebState(self.webState)
-        ->SetPageFetcher(self.aiChatUIHandler);
-  }
+
+  ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
+  ai_chat::UIHandlerBridgeHolder::FromWebState(self.webState)
+      ->SetBridge(bridge);
+  ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
+  ai_chat::AIChatTabHelper::FromWebState(self.webState)
+      ->SetPageFetcher(self.aiChatUIHandler);
 }
 
 @end

@@ -17,7 +17,7 @@ export const style = scoped.css`
 
   a {
     color: inherit;
-    text-decoration: none;
+    text-decoration: underline;
     white-space: nowrap;
   }
 

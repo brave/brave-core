@@ -55,7 +55,7 @@ public class HTTPBlockedHandler: InternalSchemeResponse {
         of: "%proceed_action%",
         with: Strings.Shields.domainBlockedProceedAction
       )
-      .replacingOccurrences(of: "%go_back_action%", with: Strings.Shields.domainBlockedGoBackAction)
+      .replacingOccurrences(of: "%go_back_action%", with: Strings.Shields.backToSafetyButtonTitle)
       .replacingOccurrences(
         of: "%message_handler%",
         with: HTTPBlockedScriptHandler.messageHandlerName

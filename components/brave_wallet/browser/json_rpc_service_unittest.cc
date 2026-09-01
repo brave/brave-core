@@ -7937,7 +7937,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
   auto nft_identifier2 = mojom::NftIdentifier::New();
   nft_identifier2->chain_id = SolMainnetChainId();
   nft_identifier2->contract_address =
-      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_identifier2->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier2));
 
@@ -7945,7 +7945,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
   responses[GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8%"
-      "2Csolana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr")] = json;
+      "2Csolana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] = json;
 
   // Add the expected balances
   expected_balances.push_back(999);

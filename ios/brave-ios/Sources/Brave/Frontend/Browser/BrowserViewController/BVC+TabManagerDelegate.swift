@@ -96,6 +96,12 @@ extension BrowserViewController: TabManagerDelegate {
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
     // we should add it as a policy decider at initialization.
     tab.addPolicyDecider(braveShieldsHelper)
+    if FeatureList.kBraveHttpsByDefault.enabled {
+      tab.httpsUpgradeHelper = .init(
+        tab: tab,
+        httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService
+      )
+    }
     tab.cosmeticFilteringTabHelper = .init(tab: tab)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
     tab.protectionStats = .init(tab: tab)

@@ -15,31 +15,26 @@ BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
 // list when Shields is in "standard" blocking mode. When disabled, Brave will
 // allow first-party requests in "standard" blocking mode regardless of whether
 // or not they appear in a filter list.
-BASE_FEATURE(kBraveAdblockDefault1pBlocking,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockDefault1pBlocking, base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will issue DNS queries for requests that the adblock
 // engine has not blocked, then check them again with the original hostname
 // substituted for any canonical name found.
-BASE_FEATURE(kBraveAdblockCnameUncloaking,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockCnameUncloaking, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, Brave will apply HTML element collapsing to all images and
 // iframes that initiate a blocked network request.
 BASE_FEATURE(kBraveAdblockCollapseBlockedElements,
              base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, Brave will enable "Easylist-Cookie List" by default unless
 // overridden by a locally set preference.
-BASE_FEATURE(kBraveAdblockCookieListDefault,
-             base::FEATURE_ENABLED_BY_DEFAULT);
-BASE_FEATURE(kBraveAdblockCosmeticFiltering,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockCookieListDefault, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockCosmeticFiltering, base::FEATURE_ENABLED_BY_DEFAULT);
 // Brave will apply cosmetic filters with procedural operators like
 // `:has-text(...)` and `:upward(...)`.
 BASE_FEATURE(kBraveAdblockProceduralFiltering,
              base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
              base::FEATURE_DISABLED_BY_DEFAULT);
-BASE_FEATURE(kBraveAdblockCspRules,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockCspRules, base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockShowHiddenComponents,
              base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will enable "Fanboy's Mobile Notifications List" by
@@ -56,25 +51,21 @@ BASE_FEATURE(kBraveAdblockExperimentalListDefault,
 // optionally whitelist the domain.
 // Domain block filters look like this:
 // ||ads.example.com^
-BASE_FEATURE(kBraveDomainBlock,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveDomainBlock, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, Brave will attempt to enable 1PES mode in a standard blocking
 // mode when a user visists a domain that is present in currently active adblock
 // filters. 1PES will be enabled only if neither cookies nor localStorage data
 // is stored for the website.
-BASE_FEATURE(kBraveDomainBlock1PES,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveDomainBlock1PES, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, network requests initiated by extensions will be checked and
 // potentially blocked by Brave Shields.
-BASE_FEATURE(kBraveExtensionNetworkBlocking,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveExtensionNetworkBlocking, base::FEATURE_DISABLED_BY_DEFAULT);
 // Enables Brave farbling (randomization of fingerprinting-susceptible WebAPIs).
 BASE_FEATURE(kBraveFarbling, base::FEATURE_ENABLED_BY_DEFAULT);
 // Enables different farbling token across browser restarts.
 BASE_FEATURE(kBraveFarblingTokenReset, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, language headers and APIs may be altered by Brave Shields.
-BASE_FEATURE(kBraveReduceLanguage,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveReduceLanguage, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, brave shred feature will be available
 BASE_FEATURE(kBraveShredFeature,
 #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
@@ -93,17 +84,12 @@ BASE_FEATURE(kBraveShredCacheData,
 BASE_FEATURE(kBraveShieldsContentSettingsIOS, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, will display debug menu for adblock features in the Shields
 // panel.
-BASE_FEATURE(kBraveIOSDebugAdblock,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveIOSDebugAdblock, base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, will farble navigator.plugins.
-BASE_FEATURE(kBraveIOSEnableFarblingPlugins,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveIOSEnableFarblingPlugins, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              base::FEATURE_DISABLED_BY_DEFAULT);
-// When enabled, Brave will always report Light in Fingerprinting: Strict mode
-BASE_FEATURE(kBraveDarkModeBlock,
-             base::FEATURE_ENABLED_BY_DEFAULT);
 // load the cosmetic filter rules using sync ipc
 BASE_FEATURE(kCosmeticFilteringSyncLoad,
              "CosmeticFilterSyncLoad",
@@ -116,8 +102,7 @@ BASE_FEATURE(kBlockAllCookiesToggle,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
 // when enabled, allow to select and block HTML elements
-BASE_FEATURE(kBraveShieldsElementPicker,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveShieldsElementPicker, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAdblockOnlyMode,
 #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
@@ -131,8 +116,7 @@ BASE_FEATURE(kAdblockOnlyMode,
 BASE_FEATURE(kCosmeticFilteringExtraPerfMetrics,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kCosmeticFilteringJsPerformance,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kCosmeticFilteringJsPerformance, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kWebKitAdvancedPrivacyProtections,
              base::FEATURE_DISABLED_BY_DEFAULT);

@@ -300,7 +300,9 @@ var package = Package(
     .testTarget(name: "BraveUITests", dependencies: ["BraveUI"]),
     .target(
       name: "BraveShields",
-      dependencies: ["Strings", "Preferences", "BraveCore", "BraveUI", "Web", "Data"],
+      dependencies: [
+        "Strings", "Preferences", "BraveCore", "BraveUI", "Web", "Data", "Shared", "BraveShared",
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(
@@ -439,26 +441,11 @@ var package = Package(
         "BraveStrings",
         "BraveUI",
         "DesignSystem",
-        "Favicon",
-        "Fuzi",
         "Preferences",
         "Strings",
-        "SpeechRecognition",
         "Web",
-        .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
-        .product(name: "Lottie", package: "lottie-spm"),
-      ],
-      resources: [
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-dark.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-light.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Scripts/highlight.min.js"),
       ],
       plugins: ["LoggerPlugin"]
-    ),
-    .testTarget(
-      name: "AIChatTests",
-      dependencies: ["AIChat"]
     ),
     .target(
       name: "BraveStore",

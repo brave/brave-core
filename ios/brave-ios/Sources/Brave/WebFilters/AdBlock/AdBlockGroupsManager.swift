@@ -565,7 +565,7 @@ import os
   func shouldBlock(
     requestURL: URL,
     sourceURL: URL,
-    resourceType: AdblockEngine.ResourceType,
+    resourceType: AdblockResourceType,
     isAdBlockEnabled: Bool,
     isAdBlockModeAggressive: Bool
   ) async -> Bool {

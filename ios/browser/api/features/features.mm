@@ -138,11 +138,6 @@
                                               kBraveAdblockScriptletDebugLogs];
 }
 
-+ (Feature*)kBraveDarkModeBlock {
-  return [[Feature alloc]
-      initWithFeature:&brave_shields::features::kBraveDarkModeBlock];
-}
-
 + (Feature*)kBraveDeAMP {
   return [[Feature alloc] initWithFeature:&de_amp::features::kBraveDeAMP];
 }
@@ -368,11 +363,6 @@
   return nil;
 }
 #endif
-
-+ (Feature*)kAIChatWebUIEnabled {
-  return
-      [[Feature alloc] initWithFeature:&ai_chat::features::kAIChatWebUIEnabled];
-}
 
 + (Feature*)kBraveSyncDefaultPasswords {
   return [[Feature alloc]

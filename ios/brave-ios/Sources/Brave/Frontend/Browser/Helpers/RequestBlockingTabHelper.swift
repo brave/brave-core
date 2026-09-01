@@ -44,7 +44,7 @@ public class RequestBlockingTabHelper: TabObserver {
 
   public func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: String) async -> Bool {
     guard let tab,
-      let resourceType = AdblockEngine.ResourceType(rawValue: resourceType),
+      let resourceType = AdblockResourceType(rawValue: resourceType),
       let adblockMode = tab.braveShieldsHelper?.shieldLevel(
         for: sourceURL,
         considerAllShieldsOption: true

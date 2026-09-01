@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import Data
 import Foundation
 import Preferences
@@ -166,7 +167,7 @@ public actor GroupedAdBlockEngine {
   func shouldBlock(
     requestURL: URL,
     sourceURL: URL,
-    resourceType: AdblockEngine.ResourceType,
+    resourceType: AdblockResourceType,
     isAggressiveMode: Bool
   ) -> Bool {
     let key = [
