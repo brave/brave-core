@@ -3,28 +3,33 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveShields
+import Combine
 import Strings
 import SwiftUI
 
-struct AdblockBlockedRequestsView: View {
+public struct AdblockBlockedRequestsView: View {
 
-  let url: String
-  @ObservedObject var contentBlockerHelper: ContentBlockerHelper
+  private let url: String
+  private let blockedRequestsPublisher: AnyPublisher<[BlockedRequestInfo], Never>
 
+  @State private var allBlockedRequests: [BlockedRequestInfo] = []
   @State private var filterText: String = ""
 
   private var blockedRequests: [BlockedRequestInfo] {
-    let blockedRequests = Array(contentBlockerHelper.blockedRequests)
     if filterText.isEmpty {
-      return blockedRequests
+      return allBlockedRequests
     }
-    return blockedRequests.filter {
+    return allBlockedRequests.filter {
       $0.requestURL.absoluteString.localizedCaseInsensitiveContains(filterText)
         || $0.sourceURL.absoluteString.localizedCaseInsensitiveContains(filterText)
         || $0.resourceType.rawValue.localizedCaseInsensitiveContains(filterText)
         || $0.location.display.localizedCaseInsensitiveContains(filterText)
     }
+  }
+
+  public init(url: String, blockedRequests: AnyPublisher<[BlockedRequestInfo], Never>) {
+    self.url = url
+    self.blockedRequestsPublisher = blockedRequests
   }
 
   public var body: some View {
@@ -58,6 +63,10 @@ struct AdblockBlockedRequestsView: View {
     }
     .navigationTitle(Strings.Shields.blockedRequestsTitle)
     .searchable(text: $filterText)
+    .toolbarVisibility(.visible, for: .navigationBar)
+    .onReceive(blockedRequestsPublisher.receive(on: DispatchQueue.main)) { blockedRequests in
+      allBlockedRequests = blockedRequests
+    }
   }
 
   private func row(title: String, detail: String) -> some View {
