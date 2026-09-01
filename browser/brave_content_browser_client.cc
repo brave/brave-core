@@ -212,9 +212,6 @@
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
-using brave_shields::ControlType;
-using brave_shields::GetFingerprintingControlType;
-using brave_shields::IsBraveShieldsEnabled;
 using content::BrowserThread;
 using content::ContentBrowserClient;
 using content::RenderFrameHost;
