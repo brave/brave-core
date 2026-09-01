@@ -49,6 +49,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
     std::move(callback).Run(mojom::PremiumStatus::Inactive,
                             mojom::PremiumInfo::New());
   }
+  MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
 }  // namespace

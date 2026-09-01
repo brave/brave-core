@@ -363,11 +363,6 @@ void ObliviousHttpAPIClient::OnInnerResponse(
   // Erase the InnerClient from the ownership list now that the request is done.
   inner_clients_.erase(request.it);
 
-  // 401 outer response indicates an invalid credential; do not cache it.
-  if (outer_response_code != net::HTTP_UNAUTHORIZED && credential.has_value()) {
-    credential_manager_->PutCredentialInCache(std::move(*credential));
-  }
-
   bool is_outer_response_code_bad =
       outer_response_code < 200 || outer_response_code >= 300;
 

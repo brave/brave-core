@@ -237,6 +237,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               FetchPremiumCredential,
               (base::OnceCallback<void(std::optional<CredentialCacheEntry>)>),
               (override));
+  MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
 // Create a version of the ConversationAPIClient that contains our mocks

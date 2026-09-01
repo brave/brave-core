@@ -91,6 +91,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               GetPremiumStatus,
               (mojom::Service::GetPremiumStatusCallback callback),
               (override));
+  MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
 // TODO(https://github.com/brave/brave-browser/issues/55381): Use
