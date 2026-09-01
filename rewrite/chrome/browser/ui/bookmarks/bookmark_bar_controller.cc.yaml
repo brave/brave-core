@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Return if the bookmark bar isn't enabled by prefs.
+
+      This plaster inserts a check for the Brave-specific pref that disables the bookmark bar.
+    preempt_function_impl:
+      function_name: 'BookmarkBarController::ShouldShowBookmarkBar'
+      return_if: '!ShowBookmarkBarEnabled(browser_->GetProfile()->GetPrefs())'
+      return_value: 'false'
+
+  - description: |
+      Replaces bookmark_model->HasBookmarks() with `true` to prevent early 
+      return due to empty items in bookmark bar.
+
+      We want to show bookmark bar with import instruction when it's empty.
+    regex:
+      re_pattern: 'bookmark_model->HasBookmarks\(\)'
+      replace: 'true'
