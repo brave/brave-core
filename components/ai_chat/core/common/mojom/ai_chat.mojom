@@ -21,6 +21,8 @@ const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 const string kMemoryStorageToolName = "memory_storage_tool";
 const string kCodeExecutionToolName = "code_execution_tool";
 const string kSemanticHistorySearchToolName = "semantic_history_search";
+const string kBrowserSettingsSearchToolName = "browser_settings_search";
+const string kBrowserSettingValueToolName = "browser_setting_value";
 
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";

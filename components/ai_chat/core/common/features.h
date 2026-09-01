@@ -168,6 +168,13 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kMaxConsoleLogOutputSize;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsCodeExecutionToolEnabled();
 
+// Exposes the user's browser settings to the assistant via two read-only
+// tools: one to search the curated settings registry for setting IDs, and
+// one to read the values of those settings.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatBrowserSettingsTools);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBrowserSettingsToolsEnabled();
+
 #if BUILDFLAG(IS_IOS)
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatWebUIEnabled);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatWebUIEnabled();

@@ -11,6 +11,8 @@
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ai_chat/tools/browser_settings_search_tool.h"
+#include "brave/browser/ai_chat/tools/browser_settings_value_tool.h"
 #include "brave/browser/ai_chat/tools/code_execution_tool.h"
 #include "brave/browser/ai_chat/tools/history_search_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -40,6 +42,12 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
   if (history_search_tool_) {
     tool_ptrs.push_back(history_search_tool_->GetWeakPtr());
   }
+  if (browser_settings_search_tool_) {
+    tool_ptrs.push_back(browser_settings_search_tool_->GetWeakPtr());
+  }
+  if (browser_settings_value_tool_) {
+    tool_ptrs.push_back(browser_settings_value_tool_->GetWeakPtr());
+  }
 
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (tab_management_tool_) {
@@ -63,6 +71,15 @@ void BrowserToolProvider::CreateTools(
   if (history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
           Profile::FromBrowserContext(browser_context))) {
     history_search_tool_ = std::make_unique<HistorySearchTool>(browser_context);
+  }
+  if (features::IsBrowserSettingsToolsEnabled()) {
+    // The two settings tools are always created together: the value tool is
+    // useless without the search tool to discover ids, and the search tool is
+    // pointless without the value tool to act on them.
+    browser_settings_search_tool_ =
+        std::make_unique<BrowserSettingsSearchTool>();
+    browser_settings_value_tool_ = std::make_unique<BrowserSettingsValueTool>(
+        Profile::FromBrowserContext(browser_context)->GetPrefs());
   }
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {
