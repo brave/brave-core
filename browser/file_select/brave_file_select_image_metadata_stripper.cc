@@ -62,7 +62,7 @@ bool HasStrippableImage(
 StripResult StripListOnBlockingThread(
     std::vector<blink::mojom::FileChooserFileInfoPtr> list) {
   StripResult result;
-  auto temp_file_deletor = [&result](const base::FilePath& temp) {
+  auto temp_file_deleter = [&result](base::FilePath&& temp) {
     // The gaurd helps to schedule the delete to upstream's delete lifecycle
     // if ever our own attempt to delete the temporary file failed.
     if (!base::DeleteFile(temp)) {
@@ -88,7 +88,7 @@ StripResult StripListOnBlockingThread(
     if (!base::CopyFile(src, temp)) {
       DVLOG(1) << "Upload strip skipped; Failed to copy the image file to a "
                   "temporary file.";
-      temp_file_deletor(temp);
+      temp_file_deleter(std::move(temp));
       continue;
     }
 
@@ -97,7 +97,7 @@ StripResult StripListOnBlockingThread(
         image_metadata_stripper::StrippingClient::kFileSelect, temp);
     if (!success) {
       DVLOG(1) << "No stripping occured; keeping original: " << src;
-      temp_file_deletor(temp);
+      temp_file_deleter(std::move(temp));
       continue;
     }
 
