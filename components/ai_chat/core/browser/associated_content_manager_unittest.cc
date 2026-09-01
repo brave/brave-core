@@ -13,6 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -65,11 +66,13 @@ class TestConversationUI : public mojom::ConversationUI {
   ~TestConversationUI() override = default;
 
   const std::vector<mojom::ToolInfoPtr>& tools() const { return tools_; }
+  size_t push_count() const { return push_count_; }
 
   // mojom::ConversationUI:
   void OnContentToolsChanged(const std::string& content_uuid,
                              std::vector<mojom::ToolInfoPtr> tools) override {
     tools_ = std::move(tools);
+    ++push_count_;
   }
   void OnConversationHistoryUpdate(mojom::ConversationTurnPtr entry) override {}
   void OnAPIRequestInProgress(bool in_progress) override {}
@@ -90,6 +93,7 @@ class TestConversationUI : public mojom::ConversationUI {
 
  private:
   std::vector<mojom::ToolInfoPtr> tools_;
+  size_t push_count_ = 0;
   mojo::Receiver<mojom::ConversationUI> receiver_{this};
 };
 
@@ -930,7 +934,8 @@ TEST_F(AssociatedContentManagerUnitTest,
 
   manager->SetToolPermission(content.uuid(), "cancel_cart",
                              mojom::ToolPermission::kNeverAllow);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return acting_ui.push_count() > 0 && other_ui.push_count() > 0; }));
 
   for (const auto* ui : {&acting_ui, &other_ui}) {
     ASSERT_EQ(1u, ui->tools().size());
@@ -952,9 +957,13 @@ TEST_F(AssociatedContentManagerUnitTest,
 
   manager->SetToolPermission("not-an-attached-content", "cancel_cart",
                              mojom::ToolPermission::kNeverAllow);
-  task_environment_.RunUntilIdle();
+  // A choice that is recorded, to wait on. Pipes preserve order, so a push
+  // for the ignored call would have arrived before this one.
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+  ASSERT_TRUE(base::test::RunUntil([&] { return ui.push_count() > 0; }));
 
-  EXPECT_TRUE(ui.tools().empty());
+  EXPECT_EQ(1u, ui.push_count());
 }
 
 TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_UnknownContentIsEmpty) {
