@@ -1,24 +1,25 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useLocation } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '$wallet/constants/types'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import Amount from '../../../utils/amount'
-import { useGetNetworkQuery } from '../../../common/slices/api.slice'
-import { reduceInt } from '../../../utils/string-utils'
+import { getLocale } from '$web-common/locale'
+import Amount from '$wallet/utils/amount'
+import { useGetNetworkQuery } from '$wallet/common/slices/api.slice'
+import { reduceInt } from '$wallet/utils/string-utils'
 
 // Components
 import {
   withPlaceholderIcon, //
-} from '../../shared/create-placeholder-icon/index'
+} from '$wallet/components/shared/create-placeholder-icon/index'
 
 // Styled Components
 import {
@@ -30,8 +31,8 @@ import {
   Icon,
   RightSide,
   NameAndSymbol,
-} from './style'
-import { HorizontalSpace, Text } from '../../shared/style'
+} from './visible_asset_item.style'
+import { HorizontalSpace, Text } from '$wallet/components/shared/style'
 
 export interface Props {
   onSelectAsset: (token: BraveWallet.BlockchainToken) => void
@@ -45,7 +46,7 @@ const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIconWrapper, ICON_CONFIG)
 
-const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
+export const VisibleAssetItem = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const { onSelectAsset, onRemoveAsset, isRemovable, token, isSelected } =
       props
@@ -125,4 +126,3 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     )
   },
 )
-export default AssetWatchlistItem

@@ -63,7 +63,7 @@ import { marketGridHeaders } from '../options/market-data-headers'
 import { TopRow } from '../page/screens/market/market.style'
 import {
   AssetsFilterDropdown, //
-} from '../components/desktop/assets-filter-dropdown/index'
+} from './components/assets_filter_dropdown/assets_filter_dropdown'
 import { SearchBar } from '../components/shared/search-bar/index'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
 setIconBasePath('chrome-untrusted://resources/brave-icons')

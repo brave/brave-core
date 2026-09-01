@@ -1,13 +1,18 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AssetFilter } from '../../../constants/types'
+import { AssetFilter } from '$wallet/constants/types'
 import * as React from 'react'
 
-import { StyledWrapper, Button, CaratDown, Dropdown } from './style'
-import { AssetsFilterOption } from '../assets-filter-option'
+import {
+  StyledWrapper,
+  Button,
+  CaratDown,
+  Dropdown,
+} from './assets_filter_dropdown.style'
+import { AssetsFilterOption } from './components/assets_filter_option/assets_filter_option'
 
 export interface Props {
   options: AssetFilter[]
@@ -63,5 +68,3 @@ export const AssetsFilterDropdown = (props: Props) => {
     </StyledWrapper>
   )
 }
-
-export default AssetsFilterDropdown

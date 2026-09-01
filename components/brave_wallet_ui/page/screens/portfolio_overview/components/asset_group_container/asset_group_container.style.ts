@@ -6,8 +6,15 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { Column, Row, WalletButton, Text } from '../../shared/style'
-import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
+import {
+  Column,
+  Row,
+  WalletButton,
+  Text,
+} from '$wallet/components/shared/style'
+import {
+  layoutPanelWidth, //
+} from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled(Column)<{ isCollapsed: boolean }>`
   border: 1px solid

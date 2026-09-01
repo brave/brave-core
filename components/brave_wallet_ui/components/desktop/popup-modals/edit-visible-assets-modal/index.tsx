@@ -23,7 +23,7 @@ import {
   PopupModal, //
 } from '../index'
 import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
-import { AddAsset } from '../../add-asset/add-asset'
+import { AddAsset } from './components/add_asset/add_asset'
 import {
   SegmentedControl, //
 } from '../../../shared/segmented_control/segmented_control'

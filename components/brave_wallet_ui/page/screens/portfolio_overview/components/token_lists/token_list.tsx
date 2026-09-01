@@ -71,7 +71,7 @@ import {
 } from '../../../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import {
   AssetGroupContainer, //
-} from '../../../../../components/desktop/asset-group-container/asset-group-container'
+} from '../asset_group_container/asset_group_container'
 import {
   EmptyTokenListState, //
 } from '../../../../../components/desktop/empty_token_list_state/empty_token_list_state'

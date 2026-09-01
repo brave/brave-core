@@ -1,20 +1,21 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 // options
-import { CUSTOM_ASSET_NAV_OPTIONS } from '../../../options/add-custom-asset-nav-options'
+import { CUSTOM_ASSET_NAV_OPTIONS } from '$wallet/options/add-custom-asset-nav-options'
 
 // components
-import { TabOption, Tabs } from '../../shared/tabs/tabs'
-import { AddCustomTokenForm } from '../../shared/add-custom-token-form/add-custom-token-form'
-import { AddNftForm } from '../../shared/add-custom-token-form/add-nft-form'
+import { TabOption, Tabs } from '$wallet/components/shared/tabs/tabs'
+import { AddCustomTokenForm } from '$wallet/components/shared/add-custom-token-form/add-custom-token-form'
+import { AddNftForm } from '$wallet/components/shared/add-custom-token-form/add-nft-form'
 
 // styles
-import { AddAssetWrapper } from './add-asset.styles'
-import { PaddedRow } from '../popup-modals/style'
+import { AddAssetWrapper } from './add_asset.styles'
+import { PaddedRow } from '$wallet/components/desktop/popup-modals/style'
 
 interface Props {
   contractAddress: string | undefined

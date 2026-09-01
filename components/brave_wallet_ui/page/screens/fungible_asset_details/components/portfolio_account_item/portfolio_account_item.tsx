@@ -1,56 +1,65 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { AccountPageTabs, BraveWallet } from '../../../constants/types'
+import { AccountPageTabs, BraveWallet } from '$wallet/constants/types'
 
 // Hooks
-import { useExplorer } from '../../../common/hooks/explorer'
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+import { useExplorer } from '$wallet/common/hooks/explorer'
+import { useOnClickOutside } from '$wallet/common/hooks/useOnClickOutside'
 
 // Utils
-import { reduceAddress } from '../../../utils/reduce-address'
-import Amount from '../../../utils/amount'
+import { reduceAddress } from '$wallet/utils/reduce-address'
+import Amount from '$wallet/utils/amount'
 import {
   computeFiatAmount,
   getPriceRequestsForTokens,
-} from '../../../utils/pricing-utils'
-import { makeAccountRoute } from '../../../utils/routes-utils'
-import { getIsRewardsAccount } from '../../../utils/rewards_utils'
+} from '$wallet/utils/pricing-utils'
+import { makeAccountRoute } from '$wallet/utils/routes-utils'
+import { getIsRewardsAccount } from '$wallet/utils/rewards_utils'
 import {
   externalWalletProviderFromString, //
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
-import { getLocale } from '../../../../common/locale'
+} from '../../../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { getLocale } from '$web-common/locale'
 
 // Components
-import WithHideBalancePlaceholder from '../with-hide-balance-placeholder'
-import { PortfolioAccountMenu } from '../wallet-menus/portfolio-account-menu'
-import { RewardsMenu } from '../wallet-menus/rewards_menu'
-import { PopupModal } from '../popup-modals/index'
-import { DepositModal } from '../popup-modals/account-settings-modal/account-settings-modal'
-
-// Styled Components
+import {
+  WithHideBalancePlaceholder, //
+} from '$wallet/components/desktop/with-hide-balance-placeholder'
+import {
+  PortfolioAccountMenu, //
+} from '$wallet/components/desktop/wallet-menus/portfolio-account-menu'
+import {
+  RewardsMenu, //
+} from '$wallet/components/desktop/wallet-menus/rewards_menu'
+import {
+  PopupModal, //
+} from '$wallet/components/desktop/popup-modals/index'
+import {
+  DepositModal, //
+} from '$wallet/components/desktop/popup-modals/account-settings-modal/account-settings-modal'
 import {
   CreateAccountIcon, //
-} from '../../shared/create-account-icon/create-account-icon'
+} from '$wallet/components/shared/create-account-icon/create-account-icon'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetPolkadotAddressForNetworkQuery,
-} from '../../../common/slices/api.slice'
+} from '$wallet/common/slices/api.slice'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../common/hooks/use-persisted-spot-prices'
-import { querySubscriptionOptions60s } from '../../../common/slices/constants'
+} from '$wallet/common/hooks/use-persisted-spot-prices'
+import { querySubscriptionOptions60s } from '$wallet/common/slices/constants'
 
 // Styled Components
-import { StyledWrapper, AccountButton } from './style'
+import { StyledWrapper, AccountButton } from './portfolio_account_item.style'
 import {
   BraveRewardsIndicator,
   VerticalSpacer,
@@ -58,7 +67,7 @@ import {
   Row,
   Column,
   VerticalDivider,
-} from '../../shared/style'
+} from '$wallet/components/shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -267,5 +276,3 @@ export const PortfolioAccountItem = (props: Props) => {
     </>
   )
 }
-
-export default PortfolioAccountItem
