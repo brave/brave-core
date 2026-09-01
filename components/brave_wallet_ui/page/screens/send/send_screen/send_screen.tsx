@@ -107,6 +107,7 @@ import {
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
 import { ZCashMigrationBanner } from '../../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
+import { isValidPolkadotAssetId } from '$wallet/utils/asset-utils'
 
 type SendAmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'
@@ -609,10 +610,10 @@ export const SendScreen = React.memo(() => {
           const { contractAddress } = tokenFromParams
           let assetId: number | undefined
           if (contractAddress !== '') {
-            assetId = Number(contractAddress)
-            if (!Number.isInteger(assetId)) {
+            if (!isValidPolkadotAssetId(contractAddress)) {
               throw new Error(`invalid Polkadot asset id: ${contractAddress}`)
             }
+            assetId = Number(contractAddress)
           }
 
           await sendPolkadotTransaction({
