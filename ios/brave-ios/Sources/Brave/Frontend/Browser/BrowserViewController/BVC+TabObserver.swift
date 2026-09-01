@@ -97,10 +97,6 @@ extension BrowserViewController: TabObserver {
     if #available(iOS 26.0, *) {
       updateWebViewObscuredInsets()
     }
-    // Reset the stored http request now that load has committed.
-    tab.upgradedHTTPSRequest = nil
-    tab.upgradeHTTPSTimeoutTimer?.invalidate()
-    tab.upgradeHTTPSTimeoutTimer = nil
 
     // Clear the current request url and the redirect source url
     // We don't need these values after the request has been comitted
@@ -191,11 +187,6 @@ extension BrowserViewController: TabObserver {
   public func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
     let error = error as NSError
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
-      // load cancelled / user stopped load. Cancel https upgrade fallback timer.
-      tab.upgradedHTTPSRequest = nil
-      tab.upgradeHTTPSTimeoutTimer?.invalidate()
-      tab.upgradeHTTPSTimeoutTimer = nil
-
       if tab === tabManager.selectedTab {
         if let displayURL = tab.visibleURL?.displayURL {
           updateToolbarCurrentURL(displayURL)
@@ -205,20 +196,6 @@ extension BrowserViewController: TabObserver {
         updateWebViewPageZoom(tab: tab)
       }
       return
-    }
-
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      // Check for invalid upgrade to https
-      if url.scheme == "https",  // verify failing url was https
-        let response = handleInvalidHTTPSUpgrade(
-          tab: tab,
-          responseURL: url
-        )
-      {
-        // load original or strict mode interstitial
-        tab.loadRequest(response)
-        return
-      }
     }
   }
 
