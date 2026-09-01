@@ -191,13 +191,6 @@ class BraveShieldStatsView: SpringButton {
       $0.edges.equalToSuperview()
       $0.width.equalTo(640)
     }
-
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(update),
-      name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
-      object: nil
-    )
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -258,16 +251,18 @@ class BraveShieldStatsView: SpringButton {
     }
   }
 
-  deinit {
-    NotificationCenter.default.removeObserver(self)
-  }
-
-  @objc private func update() {
-    adsStatView.stat =
-      (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection)
-      .kFormattedNumber
-    dataSavedStatView.stat = BraveGlobalShieldStats.shared.dataSaved
-    timeStatView.stat = BraveGlobalShieldStats.shared.timeSaved
+  private func update() {
+    withObservationTracking {
+      adsStatView.stat =
+        (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection)
+        .kFormattedNumber
+      dataSavedStatView.stat = BraveGlobalShieldStats.shared.dataSaved
+      timeStatView.stat = BraveGlobalShieldStats.shared.timeSaved
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.update()
+      }
+    }
   }
 }
 

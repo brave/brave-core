@@ -1056,18 +1056,23 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    BraveGlobalShieldStats.shared.$adblock
-      .scan(
-        (BraveGlobalShieldStats.shared.adblock, BraveGlobalShieldStats.shared.adblock),
-        { ($0.1, $1) }
-      )
-      .sink { [weak self] (oldValue, newValue) in
+    func observeAdblockChangeForDataSavedP3A(from oldValue: Int) {
+      let stats = BraveGlobalShieldStats.shared
+      withObservationTracking {
+        let newValue = stats.adblock
         let change = newValue - oldValue
         if change > 0 {
-          self?.recordDataSavedP3A(change: change)
+          recordDataSavedP3A(change: change)
+        }
+      } onChange: {
+        let oldValue = stats.adblock
+        DispatchQueue.main.async {
+          observeAdblockChangeForDataSavedP3A(from: oldValue)
         }
       }
-      .store(in: &cancellables)
+    }
+
+    observeAdblockChangeForDataSavedP3A(from: BraveGlobalShieldStats.shared.adblock)
 
     KeyboardHelper.defaultHelper.addDelegate(self)
     UNUserNotificationCenter.current().delegate = self
