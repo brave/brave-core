@@ -24,6 +24,6 @@ export function useGetCustomAssetSupportedNetworks(
           && (network.coin !== BraveWallet.CoinType.DOT
             || PolkadotAssetHubChainIds.includes(network.chainId)),
       ),
-    [networkList, supportedCoinTypes],
+    [networkList, ...supportedCoinTypes],
   )
 }
