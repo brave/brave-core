@@ -7,7 +7,7 @@
 
 #if !BUILDFLAG(IS_CHROMEOS)
 
-#include "brave/browser/ui/custom_profile_image_buildflags.h"
+#include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_isolated_world_ids.h"

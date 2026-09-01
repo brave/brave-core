@@ -6,7 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
-import("//brave/ui/webui/custom_profile_image_config.gni")
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
