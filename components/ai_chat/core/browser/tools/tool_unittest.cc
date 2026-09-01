@@ -7,9 +7,11 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
+#include "base/functional/callback.h"
 #include "brave/components/ai_chat/core/browser/types.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

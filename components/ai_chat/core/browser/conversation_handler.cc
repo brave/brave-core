@@ -23,6 +23,7 @@
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -190,8 +191,11 @@ void ConversationHandler::BuildCapabilitiesSet() {
     conversation_capabilities_.insert(
         mojom::ConversationCapability::DEEP_RESEARCH);
   }
-  // All clients can render MathML.
-  conversation_capabilities_.insert(mojom::ConversationCapability::MATH_ML);
+  // Only advertise MathML while the client is actually able to render it,
+  // otherwise the kill switch would leave responses as raw LaTeX.
+  if (base::FeatureList::IsEnabled(features::kAIChatMathRendering)) {
+    conversation_capabilities_.insert(mojom::ConversationCapability::MATH_ML);
+  }
 }
 
 ConversationHandler::ConversationHandler(

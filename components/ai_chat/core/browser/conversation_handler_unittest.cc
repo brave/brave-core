@@ -6969,15 +6969,16 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     std::string name;
     bool is_content_agent_allowed;
     bool deep_research_enabled;
+    bool math_rendering_enabled;
     ConversationCapabilitySet expected_capabilities;
   };
 
-  // MATH_ML is unconditional, so it's expected in every case.
   const std::vector<TestCase> test_paramss = {
       {
           "Chat",
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/false,
+          /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CHAT,
            mojom::ConversationCapability::MATH_ML},
       },
@@ -6985,6 +6986,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           "ChatWithDeepResearch",
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/true,
+          /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CHAT,
            mojom::ConversationCapability::DEEP_RESEARCH,
            mojom::ConversationCapability::MATH_ML},
@@ -6993,6 +6995,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           "ContentAgent",
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/false,
+          /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CHAT,
            mojom::ConversationCapability::CONTENT_AGENT,
            mojom::ConversationCapability::MATH_ML},
@@ -7001,10 +7004,20 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           "ContentAgentWithDeepResearch",
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/true,
+          /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CHAT,
            mojom::ConversationCapability::CONTENT_AGENT,
            mojom::ConversationCapability::DEEP_RESEARCH,
            mojom::ConversationCapability::MATH_ML},
+      },
+      // Don't tell the server we can render MathML when the kill switch is
+      // off, or responses come back as raw LaTeX.
+      {
+          "MathRenderingDisabled",
+          /*is_content_agent_allowed=*/false,
+          /*deep_research_enabled=*/false,
+          /*math_rendering_enabled=*/false,
+          {mojom::ConversationCapability::CHAT},
       },
   };
 
@@ -7012,11 +7025,9 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     SCOPED_TRACE(test_params.name);
 
     base::test::ScopedFeatureList feature_list;
-    if (test_params.deep_research_enabled) {
-      feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
-    } else {
-      feature_list.InitAndDisableFeature(features::kAIChatDeepResearch);
-    }
+    feature_list.InitWithFeatureStates(
+        {{features::kAIChatDeepResearch, test_params.deep_research_enabled},
+         {features::kAIChatMathRendering, test_params.math_rendering_enabled}});
 
     ai_chat_service_->SetIsContentAgentAllowed(
         test_params.is_content_agent_allowed);
