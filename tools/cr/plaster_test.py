@@ -202,8 +202,10 @@ class PlasterTest(unittest.TestCase):
             ('-c',
              f'core.attributesFile={plaster.PLASTER_GITATTRIBUTES_PATH}'),
             pinned_options)
-        self.assertEqual(
-            diff_calls[0].kwargs.get('env', {}).get('GIT_ATTR_NOSYSTEM'), '1')
+        diff_env = diff_calls[0].kwargs.get('env', {})
+        self.assertEqual(diff_env.get('GIT_ATTR_NOSYSTEM'), '1')
+        self.assertEqual(diff_env.get('GIT_CONFIG_GLOBAL'), '/dev/null')
+        self.assertEqual(diff_env.get('GIT_CONFIG_NOSYSTEM'), '1')
 
     def test_checksum_hashes_raw_bytes_without_newline_normalization(self):
         # The checksum must be over the file's raw bytes so it matches
