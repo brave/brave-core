@@ -20,7 +20,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace ai_chat {
 
@@ -51,8 +51,9 @@ class AIChatConversationUIBrowserTestBase : public InProcessBrowserTest {
 
  protected:
   // Navigates to the conversation's WebUI
-  void NavigateToConversationUI(const std::string& conversation_uuid,
-                                Browser* target_browser = nullptr);
+  void NavigateToConversationUI(
+      const std::string& conversation_uuid,
+      BrowserWindowInterface* target_browser = nullptr);
 
   // Gets the conversation entries iframe render frame host
   content::RenderFrameHost* GetConversationEntriesFrame();

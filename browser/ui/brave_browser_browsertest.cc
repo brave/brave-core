@@ -45,15 +45,13 @@ using BraveBrowserBrowserTest = InProcessBrowserTest;
 
 namespace {
 
-Browser* OpenNewBrowser(Profile* profile) {
+BrowserWindowInterface* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                     chrome::startup::IsFirstRun::kYes);
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo,
                  /*restore_tabbed_browser=*/true);
-  return ProfileBrowserCollection::GetForProfile(profile)
-      ->FindTabbedBrowser()
-      ->GetBrowserForMigrationOnly();
+  return ProfileBrowserCollection::GetForProfile(profile)->FindTabbedBrowser();
 }
 
 void AddBookmarkNode(Profile* profile) {
@@ -99,7 +97,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, DisabledFeatureURLLoadTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
                                                     false);
@@ -146,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                        DoNotOpenNewTabWhenTabStripIsEmpty) {
   ASSERT_TRUE(embedded_test_server()->Start());
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
                                                     true);
@@ -169,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Given that kEnableClosingLastTab is false, which normally creates a new tab
   // when tab strip is empty.
   ASSERT_TRUE(embedded_test_server()->Start());
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   new_browser->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab,
                                                     false);
@@ -186,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                        CloseBrowserAfterDetachingAllTabToAnotherBrowser) {
   browser()->GetProfile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
-  Browser* browser2 = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* browser2 = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(browser2);
 
   TabStripModel* tab_strip = browser()->tab_strip_model();
@@ -234,7 +232,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Create another browser with existing tab.
   ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::MoveTabsToNewWindow(browser(), {1});
-  Browser* new_browser = browser_created_observer.Wait();
+  BrowserWindowInterface* new_browser = browser_created_observer.Wait();
   ASSERT_EQ(1, tab_strip->count());
 
   ASSERT_TRUE(new_browser);
@@ -295,7 +293,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTestIncognito) {
-  Browser* incognito = CreateIncognitoBrowser();
+  BrowserWindowInterface* incognito = CreateIncognitoBrowser();
   auto* profile = incognito->GetProfile();
   auto* contents = incognito->tab_strip_model()->GetActiveWebContents();
 
@@ -361,7 +359,7 @@ class BraveBrowserBrowserTestWithBringAllTabsFeature
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserBrowserTestWithBringAllTabsFeature,
                        CanBringAllTabs) {
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   if (GetParam()) {
     EXPECT_TRUE(brave::CanBringAllTabs(browser()));

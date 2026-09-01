@@ -87,8 +87,7 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
 
     auto item = std::make_unique<CommandItem>(name, score, ranges);
     ui::Accelerator accelerator;
-    ui::AcceleratorProvider* provider =
-        AcceleratorProviderForBrowser(browser->GetBrowserForMigrationOnly());
+    ui::AcceleratorProvider* provider = AcceleratorProviderForBrowser(browser);
     if (provider->GetAcceleratorForCommandId(command_id, &accelerator)) {
       item->annotation = accelerator.GetShortcutText();
     }

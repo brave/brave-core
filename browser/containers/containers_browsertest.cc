@@ -130,7 +130,7 @@ std::vector<std::string> GetEchoedHeaders(content::WebContents* web_contents) {
 // it to finish loading, or std::nullopt if the tab can't be loaded. `location`
 // is the caller's location, reported via SCOPED_TRACE.
 std::optional<content::StoragePartitionConfig> GetStoragePartitionConfigOfTabAt(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     int index,
     const base::Location& location = base::Location::Current()) {
   SCOPED_TRACE(location.ToString());
@@ -154,7 +154,7 @@ std::optional<content::StoragePartitionConfig> GetStoragePartitionConfigOfTabAt(
 // Returns the container partition name of the tab at `index`, or std::nullopt
 // if the tab can't be loaded or is not in a containers storage partition.
 std::optional<std::string> GetContainerPartitionNameOfTabAt(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     int index,
     const base::Location& location = base::Location::Current()) {
   SCOPED_TRACE(location.ToString());

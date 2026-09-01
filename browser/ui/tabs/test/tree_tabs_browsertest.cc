@@ -254,7 +254,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   // opener. The opener lives in a different TabStripModel (popup, app window,
   // etc.); tree insertion must not assume it belongs to |destination_model|.
   void ExpectAddTabWithCrossStripOpenerSucceeds(
-      Browser* opener_window,
+      BrowserWindowInterface* opener_window,
       BraveTabStripModel& destination_model) {
     auto* opener_model =
         static_cast<BraveTabStripModel*>(opener_window->tab_strip_model());
@@ -993,14 +993,15 @@ IN_PROC_BROWSER_TEST_F(
 // https://github.com/brave/brave-browser/issues/54334
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        AddTab_OpenerInPopupWindow_DoesNotCrashAndUsesOwnTree) {
-  Browser* const popup_browser = CreateBrowserForPopup(profile());
+  BrowserWindowInterface* const popup_browser =
+      CreateBrowserForPopup(profile());
   SetTreeTabsEnabled(true);
   ExpectAddTabWithCrossStripOpenerSucceeds(popup_browser, tab_strip_model());
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        AddTab_OpenerInAppWindow_DoesNotCrashAndUsesOwnTree) {
-  Browser* const app_browser =
+  BrowserWindowInterface* const app_browser =
       CreateBrowserForApp("TreeTabsOpenerAppBrowserTest", profile());
   SetTreeTabsEnabled(true);
   ExpectAddTabWithCrossStripOpenerSucceeds(app_browser, tab_strip_model());
@@ -3717,7 +3718,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   ASSERT_TRUE(tab_strip_model().tree_model()->GetNode(parent_node_id));
   ASSERT_TRUE(tab_strip_model().tree_model()->GetNode(child_node_id));
 
-  Browser* const second_browser = CreateBrowser(profile());
+  BrowserWindowInterface* const second_browser = CreateBrowser(profile());
   BraveTabStripModel& second_model =
       *static_cast<BraveTabStripModel*>(second_browser->tab_strip_model());
   const int second_browser_initial_count = second_model.count();
@@ -3780,7 +3781,7 @@ IN_PROC_BROWSER_TEST_F(
   // the real UI insertion path this low-level test bypasses).
   tab_strip_model().ActivateTabAt(1);
 
-  Browser* const second_browser = CreateBrowser(profile());
+  BrowserWindowInterface* const second_browser = CreateBrowser(profile());
   BraveTabStripModel& second_model =
       *static_cast<BraveTabStripModel*>(second_browser->tab_strip_model());
   const int second_browser_initial_count = second_model.count();
@@ -3831,7 +3832,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::MoveTabsToNewWindow(browser(), {0, 1});
-  Browser* const new_browser = browser_created_observer.Wait();
+  BrowserWindowInterface* const new_browser = browser_created_observer.Wait();
   ASSERT_TRUE(new_browser);
 
   EXPECT_EQ(1, tab_strip_model().count());

@@ -22,7 +22,7 @@ class BraveSettingsUIBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveSettingsUIBrowserTest, GuestProfileLoadsSettings) {
   // Switch to guest profile and wait for browser to open
   profiles::SwitchToGuestProfile();
-  Browser* guest_browser = ui_test_utils::WaitForBrowserToOpen();
+  BrowserWindowInterface* guest_browser = ui_test_utils::WaitForBrowserToOpen();
   ASSERT_NE(guest_browser, nullptr);
 
   // Navigate to settings - this should trigger all BindInterface calls

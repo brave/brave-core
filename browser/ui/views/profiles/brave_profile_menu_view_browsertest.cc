@@ -68,13 +68,13 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
 #endif
   }
 
-  ProfileMenuViewBase* profile_menu_view(Browser* browser) {
+  ProfileMenuViewBase* profile_menu_view(BrowserWindowInterface* browser) {
     auto* coordinator = browser->GetFeatures().profile_menu_coordinator();
     return coordinator ? coordinator->GetProfileMenuViewBaseForTesting()
                        : nullptr;
   }
 
-  void OpenProfileMenu(Browser* browser) {
+  void OpenProfileMenu(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     auto* avatar_toolbar_button = static_cast<AvatarToolbarButton*>(
         browser_view->toolbar_button_provider()
@@ -100,7 +100,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     return profile_attributes->GetName();
   }
 
-  void CheckIdentity(Browser* browser) {
+  void CheckIdentity(BrowserWindowInterface* browser) {
     ProfileMenuViewBase* menu = profile_menu_view(browser);
     // Profile image and title container
     EXPECT_EQ(2u, menu->identity_info_container_->children().size());
@@ -142,7 +142,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, OpenGuestWindowProfile) {
   // Open a Guest window.
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
   profiles::SwitchToGuestProfile(base::DoNothing());
-  Browser* guest_browser = ui_test_utils::WaitForBrowserToOpen();
+  BrowserWindowInterface* guest_browser = ui_test_utils::WaitForBrowserToOpen();
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   OpenProfileMenu(guest_browser);

@@ -123,7 +123,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     return test_http_server_.get();
   }
 
-  IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
+  IconLabelBubbleView* GetOnionLocationView(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     if (!browser_view) {
       return nullptr;
@@ -134,7 +134,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
         kActionShowOnionLocation);
   }
 
-  void CheckOnionLocationLabel(Browser* browser,
+  void CheckOnionLocationLabel(BrowserWindowInterface* browser,
                                const GURL& url,
                                bool wait_for_tor_window = true) {
     bool is_tor = browser->GetProfile()->IsTor();
@@ -164,11 +164,11 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
       browser_creation_observer.Wait();
     }
     ASSERT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
-    Browser* tor_browser = nullptr;
+    BrowserWindowInterface* tor_browser = nullptr;
     GlobalBrowserCollection::GetInstance()->ForEach(
         [&tor_browser](BrowserWindowInterface* a_browser) {
           if (a_browser->GetProfile()->IsTor()) {
-            tor_browser = a_browser->GetBrowserForMigrationOnly();
+            tor_browser = a_browser;
           }
           return !tor_browser;
         });
@@ -183,7 +183,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(tor_browser->GetTabStripModel()->count(), is_tor ? 2 : 1);
   }
 
-  Browser* OpenTorWindow() {
+  BrowserWindowInterface* OpenTorWindow() {
     return TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   }
 

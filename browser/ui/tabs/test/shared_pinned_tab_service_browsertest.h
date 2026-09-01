@@ -8,7 +8,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
@@ -19,8 +19,8 @@ class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
   SharedPinnedTabServiceBrowserTest();
   ~SharedPinnedTabServiceBrowserTest() override;
 
-  Browser* CreateNewBrowser();
-  SharedPinnedTabService* GetForBrowser(Browser* browser);
+  BrowserWindowInterface* CreateNewBrowser();
+  SharedPinnedTabService* GetForBrowser(BrowserWindowInterface* browser);
 
   void WaitUntil(base::RepeatingCallback<bool()> condition);
   void Run();

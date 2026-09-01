@@ -112,27 +112,28 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
-  void AppendTab(Browser* browser) {
+  void AppendTab(BrowserWindowInterface* browser) {
     chrome::AddTabAt(browser, GURL(), -1, true);
   }
 
-  tab_groups::TabGroupId AddTabToNewGroup(Browser* browser, int tab_index) {
+  tab_groups::TabGroupId AddTabToNewGroup(BrowserWindowInterface* browser,
+                                          int tab_index) {
     return browser->tab_strip_model()->AddToNewGroup({tab_index});
   }
 
-  void AddTabToExistingGroup(Browser* browser,
+  void AddTabToExistingGroup(BrowserWindowInterface* browser,
                              int tab_index,
                              tab_groups::TabGroupId group) {
     ASSERT_TRUE(browser->tab_strip_model()->SupportsTabGroups());
     browser->tab_strip_model()->AddToExistingGroup({tab_index}, group);
   }
 
-  TabStrip* GetTabStrip(Browser* browser) {
+  TabStrip* GetTabStrip(BrowserWindowInterface* browser) {
     return BrowserView::GetBrowserViewForBrowser(browser)
         ->horizontal_tab_strip_for_testing();
   }
 
-  Tab* GetTabAt(Browser* browser, int index) {
+  Tab* GetTabAt(BrowserWindowInterface* browser, int index) {
     return GetTabStrip(browser)->tab_at(index);
   }
 
@@ -1258,7 +1259,7 @@ class VerticalTabStripDragAndDropBrowserTest
     return GetBoundsInScreen(view, view->GetLocalBounds()).CenterPoint();
   }
 
-  void PressTabAt(Browser* browser, int index) {
+  void PressTabAt(BrowserWindowInterface* browser, int index) {
     ASSERT_TRUE(ui_test_utils::SendMouseMoveSync(
         GetCenterPointInScreen(GetTabAt(browser, index))));
     ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::LEFT,
@@ -1285,7 +1286,7 @@ class VerticalTabStripDragAndDropBrowserTest
     WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
   }
 
-  bool IsDraggingTabStrip(Browser* b) {
+  bool IsDraggingTabStrip(BrowserWindowInterface* b) {
     return GetTabStrip(b)->GetDragContext()->GetDragController() != nullptr;
   }
 
@@ -2249,7 +2250,7 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   // set, since tab_container_ may be null in that configuration.
   browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kVerticalTabsEnabled,
                                                   true);
-  Browser* new_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
 }

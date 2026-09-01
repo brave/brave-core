@@ -16,7 +16,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
@@ -222,7 +221,7 @@ void BraveRestoreProfileMenu() {
   [super applicationWillTerminate:notification];
 }
 
-- (Browser*)getBrowser {
+- (BrowserWindowInterface*)getBrowser {
   Profile* profile = [self lastProfileIfLoaded];
   if (!profile) {
     return nullptr;
@@ -238,11 +237,11 @@ void BraveRestoreProfileMenu() {
     return nullptr;
   }
 
-  return browser_interface->GetBrowserForMigrationOnly();
+  return browser_interface;
 }
 
 - (BOOL)shouldShowCleanLinkItem {
-  Browser* browser = [self getBrowser];
+  BrowserWindowInterface* browser = [self getBrowser];
   if (!browser) {
     return NO;
   }
@@ -352,7 +351,7 @@ void BraveRestoreProfileMenu() {
 
   NSInteger tag = [sender tag];
   if (tag == IDC_COPY_CLEAN_LINK) {
-    Browser* browser = [self getBrowser];
+    BrowserWindowInterface* browser = [self getBrowser];
     if (!browser) {
       return;
     }

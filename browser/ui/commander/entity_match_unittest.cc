@@ -34,7 +34,7 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
   // Creates and returns a browser with `title` as its user title.
   // If `profile` is provided, it is used, otherwise uses the profile of this
   // test's browser.
-  std::unique_ptr<Browser> CreateAndActivateBrowser(
+  std::unique_ptr<BrowserWindowInterface> CreateAndActivateBrowser(
       const std::string& title,
       Profile* browser_profile = nullptr) {
     BrowserWindowCreateParams params(
