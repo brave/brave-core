@@ -803,6 +803,26 @@
 # CHECK(rfh) in GetThrottleManager().
 -StorageAccessAPITabHelperTest.OnFrameReceivedUserActivation_FencedFrame
 
+# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
+# the sign-in-promo behavior that Brave unconditionally disables,
+# brave-browser#58511
+-All/AppMenuModelSigninPromoTest.SignedOut/1
+-All/HistorySyncOptinServiceTest.*
+-All/ManagedDataTypeErrorScreenServiceTest.*
+-All/ProcessDiceHeaderDelegateImplTestEnableSync.EnableSync/1
+-All/ProcessDiceHeaderDelegateImplTestEnableSync.EnableSync/3
+-ComputeProfileMenuAvatarButtonPromoInfoParamTest.NoPromoWhenRequirementsForPromoSetAndResolved/*
+-ComputeProfileMenuAvatarButtonPromoInfoParamTest.OnlySigninPromoIfNotSignedIn/*
+-ComputeProfileMenuAvatarButtonPromoInfoParamTest.PromoWhenRequirementsForPromoSet/*
+-HistorySignInStateWatcherSyncToSigninTest.*
+-HistorySignInStateWatcherTest.NullServices/WithSyncToSignin
+-HistorySyncStateWhenTypeDisabledByUserTest.DisablingHistoryRelatedTypeDisablesHistorySync/*
+-PeopleHandlerWithReplaceSyncWithSigninUI.*
+-ProcessDiceHeaderDelegateImplTest.UnsupportedAccessPointForHistorySync
+-ProfileReportGeneratorTest.SignedInProfileReplaceSyncPromosWithSigninPromos
+-SigninPromoUrlTest.SigninURLForDiceMagiChromeExperiments
+-SigninPromoUrlTest.SigninURLForDiceWithHistorySyncOptin
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
