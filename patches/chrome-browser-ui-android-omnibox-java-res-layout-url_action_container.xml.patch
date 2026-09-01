@@ -6,7 +6,7 @@ index 65a566bd2b6fa97490bcaa5bd6252330a11310bc..6065a1dcc82f956aeb897384ee0fb21d
          app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
          app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
  
-+<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton.AdaptiveDensity" android:src="@drawable/ic_qr_code_18" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@id/mic_button"/>
++<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton.AdaptiveDensity" android:src="@drawable/ic_qr_code" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@id/mic_button"/>
      <!--
      Fusebox/Omnibox top-stacked elements on Active Omnibox with Empty content
      -->

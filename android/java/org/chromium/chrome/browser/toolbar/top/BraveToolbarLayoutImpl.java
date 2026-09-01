@@ -1293,11 +1293,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
 
         if (tab == null) {
-            mBraveShieldsButton.setImageResource(R.drawable.btn_brave_off);
+            mBraveShieldsButton.setImageResource(
+                    R.drawable.ic_social_brave_monochrome_favicon_fullheight_color);
             return;
         }
         mBraveShieldsButton.setImageResource(
-                isShieldsOnForTab(tab) ? R.drawable.btn_brave : R.drawable.btn_brave_off);
+                isShieldsOnForTab(tab)
+                        ? R.drawable.ic_social_brave_release_favicon_fullheight_color
+                        : R.drawable.ic_social_brave_monochrome_favicon_fullheight_color);
 
         if (mRewardsLayout == null) return;
         if (isIncognito()) {

@@ -63,7 +63,7 @@
           style="@style/ToolbarButton"
           android:layout_marginTop="8dp"
           android:layout_marginBottom="8dp"
-          android:src="@drawable/btn_brave"
+          android:src="@drawable/ic_social_brave_release_favicon_fullheight_color"
           android:layout_gravity="center"
           android:contentDescription="@string/accessibility_toolbar_btn_brave_shields" />
   </FrameLayout>
@@ -79,7 +79,7 @@
           style="@style/ToolbarButton"
           android:layout_marginTop="8dp"
           android:layout_marginBottom="8dp"
-          android:src="@drawable/btn_bat"
+          android:src="@drawable/ic_product_bat_color"
           android:layout_gravity="center"
           android:contentDescription="@string/accessibility_toolbar_btn_brave_rewards" />
 
