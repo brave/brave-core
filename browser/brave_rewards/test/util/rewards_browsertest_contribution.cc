@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,7 +30,7 @@ RewardsBrowserTestContribution::RewardsBrowserTestContribution() = default;
 RewardsBrowserTestContribution::~RewardsBrowserTestContribution() = default;
 
 void RewardsBrowserTestContribution::Initialize(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     RewardsServiceImpl* rewards_service) {
   DCHECK(browser && rewards_service);
   browser_ = browser;

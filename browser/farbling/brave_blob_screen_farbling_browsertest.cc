@@ -109,7 +109,7 @@ class BraveBlobScreenFarblingBrowserTest
   void ClosePopup() {
     // Clear pop_up_browser_ before closing so the raw_ptr is not dangling
     // when the Browser object is destroyed inside CloseBrowserSynchronously.
-    Browser* popup = pop_up_browser_;
+    BrowserWindowInterface* popup = pop_up_browser_;
     pop_up_browser_ = nullptr;
     CloseBrowserSynchronously(popup);
   }
@@ -176,7 +176,7 @@ class BraveBlobScreenFarblingBrowserTest
   GURL blob_test_url_;
   BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
   bool fingerprinting_allowed_ = false;
-  raw_ptr<Browser> pop_up_browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> pop_up_browser_ = nullptr;
 };
 
 INSTANTIATE_TEST_SUITE_P(

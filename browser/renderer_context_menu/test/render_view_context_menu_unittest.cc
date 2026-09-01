@@ -78,7 +78,7 @@ class BraveRenderViewContextMenuMock : public RenderViewContextMenu {
     if (browser_) {
       return browser_;
     }
-    return RenderViewContextMenu::GetBrowser()->GetBrowserForMigrationOnly();
+    return static_cast<Browser*>(RenderViewContextMenu::GetBrowser());
   }
 
  private:

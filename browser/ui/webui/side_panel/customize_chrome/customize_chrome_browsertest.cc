@@ -30,7 +30,7 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
  protected:
   // Returns the CustomizeChromeTabHelper associated with the tab
   customize_chrome::SidePanelController* GetSidePanelController(
-      Browser* browser) {
+      BrowserWindowInterface* browser) {
     return customize_chrome::SidePanelController::Get(
         browser->GetActiveTabInterface()->GetUnownedUserDataHost());
   }

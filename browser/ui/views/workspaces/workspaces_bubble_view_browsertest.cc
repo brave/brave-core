@@ -36,7 +36,7 @@
 namespace {
 
 BraveHorizontalTabStripRegionView* GetHorizontalTabStripRegion(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   return views::AsViewClass<BraveHorizontalTabStripRegionView>(
       browser_view->tab_strip_view());

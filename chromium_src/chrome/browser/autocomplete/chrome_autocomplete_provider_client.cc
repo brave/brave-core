@@ -77,12 +77,11 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   if (ai_chat_service->IsAIChatHistoryEnabled() &&
       ai_chat::features::kOmniboxOpensFullPage.Get()) {
     conversation_handler = ai_chat_service->CreateConversation();
-    browser->GetBrowserForMigrationOnly()->OpenURL(
-        {ai_chat::ConversationUrl(
-             conversation_handler->get_conversation_uuid()),
-         content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
-         ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
-        {});
+    browser->OpenURL({ai_chat::ConversationUrl(
+                          conversation_handler->get_conversation_uuid()),
+                      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+                      ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
+                     {});
   } else {
     auto* chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
         browser->GetTabStripModel()->GetActiveWebContents());

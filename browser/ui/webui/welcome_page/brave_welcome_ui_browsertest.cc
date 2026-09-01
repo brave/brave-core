@@ -7,7 +7,6 @@
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
@@ -17,6 +16,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -24,7 +24,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 namespace {
-Browser* OpenNewBrowser(Profile* profile) {
+BrowserWindowInterface* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreator browser_creator;
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy, &browser_creator,
@@ -32,8 +32,7 @@ Browser* OpenNewBrowser(Profile* profile) {
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo,
                  /*restore_tabbed_browser=*/true);
   return ProfileBrowserCollection::GetForProfile(profile)
-      ->GetLastActiveBrowser()
-      ->GetBrowserForMigrationOnly();
+      ->GetLastActiveBrowser();
 }
 }  // namespace
 
@@ -52,7 +51,7 @@ class BraveWelcomeUIBrowserTest : public InProcessBrowserTest {
 
 // Check whether startup url at first run is our welcome page.
 IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   ASSERT_EQ(1, tab_strip->count());
@@ -68,7 +67,7 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
 
 // Check wheter startup url is not welcome ui at second run.
 IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, StartupURLTest) {
-  Browser* new_browser = OpenNewBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = OpenNewBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   TabStripModel* tab_strip = new_browser->tab_strip_model();
   ASSERT_EQ(1, tab_strip->count());

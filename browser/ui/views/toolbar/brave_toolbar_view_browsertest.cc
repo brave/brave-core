@@ -164,7 +164,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  bool is_wallet_button_shown(Browser* browser) {
+  bool is_wallet_button_shown(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
     WalletButton* wallet_button = toolbar_view_->wallet_button();
@@ -184,7 +184,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 #endif
 
-  AvatarToolbarButton* GetAvatarToolbarButton(Browser* browser) {
+  AvatarToolbarButton* GetAvatarToolbarButton(BrowserWindowInterface* browser) {
     return static_cast<AvatarToolbarButton*>(
         BrowserView::GetBrowserViewForBrowser(browser)
             ->toolbar_button_provider()
