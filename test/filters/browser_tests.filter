@@ -2468,6 +2468,15 @@
 -IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC
 -IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC_IframeHasNoBorderAndLowOpacity
 
+# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
+# the sign-in-promo behavior that Brave unconditionally disables,
+# brave-browser#58511
+-All/HistorySyncOptinHelperLaunchContextParamBrowserTest.*
+-HistorySyncOptinHelperBrowserTest.CompletedFromAvatarPillAccessPoint
+-HistorySyncOptinHelperFreBrowserTest.*
+-HistorySyncOptinUIDialogPixelTest.InvokeUi_default/*
+-HistorySyncOptinUIWindowPixelTest.InvokeUi_default/*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*

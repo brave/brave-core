@@ -14,3 +14,18 @@ substitutions:
       replace:
         'BASE_FEATURE(kSyncAutofillValuableMetadata,
         base::FEATURE_DISABLED_BY_DEFAULT);'
+
+  - description: |-
+      Override IsReplaceSyncPromosWithSignInPromosEnabled to be always false.
+
+      Brave has no Google sign-in, so the sign-in promo variants of the sync UI
+      never apply. On `brave://history/syncedTabs` they showed a `sign in and
+      sync history` banner and cleared the list of tabs from other devices on
+      every identity state update.
+
+      This prevents showing sign-in promo on History => Tabs from other devices
+      page, as Brave has no Google sign-in.
+    preempt_function_impl:
+      function_name: IsReplaceSyncPromosWithSignInPromosEnabled
+      code: |-
+        if ((true)) return false;

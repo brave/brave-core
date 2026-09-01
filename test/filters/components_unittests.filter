@@ -252,6 +252,31 @@
 # override.
 -SkillsFeaturesTest.IsSkillsEnabled_Default_PrefOn
 
+# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
+# the sign-in-promo behavior that Brave unconditionally disables,
+# brave-browser#58511
+-AccountCheckerTest.TestFetchPriceEmailPref
+-AccountCheckerTest.TestSendPriceEmailPrefOnPrefChange
+-All/PrimaryAccountManagerExplicitSigninNewFeatureTest.*
+-All/ShoppingServiceReadyTest.TestServiceReadyDelaysForSync_TransportStartsInactive/*
+-BrowsingDataUtilsTest.AutofillCounterResultWithReplaceSyncPromosWithSignInPromosEnabled
+-CollaborationServiceImplTest.SyncDisabledByEnterprise
+-CollaborationServiceImplTest.SyncTypeDisabledByEnterprise
+-PasswordManagerFeaturesUtilTest.ShouldShowAccountStorageSettingToggle_SyncToSigninOn
+-ShoppingBookmarkModelObserverTest.TestShoppingCollectionChangeMetrics/*
+-SyncPrefsMigrationTest.GlobalPrefsAreUnchanged
+-SyncPrefsMigrationTest.GlobalToAccount_HistoryDisabled
+-SyncPrefsMigrationTest.GlobalToAccount_SavedTabGroupsEnabled
+-SyncPrefsMigrationTest.GlobalToAccount_TabsDisabled
+-SyncPrefsMigrationTest.Part2RunsOnSecondAttempt
+-SyncPrefsMigrationTest.RunsAgainAfterFeatureReenabled
+-SyncPrefsMigrationTest.TurnsAutofillOffForCustomPassphraseUser
+-SyncToSigninMigrationDataTypesTest.*
+-SyncToSigninMigrationMetricsTest.*
+-SyncToSigninMigrationTest.*
+-SyncToSigninMigrationUndoTest.*
+-UnifiedConsentServiceTest.ReplaceSync_*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
