@@ -1,0 +1,11 @@
+diff --git a/scripts/build/run_with_restat.py b/scripts/build/run_with_restat.py
+index d69be7d76a0598af2d40f69a1d63861a05119f29..b8035b058e9cc45c087965e2f61ea8eae9cc52ae 100644
+--- a/scripts/build/run_with_restat.py
++++ b/scripts/build/run_with_restat.py
+@@ -99,5 +99,6 @@ def main():
+     sys.exit(0)
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+     main()

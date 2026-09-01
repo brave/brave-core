@@ -12,32 +12,13 @@ import override_utils
 
 with brave_chromium_utils.sys_path('//brave/tools/typescript'):
     import tsc_timeout_retry
+    from chromium_src_hardlink import ensure_hardlink
 
 
 @override_utils.override_function(globals())
 def main(original_function):
     with tsc_timeout_retry.patch_subprocess_with_timeout_retry():
         return original_function()
-
-
-def ensure_hardlink(src, dst):
-    src = os.path.abspath(src) if not os.path.isabs(src) else src
-    dst = os.path.abspath(dst) if not os.path.isabs(dst) else dst
-
-    try:
-        os.link(src, dst)
-    except FileExistsError:
-        if not os.path.samefile(src, dst):
-            # recreating link if dst is not pointing to the src
-            try:
-                os.unlink(dst)
-                os.link(src, dst)
-            except (FileExistsError, FileNotFoundError):
-                # Ignore this error, it happens because of a race condition
-                # on android when the relevant target is running for more than
-                # one architecture. This is a temporary workaround
-                # TODO(https://github.com/brave/brave-browser/issues/49768)
-                pass
 
 
 # Here we put our files in the devtools source directory due to the limitations
