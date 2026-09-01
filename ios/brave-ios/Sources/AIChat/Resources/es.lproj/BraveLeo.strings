@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Hola, me llamo Leo. Soy asistente de IA de Brave, con la tecnología de %@. Pregúntame lo que quieras y haré todo lo posible por responderte.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Llama 3.1 8B, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Chat de uso general";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Qwen VL 30B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model's purpose - Describes what it can do best */

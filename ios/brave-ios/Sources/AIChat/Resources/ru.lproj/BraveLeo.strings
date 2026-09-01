@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Привет, я Leo, ИИ-помощник от Brave на базе %@. Спросите меня о чем угодно, и я постараюсь ответить как можно точнее.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Llama 3.1 8B, модели, созданной Meta для высокой производительности и широкого спектра применений. Llama размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Чат для общих целей";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Привет, я Лео. Я — ИИ-ассистент от Brave. Я работаю на базе Qwen VL 30B, модели, созданной Alibaba Cloud для высокой производительности и широкого спектра применений. Qwen размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.";
 
 /* The model's purpose - Describes what it can do best */

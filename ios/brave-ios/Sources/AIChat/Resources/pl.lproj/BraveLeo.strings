@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Cześć, jestem Leo. Jestem asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu %@. Zapytaj mnie o cokolwiek, a ja postaram się jak najlepiej odpowiedzieć.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Llama jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Czat ogólny";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen VL 30B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */

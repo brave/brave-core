@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "你好，我是 Leo，Brave 的智能助手。我由 %@ 研发支持。问我问题，我会尽力解答。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 3.1 8B 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 通过我们自己的安全基础设施由 Brave 托管。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "通用聊天工具";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "嗨，我是 Leo。我是由 Brave 提供的 AI 助手。我由 Qwen VL 30B 提供支持，这是由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。";
 
 /* The model's purpose - Describes what it can do best */
