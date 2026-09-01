@@ -552,6 +552,11 @@ void SimpleHashClient::OnGetNfts(
   // and make another api request
   if (nft_identifiers.size() > 0) {
     GURL url = SimpleHashClient::GetNftsUrl(nft_identifiers);
+    if (!url.is_valid()) {
+      std::move(callback).Run(std::move(nfts_so_far));
+      return;
+    }
+
     std::vector<mojom::NftIdentifierPtr> nft_identifiers_remaining;
     if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
       for (size_t i = kSimpleHashMaxBatchSize; i < nft_identifiers.size();
