@@ -44,6 +44,9 @@ Run `pnpm run gn_check`. Fix any issues found and re-run until it passes.
 
 Run `pnpm run presubmit`. Fix any issues found and re-run until it passes.
 
+Presubmit checks only consider checked-in changes. Any revisions in the working
+directory won't be seen.
+
 ### 4. Commit if needed
 
 Check `git status`. If there are any uncommitted changes (staged, unstaged, or
