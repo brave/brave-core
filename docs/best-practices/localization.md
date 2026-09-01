@@ -101,6 +101,23 @@ use `brave/script/lib/l10n/grd_string_replacements.py`** with
 replacement consistently across all localized versions without needing to
 manually edit GRD files or create chromium_src overrides.
 
+`default_replacements` runs over every file we braveify. **When the same wording
+must stay untouched elsewhere, key the replacement by file name in
+`per_file_replacements` instead.** For example, the actor strings call the agent
+working on the user's task Leo, while identical wording in the Gemini panel
+strings really is about Gemini:
+
+```python
+per_file_replacements = {
+    'actor_strings.grdp': [
+        (r'Gemini\sneeds\syour\shelp', r'Leo needs your help'),
+    ],
+}
+```
+
+Both lists also apply to `desc` attributes, so a widened pattern keeps
+translator context in sync with the text it describes.
+
 ---
 
 <a id="L10N-007"></a>
