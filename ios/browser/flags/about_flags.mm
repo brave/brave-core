@@ -241,14 +241,6 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                 \
       {                                                                   \
-          "brave-wallet-webui-ios",                                       \
-          "Enable WebUI for Brave Wallet iOS",                            \
-          "Enables WebUI for Brave Wallet",                               \
-          flags_ui::kOsIos,                                               \
-          FEATURE_VALUE_TYPE(                                             \
-              brave_wallet::features::kBraveWalletWebUIFeature),          \
-      },                                                                  \
-      {                                                                   \
           "brave-wallet-cardano-dapp-support-ios",                        \
           "Enable Cardano dApp Support for Brave Wallet(WebUI) iOS",      \
           "Enables Cardano dApp Support for Brave Wallet(WebUI)",         \

@@ -49,10 +49,6 @@ BASE_DECLARE_FEATURE(kBraveWalletSidePanel);
 
 BASE_DECLARE_FEATURE(kBraveWalletMojoForHardwareWalletFeature);
 
-#if BUILDFLAG(IS_IOS)
-BASE_DECLARE_FEATURE(kBraveWalletWebUIFeature);
-#endif
-
 }  // namespace brave_wallet::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_

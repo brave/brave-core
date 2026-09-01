@@ -178,10 +178,10 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   void SetUp() override {
 #if BUILDFLAG(IS_IOS)
     feature_list_.InitWithFeaturesAndParameters(
-        {{features::kBraveWalletZCashFeature,
-          { {"zcash_shielded_transactions_enabled", "true"} }},
-         { features::kBraveWalletWebUIFeature,
-           {} }},
+        {
+            {features::kBraveWalletZCashFeature,
+             { {"zcash_shielded_transactions_enabled", "true"} }},
+        },
         {}  // disabled features
     );
 #else
@@ -2957,9 +2957,6 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -3048,9 +3045,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"},
          {"zcash_ironwood_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -3574,9 +3568,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"},
          {"zcash_ironwood_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -4024,9 +4015,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"},
          {"zcash_ironwood_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -4603,9 +4591,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_OrchardToIronwood) {
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"},
          {"zcash_ironwood_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -5450,9 +5435,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
   feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );
@@ -6205,9 +6187,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_IronwoodUnshieldFunds) {
       {{features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"},
          {"zcash_ironwood_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-       {features::kBraveWalletWebUIFeature, {}}
-#endif
       },
       {}  // disabled features
   );

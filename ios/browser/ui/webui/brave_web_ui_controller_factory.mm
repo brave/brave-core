@@ -40,7 +40,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
@@ -125,14 +124,12 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (brave_wallet::IsWalletWebUIEnabled()) {
-    if (url_host == kUntrustedNftHost) {
-      return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
-    } else if (url_host == kUntrustedMarketHost) {
-      return &NewRegularProfileOnlyWebUIIOS<market::UntrustedMarketUI>;
-    } else if (url_host == kUntrustedLineChartHost) {
-      return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
-    }
+  if (url_host == kUntrustedNftHost) {
+    return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
+  } else if (url_host == kUntrustedMarketHost) {
+    return &NewRegularProfileOnlyWebUIIOS<market::UntrustedMarketUI>;
+  } else if (url_host == kUntrustedLineChartHost) {
+    return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
   }
 #endif
 
@@ -169,8 +166,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<AIChatUI>;
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  } else if (url_host == kWalletPageHost &&
-             brave_wallet::IsWalletWebUIEnabled()) {
+  } else if (url_host == kWalletPageHost) {
     return &NewWebUIIOS<WalletPageUI>;
 #endif
   }

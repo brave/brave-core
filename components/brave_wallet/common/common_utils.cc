@@ -52,26 +52,11 @@ bool IsZCashEnabled() {
 }
 
 bool IsZCashShieldedTransactionsEnabled() {
-#if BUILDFLAG(IS_IOS)
-  bool is_zcash_enabled = IsZCashEnabled();
-  bool is_shielded_tx_enabled =
-      features::kZCashShieldedTransactionsEnabled.Get();
-  bool is_wallet_webui_enabled = IsWalletWebUIEnabled();
-  return is_zcash_enabled && is_shielded_tx_enabled && is_wallet_webui_enabled;
-#else
   return IsZCashEnabled() && features::kZCashShieldedTransactionsEnabled.Get();
-#endif
 }
 
 bool IsZCashIronwoodEnabled() {
-#if BUILDFLAG(IS_IOS)
-  bool is_zcash_enabled = IsZCashEnabled();
-  bool is_ironwood_enabled = features::kZCashIronwoodEnabled.Get();
-  bool is_wallet_webui_enabled = IsWalletWebUIEnabled();
-  return is_zcash_enabled && is_ironwood_enabled && is_wallet_webui_enabled;
-#else
   return IsZCashEnabled() && features::kZCashIronwoodEnabled.Get();
-#endif
 }
 
 bool IsPolkadotEnabled() {
@@ -117,12 +102,6 @@ bool IsSnapsFeatureEnabled() {
   return false;
 #endif
 }
-
-#if BUILDFLAG(IS_IOS)
-bool IsWalletWebUIEnabled() {
-  return base::FeatureList::IsEnabled(features::kBraveWalletWebUIFeature);
-}
-#endif
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kDefault;

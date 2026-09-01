@@ -52,9 +52,6 @@ class ZCashCreateIronwoodToIronwoodTransactionTaskTest : public testing::Test {
     feature_list_.InitWithFeaturesAndParameters(
         {{features::kBraveWalletZCashFeature,
           {{"zcash_shielded_transactions_enabled", "true"}}},
-#if BUILDFLAG(IS_IOS)
-         {features::kBraveWalletWebUIFeature, {}}
-#endif
         },
         {}  // disabled features
     );
