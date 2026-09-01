@@ -12,11 +12,15 @@
 namespace blink {
 namespace {
 
-// Function to determine if contextmenu event should bypass preventDefault so
-// that users can always open context menu by holding Shift key. This method is
-// called inside EventDispatcher::DispatchEventPostProcess, so that
+// Function to determine if an event should bypass preventDefault so that
 // Node::DefaultEventHandler() can be called.
 bool ShouldBypassDefaultPreventedForContextMenu(Event* event) {
+#if BUILDFLAG(IS_ANDROID)
+  if (event->type() == event_type_names::kPaste) {
+    return true;
+  }
+#endif
+
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   if (!base::FeatureList::IsEnabled(
           blink::features::kForceContextMenuOnShiftRightClick)) {

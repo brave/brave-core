@@ -662,6 +662,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_GLOBAL_SETTINGS_TITLE" desc="Label for the global shields settings link.">
         Shields global settings
       </message>
+      <message name="IDS_ENABLE_PASTE" desc="Label for the Brave Shields action that inserts clipboard text into the focused field without allowing page JavaScript paste handlers to cancel it.">
+        Enable paste
+      </message>
       <message name="IDS_REPORT_BROKEN_SITE_PROMPT" desc="Prompt asking the user to report a broken site.">
         Tell us if the site wasn't working properly with Shields up.
       </message>

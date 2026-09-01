@@ -191,6 +191,7 @@
     "storybook": "8.6.17",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
+    "string_decoder": "1.1.1",
     "style-loader": "2.0.0",
     "styled-components": "catalog:",
     "teamcity-service-messages": "0.1.14",

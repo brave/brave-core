@@ -11,6 +11,7 @@ const require = createRequire(import.meta.url)
 // NodeJS polyfills for the browser - these are only included when needed.
 export const fallback: { [key: string]: string | false } = {
   stream: require.resolve('stream-browserify'),
+  string_decoder: require.resolve('string_decoder/'),
   path: require.resolve('path-browserify'),
   querystring: require.resolve('querystring-es3'),
   crypto: require.resolve('crypto-browserify'),

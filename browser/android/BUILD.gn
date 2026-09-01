@@ -10,6 +10,7 @@ assert(is_android)
 
 source_set("android_browser_process") {
   sources = [
+    "brave_force_paste_helper.cc",
     "brave_feature_util.cc",
     "brave_local_state_android.cc",
     "brave_relaunch_utils.cc",
@@ -55,6 +56,7 @@ source_set("android_browser_process") {
     "//components/translate/core/browser",
     "//components/unified_consent",
     "//components/webui/flags",
+    "//ui/base/clipboard",
     "//url",
   ]
 

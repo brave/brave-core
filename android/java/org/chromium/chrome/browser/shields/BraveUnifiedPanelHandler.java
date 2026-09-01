@@ -87,6 +87,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
@@ -191,6 +192,7 @@ public class BraveUnifiedPanelHandler {
     // Advanced options switches (no Forget Me in new design)
     private SwitchCompat mBlockScriptsSwitch;
     private SwitchCompat mFingerprintingSwitch;
+    private SwitchCompat mEnablePasteSwitch;
 
     // Observer for notifying toolbar of shields changes (icon update, page reload)
     private @Nullable BraveShieldsMenuObserver mMenuObserver;
@@ -487,6 +489,7 @@ public class BraveUnifiedPanelHandler {
         // Advanced options switches
         mBlockScriptsSwitch = popupView.findViewById(R.id.scripts_toggle);
         mFingerprintingSwitch = popupView.findViewById(R.id.fingerprinting_toggle);
+        mEnablePasteSwitch = popupView.findViewById(R.id.enable_paste_toggle);
 
         // Report broken site section
         mReportBrokenSiteSection = popupView.findViewById(R.id.report_broken_site_section);
@@ -555,6 +558,14 @@ public class BraveUnifiedPanelHandler {
             }
         }
 
+        View enablePasteItem = mAdvancedOptionsContent.findViewById(R.id.enable_paste_item);
+        if (enablePasteItem != null) {
+            enablePasteItem.setOnClickListener(v -> mEnablePasteSwitch.performClick());
+        }
+        if (mEnablePasteSwitch != null) {
+            mEnablePasteSwitch.setOnClickListener(v -> onEnablePasteClicked());
+        }
+
         View blockElementItem = mAdvancedOptionsContent.findViewById(R.id.block_element_item);
         if (blockElementItem != null) {
 
@@ -593,6 +604,30 @@ public class BraveUnifiedPanelHandler {
         View globalSettingsItem = mAdvancedOptionsContent.findViewById(R.id.global_settings_item);
         if (globalSettingsItem != null) {
             globalSettingsItem.setOnClickListener(v -> openGlobalShieldsSettings());
+        }
+    }
+
+    private boolean forcePaste() {
+        if (mCurrentTab == null) {
+            return false;
+        }
+
+        WebContents webContents = mCurrentTab.getWebContents();
+        if (webContents == null) {
+            return false;
+        }
+
+        BraveForcePasteHelper.forcePaste(webContents);
+        hide();
+        return true;
+    }
+
+    private void onEnablePasteClicked() {
+        if (mEnablePasteSwitch != null && !mEnablePasteSwitch.isChecked()) {
+            return;
+        }
+        if (!forcePaste() && mEnablePasteSwitch != null) {
+            mEnablePasteSwitch.setChecked(false);
         }
     }
 
@@ -688,6 +723,11 @@ public class BraveUnifiedPanelHandler {
                 mFingerprintingSwitch.setEnabled(false);
                 mFingerprintingSwitch.setChecked(false);
             }
+        }
+
+        if (mEnablePasteSwitch != null) {
+            mEnablePasteSwitch.setEnabled(shieldsEnabled);
+            mEnablePasteSwitch.setChecked(false);
         }
     }
 
