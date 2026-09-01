@@ -138,11 +138,6 @@
                                               kBraveAdblockScriptletDebugLogs];
 }
 
-+ (Feature*)kBraveDarkModeBlock {
-  return [[Feature alloc]
-      initWithFeature:&brave_shields::features::kBraveDarkModeBlock];
-}
-
 + (Feature*)kBraveDeAMP {
   return [[Feature alloc] initWithFeature:&de_amp::features::kBraveDeAMP];
 }
