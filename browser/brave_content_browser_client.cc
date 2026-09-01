@@ -119,7 +119,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
 #include "components/prefs/pref_service.h"
-#include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/user_prefs/user_prefs.h"
 #include "components/version_info/version_info.h"
 #include "content/public/browser/browser_context.h"
