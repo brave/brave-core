@@ -93,9 +93,6 @@
 # https://github.com/brave/brave-browser/issues/54521
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 
-# This test is flakey upstream due to https://issues.chromium.org/issues/511552103
--All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/linux_ViewsAXEnabled
-
 # Upstream Chromium test (chrome/browser/webapps/installable/
 # installable_manager_browsertest.cc). It asserts on InstallableManager's
 # private task queue via friend access, and that assertion is racy whenever a
