@@ -70,6 +70,15 @@ void AssociatedContentDelegate::GetContentTools(
   std::move(callback).Run({});
 }
 
+void AssociatedContentDelegate::set_tools_attached(bool tools_attached) {
+  if (tools_attached_ == tools_attached) {
+    return;
+  }
+  tools_attached_ = tools_attached;
+
+  observers_.Notify(&Observer::OnToolsAttachedChanged, this);
+}
+
 void AssociatedContentDelegate::NotifyNewPage() {
   for (auto& observer : observers_) {
     observer.OnNewPage(this);

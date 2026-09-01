@@ -135,6 +135,7 @@ class AssociatedContentManager : public ToolProvider,
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(AssociatedContentDelegate* delegate) override;
+  void OnToolsAttachedChanged(AssociatedContentDelegate* delegate) override;
 
   std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;

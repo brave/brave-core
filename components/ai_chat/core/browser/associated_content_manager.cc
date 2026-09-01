@@ -225,7 +225,6 @@ void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
   }
 
   (*it)->set_tools_attached(tools_attached);
-  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::GetToolInfos(std::string_view content_uuid,
@@ -268,7 +267,6 @@ void AssociatedContentManager::OnContentToolsDetected(
     return;
   }
   delegate->set_tools_attached(tools_attached);
-  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::ClearContent() {
@@ -547,6 +545,11 @@ void AssociatedContentManager::OnTitleChanged(
     AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
 
+  conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::OnToolsAttachedChanged(
+    AssociatedContentDelegate* delegate) {
   conversation_->OnAssociatedContentUpdated();
 }
 
