@@ -118,8 +118,7 @@ BraveVpnDnsSettingsNotificiationDialogView::
     ~BraveVpnDnsSettingsNotificiationDialogView() = default;
 
 void BraveVpnDnsSettingsNotificiationDialogView::OnLearnMoreLinkClicked() {
-  chrome::AddSelectedTabWithURL(browser_->GetBrowserForMigrationOnly(),
-                                GURL(kBraveVPNLearnMoreURL),
+  chrome::AddSelectedTabWithURL(browser_, GURL(kBraveVPNLearnMoreURL),
                                 ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
   AcceptDialog();
 }

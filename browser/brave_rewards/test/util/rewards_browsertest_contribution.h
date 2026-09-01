@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
-class browser;
+class BrowserWindowInterface;
 
 namespace brave_rewards::test_util {
 
@@ -27,7 +27,8 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
   RewardsBrowserTestContribution();
   ~RewardsBrowserTestContribution() override;
 
-  void Initialize(Browser* browser, RewardsServiceImpl* rewards_service);
+  void Initialize(BrowserWindowInterface* browser,
+                  RewardsServiceImpl* rewards_service);
 
   void TipViaCode(const std::string& publisher_key,
                   const double amount,
@@ -117,7 +118,8 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
   std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
   mojom::Result ac_reconcile_status_ = mojom::Result::FAILED;
 
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> browser_ =
+      nullptr;  // NOT OWNED
   raw_ptr<RewardsServiceImpl, DanglingUntriaged> rewards_service_ =
       nullptr;  // NOT OWNED
   std::unique_ptr<test_util::RewardsBrowserTestContextHelper> context_helper_;

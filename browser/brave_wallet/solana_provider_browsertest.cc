@@ -568,7 +568,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
         browser()->GetProfile());
   }
 
-  void ReloadAndWaitForLoadStop(Browser* browser) {
+  void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
     chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }

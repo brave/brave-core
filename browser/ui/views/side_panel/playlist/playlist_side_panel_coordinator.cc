@@ -91,9 +91,7 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
     contents_wrapper_ = std::make_unique<PlaylistContentsWrapper>(
         GURL(kPlaylistURL), profile_, IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
         /*esc_closes_ui=*/false,
-        BrowserView::GetBrowserViewForBrowser(
-            browser_->GetBrowserForMigrationOnly()),
-        this);
+        BrowserView::GetBrowserViewForBrowser(browser_), this);
     contents_wrapper_->ReloadWebContents();
 
     Proxy::CreateForWebContents(contents_wrapper_->web_contents(),
@@ -128,8 +126,7 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
 }
 
 BrowserView* PlaylistSidePanelCoordinator::GetBrowserView() {
-  return BrowserView::GetBrowserViewForBrowser(
-      browser_->GetBrowserForMigrationOnly());
+  return BrowserView::GetBrowserViewForBrowser(browser_);
 }
 
 void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {

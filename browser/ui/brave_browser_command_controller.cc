@@ -136,7 +136,7 @@ namespace chrome {
 BraveBrowserCommandController::BraveBrowserCommandController(
     BrowserWindowInterface* bwi)
     : BrowserCommandController(bwi),
-      browser_(*bwi->GetBrowserForMigrationOnly()),
+      browser_(*static_cast<Browser*>(bwi)),
       brave_command_updater_(nullptr) {
   InitBraveCommandState();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

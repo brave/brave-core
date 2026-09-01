@@ -39,11 +39,11 @@ class Profile;
 
 namespace brave {
 
-bool HasSelectedURL(Browser* browser);
-void CleanAndCopySelectedURL(Browser* browser);
+bool HasSelectedURL(BrowserWindowInterface* browser);
+void CleanAndCopySelectedURL(BrowserWindowInterface* browser);
 
 #if BUILDFLAG(ENABLE_TOR)
-void NewOffTheRecordWindowTor(Browser* browser);
+void NewOffTheRecordWindowTor(BrowserWindowInterface* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
 void NewTorConnectionForSite(BrowserWindowInterface*);
 #endif
@@ -74,7 +74,8 @@ void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
 void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
                                 const GURL& url);
 
-void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
+void ToggleWindowTitleVisibilityForVerticalTabs(
+    BrowserWindowInterface* browser);
 void ToggleVerticalTabStrip(BrowserWindowInterface* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleVerticalTabStripExpanded(Browser* browser);

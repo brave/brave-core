@@ -14,7 +14,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace brave_rewards::test_util {
 
@@ -32,18 +32,18 @@ GURL GetUrl(net::EmbeddedTestServer* https_server,
             const std::string& publisher_key,
             const std::string& path = "");
 
-void ActivateTabAtIndex(Browser* browser, const int index);
+void ActivateTabAtIndex(BrowserWindowInterface* browser, const int index);
 
 std::string BalanceDoubleToString(double amount);
 
 std::string GetUpholdExternalAddress();
 
-void NavigateToPublisherPage(Browser* browser,
+void NavigateToPublisherPage(BrowserWindowInterface* browser,
                              net::EmbeddedTestServer* https_server,
                              const std::string& publisher_key,
                              const std::string& path = "");
 
-void NavigateToPublisherAndWaitForUpdate(Browser* browser,
+void NavigateToPublisherAndWaitForUpdate(BrowserWindowInterface* browser,
                                          net::EmbeddedTestServer* https_server,
                                          const std::string& publisher_key);
 
@@ -54,7 +54,8 @@ void WaitForAutoContributeVisitTime();
 void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
                          const std::string& country = "US");
 
-void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
+void SetOnboardingBypassed(BrowserWindowInterface* browser,
+                           bool bypassed = true);
 
 }  // namespace brave_rewards::test_util
 

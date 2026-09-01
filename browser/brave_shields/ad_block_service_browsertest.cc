@@ -3237,7 +3237,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        ContentPickerInPrivateModeIsNotAvailableByDefault) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, tab_url));
   content::WebContents* contents =
       private_browser->tab_strip_model()->GetActiveWebContents();
@@ -3255,7 +3255,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                             true);
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, tab_url));
   content::WebContents* contents =
       private_browser->tab_strip_model()->GetActiveWebContents();
