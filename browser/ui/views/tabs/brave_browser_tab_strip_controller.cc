@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
 #include "chrome/browser/ui/tabs/tab_muted_utils.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "components/prefs/pref_service.h"
@@ -133,18 +134,19 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
 
   // Use if clause to prevent enumeration values not handled in switch errors.
   if (command_id == TabStripModel::CommandRestoreTab) {
-    chrome::RestoreTab(browser());
+    chrome::RestoreTab(GetBrowserWindowInterface());
     return;
   }
 
   if (command_id == TabStripModel::CommandBookmarkAllTabs) {
-    chrome::BookmarkAllTabs(browser());
+    chrome::BookmarkAllTabs(GetBrowserWindowInterface());
     return;
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    brave::ToggleVerticalTabStrip(browser());
-    BrowserView::GetBrowserViewForBrowser(browser())->InvalidateLayout();
+    brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
+    BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
+        ->InvalidateLayout();
     return;
   }
 
@@ -165,12 +167,12 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
   }
 
   if (command_id == TabStripModel::CommandBringAllTabsToThisWindow) {
-    brave::BringAllTabs(browser());
+    brave::BringAllTabs(GetBrowserWindowInterface());
     return;
   }
 
   if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
-    brave::CloseDuplicatesOfActiveTab(browser());
+    brave::CloseDuplicatesOfActiveTab(GetBrowserWindowInterface());
     return;
   }
 
@@ -181,7 +183,7 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
 bool BraveBrowserTabStripController::IsContextMenuCommandChecked(
     TabStripModel::ContextMenuCommand command_id) {
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    return VerticalTabController::FromBrowser(browser())
+    return VerticalTabController::FromBrowser(GetBrowserWindowInterface())
         ->ShouldShowBraveVerticalTabs();
   }
 
@@ -198,15 +200,15 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   // Use if clause to prevent enumeration values not handled in switch errors.
   if (command_id == TabStripModel::CommandRestoreTab) {
-    auto* restore_service =
-        TabRestoreServiceFactory::GetForProfile(browser()->GetProfile());
+    auto* restore_service = TabRestoreServiceFactory::GetForProfile(
+        GetBrowserWindowInterface()->GetProfile());
     return restore_service && (!restore_service->IsLoaded() ||
                                !restore_service->entries().empty());
   }
 
   if (command_id == TabStripModel::CommandBookmarkAllTabs) {
     return browser_defaults::bookmarks_enabled &&
-           chrome::CanBookmarkAllTabs(browser());
+           chrome::CanBookmarkAllTabs(GetBrowserWindowInterface());
   }
 
   if (command_id == TabStripModel::CommandToggleTabMuted) {
@@ -220,11 +222,11 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   }
 
   if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
-    return brave::HasDuplicatesOfActiveTab(browser());
+    return brave::HasDuplicatesOfActiveTab(GetBrowserWindowInterface());
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    return tabs::utils::IsVerticalTabToggleEnabled(browser());
+    return tabs::utils::IsVerticalTabToggleEnabled(GetBrowserWindowInterface());
   }
 
   if (command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
@@ -443,7 +445,7 @@ bool BraveBrowserTabStripController::ShouldShowTreeTabs() {
     return false;
   }
 
-  if (!VerticalTabController::FromBrowser(browser())
+  if (!VerticalTabController::FromBrowser(GetBrowserWindowInterface())
            ->ShouldShowBraveVerticalTabs()) {
     return false;
   }
