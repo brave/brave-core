@@ -34,12 +34,10 @@ inline constexpr auto kCapabilityStringMap =
          {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
          {mojom::ConversationCapability::MATH_ML, "math_ml"}});
 
-// Hints about how the server should handle a request, rather than statements
-// about what a model can do. Models never declare these in
-// `supported_capabilities`, so Tool::IsSupportedByModel exempts them -
-// otherwise enabling one would filter out every tool on every model.
-// Capabilities gate tools by default; adding one here bypasses the
-// security-team-approved model matching used by e.g. CONTENT_AGENT.
+// Hints about how the server should handle a request - these are intended to
+// let the server know what the client can do. For example, when we send the
+// math_ml capability the server can modify the system prompt so models know
+// they can output math-ml.
 inline constexpr auto kServerHintCapabilities =
     base::MakeFixedFlatSet<mojom::ConversationCapability>(
         {mojom::ConversationCapability::MATH_ML});
