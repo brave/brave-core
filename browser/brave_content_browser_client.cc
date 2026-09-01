@@ -1527,37 +1527,6 @@ bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
   return true;
 }
 
-bool PreventDarkModeFingerprinting(WebContents* web_contents,
-                                   content::SiteInstance& main_frame_site,
-                                   WebPreferences* prefs) {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
-  // the System Profile.
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
-  if (!host_content_settings_map) {
-    return false;
-  }
-  const GURL url =
-      main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
-  const bool shields_up =
-      brave_shields::IsBraveShieldsEnabled(host_content_settings_map, url);
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
-  // https://github.com/brave/brave-browser/issues/15265
-  // Always use color scheme Light if fingerprinting mode strict
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveDarkModeBlock) &&
-      shields_up && fingerprinting_type == ControlType::BLOCK &&
-      prefs->preferred_color_scheme !=
-          blink::mojom::PreferredColorScheme::kLight) {
-    prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
-    return true;
-  }
-  return false;
-}
-
 std::vector<url::Origin>
 BraveContentBrowserClient::GetOriginsRequiringDedicatedProcess() {
   std::vector<url::Origin> isolated_origin_list;
@@ -1589,8 +1558,7 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
 
-  return PreventDarkModeFingerprinting(web_contents, main_frame_site, prefs) ||
-         UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
+  return UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
          changed;
 }
 
@@ -1600,7 +1568,6 @@ void BraveContentBrowserClient::OverrideWebPreferences(
     WebPreferences* web_prefs) {
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
-  PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

@@ -1160,14 +1160,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveAdblockShowHiddenComponents),     \
       },                                                                       \
       {                                                                        \
-          "brave-dark-mode-block",                                             \
-          "Enable dark mode blocking fingerprinting protection",               \
-          "Always report light mode when fingerprinting protections set to "   \
-          "Strict",                                                            \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_shields::features::kBraveDarkModeBlock),    \
-      },                                                                       \
-      {                                                                        \
           "brave-domain-block",                                                \
           "Enable domain blocking",                                            \
           "Enable support for blocking domains with an interstitial page",     \
