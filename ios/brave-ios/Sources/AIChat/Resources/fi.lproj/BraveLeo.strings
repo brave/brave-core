@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Hei, olen Leo. Olen Braven tekoälyavustaja. Palvelun tarjoaa %@. Kysy minulta mitä tahansa, niin yritän vastata parhaani mukaan.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Llama 3.1 8B: hen, Metan luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Llama on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Yleiskäyttöinen chat";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen VL 30B: hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model's purpose - Describes what it can do best */

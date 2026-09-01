@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Xin chào, tôi là Leo, trợ lý AI của Brave. Tôi được hỗ trợ bởi %@. Hãy hỏi tôi bất cứ điều gì, tôi sẽ cố gắng hết sức để trả lời.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình được tạo ra bởi Meta để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Llama được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Trò chuyện cho mục đích chung";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen VL 30B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model's purpose - Describes what it can do best */

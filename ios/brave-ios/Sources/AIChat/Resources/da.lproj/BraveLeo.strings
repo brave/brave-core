@@ -266,12 +266,6 @@
 "aichat.introMessageGenericMessageDescription" = "Hej, jeg er Leo. Jeg er Braves AI-assistent. Jeg er drevet af %@. Spørg mig om hvad som helst, og jeg vil gøre mit bedste for at svare.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Llama 3.1 8B, en model skabt af Meta til at være effektiv og anvendelig i mange forskellige sammenhænge. Llama hostes af Brave via vores egen sikre infrastruktur.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaModelPurposeDescription" = "Chat til generelle formål";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen VL 30B, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
