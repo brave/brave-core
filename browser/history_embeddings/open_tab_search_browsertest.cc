@@ -123,6 +123,19 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
+// With no tracked HTTP(S) tabs there is nothing to rank, and the result still
+// arrives asynchronously.
+IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, NoTabsAnswersAsynchronously) {
+  ai_chat::FakeHistoryEmbeddingsSearch fake;
+
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), &fake, "query",
+                          future.GetCallback(), &tracker_);
+
+  EXPECT_FALSE(future.IsReady());
+  EXPECT_TRUE(future.Take().empty());
+}
+
 // Results follow the scored-row order (best first), and open tabs whose URL
 // isn't among the scored rows are dropped.
 IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, RanksAndDropsUnmatchedTabs) {

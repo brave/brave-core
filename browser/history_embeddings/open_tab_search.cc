@@ -17,6 +17,7 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -160,7 +161,9 @@ void SearchOpenTabsByContent(Profile* profile,
   // tracked-browser HTTP(S) tabs, so non-normal windows, other profiles and
   // incognito don't reach here.
   if (tabs.empty()) {
-    std::move(callback).Run({});
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback), std::vector<OpenTabInfo>()));
     return;
   }
   // Sequence the read-from-`tabs` (for URLs) before the move-of-`tabs` into
