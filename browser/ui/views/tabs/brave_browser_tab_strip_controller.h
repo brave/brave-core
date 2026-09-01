@@ -10,8 +10,6 @@
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
-class BrowserWindowInterface;
-
 namespace tabs {
 class TabInterface;
 class TreeTabNode;
@@ -30,8 +28,6 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   BraveBrowserTabStripController& operator=(
       const BraveBrowserTabStripController&) = delete;
   ~BraveBrowserTabStripController() override;
-
-  BrowserWindowInterface* browser() const { return browser_view_->browser(); }
 
   bool IsCommandEnabledForTab(TabStripModel::ContextMenuCommand command_id,
                               const Tab* tab);
