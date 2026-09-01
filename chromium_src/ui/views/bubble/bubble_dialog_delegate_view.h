@@ -24,21 +24,6 @@ namespace views {
 class BraveBubbleDialogDelegateView;
 }
 
-#define CreatePassKey                                  \
-  CreatePassKey_Unused();                              \
-  friend class ::BraveNewsBubbleView;                  \
-  friend class ::BraveHelpBubbleDelegateView;          \
-  friend class ::WaybackMachineBubbleView;             \
-  friend class ::playlist::PlaylistBubbleView;         \
-  friend class ::SplitViewMenuBubble;                  \
-  friend class ::SidebarItemAddedFeedbackBubble;       \
-  friend class ::SidebarEditItemBubbleDelegateView;    \
-  friend class ::SidebarAddItemBubbleDelegateView;     \
-  friend class ::views::BraveBubbleDialogDelegateView; \
-  static BddvPassKey CreatePassKey
-
 #include <ui/views/bubble/bubble_dialog_delegate_view.h>  // IWYU pragma: export
-
-#undef CreatePassKey
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_DIALOG_DELEGATE_VIEW_H_
