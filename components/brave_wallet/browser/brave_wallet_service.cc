@@ -1872,8 +1872,8 @@ void BraveWalletService::GetSimpleHashSpamNFTs(
     return;
   }
   simple_hash_client_->FetchNFTsFromSimpleHash(
-      wallet_address, chain_ids, cursor, false /* skip_spam */,
-      true /* only_spam */, std::move(callback));
+      wallet_address, chain_ids, cursor, SimpleHashClient::SpamFilter::kOnly,
+      std::move(callback));
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
