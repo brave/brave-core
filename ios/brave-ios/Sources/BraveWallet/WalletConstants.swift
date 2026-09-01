@@ -95,6 +95,14 @@ public struct WalletConstants {
   }
   #endif
 
+  /// Returns true if all three Cardano dApp support feature flags are enabled:
+  /// - kBraveWalletCardanoEnabled (Cardano support)
+  /// - kBraveWalletCardanoDAppSupportIOS (Cardano dApp support)
+  public static var isCardanoDAppSupportEnabled: Bool {
+    FeatureList.kBraveWalletCardanoEnabled?.enabled == true
+      && FeatureList.kBraveWalletCardanoDAppSupportIOS?.enabled == true
+  }
+
   /// The currently supported coin types in wallet
   public static func supportedCoinTypes(
     _ mode: SupportedCoinTypesMode = .general
@@ -114,9 +122,18 @@ public struct WalletConstants {
       // Any non-debug build will check bitcoin & zcash feature flag from core
       // TF public build can use BraveCore Switches in Browser Settings,
       // Debug section in order to enable Bitcoin.
-      result = [.eth, .sol, .fil, .btc, .zec, .ada]
+      result = [.eth, .sol, .fil]
+      if FeatureList.kBraveWalletBitcoinFeature?.enabled == true {
+        result.append(.btc)
+      }
+      if FeatureList.kBraveWalletZCashFeature?.enabled == true {
+        result.append(.zec)
+      }
+      if FeatureList.kBraveWalletCardanoEnabled?.enabled == true {
+        result.append(.ada)
+      }
     case .dapps:
-      return [.eth, .sol, .ada]
+      return isCardanoDAppSupportEnabled ? [.eth, .sol, .ada] : [.eth, .sol]
     }
     return result
   }

@@ -428,7 +428,8 @@ class UserScriptManager {
       }
 
       // Inject Cardano provider script
-      if !tab.isPrivate,
+      if WalletConstants.isCardanoDAppSupportEnabled,
+        !tab.isPrivate,
         isCardanoProviderEnabled,
         let script = self.dynamicScripts[.cardanoProvider]
       {
