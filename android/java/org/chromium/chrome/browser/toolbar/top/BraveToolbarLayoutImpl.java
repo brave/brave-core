@@ -1495,6 +1495,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public void onBottomControlsVisibilityChanged(boolean isVisible) {
         mIsBottomControlsVisible = isVisible;
+        // The tab switcher and menu buttons are only Brave's to move between the top toolbar and
+        // the bottom while Brave's own bottom controls carry them. Upstream's bottom bar carries
+        // them instead, and ToolbarPhone hides the top ones for it, so showing them back here -
+        // which this does whenever the omnibox takes focus - would leave a second pair on top.
+        if (BottomToolbarConfiguration.isAndroidBottomBarEnabled()) {
+            return;
+        }
         if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)
                 && getMenuButtonCoordinator() != null) {
             getMenuButtonCoordinator().setVisibility(!isVisible);
