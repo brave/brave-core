@@ -9,10 +9,25 @@ substitutions:
       feature_name: kAntivirusTelemetryForDownloads
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
-  - description: 'Ship kClientSideDetectionClipboardCopyApi disabled.'
-    set_feature_flag_default_state:
-      feature_name: kClientSideDetectionClipboardCopyApi
-      value: base::FEATURE_DISABLED_BY_DEFAULT
+  - description: |
+      Ship kClientSideDetectionClipboardCopyApi disabled.
+
+      Upstream now guards the default state with an
+      `#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)` conditional, a shape
+      `set_feature_flag_default_state` cannot parse, so this is a plain regex
+      replacement instead.
+    regex:
+      pattern: |-
+        BASE_FEATURE(kClientSideDetectionClipboardCopyApi,
+        #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
+                     base::FEATURE_DISABLED_BY_DEFAULT);
+        #else
+                     base::FEATURE_ENABLED_BY_DEFAULT);
+        #endif
+      replace: |-
+        // kClientSideDetectionClipboardCopyApi feature state is enforced via plaster rewrite.
+        BASE_FEATURE(kClientSideDetectionClipboardCopyApi,
+                     base::FEATURE_DISABLED_BY_DEFAULT);
 
   - description: 'Ship kGooglePlayProtectInApkTelemetry disabled.'
     set_feature_flag_default_state:
