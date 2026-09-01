@@ -89,8 +89,7 @@
         },
         "custom_vars": {
           "checkout_clang_coverage_tools": true,
-          "checkout_clangd": true,
-          "gn_version": "git_revision:c7ffaf80713afbe5a4f4d95a605c0a98084374de"
+          "checkout_clangd": true
         }
       },
       "depot_tools": {
