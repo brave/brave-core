@@ -6,18 +6,40 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
 #include <optional>
+#include <utility>
 
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/catalog/test/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/test/reactions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
+
+namespace {
+
+void DislikeSegment(const std::string& segment) {
+  mojom::ReactionInfoPtr mojom_reaction =
+      test::BuildReaction(mojom::AdType::kNotificationAd);
+  mojom_reaction->segment = segment;
+
+  test::MockTokenGenerator(/*count=*/1);
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleDislikeSegment(std::move(mojom_reaction),
+                                      callback.Get());
+}
+
+}  // namespace
 
 class BraveAdsSegmentUtilTest : public test::TestBase {};
 
@@ -79,8 +101,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {"parent-child", mojom::ReactionType::kDisliked}};
+  DislikeSegment("parent-child");
 
   // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
@@ -88,8 +109,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {"parent-child", mojom::ReactionType::kDisliked}};
+  DislikeSegment("parent-child");
 
   // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
@@ -97,8 +117,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {"parent", mojom::ReactionType::kDisliked}};
+  DislikeSegment("parent");
 
   // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent"));
@@ -106,8 +125,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {"parent", mojom::ReactionType::kDisliked}};
+  DislikeSegment("parent");
 
   // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo"));
@@ -116,8 +134,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {"parent", mojom::ReactionType::kDisliked}};
+  DislikeSegment("parent");
 
   // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
@@ -126,8 +143,7 @@ TEST_F(BraveAdsSegmentUtilTest,
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {"parent", mojom::ReactionType::kDisliked}};
+  DislikeSegment("parent");
 
   // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));

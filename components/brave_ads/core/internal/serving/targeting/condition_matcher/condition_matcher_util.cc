@@ -39,19 +39,43 @@ std::string_view MaybeStripOperatorPrefix(std::string_view pref_path) {
   return pref_path.substr(pos + 1);
 }
 
+// Epoch ("[T...]:") and numerical ("[R...]:") operators only recognize a
+// single operator character between the letter and "]:" (e.g. "[T≥]:",
+// never "[T>=]:"). Neither `MaybeParseEpochOperatorType` nor
+// `MaybeParseNumericalOperatorType` matches a malformed multi-character
+// attempt like that, so without this check it would silently fall through
+// to the Pattern/Regex matcher and be treated as a literal string to match
+// against, rather than flagged as the mistake it almost certainly is.
+bool LooksLikeMalformedOperatorPrefix(std::string_view condition) {
+  return (condition.starts_with("[T") || condition.starts_with("[R")) &&
+         condition.contains("]:");
+}
+
+}  // namespace
+
 bool HasNotOperator(std::string_view pref_path) {
   return pref_path.starts_with(kPrefPathNotOperatorPrefix);
 }
 
-bool MatchCondition(const base::DictValue& virtual_prefs,
-                    std::string_view pref_path,
-                    std::string_view condition) {
+ConditionMatchResult MatchCondition(const base::DictValue& virtual_prefs,
+                                    std::string_view pref_path,
+                                    std::string_view condition) {
+  return MatchCondition(virtual_prefs, pref_path, condition,
+                        /*test_value=*/std::nullopt);
+}
+
+ConditionMatchResult MatchCondition(const base::DictValue& virtual_prefs,
+                                    std::string_view pref_path,
+                                    std::string_view condition,
+                                    std::optional<std::string> test_value) {
   std::string_view stripped_pref_path = MaybeStripOperatorPrefix(pref_path);
   std::optional<std::string> value =
-      MaybeGetPrefValueAsString(virtual_prefs, stripped_pref_path);
+      test_value ? std::move(test_value)
+                 : MaybeGetPrefValueAsString(virtual_prefs, stripped_pref_path);
 
   if (HasNotOperator(pref_path)) {
-    return !value;
+    return !value ? ConditionMatchResult::kMatch
+                  : ConditionMatchResult::kNoMatch;
   }
 
   if (std::optional<ConditionMatcherOperatorType> epoch_operator_type =
@@ -66,24 +90,47 @@ bool MatchCondition(const base::DictValue& virtual_prefs,
           MaybeParseNumericalOperatorType(condition)) {
     std::optional<double> numerical_operand =
         MaybeResolveNumericalOperand(condition, virtual_prefs);
+    if (!numerical_operand) {
+      return ConditionMatchResult::kInvalid;
+    }
     // Missing prefs default to "0".
-    return numerical_operand &&
-           MatchNumericalOperator(value.value_or("0"), *numerical_operator_type,
+    return MatchNumericalOperator(value.value_or("0"), *numerical_operator_type,
                                   *numerical_operand);
   }
 
-  return value &&
-         (MatchPattern(*value, condition) || MatchRegex(*value, condition));
-}
+  if (LooksLikeMalformedOperatorPrefix(condition)) {
+    return ConditionMatchResult::kInvalid;
+  }
 
-}  // namespace
+  // Pattern and regex conditions never return invalid. A leading or dangling
+  // "*" is a valid glob pattern but invalid RE2 syntax, so a failed regex
+  // compile is expected here, not a sign of a malformed condition.
+  //
+  // Regex is only tried when the condition uses syntax that only means
+  // something in regex, e.g. "^$|(){}[]\". This takes priority over a glob
+  // wildcard ("*"/"?") also being present, since "^1\.*" uses "*" as a
+  // regex quantifier, not a glob wildcard. Otherwise, glob is used, since
+  // RE2::PartialMatch is an unanchored substring search and would match far
+  // more loosely than intended. For example "1.*" as a glob only matches
+  // values starting with "1.", but as a loose regex it would also match
+  // "152.1.95.0". A bare literal like "M" is matched exactly for the same
+  // reason, not as a substring.
+  const bool has_regex_only_syntax =
+      condition.find_first_of("^$|(){}[]\\") != std::string_view::npos;
+
+  return value && (has_regex_only_syntax ? MatchRegex(*value, condition)
+                                         : MatchPattern(*value, condition))
+             ? ConditionMatchResult::kMatch
+             : ConditionMatchResult::kNoMatch;
+}
 
 bool MatchConditions(const base::DictValue& virtual_prefs,
                      const ConditionMatcherMap& condition_matchers) {
   return std::ranges::all_of(
       condition_matchers, [&virtual_prefs](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
-        return MatchCondition(virtual_prefs, pref_path, condition);
+        return MatchCondition(virtual_prefs, pref_path, condition) ==
+               ConditionMatchResult::kMatch;
       });
 }
 

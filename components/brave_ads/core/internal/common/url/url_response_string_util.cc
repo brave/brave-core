@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -38,16 +39,19 @@ std::string HeadersToString(
 
 std::string UrlResponseToString(
     const mojom::UrlResponseInfo& mojom_url_response) {
-  std::string_view http_reason_phrase =
+  // A negative code is a net:: error (the request never got a real HTTP
+  // response at all), so it has no HTTP reason phrase; describe it with its
+  // net:: error name instead of leaving it blank.
+  const std::string reason_phrase =
       mojom_url_response.code >= 0
-          ? net::GetHttpReasonPhrase(
-                static_cast<net::HttpStatusCode>(mojom_url_response.code))
-          : "";
+          ? std::string(net::GetHttpReasonPhrase(
+                static_cast<net::HttpStatusCode>(mojom_url_response.code)))
+          : net::ErrorToString(mojom_url_response.code);
 
   return absl::StrFormat(
       "URL Response:\n  URL: %s\n  Response Code: %d %s\n  Response: %s",
-      mojom_url_response.url.spec(), mojom_url_response.code,
-      http_reason_phrase, mojom_url_response.body);
+      mojom_url_response.url.spec(), mojom_url_response.code, reason_phrase,
+      mojom_url_response.body);
 }
 
 std::string UrlResponseHeadersToString(

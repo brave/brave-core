@@ -30,6 +30,11 @@ class ClientStateManager final {
 
   bool IsInitialized() const { return is_initialized_; }
 
+  // `false` if `client.json` existed but failed to parse, so had to be reset
+  // to the default state; always `true` before `LoadState()` completes or if
+  // the file simply did not exist yet (not corruption, just first run).
+  bool IsValid() const { return is_valid_; }
+
   void LoadState(ResultCallback callback);
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
@@ -59,6 +64,7 @@ class ClientStateManager final {
   ClientInfo client_;
 
   bool is_initialized_ = false;
+  bool is_valid_ = true;
 
   base::WeakPtrFactory<ClientStateManager> weak_factory_{this};
 };

@@ -337,6 +337,53 @@ void CreativeNotificationAds::GetForActiveCampaigns(
                  base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
+void CreativeNotificationAds::GetAll(
+    GetCreativeNotificationAdsCallback callback) const {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
+      R"(
+          SELECT
+            creative_notification_ad.creative_instance_id,
+            creative_notification_ad.creative_set_id,
+            creative_notification_ad.campaign_id,
+            campaigns.metric_type,
+            campaigns.start_at,
+            campaigns.end_at,
+            campaigns.daily_cap,
+            campaigns.advertiser_id,
+            campaigns.priority,
+            creative_ads.per_day,
+            creative_ads.per_week,
+            creative_ads.per_month,
+            creative_ads.total_max,
+            creative_ads.value,
+            segments.segment,
+            geo_targets.geo_target,
+            creative_ads.target_url,
+            creative_notification_ad.title,
+            creative_notification_ad.body,
+            campaigns.ptr,
+            dayparts.days_of_week,
+            dayparts.start_minute,
+            dayparts.end_minute
+          FROM
+            $1 AS creative_notification_ad
+            INNER JOIN campaigns ON campaigns.id = creative_notification_ad.campaign_id
+            INNER JOIN creative_ads ON creative_ads.creative_instance_id = creative_notification_ad.creative_instance_id
+            INNER JOIN dayparts ON dayparts.campaign_id = creative_notification_ad.campaign_id
+            INNER JOIN geo_targets ON geo_targets.campaign_id = creative_notification_ad.campaign_id
+            INNER JOIN segments ON segments.creative_set_id = creative_notification_ad.creative_set_id)",
+      {kTableName}, nullptr);
+  BindColumnTypes(mojom_db_action);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetAllCallback, std::move(callback)));
+}
+
 void CreativeNotificationAds::Create(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);

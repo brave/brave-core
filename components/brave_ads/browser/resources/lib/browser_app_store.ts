@@ -22,44 +22,163 @@ export function createAppStore(): AppStore {
     verboseLoggingEnabled: loadTimeData.getBoolean('verboseLoggingEnabled'),
   })
 
+  // Rewards enabled can change from another tab (e.g. brave://rewards) while
+  // this one is open; refresh so eligibility-facing data (e.g. permission
+  // rules, payment tokens) doesn't go stale.
   pageCallbackRouter.updateBraveRewardsEnabled.addListener(
     (enabled: boolean) => {
       store.update({ rewardsEnabled: enabled })
+      loadAdsInternals()
+      loadDiagnostics()
     },
   )
   API.createAdsInternalsPageHandler(
     pageCallbackRouter.$.bindNewPipeAndPassRemote(),
   )
 
+  // Guards against overlapping requests; the manual Refresh button on every
+  // tab and the auto-refresh interval can otherwise both trigger this while a
+  // prior mojo round trip is still in flight.
+  let loadAdsInternalsInFlight = false
+
   async function loadAdsInternals() {
+    if (loadAdsInternalsInFlight) {
+      return
+    }
+    loadAdsInternalsInFlight = true
     try {
       const { response } = await API.getAdsInternals()
-      const { creativeSetConversions = [], adEvents = [] } = JSON.parse(response)
+      const {
+        creativeSetConversions = [],
+        adEvents = [],
+        confirmationQueue = [],
+        paymentTokens = [],
+        nextPaymentTokenRedemptionAt = null,
+        newTabPageAdGracePeriodEndAt = null,
+        activeNotificationAdCount = 0,
+        activeNewTabPageAdCount = 0,
+        activeNotificationAdCampaigns = [],
+        activeNewTabPageAdCampaigns = [],
+        conditionMatchers = [],
+        transactions = [],
+        dislikedAds = [],
+        likedAds = [],
+        dislikedSegments = [],
+        likedSegments = [],
+        savedAds = [],
+        adsMarkedAsInappropriate = [],
+        adHistoryRetentionPeriodDays = 30,
+      } = JSON.parse(response)
       store.update({
         conversionUrlPatterns: creativeSetConversions,
         adEvents,
+        confirmationQueue,
+        paymentTokens,
+        nextPaymentTokenRedemptionAt,
+        newTabPageAdGracePeriodEndAt,
+        activeNotificationAdCount,
+        activeNewTabPageAdCount,
+        activeNotificationAdCampaigns,
+        activeNewTabPageAdCampaigns,
+        conditionMatchers,
+        transactions,
+        dislikedAds,
+        likedAds,
+        dislikedSegments,
+        likedSegments,
+        savedAds,
+        adsMarkedAsInappropriate,
+        adHistoryRetentionPeriodDays,
       })
     } catch (error) {
       console.error('Error getting ads internals', error)
+    } finally {
+      loadAdsInternalsInFlight = false
     }
   }
 
+  let loadDiagnosticsInFlight = false
+
   async function loadDiagnostics() {
+    if (loadDiagnosticsInFlight) {
+      return
+    }
+    loadDiagnosticsInFlight = true
     try {
       const { response } = await API.getDiagnostics()
-      const { diagnosticId = '', entries = [] } = JSON.parse(response)
-      store.update({ diagnosticId, diagnosticEntries: entries })
+      const {
+        diagnosticId = '',
+        isInitialized = false,
+        entries = [],
+        variationsCountryCode = '',
+        ntpSponsoredImagesComponentId = '',
+        ntpSponsoredImagesLoaded = false,
+        ntpSponsoredImagesManifestVersion = '',
+        countryResourceComponentId = '',
+        languageResourceComponentId = '',
+      } = JSON.parse(response)
+
+      store.update({
+        diagnosticId,
+        isInitialized,
+        diagnosticEntries: entries,
+        variationsCountryCode,
+        ntpSponsoredImagesComponentId,
+        ntpSponsoredImagesLoaded,
+        ntpSponsoredImagesManifestVersion,
+        countryResourceComponentId,
+        languageResourceComponentId,
+      })
     } catch (error) {
       console.error('Error getting ads diagnostics', error)
+    } finally {
+      loadDiagnosticsInFlight = false
     }
+  }
+
+  async function loadLog() {
+    if (!logsSupported) {
+      return
+    }
+    // <if expr="enable_brave_rewards && !is_ios">
+    try {
+      // Comfortably more than the Logs tab's own render cap (see
+      // `MAX_RENDERED_LINES` in logs.tsx), so filtering to Errors only still
+      // has enough fetched history to find more than a screenful of errors.
+      const { log } = await LogsAPI.getLog(5000)
+      store.update({ log })
+    } catch (error) {
+      console.error('Error getting ads-internals log', error)
+    }
+    // </if>
   }
 
   loadAdsInternals()
   loadDiagnostics()
 
+  const AUTO_REFRESH_INTERVAL_MS = 5000
+  let autoRefreshInterval: number | undefined
+  // Guards against overlapping ticks; a slow mojo round trip (e.g. a large
+  // log fetch) could otherwise still be in flight when the next interval
+  // fires, stacking redundant requests and DOM updates on top of each other.
+  let refreshInFlight = false
+
+  async function refreshAll() {
+    if (refreshInFlight) {
+      return
+    }
+    refreshInFlight = true
+    try {
+      await Promise.all([loadAdsInternals(), loadDiagnostics(), loadLog()])
+    } finally {
+      refreshInFlight = false
+    }
+  }
+
   store.update({
     actions: {
       loadAdsInternals,
+      loadDiagnostics,
 
       async clearAdsData() {
         try {
@@ -82,19 +201,7 @@ export function createAppStore(): AppStore {
         store.update({ diagnosticId })
       },
 
-      async loadLog() {
-        if (!logsSupported) {
-          return
-        }
-        // <if expr="enable_brave_rewards && !is_ios">
-        try {
-          const { log } = await LogsAPI.getLog(5000)
-          store.update({ log })
-        } catch (error) {
-          console.error('Error getting ads-internals log', error)
-        }
-        // </if>
-      },
+      loadLog,
 
       async clearLog() {
         if (!logsSupported) {
@@ -136,6 +243,30 @@ export function createAppStore(): AppStore {
         // <if expr="enable_brave_rewards && !is_ios">
         LogsAPI.toggleVerboseLoggingAndRestart()
         // </if>
+      },
+
+      setAutoRefreshEnabled(enabled) {
+        if (autoRefreshInterval !== undefined) {
+          clearInterval(autoRefreshInterval)
+          autoRefreshInterval = undefined
+        }
+        if (enabled) {
+          autoRefreshInterval =
+            setInterval(refreshAll, AUTO_REFRESH_INTERVAL_MS) as any
+        }
+        store.update({ autoRefreshEnabled: enabled })
+      },
+
+      setErrorsOnlyEnabled(enabled) {
+        store.update({ errorsOnlyEnabled: enabled })
+      },
+
+      setEventsDateRangeFilter(filter) {
+        store.update({ eventsDateRangeFilter: filter })
+      },
+
+      setTransactionsDateRangeFilter(filter) {
+        store.update({ transactionsDateRangeFilter: filter })
       },
     },
   })

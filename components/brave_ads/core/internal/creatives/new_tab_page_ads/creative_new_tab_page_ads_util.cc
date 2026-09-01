@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
@@ -16,6 +17,8 @@
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/types/optional_util.h"
 #include "base/values.h"
@@ -27,8 +30,10 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/new_tab_page_ads_schema_version_diagnostic_entry_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
@@ -56,6 +61,8 @@ constexpr auto kMojomToStringMap =
         {mojom::NewTabPageAdMetricType::kConfirmation,
          kConfirmationAdMetricType},
     });
+
+constexpr std::string_view kAdEventVirtualPrefQueryName = "ad_events";
 
 // Schema keys.
 constexpr int kExpectedSchemaVersion = 2;
@@ -135,7 +142,7 @@ void SaveCreativeSetConversions(
               BLOG(0, "Failed to save creative set conversions");
               return std::move(callback).Run(/*success=*/false);
             }
-            BLOG(0, "Successfully saved creative set conversions");
+            BLOG(1, "Successfully saved creative set conversions");
 
             std::move(callback).Run(/*success=*/true);
           },
@@ -150,7 +157,7 @@ void SaveCreativeNewTabPageAdsCallback(
     BLOG(0, "Failed to save creative new tab page ads");
     return std::move(callback).Run(/*success=*/false);
   }
-  BLOG(0, "Successfully saved creative new tab page ads");
+  BLOG(1, "Successfully saved creative new tab page ads");
 
   SaveCreativeSetConversions(creative_set_conversions, std::move(callback));
 }
@@ -174,6 +181,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
     // Currently, only version 2 is supported. Update this code to maintain.
     return std::move(callback).Run(/*success=*/false);
   }
+  SetNewTabPageAdsSchemaVersionDiagnosticEntry(*schema_version);
 
   base::TimeDelta grace_period = base::Days(3);
   if (const std::string* const value = dict.FindString(kGracePeriodKey)) {
@@ -525,16 +533,8 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
             const base::DictValue* const condition_matcher_dict =
                 condition_matcher_value.GetIfDict();
             if (!condition_matcher_dict) {
-              BLOG(0,
+              BLOG(1,
                    "Malformed condition matcher, skipping condition matcher");
-              continue;
-            }
-
-            const std::string* const condition =
-                condition_matcher_dict->FindString(
-                    kCreativeConditionMatcherConditionKey);
-            if (!condition) {
-              BLOG(0, "Condition is required, skipping condition matcher");
               continue;
             }
 
@@ -542,11 +542,24 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
                 condition_matcher_dict->FindString(
                     kCreativeConditionMatcherPrefPathKey);
             if (!pref_path) {
-              BLOG(0, "Pref path is required, skipping condition matcher");
+              BLOG(1, "Pref path is required, skipping condition matcher");
               continue;
             }
 
-            condition_matchers.emplace(*pref_path, *condition);
+            // Condition is optional only for the "[pref path operator]"
+            // `[!]:` (does not exist) matcher, which has no condition to
+            // check (see `condition_matcher_util.h`). Any other pref path
+            // missing a condition is malformed.
+            const std::string* const condition =
+                condition_matcher_dict->FindString(
+                    kCreativeConditionMatcherConditionKey);
+            if (!condition && !HasNotOperator(*pref_path)) {
+              BLOG(0, "Condition is required, skipping condition matcher");
+              continue;
+            }
+
+            condition_matchers.emplace(*pref_path,
+                                       condition ? *condition : std::string());
           }
 
           creative_ad.condition_matchers = condition_matchers;
@@ -583,6 +596,51 @@ std::string_view ToString(mojom::NewTabPageAdMetricType value) {
 
   NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "
                << std::to_underlying(value);
+}
+
+base::flat_set<std::string> GetAdEventVirtualPrefQueryIds(
+    const ConditionMatcherMap& condition_matchers) {
+  base::flat_set<std::string> ad_event_virtual_pref_query_ids;
+
+  for (const auto& [pref_path, condition] : condition_matchers) {
+    std::optional<std::string_view> pref_path_without_prefix =
+        base::RemovePrefix(pref_path, "[virtual]:");
+    if (!pref_path_without_prefix) {
+      // Not a virtual pref path.
+      continue;
+    }
+
+    const std::vector<std::string> components =
+        base::SplitString(*pref_path_without_prefix, "|", base::TRIM_WHITESPACE,
+                          base::SPLIT_WANT_NONEMPTY);
+    if (components.empty()) {
+      // Invalid virtual pref query path.
+      continue;
+    }
+
+    if (components[0] == kAdEventVirtualPrefQueryName) {
+      if (components.size() == 3) {
+        // Only handle virtual pref query paths with exactly three
+        // components, i.e., `ad_events|<id>|<confirmation_type>`.
+        ad_event_virtual_pref_query_ids.insert(/*id=*/components[1]);
+      }
+    }
+  }
+
+  return ad_event_virtual_pref_query_ids;
+}
+
+base::flat_set<std::string> GetAdEventVirtualPrefQueryIds(
+    const CreativeNewTabPageAdList& creative_ads) {
+  base::flat_set<std::string> ad_event_virtual_pref_query_ids;
+
+  for (const auto& creative_ad : creative_ads) {
+    const base::flat_set<std::string> ids =
+        GetAdEventVirtualPrefQueryIds(creative_ad.condition_matchers);
+    ad_event_virtual_pref_query_ids.insert(ids.begin(), ids.end());
+  }
+
+  return ad_event_virtual_pref_query_ids;
 }
 
 }  // namespace brave_ads
