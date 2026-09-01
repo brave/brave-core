@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
-#include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
+#include "third_party/blink/public/mojom/choosers/file_chooser.mojom-forward.h"
 
 namespace base {
 class FilePath;

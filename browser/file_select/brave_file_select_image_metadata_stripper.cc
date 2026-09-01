@@ -22,6 +22,7 @@
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "content/public/browser/browser_thread.h"
+#include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 
 namespace brave {
 
