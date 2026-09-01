@@ -236,19 +236,18 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
     const std::string& account_address,
     const std::vector<mojom::ChainIdPtr>& chain_ids,
     const std::optional<std::string>& cursor,
-    bool skip_spam,
-    bool only_spam,
+    SpamFilter spam_filter,
     FetchNFTsFromSimpleHashCallback callback) {
-  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor);
+  GURL url = GetSimpleHashNftsByWalletUrl(account_address, chain_ids, cursor,
+                                          spam_filter);
   if (!url.is_valid()) {
     std::move(callback).Run({}, std::nullopt);
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimpleHashClient::OnFetchNFTsFromSimpleHash,
-                     weak_ptr_factory_.GetWeakPtr(), skip_spam, only_spam,
-                     std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SimpleHashClient::OnFetchNFTsFromSimpleHash,
+      weak_ptr_factory_.GetWeakPtr(), spam_filter, std::move(callback));
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeaders(),
@@ -256,8 +255,7 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
 }
 
 void SimpleHashClient::OnFetchNFTsFromSimpleHash(
-    bool skip_spam,
-    bool only_spam,
+    SpamFilter spam_filter,
     FetchNFTsFromSimpleHashCallback callback,
     APIRequestResult api_request_result) {
   std::vector<mojom::BlockchainTokenPtr> nfts;
@@ -275,7 +273,7 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
   std::optional<std::pair<std::optional<std::string>,
                           std::vector<mojom::BlockchainTokenPtr>>>
       result = ParseNFTsFromSimpleHash(
-          api_request_result.value_body().GetDict(), skip_spam, only_spam);
+          api_request_result.value_body().GetDict(), spam_filter);
   if (!result) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
@@ -299,8 +297,7 @@ void SimpleHashClient::FetchAllNFTsFromSimpleHash(
       account_address, CloneVector(chain_ids), std::move(callback));
 
   FetchNFTsFromSimpleHash(account_address, CloneVector(chain_ids), std::nullopt,
-                          true /* skip_spam*/, false /* only spam */,
-                          std::move(internal_callback));
+                          SpamFilter::kExclude, std::move(internal_callback));
 }
 
 void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
@@ -323,8 +320,7 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
         CloneVector(chain_ids), std::move(callback));
 
     FetchNFTsFromSimpleHash(account_address, CloneVector(chain_ids),
-                            *next_cursor, true /* skip_spam */,
-                            false /* only_spam */,
+                            *next_cursor, SpamFilter::kExclude,
                             std::move(internal_callback));
     return;
   }
@@ -534,9 +530,8 @@ void SimpleHashClient::OnGetNfts(
     return;
   }
 
-  auto result =
-      ParseNFTsFromSimpleHash(api_request_result.value_body().GetDict(),
-                              false /* skip_spam */, false /* only_spam */);
+  auto result = ParseNFTsFromSimpleHash(
+      api_request_result.value_body().GetDict(), SpamFilter::kAll);
 
   // Add the NFT results
   if (result) {
@@ -574,8 +569,7 @@ void SimpleHashClient::OnGetNfts(
 std::optional<std::pair<std::optional<std::string>,
                         std::vector<mojom::BlockchainTokenPtr>>>
 SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
-                                          bool skip_spam,
-                                          bool only_spam) {
+                                          SpamFilter spam_filter) {
   // Parses responses like this
   // {
   //   "next_cursor": null,
@@ -754,11 +748,6 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
   //     ...
   // }
 
-  // If both skip_spam and only_spam are true, return early.
-  if (skip_spam && only_spam) {
-    return std::nullopt;
-  }
-
   auto* next_cursor_ptr = dict.FindString("next_cursor");
   std::optional<std::string> next_cursor;
   if (next_cursor_ptr) {
@@ -784,11 +773,12 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::DictValue& dict,
     if (!collection) {
       continue;
     }
-    std::optional<int> spam_score = collection->FindInt("spam_score");
-    if (skip_spam && (!spam_score || *spam_score > 0)) {
+    // gate3 already filtered; guard against a stale or partial response.
+    const bool is_spam = collection->FindInt("spam_score").value_or(1) > 0;
+    if (spam_filter == SpamFilter::kExclude && is_spam) {
       continue;
     }
-    if (only_spam && (spam_score && *spam_score <= 0)) {
+    if (spam_filter == SpamFilter::kOnly && !is_spam) {
       continue;
     }
 
@@ -1201,7 +1191,8 @@ SimpleHashClient::ParseMetadatas(const base::DictValue& dict) {
 GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     const std::string& account_address,
     const std::vector<mojom::ChainIdPtr>& chain_ids,
-    const std::optional<std::string>& cursor) {
+    const std::optional<std::string>& cursor,
+    SpamFilter spam_filter) {
   if (chain_ids.empty() || account_address.empty()) {
     return GURL();
   }
@@ -1229,6 +1220,18 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
   GURL url = GetGate3URL().Resolve("/simplehash/api/v0/nfts/owners");
   url = net::AppendQueryParameter(url, "chains", chain_ids_param);
   url = net::AppendQueryParameter(url, "wallet_addresses", account_address);
+
+  // Filter upstream so discovery skips metadata for NFTs it would drop.
+  switch (spam_filter) {
+    case SpamFilter::kAll:
+      break;
+    case SpamFilter::kExclude:
+      url = net::AppendQueryParameter(url, "spam", "exclude");
+      break;
+    case SpamFilter::kOnly:
+      url = net::AppendQueryParameter(url, "spam", "only");
+      break;
+  }
 
   // If cursor is provided, add it as a query parameter
   if (cursor) {
