@@ -5,7 +5,6 @@
 
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -29,34 +28,20 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
-void BraveWalletRenderFrameObserver::DidStartNavigation(
-    const GURL& url,
-    std::optional<blink::WebNavigationType> navigation_type) {
-  url_ = url;
-}
-
-bool BraveWalletRenderFrameObserver::IsPageValid() {
-  // There could be empty, invalid and "about:blank" URLs,
-  // they should fallback to the main frame rules
-  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank") {
-    url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
-               .GetURL();
-  }
-  return url_.SchemeIsHTTPOrHTTPS();
-}
-
 bool BraveWalletRenderFrameObserver::CanCreateProvider() {
-  if (!IsPageValid()) {
+  auto* web_frame = render_frame()->GetWebFrame();
+
+  if (!GURL(web_frame->GetDocument().Url()).SchemeIsHTTPOrHTTPS()) {
     return false;
   }
 
   // Wallet provider objects should only be created in secure contexts
-  if (!render_frame()->GetWebFrame()->GetDocument().IsSecureContext()) {
+  if (!web_frame->GetDocument().IsSecureContext()) {
     return false;
   }
 
   // Scripts can't be executed on provisional frames
-  if (render_frame()->GetWebFrame()->IsProvisional()) {
+  if (web_frame->IsProvisional()) {
     return false;
   }
 
