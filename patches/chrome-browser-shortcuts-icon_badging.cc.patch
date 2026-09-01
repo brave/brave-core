@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/shortcuts/icon_badging.cc b/chrome/browser/shortcuts/icon_badging.cc
+index 35cd2cb10bf55167b95372a08df6bf20f0f10fb2..8bdd5944e906b809c5473522259a9d705e1fe136 100644
+--- a/chrome/browser/shortcuts/icon_badging.cc
++++ b/chrome/browser/shortcuts/icon_badging.cc
+@@ -185,11 +185,11 @@ static_assert(static_cast<int>(kChromeForTestingBrandedResourceMap.size()) ==
+ #else
+ constexpr SizeToResourceMap kChromiumResourceMap =
+     base::MakeFixedFlatMap<BadgeSize, int>(
+-        {{BadgeSize::k8, IDR_PRODUCT_LOGO_16_SHORTCUTS},
+-         {BadgeSize::k16, IDR_PRODUCT_LOGO_16_SHORTCUTS},
+-         {BadgeSize::k24, IDR_PRODUCT_LOGO_24_SHORTCUTS},
+-         {BadgeSize::k64, IDR_PRODUCT_LOGO_64_SHORTCUTS},
+-         {BadgeSize::k128, IDR_PRODUCT_LOGO_128_SHORTCUTS}});
++        {{BadgeSize::k8, IDR_BRAVE_PRODUCT_LOGO_16_SHORTCUTS},
++         {BadgeSize::k16, IDR_BRAVE_PRODUCT_LOGO_16_SHORTCUTS},
++         {BadgeSize::k24, IDR_BRAVE_PRODUCT_LOGO_24_SHORTCUTS},
++         {BadgeSize::k64, IDR_BRAVE_PRODUCT_LOGO_64_SHORTCUTS},
++         {BadgeSize::k128, IDR_BRAVE_PRODUCT_LOGO_128_SHORTCUTS}});
+ 
+ static_assert(static_cast<int>(kChromiumResourceMap.size()) ==
+                   resource_map_size,
+@@ -232,7 +232,7 @@ gfx::ImageSkia GetMaskForBadging(ShortcutSize icon_size) {
+   // Set white mask for the loaded icon.
+   gfx::ImageSkia masked_badge =
+       gfx::ImageSkiaOperations::CreateImageWithCircleBackground(
+-          image->width() / kWhiteMaskFactor, SK_ColorWHITE, *image);
++          image->width() / kWhiteMaskFactor, SK_ColorTRANSPARENT, *image);
+ 
+   int badge_size_int = ToInt(badge_size);
+   // Maintain the badging ratio of 1/4th for sizes < 128, and 1/8th
