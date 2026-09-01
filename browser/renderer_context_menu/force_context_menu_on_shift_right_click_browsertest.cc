@@ -15,12 +15,15 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/context_menu_interceptor.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/context_menu_data/untrustworthy_context_menu_params.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/input/web_input_event.h"
 #include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "third_party/blink/public/mojom/context_menu/context_menu.mojom-shared.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/point_f.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -31,18 +34,18 @@ namespace {
 // canvas, and "plain" is off on its own with no canvas underneath.
 constexpr char kTestPage[] = R"(data:text/html,
     <html><body style="margin:0">
-      <div style="position:relative;width:200px;height:200px">
-        <canvas width="200" height="200"
+      <div style="position:relative;width:100px;height:100px">
+        <canvas width="100" height="100"
                 style="position:absolute;inset:0"></canvas>
         <div id="overlay" style="position:absolute;inset:0"></div>
       </div>
-      <div style="position:relative;width:200px;height:200px">
-        <canvas width="200" height="200"
+      <div style="position:relative;width:100px;height:100px">
+        <canvas width="100" height="100"
                 style="position:absolute;inset:0"></canvas>
         <div id="opaque"
              style="position:absolute;inset:0;background:white"></div>
       </div>
-      <div id="plain" style="width:200px;height:200px"></div>
+      <div id="plain" style="width:100px;height:100px"></div>
       <script>
         for (const c of document.querySelectorAll('canvas')) {
           c.getContext('2d');
@@ -75,7 +78,7 @@ class ForceContextMenuOnShiftRightClickBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void ShiftRightClickOn(std::string_view id) {
+  gfx::Point ShiftRightClickOn(std::string_view id) {
     // GetCenterCoordinatesOfElementWithId() CHECK-fails on a missing element,
     // which reads as a browser crash rather than a test failure. A truncated
     // test page is the likely cause, so say so.
@@ -84,15 +87,27 @@ class ForceContextMenuOnShiftRightClickBrowserTest
              content::JsReplace("!!document.getElementById($1)", id))
              .ExtractBool()) {
       ADD_FAILURE() << "no #" << id << " on the page; is it truncated?";
-      return;
+      return gfx::Point();
     }
 
     const gfx::PointF center =
         content::GetCenterCoordinatesOfElementWithId(web_contents(), id);
+    const gfx::Point point(center.x(), center.y());
     content::SimulateMouseClickAt(web_contents(),
                                   blink::WebInputEvent::kShiftKey,
-                                  blink::WebMouseEvent::Button::kRight,
-                                  gfx::Point(center.x(), center.y()));
+                                  blink::WebMouseEvent::Button::kRight, point);
+    return point;
+  }
+
+  // media_type can't identify which element a menu came from on a page with a
+  // document-level contextmenu listener: that listener makes
+  // ContextMenuController::GetContextMenuNodeWithImageContents() treat image
+  // selection as blocked and report kNone even for a hit that penetrates to a
+  // canvas. Where the menu was raised is the signal that still works.
+  static void ExpectMenuRaisedAt(const gfx::Point& expected,
+                                 content::ContextMenuInterceptor& interceptor) {
+    const auto params = interceptor.get_params();
+    EXPECT_EQ(expected, gfx::Point(params.x, params.y));
   }
 
  private:
@@ -107,11 +122,10 @@ IN_PROC_BROWSER_TEST_F(ForceContextMenuOnShiftRightClickBrowserTest,
   content::ContextMenuInterceptor interceptor(
       web_contents()->GetPrimaryMainFrame(),
       content::ContextMenuInterceptor::ShowBehavior::kPreventShow);
-  ShiftRightClickOn("plain");
+  const gfx::Point plain = ShiftRightClickOn("plain");
   interceptor.Wait();
 
-  EXPECT_EQ(blink::mojom::ContextMenuDataMediaType::kNone,
-            interceptor.get_params().media_type);
+  ExpectMenuRaisedAt(plain, interceptor);
 }
 
 // A canvas under a transparent overlay is still a canvas, so preventDefault()
@@ -125,14 +139,13 @@ IN_PROC_BROWSER_TEST_F(ForceContextMenuOnShiftRightClickBrowserTest,
       content::ContextMenuInterceptor::ShowBehavior::kPreventShow);
   ShiftRightClickOn("overlay");
 
-  // A menu for the overlay would arrive before this one, and would carry
-  // kCanvas because ContextMenuController penetrates to the canvas too. So the
-  // media type of the first menu we see says whether the click was honored.
-  ShiftRightClickOn("plain");
+  // The overlay click must raise nothing, so the menu we wait for is the one
+  // from #plain. If the override leaked through, the overlay's menu arrives
+  // first and this sees its position instead.
+  const gfx::Point plain = ShiftRightClickOn("plain");
   interceptor.Wait();
 
-  EXPECT_EQ(blink::mojom::ContextMenuDataMediaType::kNone,
-            interceptor.get_params().media_type);
+  ExpectMenuRaisedAt(plain, interceptor);
 }
 
 // Opaque content between the cursor and a canvas means the click didn't land
@@ -144,11 +157,10 @@ IN_PROC_BROWSER_TEST_F(ForceContextMenuOnShiftRightClickBrowserTest,
   content::ContextMenuInterceptor interceptor(
       web_contents()->GetPrimaryMainFrame(),
       content::ContextMenuInterceptor::ShowBehavior::kPreventShow);
-  ShiftRightClickOn("opaque");
+  const gfx::Point opaque = ShiftRightClickOn("opaque");
   interceptor.Wait();
 
-  EXPECT_EQ(blink::mojom::ContextMenuDataMediaType::kNone,
-            interceptor.get_params().media_type);
+  ExpectMenuRaisedAt(opaque, interceptor);
 }
 
 // The carve-out only applies to the preventDefault() override: a canvas that
