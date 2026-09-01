@@ -1250,6 +1250,37 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
            "?nft_ids=solana.BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG"));
   nft_ids.clear();
 
+  // Solana NFT with a mint address that is not a base58 pubkey yields empty URL
+  nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = SolMainnetChainId();
+  nft_id->contract_address =
+      "0x1668E0FB0Dd39e54fE33f80a9F37c4dBF172E1b0x1668E0FB0Dd39e54fE33f80a9F37c"
+      "4dBF172E1b11";
+  nft_id->token_id = "";
+  nft_ids.push_back(std::move(nft_id));
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
+  EXPECT_EQ(url, GURL());
+  nft_ids.clear();
+
+  // Solana NFT with an invalid mint address is skipped, keeping the rest of
+  // the batch
+  nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = SolMainnetChainId();
+  nft_id->contract_address = "invalid";
+  nft_id->token_id = "";
+  nft_ids.push_back(std::move(nft_id));
+  nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = SolMainnetChainId();
+  nft_id->contract_address = "BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG";
+  nft_id->token_id = "";
+  nft_ids.push_back(std::move(nft_id));
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
+  EXPECT_EQ(
+      url,
+      GURL("https://gate3.wallet.brave.com/simplehash/api/v0/nfts/assets"
+           "?nft_ids=solana.BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG"));
+  nft_ids.clear();
+
   // Single Ethereum NFT with non hex token ID yields empty URL
   nft_id = mojom::NftIdentifier::New();
   nft_id->chain_id = EthMainnetChainId();
@@ -2034,7 +2065,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
   auto nft_identifier2 = mojom::NftIdentifier::New();
   nft_identifier2->chain_id = SolMainnetChainId();
   nft_identifier2->contract_address =
-      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_identifier2->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier2));
 
@@ -2042,7 +2073,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
   responses[GURL(
       "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8%"
-      "2Csolana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr")] = json;
+      "2Csolana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] = json;
 
   // Add the expected balances
   std::vector<uint64_t> expected_balances;
