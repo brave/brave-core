@@ -780,6 +780,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/overlay",
       "//chrome/browser/ui/views/tabs:tab",
       "//chrome/browser/ui/views/tabs:tab_strip",
+      "//chrome/browser/ui/views/tabs:tab_strip_button",
       "//chrome/browser/ui/views/tabs/dragging",
       "//chrome/browser/ui/views/tabs/shared",
       "//chrome/browser/ui/views/tabs/tab",
@@ -1312,6 +1313,7 @@ source_set("ui") {
       "//chrome/browser/ui/views:layout_provider",
       "//chrome/browser/ui/views/profiles:avatar_toolbar_button",
       "//chrome/browser/ui/views/tabs:new_tab_button",
+      "//chrome/browser/ui/views/tabs:tab_strip_button",
     ]
 
     if (enable_brave_rewards) {
