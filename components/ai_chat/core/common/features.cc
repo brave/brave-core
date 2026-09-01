@@ -195,14 +195,6 @@ bool IsCodeExecutionToolEnabled() {
   return base::FeatureList::IsEnabled(features::kCodeExecutionTool);
 }
 
-#if BUILDFLAG(IS_IOS)
-BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool IsAIChatWebUIEnabled() {
-  return base::FeatureList::IsEnabled(kAIChatWebUIEnabled);
-}
-#endif
-
 BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<bool> kShowAIChatInputOnNewTabPageDayZero{
