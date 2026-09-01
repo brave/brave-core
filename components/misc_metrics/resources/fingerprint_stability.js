@@ -20,7 +20,7 @@ const hashValue = (() => {
 
   // FNV-1a hash, using the standard parameters for the 32-bit variant
   return (value) => {
-    const str = toCanonicalString(value)
+    const str = toCanonicalString(value) ?? 'undefined'
     let h = 0x811c9dc5
     for (let i = 0; i < str.length; i++) {
       h ^= str.charCodeAt(i)
@@ -31,11 +31,6 @@ const hashValue = (() => {
 })()
 
 const { getWebGlBasics, getWebGlExtensions } = (() => {
-  /** WebGl context is not available */
-  const STATUS_NO_GL_CONTEXT = -1
-  /** WebGL context `getParameter` method is not a function */
-  const STATUS_GET_PARAMETER_NOT_A_FUNCTION = -2
-
   /**
    * WebGL parameter enum values that can be queried via gl.getParameter().
    * Context parameters describe GPU hardware limits and graphics settings (e.g. max texture size, viewport bounds).
@@ -80,11 +75,11 @@ const { getWebGlBasics, getWebGlExtensions } = (() => {
   function getWebGlBasics() {
     const gl = getWebGLContext()
     if (!gl) {
-      return STATUS_NO_GL_CONTEXT
+      return null
     }
 
     if (!isValidParameterGetter(gl)) {
-      return STATUS_GET_PARAMETER_NOT_A_FUNCTION
+      return null
     }
 
     const debugExtension = gl.getExtension(rendererInfoExtensionName)
@@ -94,10 +89,12 @@ const { getWebGlBasics, getWebGlExtensions } = (() => {
       vendor: gl.getParameter(gl.VENDOR)?.toString() || '',
       vendorUnmasked: debugExtension
         ? gl.getParameter(debugExtension.UNMASKED_VENDOR_WEBGL)?.toString()
+          || ''
         : '',
       renderer: gl.getParameter(gl.RENDERER)?.toString() || '',
       rendererUnmasked: debugExtension
         ? gl.getParameter(debugExtension.UNMASKED_RENDERER_WEBGL)?.toString()
+          || ''
         : '',
       shadingLanguageVersion:
         gl.getParameter(gl.SHADING_LANGUAGE_VERSION)?.toString() || '',
@@ -110,11 +107,11 @@ const { getWebGlBasics, getWebGlExtensions } = (() => {
   function getWebGlExtensions() {
     const gl = getWebGLContext()
     if (!gl) {
-      return STATUS_NO_GL_CONTEXT
+      return null
     }
 
     if (!isValidParameterGetter(gl)) {
-      return STATUS_GET_PARAMETER_NOT_A_FUNCTION
+      return null
     }
 
     const extensions = gl.getSupportedExtensions()
@@ -716,8 +713,8 @@ const getCanvasFingerprint = (() => {
     screen_pixelDepth: screen.pixelDepth,
     webAudio: await getAudioFingerprintPromise(),
     webglExtensions: getWebGlExtensions(),
-    webglRendererUnmasked: webglBasics.rendererUnmasked,
-    webglVendorUnmasked: webglBasics.vendorUnmasked,
+    webglRendererUnmasked: webglBasics?.rendererUnmasked || '',
+    webglVendorUnmasked: webglBasics?.vendorUnmasked || '',
     windowDevicePixelRatio: window.devicePixelRatio,
   }
 

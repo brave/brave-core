@@ -7,11 +7,8 @@
 
 #include <memory>
 
-#include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_future.h"
-#include "base/time/time.h"
 #include "base/values.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -27,12 +24,6 @@ namespace {
 constexpr char kLanguagesKey[] = "navigator_languages";
 constexpr char kScreenSizeKey[] = "screenSize";
 
-#if BUILDFLAG(IS_ANDROID)
-// Renderer execution can exceed the default timeout on Android. The execution
-// timeout and the RunLoop timeout must be raised together.
-constexpr base::TimeDelta kAndroidExecutionTimeout = base::Seconds(60);
-#endif
-
 }  // namespace
 
 class FingerprintFrequencyMetricsBrowserTest : public PlatformBrowserTest {
@@ -42,9 +33,6 @@ class FingerprintFrequencyMetricsBrowserTest : public PlatformBrowserTest {
     FingerprintFrequencyMetrics::RegisterPrefs(local_state_.registry());
     metrics_ = std::make_unique<FingerprintFrequencyMetrics>(
         &local_state_, chrome_test_utils::GetProfile(this));
-#if BUILDFLAG(IS_ANDROID)
-    metrics_->SetExecutionTimeoutForTesting(kAndroidExecutionTimeout);
-#endif
   }
 
   void TearDownOnMainThread() override {
@@ -54,10 +42,6 @@ class FingerprintFrequencyMetricsBrowserTest : public PlatformBrowserTest {
 
  protected:
   base::DictValue ExecuteRenderer() {
-#if BUILDFLAG(IS_ANDROID)
-    base::test::ScopedRunLoopTimeout run_timeout(FROM_HERE,
-                                                 kAndroidExecutionTimeout);
-#endif
     base::test::TestFuture<base::DictValue> future;
     metrics_->ExecuteRendererForTesting(future.GetCallback());
     return future.Take();
@@ -67,16 +51,8 @@ class FingerprintFrequencyMetricsBrowserTest : public PlatformBrowserTest {
   std::unique_ptr<FingerprintFrequencyMetrics> metrics_;
 };
 
-// TODO(https://github.com/brave/brave-browser/issues/58513): Enable this test
-// once fixed.
-#if BUILDFLAG(IS_ANDROID)
-#define NON_ANDROID_TEST(test) DISABLED_##test
-#else
-#define NON_ANDROID_TEST(test) test
-#endif
-
 IN_PROC_BROWSER_TEST_F(FingerprintFrequencyMetricsBrowserTest,
-                       NON_ANDROID_TEST(AcceptLanguagesChangeAltersHash)) {
+                       AcceptLanguagesChangeAltersHash) {
   base::DictValue first = ExecuteRenderer();
   ASSERT_TRUE(first.FindInt(kLanguagesKey));
   ASSERT_TRUE(first.FindInt(kScreenSizeKey));
