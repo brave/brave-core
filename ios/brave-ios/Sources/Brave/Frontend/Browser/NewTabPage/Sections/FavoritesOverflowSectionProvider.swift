@@ -12,10 +12,18 @@ import Shared
 import UIKit
 
 class FavoritesOverflowButton: SpringButton {
-  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
-    $0.clipsToBounds = true
-    $0.isUserInteractionEnabled = false
-  }
+  private let backgroundView: UIVisualEffectView = {
+    let view = UIVisualEffectView()
+    view.clipsToBounds = true
+    view.isUserInteractionEnabled = false
+    if #available(iOS 26.0, *) {
+      view.effect = UIGlassEffect(style: .regular)
+    } else {
+      view.effect = UIBlurEffect(style: .systemThinMaterial)
+    }
+    view.overrideUserInterfaceStyle = .dark
+    return view
+  }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
