@@ -51,10 +51,10 @@ class ScopedWireguardFirewall {
   // included. Call before starting the tunnel. Returns nullptr if any part of
   // it failed; callers must treat that as fatal.
   //
-  // This deliberately leaves DNS permitted: tunnel.dll still has to resolve the
-  // endpoint hostname, and on Windows that resolution comes from the DNS Client
-  // service rather than our own process, so no app-based permit would cover it.
-  // PermitTunnelInterface() withdraws that allowance.
+  // This installs a temporary DNS permit locked to the DNS Client service
+  // (svchost.exe). tunnel.dll has to resolve the endpoint hostname, which
+  // happens outside our own process. PermitTunnelInterface() withdraws this
+  // allowance once the tunnel is up.
   static std::unique_ptr<ScopedWireguardFirewall> Create();
 
   ScopedWireguardFirewall(const ScopedWireguardFirewall&) = delete;
@@ -71,9 +71,8 @@ class ScopedWireguardFirewall {
   bool PermitTunnelInterface(const NET_LUID& tunnel_luid);
 
   // Withdraws the temporary DNS allowance granted during phase one.
-  // Called automatically on success by PermitTunnelInterface(), but
-  // must be called manually on failure paths to prevent DNS leaks if the
-  // process survives.
+  // Called automatically by PermitTunnelInterface(), but must be called
+  // manually on failure paths to prevent DNS leaks if the process survives.
   void WithdrawTemporaryDns();
 
  private:

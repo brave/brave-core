@@ -219,7 +219,6 @@ class ScopedFirewallHolder {
       // nothing anyway; stop it rather than leave the user staring at a dead
       // connection.
       VLOG(1) << "Failed to complete the WireGuard firewall, stopping tunnel";
-      firewall_->WithdrawTemporaryDns();
       InitiateTeardown();
     }
     settled_.Signal();

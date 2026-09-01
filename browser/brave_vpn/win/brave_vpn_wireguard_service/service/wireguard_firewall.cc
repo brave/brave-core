@@ -85,6 +85,7 @@ constexpr uint8_t kUdpProtocol = IPPROTO_UDP;
 constexpr uint16_t kDhcpV4ClientPort = 68;
 constexpr uint16_t kDhcpV4ServerPort = 67;
 constexpr uint32_t kIpv4Broadcast = 0xffffffff;
+constexpr uint16_t kDnsPort = 53;
 
 struct Ipv4Prefix {
   uint32_t address;
@@ -140,10 +141,16 @@ static_assert(AreValidPrefixLengths(),
               "block-all filter and defeat the kill-switch.");
 
 // Prefix length to the netmask WFP wants, in host byte order. Defined across
-// the whole 0..32 range so that a bad table entry is a wrong filter rather than
-// undefined behavior; AreValidPrefixLengths() is what rejects bad entries.
+// the whole 0..32 range. Out-of-bounds dynamic values are capped to 32 to
+// prevent UB during bitwise shifts.
 constexpr uint32_t Ipv4Netmask(uint8_t prefix_length) {
-  return prefix_length == 0 ? 0u : 0xffffffffu << (32u - prefix_length);
+  if (prefix_length == 0) {
+    return 0u;
+  }
+  if (prefix_length >= 32) {
+    return 0xffffffffu;
+  }
+  return 0xffffffffu << (32u - prefix_length);
 }
 
 // The provider owns everything we install and exists so that a `netsh wfp show
@@ -363,10 +370,10 @@ DWORD AddPermitTunnelInterface(HANDLE engine,
 // (e.g., when a user types a local hostname).
 DWORD AddBlockDns(HANDLE engine, const BaseObjects& base_objects) {
   constexpr uint16_t kNameResolutionPorts[] = {
-      53,    // Standard DNS
-      137,   // NetBIOS Name Service
-      5353,  // mDNS
-      5355,  // LLMNR
+      kDnsPort,  // Standard DNS
+      137,       // NetBIOS Name Service
+      5353,      // mDNS
+      5355,      // LLMNR
   };
 
   for (const uint16_t port : kNameResolutionPorts) {
@@ -495,9 +502,12 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
           FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_ADDRESS,
                                  FWP_MATCH_EQUAL,
                                  {FWP_V4_ADDR_MASK, {.v4AddrMask = &mask}}}};
-      AddFilterToLayers(engine, base_objects, v4_layers, FWP_ACTION_PERMIT,
-                        kWeightPermitLocalNetwork, conditions,
-                        L"Permit dynamic local IPv4");
+      auto result = AddFilterToLayers(
+          engine, base_objects, v4_layers, FWP_ACTION_PERMIT,
+          kWeightPermitLocalNetwork, conditions, L"Permit dynamic local IPv4");
+      if (result != ERROR_SUCCESS) {
+        return result;
+      }
     }
 
     for (auto& mask : dynamic_v6_masks) {
@@ -505,9 +515,13 @@ DWORD AddPermitLocalNetwork(HANDLE engine, const BaseObjects& base_objects) {
           FWPM_FILTER_CONDITION0{FWPM_CONDITION_IP_REMOTE_ADDRESS,
                                  FWP_MATCH_EQUAL,
                                  {FWP_V6_ADDR_MASK, {.v6AddrMask = &mask}}}};
-      AddFilterToLayers(engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
-                        kWeightPermitLocalNetwork, conditions,
-                        L"Permit dynamic local IPv6");
+
+      auto result = AddFilterToLayers(
+          engine, base_objects, v6_layers, FWP_ACTION_PERMIT,
+          kWeightPermitLocalNetwork, conditions, L"Permit dynamic local IPv6");
+      if (result != ERROR_SUCCESS) {
+        return result;
+      }
     }
   }
 
@@ -548,8 +562,6 @@ DWORD AddSublayer(HANDLE engine, const BaseObjects& base_objects) {
 DWORD AddTemporaryPermitDns(HANDLE engine,
                             const BaseObjects& base_objects,
                             std::vector<UINT64>* filter_ids) {
-  constexpr uint16_t kDnsPort = 53;
-
   // 1. Add App ID condition: %SystemRoot%\System32\svchost.exe
   base::FilePath svchost_path =
       base::PathService::CheckedGet(base::DIR_SYSTEM).Append(L"svchost.exe");
@@ -607,8 +619,7 @@ bool AddGlobalFilters(HANDLE engine,
 // it, dropping the allowance that kept endpoint resolution working.
 bool AddTunnelFilters(HANDLE engine,
                       const BaseObjects& base_objects,
-                      const NET_LUID& tunnel_luid,
-                      base::span<const UINT64> temporary_dns_filter_ids) {
+                      const NET_LUID& tunnel_luid) {
   return AddPermitTunnelInterface(engine, base_objects, tunnel_luid) ==
              ERROR_SUCCESS &&
          AddBlockDns(engine, base_objects) == ERROR_SUCCESS;
@@ -708,16 +719,16 @@ bool ScopedWireguardFirewall::PermitTunnelInterface(
     const NET_LUID& tunnel_luid) {
   const BaseObjects base_objects = {.provider = provider_key_,
                                     .sublayer = sublayer_key_};
+
+  WithdrawTemporaryDns();
+
   auto result = FwpmTransactionBegin0(engine_, 0);
   if (result != ERROR_SUCCESS) {
     VLOG(1) << "FwpmTransactionBegin0 failed, error: " << std::hex << result;
     return false;
   }
 
-  WithdrawTemporaryDns();
-
-  if (!AddTunnelFilters(engine_, base_objects, tunnel_luid,
-                        temporary_dns_filter_ids_)) {
+  if (!AddTunnelFilters(engine_, base_objects, tunnel_luid)) {
     FwpmTransactionAbort0(engine_);
     return false;
   }
