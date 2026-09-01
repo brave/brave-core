@@ -242,11 +242,11 @@
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_NEWS_WIDGET_LABEL" desc="Label for showing or hiding the Brave News widget on the NTP" formatter_data="webui=BraveNewTabPage">
-    Brave News
+    News
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP" formatter_data="webui=BraveNewTabPage">
-    Brave Rewards
+    Rewards
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP" formatter_data="webui=BraveNewTabPage">
@@ -266,11 +266,11 @@
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP" formatter_data="webui=BraveNewTabPage">
-    Brave Stats
+    Stats
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL" desc="Label for showing or hiding the Brave Talk widget on the NTP" formatter_data="webui=BraveNewTabPage">
-    Brave Talk
+    Talk
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="Label for control that toggles top sites visibility" formatter_data="webui=BraveNewTabPage">
@@ -278,7 +278,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL" desc="Label for showing or hiding the Brave VPN NTP widget" formatter_data="webui=BraveNewTabPage">
-    Brave VPN
+    VPN
   </message>
 
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title" formatter_data="webui=BraveNewTabPage">
