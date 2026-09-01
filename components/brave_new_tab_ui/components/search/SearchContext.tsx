@@ -108,6 +108,7 @@ class SearchPage implements PageInterface {
   resetPopupToInitialState(): void { }
   onScreenshotMenuClosed(): void { }
   setShowFre(show: boolean): void { }
+  updateProfileInfo(avatarUrl: string, name: string, email: string): void { }
 }
 
 export const search = new SearchPage()
