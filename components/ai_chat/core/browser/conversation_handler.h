@@ -242,6 +242,8 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
   void OnAssociatedContentUpdated();
+  void OnContentToolsChanged(const std::string& content_uuid,
+                             std::vector<mojom::ToolInfoPtr> tools);
 
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
