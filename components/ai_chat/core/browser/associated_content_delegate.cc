@@ -76,9 +76,7 @@ void AssociatedContentDelegate::set_tools_attached(bool tools_attached) {
   }
   tools_attached_ = tools_attached;
 
-  for (auto& observer : observers_) {
-    observer.OnToolsAttachedChanged(this);
-  }
+  observers_.Notify(&Observer::OnToolsAttachedChanged, this);
 }
 
 void AssociatedContentDelegate::NotifyNewPage() {

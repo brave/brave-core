@@ -758,6 +758,8 @@ TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsBeingDetached) {
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content);
   associated_content.set_tools_attached(true);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
   ASSERT_TRUE(conversation_->associated_content[0]->tools_attached);
 
   associated_content.set_tools_attached(false);
