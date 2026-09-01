@@ -14,3 +14,15 @@ substitutions:
       replace: |-
         \1
           void SetOriginForClearWindowNameCheck(const url::Origin&) override;
+
+  - description: |
+      Declare WebLocalFrameImpl::NotifyScriptToolsChanged
+
+      Fans WebMCP tool changes out to WebLocalFrameObserver, whose observer
+      list is private to this class. Defined in the chromium_src
+      web_local_frame_impl.cc override.
+    regex:
+      re_pattern: '(void WillSendSubmitEvent\(const WebFormElement& form\);)'
+      replace: |-
+        \1
+          void NotifyScriptToolsChanged();

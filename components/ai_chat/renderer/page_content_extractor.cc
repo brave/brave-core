@@ -107,6 +107,7 @@ PageContentExtractor::PageContentExtractor(
     int32_t isolated_world_id)
     : content::RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<PageContentExtractor>(render_frame),
+      blink::WebLocalFrameObserver(render_frame->GetWebFrame()),
       global_world_id_(global_world_id),
       isolated_world_id_(isolated_world_id),
       weak_ptr_factory_(this) {
@@ -370,6 +371,35 @@ void PageContentExtractor::ExecuteContentTool(
             }
           },
           std::move(wrapped)));
+}
+
+void PageContentExtractor::SetContentToolsListener(
+    mojo::PendingRemote<mojom::ContentToolsListener> listener) {
+  content_tools_listener_.reset();
+  if (!listener) {
+    return;
+  }
+  content_tools_listener_.Bind(std::move(listener));
+  content_tools_listener_.set_disconnect_handler(
+      base::BindOnce(&PageContentExtractor::OnContentToolsListenerDisconnected,
+                     base::Unretained(this)));
+
+  // Report tools registered before the subscription was established.
+  content_tools_listener_->OnContentToolsChanged();
+}
+
+void PageContentExtractor::OnContentToolsListenerDisconnected() {
+  content_tools_listener_.reset();
+}
+
+void PageContentExtractor::OnScriptToolsChanged() {
+  if (content_tools_listener_) {
+    content_tools_listener_->OnContentToolsChanged();
+  }
+}
+
+void PageContentExtractor::OnFrameDetached() {
+  // Teardown is driven by RenderFrameObserver::OnDestruct().
 }
 
 void PageContentExtractor::GetSearchSummarizerKey(
