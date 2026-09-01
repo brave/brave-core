@@ -35,14 +35,19 @@
 }
 
 #preview {
+  --leo-button-padding: calc(
+    (var(--avatar-size) - var(--leo-icon-l)) / 2
+  );
+}
+
+#preview.selected {
   --avatar-selected-color: var(--leo-color-divider-interactive);
-  --leo-button-color: var(--leo-color-icon-default);
 
   align-items: center;
   background: var(--leo-color-container-highlight);
   border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-full);
-  box-sizing: content-box;
+  box-sizing: border-box;
   color: var(--leo-color-icon-default);
   display: inline-flex;
   height: var(--avatar-size);
@@ -50,9 +55,7 @@
   padding: 0;
   position: relative;
   width: var(--avatar-size);
-}
 
-#preview.selected {
   outline: var(--selected-border) solid var(--avatar-selected-color);
 }
 
