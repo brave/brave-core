@@ -997,7 +997,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   // Second window: vertical tabs on at startup.
   browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kVerticalTabsEnabled, true);
-  Browser* browser_with_vertical_at_startup =
+  BrowserWindowInterface* browser_with_vertical_at_startup =
       CreateBrowser(browser()->GetProfile());
   BraveBrowserView* view_with_vertical_at_startup = BraveBrowserView::From(
       BrowserView::GetBrowserViewForBrowser(browser_with_vertical_at_startup));
@@ -1031,7 +1031,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
 
   // Second window: compact mode on at startup.
   local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, true);
-  Browser* browser_with_compact_at_startup =
+  BrowserWindowInterface* browser_with_compact_at_startup =
       CreateBrowser(browser()->GetProfile());
   EXPECT_FALSE(WindowFeatureController::From(browser_with_compact_at_startup)
                    ->UsesImmersiveFullscreenMode());

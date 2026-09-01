@@ -11,7 +11,7 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
-class Browser;
+class BrowserWindowInterface;
 class Profile;
 
 namespace ai_chat {
@@ -34,7 +34,7 @@ void OpenBrowserWindowForAIChatAgentProfile(Profile& from_profile);
 #if !BUILDFLAG(IS_ANDROID)
 void OpenBrowserWindowForAIChatAgentProfileForTesting(
     Profile& from_profile,
-    base::OnceCallback<void(Browser*)> callback);
+    base::OnceCallback<void(BrowserWindowInterface*)> callback);
 #endif
 
 }  // namespace ai_chat

@@ -95,7 +95,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
 
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override {
-    auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
+    auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::OpenUrlInContainer(base::to_address(browser_window_interface_),
                               chrome::GetNewTabURL(browser), container,
@@ -103,7 +103,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
   }
 
   void OnNoContainerSelected() override {
-    auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
+    auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::OpenUrlWithoutContainer(base::to_address(browser_window_interface_),
                                    chrome::GetNewTabURL(browser),
@@ -111,7 +111,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
   }
 
   void OnNewTemporaryContainerSelected() override {
-    auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
+    auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::CreateTemporaryContainerAndOpenUrl(
         base::to_address(browser_window_interface_),

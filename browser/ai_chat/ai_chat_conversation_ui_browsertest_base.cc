@@ -20,7 +20,7 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -62,7 +62,7 @@ void AIChatConversationUIBrowserTestBase::TearDownOnMainThread() {
 
 void AIChatConversationUIBrowserTestBase::NavigateToConversationUI(
     const std::string& conversation_uuid,
-    Browser* target_browser) {
+    BrowserWindowInterface* target_browser) {
   if (!target_browser) {
     target_browser = browser();
   }

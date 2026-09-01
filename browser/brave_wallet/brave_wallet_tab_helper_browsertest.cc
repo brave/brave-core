@@ -57,7 +57,7 @@ base::WeakPtr<content::WebContents> ExecuteWindowOpenScript(
 
 base::WeakPtr<content::WebContents> OpenFromRegularPage(
     const GURL& url,
-    Browser* browser,
+    BrowserWindowInterface* browser,
     content::WebContents* web_contents) {
   EXPECT_EQ(1, browser->tab_strip_model()->count());
 

@@ -14,11 +14,11 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/browser/ui/window_metadata/window_metadata_controller.h"
 #include "chrome/grit/generated_resources.h"
@@ -158,31 +158,29 @@ std::vector<WindowMatch> WindowsMatchingInput(
   double mru_score = .95;
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
-  // TODO(https://github.com/brave/brave-browser/issues/49807): This code as a
-  // whole needs to be revisited with regards the use of `Browser*`.
   ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
       [&](BrowserWindowInterface* browser_window_interface) {
-        Browser* browser =
-            browser_window_interface->GetBrowserForMigrationOnly();
-        if (browser == browser_to_exclude ||
-            browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+        if (browser_window_interface == browser_to_exclude ||
+            browser_window_interface->GetType() !=
+                BrowserWindowInterface::Type::TYPE_NORMAL) {
           return true;  // continue iterating
         }
-        if (match_profile &&
-            browser->GetProfile() != browser_to_exclude->GetProfile()) {
+        if (match_profile && browser_window_interface->GetProfile() !=
+                                 browser_to_exclude->GetProfile()) {
           return true;  // continue iterating
         }
         std::u16string title =
             WindowMetadataController::From(browser_window_interface)
                 ->GetWindowTitleForMaxWidth(kMaxTitleWidth);
         if (input.empty()) {
-          WindowMatch match(browser, title, mru_score);
+          WindowMatch match(browser_window_interface, title, mru_score);
           results.push_back(std::move(match));
           mru_score *= .95;
         } else {
           double score = finder.Find(title, ranges);
           if (score > 0) {
-            WindowMatch match(browser, std::move(title), score);
+            WindowMatch match(browser_window_interface, std::move(title),
+                              score);
             match.matched_ranges = ranges;
             results.push_back(std::move(match));
           }

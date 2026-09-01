@@ -182,13 +182,14 @@ class TorTabNavigator final : public content::WebContentsObserver,
 };
 
 // static
-Browser* TorProfileManager::SwitchToTorProfile(Profile* original_profile) {
+BrowserWindowInterface* TorProfileManager::SwitchToTorProfile(
+    Profile* original_profile) {
   return TorProfileManager::SwitchToTorProfile(original_profile,
                                                GURL::EmptyGURL(), std::nullopt);
 }
 
 // static
-Browser* TorProfileManager::SwitchToTorProfile(
+BrowserWindowInterface* TorProfileManager::SwitchToTorProfile(
     Profile* original_profile,
     const GURL& url,
     const std::optional<url::Origin>& initiator_origin) {
@@ -211,7 +212,7 @@ Browser* TorProfileManager::SwitchToTorProfile(
     BrowserWindow::FromBrowser(browser)->Activate();
     BrowserWindow::FromBrowser(browser)->Show();
   }
-  return browser->GetBrowserForMigrationOnly();
+  return browser;
 }
 
 // static

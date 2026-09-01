@@ -180,7 +180,7 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
 
   Profile* profile1() { return browser()->GetProfile(); }
 
-  void AppendTabWithTitle(Browser* browser,
+  void AppendTabWithTitle(BrowserWindowInterface* browser,
                           const GURL& url,
                           const std::string& title,
                           ui_test_utils::BrowserTestWaitFlags wait_flags =
@@ -322,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   // Create another browser with the default profile.
   ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::NewEmptyWindow(profile1(), false);
-  Browser* browser2 = browser_created_observer.Wait();
+  BrowserWindowInterface* browser2 = browser_created_observer.Wait();
 
   // Test Engine's GetFocusTabs is called with expected tabs info and topic.
   auto* mock_engine = SetMockTabOrganizationEngine();
@@ -392,9 +392,8 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   run_loop1.Run();
   ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 3u)
       << "A new window should be created.";
-  Browser* focus_tabs_browser =
-      GetLastActiveBrowserWindowInterfaceWithAnyProfile()
-          ->GetBrowserForMigrationOnly();
+  BrowserWindowInterface* focus_tabs_browser =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   EXPECT_EQ(focus_tabs_browser->GetTabStripModel()->count(), 2)
       << "The new window should have 2 tabs.";
   EXPECT_EQ(WindowMetadataController::From(focus_tabs_browser)->user_title(),

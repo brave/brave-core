@@ -59,7 +59,7 @@ constexpr auto kCreativeAdPlacementIdToIndex =
          {"fE%22%27%2B%2A%26-._~", 2}});
 
 CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
   return CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
 }
@@ -209,7 +209,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        IncognitoBrowser) {
   const GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
-  Browser* incognito_browser =
+  BrowserWindowInterface* incognito_browser =
       OpenURLOffTheRecord(browser()->GetProfile(), url);
   EXPECT_FALSE(GetCreativeSearchResultAdTabHelper(incognito_browser));
 

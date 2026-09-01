@@ -25,7 +25,7 @@
 #include "chrome/browser/actor/execution_engine.h"
 #include "chrome/browser/actor/site_policy.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -78,10 +78,10 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     // Create the agent profile
     auto* profile = browser()->GetProfile();
     SetUserOptedIn(profile->GetPrefs(), true);
-    base::test::TestFuture<Browser*> browser_future;
+    base::test::TestFuture<BrowserWindowInterface*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
         *profile, browser_future.GetCallback());
-    Browser* browser = browser_future.Take();
+    BrowserWindowInterface* browser = browser_future.Take();
     ASSERT_NE(browser, nullptr);
     agent_profile_ = browser->GetProfile();
 

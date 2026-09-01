@@ -239,7 +239,7 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
 };
 
 #if BUILDFLAG(ENABLE_TOR)
-void NewOffTheRecordWindowTor(Browser* browser) {
+void NewOffTheRecordWindowTor(BrowserWindowInterface* browser) {
   CHECK(browser);
   NewOffTheRecordWindowTor(browser->GetProfile());
 }
@@ -403,7 +403,8 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
   scw.WriteText(base::UTF8ToUTF16(final_url.spec()));
 }
 
-void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
+void ToggleWindowTitleVisibilityForVerticalTabs(
+    BrowserWindowInterface* browser) {
   auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow,
@@ -481,7 +482,7 @@ void ToggleSidebar(Browser* browser) {
   }
 }
 
-bool HasSelectedURL(Browser* browser) {
+bool HasSelectedURL(BrowserWindowInterface* browser) {
   if (!browser) {
     return false;
   }
@@ -489,7 +490,7 @@ bool HasSelectedURL(Browser* browser) {
   return brave_browser_window && brave_browser_window->HasSelectedURL();
 }
 
-void CleanAndCopySelectedURL(Browser* browser) {
+void CleanAndCopySelectedURL(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -822,12 +823,11 @@ void BringAllTabs(BrowserWindowInterface* browser) {
   }
 
   // Find all browsers with the same profile
-  std::vector<Browser*> browsers;
+  std::vector<BrowserWindowInterface*> browsers;
   GlobalBrowserCollection::GetInstance()->ForEach(
       [&browsers, browser](BrowserWindowInterface* from) {
-        auto* from_deprecated = from->GetBrowserForMigrationOnly();
-        if (CanTakeTabs(from_deprecated, browser)) {
-          browsers.push_back(from_deprecated);
+        if (CanTakeTabs(from, browser)) {
+          browsers.push_back(from);
         }
         return true;
       });
@@ -841,7 +841,7 @@ void BringAllTabs(BrowserWindowInterface* browser) {
       browser->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab);
 
-  base::flat_set<Browser*> browsers_to_close;
+  base::flat_set<BrowserWindowInterface*> browsers_to_close;
   std::ranges::for_each(browsers, [&detached_pinned_tabs,
                                    &detached_unpinned_tabs, &browsers_to_close,
                                    shared_pinned_tab_enabled](auto* other) {
