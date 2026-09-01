@@ -138,8 +138,18 @@ class EphemeralStorageService : public KeyedService {
   // startup. It's impossible to do a cleanup on shutdown, because the process
   // is asynchronous and cannot block the browser shutdown.
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
+  // Cleans up the stored areas whose keepalive already elapsed and leaves the
+  // rest scheduled for CleanupOnStartup().
+  void CleanupExpiredFirstPartyStorageAreasOnStartup();
   void CleanupOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
+  // Cleans up an area that was queued for cleanup in prefs, i.e. its keepalive
+  // was still pending when the browser was closed.
+  void CleanupPendingFirstPartyStorageArea(
+      const GURL& url,
+      const content::StoragePartitionConfig& storage_partition_config,
+      const std::optional<brave_shields::mojom::AutoShredMode>&
+          auto_shred_mode);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
 
