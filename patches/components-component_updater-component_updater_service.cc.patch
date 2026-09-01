@@ -1,5 +1,5 @@
 diff --git a/components/component_updater/component_updater_service.cc b/components/component_updater/component_updater_service.cc
-index b8210dce96d8013c9a8f8e06f9647b1c17b71ede..2a48dafb1f405521fa64f3e67b8eb02131ec59d1 100644
+index a1daf3154fa11842d7b92a42215788759cde6f7f..0c5c3eb29525b557ad426663e3d10a858ec18c90 100644
 --- a/components/component_updater/component_updater_service.cc
 +++ b/components/component_updater/component_updater_service.cc
 @@ -573,7 +573,7 @@ std::unique_ptr<ComponentUpdateService> ComponentUpdateServiceFactory(

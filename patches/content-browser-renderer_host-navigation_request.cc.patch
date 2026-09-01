@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 6a407b0e63070930781ddd8d4b1fe74d9c18690b..694630e8503f349474867aac52fd3e379043f89e 100644
+index b1d10c220c51113f86cfb58a5febe34fe0f1f8c8..718c4e539da9b4744b239de61392bd2b4fc6f00d 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -3975,6 +3975,9 @@ void NavigationRequest::OnRequestRedirected(
+@@ -3980,6 +3980,9 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -12,7 +12,7 @@ index 6a407b0e63070930781ddd8d4b1fe74d9c18690b..694630e8503f349474867aac52fd3e37
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -6040,7 +6043,10 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -6069,7 +6072,10 @@ void NavigationRequest::OnStartChecksComplete(
    }
    CHECK(local_root_rfh);
  

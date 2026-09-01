@@ -1,8 +1,8 @@
 diff --git a/components/tabs/impl/tab_strip_collection.cc b/components/tabs/impl/tab_strip_collection.cc
-index c26e26fe676eefc05c0b8905867e0aaf063aae4f..117ed19f47508189b3017101d4589a93ab285bc9 100644
+index bfb0b512753a58c0486b3a82669c17c024076e54..278b2bec3e988c591fb9b66cfbc6b9b07d1ef240 100644
 --- a/components/tabs/impl/tab_strip_collection.cc
 +++ b/components/tabs/impl/tab_strip_collection.cc
-@@ -309,6 +309,24 @@ ChildrenPtrs TabStripCollection::GetTabsAndCollectionsForMove(
+@@ -314,6 +314,24 @@ ChildrenPtrs TabStripCollection::GetTabsAndCollectionsForMove(
  }
  
  ScopedTab TabStripCollection::RemoveTabAtIndexRecursive(size_t index) {

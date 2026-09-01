@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index d39d0f06826d7aa072a915d2b3c091ce72f4e37d..7fbe24d2db23b2943890e4a924123dbe1c5300fe 100644
+index 16474c951da77d3c5c2f47bb07cc0529a459624d..9d2b169fe909b262af68dd79abb7e6f100b1d92c 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -484,6 +484,8 @@ void Tab::Layout(PassKey) {
+@@ -497,6 +497,8 @@ void Tab::Layout(PassKey) {
    // indicator, but visually it will be smaller at kFaviconSize wide.
    gfx::Rect favicon_bounds(start, contents_rect.y(), 0, 0);
    if (showing_icon_) {
@@ -11,7 +11,7 @@ index d39d0f06826d7aa072a915d2b3c091ce72f4e37d..7fbe24d2db23b2943890e4a924123dbe
      if (center_icon_) {
        // When centering the favicon, the favicon is allowed to escape the normal
        // contents rect.
-@@ -588,6 +590,12 @@ void Tab::Layout(PassKey) {
+@@ -601,6 +603,12 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_button_->x() - after_title_padding;
@@ -24,7 +24,7 @@ index d39d0f06826d7aa072a915d2b3c091ce72f4e37d..7fbe24d2db23b2943890e4a924123dbe
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -742,7 +750,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
+@@ -759,7 +767,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
    // Close tab on middle click, but only if the button is released over the tab
    // (normal windows behavior is to discard presses of a UI element where the
    // releases happen off the element).
@@ -33,7 +33,7 @@ index d39d0f06826d7aa072a915d2b3c091ce72f4e37d..7fbe24d2db23b2943890e4a924123dbe
      if (HitTestPoint(event.location())) {
        controller_->CloseTab(this, CloseTabSource::kFromMouse);
      } else if (closing_) {
-@@ -852,7 +860,7 @@ void Tab::OnGestureEvent(ui::GestureEvent* event) {
+@@ -869,7 +877,7 @@ void Tab::OnGestureEvent(ui::GestureEvent* event) {
  gfx::Size Tab::CalculatePreferredSize(
      const views::SizeBounds& available_size) const {
    return gfx::Size(GetTabSizeInfo().standard_width,
@@ -42,7 +42,7 @@ index d39d0f06826d7aa072a915d2b3c091ce72f4e37d..7fbe24d2db23b2943890e4a924123dbe
  }
  
  void Tab::PaintChildren(const views::PaintInfo& info) {
-@@ -1236,7 +1244,7 @@ void Tab::UpdateIconVisibility() {
+@@ -1273,7 +1281,7 @@ void Tab::UpdateIconVisibility() {
    showing_icon_ = showing_alert_indicator_ = false;
    extra_alert_indicator_padding_ = false;
  

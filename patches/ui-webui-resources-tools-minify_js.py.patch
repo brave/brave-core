@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/tools/minify_js.py b/ui/webui/resources/tools/minify_js.py
-index f442a877f70b76899a1572bad26c05d27a1abddb..083c2d128c079b2c24885619feb286b9f6b6b647 100755
+index 7f2587d627e186acdc0019dfca462e3c27b0ae47..1375da21ca791f6b8187deb0f5ac11aac4350f27 100755
 --- a/ui/webui/resources/tools/minify_js.py
 +++ b/ui/webui/resources/tools/minify_js.py
-@@ -46,5 +46,6 @@ def main(argv):
+@@ -57,5 +57,6 @@ def main(argv):
      json.dump(manifest_data, manifest_file)
  
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index d21579e3f2073d9fd7b9511ee7a5877c4d124f02..2611dddb90f5cc07d8546852e6d39fbf84a729e7 100644
+index a67210a0392247edca3ab3f561275db8ea103c68..b2e81dceec0ccf6aaa37dc96d197755f8a014a01 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
 @@ -197,7 +197,8 @@ bool RemoteActorCredentialSharingEnabled() {

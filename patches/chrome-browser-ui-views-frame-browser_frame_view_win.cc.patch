@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.cc b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
-index 032e9d026cff54b91c14d6b7d933535cdf29c811..ddd5c9cc56882f8d7baddc91c50dcb2f3d491c01 100644
+index 207ea26540d4d90e9f8398d6185179ed175fc03e..92ab3104943813ece1abcbdc3ea33acb79967483 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_win.cc
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
-@@ -179,7 +179,7 @@ BrowserFrameViewWin::BrowserFrameViewWin(BrowserWidget* widget,
+@@ -115,7 +115,7 @@ BrowserFrameViewWin::BrowserFrameViewWin(BrowserWidget* widget,
  
    // If this is a web app window, the window title will be part of the
    // BrowserView and thus we don't need to create another one here.
