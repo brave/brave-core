@@ -122,11 +122,13 @@ class WalletTabHelper: NSObject, TabObserver {
       walletSolProvider = provider
       walletSolProvider?.initialize(eventsListener: self)
     }
-    if let provider = braveWalletAPI.cardanoProvider(
-      with: self,
-      origin: committedOrigin,
-      isPrivateBrowsing: tab.isPrivate
-    ) {
+    if WalletConstants.isCardanoDAppSupportEnabled,
+      let provider = braveWalletAPI.cardanoProvider(
+        with: self,
+        origin: committedOrigin,
+        isPrivateBrowsing: tab.isPrivate
+      )
+    {
       walletCardanoProvider = provider
     }
   }
