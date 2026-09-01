@@ -152,6 +152,66 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Shields.DevModeEnabled", {}},
     {"Brave.Shields.DomainAdsSettingsAboveGlobal", {}},
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
+    {"Brave.Shields.FPInput.Canvas", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.DeviceMemory", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.DevicePixelRatio", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.Fonts", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.HardwareConcurrency", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.Languages", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.ScreenAvailSize", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.ScreenPixelDepth", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.ScreenSize", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.Timezone", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.UserAgent", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.WebAudio", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.WebGLExtensions", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.WebGLRenderer", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
+    {"Brave.Shields.FPInput.WebGLVendor", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform},
+    }},
     {"Brave.Shields.FilterLists.2", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
     {"Brave.Shields.ManualShred", {}},
