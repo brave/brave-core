@@ -54,10 +54,6 @@ GURL GetFirstPartyStorageURL(const std::string& ephemeral_domain) {
 base::Value GetFirstPartyStorageValueToCleanup(
     const GURL& url,
     const content::StoragePartitionConfig& storage_partition_config) {
-  if (storage_partition_config.is_default()) {
-    LOG(INFO) << "[SHRED] GetFirstPartyStorageValueToCleanup url:" << url << " is_default:1 storage_partition_config:" << storage_partition_config;
-   // return base::Value(url.spec());
-  }
   return base::Value(
       base::DictValue()
           .Set(kUrlKey, url.spec())
@@ -133,6 +129,7 @@ std::optional<std::pair<GURL, content::StoragePartitionConfig>>
 GetFirstPartyStorageURLAndStoragePartitionConfig(
     const base::Value& value,
     content::BrowserContext* browser_context) {
+  // Support old format
   if (value.is_string()) {
     return std::make_pair(
         GURL(value.GetString()),
@@ -433,35 +430,18 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
   }
 
   bool keep_alive_expired = false;
-  {
-    ScopedListPrefUpdate pref_update(prefs_,
-                                     kFirstPartyStorageOriginsToCleanup);
-    if (const base::Value* queued_area = FindFirstPartyStorageArea(
-            *pref_update, url, storage_partition_config)) {
-      keep_alive_expired = IsFirstPartyStorageAreaKeepAliveExpired(
-          *queued_area, tld_ephemeral_area_keep_alive_);
-    }
-    LOG(INFO) << "[SHRED] FirstPartyStorageAreaInUse #100 Keep Alive Expired \nurl:" << url 
-        << " \nstorage_partition_config:" << storage_partition_config
-        << " \nfirst_party_storage_areas_to_cleanup_on_startup_:" << first_party_storage_areas_to_cleanup_on_startup_.DebugString();
-
-
-    if(!keep_alive_expired) {
-    EraseFirstPartyStorageArea(*pref_update, url, storage_partition_config);
-    // Make sure to cancel the scheduled cleanup for this area.
-    EraseFirstPartyStorageArea(first_party_storage_areas_to_cleanup_on_startup_,
-                               url, storage_partition_config);
-    }
+  ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
+  if (const base::Value* queued_area = FindFirstPartyStorageArea(
+          *pref_update, url, storage_partition_config)) {
+    keep_alive_expired = IsFirstPartyStorageAreaKeepAliveExpired(
+        *queued_area, tld_ephemeral_area_keep_alive_);
   }
 
-  if (keep_alive_expired) {
- //   LOG(INFO) << "[SHRED] FirstPartyStorageAreaInUse #200 Keep Alive Expired url:" << url << " storage_partition_config:" << storage_partition_config;
-    // The keepalive elapsed while the browser was not running, so the storage
-    // must still be cleaned up even though the area is used again. Do it now,
-    // before the navigation is committed, instead of waiting for the startup
-    // cleanup timer.
- //   CleanupPendingFirstPartyStorageArea(url, storage_partition_config,
- //                                       auto_shred_mode);
+  if (!keep_alive_expired) {
+    // Make sure to cancel the scheduled cleanup for this area.
+    EraseFirstPartyStorageArea(*pref_update, url, storage_partition_config);
+    EraseFirstPartyStorageArea(first_party_storage_areas_to_cleanup_on_startup_,
+                               url, storage_partition_config);
   }
 }
 
