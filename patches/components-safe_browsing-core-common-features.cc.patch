@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/core/common/features.cc b/components/safe_browsing/core/common/features.cc
-index e188fa7516a129322bad2fcdd4d3fca38d2c5726..e05088ba1181346a5c5329bb5492eca2cb8685c9 100644
+index e188fa7516a129322bad2fcdd4d3fca38d2c5726..2c94aed5f3d8a29d0e3b4a02f2b016d2dad51c7e 100644
 --- a/components/safe_browsing/core/common/features.cc
 +++ b/components/safe_browsing/core/common/features.cc
 @@ -41,6 +41,7 @@ BASE_FEATURE(kAdSamplerTriggerFeature,
@@ -10,19 +10,21 @@ index e188fa7516a129322bad2fcdd4d3fca38d2c5726..e05088ba1181346a5c5329bb5492eca2
  BASE_FEATURE(kAntivirusTelemetryForDownloads,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -73,9 +74,9 @@ constexpr base::FeatureParam<std::string> kClientSideDetectionBypassTiersList{
+@@ -73,12 +74,9 @@ constexpr base::FeatureParam<std::string> kClientSideDetectionBypassTiersList{
      &kClientSideDetectionBypassTiers, "ClientSideDetectionBypassTiersList",
      /*default_value=*/""};
  
 +// kClientSideDetectionClipboardCopyApi feature state is enforced via plaster rewrite.
  BASE_FEATURE(kClientSideDetectionClipboardCopyApi,
 -#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
--             base::FEATURE_DISABLED_BY_DEFAULT);
-+base::FEATURE_DISABLED_BY_DEFAULT);
- #else
-              base::FEATURE_ENABLED_BY_DEFAULT);
- #endif
-@@ -341,9 +342,10 @@ constexpr base::FeatureParam<double>
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-#endif
+ constexpr base::FeatureParam<double> kCsdClipboardCopyApiHCAcceptanceRate{
+     &kClientSideDetectionClipboardCopyApi, "HCAcceptanceRate",
+     /*default_value=*/1.0};
+@@ -341,9 +339,10 @@ constexpr base::FeatureParam<double>
  BASE_FEATURE(kGlobalCacheListForGatingNotificationProtections,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
@@ -34,7 +36,7 @@ index e188fa7516a129322bad2fcdd4d3fca38d2c5726..e05088ba1181346a5c5329bb5492eca2
  
  BASE_FEATURE(kGooglePlayProtectReducesWarnings,
               "SafeBrowsingGooglePlayProtectReducesWarnings",
-@@ -432,7 +434,8 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
+@@ -432,7 +431,8 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
  
  BASE_FEATURE(kNoticeQueueForEsb, base::FEATURE_ENABLED_BY_DEFAULT);
  
