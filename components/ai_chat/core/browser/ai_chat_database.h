@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -150,6 +151,7 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
  private:
   friend class AIChatDatabaseTest;
   friend class AIChatDatabaseMigrationTest;
+  FRIEND_TEST_ALL_PREFIXES(AIChatDatabaseTest, ConversationThreadEntries);
 
   sql::Database& GetDB();
 

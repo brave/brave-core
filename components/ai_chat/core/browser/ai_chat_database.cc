@@ -774,9 +774,8 @@ std::vector<mojom::ThreadPtr> AIChatDatabase::GetConversationThreads(
     std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // Join the thread table against per-thread entry stats (count and most recent
-  // entry time), inferred from conversation entries tagged with the thread's
-  // uuid.
+  // Join the thread table against per-thread entry stats (count), inferred
+  // from conversation entries tagged with the thread's uuid.
   static constexpr char kQuery[] =
       "SELECT thread.uuid,"
       " thread.conversation_uuid,"

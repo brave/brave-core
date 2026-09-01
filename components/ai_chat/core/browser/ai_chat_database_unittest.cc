@@ -285,19 +285,47 @@ TEST_P(AIChatDatabaseTest, ConversationThreadEntries) {
 
   const std::string thread_uuid = "thread_1";
   history[2]->thread_uuid = thread_uuid;
+  history[3]->thread_uuid = thread_uuid;
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+
+  // Persist the thread metadata, originating from the first entry
+  auto thread = mojom::Thread::New(thread_uuid, uuid, history[0]->uuid.value(),
+                                   1000, 500, 0);
+  EXPECT_TRUE(db_->AddConversationThread(thread->Clone()));
 
   auto conversation_data = db_->GetConversationData(uuid);
   ASSERT_TRUE(conversation_data);
   EXPECT_EQ(conversation_data->entries.size(), 2u);
   for (const auto& entry : conversation_data->entries) {
     EXPECT_NE(entry->uuid, history[2]->uuid);
+    EXPECT_NE(entry->uuid, history[3]->uuid);
   }
 
+  // Verify the thread metadata and entry count are returned with the
+  // conversation data, and the thread uuid is attached to the origin entry
+  ASSERT_EQ(conversation_data->threads.size(), 1u);
+  EXPECT_EQ(conversation_data->threads[0]->uuid, thread_uuid);
+  EXPECT_EQ(conversation_data->threads[0]->conversation_uuid, uuid);
+  EXPECT_EQ(conversation_data->threads[0]->origin_conversation_entry_uuid,
+            history[0]->uuid.value());
+  EXPECT_EQ(conversation_data->threads[0]->total_tokens, 1000u);
+  EXPECT_EQ(conversation_data->threads[0]->trimmed_tokens, 500u);
+  EXPECT_EQ(conversation_data->threads[0]->entry_count, 2u);
+  EXPECT_EQ(conversation_data->entries[0]->child_thread_uuids,
+            std::vector<std::string>{thread_uuid});
+  EXPECT_TRUE(conversation_data->entries[1]->child_thread_uuids.empty());
+
   auto thread_entries = db_->GetConversationThreadEntries(thread_uuid);
-  ASSERT_EQ(thread_entries.size(), 1u);
+  ASSERT_EQ(thread_entries.size(), 2u);
   EXPECT_EQ(thread_entries[0]->uuid, history[2]->uuid);
+  EXPECT_EQ(thread_entries[1]->uuid, history[3]->uuid);
   EXPECT_EQ(thread_entries[0]->thread_uuid, thread_uuid);
+  EXPECT_EQ(thread_entries[1]->thread_uuid, thread_uuid);
+
+  // Deleting the conversation also deletes its thread metadata rows
+  EXPECT_TRUE(db_->DeleteConversation(uuid));
+  EXPECT_TRUE(db_->GetConversationThreads(uuid).empty());
 }
 
 TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
@@ -926,9 +954,15 @@ TEST_P(AIChatDatabaseTest, UpdateThreadTokenInfo) {
   ASSERT_TRUE(conversation_data);
   ASSERT_EQ(conversation_data->entries.size(), 1u);
   ASSERT_EQ(conversation_data->threads.size(), 1u);
+  EXPECT_EQ(conversation_data->threads[0]->uuid, thread_uuid);
+  EXPECT_EQ(conversation_data->threads[0]->conversation_uuid, uuid);
+  EXPECT_EQ(conversation_data->threads[0]->origin_conversation_entry_uuid,
+            history[0]->uuid.value());
   EXPECT_EQ(conversation_data->threads[0]->total_tokens, initial_total_tokens);
   EXPECT_EQ(conversation_data->threads[0]->trimmed_tokens,
             initial_trimmed_tokens);
+  // No entries are tagged with the thread, so the count defaults to 0
+  EXPECT_EQ(conversation_data->threads[0]->entry_count, 0u);
 
   // Update token info
   uint64_t updated_total_tokens = 5000;
@@ -944,6 +978,49 @@ TEST_P(AIChatDatabaseTest, UpdateThreadTokenInfo) {
   EXPECT_EQ(conversation_data->threads[0]->total_tokens, updated_total_tokens);
   EXPECT_EQ(conversation_data->threads[0]->trimmed_tokens,
             updated_trimmed_tokens);
+}
+
+TEST_P(AIChatDatabaseTest, AddConversationThreadOrphanGuard) {
+  const std::string uuid = "for_thread_guard";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+
+  const auto history = CreateSampleChatHistory(1u);
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+  // A thread with an unknown origin conversation entry is rejected and not
+  // persisted
+  auto thread =
+      mojom::Thread::New("thread_guard_1", uuid, "unknown_entry_uuid", 0, 0, 0);
+  EXPECT_FALSE(db_->AddConversationThread(std::move(thread)));
+  auto conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_TRUE(conversation_data->threads.empty());
+
+  // A thread whose origin entry belongs to a different conversation is
+  // rejected and not persisted
+  const std::string other_uuid = "for_thread_guard_other";
+  mojom::ConversationPtr other_metadata = mojom::Conversation::New(
+      other_uuid, "other title", base::Time::Now(), true, std::nullopt, 0, 0,
+      false, std::vector<mojom::AssociatedContentPtr>());
+  const auto other_history = CreateSampleChatHistory(1u);
+  ASSERT_TRUE(db_->AddConversation(other_metadata->Clone(), {},
+                                   other_history[0]->Clone()));
+
+  thread = mojom::Thread::New("thread_guard_2", uuid,
+                              other_history[0]->uuid.value(), 0, 0, 0);
+  EXPECT_FALSE(db_->AddConversationThread(std::move(thread)));
+  thread = mojom::Thread::New("thread_guard_3", other_uuid,
+                              history[0]->uuid.value(), 0, 0, 0);
+  EXPECT_FALSE(db_->AddConversationThread(std::move(thread)));
+
+  conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_TRUE(conversation_data->threads.empty());
+  conversation_data = db_->GetConversationData(other_uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_TRUE(conversation_data->threads.empty());
 }
 
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
