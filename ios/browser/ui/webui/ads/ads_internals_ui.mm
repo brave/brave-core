@@ -30,7 +30,13 @@ AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.GetHost()),
       handler_(brave_ads::AdsServiceFactoryIOS::GetForProfile(
                    ProfileIOS::FromWebUIIOS(web_ui)),
-               *ProfileIOS::FromWebUIIOS(web_ui)->GetPrefs()) {
+               *ProfileIOS::FromWebUIIOS(web_ui)->GetPrefs(),
+               /*variations_service=*/nullptr,
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+               AdsInternalsHandler::GetComponentIdCallback()) {
   BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
       web_ui, url.host(), base::span(kAdsInternalsGenerated),
       IDR_ADS_INTERNALS_HTML);

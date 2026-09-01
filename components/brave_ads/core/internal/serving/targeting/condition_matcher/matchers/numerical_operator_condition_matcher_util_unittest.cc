@@ -123,125 +123,154 @@ TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchNumericalOperatorForEmptyValue) {
   // Act & Assert
-  EXPECT_FALSE(
+  EXPECT_EQ(
+      ConditionMatchResult::kInvalid,
       MatchNumericalOperator("", ConditionMatcherOperatorType::kEqual, 0));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest, MatchEqualOperator) {
   // Act & Assert
-  EXPECT_TRUE(
+  EXPECT_EQ(
+      ConditionMatchResult::kMatch,
       MatchNumericalOperator("1.0", ConditionMatcherOperatorType::kEqual, 1));
-  EXPECT_TRUE(
+  EXPECT_EQ(
+      ConditionMatchResult::kMatch,
       MatchNumericalOperator("1", ConditionMatcherOperatorType::kEqual, 1));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchEqualOperator) {
   // Act & Assert
-  EXPECT_FALSE(
+  EXPECT_EQ(
+      ConditionMatchResult::kNoMatch,
       MatchNumericalOperator("1.0", ConditionMatcherOperatorType::kEqual, 2));
-  EXPECT_FALSE(
+  EXPECT_EQ(
+      ConditionMatchResult::kNoMatch,
       MatchNumericalOperator("1", ConditionMatcherOperatorType::kEqual, 2));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        MatchNotEqualOperator) {
   // Act & Assert
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kNotEqual, 2));
-  EXPECT_TRUE(
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator("1.0",
+                                   ConditionMatcherOperatorType::kNotEqual, 2));
+  EXPECT_EQ(
+      ConditionMatchResult::kMatch,
       MatchNumericalOperator("1", ConditionMatcherOperatorType::kNotEqual, 2));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchNotEqualOperator) {
   // Act & Assert
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kNotEqual, 1));
-  EXPECT_FALSE(
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator("1.0",
+                                   ConditionMatcherOperatorType::kNotEqual, 1));
+  EXPECT_EQ(
+      ConditionMatchResult::kNoMatch,
       MatchNumericalOperator("1", ConditionMatcherOperatorType::kNotEqual, 1));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        MatchGreaterThanOperator) {
   // Act & Assert
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kGreaterThan, 0));
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kGreaterThan, 0));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kGreaterThan, 0));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kGreaterThan, 0));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchGreaterThanOperator) {
   // Act & Assert
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kGreaterThan, 1));
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kGreaterThan, 1));
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kGreaterThan, 1));
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kGreaterThan, 1));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        MatchGreaterThanOrEqualOperator) {
   // Act & Assert
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kGreaterThanOrEqual, 0));
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kGreaterThanOrEqual, 0));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kGreaterThanOrEqual, 0));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kGreaterThanOrEqual, 0));
 
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kGreaterThanOrEqual, 1));
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kGreaterThanOrEqual, 1));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kGreaterThanOrEqual, 1));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kGreaterThanOrEqual, 1));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchGreaterThanOrEqualOperator) {
   // Act & Assert
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kGreaterThanOrEqual, 2));
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kGreaterThanOrEqual, 2));
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kGreaterThanOrEqual, 2));
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kGreaterThanOrEqual, 2));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        MatchLessThanOperator) {
   // Act & Assert
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kLessThan, 2));
-  EXPECT_TRUE(
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator("1.0",
+                                   ConditionMatcherOperatorType::kLessThan, 2));
+  EXPECT_EQ(
+      ConditionMatchResult::kMatch,
       MatchNumericalOperator("1", ConditionMatcherOperatorType::kLessThan, 2));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchLessThanOperator) {
   // Act & Assert
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kLessThan, 1));
-  EXPECT_FALSE(
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator("1.0",
+                                   ConditionMatcherOperatorType::kLessThan, 1));
+  EXPECT_EQ(
+      ConditionMatchResult::kNoMatch,
       MatchNumericalOperator("1", ConditionMatcherOperatorType::kLessThan, 1));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        MatchLessThanOrEqualOperator) {
   // Act & Assert
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kLessThanOrEqual, 1));
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kLessThanOrEqual, 1));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kLessThanOrEqual, 1));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kLessThanOrEqual, 1));
 
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kLessThanOrEqual, 2));
-  EXPECT_TRUE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kLessThanOrEqual, 2));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kLessThanOrEqual, 2));
+  EXPECT_EQ(ConditionMatchResult::kMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kLessThanOrEqual, 2));
 }
 
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchLessThanOrEqualOperator) {
   // Act & Assert
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1.0", ConditionMatcherOperatorType::kLessThanOrEqual, 0));
-  EXPECT_FALSE(MatchNumericalOperator(
-      "1", ConditionMatcherOperatorType::kLessThanOrEqual, 0));
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator(
+                "1.0", ConditionMatcherOperatorType::kLessThanOrEqual, 0));
+  EXPECT_EQ(ConditionMatchResult::kNoMatch,
+            MatchNumericalOperator(
+                "1", ConditionMatcherOperatorType::kLessThanOrEqual, 0));
 }
 
 }  // namespace brave_ads

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CALLBACK_H_
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -36,6 +37,9 @@ using GetInternalsCallback =
 
 using GetDiagnosticsCallback =
     base::OnceCallback<void(std::optional<base::ListValue> diagnostics)>;
+
+using TestDiagnosticsConditionMatcherCallback =
+    base::OnceCallback<void(std::string current_value, std::string matches)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;

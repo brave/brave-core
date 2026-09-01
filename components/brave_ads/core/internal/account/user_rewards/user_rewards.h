@@ -58,7 +58,7 @@ class UserRewards final : public AdsClientNotifierObserver,
   // RefillConfirmationTokensDelegate:
   void OnWillRefillConfirmationTokens(size_t count) override;
   void OnDidRefillConfirmationTokens() override;
-  void OnFailedToRefillConfirmationTokens() override;
+  void OnFailedToRefillConfirmationTokens(bool will_retry) override;
   void OnWillRetryRefillingConfirmationTokens(base::Time retry_at) override;
   void OnDidRetryRefillingConfirmationTokens() override;
   void OnCaptchaRequiredToRefillConfirmationTokens(

@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 
+#include "base/strings/strcat.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
@@ -30,8 +32,19 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
     return kNever;
   }
 
-  return LongFriendlyDateAndTime(last_updated_at,
-                                 /*use_sentence_style=*/false);
+  const std::string last_updated_at_text =
+      LongFriendlyDateAndTime(last_updated_at, /*use_sentence_style=*/false);
+
+  const base::Time expires_at = last_updated_at + kCatalogLifespan.Get();
+  if (!HasCatalogExpired()) {
+    return base::StrCat(
+        {last_updated_at_text, " (expires in ",
+         FormatApproximateDuration(expires_at - base::Time::Now()), ")"});
+  }
+
+  return base::StrCat(
+      {last_updated_at_text, " (",
+       FormatApproximateDuration(base::Time::Now() - expires_at), " overdue)"});
 }
 
 }  // namespace brave_ads

@@ -59,45 +59,52 @@ std::optional<ConditionMatcherOperatorType> MaybeParseEpochOperatorType(
   return std::nullopt;
 }
 
-bool MatchEpochOperator(std::string_view value,
-                        ConditionMatcherOperatorType operator_type,
-                        std::string_view condition) {
+ConditionMatchResult MatchEpochOperator(
+    std::string_view value,
+    ConditionMatcherOperatorType operator_type,
+    std::string_view condition) {
   std::optional<int> days = MaybeParseDays(condition);
   if (!days) {
     // Invalid days.
-    return false;
+    return ConditionMatchResult::kInvalid;
   }
 
   std::optional<base::TimeDelta> time_delta = MaybeParseTimeDelta(value);
   if (!time_delta) {
     // Invalid time delta.
     BLOG(1, "Invalid epoch operator condition matcher for " << condition);
-    return false;
+    return ConditionMatchResult::kInvalid;
   }
 
   switch (operator_type) {
     case ConditionMatcherOperatorType::kEqual: {
-      return time_delta->InDays() == days;
+      return time_delta->InDays() == days ? ConditionMatchResult::kMatch
+                                          : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kNotEqual: {
-      return time_delta->InDays() != days;
+      return time_delta->InDays() != days ? ConditionMatchResult::kMatch
+                                          : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kGreaterThan: {
-      return time_delta->InDays() > days;
+      return time_delta->InDays() > days ? ConditionMatchResult::kMatch
+                                         : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kGreaterThanOrEqual: {
-      return time_delta->InDays() >= days;
+      return time_delta->InDays() >= days ? ConditionMatchResult::kMatch
+                                          : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kLessThan: {
-      return time_delta->InDays() < days;
+      return time_delta->InDays() < days ? ConditionMatchResult::kMatch
+                                         : ConditionMatchResult::kNoMatch;
     }
 
     case ConditionMatcherOperatorType::kLessThanOrEqual: {
-      return time_delta->InDays() <= days;
+      return time_delta->InDays() <= days ? ConditionMatchResult::kMatch
+                                          : ConditionMatchResult::kNoMatch;
     }
   }
 

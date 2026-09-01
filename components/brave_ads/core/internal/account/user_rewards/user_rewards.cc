@@ -82,8 +82,12 @@ void UserRewards::OnDidRefillConfirmationTokens() {
   BLOG(1, "Successfully refilled confirmation tokens");
 }
 
-void UserRewards::OnFailedToRefillConfirmationTokens() {
-  BLOG(0, "Failed to refill confirmation tokens");
+void UserRewards::OnFailedToRefillConfirmationTokens(bool will_retry) {
+  if (will_retry) {
+    BLOG(1, "Failed to refill confirmation tokens, will retry");
+  } else {
+    BLOG(0, "Failed to refill confirmation tokens, giving up");
+  }
 }
 
 void UserRewards::OnWillRetryRefillingConfirmationTokens(base::Time retry_at) {

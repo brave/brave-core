@@ -410,6 +410,149 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       ParseAndSaveConditionMatcherWithoutCondition) {
+  // Arrange
+  //
+  // The "[pref path operator]" (does not exist) matcher documented in
+  // `condition_matcher_util.h` has no "condition" field. Regression test
+  // for a parser bug where `condition` was unconditionally required,
+  // silently dropping this matcher.
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
+      {
+        "schemaVersion": 2,
+        "campaigns": [
+          {
+            "version": 1,
+            "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+            "advertiserId": "496b045a-195e-441f-b439-07bac083450f",
+            "startAt": "2025-01-01T00:00:00Z",
+            "endAt": "2025-12-31T23:59:59Z",
+            "dailyCap": 20,
+            "priority": 10,
+            "ptr": 1,
+            "metrics": "confirmation",
+            "geoTargets": ["US"],
+            "creativeSets": [
+              {
+                "creativeSetId": "34ab06be-c9ed-4104-9ce0-9e639f4ad272",
+                "perDay": 100,
+                "perWeek": 200,
+                "perMonth": 300,
+                "totalMax": 400,
+                "value": "0.05",
+                "creatives": [
+                  {
+                    "creativeInstanceId": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd",
+                    "companyName": "Image NTT Creative 1",
+                    "alt": "Some content 1",
+                    "targetUrl": "https://brave.com/1",
+                    "conditionMatchers": [
+                      {
+                        "prefPath": "[!]:foo.bar.does.not.exist"
+                      }
+                    ],
+                    "wallpaper": {
+                      "type": "image",
+                      "relativeUrl": "f4c33efb-1605-4b2a-8980-4d41d25b36ff/background.jpg"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      })JSON");
+
+  // Act
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      get_test_future;
+  database::table::CreativeNewTabPageAds database_table;
+  database_table.GetAll(
+      get_test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = get_test_future.Take();
+  ASSERT_TRUE(success);
+  ASSERT_EQ(1u, creative_ads.size());
+  EXPECT_EQ((ConditionMatcherMap{{"[!]:foo.bar.does.not.exist", ""}}),
+            creative_ads.front().condition_matchers);
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       ParseAndSaveSkipsConditionMatcherMissingConditionForNormalPrefPath) {
+  // Arrange
+  //
+  // Only the "[!]:" (does not exist) matcher has no "condition" field; any
+  // other pref path missing one is malformed and must still be skipped.
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
+      {
+        "schemaVersion": 2,
+        "campaigns": [
+          {
+            "version": 1,
+            "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+            "advertiserId": "496b045a-195e-441f-b439-07bac083450f",
+            "startAt": "2025-01-01T00:00:00Z",
+            "endAt": "2025-12-31T23:59:59Z",
+            "dailyCap": 20,
+            "priority": 10,
+            "ptr": 1,
+            "metrics": "confirmation",
+            "geoTargets": ["US"],
+            "creativeSets": [
+              {
+                "creativeSetId": "34ab06be-c9ed-4104-9ce0-9e639f4ad272",
+                "perDay": 100,
+                "perWeek": 200,
+                "perMonth": 300,
+                "totalMax": 400,
+                "value": "0.05",
+                "creatives": [
+                  {
+                    "creativeInstanceId": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd",
+                    "companyName": "Image NTT Creative 1",
+                    "alt": "Some content 1",
+                    "targetUrl": "https://brave.com/1",
+                    "conditionMatchers": [
+                      {
+                        "prefPath": "foo.bar"
+                      }
+                    ],
+                    "wallpaper": {
+                      "type": "image",
+                      "relativeUrl": "f4c33efb-1605-4b2a-8980-4d41d25b36ff/background.jpg"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      })JSON");
+
+  // Act
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+  ASSERT_TRUE(test_future.Get());
+
+  // Assert
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      get_test_future;
+  database::table::CreativeNewTabPageAds database_table;
+  database_table.GetAll(
+      get_test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = get_test_future.Take();
+  ASSERT_TRUE(success);
+  ASSERT_EQ(1u, creative_ads.size());
+  EXPECT_THAT(creative_ads.front().condition_matchers, ::testing::IsEmpty());
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
        ParseAndSaveAdsWithEmptyDictClearsExistingAds) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("4 July 2025"));

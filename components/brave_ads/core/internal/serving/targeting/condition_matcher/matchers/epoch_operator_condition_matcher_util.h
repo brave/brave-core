@@ -25,10 +25,13 @@ std::optional<ConditionMatcherOperatorType> MaybeParseEpochOperatorType(
     std::string_view condition);
 
 // Matches a value against an epoch condition using equality, greater than,
-// greater than or equal, less than, and less than or equal operators.
-bool MatchEpochOperator(std::string_view value,
-                        ConditionMatcherOperatorType operator_type,
-                        std::string_view condition);
+// greater than or equal, less than, and less than or equal operators. Returns
+// `ConditionMatchResult::kInvalid` if `condition` or `value` cannot be
+// parsed.
+ConditionMatchResult MatchEpochOperator(
+    std::string_view value,
+    ConditionMatcherOperatorType operator_type,
+    std::string_view condition);
 
 }  // namespace brave_ads
 

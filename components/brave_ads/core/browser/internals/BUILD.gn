@@ -13,7 +13,10 @@ source_set("internals") {
     "ads_internals_handler.h",
   ]
 
-  deps = [ "//brave/components/brave_ads/core/browser/service" ]
+  deps = [
+    "//brave/components/brave_ads/core/browser/service",
+    "//components/variations/service",
+  ]
 
   public_deps = [
     "//base",
