@@ -39,7 +39,7 @@ export function getHtml(this: BrCustomProfileImageRowElement) {
         : html`
             <leo-button
               id="preview"
-              kind="plain-faint"
+              kind="plain"
               size="jumbo"
               fab
               title="${this.actionTooltip_()}"
