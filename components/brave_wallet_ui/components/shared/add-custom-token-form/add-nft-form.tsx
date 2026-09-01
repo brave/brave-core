@@ -115,14 +115,11 @@ export const AddNftForm = (props: Props) => {
   // coin input never reaches the RPC / gate3 (brave/brave-browser#58531).
   // Deliberately an approximate sync check so the form stays keystroke-
   // responsive; SimpleHashClient::GetNftsUrl is the authoritative validator.
-  const isContractAddressValid = React.useMemo(() => {
-    if (!customAssetsNetwork) {
-      return false
-    }
-    return customAssetsNetwork.coin === BraveWallet.CoinType.SOL
+  const isContractAddressValid = !customAssetsNetwork
+    ? false
+    : customAssetsNetwork.coin === BraveWallet.CoinType.SOL
       ? isValidSolanaAddress(tokenContractAddress)
       : isValidEVMAddress(tokenContractAddress)
-  }, [customAssetsNetwork, tokenContractAddress])
 
   // mutations
   const [addUserToken] = useAddUserTokenMutation()
