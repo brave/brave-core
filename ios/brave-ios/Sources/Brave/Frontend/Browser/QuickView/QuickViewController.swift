@@ -358,6 +358,10 @@ class QuickViewController: UIViewController {
       weakShieldsPanelVC = shieldsPanelViewController
       if UIDevice.current.userInterfaceIdiom == .pad {
         shieldsPanelViewController.modalPresentationStyle = .popover
+      } else {
+        // A sheet stacked on top of this one only nests behind it at the `.large` detent, otherwise
+        // UIKit slides this one out of view for the duration of the presentation.
+        expandToLargeDetentForStackedSheet()
       }
       shieldsPanelViewController.popoverPresentationController?.sourceView =
         toolbarHostingController.rootView.shieldBackgroundView.uiView
@@ -384,6 +388,16 @@ class QuickViewController: UIViewController {
       )
       weakShieldsPanelVC = popover
       popover.present(from: toolbarHostingController.rootView.shieldBackgroundView.uiView, on: self)
+    }
+  }
+
+  /// Moves this sheet to the `.large` detent so a sheet presented on top of it nests behind it
+  /// rather than pushing it out of view.
+  private func expandToLargeDetentForStackedSheet() {
+    guard let sheet = sheetPresentationController, sheet.selectedDetentIdentifier != .large
+    else { return }
+    sheet.animateChanges {
+      sheet.selectedDetentIdentifier = .large
     }
   }
 
@@ -474,6 +488,9 @@ class QuickViewController: UIViewController {
       sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
       sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
+    }
+    if UIDevice.current.userInterfaceIdiom != .pad {
+      expandToLargeDetentForStackedSheet()
     }
     present(viewController, animated: true)
   }
