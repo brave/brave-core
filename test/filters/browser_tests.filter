@@ -2546,17 +2546,23 @@
 # model
 -AppMenuModelTest.ModelHasIcons
 
-# Known upstream flake. WebContents::GetBackgroundColor() returns nullopt until
-# the renderer sends DidChangeBackgroundColor, which Blink only emits from
+# Upstream flake. check-upstream-flake.py reports STABLE UPSTREAM (0.9% over 30
+# days), but that aggregate is diluted by high-volume CQ trybots; see the
+# per-builder rates below. WebContents::GetBackgroundColor() returns nullopt
+# until the renderer sends DidChangeBackgroundColor, which Blink only emits from
 # WebFrameWidgetImpl::UpdateLifecycle once a full (kAll) lifecycle update runs.
 # content::WaitForLoadStop() only waits for DidStopLoading, so on a loaded bot
 # the assertion can run before the first compositor lifecycle update and observe
-# nullopt instead of SK_ColorTRANSPARENT. The aggregate LUCI Analysis rate
-# (0.9% over 30 days) is diluted by high-volume CQ trybots; upstream's own
-# waterfall builders show 11.1% (Linux Tests), 13.7% (Mac13 Tests) and 55.1%
-# (win11-arm64-rel-tests) since 2026-08-18, so the flake is not platform
-# specific and this all-platform file is used. No Brave chromium_src override or
-# patch touches the actor overlay background color path.
+# nullopt instead of SK_ColorTRANSPARENT. Counting only verdicts since
+# 2026-08-18, upstream's own waterfall builders show 11.1% (Linux Tests), 13.7%
+# (Mac13 Tests) and 55.1% (win11-arm64-rel-tests), so the flake is not platform
+# specific and this all-platform file is used. Brave does override the overlay
+# stylesheet in chromium_src/chrome/browser/resources/actor_overlay/app.css, but
+# only the translucent :host(.background-visible) gradient and the border
+# colors, not the document base background color this assertion reads -- that is
+# set by ActorOverlayWebView::ShowUI via
+# WebContents::SetPageBaseBackgroundColor(SK_ColorTRANSPARENT), which no Brave
+# override or patch touches.
 # https://github.com/brave/brave-browser/issues/58297
 -ActorOverlayTest.OverlayWebViewIsTransparentAfterNavigation
 
