@@ -393,8 +393,10 @@ class AIChatService : public KeyedService,
 
   void CreateTabOrganizationEngineIfNeeded();
   void OnTabOrganizationModelPrefChanged();
+  void OnTabOrganizationSendPageContentPrefChanged();
 
   void OnSuggestedTopicsReceived(
+      size_t passage_count,
       GetSuggestedTopicsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> topics);
   void OnGetFocusTabs(
@@ -457,6 +459,11 @@ class AIChatService : public KeyedService,
   // Cached suggested topics for users to be focused on from the latest
   // GetSuggestedTopics call, would be cleared when there are tab data changes.
   std::vector<std::string> cached_focus_topics_;
+  // Total passages `cached_focus_topics_` was derived from, so it only means
+  // anything while that is non-empty. Excerpts arrive from background indexing,
+  // which clears nothing, and any tab change clears the cache anyway, so with
+  // the same tabs a different total means different excerpts.
+  size_t cached_focus_passage_count_ = 0;
 
   base::ScopedMultiSourceObservation<ConversationHandler,
                                      ConversationHandler::Observer>

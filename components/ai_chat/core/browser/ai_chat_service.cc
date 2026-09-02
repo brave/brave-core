@@ -185,6 +185,11 @@ AIChatService::AIChatService(
       prefs::kBraveAIChatTabOrganizationModelKey,
       base::BindRepeating(&AIChatService::OnTabOrganizationModelPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatTabOrganizationSendPageContent,
+      base::BindRepeating(
+          &AIChatService::OnTabOrganizationSendPageContentPrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 
@@ -1563,7 +1568,13 @@ void AIChatService::DisassociateContent(
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
-  if (!cached_focus_topics_.empty()) {
+  size_t passage_count = 0;
+  for (const auto& tab : tabs) {
+    passage_count += tab.passages.size();
+  }
+
+  if (!cached_focus_topics_.empty() &&
+      passage_count == cached_focus_passage_count_) {
     std::move(callback).Run(cached_focus_topics_);
     return;
   }
@@ -1582,9 +1593,9 @@ void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
 
   CreateTabOrganizationEngineIfNeeded();
   tab_organization_engine_->GetSuggestedTopics(
-      tabs,
-      base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      tabs, base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
+                           weak_ptr_factory_.GetWeakPtr(), passage_count,
+                           std::move(callback)));
 }
 
 void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
@@ -1645,11 +1656,19 @@ void AIChatService::OnTabOrganizationModelPrefChanged() {
   cached_focus_topics_.clear();
 }
 
+void AIChatService::OnTabOrganizationSendPageContentPrefChanged() {
+  // Topics describe the tabs as the model saw them, and this pref decides
+  // whether page excerpts were part of that, so don't serve the old ones.
+  cached_focus_topics_.clear();
+}
+
 void AIChatService::OnSuggestedTopicsReceived(
+    size_t passage_count,
     GetSuggestedTopicsCallback callback,
     base::expected<std::vector<std::string>, mojom::APIError> topics) {
   if (tab_data_observer_receiver_.is_bound() && topics.has_value()) {
     cached_focus_topics_ = topics.value();
+    cached_focus_passage_count_ = passage_count;
   }
 
   std::move(callback).Run(std::move(topics));
