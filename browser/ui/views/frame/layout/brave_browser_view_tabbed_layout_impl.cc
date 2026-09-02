@@ -191,17 +191,19 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     layout.AddChild(views().focus_mode_title_bar, title_bar_bounds);
   }
 
+  // Upstream only makes |main_background_region| visible when the panel opens
+  // because the contents area has margins around it. We need it to always be
+  // visible when rounded corners are enabled.
+  if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    if (auto* main_background_layout =
+            layout.GetLayoutFor(views().main_background_region)) {
+      main_background_layout->visibility = true;
+    }
+  }
+
   // Retrieve contents container proposed bounds.
   auto* contents_layout = layout.GetLayoutFor(views().multi_contents_view);
   CHECK(contents_layout);
-
-  // Handle contents background - contents background should be laid out before
-  // other views like sidebar or vertical tab strip in order to cover the entire
-  // contents area that contains sidebar. Otherwise, we would have hole between
-  // contents background and sidebar when using rounded corners.
-  if (views().contents_background && contents_layout) {
-    layout.AddChild(views().contents_background, contents_layout->bounds);
-  }
 
   // Apply vertical tab strip insets for contents container BEFORE laying out
   // sidebar, so the sidebar is positioned adjacent to (not underneath) the
