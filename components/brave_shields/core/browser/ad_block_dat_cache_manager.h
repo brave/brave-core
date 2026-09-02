@@ -31,6 +31,9 @@ class AdBlockDATCacheManager {
   // Calls |on_complete| with success/failure.
   void WriteDATFile(bool is_default_engine, DATFileDataBuffer dat);
 
+  // Deletes cached DAT files from disk.
+  void DropDATCache();
+
   // Reads cached DAT files from disk. Calls |on_complete| with the results.
   void MaybeReadCachedDATFiles(
       base::OnceCallback<void(std::optional<DATFileDataBuffer>,

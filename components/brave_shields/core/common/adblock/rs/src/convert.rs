@@ -6,8 +6,8 @@
 use std::time::Duration;
 
 use crate::ffi::{
-    AddedFiltersRecord, BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16,
-    RegexDebugEntry, RegexManagerDiscardPolicy, SourceInfo,
+    AddedFiltersRecord, BlockerResult, DebugInfo, FilterListMetadata, FilterRuleInfo,
+    OptionalString, OptionalU16, RegexDebugEntry, RegexManagerDiscardPolicy, SourceInfo,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
 use adblock::engine::{EngineDebugInfo as InnerEngineDebugInfo, SourceInfo as InnerSourceInfo};
@@ -20,6 +20,8 @@ use adblock::regex_manager::{
     RegexDebugEntry as InnerRegexDebugEntry,
     RegexManagerDiscardPolicy as InnerRegexManagerDiscardPolicy,
 };
+use adblock::sourcemap::FilterRuleDebugInfo as InnerFilterRuleDebugInfo;
+use cxx::UniquePtr;
 
 impl From<Option<String>> for OptionalString {
     fn from(value: Option<String>) -> Self {
@@ -74,12 +76,31 @@ impl From<InnerEngineDebugInfo> for DebugInfo {
     }
 }
 
+// Converts `Option<FilterRuleDebugInfo>` into a `UniquePtr<FilterRuleInfo>`.
+fn to_filter_rule_info(info: Option<InnerFilterRuleDebugInfo>) -> UniquePtr<FilterRuleInfo> {
+    let Some(info) = info else {
+        return UniquePtr::null();
+    };
+    let Some(raw_line) = info.raw_line else {
+        return UniquePtr::null();
+    };
+
+    let mut filter_rule_info = FilterRuleInfo { raw_line, source_index: -1, line_number: -1 };
+    if let Some(source_location) = info.source_location {
+        filter_rule_info.source_index = i32::try_from(source_location.source_index).unwrap_or(-1);
+        filter_rule_info.line_number = i32::try_from(source_location.line_number).unwrap_or(-1);
+    }
+    UniquePtr::new(filter_rule_info)
+}
+
 impl From<InnerBlockerResult> for BlockerResult {
     fn from(result: InnerBlockerResult) -> Self {
         Self {
             matched: result.should_block(),
             important: result.important,
             has_exception: result.exception.is_some(),
+            filter: to_filter_rule_info(result.filter),
+            exception: to_filter_rule_info(result.exception),
             redirect: result.redirect.into(),
             rewritten_url: result.rewritten_url.into(),
         }

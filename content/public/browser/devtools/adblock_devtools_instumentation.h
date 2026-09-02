@@ -6,6 +6,7 @@
 #ifndef BRAVE_CONTENT_PUBLIC_BROWSER_DEVTOOLS_ADBLOCK_DEVTOOLS_INSTUMENTATION_H_
 #define BRAVE_CONTENT_PUBLIC_BROWSER_DEVTOOLS_ADBLOCK_DEVTOOLS_INSTUMENTATION_H_
 
+#include <cstdint>
 #include <optional>
 #include <string>
 
@@ -19,6 +20,13 @@ class NavigationHandle;
 }
 
 namespace content::devtools_instrumentation {
+
+// Matches to adblock FilterRuleInfo.
+struct CONTENT_EXPORT AdblockFilterRuleInfo {
+  std::string raw_line;
+  uint32_t source_index = 0;
+  uint32_t line_number = 0;
+};
 
 struct CONTENT_EXPORT AdblockInfo {
   AdblockInfo();
@@ -42,6 +50,8 @@ struct CONTENT_EXPORT AdblockInfo {
   bool did_match_exception = false;
   bool has_mock_data = false;
   std::optional<std::string> rewritten_url;
+  std::optional<AdblockFilterRuleInfo> filter;
+  std::optional<AdblockFilterRuleInfo> exception;
 };
 
 CONTENT_EXPORT void SendAdblockInfo(
