@@ -8,12 +8,11 @@ import { useGetVisibleNetworksQuery } from '../slices/api.slice'
 import {
   BraveWallet,
   CustomAssetSupportedCoinTypes,
+  CustomNftSupportedCoinTypes,
   PolkadotAssetHubChainIds,
 } from '../../constants/types'
 
-export function useGetCustomAssetSupportedNetworks(
-  supportedCoinTypes: BraveWallet.CoinType[] = CustomAssetSupportedCoinTypes,
-) {
+function useGetSupportedNetworks(supportedCoinTypes: BraveWallet.CoinType[]) {
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
 
   return React.useMemo(
@@ -26,4 +25,12 @@ export function useGetCustomAssetSupportedNetworks(
       ),
     [networkList, ...supportedCoinTypes],
   )
+}
+
+export function useGetCustomAssetSupportedNetworks() {
+  return useGetSupportedNetworks(CustomAssetSupportedCoinTypes)
+}
+
+export function useGetCustomNftSupportedNetworks() {
+  return useGetSupportedNetworks(CustomNftSupportedCoinTypes)
 }
