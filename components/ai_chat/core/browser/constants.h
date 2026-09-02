@@ -88,6 +88,12 @@ inline constexpr uint32_t kMaxTitleLength = 100u;
 // operations (GetSuggestedTopics, GetFocusTabs).
 inline constexpr size_t kTabListChunkSize = 75;
 
+// Page excerpts sent alongside each tab so the model can infer a topic from
+// content rather than the title alone. Small because a request carries up to
+// `kTabListChunkSize` tabs.
+inline constexpr size_t kMaxPassagesPerTab = 2;
+inline constexpr size_t kMaxPassageBytes = 256;
+
 // Model name to send to the server for Claude Haiku model.
 inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";
 // Model name to send to the server for Claude Sonnet model.
