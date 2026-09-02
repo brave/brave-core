@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 569803648f205e48f47dab4d11ed541d1c69e5d5..c8a03ff3eac262bcdd8fed3485630273a8e7d54d 100644
+index 23ff359d46ba9172a78ca0db9717d209a163ef44..12632dc2885b33208d949c29869534a98199f688 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -786,7 +786,16 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+@@ -801,7 +801,16 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
  #endif
  
    if (resource_name.empty()) {
@@ -20,7 +20,7 @@ index 569803648f205e48f47dab4d11ed541d1c69e5d5..c8a03ff3eac262bcdd8fed3485630273
          << "Every autocomplete icon must have an equivalent SVG "
             "resource for the NTP Realbox. icon.name: '"
          << icon.name << "'";
-@@ -1235,7 +1244,7 @@ void SearchboxHandler::QueryAutocomplete(
+@@ -1334,7 +1343,7 @@ void SearchboxHandler::QueryAutocomplete(
    current_query_id_ = query_id;
  
    std::u16string input_with_keyword = input;
@@ -28,4 +28,4 @@ index 569803648f205e48f47dab4d11ed541d1c69e5d5..c8a03ff3eac262bcdd8fed3485630273
 +  bool is_keyword_selected = true;
    const TemplateURL* template_url = nullptr;
    if (!keyword.empty()) {
-     TemplateURLService* service =
+     TemplateURLService* service = GetTemplateURLService();
