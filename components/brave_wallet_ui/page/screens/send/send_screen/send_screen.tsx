@@ -39,6 +39,7 @@ import {
 import {
   getDominantColorFromImageURL, //
 } from '../../../../utils/style.utils'
+import { isValidPolkadotAssetId } from '$wallet/utils/asset-utils'
 
 // Hooks
 import {
@@ -107,7 +108,6 @@ import {
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
 import { ZCashMigrationBanner } from '../../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
-import { isValidPolkadotAssetId } from '$wallet/utils/asset-utils'
 
 type SendAmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'
