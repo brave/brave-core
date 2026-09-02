@@ -619,7 +619,7 @@ version = "1.0.199"
 dependencies = [
  "cc",
  "codespan-reporting",
- "indexmap 2.14.0",
+ "indexmap 2.14.1",
  "proc-macro2",
  "quote",
  "scratch",
@@ -632,7 +632,7 @@ version = "1.0.199"
 dependencies = [
  "clap",
  "codespan-reporting",
- "indexmap 2.14.0",
+ "indexmap 2.14.1",
  "proc-macro2",
  "quote",
  "syn 3.0.4",
@@ -646,7 +646,7 @@ version = "1.0.199"
 name = "cxxbridge-macro"
 version = "1.0.199"
 dependencies = [
- "indexmap 2.14.0",
+ "indexmap 2.14.1",
  "proc-macro2",
  "quote",
  "syn 3.0.4",
@@ -1195,7 +1195,7 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.14.0"
+version = "2.14.1"
 dependencies = [
  "equivalent",
  "hashbrown 0.17.1",
@@ -1259,7 +1259,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cssparser",
  "html5ever",
- "indexmap 2.14.0",
+ "indexmap 2.14.1",
  "precomputed-hash",
  "selectors 0.32.0",
 ]
