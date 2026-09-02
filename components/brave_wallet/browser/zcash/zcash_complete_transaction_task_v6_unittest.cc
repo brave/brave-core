@@ -144,9 +144,6 @@ class ZCashCompleteTransactionTaskV6Test : public testing::Test {
         {{features::kBraveWalletZCashFeature,
           {{"zcash_shielded_transactions_enabled",
             shielded_enabled ? "true" : "false"}}},
-#if BUILDFLAG(IS_IOS)
-         {features::kBraveWalletWebUIFeature, {}}
-#endif
         },
         {});
   }

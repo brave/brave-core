@@ -38,9 +38,6 @@ bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
 bool IsMojoForHardwareWalletEnabled();
 bool IsSnapsFeatureEnabled();
-#if BUILDFLAG(IS_IOS)
-bool IsWalletWebUIEnabled();
-#endif
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);
