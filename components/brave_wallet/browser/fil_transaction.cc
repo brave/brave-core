@@ -8,12 +8,12 @@
 #include <algorithm>
 #include <array>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <utility>
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -60,7 +60,7 @@ std::optional<std::vector<uint8_t>> ToBigIntBytesArray(
 
   auto bigint_span =
       base::byte_span_from_ref(*bigint).first(significant_bytes_count);
-  for (auto item : base::Reversed(bigint_span)) {
+  for (auto item : std::views::reverse(bigint_span)) {
     result.push_back(item);
   }
 

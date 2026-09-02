@@ -7,9 +7,9 @@
 
 #include <algorithm>
 #include <array>
+#include <ranges>
 
 #include "base/check_op.h"
-#include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -59,7 +59,7 @@ eth_abi::Bytes32 Namehash(std::string_view name) {
   auto labels = SplitStringPiece(name, ".", base::KEEP_WHITESPACE,
                                  base::SPLIT_WANT_NONEMPTY);
 
-  for (const auto& label : base::Reversed(labels)) {
+  for (const auto& label : std::views::reverse(labels)) {
     auto label_hash = KeccakHash(base::as_byte_span(label));
     hash = KeccakHash(ConcatArrays(hash, label_hash));
   }

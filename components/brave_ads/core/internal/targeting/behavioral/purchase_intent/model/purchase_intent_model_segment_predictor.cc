@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_predictor.h"
 
 #include <cstddef>
+#include <ranges>
 
-#include "base/containers/adapters.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 
 namespace brave_ads {
@@ -27,7 +27,7 @@ SegmentList PredictPurchaseIntentSegments(
   SegmentList segments;
   segments.reserve(kMaximumSegments);
 
-  for (const auto& [score, segment] : base::Reversed(segment_scores)) {
+  for (const auto& [score, segment] : std::views::reverse(segment_scores)) {
     if (score < threshold) {
       continue;
     }

@@ -11,6 +11,7 @@
 #include <iterator>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string_view>
 #include <variant>
 #include <vector>
@@ -18,7 +19,6 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
@@ -127,7 +127,7 @@ mojom::ConversationEntryEvent* MaybeGetEventToAppend(
                                 ConversationEntryEvent_Tag::kToolUseEvent)
       << "Only completions and tool use events can be split across multiple "
          "events.";
-  for (const auto& event : base::Reversed(events)) {
+  for (const auto& event : std::views::reverse(events)) {
     if (IsNonSplittingEvent(event->which())) {
       continue;
     }
