@@ -348,11 +348,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     }
 
     @Override
-    protected void onRestoreInstanceState(@Nullable Bundle state) {
+    protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
-        if (state == null) {
-            return;
-        }
         mSplashAnimationFinished = state.getBoolean(KEY_SPLASH_ANIMATION_FINISHED, false);
         mRestoredPageIndex = state.getInt(KEY_PAGE_INDEX, 0);
         mCrashReportingChecked = state.getBoolean(KEY_CRASH_REPORTING_CHECKED);
