@@ -11,8 +11,8 @@ import Button from '@brave/leo/react/button'
 import {
   useSafeUISelector,
   useSafeWalletSelector,
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
+} from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '$wallet/common/selectors'
 
 // Hooks
 import {
@@ -20,45 +20,45 @@ import {
   useGetZCashAccountInfoQuery,
   useStartShieldSyncMutation,
   useStopShieldSyncMutation,
-} from '../../../common/slices/api.slice'
+} from '$wallet/common/slices/api.slice'
 
 // Constants
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../common/constants/local-storage-keys'
+} from '$wallet/common/constants/local-storage-keys'
 
 // Slices
 import {
   networkEntityAdapter, //
-} from '../../../common/slices/entities/network.entity'
+} from '$wallet/common/slices/entities/network.entity'
 
 // Utils
-import { reduceAddress } from '../../../utils/reduce-address'
-import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '$wallet/utils/reduce-address'
+import { getLocale } from '$web-common/locale'
 import {
   useLocalStorage,
   useSyncedLocalStorage,
-} from '../../../common/hooks/use_local_storage'
-import { makeAccountRoute, openTab } from '../../../utils/routes-utils'
+} from '$wallet/common/hooks/use_local_storage'
+import { makeAccountRoute, openTab } from '$wallet/utils/routes-utils'
 
 // Types
-import { AccountPageTabs, BraveWallet } from '../../../constants/types'
+import { AccountPageTabs, BraveWallet } from '$wallet/constants/types'
 import {
   ExternalWalletProvider, //
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+} from '../../../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Components
-import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
-import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import { CreateNetworkIcon } from '$wallet/components/shared/create-network-icon/index'
+import { LoadingSkeleton } from '$wallet/components/shared/loading-skeleton/index'
 import {
   CreateAccountIcon, //
-} from '../../shared/create-account-icon/create-account-icon'
+} from '$wallet/components/shared/create-account-icon/create-account-icon'
 import {
   ZCashSyncModal, //
-} from '../popup-modals/zcash_sync_modal/zcash_sync_modal'
+} from '$wallet/components/desktop/popup-modals/zcash_sync_modal/zcash_sync_modal'
 import {
   AddressActionsMenu, //
-} from '../wallet-menus/address_actions_menu'
+} from '$wallet/components/desktop/wallet-menus/address_actions_menu'
 
 // Styled Components
 import {
@@ -77,14 +77,14 @@ import {
   AddressArea,
   NetworkAndExternalProviderClickArea,
   EmptyClickArea,
-} from './asset-group-container.style'
+} from './asset_group_container.style'
 import {
   Row,
   Column,
   Text,
   HorizontalSpace,
   BraveRewardsIndicator,
-} from '../../shared/style'
+} from '$wallet/components/shared/style'
 
 interface Props {
   externalProvider?: ExternalWalletProvider | null

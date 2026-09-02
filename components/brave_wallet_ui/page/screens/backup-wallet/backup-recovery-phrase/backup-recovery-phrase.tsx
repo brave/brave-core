@@ -27,7 +27,7 @@ import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 // components
 import {
   RecoveryPhrase, //
-} from '../../../../components/desktop/recovery-phrase/recovery-phrase'
+} from './components/recovery_phrase/recovery_phrase'
 import {
   OnboardingContentLayout, //
 } from '../../onboarding/components/onboarding_content_layout/content_layout'

@@ -16,7 +16,7 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // components
-import AssetWatchlistItem from '../../asset-watchlist-item'
+import { VisibleAssetItem } from './components/visible_asset_item/visible_asset_item'
 
 // styles
 import {
@@ -27,7 +27,7 @@ import {
 } from '../../../shared/style'
 import { AddIcon, AddButtonText, VirtualListStyle } from './style'
 import { PaddedColumn } from '../style'
-import { assetWatchListItemHeight } from '../../asset-watchlist-item/style'
+import { visibleAssetItemHeight } from './components/visible_asset_item/visible_asset_item.style'
 
 interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
@@ -92,7 +92,7 @@ const ListItem = (props: ListItemProps) => {
 
   return (
     <div style={style}>
-      <AssetWatchlistItem
+      <VisibleAssetItem
         ref={handleSetSize}
         isRemovable={isRemovable(data)}
         token={data}
@@ -143,7 +143,7 @@ export const VirtualizedVisibleAssetsList = (
 
   const listRef = React.useRef<List | null>(null)
   const itemSizes = React.useRef<number[]>(
-    new Array(tokenList.length).fill(assetWatchListItemHeight),
+    new Array(tokenList.length).fill(visibleAssetItemHeight),
   )
 
   const setSize = React.useCallback((index: number, size: number) => {
@@ -159,7 +159,7 @@ export const VirtualizedVisibleAssetsList = (
   }, [])
 
   const getSize = React.useCallback((index: number) => {
-    return itemSizes.current[index] || assetWatchListItemHeight
+    return itemSizes.current[index] || visibleAssetItemHeight
   }, [])
 
   return (

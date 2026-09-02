@@ -1,11 +1,11 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as leo from '@brave/leo/tokens/css/variables'
 import styled, { css } from 'styled-components'
-import { WalletButton } from '../../shared/style'
+import { WalletButton } from '$wallet/components/shared/style'
 
 const Font = css`
   font: ${leo.font.default.semibold};

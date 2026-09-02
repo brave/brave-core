@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory, Link, NavLink } from 'react-router-dom'
@@ -10,19 +10,19 @@ import { useHistory, Link, NavLink } from 'react-router-dom'
 import { getLocale } from '$web-common/locale'
 
 // routes
-import { WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '$wallet/constants/types'
 
 // style
-import { LinkText } from '../../../components/shared/style'
+import { LinkText } from '$wallet/components/shared/style'
 import {
   BackIcon, //
-} from '../../../page/screens/deposit/components/select_header/select_header.style'
+} from '$wallet/page/screens/deposit/components/select_header/select_header.style'
 import {
   BackButton,
   DotsWrapper,
   FlexBox,
   Wrapper,
-} from './steps-navigation.style'
+} from './steps_navigation.style'
 
 export interface StepsNavigationProps<T extends string> {
   currentStep: T
@@ -118,5 +118,3 @@ export const StepsNavigation: <T extends string>(
     </Wrapper>
   )
 }
-
-export default StepsNavigation

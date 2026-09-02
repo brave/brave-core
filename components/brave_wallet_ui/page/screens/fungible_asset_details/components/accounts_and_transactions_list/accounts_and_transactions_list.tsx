@@ -35,7 +35,7 @@ import { PortfolioAssetOptions } from '../../../../../options/nav-options'
 // Components
 import {
   PortfolioAccountItem, //
-} from '../../../../../components/desktop/portfolio-account-item/index'
+} from '../portfolio_account_item/portfolio_account_item'
 import {
   SegmentedControl, //
 } from '../../../../../components/shared/segmented_control/segmented_control'

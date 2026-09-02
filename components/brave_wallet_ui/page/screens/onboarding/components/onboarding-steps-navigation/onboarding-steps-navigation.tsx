@@ -19,7 +19,7 @@ import {
 import {
   StepsNavigation,
   StepsNavigationProps,
-} from '../../../../../components/desktop/steps-navigation/steps-navigation'
+} from '../steps_navigation/steps_navigation'
 
 const NEW_WALLET_STEPS: WalletRoutes[] = [
   WalletRoutes.OnboardingWelcome,
