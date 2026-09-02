@@ -1434,6 +1434,35 @@ TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_CacheTopics) {
   TestGetSuggestedTopics(topics2);
 }
 
+TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_ModelChangeDropsCache) {
+  ai_chat_service_->SetTabOrganizationEngineForTesting(
+      std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
+  auto* engine = static_cast<MockEngineConsumer*>(
+      ai_chat_service_->GetTabOrganizationEngineForTesting());
+
+  std::vector<std::string> topics1{"topic1"};
+  EXPECT_CALL(*engine, GetSuggestedTopics(_, _))
+      .WillOnce(base::test::RunOnceCallback<1>(topics1));
+
+  TestGetSuggestedTopics(topics1);
+  TestGetSuggestedTopics(topics1);
+
+  // Topics describe what one model made of the tabs, so picking a different
+  // model for tab focus has to ask again rather than reuse them.
+  prefs_.SetString(prefs::kBraveAIChatTabOrganizationModelKey,
+                   kClaudeHaikuModelKey);
+
+  ai_chat_service_->SetTabOrganizationEngineForTesting(
+      std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
+  auto* new_engine = static_cast<MockEngineConsumer*>(
+      ai_chat_service_->GetTabOrganizationEngineForTesting());
+  std::vector<std::string> topics2{"topic2"};
+  EXPECT_CALL(*new_engine, GetSuggestedTopics(_, _))
+      .WillOnce(base::test::RunOnceCallback<1>(topics2));
+
+  TestGetSuggestedTopics(topics2);
+}
+
 TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_EmptyTabs) {
   base::RunLoop run_loop;
   ai_chat_service_->GetSuggestedTopics(
