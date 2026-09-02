@@ -221,21 +221,17 @@ class BraveDownloadManagerDelegateBrowserTestBase : public PlatformBrowserTest {
         << "File should always finish downloading";
   }
 
-  void DownloadAndExpectIptcStripping(const ImageTestFile& file) {
+  void DownloadAndExpectIptcStripping(const ImageTestFile& file,
+                                      bool should_strip) {
     base::test::TestFuture<void> iptc_metadata_stripper_future;
     GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
         iptc_metadata_stripper_future.GetCallback());
     DownloadURL(embedded_test_server()->GetURL(UrlPath(file)));
-    EXPECT_TRUE(iptc_metadata_stripper_future.Wait());
-    AssertFileWasDownloaded(file);
-  }
-
-  void DownloadAndExpectNoIptcStripping(const ImageTestFile& file) {
-    base::test::TestFuture<void> iptc_metadata_stripper_future;
-    GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
-        iptc_metadata_stripper_future.GetCallback());
-    DownloadURL(embedded_test_server()->GetURL(UrlPath(file)));
-    EXPECT_FALSE(iptc_metadata_stripper_future.IsReady());
+    if (should_strip) {
+      EXPECT_TRUE(iptc_metadata_stripper_future.Wait());
+    } else {
+      EXPECT_FALSE(iptc_metadata_stripper_future.IsReady());
+    }
     AssertFileWasDownloaded(file);
   }
 
@@ -289,7 +285,8 @@ class BraveDownloadManagerDelegateFeatureDisabledBrowserTest
 IN_PROC_BROWSER_TEST_F(
     BraveDownloadManagerDelegateBrowserTest,
     NON_ANDROID_TEST(RemovesFbmdMetadataFromDownloadedJpegImage)) {
-  DownloadAndExpectIptcStripping(kRealJpegImageAndJpegMimeFile);
+  DownloadAndExpectIptcStripping(kRealJpegImageAndJpegMimeFile,
+                                 /*should_strip=*/true);
 
   base::ScopedAllowBlockingForTesting allow_blocking;
   std::string downloaded_contents;
@@ -311,7 +308,8 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     BraveDownloadManagerDelegateBrowserTest,
     NON_ANDROID_TEST(InvokesStrippingForJpegExtWithNonJpegMime)) {
-  DownloadAndExpectIptcStripping(kJpegExtAndOctetMimeFile);
+  DownloadAndExpectIptcStripping(kJpegExtAndOctetMimeFile,
+                                 /*should_strip=*/true);
 
   download::DownloadItem* const item = GetCompletedDownload();
   ASSERT_TRUE(item);
@@ -322,7 +320,8 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     BraveDownloadManagerDelegateBrowserTest,
     NON_ANDROID_TEST(DoesNotInvokeStrippingForNonJpegExtWithJpegMime)) {
-  DownloadAndExpectNoIptcStripping(kPngExtAndJpegMimeFile);
+  DownloadAndExpectIptcStripping(kPngExtAndJpegMimeFile,
+                                 /*should_strip=*/false);
 
   download::DownloadItem* const item = GetCompletedDownload();
   ASSERT_TRUE(item);
@@ -333,28 +332,13 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     BraveDownloadManagerDelegateBrowserTest,
     NON_ANDROID_TEST(DoesNotStripMetadataFromNonImageDownload)) {
-  base::test::TestFuture<void> iptc_metadata_stripper_future;
-  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
-      iptc_metadata_stripper_future.GetCallback());
-
-  DownloadURL(embedded_test_server()->GetURL(UrlPath(kTxtExtAndPlainMimeFile)));
-
-  // Target path is not .jpg/.jpeg, so IPTC stripping is skipped.
-  EXPECT_FALSE(iptc_metadata_stripper_future.IsReady());
-
-  // Ensure the file was still downloaded regardless.
-  AssertFileWasDownloaded(kTxtExtAndPlainMimeFile);
+  DownloadAndExpectIptcStripping(kTxtExtAndPlainMimeFile,
+                                 /*should_strip=*/false);
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveDownloadManagerDelegateFeatureDisabledBrowserTest,
     NON_ANDROID_TEST(DoesNotStripMetadataWhenFeatureDisabled)) {
-  base::test::TestFuture<void> iptc_metadata_stripper_future;
-  GetDownloadManagerDelegate()->SetOnImageMetadataStrippedCallback(
-      iptc_metadata_stripper_future.GetCallback());
-
-  DownloadURL(embedded_test_server()->GetURL(UrlPath(kJpegExtAndJpegMimeFile)));
-
-  EXPECT_FALSE(iptc_metadata_stripper_future.IsReady());
-  AssertFileWasDownloaded(kJpegExtAndJpegMimeFile);
+  DownloadAndExpectIptcStripping(kJpegExtAndJpegMimeFile,
+                                 /*should_strip=*/false);
 }
