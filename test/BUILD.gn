@@ -148,6 +148,7 @@ test("brave_unit_tests") {
     "//brave/components/ntp_background_images/browser/test/ntp_sponsored_source_test_util.h",
     "//brave/components/webcompat/content/test/webcompat_exceptions_unittest.cc",
     "//brave/third_party/blink/renderer/brave_font_whitelist_unittest.cc",
+    "//brave/third_party/blink/renderer/shape_cache_key_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//brave/vendor/brave_base/random_unittest.cc",
     "//components/domain_reliability/test_util.cc",
@@ -1445,6 +1446,10 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/web_applications",
       "//ui/base/clipboard:clipboard_test_support",
     ]
+
+    if (enable_dice_support) {
+      sources += [ "//brave/browser/ui/views/profiles/brave_profile_picker_view_browsertest.cc" ]
+    }
 
     if (enable_brave_rewards) {
       sources += [ "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc" ]
