@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Remove the Autofill feedback menu item and its following separator.
+
+      Brave does not offer the upstream autofill feedback flow, so the "Feedback"
+      item and the separator that follows it must not appear in the context menu.
+      The rewriter wraps the function body so the removal runs on all paths
+      including the early-return path for content-editable fields.
+    after_function_impl:
+      function_name: AutofillContextMenuManager::AppendItems
+      code: |-
+        RemoveAutofillFeedbackMenuItem(menu_model_);
