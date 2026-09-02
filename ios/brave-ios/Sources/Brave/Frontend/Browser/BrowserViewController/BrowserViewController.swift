@@ -743,10 +743,6 @@ public class BrowserViewController: UIViewController {
     obscuredInsets.top = toolbarInsets.top
     obscuredInsets.bottom = toolbarInsets.bottom
 
-    // Setting obscuredInsets actually includes a side-effect of setting the web views contentInset
-    webViewProxy.obscuredInsets = obscuredInsets
-
-    // But we still need to update the scroll indicator insets manually
     var scrollIndicatorInsets = UIEdgeInsets(
       top: max(0, toolbarInsets.top - view.safeAreaInsets.top),
       left: 0,
@@ -757,15 +753,21 @@ public class BrowserViewController: UIViewController {
     if let keyboardState, case let keyboardHeight = keyboardState.intersectionHeightForView(view),
       keyboardHeight > 0
     {
-      var contentInsets = webViewProxy.scrollView?.contentInset ?? .zero
-      contentInsets.bottom = keyboardHeight + toolbarInsets.bottom
-      webViewProxy.scrollView?.contentInset = contentInsets
+      // The keyboard must be included in the obscured insets themselves. WKWebView derives and
+      // re-asserts the scroll view's contentInset from obscuredContentInsets, so adjusting the
+      // scroll view's contentInset manually would be overwritten by the web process.
+      obscuredInsets.bottom = max(obscuredInsets.bottom, keyboardHeight)
       if isUsingBottomBar {
         scrollIndicatorInsets.bottom = 0
       } else {
         scrollIndicatorInsets.bottom -= toolbarInsets.bottom
       }
     }
+
+    // Setting obscuredInsets actually includes a side-effect of setting the web views contentInset
+    webViewProxy.obscuredInsets = obscuredInsets
+
+    // But we still need to update the scroll indicator insets manually
     webViewProxy.scrollView?.scrollIndicatorInsets = scrollIndicatorInsets
   }
 
