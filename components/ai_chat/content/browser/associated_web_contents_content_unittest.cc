@@ -395,6 +395,19 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   NavigateTo(GURL("https://www.brave.com"));
 }
 
+TEST_P(AssociatedWebContentsContentUnitTest,
+       Reload_BrowserInitiatedNavigationToSameUrlKeepsContentIdInSync) {
+  NavigateTo(GURL("https://www.brave.com"));
+
+  // A browser-initiated navigation to the current URL is converted to a
+  // reload, and Chromium reassigns the committed entry's unique id at commit
+  // time, so the content must not keep its previous id.
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      web_contents(), GURL("https://www.brave.com"));
+  EXPECT_EQ(controller().GetLastCommittedEntry()->GetUniqueID(),
+            web_contents_content_->content_id());
+}
+
 TEST_P(AssociatedWebContentsContentUnitTest, GetPageContent_HasContent) {
   constexpr char kExpectedText[] = "This is the way.";
   // Add whitespace to ensure it's trimmed

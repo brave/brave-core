@@ -145,15 +145,14 @@ void AssociatedWebContentsContent::NavigationEntryCommitted(
   }
 
   // A reload of the same URL is the same logical page, so leave the content
-  // alone: archiving it and regenerating its uuid would orphan turn
-  // associations and staged state. Nothing needs updating either, since the
-  // navigation entry - and so the content id - is reused. A reload that
-  // redirects somewhere else is a different page, and is handled as a normal
-  // navigation below.
-  const bool is_same_page_reload = pending_navigation_is_reload_ &&
-                                   !is_same_document_navigation_ &&
-                                   load_details.previous_main_frame_url ==
-                                       web_contents()->GetLastCommittedURL();
+  // alone.
+  // Note: This doesn't treat navigations to the the same URL as a reload as
+  // they have a different content_id.
+  const bool is_same_page_reload =
+      pending_navigation_is_reload_ && !is_same_document_navigation_ &&
+      load_details.previous_main_frame_url ==
+          web_contents()->GetLastCommittedURL() &&
+      load_details.entry->GetUniqueID() == content_id();
   pending_navigation_is_reload_ = false;
 
   if (!is_same_page_reload &&
