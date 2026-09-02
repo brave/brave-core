@@ -19,7 +19,12 @@ BASE_FEATURE(kBraveAdblockDefault1pBlocking, base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will issue DNS queries for requests that the adblock
 // engine has not blocked, then check them again with the original hostname
 // substituted for any canonical name found.
-BASE_FEATURE(kBraveAdblockCnameUncloaking, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAdblockCnameUncloaking,
+#if BUILDFLAG(IS_ANDROID)
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#endif
 // When enabled, Brave will apply HTML element collapsing to all images and
 // iframes that initiate a blocked network request.
 BASE_FEATURE(kBraveAdblockCollapseBlockedElements,
