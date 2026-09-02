@@ -357,10 +357,13 @@ void TabSearchPageHandler::SearchTabsByContent(
     std::move(callback).Run({});
     return;
   }
-  history_embeddings::HistoryEmbeddingsSearch* embeddings_search =
-      embeddings_search_for_testing_
-          ? embeddings_search_for_testing_.get()
-          : HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+  base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch> embeddings_search;
+  if (embeddings_search_for_testing_) {
+    embeddings_search = *embeddings_search_for_testing_;
+  } else if (auto* service =
+                 HistoryEmbeddingsServiceFactory::GetForProfile(profile)) {
+    embeddings_search = service->AsWeakPtr();
+  }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
   // Empty query, or one of the keyed services we depend on is unavailable
@@ -373,7 +376,7 @@ void TabSearchPageHandler::SearchTabsByContent(
   // tab_search only needs the matched tab_ids; drop the rest of the metadata
   // the util carries for its other consumer.
   history_embeddings::SearchOpenTabsByContent(
-      profile, history_service, embeddings_search, query,
+      profile, history_service, std::move(embeddings_search), query,
       base::BindOnce(
           [](SearchTabsByContentCallback callback,
              std::vector<history_embeddings::OpenTabInfo> tabs) {

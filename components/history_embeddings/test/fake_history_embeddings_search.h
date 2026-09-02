@@ -10,9 +10,12 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history_embeddings/core/history_embeddings_search.h"
+#include "components/history_embeddings/core/vector_database.h"
 
 class GURL;
 
@@ -44,6 +47,16 @@ class FakeHistoryEmbeddingsSearch
   // Sets the rows that subsequent `Search()` calls will return.
   void SetScoredRows(std::vector<history_embeddings::ScoredUrlRow> rows);
 
+  // Mirrors `HistoryEmbeddingsService::AsWeakPtr()`, which is how production
+  // callers hold the search across asynchronous work.
+  base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+  // Mirrors what `HistoryEmbeddingsService::Shutdown()` does: the object
+  // stays alive, but pointers handed out earlier stop resolving.
+  void InvalidateWeakPtrs() { weak_ptr_factory_.InvalidateWeakPtrs(); }
+
   // Captured args from the most recent `Search()` call.
   const std::string& last_query() const { return last_query_; }
   const std::optional<base::Time>& last_time_range_start() const {
@@ -72,6 +85,7 @@ class FakeHistoryEmbeddingsSearch
   size_t last_count_ = 0;
   bool last_skip_answering_ = false;
   std::vector<history::URLID> last_url_id_filter_;
+  base::WeakPtrFactory<FakeHistoryEmbeddingsSearch> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
