@@ -204,18 +204,23 @@ source_set("browser_tests") {
   }
 
   if (!is_android) {
-    sources += [ "vertical_tab_metrics_browsertest.cc" ]
+    sources += [
+      "profile_misc_metrics_service_browsertest.cc",
+      "vertical_tab_metrics_browsertest.cc",
+    ]
   }
 
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/test:test_support",
+    "//components/keyed_service/core",
     "//components/language/core/browser",
     "//components/prefs:test_support",
     "//content/test:test_support",

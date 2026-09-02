@@ -33,6 +33,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_selections.h"
 #include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
@@ -203,7 +204,10 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   MigrateHttpsUpgradeSettings(profile);
 
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
-  if (!do_final_services_init_) {
+  // Mirror the upstream guard so Brave services aren't created for profiles
+  // that have keyed services disabled (System Profile).
+  if (!do_final_services_init_ ||
+      AreKeyedServicesDisabledForProfileByDefault(profile)) {
     return;
   }
 
