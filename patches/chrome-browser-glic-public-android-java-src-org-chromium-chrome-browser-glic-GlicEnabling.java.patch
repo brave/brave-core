@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
-index d5a3a77572d41b5d6016be46f4e278f746e7acdc..bd327a2d393a557efdc144a934ebc20934a741aa 100644
+index d88179d7c5ec5ea4b4b0cadd97dacc88fc8f7480..19aeeef23fee841cb907860cfe77c2ece9c18a44 100644
 --- a/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
 +++ b/chrome/browser/glic/public/android/java/src/org/chromium/chrome/browser/glic/GlicEnabling.java
 @@ -26,7 +26,7 @@ public class GlicEnabling {
@@ -28,7 +28,7 @@ index d5a3a77572d41b5d6016be46f4e278f746e7acdc..bd327a2d393a557efdc144a934ebc209
      }
  
      /** Returns true if the user was previously determined to be ineligible for Glic. */
-@@ -58,21 +58,21 @@ public class GlicEnabling {
+@@ -58,14 +58,14 @@ public class GlicEnabling {
      public static boolean shouldShowSettingsPage(@Nullable Profile profile) {
          if (profile == null) return false;
          if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
@@ -44,7 +44,8 @@ index d5a3a77572d41b5d6016be46f4e278f746e7acdc..bd327a2d393a557efdc144a934ebc209
 +        return false;
      }
  
-     /** Returns true if Glic is ready to be used for the given profile. */
+     /**
+@@ -82,7 +82,7 @@ public class GlicEnabling {
      public static boolean isReadyForProfile(@Nullable Profile profile) {
          if (profile == null) return false;
          if (sIsEnabledForTesting != null) return sIsEnabledForTesting;
