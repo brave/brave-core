@@ -6,12 +6,16 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
@@ -133,6 +137,22 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup(
   }
 }
 
+void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady(base::OnceClosure pre_reload_callback) {
+   auto& controller = web_contents()->GetController();
+  if (controller.GetPendingEntry() || controller.NeedsReload()) {
+    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady #100 url:" << web_contents()->GetURL();
+    if(!reload_on_ready_callback_.is_null()) {
+      LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady Owerwritten #500 url:" << web_contents()->GetURL();
+    }
+    reload_on_ready_callback_ =
+        base::BindOnce(&EphemeralStorageTabHelper::ReloadBypassingCache,
+                       weak_factory_.GetWeakPtr(), std::move(pre_reload_callback));
+    return;
+  }
+  LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady #200 url:" << web_contents()->GetURL();
+  ReloadBypassingCache(std::move(pre_reload_callback));
+}
+
 void EphemeralStorageTabHelper::DidStartNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
@@ -163,14 +183,34 @@ void EphemeralStorageTabHelper::DidFinishNavigation(
   // Clear all provisional ephemeral lifetimes. A committed ephemeral lifetime
   // is created in ReadyToCommitNavigation().
   provisional_tld_ephemeral_lifetimes_.clear();
+
+   if (reload_on_ready_callback_) {
+    // Cancel this navigation (which may be about to serve a stale response
+    // preferring cache, e.g. a tab restore) and reload it bypassing the
+    // cache. NavigationController::Reload() can't be called re-entrantly
+    // from here (DidStartNavigation() runs synchronously from within
+    // NavigateToExistingPendingEntry()), so post it instead.
+    
+    // base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+    //     FROM_HERE, base::BindOnce(&EphemeralStorageTabHelper::ReloadBypassingCache,
+    //                               weak_factory_.GetWeakPtr()));
+
+    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::DidFinishNavigation url:" << navigation_handle->GetURL();
+    std::move(reload_on_ready_callback_).Run();
+
+    return;
+  }
+
 }
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame()) {
+//    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReadyToCommitNavigation #100 url:" << navigation_handle->GetURL();
     return;
   }
   if (navigation_handle->IsSameDocument()) {
+//    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReadyToCommitNavigation #101 url:" << navigation_handle->GetURL();
     return;
   }
 
@@ -180,6 +220,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
       net::URLToEphemeralStorageDomain(last_committed_url);
+//LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReadyToCommitNavigation new_domain:" << new_domain << " previous_domain:" << previous_domain;
   if (new_domain != previous_domain) {
     // Create new storage areas for new ephemeral storage domain.
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
@@ -240,6 +281,15 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
       brave_shields::ControlType::ALLOW;
   tld_ephemeral_lifetime_->SetShieldsStateOnHost(
       url.host(), shields_enabled && cookies_restricted);
+}
+
+void EphemeralStorageTabHelper::ReloadBypassingCache(base::OnceClosure pre_reload_callback) {
+  if(pre_reload_callback) {
+    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCache callback call url:" << web_contents()->GetURL();
+    std::move(pre_reload_callback).Run();
+  }
+  web_contents()->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
+                                         false);
 }
 
 #if BUILDFLAG(IS_ANDROID)

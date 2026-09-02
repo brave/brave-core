@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_set.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/unguessable_token.h"
@@ -56,6 +57,7 @@ class EphemeralStorageTabHelper
       const url::Origin& origin);
 
   void EnforceFirstPartyStorageCleanup(StorageCleanupMode mode);
+  void ReloadBypassingCacheWhenReady(base::OnceClosure pre_reload_callback);
 
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
@@ -72,10 +74,15 @@ class EphemeralStorageTabHelper
 
   void CreateProvisionalTLDEphemeralLifetime(
       content::NavigationHandle* navigation_handle);
+  // NavigationController::Reload() can't be called re-entrantly from within
+  // DidStartNavigation(), which runs synchronously inside
+  // NavigateToExistingPendingEntry(). This is posted as a separate task so it
+  // runs after that call has unwound.
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
 
   void UpdateShieldsState(const GURL& url);
+  void ReloadBypassingCache(base::OnceClosure pre_reload_callback);
 
 #if BUILDFLAG(IS_ANDROID)
   // TabModelObserver
@@ -92,6 +99,7 @@ class EphemeralStorageTabHelper
   base::flat_set<scoped_refptr<TLDEphemeralLifetime>>
       provisional_tld_ephemeral_lifetimes_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
+  base::OnceClosure reload_on_ready_callback_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 
