@@ -179,6 +179,26 @@ extension BrowserViewController: TabManagerDelegate {
           self.tabManager.configureTab(tab, request: request, flushToDisk: false, zombie: true)
           self.tabManager.saveTab(tab, saveOrder: true)
           self.tabManager.selectTab(tab)
+        },
+        onShowConfirmationAlert: { [weak self] in
+          let alert = UIAlertController(
+            title: Strings.quickViewConfirmationAlertTitle,
+            message: Strings.quickViewConfirmationAlertMessage,
+            preferredStyle: .alert
+          )
+          alert.addAction(
+            .init(title: Strings.quickViewConfirmationAlertKeepButtonTitle, style: .default)
+          )
+          alert.addAction(
+            .init(
+              title: Strings.quickViewConfirmationAlertTurnOffButtonTitle,
+              style: .cancel,
+              handler: { _ in
+                Preferences.General.openLinkInQuickViewMode.value = false
+              }
+            )
+          )
+          self?.present(alert, animated: true)
         }
       )
       if let sheet = quickViewController.sheetPresentationController {

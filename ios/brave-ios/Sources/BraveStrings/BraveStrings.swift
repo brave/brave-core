@@ -9264,4 +9264,36 @@ extension Strings {
     comment:
       "Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab."
   )
+
+  public static let quickViewConfirmationAlertTitle = NSLocalizedString(
+    "quickview.confirmation.alert.title",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Keep opening links in QuickView?",
+    comment:
+      "Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links."
+  )
+  public static let quickViewConfirmationAlertMessage = NSLocalizedString(
+    "quickview.confirmation.alert.message",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "QuickView lets you preview links without leaving your page. You can turn this off anytime in Settings.",
+    comment:
+      "Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it."
+  )
+  public static let quickViewConfirmationAlertKeepButtonTitle = NSLocalizedString(
+    "quickview.confirmation.alert.keep.button.title",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Keep using QuickView",
+    comment: "Button title to keep opening links in QuickView after the confirmation alert."
+  )
+  public static let quickViewConfirmationAlertTurnOffButtonTitle = NSLocalizedString(
+    "quickview.confirmation.alert.turnOff.button.title",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Turn off",
+    comment: "Button title to stop opening links in QuickView after the confirmation alert."
+  )
 }

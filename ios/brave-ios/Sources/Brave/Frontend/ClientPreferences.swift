@@ -146,6 +146,11 @@ extension Preferences {
       key: "general.open-link-in-quickview-mode",
       default: true
     )
+    /// Whether or not brave has shown a prompt to users to confirm later continue opening links in QuickView
+    public static let openLinkInQuickViewModeConfirmationShown: Option<Bool> = .init(
+      key: "general.open-link-in-quickview-mode-confirmation-shown",
+      default: false
+    )
     /// Whether or not the crash reporting alert has been shown at least once
     public static let crashReportingOptInShown: Option<Bool> = .init(
       key: "general.crash-reporting-opt-in-shown",
