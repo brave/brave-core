@@ -715,7 +715,6 @@
 
 -keep class org.chromium.chrome.browser.IntentHandler {
     public <init>(...);
-    *** getUrlForCustomTab(...);
     *** getUrlForWebapp(...);
     *** extractUrlFromIntent(...);
     *** isUrlUnsafe(...);
