@@ -38,7 +38,7 @@ function createEthereumSignatureVRS(
   s: string,
 ): Untrusted.EthereumSignatureVRS {
   return {
-    vBytes: Buffer.from(v, 'hex'),
+    vHex: '0x' + v,
     rBytes: Buffer.from(r, 'hex'),
     sBytes: Buffer.from(s, 'hex'),
   }

@@ -15,10 +15,9 @@
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
-
-class EthTransaction;
 
 class EthereumKeyring : public Secp256k1HDKeyring {
  public:
@@ -34,16 +33,16 @@ class EthereumKeyring : public Secp256k1HDKeyring {
   // bytes)
   // signature: The 64 byte signature + v parameter (0 chain id assumed)
   static std::optional<std::string> RecoverAddress(
-      base::span<const uint8_t> message,
-      base::span<const uint8_t> eth_signature);
+      const KeccakHashArray& message_hash,
+      const Secp256k1Signature& signature);
 
-  std::optional<std::vector<uint8_t>> SignMessage(
+  std::optional<Secp256k1Signature> SignMessage(
       const std::string& address,
-      base::span<const uint8_t> message,
-      uint256_t chain_id,
-      bool is_eip712);
+      const KeccakHashArray& message_hash);
 
-  void SignTransaction(const std::string& address, EthTransaction* tx);
+  //   void SignTransaction(const std::string& address,
+  //                        EthTransaction* tx,
+  //                        uint256_t chain_id);
 
   bool GetPublicKeyFromX25519_XSalsa20_Poly1305(const std::string& address,
                                                 std::string* key);

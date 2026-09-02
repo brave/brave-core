@@ -9,29 +9,61 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+#include <vector>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
 
-inline constexpr size_t kSecp256k1CompactSignatureSize = 64;
-
 class Secp256k1Signature {
  public:
-  static std::optional<Secp256k1Signature> CreateFromPayload(
-      base::span<const uint8_t, kSecp256k1CompactSignatureSize> rs_bytes,
-      uint8_t recid);
+  inline static constexpr size_t kCompactSignatureSize = 64;
+  inline static constexpr size_t kRSize = kCompactSignatureSize / 2;
+  inline static constexpr size_t kSSize = kCompactSignatureSize / 2;
 
-  base::span<const uint8_t, kSecp256k1CompactSignatureSize> rs_bytes() const {
-    return bytes().first<kSecp256k1CompactSignatureSize>();
+  static std::optional<Secp256k1Signature> CreateFromPayload(
+      base::span<const uint8_t, kCompactSignatureSize> rs_bytes,
+      uint8_t recid);
+  static std::optional<Secp256k1Signature> CreateFromPayload(
+      base::span<const uint8_t, kRSize> r_bytes,
+      base::span<const uint8_t, kSSize> s_bytes,
+      uint8_t recid);
+  static std::optional<Secp256k1Signature> CreateFromRecoverAddressPayload(
+      base::span<const uint8_t> bytes);
+  static std::optional<Secp256k1Signature> CreateFromHardwareWalletVRS(
+      bool is_legacy,
+      uint256_t chain_id,
+      const std::vector<uint8_t>& v,
+      const std::vector<uint8_t>& r,
+      const std::vector<uint8_t>& s);
+
+  bool operator==(const Secp256k1Signature& other) const = default;
+
+  base::span<const uint8_t, kCompactSignatureSize> r_bytes() const {
+    return rs_bytes().first<kCompactSignatureSize>();
   }
-  base::span<const uint8_t, kSecp256k1CompactSignatureSize + 1> bytes() const {
+
+  base::span<const uint8_t, kSSize> s_bytes() const {
+    return rs_bytes().last<kSSize>();
+  }
+
+  base::span<const uint8_t, kCompactSignatureSize> rs_bytes() const {
+    return bytes().first<kCompactSignatureSize>();
+  }
+
+  base::span<const uint8_t, kCompactSignatureSize + 1> bytes() const {
     return bytes_;
   }
+
   uint8_t recid() const { return bytes_.back(); }
 
+  std::vector<uint8_t> ToSignatureBytesForEthSignMessage() const;
+
  private:
-  std::array<uint8_t, kSecp256k1CompactSignatureSize + 1> bytes_ = {};
+  // Layout is:
+  // R(32) | S(32) | RecId(1)
+  std::array<uint8_t, kCompactSignatureSize + 1> bytes_ = {};
 };
 
 }  // namespace brave_wallet

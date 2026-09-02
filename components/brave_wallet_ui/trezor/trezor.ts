@@ -150,7 +150,7 @@ addTrezorCommandHandler(
               success: true,
               payload: {
                 // https://docs.trezor.io/trezor-suite/packages/connect/methods/ethereumSignTransaction.html#result
-                vBytes: Buffer.from(hexPad(result.payload.v.slice(2)), 'hex'),
+                vHex: result.payload.v,
                 rBytes: Buffer.from(result.payload.r.slice(2), 'hex'),
                 sBytes: Buffer.from(result.payload.s.slice(2), 'hex'),
               },
