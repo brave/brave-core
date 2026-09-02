@@ -149,11 +149,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_to_public`                           | `cxx`     | AST   | Appends a member to a class `public:` section.        |
 | `add_enum_entries`                        | `cxx`     | AST   | Appends entries to the end of a C++ enum.             |
 | `set_feature_flag_default_state`          | `cxx`     | macro | Sets a `BASE_FEATURE`'s default state.                |
-| `add_configs`                             | `gn`      | gn    | Adds configs to a target in a build file.             |
-| `add_deps`                                | `gn`      | gn    | Adds dependencies to a target in a build file.        |
-| `add_public_deps`                         | `gn`      | gn    | Adds public dependencies to a target in a build file. |
-| `add_sources`                             | `gn`      | gn    | Adds source files to a target in a build file.        |
-| `add_visibility`                          | `gn`      | gn    | Adds visibility entries to a target in a build file.  |
+| `insert_into_list`                        | `gn`      | gn    | Inserts value(s) into a target's list attribute.      |
 | `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
 
 Use `plaster --help` to discover rewriters and read their full docs:

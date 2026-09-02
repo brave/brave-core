@@ -752,48 +752,21 @@ substitutions:
         },
     },
     "gn_edit": {
-        "gn.add_configs": {
+        "gn.insert_into_list": {
             "description": """\
-Adds configs to a GN target.
+Inserts value(s) into a list attribute on a GN target.
 
-The entries are added to the target's `configs`, which is created if the target
-has none.
-
-```yaml
-substitutions:
-  - description: Apply the Brave constants config.
-    add_configs:
-      target: common
-      configs: //brave/common:constants_configs
-```
-""",
-            "inputs": [
-                {
-                    "name": "target",
-                    "description": "The target to add the configs to, e.g. `common` for `source_set(\"common\")`.",
-                },
-                {
-                    "name": "configs",
-                    "description": "The config label(s) to add, e.g. `//brave/common:constants_configs`.",
-                    "variadic": True,
-                },
-            ],
-            "pattern": "//:{target}",
-            "command": "add configs {configs}",
-        },
-        "gn.add_deps": {
-            "description": """\
-Adds dependencies to a GN target.
-
-The entries are added to the target's `deps`, which is created if the target has
-none.
+The values are added to the target's `list_name` attribute (e.g. `deps`,
+`sources`, `configs`, `public_deps`, `visibility`), which is created if the
+target has none.
 
 ```yaml
 substitutions:
   - description: Depend on the Brave omnibox additions.
-    add_deps:
+    insert_into_list:
       target: browser
-      deps:
+      list_name: deps
+      values:
         - //brave/components/omnibox/browser
         - //brave/components/omnibox/common
 ```
@@ -808,104 +781,20 @@ substitutions:
             "inputs": [
                 {
                     "name": "target",
-                    "description": "The target to add the dependencies to, e.g. `browser` for `static_library(\"browser\")`.",
+                    "description": "The target to edit, e.g. `browser` for `static_library(\"browser\")`.",
                 },
                 {
-                    "name": "deps",
-                    "description": "The dependency label(s) to add, e.g. `//brave/components/omnibox/browser`.",
+                    "name": "list_name",
+                    "description": "The target's list attribute to insert into, e.g. `deps`, `sources`, `configs`, `public_deps`, or `visibility`.",
+                },
+                {
+                    "name": "values",
+                    "description": "The value(s) to insert, e.g. `//brave/components/omnibox/browser`.",
                     "variadic": True,
                 },
             ],
             "pattern": "//:{target}",
-            "command": "add deps {deps}",
-        },
-        "gn.add_public_deps": {
-            "description": """\
-Adds public dependencies to a GN target.
-
-The entries are added to the target's `public_deps`, which is created if the
-target has none.
-
-```yaml
-substitutions:
-  - description: Re-export the Brave network additions.
-    add_public_deps:
-      target: cpp
-      public_deps: //brave/services/network/public/cpp
-```
-""",
-            "inputs": [
-                {
-                    "name": "target",
-                    "description": "The target to add the public dependencies to, e.g. `cpp` for `source_set(\"cpp\")`.",
-                },
-                {
-                    "name": "public_deps",
-                    "description": "The dependency label(s) to add, e.g. `//brave/services/network/public/cpp`.",
-                    "variadic": True,
-                },
-            ],
-            "pattern": "//:{target}",
-            "command": "add public_deps {public_deps}",
-        },
-        "gn.add_sources": {
-            "description": """\
-Adds source files to a GN target.
-
-The paths are added to the target's `sources`, which is created if the target
-has none.
-
-```yaml
-substitutions:
-  - description: Build the Brave colour mixers into the target.
-    add_sources:
-      target: mixers
-      sources: //brave/ui/color/brave_color_mixer.cc
-```
-""",
-            "inputs": [
-                {
-                    "name": "target",
-                    "description": "The target to add the sources to, e.g. `mixers` for `component(\"mixers\")`.",
-                },
-                {
-                    "name": "sources",
-                    "description": "The source path(s) to add, relative to the build file or `//`-rooted.",
-                    "variadic": True,
-                },
-            ],
-            "pattern": "//:{target}",
-            "command": "add sources {sources}",
-        },
-        "gn.add_visibility": {
-            "description": """\
-Adds visibility entries to a gn target.
-
-The patterns are added to the target's `visibility`, which is created if the
-target has none. Be aware that a target declaring no `visibility` is visible to
-everything, so adding the first entry restricts it to exactly what is listed.
-
-```yaml
-substitutions:
-  - description: Let the Brave content layer reach this target.
-    add_visibility:
-      target: content
-      visibility: //brave/content/*
-```
-""",
-            "inputs": [
-                {
-                    "name": "target",
-                    "description": "The target to add the visibility entries to, e.g. `content` for `source_set(\"content\")`.",
-                },
-                {
-                    "name": "visibility",
-                    "description": "The label pattern(s) to make the target visible to, e.g. `//brave/content/*`.",
-                    "variadic": True,
-                },
-            ],
-            "pattern": "//:{target}",
-            "command": "add visibility {visibility}",
+            "command": "add {list_name} {values}",
         },
     },
 }

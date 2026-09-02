@@ -3761,7 +3761,7 @@ class GnEditRewriter(Rewriter):
     """
 
     # Set on the generated subclass (see `_generated_rewriters`): the
-    # `rewriters.pyl` op id this resolves to (e.g. `gn.add_deps`).
+    # `rewriters.pyl` op id this resolves to (e.g. `gn.insert_into_list`).
     OP_ID: ClassVar[str] = ''
 
     def __init__(self, inputs: dict[str, str]):

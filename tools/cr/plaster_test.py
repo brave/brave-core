@@ -7734,23 +7734,21 @@ class GnEditSchemaTest(unittest.TestCase):
     def test_the_shipped_ops_validate(self):
         # `load()` validates on construction, so this fails loudly if a
         # shipped op ever drifts from its declared interface.
-        self.assertEqual(sorted(plaster.RewritersEval.load().gn_edits), [
-            'gn.add_configs', 'gn.add_deps', 'gn.add_public_deps',
-            'gn.add_sources', 'gn.add_visibility'
-        ])
+        self.assertEqual(sorted(plaster.RewritersEval.load().gn_edits),
+                         ['gn.insert_into_list'])
 
 
 class GnEditRewriterTest(unittest.TestCase):
     """`GnEditRewriter` validates a substitution body and drives the engine."""
 
     @staticmethod
-    def _cls(name: str = 'add_deps'):
+    def _cls(name: str = 'insert_into_list'):
         return plaster._REWRITERS.resolve(name, plaster._GN_NAMESPACE)
 
-    def _parse(self, body, name='add_deps', description='t'):
+    def _parse(self, body, name='insert_into_list', description='t'):
         return self._cls(name).parse(body, description=description)
 
-    def _expect_parse_error(self, body, substr, name='add_deps'):
+    def _expect_parse_error(self, body, substr, name='insert_into_list'):
         with self.assertRaises(ValueError) as cm:
             self._parse(body, name=name)
         self.assertIn(substr, str(cm.exception))
@@ -7790,62 +7788,92 @@ class GnEditRewriterTest(unittest.TestCase):
         self._expect_parse_error(['not', 'a', 'mapping'], 'must be a mapping')
 
     def test_a_missing_arg_is_rejected(self):
-        self._expect_parse_error({'target': 'foo'}, 'requires arg(s): deps')
+        self._expect_parse_error({
+            'target': 'foo',
+            'list_name': 'deps'
+        }, 'requires arg(s): values')
 
     def test_an_unknown_arg_is_rejected(self):
-        self._expect_parse_error({
-            'target': 'foo',
-            'deps': '//a',
-            'nope': 1
-        }, "Unrecognised add_deps arg(s): 'nope'")
+        self._expect_parse_error(
+            {
+                'target': 'foo',
+                'list_name': 'deps',
+                'values': '//a',
+                'nope': 1
+            }, "Unrecognised insert_into_list arg(s): 'nope'")
 
     def test_an_empty_scalar_input_is_rejected(self):
-        self._expect_parse_error({
-            'target': '',
-            'deps': '//a'
-        }, '`target` must be a non-empty string')
+        self._expect_parse_error(
+            {
+                'target': '',
+                'list_name': 'deps',
+                'values': '//a'
+            }, '`target` must be a non-empty string')
 
     def test_a_non_string_scalar_input_is_rejected(self):
-        self._expect_parse_error({
-            'target': 7,
-            'deps': '//a'
-        }, '`target` must be a non-empty string')
+        self._expect_parse_error(
+            {
+                'target': 7,
+                'list_name': 'deps',
+                'values': '//a'
+            }, '`target` must be a non-empty string')
 
     def test_a_variadic_input_accepts_a_bare_string(self):
-        self._parse({'target': 'foo', 'deps': '//a'})
+        self._parse({'target': 'foo', 'list_name': 'deps', 'values': '//a'})
 
     def test_a_variadic_input_accepts_a_list(self):
-        self._parse({'target': 'foo', 'deps': ['//a', '//b']})
+        self._parse({
+            'target': 'foo',
+            'list_name': 'deps',
+            'values': ['//a', '//b']
+        })
 
     def test_an_empty_variadic_list_is_rejected(self):
-        self._expect_parse_error({
-            'target': 'foo',
-            'deps': []
-        }, '`deps` must be a non-empty string or a non-empty list of them')
+        self._expect_parse_error(
+            {
+                'target': 'foo',
+                'list_name': 'deps',
+                'values': []
+            },
+            '`values` must be a non-empty string or a non-empty list of them')
 
     def test_a_variadic_list_of_non_strings_is_rejected(self):
-        self._expect_parse_error({
-            'target': 'foo',
-            'deps': [123]
-        }, '`deps` must be a non-empty string or a non-empty list of them')
+        self._expect_parse_error(
+            {
+                'target': 'foo',
+                'list_name': 'deps',
+                'values': [123]
+            },
+            '`values` must be a non-empty string or a non-empty list of them')
 
     def test_a_variadic_list_with_an_empty_entry_is_rejected(self):
-        self._expect_parse_error({
-            'target': 'foo',
-            'deps': ['//a', '']
-        }, '`deps` must be a non-empty string or a non-empty list of them')
+        self._expect_parse_error(
+            {
+                'target': 'foo',
+                'list_name': 'deps',
+                'values': ['//a', '']
+            },
+            '`values` must be a non-empty string or a non-empty list of them')
 
     # -- apply --------------------------------------------------------------
 
     def test_apply_adds_the_values(self):
-        rewriter = self._parse({'target': 'foo', 'deps': ['//brave/a']})
+        rewriter = self._parse({
+            'target': 'foo',
+            'list_name': 'deps',
+            'values': ['//brave/a']
+        })
         result, errors = rewriter.apply(
             'source_set("foo") {\n  deps = []\n}\n', count=1, description='d')
         self.assertEqual(errors, [])
         self.assertIn('"//brave/a"', result)
 
     def test_apply_reports_an_edit_that_changed_nothing(self):
-        rewriter = self._parse({'target': 'foo', 'deps': '//b'})
+        rewriter = self._parse({
+            'target': 'foo',
+            'list_name': 'deps',
+            'values': '//b'
+        })
         source = 'source_set("foo") {\n  deps = [ "//b" ]\n}\n'
         result, errors = rewriter.apply(source, count=1, description='d')
         self.assertEqual(result, source)
@@ -7857,7 +7885,11 @@ class GnEditRewriterTest(unittest.TestCase):
         # A pattern matching no target is a mistake in the plaster, so it is
         # reported like any other substitution failure rather than aborting
         # the run with a traceback.
-        rewriter = self._parse({'target': 'nope', 'deps': '//brave/a'})
+        rewriter = self._parse({
+            'target': 'nope',
+            'list_name': 'deps',
+            'values': '//brave/a'
+        })
         source = 'source_set("foo") {\n}\n'
         result, errors = rewriter.apply(source, count=1, description='d')
         self.assertEqual(result, source)
@@ -7878,7 +7910,8 @@ class GnEditRewriterTest(unittest.TestCase):
         with mock.patch.object(terminal.terminal, 'run', side_effect=spy):
             self._parse({
                 'target': 'foo',
-                'deps': ['//brave/a', '//brave/b'],
+                'list_name': 'deps',
+                'values': ['//brave/a', '//brave/b'],
             }).apply('source_set("foo") {\n  deps = []\n}\n',
                      count=1,
                      description='d')
@@ -7896,20 +7929,19 @@ class GnEditRewriterTest(unittest.TestCase):
         with mock.patch.object(terminal.terminal, 'run', side_effect=spy):
             self._parse({
                 'target': 'foo',
-                'sources': 'has space.cc',
-            },
-                        name='add_sources').apply(
-                            'source_set("foo") {\n  sources = []\n}\n',
-                            count=1,
-                            description='d')
+                'list_name': 'sources',
+                'values': 'has space.cc',
+            }).apply('source_set("foo") {\n  sources = []\n}\n',
+                     count=1,
+                     description='d')
         self.assertIn('add sources "has space.cc"', calls[0])
 
-    def test_add_sources_adds_to_sources(self):
+    def test_apply_inserts_into_the_named_list(self):
         rewriter = self._parse({
             'target': 'foo',
-            'sources': ['b.cc', 'a.cc'],
-        },
-                               name='add_sources')
+            'list_name': 'sources',
+            'values': ['b.cc', 'a.cc'],
+        })
         result, errors = rewriter.apply(
             'source_set("foo") {\n  sources = [ "existing.cc" ]\n}\n',
             count=1,
@@ -7918,10 +7950,10 @@ class GnEditRewriterTest(unittest.TestCase):
         for expected in ('"a.cc"', '"b.cc"', '"existing.cc"'):
             self.assertIn(expected, result)
 
-    def test_each_op_adds_to_the_attribute_it_names(self):
-        # The ops differ only by the attribute their `command` template names,
-        # so this checks each one lands in its own attribute and leaves the
-        # neighbouring ones alone -- the failure a copy-pasted spec produces.
+    def test_each_list_name_inserts_into_its_own_attribute(self):
+        # `list_name` is what the `command` template names, so this checks
+        # each one lands in its own attribute and leaves the neighbouring
+        # ones alone -- the failure a copy-pasted plaster produces.
         source = ('source_set("foo") {\n'
                   '  deps = []\n'
                   '  public_deps = []\n'
@@ -7929,19 +7961,19 @@ class GnEditRewriterTest(unittest.TestCase):
                   '  visibility = []\n'
                   '  sources = []\n'
                   '}\n')
-        for name, attribute, value in (
-            ('add_configs', 'configs', '//brave/common:constants_configs'),
-            ('add_deps', 'deps', '//brave/a'),
-            ('add_public_deps', 'public_deps', '//brave/b'),
-            ('add_sources', 'sources', 'brave.cc'),
-            ('add_visibility', 'visibility', '//brave/content/*'),
+        for attribute, value in (
+            ('configs', '//brave/common:constants_configs'),
+            ('deps', '//brave/a'),
+            ('public_deps', '//brave/b'),
+            ('sources', 'brave.cc'),
+            ('visibility', '//brave/content/*'),
         ):
-            with self.subTest(name):
-                result, errors = self._parse(
-                    {
-                        'target': 'foo',
-                        attribute: value
-                    }, name=name).apply(source, count=1, description='d')
+            with self.subTest(attribute):
+                result, errors = self._parse({
+                    'target': 'foo',
+                    'list_name': attribute,
+                    'values': value,
+                }).apply(source, count=1, description='d')
                 self.assertEqual(errors, [])
                 self.assertIn(f'{attribute} = [ "{value}" ]', result)
                 # Every other attribute is still empty.
@@ -7950,51 +7982,19 @@ class GnEditRewriterTest(unittest.TestCase):
                     if other != attribute:
                         self.assertIn(f'{other} = []', result)
 
-    def test_every_op_accepts_a_list_for_its_variadic_input(self):
-        # `variadic` is per-op declared data, so an op whose spec omitted the
-        # flag would reject a list body while every other op accepted one --
-        # and the single-value cases above would not notice.
-        source = ('source_set("foo") {\n'
-                  '  deps = []\n'
-                  '  public_deps = []\n'
-                  '  configs = []\n'
-                  '  visibility = []\n'
-                  '  sources = []\n'
-                  '}\n')
-        for op_id, spec in sorted(
-                plaster.RewritersEval.load().gn_edits.items()):
-            name = op_id.split('.', 1)[1]
-            variadic = [
-                entry['name'] for entry in spec['inputs']
-                if entry.get('variadic')
-            ]
-            with self.subTest(name):
-                self.assertEqual(variadic, [name.removeprefix('add_')])
-                result, errors = self._parse(
-                    {
-                        'target': 'foo',
-                        variadic[0]: ['//brave/a', '//brave/b']
-                    },
-                    name=name).apply(source, count=1, description='d')
-                self.assertEqual(errors, [])
-                self.assertIn('"//brave/a"', result)
-                self.assertIn('"//brave/b"', result)
-
-    def test_add_visibility_creates_the_attribute_when_absent(self):
+    def test_insert_into_list_creates_the_attribute_when_absent(self):
         # Worth pinning because it is a behaviour change rather than an
         # addition: a target declaring no `visibility` is visible everywhere,
         # so the first entry restricts it to exactly what is listed.
-        result, errors = self._parse(
-            {
-                'target': 'foo',
-                'visibility': '//brave/content/*'
-            },
-            name='add_visibility').apply(
-                'source_set("foo") {\n'
-                '  sources = [ "a.cc" ]\n'
-                '}\n',
-                count=1,
-                description='d')
+        result, errors = self._parse({
+            'target': 'foo',
+            'list_name': 'visibility',
+            'values': '//brave/content/*',
+        }).apply('source_set("foo") {\n'
+                 '  sources = [ "a.cc" ]\n'
+                 '}\n',
+                 count=1,
+                 description='d')
         self.assertEqual(errors, [])
         self.assertIn('visibility = [ "//brave/content/*" ]', result)
 
@@ -8030,13 +8030,14 @@ class GnEditDispatchTest(unittest.TestCase):
                '  deps = [ "//base" ]\n'
                '}\n')
 
-    def test_add_deps_applies_to_a_build_gn_target(self):
+    def test_insert_into_list_applies_to_a_build_gn_target(self):
         result = self._apply(
             'BUILD.gn', self._SOURCE, 'substitutions:\n'
             '  - description: Depend on the Brave omnibox additions.\n'
-            '    add_deps:\n'
+            '    insert_into_list:\n'
             '      target: browser\n'
-            '      deps:\n'
+            '      list_name: deps\n'
+            '      values:\n'
             '        - //brave/components/omnibox/browser\n'
             '        - //brave/components/omnibox/common\n')
         self.assertEqual(
@@ -8049,26 +8050,29 @@ class GnEditDispatchTest(unittest.TestCase):
             '  ]\n'
             '}\n')
 
-    def test_add_sources_applies_to_a_build_gn_target(self):
+    def test_insert_into_list_applies_to_sources(self):
         result = self._apply(
             'BUILD.gn', self._SOURCE, 'substitutions:\n'
             '  - description: Build the Brave sources.\n'
-            '    add_sources:\n'
+            '    insert_into_list:\n'
             '      target: browser\n'
-            '      sources: //brave/components/omnibox/browser/extra.cc\n')
+            '      list_name: sources\n'
+            '      values: //brave/components/omnibox/browser/extra.cc\n')
         self.assertIn('"//brave/components/omnibox/browser/extra.cc"', result)
 
     def test_several_substitutions_accumulate(self):
         result = self._apply(
             'BUILD.gn', self._SOURCE, 'substitutions:\n'
             '  - description: Add the Brave deps.\n'
-            '    add_deps:\n'
+            '    insert_into_list:\n'
             '      target: browser\n'
-            '      deps: //brave/components/omnibox/browser\n'
+            '      list_name: deps\n'
+            '      values: //brave/components/omnibox/browser\n'
             '  - description: Add the Brave sources.\n'
-            '    add_sources:\n'
+            '    insert_into_list:\n'
             '      target: browser\n'
-            '      sources: //brave/x.cc\n')
+            '      list_name: sources\n'
+            '      values: //brave/x.cc\n')
         self.assertIn('"//brave/components/omnibox/browser"', result)
         self.assertIn('"//brave/x.cc"', result)
 
@@ -8080,9 +8084,10 @@ class GnEditDispatchTest(unittest.TestCase):
             '  }\n'
             '}\n', 'substitutions:\n'
             '  - description: Depend on the Brave additions.\n'
-            '    add_deps:\n'
+            '    insert_into_list:\n'
             '      target: inner\n'
-            '      deps: //brave/a\n')
+            '      list_name: deps\n'
+            '      values: //brave/a\n')
         self.assertIn('"//brave/a"', result)
 
     def test_only_the_named_target_is_edited(self):
@@ -8094,9 +8099,10 @@ class GnEditDispatchTest(unittest.TestCase):
             '  deps = []\n'
             '}\n', 'substitutions:\n'
             '  - description: Only a.\n'
-            '    add_deps:\n'
+            '    insert_into_list:\n'
             '      target: a\n'
-            '      deps: //brave/a\n')
+            '      list_name: deps\n'
+            '      values: //brave/a\n')
         self.assertEqual(
             result, 'source_set("a") {\n'
             '  deps = [ "//brave/a" ]\n'
@@ -8120,9 +8126,10 @@ class GnEditDispatchTest(unittest.TestCase):
         result = self._apply(
             'BUILD.gn', source, 'substitutions:\n'
             '  - description: Add a Brave dep.\n'
-            '    add_deps:\n'
+            '    insert_into_list:\n'
             '      target: browser\n'
-            '      deps: //brave/a\n')
+            '      list_name: deps\n'
+            '      values: //brave/a\n')
         self.assertEqual(
             result, '# A leading comment.\n'
             'source_set("browser") {\n'
@@ -8142,9 +8149,10 @@ class GnEditDispatchTest(unittest.TestCase):
             self._apply(
                 'BUILD.gn', self._SOURCE, 'substitutions:\n'
                 '  - description: Already there.\n'
-                '    add_deps:\n'
+                '    insert_into_list:\n'
                 '      target: browser\n'
-                '      deps: //base\n')
+                '      list_name: deps\n'
+                '      values: //base\n')
         self.assertIn('changed nothing', str(cm.exception))
 
     def test_an_unmatched_target_fails_the_apply(self):
@@ -8152,9 +8160,10 @@ class GnEditDispatchTest(unittest.TestCase):
             self._apply(
                 'BUILD.gn', self._SOURCE, 'substitutions:\n'
                 '  - description: No such target.\n'
-                '    add_deps:\n'
+                '    insert_into_list:\n'
                 '      target: nope\n'
-                '      deps: //brave/a\n')
+                '      list_name: deps\n'
+                '      values: //brave/a\n')
         self.assertIn('Target(s) not found', str(cm.exception))
 
     def test_a_count_is_rejected_for_a_gn_target(self):
@@ -8163,9 +8172,10 @@ class GnEditDispatchTest(unittest.TestCase):
                 'BUILD.gn', self._SOURCE, 'substitutions:\n'
                 '  - description: Counting makes no sense here.\n'
                 '    count: 2\n'
-                '    add_deps:\n'
+                '    insert_into_list:\n'
                 '      target: browser\n'
-                '      deps: //brave/a\n')
+                '      list_name: deps\n'
+                '      values: //brave/a\n')
         self.assertIn('does not accept a count other than 1',
                       str(cm.exception))
 
@@ -8176,9 +8186,10 @@ class GnEditDispatchTest(unittest.TestCase):
                 'blank_macros_for_ast_parsing: true\n'
                 'substitutions:\n'
                 '  - description: Add a Brave dep.\n'
-                '    add_deps:\n'
+                '    insert_into_list:\n'
                 '      target: browser\n'
-                '      deps: //brave/a\n')
+                '      list_name: deps\n'
+                '      values: //brave/a\n')
         self.assertIn('only supported for C++ sources', str(cm.exception))
 
     def test_a_gn_rewriter_is_unavailable_on_a_cxx_target(self):
@@ -8186,9 +8197,10 @@ class GnEditDispatchTest(unittest.TestCase):
             self._apply(
                 'browser.cc', 'int x = 1;\n', 'substitutions:\n'
                 '  - description: Wrong kind of source.\n'
-                '    add_deps:\n'
+                '    insert_into_list:\n'
                 '      target: browser\n'
-                '      deps: //brave/a\n')
+                '      list_name: deps\n'
+                '      values: //brave/a\n')
         self.assertIn('not available for this source', str(cm.exception))
 
     def test_the_regex_rewriter_is_still_available_on_a_gn_target(self):
@@ -8206,9 +8218,10 @@ class GnEditDispatchTest(unittest.TestCase):
         self._apply(
             'BUILD.gn', self._SOURCE, 'substitutions:\n'
             '  - description: Add a Brave dep.\n'
-            '    add_deps:\n'
+            '    insert_into_list:\n'
             '      target: browser\n'
-            '      deps: //brave/a\n')
+            '      list_name: deps\n'
+            '      values: //brave/a\n')
         patch = (self.fake_chromium_src.brave_patches /
                  'components-omnibox-browser-BUILD.gn.patch')
         self.assertTrue(patch.exists())
