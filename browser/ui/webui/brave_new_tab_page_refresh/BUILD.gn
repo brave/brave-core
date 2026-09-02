@@ -75,6 +75,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/mojom:webui",
+    "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
@@ -84,6 +85,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
+    "//brave/components/search_engines",
     "//chrome/app:generated_resources",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
@@ -183,6 +185,7 @@ source_set("browser_tests") {
 
     deps += [
       "//brave/components/ai_chat/core/common",
+      "//brave/components/brave_search/common",
       "//brave/components/brave_search_conversion",
       "//chrome/browser/profiles:profile",
       "//components/prefs",

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
@@ -15,8 +16,15 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//components/prefs",
+    "//net",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 }
 
 mojom("mojom") {
@@ -33,8 +41,17 @@ source_set("unit_tests") {
   sources = [ "brave_search_utils_unittest.cc" ]
 
   deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_search/common",
+    "//components/prefs",
+    "//components/prefs:test_support",
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 }
