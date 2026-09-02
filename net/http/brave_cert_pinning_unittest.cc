@@ -84,7 +84,8 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
                      std::string* error_out) {
     DCHECK(error_out);
     net::TestDelegate delegate;
-    GURL url("https://" + host + "/");
+    GURL url(base::StrCat(
+        {url::kHttpsScheme, url::kStandardSchemeSeparator, host, "/"}));
     auto request =
         context_->CreateRequest(url, net::DEFAULT_PRIORITY, &delegate);
     request->Start();
