@@ -597,6 +597,9 @@
   <message name="IDS_IDC_NEW_EMAIL_ALIAS_DESC" desc="Desc label for Email Aliases autofill suggestsion">
     Create a random email that forwards to your inbox.
   </message>
+  <message name="IDS_IDC_YOUR_EMAIL_ALIASES" desc="Label for Your Email Aliases menu item">
+    Your Email aliases
+  </message>
 
   <message name="IDS_IDC_NEW_TEMPORARY_CONTAINER" desc="Label for the command that opens the current URL in a new local-only temporary container.">
     New temporary container

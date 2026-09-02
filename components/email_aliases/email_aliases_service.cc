@@ -240,9 +240,7 @@ void EmailAliasesService::OnEditAliasResponse(
 
 void EmailAliasesService::RefreshAliases() {
   CHECK(auth_);
-  if (observers_.empty()) {
-    return;
-  }
+  aliases_.clear();
   auth_->GetServiceToken(
       base::BindOnce(&EmailAliasesService::RefreshAliasesWithToken,
                      weak_factory_.GetWeakPtr()));
@@ -365,9 +363,11 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     aliases.push_back(std::move(alias_obj));
   }
 
+  aliases_ = std::move(aliases);
+
   metrics_.ReportEmailAliasPresence(!aliases.empty());
   NotifyObserversAliasesUpdated(
-      observers_, mojom::AliasesUpdate::NewAliases(std::move(aliases)));
+      observers_, mojom::AliasesUpdate::NewAliases(mojo::Clone(aliases_)));
 }
 
 }  // namespace email_aliases

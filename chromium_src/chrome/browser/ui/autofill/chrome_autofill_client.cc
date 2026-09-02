@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 
+#include <optional>
+
 #include "base/check_is_test.h"
 #include "base/memory/ptr_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -17,6 +19,7 @@
 #include "components/autofill/content/browser/renderer_forms_from_browser_form.h"
 #include "components/autofill/core/browser/form_import/form_data_importer.h"
 #include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
+#include "components/autofill/core/browser/webdata/autocomplete/autocomplete_entry.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
@@ -25,7 +28,9 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/pref_names.h"
 #endif
 
@@ -124,6 +129,45 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
 
  private:
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  std::optional<Suggestion> GetYourEmailAliasesSuggestions() {
+    auto* profile =
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+    if (!profile) {
+      return std::nullopt;
+    }
+    auto* service =
+        email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+            profile);
+    if (!service) {
+      return std::nullopt;
+    }
+
+    const auto& aliases = service->aliases();
+    if (aliases.empty()) {
+      return std::nullopt;
+    }
+
+    Suggestion your_email_aliases(
+        autofill::SuggestionType::kDevtoolsTestAddresses);
+    your_email_aliases.main_text = autofill::Suggestion::Text(
+        l10n_util::GetStringUTF16(IDS_IDC_YOUR_EMAIL_ALIASES));
+    your_email_aliases.acceptability =
+        Suggestion::Acceptability::kSelectableButUnacceptable;
+
+    for (const email_aliases::mojom::AliasPtr& alias : aliases) {
+      autofill::Suggestion entry(autofill::SuggestionType::kAutocompleteEntry);
+      entry.main_text =
+          autofill::Suggestion::Text(base::UTF8ToUTF16(alias->email));
+      entry.labels.push_back({autofill::Suggestion::Text(
+          base::UTF8ToUTF16(alias->note.value_or(std::string{})))});
+      entry.payload = AutocompleteEntry{};
+      entry.brave_email_alias_suggestion = true;
+      your_email_aliases.children.push_back(std::move(entry));
+    }
+
+    return your_email_aliases;
+  }
+
   void AddEmailAliasSuggestsion(
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
@@ -169,6 +213,10 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
         }
         chrome_suggestions.insert(chrome_suggestions.begin() + insert_index,
                                   std::move(new_email_alias));
+        if (auto your_email_aliases = GetYourEmailAliasesSuggestions()) {
+          chrome_suggestions.insert(chrome_suggestions.begin() + insert_index,
+                                    std::move(*your_email_aliases));
+        }
       }
     }
   }
