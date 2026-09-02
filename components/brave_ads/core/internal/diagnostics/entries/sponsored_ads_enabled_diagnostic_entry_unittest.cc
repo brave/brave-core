@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/sponsored_ads_enabled_diagnostic_entry.h"
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
@@ -13,30 +13,29 @@
 
 namespace brave_ads {
 
-class BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest
-    : public test::TestBase {};
+class BraveAdsSponsoredAdsEnabledDiagnosticEntryTest : public test::TestBase {};
 
-TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedIn) {
+TEST_F(BraveAdsSponsoredAdsEnabledDiagnosticEntryTest, IsEnabled) {
   // Arrange
-  const OptedInToNewTabPageAdsDiagnosticEntry diagnostic_entry;
+  const SponsoredAdsEnabledDiagnosticEntry diagnostic_entry;
 
   // Act & Assert
-  EXPECT_EQ(DiagnosticEntryType::kOptedInToNewTabPageAds,
+  EXPECT_EQ(DiagnosticEntryType::kSponsoredAdsEnabled,
             diagnostic_entry.GetType());
-  EXPECT_EQ("Opted into new tab page ads", diagnostic_entry.GetName());
+  EXPECT_EQ("Sponsored ads enabled", diagnostic_entry.GetName());
   EXPECT_EQ("true", diagnostic_entry.GetValue());
 }
 
-TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedOut) {
+TEST_F(BraveAdsSponsoredAdsEnabledDiagnosticEntryTest, IsDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableSponsoredAds();
 
-  const OptedInToNewTabPageAdsDiagnosticEntry diagnostic_entry;
+  const SponsoredAdsEnabledDiagnosticEntry diagnostic_entry;
 
   // Act & Assert
-  EXPECT_EQ(DiagnosticEntryType::kOptedInToNewTabPageAds,
+  EXPECT_EQ(DiagnosticEntryType::kSponsoredAdsEnabled,
             diagnostic_entry.GetType());
-  EXPECT_EQ("Opted into new tab page ads", diagnostic_entry.GetName());
+  EXPECT_EQ("Sponsored ads enabled", diagnostic_entry.GetName());
   EXPECT_EQ("false", diagnostic_entry.GetValue());
 }
 

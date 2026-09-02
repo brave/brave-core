@@ -61,6 +61,38 @@ TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
   EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
 }
 
+TEST_F(BraveAdsSettingsTest,
+       UserHasNotOptedInToNewTabPageAdsWhenBackgroundImagesAreDisabled) {
+  // Arrange
+  test::SetProfileBooleanPrefValue(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
+
+  // Act & Assert
+  EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
+}
+
+TEST_F(BraveAdsSettingsTest,
+       UserHasNotOptedInToNewTabPageAdsWhenSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
+
+  // Act & Assert
+  EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
+}
+
+TEST_F(BraveAdsSettingsTest, SponsoredAdsAreEnabledByDefault) {
+  // Act & Assert
+  EXPECT_TRUE(IsSponsoredAdsEnabled());
+}
+
+TEST_F(BraveAdsSettingsTest, SponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsSponsoredAdsEnabled());
+}
+
 TEST_F(BraveAdsSettingsTest, NotificationAdsAreEnabled) {
   // Act & Assert
   EXPECT_TRUE(IsNotificationAdsEnabled());

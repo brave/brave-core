@@ -24,6 +24,10 @@ void DisconnectExternalBraveRewardsWallet() {
 void OptOutOfNewTabPageAds() {
   SetProfileBooleanPrefValue(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
+  DisableSponsoredAds();
+}
+
+void DisableSponsoredAds() {
   SetProfileBooleanPrefValue(prefs::kSponsoredEnabled, false);
 }
 
@@ -37,7 +41,7 @@ void SetMaximumNotificationAdsPerHour(int max_ads_per_hour) {
 }
 
 void OptOutOfSearchResultAds() {
-  SetProfileBooleanPrefValue(prefs::kSponsoredEnabled, false);
+  DisableSponsoredAds();
 }
 
 void OptOutOfAllAds() {
