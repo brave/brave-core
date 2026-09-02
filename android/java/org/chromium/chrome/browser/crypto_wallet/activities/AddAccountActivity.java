@@ -217,7 +217,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // View visibility is not part of the saved view hierarchy state. Show
         // the password field again when the restored private key content is a
