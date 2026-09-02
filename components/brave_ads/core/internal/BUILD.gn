@@ -989,6 +989,8 @@ static_library("internal") {
     "targeting/behavioral/purchase_intent/resource/purchase_intent_value_util.h",
     "targeting/contextual/text_classification/model/text_classification_model.cc",
     "targeting/contextual/text_classification/model/text_classification_model.h",
+    "targeting/contextual/text_classification/resource/text_classification_page_probabilities_database_table.cc",
+    "targeting/contextual/text_classification/resource/text_classification_page_probabilities_database_table.h",
     "targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.cc",
     "targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h",
     "targeting/contextual/text_classification/resource/text_classification_resource.cc",

@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_page_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -84,6 +85,11 @@ void Create(RunDBTransactionCallback callback) {
   table::PurchaseIntentSignalHistory
       purchase_intent_signal_history_database_table;
   purchase_intent_signal_history_database_table.Create(mojom_db_transaction);
+
+  table::TextClassificationPageProbabilities
+      text_classification_page_probabilities_database_table;
+  text_classification_page_probabilities_database_table.Create(
+      mojom_db_transaction);
 
   table::TextClassificationProbabilities
       text_classification_probabilities_database_table;

@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/legacy_migration_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
@@ -32,6 +33,17 @@ namespace {
 void SuccessfullyMigrated(ResultCallback callback) {
   MaybeDeleteFile(kClientJsonFilename);
   std::move(callback).Run(/*success=*/true);
+}
+
+void PruneTextClassificationProbabilitiesCallback(ResultCallback callback,
+                                                  bool success) {
+  if (!success) {
+    BLOG(0, "Failed to prune migrated text classification probabilities");
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  BLOG(3, "Successfully migrated client state");
+  SuccessfullyMigrated(std::move(callback));
 }
 
 void MigrationCallback(ResultCallback callback,
@@ -45,8 +57,15 @@ void MigrationCallback(ResultCallback callback,
     }
   }
 
-  BLOG(3, "Successfully migrated client state");
-  SuccessfullyMigrated(std::move(callback));
+  // The legacy client state was not bounded by
+  // `kTextClassificationPageProbabilitiesHistorySize`, so prune migrated
+  // rows down to the same limit enforced when appending new history.
+  database::table::TextClassificationProbabilities
+      text_classification_probabilities_database_table;
+  text_classification_probabilities_database_table.PruneToMaximumEntries(
+      kTextClassificationPageProbabilitiesHistorySize.Get(),
+      base::BindOnce(&PruneTextClassificationProbabilitiesCallback,
+                     std::move(callback)));
 }
 
 void LoadClientStateCallback(ResultCallback callback,

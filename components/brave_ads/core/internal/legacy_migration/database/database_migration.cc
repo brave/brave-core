@@ -28,6 +28,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_database_table.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_page_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_probabilities_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -148,6 +149,13 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
       purchase_intent_signal_history_database_table;
   purchase_intent_signal_history_database_table.Migrate(mojom_db_transaction,
                                                         to_version);
+
+  // Must run before `TextClassificationProbabilities::Migrate`, which
+  // depends on the table this step creates.
+  table::TextClassificationPageProbabilities
+      text_classification_page_probabilities_database_table;
+  text_classification_page_probabilities_database_table.Migrate(
+      mojom_db_transaction, to_version);
 
   table::TextClassificationProbabilities
       text_classification_probabilities_database_table;
