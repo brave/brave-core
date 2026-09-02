@@ -1312,6 +1312,11 @@ test("brave_browser_tests") {
         "//brave/browser/ui/webui/brave_wallet/trezor:browser_tests",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel:browser_tests",
       ]
+      if (enable_snaps) {
+        deps += [
+          "//brave/browser/ui/webui/brave_wallet/snap_executor:browser_tests",
+        ]
+      }
     }
   }
 

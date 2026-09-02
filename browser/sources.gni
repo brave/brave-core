@@ -393,6 +393,10 @@ if (enable_brave_wallet) {
       "//brave/browser/ui/webui/brave_wallet/wallet_panel",
     ]
   }
+  if (enable_snaps) {
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/webui/brave_wallet/snap_executor" ]
+  }
 }
 
 if (enable_email_aliases) {
