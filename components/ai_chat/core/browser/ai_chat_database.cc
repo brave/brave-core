@@ -34,12 +34,23 @@
 #include "sql/statement.h"
 #include "sql/statement_id.h"
 #include "sql/transaction.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 
 namespace {
 
 constexpr char kSearchQueriesSeparator[] = "|||";
+
+constexpr char kConversationEntriesQueryTemplate[] =
+    "SELECT uuid, thread_uuid, date, entry_text, prompt, character_type, "
+    "editing_entry_uuid, action_type, selected_text, model_key, "
+    // Note: Column name kept as 'smart_mode_data' for backward compatibility
+    // (feature is now called 'skills').
+    "smart_mode_data, is_near_verified"
+    " FROM conversation_entry"
+    " WHERE %s"
+    " ORDER BY date ASC";
 
 std::optional<std::string> GetOptionalString(sql::Statement& statement,
                                              int index) {
@@ -180,6 +191,14 @@ bool MigrateFrom9to10(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom10to11(sql::Database* db) {
+  static constexpr char kAddThreadUuidColumnQuery[] =
+      "ALTER TABLE conversation_entry ADD COLUMN thread_uuid TEXT DEFAULT "
+      "NULL";
+  sql::Statement statement(db->GetUniqueStatement(kAddThreadUuidColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 // Key in sql::MetaTable for the serialized DataTypeState.
 const char kAIChatDataTypeStateKey[] = "ai_chat_data_type_state";
 
@@ -195,7 +214,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 10;
+constexpr int kCurrentDatabaseVersion = 11;
 
 AIChatDatabase::AIChatDatabase(
     const base::FilePath& db_file_path,
@@ -341,6 +360,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 10;
     }
+    if (migration_success && current_version == 10) {
+      migration_success = MigrateFrom10to11(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(11);
+      }
+      current_version = 11;
+    }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
       transaction.Rollback();
@@ -454,31 +482,51 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
     return nullptr;
   }
 
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      absl::StrFormat(kConversationEntriesQueryTemplate,
+                      "conversation_uuid=? AND thread_uuid IS NULL")));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_uuid);
+
+  auto entries = GetConversationEntries(statement);
+
+  // Attach thread UUIDs to their originating conversation entries.
+  auto threads = GetConversationThreads(conversation_uuid);
+  for (auto& thread : threads) {
+    auto entry_it =
+        std::ranges::find(entries, thread->origin_conversation_entry_uuid,
+                          &mojom::ConversationTurn::uuid);
+    if (entry_it == entries.end()) {
+      continue;
+    }
+    (*entry_it)->child_thread_uuids.emplace_back(thread->uuid);
+  }
+
   return mojom::ConversationArchive::New(
-      GetConversationEntries(conversation_uuid),
+      std::move(entries), std::move(threads),
       GetArchiveContentsForConversation(conversation_uuid));
 }
 
-std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
-    std::string_view conversation_uuid) {
+std::vector<mojom::ConversationTurnPtr>
+AIChatDatabase::GetConversationThreadEntries(std::string_view thread_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
 
-  static constexpr char kEntriesQuery[] =
-      "SELECT uuid, date, entry_text, prompt, character_type, "
-      "editing_entry_uuid, "
-      // Note: Column name kept as 'smart_mode_data' for backward compatibility
-      // (feature is now called 'skills').
-      "action_type, selected_text, model_key, smart_mode_data, is_near_verified"
-      " FROM conversation_entry"
-      " WHERE conversation_uuid=?"
-      " ORDER BY date ASC";
-  sql::Statement statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE, kEntriesQuery));
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      absl::StrFormat(kConversationEntriesQueryTemplate, "thread_uuid=?")));
   CHECK(statement.is_valid());
+  statement.BindString(0, thread_uuid);
 
-  statement.BindString(0, conversation_uuid);
+  return GetConversationEntries(statement);
+}
 
-  DVLOG(4) << __func__ << " for " << conversation_uuid;
+std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
+    sql::Statement& statement) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   std::vector<mojom::ConversationTurnPtr> history;
   // Map of editing entry id to the edit entry
@@ -487,9 +535,9 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   while (statement.Step()) {
     // basic metadata
     std::string entry_uuid = statement.ColumnString(0);
-    DVLOG(4) << "Found entry row for conversation " << conversation_uuid
-             << " with id " << entry_uuid;
+    DVLOG(4) << "Found entry row with id " << entry_uuid;
     int index = 1;
+    auto thread_uuid = GetOptionalString(statement, index++);
     auto date = statement.ColumnTime(index++);
     auto text = DecryptOptionalColumnToString(statement, index++).value_or("");
     auto prompt = DecryptOptionalColumnToString(statement, index++);
@@ -520,10 +568,9 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     index++;
 
     auto entry = mojom::ConversationTurn::New(
-        entry_uuid, std::nullopt /* thread_uuid */, character_type, action_type,
-        text, prompt, selected_text, std::nullopt, date, std::nullopt,
-        std::nullopt, std::move(skill), false, model_key,
-        std::move(near_verification_status),
+        entry_uuid, thread_uuid, character_type, action_type, text, prompt,
+        selected_text, std::nullopt, date, std::nullopt, std::nullopt,
+        std::move(skill), false, model_key, std::move(near_verification_status),
         std::vector<std::string>{} /* child_thread_uuids */);
 
     // events
@@ -722,6 +769,49 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   }
 
   return history;
+}
+
+std::vector<mojom::ThreadPtr> AIChatDatabase::GetConversationThreads(
+    std::string_view conversation_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Join the thread table against per-thread entry stats (count), inferred
+  // from conversation entries tagged with the thread's uuid.
+  static constexpr char kQuery[] =
+      "SELECT thread.uuid,"
+      " thread.conversation_uuid,"
+      " thread.origin_conversation_entry_uuid,"
+      " thread.total_tokens,"
+      " thread.trimmed_tokens,"
+      " COALESCE(entry_stats.entry_count, 0)"
+      " FROM thread"
+      " LEFT JOIN ("
+      "  SELECT thread_uuid,"
+      "   COUNT(*) AS entry_count"
+      "  FROM conversation_entry"
+      "  WHERE conversation_uuid=? AND thread_uuid IS NOT NULL"
+      "  GROUP BY thread_uuid) AS entry_stats"
+      " ON entry_stats.thread_uuid = thread.uuid"
+      " WHERE thread.conversation_uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_uuid);
+  statement.BindString(1, conversation_uuid);
+
+  std::vector<mojom::ThreadPtr> threads;
+  while (statement.Step()) {
+    int index = 0;
+    auto thread = mojom::Thread::New();
+    thread->uuid = statement.ColumnString(index++);
+    thread->conversation_uuid = statement.ColumnString(index++);
+    thread->origin_conversation_entry_uuid = statement.ColumnString(index++);
+    thread->total_tokens = statement.ColumnInt64(index++);
+    thread->trimmed_tokens = statement.ColumnInt64(index++);
+    thread->entry_count = static_cast<uint32_t>(statement.ColumnInt(index++));
+    threads.emplace_back(std::move(thread));
+  }
+
+  return threads;
 }
 
 std::vector<mojom::ContentArchivePtr>
@@ -973,22 +1063,23 @@ bool AIChatDatabase::AddConversationEntry(
   if (editing_id.has_value()) {
     static constexpr char kInsertEditingConversationEntryQuery[] =
         "INSERT INTO conversation_entry(editing_entry_uuid, uuid,"
-        " conversation_uuid, date, entry_text, prompt,"
+        " conversation_uuid, thread_uuid, date, entry_text, prompt,"
         " character_type, action_type, selected_text, model_key,"
         // Note: Column name kept as 'smart_mode_data' for backward
         // compatibility (feature is now called 'skills').
         " smart_mode_data, is_near_verified)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
     static constexpr char kInsertConversationEntryQuery[] =
-        "INSERT INTO conversation_entry(uuid, conversation_uuid, date,"
-        " entry_text, prompt, character_type, action_type, selected_text,"
+        "INSERT INTO conversation_entry(uuid, conversation_uuid, thread_uuid,"
+        " date, entry_text, prompt, character_type, action_type,"
+        " selected_text,"
         // Note: Column name kept as 'smart_mode_data' for backward
         // compatibility (feature is now called 'skills').
         " model_key, smart_mode_data, is_near_verified)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertConversationEntryQuery));
   }
@@ -1000,6 +1091,8 @@ bool AIChatDatabase::AddConversationEntry(
   }
   insert_conversation_entry_statement.BindString(index++, entry->uuid.value());
   insert_conversation_entry_statement.BindString(index++, conversation_uuid);
+  BindOptionalString(insert_conversation_entry_statement, index++,
+                     entry->thread_uuid);
   insert_conversation_entry_statement.BindTime(index++, entry->created_time);
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->text);
@@ -1209,6 +1302,57 @@ bool AIChatDatabase::AddConversationEntry(
   return true;
 }
 
+bool AIChatDatabase::AddConversationThread(mojom::ThreadPtr thread) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!thread->uuid.empty());
+  CHECK(!thread->conversation_uuid.empty());
+  CHECK(!thread->origin_conversation_entry_uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  // Verify the conversation and the origin conversation entry both exist
+  // (and that the entry belongs to the conversation), in a single query.
+  // We don't want to add orphan threads otherwise.
+  static constexpr char kGetConversationAndEntryQuery[] =
+      "SELECT conversation_entry.uuid FROM conversation_entry"
+      " JOIN conversation ON conversation.uuid ="
+      " conversation_entry.conversation_uuid"
+      " WHERE conversation_entry.uuid=? AND conversation.uuid=?";
+  sql::Statement get_conversation_and_entry_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kGetConversationAndEntryQuery));
+  CHECK(get_conversation_and_entry_statement.is_valid());
+  get_conversation_and_entry_statement.BindString(
+      0, thread->origin_conversation_entry_uuid);
+  get_conversation_and_entry_statement.BindString(1, thread->conversation_uuid);
+  if (!get_conversation_and_entry_statement.Step()) {
+    DVLOG(0) << "Conversation or conversation entry not found";
+    return false;
+  }
+
+  static constexpr char kInsertThreadQuery[] =
+      "INSERT OR IGNORE INTO thread(uuid, conversation_uuid,"
+      " origin_conversation_entry_uuid, total_tokens, trimmed_tokens)"
+      " VALUES(?, ?, ?, ?, ?)";
+  sql::Statement statement(GetDB().GetUniqueStatement(kInsertThreadQuery));
+  CHECK(statement.is_valid());
+
+  int index = 0;
+  statement.BindString(index++, thread->uuid);
+  statement.BindString(index++, thread->conversation_uuid);
+  statement.BindString(index++, thread->origin_conversation_entry_uuid);
+  statement.BindInt64(index++, thread->total_tokens);
+  statement.BindInt64(index++, thread->trimmed_tokens);
+
+  if (!statement.Run()) {
+    DVLOG(0) << "Failed to execute 'thread' insert statement: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+
+  return true;
+}
+
 bool AIChatDatabase::UpdateToolUseEvent(std::string_view entry_uuid,
                                         size_t event_order,
                                         mojom::ToolUseEventPtr tool_use_event) {
@@ -1314,6 +1458,27 @@ bool AIChatDatabase::UpdateConversationTokenInfo(
   return statement.Run();
 }
 
+bool AIChatDatabase::UpdateThreadTokenInfo(std::string_view thread_uuid,
+                                           uint64_t total_tokens,
+                                           uint64_t trimmed_tokens) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kUpdateThreadTokenInfoQuery[] =
+      "UPDATE thread SET total_tokens=?, trimmed_tokens=? WHERE uuid=?";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateThreadTokenInfoQuery));
+  CHECK(statement.is_valid());
+
+  statement.BindInt64(0, total_tokens);
+  statement.BindInt64(1, trimmed_tokens);
+  statement.BindString(2, thread_uuid);
+
+  return statement.Run();
+}
+
 bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
@@ -1401,6 +1566,16 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   CHECK(delete_associated_content_statement.is_valid());
   delete_associated_content_statement.BindString(0, conversation_uuid);
   if (!delete_associated_content_statement.Run()) {
+    return false;
+  }
+
+  static constexpr char kDeleteThreadsQuery[] =
+      "DELETE FROM thread WHERE conversation_uuid=?";
+  sql::Statement delete_threads_statement(
+      GetDB().GetUniqueStatement(kDeleteThreadsQuery));
+  CHECK(delete_threads_statement.is_valid());
+  delete_threads_statement.BindString(0, conversation_uuid);
+  if (!delete_threads_statement.Run()) {
     return false;
   }
 
@@ -1709,6 +1884,24 @@ bool AIChatDatabase::CreateSchema() {
     return false;
   }
 
+  // A thread is a sub-conversation that branches off a conversation entry.
+  // Mirrors the conversation table (minus model_key) but is scoped to a single
+  // conversation and originates from a specific conversation entry.
+  static constexpr char kCreateThreadTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS thread("
+      "uuid TEXT PRIMARY KEY NOT NULL,"
+      "conversation_uuid TEXT NOT NULL,"
+      "origin_conversation_entry_uuid TEXT NOT NULL,"
+      "type TEXT NOT NULL DEFAULT 'normal',"
+      // Encrypted thread title string
+      "title BLOB,"
+      "total_tokens INTEGER NOT NULL,"
+      "trimmed_tokens INTEGER NOT NULL)";
+  CHECK(GetDB().IsSQLValid(kCreateThreadTableQuery));
+  if (!GetDB().Execute(kCreateThreadTableQuery)) {
+    return false;
+  }
+
   // AssociatedContent is 1:many with Conversation for future-proofing when
   // we support multiple associated contents per conversation.
   static constexpr char kCreateAssociatedContentTableQuery[] =
@@ -1741,6 +1934,8 @@ bool AIChatDatabase::CreateSchema() {
       "CREATE TABLE IF NOT EXISTS conversation_entry("
       "uuid TEXT PRIMARY KEY NOT NULL,"
       "conversation_uuid STRING NOT NULL,"
+      // The thread this entry belongs to, if any. NULL for root entries.
+      "thread_uuid TEXT,"
       "date INTEGER NOT NULL,"
       // Encrypted text string
       // TODO(petemill): move to event only

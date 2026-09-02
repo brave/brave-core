@@ -107,6 +107,7 @@ struct ContentArchive {
 
 struct ConversationArchive {
   array<ConversationTurn> entries;
+  array<Thread> threads;
   array<ContentArchive> associated_content;
 };
 
