@@ -1,0 +1,25 @@
+diff --git a/components/content_settings/browser/ui/cookie_controls_controller.cc b/components/content_settings/browser/ui/cookie_controls_controller.cc
+index 3823642e26e69ed24a826c1824816649270ca0dd..63dc576784711475fc968a5d884b81dfc9409e3a 100644
+--- a/components/content_settings/browser/ui/cookie_controls_controller.cc
++++ b/components/content_settings/browser/ui/cookie_controls_controller.cc
+@@ -133,8 +133,7 @@ void CookieControlsController::Update(content::WebContents* web_contents) {
+     return;
+   }
+   auto status = GetStatus(web_contents);
+-  const CookieControlsState icon_state =
+-      GetCookieControlsIconState(status.controls_state);
++  const CookieControlsState icon_state = CookieControlsState::kHidden;
+   for (auto& observer : observers_) {
+     observer.OnStatusChanged(status.controls_state, status.enforcement,
+                              status.expiration);
+@@ -294,9 +293,7 @@ void CookieControlsController::UpdateCookieControlsIcon() {
+   if (observers_.empty()) {
+     return;
+   }
+-  auto status = GetStatus(GetWebContents());
+-  const CookieControlsState icon_state =
+-      GetCookieControlsIconState(status.controls_state);
++  const CookieControlsState icon_state = CookieControlsState::kHidden;
+   for (auto& observer : observers_) {
+     observer.OnCookieControlsIconStatusChanged(icon_state);
+   }
