@@ -65,8 +65,10 @@ public class QuickSearchEnginesUtil {
      */
     public static void saveSearchEnginesIntoPref(
             Map<String, QuickSearchEnginesModel> searchEnginesMap) {
-        new SharedPreferencesHelper()
-                .saveMap(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, searchEnginesMap);
+        String json = QuickSearchEnginesSerializer.serialize(searchEnginesMap);
+        if (json == null) return;
+        ChromeSharedPreferences.getInstance()
+                .writeString(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, json);
     }
 
     /**
@@ -75,11 +77,9 @@ public class QuickSearchEnginesUtil {
      * @return Map of search engine keywords to their QuickSearchEnginesModel, or null if not found
      */
     public static Map<String, QuickSearchEnginesModel> getQuickSearchEnginesFromPref() {
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper();
-        return sharedPreferencesHelper.getMap(
-                BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES,
-                String.class,
-                QuickSearchEnginesModel.class);
+        return QuickSearchEnginesSerializer.deserialize(
+                ChromeSharedPreferences.getInstance()
+                        .readString(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, ""));
     }
 
     /**
