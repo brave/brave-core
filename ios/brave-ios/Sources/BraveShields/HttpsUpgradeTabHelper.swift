@@ -180,7 +180,15 @@ extension HttpsUpgradeTabHelper: TabPolicyDecider {
 // MARK: - TabObserver
 extension HttpsUpgradeTabHelper: TabObserver {
   public func tabDidCommitNavigation(_ tab: some TabState) {
-    // Reset the stored http request now that the load has committed.
+    // Upgraded load can still fail after commit, so only discard it if some
+    // other navigation superseded the upgrade.
+    guard let upgradedURL = upgradedHTTPSRequest?.url,
+      tab.lastCommittedURL?.baseDomain != upgradedURL.baseDomain
+    else { return }
+    cancelUpgrade()
+  }
+
+  public func tabDidFinishNavigation(_ tab: some TabState) {
     cancelUpgrade()
   }
 
