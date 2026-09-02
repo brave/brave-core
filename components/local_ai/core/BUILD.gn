@@ -86,12 +86,14 @@ source_set("unit_tests") {
   sources = [
     "local_models_updater_unittest.cc",
     "on_device_speech_models_component_installer_unittest.cc",
+    "on_device_speech_models_state_unittest.cc",
   ]
 
   deps = [
     ":core",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_component_updater/browser:test_support",
     "//components/component_updater:test_support",
     "//components/history_embeddings/core",
