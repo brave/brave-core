@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e540d12a91 100644
+index 57ccf4ba4c6050dca1c79f5eb9c4e188763c60b3..3960f53f0fe7b7b932deb00a92cf24ce34dfe7dc 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -12,7 +12,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
  
      <!--  Needed for allowing downloaded APKs to be installed. -->
-@@ -72,22 +74,32 @@ by a child template that "extends" this file.
+@@ -72,11 +74,15 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CAPTURE_KEYBOARD" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -28,7 +28,8 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
      {% endif %}
      <!-- TODO(crbug.com/40259231): Remove this tools:ignore attribute once it's no longer necessary. -->
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" tools:ignore="SystemPermissionTypo" />
-     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
+@@ -84,11 +90,17 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SHORT_SERVICE" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
  
 +<!--
@@ -45,7 +46,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
      <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
      <!-- Permission to request promoted ongoing status (Live Updates) for Actor task notifications on Android 16+. -->
      <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
-@@ -95,7 +107,7 @@ by a child template that "extends" this file.
+@@ -96,7 +108,7 @@ by a child template that "extends" this file.
      <!-- Needed to determine whether an app installed on the device should handle a web navigation.  -->
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  
@@ -54,7 +55,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
  
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-@@ -105,12 +117,14 @@ by a child template that "extends" this file.
+@@ -106,12 +118,14 @@ by a child template that "extends" this file.
        resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
@@ -70,7 +71,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -172,11 +186,14 @@ by a child template that "extends" this file.
+@@ -173,11 +187,14 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -85,7 +86,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
      {% block extra_uses_permissions %}
      {% endblock %}
  
-@@ -396,6 +413,7 @@ by a child template that "extends" this file.
+@@ -397,6 +414,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -93,7 +94,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -997,6 +1015,7 @@ by a child template that "extends" this file.
+@@ -1012,6 +1030,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -101,7 +102,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -1027,6 +1046,7 @@ by a child template that "extends" this file.
+@@ -1042,6 +1061,7 @@ by a child template that "extends" this file.
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
  
@@ -109,7 +110,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
              android:label="@string/bookmark_widget_title"
-@@ -1245,7 +1265,7 @@ by a child template that "extends" this file.
+@@ -1260,7 +1280,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -118,7 +119,7 @@ index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e5
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1338,6 +1358,7 @@ by a child template that "extends" this file.
+@@ -1353,6 +1373,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
