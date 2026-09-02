@@ -46,12 +46,13 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
-  // IPTC metadata stripping only available for jpeg types. So, for non
-  // types rely on upstream flow.
-  // TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
-  // more investigation whether FBMD is present or not. So, tackling only jpeg.
-  const std::string mime_type = item->GetMimeType();
-  if (mime_type != "image/jpeg") {
+  // IPTC metadata stripping only available for jpeg.
+  // TODO(https://github.com/brave/brave-browser/issues/5238): PNG needs
+  // more investigation whether FBMD is present or not.
+  const base::FilePath path = item->GetTargetFilePath();
+  const bool is_jpeg_ext = path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
+                           path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
+  if (!is_jpeg_ext) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
