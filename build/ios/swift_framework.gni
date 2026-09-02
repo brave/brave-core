@@ -73,6 +73,15 @@ _swift_module_triple =
 #       module has to be resolvable by consumers, or has to be imported with
 #       `@_implementationOnly import`.
 #
+#   enable_testability
+#       (optional) boolean, defaults to false. Compiles the module with
+#       testability enabled, which allows importing the module with the
+#       `@testable import`. If you enable this then all `deps` will be public
+#       by default as this is required when compiling with the `-enable-testing`
+#       flag. If you have supplied `cxx_import_deps` these will unfortunately
+#       need to be explicitly re-defined in the swift_source_set depending on
+#       this target. This argument is ignored for official builds.
+#
 #   sources
 #       list of source files. The `.swift` files are compiled into the exported
 #       module, any other file is handed to ios_framework_bundle as-is.
@@ -105,6 +114,10 @@ template("ios_swift_framework_bundle") {
   _swift_target = "${_target_name}_swift_module"
   _stage_target = "${_target_name}_swift_module_stage"
   _bundle_data_target = "${_target_name}_swift_module_bundle_data"
+  _enable_testability = false
+  if (defined(invoker.enable_testability) && !is_official_build) {
+    _enable_testability = invoker.enable_testability
+  }
 
   # Matches the layout used by the `swift` tool: the module artifacts are
   # written to `{{target_out_dir}}/{{label_name}}/{{module_name}}.*`.
@@ -151,6 +164,12 @@ template("ios_swift_framework_bundle") {
     if (!defined(invoker.enable_library_evolution) ||
         invoker.enable_library_evolution) {
       swiftflags += [ "-enable-library-evolution" ]
+    }
+
+    # Enable importing this module with `@testable` to access internal symbols
+    # in unit tests.
+    if (_enable_testability) {
+      swiftflags += [ "-enable-testing" ]
     }
 
     if (defined(invoker.swiftflags)) {
@@ -240,6 +259,7 @@ template("ios_swift_framework_bundle") {
                              "bridge_header",
                              "cxx_import_deps",
                              "enable_library_evolution",
+                             "enable_testability",
                              "sources",
                              "swiftflags",
                              "visibility",
@@ -252,6 +272,14 @@ template("ios_swift_framework_bundle") {
     if (!defined(deps)) {
       deps = []
     }
+
+    if (!defined(public_deps)) {
+      public_deps = []
+    }
+    if (_enable_testability) {
+      public_deps += deps
+    }
+
     deps += [ ":$_swift_target" ]
 
     if (!defined(bundle_deps)) {
