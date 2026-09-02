@@ -5,6 +5,7 @@
 
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -183,6 +184,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
          base::FeatureList::IsEnabled(
              net::features::kThirdPartyStoragePartitioning));
 
+LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea key:" << key.first << " : " << key.second;
   content::BrowsingDataRemover::DataType data_to_remove =
       (content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
        chrome_browsing_data_remover::FILTERABLE_DATA_TYPES);
@@ -199,6 +201,76 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
+}
+
+void BraveEphemeralStorageServiceDelegate::ReloadTabIfMatchingEphemeralDomain(
+    std::vector<std::pair<std::string, base::OnceClosure>>
+        ephemeral_domains) {
+  auto* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
+
+//#if !BUILDFLAG(IS_ANDROID)
+  for (auto* browser : GetAllBrowserWindowInterfaces()) {
+    if (profile != browser->GetProfile()) {
+      continue;
+    }
+    auto* tab_strip = browser->GetTabStripModel();
+    if (!tab_strip) {
+      continue;
+    }
+    for (auto* tab : *tab_strip) {
+      if (!tab || !tab->GetContents()) {
+        continue;
+      }
+
+      content::WebContents* contents = tab->GetContents();
+      if (!contents) {
+        continue;
+      }
+
+      const auto tab_domain =
+          net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
+      if (tab_domain.empty()) {
+        continue;
+      }
+
+      // Each domain's cleanup closure must be run exactly once, so only the
+      // first tab found for a given domain gets it; other tabs on the same
+      // domain are still reloaded, just without the closure.
+      auto domain_it = std::ranges::find(
+          ephemeral_domains, tab_domain,
+          &std::pair<std::string, base::OnceClosure>::first);
+      if (domain_it == ephemeral_domains.end()) {
+        continue;
+      }
+
+      if (auto* ephemeral_storage_tab_helper =
+              ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+                  tab->GetContents())) {
+LOG(INFO) << "[SHRED] ReloadTabsMatchingFirstPartyStorageAreaFromNetwork url:" << contents->GetLastCommittedURL();
+        ephemeral_storage_tab_helper->ReloadBypassingCacheWhenReady(
+            std::move(domain_it->second));
+      }
+      //contents->GetController().SetNeedsReload();
+    }
+  }
+// #else
+//   for (TabModel* model : TabModelList::models()) {
+//     const size_t tab_count = model->GetTabCount();
+//     for (size_t index = 0; index < tab_count; index++) {
+//       auto* tab = static_cast<TabAndroid*>(model->GetTabAt(index));
+//       if (!tab || profile != tab->profile()) {
+//         continue;
+//       }
+//       content::WebContents* contents = tab->GetContents();
+//       if (!ShouldReloadTabFromNetwork(contents, key)) {
+//         continue;
+//       }
+//       contents->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
+//                                        /*check_for_repost=*/true);
+//     }
+//   }
+// #endif
 }
 
 void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
@@ -227,7 +299,7 @@ void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
           brave_shields::features::kBraveShredFeature)) {
     return;
   }
-
+LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive";
   // Collect ephemeral domains from currently open tabs that have the "Shred on
   // App Close" mode enabled.
   const auto ephemeral_domains = GetEphemeralDomainsToCleanOnAppClose();
@@ -250,7 +322,7 @@ void BraveEphemeralStorageServiceDelegate::
   if (enforced_by_user) {
     brave_shields::RecordManualShredP3A(*g_browser_process->local_state());
   }
-
+LOG(INFO) << "[SHRED] PrepareTabsForFirstPartyStorageCleanup ephemeral_domains.size:" << ephemeral_domains.size();
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 

@@ -12,6 +12,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "base/logging.h"
 
 namespace ephemeral_storage {
 
@@ -39,6 +40,7 @@ TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key)
       EphemeralStorageServiceFactory::GetForContext(key.browser_context)
           ->GetWeakPtr();
   DCHECK(ephemeral_storage_service_);
+  LOG(INFO) << "[SHRED] TLDEphemeralLifetime::TLDEphemeralLifetime key:" << key.storage_domain;
   ephemeral_storage_service_->TLDEphemeralLifetimeCreated(
       key.storage_domain, key.storage_partition_config);
 }
