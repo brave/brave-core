@@ -137,7 +137,7 @@
 # MLInstallabilityPromoter::StartPipeline() bail out before it starts any of
 # its tasks.
 #
-# script/check-upstream-flake.py reports "STABLE UPSTREAM" (0.8% over 60 days),
+# tools/chromium_tests_analysis/check-upstream-flake.py reports "STABLE UPSTREAM" (0.8% over 60 days),
 # i.e. below the 1% bar, so this entry rests on the mechanism above and on
 # Brave being provably not at fault, not on the flake rate. The rate only
 # decides which file the entry belongs in: over that window linux-rel and

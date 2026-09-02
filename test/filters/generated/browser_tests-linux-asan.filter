@@ -3,7 +3,7 @@
 ## Upstream browser_tests tests with a flake rate >= 1.0% on
 ## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 script/update-upstream-flake-filters.py
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 1.4% flake rate over 30 days per LUCI Analysis (506 passed, 0 failed, 7 flaky).
 -ActorMediaControlToolBrowserTest.PauseAndPlayMedia

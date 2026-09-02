@@ -3,7 +3,7 @@
 ## Upstream unit_tests tests with a flake rate >= 1.0% on
 ## linux bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 script/update-upstream-flake-filters.py
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 2.9% flake rate over 30 days per LUCI Analysis (37269 passed, 1 failed, 1121 flaky).
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/3

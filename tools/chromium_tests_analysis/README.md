@@ -1,4 +1,18 @@
-# LUCI
+# Chromium tests analysis
+
+This directory contains scripts for querying Chromium's LUCI Analysis service
+about upstream tests that Brave runs on CI:
+
+- `check-upstream-flake.py` reports how flaky a single upstream test is.
+- `update-upstream-flake-filters.py` regenerates the filter files in
+  `test/filters/generated/` that exclude flaky upstream tests from Brave's test
+  runs.
+- `luci_analysis.py` is the LUCI Analysis API client used by both scripts.
+
+The rest of this document describes the LUCI data model that the scripts operate
+on.
+
+## LUCI
 
 LUCI runs Chromium's tests. Test results are organized by three parameters:
 
@@ -21,7 +35,7 @@ verdict can be one of the following:
 
 * plus a few other ones such as _skipped_ or _errored_.
 
-## Test ID
+### Test ID
 
 The test ID is the fully-qualified form of the familiar test name. It has the
 structure `://<target>!<scheme>::<name>`. For the example above:
@@ -50,7 +64,7 @@ parameter) becomes
 i.e. `<suite>#<test>/<instantiation>.<parameter>`. This keeps all IDs of a suite
 adjacent when sorted.
 
-## Variant
+### Variant
 
 The variant is a set of free-form key/value string pairs, which include
 `builder`, `os` and `test_suite`. For example:
@@ -76,7 +90,7 @@ Caution: `os` is the machine's OS, not the tested platform. iOS simulator bots
 report a Mac `os`, ChromeOS builds run on Ubuntu machines. The builder name is
 what disambiguates these.
 
-## Clusters
+### Clusters
 
 LUCI Analysis groups failed test results into _clusters_ (individual runs, so a
 flaky verdict's failed attempts are included even though the test eventually

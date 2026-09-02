@@ -3,7 +3,7 @@
 ## Upstream content_unittests tests with a flake rate >= 1.0% on
 ## macos bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 script/update-upstream-flake-filters.py
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 1.1% flake rate over 30 days per LUCI Analysis (465 passed, 5 failed, 0 flaky).
 -All/SharedWorkerServiceImplCreationContextTest.SpoofingProtection/0

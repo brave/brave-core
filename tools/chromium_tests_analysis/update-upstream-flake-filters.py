@@ -7,8 +7,8 @@
 Update the auto-generated filter files for flaky upstream tests.
 
 Usage:
-    python3 script/update-upstream-flake-filters.py [suite ...] \\
-        [--days 30] [--min-flake-rate 1.0]
+    python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py \\
+        [suite ...] [--days 30] [--min-flake-rate 1.0]
 
 N.B.: The generated list of flaky tests is not exhaustive because the
 discovery APIs we are using (see below) cap the number of result items.
@@ -22,10 +22,10 @@ test/filters/generated/<suite>-<config>.filter, where <config> is a platform
 ("linux") or a platform-sanitizer combination ("linux-asan"). Flake rates are
 computed per config from the matching upstream bots, so a test only flaky on
 e.g. Linux ASan bots is only filtered there. The files are picked up
-automatically by `pnpm run test` (see build/commands/lib/testUtils.js).
+automatically by `pnpm run test` (see build/commands/lib/testUtils.ts).
 
 Candidate test discovery uses the following clustering APIs. For more
-information on LUCI's data model, see docs/luci.md.
+information on LUCI's data model, see README.md in this directory.
 
 1.  `Clusters.QueryClusterSummaries` returns the clusters with the most
     failures, filtered to failures of the suite. The API caps this at the top
@@ -63,8 +63,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 
-from lib.config import BRAVE_CORE_ROOT
-from lib.luci_analysis import (
+from luci_analysis import (
     LuciAnalysisError,
     MIN_MEANINGFUL_VERDICTS,
     analyze_stats,
@@ -73,6 +72,9 @@ from lib.luci_analysis import (
     query_cluster_failures,
     query_cluster_summaries,
 )
+
+BRAVE_CORE_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Upstream test suites Brave runs on CI.
 DEFAULT_SUITES = [
@@ -93,7 +95,7 @@ GENERATED_FILTERS_DIR = os.path.join(BRAVE_CORE_ROOT, "test", "filters",
 # Platforms Brave runs upstream test suites on, mapped to the "os"
 # prefixes of the corresponding upstream bots. Bots for other platforms
 # (e.g. ChromeOS) are ignored. The platform names must match those used by
-# getApplicableFilters in build/commands/lib/testUtils.js. This is why we also
+# getApplicableFilters in build/commands/lib/testUtils.ts. This is why we also
 # currently do not handle Android here.
 PLATFORM_OS_PREFIXES = {
     "linux": ("Ubuntu", "Linux"),
@@ -103,7 +105,7 @@ PLATFORM_OS_PREFIXES = {
 
 # Sanitizers Brave runs upstream test suites with, identified by
 # substrings of upstream builder names. The names must match those used
-# by getApplicableFilters in build/commands/lib/testUtils.js.
+# by getApplicableFilters in build/commands/lib/testUtils.ts.
 SANITIZERS = ("asan", "msan", "ubsan")
 
 # Bots whose builder name contains one of these don't correspond to any
@@ -374,7 +376,8 @@ def build_filter_content(suite, config, entries, days, min_flake_rate):
         f"## {config} bots over the past {days} days per Chromium LUCI"
         " Analysis.",
         "## Regenerate with:",
-        "##   python3 script/update-upstream-flake-filters.py",
+        "##   python3 tools/chromium_tests_analysis/"
+        "update-upstream-flake-filters.py",
     ]
     for gtest_name, analysis in sorted(entries):
         lines.append("")

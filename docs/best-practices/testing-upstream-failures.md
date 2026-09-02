@@ -16,17 +16,19 @@ instead:
 
 ```bash
 # in src/brave/
-python3 script/update-upstream-flake-filters.py
+python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # Only specific suites, or different thresholds:
-python3 script/update-upstream-flake-filters.py browser_tests --days 30 \
+python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py browser_tests --days 30 \
     --min-flake-rate 1.0
 ```
 
 Candidate discovery is based on LUCI Analysis failure clusters, which only
 expose the top 200 clusters per query — a test flaking at a very low volume can
 be missed. The rules below still apply when manually filtering such tests in the
-hand-written filter files. See [LUCI](../luci.md) for the underlying data model.
+hand-written filter files. See
+[LUCI](../../tools/chromium_tests_analysis/README.md) for the underlying data
+model.
 
 ---
 
@@ -58,13 +60,13 @@ causing the test to fail, fix that code — don't hide it with a filter.
 
 ```bash
 # Default 30-day lookback
-python3 script/check-upstream-flake.py "TestSuite.TestMethod"
+python3 tools/chromium_tests_analysis/check-upstream-flake.py "TestSuite.TestMethod"
 
 # Wider lookback window
-python3 script/check-upstream-flake.py "TestSuite.TestMethod" --days 60
+python3 tools/chromium_tests_analysis/check-upstream-flake.py "TestSuite.TestMethod" --days 60
 
 # Search by test class name (finds all methods in the suite)
-python3 script/check-upstream-flake.py "TestSuite"
+python3 tools/chromium_tests_analysis/check-upstream-flake.py "TestSuite"
 ```
 
 The script queries Chromium's LUCI Analysis database and returns one of five

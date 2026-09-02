@@ -11,7 +11,7 @@ Queries the LUCI Analysis REST API (pRPC protocol) to retrieve
 flakiness statistics for a given test in the Chromium project.
 
 Usage:
-    python3 scripts/check-upstream-flake.py \\
+    python3 tools/chromium_tests_analysis/check-upstream-flake.py \\
         "TestSuite.TestName" [--days 30] [--json]
 """
 
@@ -19,7 +19,7 @@ import argparse
 import json
 import sys
 
-from lib.luci_analysis import (
+from luci_analysis import (
     LuciAnalysisError,
     analyze_stats,
     analyze_verdicts,
@@ -159,7 +159,7 @@ def main():
                      " flake in Chromium's LUCI Analysis"
                      " database."),
         epilog=("Example: python3"
-                " scripts/check-upstream-flake.py"
+                " tools/chromium_tests_analysis/check-upstream-flake.py"
                 " 'WebUIURLLoaderFactoryTest"
                 ".RangeRequest'"),
     )

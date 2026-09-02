@@ -3,7 +3,7 @@
 ## Upstream browser_tests tests with a flake rate >= 1.0% on
 ## windows bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 script/update-upstream-flake-filters.py
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 1.4% flake rate over 30 days per LUCI Analysis (32783 passed, 27 failed, 433 flaky).
 -AccountsPolicyManagerBrowserTest.ProfileSigninAllowedPrefChanged_Managed

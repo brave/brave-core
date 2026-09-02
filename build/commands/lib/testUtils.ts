@@ -70,7 +70,7 @@ export function getTestsToRun(config: Config, suite: string) {
 //
 // Each filter is looked up both in test/filters/ (hand-written) and in
 // test/filters/generated/ (auto-generated upstream flake filters, see
-// script/update-upstream-flake-filters.py).
+// tools/chromium_tests_analysis/update-upstream-flake-filters.py).
 export function getApplicableFilters(config: Config, suite: string) {
   let filterFilePaths: string[] = []
 

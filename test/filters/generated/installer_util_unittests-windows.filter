@@ -3,4 +3,4 @@
 ## Upstream installer_util_unittests tests with a flake rate >= 1.0% on
 ## windows bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 script/update-upstream-flake-filters.py
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
