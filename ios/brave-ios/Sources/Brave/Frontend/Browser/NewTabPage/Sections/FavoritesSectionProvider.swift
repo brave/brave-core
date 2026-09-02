@@ -41,7 +41,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
     frc = Favorite.frc()
     super.init()
-    frc.fetchRequest.fetchLimit = 10
+    frc.fetchRequest.fetchLimit = 20
     frc.delegate = self
 
     do {
@@ -51,36 +51,39 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     }
   }
 
-  static var defaultIconSize = CGSize(width: 82, height: FavoritesCell.height(forWidth: 82))
-  static var largerIconSize = CGSize(width: 100, height: FavoritesCell.height(forWidth: 100))
+  static var defaultIconSize = CGSize(width: 64, height: FavoritesCell.height(forWidth: 64))
+
+  /// The maximum width of the favorites content, matching the stats section.
+  static let maxWidth: CGFloat = 640
 
   /// The number of times that each row contains
   static func numberOfItems(in collectionView: UICollectionView, availableWidth: CGFloat) -> Int {
-    // Two considerations:
-    // 1. icon size minimum
-    // 2. trait collection
-    // 3. orientation ("is landscape")
-    let icons = (min: 4, max: 6)
     let defaultWidth: CGFloat = defaultIconSize.width
-    let fittingNumber: Int
-
-    if collectionView.traitCollection.horizontalSizeClass == .regular {
-      if collectionView.frame.width > collectionView.frame.height {
-        fittingNumber = Int(floor(availableWidth / defaultWidth))
-      } else {
-        fittingNumber = Int(floor(availableWidth / largerIconSize.width))
-      }
-    } else {
-      fittingNumber = Int(floor(availableWidth / defaultWidth))
-    }
-
-    return max(icons.min, min(icons.max, fittingNumber))
+    return Int(floor(availableWidth / defaultWidth))
   }
 
   func registerCells(to collectionView: UICollectionView) {
     collectionView.register(
       FavoritesCell.self,
       forCellWithReuseIdentifier: FavoritesCell.identifier
+    )
+  }
+
+  var numberOfFavorites: Int {
+    frc.fetchedObjects?.count ?? 0
+  }
+
+  /// The actual number of favorites that will be displayed in a single row
+  /// given the available width, which is the lesser of the number of fetched
+  /// favorites and the maximum number of items that fit in the row.
+  func displayedItemCount(in collectionView: UICollectionView, section: Int) -> Int {
+    guard Preferences.NewTabPage.showNewTabFavourites.value else { return 0 }
+    return min(
+      numberOfFavorites,
+      Self.numberOfItems(
+        in: collectionView,
+        availableWidth: fittingSizeForCollectionView(collectionView, section: section).width
+      )
     )
   }
 
@@ -95,15 +98,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    let fetchedCount = frc.fetchedObjects?.count ?? 0
-    let numberOfItems = min(
-      fetchedCount,
-      Self.numberOfItems(
-        in: collectionView,
-        availableWidth: fittingSizeForCollectionView(collectionView, section: section).width
-      )
-    )
-    return Preferences.NewTabPage.showNewTabFavourites.value ? numberOfItems : 0
+    return displayedItemCount(in: collectionView, section: section)
   }
 
   func collectionView(
@@ -127,8 +122,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     }
 
     let fav = frc.object(at: IndexPath(item: indexPath.item, section: 0))
-    cell.textLabel.textColor = .white
-    cell.textLabel.text = fav.displayTitle ?? fav.url
+    cell.title = fav.displayTitle ?? fav.url
 
     // Reset Fav-icon loading and image-view to default
     cell.imageView.cancelLoading()
@@ -136,7 +130,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     if let url = fav.url?.asURL {
       cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: isPrivateBrowsing)
     }
-    cell.accessibilityLabel = cell.textLabel.text
+    cell.accessibilityLabel = cell.title
   }
 
   private func itemSize(collectionView: UICollectionView, section: Int) -> CGSize {
@@ -152,12 +146,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         width: floor(width / 4.0),
         height: FavoritesCell.height(forWidth: floor(width / 4.0))
       )
-    } else if collectionView.traitCollection.horizontalSizeClass == .regular {
-      // If we're on regular horizontal size class and the computed size
-      // of the icon is larger than `largerIconSize`, use `largerIconSize`
-      if width / CGFloat(minimumNumberOfColumns) > Self.largerIconSize.width {
-        size = Self.largerIconSize
-      }
     }
     return size
   }
@@ -175,10 +163,12 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     layout collectionViewLayout: UICollectionViewLayout,
     insetForSectionAt section: Int
   ) -> UIEdgeInsets {
-    let isLandscape = collectionView.frame.width > collectionView.frame.height
-    // Adjust the left-side padding a bit for portrait iPad
-    let inset = isLandscape ? 12 : collectionView.readableContentGuide.layoutFrame.origin.x
-    return UIEdgeInsets(top: 6, left: inset, bottom: 6, right: inset)
+    let insets = horizontalInsets(
+      for: collectionView,
+      maxWidth: Self.maxWidth,
+      minimumInset: 16
+    )
+    return UIEdgeInsets(top: 8, left: insets.left, bottom: 8, right: insets.right)
   }
 
   func collectionView(
@@ -251,7 +241,13 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     else {
       return nil
     }
-    return UITargetedPreview(view: cell.imageView)
+    let preview = UITargetedPreview(view: cell.imageContainerView)
+    preview.parameters.backgroundColor = .clear
+    preview.parameters.visiblePath = UIBezierPath(
+      roundedRect: cell.imageContainerView.bounds,
+      cornerRadius: 16
+    )
+    return preview
   }
 
   func collectionView(
@@ -263,7 +259,13 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     else {
       return nil
     }
-    return UITargetedPreview(view: cell.imageView)
+    let preview = UITargetedPreview(view: cell.imageContainerView)
+    preview.parameters.backgroundColor = .clear
+    preview.parameters.visiblePath = UIBezierPath(
+      roundedRect: cell.imageContainerView.bounds,
+      cornerRadius: 16
+    )
+    return preview
   }
 }
 
