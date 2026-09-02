@@ -310,10 +310,9 @@ export function isPolkadotAssetTransaction(
 ): tx is PolkadotTransactionInfo & {
   txDataUnion: { polkadotTxData: { assetId: BraveWallet.PolkadotAssetId } }
 } {
-  // The asset id is a struct, so it is truthy whenever it is present. Note
-  // that 0 is a valid asset id.
   return (
-    isPolkadotTransaction(tx) && Boolean(tx.txDataUnion.polkadotTxData.assetId)
+    isPolkadotTransaction(tx)
+    && tx.txDataUnion.polkadotTxData.assetId !== undefined
   )
 }
 
