@@ -9269,7 +9269,7 @@ extension Strings {
     "quickview.confirmation.alert.title",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Keep opening links in QuickView?",
+    value: "Keep opening conversation links in Quick View?",
     comment:
       "Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links."
   )
