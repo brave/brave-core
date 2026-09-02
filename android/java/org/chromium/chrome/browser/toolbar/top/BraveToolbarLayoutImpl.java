@@ -271,9 +271,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mWalletIcon = mWalletLayout.findViewById(R.id.brave_wallet_button);
         }
 
+        // Use the same tints as the omnibox status icon, so the icons Brave adds inside the URL
+        // bar match the ones upstream puts there.
         mDarkModeTint = ThemeUtils.getThemedToolbarIconTint(getContext(), false);
-        mLightModeTint =
-                ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.brave_white));
+        mLightModeTint = ThemeUtils.getThemedToolbarIconTint(getContext(), true);
 
         if (mHomeButton != null) {
             mHomeButton.setOnLongClickListener(this);
@@ -1452,10 +1453,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
+        // Shields and rewards are brand-colored and stay untinted.
+        ColorStateList tint =
+                ColorUtils.shouldUseLightForegroundOnBackground(color)
+                        ? mLightModeTint
+                        : mDarkModeTint;
         if (mWalletIcon != null) {
-            ImageViewCompat.setImageTintList(mWalletIcon,
-                    !ColorUtils.shouldUseLightForegroundOnBackground(color) ? mDarkModeTint
-                                                                            : mLightModeTint);
+            ImageViewCompat.setImageTintList(mWalletIcon, tint);
+        }
+        if (mYouTubePipButton != null) {
+            ImageViewCompat.setImageTintList(mYouTubePipButton, tint);
         }
 
         final int textBoxColor =
