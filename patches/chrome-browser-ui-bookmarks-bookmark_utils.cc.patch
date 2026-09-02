@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_utils.cc b/chrome/browser/ui/bookmarks/bookmark_utils.cc
-index ed11adf55026f1189a906c15485e8571a9784ec1..99fe7f30783f2b652e6b7245ab577f7e2b54e8d1 100644
+index ed11adf55026f1189a906c15485e8571a9784ec1..f558115b8f10b3e8c31d0adcd45a30807a5b9d56 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_utils.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_utils.cc
 @@ -195,6 +195,7 @@ bool GetURLAndTitleToBookmark(content::WebContents* web_contents,
@@ -37,7 +37,7 @@ index ed11adf55026f1189a906c15485e8571a9784ec1..99fe7f30783f2b652e6b7245ab577f7e
  }
  
  bool IsAppsShortcutEnabled(Profile* profile) {
-+  return false;
++  if ((true)) return false;
  #if BUILDFLAG(IS_CHROMEOS)
    // Chrome OS uses the app list / app launcher.
    return false;
@@ -45,7 +45,7 @@ index ed11adf55026f1189a906c15485e8571a9784ec1..99fe7f30783f2b652e6b7245ab577f7e
  }
  
  bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
-+  return false;
++  if ((true)) return false;
    return IsAppsShortcutEnabled(profile) &&
           profile->GetPrefs()->GetBoolean(
               bookmarks::prefs::kShowAppsShortcutInBookmarkBar);
@@ -54,7 +54,7 @@ index ed11adf55026f1189a906c15485e8571a9784ec1..99fe7f30783f2b652e6b7245ab577f7e
  ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                       ui::ColorVariant color) {
 +#if defined(TOOLKIT_VIEWS)
-+  return GetBraveBookmarkFolderIcon(icon_type, color);
++  if ((true)) return GetBraveBookmarkFolderIcon(icon_type, color);
 +#endif  // defined(TOOLKIT_VIEWS)
    const gfx::VectorIcon* icon_id;
    if (icon_type == BookmarkFolderIconType::kNormal) {

@@ -16,12 +16,12 @@ substitutions:
   - description: Always return false in IsAppsShortcutEnabled()
     preempt_function_impl:
       function_name: 'IsAppsShortcutEnabled'
-      code: 'return false;'
+      code: 'if ((true)) return false;'
 
   - description: Always return false in ShouldShowAppsShortcutInBookmarkBar()
     preempt_function_impl:
       function_name: 'ShouldShowAppsShortcutInBookmarkBar'
-      code: 'return false;'
+      code: 'if ((true)) return false;'
 
   - description: |
       Return Brave version of bookmark folder icon in GetBookmarkFolderIcon()
@@ -34,7 +34,7 @@ substitutions:
       replace: |-
         \1
         #if defined(TOOLKIT_VIEWS)
-          return GetBraveBookmarkFolderIcon(icon_type, color);
+          if ((true)) return GetBraveBookmarkFolderIcon(icon_type, color);
         #endif  // defined(TOOLKIT_VIEWS)
 
   - description: |
