@@ -1,11 +1,11 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d91922eba 100644
+index 6f07039a8b59fefc50fc4b98040734a6414b31ec..dd92ddd25060d1a01f99da6a8ba5b229c6c44d3e 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -74,9 +74,10 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
  BASE_FEATURE(kIPHDesktopRealboxContextualSearchFeature,
               "IPH_DesktopRealboxContextualSearchFeature",
-              base::FEATURE_DISABLED_BY_DEFAULT);
+              base::FEATURE_ENABLED_BY_DEFAULT);
 +// kIPHDiscardRingFeature feature state is enforced via plaster rewrite.
  BASE_FEATURE(kIPHDiscardRingFeature,
               "IPH_DiscardRing",
@@ -26,7 +26,7 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
  BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
               "IPH_GMCLocalMediaCasting",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -178,9 +180,10 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+@@ -175,9 +177,10 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
  BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
               "IPH_PasswordsSaveRecoveryPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -38,7 +38,7 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
  BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
               "IPH_PasswordsManagementBubbleDuringSignin",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -196,9 +199,10 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+@@ -193,9 +196,10 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
  BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
               "IPH_PdfGlicSummarizeFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -50,7 +50,7 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
  BASE_FEATURE(kIPHPdfSearchifyFeature,
               "IPH_PdfSearchifyFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -229,6 +233,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+@@ -226,6 +230,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
  BASE_FEATURE(kIPHReadingListEntryPointFeature,
               "IPH_ReadingListEntryPoint",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -77,7 +77,7 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
               base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHVerticalTabsExpandOnHoverFeature,
               "IPH_VerticalTabsExpandOnHoverFeature",
-              base::FEATURE_DISABLED_BY_DEFAULT);
+              base::FEATURE_ENABLED_BY_DEFAULT);
 +// kIPHVerticalTabstripTutorialFeature feature state is enforced via plaster rewrite.
  BASE_FEATURE(kIPHVerticalTabstripTutorialFeature,
               "IPH_VerticalTabstripTutorialFeature",
@@ -98,7 +98,7 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
  BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
               "IPH_TabGroupsSaveV2CloseGroup",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -1031,9 +1040,10 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+@@ -1036,9 +1045,10 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
  BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
               "IPH_AutofillHomeWorkProfileSuggestion",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -107,6 +107,6 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
               "IPH_AutofillAccountNameEmailSuggestion",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kIPHAutofillAiOptInFeature,
-              "IPH_AutofillAiOptIn",
+ BASE_FEATURE(kIPHAutofillAiValuablesFeature,
+              "IPH_AutofillAiValuables",
               base::FEATURE_ENABLED_BY_DEFAULT);
