@@ -35,9 +35,8 @@ import build_tree_sitter_gn  # noqa: E402  pylint: disable=wrong-import-position
 # ast-grep upstream details.
 AST_GREP_GIT_URL = 'https://github.com/ast-grep/ast-grep.git'
 
-# Pulling this specific hash for `0.44.1`, as the tag itself still has an audit
-# failure.
-AST_GREP_REF = '51496f3b161ba077ad680451062deb4d09da848a'
+# Pulling this specific hash for `0.45.3`.
+AST_GREP_REF = '979c143639e3588c31f563091e69398683ed34f0'
 
 # Additional paths under `third_party/` for the source checkout, intermediate
 # build state, and final binary output.
