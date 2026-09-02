@@ -148,6 +148,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER_STATUS" desc="Swap provider status label in transaction details" formatter_data="webui=Wallet">Provider status</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title" formatter_data="webui=Wallet">Confirm shield</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title" formatter_data="webui=Wallet">Confirm unshield</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_MIGRATE" desc="Confirm migrate title" formatter_data="webui=Wallet">Confirm migrate</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button" formatter_data="webui=Wallet">Spend</message>
   <message name="IDS_BRAVE_WALLET_SORT_BY" desc="Sort by button label" formatter_data="webui=Wallet">Sort by</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button" formatter_data="webui=Wallet">Review bridge</message>
@@ -757,8 +758,10 @@
   <message name="IDS_BRAVE_WALLET_SWAP_REFUNDED" desc="Swap transaction refunded title" formatter_data="webui=Wallet">Refunded</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_AMOUNT" desc="Transaction intent shielding amount description" formatter_data="webui=Wallet">Shielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING_AMOUNT" desc="Transaction intent unshielding amount description" formatter_data="webui=Wallet">Unshielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_MIGRATING_AMOUNT" desc="Transaction intent migrating amount description" formatter_data="webui=Wallet">Migrating <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_SHIELDED" desc="Transaction intent amount has been shielded description" formatter_data="webui=Wallet"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been shielded</message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_UNSHIELDED" desc="Transaction intent amount has been unshielded description" formatter_data="webui=Wallet"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been unshielded</message>
+  <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_MIGRATED" desc="Transaction intent amount has been migrated description" formatter_data="webui=Wallet"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been migrated</message>
   <message name="IDS_BRAVE_WALLET_PENDING_TRANSACTIONS" desc="Transaction complete panel, amount of transactions still pending." formatter_data="webui=Wallet">
     {PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
@@ -1252,14 +1255,18 @@
   <message name="IDS_BRAVE_WALLET_SYNCING" desc="Syncing label" formatter_data="webui=Wallet">Syncing</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_SHIELD" desc="Review shield button label" formatter_data="webui=Wallet">Review shield</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_UNSHIELD" desc="Review unshield button label" formatter_data="webui=Wallet">Review unshield</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_MIGRATE" desc="Review migrate button label" formatter_data="webui=Wallet">Review migrate</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING" desc="Shielding label" formatter_data="webui=Wallet">Shielding</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING" desc="Unshielding label" formatter_data="webui=Wallet">Unshielding</message>
+  <message name="IDS_BRAVE_WALLET_MIGRATING" desc="Migrating label" formatter_data="webui=Wallet">Migrating</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ZEC" desc="Shield ZEC button label" formatter_data="webui=Wallet">Shield ZEC</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELD_ZEC" desc="Unshield ZEC button label" formatter_data="webui=Wallet">Unshield ZEC</message>
+  <message name="IDS_BRAVE_WALLET_MIGRATE_ZEC" desc="Migrate ZEC button label" formatter_data="webui=Wallet">Migrate ZEC</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_FUNDS" desc="Shield funds button label" formatter_data="webui=Wallet">Shield funds</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELD_FUNDS" desc="Unshield funds button label" formatter_data="webui=Wallet">Unshield funds</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Shielding funds alert description" formatter_data="webui=Wallet">You are sending funds from your transparent account to your shielded account.</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Unshielding funds alert description" formatter_data="webui=Wallet">You are sending funds from your shielded account to your transparent account.</message>
+  <message name="IDS_BRAVE_WALLET_MIGRATING_FUNDS_ALERT_DESCRIPTION" desc="Migrate funds alert description" formatter_data="webui=Wallet">You are sending funds from your shielded legacy account to your shielded account.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action" formatter_data="webui=Wallet">Retry</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_MAY_INCLUDE_ACCOUNT_CREATION_FEE" desc="A warning that the transaction might include an associated token account creation fee" formatter_data="webui=Wallet">This transaction may include an account creation fee</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_REQUIRED_TO_TAKE_THIS_ACTION" desc="Description text explaining that a password is required to proceed" formatter_data="webui=Wallet">Password is required to take this action.</message>

@@ -480,6 +480,23 @@ void ZCashWalletService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
+bool ZCashWalletService::IsOwnInternalShieldAddress(
+    const mojom::AccountIdPtr& account_id,
+    const std::string& addr) {
+  const auto& account_infos = keyring_service_->GetAllAccountInfos();
+  for (const auto& account_info : account_infos) {
+    if (account_info->account_id->keyring_id != account_id->keyring_id) {
+      continue;
+    }
+    auto zcash_account_info =
+        keyring_service_->GetZCashAccountInfo(account_info->account_id);
+    if (zcash_account_info->orchard_internal_address == addr) {
+      return true;
+    }
+  }
+  return false;
+}
+
 base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
 ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
                                        mojom::ZCashTokenType from_token_type,
@@ -490,6 +507,8 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
   //
   // When shielded transactions and Ironwood are enabled:
   //   Shielded sender (Orchard or Ironwood):
+  //     Orchard sender + same-keyring account's internal orchard address
+  //                                      → kMigratingIronwood
   //     recipient orchard addr           → k{Orchard,Ironwood}ToIronwood
   //     recipient same-keyring account's next transparent receive address
   //                                      → kUnshielding{Orchard,Ironwood}
@@ -528,6 +547,10 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
           return base::unexpected(
               mojom::ZCashAddressError::kInvalidRecipientType);
         }
+        if (from_token_type == mojom::ZCashTokenType::kOrchard &&
+            IsOwnInternalShieldAddress(account_id, addr)) {
+          return base::ok(mojom::ZCashTxType::kMigratingIronwood);
+        }
         if (from_token_type == mojom::ZCashTokenType::kIronwood) {
           return base::ok(mojom::ZCashTxType::kIronwoodToIronwood);
         }
@@ -565,16 +588,8 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
         return base::unexpected(
             mojom::ZCashAddressError::kInvalidRecipientType);
       }
-      const auto& account_infos = keyring_service_->GetAllAccountInfos();
-      for (const auto& account_info : account_infos) {
-        if (account_info->account_id->keyring_id != account_id->keyring_id) {
-          continue;
-        }
-        auto zcash_account_info =
-            keyring_service_->GetZCashAccountInfo(account_info->account_id);
-        if (zcash_account_info->orchard_internal_address == addr) {
-          return base::ok(mojom::ZCashTxType::kShieldingIronwood);
-        }
+      if (IsOwnInternalShieldAddress(account_id, addr)) {
+        return base::ok(mojom::ZCashTxType::kShieldingIronwood);
       }
       return base::ok(mojom::ZCashTxType::kTransparentToIronwood);
     }

@@ -46,6 +46,7 @@ interface Props {
   isAccountSyncing?: boolean
   isShieldingFunds?: boolean
   isUnshieldingFunds?: boolean
+  isMigratingFunds?: boolean
 }
 
 type Warning = TransactionWarning
@@ -64,6 +65,7 @@ export function PendingTransactionActionsFooter({
   isAccountSyncing,
   isShieldingFunds,
   isUnshieldingFunds,
+  isMigratingFunds,
 }: Props) {
   // selectors
   const submittingTransaction = useUnsafeUISelector(
@@ -119,6 +121,22 @@ export function PendingTransactionActionsFooter({
   const isConfirmButtonDisabledOrSubmitting =
     isConfirmButtonDisabled || !!submittingTransaction
 
+  const confirmButtonText = React.useMemo((): string => {
+    if (isAccountSyncing) {
+      return getLocale(S.BRAVE_WALLET_SYNCING)
+    }
+    if (isShieldingFunds) {
+      return getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
+    }
+    if (isUnshieldingFunds) {
+      return getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
+    }
+    if (isMigratingFunds) {
+      return getLocale(S.BRAVE_WALLET_MIGRATE_ZEC)
+    }
+    return getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)
+  }, [isAccountSyncing, isShieldingFunds, isUnshieldingFunds, isMigratingFunds])
+
   const { confirmButton, rejectButton } = React.useMemo(() => {
     return {
       confirmButton: (
@@ -129,13 +147,7 @@ export function PendingTransactionActionsFooter({
           isDisabled={isConfirmButtonDisabledOrSubmitting}
           isLoading={isTransactionConfirmedOrSubmitting}
         >
-          {isAccountSyncing
-            ? getLocale(S.BRAVE_WALLET_SYNCING)
-            : isShieldingFunds
-              ? getLocale(S.BRAVE_WALLET_SHIELD_ZEC)
-              : isUnshieldingFunds
-                ? getLocale(S.BRAVE_WALLET_UNSHIELD_ZEC)
-                : getLocale(S.BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON)}
+          {confirmButtonText}
         </Button>
       ),
       rejectButton: (
@@ -155,9 +167,7 @@ export function PendingTransactionActionsFooter({
     isTransactionConfirmedOrSubmitting,
     isConfirmButtonDisabledOrSubmitting,
     onReject,
-    isAccountSyncing,
-    isShieldingFunds,
-    isUnshieldingFunds,
+    confirmButtonText,
   ])
 
   // effects

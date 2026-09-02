@@ -5,6 +5,10 @@
 
 import * as React from 'react'
 
+// Selectors
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import { openTab } from '../../../../utils/routes-utils'
@@ -13,11 +17,20 @@ import { openTab } from '../../../../utils/routes-utils'
 import { Alert, Button } from './zcash_migration_banner.style'
 
 export function ZCashMigrationBanner() {
+  const isZCashIronwoodEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashIronwoodEnabled,
+  )
+
   const onClickLearnMore = () => {
     openTab(
       'https://forum.zcashcommunity.com/t/ironwood-update-for-users/56721',
     )
   }
+
+  if (isZCashIronwoodEnabled) {
+    return null
+  }
+
   return (
     <Alert type='warning'>
       {getLocale(S.BRAVE_WALLET_ZCASH_MIGRATION_BANNER_DESCRIPTION)}

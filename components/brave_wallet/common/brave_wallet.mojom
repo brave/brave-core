@@ -2150,13 +2150,16 @@ struct ZCashAccountInfo {
   ZCashAddress next_transparent_receive_address;
   ZCashAddress next_transparent_change_address;
   ZCashAccountShieldBirthday? account_shield_birthday;
-  // Address that contains both transparent and orchard part
+  // Address that contains both transparent
+  // and orchard part/ironwood part
   // Could be null if orchard is not enabled.
   string? unified_address;
   // Address that contains orchard part only
   // Could be null if orchard is not enabled.
+  // Address is the same across orchard and ironwood pool.
   string? orchard_address;
   // Address can be used to shield funds internally.
+  // Address is the same across orchard and ironwood pool.
   string? orchard_internal_address;
 };
 
@@ -2176,6 +2179,8 @@ enum ZCashTxType {
   // Internal transfer to a same-keyring account's transparent address
   // (from Ironwood)
   kUnshieldingIronwood = 11,
+  // Transfer from orchard to ironwood internal account
+  kMigratingIronwood = 12,
 };
 
 enum ZCashAddressError {

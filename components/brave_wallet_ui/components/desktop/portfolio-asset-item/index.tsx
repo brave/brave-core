@@ -258,8 +258,8 @@ export const PortfolioAssetItem = ({
                           {isShieldedToken(token)
                             ? token.zcashTokenType
                               === BraveWallet.ZCashTokenType.kIronwood
-                              ? 'Zcash (Ironwood)'
-                              : 'Zcash'
+                              ? 'Zcash (Shielded)'
+                              : 'Zcash (Shielded Legacy)'
                             : token.name}
                         </AssetName>
                         {isShieldedToken(token) && <ShieldedLabel />}
