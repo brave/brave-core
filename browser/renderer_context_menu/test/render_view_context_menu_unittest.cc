@@ -16,7 +16,6 @@
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -72,17 +71,17 @@ class BraveRenderViewContextMenuMock : public RenderViewContextMenu {
 
   void Show() override {}
 
-  void SetBrowser(Browser* browser) { browser_ = browser; }
+  void SetBrowser(BrowserWindowInterface* browser) { browser_ = browser; }
 
-  Browser* GetBrowser() const override {
+  BrowserWindowInterface* GetBrowser() const override {
     if (browser_) {
       return browser_;
     }
-    return static_cast<Browser*>(RenderViewContextMenu::GetBrowser());
+    return RenderViewContextMenu::GetBrowser();
   }
 
  private:
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 class BraveRenderViewContextMenuTest : public testing::Test {
@@ -101,7 +100,8 @@ class BraveRenderViewContextMenuTest : public testing::Test {
         /*is_paste_enabled=*/false, /*is_paste_and_match_style_enabled=*/false);
 
     BrowserWindowCreateParams create_params(
-        is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
+        is_pwa_browser ? BrowserWindowInterface::Type::TYPE_APP
+                       : BrowserWindowInterface::Type::TYPE_NORMAL,
         profile_.get(), true);
     auto browser_window = std::make_unique<TestBrowserWindow>();
     create_params.window = browser_window.release();
@@ -155,7 +155,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
   content::BrowserTaskEnvironment browser_task_environment;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
-  std::unique_ptr<Browser> browser_;
+  std::unique_ptr<BrowserWindowInterface> browser_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;
 };
