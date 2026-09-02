@@ -79,7 +79,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
   auto* profile = Profile::FromBrowserContext(context);
-  if (local_state && profile && !profile->IsOffTheRecord() &&
+  // Regular profiles only: this navigates a WebContents of its own, and
+  // Guest/System profiles are missing keyed services that navigation
+  // throttles dereference unconditionally.
+  if (local_state && profile && profile->IsRegularProfile() &&
       base::FeatureList::IsEnabled(features::kFingerprintInputMetrics)) {
     fingerprint_frequency_metrics_ =
         std::make_unique<FingerprintFrequencyMetrics>(local_state, profile);
@@ -155,6 +158,11 @@ void ProfileMiscMetricsService::Shutdown() {
 
 PageMetrics* ProfileMiscMetricsService::GetPageMetrics() {
   return page_metrics_.get();
+}
+
+FingerprintFrequencyMetrics*
+ProfileMiscMetricsService::GetFingerprintFrequencyMetricsForTesting() {
+  return fingerprint_frequency_metrics_.get();
 }
 
 #if BUILDFLAG(IS_ANDROID)
