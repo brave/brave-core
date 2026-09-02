@@ -73,7 +73,8 @@ class StatsSectionProvider: NSObject, NTPSectionProvider {
     layout collectionViewLayout: UICollectionViewLayout,
     insetForSectionAt section: Int
   ) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+    let insets = horizontalInsets(for: collectionView, maxWidth: 640, minimumInset: 16)
+    return UIEdgeInsets(top: 8, left: insets.left, bottom: 8, right: insets.right)
   }
 }
 

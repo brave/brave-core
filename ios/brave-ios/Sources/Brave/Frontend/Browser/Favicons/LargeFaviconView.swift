@@ -15,8 +15,10 @@ struct FaviconUX {
 }
 
 struct FaviconConfiguration {
-  let borderColor: UIColor
-  let borderWidth: CGFloat
+  var borderColor: UIColor
+  var borderWidth: CGFloat
+  var cornerRadius: CGFloat = 8
+  var displayBackground: Bool = true
 
   static let defaultConfig = FaviconConfiguration(
     borderColor: FaviconUX.faviconBorderColor,
@@ -26,9 +28,11 @@ struct FaviconConfiguration {
 
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
+  private let isBackgroundDisplayed: Bool
   init(
     config: FaviconConfiguration? = nil
   ) {
+    isBackgroundDisplayed = config?.displayBackground ?? true
     super.init(frame: .zero)
 
     layer.cornerRadius = 8
@@ -36,6 +40,7 @@ class LargeFaviconView: UIView {
     if let config {
       layer.borderColor = config.borderColor.cgColor
       layer.borderWidth = config.borderWidth
+      layer.cornerRadius = config.cornerRadius
     }
     clipsToBounds = true
     layoutMargins = .zero
@@ -76,10 +81,11 @@ class LargeFaviconView: UIView {
         self.imageView.contentMode = .scaleAspectFit
 
         if let image = favicon.image {
-          self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
+          self.backgroundView.isHidden =
+            !isBackgroundDisplayed || !favicon.isMonogramImage && !image.hasTransparentEdges
         } else {
           self.backgroundView.isHidden =
-            !favicon.hasTransparentBackground && !favicon.isMonogramImage
+            !isBackgroundDisplayed || !favicon.hasTransparentBackground && !favicon.isMonogramImage
         }
         return
       }
@@ -98,16 +104,17 @@ class LargeFaviconView: UIView {
         self.imageView.contentMode = .scaleAspectFit
 
         if let image = favicon.image {
-          self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
+          self.backgroundView.isHidden =
+            !isBackgroundDisplayed || !favicon.isMonogramImage && !image.hasTransparentEdges
         } else {
           self.backgroundView.isHidden =
-            !favicon.hasTransparentBackground && !favicon.isMonogramImage
+            !isBackgroundDisplayed || !favicon.hasTransparentBackground && !favicon.isMonogramImage
         }
       } catch {
         self.imageView.image = Favicon.defaultImage
         self.backgroundColor = nil
         self.imageView.contentMode = .scaleAspectFit
-        self.backgroundView.isHidden = false
+        self.backgroundView.isHidden = !isBackgroundDisplayed
       }
     }
   }
@@ -119,7 +126,7 @@ class LargeFaviconView: UIView {
     imageView.contentMode = .scaleAspectFit
     backgroundColor = .clear
     layoutMargins = .zero
-    backgroundView.isHidden = false
+    backgroundView.isHidden = !isBackgroundDisplayed
   }
 
   private var faviconTask: Task<Void, Error>?

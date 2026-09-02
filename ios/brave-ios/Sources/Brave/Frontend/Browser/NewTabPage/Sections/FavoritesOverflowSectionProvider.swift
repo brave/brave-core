@@ -66,7 +66,7 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   init(action: @escaping () -> Void) {
     self.action = action
     frc = Favorite.frc()
-    frc.fetchRequest.fetchLimit = 10
+    frc.fetchRequest.fetchLimit = 20
     super.init()
     try? frc.performFetch()
     frc.delegate = self
@@ -116,7 +116,14 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     _ collectionView: UICollectionView,
     layout collectionViewLayout: UICollectionViewLayout,
     insetForSectionAt section: Int
-  ) -> UIEdgeInsets { .zero }
+  ) -> UIEdgeInsets {
+    let insets = horizontalInsets(
+      for: collectionView,
+      maxWidth: FavoritesSectionProvider.maxWidth,
+      minimumInset: 16
+    )
+    return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
+  }
 }
 
 extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
