@@ -416,6 +416,18 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/internal/orchard_storage",
     "//sql",
   ]
+
+  if (enable_snaps) {
+    sources += [
+      "snaps_service.cc",
+      "snaps_service.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_wallet/browser/snap",
+      "//brave/components/brave_wallet/browser/snap/execution_environment",
+    ]
+  }
 }
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be

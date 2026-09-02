@@ -3923,3 +3923,47 @@ interface SimulationService {
           string error_response,
           string error_string);
 };
+
+// Minimal snap metadata used by the extracted SnapsService.
+struct SnapInstallData {
+  string snap_id;
+  string version;
+};
+
+// Browser-side service exposing snap lifecycle operations to the wallet UI.
+interface SnapsService {
+  // Invoke a snap RPC method from the wallet UI.
+  InvokeSnap(string snap_id, string method, string params_json)
+      => (string? result_json, string? error);
+
+  // Initiates a user-approved snap install from the wallet UI.
+  RequestInstallSnap(string snap_id, string version)
+      => (bool success, string? error);
+
+  // Returns the JS bundle source for an installed snap, used by SnapBridge to
+  // pass sourceCode to the snap executor. Returns null on error or if not
+  // installed.
+  GetSnapBundle(string snap_id) => (string? source_code, string? error);
+};
+
+// Implemented by the wallet page TypeScript (SnapBridge).
+// Called from the browser to manage snap iframes.
+interface SnapBridge {
+  // Create an iframe for the snap and load its bundle.
+  LoadSnap(string snap_id) => (bool success, string? error);
+
+  // Execute an RPC call on the snap (in its iframe).
+  InvokeSnap(string snap_id,
+             string method,
+             mojo_base.mojom.Value params,
+             string caller_origin)
+      => (mojo_base.mojom.Value? result, string? error);
+};
+
+// Implemented by the browser.
+// Called from the wallet page TypeScript when snap code calls snap.request().
+interface SnapRequestHandler {
+  HandleSnapRequest(
+      string snap_id, string method, mojo_base.mojom.Value params)
+      => (mojo_base.mojom.Value? result, string? error);
+};

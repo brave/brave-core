@@ -21,6 +21,9 @@
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/browser/ui/webui/brave_wallet/snap_executor/snap_executor_ui.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -74,6 +77,10 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<ledger::UntrustedLedgerUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
+#if BUILDFLAG(ENABLE_SNAPS)
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<snap_executor::UntrustedSnapExecutorUIConfig>());
+#endif
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
