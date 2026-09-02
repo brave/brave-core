@@ -692,7 +692,7 @@ void AssociatedContentManager::AddToolsForGenerationLoop(
     if (permission == mojom::ToolPermission::kNeverAllow) {
       continue;
     }
-    tool->SetUserPermission(permission);
+    tool->SetUserPermissionStrategy(permission);
     tools_.push_back(std::move(tool));
   }
 }

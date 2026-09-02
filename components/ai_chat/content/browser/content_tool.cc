@@ -155,7 +155,7 @@ std::variant<bool, mojom::PermissionChallengePtr>
 ContentTool::RequiresUserInteractionBeforeHandling(
     const mojom::ToolUseEvent& tool_use) const {
   if (user_permission_granted_ ||
-      user_permission_ == mojom::ToolPermission::kAlwaysAllow) {
+      user_permission_strategy_ == mojom::ToolPermission::kAlwaysAllow) {
     return false;
   }
 
@@ -168,8 +168,8 @@ void ContentTool::UserPermissionGranted(const std::string& tool_use_id) {
   user_permission_granted_ = true;
 }
 
-void ContentTool::SetUserPermission(mojom::ToolPermission permission) {
-  user_permission_ = permission;
+void ContentTool::SetUserPermissionStrategy(mojom::ToolPermission permission) {
+  user_permission_strategy_ = permission;
 }
 
 std::optional<std::string> ContentTool::GetPermissionChallengeDescription(

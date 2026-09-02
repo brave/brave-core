@@ -79,7 +79,7 @@ class MockTool : public Tool {
               (override));
 
   MOCK_METHOD(void,
-              SetUserPermission,
+              SetUserPermissionStrategy,
               (mojom::ToolPermission permission),
               (override));
 

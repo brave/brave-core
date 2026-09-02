@@ -39,7 +39,7 @@ class ContentTool : public Tool {
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override;
   void UserPermissionGranted(const std::string& tool_use_id) override;
-  void SetUserPermission(mojom::ToolPermission permission) override;
+  void SetUserPermissionStrategy(mojom::ToolPermission permission) override;
   std::optional<std::string> GetPermissionChallengeDescription(
       const mojom::ToolUseEvent& tool_use) const override;
 
@@ -51,7 +51,7 @@ class ContentTool : public Tool {
   bool user_permission_granted_ = false;
   // Never kNeverAllow: those tools are withheld from the model by
   // AssociatedContentManager and so never reach here.
-  mojom::ToolPermission user_permission_ = mojom::ToolPermission::kAsk;
+  mojom::ToolPermission user_permission_strategy_ = mojom::ToolPermission::kAsk;
 
   content::WeakDocumentPtr rfh_;
   // As registered by the page. |name_| and |description_| are the model-facing
