@@ -76,10 +76,6 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     collectionView.register(FeedCardCell<SponsorCardView>.self)
   }
 
-  var landscapeBehavior: NTPLandscapeSizingBehavior {
-    .fullWidth
-  }
-
   private var isShowingOptInCard: Bool {
     Preferences.BraveNews.isShowingOptIn.value
   }

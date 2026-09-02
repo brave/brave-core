@@ -68,7 +68,8 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     if !shouldShowCallout() {
       return .zero
     }
-    return UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
+    let insets = horizontalInsets(for: collectionView, maxWidth: 640, minimumInset: 16)
+    return UIEdgeInsets(top: 8, left: insets.left, bottom: 0, right: insets.right)
   }
 
   func registerCells(to collectionView: UICollectionView) {
