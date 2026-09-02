@@ -1,5 +1,5 @@
 diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
-index c297b0e1e883ff34a36bdba27953541108dc7787..974ff3cae06342b7c9da6648dd732077bd880f85 100644
+index 1c8b95a4b1530a8aff0b9387c83da05025a06025..d19b0bb42d695a19de89be9d78b89d3dcc716581 100644
 --- a/content/browser/gpu/gpu_internals_ui.cc
 +++ b/content/browser/gpu/gpu_internals_ui.cc
 @@ -733,6 +733,7 @@ void GpuMessageHandler::HandleGetGpuInfo(const base::ListValue& args) {
@@ -7,7 +7,7 @@ index c297b0e1e883ff34a36bdba27953541108dc7787..974ff3cae06342b7c9da6648dd732077
  
  base::DictValue GpuMessageHandler::GetClientInfo() {
 +  base::DictValue dict = [&]() -> base::DictValue {
-   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+   CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M159);
  
    base::DictValue dict;
 @@ -773,6 +774,13 @@ base::DictValue GpuMessageHandler::GetClientInfo() {
