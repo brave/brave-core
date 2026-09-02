@@ -29,8 +29,22 @@ namespace brave {
 namespace {
 
 struct StripResult {
-  std::vector<blink::mojom::FileChooserFileInfoPtr> list;
+  // The final list of selected files where the original image file(s)
+  // containing flagged metadata gets replaced with a stripped-out
+  // temporary image file w/o the flagged metadata.
+  std::vector<blink::mojom::FileChooserFileInfoPtr> selected_files;
+  // Temporary files which are created during the stripping process. These files
+  // are passed down to the upstream for deletion at `OnStripComplete`.
   std::vector<base::FilePath> temp_files;
+
+  StripResult() = default;
+  ~StripResult() = default;
+
+  StripResult(const StripResult&) = delete;
+  StripResult& operator=(const StripResult&) = delete;
+
+  StripResult(StripResult&&) = default;
+  StripResult& operator=(StripResult&&) = default;
 };
 
 // TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
@@ -40,19 +54,19 @@ bool IsStrippableImagePath(const base::FilePath& path) {
          path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
 }
 
-// Returns true if any of the items in the |list| could be a candidate for
-// stripping metadata.
+// Returns true if any of the items in the |selected_files| could be a candidate
+// for stripping metadata.
 bool HasStrippableImage(
-    const std::vector<blink::mojom::FileChooserFileInfoPtr>& list) {
+    const std::vector<blink::mojom::FileChooserFileInfoPtr>& selected_files) {
   return std::ranges::any_of(
-      list, [](const blink::mojom::FileChooserFileInfoPtr& info) {
+      selected_files, [](const blink::mojom::FileChooserFileInfoPtr& info) {
         return info && info->is_native_file() &&
                IsStrippableImagePath(info->get_native_file()->file_path);
       });
 }
 
 // Algorithm:
-// 1) Iterate over each item in the |list|.
+// 1) Iterate over each item in the |selected_files|.
 // 2) If the "ith" item is not strippable, continue with 1.
 // 3) If the "ith" is stripppable then:
 //    3.a) Copy the contents of "ith" item into a temporary file.
@@ -61,28 +75,29 @@ bool HasStrippableImage(
 //         3.b.2) Otherwise, mark the temporay file for upload and then later
 //         for deletion.
 StripResult StripListOnBlockingThread(
-    std::vector<blink::mojom::FileChooserFileInfoPtr> list) {
+    std::vector<blink::mojom::FileChooserFileInfoPtr> selected_files) {
   StripResult result;
   auto temp_file_deleter = [&result](base::FilePath&& temp) {
-    // The gaurd helps to schedule the delete to upstream's delete lifecycle
+    // The guard helps to schedule the delete to upstream's delete lifecycle
     // if ever our own attempt to delete the temporary file failed.
     if (!base::DeleteFile(temp)) {
       result.temp_files.push_back(std::move(temp));
     }
   };
 
-  for (auto& info : list) {
+  for (auto& info : selected_files) {
     if (!info || !info->is_native_file()) {
       continue;
     }
-    const base::FilePath src = info->get_native_file()->file_path;
+    const base::FilePath& src = info->get_native_file()->file_path;
     if (!IsStrippableImagePath(src)) {
       continue;
     }
 
     base::FilePath temp;
     if (!base::CreateTemporaryFile(&temp)) {
-      DVLOG(1) << "Upload strip skipped; no temp file for: " << src;
+      LOG(ERROR) << "Upload strip skipped; temp file could not be created: "
+                 << src;
       continue;
     }
 
@@ -103,8 +118,8 @@ StripResult StripListOnBlockingThread(
     }
 
     // Re-write the file path of the original upload file, with our temporary's
-    // file path. This keeps the overall |list| untouched which is then moved
-    // directly to the result.
+    // file path. This keeps the overall |selected_files| untouched which is
+    // then moved directly to the result.
     // TODO(https://github.com/brave/brave-browser/issues/5238): On macOS the
     // file control shows the temp basename (e.g.
     // .com.brave.Browser.channelNameHere.XXXXXX).
@@ -120,7 +135,7 @@ StripResult StripListOnBlockingThread(
     // DeleteTemporaryFiles method.
     result.temp_files.push_back(std::move(temp));
   }
-  result.list = std::move(list);
+  result.selected_files = std::move(selected_files);
   return result;
 }
 
@@ -134,7 +149,7 @@ void OnStripComplete(
   // Update the |temporary_files| list to mark the deletion of our newly created
   // temp files.
   base::Extend(temporary_files, std::move(result.temp_files));
-  std::move(notify).Run(std::move(result.list));
+  std::move(notify).Run(std::move(result.selected_files));
 }
 
 }  // namespace
