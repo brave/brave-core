@@ -243,13 +243,13 @@ TEST_F(ContentToolTest, AlwaysAllowSkipsPermissionChallenge) {
   ContentTool tool(*mojo_tool, weak_document());
 
   auto tool_use = mojom::ToolUseEvent::New();
-  tool.SetUserPermission(mojom::ToolPermission::kAlwaysAllow);
+  tool.SetUserPermissionStrategy(mojom::ToolPermission::kAlwaysAllow);
 
   auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<bool>(result));
   EXPECT_FALSE(std::get<bool>(result));
 
-  tool.SetUserPermission(mojom::ToolPermission::kAsk);
+  tool.SetUserPermissionStrategy(mojom::ToolPermission::kAsk);
   EXPECT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(
       tool.RequiresUserInteractionBeforeHandling(*tool_use)));
 }

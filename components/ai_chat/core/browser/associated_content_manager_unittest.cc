@@ -824,7 +824,7 @@ TEST_F(AssociatedContentManagerUnitTest,
             std::vector<std::unique_ptr<Tool>> tools;
             for (const char* name : {"browse_store", "cancel_cart"}) {
               auto tool = std::make_unique<NiceMock<MockTool>>(name);
-              ON_CALL(*tool, SetUserPermission)
+              ON_CALL(*tool, SetUserPermissionStrategy)
                   .WillByDefault(
                       [&applied, name](mojom::ToolPermission permission) {
                         applied[name] = permission;
