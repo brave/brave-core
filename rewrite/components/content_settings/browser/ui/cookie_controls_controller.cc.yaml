@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Force the cookie controls icon to stay hidden.
+
+      Brave blocks third-party cookies via Shields, so the upstream cookie
+      controls page action is redundant. GetCookieControlsIconState is the
+      single place that computes the icon's visibility, reached from both
+      Update() and UpdateCookieControlsIcon(), so overriding it here covers
+      both callers (and any added later) without patching each call site.
+    preempt_function_impl:
+      function_name: CookieControlsController::GetCookieControlsIconState
+      code: |-
+        if ((true)) return CookieControlsState::kHidden;
