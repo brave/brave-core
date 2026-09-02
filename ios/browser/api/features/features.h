@@ -80,7 +80,6 @@ OBJC_EXPORT
     Feature* kShouldCancelRequestsForUserAgentChange;
 @property(class, nonatomic, readonly) Feature* kUseProfileWebViewConfiguration;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
-@property(class, nonatomic, readonly, nullable) Feature* kBraveWalletWebUIIOS;
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletCardanoDAppSupportIOS;
 @property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;

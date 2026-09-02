@@ -346,19 +346,12 @@
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-+ (Feature*)kBraveWalletWebUIIOS {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kBraveWalletWebUIFeature];
-}
 + (Feature*)kBraveWalletCardanoDAppSupportIOS {
   return
       [[Feature alloc] initWithFeature:&brave_wallet::features::
                                            kBraveWalletCardanoDAppSupportIOS];
 }
 #else
-+ (nullable Feature*)kBraveWalletWebUIIOS {
-  return nil;
-}
 + (nullable Feature*)kBraveWalletCardanoDAppSupportIOS {
   return nil;
 }
