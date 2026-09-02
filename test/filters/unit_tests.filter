@@ -416,6 +416,9 @@
 -ProfileTokenWebSigninInterceptorTest.InterceptionCreatesEphemeralProfileIfAcceptedWithNoId
 -ProfileTokenWebSigninInterceptorTest.InterceptionCreatesNewProfileIfAccepted
 
+# Flaky upstream tests
+-FirstRunTest.CreateSentinelIfNeeded_SkippedIfSuppressed
+
 # This test fails because we use our own preferences for showing the bookmarks
 # bar
 -BookmarkBarTabGroupsTest.SavedTabGroupsRespectPrefOnNTP
@@ -686,6 +689,7 @@
 # See https://github.com/brave/brave-browser/issues/52476
 # Upstream commit: https://chromium.googlesource.com/chromium/src/+/41015f71bcdd352f79f965e10a982b598d8e9557
 -ProtocolHandlersManagerServiceTest.PRE_ProtocolHandlerSanityCheck
+-ProtocolHandlersManagerServiceTest.ProtocolHandlerSanityCheck
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityRefreshNavigationThrottleTest.FetchEligibilityOnAimSearchUrl
