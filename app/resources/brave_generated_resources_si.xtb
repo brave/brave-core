@@ -211,6 +211,7 @@
 <translation id="8707615221880318679">මෙම පෞද්ගලික ප්‍රතිචාර සමහර බ්‍රේව් විශේෂාංග වල සමස්ත භාවිතය තක්සේරුවට සහ ඒවා හොඳින් සංවර්ධනයට උපකාරී වේ.</translation>
 <translation id="193368604235852218">වෙබ්3</translation>
 <translation id="4738583579791001083">වෙබ්3 වසම්</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4552520379838695057">කණගාටුයි, එම පිටුව දක්නට නැත.</translation>
 <translation id="7299769530898469069">සුරැකි අනුවාදය පූරණයට නොහැකි විය</translation>
 <translation id="2609895996619941644">ඔබට Wayback යන්ත්‍රයේ සුරැකි අනුවාදයක් තිබේදැයි පරීක්‍ෂාවට වුවමනා ද?</translation>
@@ -246,6 +247,7 @@
 <translation id="1185644444415356776">අඩංගුව තුළ සබැඳිය විවෘත කරන්න</translation>
 <translation id="6745991613881384719">අඩංගු විවෘත කිරීම් කළමනාකරණය</translation>
 <translation id="8523788649219117880">නව තාවකාලික බහාලුම</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> බහාලුම</translation>
 <translation id="3704707436873245822">රූපයෙන් පෙළ පිටපත් කරන්න</translation>
 <translation id="5268098808165185458">රූපයෙන් පෙළ පිටපත් වෙමින්...</translation>
 <translation id="4046485130884276245">රූපයෙන් පෙළ පිටපත් වී ඇත</translation>
@@ -377,6 +379,7 @@
 <translation id="6724227215236550330">මෙම උපාංගයේ <ph name="BRAND"/> වෙත මුරපද ආයාත කිරීමට CSV ගොනුවක් <ph name="BEGIN_LINK"/> තෝරන්න<ph name="END_LINK"/>.</translation>
 <translation id="3575561030014162610">මෙම උපාංගයේ <ph name="BRAND"/> වෙත මුරපද ආයාත කිරීමට, CSV ගොනුවක් තෝරන්න</translation>
 <translation id="8570228839666486945">උපාංග මත AI</translation>
+<translation id="7447041379556102185">උපාංගය මත කථන හඳුනාගැනීම</translation>
 <translation id="3456536577668402695">ඔබගේ සෙවුම් සහ පිටු අන්තර්ගතයන් මෙම උපාංගය තුළ සැකසේ. කිසිවක් බ්‍රේව් වෙත නොයවන අතර මානව සමාලෝචකයන් විසින් නොදැකේ.</translation>
 <translation id="4751537843966994505">අර්ථමය ඉතිහාස සෙවීම</translation>
 <translation id="6175973371938222040">ඔබ ප්‍රාදේශීයව පිවිසෙන පිටු සුචිගත කරන්න එවිට ඔබට ඔබේ ඉතිහාසය අර්ථය අනුව සෙවිය හැක. සියලු සැකසුම් මෙම උපාංගයේ පවතී.</translation>
@@ -407,6 +410,7 @@
 <translation id="6017560037265964523">අඩංගුව</translation>
 <translation id="3718176486689879621">බහාලුම් යනු ඔබගේ බ්‍රවුස් කිරීමේ දත්ත, එනම් කුකී, කෑෂ්, සහ වෙබ් අඩවි ගබඩාව වැනි දේවල් වෙන වෙන සන්දර්භ වලට හුදකලා කරන වර්ණ-කේතගත කරන ලද බ්‍රවුසර ටැබ වේ. <ph name="BEGIN_LINK"/>තවත් දැනගන්න<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">බහාලුම් සක්‍රීය කරන්න</translation>
+<translation id="4858772568604670131">බහාලුම් සඳහා සැමවිටම කුඩා අයිකනය භාවිත කරන්න</translation>
 <translation id="7773735778926921278">නව අඩංගු එකතු කරන්න</translation>
 <translation id="8900907990448657776">අඩංගුව සංස්කරණය කරන්න</translation>
 <translation id="7900511996284443779">අඩංගුව මකන්න</translation>
@@ -555,7 +559,6 @@
 <translation id="1799030480311994998">විශේෂාංග</translation>
 <translation id="6709133671862442373">පුවත්</translation>
 <translation id="6297791103122079275">කතා</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">වාදන ලැයිස්තුව</translation>
 <translation id="1199170151481311646">පෞද්ගලිකත්වය ආරක්ෂා කරන විශ්ලේෂණය</translation>
 <translation id="5990642573624858459">සංඛ්‍යාන වාර්තාවීම්</translation>
@@ -603,11 +606,14 @@
 <translation id="4891600875049212418">සංවේදී අඩවි වලට පිවිසීමේදී වාර්තාගත නොවන ස්ථානයට යන්න</translation>
 <translation id="1022603984240541480">අනුකූල අඩවිවල පෞද්ගලිකත්ව සැකසුම් සුසර කිරීමේ දැනුම්දීම පෙන්වන්න</translation>
 <translation id="3528176629974273019">අඩවියට විශේෂිත පෞද්ගලිකත්ව සැකසුම් ස්වයංක්‍රීයව යෝජනා කිරීමට (සහ සකසන්නට) Brave හට ඉඩ දෙයි.</translation>
+<translation id="2740687181110647855">පෞද්ගලිකත්ව සැකසුම් සකස් කිරීමේ මෙවලම</translation>
 <translation id="509873765238158442">Microsoft Recall අවහිර කරන්න</translation>
 <translation id="4763421121695677716">Brave පටිත්තවලට ඔට්ටු ගත කීර්ති ඇණවුමක් ගෙන පටිත්තවලගේ ස්ක්‍රීන්ෂොට්ස් ස්වයංක්‍රීයව ගන්නා Microsoft Windows පටිත්ත සිසු විශේෂාංගය ලාභදායක කරන්නේ නැත.</translation>
 <translation id="1968895725257436430">දත්ත එකතුව</translation>
 <translation id="1700052872056357670">පිටවීමේදී දත්ත මකන්න</translation>
 <translation id="216468847346280584">Brave දැන්වීම් දත්ත මකන්න...</translation>
+<translation id="96212973142796240">Brave දැන්වීම් දත්ත ඉවත් කරන ලදී</translation>
+<translation id="6665923829462527507">Brave දැන්වීම් දත්ත ඉවත් කළ නොහැකි විය. නැවත උත්සාහ කරන්න.</translation>
 <translation id="2808630562319398131">Brave පාරිතෝෂික දත්ත යළි සකසන්න...</translation>
 <translation id="6438096877646138757">ඔබ වැසූ පසු දත්තකඩ හිස් කරන අඩවි</translation>
 <translation id="2988792685798128092">අඩවිය වසන විට මකන්න</translation>
@@ -874,6 +880,7 @@
 <translation id="8631951653187535788">ඔබට මෙම ආකෘතිය මැකීමට අවශ්‍ය බව විශ්වාසද? මෙම ආකෘතිය ඕනෑම සක්‍රිය සංවාදයක භාවිතා කරන්නේ නම්, එම සංවාදය ලියෝගේ පෙරනිමි ආකෘතිය භාවිතා කිරීමට වෙනස් වේ.</translation>
 <translation id="1907126221851170941">ආකෘතිය එකතු කරන්න</translation>
 <translation id="8346224718149026088">ආකෘතිය සංස්කරණය කරන්න</translation>
+<translation id="3914173277599553213">අවශ්‍යය</translation>
 <translation id="3468298837301810372">නම්පත</translation>
 <translation id="3553035516792776805">ආකෘති ඉල්ලීමේ නම</translation>
 <translation id="7634775528597575156">සේවාදායක අන්ත ලක්ෂ්‍යය</translation>

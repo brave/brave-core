@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Betygsätt Brave</translation>
 <translation id="4104400246019119780">Tack!</translation>
 <translation id="5202255382948179481">Lägg till dina förslag</translation>
-<translation id="7759809451544302770">Valfritt</translation>
 <translation id="4748689412569009273">Hur betygsätter du din upplevelse av Brave med en emoji?</translation>
 <translation id="7335142069363686805">Betygsätt nu</translation>
 <translation id="6681362094306959654">Gillar du Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Ledsen</translation>
 <translation id="5488843227043643519">Vill du ge ett betyg i Play Butik?</translation>
 <translation id="5867854497245948308">Tack för din feedback!</translation>
-<translation id="4935400164159327304">Berätta hur vi kan förbättra Brave.</translation>
+<translation id="5578122562331038807">Berätta hur vi kan förbättra Brave</translation>
+<translation id="1483493594462132177">Skicka</translation>
+<translation id="3889034478061064651">Lägg till dina förslag (valfritt)</translation>
+<translation id="1769154760586570836">Feedback skickad. Tack!</translation>
+<translation id="4450893287417543264">Visa inte igen.</translation>
 <translation id="8966035543003363155">Brave-aviseringar gör allt enklare</translation>
 <translation id="7662771815233894695">Hantera nedladdningar, tjäna tokens, se veckovis användarstatistik med mera.</translation>
 <translation id="4265429476391459783">Du tjänar inte belöningar eller får integritetsrapporter</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Sidåtgärder</translation>
 <translation id="7104487676473617844">Följande objekt visas endast i menyn när de stöds av den aktuella öppna webbsidan.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Inställningar</translation>
 <translation id="8038539967102225446">Brave Ads är här!</translation>
 <translation id="222883304157347087">(denna enhet)</translation>
 <translation id="4157741509680155021">ENHETER PÅ SYNKRONISERINGSKEDJAN</translation>
@@ -532,7 +534,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
-<translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Inbyggd webbläsare.\nSjälvförvaring.\nOch flera kedjor.</translation>
 <translation id="7909462264772842773">Ta kontroll över din krypto och NFT:er. Brave Wallet stöder Ethereum, EVM-kedjor, Solana, Filecoin med flera.</translation>
@@ -608,7 +609,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="569068482611873351">Importera ...</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3114681061018999547">Skyddar</translation>
-<translation id="3784455785234192852">Lås</translation>
 <translation id="4412698727486357573">Hjälpcenter</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
@@ -804,6 +804,10 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2478788592457735063">Detta byter nätverket till ett som har lagts till tidigare.</translation>
 <translation id="8756686998207163764">Byta nätverk</translation>
 <translation id="8905793906896555159">Aktivera flikgrupper</translation>
+<translation id="6735749683447943955">Inaktivera flikgrupper?</translation>
+<translation id="4616687974503500682">Alla befintliga grupper raderas, och flikarna i de grupperna blir öppna, ogrupperade flikar i ditt webbläsarfönster. Är du säker på att du vill fortsätta?</translation>
+<translation id="4394049700291259645">Inaktivera</translation>
+<translation id="3859027502409073633">Visa synkroniserade flikgrupper</translation>
 <translation id="7632160823264702523">Flikgruppsfält</translation>
 <translation id="2477807195394450274">Visa ett nedre fält för snabb åtkomst till flikar i den för närvarande öppna flikgruppen</translation>
 <translation id="8374720587111523381">Öppna länkar i aktuell flikgrupp</translation>
@@ -811,6 +815,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1227658541937938697">Öppnar automatiskt alla länkar i den aktuella flikgruppen</translation>
 <translation id="5242300593039211344">Lås plånbok</translation>
 <translation id="1108298724135935307">Anslutna webbplatser</translation>
+<translation id="8428213095426709021">Inställningar</translation>
 <translation id="4255623233927788178">Visa på block explorer</translation>
 <translation id="8274201358637112807">Den här sidan vill interagera med Brave Wallet</translation>
 <translation id="3355936511340229503">Anslutningsfel</translation>
@@ -852,7 +857,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6458565248779152483">Inaktivera Brave VPN</translation>
 <translation id="9080536793704001825">Pausa i 15 minuter</translation>
 <translation id="803706420145725977">Pausa i 1 timme</translation>
-<translation id="4394049700291259645">Inaktivera</translation>
 <translation id="7733890291091968191">Visa web3-notiser</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave spårar inte dig och vet inte hur du använder appen, så vi kan inte se hur du har konfigurerat VPN. Berätta mer om problemet så ska vi göra vårt bästa för att hjälpa dig så fort som möjligt. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-värdnamn\n <ph name="VALUE"/></translation>

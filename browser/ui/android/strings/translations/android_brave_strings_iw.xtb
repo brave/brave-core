@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">דרג/י את Brave</translation>
 <translation id="4104400246019119780">תודה!</translation>
 <translation id="5202255382948179481">הוסיפו את ההמלצה שלכם</translation>
-<translation id="7759809451544302770">אופציונלי</translation>
 <translation id="4748689412569009273">באימוג'י אחד, איך החוויה שלכם ב-Brave?</translation>
 <translation id="7335142069363686805">דרגו אותנו</translation>
 <translation id="6681362094306959654">אוהבים את Brave</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">עָצוּב</translation>
 <translation id="5488843227043643519">האם תשאירו דירוג בחנות האפליקציות?</translation>
 <translation id="5867854497245948308">תודה על המשוב שלכם!</translation>
-<translation id="4935400164159327304">יידעו אותנו כיצד נוכל לשפר את Brave.</translation>
+<translation id="5578122562331038807">יידעו אותנו כיצד נוכל לשפר את Brave</translation>
+<translation id="1483493594462132177">שלח</translation>
+<translation id="3889034478061064651">הוסיפו את ההמלצות שלכם (רשות)</translation>
+<translation id="1769154760586570836">המשוב נשלח. תודה!</translation>
+<translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="8966035543003363155">ההתראות של Brave הופכות את זה לקל יותר</translation>
 <translation id="7662771815233894695">נהלו את ההורדות, הרוויחו טוקנים, צפו בסטטיסטיקות שימוש שבועיות ועוד.</translation>
 <translation id="4265429476391459783">אתם לא מרוויחים Rewards או מקבלים דוחות פרטיות</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">פעולות על דפים</translation>
 <translation id="7104487676473617844">הפריטים הבאים יוצגו בתפריט רק כאשר הם נתמכים בדף האינטרנט הפתוח הנוכחי.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">הגדרות</translation>
 <translation id="8038539967102225446">Brave Ads כבר כאן!</translation>
 <translation id="222883304157347087">(מכשיר זה)</translation>
 <translation id="4157741509680155021">מכשירים בשרשרת הסנכרון</translation>
@@ -536,7 +538,6 @@
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
-<translation id="1483493594462132177">שלח</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">מקור הדפדפן.\nמשמורת עצמית.\nורב שרשרת.</translation>
 <translation id="7909462264772842773">החזק נכסי קריפטו במשמורת שלך ועקוב אחרי ביצועי תיק ההשקעות. ארנק Brave תומך באתריום, רשתות EVM, סולנה, פיילקוין ועוד.</translation>
@@ -612,7 +613,6 @@
 <translation id="569068482611873351">ייבא...</translation>
 <translation id="4522570452068850558">פרטים</translation>
 <translation id="3114681061018999547">בהגנה</translation>
-<translation id="3784455785234192852">נעל</translation>
 <translation id="4412698727486357573">מרכז העזרה</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
@@ -808,6 +808,10 @@
 <translation id="2478788592457735063">זה עשוי להחליף את הרשת לרשת שהוספה בעבר.</translation>
 <translation id="8756686998207163764">החלף רשת</translation>
 <translation id="8905793906896555159">הפעלת קבוצות כרטיסיות</translation>
+<translation id="6735749683447943955">להשבית קבוצות כרטיסיות?</translation>
+<translation id="4616687974503500682">כל הקבוצות הקיימות יימחקו, והכרטיסיות שבתוך הקבוצות האלה יהפכו לכרטיסיות פתוחות ולא מקובצות בחלון הדפדפן שלכם. האם אתם בטוחים שברצונכם להמשיך?</translation>
+<translation id="4394049700291259645">השבת</translation>
+<translation id="3859027502409073633">הצגת קבוצות כרטיסיות מסונכרנות</translation>
 <translation id="7632160823264702523">סרגל קבוצות כרטיסיות</translation>
 <translation id="2477807195394450274">הצגת סרגל תחתון לגישה מהירה לכרטיסיות בקבוצת הכרטיסיות הפתוחה כעת</translation>
 <translation id="8374720587111523381">פתיחת קישורים בקבוצת הכרטיסיות הנוכחית</translation>
@@ -815,6 +819,7 @@
 <translation id="1227658541937938697">פתח באופן אוטומטי את כל הקישורים בקבוצת הכרטיסיות הנוכחית</translation>
 <translation id="5242300593039211344">נעילת ארנק</translation>
 <translation id="1108298724135935307">אתרים מחוברים</translation>
+<translation id="8428213095426709021">הגדרות</translation>
 <translation id="4255623233927788178">צפה בחסימת סייר</translation>
 <translation id="8274201358637112807">דף זה מבקש לבצע אינטראקציה עם ארנק Brave</translation>
 <translation id="3355936511340229503">שגיאת חיבור</translation>
@@ -856,7 +861,6 @@
 <translation id="6458565248779152483">השבת Brave VPN</translation>
 <translation id="9080536793704001825">השהה למשך 15 דקות</translation>
 <translation id="803706420145725977">השהה למשך שעה אחת</translation>
-<translation id="4394049700291259645">השבת</translation>
 <translation id="7733890291091968191">הצגת התראות Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave אינה עוקבת אחריך ואינה יודעת באיזה אופן החלטת לעשות שימוש באפליקציה שלנו, ולכן, אנו לא יודעים באיזה אופן הגדרת את ה-VPN. עליך לשתף מידע על הבעיה שחווית כדי שנוכל לעשות את מירב המאמצים לפתור אותה בהקדם האפשרי.####\n\n</translation>
 <translation id="3367162038532116157">\n\nשם מארח VPN\n <ph name="VALUE"/></translation>

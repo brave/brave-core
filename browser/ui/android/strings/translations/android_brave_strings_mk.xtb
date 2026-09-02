@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Оценете го Brave</translation>
 <translation id="4104400246019119780">Благодариме!</translation>
 <translation id="5202255382948179481">Додајте ги вашите предлози</translation>
-<translation id="7759809451544302770">Опционално</translation>
 <translation id="4748689412569009273">Изразено во едно емоџи, какво е вашето искуство со Brave?</translation>
 <translation id="7335142069363686805">Оцени сега</translation>
 <translation id="6681362094306959654">Ви се допаѓа Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Тажен</translation>
 <translation id="5488843227043643519">Дали сакате да оставите оценка на Play Store?</translation>
 <translation id="5867854497245948308">Ви благодариме за вашиот фидбек!</translation>
-<translation id="4935400164159327304">Кажете ни како можеме да го подобриме Brave.</translation>
+<translation id="5578122562331038807">Кажете ни како можеме да го подобриме Brave</translation>
+<translation id="1483493594462132177">Испрати</translation>
+<translation id="3889034478061064651">Додајте ги вашите предлози (Опционално)</translation>
+<translation id="1769154760586570836">Повратната информација е испратена. Ви благодариме!</translation>
+<translation id="4450893287417543264">Не прикажувај повторно</translation>
 <translation id="8966035543003363155">Известувањата на Brave го прават полесно</translation>
 <translation id="7662771815233894695">Управувајте со преземања, заработувајте токени, прегледувајте неделни статистики за користење и многу повеќе.</translation>
 <translation id="4265429476391459783">Не заработувате Награди ниту добивате Извештаи за приватност</translation>
@@ -282,7 +285,6 @@
 <translation id="7002271985859760052">Акции за страница</translation>
 <translation id="7104487676473617844">Следниве ставки ќе бидат видливи во менито само кога се поддржани од тековната веб-страница.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Поставки</translation>
 <translation id="8038539967102225446">Brave реклами се тука!</translation>
 <translation id="222883304157347087">(овој уред)</translation>
 <translation id="4157741509680155021">УРЕДИ НА СИНХРОНИЗИРАЧКИОТ ЛАНЕЦ</translation>
@@ -537,7 +539,6 @@
 <translation id="1822560017823072927">Стандардни јавни и приватни интерфејси</translation>
 <translation id="5825943197137337319">Само стандарден јавен интерфејс</translation>
 <translation id="1689062823386843231">Оневозможи не-проксирани UDP</translation>
-<translation id="1483493594462132177">Испрати</translation>
 <translation id="538450413584738399">Замени</translation>
 <translation id="4556086616242530072">Прелистувачот е природен.
 Само-чувар.
@@ -615,7 +616,6 @@
 <translation id="569068482611873351">Увези...</translation>
 <translation id="4522570452068850558">Детали</translation>
 <translation id="3114681061018999547">Заштита</translation>
-<translation id="3784455785234192852">Заклучи</translation>
 <translation id="4412698727486357573">Центар за помош</translation>
 <translation id="8239147115686034860">Автоматски заклучи го Brave паричникот</translation>
 <translation id="414639769490080648">Бројот на минути на чекање до автоматско заклучување на Brave паричникот</translation>
@@ -815,6 +815,10 @@
 <translation id="2478788592457735063">Со ова, мрежата ќе се промени на претходно додадена мрежа.</translation>
 <translation id="8756686998207163764">Промени мрежа</translation>
 <translation id="8905793906896555159">Овозможи групи картички</translation>
+<translation id="6735749683447943955">Да се оневозможат групи картички?</translation>
+<translation id="4616687974503500682">Сите постојни групи ќе бидат избришани, а картичките во тие групи ќе станат отворени, негрупирани картички во прозорецот на вашиот прелистувач. Дали сте сигурни дека сакате да продолжите?</translation>
+<translation id="4394049700291259645">Оневозможи</translation>
+<translation id="3859027502409073633">Прикажи синхронизирани групи картички</translation>
 <translation id="7632160823264702523">Лента со групи картички</translation>
 <translation id="2477807195394450274">Прикажи лента на дното за брз пристап до картичките во тековно отворената група картички</translation>
 <translation id="8374720587111523381">Отвори врски во тековната група картички</translation>
@@ -822,6 +826,7 @@
 <translation id="1227658541937938697">Автоматски отвора сите врски во тековната група на картички</translation>
 <translation id="5242300593039211344">Заклучи паричник</translation>
 <translation id="1108298724135935307">Поврзани страници</translation>
+<translation id="8428213095426709021">Поставки</translation>
 <translation id="4255623233927788178">Прегледај во истражувач на блокови</translation>
 <translation id="8274201358637112807">Страницата сака да комуницира со Паричникот Brave</translation>
 <translation id="3355936511340229503">Грешка при поврзување</translation>
@@ -863,7 +868,6 @@
 <translation id="6458565248779152483">Оневозможи Brave VPN</translation>
 <translation id="9080536793704001825">Прекини за 15 минути</translation>
 <translation id="803706420145725977">Прекини за 1 час</translation>
-<translation id="4394049700291259645">Оневозможи</translation>
 <translation id="7733890291091968191">Прикажи Web3 известувања</translation>
 <translation id="1371627247679035769">#### Brave не ве следи ниту знае како ја користите нашата апликација, затоа не знаеме како сте го поставиле VPN. Ве молиме споделете информации за проблемот што го доживувате и ќе направиме сè што е можно за да го решиме што е можно побрзо. ####</translation>
 <translation id="3367162038532116157">VPN Домаќин
