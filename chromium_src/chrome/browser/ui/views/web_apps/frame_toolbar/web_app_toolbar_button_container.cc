@@ -66,23 +66,10 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
       views::AsViewClass<WebAppFrameToolbarView>(container->parent());
   CHECK(frame_toolbar);
 
-  size_t insert_index = 0;
-  if (ExtensionsToolbarDesktop* ext = container->extensions_container()) {
-    for (size_t i = 0; i < container->children().size(); ++i) {
-      if (container->children()[i].get() == ext) {
-        insert_index = i;
-        break;
-      }
-    }
-  } else if (PinnedToolbarActionsContainer* pinned =
-                 container->pinned_toolbar_actions_container()) {
-    for (size_t i = 0; i < container->children().size(); ++i) {
-      if (container->children()[i].get() == pinned) {
-        insert_index = i;
-        break;
-      }
-    }
-  }
+  // Insert right before the menu button.
+  const size_t insert_index =
+      container->GetIndexOf(container->web_app_menu_button())
+          .value_or(container->children().size());
 
   auto button = std::make_unique<BraveShieldsToolbarButton>(
       static_cast<BrowserWindowInterface*>(browser),
