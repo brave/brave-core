@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip saving history for a tab that requested off-the-record browsing.
+
+      Request-OTR lets a user browse a single tab privately without opening a
+      full private window, so GetHistoryService must treat such a tab the
+      same way it treats an actually off-the-record profile. The helper this
+      calls is defined by the chromium_src override at
+      brave/chromium_src/chrome/browser/history/history_tab_helper.cc.
+    preempt_function_impl:
+      function_name: HistoryTabHelper::GetHistoryService
+      code: |-
+        #if BUILDFLAG(ENABLE_REQUEST_OTR)
+        if (BraveTabRequestedOffTheRecord(web_contents())) {
+          return nullptr;
+        }
+        #endif

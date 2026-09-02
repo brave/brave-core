@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Initialize the history retention pref before returning the new service.
+
+      Brave lets users cap how long history is retained; the pref must be
+      read into the freshly built history::HistoryService before any tab can
+      start recording visits through it.
+    after_function_impl:
+      function_name: BuildHistoryService
+      result_var: built_service
+      code: |-
+        static_cast<history::HistoryService*>(built_service.get())
+            ->InitHistoryRetentionPref(
+                Profile::FromBrowserContext(context)->GetPrefs());
+        return built_service;

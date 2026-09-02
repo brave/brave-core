@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/history/history_tab_helper.cc b/chrome/browser/history/history_tab_helper.cc
+index 1efed5ab8dfa3f25a8f2dc5c4aceeeebd1a06bed..b46368d1fbf4628e6bda04ed3a0a8df733044799 100644
+--- a/chrome/browser/history/history_tab_helper.cc
++++ b/chrome/browser/history/history_tab_helper.cc
+@@ -642,6 +642,11 @@ void HistoryTabHelper::TitleWasSet(NavigationEntry* entry) {
+ }
+ 
+ history::HistoryService* HistoryTabHelper::GetHistoryService() {
++  #if BUILDFLAG(ENABLE_REQUEST_OTR)
++  if (BraveTabRequestedOffTheRecord(web_contents())) {
++    return nullptr;
++  }
++  #endif
+   Profile* profile =
+       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+   if (profile->IsOffTheRecord()) {
