@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 
-#include <memory>
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notimplemented.h"
 #include "base/process/process_handle.h"
@@ -16,61 +16,42 @@
 
 namespace brave_vpn::v2 {
 namespace {
-
-class BrowserIdentityWin : public BrowserIdentity {
- public:
-  explicit BrowserIdentityWin(base::ProcessId pid) : pid_(pid) {}
-
-  BrowserIdentityWin(const BrowserIdentityWin&) = delete;
-  BrowserIdentityWin& operator=(const BrowserIdentityWin&) = delete;
-
-  // BrowserIdentity overrides:
-  base::ProcessId pid() const override { return pid_; }
-
-  std::string GetDescription() const override {
-    return absl::StrFormat("pid=%lu", static_cast<unsigned long>(pid_));
-  }
-
-  BrowserIdentity::VerificationResult Verify() const override {
-    // TODO(https://github.com/brave/brave-browser/issues/54633)
-    // Implement the verification step on Windows.
-    NOTIMPLEMENTED()
-        << "Identity verification is not yet implemented on Windows";
-    return VerificationResult::kAccepted;
-  }
-
-  bool IsSameProcess(const BrowserIdentity& /*other*/) const override {
-    // TODO(https://github.com/brave/brave-browser/issues/54633)
-    // Implement the comparison step on Windows: check if the process this
-    // object names is the same as the one |other| names.
-    NOTIMPLEMENTED() << "IsSameProcess is not yet implemented on Windows";
-    return true;
-  }
-
- private:
-  ~BrowserIdentityWin() override = default;
-
-  const base::ProcessId pid_;
-};
-
-class BrowserIdentityFactoryWin : public BrowserIdentityFactory {
- public:
-  // BrowserIdentityFactory overrides:
-  scoped_refptr<BrowserIdentity> Capture(
-      const named_mojo_ipc_server::ConnectionInfo& info) const override {
-    // TODO(https://github.com/brave/brave-browser/issues/54633)
-    // Implement the capture step on Windows: pin the peer process and take the
-    // platform-specific data BrowserIdentityWin needs. Returning null here
-    // refuses the connection outright.
-    NOTIMPLEMENTED() << "Identity capture is not yet implemented on Windows";
-    return base::MakeRefCounted<BrowserIdentityWin>(info.pid);
-  }
-};
-
+BrowserIdentity::VerificationResult VerifyImpl(base::ProcessId /*pid*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/54633)
+  // Implement the verification step on Windows.
+  // The passed arguments are copied from the BrowserIdentity object, so this
+  // function can be posted to a thread pool and run without any other context.
+  NOTIMPLEMENTED() << "Identity verification is not yet implemented on Windows";
+  return BrowserIdentity::VerificationResult::kAccepted;
+}
 }  // namespace
 
-std::unique_ptr<BrowserIdentityFactory> CreateBrowserIdentityFactory() {
-  return std::make_unique<BrowserIdentityFactoryWin>();
+// static
+scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
+    const named_mojo_ipc_server::ConnectionInfo& info) {
+  // TODO(https://github.com/brave/brave-browser/issues/54633)
+  // Implement the capture step on Windows: pin the peer process and take the
+  // platform-specific data BrowserIdentity needs. Returning null here refuses
+  // the connection outright.
+  NOTIMPLEMENTED() << "Identity capture is not yet implemented on Windows";
+  return base::WrapRefCounted(new BrowserIdentity(info.pid));
+}
+
+std::string BrowserIdentity::GetDescription() const {
+  return absl::StrFormat("pid=%lu", static_cast<unsigned long>(pid_));
+}
+
+bool BrowserIdentity::IsSameProcess(const BrowserIdentity& /*other*/) const {
+  // TODO(https://github.com/brave/brave-browser/issues/54633)
+  // Implement the comparison step on Windows: check if the process this object
+  // names is the same as the one |other| names.
+  NOTIMPLEMENTED() << "IsSameProcess is not yet implemented on Windows";
+  return true;
+}
+
+BrowserIdentity::VerificationRequestCallback
+BrowserIdentity::BindVerificationRequest() const {
+  return base::BindOnce(&VerifyImpl, pid_);
 }
 
 }  // namespace brave_vpn::v2

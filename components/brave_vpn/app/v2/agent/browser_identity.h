@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_BROWSER_IDENTITY_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_BROWSER_IDENTITY_H_
 
-#include <memory>
 #include <string>
 
+#include "base/auto_reset.h"
+#include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/process/process_handle.h"
@@ -20,13 +21,15 @@ struct ConnectionInfo;
 namespace brave_vpn::v2 {
 
 // BrowserIdentity is a reference to the process on the far end of one browser
-// connection, taken while that connection is being accepted. Abstract because
-// an identity is platform-specific.
+// connection, taken while that connection is being accepted. All member
+// functions are cheap and non-blocking; the expensive part of verification is
+// posted to a thread pool and reported via a callback.
 //
-// Refcounted because an instance is captured on the IPC sequence, read on a
-// blocking pool, and outlives the registry if the agent shuts down while a
-// verification is in flight.
-class BrowserIdentity : public base::RefCountedThreadSafe<BrowserIdentity> {
+// Refcounted as its ownership is genuinely shared: one accept-time capture is
+// reachable from BrowserRegistry's pid-keyed capture map and from every
+// connection that resolved against it, and those connections outlive the
+// capture.
+class BrowserIdentity : public base::RefCounted<BrowserIdentity> {
  public:
   enum class VerificationResult {
     // Verified as Brave browser.
@@ -39,65 +42,70 @@ class BrowserIdentity : public base::RefCountedThreadSafe<BrowserIdentity> {
     kInconclusive,
   };
 
+  using VerificationRequestCallback = base::OnceCallback<VerificationResult()>;
+  using VerificationResponseCallback =
+      base::OnceCallback<void(VerificationResult)>;
+
+  // Creates a BrowserIdentity for the peer described by |info| by invoking the
+  // capture function. Returns null if the capture fails. The capture function
+  // can be overriden in tests by SetBrowserIdentityCaptureCallbackForTesting().
+  static scoped_refptr<BrowserIdentity> Create(
+      const named_mojo_ipc_server::ConnectionInfo& info);
+
   BrowserIdentity(const BrowserIdentity&) = delete;
   BrowserIdentity& operator=(const BrowserIdentity&) = delete;
 
   // The peer's pid. Only meaningful as a lookup key: a pid is not an identity,
   // and one read at dispatch time may already name a different process than the
   // one that connected.
-  virtual base::ProcessId pid() const = 0;
+  base::ProcessId pid() const { return pid_; }
 
   // Informational string for logging: a pid, a timestamp, etc.; no sensitive
   // information.
-  virtual std::string GetDescription() const = 0;
-
-  // Runs the expensive half of verification: the code identity of the process
-  // this object names; blocking.
-  virtual VerificationResult Verify() const = 0;
+  virtual std::string GetDescription() const;
 
   // True if |other| names the same process instance, not merely the same pid.
   // Used to notice that a cached identity went stale because its pid was
   // recycled by an unrelated process.
-  virtual bool IsSameProcess(const BrowserIdentity& other) const = 0;
+  virtual bool IsSameProcess(const BrowserIdentity& other) const;
+
+  // Posts an expensive part of verification to a thread pool with all the
+  // necessary platform-specific arguments, and calls |callback| with the
+  // result. |callback| is never invoked synchronously, and always runs on the
+  // sequence that called Verify(), which must therefore have a current default
+  // task runner. Safe to call more than once, and on any number of identities
+  // concurrently. Only meaningful on a capture taken at accept time: a capture
+  // taken while a message is dispatching may carry no platform data beyond the
+  // pid, since the ConnectionInfo the server keeps as receiver context has had
+  // its endpoint consumed by the invitation.
+  virtual void Verify(VerificationResponseCallback callback) const;
 
  protected:
-  friend class base::RefCountedThreadSafe<BrowserIdentity>;
+  friend class base::RefCounted<BrowserIdentity>;
 
-  BrowserIdentity() = default;
-  virtual ~BrowserIdentity() = default;
+  // Captures a BrowserIdentity for the peer described by |info|, with
+  // platform-specific data, or returns null if the peer cannot be pinned or is
+  // not running as this user.
+  static scoped_refptr<BrowserIdentity> Capture(
+      const named_mojo_ipc_server::ConnectionInfo& info);
+
+  explicit BrowserIdentity(base::ProcessId pid);
+  virtual ~BrowserIdentity();
+
+  // Returns a closure carrying copies of the platform data the blocking
+  // verification needs, so it can run without touching the object.
+  VerificationRequestCallback BindVerificationRequest() const;
+
+  const base::ProcessId pid_;
 };
 
-// BrowserIdentityFactory is the only entity that knows what a ConnectionInfo
-// holds. ConnectionInfo belongs to named_mojo_ipc_server and carries the peer's
-// credentials in a different member on every platform, so keeping the knowledge
-// behind one seam is what lets BrowserRegistry stay platform-neutral and lets
-// unit tests describe a peer without fabricating kernel data.
-class BrowserIdentityFactory {
- public:
-  BrowserIdentityFactory(const BrowserIdentityFactory&) = delete;
-  BrowserIdentityFactory& operator=(const BrowserIdentityFactory&) = delete;
+using BrowserIdentityCaptureCallback =
+    base::RepeatingCallback<scoped_refptr<BrowserIdentity>(
+        const named_mojo_ipc_server::ConnectionInfo& info)>;
 
-  virtual ~BrowserIdentityFactory() = default;
-
-  // Captures the peer described by |info|, or returns null if the peer cannot
-  // be pinned or is not running as this user; cheap and non-blocking.
-  //
-  // Called from two places, and |info| is not equally complete in both: the
-  // accept callback has the live endpoint, while the copy the server keeps as
-  // receiver context has had it consumed by the invitation. Which part of the
-  // connection info is valid is a Mojo IPC implementation detail, so only pid()
-  // and the comparison in IsSameProcess() are guaranteed on a capture taken at
-  // dispatch. Hence verification calls must only be performed on accept-time
-  // captures.
-  virtual scoped_refptr<BrowserIdentity> Capture(
-      const named_mojo_ipc_server::ConnectionInfo& info) const = 0;
-
- protected:
-  BrowserIdentityFactory() = default;
-};
-
-// Defined once per platform.
-std::unique_ptr<BrowserIdentityFactory> CreateBrowserIdentityFactory();
+[[nodiscard]] base::AutoReset<BrowserIdentityCaptureCallback>
+SetBrowserIdentityCaptureCallbackForTesting(  // IN-TEST
+    BrowserIdentityCaptureCallback callback);
 
 }  // namespace brave_vpn::v2
 

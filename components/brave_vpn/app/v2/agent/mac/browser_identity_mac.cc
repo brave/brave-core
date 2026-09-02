@@ -7,9 +7,9 @@
 
 #include <bsm/libbsm.h>
 
-#include <memory>
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notimplemented.h"
 #include "base/process/process_handle.h"
@@ -18,61 +18,43 @@
 
 namespace brave_vpn::v2 {
 namespace {
-
-class BrowserIdentityMac : public BrowserIdentity {
- public:
-  explicit BrowserIdentityMac(base::ProcessId pid) : pid_(pid) {}
-
-  BrowserIdentityMac(const BrowserIdentityMac&) = delete;
-  BrowserIdentityMac& operator=(const BrowserIdentityMac&) = delete;
-
-  // BrowserIdentity overrides:
-  base::ProcessId pid() const override { return pid_; }
-
-  std::string GetDescription() const override {
-    return absl::StrFormat("pid=%d", pid_);
-  }
-
-  BrowserIdentity::VerificationResult Verify() const override {
-    // TODO(https://github.com/brave/brave-browser/issues/54634)
-    // Implement the verification step on macOS.
-    NOTIMPLEMENTED() << "Identity verification is not yet implemented on macOS";
-    return VerificationResult::kAccepted;
-  }
-
-  bool IsSameProcess(const BrowserIdentity& /*other*/) const override {
-    // TODO(https://github.com/brave/brave-browser/issues/54634)
-    // Implement the comparison step on macOS: check if the process this object
-    // names is the same as the one |other| names.
-    NOTIMPLEMENTED() << "IsSameProcess is not yet implemented on macOS";
-    return true;
-  }
-
- private:
-  ~BrowserIdentityMac() override = default;
-
-  const base::ProcessId pid_;
-};
-
-class BrowserIdentityFactoryMac : public BrowserIdentityFactory {
- public:
-  // BrowserIdentityFactory overrides:
-  scoped_refptr<BrowserIdentity> Capture(
-      const named_mojo_ipc_server::ConnectionInfo& info) const override {
-    // TODO(https://github.com/brave/brave-browser/issues/54634)
-    // Implement the capture step on macOS: pin the peer process and take the
-    // platform-specific data BrowserIdentityMac needs. Returning null here
-    // refuses the connection outright.
-    NOTIMPLEMENTED() << "Identity capture is not yet implemented on macOS";
-    return base::MakeRefCounted<BrowserIdentityMac>(
-        audit_token_to_pid(info.audit_token));
-  }
-};
-
+BrowserIdentity::VerificationResult VerifyImpl(base::ProcessId /*pid*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/54634)
+  // Implement the verification step on macOS.
+  // The passed arguments are copied from the BrowserIdentity object, so this
+  // function can be posted to a thread pool and run without any other context.
+  NOTIMPLEMENTED() << "Identity verification is not yet implemented on macOS";
+  return BrowserIdentity::VerificationResult::kAccepted;
+}
 }  // namespace
 
-std::unique_ptr<BrowserIdentityFactory> CreateBrowserIdentityFactory() {
-  return std::make_unique<BrowserIdentityFactoryMac>();
+// static
+scoped_refptr<BrowserIdentity> BrowserIdentity::Capture(
+    const named_mojo_ipc_server::ConnectionInfo& info) {
+  // TODO(https://github.com/brave/brave-browser/issues/54634)
+  // Implement the capture step on macOS: pin the peer process and take the
+  // platform-specific data BrowserIdentity needs. Returning null here refuses
+  // the connection outright.
+  NOTIMPLEMENTED() << "Identity capture is not yet implemented on macOS";
+  return base::WrapRefCounted(
+      new BrowserIdentity(audit_token_to_pid(info.audit_token)));
+}
+
+std::string BrowserIdentity::GetDescription() const {
+  return absl::StrFormat("pid=%d", pid_);
+}
+
+bool BrowserIdentity::IsSameProcess(const BrowserIdentity& /*other*/) const {
+  // TODO(https://github.com/brave/brave-browser/issues/54634)
+  // Implement the comparison step on macOS: check if the process this object
+  // names is the same as the one |other| names.
+  NOTIMPLEMENTED() << "IsSameProcess is not yet implemented on macOS";
+  return true;
+}
+
+BrowserIdentity::VerificationRequestCallback
+BrowserIdentity::BindVerificationRequest() const {
+  return base::BindOnce(&VerifyImpl, pid_);
 }
 
 }  // namespace brave_vpn::v2

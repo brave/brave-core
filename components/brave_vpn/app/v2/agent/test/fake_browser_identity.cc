@@ -8,63 +8,40 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/scoped_refptr.h"
+#include "base/check.h"
+#include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/process/process_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
-#include "components/named_mojo_ipc_server/connection_info.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_vpn::v2 {
-namespace {
 
-class FakeBrowserIdentity : public BrowserIdentity {
- public:
-  FakeBrowserIdentity(base::ProcessId pid,
-                      scoped_refptr<FakeBrowserIdentitySettings> settings)
-      : pid_(pid), settings_(std::move(settings)) {}
+FakeBrowserIdentity::FakeBrowserIdentity(
+    base::ProcessId pid,
+    FakeVerificationResultProvider result_provider,
+    bool is_same_process)
+    : BrowserIdentity(pid),
+      verification_result_(std::move(result_provider)),
+      is_same_process_(is_same_process) {}
 
-  FakeBrowserIdentity(const FakeBrowserIdentity&) = delete;
-  FakeBrowserIdentity& operator=(const FakeBrowserIdentity&) = delete;
+FakeBrowserIdentity::~FakeBrowserIdentity() = default;
 
-  // BrowserIdentity overrides:
-  base::ProcessId pid() const override { return pid_; }
+std::string FakeBrowserIdentity::GetDescription() const {
+  return absl::StrFormat("fake pid=%d", static_cast<int>(pid()));
+}
 
-  std::string GetDescription() const override {
-    return absl::StrFormat("fake pid=%d", static_cast<int>(pid_));
-  }
+bool FakeBrowserIdentity::IsSameProcess(
+    const BrowserIdentity& /*other*/) const {
+  return is_same_process_;
+}
 
-  VerificationResult Verify() const override {
-    return settings_->verification_result();
-  }
-
-  bool IsSameProcess(const BrowserIdentity& /*other*/) const override {
-    return settings_->is_same_process();
-  }
-
- private:
-  ~FakeBrowserIdentity() override = default;
-
-  const base::ProcessId pid_;
-  const scoped_refptr<FakeBrowserIdentitySettings> settings_;
-};
-
-}  // namespace
-
-FakeBrowserIdentitySettings::FakeBrowserIdentitySettings() = default;
-
-FakeBrowserIdentitySettings::~FakeBrowserIdentitySettings() = default;
-
-FakeBrowserIdentityFactory::FakeBrowserIdentityFactory()
-    : settings_(base::MakeRefCounted<FakeBrowserIdentitySettings>()) {}
-
-FakeBrowserIdentityFactory::~FakeBrowserIdentityFactory() = default;
-
-scoped_refptr<BrowserIdentity> FakeBrowserIdentityFactory::Capture(
-    const named_mojo_ipc_server::ConnectionInfo& /*info*/) const {
-  if (capture_fails_) {
-    return nullptr;
-  }
-  return base::MakeRefCounted<FakeBrowserIdentity>(peer_pid_, settings_);
+void FakeBrowserIdentity::Verify(VerificationResponseCallback callback) const {
+  CHECK(callback);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(std::move(callback), verification_result_.Run()));
 }
 
 }  // namespace brave_vpn::v2

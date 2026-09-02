@@ -23,6 +23,7 @@ source_set("core") {
     "browser_host_impl.h",
     "browser_host_provider_impl.cc",
     "browser_host_provider_impl.h",
+    "browser_identity.cc",
     "browser_identity.h",
     "browser_registry.cc",
     "browser_registry.h",
@@ -186,8 +187,6 @@ source_set("test_support") {
     "//brave/components/brave_vpn/common/mojom:agent",
     "//mojo/public/cpp/bindings",
   ]
-
-  deps = [ "//components/named_mojo_ipc_server" ]
 }
 
 source_set("unit_tests") {

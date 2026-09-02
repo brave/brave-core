@@ -10,14 +10,12 @@
 
 #include <memory>
 
-#include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/process/process_handle.h"
 #include "base/sequence_checker.h"
-#include "base/time/time.h"
+#include "base/timer/elapsed_timer.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_provider_impl.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
@@ -27,15 +25,32 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/platform/named_platform_channel.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_vpn::v2 {
 
 class BrowserHostImpl;
 
 // Owns the IPC server and every browser to agent connection on it, plus the
-// authentication policy the unauthenticated surface delegates to. Sessions are
-// keyed by the BrowserHostProvider receiver id, which identifies the
+// authentication policy the unauthenticated surface delegates to. Sessions
+// are keyed by the BrowserHostProvider receiver id, which identifies the
 // connection: one authenticated BrowserHost per connection at a time.
+//
+// Authentication state is split across two maps:
+//
+// |peers_| is keyed by pid and holds the accept-time capture of each connecting
+// browser process. The capture pins the process, so verification inspects the
+// process that connected rather than whatever holds its pid later. Entries are
+// dropped on timeout, on a reused pid, or on a mismatch at dispatch. They are
+// never dropped on success, because sibling profile connections from the same
+// process resolve through them.
+//
+// |connections_| is keyed by receiver id and holds per-connection state,
+// including a reference to that same accept-time capture. A capture taken at
+// dispatch is not used: only pid() and IsSameProcess() are meaningful on one.
+// An entry lives until its connection goes away, so it outlives the |peers_|
+// entry and lets a browser re-bind a host after the capture expires. Values are
+// heap-allocated because ResolveConnection() returns a pointer into the map.
 class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
  public:
   explicit BrowserRegistry(mojo::NamedPlatformChannel::ServerName server_name);
@@ -45,31 +60,46 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
   BrowserRegistry& operator=(const BrowserRegistry&) = delete;
 
   // Takes the IPC server directly, so a test can choose connection ids and
-  // report disconnects without a real endpoint, and a factory so it can
-  // describe a peer without fabricating kernel credentials.
+  // report disconnects without a real endpoint.
   static std::unique_ptr<BrowserRegistry> CreateForTesting(
-      std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server,
-      std::unique_ptr<BrowserIdentityFactory> identity_factory);
+      std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
 
  private:
   friend class BrowserRegistryTest;
 
-  BrowserRegistry(std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server,
-                  std::unique_ptr<BrowserIdentityFactory> identity_factory);
+  explicit BrowserRegistry(
+      std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
 
-  // A peer captured at accept time that has not called BindBrowserHost() yet.
-  // Keyed by pid, so two connections from one process share an entry and would
-  // have identical identities anyway.
+  // Enum describing where a connection is in the authentication sequence.
+  enum class ConnectionState {
+    // Resolved against an accept-time capture, but with no host bound and no
+    // verification running: either it has not authenticated yet, or a previous
+    // attempt was refused, or its host pipe was dropped. May authenticate.
+    kIdentified,
+    // A verification is in flight.
+    kVerifying,
+    // Verified, with a live BrowserHostImpl.
+    kVerified,
+  };
+
+  // Per-connection state, keyed by BrowserHostProvider receiver id.
+  struct Connection {
+    ConnectionState state = ConnectionState::kIdentified;
+    scoped_refptr<BrowserIdentity> identity;
+    std::unique_ptr<BrowserHostImpl> host_session;
+  };
+
+  // A peer captured at accept time. Keyed by pid, so two connections from one
+  // process share an identity.
   struct Peer {
     scoped_refptr<BrowserIdentity> identity;
-    base::TimeTicks captured_at;
+    base::ElapsedTimer time_since_capture;
   };
 
   // Everything Authenticate() must carry across the verification hop, since
   // none of it can be re-read from dispatch state afterwards.
   struct PendingAuth {
     mojo::ReceiverId receiver_id = 0;
-    scoped_refptr<BrowserIdentity> identity;
     mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint;
     mojo::PendingReceiver<mojom::BrowserHost> host;
     base::OnceCallback<void(mojom::BrowserAuthResult)> reply;
@@ -90,12 +120,14 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
   brave_vpn::mojom::BrowserHostProvider* OnBrowserConnecting(
       const named_mojo_ipc_server::ConnectionInfo& info);
 
-  // Binds the identity captured for the connection currently dispatching, to
-  // the receiver id so a browser that drops its host and asks again resolves to
-  // the same peer. Null if the connection was never captured or its accept-time
-  // entry already timed out.
-  scoped_refptr<BrowserIdentity> ResolveBrowserIdentity(
-      mojo::ReceiverId receiver_id);
+  // Null if the connection is not known.
+  Connection* FindConnection(mojo::ReceiverId receiver_id);
+
+  // Returns the entry for the connection currently dispatching, creating it
+  // from the accept-time capture on first use so a browser that drops its host
+  // and asks again resolves to the same peer. Null if the connection was never
+  // captured or its accept-time entry already timed out.
+  Connection* ResolveConnection(mojo::ReceiverId receiver_id);
 
   // Second half of Authenticate(): creates the browser host on success.
   void OnPeerVerified(PendingAuth pending,
@@ -112,13 +144,9 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
   BrowserHostProviderImpl host_provider_{this};
 
   std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server_;
-  std::unique_ptr<BrowserIdentityFactory> identity_factory_;
-  base::flat_map<mojo::ReceiverId, std::unique_ptr<BrowserHostImpl>>
-      host_sessions_;
-  base::flat_set<mojo::ReceiverId> pending_auth_;
-  base::flat_map<base::ProcessId, Peer> peers_;
-  base::flat_map<mojo::ReceiverId, scoped_refptr<BrowserIdentity>> identities_;
-
+  absl::flat_hash_map<base::ProcessId, Peer> peers_;
+  absl::flat_hash_map<mojo::ReceiverId, std::unique_ptr<Connection>>
+      connections_;
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<BrowserRegistry> weak_factory_{this};
 };

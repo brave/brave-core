@@ -9,9 +9,12 @@
 
 #include <memory>
 
+#include "base/auto_reset.h"
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ptr.h"
+#include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/process/process_handle.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_provider_impl.h"
@@ -35,12 +38,25 @@ base::ProcessId PidForConnection(mojo::ReceiverId connection) {
 
 class BrowserRegistryTest : public testing::Test {
  protected:
-  BrowserRegistryTest() {
-    auto identity_factory = std::make_unique<FakeBrowserIdentityFactory>();
-    identity_factory_ = identity_factory.get();
+  BrowserRegistryTest()
+      : identity_capture_callback_reset_(
+            SetBrowserIdentityCaptureCallbackForTesting(base::BindRepeating(
+                &BrowserRegistryTest::CaptureIdentityForConnection,
+                base::Unretained(this)))) {
     registry_ = BrowserRegistry::CreateForTesting(
-        std::make_unique<named_mojo_ipc_server::FakeIpcServer>(&server_state_),
-        std::move(identity_factory));
+        std::make_unique<named_mojo_ipc_server::FakeIpcServer>(&server_state_));
+  }
+
+  scoped_refptr<BrowserIdentity> CaptureIdentityForConnection(
+      const named_mojo_ipc_server::ConnectionInfo&) {
+    if (identity_capture_fails_) {
+      return nullptr;
+    }
+    return base::MakeRefCounted<FakeBrowserIdentity>(
+        current_connection_pid_, base::BindLambdaForTesting([this]() {
+          return identity_verification_result_;
+        }),
+        identity_is_same_process_);
   }
 
   brave_vpn::mojom::BrowserHostProvider* CallOnBrowserConnecting() {
@@ -64,8 +80,8 @@ class BrowserRegistryTest : public testing::Test {
     server_state_.current_connection_info =
         std::make_unique<named_mojo_ipc_server::ConnectionInfo>();
     const auto it = connection_pids_.find(connection);
-    identity_factory_->set_peer_pid(
-        it == connection_pids_.end() ? base::kNullProcessId : it->second);
+    current_connection_pid_ =
+        it == connection_pids_.end() ? base::kNullProcessId : it->second;
   }
 
   // Drives the accept-time callback the real IPC server would make, which is
@@ -107,10 +123,16 @@ class BrowserRegistryTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   named_mojo_ipc_server::FakeIpcServer::TestState server_state_;
-  std::unique_ptr<BrowserRegistry> registry_;
-  raw_ptr<FakeBrowserIdentityFactory> identity_factory_ = nullptr;
   mojo::ReceiverId last_connection_id_ = 0;
   base::flat_map<mojo::ReceiverId, base::ProcessId> connection_pids_;
+  base::ProcessId current_connection_pid_ = base::kNullProcessId;
+  bool identity_capture_fails_ = false;
+  bool identity_is_same_process_ = true;
+  BrowserIdentity::VerificationResult identity_verification_result_ =
+      BrowserIdentity::VerificationResult::kAccepted;
+  base::AutoReset<BrowserIdentityCaptureCallback>
+      identity_capture_callback_reset_;
+  std::unique_ptr<BrowserRegistry> registry_;
 };
 
 TEST_F(BrowserRegistryTest, StartsServingOnConstruction) {
@@ -277,7 +299,6 @@ TEST_F(BrowserRegistryTest, DestroyedWhileVerificationPendingIsSafe) {
   StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
   browser.WatchEndpoint();
 
-  identity_factory_ = nullptr;
   registry_.reset();
 
   // The abandoned request takes the browser's endpoint down with it, which is
@@ -311,7 +332,7 @@ TEST_F(BrowserRegistryTest, KeepsOneSessionPerConnection) {
 // BindBrowserHost(): returning null from the accept callback is what refuses
 // the connection.
 TEST_F(BrowserRegistryTest, RefusesConnectionWhosePeerCannotBeCaptured) {
-  identity_factory_->set_capture_fails(true);
+  identity_capture_fails_ = true;
   SetDispatchingConnection(NextConnectionId());
   EXPECT_FALSE(CallOnBrowserConnecting());
 }
@@ -387,7 +408,7 @@ TEST_F(BrowserRegistryTest, DoesNotResolveAgainstAnotherProcessCapture) {
 TEST_F(BrowserRegistryTest, RefusesBrowserWhosePidWasRecycled) {
   const mojo::ReceiverId connection = NextConnectionId();
 
-  identity_factory_->set_is_same_process(false);
+  identity_is_same_process_ = false;
   SimulateConnect(connection, PidForConnection(connection));
 
   FakeBrowser browser;
@@ -400,14 +421,14 @@ TEST_F(BrowserRegistryTest, RefusesBrowserWhosePidWasRecycled) {
 TEST_F(BrowserRegistryTest, RecapturesAfterPidWasRecycled) {
   constexpr base::ProcessId kSharedPid{12345};
 
-  identity_factory_->set_is_same_process(false);
+  identity_is_same_process_ = false;
   const mojo::ReceiverId stale_connection = NextConnectionId();
   SimulateConnect(stale_connection, kSharedPid);
   FakeBrowser stale;
   ASSERT_EQ(mojom::BrowserAuthResult::kInconclusive,
             Authenticate(stale, stale_connection));
 
-  identity_factory_->set_is_same_process(true);
+  identity_is_same_process_ = true;
   const mojo::ReceiverId fresh_connection = NextConnectionId();
   SimulateConnect(fresh_connection, kSharedPid);
   FakeBrowser fresh;
@@ -455,8 +476,8 @@ TEST_F(BrowserRegistryTest, ForgetsIdentityWhenTheConnectionGoesAway) {
 // A verdict that the peer is not our browser reaches the browser as a rejection
 // and leaves no session behind.
 TEST_F(BrowserRegistryTest, RejectsBrowserThatFailsVerification) {
-  identity_factory_->set_verification_result(
-      BrowserIdentity::VerificationResult::kRejected);
+  identity_verification_result_ =
+      BrowserIdentity::VerificationResult::kRejected;
 
   FakeBrowser browser;
   StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
@@ -472,8 +493,8 @@ TEST_F(BrowserRegistryTest, RejectsBrowserThatFailsVerification) {
 // as the retryable answer, which is what keeps a browser whose image was
 // replaced mid-update from going permanently unavailable.
 TEST_F(BrowserRegistryTest, ReportsInconclusiveVerificationAsRetryable) {
-  identity_factory_->set_verification_result(
-      BrowserIdentity::VerificationResult::kInconclusive);
+  identity_verification_result_ =
+      BrowserIdentity::VerificationResult::kInconclusive;
 
   FakeBrowser browser;
   StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
@@ -488,16 +509,16 @@ TEST_F(BrowserRegistryTest, ReportsInconclusiveVerificationAsRetryable) {
 // A refused verdict is about that one request: the connection stays usable, so
 // the same peer can authenticate afterwards.
 TEST_F(BrowserRegistryTest, AllowsAuthenticatingAfterFailedVerification) {
-  identity_factory_->set_verification_result(
-      BrowserIdentity::VerificationResult::kRejected);
+  identity_verification_result_ =
+      BrowserIdentity::VerificationResult::kRejected;
 
   const mojo::ReceiverId connection = NextConnectionId();
   FakeBrowser first;
   ASSERT_EQ(mojom::BrowserAuthResult::kRejected,
             Authenticate(first, connection));
 
-  identity_factory_->set_verification_result(
-      BrowserIdentity::VerificationResult::kAccepted);
+  identity_verification_result_ =
+      BrowserIdentity::VerificationResult::kAccepted;
 
   FakeBrowser second;
   EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
