@@ -425,32 +425,17 @@ TEST_F(ModelServiceTest, GetLeoModelKeyByName_And_GetLeoModelNameByKey) {
   EXPECT_FALSE(name.has_value());
 }
 
-TEST_F(ModelServiceTest,
-       GetEngineForModelFallsBackToConfiguredDefaultForUnknownKey) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, kChatAutomaticModelKey}});
-
+TEST_F(ModelServiceTest, GetEngineForModelFallsBackToAutomaticForUnknownKey) {
   // APIRequestHelper posts to the thread pool at construction time.
   base::test::TaskEnvironment task_environment;
   auto engine = GetService()->GetEngineForModel("this-model-key-does-not-exist",
                                                 /*url_loader_factory=*/nullptr,
                                                 /*credential_manager=*/nullptr);
   ASSERT_TRUE(engine);
-  EXPECT_EQ(engine->GetModelName(), "automatic");
-}
-
-TEST_F(ModelServiceTest,
-       CrashesWhenConfiguredDefaultModelAlsoMissingInGetEngineForModel) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, "this-default-does-not-exist"}});
-
-  EXPECT_CHECK_DEATH(GetService()->GetEngineForModel(
-      "this-model-key-does-not-exist", /*url_loader_factory=*/nullptr,
-      /*credential_manager=*/nullptr));
+  auto expected_name =
+      GetService()->GetLeoModelNameByKey(kChatAutomaticModelKey);
+  ASSERT_TRUE(expected_name.has_value());
+  EXPECT_EQ(engine->GetModelName(), expected_name.value());
 }
 
 TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {

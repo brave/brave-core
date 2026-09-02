@@ -5481,7 +5481,17 @@ struct SkillImageUploadScenario {
 
 class ConversationHandlerSkillImageUploadTest
     : public ConversationHandlerUnitTest,
-      public testing::WithParamInterface<SkillImageUploadScenario> {};
+      public testing::WithParamInterface<SkillImageUploadScenario> {
+ public:
+  ConversationHandlerSkillImageUploadTest() {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kAIChat,
+        {{features::kAIModelsVisionDefaultKey.name, kChatAutomaticModelKey}});
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
 
 // Covers model resolution and file plumbing when a skill submission carries
 // an image attachment. Each case starts on a specific model and may have a
@@ -7066,70 +7076,13 @@ TEST_F(ConversationHandlerUnitTest, FallsBackWhenModelKeyNoLongerExists) {
   EXPECT_EQ(handler->GetCurrentModel().key, kChatAutomaticModelKey);
 }
 
-using ConversationHandlerDeathTest = ConversationHandlerUnitTest;
-
-// The configured default failing to resolve means it's actually broken, so
-// this case is a same-build internal-consistency violation, not a resolvable
-// fallback.
-//
-// DUMP_WILL_BE_NOTREACHED() is only guaranteed fatal outside official builds
-// or with DCHECKs enabled; skip this death test in the one configuration
-// (official build, DCHECKs off) where it wouldn't actually crash.
-#if !defined(OFFICIAL_BUILD) || DCHECK_IS_ON()
-TEST_F(ConversationHandlerDeathTest,
-       CrashesWhenConfiguredDefaultModelDoesNotExist) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, "this-default-does-not-exist"}});
-
-  auto conversation = mojom::Conversation::New(
-      "stale-model-and-default-uuid", "title", base::Time::Now(), false,
-      "this-model-key-does-not-exist", 0, 0, false,
-      std::vector<mojom::AssociatedContentPtr>());
-
-  std::vector<std::unique_ptr<ToolProvider>> tool_providers;
-  tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
-
-  EXPECT_NOTREACHED_DEATH(
-      auto handler = std::make_unique<ConversationHandler>(
-          conversation.get(), ai_chat_service_.get(), model_service_.get(),
-          ai_chat_service_->GetCredentialManagerForTesting(),
-          mock_feedback_api_.get(), &prefs_, shared_url_loader_factory_,
-          std::move(tool_providers)));
-}
-#endif  // !defined(OFFICIAL_BUILD) || DCHECK_IS_ON()
-
 // Bypasses InitEngine()'s up-front resolution to exercise GetCurrentModel()'s
 // own fallback.
-TEST_F(ConversationHandlerUnitTest,
-       GetCurrentModelFallsBackToConfiguredDefault) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, kClaudeSonnetModelKey}});
-
+TEST_F(ConversationHandlerUnitTest, GetCurrentModelFallsBackToAutomatic) {
   conversation_handler_->SetModelKeyForTesting("this-model-key-does-not-exist");
 
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
-            kClaudeSonnetModelKey);
+            kChatAutomaticModelKey);
 }
-
-// DUMP_WILL_BE_NOTREACHED() is only guaranteed fatal outside official builds
-// or with DCHECKs enabled; skip this death test in the one configuration
-// (official build, DCHECKs off) where it wouldn't actually crash.
-#if !defined(OFFICIAL_BUILD) || DCHECK_IS_ON()
-TEST_F(ConversationHandlerDeathTest,
-       CrashesWhenConfiguredDefaultModelAlsoMissingInGetCurrentModel) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, "this-default-does-not-exist"}});
-
-  conversation_handler_->SetModelKeyForTesting("this-model-key-does-not-exist");
-
-  EXPECT_NOTREACHED_DEATH(conversation_handler_->GetCurrentModel());
-}
-#endif  // !defined(OFFICIAL_BUILD) || DCHECK_IS_ON()
 
 }  // namespace ai_chat

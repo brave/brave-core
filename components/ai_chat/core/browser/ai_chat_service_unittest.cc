@@ -1544,19 +1544,16 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
 }
 
-TEST_P(AIChatServiceUnitTest,
-       GetDefaultAIEngineFallsBackToConfiguredDefaultWhenStale) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChat,
-      {{features::kAIModelsDefaultKey.name, kChatAutomaticModelKey}});
-
+TEST_P(AIChatServiceUnitTest, GetDefaultAIEngineFallsBackToAutomaticWhenStale) {
   model_service_->SetDefaultModelKeyWithoutValidationForTesting(
       "this-model-key-does-not-exist");
 
   auto engine = ai_chat_service_->GetDefaultAIEngine();
   ASSERT_TRUE(engine);
-  EXPECT_EQ(engine->GetModelName(), "automatic");
+  auto expected_name =
+      model_service_->GetLeoModelNameByKey(kChatAutomaticModelKey);
+  ASSERT_TRUE(expected_name.has_value());
+  EXPECT_EQ(engine->GetModelName(), expected_name.value());
 }
 
 TEST_P(AIChatServiceUnitTest,

@@ -1189,10 +1189,10 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     AIChatCredentialManager* credential_manager) {
   const mojom::Model* model = GetModel(model_key);
   if (!model) {
-    // Model no longer exists — fall back to the configured default.
-    model = GetModel(features::kAIModelsDefaultKey.Get());
+    // Model no longer exists — fall back to automatic.
+    model = GetModel(kChatAutomaticModelKey);
   }
-  CHECK(model) << "Default model missing from model list";
+  CHECK(model) << "Automatic model missing from model list";
 
   std::unique_ptr<EngineConsumer> engine;
   if (model->supports_private_inference ||

@@ -48,6 +48,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -418,15 +419,14 @@ const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   if (!model) {
     DVLOG(1) << "Model " << model_key_
-             << " no longer exists, falling back to default model";
-    model_key_ = features::kAIModelsDefaultKey.Get();
+             << " no longer exists, falling back to automatic model";
+    model_key_ = kChatAutomaticModelKey;
     model = model_service_->GetModel(model_key_);
   }
   if (!model) {
-    // default_model is read live from config; failing here means it's
-    // currently misconfigured.
+    // Automatic must always be present in the built-in model list.
     SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
-                                features::kAIModelsDefaultKey.Get());
+                                kChatAutomaticModelKey);
     DUMP_WILL_BE_NOTREACHED();
     const auto& all_models = model_service_->GetModels();
     model = all_models.at(0).get();
