@@ -1,5 +1,5 @@
 diff --git a/content/browser/speech/on_device_speech_recognition_engine_impl.h b/content/browser/speech/on_device_speech_recognition_engine_impl.h
-index dbfb04ae1df81ac40011741e7254f711a720db18..1ce88f068a475509106f597e78a7b27dcee8a172 100644
+index b498cbcbb903d15cf3de5e02af3fb69e3d9c7de3..010364a22d065a000606dda73a9fb378b227772c 100644
 --- a/content/browser/speech/on_device_speech_recognition_engine_impl.h
 +++ b/content/browser/speech/on_device_speech_recognition_engine_impl.h
 @@ -101,6 +101,7 @@ class CONTENT_EXPORT OnDeviceSpeechRecognitionEngine

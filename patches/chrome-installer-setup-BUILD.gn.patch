@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index 9635a435d6fdc568240daae2ce69c62c54d44904..461133effe196c684b10efa7ffda2e8c42458655 100644
+index 8967d1094ffe3d0e6bc5eb4bfe38e302e4ac26a6..ed1b874e775ab22c1d1b6d8590d30e3eae3465a3 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 9635a435d6fdc568240daae2ce69c62c54d44904..461133effe196c684b10efa7ffda2e8c
  import("//build/buildflag_header.gni")
  import("//build/config/chrome_build.gni")
  import("//chrome/process_version_rc_template.gni")
-@@ -98,6 +99,7 @@ if (is_win) {
+@@ -100,6 +101,7 @@ if (is_win) {
        "wof_compression.cc",
        "wof_compression.h",
      ]
@@ -18,8 +18,8 @@ index 9635a435d6fdc568240daae2ce69c62c54d44904..461133effe196c684b10efa7ffda2e8c
  
      public_deps = [
        "//base",
-@@ -122,6 +124,7 @@ if (is_win) {
-       "//third_party/crashpad/crashpad/util",
+@@ -127,6 +129,7 @@ if (is_win) {
+       "//third_party/zlib/google:zip",
        "//ui/base:fullscreen_win",
      ]
 +    deps += brave_chromium_src_chrome_installer_setup_deps
