@@ -21,6 +21,7 @@ source_set("ads") {
     "//brave/ios/web/webui",
     "//components/prefs",
     "//components/resources",
+    "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public/webui",
     "//ui/base",

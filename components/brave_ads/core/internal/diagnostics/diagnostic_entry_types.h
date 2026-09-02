@@ -11,9 +11,8 @@ namespace brave_ads {
 // Diagnostic entries should be visually sorted based on the enum order.
 enum class DiagnosticEntryType {
   kDeviceId,
-  kOptedInToNewTabPageAds,
+  kSponsoredAdsEnabled,
   kNotificationAdsEnabled,
-  kOptedInToSearchResultAds,
   kLanguage,
   kCountry,
   kSchemaVersion,

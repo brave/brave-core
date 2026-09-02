@@ -184,6 +184,9 @@ export interface AppState {
     setErrorsOnlyEnabled: (enabled: boolean) => void
     setEventsDateRangeFilter: (filter: DateRangeFilterState) => void
     setTransactionsDateRangeFilter: (filter: DateRangeFilterState) => void
+    testConditionMatcher: (
+      prefPath: string, condition: string, testValue: string | null) =>
+      Promise<{ currentValue: string, matches: string }>
   }
 }
 
@@ -244,6 +247,9 @@ export function defaultAppStore() {
       setErrorsOnlyEnabled(enabled) {},
       setEventsDateRangeFilter(filter) {},
       setTransactionsDateRangeFilter(filter) {},
+      async testConditionMatcher() {
+        return { currentValue: 'Unknown', matches: 'N/A' }
+      },
     },
   })
 }

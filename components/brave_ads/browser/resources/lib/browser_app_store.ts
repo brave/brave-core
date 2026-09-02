@@ -22,9 +22,9 @@ export function createAppStore(): AppStore {
     verboseLoggingEnabled: loadTimeData.getBoolean('verboseLoggingEnabled'),
   })
 
-  // Rewards enabled can change from another tab (e.g. brave://rewards) while
-  // this one is open; refresh so eligibility-facing data (e.g. permission
-  // rules, payment tokens) doesn't go stale.
+  // Rewards enabled/wallet connected can change from another tab (e.g.
+  // brave://rewards) while this one is open; refresh so eligibility-facing
+  // data (e.g. permission rules, payment tokens) doesn't go stale.
   pageCallbackRouter.updateBraveRewardsEnabled.addListener(
     (enabled: boolean) => {
       store.update({ rewardsEnabled: enabled })
@@ -32,6 +32,17 @@ export function createAppStore(): AppStore {
       loadDiagnostics()
     },
   )
+  pageCallbackRouter.updateBraveRewardsWalletConnected.addListener(() => {
+    loadAdsInternals()
+    loadDiagnostics()
+  })
+  // Ads finish initializing asynchronously after startup, so "Ads
+  // initialized" and permission rule state (both diagnostics) can still be
+  // stale even if this page loaded first; a plain state refresh here doesn't
+  // touch scroll position.
+  pageCallbackRouter.updateDidInitializeAdsService.addListener(() => {
+    loadDiagnostics()
+  })
   API.createAdsInternalsPageHandler(
     pageCallbackRouter.$.bindNewPipeAndPassRemote(),
   )
@@ -267,6 +278,18 @@ export function createAppStore(): AppStore {
 
       setTransactionsDateRangeFilter(filter) {
         store.update({ transactionsDateRangeFilter: filter })
+      },
+
+      async testConditionMatcher(prefPath, condition, testValue) {
+        try {
+          const { currentValue, matches } =
+            await API.evaluateConditionMatcher(
+              prefPath, condition, testValue)
+          return { currentValue, matches }
+        } catch (error) {
+          console.error('Error testing condition matcher', error)
+          return { currentValue: 'Unknown', matches: 'N/A' }
+        }
       },
     },
   })

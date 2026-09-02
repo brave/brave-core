@@ -396,6 +396,11 @@ NTPBackgroundImagesService::MaybeGetSponsoredSiteImageFilePath(
   return sponsored_images_installed_dir_->Append(normalized_request_path);
 }
 
+const std::optional<std::string>&
+NTPBackgroundImagesService::GetSponsoredImagesComponentId() const {
+  return sponsored_images_component_id_;
+}
+
 void NTPBackgroundImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
   background_images_installed_dir_ = installed_dir;

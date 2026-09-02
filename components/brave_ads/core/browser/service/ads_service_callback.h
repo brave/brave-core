@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_CALLBACK_H_
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -14,7 +15,6 @@
 
 namespace base {
 class DictValue;
-class ListValue;
 }  // namespace base
 
 // Callback types for the `AdsService` browser-layer interface. `AdsService`
@@ -29,7 +29,10 @@ using GetInternalsCallback =
     base::OnceCallback<void(std::optional<base::DictValue> internals)>;
 
 using GetDiagnosticsCallback =
-    base::OnceCallback<void(std::optional<base::ListValue> diagnostics)>;
+    base::OnceCallback<void(std::optional<base::DictValue> diagnostics)>;
+
+using EvaluateConditionMatcherCallback =
+    base::OnceCallback<void(std::string current_value, std::string matches)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;

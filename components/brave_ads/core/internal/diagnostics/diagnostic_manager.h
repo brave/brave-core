@@ -66,13 +66,8 @@ class DiagnosticManager final {
 
   void SetEntry(std::unique_ptr<DiagnosticEntryInterface> entry);
 
-  // Excludes entries returned by the tab-specific getters below.
+  // Returns every registered entry, keyed by `brave://ads-internals` tab.
   void GetDiagnostics(GetDiagnosticsCallback callback) const;
-
-  void GetRewardsDiagnostics(GetDiagnosticsCallback callback) const;
-  void GetStorageDiagnostics(GetDiagnosticsCallback callback) const;
-  void GetResourcesDiagnostics(GetDiagnosticsCallback callback) const;
-  void GetPermissionRulesDiagnostics(GetDiagnosticsCallback callback) const;
 
   static void GetConfirmationQueue(
       GetConfirmationQueueDiagnosticsCallback callback);

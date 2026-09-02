@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -33,7 +34,8 @@ namespace variations {
 class VariationsService;
 }  // namespace variations
 
-class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
+class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals,
+                                  public brave_ads::AdsServiceObserver {
  public:
   // Avoids a direct dependency on `NTPBackgroundImagesService`, which would
   // introduce a build dependency cycle back to this component (see
@@ -74,17 +76,33 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
   void ClearAdsData(brave_ads::ResultCallback callback) override;
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
   void SetDiagnosticId(const std::string& diagnostic_id) override;
+  void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      const std::optional<std::string>& test_value,
+      EvaluateConditionMatcherCallback callback) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
                             std::optional<base::DictValue> dict);
 
+  // `dict` holds the fields gathered synchronously in `BuildDiagnosticsDict`;
+  // `OnGetDiagnostics` merges in the tab-keyed entries from `AdsService`
+  // before `WriteDiagnosticsJson` serializes the result.
   base::DictValue BuildDiagnosticsDict() const;
   void OnGetDiagnostics(GetDiagnosticsCallback callback,
                         base::DictValue dict,
-                        std::optional<base::ListValue> diagnostic_entries);
+                        std::optional<base::DictValue> diagnostics);
+  void WriteDiagnosticsJson(GetDiagnosticsCallback callback,
+                            base::DictValue dict);
 
   void OnBraveRewardsEnabledPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();
+
+  void OnBraveRewardsWalletConnectedPrefChanged(const std::string& path);
+  void UpdateBraveRewardsWalletConnected();
+
+  // brave_ads::AdsServiceObserver:
+  void OnDidInitializeAdsService() override;
 
   const raw_ptr<brave_ads::AdsService> ads_service_;  // Not owned.
 

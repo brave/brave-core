@@ -14,6 +14,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
@@ -39,12 +40,11 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/new_tab_page_ads_schema_version_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/notification_ads_enabled_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_search_result_ads_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/optional_bool_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/permission_rule_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/resource_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/schema_version_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/sponsored_ads_enabled_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/browser_is_active_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
@@ -64,6 +64,12 @@
 namespace brave_ads {
 
 namespace {
+
+constexpr char kEntriesKey[] = "entries";
+constexpr char kRewardsEntriesKey[] = "rewardsEntries";
+constexpr char kStorageEntriesKey[] = "storageEntries";
+constexpr char kResourcesEntriesKey[] = "resourcesEntries";
+constexpr char kPermissionRulesEntriesKey[] = "permissionRulesEntries";
 
 std::optional<bool> IsWalletValid() {
   const std::optional<WalletInfo>& wallet = GetAccount().GetWallet();
@@ -154,9 +160,9 @@ constexpr PermissionRuleTableEntry kPermissionRuleTable[] = {
     {DiagnosticEntryType::kCanShowNotificationsPermission,
      "Can show notifications permission", &HasCanShowNotificationsPermission}};
 
-// Entries below are reported through their own tab-specific getter instead
-// of `GetDiagnostics`, so the General/Diagnostics tab doesn't show entries
-// meant for another tab before that tab exists to display them.
+// Entries below are reported under their own key in `GetDiagnostics`'s
+// result instead of the general `kEntriesKey` list, so the General/
+// Diagnostics tab doesn't show entries meant for another tab.
 constexpr auto kRewardsDiagnosticEntryTypes =
     base::MakeFixedFlatSet<DiagnosticEntryType>(
         {DiagnosticEntryType::kWalletValid,
@@ -238,9 +244,8 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<SchemaVersionDiagnosticEntry>());
   SetEntry(
       std::make_unique<LastDatabaseMigrationFailureReasonDiagnosticEntry>());
-  SetEntry(std::make_unique<OptedInToNewTabPageAdsDiagnosticEntry>());
+  SetEntry(std::make_unique<SponsoredAdsEnabledDiagnosticEntry>());
   SetEntry(std::make_unique<NotificationAdsEnabledDiagnosticEntry>());
-  SetEntry(std::make_unique<OptedInToSearchResultAdsDiagnosticEntry>());
   for (const auto& entry : kResourceTable) {
     SetEntry(std::make_unique<ResourceDiagnosticEntry>(
         entry.type, entry.name, base::BindRepeating(entry.is_loaded),
@@ -268,35 +273,30 @@ void DiagnosticManager::SetEntry(
 }
 
 void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(DiagnosticsToList(
-      diagnostics_, base::BindRepeating([](DiagnosticEntryType type) {
-        return !IsTabSpecificDiagnosticEntryType(type);
-      })));
-}
-
-void DiagnosticManager::GetRewardsDiagnostics(
-    GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(DiagnosticsToList(
-      diagnostics_, base::BindRepeating(&IsRewardsDiagnosticEntryType)));
-}
-
-void DiagnosticManager::GetStorageDiagnostics(
-    GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(DiagnosticsToList(
-      diagnostics_, base::BindRepeating(&IsStorageDiagnosticEntryType)));
-}
-
-void DiagnosticManager::GetResourcesDiagnostics(
-    GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(DiagnosticsToList(
-      diagnostics_, base::BindRepeating(&IsResourcesDiagnosticEntryType)));
-}
-
-void DiagnosticManager::GetPermissionRulesDiagnostics(
-    GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(DiagnosticsToList(
-      diagnostics_,
-      base::BindRepeating(&IsPermissionRulesDiagnosticEntryType)));
+  std::move(callback).Run(
+      base::DictValue()
+          .Set(kEntriesKey,
+               DiagnosticsToList(
+                   diagnostics_,
+                   base::BindRepeating([](DiagnosticEntryType type) {
+                     return !IsTabSpecificDiagnosticEntryType(type);
+                   })))
+          .Set(kRewardsEntriesKey,
+               DiagnosticsToList(
+                   diagnostics_,
+                   base::BindRepeating(&IsRewardsDiagnosticEntryType)))
+          .Set(kStorageEntriesKey,
+               DiagnosticsToList(
+                   diagnostics_,
+                   base::BindRepeating(&IsStorageDiagnosticEntryType)))
+          .Set(kResourcesEntriesKey,
+               DiagnosticsToList(
+                   diagnostics_,
+                   base::BindRepeating(&IsResourcesDiagnosticEntryType)))
+          .Set(kPermissionRulesEntriesKey,
+               DiagnosticsToList(diagnostics_,
+                                 base::BindRepeating(
+                                     &IsPermissionRulesDiagnosticEntryType))));
 }
 
 void DiagnosticManager::GetConfirmationQueue(

@@ -20,6 +20,7 @@
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/web_ui_ios.h"
@@ -31,7 +32,10 @@ AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
       handler_(brave_ads::AdsServiceFactoryIOS::GetForProfile(
                    ProfileIOS::FromWebUIIOS(web_ui)),
                *ProfileIOS::FromWebUIIOS(web_ui)->GetPrefs(),
-               /*variations_service=*/nullptr,
+               GetApplicationContext()->GetVariationsService(),
+               // iOS has no `NTPBackgroundImagesService` or
+               // `ResourceComponent` equivalent, so these diagnostics fall
+               // back to their empty/nullptr-safe defaults.
                AdsInternalsHandler::GetComponentIdCallback(),
                AdsInternalsHandler::GetComponentIdCallback(),
                AdsInternalsHandler::GetComponentIdCallback(),
