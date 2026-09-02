@@ -42,7 +42,7 @@ namespace {
 
 constexpr char kSearchQueriesSeparator[] = "|||";
 
-constexpr char kEntriesQueryTemplate[] =
+constexpr char kConversationEntriesQueryTemplate[] =
     "SELECT uuid, thread_uuid, date, entry_text, prompt, character_type, "
     "editing_entry_uuid, action_type, selected_text, model_key, "
     // Note: Column name kept as 'smart_mode_data' for backward compatibility
@@ -484,7 +484,7 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
 
   sql::Statement statement(GetDB().GetCachedStatement(
       SQL_FROM_HERE,
-      absl::StrFormat(kEntriesQueryTemplate,
+      absl::StrFormat(kConversationEntriesQueryTemplate,
                       "conversation_uuid=? AND thread_uuid IS NULL")));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_uuid);
@@ -516,7 +516,8 @@ AIChatDatabase::GetConversationThreadEntries(std::string_view thread_uuid) {
   }
 
   sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE, absl::StrFormat(kEntriesQueryTemplate, "thread_uuid=?")));
+      SQL_FROM_HERE,
+      absl::StrFormat(kConversationEntriesQueryTemplate, "thread_uuid=?")));
   CHECK(statement.is_valid());
   statement.BindString(0, thread_uuid);
 
