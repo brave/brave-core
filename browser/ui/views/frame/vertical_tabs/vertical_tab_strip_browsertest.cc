@@ -1437,6 +1437,42 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleWithGroups) {
   ToggleVerticalTabStrip();  // To horizontal tab strip
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       TabsBelowViewportAreHidden) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* model = browser()->tab_strip_model();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+
+  // Add tabs until the strip overflows the viewport by a few tab heights.
+  while (brave_tab_container->GetMaxScrollOffsetForTesting() <
+         3 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+
+  // Scroll to the top: the first tab is in the viewport, the last tab is
+  // below it and must be hidden.
+  brave_tab_container->SetScrollOffsetForTesting(0);
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  EXPECT_TRUE(GetTabAt(browser(), 0)->GetVisible());
+  EXPECT_FALSE(GetTabAt(browser(), model->count() - 1)->GetVisible());
+
+  // Scroll to the bottom: visibility flips.
+  brave_tab_container->SetScrollOffsetForTesting(
+      brave_tab_container->GetMaxScrollOffsetForTesting());
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  EXPECT_FALSE(GetTabAt(browser(), 0)->GetVisible());
+  EXPECT_TRUE(GetTabAt(browser(), model->count() - 1)->GetVisible());
+}
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   ToggleVerticalTabStrip();
 

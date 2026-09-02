@@ -309,16 +309,22 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
       return true;
     }
 
-    // Handle unpinned tabs in vertical tabs mode.
-    // Only show tab if it is not hidden under the pinned tab area.
+    // Handle unpinned tabs in vertical tabs mode. Only show tabs that
+    // intersect the viewport: tabs scrolled up under the pinned tab area and
+    // tabs scrolled down below the container bottom are hidden. Ideal bounds
+    // already include the current scroll offset (see UpdateIdealBounds), so
+    // comparing against [pinned area bottom, height()] tests viewport
+    // intersection.
     if (auto tab_index = GetTabIndex(tab)) {
-      const auto tab_bottom =
-          tabs_view_model_.ideal_bounds(*tab_index).bottom();
+      const auto& ideal_bounds = tabs_view_model_.ideal_bounds(*tab_index);
       const int pinned_tabs_area_bottom =
           visibility_pass_cache_
               ? visibility_pass_cache_->pinned_tabs_area_bottom
               : GetPinnedTabsAreaBottom();
-      return tab_bottom > pinned_tabs_area_bottom;
+      if (ideal_bounds.bottom() <= pinned_tabs_area_bottom) {
+        return false;
+      }
+      return ideal_bounds.y() < height();
     }
   } else if (scroll_direction == views::LayoutOrientation::kHorizontal) {
     if (tab->data().pinned || tab->dragging()) {
