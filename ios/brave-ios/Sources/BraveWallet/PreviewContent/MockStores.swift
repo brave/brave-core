@@ -114,91 +114,6 @@ extension KeyringStore {
   }
 }
 
-extension BuyTokenStore {
-  static var previewStore: BuyTokenStore {
-    .init(
-      keyringService: MockKeyringService(),
-      walletService: BraveWallet.TestBraveWalletService.previewWalletService,
-      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
-      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
-      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
-      prefilledToken: .previewToken
-    )
-  }
-}
-
-extension SendTokenStore {
-  static var previewStore: SendTokenStore {
-    .init(
-      keyringService: MockKeyringService(),
-      rpcService: MockJsonRpcService(),
-      walletService: MockBraveWalletService(),
-      txService: MockTxService(),
-      blockchainRegistry: MockBlockchainRegistry(),
-      assetRatioService: MockAssetRatioService(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
-      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
-      prefilledToken: .previewToken,
-      ipfsApi: TestIpfsAPI(),
-      userAssetManager: TestableWalletUserAssetManager()
-    )
-  }
-}
-
-extension AssetDetailStore {
-  static var previewStore: AssetDetailStore {
-    .init(
-      assetRatioService: MockAssetRatioService(),
-      keyringService: MockKeyringService(),
-      rpcService: MockJsonRpcService(),
-      walletService: MockBraveWalletService(),
-      txService: MockTxService(),
-      blockchainRegistry: MockBlockchainRegistry(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI(),
-      swapService: MockSwapService(),
-      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
-      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
-      meldIntegrationService: BraveWallet.TestMeldIntegrationService.previewMeldIntegrationService,
-      userAssetManager: TestableWalletUserAssetManager(),
-      assetDetailType: .blockchainToken(.previewToken)
-    )
-  }
-}
-
-extension SwapTokenStore {
-  static var previewStore: SwapTokenStore {
-    .init(
-      keyringService: MockKeyringService(),
-      blockchainRegistry: MockBlockchainRegistry(),
-      rpcService: MockJsonRpcService(),
-      swapService: MockSwapService(),
-      txService: MockTxService(),
-      walletService: MockBraveWalletService(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      userAssetManager: TestableWalletUserAssetManager(),
-      prefilledToken: nil
-    )
-  }
-}
-
-extension UserAssetsStore {
-  static var previewStore: UserAssetsStore {
-    .init(
-      blockchainRegistry: MockBlockchainRegistry(),
-      rpcService: MockJsonRpcService(),
-      keyringService: MockKeyringService(),
-      assetRatioService: MockAssetRatioService(),
-      walletService: MockBraveWalletService(),
-      ipfsApi: TestIpfsAPI(),
-      userAssetManager: TestableWalletUserAssetManager()
-    )
-  }
-}
-
 extension AccountActivityStore {
   static var previewStore: AccountActivityStore {
     .init(
@@ -301,22 +216,6 @@ extension AccountsStore {
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       userAssetManager: TestableWalletUserAssetManager()
-    )
-  }
-}
-
-extension DepositTokenStore {
-  static var previewStore: DepositTokenStore {
-    .init(
-      keyringService: BraveWallet.TestKeyringService(),
-      rpcService: MockJsonRpcService(),
-      walletService: BraveWallet.TestBraveWalletService(),
-      blockchainRegistry: BraveWallet.TestBlockchainRegistry.previewBlockchainRegistry,
-      prefilledToken: nil,
-      prefilledAccount: nil,
-      userAssetManager: TestableWalletUserAssetManager(),
-      bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
-      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService
     )
   }
 }

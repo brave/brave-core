@@ -6,6 +6,127 @@
 import BraveCore
 import Foundation
 
+public enum AssetGroupType: Equatable, Identifiable {
+  case none
+  case network(BraveWallet.NetworkInfo)
+  case account(BraveWallet.AccountInfo)
+
+  public var id: String {
+    switch self {
+    case .none: return "Group.none"
+    case .network(let network):
+      return "Group.network.\(network.id)"
+    case .account(let account):
+      return "Group.account.\(account.id)"
+    }
+  }
+}
+
+public struct AssetViewModel: Identifiable, Equatable {
+  let groupType: AssetGroupType
+  let token: BraveWallet.BlockchainToken
+  let network: BraveWallet.NetworkInfo
+  let price: String
+  let history: [BraveWallet.AssetTimePrice]
+  /// Balance for each account for this asset. The key is the account.id.
+  let balanceForAccounts: [String: Double]
+  /// All BTC balance types for each account. Key is `account.id`.
+  let btcBalances: [String: [BTCBalanceType: Double]]
+  /// The total balance for all accounts for this asset.
+  var totalBalance: Double {
+    balanceForAccounts.values.reduce(0, +)
+  }
+
+  public var id: String {
+    "\(groupType.id)\(token.id)\(network.chainId)"
+  }
+
+  /// The quantity / balance to display for this asset within it's `AssetGroupType`.
+  var quantity: String {
+    let balance: Double
+    switch groupType {
+    case .account(let account):
+      balance = balanceForAccounts[account.id] ?? 0
+    case .none, .network:
+      balance = totalBalance
+    }
+    return String(format: "%.04f", balance)
+  }
+
+  /// The formatted fiat amount to display for this asset within it's `AssetGroupType`.
+  func fiatAmount(currencyFormatter: NumberFormatter) -> String {
+    let balance: Double
+    switch groupType {
+    case .account(let account):
+      balance = balanceForAccounts[account.id] ?? 0
+    case .none, .network:
+      balance = totalBalance
+    }
+    return currencyFormatter.formatAsFiat((Double(price) ?? 0) * balance) ?? ""
+  }
+
+  /// Sort by the fiat/value of the asset (price x balance) descending, otherwise by balance when price is unavailable.
+  static func sorted(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
+    if let lhsPrice = Double(lhs.price),
+      let rhsPrice = Double(rhs.price)
+    {
+      let lhsValue = (lhsPrice * lhs.totalBalance)
+      let rhsValue = (rhsPrice * rhs.totalBalance)
+      if lhsValue == rhsValue, lhsValue <= 0 {
+        return sameBalanceSort(lhs: lhs, rhs: rhs)
+      }
+      return lhsValue > rhsValue
+    } else if let lhsPrice = Double(lhs.price), (lhsPrice * lhs.totalBalance) > 0 {
+      // lhs has a non-zero value
+      return true
+    } else if let rhsPrice = Double(rhs.price), (rhsPrice * rhs.totalBalance) > 0 {
+      // rhs has a non-zero value
+      return false
+    }
+    if lhs.totalBalance == rhs.totalBalance, lhs.totalBalance <= 0 {
+      return sameBalanceSort(lhs: lhs, rhs: rhs)
+    }
+    // price unavailable, sort by balance
+    return lhs.totalBalance > rhs.totalBalance
+  }
+
+  /// Sorts primary networks to be first (Solana Mainnet first primary network), then sorts native assets to be first, then sorts alphabetically.
+  /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
+  private static func sameBalanceSort(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
+    var parentOrder: Bool {
+      // sort native tokens to be first
+      let isLHSNativeToken = lhs.network.isNativeAsset(lhs.token)
+      let isRHSNativeToken = rhs.network.isNativeAsset(rhs.token)
+      if isLHSNativeToken && !isRHSNativeToken {
+        return true
+      } else if !isLHSNativeToken && isRHSNativeToken {
+        return false
+      }
+      // sort by name
+      return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedAscending
+    }
+
+    return lhs.network.sort(with: rhs.network, parentOrder: parentOrder)
+  }
+}
+
+struct NFTAssetViewModel: Identifiable, Equatable {
+  let groupType: AssetGroupType
+  var token: BraveWallet.BlockchainToken
+  var network: BraveWallet.NetworkInfo
+  /// Balance for the NFT for each account address. The key is the account address.
+  var balanceForAccounts: [String: Int]
+  var nftMetadata: BraveWallet.NftMetadata?
+
+  public var id: String {
+    token.id + network.chainId
+  }
+
+  static func == (lhs: NFTAssetViewModel, rhs: NFTAssetViewModel) -> Bool {
+    lhs.id == rhs.id
+  }
+}
+
 class AccountActivityStore: ObservableObject, WalletObserverStore {
   /// If we want to observe selected account changes (ex. in `WalletPanelView`).
   /// In some cases, we do not want to update the account displayed when the
@@ -445,9 +566,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         }
       }
     }
-    updatedUserAssets = updatedUserAssets.sorted(by: { lhs, rhs in
-      AssetViewModel.sorted(by: .valueDesc, lhs: lhs, rhs: rhs)
-    })
+    updatedUserAssets = updatedUserAssets.sorted(by: AssetViewModel.sorted)
 
     return (updatedUserAssets, updatedUserNFTs)
   }
