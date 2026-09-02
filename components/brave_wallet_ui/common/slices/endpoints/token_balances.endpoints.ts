@@ -52,6 +52,7 @@ import {
   blockchainTokenEntityAdaptorInitialState, //
 } from '../entities/blockchain-token.entity'
 import { Uint128ToBigInt } from '../../../utils/polkadot-utils'
+import { ZCashTokenType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -1153,7 +1154,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
             balance: Amount.normalize(balance.toString()),
             coinType: arg.coin,
             tokenId: '',
-            zcashTokenType: token.zcashTokenType,
+            zcashTokenType: ZCashTokenType.kNone,
           })
         }
       })
