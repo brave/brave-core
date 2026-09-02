@@ -380,16 +380,10 @@ void PageContentExtractor::SetContentToolsListener(
     return;
   }
   content_tools_listener_.Bind(std::move(listener));
-  content_tools_listener_.set_disconnect_handler(
-      base::BindOnce(&PageContentExtractor::OnContentToolsListenerDisconnected,
-                     base::Unretained(this)));
+  content_tools_listener_.reset_on_disconnect();
 
   // Report tools registered before the subscription was established.
   content_tools_listener_->OnContentToolsChanged();
-}
-
-void PageContentExtractor::OnContentToolsListenerDisconnected() {
-  content_tools_listener_.reset();
 }
 
 void PageContentExtractor::OnScriptToolsChanged() {

@@ -95,8 +95,6 @@ class PageContentExtractor
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);
 
-  void OnContentToolsListenerDisconnected();
-
   mojo::Receiver<mojom::PageContentExtractor> receiver_{this};
 
   mojo::Remote<mojom::ContentToolsListener> content_tools_listener_;
