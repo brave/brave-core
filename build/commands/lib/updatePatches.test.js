@@ -166,6 +166,13 @@ describe('updatePatches diff pins', function () {
       .find((args) => args.includes('diff') && args.includes('--full-index'))
   }
 
+  // The options object (including `env`) for that same call.
+  function findSingleDiffCallOptions(spy) {
+    return spy.mock.calls.find(
+      ([, args]) => args.includes('diff') && args.includes('--full-index'),
+    )[2]
+  }
+
   test('pins diff.algorithm and core.attributesFile for a text file', async () => {
     const textPath = path.join(repoPath, 'source.cc')
     await fs.writeFile(textPath, 'line one\nline two\n')
@@ -181,6 +188,11 @@ describe('updatePatches diff pins', function () {
     expect(diffArgs.some((arg) => arg.startsWith('core.attributesFile='))).toBe(
       true,
     )
+
+    const diffOptions = findSingleDiffCallOptions(spy)
+    expect(diffOptions.env.GIT_ATTR_NOSYSTEM).toBe('1')
+    expect(diffOptions.env.GIT_CONFIG_GLOBAL).toBe('/dev/null')
+    expect(diffOptions.env.GIT_CONFIG_NOSYSTEM).toBe('1')
   })
 
   test('skips the attributesFile pin for a binary file, keeping it a binary diff', async () => {

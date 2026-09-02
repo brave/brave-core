@@ -138,10 +138,18 @@ async function writePatchFiles(
       '--ignore-space-at-eol',
       old,
     ]
+    // Cancelling global git settings to make sure we get reproducible output
+    // across machines, as there are certain diff tools that can mangle the
+    // diffs.
     const patchContents = await util.runAsync('git', singleDiffArgs, {
       cwd: gitRepoPath,
       verbose: false,
-      env: { ...process.env, GIT_ATTR_NOSYSTEM: '1' },
+      env: {
+        ...process.env,
+        GIT_ATTR_NOSYSTEM: '1',
+        GIT_CONFIG_GLOBAL: '/dev/null',
+        GIT_CONFIG_NOSYSTEM: '1',
+      },
     })
 
     if (isPlasterManaged) {

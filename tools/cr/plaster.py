@@ -359,6 +359,10 @@ class PatchinfoBuilder:
         # select a different one (e.g. `histogram`) than git's own default,
         # which would produce different hunks for the same change and fail
         # presubmit in CI.
+        #
+        # `GIT_CONFIG_GLOBAL` is repointed at an empty file instead of
+        # `~/.gitconfig`, and `GIT_CONFIG_NOSYSTEM` drops `/etc/gitconfig`. This
+        # is done to prevent certain user tools from mangling the diff.
         content = repository.chromium.run_git(
             '-c',
             f'core.attributesFile={PLASTER_GITATTRIBUTES_PATH}',
@@ -373,7 +377,10 @@ class PatchinfoBuilder:
             self.source,
             no_trim=True,
             env={
-                **os.environ, 'GIT_ATTR_NOSYSTEM': '1'
+                **os.environ,
+                'GIT_ATTR_NOSYSTEM': '1',
+                'GIT_CONFIG_GLOBAL': '/dev/null',
+                'GIT_CONFIG_NOSYSTEM': '1',
             })
         return self.patch.save_if_changed(new_content=content, dry_run=dry_run)
 
