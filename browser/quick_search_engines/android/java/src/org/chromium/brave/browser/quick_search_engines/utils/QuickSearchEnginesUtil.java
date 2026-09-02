@@ -265,15 +265,15 @@ public class QuickSearchEnginesUtil {
             Map<String, QuickSearchEnginesModel> ytSearchEnginesMap =
                     new LinkedHashMap<String, QuickSearchEnginesModel>();
 
-            // Iterate through existing engines
+            // Iterate through existing engines, keeping each entry under the key it already
+            // has. Re-keying by the model's own keyword instead would let an entry whose
+            // keyword does not match its key silently move, or drop out of the map entirely
+            // if that keyword were null.
             for (Map.Entry<String, QuickSearchEnginesModel> entry : searchEnginesMap.entrySet()) {
-                QuickSearchEnginesModel quickSearchEnginesModel = entry.getValue();
-                ytSearchEnginesMap.put(
-                        quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
+                ytSearchEnginesMap.put(entry.getKey(), entry.getValue());
 
                 // Add YouTube search right after Google if it's not already present
-                if (QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(
-                                quickSearchEnginesModel.getKeyword())
+                if (QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(entry.getKey())
                         && !searchEnginesMap.containsKey(
                                 QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
                     addYtQuickSearchEnginesModel(ytSearchEnginesMap);
