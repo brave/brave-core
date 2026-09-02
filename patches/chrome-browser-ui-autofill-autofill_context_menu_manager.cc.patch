@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/autofill/autofill_context_menu_manager.cc b/chrome/browser/ui/autofill/autofill_context_menu_manager.cc
+index 55daade9191b92fee62b4595bcc2de24a6e1b6b1..ae94e0e1124d3ef578a55d1a7214a4581f6404a4 100644
+--- a/chrome/browser/ui/autofill/autofill_context_menu_manager.cc
++++ b/chrome/browser/ui/autofill/autofill_context_menu_manager.cc
+@@ -203,6 +203,7 @@ AutofillContextMenuManager::AutofillContextMenuManager(
+ AutofillContextMenuManager::~AutofillContextMenuManager() = default;
+ 
+ void AutofillContextMenuManager::AppendItems() {
++  [&]() -> void {
+   if (params_.is_content_editable_for_autofill) {
+     if (MaybeAddAtMemoryItem()) {
+       menu_model_->AddSeparator(ui::NORMAL_SEPARATOR);
+@@ -212,6 +213,8 @@ void AutofillContextMenuManager::AppendItems() {
+ 
+   MaybeAddAutofillManualFallbackItems();
+   MaybeAddAutofillFeedbackItem();
++  }();
++  RemoveAutofillFeedbackMenuItem(menu_model_);
+ }
+ 
+ bool AutofillContextMenuManager::IsCommandIdSupported(int command_id) {
