@@ -16,17 +16,21 @@ export const style = scoped.css`
   }
 
   .query-container {
-    position: absolute;
+    position: fixed;
     z-index: 1;
     position-anchor: --query-box-anchor;
-    inset: anchor(start) 0 auto;
+    inset-block-start: anchor(start);
+    inset-block-end: 24px;
+    inset-inline: 0;
 
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto;
-    padding-bottom: 20px;
     overflow: visible;
     width: calc(100vw - 32px);
     max-width: 488px;
+    height: auto;
+    max-height: max-content;
   }
 
   .input-container {
@@ -34,6 +38,10 @@ export const style = scoped.css`
     background: ${color.container.background};
     box-shadow: ${effect.elevation['03']};
     color: ${color.text.primary};
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: 100%;
 
     &:hover, &:focus-within {
       box-shadow: ${effect.elevation['04']};
