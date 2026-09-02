@@ -11,6 +11,7 @@
 #include "base/containers/fixed_flat_set.h"
 
 class GURL;
+class PrefService;
 
 namespace brave_search {
 
@@ -28,6 +29,13 @@ inline constexpr auto kVettedHosts = base::MakeFixedFlatSet<std::string_view>(
 
 bool IsAllowedHost(const GURL& url);
 bool IsDefaultAPIEnabled();
+
+// Appends the `source` query param (`newtab`, `newtab_v1` or `newtab_v2`) to
+// `url` so Brave Search can distinguish NTP searchbox traffic from other
+// entry points. Should only be called when `url` is a Brave Search URL.
+GURL OverrideWithNewTabSource(GURL url,
+                              PrefService* local_state,
+                              bool is_first_run);
 
 }  // namespace brave_search
 
