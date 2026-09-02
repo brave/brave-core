@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">評價 Brave</translation>
 <translation id="4104400246019119780">謝謝！</translation>
 <translation id="5202255382948179481">新增您的建議</translation>
-<translation id="7759809451544302770">選填</translation>
 <translation id="4748689412569009273">以一個表情符號表達，您使用 Brave 的體驗如何？</translation>
 <translation id="7335142069363686805">立即評分</translation>
 <translation id="6681362094306959654">喜歡 Brave 嗎？</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">難過</translation>
 <translation id="5488843227043643519">留下 Play 商店評分？</translation>
 <translation id="5867854497245948308">感謝您的寶貴意見！</translation>
-<translation id="4935400164159327304">讓我們知道如何改善 Brave。</translation>
+<translation id="5578122562331038807">讓我們知道如何改善 Brave</translation>
+<translation id="1483493594462132177">發送</translation>
+<translation id="3889034478061064651">新增您的建議 (選填)</translation>
+<translation id="1769154760586570836">意見回饋已傳送。感謝您!</translation>
+<translation id="4450893287417543264">不要再顯示</translation>
 <translation id="8966035543003363155">Brave 通知讓一切變得更輕鬆</translation>
 <translation id="7662771815233894695">管理下載項目、賺取代幣、檢視每週使用情形的統計資料等等。</translation>
 <translation id="4265429476391459783">您尚未賺取任何獎勵或收到隱私報告</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">頁面操作</translation>
 <translation id="7104487676473617844">以下項目僅在目前開啟的網頁支援時才會顯示於選單中。</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">設定</translation>
 <translation id="8038539967102225446">Brave 廣告已就緒！</translation>
 <translation id="222883304157347087">（此裝置）</translation>
 <translation id="4157741509680155021">同步鏈上的裝置</translation>
@@ -535,7 +537,6 @@
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
-<translation id="1483493594462132177">發送</translation>
 <translation id="538450413584738399">交換貨幣</translation>
 <translation id="4556086616242530072">瀏覽器本地化，\n自行保管，\n以及多鏈結。</translation>
 <translation id="7909462264772842773">掌控您的加密貨幣和 NFT。Brave 錢包支援以太坊、EVM 鏈、Solana、Filecoin 等。</translation>
@@ -611,7 +612,6 @@
 <translation id="569068482611873351">匯入……</translation>
 <translation id="4522570452068850558">詳情</translation>
 <translation id="3114681061018999547">屏蔽中</translation>
-<translation id="3784455785234192852">鎖定</translation>
 <translation id="4412698727486357573">說明中心</translation>
 <translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
 <translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
@@ -807,6 +807,10 @@
 <translation id="2478788592457735063">這會將網路切換到之前新增的網路。</translation>
 <translation id="8756686998207163764">切換網路</translation>
 <translation id="8905793906896555159">啟用分頁群組</translation>
+<translation id="6735749683447943955">停用分頁群組?</translation>
+<translation id="4616687974503500682">任何現有的群組都將被刪除,而這些群組中的分頁將成為瀏覽器視窗中開啟的未分組分頁。您確定要繼續嗎?</translation>
+<translation id="4394049700291259645">停用</translation>
+<translation id="3859027502409073633">顯示已同步的分頁群組</translation>
 <translation id="7632160823264702523">分頁群組列</translation>
 <translation id="2477807195394450274">顯示底部列，以快速存取目前開啟的分頁群組中的分頁</translation>
 <translation id="8374720587111523381">在目前的分頁群組中開啟連結</translation>
@@ -814,6 +818,7 @@
 <translation id="1227658541937938697">自動開啟目前分頁群組中的所有連結</translation>
 <translation id="5242300593039211344">鎖定錢包</translation>
 <translation id="1108298724135935307">已連結的網站</translation>
+<translation id="8428213095426709021">設定</translation>
 <translation id="4255623233927788178">在區塊瀏覽器上檢視</translation>
 <translation id="8274201358637112807">此網頁希望與 Brave 錢包互動</translation>
 <translation id="3355936511340229503">連線錯誤</translation>
@@ -855,7 +860,6 @@
 <translation id="6458565248779152483">停用 Brave VPN</translation>
 <translation id="9080536793704001825">暫停 15 分鐘</translation>
 <translation id="803706420145725977">暫停 1 小時</translation>
-<translation id="4394049700291259645">停用</translation>
 <translation id="7733890291091968191">顯示 Web3 通知</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave 不會追蹤您，或知道您如何使用我們的應用程式，因此不了解您如何設定 VPN。請分享您所遭遇問題的資訊，我們會努力盡快解決。 ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN 主機名稱\n <ph name="VALUE"/></translation>

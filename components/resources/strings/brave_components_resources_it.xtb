@@ -262,8 +262,6 @@
 <translation id="1892970806832316900">In sospeso fino al giorno <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Spiacenti, il tuo browser non può ricevere annunci privati Brave.</translation>
 <translation id="5177429570315095022">Il tuo browser deve essere aggiornato per poter continuare a vedere gli annunci.</translation>
-<translation id="4593680147181354667">ID diagnostica</translation>
-<translation id="3995471429906554168">Informazioni diagnostiche</translation>
 <translation id="752216563428219524">Annunci non inizializzati, aggiorna la pagina.</translation>
 <translation id="7422678632904904341">Importo:</translation>
 <translation id="6969783933307596818">Aggiorna automaticamente ogni 5 secondi</translation>
@@ -309,7 +307,6 @@
 <translation id="8118649457152178086">Paese Ricompense:</translation>
 <translation id="2152423226436243241">Contribuisci automaticamente</translation>
 <translation id="7504352885209484360">Contributo ricorrente</translation>
-<translation id="916115051162298064">Diagnostica annuncio</translation>
 <translation id="7806880412350961625">Registri eventi</translation>
 <translation id="4309915981827077375">Informazioni generali</translation>
 <translation id="3662406032239313663">Log</translation>
@@ -1073,7 +1070,6 @@
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Rete di test</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Seleziona l'account</translation>
 <translation id="6797737193502014008">Cerca gli account</translation>
 <translation id="3505920073976671674">Seleziona la rete</translation>
@@ -1459,6 +1455,12 @@
 <translation id="3009178788565917040">Output</translation>
 <translation id="7953669802889559161">Input</translation>
 <translation id="4554024082642878647">Output</translation>
+<translation id="5371133472668945195">Minting</translation>
+<translation id="6298850625966818206">Prelievi</translation>
+<translation id="797064699579611882">Hash dei dati dello script</translation>
+<translation id="2317256716536338565">Garanzia</translation>
+<translation id="4739988172452238850">Restituzione della garanzia</translation>
+<translation id="4695732358958704457">Garanzia totale</translation>
 <translation id="1965889974717516497">Reti secondarie</translation>
 <translation id="7691821949666755802">Reti di prova</translation>
 <translation id="2816106784624007524">Il limite del gas deve essere un numero intero superiore a 0</translation>
@@ -1518,7 +1520,6 @@
 <translation id="4100192671552260674">Account bloccato</translation>
 <translation id="1865659351831046902">Account token nativo</translation>
 <translation id="3430421677512658698">Minting di token</translation>
-<translation id="5371133472668945195">Minting</translation>
 <translation id="3591768665664470087">Firmatari</translation>
 <translation id="2761935211528145049">Delegato</translation>
 <translation id="5048094297412542354">Proprietario/delegato</translation>
@@ -1766,11 +1767,6 @@
 <translation id="5797060124625958778">Priorità di velocità</translation>
 <translation id="6213230117190778270">Ricevi</translation>
 <translation id="6748108480210050150">Da</translation>
-<translation id="4875290286426670462"><ph name="ASSET_SYMBOL"/> senza limitazioni</translation>
-<translation id="6018568069962140636">Questo token non è verificato</translation>
-<translation id="8549067157732633185">Questo token è verificato</translation>
-<translation id="2130170065617939165">Questo token è verificato nelle liste <ph name="NUMBER_OF_LISTS"/></translation>
-<translation id="1554316484739382186">Destinatario dei fondi: <ph name="ADDRESS"/></translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">Account <ph name="PROVIDER"/></translation>
@@ -1787,11 +1783,6 @@
 <translation id="1531836666020185856">In evidenza</translation>
 <translation id="3225021799163709119">Popolari</translation>
 <translation id="6854651431635060919">Account rete di prova</translation>
-<translation id="626850389704042219">Abilita la simulazione delle transazioni</translation>
-<translation id="7414944309396133072">Visualizza l’anteprima della variazione stimata del saldo</translation>
-<translation id="2761574758015819991">Individua transazioni potenzialmente dannose</translation>
-<translation id="168533464844528463">Aiuta a rilevare tentativi di phishing</translation>
-<translation id="2410455471299328417">Questo servizio è fornito da <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> ed è soggetto ai relativi <ph name="TERMS_LINK_BEFORE"/>Termini di servizio<ph name="TERMS_LINK_AFTER"/> e <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Informativa sulla privacy<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">Disponibile</translation>
 <translation id="5296640085393149413">Fondi disponibili che puoi utilizzare.</translation>
 <translation id="2515906149804238711">Una variazione in sospeso nel saldo del tuo portafoglio.</translation>
@@ -1819,14 +1810,8 @@
 <translation id="2454691116905703258">Il nome del token per un NFT si riferisce al nome specifico dato a un token non fungibile di una particolare collezione o progetto. Questo nome distingue un NFT da un altro della stessa collezione.</translation>
 <translation id="3212749868469431851">Il simbolo NFT si riferisce all’identificativo unico utilizzato per distinguere la collezione o il progetto di NFT.</translation>
 <translation id="8198838794018761504">Solo monitoraggio</translation>
-<translation id="193368604235852218">Web3</translation>
-<translation id="3417321754118442366">Nessuna DApp trovata</translation>
-<translation id="4864082959618144988">Portafogli attivi</translation>
-<translation id="5445224754926400848">Visita <ph name="VALUE"/></translation>
-<translation id="8355371587927005068">Filtri</translation>
-<translation id="803703704549420287">Cancella i filtri</translation>
-<translation id="1472675084647422956">Mostra altro</translation>
 <translation id="4522570452068850558">Dettagli</translation>
+<translation id="7417602392941345608">Brave sta attualmente eseguendo la migrazione a Zcash NU6.3. Durante questa migrazione, la funzionalità di Zcash sarà limitata all'annullamento della schermatura e all'invio da trasparente a trasparente.</translation>
 <translation id="8713438253026855351">Passa a un account protetto</translation>
 <translation id="3526789880090101085">Proteggi l'account</translation>
 <translation id="3155166394760577549">Attiva le protezioni per tutelare la privacy delle transazioni.</translation>
@@ -1870,41 +1855,6 @@
 <translation id="8631765320256788981">Stai inviando dei fondi dal tuo account trasparente a un account protetto.</translation>
 <translation id="3860364671495430495">Stai inviando dei fondi dal tuo account protetto a un account trasparente.</translation>
 <translation id="7144878232160441200">Riprova</translation>
-<translation id="9094621390791852268">Anteprima della transazione non riuscita.</translation>
-<translation id="4982713341035600933">Variazione stimata del saldo</translation>
-<translation id="7197388583016272600">Dettagli dell’approvazione</translation>
-<translation id="3785613860627641047">Variazione di autorità</translation>
-<translation id="5135378583369915147">Scansione della transazione</translation>
-<translation id="4744699166186440">Indirizzo di staking</translation>
-<translation id="6313747204807079184">Indirizzo di prelievo</translation>
-<translation id="4312670848214406213">Stai dando a qualcun altro l’autorizzazione a trasferire i token per tuo conto.</translation>
-<translation id="5465460394116463557">Questa operazione richiede l’autorizzazione a trasferire molti token; di solito è un tentativo di furto.</translation>
-<translation id="7315935420455987651">Questo sito potrebbe essere falso.</translation>
-<translation id="7772576967285233002">Questa DApp potrà spostare i token dal tuo account in un secondo momento.</translation>
-<translation id="438039795179295571">Questo sito è segnalato come ad alto rischio e probabilmente tenterà di rubare i tuoi fondi.</translation>
-<translation id="4852394547793286745">Questo dominio non è ancora stato verificato. Continua solo se ti fidi del sito.</translation>
-<translation id="5832443872711287128">Ricontrolla questo indirizzo perché potrebbe impersonare un tuo precedente contatto.</translation>
-<translation id="5317646355693663165">Questa operazione trasferisce la proprietà del tuo saldo di token a qualcun altro.</translation>
-<translation id="3459325260212799301">Questo sito è segnalato come non sicuro e/o dannoso. Se continui potrebbero verificarsi delle perdite.</translation>
-<translation id="5409388443146954820">Questa operazione approverà oltre 200 azioni. Potrebbe essere dannosa, a meno che non sia stata pianificata.</translation>
-<translation id="6187462466381633445">Questa operazione richiede oltre 200 approvazioni; di solito è un tentativo per prosciugare i tuoi saldi.</translation>
-<translation id="3322526234603442338">Stai scambiando dei token senza avere nulla in cambio. Probabilmente si tratta di un errore.</translation>
-<translation id="4773052969794445878">Stai inviando fondi all’indirizzo di un token dove andranno persi per sempre.</translation>
-<translation id="8144820760826901598">Questa operazione trasferisce la proprietà dell’account e dei saldi a qualcun altro.</translation>
-<translation id="6023771436430346631">Fondi insufficienti per coprire la commissione gas della rete.</translation>
-<translation id="4753738223346804632">Fondi insufficienti per completare la transazione.</translation>
-<translation id="8661124952575076441">È probabile che la transazione non vada a buon fine e torni indietro. Il tentativo comporterà comunque costi di gas.</translation>
-<translation id="7660840414862537846">Errore imprevisto con l’anteprima della transazione. L’approvazione potrebbe non essere sicura.</translation>
-<translation id="4683335916231560287">Nessuna modifica rilevata</translation>
-<translation id="6769279318856228158">Cambio di proprietà dell’account</translation>
-<translation id="3200658657457611958">Simula il comportamento di una transazione prima dell’autorizzazione</translation>
-<translation id="8311005737513179222">L’anteprima della transazione non è supportata su questa rete.</translation>
-<translation id="4282496974850444428">Vedi questo messaggio perché hai optato per il servizio di anteprima delle transazioni.</translation>
-<translation id="6094399032955582807">Vedi le reti disponibili</translation>
-<translation id="6644973832009582039">Al momento la scansione dei messaggi EVM non è supportata</translation>
-<translation id="5222675470118670784">Cos’è la scansione dei messaggi EVM?</translation>
-<translation id="4085714860536252628">Garantisce la sicurezza e l’accuratezza esaminando i messaggi inviati dalla Macchina Virtuale di Ethereum che interagiscono con il tuo smart contract o con qualsiasi azione.</translation>
-<translation id="7800112661494546348">È come ricontrollare una lettera per assicurarsi che sia tutto corretto prima di firmarla.</translation>
 <translation id="4750109510113597688">Questa transazione può includere una commissione per la creazione di account</translation>
 <translation id="6201709949885884577">Per eseguire questa azione è richiesta una password.</translation>
 <translation id="3435015606307655951">Trasferimento sicuro</translation>
@@ -1931,10 +1881,9 @@
 <translation id="6024292492796847324">Progresso dell'inizializzazione di Tor</translation>
 <translation id="8300751939969131609">Attiva News Brave e non perderti neanche una notizia</translation>
 <translation id="7758665172236842395">Segui le tue fonti preferite in un unico feed. Ti basta aprire una scheda su Brave, scorrere verso il basso e… voilà!</translation>
-<translation id="2376542729617592331">Le News di Brave usano annunci anonimi e rispettosi della privacy. <ph name="LINK_START"/>Scopri di più<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Attiva le Notizie di Brave</translation>
 <translation id="1772301834467143364">Notizie Brave</translation>
-<translation id="6265592479622441247">Torna alla <ph name="BEGIN_BOLD"/>dashboard<ph name="END_BOLD"/></translation>
+<translation id="1717242776111689224">Abilita Notizie Brave</translation>
 <translation id="3169472444629675720">Scopri</translation>
 <translation id="8981973962043893066">Cerca siti, argomenti o feed RSS</translation>
 <translation id="1498364270401875204">Canali</translation>
@@ -1970,8 +1919,10 @@
 <translation id="736592699917579616">Cibo</translation>
 <translation id="5104499318017527547">Divertimento</translation>
 <translation id="2228584369802328636">Gaming</translation>
+<translation id="1748819301509295490">Governo</translation>
 <translation id="6941852195052765076">Salute</translation>
 <translation id="2233040275795129413">Lifestyle</translation>
+<translation id="4102567721634170493">Notizie locali</translation>
 <translation id="5178222043222938163">Musica</translation>
 <translation id="1322083935398004629">Politica</translation>
 <translation id="8739620487574841501">Notizie regionali</translation>
@@ -2013,6 +1964,7 @@
 <translation id="5210365745912300556">Chiudi scheda</translation>
 <translation id="8852436503814917529">Passa alla scheda successiva</translation>
 <translation id="1543046737011894871">Passa alla scheda precedente</translation>
+<translation id="8577900867298864393">Chiudi tutte le schede duplicate</translation>
 <translation id="2291643155573394834">Scheda successiva</translation>
 <translation id="7748528009589593815">Scheda precedente</translation>
 <translation id="3738690686686515962">Seleziona la scheda 0</translation>
@@ -2258,7 +2210,6 @@
 <translation id="8151638057146502721">Configura</translation>
 <translation id="999273441077650169">Il modello cambia dinamicamente per utilizzare quello più adatto.<ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Qwen VL 30B, un modello creato da Alibaba Cloud per essere performante e applicabile in molti scenari. Qwen è hostato da Brave attraverso la nostra infrastruttura sicura.<ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
-<translation id="3812564134126884433">Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto GLM-5, un modello creato da Zhipu AI per essere performante e applicabile in molti scenari. GLM-5 è hostato da NEAR attraverso la sua infrastruttura sicura e verificabilmente privata.<ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto GLM-5.1, un modello creato da Zhipu AI per essere performante e applicabile in molti scenari. GLM-5.1 è hostato da NEAR attraverso la sua infrastruttura sicura e verificabilmente privata.<ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ciao, sono Leo. Sono un assistente AI di Brave. Sono alimentato da Claude Instant, un modello creato da Anthropic per gestire attività conversazionali e di elaborazione del testo. Claude Instant è ospitato da Brave tramite la nostra infrastruttura sicura.<ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Claude Haiku, un modello creato da Anthropic per gestire conversazioni e compiti di elaborazione testuale. Claude Haiku è hostato da Brave attraverso la nostra infrastruttura sicura.<ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
@@ -2351,8 +2302,15 @@
 <translation id="903201991022343217">Inizia una nuova conversazione</translation>
 <translation id="8742207701089910775">Condividi questa conversazione</translation>
 <translation id="4014016095804982975">La tua conversazione verrà caricata crittografata e potrà essere decrittografata solo con il link generato. Brave non sarà in grado di visualizzare la tua conversazione. Solo tu e le persone con cui condividi questo link potete decrittografare la conversazione condivisa. Tutte le conversazioni condivise scadranno dopo 7 giorni.</translation>
+<translation id="2796028253343262770">Puoi <ph name="LINK_BEFORE"/>gestire le tue condivisioni<ph name="LINK_AFTER"/> per trovarle o eliminarle in qualsiasi momento.</translation>
 <translation id="1390174375123434798">Genera link</translation>
 <translation id="8904787158537906492">Link copiato negli appunti</translation>
+<translation id="8271640637943225289">Gestisci conversazioni condivise</translation>
+<translation id="8560840376878438871">Chiunque abbia il link può visualizzare queste conversazioni fino alla loro scadenza. Elimina una conversazione condivisa per impedirne il funzionamento del link.</translation>
+<translation id="4502471087710059721">Non hai condiviso alcuna conversazione.</translation>
+<translation id="6181755214951367004">Elimina conversazione condivisa</translation>
+<translation id="3987993985790029246">Copia link</translation>
+<translation id="5621789433179102273">Impossibile eliminare la conversazione condivisa. Controlla la tua connessione e riprova.</translation>
 <translation id="8171760814579050200">Rinomina conversazione</translation>
 <translation id="402386227879573975">Copia intera conversazione</translation>
 <translation id="5397794290049113714">Tu</translation>
@@ -2361,9 +2319,6 @@
 <translation id="4198859185714743678">Elaborazione completata</translation>
 <translation id="6140948187512243695">Mostra dettagli</translation>
 <translation id="4881695831933465202">Apri</translation>
-<translation id="1625889395409731085">Vuoi aprire un link esterno?</translation>
-<translation id="4211063437291114749">Leo AI vuole aprire una pagina web in una nuova scheda. Vuoi continuare?</translation>
-<translation id="5526001300821542157">Apri i link senza chiederlo di nuovo</translation>
 <translation id="1243966363662220847">Feedback risposta</translation>
 <translation id="7417895556119762861">Mettere mi piace o non mi piace a una risposta invierà la valutazione, il modello di conversazione, il modello, la lingua, la versione e lo status premium a Brave al fine di migliorare Leo. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Invia messaggio a Leo</translation>
@@ -2455,6 +2410,9 @@
 <translation id="9088751620363630236">Scatta una foto...</translation>
 <translation id="4250229828105606438">Screenshot</translation>
 <translation id="7949596341600215809">Cattura tutta la pagina</translation>
+<translation id="3024277805447899099">Anteprima immagine</translation>
+<translation id="6671495933530132209">Copia immagine</translation>
+<translation id="6864459304226931083">Scarica immagine</translation>
 <translation id="6332876390231524389">Contenuti della scheda corrente</translation>
 <translation id="6397861830483632092">Schede aperte…</translation>
 <translation id="802080272588201037">Segnalibri…</translation>
@@ -2586,6 +2544,7 @@
 <translation id="8057865981284642090">Per usare gli Alias email, devi aver effettuato l'accesso al tuo account Brave. Inizia
     facendo clic sul pulsante qui sotto.</translation>
 <translation id="4472575034687746823">Come iniziare</translation>
+<translation id="3000160751117721864">Cosa sono i siti sponsorizzati?</translation>
 <translation id="8370801182970639038">Automatico (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motori di ricerca abilitati</translation>
 <translation id="8285901519864208412">Nascondi carta Ricompense</translation>
@@ -2601,19 +2560,23 @@
 <translation id="9173319813356700250">NOTIZIE</translation>
 <translation id="6543799171249004861">Foto di <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="2977532139641645513">Rimuovi siti sponsorizzati</translation>
 <translation id="466214682712474574">Accedi al tuo account <ph name="PROVIDER"/> per vedere il tuo saldo.</translation>
 <translation id="8332875111286275890">Accedi per vedere il tuo saldo</translation>
 <translation id="5430001801813715388">RICOMPENSE</translation>
 <translation id="988042349921505128">Ricerca e AI</translation>
 <translation id="2430295257226173518">Chiedi e trova tutto…</translation>
-<translation id="167018310108390163">Personalizza la pagina della nuova scheda</translation>
+<translation id="4391352555758073798">Mostra immagini di sfondo</translation>
 <translation id="3500134717967948757">Mostra il widget Leo AI nelle nuove schede</translation>
 <translation id="6851426306697017546">Mostra orologio</translation>
 <translation id="4844370919312937270">Mostra il widget di ricerca nelle nuove schede</translation>
-<translation id="7328310113820087094">Con <ph name="LINK_BEGIN"/>Ricompense Brave<ph name="LINK_END"/>, puoi guadagnare visualizzando gli annunci mostrati nelle nuove schede aperte.</translation>
+<translation id="5088374130885640159">Con <ph name="REWARDS_LINK_BEGIN"/>Ricompense Brave<ph name="REWARDS_LINK_END"/>, puoi guadagnare visualizzando gli annunci mostrati nelle nuove schede aperte. <ph name="LEARN_MORE_LINK_BEGIN"/>Scopri di più<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Mostra le pubblicità della pagina nuova scheda</translation>
+<translation id="1410408595862476783">Mostra siti sponsorizzati</translation>
 <translation id="5009354496127441090">Mostra i siti popolari</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="3725423404048844760">I siti sponsorizzati aiutano a mantenere Brave gratuito. Se utilizzi <ph name="SITE_NAME"/>, stai supportando la missione di Brave. Puoi disabilitarli in qualsiasi momento. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/>.</translation>
+<translation id="4801943363579282909">I siti sponsorizzati aiutano a mantenere Brave gratuito. Se li utilizzi, stai supportando la missione di Brave. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATISTICHE</translation>
 <translation id="5236080651083907980">Videochiamate criptate con Brave Talk</translation>
 <translation id="2671474274417808910">Chiamate che rispettano davvero la tua privacy.</translation>
@@ -2771,6 +2734,16 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="2601678491007820794">Importa tutto dal tuo vecchio browser e rendi la transizione fluida.</translation>
 <translation id="5291297136536006359">Puoi farlo anche in un secondo momento nelle impostazioni di Brave.</translation>
 <translation id="701087249209337256">Porta con te i contenuti del tuo vecchio browser</translation>
+<translation id="142389341645668510">Personalizza Brave</translation>
+<translation id="112005628409144325">Personalizza la tua esperienza di navigazione con il layout delle schede e le modalità colore che preferisci.</translation>
+<translation id="7376367936988732808">Layout delle schede</translation>
+<translation id="4734965478015604180">Orizzontale</translation>
+<translation id="490375751687810070">Verticale</translation>
+<translation id="6278428485366576908">Tema</translation>
+<translation id="6965978654500191972">Dispositivo</translation>
+<translation id="1807246157184219062">Chiaro</translation>
+<translation id="2414886740292270097">Scuro</translation>
+<translation id="1297301331745007533">Grigio (predefinito)</translation>
 <translation id="7463724872882590240">Seleziona il tuo browser precedente</translation>
 <translation id="6091623542030502746">Cosa vuoi importare?</translation>
 <translation id="4740018245743691625">Risultati dell'importazione</translation>
@@ -2779,9 +2752,25 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6786747875388722282">Estensioni</translation>
 <translation id="5869522115854928033">Password salvate</translation>
 <translation id="4692623383562244444">Motori di ricerca</translation>
+<translation id="4820229477869533192">Seleziona le funzionalità che desideri visualizzare per impostazione predefinita nella barra degli strumenti principale. Puoi sempre mostrarle o nasconderle in seguito nelle Impostazioni.</translation>
+<translation id="3723975047960999626">L'assistente intelligente basato su IA integrato direttamente nel tuo browser. Poni domande, riassumi pagine, crea nuovi contenuti e altro ancora.</translation>
+<translation id="108658397513441308">Portafoglio Web3</translation>
+<translation id="277626258870089521">Il portafoglio cripto sicuro e integrato che potenzia il tuo browser per Web3.</translation>
+<translation id="9019025288391074918">Supporta i creatori di contenuti e guadagna token per gli annunci che vedi in Brave.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="3163354572023395604">Nascondi il tuo indirizzo IP, maschera la tua posizione e accedi ai tuoi contenuti preferiti ovunque tu sia.</translation>
+<translation id="5561552922279152819">Costruisci un web migliore con noi</translation>
+<translation id="2888496576732880897">Aiuta Ricerca Brave a crescere</translation>
+<translation id="3929158593488526786">Aderisci al Web Discovery Project per contribuire a far crescere l'indice e migliorare i risultati di ricerca.</translation>
+<translation id="3772776117136934611">Aiutaci a migliorare il browser</translation>
+<translation id="9171227192121024771">Condividi informazioni di prodotto totalmente private e anonime per farci sapere quali sono le funzioni usate dagli utenti di Brave</translation>
+<translation id="5298784657468199167">Invia report di arresto anomalo</translation>
+<translation id="6718362830686703942">In caso di arresto anomalo o blocco, invia dei resoconti diagnostici.</translation>
+<translation id="8012286900922253352">Aiuta Brave a migliorare e a creare prodotti migliori abilitando queste metriche private.</translation>
+<translation id="6058364846991826201">Puoi modificare queste impostazioni quando vuoi su Brave andando su <ph name="SETTINGS_LINK"/>. Leggi la nostra <ph name="PRIVACY_POLICY_LINK_BEGIN"/>Informativa sulla privacy<ph name="PRIVACY_POLICY_LINK_END"/> completa.</translation>
+<translation id="6871397658902960384">Comincia a navigare</translation>
 <translation id="4988030440045495002">Tema ultra scuro</translation>
 <translation id="2422927186524098759">Barra laterale</translation>
-<translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Barra degli strumenti</translation>
 <translation id="6225572914528673855">Barra degli indirizzi</translation>
 <translation id="6821966107067356137">Aggiungi feed RSS</translation>

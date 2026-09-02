@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Brave రేటు</translation>
 <translation id="4104400246019119780">ధన్యవాదాలు!</translation>
 <translation id="5202255382948179481">మీ సూచనలను చేర్చండి</translation>
-<translation id="7759809451544302770">ఐచ్ఛికం</translation>
 <translation id="4748689412569009273">ఒక ఎమోజీ లో, Brave తో మీ అనుభవం ఎలా ఉందో?</translation>
 <translation id="7335142069363686805">ఇప్పుడే రేట్ చేయండి</translation>
 <translation id="6681362094306959654">Brave నచ్చిందా?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">సాడ్</translation>
 <translation id="5488843227043643519">Play Store రేటింగ్ ఇవ్వండి?</translation>
 <translation id="5867854497245948308">మీ అభిప్రాయం కోసం ధన్యవాదాలు!</translation>
-<translation id="4935400164159327304">Brave ని ఎలా మెరుగుపరచగలమో మాకు తెలియజేయండి.</translation>
+<translation id="5578122562331038807">Brave ని ఎలా మెరుగుపరచగలమో మాకు తెలియజేయండి</translation>
+<translation id="1483493594462132177">పంపు</translation>
+<translation id="3889034478061064651">మీ సూచనలను చేర్చండి (ఐచ్చికం)</translation>
+<translation id="1769154760586570836">అభిప్రాయం పంపబడింది. ధన్యవాదాలు!</translation>
+<translation id="4450893287417543264">మళ్ళి అడగవద్దు</translation>
 <translation id="8966035543003363155">Brave నోటిఫికేషన్లు సులభతరం చేస్తాయి</translation>
 <translation id="7662771815233894695">డౌన్‌లోడ్లను నిర్వహించండి, టోకెన్‌లు సంపాదించండి, వారదీ ఒకసారి ఉపయోగ గణాంకాలను చూడండి మరియు మరిన్ని.</translation>
 <translation id="4265429476391459783">మీరు Brave Rewards లేదా వ్యక్తిగత రిపోర్టులను అందుకోకపోవచ్చు</translation>
@@ -284,7 +287,6 @@ Brave News మీ పరికరంలో ప్రైవేట్ మరియ
 <translation id="7002271985859760052">పేజీ క్రియలు</translation>
 <translation id="7104487676473617844">క్రింద తెలిపిన అంశాలు ప్రస్తుత తెరిచిన వెబ్‌పేజీ మద్దతిస్తే మాత్రమే మెనూలో కనిపిస్తాయి.</translation>
 <translation id="4159764849281393303">వెబ్‌అప్</translation>
-<translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
 <translation id="8038539967102225446">Brave యాడ్స్ వచ్చాయి!</translation>
 <translation id="222883304157347087">(ఈ పరికరం)</translation>
 <translation id="4157741509680155021">సమకాలీకరణ చైన్ పరికరాలు</translation>
@@ -547,7 +549,6 @@ Brave News మీ పరికరంలో ప్రైవేట్ మరియ
 <translation id="1822560017823072927">డిఫాల్ట్ పబ్లిక్ మరియు ప్రైవేట్ ఇంటర్‌ఫేస్‌లు</translation>
 <translation id="5825943197137337319">డిఫాల్ట్ పబ్లిక్ ఇంటర్‌ఫేస్ మాత్రమే</translation>
 <translation id="1689062823386843231">నాన్-ప్రాక్సిడ్ UDPని నిలిపివేయండి</translation>
-<translation id="1483493594462132177">పంపు</translation>
 <translation id="538450413584738399">మార్పిడి</translation>
 <translation id="4556086616242530072">బ్రౌజర్ నేటివ్.
 స్వయంగా కాపాడి ఉంచండి.
@@ -625,7 +626,6 @@ Brave News మీ పరికరంలో ప్రైవేట్ మరియ
 <translation id="569068482611873351">దిగుమతి...</translation>
 <translation id="4522570452068850558">వివరాలు</translation>
 <translation id="3114681061018999547">స్టోరింగ్</translation>
-<translation id="3784455785234192852">లాక్</translation>
 <translation id="4412698727486357573">సహాయ కేంద్రం</translation>
 <translation id="8239147115686034860">తప్పనిసరిగా Brave Wallet కుడితో ఆటోమాటిక్ లాక్ చేయండి</translation>
 <translation id="414639769490080648">తప్పనిసరిగా Brave Wallet ఆటోమాటిక్ లాక్ అయ్యే వరకు వేచి ఉండే నిమిషాల సంఖ్య</translation>
@@ -823,6 +823,10 @@ Brave వాడుకొని, మీరు వినియోగ నియమ�
 <translation id="2478788592457735063">దీంతో నెట్‌వర్క్‌ను మునుపటి నెట్వర్క్‌కు మార్చబడుతుంది.</translation>
 <translation id="8756686998207163764">నెట్వర్క్ మార్చండి</translation>
 <translation id="8905793906896555159">ట్యాబ్ గ్రూపులను ప్రారంభించండి</translation>
+<translation id="6735749683447943955">ట్యాబ్ గ్రూపులను నిలిపివేయాలా?</translation>
+<translation id="4616687974503500682">ఏదైనా ఇప్పటికే ఉన్న గ్రూపులు తొలగించబడతాయి, ఆ గ్రూపులలోని ట్యాబ్‌లు మీ browser విండోలో తెరిచిన, గ్రూప్ చేయని ట్యాబ్‌లుగా మారతాయి. మీరు కొనసాగించాలనుకుంటున్నారని ఖచ్చితంగా అనుకుంటున్నారా?</translation>
+<translation id="4394049700291259645">ఆపివెయ్యి</translation>
+<translation id="3859027502409073633">సింక్ చేసిన ట్యాబ్ గ్రూపులను చూపించు</translation>
 <translation id="7632160823264702523">ట్యాబ్ గ్రూపుల బార్</translation>
 <translation id="2477807195394450274">ప్రస్తుతం తెరిచిన ట్యాబ్ గ్రూప్‌లోని ట్యాబ్‌లను త్వరగా యాక్సెస్ చేయడానికి దిగువ బార్‌ను చూపించండి</translation>
 <translation id="8374720587111523381">ప్రస్తుత ట్యాబ్ గ్రూప్‌లో లింకులను ఓపెన్ చేయండి</translation>
@@ -830,6 +834,7 @@ Brave వాడుకొని, మీరు వినియోగ నియమ�
 <translation id="1227658541937938697">ప్రస్తుత ట్యాబ్ గ్రూప్‌లో అన్ని లింకులను ఆటోమేటిగ్గా ఓపెన్ చేయండి</translation>
 <translation id="5242300593039211344">వాలెట్‌ను లాక్ చేయండి</translation>
 <translation id="1108298724135935307">కనెక్ట్ చేసిన సైట్‌లు</translation>
+<translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
 <translation id="4255623233927788178">బ్లాక్ ఎక్స్‌ప్లోరర్‌లో చూడండి</translation>
 <translation id="8274201358637112807">ఈ పేజీ Brave Walletతో ఇంటరాక్ట్ చేయాలని కోరుకుంటోంది</translation>
 <translation id="3355936511340229503">కనెక్షన్ లోపం</translation>
@@ -871,7 +876,6 @@ Brave వాడుకొని, మీరు వినియోగ నియమ�
 <translation id="6458565248779152483">Brave VPN ని ఆపివేయి</translation>
 <translation id="9080536793704001825">15 నిమిషాల కోసము ఆపివేయి</translation>
 <translation id="803706420145725977">1 గంటకు ఆపివేయి</translation>
-<translation id="4394049700291259645">ఆపివెయ్యి</translation>
 <translation id="7733890291091968191">Web3 నోటిఫికేషన్‌లు చూపించండి</translation>
 <translation id="1371627247679035769">#### Brave మిమ్మల్ని ట్రాక్ చేయదు లేదా మీరు మా యాప్‌ను ఎలా ఉపయోగిస్తున్నారో తెలియదు, అందువలన మీ VPNని ఎలా సెట్ చేసారో మాకు తెలియదు. మీరు ఎదురుకుంటున్న సమస్య గురించి సమాచారం పంచుకోండి మరియు మేము వీలైనంత త్వరగా దాన్ని తీర్చడానికి మా వంతు కృషి చేస్తాము. ####</translation>
 <translation id="3367162038532116157">VPN హోస్ట్నేమ్

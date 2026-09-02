@@ -212,6 +212,7 @@
 <translation id="8707615221880318679">これらの個人的な回答は、Braveが特定の機能の全体的な使用状況を推定し、お客様にとってより良いものにするために役立ちます。</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3ドメイン</translation>
+<translation id="1458638489455808030">ウェイバック・マシン</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="7299769530898469069">保存されたバージョンを読み込めません</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認したいですか？</translation>
@@ -247,6 +248,7 @@
 <translation id="1185644444415356776">リンクをコンテナで開く</translation>
 <translation id="6745991613881384719">コンテナの管理</translation>
 <translation id="8523788649219117880">新しい一時コンテナ</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> コンテナ</translation>
 <translation id="3704707436873245822">画像からテキストをコピー</translation>
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
 <translation id="4046485130884276245">画像からテキストをコピーしました</translation>
@@ -378,6 +380,7 @@
 <translation id="6724227215236550330">保存されたパスワードはここに表示されます。このデバイスの <ph name="BRAND"/> にパスワードをインポートするには、 <ph name="BEGIN_LINK"/> CSV ファイルを選択してください<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">このデバイスでパスワードを <ph name="BRAND"/> にインポートするには、CSVファイルを選択してください</translation>
 <translation id="8570228839666486945">デバイス上のAI</translation>
+<translation id="7447041379556102185">デバイス上の音声認識</translation>
 <translation id="3456536577668402695">検索内容とページコンテンツはこのデバイス上で処理されます。Braveに送信されることも、人間のレビュアーによって閲覧されることもありません。</translation>
 <translation id="4751537843966994505">セマンティック履歴検索</translation>
 <translation id="6175973371938222040">訪問したページをローカルにインデックス化し、意味で履歴を検索できるようにします。すべての処理はこのデバイス上で行われます。</translation>
@@ -408,6 +411,7 @@
 <translation id="6017560037265964523">コンテナ</translation>
 <translation id="3718176486689879621">コンテナは、Cookie、キャッシュ、サイトストレージなどの閲覧データを別々のコンテキストに分離する、色分けされたブラウザタブです。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">コンテナを有効にする</translation>
+<translation id="4858772568604670131">コンテナに常にミニアイコンを使用する</translation>
 <translation id="7773735778926921278">新しいコンテナを追加</translation>
 <translation id="8900907990448657776">コンテナを編集</translation>
 <translation id="7900511996284443779">コンテナを削除</translation>
@@ -556,7 +560,6 @@
 <translation id="1799030480311994998">機能</translation>
 <translation id="6709133671862442373">ニュース</translation>
 <translation id="6297791103122079275">Talk</translation>
-<translation id="1458638489455808030">ウェイバック・マシン</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="1199170151481311646">プライバシー保護分析</translation>
 <translation id="5990642573624858459">統計報告</translation>
@@ -604,11 +607,14 @@
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
 <translation id="1022603984240541480">対応サイトでプライバシー設定チューニングの通知を表示</translation>
 <translation id="3528176629974273019">Braveがサイト固有のプライバシー設定を自動的に提案（および調整）できるようにします。</translation>
+<translation id="2740687181110647855">プライバシー設定調整ツール</translation>
 <translation id="509873765238158442">Microsoft Recallをブロック</translation>
 <translation id="4763421121695677716">Microsoft Windowsコンピュータのリコール機能をブロックして、開いているBraveタブのスクリーンショットを自動的に撮影できないようにします。</translation>
 <translation id="1968895725257436430">データコレクション</translation>
 <translation id="1700052872056357670">終了時にデータをクリア</translation>
 <translation id="216468847346280584">Brave広告のデータをクリア</translation>
+<translation id="96212973142796240">Brave Adsのデータを消去しました</translation>
+<translation id="6665923829462527507">Brave Adsのデータを消去できませんでした。もう一度お試しください。</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
 <translation id="2988792685798128092">サイトを閉じたときに消去</translation>
@@ -877,6 +883,7 @@
 <translation id="8631951653187535788">このモデルを削除しますか？このモデルがアクティブな会話で使用されている場合、その会話はLeoのデフォルトモデルを使用するよう変更されます。</translation>
 <translation id="1907126221851170941">モデルを追加</translation>
 <translation id="8346224718149026088">モデルを編集</translation>
+<translation id="3914173277599553213">必須</translation>
 <translation id="3468298837301810372">ラベル</translation>
 <translation id="3553035516792776805">モデルのリクエスト名</translation>
 <translation id="7634775528597575156">サーバーのエンドポイント</translation>

@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">វាយតម្លៃ Brave</translation>
 <translation id="4104400246019119780">សូមអរគុណ!</translation>
 <translation id="5202255382948179481">បន្ថែមការណែនាំរបស់អ្នក</translation>
-<translation id="7759809451544302770">ស្រេចចិត្ត</translation>
 <translation id="4748689412569009273">ជ្រើសរើសរូបអារម្មណ៍មួយដើម្បីប្រាប់ពីបទពិសោធន៍របស់អ្នកជាមួយ Brave។</translation>
 <translation id="7335142069363686805">វាយតម្លៃឥឡូវនេះ</translation>
 <translation id="6681362094306959654">ចូលចិត្ត Brave មែនទេ?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">មានទុក្ខសោក</translation>
 <translation id="5488843227043643519">ផ្តល់ការវាយតម្លៃនៅលើ Play Store មែនទេ?</translation>
 <translation id="5867854497245948308">អរគុណសម្រាប់មតិយោបល់របស់អ្នក!</translation>
-<translation id="4935400164159327304">ប្រាប់ពួកយើង​ថាអ្នកគិតថាពួកយើងអាចកែលម្អ Brave ប្រក់ក្បាលបានយ៉ាងដូចម្តេច។</translation>
+<translation id="5578122562331038807">ប្រាប់ពួកយើងថាពួកយើងអាចកែលម្អ Brave បានយ៉ាងដូចម្តេច</translation>
+<translation id="1483493594462132177">ផ្ញើ</translation>
+<translation id="3889034478061064651">បន្ថែមការណែនាំរបស់អ្នក (ស្រេចចិត្ត)</translation>
+<translation id="1769154760586570836">បានផ្ញើមតិកែលម្អ។ សូមអរគុណ!</translation>
+<translation id="4450893287417543264">កុំបង្ហាញម្តងទៀត</translation>
 <translation id="8966035543003363155">ការជូនដំណឹង Brave ធ្វើឱ្យមានភាពងាយស្រួល</translation>
 <translation id="7662771815233894695">គ្រប់គ្រងការទាញយក ហានរោយ ផ្ញើរ ឬឃើញស្ថិតិការប្រើប្រាស់ប្រចាំសប្ដាហ៍ និងច្រើនទៀត។</translation>
 <translation id="4265429476391459783">អ្នកមិនទទួលបានរង្វាន់ ឬទទួលបានរបាយការណ៍ឯកជនភាពទេ</translation>
@@ -279,7 +282,6 @@
 <translation id="7002271985859760052">សកម្មភាព​ទំព័រ</translation>
 <translation id="7104487676473617844">ធាតុ​ខាងក្រោម​នឹង​មើលឃើញ​នៅ​ក្នុងម៉ឺនុយ ប្រសិន​បើ​គេហទំព័រ​បច្ចុប្បន្ន​គាំទ្រ។</translation>
 <translation id="4159764849281393303">កម្មវិធីវែប</translation>
-<translation id="8428213095426709021">ការកំណត់</translation>
 <translation id="8038539967102225446">ការផ្សាយពាណិជ្ជកម្ម Brave មកដល់ហើយ!</translation>
 <translation id="222883304157347087">( ឧបករណ៍នេះ )</translation>
 <translation id="4157741509680155021">ឧបករណ៍ការការពារ Brave សមប់</translation>
@@ -537,7 +539,6 @@
 <translation id="1822560017823072927">ចំណុចប្រទាក់សាធារណៈនិងឯកជនដើម</translation>
 <translation id="5825943197137337319">ចំណុចប្រទាក់សាធារណៈដើមតែប៉ុណ្ណោះ</translation>
 <translation id="1689062823386843231">បិទ UDP ពីរឿងផ្សេង</translation>
-<translation id="1483493594462132177">ផ្ញើ</translation>
 <translation id="538450413584738399">ប្តូរ</translation>
 <translation id="4556086616242530072">កម្មវិធីរុករកតាមអ៊ីនធឺណេតមាន​ដៃគូ​សុខភាព
 គ្រប់គ្រង​ភ្ញាក់ផ្អើល។
@@ -615,7 +616,6 @@
 <translation id="569068482611873351">នាំចូល...</translation>
 <translation id="4522570452068850558">ព័ត៌មានលំអិត</translation>
 <translation id="3114681061018999547">ការពារ</translation>
-<translation id="3784455785234192852">ចាក់សោ</translation>
 <translation id="4412698727486357573">មជ្ឈមណ្ឌលជំនួយ</translation>
 <translation id="8239147115686034860">ចាក់សោ Brave Wallet ដោយស្វ័យប្រវត្តិ</translation>
 <translation id="414639769490080648">ចំនួននាទីដែលត្រូវរង់ចាំរហូតដល់ Brave Wallet ចាក់សោដោយស្វ័យប្រវត្តិ</translation>
@@ -815,6 +815,10 @@
 <translation id="2478788592457735063">វានឹងប្ដូរតំបន់បណ្ដាញទៅនឹងតំបន់បណ្ដាញដែលបានបន្ថែមមុននេះ។</translation>
 <translation id="8756686998207163764">ប្ដូរតំបន់បណ្តាញ</translation>
 <translation id="8905793906896555159">បើកក្រុមផ្ទាំង</translation>
+<translation id="6735749683447943955">បិទក្រុមផ្ទាំង?</translation>
+<translation id="4616687974503500682">ក្រុមដែលមានស្រាប់ណាមួយនឹងត្រូវលុប ហើយផ្ទាំងនៅក្នុងក្រុមទាំងនោះនឹងក្លាយជាផ្ទាំងបើកចំហ ដែលមិនបានដាក់ជាក្រុមនៅក្នុងបង្អួចកម្មវិធីរុករករបស់អ្នក។ តើអ្នកប្រាកដថាចង់បន្តទេ?</translation>
+<translation id="4394049700291259645">បិទដំណើរការ</translation>
+<translation id="3859027502409073633">បង្ហាញក្រុមផ្ទាំងដែលបានធ្វើសមកាលកម្ម</translation>
 <translation id="7632160823264702523">របារក្រុមផ្ទាំង</translation>
 <translation id="2477807195394450274">បង្ហាញរបារខាងក្រោមសម្រាប់ការចូលប្រើផ្ទាំងយ៉ាងរហ័សនៅក្នុងក្រុមផ្ទាំងដែលបើកបច្ចុប្បន្ន</translation>
 <translation id="8374720587111523381">បើកតំណនៅក្នុងក្រុមផ្ទាំងបច្ចុប្បន្ន</translation>
@@ -822,6 +826,7 @@
 <translation id="1227658541937938697">បើកគ្រប់តំណដោយស្វ័យប្រវត្តិនៅក្នុងក្រុមផ្ទាំងបច្ចុប្បន្ន</translation>
 <translation id="5242300593039211344">ចាក់សោកាបូប</translation>
 <translation id="1108298724135935307">បានភ្ជាប់គេហទំព័រ</translation>
+<translation id="8428213095426709021">ការកំណត់</translation>
 <translation id="4255623233927788178">មើលលើអ្នកស្វែងរកប្លុក</translation>
 <translation id="8274201358637112807">ទំព័រនេះចង់ឱ្យកាបូប Brave មានប្រតិបត្តិការជាមួយវិបសាយ</translation>
 <translation id="3355936511340229503">កំហុសសន្ទាន</translation>
@@ -863,7 +868,6 @@
 <translation id="6458565248779152483">បិទ Brave VPN</translation>
 <translation id="9080536793704001825">ផ្អាករយៈពេល 15 នាទី</translation>
 <translation id="803706420145725977">ផ្អាករយៈពេល 1 ម៉ោង</translation>
-<translation id="4394049700291259645">បិទដំណើរការ</translation>
 <translation id="7733890291091968191">បង្ហាញការជូនដំណឹង Web3</translation>
 <translation id="1371627247679035769">#### Brave មិនតាមដានអ្នកឬដឹងថាអ្នកប្រើកម្មវិធីរបស់យើងយ៉ាងណាទេ ដូច្នេះយើងមិនដឹងថាអ្នកបានកំណត់ VPN យ៉ាងណាទេ។ សូមចែករំលែកទិន្នន័យអំពីបញ្ហាដែលអ្នកកំពុងជួបប្រទះ និងយើងនឹងអស់កំលាំងលើយើងដើម្បីដោះស្រាយវាបណ្តើៗតាមដែលអាចធ្វើបាន។ ####</translation>
 <translation id="3367162038532116157">VPN Hostname

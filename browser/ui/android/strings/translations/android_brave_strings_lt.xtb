@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Įvertinti „Brave“</translation>
 <translation id="4104400246019119780">Ačiū!</translation>
 <translation id="5202255382948179481">Pridėkite pasiūlymų</translation>
-<translation id="7759809451544302770">Pasirinktinai</translation>
 <translation id="4748689412569009273">Kokiu vienu jaustuku išreikštumėte savo patirtį naudojant „Brave“?</translation>
 <translation id="7335142069363686805">Įvertinkite dabar</translation>
 <translation id="6681362094306959654">Patinka „Brave“?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Liūdnas</translation>
 <translation id="5488843227043643519">Ar galite palikti įvertinimą „Play Store“?</translation>
 <translation id="5867854497245948308">Ačiū už atsiliepimą!</translation>
-<translation id="4935400164159327304">Pasakykite, kaip galime patobulinti „Brave“.</translation>
+<translation id="5578122562331038807">Pasakykite, kaip galime patobulinti „Brave“</translation>
+<translation id="1483493594462132177">Siųsti</translation>
+<translation id="3889034478061064651">Pridėkite pasiūlymų (neprivaloma)</translation>
+<translation id="1769154760586570836">Atsiliepimas išsiųstas. Ačiū!</translation>
+<translation id="4450893287417543264">Neberodyti</translation>
 <translation id="8966035543003363155">„Brave“ pranešimai palengvina darbą</translation>
 <translation id="7662771815233894695">Valdykite atsisiuntimus, kaupkite žetonus, peržiūrėkite savaitės naudojimo statistiką ir dar daugiau.</translation>
 <translation id="4265429476391459783">Nesukaupėte „Brave Rewards“ ir negavote privatumo ataskaitų.</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Puslapio veiksmai</translation>
 <translation id="7104487676473617844">Toliau nurodyti elementai bus rodomi meniu tik tuo atveju, jei juos palaiko šiuo metu atidarytas tinklalapis.</translation>
 <translation id="4159764849281393303">Žiniatinklio programa</translation>
-<translation id="8428213095426709021">Nustatymai</translation>
 <translation id="8038539967102225446">„Brave Ads“ jau čia!</translation>
 <translation id="222883304157347087">(šis įrenginys)</translation>
 <translation id="4157741509680155021">SINCHRONIZAVIMO GRANDINĖS ĮRENGINIAI</translation>
@@ -539,7 +541,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
-<translation id="1483493594462132177">Siųsti</translation>
 <translation id="538450413584738399">„Swap“</translation>
 <translation id="4556086616242530072">Įdiegta naršyklėje.\nSavarankiška priežiūra.\nKelių grandinių.</translation>
 <translation id="7909462264772842773">Valdykite savo kriptovaliutas ir NFT. „Brave“ piniginė palaiko „Ethereum“, EVM grandines, „Solana“, „Filecoin“ ir kt.</translation>
@@ -615,7 +616,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="569068482611873351">Importuoti...</translation>
 <translation id="4522570452068850558">Išsami informacija</translation>
 <translation id="3114681061018999547">Ekranavimas</translation>
-<translation id="3784455785234192852">Užrakinti</translation>
 <translation id="4412698727486357573">Pagalbos centras</translation>
 <translation id="8239147115686034860">Automatiškai užrakinti „Brave“ piniginę</translation>
 <translation id="414639769490080648">Skaičius minučių, kiek reikia palaukti, kol automatiškai užrakinama „Brave“ piniginė</translation>
@@ -811,6 +811,10 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2478788592457735063">Taip tinklas bus perjungtas į anksčiau pridėtą tinklą.</translation>
 <translation id="8756686998207163764">Perjungti tinklą</translation>
 <translation id="8905793906896555159">Įgalinti kortelių grupes</translation>
+<translation id="6735749683447943955">Išjungti kortelių grupes?</translation>
+<translation id="4616687974503500682">Visos esamos grupės bus ištrintos, o jose esančios kortelės taps atviromis, negrupuotomis kortelėmis jūsų naršyklės lange. Ar tikrai norite tęsti?</translation>
+<translation id="4394049700291259645">Neleisti</translation>
+<translation id="3859027502409073633">Rodyti sinchronizuotas kortelių grupes</translation>
 <translation id="7632160823264702523">Kortelių grupių juosta</translation>
 <translation id="2477807195394450274">Rodyti apatinę juostą, kad būtų galima greitai pasiekti korteles esamoje atvertoje kortelių grupėje</translation>
 <translation id="8374720587111523381">Atverti nuorodas esamoje kortelių grupėje</translation>
@@ -818,6 +822,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1227658541937938697">Automatiškai atverti visas nuorodas esamoje kortelių grupėje</translation>
 <translation id="5242300593039211344">Užrakinti piniginę</translation>
 <translation id="1108298724135935307">Susietos svetainės</translation>
+<translation id="8428213095426709021">Nustatymai</translation>
 <translation id="4255623233927788178">Peržiūrėti blokų naršyklėje</translation>
 <translation id="8274201358637112807">Šis puslapis nori sąveikauti su „Brave“ pinigine</translation>
 <translation id="3355936511340229503">Ryšio klaida</translation>
@@ -859,7 +864,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6458565248779152483">„Brave“ VPN išjungimas</translation>
 <translation id="9080536793704001825">Pristabdyti 15 minučių</translation>
 <translation id="803706420145725977">Pristabdyti 1 valandai</translation>
-<translation id="4394049700291259645">Išjungti</translation>
 <translation id="7733890291091968191">Rodyti „Web3“ pranešimus</translation>
 <translation id="1371627247679035769">\n\n\n\n#### „Brave“ jūsų neseka ir nežino, kaip naudojate mūsų programą, todėl neturime informacijos apie tai, kaip sukonfigūravote VPN. Papasakokite mums apie problemą, su kuria susidūrėte, ir mes visomis išgalėmis pasistengsime ją kuo greičiau išspręsti. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN pagrindinio kompiuterio vardas\n <ph name="VALUE"/></translation>
