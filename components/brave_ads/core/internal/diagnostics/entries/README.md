@@ -5,9 +5,9 @@ Diagnostic information to help identify the root cause of issues that users may 
 | diagnostic  |
 |---|
 | device id  |
-| opted into new tab page ads  |
 | notification ads enabled  |
-| opted into search result ads  |
+| sponsored ads enabled  |
+| new tab page ads shown  |
 | language  |
 | country  |
 | catalog id  |

@@ -65,7 +65,7 @@ bool AdsServiceImplIOS::IsIneligibleToStart() const {
 
 bool AdsServiceImplIOS::CanStartBatAdsService() const {
   // Never start if Rewards is disabled by policy, feature flag, or
-  // unsupported region, regardless of which ad unit the user has opted into.
+  // unsupported region, regardless of which ad units are enabled.
   return brave_rewards::IsSupported(&*prefs_);
 }
 

@@ -11,14 +11,14 @@ namespace brave_ads::test {
 void DisableBraveRewards();
 void DisconnectExternalBraveRewardsWallet();
 
-void OptOutOfNewTabPageAds();
-
 void DisableNotificationAds();
 void SetMaximumNotificationAdsPerHour(int max_ads_per_hour);
 
-void OptOutOfSearchResultAds();
+void DisableSponsoredAds();
 
-void OptOutOfAllAds();
+void DisableNewTabPageBackgroundImages();
+
+void DisableAllAds();
 
 void OptOutOfSurveyPanelist();
 

@@ -24,7 +24,7 @@ class BraveAdsConversionsNewTabPageAdTest
     : public test::BraveAdsConversionsTestBase {};
 
 TEST_F(BraveAdsConversionsNewTabPageAdTest,
-       ConvertViewedAdIfOptedInToNewTabPageAds) {
+       ConvertViewedAdIfNewTabPageAdsAreEnabled) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);
@@ -43,9 +43,27 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
 }
 
 TEST_F(BraveAdsConversionsNewTabPageAdTest,
-       DoNotConvertViewedAdIfOptedOutOfNewTabPageAds) {
+       DoNotConvertViewedAdIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
+                                  /*use_random_uuids=*/false);
+  test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          test::kMatchingUrlPattern,
+                                          /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsNewTabPageAdTest,
+       DoNotConvertViewedAdIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);
@@ -80,7 +98,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
 }
 
 TEST_F(BraveAdsConversionsNewTabPageAdTest,
-       ConvertClickedAdIfOptedInToNewTabPageAds) {
+       ConvertClickedAdIfNewTabPageAdsAreEnabled) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);
@@ -100,9 +118,28 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
 }
 
 TEST_F(BraveAdsConversionsNewTabPageAdTest,
-       DoNotConvertClickedAdIfOptedOutOfNewTabPageAds) {
+       DoNotConvertClickedAdIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
+                                  /*use_random_uuids=*/false);
+  test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          test::kMatchingUrlPattern,
+                                          /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsNewTabPageAdTest,
+       DoNotConvertClickedAdIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);

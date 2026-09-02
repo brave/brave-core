@@ -53,15 +53,15 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"
             },
             {
-              "name": "Opted into new tab page ads",
-              "value": "true"
-            },
-            {
               "name": "Notification ads enabled",
               "value": "true"
             },
             {
-              "name": "Opted into search result ads",
+              "name": "Sponsored ads enabled",
+              "value": "true"
+            },
+            {
+              "name": "New tab page ads shown",
               "value": "true"
             },
             {

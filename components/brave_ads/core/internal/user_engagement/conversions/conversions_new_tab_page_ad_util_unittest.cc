@@ -34,10 +34,26 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest, AllowedToConvertViewedAdEvent) {
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
 }
 
-TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
-       NotAllowedToConvertViewedAdEventIfOptedOutOfNewTabPageAds) {
+TEST_F(
+    BraveAdsConversionsNewTabPageAdUtilTest,
+    NotAllowedToConvertViewedAdEventIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
+}
+
+TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
+       NotAllowedToConvertViewedAdEventIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);
@@ -76,10 +92,25 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
 }
 
-TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
-       NotAllowedToConvertClickedAdEventIfOptedOutOfNewTabPageAds) {
+TEST_F(
+    BraveAdsConversionsNewTabPageAdUtilTest,
+    NotAllowedToConvertClickedAdEventIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
+                                  /*use_random_uuids=*/false);
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
+}
+
+TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
+       NotAllowedToConvertClickedAdEventIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/false);

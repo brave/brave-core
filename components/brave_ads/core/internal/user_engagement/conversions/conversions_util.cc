@@ -24,9 +24,9 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
   switch (ad_event.type) {
     case mojom::AdType::kNewTabPageAd: {
       // Only if:
-      // - The user has opted into new tab page ads and has joined Brave
+      // - New tab page ads are enabled and the user has joined Brave
       //   Rewards.
-      return UserHasOptedInToNewTabPageAds() && UserHasJoinedBraveRewards();
+      return IsNewTabPageAdsEnabled() && UserHasJoinedBraveRewards();
     }
 
     case mojom::AdType::kNotificationAd: {
@@ -38,8 +38,8 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
 
     case mojom::AdType::kSearchResultAd: {
       // Only if:
-      // - The user has opted into search result ads.
-      return UserHasOptedInToSearchResultAds();
+      // - Sponsored ads are enabled.
+      return IsSponsoredAdsEnabled();
     }
 
     case mojom::AdType::kUndefined: {

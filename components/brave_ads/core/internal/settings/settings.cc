@@ -35,12 +35,6 @@ bool UserHasJoinedBraveRewardsAndConnectedWallet() {
   return UserHasJoinedBraveRewards() && HasConnectedWallet();
 }
 
-bool UserHasOptedInToNewTabPageAds() {
-  return GetProfileBooleanPref(
-             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
-         GetProfileBooleanPref(prefs::kSponsoredEnabled);
-}
-
 bool IsNotificationAdsEnabled() {
   return UserHasJoinedBraveRewards() &&
          GetProfileBooleanPref(prefs::kNotificationsEnabled);
@@ -53,8 +47,14 @@ int GetMaximumNotificationAdsPerHour() {
   return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();
 }
 
-bool UserHasOptedInToSearchResultAds() {
+bool IsSponsoredAdsEnabled() {
   return GetProfileBooleanPref(prefs::kSponsoredEnabled);
+}
+
+bool IsNewTabPageAdsEnabled() {
+  return GetProfileBooleanPref(
+             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
+         IsSponsoredAdsEnabled();
 }
 
 bool UserHasOptedInToSurveyPanelist() {
@@ -62,7 +62,7 @@ bool UserHasOptedInToSurveyPanelist() {
     return false;
   }
 
-  if (!UserHasOptedInToNewTabPageAds()) {
+  if (!IsNewTabPageAdsEnabled()) {
     return false;
   }
 

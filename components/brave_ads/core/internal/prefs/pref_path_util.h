@@ -12,7 +12,7 @@ namespace brave_ads {
 
 bool DoesMatchUserHasJoinedBraveRewardsPrefPath(std::string_view path);
 
-bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path);
+bool DoesMatchNewTabPageAdsEnabledPrefPath(std::string_view path);
 
 bool DoesMatchNotificationAdsEnabledPrefPath(std::string_view path);
 

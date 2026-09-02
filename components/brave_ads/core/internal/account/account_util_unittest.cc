@@ -46,11 +46,28 @@ TEST_F(BraveAdsAccountUtilTest, AllowNewTabPageAdDepositsForNonRewardsUser) {
 
 TEST_F(
     BraveAdsAccountUtilTest,
-    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfOptedOutOfNewTabPageAds) {
+    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
   test::DisableBraveRewards();
 
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  // Act & Assert
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
+    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
+                                    mojom::AdType::kNewTabPageAd,
+                                    static_cast<mojom::ConfirmationType>(i)));
+  }
+}
+
+TEST_F(
+    BraveAdsAccountUtilTest,
+    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  test::DisableSponsoredAds();
 
   // Act & Assert
   for (size_t i = 0;

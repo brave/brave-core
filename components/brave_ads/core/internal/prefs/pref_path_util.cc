@@ -17,7 +17,7 @@ bool DoesMatchUserHasJoinedBraveRewardsPrefPath(std::string_view path) {
   return path == brave_rewards::prefs::kEnabled;
 }
 
-bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path) {
+bool DoesMatchNewTabPageAdsEnabledPrefPath(std::string_view path) {
   return path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
          path == prefs::kSponsoredEnabled;
 }

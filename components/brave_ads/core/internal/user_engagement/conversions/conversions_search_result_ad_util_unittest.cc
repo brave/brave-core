@@ -36,9 +36,9 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
-       NotAllowedToConvertViewedAdEventIfOptedOutOfSearchResultAds) {
+       NotAllowedToConvertViewedAdEventIfSponsoredAdsAreDisabled) {
   // Arrange
-  test::OptOutOfSearchResultAds();
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);
@@ -63,9 +63,9 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
-       NotAllowedToConvertClickedAdEventIfOptedOutOfSearchResultAds) {
+       NotAllowedToConvertClickedAdEventIfSponsoredAdsAreDisabled) {
   // Arrange
-  test::OptOutOfSearchResultAds();
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);

@@ -41,7 +41,7 @@ void MaybePurgeNewTabPageAdEvents() {
     return;
   }
 
-  if (!UserHasOptedInToNewTabPageAds()) {
+  if (!IsNewTabPageAdsEnabled()) {
     PurgeAdEventsForType(mojom::AdType::kNewTabPageAd);
   }
 }
@@ -77,7 +77,7 @@ void Maintenance::RepeatedlyScheduleAfterCallback() {
 }
 
 void Maintenance::OnNotifyPrefDidChange(const std::string& path) {
-  if (DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path)) {
+  if (DoesMatchNewTabPageAdsEnabledPrefPath(path)) {
     MaybePurgeNewTabPageAdEvents();
   }
 }

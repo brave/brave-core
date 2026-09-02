@@ -193,14 +193,35 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
-       DoNotServeAdIfUserHasNotOptedInToNewTabPageAds) {
+       DoNotServeAdIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       {kNewTabPageAdServingFeature});
 
   test::ForcePermissionRules();
 
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  MockCreativeNewTabPageAds();
+
+  // Act & Assert
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsNewTabPageAdIntegrationTest,
+       DoNotServeAdIfSponsoredAdsAreDisabled) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
+  test::ForcePermissionRules();
+
+  test::DisableSponsoredAds();
 
   MockCreativeNewTabPageAds();
 
