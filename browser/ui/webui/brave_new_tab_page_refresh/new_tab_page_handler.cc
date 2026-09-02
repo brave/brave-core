@@ -12,6 +12,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -29,7 +31,9 @@
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/pref_names.h"
@@ -322,7 +326,14 @@ void NewTabPageHandler::OpenSearch(const std::string& query,
                                    const std::string& engine,
                                    mojom::EventDetailsPtr details,
                                    OpenSearchCallback callback) {
-  auto* template_url = template_url_service_->GetTemplateURLForHost(engine);
+  // GetTemplateURLForHost can resolve the Brave Search host to a starter pack
+  // engine (@ask) because starter packs outrank other engines on host
+  // collisions, so look up the Brave engine by its unique keyword instead.
+  const bool is_brave = engine == kBraveSearchHost;
+  TemplateURL* template_url =
+      is_brave ? template_url_service_->GetTemplateURLForKeyword(
+                     TemplateURLPrepopulateData::brave_search.keyword)
+               : template_url_service_->GetTemplateURLForHost(engine);
   if (!template_url) {
     std::move(callback).Run();
     return;
@@ -330,6 +341,12 @@ void NewTabPageHandler::OpenSearch(const std::string& query,
 
   GURL search_url = template_url->GenerateSearchURL(
       template_url_service_->search_terms_data(), base::UTF8ToUTF16(query));
+
+  if (is_brave) {
+    auto* local_state = g_browser_process->local_state();
+    search_url = brave_search::OverrideWithNewTabSource(
+        search_url, local_state, brave_stats::IsFirstRun(local_state));
+  }
 
   OpenGURL(search_url,
            ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
