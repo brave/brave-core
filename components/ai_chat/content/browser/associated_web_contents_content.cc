@@ -146,7 +146,7 @@ void AssociatedWebContentsContent::NavigationEntryCommitted(
 
   // A reload of the same URL is the same logical page, so leave the content
   // alone.
-  // Note: This doesn't treat navigations to the the same URL as a reload as
+  // Note: This doesn't treat navigations to the same URL as a reload as
   // they have a different content_id.
   const bool is_same_page_reload =
       pending_navigation_is_reload_ && !is_same_document_navigation_ &&
