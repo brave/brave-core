@@ -1,12 +1,12 @@
 diff --git a/components/enterprise/connectors/core/connectors_internals_utils.cc b/components/enterprise/connectors/core/connectors_internals_utils.cc
-index cf1416715f721ccf49c39440c3290838006b2193..13c6366c093bd721c2522cf3ae6cc7a1a373db56 100644
+index 10a0edd5c8ad2fed3593a32cf279b172d88fab75..8fb883e066c4d302aa5fc6449b401a09e9a82095 100644
 --- a/components/enterprise/connectors/core/connectors_internals_utils.cc
 +++ b/components/enterprise/connectors/core/connectors_internals_utils.cc
-@@ -116,6 +116,7 @@ connectors_internals::mojom::KeyType AlgorithmToType(
-     case crypto::SignatureVerifier::RSA_PSS_SHA256:
-       return connectors_internals::mojom::KeyType::RSA;
+@@ -123,6 +123,7 @@ connectors_internals::mojom::KeyType AlgorithmToType(
      case crypto::SignatureVerifier::ECDSA_SHA256:
+     case crypto::SignatureVerifier::ECDSA_SHA384:
+     case crypto::SignatureVerifier::ECDSA_SHA512:
 +    case crypto::SignatureVerifier::ECDSA_SHA384:
        return connectors_internals::mojom::KeyType::EC;
-   }
- }
+     case crypto::SignatureVerifier::ED25519:
+     case crypto::SignatureVerifier::MLDSA_44:
