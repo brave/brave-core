@@ -1,0 +1,44 @@
+diff --git a/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache.h b/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache.h
+index fe4c1ca98aedc3eba9df9c598f7b546703bef05e..00259944a15d40f65971400105d2b1a2e7d376e2 100644
+--- a/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache.h
++++ b/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache.h
+@@ -79,12 +79,14 @@ struct ShapeCacheKey {
+                 unsigned end_offset,
+                 const AtomicString& locale,
+                 base::span<const FontFeatureRange> font_features,
+-                TextDirection direction)
++                TextDirection direction,
++                float specified_size)
+       : text_(text),
+         start_offset_(start_offset),
+         end_offset_(end_offset),
+         locale_(locale),
+         font_features_(font_features),
++        specified_size_(specified_size),
+         direction_(direction) {
+     DCHECK_NE(text_, g_empty_string);
+   }
+@@ -100,6 +102,7 @@ struct ShapeCacheKey {
+     AddIntToHash(hash, locale_ ? blink::GetHash(locale_) : 0);
+     AddIntToHash(
+         hash, StringHasher::HashMemory32(base::as_byte_span(font_features_)));
++    AddFloatToHash(hash, specified_size_);
+     AddIntToHash(hash, static_cast<unsigned>(direction_));
+     return hash;
+   }
+@@ -108,6 +111,7 @@ struct ShapeCacheKey {
+     return text_ == other.text_ && start_offset_ == other.start_offset_ &&
+            end_offset_ == other.end_offset_ && locale_ == other.locale_ &&
+            font_features_ == other.font_features_ &&
++           specified_size_ == other.specified_size_ &&
+            direction_ == other.direction_;
+   }
+ 
+@@ -119,6 +123,7 @@ struct ShapeCacheKey {
+   unsigned end_offset_ = 0u;
+   AtomicString locale_;
+   Vector<FontFeatureRange, 1> font_features_;
++  float specified_size_ = 0;
+   TextDirection direction_ = TextDirection::kLtr;
+ };
+ 

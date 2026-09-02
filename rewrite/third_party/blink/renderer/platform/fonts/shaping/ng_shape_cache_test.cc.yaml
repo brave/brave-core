@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pass the Ahem font size to the directional ShapeCacheKey test helper.
+
+      The cache is created for a 100px Ahem font, so the helper must state the
+      exact font size now required by ShapeCacheKey.
+    regex:
+      pattern:
+        'return ShapeCacheKey(text, 0, text.length(), g_null_atom, {},
+        direction);'
+      replace: |-
+        return ShapeCacheKey(text, 0, text.length(), g_null_atom, {}, direction,
+                                 100.f);
+
+  - description: 'Pass the Ahem font size to the LTR ShapeCacheKey test helper.'
+    regex:
+      pattern: 'TextDirection::kLtr);'
+      replace: 'TextDirection::kLtr, 100.f);'

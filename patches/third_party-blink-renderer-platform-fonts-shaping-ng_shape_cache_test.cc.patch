@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache_test.cc b/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache_test.cc
+index eb5987ebac862df7f639590f692536f3183c0739..627fa0d4c0edfbceca84f6997d86312431685eab 100644
+--- a/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache_test.cc
++++ b/third_party/blink/renderer/platform/fonts/shaping/ng_shape_cache_test.cc
+@@ -33,7 +33,8 @@ TEST_F(NGShapeCacheTest, AddEntriesAndCacheHits) {
+ 
+   auto CreateKey = [](const String& text,
+                       TextDirection direction) -> ShapeCacheKey {
+-    return ShapeCacheKey(text, 0, text.length(), g_null_atom, {}, direction);
++    return ShapeCacheKey(text, 0, text.length(), g_null_atom, {}, direction,
++                         100.f);
+   };
+ 
+   // Adding an entry is successful.
+@@ -80,7 +81,7 @@ TEST_F(NGShapeCacheTest, FontPerformanceMetrics) {
+ 
+   auto CreateKey = [](const String& text) -> ShapeCacheKey {
+     return ShapeCacheKey(text, 0, text.length(), g_null_atom, {},
+-                         TextDirection::kLtr);
++                         TextDirection::kLtr, 100.f);
+   };
+ 
+   // First access: Miss

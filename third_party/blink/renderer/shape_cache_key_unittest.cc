@@ -15,7 +15,7 @@ namespace {
 ShapeCacheKey CreateShapeCacheKey(float specified_size) {
   const String text("A");
   return ShapeCacheKey(text, 0, text.length(), g_null_atom, {},
-                       TextDirection::kLtr);
+                       TextDirection::kLtr, specified_size);
 }
 
 TEST(ShapeCacheKeyTest, SpecifiedSizeAffectsEquality) {

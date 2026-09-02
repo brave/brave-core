@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/layout/inline/inline_node.cc b/third_party/blink/renderer/core/layout/inline/inline_node.cc
+index ac96b2a2e7d8af063db17d118a32a60dda644fc1..44eac7910548cae45e758de73f3fa0327e78146a 100644
+--- a/third_party/blink/renderer/core/layout/inline/inline_node.cc
++++ b/third_party/blink/renderer/core/layout/inline/inline_node.cc
+@@ -173,7 +173,8 @@ class ReusingTextShaper final {
+       return font.PrimaryFont()->GetShapeCache().GetOrCreate(
+           ShapeCacheKey(shaper_.GetText(), start_item.StartOffset(), end_offset,
+                         locale ? locale->LocaleString() : g_null_atom,
+-                        font.GetFontFeatures(), start_item.Direction()),
++                        font.GetFontFeatures(), start_item.Direction(),
++                        font.GetFontDescription().SpecifiedSize()),
+           ShapeFunc);
+     }
+     return ShapeFunc().shape_result;
