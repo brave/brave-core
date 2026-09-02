@@ -46,6 +46,7 @@ interface Props {
   isAccountSyncing?: boolean
   isShieldingFunds?: boolean
   isUnshieldingFunds?: boolean
+  isMigratingFunds?: boolean
 }
 
 type Warning = TransactionWarning
@@ -64,6 +65,7 @@ export function PendingTransactionActionsFooter({
   isAccountSyncing,
   isShieldingFunds,
   isUnshieldingFunds,
+  isMigratingFunds,
 }: Props) {
   // selectors
   const submittingTransaction = useUnsafePanelSelector(
@@ -119,6 +121,22 @@ export function PendingTransactionActionsFooter({
   const isConfirmButtonDisabledOrSubmitting =
     isConfirmButtonDisabled || !!submittingTransaction
 
+  const confirmButtonText = React.useMemo((): string => {
+    if (isAccountSyncing) {
+      return getLocale('braveWalletSyncing')
+    }
+    if (isShieldingFunds) {
+      return getLocale('braveWalletShieldZEC')
+    }
+    if (isUnshieldingFunds) {
+      return getLocale('braveWalletUnshieldZEC')
+    }
+    if (isMigratingFunds) {
+      return getLocale('braveWalletMigrateZEC')
+    }
+    return getLocale('braveWalletAllowSpendConfirmButton')
+  }, [isAccountSyncing, isShieldingFunds, isUnshieldingFunds, isMigratingFunds])
+
   const { confirmButton, rejectButton } = React.useMemo(() => {
     return {
       confirmButton: (
@@ -129,13 +147,7 @@ export function PendingTransactionActionsFooter({
           isDisabled={isConfirmButtonDisabledOrSubmitting}
           isLoading={isTransactionConfirmedOrSubmitting}
         >
-          {isAccountSyncing
-            ? getLocale('braveWalletSyncing')
-            : isShieldingFunds
-              ? getLocale('braveWalletShieldZEC')
-              : isUnshieldingFunds
-                ? getLocale('braveWalletUnshieldZEC')
-                : getLocale('braveWalletAllowSpendConfirmButton')}
+          {confirmButtonText}
         </Button>
       ),
       rejectButton: (
@@ -155,9 +167,7 @@ export function PendingTransactionActionsFooter({
     isTransactionConfirmedOrSubmitting,
     isConfirmButtonDisabledOrSubmitting,
     onReject,
-    isAccountSyncing,
-    isShieldingFunds,
-    isUnshieldingFunds,
+    confirmButtonText,
   ])
 
   // effects

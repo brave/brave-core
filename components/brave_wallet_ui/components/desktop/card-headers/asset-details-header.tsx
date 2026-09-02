@@ -210,12 +210,7 @@ export const AssetDetailsHeader = (props: Props) => {
                   variant='large.semibold'
                   textAlign='left'
                 >
-                  {isShieldedToken(selectedAsset)
-                    ? selectedAsset.zcashTokenType
-                      === BraveWallet.ZCashTokenType.kIronwood
-                      ? 'Zcash (Ironwood)'
-                      : 'Zcash'
-                    : (selectedAsset?.name ?? '')}
+                  {selectedAsset.name ?? ''}
                 </Text>
                 {isShieldedToken(selectedAsset) && <ShieldedLabel />}
               </Row>

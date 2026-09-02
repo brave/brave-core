@@ -380,6 +380,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   mojom::ZCashAccountShieldBirthdayPtr GetAccountShieldBirthday(
       const mojom::AccountIdPtr& account_id);
 
+  bool IsOwnInternalShieldAddress(const mojom::AccountIdPtr& account_id,
+                                  const std::string& addr);
+
   std::vector<mojom::AccountIdPtr> GetShieldedAccounts();
 
   void OnSyncStart(const mojom::AccountIdPtr& account_id) override;

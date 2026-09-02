@@ -590,18 +590,34 @@ export const usePendingTransactions = () => {
       === BraveWallet.ZCashTxType.kUnshieldingOrchard
     || getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kUnshieldingIronwood
+  const isMigratingFunds =
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kMigratingIronwood
 
-  const transactionTitle = React.useMemo(
-    (): string =>
-      isShieldingFunds
-        ? getLocale('braveWalletShielding')
-        : isSolanaDappTransaction
-          ? getLocale('braveWalletApproveTransaction')
-          : transactionDetails?.isSwap
-            ? getLocale('braveWalletSwap')
-            : getLocale('braveWalletSend'),
-    [isShieldingFunds, isSolanaDappTransaction, transactionDetails?.isSwap],
-  )
+  const transactionTitle = React.useMemo((): string => {
+    if (isShieldingFunds) {
+      return getLocale('braveWalletShielding')
+    }
+    if (isUnshieldingFunds) {
+      return getLocale('braveWalletUnshielding')
+    }
+    if (isMigratingFunds) {
+      return getLocale('braveWalletMigrating')
+    }
+    if (isSolanaDappTransaction) {
+      return getLocale('braveWalletApproveTransaction')
+    }
+    if (transactionDetails?.isSwap) {
+      return getLocale('braveWalletSwap')
+    }
+    return getLocale('braveWalletSend')
+  }, [
+    isShieldingFunds,
+    isUnshieldingFunds,
+    isMigratingFunds,
+    isSolanaDappTransaction,
+    transactionDetails?.isSwap,
+  ])
 
   const isLoadingGasFee = React.useMemo(() => {
     if (txCoinType === undefined) {
@@ -787,6 +803,7 @@ export const usePendingTransactions = () => {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
     canEditNetworkFee,
   }
 }

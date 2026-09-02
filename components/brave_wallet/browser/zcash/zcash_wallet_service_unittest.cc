@@ -1766,6 +1766,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodMatrix) {
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = account_1->account_id.Clone();
+  auto account_2 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  auto account_id_2 = account_2->account_id.Clone();
 
   static constexpr char kOrchardUnifiedAddress[] =
       "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
@@ -1776,6 +1779,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodMatrix) {
       "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT";
 
   auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
+  auto account_2_info = keyring_service_->GetZCashAccountInfo(account_id_2);
+  ASSERT_NE(account_info->orchard_internal_address,
+            account_2_info->orchard_internal_address);
 
   auto get_tx_type = [&](mojom::ZCashTokenType from_token,
                          const std::string& addr) {
@@ -1815,6 +1821,35 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodMatrix) {
     std::tie(t, e) =
         get_tx_type(mojom::ZCashTokenType::kTransparent,
                     account_info->orchard_internal_address.value());
+    EXPECT_EQ(t, mojom::ZCashTxType::kShieldingIronwood);
+    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+
+    // orchard → orchard_internal → kMigratingIronwood
+    std::tie(t, e) =
+        get_tx_type(mojom::ZCashTokenType::kOrchard,
+                    account_info->orchard_internal_address.value());
+    EXPECT_EQ(t, mojom::ZCashTxType::kMigratingIronwood);
+    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+
+    // ironwood → orchard_internal → kIronwoodToIronwood
+    std::tie(t, e) =
+        get_tx_type(mojom::ZCashTokenType::kIronwood,
+                    account_info->orchard_internal_address.value());
+    EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToIronwood);
+    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+
+    // Another same-keyring account's internal address counts as a migration
+    // target too, so orchard → that address is still kMigratingIronwood.
+    std::tie(t, e) =
+        get_tx_type(mojom::ZCashTokenType::kOrchard,
+                    account_2_info->orchard_internal_address.value());
+    EXPECT_EQ(t, mojom::ZCashTxType::kMigratingIronwood);
+    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+
+    // t → another account's orchard_internal → kShieldingIronwood
+    std::tie(t, e) =
+        get_tx_type(mojom::ZCashTokenType::kTransparent,
+                    account_2_info->orchard_internal_address.value());
     EXPECT_EQ(t, mojom::ZCashTxType::kShieldingIronwood);
     EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
@@ -3111,74 +3146,74 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
       });
 
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(
-          [&](const std::string& chain_id, const std::string& address,
-              ZCashRpc::GetUtxoListCallback callback) {
-            std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
-            if (address == "t1KgcafpY8SQ9prSaJaLWDNjMK3jZRh462t") {
-              auto utxo = zcash::mojom::ZCashUtxo::New(
-                  "t1KgcafpY8SQ9prSaJaLWDNjMK3jZRh462t" /* address */,
-                  *PrefixedHexStringToBytes(
-                      "0x6a201fbe4f47633371559f550fad9f08f092aef8ec5fd71c7faa39"
-                      "931ebf2a91") /* tx id */,
-                  0u /* index */,
-                  *PrefixedHexStringToBytes("0x76a91413dc27df4fecc40e45a619efa0"
-                                            "c4d81a64fdebf188ac") /*script*/,
-                  100000u /* amount */, 3451109u /* block */);
-              utxos.push_back(std::move(utxo));
-            }
-            if (address == "t1S8CizjZXtyEXbusiYhp96zkLVrQjLm1QU") {
-              auto utxo = zcash::mojom::ZCashUtxo::New(
-                  "t1S8CizjZXtyEXbusiYhp96zkLVrQjLm1QU" /* address */,
-                  *PrefixedHexStringToBytes(
-                      "0x8168e775c95d7ddc05deddc37ff728d2cb0809029ba4d442e1426b"
-                      "29e6495399") /* tx id */,
-                  0u /* index */,
-                  *PrefixedHexStringToBytes("0x76a9145a83cfa45e4899770f22d52d97"
-                                            "b7adfdcb10325488ac") /*script*/,
-                  10000u /* amount */, 2757588u /* block */);
-              utxos.push_back(std::move(utxo));
-            }
-            if (address == "t1Xgp6z3tPYgsAtC6aA87ntNeTTGtKgUJvB") {
-              auto utxo = zcash::mojom::ZCashUtxo::New(
-                  "t1Xgp6z3tPYgsAtC6aA87ntNeTTGtKgUJvB" /* address */,
-                  *PrefixedHexStringToBytes(
-                      "0x3ed75ebecf3fb2f0d71d1e6d0ae0ef712d55d1858236c78b763a2f"
-                      "a790055646") /* tx id */,
-                  0u /* index */,
-                  *PrefixedHexStringToBytes("0x76a914978748a668db7815805585c56f"
-                                            "981a316e220b0b88ac") /*script*/,
-                  10000u /* amount */, 3447696u /* block */);
-              utxos.push_back(std::move(utxo));
-            }
-            if (address == "t1a3UxbMRzhhNRHDmCYGKvzfjGBdmyiRJZW") {
-              auto utxo = zcash::mojom::ZCashUtxo::New(
-                  "t1a3UxbMRzhhNRHDmCYGKvzfjGBdmyiRJZW" /* address */,
-                  *PrefixedHexStringToBytes(
-                      "0xf61a9b0c003399d1a6051007944485818642ff4d13cd02438f9d38"
-                      "3400aec256") /* tx id */,
-                  0u /* index */,
-                  *PrefixedHexStringToBytes("0x76a914b1604a14ec8a526556b324f6ad"
-                                            "c0ca1d0d2bd2d388ac") /*script*/,
-                  10000u /* amount */, 3455353u /* block */);
-              utxos.push_back(std::move(utxo));
-            }
-            if (address == "t1dYrsWYsYMMMfm85AkRcvpPw8ieiTGCpab") {
-              auto utxo = zcash::mojom::ZCashUtxo::New(
-                  "t1dYrsWYsYMMMfm85AkRcvpPw8ieiTGCpab" /* address */,
-                  *PrefixedHexStringToBytes(
-                      "0x3709db74afec0c999cc686e6f106dd9cb8c495665ab868c04c26c2"
-                      "008f049522") /* tx id */,
-                  0u /* index */,
-                  *PrefixedHexStringToBytes("0x76a914d7d70569db3474c588f952a198"
-                                            "562a7c24affeaf88ac") /*script*/,
-                  10000u /* amount */, 3446640u /* block */);
-              utxos.push_back(std::move(utxo));
-            }
-            auto response =
-                zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
-            std::move(callback).Run(std::move(response));
-          });
+      .WillByDefault([&](const std::string& chain_id,
+                         const std::string& address,
+                         ZCashRpc::GetUtxoListCallback callback) {
+        std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
+        if (address == "t1KgcafpY8SQ9prSaJaLWDNjMK3jZRh462t") {
+          auto utxo = zcash::mojom::ZCashUtxo::New(
+              "t1KgcafpY8SQ9prSaJaLWDNjMK3jZRh462t" /* address */,
+              *PrefixedHexStringToBytes(
+                  "0x6a201fbe4f47633371559f550fad9f08f092aef8ec5fd71c7faa39"
+                  "931ebf2a91") /* tx id */,
+              0u /* index */,
+              *PrefixedHexStringToBytes("0x76a91413dc27df4fecc40e45a619efa0"
+                                        "c4d81a64fdebf188ac") /*script*/,
+              100000u /* amount */, 3451109u /* block */);
+          utxos.push_back(std::move(utxo));
+        }
+        if (address == "t1S8CizjZXtyEXbusiYhp96zkLVrQjLm1QU") {
+          auto utxo = zcash::mojom::ZCashUtxo::New(
+              "t1S8CizjZXtyEXbusiYhp96zkLVrQjLm1QU" /* address */,
+              *PrefixedHexStringToBytes(
+                  "0x8168e775c95d7ddc05deddc37ff728d2cb0809029ba4d442e1426b"
+                  "29e6495399") /* tx id */,
+              0u /* index */,
+              *PrefixedHexStringToBytes("0x76a9145a83cfa45e4899770f22d52d97"
+                                        "b7adfdcb10325488ac") /*script*/,
+              10000u /* amount */, 2757588u /* block */);
+          utxos.push_back(std::move(utxo));
+        }
+        if (address == "t1Xgp6z3tPYgsAtC6aA87ntNeTTGtKgUJvB") {
+          auto utxo = zcash::mojom::ZCashUtxo::New(
+              "t1Xgp6z3tPYgsAtC6aA87ntNeTTGtKgUJvB" /* address */,
+              *PrefixedHexStringToBytes(
+                  "0x3ed75ebecf3fb2f0d71d1e6d0ae0ef712d55d1858236c78b763a2f"
+                  "a790055646") /* tx id */,
+              0u /* index */,
+              *PrefixedHexStringToBytes("0x76a914978748a668db7815805585c56f"
+                                        "981a316e220b0b88ac") /*script*/,
+              10000u /* amount */, 3447696u /* block */);
+          utxos.push_back(std::move(utxo));
+        }
+        if (address == "t1a3UxbMRzhhNRHDmCYGKvzfjGBdmyiRJZW") {
+          auto utxo = zcash::mojom::ZCashUtxo::New(
+              "t1a3UxbMRzhhNRHDmCYGKvzfjGBdmyiRJZW" /* address */,
+              *PrefixedHexStringToBytes(
+                  "0xf61a9b0c003399d1a6051007944485818642ff4d13cd02438f9d38"
+                  "3400aec256") /* tx id */,
+              0u /* index */,
+              *PrefixedHexStringToBytes("0x76a914b1604a14ec8a526556b324f6ad"
+                                        "c0ca1d0d2bd2d388ac") /*script*/,
+              10000u /* amount */, 3455353u /* block */);
+          utxos.push_back(std::move(utxo));
+        }
+        if (address == "t1dYrsWYsYMMMfm85AkRcvpPw8ieiTGCpab") {
+          auto utxo = zcash::mojom::ZCashUtxo::New(
+              "t1dYrsWYsYMMMfm85AkRcvpPw8ieiTGCpab" /* address */,
+              *PrefixedHexStringToBytes(
+                  "0x3709db74afec0c999cc686e6f106dd9cb8c495665ab868c04c26c2"
+                  "008f049522") /* tx id */,
+              0u /* index */,
+              *PrefixedHexStringToBytes("0x76a914d7d70569db3474c588f952a198"
+                                        "562a7c24affeaf88ac") /*script*/,
+              10000u /* amount */, 3446640u /* block */);
+          utxos.push_back(std::move(utxo));
+        }
+        auto response =
+            zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
+        std::move(callback).Run(std::move(response));
+      });
 
   std::optional<ZCashTransaction> created_transaction;
   base::MockCallback<ZCashWalletService::CreateTransactionCallback>
@@ -7020,10 +7055,14 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_IronwoodUnshieldFunds) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
+  // Ironwood is pinned off here: with it on, StartShieldSync first rewinds the
+  // sync state and completes asynchronously, which
+  // StartShieldSync_IronwoodMigration_RewindsWhenNeeded covers instead.
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "false"}});
 
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,

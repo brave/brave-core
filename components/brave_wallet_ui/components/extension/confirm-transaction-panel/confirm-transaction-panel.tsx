@@ -126,6 +126,7 @@ export const ConfirmTransactionPanel = () => {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
   } = usePendingTransactions()
 
   // queries
@@ -469,6 +470,7 @@ export const ConfirmTransactionPanel = () => {
             isAccountSyncing={isAccountSyncing}
             isShieldingFunds={isShieldingFunds}
             isUnshieldingFunds={isUnshieldingFunds}
+            isMigratingFunds={isMigratingFunds}
           />
         </Column>
       </StyledWrapper>

@@ -148,6 +148,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP_PROVIDER_STATUS" desc="Swap provider status label in transaction details">Provider status</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SHIELD" desc="Confirm shield title">Confirm shield</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_UNSHIELD" desc="Confirm unshield title">Confirm unshield</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_MIGRATE" desc="Confirm migrate title">Confirm migrate</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
   <message name="IDS_BRAVE_WALLET_SORT_BY" desc="Sort by button label">Sort by</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
@@ -757,9 +758,12 @@
   <message name="IDS_BRAVE_WALLET_SWAP_REFUNDED" desc="Swap transaction refunded title">Refunded</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_AMOUNT" desc="Transaction intent shielding amount description">Shielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING_AMOUNT" desc="Transaction intent unshielding amount description">Unshielding <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_MIGRATING_AMOUNT" desc="Transaction intent migrating amount description">Migrating <ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_SHIELDED" desc="Transaction intent amount has been shielded description"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been shielded</message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_UNSHIELDED" desc="Transaction intent amount has been unshielded description"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been unshielded</message>
+  <message name="IDS_BRAVE_WALLET_AMOUNT_HAS_BEEN_MIGRATED" desc="Transaction intent amount has been migrated description"><ph name="AMOUNT"><ex>1.5 ZEC</ex>$1</ph> has been migrated</message>
   <message name="IDS_BRAVE_WALLET_PENDING_TRANSACTIONS" desc="Transaction complete panel, amount of transactions still pending.">
+
     {PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
       other {{PENDING_TRANSACTIONS} more transactions pending.}
@@ -1251,14 +1255,18 @@
   <message name="IDS_BRAVE_WALLET_SYNCING" desc="Syncing label">Syncing</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_SHIELD" desc="Review shield button label">Review shield</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_UNSHIELD" desc="Review unshield button label">Review unshield</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_MIGRATE" desc="Review migrate button label">Review migrate</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING" desc="Shielding label">Shielding</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING" desc="Unshielding label">Unshielding</message>
+  <message name="IDS_BRAVE_WALLET_MIGRATING" desc="Migrating label">Migrating</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ZEC" desc="Shield ZEC button label">Shield ZEC</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELD_ZEC" desc="Unshield ZEC button label">Unshield ZEC</message>
+  <message name="IDS_BRAVE_WALLET_MIGRATE_ZEC" desc="Migrate ZEC button label">Migrate ZEC</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_FUNDS" desc="Shield funds button label">Shield funds</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELD_FUNDS" desc="Unshield funds button label">Unshield funds</message>
   <message name="IDS_BRAVE_WALLET_SHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Shielding funds alert description">You are sending funds from your transparent account to your shielded account.</message>
   <message name="IDS_BRAVE_WALLET_UNSHIELDING_FUNDS_ALERT_DESCRIPTION" desc="Unshielding funds alert description">You are sending funds from your shielded account to your transparent account.</message>
+  <message name="IDS_BRAVE_WALLET_MIGRATING_FUNDS_ALERT_DESCRIPTION" desc="Migrate funds alert description">You are sending funds from your shielded legacy account to your shielded account.</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_MAY_INCLUDE_ACCOUNT_CREATION_FEE" desc="A warning that the transaction might include an associated token account creation fee">This transaction may include an account creation fee</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_REQUIRED_TO_TAKE_THIS_ACTION" desc="Description text explaining that a password is required to proceed">Password is required to take this action.</message>

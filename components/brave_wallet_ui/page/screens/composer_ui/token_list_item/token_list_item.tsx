@@ -118,8 +118,8 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
       }
       if (isShieldedToken(token)) {
         return token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
-          ? 'Zcash (Ironwood)'
-          : 'Zcash'
+          ? 'Zcash (Shielded)'
+          : 'Zcash (Shielded Legacy)'
       }
       return token.name || token.symbol
     }, [token])

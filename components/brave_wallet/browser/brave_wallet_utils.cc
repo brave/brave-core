@@ -1068,7 +1068,7 @@ mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
   result->logo = "zec.png";
   result->coingecko_id = "zec";
   result->zcash_token_type = mojom::ZCashTokenType::kOrchard;
-  result->name += "(Shielded)";
+  result->name += "(Shielded legacy)";
 
   return result;
 }
@@ -1082,7 +1082,7 @@ mojom::BlockchainTokenPtr GetZcashNativeIronwoodToken(
   result->logo = "zec.png";
   result->coingecko_id = "zec";
   result->zcash_token_type = mojom::ZCashTokenType::kIronwood;
-  result->name += "(Ironwood)";
+  result->name += "(Shielded)";
 
   return result;
 }

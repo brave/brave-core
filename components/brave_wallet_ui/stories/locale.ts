@@ -689,6 +689,7 @@ provideStrings({
   braveWalletSwapProviderStatus: 'Provider status',
   braveWalletConfirmShield: 'Confirm shield',
   braveWalletConfirmUnshield: 'Confirm unshield',
+  braveWalletConfirmMigrate: 'Confirm migrate',
   braveWalletSpend: 'Spend',
 
   // Buy
@@ -1235,8 +1236,11 @@ provideStrings({
   braveWalletErrorAttemptingToTransactOnNetwork:
     'There was an error attempting to $1 on $2',
   braveWalletShieldingAmount: 'Shielding $1',
+  braveWalletUnshieldingAmount: 'Unshielding $1',
+  braveWalletMigratingAmount: 'Migrating $1',
   braveWalletAmountHasBeenShielded: '$1 has been shielded',
   braveWalletAmountHasBeenUnshielded: '$1 has been unshielded',
+  braveWalletAmountHasBeenMigrated: '$1 has been migrated',
   // Submitted
   braveWalletTransactionSubmittedTitle: 'Transaction submitted',
   braveWalletTransactionSignedTitle: 'Transaction signed',
@@ -1538,10 +1542,13 @@ provideStrings({
   braveWalletSyncing: 'Syncing',
   braveWalletReviewShield: 'Review shield',
   braveWalletReviewUnshield: 'Review unshield',
+  braveWalletReviewMigrate: 'Review migrate',
   braveWalletShielding: 'Shielding',
   braveWalletUnshielding: 'Unshielding',
+  braveWalletMigrating: 'Migrating',
   braveWalletShieldZEC: 'Shield ZEC',
   braveWalletUnshieldZEC: 'Unshield ZEC',
+  braveWalletMigrateZEC: 'Migrate ZEC',
   braveWalletShieldFunds: 'Shield funds',
   braveWalletUnshieldFunds: 'Unshield funds',
   braveWalletShieldingFundsAlertDescription:
@@ -1549,6 +1556,9 @@ provideStrings({
     + 'account.',
   braveWalletUnshieldingFundsAlertDescription:
     'You are sending funds from your shielded account to your transparent'
+    + 'account.',
+  braveWalletMigratingFundsAlertDescription:
+    'You are sending funds from your shielded legacy account to your shielded'
     + 'account.',
   // Page Not Found
   braveWalletPageNotFoundTitle:

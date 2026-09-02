@@ -103,6 +103,7 @@ export function ConfirmSendTransaction() {
     isAccountSyncing,
     isShieldingFunds,
     isUnshieldingFunds,
+    isMigratingFunds,
     insufficientFundsForGasError,
     insufficientFundsError,
   } = usePendingTransactions()
@@ -179,7 +180,9 @@ export function ConfirmSendTransaction() {
               ? getLocale('braveWalletConfirmShield')
               : isUnshieldingFunds
                 ? getLocale('braveWalletConfirmUnshield')
-                : getLocale('braveWalletConfirmSend')
+                : isMigratingFunds
+                  ? getLocale('braveWalletConfirmMigrate')
+                  : getLocale('braveWalletConfirmSend')
           }
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
@@ -222,7 +225,15 @@ export function ConfirmSendTransaction() {
                 {/* Send token and amount */}
                 <ConfirmationTokenInfo
                   token={transactionDetails.token}
-                  label={isShieldingFunds ? 'shield' : 'send'}
+                  label={
+                    isShieldingFunds
+                      ? 'shield'
+                      : isUnshieldingFunds
+                        ? 'unshield'
+                        : isMigratingFunds
+                          ? 'migrate'
+                          : 'send'
+                  }
                   valueExact={transactionDetails.valueExact}
                   fiatValue={transactionDetails.fiatValue}
                   network={transactionsNetwork}
@@ -360,6 +371,7 @@ export function ConfirmSendTransaction() {
           isAccountSyncing={isAccountSyncing}
           isShieldingFunds={isShieldingFunds}
           isUnshieldingFunds={isUnshieldingFunds}
+          isMigratingFunds={isMigratingFunds}
         />
       </StyledWrapper>
 

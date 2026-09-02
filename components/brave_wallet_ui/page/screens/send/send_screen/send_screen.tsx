@@ -259,10 +259,14 @@ export const SendScreen = React.memo(() => {
     tokenFromParams
     && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
-    && (getZCashTransactionTypeResult.txType
+    && getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kShieldingIronwood
-      || getZCashTransactionTypeResult.txType
-        === BraveWallet.ZCashTxType.kTransparentToIronwood)
+  const isMigratingFunds =
+    tokenFromParams
+    && toAddressOrUrl !== ''
+    && tokenFromParams.coin === BraveWallet.CoinType.ZEC
+    && getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kMigratingIronwood
   const isUnshieldingFunds =
     tokenFromParams
     && toAddressOrUrl !== ''
@@ -279,6 +283,8 @@ export const SendScreen = React.memo(() => {
         === BraveWallet.ZCashAddressError.kInvalidRecipientType
       || getZCashTransactionTypeResult.txType
         === BraveWallet.ZCashTxType.kShieldingIronwood
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kMigratingIronwood
       || getZCashTransactionTypeResult.txType
         === BraveWallet.ZCashTxType.kTransparentToIronwood
       || getZCashTransactionTypeResult.txType
@@ -792,6 +798,8 @@ export const SendScreen = React.memo(() => {
                     || getZCashTransactionTypeResult.txType
                       === BraveWallet.ZCashTxType.kOrchardToIronwood
                     || getZCashTransactionTypeResult.txType
+                      === BraveWallet.ZCashTxType.kMigratingIronwood
+                    || getZCashTransactionTypeResult.txType
                       === BraveWallet.ZCashTxType.kIronwoodToIronwood) && (
                     <AddMemo
                       memoText={memoText}
@@ -805,6 +813,16 @@ export const SendScreen = React.memo(() => {
                   >
                     <AlertMessage type='info'>
                       {getLocale('braveWalletShieldingFundsAlertDescription')}
+                    </AlertMessage>
+                  </Row>
+                )}
+                {isMigratingFunds && (
+                  <Row
+                    width='100%'
+                    padding='16px 0px 0px 0px'
+                  >
+                    <AlertMessage type='info'>
+                      {getLocale('braveWalletMigratingFundsAlertDescription')}
                     </AlertMessage>
                   </Row>
                 )}
@@ -852,6 +870,7 @@ export const SendScreen = React.memo(() => {
                       isAccountSyncing,
                       isShieldingFunds,
                       isUnshieldingFunds,
+                      isMigratingFunds,
                     ),
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </Button>
@@ -907,6 +926,7 @@ function getReviewButtonText(
   isAccountSyncing?: boolean,
   isShieldingFunds?: boolean,
   isUnshieldingFunds?: boolean,
+  isMigratingFunds?: boolean,
 ) {
   if (sendAmountValidationError === 'fromAmountDecimalsOverflow') {
     return 'braveWalletDecimalPlacesError'
@@ -925,6 +945,9 @@ function getReviewButtonText(
   }
   if (isUnshieldingFunds) {
     return 'braveWalletReviewUnshield'
+  }
+  if (isMigratingFunds) {
+    return 'braveWalletReviewMigrate'
   }
 
   return 'braveWalletReviewSend'
