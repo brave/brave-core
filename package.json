@@ -24,6 +24,7 @@
     "apply_patches": "node ./build/commands/scripts/commands.js apply_patches",
     "start": "node ./build/commands/scripts/commands.js start",
     "network-audit": "node ./build/commands/scripts/test.ts brave_network_audit_tests",
+    "network_tests": "node ./build/commands/scripts/test.ts brave_network_tests",
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
