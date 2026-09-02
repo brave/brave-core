@@ -17,7 +17,6 @@ import argparse
 import logging
 import os
 from pathlib import Path
-import platform
 import re
 import subprocess
 import sys
@@ -29,16 +28,22 @@ sys.path.insert(
 
 # pylint: disable=wrong-import-position
 import build_ast_grep
+import build_utils
 from upload import S3Uploader, sha256_file, summarise
+
+# GCS-style host platform tag, mirroring build_rust_toolchain.py. Keyed off
+# `build_utils.platform_dir()` so there's a single place deciding which OS/arch
+# this host is.
+_PLATFORM_TAGS = {
+    'mac_arm64': 'mac-arm64',
+    'mac': 'mac',
+    'win': 'win',
+    'linux': 'linux-x64',
+}
 
 
 def _platform_tag() -> str:
-    """GCS-style host platform tag, mirroring build_rust_toolchain.py."""
-    if sys.platform == 'darwin':
-        return 'mac-arm64' if platform.machine() == 'arm64' else 'mac'
-    if sys.platform == 'win32':
-        return 'win'
-    return 'linux-x64'
+    return _PLATFORM_TAGS[build_utils.platform_dir()]
 
 
 def _ast_grep_version() -> str:
@@ -71,7 +76,7 @@ def _create_archive(out_dir: Path) -> Path:
     Raises:
         RuntimeError: If the ast-grep build output directory is missing.
     """
-    source = build_ast_grep.AST_GREP_PLATFORM_DIR
+    source = build_utils.AST_GREP_PLATFORM_DIR
     if not source.is_dir():
         raise RuntimeError(f'ast-grep build output not found at {source}')
 
