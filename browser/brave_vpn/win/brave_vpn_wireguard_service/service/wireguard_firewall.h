@@ -73,7 +73,9 @@ class ScopedWireguardFirewall {
   // Withdraws the temporary DNS allowance granted during phase one.
   // Called automatically by PermitTunnelInterface(), but must be called
   // manually on failure paths to prevent DNS leaks if the process survives.
-  void WithdrawTemporaryDns();
+  // Returns false if the allowance could not be confirmed withdrawn, in
+  // which case it may still be active.
+  bool WithdrawTemporaryDns();
 
  private:
   ScopedWireguardFirewall(HANDLE engine,

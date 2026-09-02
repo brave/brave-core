@@ -720,7 +720,17 @@ bool ScopedWireguardFirewall::PermitTunnelInterface(
   const BaseObjects base_objects = {.provider = provider_key_,
                                     .sublayer = sublayer_key_};
 
-  WithdrawTemporaryDns();
+  // This must fail closed rather than fall through to AddTunnelFilters():
+  // the temporary DNS permit runs at kWeightPermitTemporaryDns (12), which
+  // outranks AddBlockDns()'s kWeightBlockDns (10). If the permit is left
+  // behind, it would keep beating the DNS block added below, so DNS could
+  // still leak outside the tunnel even though the rest of this function
+  // goes on to succeed.
+  if (!WithdrawTemporaryDns()) {
+    VLOG(1) << "WithdrawTemporaryDns failed, the temporary DNS allowance may "
+               "still be active";
+    return false;
+  }
 
   auto result = FwpmTransactionBegin0(engine_, 0);
   if (result != ERROR_SUCCESS) {
@@ -743,16 +753,41 @@ bool ScopedWireguardFirewall::PermitTunnelInterface(
   return true;
 }
 
-void ScopedWireguardFirewall::WithdrawTemporaryDns() {
+bool ScopedWireguardFirewall::WithdrawTemporaryDns() {
+  if (temporary_dns_filter_ids_.empty()) {
+    return true;
+  }
+
+  // Runs both on the normal phase one -> phase two transition
+  // (PermitTunnelInterface(), the common case) and on explicit failure/
+  // teardown paths, so a delete failing here doesn't mean the caller is
+  // already doomed. Each delete's return value is ignored because a stale or
+  // already-gone filter ID is an expected, harmless case; the calls are
+  // batched into one transaction so the removal is still applied as a unit
+  // rather than one filter engine round trip per ID.
+  auto result = FwpmTransactionBegin0(engine_, 0);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmTransactionBegin0 failed, error: " << std::hex << result;
+    return false;
+  }
+
   for (const auto filter_id : temporary_dns_filter_ids_) {
-    // Ignore return values: we are likely already on a failure path,
-    // and WFP will safely return an error if the filter is already gone.
     FwpmFilterDeleteById0(engine_, filter_id);
+  }
+
+  result = FwpmTransactionCommit0(engine_);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "FwpmTransactionCommit0 failed, error: " << std::hex << result;
+    // The deletes did not take effect, so keep the IDs around: a later call
+    // (e.g. from the watchdog) can retry them instead of leaking them for the
+    // rest of the WFP session.
+    return false;
   }
 
   // Clear the list so subsequent calls (e.g., from the watchdog) are a safe
   // no-op.
   temporary_dns_filter_ids_.clear();
+  return true;
 }
 
 ScopedWireguardFirewall::ScopedWireguardFirewall(
