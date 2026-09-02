@@ -18,7 +18,6 @@
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -72,7 +71,7 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
 
   ui::SimpleMenuModel::Delegate* delegate() { return &delegate_; }
 
-  Browser* GetBrowser() {
+  BrowserWindowInterface* GetBrowser() {
     if (!browser_) {
       BrowserWindowCreateParams params(profile_.get(), true);
       // Browser takes ownership of test_window
@@ -95,7 +94,7 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment task_environment_;
   TestSimpleMenuDelegate delegate_;
-  std::unique_ptr<Browser> browser_;
+  std::unique_ptr<BrowserWindowInterface> browser_;
   std::unique_ptr<TestingProfile> profile_;
 };
 
