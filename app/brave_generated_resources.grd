@@ -1607,7 +1607,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Dismiss
       </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_PRIVACY_DISCLAIMER" desc="Disclaimer text for enabling the tab focus feature">
-        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them.
+        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them. If you also turn on sending page content, short excerpts of each tab's text are sent too.
       </message>
       <message name="IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL" desc="Text of enable tab focus button">
         Enable
