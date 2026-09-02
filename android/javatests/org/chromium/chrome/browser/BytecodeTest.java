@@ -856,13 +856,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
-                        "getUrlForCustomTab",
-                        MethodModifier.STATIC,
-                        String.class,
-                        Intent.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/IntentHandler",
                         "getUrlForWebapp",
                         MethodModifier.STATIC,
                         String.class,
