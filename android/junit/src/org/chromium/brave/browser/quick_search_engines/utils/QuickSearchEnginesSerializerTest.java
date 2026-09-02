@@ -35,13 +35,13 @@ public class QuickSearchEnginesSerializerTest {
      * mShortName, mKeyword, mUrl, mIsEnabled and mType, with mType still an int - hence "e":0.
      */
     private static final String LEGACY_JSON_NUMERIC_TYPE =
-            "{\":g\":{\"a\":\"Google\",\"b\":\":g\",\"c\":\"{google:baseURL}search?q\\u003d{searchTerms}\\u0026{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:language}{google:prefetchSource}{google:searchClient}{google:sourceId}{google:searchSource}{google:contextualSearchVersion}ie\\u003d{inputEncoding}\",\"d\":true,\"e\":0},"
-                + "\":yt\":{\"a\":\"YouTube\",\"b\":\":yt\",\"c\":\"https://www.youtube.com/results?search_query\\u003d{searchTerms}\",\"d\":true,\"e\":0},"
-                + "\":b\":{\"a\":\"Bing\",\"b\":\":b\",\"c\":\"https://www.bing.com/search?q\\u003d{searchTerms}\",\"d\":true,\"e\":0},"
-                + "\":e\":{\"a\":\"Ecosia\",\"b\":\":e\",\"c\":\"https://www.ecosia.org/search?tt\\u003d42b8ae98\\u0026q\\u003d{searchTerms}\\u0026addon\\u003dbrave\",\"d\":true,\"e\":0},"
-                + "\":d\":{\"a\":\"DuckDuckGo\",\"b\":\":d\",\"c\":\"https://duckduckgo.com/?q\\u003d{searchTerms}\\u0026t\\u003dbrave\",\"d\":true,\"e\":0},"
-                + "\":q\":{\"a\":\"Qwant\",\"b\":\":q\",\"c\":\"https://www.qwant.com/?q\\u003d{searchTerms}\\u0026client\\u003dbrz-brave\",\"d\":true,\"e\":0},"
-                + "\":sp\":{\"a\":\"Startpage\",\"b\":\":sp\",\"c\":\"https://www.startpage.com/do/search?q\\u003d{searchTerms}\\u0026segment\\u003dstartpage.brave\",\"d\":true,\"e\":0}}";
+            "{\":g\":{\"a\":\"Google\",\"b\":\":g\",\"c\":\"{google:baseURL}search?q\\u003d{searchTerms}\\u0026{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:language}{google:prefetchSource}{google:searchClient}{google:sourceId}{google:searchSource}{google:contextualSearchVersion}ie\\u003d{inputEncoding}\",\"d\":true,\"e\":0}," // presubmit: ignore-long-line
+                    + "\":yt\":{\"a\":\"YouTube\",\"b\":\":yt\",\"c\":\"https://www.youtube.com/results?search_query\\u003d{searchTerms}\",\"d\":true,\"e\":0},"
+                    + "\":b\":{\"a\":\"Bing\",\"b\":\":b\",\"c\":\"https://www.bing.com/search?q\\u003d{searchTerms}\",\"d\":true,\"e\":0},"
+                    + "\":e\":{\"a\":\"Ecosia\",\"b\":\":e\",\"c\":\"https://www.ecosia.org/search?tt\\u003d42b8ae98\\u0026q\\u003d{searchTerms}\\u0026addon\\u003dbrave\",\"d\":true,\"e\":0},"
+                    + "\":d\":{\"a\":\"DuckDuckGo\",\"b\":\":d\",\"c\":\"https://duckduckgo.com/?q\\u003d{searchTerms}\\u0026t\\u003dbrave\",\"d\":true,\"e\":0},"
+                    + "\":q\":{\"a\":\"Qwant\",\"b\":\":q\",\"c\":\"https://www.qwant.com/?q\\u003d{searchTerms}\\u0026client\\u003dbrz-brave\",\"d\":true,\"e\":0},"
+                    + "\":sp\":{\"a\":\"Startpage\",\"b\":\":sp\",\"c\":\"https://www.startpage.com/do/search?q\\u003d{searchTerms}\\u0026segment\\u003dstartpage.brave\",\"d\":true,\"e\":0}}";
 
     /**
      * Captured from a cr153-based install. Same engines and the same member names, but R8 narrowed
