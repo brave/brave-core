@@ -50,8 +50,10 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
   // types rely on upstream flow.
   // TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
   // more investigation whether FBMD is present or not. So, tackling only jpeg.
-  const std::string mime_type = item->GetMimeType();
-  if (mime_type != "image/jpeg") {
+  const base::FilePath path = item->GetTargetFilePath();
+  const bool is_jpeg_ext = path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
+                           path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
+  if (!is_jpeg_ext) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
