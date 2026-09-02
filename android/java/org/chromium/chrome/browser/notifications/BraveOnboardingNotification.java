@@ -55,12 +55,13 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                         .setContentIntent(getDeepLinkIntent(context))
                         .setOrigin(getNotificationUrl());
 
-        NotificationWrapper notification = notificationBuilder.build(new NotificationMetadata(
-                                              NotificationUmaTracker.SystemNotificationType
-                                              .UNKNOWN /* Underlying code doesn't track UNKNOWN */,
-                                              BRAVE_ONBOARDING_NOTIFICATION_TAG /* notificationTag */,
-                                              BRAVE_ONBOARDING_NOTIFICATION_ID /* notificationId */
-                                          ));
+        NotificationWrapper notification =
+                notificationBuilder.build(
+                        new NotificationMetadata(
+                                NotificationUmaTracker.SystemNotificationType
+                                        .UNKNOWN /* Underlying code doesn't track UNKNOWN */,
+                                BRAVE_ONBOARDING_NOTIFICATION_TAG /* notificationTag */,
+                                BRAVE_ONBOARDING_NOTIFICATION_ID /* notificationId */));
         notificationManager.notify(notification);
     }
 
