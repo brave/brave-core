@@ -171,7 +171,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
                 new TabListModel(),
                 mTabModelSupplier,
                 mTabClosedListener,
-                /* tabGridDialogHandler= */ null,
+                /* ungroupBarStatusHandler= */ null,
                 /* componentName= */ "",
                 TabListLayoutType.GROUPED,
                 CallbackUtils.emptyRunnable());
