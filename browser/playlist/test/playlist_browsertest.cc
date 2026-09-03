@@ -188,7 +188,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
 // Check toggling playlist panel while playing doesn't make crash.
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
 
   // Open playlist panel.
   panel_ui->Show(SidePanelEntryId::kPlaylist);

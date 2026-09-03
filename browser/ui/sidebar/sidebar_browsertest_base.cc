@@ -33,7 +33,6 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
@@ -117,7 +116,7 @@ void SidebarBrowserTest::SimulateSidebarItemClickAt(size_t index) {
   sidebar_items_contents_view->OnItemPressed(item, event);
 
   if (model()->GetAllSidebarItems()[index].open_in_panel) {
-    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    auto* panel_ui = SidePanelUI::From(browser());
     WaitUntil(base::BindLambdaForTesting([&]() {
       return (model()->active_index() == index &&
               panel_ui->IsSidePanelShowing());
