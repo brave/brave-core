@@ -58,6 +58,14 @@ inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
 inline constexpr char kAIChatLeoWorkspaceUIURL[] =
     "chrome-untrusted://leo-workspace/";
 
+// Reserved segment under which a workspace's folder is served:
+// chrome-untrusted://leo-workspace/<uuid>/files/<path relative to the folder>,
+// so model-authored file names cannot collide with the tool page at /<uuid>.
+// TODO(https://github.com/brave/brave-browser/issues/58792): Support dynamic
+// origins from WebUI; the segment sits after the uuid so that a per-workspace
+// origin only has to drop the leading one.
+inline constexpr char kAIChatLeoWorkspaceFilesSegment[] = "files";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_
