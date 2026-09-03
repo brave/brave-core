@@ -717,28 +717,23 @@ std::unique_ptr<ScopedWireguardFirewall> ScopedWireguardFirewall::Create() {
 
 bool ScopedWireguardFirewall::PermitTunnelInterface(
     const NET_LUID& tunnel_luid) {
+  base::AutoLock auto_lock(lock_);
+
   const BaseObjects base_objects = {.provider = provider_key_,
                                     .sublayer = sublayer_key_};
-
-  // This must fail closed rather than fall through to AddTunnelFilters():
-  // the temporary DNS permit runs at kWeightPermitTemporaryDns (12), which
-  // outranks AddBlockDns()'s kWeightBlockDns (10). If the permit is left
-  // behind, it would keep beating the DNS block added below, so DNS could
-  // still leak outside the tunnel even though the rest of this function
-  // goes on to succeed.
-  if (!WithdrawTemporaryDns()) {
-    VLOG(1) << "WithdrawTemporaryDns failed, the temporary DNS allowance may "
-               "still be active";
-    return false;
-  }
-
   auto result = FwpmTransactionBegin0(engine_, 0);
   if (result != ERROR_SUCCESS) {
     VLOG(1) << "FwpmTransactionBegin0 failed, error: " << std::hex << result;
     return false;
   }
 
-  if (!AddTunnelFilters(engine_, base_objects, tunnel_luid)) {
+  // WithdrawTemporaryDns() must fail closed here too: the temporary DNS
+  // permit runs at kWeightPermitTemporaryDns (12), which outranks
+  // AddBlockDns()'s kWeightBlockDns (10). If it's left behind, it would keep
+  // beating the DNS block AddTunnelFilters() adds below, so DNS could still
+  // leak outside the tunnel even if everything else here succeeds.
+  if (!WithdrawTemporaryDnsLocked() ||
+      !AddTunnelFilters(engine_, base_objects, tunnel_luid)) {
     FwpmTransactionAbort0(engine_);
     return false;
   }
@@ -749,45 +744,38 @@ bool ScopedWireguardFirewall::PermitTunnelInterface(
     return false;
   }
 
+  temporary_dns_filter_ids_.clear();
+
   VLOG(1) << "WireGuard firewall now permits the tunnel adapter";
   return true;
 }
 
 bool ScopedWireguardFirewall::WithdrawTemporaryDns() {
-  if (temporary_dns_filter_ids_.empty()) {
-    return true;
-  }
+  base::AutoLock auto_lock(lock_);
 
-  // Runs both on the normal phase one -> phase two transition
-  // (PermitTunnelInterface(), the common case) and on explicit failure/
-  // teardown paths, so a delete failing here doesn't mean the caller is
-  // already doomed. Each delete's return value is ignored because a stale or
-  // already-gone filter ID is an expected, harmless case; the calls are
-  // batched into one transaction so the removal is still applied as a unit
-  // rather than one filter engine round trip per ID.
-  auto result = FwpmTransactionBegin0(engine_, 0);
-  if (result != ERROR_SUCCESS) {
-    VLOG(1) << "FwpmTransactionBegin0 failed, error: " << std::hex << result;
+  if (!WithdrawTemporaryDnsLocked()) {
     return false;
   }
 
-  for (const auto filter_id : temporary_dns_filter_ids_) {
-    FwpmFilterDeleteById0(engine_, filter_id);
-  }
-
-  result = FwpmTransactionCommit0(engine_);
-  if (result != ERROR_SUCCESS) {
-    VLOG(1) << "FwpmTransactionCommit0 failed, error: " << std::hex << result;
-    // The deletes did not take effect, so keep the IDs around: a later call
-    // (e.g. from the watchdog) can retry them instead of leaking them for the
-    // rest of the WFP session.
-    return false;
-  }
-
-  // Clear the list so subsequent calls (e.g., from the watchdog) are a safe
-  // no-op.
+  // Unlike PermitTunnelInterface(), there is no transaction open here, so the
+  // deletes have already taken effect and the ids can be dropped. That keeps a
+  // later call from reissuing deletes for filters we no longer own, which
+  // would be a hazard if the engine ever reused one of the ids.
   temporary_dns_filter_ids_.clear();
   return true;
+}
+
+bool ScopedWireguardFirewall::WithdrawTemporaryDnsLocked() {
+  bool all_succeeded = true;
+  for (const auto filter_id : temporary_dns_filter_ids_) {
+    auto result = FwpmFilterDeleteById0(engine_, filter_id);
+    if (result != ERROR_SUCCESS) {
+      VLOG(1) << "FwpmFilterDeleteById0 failed, error: " << std::hex << result;
+      all_succeeded = false;
+    }
+  }
+
+  return all_succeeded;
 }
 
 ScopedWireguardFirewall::ScopedWireguardFirewall(

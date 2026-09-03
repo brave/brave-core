@@ -238,8 +238,10 @@ class ScopedFirewallHolder {
   void StopWaiting() { settled_.Signal(); }
 
  private:
-  // Only touched from the interface-change thread after construction, and
-  // destroyed on the main thread once the watcher has been torn down.
+  // Touched from the interface-change thread via PermitTunnel() and from the
+  // watchdog thread via WithdrawTemporaryDns(), which can overlap;
+  // ScopedWireguardFirewall serializes the two itself. Destroyed on the main
+  // thread once the watcher has been torn down.
   const std::unique_ptr<wireguard::ScopedWireguardFirewall> firewall_;
   base::WaitableEvent settled_;
 };

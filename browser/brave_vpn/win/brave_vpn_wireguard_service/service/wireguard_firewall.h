@@ -21,6 +21,8 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/synchronization/lock.h"
+#include "base/thread_annotations.h"
 
 namespace base {
 class FilePath;
@@ -45,6 +47,10 @@ namespace brave_vpn::wireguard {
 // force before the tunnel adapter exists -- otherwise traffic escapes during
 // the window between the service starting and the adapter appearing -- but the
 // filter that permits the tunnel itself needs the adapter's LUID.
+//
+// Thread-safe: the two phases are driven from different threads and can
+// overlap, so the public methods serialize access to the filtering engine
+// themselves.
 class ScopedWireguardFirewall {
  public:
   // Phase one: everything that does not depend on the tunnel adapter, block-all
@@ -66,8 +72,9 @@ class ScopedWireguardFirewall {
   // one. Until this runs the tunnel carries nothing, which is the safe
   // direction to fail. Returns false if the policy could not be completed.
   //
-  // Runs on the interface-change thread while the caller is inside
-  // tunnel.dll; nothing else touches the engine until this object is destroyed.
+  // Runs on the interface-change thread while the caller is inside tunnel.dll.
+  // WithdrawTemporaryDns() may run concurrently on the firewall watchdog
+  // thread, so this serializes against it internally.
   bool PermitTunnelInterface(const NET_LUID& tunnel_luid);
 
   // Withdraws the temporary DNS allowance granted during phase one.
@@ -83,10 +90,22 @@ class ScopedWireguardFirewall {
                           const GUID& sublayer_key,
                           std::vector<UINT64> temporary_dns_filter_ids);
 
+  // The work behind WithdrawTemporaryDns(), for callers that already hold the
+  // lock. Deletes the filters but leaves `temporary_dns_filter_ids_` alone:
+  // PermitTunnelInterface() runs this inside a transaction, and an abort would
+  // restore the filters, so the ids may not be dropped until it commits.
+  bool WithdrawTemporaryDnsLocked() EXCLUSIVE_LOCKS_REQUIRED(lock_);
+
+  // Serializes the filter engine work between the interface-change thread and
+  // the watchdog thread. `engine_` itself is never reassigned after
+  // construction; what needs serializing is the operations run through it,
+  // because a WFP transaction belongs to the session rather than the thread
+  // that opened it.
+  base::Lock lock_;
   HANDLE engine_ = nullptr;
   const GUID provider_key_;
   const GUID sublayer_key_;
-  std::vector<UINT64> temporary_dns_filter_ids_;
+  std::vector<UINT64> temporary_dns_filter_ids_ GUARDED_BY(lock_);
 };
 
 // Watches for the arrival of the tunnel adapter that tunnel.dll creates and
