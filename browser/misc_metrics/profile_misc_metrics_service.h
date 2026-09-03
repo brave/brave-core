@@ -61,7 +61,6 @@ class ProfileMiscMetricsService : public KeyedService {
 
   PageMetrics* GetPageMetrics();
 
-  FingerprintFrequencyMetrics* GetFingerprintFrequencyMetricsForTesting();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics* GetAIChatMetrics();
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)

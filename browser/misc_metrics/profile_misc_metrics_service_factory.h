@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
 
@@ -21,8 +21,7 @@ namespace misc_metrics {
 
 class ProfileMiscMetricsService;
 
-class ProfileMiscMetricsServiceFactory
-    : public BrowserContextKeyedServiceFactory {
+class ProfileMiscMetricsServiceFactory : public ProfileKeyedServiceFactory {
  public:
   static ProfileMiscMetricsService* GetServiceForContext(
       content::BrowserContext* context);
@@ -40,8 +39,6 @@ class ProfileMiscMetricsServiceFactory
   ~ProfileMiscMetricsServiceFactory() override;
 
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
-      content::BrowserContext* context) const override;
-  content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
 };
 
