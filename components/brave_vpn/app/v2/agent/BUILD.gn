@@ -23,6 +23,8 @@ source_set("core") {
     "browser_host_impl.h",
     "browser_host_provider_impl.cc",
     "browser_host_provider_impl.h",
+    "browser_identity.cc",
+    "browser_identity.h",
     "browser_registry.cc",
     "browser_registry.h",
     "shutdown_handlers.cc",
@@ -32,6 +34,7 @@ source_set("core") {
 
   if (is_win) {
     sources += [
+      "win/browser_identity_win.cc",
       "win/shutdown_handlers_win.cc",
       "win/single_instance_win.cc",
     ]
@@ -42,6 +45,15 @@ source_set("core") {
       "posix/shutdown_handlers_posix.cc",
       "posix/single_instance_posix.cc",
     ]
+  }
+
+  if (is_linux) {
+    sources += [ "linux/browser_identity_linux.cc" ]
+  }
+
+  if (is_mac) {
+    sources += [ "mac/browser_identity_mac.cc" ]
+    libs = [ "bsm" ]
   }
 
   public_deps = [
@@ -164,9 +176,12 @@ source_set("test_support") {
     "test/fake_browser.h",
     "test/fake_browser_endpoint.cc",
     "test/fake_browser_endpoint.h",
+    "test/fake_browser_identity.cc",
+    "test/fake_browser_identity.h",
   ]
 
   public_deps = [
+    ":core",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_vpn/common/mojom:agent",

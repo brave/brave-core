@@ -265,6 +265,14 @@ void AgentClient::OnAuthResult(mojom::BrowserAuthResult result) {
       observers_.Notify(&Observer::OnAgentConnected);
       return;
 
+    case mojom::BrowserAuthResult::kInconclusive:
+      // The agent couldn't determine whether this browser is Brave: its image
+      // was replaced mid-update, a signing cert rotated, the accept-time
+      // capture expired. None is a verdict about this binary, and a fresh
+      // connection may well succeed.
+      TeardownAndRetry("agent could not verify this browser");
+      return;
+
     case mojom::BrowserAuthResult::kVersionMismatch:
       // The agent accepts a range ending at the version it was built with, so
       // this is usually a browser that updated ahead of the agent it is talking

@@ -43,6 +43,8 @@ std::string_view BrowserAuthResultToString(
       return "version mismatch";
     case mojom::BrowserAuthResult::kHostAlreadyRequested:
       return "host already requested";
+    case mojom::BrowserAuthResult::kInconclusive:
+      return "inconclusive";
   }
 }
 
