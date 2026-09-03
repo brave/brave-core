@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.tasks.tab_management.TabListMediator.TabGridDialogHandler;
 import org.chromium.chrome.browser.tasks.tab_management.TabListMediator.TabListLayoutType;
 
 import java.util.function.Supplier;
@@ -31,7 +30,7 @@ public class BraveTabGridItemTouchHelperCallback extends TabGridItemTouchHelperC
             TabListModel tabListModel,
             Supplier<TabModel> currentTabModelSupplier,
             TabActionListener tabClosedListener,
-            @Nullable TabGridDialogHandler tabGridDialogHandler,
+            @Nullable UngroupBarStatusHandler ungroupBarStatusHandler,
             String componentName,
             @TabListLayoutType int layoutType,
             Runnable onDragStateChangedListener) {
@@ -41,7 +40,7 @@ public class BraveTabGridItemTouchHelperCallback extends TabGridItemTouchHelperC
                 tabListModel,
                 currentTabModelSupplier,
                 tabClosedListener,
-                tabGridDialogHandler,
+                ungroupBarStatusHandler,
                 componentName,
                 layoutType,
                 onDragStateChangedListener);
