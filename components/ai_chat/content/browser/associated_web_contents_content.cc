@@ -38,9 +38,11 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/permission_controller.h"
 #include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -99,6 +101,17 @@ AssociatedWebContentsContent::AssociatedWebContentsContent(
 
 AssociatedWebContentsContent::~AssociatedWebContentsContent() = default;
 
+void AssociatedWebContentsContent::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+  // NavigationEntryCommitted() runs before DidFinishNavigation() and
+  // LoadCommittedDetails doesn't expose the reload type, so record it here.
+  pending_navigation_is_reload_ =
+      navigation_handle->GetReloadType() != content::ReloadType::NONE;
+}
+
 void AssociatedWebContentsContent::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
   if (!load_details.is_main_frame) {
@@ -130,8 +143,21 @@ void AssociatedWebContentsContent::NavigationEntryCommitted(
   if (!is_same_document_navigation_) {
     is_page_loaded_ = false;
   }
-  if (!is_same_document_navigation_ ||
-      previous_page_title_ != load_details.entry->GetTitle()) {
+
+  // A reload of the same URL is the same logical page, so leave the content
+  // alone.
+  // Note: This doesn't treat navigations to the same URL as a reload as
+  // they have a different content_id.
+  const bool is_same_page_reload =
+      pending_navigation_is_reload_ && !is_same_document_navigation_ &&
+      load_details.previous_main_frame_url ==
+          web_contents()->GetLastCommittedURL() &&
+      load_details.entry->GetUniqueID() == content_id();
+  pending_navigation_is_reload_ = false;
+
+  if (!is_same_page_reload &&
+      (!is_same_document_navigation_ ||
+       previous_page_title_ != load_details.entry->GetTitle())) {
     OnNewPage(pending_navigation_id_);
   }
   previous_page_title_ = load_details.entry->GetTitle();
