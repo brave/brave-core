@@ -241,7 +241,10 @@ if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.quick_search_engines") {
     resources_package = "org.chromium.brave.browser.quick_search_engines"
-    sources = [ "src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtilTest.java" ]
+    sources = [
+      "src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesSerializerTest.java",
+      "src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtilTest.java",
+    ]
 
     deps = [
       "//brave/browser/quick_search_engines/android:java",
