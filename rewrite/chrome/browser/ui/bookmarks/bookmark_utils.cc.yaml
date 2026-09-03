@@ -1,0 +1,51 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Call Brave specific logic at the end of ToogleBookmarkBarWhenVisible()
+
+      This is needed to update the Brave specific pref as a result of visibility
+      change.
+    after_function_impl:
+      function_name: 'ToggleBookmarkBarWhenVisible'
+      code: 'BraveToggleBookmarkBarState(browser_context);'
+
+  - description: Always return false in IsAppsShortcutEnabled()
+    preempt_function_impl:
+      function_name: 'IsAppsShortcutEnabled'
+      code: 'if ((true)) return false;'
+
+  - description: Always return false in ShouldShowAppsShortcutInBookmarkBar()
+    preempt_function_impl:
+      function_name: 'ShouldShowAppsShortcutInBookmarkBar'
+      code: 'if ((true)) return false;'
+
+  - description: |
+      Return Brave version of bookmark folder icon in GetBookmarkFolderIcon()
+
+      In order to avoid indentation, uses `regex` instead of 
+      `preempt_function_impl`.
+    regex:
+      re_pattern: |-
+        (ui::ImageModel GetBookmarkFolderIcon\(\s*BookmarkFolderIconType icon_type,\s*ui::ColorVariant color\) \{)
+      replace: |-
+        \1
+        #if defined(TOOLKIT_VIEWS)
+          if ((true)) return GetBraveBookmarkFolderIcon(icon_type, color);
+        #endif  // defined(TOOLKIT_VIEWS)
+
+  - description: |
+      Postprocess the URL string in FormatBookmarkURLForDisplay().
+
+      WebUI bookmarks are stored as chrome:// but displayed as brave://. Editing a
+      bookmark rewrites the stored URL to brave://, since the editor re-parses this
+      text via FixupURL(); browser_about_handler maps it back on navigation.
+    after_function_impl:
+      function_name: FormatBookmarkURLForDisplay
+      result_var: url_string
+      code: |-
+        brave_utils::ReplaceChromeToBraveScheme(url_string);
+        return url_string;

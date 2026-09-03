@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
+index f985dcebfa70b1ea5b8dc9fb2ccb1a2e0c0d031b..a64ef2b7eaabe57798c10b5acce562a6ce0c2227 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
++++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
+@@ -220,6 +220,7 @@ void BookmarkBarController::OnSplitTabChanged(const SplitTabChange& change) {
+ }
+ 
+ bool BookmarkBarController::ShouldShowBookmarkBar() const {
++  if (!ShowBookmarkBarEnabled(browser_->GetProfile()->GetPrefs())) return false;
+   Profile* profile = browser_->GetProfile();
+   if (profile->IsGuestSession()) {
+     return false;
+@@ -268,7 +269,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
+ 
+   bookmarks::BookmarkModel* bookmark_model =
+       BookmarkModelFactory::GetForBrowserContext(profile);
+-  const bool has_bookmarks = bookmark_model && bookmark_model->HasBookmarks();
++  const bool has_bookmarks = bookmark_model && true;
+ 
+   tab_groups::TabGroupSyncService* tab_group_service =
+       tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile);
