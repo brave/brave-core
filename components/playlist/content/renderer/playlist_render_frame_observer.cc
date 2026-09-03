@@ -66,6 +66,11 @@ void PlaylistRenderFrameObserver::AddMediaDetector(
   CHECK(!media_detector_->empty());
 }
 
+void PlaylistRenderFrameObserver::ClearMediaScripts() {
+  media_source_api_suppressor_.reset();
+  media_detector_.reset();
+}
+
 void PlaylistRenderFrameObserver::BindConfigurator(
     mojo::PendingAssociatedReceiver<
         mojom::PlaylistRenderFrameObserverConfigurator> receiver) {
