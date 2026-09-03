@@ -915,8 +915,11 @@
       <message name="IDS_SHARE_TITLES_AND_URLS_WITH_OS_LEARN_MORE_SETTING_TEXT" desc="Text of the Learn more link.">
         <ph name="BEGIN_LINK1">&lt;link&gt;</ph>Learn more<ph name="END_LINK1">&lt;/link&gt;</ph>
       </message>
-      <message name="IDS_SHARE_BROWSING_DATA_WITH_ON_DEVICE_INTELLIGENCE_SETTING_TEXT" desc="Description for the switch in tabs settings to toggle sharing browsing data with on-device intelligence features." translateable="false">
-        Share browsing data with on-device intelligence features
+      <message name="IDS_CHROME_SUGGESTIONS_IN_OTHER_APPS_TITLE" desc="Title for the switch in tabs settings to toggle sharing browsing data to get suggestions in other apps.">
+        Get Brave suggestions in other apps
+      </message>
+      <message name="IDS_CHROME_SUGGESTIONS_IN_OTHER_APPS_SUMMARY" desc="Summary for the switch in tabs settings to toggle sharing browsing data to get suggestions in other apps.">
+        Share browsing data, such as your recent browsing history, to get suggestions on selected apps. This data is processed securely on your device.
       </message>
 
     <!-- Archived tabs strings -->
@@ -1104,11 +1107,27 @@
           =1 {Move tab right}
           other {Move tabs right}}
       </message>
+      <message name="IDS_MOVE_TABS_UP" desc="Menu item for moving tab(s) up in the vertical tab order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab up}
+          other {Move tabs up}}
+      </message>
+      <message name="IDS_MOVE_TABS_DOWN" desc="Menu item for moving tab(s) down in the vertical tab order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab down}
+          other {Move tabs down}}
+      </message>
       <message name="IDS_MOVE_TAB_GROUP_LEFT" desc="Menu item for moving a tab group to the left in the tab strip order.">
         Move tab group left
       </message>
       <message name="IDS_MOVE_TAB_GROUP_RIGHT" desc="Menu item for moving a tab group to the right in the tab strip order.">
         Move tab group right
+      </message>
+      <message name="IDS_MOVE_TAB_GROUP_UP" desc="Menu item for moving a tab group up in the vertical tab order.">
+        Move tab group up
+      </message>
+      <message name="IDS_MOVE_TAB_GROUP_DOWN" desc="Menu item for moving a tab group down in the vertical tab order.">
+        Move tab group down
       </message>
       <message name="IDS_PIN_TABS_MENU_ITEM" desc="Content description for an action which pins a selection of tabs.">
         {TAB_COUNT, plural,
@@ -1180,9 +1199,6 @@
       </message>
       <message name="IDS_CLOSE_TABS_BELOW_MENU_ITEM" desc="Context menu item text to close all tabs below the selected tab.">
         Close tabs below
-      </message>
-      <message name="IDS_SEND_FEEDBACK_ABOUT_TAB_STRIP" desc="Context menu item text to send feedback about the tab strip.">
-        Send feedback about the tab strip
       </message>
 
       <!-- Tab Group List Bottom Sheet -->
