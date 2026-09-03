@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
@@ -21,6 +20,7 @@
 #include "ui/gfx/native_ui_types.h"
 
 class PrefService;
+class BraveWaybackMachineTest;
 
 class BraveWaybackMachineTabHelper
     : public content::WebContentsObserver,
@@ -55,7 +55,7 @@ class BraveWaybackMachineTabHelper
   void FetchWaybackURL();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveWaybackMachineTest, BubbleLaunchTest);
+  friend class BraveWaybackMachineTest;
 
   explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
 

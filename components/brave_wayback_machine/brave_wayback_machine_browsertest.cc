@@ -21,25 +21,38 @@
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/test/button_test_api.h"
 
-using BraveWaybackMachineTest = InProcessBrowserTest;
+class BraveWaybackMachineTest : public InProcessBrowserTest {
+ protected:
+  BraveWaybackMachineTabHelper* GetTabHelper() {
+    return BraveWaybackMachineTabHelper::FromWebContents(
+        browser()->tab_strip_model()->GetActiveWebContents());
+  }
+
+  IconLabelBubbleView* GetIcon() {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    auto* button_provider = browser_view->toolbar_button_provider();
+    return page_actions::GetIconLabelBubbleViewForTesting(
+        button_provider->GetPageActionViewInterface(kActionShowWaybackMachine),
+        kActionShowWaybackMachine);
+  }
+
+  bool ShouldCheckWaybackMachine(int response_code) {
+    return GetTabHelper()->ShouldCheckWaybackMachine(response_code);
+  }
+
+  void SetWaybackState(WaybackState state) {
+    GetTabHelper()->SetWaybackState(state);
+  }
+};
 
 IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, BubbleLaunchTest) {
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* button_provider = browser_view->toolbar_button_provider();
+  EXPECT_FALSE(ShouldCheckWaybackMachine(net::HTTP_OK));
+  EXPECT_TRUE(ShouldCheckWaybackMachine(net::HTTP_NOT_FOUND));
 
-  auto* model = browser()->tab_strip_model();
-  auto* contents = model->GetActiveWebContents();
-  BraveWaybackMachineTabHelper* tab_helper =
-      BraveWaybackMachineTabHelper::FromWebContents(contents);
-  EXPECT_FALSE(tab_helper->ShouldCheckWaybackMachine(net::HTTP_OK));
-  EXPECT_TRUE(tab_helper->ShouldCheckWaybackMachine(net::HTTP_NOT_FOUND));
-
-  auto* icon = page_actions::GetIconLabelBubbleViewForTesting(
-      button_provider->GetPageActionViewInterface(kActionShowWaybackMachine),
-      kActionShowWaybackMachine);
+  auto* icon = GetIcon();
   EXPECT_FALSE(icon->GetVisible());
 
-  tab_helper->SetWaybackState(WaybackState::kNeedToCheck);
+  SetWaybackState(WaybackState::kNeedToCheck);
   EXPECT_TRUE(icon->GetVisible());
 
   // Check bubble is launched.
@@ -47,5 +60,5 @@ IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, BubbleLaunchTest) {
       ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(), gfx::Point(),
                      ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
                      ui::EF_LEFT_MOUSE_BUTTON));
-  EXPECT_TRUE(tab_helper->active_window().has_value());
+  EXPECT_TRUE(GetTabHelper()->active_window().has_value());
 }
