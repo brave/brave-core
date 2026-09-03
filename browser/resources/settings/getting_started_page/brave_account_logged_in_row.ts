@@ -4,8 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
-// @ts-expect-error: no type definitions are generated for leo.bundle.js
-import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import {
@@ -13,10 +11,7 @@ import {
   LoggedInVerificationIntent,
   VerificationIntent,
 } from '../brave_account.mojom-webui.js'
-import {
-  ChangePasswordClientErrorCode,
-  ChangePasswordError,
-} from '../change_password.mojom-webui.js'
+import { showError } from '../brave_account_shared.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_logged_in_row.css.js'
 import { getHtml } from './brave_account_logged_in_row.html.js'
@@ -75,32 +70,17 @@ export class BraveAccountLoggedInRowElement extends
     if (this.isChangingPassword) return
     this.isChangingPassword = true
 
-    let error: ChangePasswordError | undefined
-
     try {
       await this.browserProxy.authentication.changePasswordStep1(
         this.state.email)
+      this.openBraveAccountDialog()
     } catch (e) {
-      if (e && typeof e === 'object') {
-        error = e as ChangePasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ChangePasswordClientErrorCode.kUnexpected },
-        }
-      }
-    }
-
-    if (error) {
-      leoShowAlert({
-        type: 'error',
+      showError('changePassword', e, {
         title: this.i18n(
           BraveAccountSettingsStrings
             .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE),
-        content: this.getErrorMessage({ kind: 'changePassword', details: error }),
-      }, 30000)
-    } else {
-      this.openBraveAccountDialog()
+        durationMs: 30000,
+      })
     }
 
     this.isChangingPassword = false
