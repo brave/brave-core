@@ -23,6 +23,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
+#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/widget/widget.h"
@@ -170,6 +171,14 @@ TabNestingInfo BraveTabGroupHeader::GetTabNestingInfo() const {
   return {
       .tree_height = tab_slot_controller_->GetTreeHeight(*tree_tab_node()),
       .level = tab_slot_controller_->GetTreeTabNode(*tree_tab_node())->level()};
+}
+
+views::BubbleBorder::Arrow BraveTabGroupHeader::GetAnchorPosition() const {
+  if (ShouldShowVerticalTabs()) {
+    return views::BubbleBorder::Arrow::LEFT_TOP;
+  }
+
+  return TabGroupHeader::GetAnchorPosition();
 }
 
 BEGIN_METADATA(BraveTabGroupHeader)

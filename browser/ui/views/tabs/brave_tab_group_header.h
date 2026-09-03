@@ -10,6 +10,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
+#include "ui/views/bubble/bubble_border.h"
 
 namespace tab_groups {
 class TabGroupId;
@@ -30,6 +31,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   int GetDesiredWidth() const override;
   void Layout(PassKey) override;
   TabNestingInfo GetTabNestingInfo() const override;
+  views::BubbleBorder::Arrow GetAnchorPosition() const override;
 
  private:
   bool ShouldShowVerticalTabs() const;

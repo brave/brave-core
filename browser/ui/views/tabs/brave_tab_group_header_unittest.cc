@@ -25,6 +25,7 @@
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
@@ -134,4 +135,29 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipClipPathClearedInVerticalTabs) {
   SetGroupTitle(u"A very long tab group title that needs lots of space");
 
   EXPECT_TRUE(title_chip()->clip_path().isEmpty());
+}
+
+// BraveTabGroupHeader::GetAnchorPosition() must return LEFT_TOP in vertical
+// tab mode so the hover card appears to the right of the tab strip, and must
+// delegate to TabGroupHeader::GetAnchorPosition() (TOP_LEFT) in horizontal
+// mode.
+TEST_F(BraveTabGroupHeaderTest, GetAnchorPositionReflectsTabOrientation) {
+  TestingProfile profile;
+
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
+  EXPECT_CALL(*tab_slot_controller_, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+
+  // Horizontal tabs: delegate to TabGroupHeader::GetAnchorPosition() which
+  // returns TOP_LEFT.
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
+  EXPECT_EQ(views::BubbleBorder::Arrow::TOP_LEFT,
+            group_views_->header()->GetAnchorPosition());
+
+  // Vertical tabs: must return LEFT_TOP so the hover card appears to the
+  // right of the tab strip.
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_EQ(views::BubbleBorder::Arrow::LEFT_TOP,
+            group_views_->header()->GetAnchorPosition());
 }
