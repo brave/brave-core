@@ -66,7 +66,7 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() const {
   // SidePanelCoordinator (which implements SidePanelUI) is created in
   // BWF::InitPostWindowConstruction, so it may be null during the early layout
   // pass that happens while the widget is being initialized.
-  auto* side_panel_ui = browser_view().browser()->GetFeatures().side_panel_ui();
+  auto* side_panel_ui = SidePanelUI::From(browser_view().browser());
   if (!side_panel_ui) {
     return false;
   }
