@@ -31,7 +31,7 @@ class _Base(unittest.TestCase):
         self._repo.setup()
         self.addCleanup(self._repo.cleanup)
         # chromium_src/, rewrite/ created by FakeChromiumRepo.setup()
-        # `npm run format` is not available in the fake repo; suppress it.
+        # `pnpm run format` is not available in the fake repo; suppress it.
         self._format_mock = patch('alias.follow_renames._run_format').start()
         self.addCleanup(patch.stopall)
 
@@ -639,7 +639,7 @@ class PatchFileRepairTest(_Base):
 
 
 class FormatTest(_Base):
-    """`npm run format` runs once per invocation unless --no-format."""
+    """`pnpm run format` runs once per invocation unless --no-format."""
 
     def test_format_called_when_renames_exist(self) -> None:
         before = self._chromium_head()

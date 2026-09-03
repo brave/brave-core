@@ -160,7 +160,7 @@ PINNED_GROUPS = [
      re.compile(r'Remove dead upstream tests from filters\.?')),
 ]
 
-# Subjects produced by `npm run update_patches` and string generation --
+# Subjects produced by `pnpm run update_patches` and string generation --
 # evicted when `discard_recyclable=True`.
 RECYCLABLE_PATTERNS = [
     re.compile(rf'Update patches from Chromium {_CR_VERSION} to '

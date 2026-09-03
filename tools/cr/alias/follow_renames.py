@@ -71,7 +71,7 @@ def cmd_follow_renames(args: list[str]) -> int:
         '--no-format',
         action='store_true',
         dest='no_format',
-        help='Skip running `npm run format` after processing renames')
+        help='Skip running `pnpm run format` after processing renames')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose logging')
@@ -99,15 +99,15 @@ def cmd_follow_renames(args: list[str]) -> int:
 
 
 def _run_format() -> None:
-    """Runs `npm run format` to clean up files touched by rename repairs.
+    """Runs `pnpm run format` to clean up files touched by rename repairs.
 
     Failures are downgraded to warnings: format must not block successful
     rename processing.
     """
     try:
-        terminal.run_npm_command('format')
+        terminal.run_pnpm_command('format')
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        logging.warning('npm run format failed: %s', e)
+        logging.warning('pnpm run format failed: %s', e)
 
 
 def _get_chromium_renames(ref_or_range: str) -> list[_RenamePair]:
