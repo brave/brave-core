@@ -118,6 +118,15 @@ CWV_EXPORT
 /// Called when the favicon driver updates the web views favicon status
 - (void)webView:(CWVWebView*)webView
     didUpdateFaviconStatus:(nullable CWVFaviconStatus*)faviconStatus;
+/// Called when a page or tab helper (such as a security interstitial) requests
+/// a URL be opened in a new tab, and returns the web view of the created tab
+/// which the URL will then be loaded into.
+///
+/// `CWVWebView` ignores the requested disposition and loads every URL in the
+/// current web view, so this is required to match Chrome's behaviour.
+- (nullable CWVWebView*)webView:(CWVWebView*)webView
+     createWebViewForOpeningURL:(NSURL*)url
+                   inBackground:(BOOL)inBackground;
 @end
 
 /// A CWVWebView with Chrome tab helpers attached and the ability to handle

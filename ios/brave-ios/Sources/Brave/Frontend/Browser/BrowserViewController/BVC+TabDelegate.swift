@@ -638,6 +638,26 @@ extension BrowserViewController {
 
   public func tab(
     _ tab: some TabState,
+    createTabForOpeningURL url: URL,
+    inBackground: Bool
+  ) -> (any TabState)? {
+    if inBackground {
+      return tabManager.addTab(
+        afterTab: tab,
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
+      )
+    }
+    if let selectedTab = tabManager.selectedTab {
+      screenshotHelper.takeScreenshot(selectedTab)
+    }
+    return tabManager.addTabAndSelect(
+      afterTab: tab,
+      isPrivate: privateBrowsingManager.isPrivateBrowsing
+    )
+  }
+
+  public func tab(
+    _ tab: some TabState,
     createNewTabWithRequest request: URLRequest,
     isUserInitiated: Bool
   ) -> (any TabState)? {

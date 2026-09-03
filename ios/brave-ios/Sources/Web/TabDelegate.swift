@@ -52,6 +52,13 @@ public protocol TabDelegate: AnyObject {
     createNewTabWithRequest request: URLRequest,
     isUserInitiated: Bool
   ) -> (any TabState)?
+  /// Called when the page or a tab helper requests a URL be opened in a new
+  /// tab. The URL is loaded into the returned tab by the caller.
+  func tab(
+    _ tab: some TabState,
+    createTabForOpeningURL url: URL,
+    inBackground: Bool
+  ) -> (any TabState)?
   func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   func tab(_ tab: some TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
   func tab(_ tab: some TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder)
@@ -82,6 +89,14 @@ extension TabDelegate {
     _ tab: some TabState,
     createNewTabWithRequest request: URLRequest,
     isUserInitiated: Bool
+  ) -> (any TabState)? {
+    return nil
+  }
+
+  public func tab(
+    _ tab: some TabState,
+    createTabForOpeningURL url: URL,
+    inBackground: Bool
   ) -> (any TabState)? {
     return nil
   }
