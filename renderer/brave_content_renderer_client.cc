@@ -124,6 +124,8 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
+  // Disable the fenced frames API; kFencedFrames is disabled browser-side.
+  blink::WebRuntimeFeatures::EnableFencedFrames(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
   blink::WebRuntimeFeatures::EnableTopicsAPI(false);
   blink::WebRuntimeFeatures::EnableWebGPUExperimentalFeatures(false);
