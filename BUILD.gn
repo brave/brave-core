@@ -116,7 +116,7 @@ group("brave_all_unit_tests") {
 }
 
 brave_network_tests_deps = [ "//brave/net:brave_cert_pinning_tests" ]
-if (!is_android) {
+if (!is_android && !is_ios) {
   brave_network_tests_deps += [ "//brave/test:brave_network_audit_tests" ]
 }
 
