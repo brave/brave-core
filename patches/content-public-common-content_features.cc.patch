@@ -1,5 +1,5 @@
 diff --git a/content/public/common/content_features.cc b/content/public/common/content_features.cc
-index 1d1d8f6312129affa65b080e288746bb0d7ba547..8894fd521162aac49a9b5fe93fe6167e26c13361 100644
+index c62815e8a54926aa8aac86da6d8d2dbe049f98c2..a3c44e7d89e578bafe10a6cbe1f5efd3e4e967f0 100644
 --- a/content/public/common/content_features.cc
 +++ b/content/public/common/content_features.cc
 @@ -302,13 +302,9 @@ BASE_FEATURE(kDeviceBoundSessionTerminationEvictBackForwardCache,
@@ -72,7 +72,7 @@ index 1d1d8f6312129affa65b080e288746bb0d7ba547..8894fd521162aac49a9b5fe93fe6167e
  BASE_FEATURE(kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // When enabled, ProcessSelectionDeferringConditions will be run. This allows
-@@ -1009,7 +1011,8 @@ constexpr base::FeatureParam<double> kProcessPerSiteMainFrameTotalMemoryLimit{
+@@ -1013,7 +1015,8 @@ constexpr base::FeatureParam<double> kProcessPerSiteMainFrameTotalMemoryLimit{
  // it doesn't require a developer opt-in.
  //
  // crbug.com/1472634 for more details.
@@ -82,7 +82,7 @@ index 1d1d8f6312129affa65b080e288746bb0d7ba547..8894fd521162aac49a9b5fe93fe6167e
  
  // Improve ServiceWorkerAutoPreload coverage by using more accurate web request
  // proxy detection.
-@@ -1097,7 +1100,8 @@ BASE_FEATURE(kUserMediaCaptureOnFocus, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1101,7 +1104,8 @@ BASE_FEATURE(kUserMediaCaptureOnFocus, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // This is intended as a kill switch for the WebOTP Service feature. To enable
  // this feature, the experimental web platform features flag should be set.
@@ -92,7 +92,7 @@ index 1d1d8f6312129affa65b080e288746bb0d7ba547..8894fd521162aac49a9b5fe93fe6167e
  
  // Trial to disable synchronous draw for synchronous compositor (ie Android
  // WebView).
-@@ -1531,7 +1535,11 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1532,7 +1536,11 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<int> kNavigationCapturingIPHGuardrailStorageDuration{
      &kPwaNavigationCapturing, "link_capturing_guardrail_storage_duration", 30};
  

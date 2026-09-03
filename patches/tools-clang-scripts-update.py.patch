@@ -1,5 +1,5 @@
 diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
-index 32b75b0f017b95ed00b6a2c78495ca28600fc886..5810528d21c1b35ac6f90796f874565f0ab4d52d 100755
+index 86b60b51446cad85c2cd340517dd6625450d8395..32313b7b3072de6b44353873b69a5fca5eb6a3b3 100755
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
 @@ -217,6 +217,8 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):

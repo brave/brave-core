@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/favicon/favicon_utils.cc b/chrome/browser/favicon/favicon_utils.cc
-index c67469586876753e83ef2adf508a5e13db510dea..e012b3f7201390cba760fe1c2e4adc1b8a0204af 100644
+index 0866bd2b09f9b6615809ff3cd598cd48f4888125..4df64931a0bea3d734f406eb70b5d645eda17a83 100644
 --- a/chrome/browser/favicon/favicon_utils.cc
 +++ b/chrome/browser/favicon/favicon_utils.cc
-@@ -194,6 +194,9 @@ bool ShouldThemifyFavicon(GURL url) {
+@@ -208,6 +208,9 @@ bool ShouldThemifyFavicon(GURL url) {
  }
  
  bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {

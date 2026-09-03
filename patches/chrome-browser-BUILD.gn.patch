@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index f261c72029a989e0fc0cdf0f7042b1bc12b84e07..842e3e14fe639cebbfcb2b95a50d09dbf3b6fc10 100644
+index bde7030b6eeb6497c55ccd8b64118ab9176248d4..69a8008f65e9718d3b8c2e772011e8d827a9ea33 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -3336,6 +3336,7 @@ source_set("browser") {
+@@ -3343,6 +3343,7 @@ source_set("browser") {
        "//chrome/browser/safe_browsing/suspicious_site_warnings",
      ]
    }
@@ -10,7 +10,7 @@ index f261c72029a989e0fc0cdf0f7042b1bc12b84e07..842e3e14fe639cebbfcb2b95a50d09db
  
    # This target intentionally has no sources of its own and no
    # allow_circular_includes_from; it only aggregates dependencies. Do NOT add
-@@ -3505,6 +3506,7 @@ group("browser_public_dependencies") {
+@@ -3512,6 +3513,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }

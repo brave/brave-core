@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a185730e25 100644
+index 715e1731421828f1e39d1dea7f4e34a63fe3c7f9..92371324370a9673c9d2386a7c58fa7931b70616 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -297,6 +297,7 @@
@@ -61,7 +61,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -1305,7 +1309,7 @@
+@@ -1301,7 +1305,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -70,7 +70,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -1381,6 +1385,7 @@
+@@ -1377,6 +1381,7 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
@@ -78,7 +78,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        public: true,
        status: "stable",
      },
-@@ -2819,7 +2824,8 @@
+@@ -2817,7 +2822,8 @@
      },
      {
        name: "FencedFrames",
@@ -88,7 +88,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -2920,6 +2926,7 @@
+@@ -2918,6 +2924,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -96,7 +96,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        status: "experimental",
      },
      {
-@@ -2934,6 +2941,7 @@
+@@ -2932,6 +2939,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -104,7 +104,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        status: {"default": "stable"},
      },
      {
-@@ -3061,6 +3069,7 @@
+@@ -3060,6 +3068,7 @@
      },
      {
        name: "Fledge",
@@ -129,7 +129,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4627,6 +4637,7 @@
+@@ -4633,6 +4643,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -137,7 +137,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4799,6 +4810,7 @@
+@@ -4805,6 +4816,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -145,7 +145,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        status: "stable",
      },
      {
-@@ -5025,6 +5037,7 @@
+@@ -5031,6 +5043,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -153,7 +153,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        status: "stable",
      },
      {
-@@ -6440,7 +6453,7 @@
+@@ -6429,7 +6442,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -162,7 +162,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6615,6 +6628,7 @@
+@@ -6604,6 +6617,7 @@
      },
      {
        name: "UserMediaElement",
@@ -170,7 +170,7 @@ index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a1
        status: "stable",
        public: true,
      },
-@@ -7420,5 +7434,10 @@
+@@ -7421,5 +7435,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

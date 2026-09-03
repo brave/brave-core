@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm b/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm
-index e6a27017718610c2bf2dc0d4c41399a3ac126f18..cfa764e7e9e8414a778fd48eb02494be7cbc4f2f 100644
+index a25031b415769c9ec8e17d33b83a3fb6c12121a2..71282974130cf4b5512201f3adee798abfe4ed2c 100644
 --- a/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm
 +++ b/ios/chrome/browser/settings/manage_sync/coordinator/manage_sync_settings_mediator.mm
 @@ -826,6 +826,7 @@ constexpr CGFloat kBatchUploadSymbolPointSize = 22.;

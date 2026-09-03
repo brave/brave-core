@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index be7345cba4dd4e34c42f3926c806b20b34c39ce9..bc99cc6b94f36e7ea4f5e3a684efec5c31b05621 100644
+index 16beee3defe7ec134fe9c9114069547dd0d8a545..448dbcb0353daecdeb1e353b8ed98c51a6a42505 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1376,6 +1376,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1381,6 +1381,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;

@@ -1,5 +1,5 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 4dff13d0e1c57661e93c44c0288ad40d9941ca56..6714295f8912105faaa0f69765e8eb2bde0bd4b6 100644
+index 0100612e0735a0af7a20bf1ba1d6905f1734ec23..4c790968e026e2b6a3c67c5b33a915904c1fff66 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
 @@ -30,6 +30,7 @@ enum class KeyType {
@@ -10,16 +10,7 @@ index 4dff13d0e1c57661e93c44c0288ad40d9941ca56..6714295f8912105faaa0f69765e8eb2b
  };
  
  constexpr char kTestKeyName[] = "ChromeMetricsTestKey";
-@@ -119,6 +120,8 @@ constexpr sign::SignatureKind ToSignatureKind(
-       return sign::ECDSA_SHA256;
-     case SignatureVerifier::RSA_PSS_SHA256:
-       return sign::RSA_PSS_SHA256;
-+    case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
-+      return sign::ECDSA_SHA384;
-   }
- 
-   NOTREACHED();
-@@ -147,6 +150,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
+@@ -131,6 +132,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -27,7 +18,7 @@ index 4dff13d0e1c57661e93c44c0288ad40d9941ca56..6714295f8912105faaa0f69765e8eb2b
          supported_virtual_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -218,6 +222,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
+@@ -202,6 +204,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -35,7 +26,7 @@ index 4dff13d0e1c57661e93c44c0288ad40d9941ca56..6714295f8912105faaa0f69765e8eb2b
          supported_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -385,6 +390,8 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
+@@ -369,6 +372,8 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
        return "RSA";
      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
        return "ECDSA";
@@ -44,3 +35,12 @@ index 4dff13d0e1c57661e93c44c0288ad40d9941ca56..6714295f8912105faaa0f69765e8eb2b
    }
  }
  
+@@ -383,6 +388,8 @@ sign::SignatureKind ToSignatureKind(
+       return sign::ECDSA_SHA256;
+     case SignatureVerifier::RSA_PSS_SHA256:
+       return sign::RSA_PSS_SHA256;
++    case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
++      return sign::ECDSA_SHA384;
+   }
+ 
+   NOTREACHED();

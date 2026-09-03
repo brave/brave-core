@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/BUILD.gn b/chrome/browser/ui/startup/BUILD.gn
-index 8b593031e4160c7c8a26943abe46b7f442b6d263..7b6c41d96677ccbfc1919c59dd5c23568b8797ef 100644
+index df4ad99b2b4c9e489cbe8ae06c9d4c6fee748bed..4a42c8ede7b161c0b6aad376d7bb79ab48c3b2f5 100644
 --- a/chrome/browser/ui/startup/BUILD.gn
 +++ b/chrome/browser/ui/startup/BUILD.gn
 @@ -28,6 +28,7 @@ source_set("startup_tab") {

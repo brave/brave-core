@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/download_target_determiner.cc b/chrome/browser/download/download_target_determiner.cc
-index 2633e23a16cab91f54a6d8b94ca1586e6489248d..5de2b09b63a97ed4bbdcf0c739d8265dfb18a13d 100644
+index 0e2ffe2ae77288b8987969e515f37b2fb9fc8ff2..a561a4438c9af214a9146e70b36c5b809b637de4 100644
 --- a/chrome/browser/download/download_target_determiner.cc
 +++ b/chrome/browser/download/download_target_determiner.cc
-@@ -1266,6 +1266,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
+@@ -1286,6 +1286,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
        download_->GetDownloadSource() != download::DownloadSource::DRAG_AND_DROP;
    if (HasPromptedForPath() ||
        confirmation_reason_ != DownloadConfirmationReason::NONE ||
@@ -10,7 +10,7 @@ index 2633e23a16cab91f54a6d8b94ca1586e6489248d..5de2b09b63a97ed4bbdcf0c739d8265d
        user_approved_path) {
      // If the "DownloadRestrictions" enterprise policy explicitly disallows the
      // download, don't let the user gesture bypass the dangerous verdict.
-@@ -1306,6 +1307,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
+@@ -1328,6 +1329,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
          ui::PAGE_TRANSITION_FROM_ADDRESS_BAR) != 0 ||
         (download_->HasUserGesture() && visits == VISITED_REFERRER)))
      return DownloadFileType::NOT_DANGEROUS;

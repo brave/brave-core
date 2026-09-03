@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/translate/translate_manager_browsertest.cc b/chrome/browser/translate/translate_manager_browsertest.cc
-index 529e4e83fd62a483a059f659bb22c7d4b5dee61f..4f0d1c512e013a60b061a35cd0202a964f9f7c92 100644
+index 5e54bcd68c4fedb8370f99a59308463043b6ac89..e196d24563f8dc1692dd6cf69985070902763464 100644
 --- a/chrome/browser/translate/translate_manager_browsertest.cc
 +++ b/chrome/browser/translate/translate_manager_browsertest.cc
 @@ -405,7 +405,7 @@ class TranslateManagerBrowserTest : public InProcessBrowserTest {

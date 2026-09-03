@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/lifetime/BUILD.gn b/chrome/browser/lifetime/BUILD.gn
-index a578db9444e7642e069f340e20ec6448b93b60da..1cf0d9c579e0a286e8071304bb50708995e52670 100644
+index e214f4beeb8eaec4cbe9e94033c448edee4da723..114de0839d3db40fed21f8577cb31523472b3096 100644
 --- a/chrome/browser/lifetime/BUILD.gn
 +++ b/chrome/browser/lifetime/BUILD.gn
 @@ -143,6 +143,7 @@ source_set("impl") {
