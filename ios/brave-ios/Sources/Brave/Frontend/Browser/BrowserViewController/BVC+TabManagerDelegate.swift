@@ -22,6 +22,7 @@ extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: some TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.pullToRefresh = .init(tab: tab)
+    tab.renderProcessCrash = .init(tab: tab)
     if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab, delegate: self)
     }
