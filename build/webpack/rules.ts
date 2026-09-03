@@ -131,6 +131,10 @@ export function tsLoaderRule({
     loader: 'ts-loader',
     options: {
       transpileOnly,
+      // Stable styled-components IDs must not include the checkout path.
+      compilerOptions: {
+        sourceRoot: path.resolve(path.dirname(configFile), '../../../brave'),
+      },
       getCustomTransformers: getTsCustomTransformers,
       // Use generated tsconfig so that we can point at gen/ output in the correct
       // build configuration output directory.

@@ -31,6 +31,10 @@ export function createWebpackConfig(
   options: TranspileWebUiCliOptions,
 ): Configuration {
   const rootGenDir = path.resolve(options.root_gen_dir)
+  const checkoutRoot = path.resolve(rootGenDir, '../../..')
+  // Inline source maps must not embed checkout-specific paths.
+  const sourceMapPath = (filePath: string) =>
+    filePath.replace(checkoutRoot, '').replace(/\\/g, '/')
   const pathMap = generatePathMap(rootGenDir)
   const buildFlags = JSON.parse(
     fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
@@ -74,6 +78,10 @@ export function createWebpackConfig(
     // is stable across architectures.
     webassemblyModuleFilename: '[id].module.wasm',
     publicPath: '/',
+    devtoolModuleFilenameTemplate: (info) =>
+      sourceMapPath(info.absoluteResourcePath),
+    devtoolFallbackModuleFilenameTemplate: (info) =>
+      sourceMapPath(info.resourcePath),
   }
 
   if (options.output_module) {
