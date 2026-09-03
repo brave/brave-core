@@ -172,7 +172,6 @@ class EphemeralStorageService : public KeyedService {
   // Contains First Party Ephemeral Storage tokens to partition storage.
   base::flat_map<std::string, base::UnguessableToken> fpes_tokens_;
   base::ListValue first_party_storage_areas_to_cleanup_on_startup_;
-  base::OneShotTimer first_party_storage_areas_startup_cleanup_timer_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };
