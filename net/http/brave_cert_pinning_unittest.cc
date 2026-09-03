@@ -23,6 +23,7 @@
 #include "net/cert/coalescing_cert_verifier.h"
 #include "net/cert_net/cert_net_fetcher_url_request.h"
 #include "net/net_buildflags.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_builder.h"
@@ -86,8 +87,9 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     net::TestDelegate delegate;
     GURL url(base::StrCat(
         {url::kHttpsScheme, url::kStandardSchemeSeparator, host, "/"}));
-    auto request =
-        context_->CreateRequest(url, net::DEFAULT_PRIORITY, &delegate);
+    auto request = context_->CreateRequest(
+        url, net::DEFAULT_PRIORITY, &delegate, TRAFFIC_ANNOTATION_FOR_TESTS,
+        net::handles::kInvalidNetworkHandle);
     request->Start();
     delegate.RunUntilComplete();
 
