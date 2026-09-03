@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 446351a9d08f9c43eb61e7f86eae294126a69610..0c8787498bfddeeaaafce07e9b4e4492e813aa05 100644
+index 4de51122468815e6d3a2d6fc3e43fb468f0e0dad..5528656944941ecbf345af679b08e215718fda0b 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -875,4 +875,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents,
+@@ -857,4 +857,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents,
  
    // This is common code for all of us. PLEASE DO YOUR PART to keep it tidy and
    // organized.

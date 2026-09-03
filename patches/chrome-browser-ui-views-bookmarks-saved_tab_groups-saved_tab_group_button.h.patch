@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h
-index 65f593122431fd5af433b42425377894e483954d..84a145b4cc98ce5e1bc74e5f1785134e72a1e728 100644
+index b4b2eb8e86719ba274ce905896a778ab2d635da1..c14f9363fedc3e20ee4692937ebe0665a2a72152 100644
 --- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h
 +++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.h
-@@ -96,13 +96,14 @@ class SavedTabGroupButton : public views::MenuButton,
+@@ -94,13 +94,14 @@ class SavedTabGroupButton : public views::MenuButton,
    const base::Uuid guid() const { return guid_; }
  
   private:

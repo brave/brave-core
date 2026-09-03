@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_widget.h b/chrome/browser/ui/views/frame/browser_widget.h
-index 8d886fa1501b48ae487b36cb70dd7d5f0c028e87..0ca395a6d23b31d72921ae17cd5b8a6cddd41967 100644
+index d384a2c99a1c1d8f160de20ea8518a6a4cc5ab71..f2adb106e92282cc7491fa7785f7d0e884ae8962 100644
 --- a/chrome/browser/ui/views/frame/browser_widget.h
 +++ b/chrome/browser/ui/views/frame/browser_widget.h
 @@ -129,7 +129,7 @@ class BrowserWidget : public views::Widget,

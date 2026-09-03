@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 13641b7cce95b6807b7456af5fcf1b2f64b02879..4f1140031b37a8fee5b6a203f938b75124fd2b32 100755
+index c150609abbdd48ac91549e8e85e1de71fb501c96..f810a32969e4102408e31b8d819cefb750b9e24e 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
 @@ -24,6 +24,7 @@ import zip_helpers

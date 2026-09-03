@@ -1,5 +1,5 @@
 diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
-index 9c038651f14d8760f6ffaf8dd76f60ed14b05439..91b97a3e68948620d69c264dc6602369b285da50 100644
+index 6576dae682f87af8e8d4d80df6abe56869c0439b..8a2a612239503afec048e80ce6cf4ccca14d339d 100644
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
 @@ -389,7 +389,8 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -12,7 +12,7 @@ index 9c038651f14d8760f6ffaf8dd76f60ed14b05439..91b97a3e68948620d69c264dc6602369
  
  // Whether we should show a setting to disable autoplay policy.
  BASE_FEATURE(kAutoplayDisableSettings, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -554,7 +555,8 @@ BASE_FEATURE(kEnableHighChannelLayouts, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -551,7 +552,8 @@ BASE_FEATURE(kDocumentPictureInPictureReparenting,
  BASE_FEATURE(kEnableRtcpReporting, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables user control over muting tab audio from the tab strip.
@@ -22,7 +22,7 @@ index 9c038651f14d8760f6ffaf8dd76f60ed14b05439..91b97a3e68948620d69c264dc6602369
  
  // Enables tracking the occlusion of HW secure encrypted video elements.
  // The HW secure check is OS agnostic, but this switch is currently only
-@@ -615,8 +617,9 @@ BASE_FEATURE(kForceSoftwareForRtcLowResolutions,
+@@ -612,8 +614,9 @@ BASE_FEATURE(kForceSoftwareForRtcLowResolutions,
  //
  // TODO(crbug.com/420406085): Remove after January 2028.
  // Keep this flag around at least until that date.
@@ -33,7 +33,7 @@ index 9c038651f14d8760f6ffaf8dd76f60ed14b05439..91b97a3e68948620d69c264dc6602369
  
  // Auto-dismiss global media controls.
  BASE_FEATURE(kGlobalMediaControlsAutoDismiss, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -711,7 +714,8 @@ BASE_FEATURE(kInternalMediaSession,
+@@ -708,7 +711,8 @@ BASE_FEATURE(kInternalMediaSession,
  );
  
  // Enables the Live Caption feature on supported devices.
@@ -43,7 +43,7 @@ index 9c038651f14d8760f6ffaf8dd76f60ed14b05439..91b97a3e68948620d69c264dc6602369
  
  // Enable automatic downloading of speech recognition language packs.
  BASE_FEATURE(kLiveCaptionAutomaticLanguageDownload,
-@@ -1314,7 +1318,8 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1327,7 +1331,8 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables MediaDrmBridge to call into MediaDrm API to query HDCP Status to
  // support the CDM API GetStatusForPolicy.

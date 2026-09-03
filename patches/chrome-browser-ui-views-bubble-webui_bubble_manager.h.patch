@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index 31794e9f9981454dfcf0d2f5826a387255705e9c..3ad1cde6329f73ba527f776532fe15b099bd43ac 100644
+index 49877b4539b3a3c7bba1674a5c6903fdccd94b1b..921fb899fd22aee37141eb62f9ac751d30754b96 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -167,10 +167,12 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
+@@ -164,10 +164,12 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
  
   private:
    // WebUIBubbleManager:

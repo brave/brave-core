@@ -1,5 +1,5 @@
 diff --git a/content/browser/gpu/gpu_process_host.h b/content/browser/gpu/gpu_process_host.h
-index 255597c2c60350e365f95b3170601e380066272b..309a4e8d2181c5a18a784e661ff1d99a5a59f4d2 100644
+index 0388647bbc751d251b8c2f2bcca6f3f70158ed3a..23e4991e7da2a61997813779eee2fdc7db178d39 100644
 --- a/content/browser/gpu/gpu_process_host.h
 +++ b/content/browser/gpu/gpu_process_host.h
 @@ -146,6 +146,16 @@ class GpuProcessHost final : public BrowserChildProcessHostDelegate,
