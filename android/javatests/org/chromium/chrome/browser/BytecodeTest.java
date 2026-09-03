@@ -2098,7 +2098,6 @@ public class BytecodeTest {
                         Bundle.class,
                         PersistableBundle.class,
                         MultiInstanceManager.class,
-                        NonNullObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         EdgeToEdgeManager.class,
                         MonotonicObservableSupplier.class,
