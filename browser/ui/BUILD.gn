@@ -785,6 +785,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/tabs:tab",
       "//chrome/browser/ui/views/tabs:tab_strip",
       "//chrome/browser/ui/views/tabs:tab_strip_button",
+      "//chrome/browser/ui/views/tabs/common",
       "//chrome/browser/ui/views/tabs/dragging",
       "//chrome/browser/ui/views/tabs/shared",
       "//chrome/browser/ui/views/tabs/tab",
