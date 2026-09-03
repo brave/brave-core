@@ -19,7 +19,10 @@ DEPS = ['path', 'step', 'depot_tools', 'brave_core_checkout']
 
 
 def RunSteps(api: RecipeScriptApi) -> None:
-    brave_root = api.brave_core_checkout.deploy('third_party/node')
+    brave_root = api.brave_core_checkout.deploy([
+        'third_party/node',
+        'tools/cr/toolchains',
+    ])
 
     vpython3 = api.depot_tools.vpython3()
     node_dir = brave_root / 'third_party/node'
@@ -34,6 +37,7 @@ def RunSteps(api: RecipeScriptApi) -> None:
         node_dir / 'package_node.py',
         '--output-dir',
         api.path.out,
+        '--upload',
     ])
 
 
@@ -42,7 +46,8 @@ def GenTests(api):
     # `deployed(...)` seeds the sparse path so the existence check passes.
     yield api.test(
         'basic',
-        api.brave_core_checkout.deployed('third_party/node'),
+        api.brave_core_checkout.deployed('third_party/node',
+                                         'tools/cr/toolchains'),
         api.post_process(post_process.MustRun,
                          'clone brave-core (shallow, sparse)'),
         api.post_process(post_process.MustRun, 'download node'),
@@ -53,7 +58,8 @@ def GenTests(api):
     yield api.test(
         'reuse checkout',
         api.brave_core_checkout.existing_checkout(),
-        api.brave_core_checkout.deployed('third_party/node'),
+        api.brave_core_checkout.deployed('third_party/node',
+                                         'tools/cr/toolchains'),
         api.post_process(post_process.MustRun, 'fetch brave-core ref'),
         api.post_process(post_process.DoesNotRun,
                          'clone brave-core (shallow, sparse)'),

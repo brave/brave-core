@@ -31,7 +31,8 @@
       "[WORKSPACE]/b/src/brave",
       "sparse-checkout",
       "add",
-      "third_party/node"
+      "third_party/node",
+      "tools/cr/toolchains"
     ],
     "name": "sparse-checkout add"
   },
@@ -65,7 +66,8 @@
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "[WORKSPACE]/b/src/brave/third_party/node/package_node.py",
       "--output-dir",
-      "[WORKSPACE]/out"
+      "[WORKSPACE]/out",
+      "--upload"
     ],
     "name": "package node"
   },
