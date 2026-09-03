@@ -28,8 +28,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   FakeBrowserViewLayoutDelegate() = default;
   ~FakeBrowserViewLayoutDelegate() override = default;
 
-  bool ShouldDrawTabStrip() const override { return false; }
-  bool ShouldDrawVerticalTabStrip() const override { return false; }
+  TabStripType GetTabStripType() const override { return TabStripType::kNone; }
   bool IsVerticalTabStripCollapsed() const override { return false; }
   bool ShouldDrawWebAppFrameToolbar() const override { return false; }
   bool GetUnframedModeEnabled() const override { return false; }
