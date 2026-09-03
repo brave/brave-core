@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+config("tree_sitter_gn_config") {
+  include_dirs = [ "//brave/third_party/tree-sitter-gn-src/src" ]
+}
+
+shared_library("tree_sitter_gn") {
+  output_name = "gn"
+  sources = [
+    "//brave/third_party/tree-sitter-gn-src/src/parser.c",
+    "//brave/third_party/tree-sitter-gn-src/src/scanner.c",
+  ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    ":tree_sitter_gn_config",
+  ]
+  if (is_clang) {
+    configs -= [ "//build/config/clang:unsafe_buffers" ]
+  }
+  if (is_posix) {
+    # ast-grep resolves `tree_sitter_gn` by name after `dlopen`, so the entry
+    # point has to survive Chromium's default hidden visibility. For Windows
+    # `parser.c` marks it `__declspec(dllexport)` itself though.
+    configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+    configs += [ "//build/config/gcc:symbol_visibility_default" ]
+  }
+}

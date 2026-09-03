@@ -10,15 +10,13 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 import build_utils
-from build_utils import AST_GREP_PLATFORM_DIR, CHROMIUM_ROOT, LLVM_BIN_DIR, \
-    THIRD_PARTY
+from build_utils import AST_GREP_PLATFORM_DIR, CHROMIUM_ROOT, THIRD_PARTY
 
 # Pinning the `v1.0.0` tag's commit.
 TREE_SITTER_GN_GIT_URL = (
@@ -27,6 +25,36 @@ TREE_SITTER_GN_REF = 'bc06955bc1e3c9ff8e9b2b2a55b38b94da923c05'
 
 TREE_SITTER_GN_SRC_DIR: Path = THIRD_PARTY / 'tree-sitter-gn-src'
 
+# The grammar is built by `//brave/third_party/ast-grep/BUILD.gn`, a target
+# nothing else in the build depends on, so it gets its own out dir. That dir
+# has to sit outside `//brave/`: devtools-frontend's `ts_library` rule filters
+# its sources with `label_matches(src, ["//brave/*"])`, which a build dir under
+# `//brave/` makes every generated devtools file match, breaking `gn gen`.
+GN_OUT_DIR: Path = CHROMIUM_ROOT / 'out' / 'ast-grep-tree-sitter-gn'
+GN_LABEL = '//brave/third_party/ast-grep:tree_sitter_gn'
+
+_GN_ARGS = ' '.join([
+    f'root_extra_deps = ["{GN_LABEL}"]',
+    'is_debug = false',
+    'symbol_level = 0',
+    'use_siso = false',
+])
+
+# The overrides every Brave build applies to Chromium. A full checkout needs
+# them: without `translate_genders = false` in particular, `gn gen` fails on
+# Brave's locale paks. The recipe that packages ast-grep sparsely clones only
+# `brave/third_party/ast-grep/`, where this file is absent — along with the
+# Brave changes it compensates for.
+_BRAVE_DEFAULTS_ARGS = '//brave/build/args/brave_defaults.gni'
+
+_EXE = '.exe' if sys.platform == 'win32' else ''
+_NINJA: Path = CHROMIUM_ROOT / 'third_party' / 'ninja' / f'ninja{_EXE}'
+
+# What GN names the `shared_library`, and what ast-grep is handed.
+_GN_LIBRARY_NAME = {
+    'win32': 'gn.dll',
+    'darwin': 'libgn.dylib'
+}.get(sys.platform, 'libgn.so')
 _SHARED_LIB_EXT = {'win32': 'dll', 'darwin': 'dylib'}.get(sys.platform, 'so')
 
 # `The file providing details of how to load the custom tree-sitter.
@@ -39,64 +67,42 @@ customLanguages:
 """
 
 
-def _windows_sdk_lib_dirs() -> list[Path]:
-    """VC tools + Windows SDK import-library directories.
+def _compile() -> Path:
+    """Build `GN_LABEL` in `GN_OUT_DIR`, returning the shared library's path.
     """
-    sys.path.insert(0, str(CHROMIUM_ROOT / 'build'))
-    from vs_toolchain import (
-        FindVCComponentRoot,  # noqa: E402
-        SDK_VERSION,
-        SetEnvironmentAndGetSDKDir)
-    sdk_dir = Path(SetEnvironmentAndGetSDKDir())
-    return [
-        Path(FindVCComponentRoot('Tools')) / 'lib' / 'x64',
-        sdk_dir / 'Lib' / SDK_VERSION / 'um' / 'x64',
-        sdk_dir / 'Lib' / SDK_VERSION / 'ucrt' / 'x64',
-    ]
+    gn = shutil.which('gn')
+    if gn is None:
+        raise RuntimeError('`gn` not found on PATH. Is depot_tools set up?')
 
+    gn_args = _GN_ARGS
+    brave_defaults = CHROMIUM_ROOT / _BRAVE_DEFAULTS_ARGS.removeprefix('//')
+    if brave_defaults.is_file():
+        # Prepended rather than appended: the import assigns `root_extra_deps`
+        # itself, and GN refuses to overwrite a non-empty list.
+        gn_args = (f'import("{_BRAVE_DEFAULTS_ARGS}") root_extra_deps = [] '
+                   f'{gn_args}')
 
-def _compile(output: Path) -> None:
-    """Compile `parser.c` + `scanner.c` into the shared library at `output`.
+    logging.info('Generating %s', GN_OUT_DIR)
+    subprocess.run([gn, 'gen', str(GN_OUT_DIR), f'--args={gn_args}'],
+                   check=True,
+                   cwd=CHROMIUM_ROOT)
 
-    `parser.c`'s pre-generated ABI (14) sits within ast-grep's tree-sitter
-    compatible range ([13, 15] as of tree-sitter 0.26), so it is used as-is,
-    with no `tree-sitter generate` step.
-    """
-    src_dir = TREE_SITTER_GN_SRC_DIR / 'src'
-    sources = [src_dir / 'parser.c', src_dir / 'scanner.c']
+    logging.info('Compiling tree-sitter-gn')
+    ninja_target = GN_LABEL.removeprefix('//')
+    subprocess.run(
+        [str(_NINJA), '-C', str(GN_OUT_DIR), ninja_target], check=True)
 
-    env = dict(os.environ)
-    if sys.platform == 'win32':
-        clang_cl = LLVM_BIN_DIR / 'clang-cl.exe'
-        cmd = [
-            str(clang_cl), '/LD', '/O2', f'-I{src_dir}', *map(str, sources),
-            f'-Fe:{output}', '-fuse-ld=lld', '-link', '/EXPORT:tree_sitter_gn'
-        ]
-        env['LIB'] = os.pathsep.join(str(p) for p in _windows_sdk_lib_dirs())
-    else:
-        clang = LLVM_BIN_DIR / 'clang'
-        shared_flag = '-dynamiclib' if sys.platform == 'darwin' else '-shared'
-        cmd = [
-            str(clang), shared_flag, '-fPIC', '-O2', '-fuse-ld=lld',
-            f'-I{src_dir}', *map(str, sources), '-o',
-            str(output)
-        ]
-        if sys.platform == 'darwin':
-            sdk_path = subprocess.run(['xcrun', '--show-sdk-path'],
-                                      check=True,
-                                      capture_output=True,
-                                      text=True).stdout.strip()
-            cmd += ['-isysroot', sdk_path]
-
-    logging.info('Compiling tree-sitter-gn -> %s', output)
-    subprocess.run(cmd, check=True, env=env)
+    library = GN_OUT_DIR / _GN_LIBRARY_NAME
+    if not library.is_file():
+        raise RuntimeError(f'ninja finished but no library at {library}')
+    return library
 
 
 def build(clean: bool = False) -> Path:
     """Build the `gn` custom-language library into `AST_GREP_PLATFORM_DIR/lib/`.
 
     Also (re)writes `AST_GREP_PLATFORM_DIR/sgconfig.yml` registering it.
-    Returns the compiled library's path.
+    Returns the installed library's path.
     """
     if clean and TREE_SITTER_GN_SRC_DIR.exists():
         logging.info('Removing %s', TREE_SITTER_GN_SRC_DIR)
@@ -106,10 +112,13 @@ def build(clean: bool = False) -> Path:
                                      TREE_SITTER_GN_REF,
                                      TREE_SITTER_GN_SRC_DIR)
 
+    library = _compile()
+
     lib_dir = AST_GREP_PLATFORM_DIR / 'lib'
     lib_dir.mkdir(parents=True, exist_ok=True)
     output = lib_dir / f'gn.{_SHARED_LIB_EXT}'
-    _compile(output)
+    logging.info('Installing %s -> %s', library, output)
+    shutil.copy2(library, output)
 
     # Write the `sgconfig.yml` registering the library, so ast-grep can find it.
     sgconfig_path = AST_GREP_PLATFORM_DIR / 'sgconfig.yml'

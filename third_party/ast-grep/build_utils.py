@@ -19,11 +19,6 @@ BRAVE_ROOT: Path = Path(__file__).resolve().parents[2]
 CHROMIUM_ROOT: Path = BRAVE_ROOT.parent
 THIRD_PARTY: Path = BRAVE_ROOT / 'third_party'
 
-# Chromium's own clang/lld, fetched by `tools/clang/scripts/update.py` as part
-# of `gclient sync`.
-LLVM_BIN_DIR: Path = (CHROMIUM_ROOT / 'third_party' / 'llvm-build' /
-                      'Release+Asserts' / 'bin')
-
 
 def platform_dir() -> str:
     """Host-OS token used in ast-grep's per-platform dir name (`ast-grep-<os>`)."""
