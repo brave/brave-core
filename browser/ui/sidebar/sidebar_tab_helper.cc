@@ -11,7 +11,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -98,7 +97,7 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
     return;
   }
 
-  auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  auto* side_panel_ui = SidePanelUI::From(browser);
   if (!side_panel_ui) {
     return;
   }

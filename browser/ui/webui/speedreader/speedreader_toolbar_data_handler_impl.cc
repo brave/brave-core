@@ -20,7 +20,6 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -156,7 +155,7 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
       !browser_->GetProfile()->IsRegularProfile()) {
     return;
   }
-  auto* side_panel = browser_->GetFeatures().side_panel_ui();
+  auto* side_panel = SidePanelUI::From(browser_);
   if (!side_panel) {
     return;
   }
