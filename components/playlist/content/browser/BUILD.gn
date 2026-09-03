@@ -33,6 +33,8 @@ static_library("browser") {
     "playlist_media_handler.h",
     "playlist_media_session_observer.cc",
     "playlist_media_session_observer.h",
+    "playlist_network_media_detector.cc",
+    "playlist_network_media_detector.h",
     "playlist_network_observer.cc",
     "playlist_network_observer.h",
     "playlist_p3a.cc",
