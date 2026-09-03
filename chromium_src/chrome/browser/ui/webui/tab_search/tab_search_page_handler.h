@@ -6,7 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 
-#include "base/memory/raw_ptr.h"
+#include <optional>
+
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -92,9 +93,11 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // Overrides the `HistoryEmbeddingsSearch` used by `SearchTabsByContent` so
   // tests can avoid standing up a real `HistoryEmbeddingsService`.
+  // Pass nullopt to drop the override and go back to the profile's service.
   void SetEmbeddingsSearchForTesting(
-      history_embeddings::HistoryEmbeddingsSearch* search) {
-    embeddings_search_for_testing_ = search;
+      std::optional<base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch>>
+          search) {
+    embeddings_search_for_testing_ = std::move(search);
   }
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
@@ -130,8 +133,10 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   // stale search can't fire its embeddings query after the handler is gone.
   base::CancelableTaskTracker query_url_task_tracker_;
 
-  raw_ptr<history_embeddings::HistoryEmbeddingsSearch>
-      embeddings_search_for_testing_ = nullptr;
+  // Set means a test installed an override; the pointer inside may still have
+  // been invalidated.
+  std::optional<base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch>>
+      embeddings_search_for_testing_;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

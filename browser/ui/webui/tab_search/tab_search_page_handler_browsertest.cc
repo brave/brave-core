@@ -515,7 +515,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerSearchTabsByContentBrowserTest,
           foo_url_id, foo_url, base::UTF8ToUTF16(std::string(kFooDotComTitle1)),
           base::Time::Now(), /*score=*/0.7f),
   });
-  handler()->SetEmbeddingsSearchForTesting(&fake);
+  handler()->SetEmbeddingsSearchForTesting(fake.GetWeakPtr());
 
   base::test::TestFuture<const std::vector<int32_t>&> future;
   handler()->SearchTabsByContent("query", future.GetCallback());
@@ -526,5 +526,5 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerSearchTabsByContentBrowserTest,
   // by open_tab_search's own browser test.
   EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(foo_tab_id, bar_tab_id));
 
-  handler()->SetEmbeddingsSearchForTesting(nullptr);
+  handler()->SetEmbeddingsSearchForTesting(std::nullopt);
 }

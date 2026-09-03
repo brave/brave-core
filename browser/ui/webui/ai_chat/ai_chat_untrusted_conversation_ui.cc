@@ -152,7 +152,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       std::move(callback).Run(std::nullopt);
       return;
     }
-    history_embeddings::HistoryEmbeddingsSearch* embeddings_search =
+    auto* embeddings_search =
         HistoryEmbeddingsServiceFactory::GetForProfile(profile);
     auto* history_service = HistoryServiceFactory::GetForProfile(
         profile, ServiceAccessType::EXPLICIT_ACCESS);
@@ -161,7 +161,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     history_embeddings::SearchOpenTabsByContent(
-        profile, history_service, embeddings_search, query,
+        profile, history_service, embeddings_search->AsWeakPtr(), query,
         base::BindOnce(
             [](SearchForTabsCallback callback,
                std::vector<history_embeddings::OpenTabInfo> tabs) {

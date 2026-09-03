@@ -108,11 +108,12 @@ void DispatchRankedTabs(
 
 void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
                       std::string query,
-                      HistoryEmbeddingsSearch* embeddings_search,
+                      base::WeakPtr<HistoryEmbeddingsSearch> embeddings_search,
                       RankedOpenTabsCallback callback,
                       std::optional<std::vector<history::URLID>> url_ids) {
-  // HistoryService returned no result (e.g. shutdown / cancellation).
-  if (!url_ids) {
+  // HistoryService returned no result (e.g. shutdown / cancellation), or the
+  // embeddings service was shut down while the URL lookup was in flight.
+  if (!url_ids || !embeddings_search) {
     std::move(callback).Run({});
     return;
   }
@@ -150,12 +151,13 @@ void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
 
 }  // namespace
 
-void SearchOpenTabsByContent(Profile* profile,
-                             history::HistoryService* history_service,
-                             HistoryEmbeddingsSearch* embeddings_search,
-                             std::string query,
-                             RankedOpenTabsCallback callback,
-                             base::CancelableTaskTracker* task_tracker) {
+void SearchOpenTabsByContent(
+    Profile* profile,
+    history::HistoryService* history_service,
+    base::WeakPtr<HistoryEmbeddingsSearch> embeddings_search,
+    std::string query,
+    RankedOpenTabsCallback callback,
+    base::CancelableTaskTracker* task_tracker) {
   std::vector<OpenTabInfo> tabs = SnapshotOpenTabs(profile);
   // No tracked tabs to rank against — `SnapshotOpenTabs` only keeps
   // tracked-browser HTTP(S) tabs, so non-normal windows, other profiles and
@@ -174,7 +176,7 @@ void SearchOpenTabsByContent(Profile* profile,
   history_service->QueryUrlIds(
       urls,
       base::BindOnce(&OnUrlIdsResolved, std::move(tabs), std::move(query),
-                     embeddings_search, std::move(callback)),
+                     std::move(embeddings_search), std::move(callback)),
       task_tracker);
 }
 

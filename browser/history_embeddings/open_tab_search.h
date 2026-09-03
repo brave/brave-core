@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/weak_ptr.h"
 #include "url/gurl.h"
 
 namespace base {
@@ -51,12 +52,16 @@ using RankedOpenTabsCallback =
 // `HistoryEmbeddingsSearch::Search` (`skip_answering=true`), and dispatches
 // the matched tabs (best first) to `callback`. Dispatches an empty list when
 // there are no such tabs or none of them match.
-void SearchOpenTabsByContent(Profile* profile,
-                             history::HistoryService* history_service,
-                             HistoryEmbeddingsSearch* embeddings_search,
-                             std::string query,
-                             RankedOpenTabsCallback callback,
-                             base::CancelableTaskTracker* task_tracker);
+// `embeddings_search` is weak because the URL lookup is asynchronous and the
+// service releases its storage in Shutdown(); an invalidated pointer yields
+// no matches, so `callback` always runs.
+void SearchOpenTabsByContent(
+    Profile* profile,
+    history::HistoryService* history_service,
+    base::WeakPtr<HistoryEmbeddingsSearch> embeddings_search,
+    std::string query,
+    RankedOpenTabsCallback callback,
+    base::CancelableTaskTracker* task_tracker);
 
 }  // namespace history_embeddings
 
