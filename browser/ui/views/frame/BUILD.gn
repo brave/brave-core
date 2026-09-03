@@ -30,6 +30,7 @@ source_set("frame") {
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/views/bookmarks",
     "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
+    "//chrome/browser/ui/views/frame:custom_corners_background",
     "//chrome/browser/ui/views/infobars",
     "//ui/compositor",
   ]
@@ -152,6 +153,7 @@ source_set("browser_tests") {
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/views/frame",
+      "//chrome/browser/ui/views/frame:custom_corners_background",
       "//components/prefs",
       "//ui/linux:test_support",
       "//ui/native_theme",
