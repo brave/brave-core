@@ -26,8 +26,6 @@ NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionHSTS);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveTorWindowsHttpsOnly);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveForgetFirstPartyStorage);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveProvisionalTLDEphemeralLifetime);
-NET_EXPORT extern const base::FeatureParam<int>
-    kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds;
 NET_EXPORT extern const base::FeatureParam<bool>
     kBraveForgetFirstPartyStorageByDefault;
 
