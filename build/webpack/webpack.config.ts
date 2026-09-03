@@ -93,6 +93,16 @@ export function createWebpackConfig(
     output.publicPath = options.public_asset_path
   }
 
+  // Preserve native import.meta semantics in ESM output for runtime-relative assets.
+  const moduleParser: NonNullable<Configuration['module']>['parser'] =
+    options.output_module
+      ? {
+          'javascript': {
+            importMeta: false,
+          },
+        }
+      : undefined
+
   const experiments: Configuration['experiments'] = {
     outputModule: Boolean(options.output_module),
   }
@@ -155,6 +165,7 @@ export function createWebpackConfig(
       !options.sync_wasm && new XHRCompileAsyncWasmPlugin(),
     ],
     module: {
+      ...(moduleParser ? { parser: moduleParser } : {}),
       rules: [
         ...cssRules({ isDevMode }),
         tsLoaderRule({ configFile: tsConfigPath }),
