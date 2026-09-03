@@ -1752,7 +1752,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
     Your card is saved in Brave Wallet so you can autofill it for future purchases
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT_V2" desc="Description text for confirmation shown after Brave Wallet save card is successfully uploaded and saved to the server.">
-    This card is saved in Brave Wallet so you can use it across Brave services
+    This card is saved in Brave Wallet so you can use it across Brave products
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after save card upload to the server was unsuccessful.">
     This card couldn't be saved in your Brave sync chain. It's saved to Brave on this device instead.
@@ -1764,7 +1764,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
     This IBAN is saved in your Brave sync chain so you can use it across Brave services.
   </message>
   <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was successful and it was uploaded to the server. The wording specifically references Brave Wallet.">
-    This IBAN is saved in Brave Wallet so you can use it across Brave services.
+    This IBAN is saved in Brave Wallet so you can use it across Brave products.
   </message>
   <message name="IDS_AUTOFILL_SAVE_IBAN_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was failed and and it was not uploaded to the server.">
     This IBAN couldn't be saved in your Brave sync chain. It's saved to Brave on this device instead. Brave will ask you again the next time you use this IBAN.

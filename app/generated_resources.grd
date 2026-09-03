@@ -1511,6 +1511,9 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Page menu. Android has separate strings for its menu -->
       <if expr="not is_android">
+        <message name="IDS_APP_MENU_SEARCH_PLACEHOLDER" desc="Placeholder text for the search bar in the app menu.">
+          Search menu, or type an action
+        </message>
         <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and Actions section in the main App Menu">
           Tools and Actions
         </message>
@@ -18888,7 +18891,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <!-- Dictation strings -->
       <message name="IDS_DICTATION_ONBOARDING_BULLET_DATA_SHARING" desc="The second paragraph in the onboarding dialog describing data sharing with Brave servers." translateable="false">
-        The content and URL of the page you're on will be sent to Brave to generate text based on your spoken audio and the page context
+        The content and URL of the page you're on and your spoken audio will be sent to Brave to generate text based on your spoken audio and the page context
       </message>
       <message name="IDS_DICTATION_ONBOARDING_BUTTON_ACCEPT" desc="Button label on the onboarding dialog to confirm the provided information and use the feature." translateable="false">
         Allow
