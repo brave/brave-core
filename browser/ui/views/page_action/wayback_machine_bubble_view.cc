@@ -54,12 +54,10 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 }  // namespace
 
 WaybackMachineBubbleView::WaybackMachineBubbleView(
-    base::WeakPtr<content::WebContents> web_contents,
-    views::View* anchor,
+    views::BubbleAnchor anchor,
+    content::WebContents* web_contents,
     actions::ActionItem* item)
-    : BubbleDialogDelegateView(anchor, views::BubbleBorder::TOP_RIGHT),
-      web_contents_(web_contents),
-      item_(item) {
+    : LocationBarBubbleDelegateView(anchor, web_contents), item_(item) {
   if (item_) {
     item_->SetIsShowingBubble(true);
   }
@@ -74,7 +72,7 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
       /*inside_border_insets*/ gfx::Insets(),
       /*between_child_spacing*/ kPadding));
 
-  auto* tab_helper = GetTabHelper(web_contents_.get());
+  auto* tab_helper = GetTabHelper(web_contents);
   CHECK(tab_helper);
   const bool need_checking =
       tab_helper->wayback_state() == WaybackState::kNeedToCheck;
@@ -137,15 +135,15 @@ WaybackMachineBubbleView::~WaybackMachineBubbleView() {
 }
 
 void WaybackMachineBubbleView::OnAccepted() {
-  if (auto* tab_helper = GetTabHelper(web_contents_.get())) {
+  if (auto* tab_helper = GetTabHelper(web_contents())) {
     tab_helper->FetchWaybackURL();
   }
 }
 
 void WaybackMachineBubbleView::OnDontAskAgain() {
-  if (web_contents_) {
+  if (web_contents()) {
     auto* profile =
-        Profile::FromBrowserContext(web_contents_->GetBrowserContext());
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext());
     profile->GetPrefs()->SetBoolean(kBraveWaybackMachineEnabled, false);
   }
   if (views::Widget* widget = GetWidget()) {

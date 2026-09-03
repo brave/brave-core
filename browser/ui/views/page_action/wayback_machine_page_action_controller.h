@@ -14,7 +14,6 @@
 #include "components/tabs/public/tab_interface.h"
 #include "ui/views/view_tracker.h"
 
-class ToolbarButtonProvider;
 class WaybackMachineBubbleView;
 
 namespace actions {
@@ -44,13 +43,22 @@ class WaybackMachinePageActionController {
 
   void Init();
 
-  void ExecuteAction(ToolbarButtonProvider* toolbar_button_provider,
-                     actions::ActionItem* item);
+  // Shows the bubble in response to a user activating the page action.
+  void ExecuteAction(actions::ActionItem* item);
 
   WaybackMachineBubbleView* GetBubbleViewForTesting();
 
  private:
   void OnWaybackStateChanged(WaybackState state);
+
+  // Creates and shows the bubble, unless one is already showing. A bubble shown
+  // without a user gesture is shown inactive, so that it doesn't take focus
+  // away from the page.
+  void ShowBubble(actions::ActionItem* item, bool user_gesture);
+
+  // Shows the bubble unprompted when a failed navigation first makes the page
+  // action visible.
+  void MaybeAutoShowBubble();
 
   // (Re-)registers for wayback-state updates on |contents|'
   // BraveWaybackMachineTabHelper, since the tab's contents can be swapped out
