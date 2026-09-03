@@ -14,6 +14,7 @@
 #include "base/callback_list.h"
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
@@ -366,6 +367,8 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Separator view between pinned and unpinned tabs
   raw_ptr<views::View> separator_ = nullptr;
+
+  base::WeakPtrFactory<BraveTabContainer> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

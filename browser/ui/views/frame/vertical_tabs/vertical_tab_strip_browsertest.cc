@@ -550,6 +550,65 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   ASSERT_EQ(region_view->original_region_view_->height(), contents_view_height);
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LockLayoutCoalescesLayout) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  // Freeze layout the way AddTabs() does during session restore.
+  base::OnceClosure unlock = brave_tab_container->LockLayout();
+
+  AppendTab(browser());
+  AppendTab(browser());
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  // While locked, inserts must not run any layout: the new tabs' ideal
+  // bounds stay unset and the preferred size is collapsed.
+  EXPECT_TRUE(brave_tab_container->CalculatePreferredSize({}).IsEmpty());
+  EXPECT_TRUE(brave_tab_container->GetIdealBounds(1).IsEmpty());
+  EXPECT_TRUE(brave_tab_container->GetIdealBounds(2).IsEmpty());
+
+  // Running the unlock closure lays out the whole batch in a single pass.
+  std::move(unlock).Run();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+
+  ASSERT_EQ(3, browser()->tab_strip_model()->count());
+  for (int i = 0; i < 3; ++i) {
+    EXPECT_FALSE(brave_tab_container->GetIdealBounds(i).IsEmpty());
+  }
+  EXPECT_LT(brave_tab_container->GetIdealBounds(0).y(),
+            brave_tab_container->GetIdealBounds(1).y());
+  EXPECT_LT(brave_tab_container->GetIdealBounds(1).y(),
+            brave_tab_container->GetIdealBounds(2).y());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       LockLayoutClosureOutlivesTabContainer) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  base::OnceClosure unlock = brave_tab_container->LockLayout();
+  CloseBrowserSynchronously(browser());
+
+  // The unlock closure is bound to a weak pointer, so running it after the
+  // container has been destroyed (e.g. the window was closed while a
+  // session-restore batch held the lock) must be a safe no-op.
+  std::move(unlock).Run();
+}
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarMode) {
   ToggleVerticalTabStrip();
 
