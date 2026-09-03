@@ -53,6 +53,16 @@ substitutions:
       re_flags: [MULTILINE]
       replace: '\1\2\n\1base_feature: "none",'
 
+  # FencedFrames declares `base_feature: "none"` upstream, so the runtime flag
+  # has no backing `base::Feature` and its state cannot be forced. Give it one
+  # (a generated `kFencedFramesRuntime`, not the manual `kFencedFrames` in
+  # third_party/blink/common/features.cc, which would collide) so the disabled
+  # state below is synced into the runtime flag at startup.
+  - description: 'Give FencedFrames a backing base::Feature.'
+    regex:
+      re_pattern: '(name: "FencedFrames",\n *)base_feature: "none",'
+      replace: '\1base_feature: "FencedFramesRuntime",'
+
   # These plaster override the `base::Feature` value for the blink runtime
   # features. Keep them in alphabetical order.
   - description: 'Ship the interest-group ad-targeting API disabled.'
@@ -98,6 +108,11 @@ substitutions:
   - description: 'Ship the Protected Audience ad auction API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: Fledge
+      value: disabled
+
+  - description: 'Ship the fenced frames API disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: FencedFrames
       value: disabled
 
   - description: "Ship the Language Detection API's base feature disabled."
