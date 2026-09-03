@@ -47,6 +47,7 @@ source_set("prefs") {
     "//components/pref_registry",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/prefs",
+    "//ios/chrome/browser/shared/model/prefs:pref_names",
     "//ios/chrome/common",
   ]
   if (enable_brave_vpn) {

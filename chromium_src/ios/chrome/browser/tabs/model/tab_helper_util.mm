@@ -15,6 +15,7 @@
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
 #import "ios/components/security_interstitials/https_only_mode/https_only_mode_container.h"
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
+#import "ios/web/public/web_state.h"
 
 void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   IOSTaskTabHelper::CreateForWebState(web_state);
@@ -25,4 +26,12 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   // Create Brave's version instead of Chromes as we replace its usage in
   // ios_captive_portal_blocking_page.mm
   BraveCaptivePortalTabHelper::CreateForWebState(web_state);
+
+  // TODO: Only needed when kTransitionToUpstreamHttpsUpgrades enabled
+  ProfileIOS* profile =
+      ProfileIOS::FromBrowserState(web_state->GetBrowserState());
+  HttpsOnlyModeUpgradeTabHelper::CreateForWebState(
+      web_state, profile->GetPrefs(),
+      HttpsUpgradeServiceFactory::GetForProfile(profile));
+  HttpsOnlyModeContainer::CreateForWebState(web_state);
 }
