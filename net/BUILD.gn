@@ -39,7 +39,7 @@ test("brave_cert_pinning_tests") {
   testonly = true
   sources = [
     "http/brave_cert_pinning_test_main.cc",
-    "http/brave_cert_pinning_unittest.cc",
+    "http/brave_cert_pinning_test.cc",
   ]
   deps = [
     "//base",
