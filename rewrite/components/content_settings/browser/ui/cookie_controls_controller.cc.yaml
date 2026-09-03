@@ -36,4 +36,5 @@ substitutions:
         auto status = GetStatus(GetWebContents());
           const CookieControlsState icon_state =
               GetCookieControlsIconState(status.controls_state);
-      replace: 'const CookieControlsState icon_state = CookieControlsState::kHidden;'
+      replace:
+        'const CookieControlsState icon_state = CookieControlsState::kHidden;'

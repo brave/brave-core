@@ -1,7 +1,7 @@
-diff --git a/base/win/embedded_i18n/create_string_rc.py b/base/win/embedded_i18n/create_string_rc.py
+diff --git a/base/i18n/win/embedded_i18n/create_string_rc.py b/base/i18n/win/embedded_i18n/create_string_rc.py
 index bccce42ac9d7e21362ef815bdfdc46dbe24bee51..285c5654a7ebb7a50cf25916ed215681240bbc52 100755
---- a/base/win/embedded_i18n/create_string_rc.py
-+++ b/base/win/embedded_i18n/create_string_rc.py
+--- a/base/i18n/win/embedded_i18n/create_string_rc.py
++++ b/base/i18n/win/embedded_i18n/create_string_rc.py
 @@ -388,7 +388,13 @@ Extra input files:
      # Read the source (en-US) string from the .grd file.
      grd_handler = GrdHandler(self.string_id_set)
