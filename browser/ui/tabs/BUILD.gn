@@ -212,7 +212,6 @@ source_set("browser_tests") {
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui",
-    "//chrome/browser/ui/tabs:tab_menu",
     "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",
@@ -233,6 +232,7 @@ source_set("browser_tests") {
     deps += [
       ":tab_menu",
       ":tab_model",
+      "//chrome/browser/ui/tabs:tab_menu",
     ]
   }
 
