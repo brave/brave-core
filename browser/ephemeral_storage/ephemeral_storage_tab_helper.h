@@ -56,7 +56,7 @@ class EphemeralStorageTabHelper
       const url::Origin& origin);
 
   void EnforceFirstPartyStorageCleanup(StorageCleanupMode mode);
-  void ReloadBypassingCacheWhenReady(base::OnceClosure pre_reload_callback);
+  void ReloadBypassingCacheWhenReady();
 
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
@@ -81,7 +81,7 @@ class EphemeralStorageTabHelper
                                                   const GURL& new_url);
 
   void UpdateShieldsState(const GURL& url);
-  void ReloadBypassingCache(base::OnceClosure pre_reload_callback);
+  void ReloadBypassingCache();
 
 #if BUILDFLAG(IS_ANDROID)
   // TabModelObserver
