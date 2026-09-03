@@ -307,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
                   ->GetVisible());
 
   // Check separator is still visible after panel opens.
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
   ASSERT_TRUE(
@@ -503,7 +503,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   }
 #endif
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
 
@@ -581,7 +581,7 @@ IN_PROC_BROWSER_TEST_P(
                             window_corner_radius);
   }
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
 
   // --- Right-aligned panel (default: kSidePanelHorizontalAlignment = true) ---
   panel_ui->Toggle();
@@ -634,7 +634,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   }
 #endif
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
 
@@ -672,7 +672,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   }
 #endif
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
   RunScheduledLayouts();
 
@@ -804,7 +804,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        BoundingBoxStableWithSidePanelTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* brave_view = brave_browser_view();
 
   // Get bounds with panel closed.
