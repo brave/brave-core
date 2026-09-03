@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/views/tabs/horizontal_tab_style_views.cc b/chrome/browser/ui/views/tabs/horizontal_tab_style_views.cc
-index 0aa52cb4ce00e14e90984de3adf115375f04e4d6..7438c2853334a1b71c6a5ee0c29b9905ca1cbd65 100644
---- a/chrome/browser/ui/views/tabs/horizontal_tab_style_views.cc
-+++ b/chrome/browser/ui/views/tabs/horizontal_tab_style_views.cc
+diff --git a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
+index ea5199ed41b877e02ef3b084217d4e8539b802dd..28a7c6d8eac4210eca6bf6db571b84c92204d944 100644
+--- a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
++++ b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
 @@ -224,6 +224,7 @@ SkPath HorizontalTabStyleViews::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
@@ -10,7 +10,7 @@ index 0aa52cb4ce00e14e90984de3adf115375f04e4d6..7438c2853334a1b71c6a5ee0c29b9905
    float left_extension_corner_radius = extension_corner_radius;
    if (delegate_->IsLeftSplitTab()) {
      top_right_corner_radius = 0;
-@@ -856,18 +857,22 @@ void HorizontalTabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -864,18 +865,22 @@ void HorizontalTabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
