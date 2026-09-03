@@ -1,4 +1,4 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -103,10 +103,18 @@ extension BrowserViewController: TabDownloadDelegate {
       downloadQueue.enqueue(download)
 
       download.startDownloadToLocalFileAtPath(url.path)
+
+      if #available(iOS 26.0, *) {
+        downloadBackgroundTaskModel?.addDownload(download)
+      }
     }
   }
 
   public func tab(_ tab: some TabState, didFinishDownload download: Download, error: (any Error)?) {
+    if #available(iOS 26.0, *) {
+      downloadBackgroundTaskModel?.removeDownload(download)
+    }
+
     guard let destinationURL = download.destinationURL, error == nil else {
       downloadQueue.download(download, didCompleteWithError: error)
 

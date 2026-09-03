@@ -9265,3 +9265,38 @@ extension Strings {
       "Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab."
   )
 }
+
+// MARK: - Background Downloading
+extension Strings {
+  public static let backgroundDownloadingTitleSingleDownload = NSLocalizedString(
+    "backgroundDownloadingTitleSingleDownload",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Downloading \"%@\"",
+    comment: "A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name"
+  )
+
+  public static let backgroundDownloadingTitleMultiDownload = NSLocalizedString(
+    "backgroundDownloadingTitleMultiDownload",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Downloading %lld files",
+    comment: "A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads"
+  )
+
+  public static let backgroundDownloadingSubtitleWithExpectedSize = NSLocalizedString(
+    "backgroundDownloadingSubtitleWithExpectedSize",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "%@ of %@",
+    comment: "A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB'"
+  )
+
+  public static let backgroundDownloadingSubtitle = NSLocalizedString(
+    "backgroundDownloadingSubtitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "%@",
+    comment: "A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB')"
+  )
+}
