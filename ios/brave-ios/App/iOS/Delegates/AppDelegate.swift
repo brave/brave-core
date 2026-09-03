@@ -241,6 +241,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     }
 
+    if Preferences.NewTabPage.topsitesMode.value == nil {
+      Preferences.NewTabPage.topsitesMode.value =
+        Favorite.hasFavorites ? TopsitesMode.favourite : TopsitesMode.mostVisited
+    }
+
     if isFirstLaunch {
       let currentDate = Date()
       Preferences.DAU.installationDate.value = currentDate
