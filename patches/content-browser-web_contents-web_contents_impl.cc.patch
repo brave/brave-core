@@ -1,8 +1,8 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index c6d05b8b675f7eea013657721965662c84132c19..e2fa1443b6f272dade1f994090ec3acd9ac4bc7c 100644
+index 0d07dd8bf2dd38614b8f54aa0377211308625ca4..52af5f75007a2daeb584f9dbe186d1160c88fa12 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
-@@ -3015,7 +3015,11 @@ int WebContentsImpl::GetVirtualKeyboardResizeHeight() {
+@@ -3025,7 +3025,11 @@ int WebContentsImpl::GetVirtualKeyboardResizeHeight() {
  }
  
  bool WebContentsImpl::ShouldDoLearning() {
@@ -14,7 +14,7 @@ index c6d05b8b675f7eea013657721965662c84132c19..e2fa1443b6f272dade1f994090ec3acd
  }
  
  void WebContentsImpl::OnAudioStateChanged() {
-@@ -5650,6 +5654,12 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+@@ -5674,6 +5678,12 @@ FrameTree* WebContentsImpl::CreateNewWindow(
    // SiteInstance is created in a new BrowsingInstance.
    scoped_refptr<SiteInstance> site_instance;
    if (params.opener_suppressed) {
@@ -27,7 +27,7 @@ index c6d05b8b675f7eea013657721965662c84132c19..e2fa1443b6f272dade1f994090ec3acd
      if (is_guest) {
        // For guests, noopener windows can be created in a new BrowsingInstance
        // as long as they preserve the guest's StoragePartition.
-@@ -5747,7 +5757,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+@@ -5771,7 +5781,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
  
    // Save the window for later if we're not suppressing the opener (since it
    // will be shown immediately).

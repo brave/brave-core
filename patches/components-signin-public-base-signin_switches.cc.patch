@@ -1,5 +1,5 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index ac7aedfe58d45d64d02416ced5f9f13e1ec90f98..7f15343203e4ad1b39924cd2d476906d18817a09 100644
+index 61359f6376e3edcbd72252de98e27aaf7bfdb49f..d7cc5c2435c701f7f1c200e404bf73d16deb79b2 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
 @@ -653,8 +653,10 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
@@ -14,7 +14,7 @@ index ac7aedfe58d45d64d02416ced5f9f13e1ec90f98..7f15343203e4ad1b39924cd2d476906d
  BASE_FEATURE(kFirstRunDesktopRefresh, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
  bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
-@@ -828,6 +830,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
+@@ -838,6 +840,7 @@ BASE_FEATURE(kReadContextualAccountCapabilities,
               base::FEATURE_ENABLED_BY_DEFAULT);
  #endif
  
@@ -22,7 +22,7 @@ index ac7aedfe58d45d64d02416ced5f9f13e1ec90f98..7f15343203e4ad1b39924cd2d476906d
  BASE_FEATURE(kReadIsSubjectToUniversalOptOutCapability,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -959,13 +962,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -973,13 +976,9 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  

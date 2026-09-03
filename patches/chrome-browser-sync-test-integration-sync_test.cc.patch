@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/test/integration/sync_test.cc b/chrome/browser/sync/test/integration/sync_test.cc
-index 92194e3b2ff4282548074d1d6090b7d28b4f9e2b..9ced6abc5eaf7724d794195501c2ae0adf59654d 100644
+index 71bde65ff87e9996ffe15cb15efb629a135f0470..db91b8fa70c0d479d6cca34302b50631b237cf59 100644
 --- a/chrome/browser/sync/test/integration/sync_test.cc
 +++ b/chrome/browser/sync/test/integration/sync_test.cc
-@@ -1281,7 +1281,7 @@ std::string SetupSyncModeAsString(SyncTest::SetupSyncMode sync_test_mode) {
+@@ -1290,7 +1290,7 @@ std::string SetupSyncModeAsString(SyncTest::SetupSyncMode sync_test_mode) {
  // enabled by default, e.g. HISTORY requires a dedicated opt-in via
  // SyncUserSettings::SetSelectedTypes().
  syncer::DataTypeSet AllowedTypesInStandaloneTransportMode() {

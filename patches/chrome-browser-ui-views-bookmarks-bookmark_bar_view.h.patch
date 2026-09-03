@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.h b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.h
-index 8f4ba2881d4cd95d4f3fe9e6c639ede021153bcd..c7935d9294b6dd7d65f1ff4bbc2c720dc80918ea 100644
+index 64d2117654eddb3f0ca24b0ff6cb44392a82a4f0..13864c9d694ce8c8429ae07e85ddf3409edfb02e 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.h
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.h
-@@ -264,6 +264,7 @@ class BookmarkBarView : public views::AccessiblePaneView,
+@@ -265,6 +265,7 @@ class BookmarkBarView : public views::AccessiblePaneView,
        int available_width);
  
   private:
@@ -10,7 +10,7 @@ index 8f4ba2881d4cd95d4f3fe9e6c639ede021153bcd..c7935d9294b6dd7d65f1ff4bbc2c720d
    using BookmarkButtonAndNode =
        std::pair<raw_ptr<views::LabelButton>,
                  raw_ptr<const bookmarks::BookmarkNode>>;
-@@ -393,7 +394,7 @@ class BookmarkBarView : public views::AccessiblePaneView,
+@@ -394,7 +395,7 @@ class BookmarkBarView : public views::AccessiblePaneView,
    // Updates the visibility of |other_bookmarks_button_| and
    // |managed_bookmarks_button_|. Also shows or hides the separator if required.
    // Returns true if something changed and a LayoutAndPaint() is needed.

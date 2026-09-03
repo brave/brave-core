@@ -1,5 +1,5 @@
 diff --git a/components/one_time_tokens/core/common/one_time_token_features.cc b/components/one_time_tokens/core/common/one_time_token_features.cc
-index 3c0161179125270ba002eefc79535fc1cc9ef13c..478176468f70910c2b5695619f05f2842ff73798 100644
+index 12f1378c88fe99443d9d0bb59b6d304a8168e366..ddcb42697db81cff9db993276e41357beebcbaee 100644
 --- a/components/one_time_tokens/core/common/one_time_token_features.cc
 +++ b/components/one_time_tokens/core/common/one_time_token_features.cc
 @@ -10,6 +10,7 @@ namespace one_time_tokens::features {

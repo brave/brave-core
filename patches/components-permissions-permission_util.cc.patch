@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 5f510af63db41687d95cdc95cce402b20c62b559..66be225e588acac73a5dcbac18cb7c0060e2b88c 100644
+index d20920174d7e7fafa4f58283db2a660beef7ef7a..32bd5e5790b4969d359c9e6f3bf2ce522ec861b8 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -84,6 +84,7 @@ constexpr const char* kIsFileURLHistogram =
