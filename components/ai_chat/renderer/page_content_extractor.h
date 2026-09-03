@@ -17,7 +17,9 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
+#include "third_party/blink/public/web/web_local_frame_observer.h"
 
 namespace base {
 class TimeTicks;
@@ -36,7 +38,8 @@ namespace ai_chat {
 class PageContentExtractor
     : public ai_chat::mojom::PageContentExtractor,
       public content::RenderFrameObserver,
-      public content::RenderFrameObserverTracker<PageContentExtractor> {
+      public content::RenderFrameObserverTracker<PageContentExtractor>,
+      public blink::WebLocalFrameObserver {
  public:
   PageContentExtractor(content::RenderFrame* render_frame,
                        service_manager::BinderRegistry* registry,
@@ -62,6 +65,8 @@ class PageContentExtractor
       const std::string& input_json,
       mojom::PageContentExtractor::ExecuteContentToolCallback callback)
       override;
+  void SetContentToolsListener(
+      mojo::PendingRemote<mojom::ContentToolsListener> listener) override;
 
   base::WeakPtr<PageContentExtractor> GetWeakPtr();
 
@@ -83,10 +88,16 @@ class PageContentExtractor
   // RenderFrameObserver implementation:
   void OnDestruct() override;
 
+  // blink::WebLocalFrameObserver implementation:
+  void OnScriptToolsChanged() override;
+  void OnFrameDetached() override;
+
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);
 
   mojo::Receiver<mojom::PageContentExtractor> receiver_{this};
+
+  mojo::Remote<mojom::ContentToolsListener> content_tools_listener_;
 
   int32_t global_world_id_;
   int32_t isolated_world_id_;

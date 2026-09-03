@@ -15,4 +15,8 @@ void WebLocalFrameImpl::SetOriginForClearWindowNameCheck(
   GetFrame()->origin_for_clear_window_name_check_ = origin;
 }
 
+void WebLocalFrameImpl::NotifyScriptToolsChanged() {
+  observers_.Notify(&WebLocalFrameObserver::OnScriptToolsChanged);
+}
+
 }  // namespace blink

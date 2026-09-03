@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# This is necessary because of the use of `CORE_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
 substitutions:
   - description: |
       Declare WebLocalFrameImpl::SetOriginForClearWindowNameCheck
@@ -14,3 +18,13 @@ substitutions:
       replace: |-
         \1
           void SetOriginForClearWindowNameCheck(const url::Origin&) override;
+
+  - description: |
+      Declare WebLocalFrameImpl::NotifyScriptToolsChanged
+
+      Fans WebMCP tool changes out to WebLocalFrameObserver, whose observer
+      list is private to this class. Defined in the chromium_src
+      web_local_frame_impl.cc override.
+    add_to_public:
+      class_name: WebLocalFrameImpl
+      code: 'void NotifyScriptToolsChanged();'

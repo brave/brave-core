@@ -67,6 +67,10 @@ class MockPageContentExtractor : public mojom::PageContentExtractor {
                const std::string& input_json,
                ExecuteContentToolCallback),
               (override));
+  MOCK_METHOD(void,
+              SetContentToolsListener,
+              (mojo::PendingRemote<mojom::ContentToolsListener>),
+              (override));
 
   void Bind(mojo::ScopedMessagePipeHandle handle) {
     receiver_.Bind(

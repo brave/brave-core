@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is necessary because of the use of `BLINK_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Let a frame observer react to WebMCP tool registrations.
+
+      The signal reaches the renderer on the document's ModelContext, which
+      blink's public API doesn't expose. Surfacing it here keeps the observer,
+      //brave/components/ai_chat/renderer, on //third_party/blink/public
+      instead of reaching into blink core.
+    add_to_public:
+      class_name: WebLocalFrameObserver
+      code: 'virtual void OnScriptToolsChanged() {}'
