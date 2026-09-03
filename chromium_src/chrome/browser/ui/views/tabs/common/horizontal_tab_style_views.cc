@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/tabs/horizontal_tab_style_views.h"
+#include "chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h"
 
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
@@ -18,7 +18,7 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/views/view_utils.h"
 
-#include <chrome/browser/ui/views/tabs/horizontal_tab_style_views.cc>
+#include <chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc>
 
 namespace {
 
