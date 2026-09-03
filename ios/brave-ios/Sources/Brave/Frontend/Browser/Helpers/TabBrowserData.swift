@@ -293,6 +293,7 @@ class TabBrowserData: NSObject, TabObserver {
       .cookieBlocking: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled),
       .mediaBackgroundPlay: tab.profile.prefs.boolean(forPath: kMediaBackgroundingEnabled),
       .braveTranslate: Preferences.Translate.translateEnabled.value != false,
+      .youtubeDesktopCookie: Preferences.General.preferYouTubeDesktopSite.value,
     ]
 
     userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))

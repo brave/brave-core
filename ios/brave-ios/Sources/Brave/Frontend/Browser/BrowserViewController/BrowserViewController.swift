@@ -491,6 +491,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Shields.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
+    Preferences.General.preferYouTubeDesktopSite.observe(from: self)
 
     // Observe some Chromium prefs
     prefsChangeRegistrar.addObserver(forPath: BraveRewardsDisabledByPolicyPrefName) {
@@ -3070,6 +3071,12 @@ extension BrowserViewController: PreferencesObserver {
         screenTimeViewController?.suppressUsageRecording = true
         screenTimeViewController = nil
       }
+    case Preferences.General.preferYouTubeDesktopSite.key:
+      let enabled = Preferences.General.preferYouTubeDesktopSite.value
+      tabManager.allTabs.forEach {
+        $0.browserData?.setScript(script: .youtubeDesktopCookie, enabled: enabled)
+      }
+      tabManager.reloadSelectedTab()
     case Preferences.Translate.translateEnabled.key:
       if let tab = tabManager.selectedTab {
         updateTranslateURLBar(tab: tab, state: .unavailable)
