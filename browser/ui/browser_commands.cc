@@ -334,7 +334,7 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
 
 void ToggleSidePanel(Browser* browser, SidePanelEntryId id) {
 #if defined(TOOLKIT_VIEWS)
-  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  SidePanelUI* side_panel_ui = SidePanelUI::From(browser);
   side_panel_ui->Toggle(SidePanelEntry::Key(id),
                         SidePanelOpenTrigger::kToolbarButton);
 #endif

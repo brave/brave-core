@@ -27,7 +27,6 @@
 #include "chrome/browser/pdf/pdf_extension_test_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -164,7 +163,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenAIChatSidePanel() {
-    auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+    auto* side_panel_ui = SidePanelUI::From(browser());
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     auto* side_panel = browser_view->side_panel();
@@ -353,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
-  auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* side_panel_ui = SidePanelUI::From(browser());
   side_panel_ui->Show(SidePanelEntryId::kChatUI);
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->side_panel();

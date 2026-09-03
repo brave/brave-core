@@ -14,7 +14,6 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -142,7 +141,8 @@ void BraveSidePanelHeaderController::OnLaunchButtonPressed(const GURL& url) {
 }
 
 void BraveSidePanelHeaderController::OnCloseButtonPressed() {
-  if (auto* side_panel_ui = browser_window_->GetFeatures().side_panel_ui()) {
+  if (auto* side_panel_ui =
+          SidePanelUI::From(base::to_address(browser_window_))) {
     side_panel_ui->Close();
   }
 }
