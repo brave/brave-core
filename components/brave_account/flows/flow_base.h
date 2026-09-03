@@ -16,6 +16,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
@@ -35,8 +36,9 @@ class Encryptor;
 namespace brave_account {
 
 // Shared plumbing for the `mojom::Authentication` flow helpers. Each flow
-// (`Login`, `LogOut`, `Register`, ...) derives `FlowBase` and reaches the
-// crypto, prefs, and request-sending helpers below by inheritance.
+// (`Login`, `LogOut`, `Register`, ...) derives `FlowBase` and reaches
+// `Encrypt()`/`Decrypt()`, `GetDecrypted*Token()`, `account_state_prefs_`, and
+// the `Send*Request()` helpers by inheritance.
 //
 // Request lifetime: flow-owned requests are parked in `in_flight_` and
 // cancelled by `~FlowBase`. A flow is a member of its owning state, so the

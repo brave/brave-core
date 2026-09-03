@@ -177,7 +177,7 @@ void ResetPassword::OnStep1(
             return mojom::ResetPasswordStep1Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedOut ==> LoggedOutWithVerification (no state swap).
   const bool success = result.has_value();
   std::move(callback).Run(std::move(result));
@@ -230,7 +230,7 @@ void ResetPassword::OnStep2(
             return mojom::ResetPasswordStep2Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedOutWithVerification ==> LoggedOutWithVerification (no state swap):
   // records the verified email.
   const bool success = result.has_value();
@@ -329,7 +329,7 @@ void ResetPassword::OnStep4(
             return mojom::ResetPasswordStep4Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedOutWithVerification ==> LoggedIn (state swap).
   const bool success = result.has_value();
   std::move(callback).Run(std::move(result));

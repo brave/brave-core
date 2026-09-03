@@ -185,7 +185,7 @@ void ChangePassword::OnStep1(
             return mojom::ChangePasswordStep1Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedIn ==> LoggedInWithVerification (no state swap): attaches a
   // verification slot to the existing logged-in state.
   const bool success = result.has_value();
@@ -241,7 +241,7 @@ void ChangePassword::OnStep2(
             return mojom::ChangePasswordStep2Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedInWithVerification ==> LoggedInWithVerification (no state swap):
   // records the verified email.
   const bool success = result.has_value();
@@ -324,7 +324,7 @@ void ChangePassword::OnStep4(
             return mojom::ChangePasswordStep4Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedInWithVerification ==> LoggedIn (no state swap): drops the
   // verification slot.
   const bool success = result.has_value();

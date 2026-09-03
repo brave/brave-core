@@ -77,7 +77,7 @@ void UpdateEmail::OnResponse(AuthValidate::Response response) {
     // Force logged-out (and stop polling) to prevent presenting invalid state
     // to the user and issuing invalid requests.
     //
-    // See `StateBase`'s class comment on ordering.
+    // See `FlowBase`'s class comment on ordering.
     // LoggedIn ==> LoggedOut (state swap).
     return account_state_prefs_->SetLoggedOut();
   }

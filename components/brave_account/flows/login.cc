@@ -165,7 +165,7 @@ void Login::OnStep2(mojom::Authentication::LoginStep2Callback callback,
             return mojom::LoginStep2Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedOut ==> LoggedIn (state swap).
   const bool success = result.has_value();
   std::move(callback).Run(std::move(result));

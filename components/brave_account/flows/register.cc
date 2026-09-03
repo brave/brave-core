@@ -176,7 +176,7 @@ void Register::OnStep2(mojom::Authentication::RegisterStep2Callback callback,
             return mojom::RegisterStep2Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedOut ==> LoggedOutWithVerification (no state swap).
   const bool success = result.has_value();
   std::move(callback).Run(std::move(result));
@@ -237,7 +237,7 @@ void Register::OnStep3(mojom::Authentication::RegisterStep3Callback callback,
             return mojom::RegisterStep3Result::New();
           });
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedOutWithVerification ==> LoggedIn (state swap).
   const bool success = result.has_value();
   std::move(callback).Run(std::move(result));

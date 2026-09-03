@@ -41,7 +41,7 @@ void LogOut::operator()() {
     SendUnownedRequest<AuthLogout>(std::move(request));
   }
 
-  // See `StateBase`'s class comment on ordering.
+  // See `FlowBase`'s class comment on ordering.
   // LoggedIn ==> LoggedOut (state swap).
   account_state_prefs_->SetLoggedOut();
 }
