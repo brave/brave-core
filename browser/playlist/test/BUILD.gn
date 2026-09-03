@@ -24,6 +24,7 @@ source_set("browser_tests") {
     sources += [
       "playlist_active_tab_tracker_browsertest.cc",
       "playlist_browsertest.cc",
+      "playlist_stream_playback_browsertest.cc",
     ]
 
     deps += [
@@ -47,6 +48,7 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//net",
     "//net:test_support",
+    "//services/network/public/cpp",
   ]
 
   if (is_android) {
