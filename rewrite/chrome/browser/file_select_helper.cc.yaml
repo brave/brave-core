@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Strip tracking metadata from uploaded images.
+
+      NotifyListenerAndEnd is the point where the chosen files are
+      handed to the renderer. Therefore we override this point to select the picked
+      JPEG files, and pass to our metadata stripping pipeline.
+    preempt_function_impl:
+      function_name: FileSelectHelper::NotifyListenerAndEnd
+      code: |-
+        if (brave::MaybeStripImageMetadataForUpload(
+                image_metadata_processed_, temporary_files_, list,
+                base::BindOnce(&FileSelectHelper::NotifyListenerAndEnd, this))) {
+          return;
+        }
