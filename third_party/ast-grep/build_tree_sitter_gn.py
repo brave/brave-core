@@ -32,9 +32,15 @@ TREE_SITTER_GN_SRC_DIR: Path = THIRD_PARTY / 'tree-sitter-gn-src'
 # `//brave/` makes every generated devtools file match, breaking `gn gen`.
 GN_OUT_DIR: Path = CHROMIUM_ROOT / 'out' / 'ast-grep-tree-sitter-gn'
 GN_LABEL = '//brave/third_party/ast-grep:tree_sitter_gn'
+GN_TEST_LABEL = '//brave/third_party/ast-grep:tree_sitter_gn_unittests'
+
+# Where the test looks for the installed grammar. This script owns the
+# per-platform naming, so GN is told rather than working it out again.
+_AST_GREP_DIR = AST_GREP_PLATFORM_DIR.relative_to(CHROMIUM_ROOT).as_posix()
 
 _GN_ARGS = ' '.join([
-    f'root_extra_deps = ["{GN_LABEL}"]',
+    f'root_extra_deps = ["{GN_LABEL}", "{GN_TEST_LABEL}"]',
+    f'ast_grep_dir = "{_AST_GREP_DIR}"',
     'is_debug = false',
     'symbol_level = 0',
     'use_siso = false',
@@ -68,7 +74,7 @@ customLanguages:
 
 
 def _compile() -> Path:
-    """Build `GN_LABEL` in `GN_OUT_DIR`, returning the shared library's path.
+    """Build the grammar and its test, returning the shared library's path.
     """
     gn = shutil.which('gn')
     if gn is None:
@@ -88,14 +94,26 @@ def _compile() -> Path:
                    cwd=CHROMIUM_ROOT)
 
     logging.info('Compiling tree-sitter-gn')
-    ninja_target = GN_LABEL.removeprefix('//')
-    subprocess.run(
-        [str(_NINJA), '-C', str(GN_OUT_DIR), ninja_target], check=True)
+    targets = [label.removeprefix('//') for label in (GN_LABEL, GN_TEST_LABEL)]
+    subprocess.run([str(_NINJA), '-C',
+                    str(GN_OUT_DIR), *targets],
+                   check=True)
 
     library = GN_OUT_DIR / _GN_LIBRARY_NAME
     if not library.is_file():
         raise RuntimeError(f'ninja finished but no library at {library}')
     return library
+
+
+def _run_test() -> None:
+    """Check ast-grep loads the freshly installed grammar.
+
+    Runs after installation, since the test scans with the `sgconfig.yml` and
+    library that land in `AST_GREP_PLATFORM_DIR`, not the build output.
+    """
+    test_bin = GN_OUT_DIR / f'tree_sitter_gn_unittests{_EXE}'
+    logging.info('Running %s', test_bin.name)
+    subprocess.run([str(test_bin)], check=True)
 
 
 def build(clean: bool = False) -> Path:
@@ -126,6 +144,8 @@ def build(clean: bool = False) -> Path:
     sgconfig_path.write_text(_SGCONFIG_TEMPLATE %
                              {'library_path': lib_rel.as_posix()},
                              newline='\n')
+
+    _run_test()
     return output
 
 

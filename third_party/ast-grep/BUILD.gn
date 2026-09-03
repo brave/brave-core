@@ -3,6 +3,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//testing/test.gni")
+
+declare_args() {
+  # This host's provisioned ast-grep install tree, relative to the source root.
+  # Set by `build_tree_sitter_gn.py`, which owns the per-platform naming.
+  ast_grep_dir = ""
+}
+
+assert(ast_grep_dir != "",
+       "ast_grep_dir must be set; build via build_tree_sitter_gn.py")
+
+if (host_os == "win") {
+  ast_grep_exe_suffix = ".exe"
+} else {
+  ast_grep_exe_suffix = ""
+}
+
 config("tree_sitter_gn_config") {
   include_dirs = [ "//brave/third_party/tree-sitter-gn-src/src" ]
 }
@@ -28,4 +45,26 @@ shared_library("tree_sitter_gn") {
     configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
     configs += [ "//build/config/gcc:symbol_visibility_default" ]
   }
+}
+
+# Checks that ast-grep can load the grammar `tree_sitter_gn` produces, once
+# `build_tree_sitter_gn.py` has installed it into `ast_grep_dir`.
+test("tree_sitter_gn_unittests") {
+  sources = [ "tree_sitter_gn_unittest.cc" ]
+  defines = [
+    "AST_GREP_BIN=\"$ast_grep_dir/bin/ast-grep$ast_grep_exe_suffix\"",
+    "AST_GREP_SGCONFIG=\"$ast_grep_dir/sgconfig.yml\"",
+  ]
+  data = [
+    "//$ast_grep_dir/bin/",
+    "//$ast_grep_dir/lib/",
+    "//$ast_grep_dir/sgconfig.yml",
+  ]
+  deps = [
+    "//base",
+    "//base/test:run_all_unittests",
+    "//base/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }
