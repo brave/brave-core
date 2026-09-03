@@ -12,9 +12,9 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
+#include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
@@ -56,8 +56,7 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
       TabContextMenuController* context_menu_controller,
       int tab_index) {
     auto model = std::make_unique<BraveTabMenuModel>(
-        context_menu_controller,
-        browser()->GetFeatures().tab_menu_model_delegate(),
+        context_menu_controller, TabMenuModelDelegate::From(browser()),
         browser()->tab_strip_model(), tab_index);
 
     auto* model_ptr = model.get();

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 0f89eff01970621556641ffd4647c0769bf57ddf..db05b91832fcef5507fffea3d82af8dfd319414c 100644
+index 8d1d695e7040761a00418ee388661319aa9a08c6..d2251070867f90a2e43fb7e28d0993a5fc4022f6 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-@@ -275,7 +275,7 @@ bool RegisterTransformers() {
+@@ -277,7 +277,7 @@ bool RegisterTransformers() {
  ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient()
      : resource_manager_(
            std::make_unique<ChromeComponentExtensionResourceManager>()),
@@ -11,7 +11,7 @@ index 0f89eff01970621556641ffd4647c0769bf57ddf..db05b91832fcef5507fffea3d82af8df
        event_router_forwarder_(base::MakeRefCounted<EventRouterForwarder>()) {
    AddAPIProvider(std::make_unique<CoreExtensionsBrowserAPIProvider>());
    AddAPIProvider(std::make_unique<ChromeExtensionsBrowserAPIProvider>());
-@@ -690,7 +690,7 @@ ChromeExtensionsBrowserClient::CreateUpdateClientConfigurator(
+@@ -692,7 +692,7 @@ ChromeExtensionsBrowserClient::CreateUpdateClientConfigurator(
        override_url = update_url;
      }
    }

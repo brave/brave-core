@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d0589082005266182 100644
+index 2e80bf517b821cd1913ffbf0147346e1c92e390d..60daec3deedd0c162af35eb08ea68fb54a34a930 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
 @@ -118,7 +118,8 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
@@ -12,7 +12,7 @@ index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d05890820
  
  // A console warning is shown when the opaque url returned from Protected
  // Audience/selectUrl is used to navigate an iframe. Since fenced frames are not
-@@ -183,7 +184,8 @@ BASE_FEATURE_PARAM(std::string,
+@@ -188,7 +189,8 @@ BASE_FEATURE_PARAM(std::string,
  
  // Enable background resource fetch in Blink. See https://crbug.com/1379780 for
  // more details.
@@ -22,7 +22,7 @@ index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d05890820
  BASE_FEATURE_PARAM(bool,
                     kBackgroundFontResponseProcessor,
                     &kBackgroundResourceFetch,
-@@ -637,7 +639,8 @@ BASE_FEATURE_PARAM(bool,
+@@ -635,7 +637,8 @@ BASE_FEATURE_PARAM(bool,
  // this feature does not automatically expose this element to the web, it only
  // allows the element to be enabled by the runtime enabled feature, for origin
  // trials.
@@ -32,7 +32,7 @@ index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d05890820
  
  // Enable sending event-level reports through reportEvent() in cross-origin
  // subframes. This requires opt-in both from the cross-origin subframe that is
-@@ -1461,6 +1464,7 @@ BASE_FEATURE_PARAM(
+@@ -1459,6 +1462,7 @@ BASE_FEATURE_PARAM(
      "low_pri_async_exec_opt_out_high_fetch_priority_hint",
      true);
  
@@ -40,7 +40,7 @@ index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d05890820
  BASE_FEATURE(kMixedContentAutoupgrade,
               "AutoupgradeMixedContent",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -1782,13 +1786,9 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1780,13 +1784,9 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     &kPreloadingEagerHoverHeuristics,
                     "hover_dwell_time",
                     base::Milliseconds(10));
@@ -56,7 +56,7 @@ index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d05890820
  BASE_FEATURE_PARAM(base::TimeDelta,
                     kPreloadingEagerViewportHeuristicsPresentTime,
                     &kPreloadingEagerViewportHeuristics,
-@@ -1900,6 +1900,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1898,6 +1898,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Reduce the amount of information in the default 'referer' header for
  // cross-origin requests.
@@ -64,7 +64,7 @@ index e72858e5ac41960cc1940317b74c3f63e89c290d..d2d89d77b8de59575b64a50d05890820
  BASE_FEATURE(kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Whether `blink::MemoryCache` and `blink::ResourceFetcher` release their
-@@ -2295,7 +2296,8 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
+@@ -2293,7 +2294,8 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
  
  // Changes behavior of User-Agent Client Hints to send blank headers when the
  // User-Agent string is overridden, instead of disabling the headers altogether.

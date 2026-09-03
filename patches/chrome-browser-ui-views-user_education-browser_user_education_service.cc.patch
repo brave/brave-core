@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/user_education/browser_user_education_service.cc b/chrome/browser/ui/views/user_education/browser_user_education_service.cc
-index ae6e385e60e3cc8e156bf3d4d1d30c5aad6e81f2..19adfd539ebac5dfc529d3f5095642ed7dd37702 100644
+index 5b12f2bca44b416f13fc5118ed7b609d81706def..71800a1633b19d693344ab0e93211587cba42aa5 100644
 --- a/chrome/browser/ui/views/user_education/browser_user_education_service.cc
 +++ b/chrome/browser/ui/views/user_education/browser_user_education_service.cc
 @@ -393,6 +393,7 @@ void MaybeRegisterChromeFeaturePromos(

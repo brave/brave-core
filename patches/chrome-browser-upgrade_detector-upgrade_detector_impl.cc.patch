@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index 75e155bf953d67a653eb5812bd7f200a83931f81..bfa631f3a7738410a0c2ea737541dbedcca97d9e 100644
+index 2805ed52e2e0c8c4cf7772609e4b4df0fe2fed2c..de1523d10f1bb485119ce95d5f9572a202cb3c13 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-@@ -220,6 +220,7 @@ void UpgradeDetectorImpl::DoCalculateThresholds() {
+@@ -222,6 +222,7 @@ void UpgradeDetectorImpl::DoCalculateThresholds() {
  
  void UpgradeDetectorImpl::StartOutdatedBuildDetector() {
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

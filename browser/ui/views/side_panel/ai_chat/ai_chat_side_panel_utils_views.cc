@@ -64,7 +64,7 @@ void ClosePanel(content::WebContents* web_contents) {
     return;
   }
 
-  if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
+  if (SidePanelUI* ui = SidePanelUI::From(browser)) {
     ui->Close();
   }
 }
@@ -79,7 +79,7 @@ void ClosePanelIfChatActive(content::WebContents* web_contents) {
     return;
   }
 
-  SidePanelUI* ui = browser->GetFeatures().side_panel_ui();
+  SidePanelUI* ui = SidePanelUI::From(browser);
   if (ui && ui->GetCurrentEntryId() == SidePanelEntryId::kChatUI) {
     ui->Close();
   }
@@ -233,7 +233,7 @@ void OpenConversationInSidePanel(Profile* profile,
   }
 
   // Window type without a side panel UI (not a normal browser window).
-  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  SidePanelUI* side_panel_ui = SidePanelUI::From(browser);
   if (!side_panel_ui) {
     return;
   }

@@ -28,7 +28,6 @@
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/download/offline_item_model_manager_factory.h"
 #include "chrome/browser/offline_items_collection/offline_content_aggregator_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/download/download_display.h"
 #include "chrome/common/chrome_switches.h"
@@ -333,7 +332,7 @@ class DownloadDisplayControllerTest : public testing::Test {
     display_ = std::make_unique<FakeDownloadDisplay>();
     auto window = std::make_unique<TestBrowserWindow>();
     BrowserWindowCreateParams params(profile_, true);
-    params.type = Browser::TYPE_NORMAL;
+    params.type = BrowserWindowInterface::TYPE_NORMAL;
     params.window = window.release();
     browser_ = DeprecatedCreateOwnedBrowserWindowForTesting(std::move(params));
     bubble_controller_ = std::make_unique<DownloadBubbleUIController>(
@@ -349,7 +348,7 @@ class DownloadDisplayControllerTest : public testing::Test {
     mock_update_service_.reset();
   }
 
-  Browser* browser() { return browser_.get(); }
+  BrowserWindowInterface* browser() { return browser_.get(); }
 
  protected:
   download::MockDownloadItem& item(size_t index) { return *items_[index]; }
@@ -529,7 +528,7 @@ class DownloadDisplayControllerTest : public testing::Test {
   std::unique_ptr<DownloadBubbleUIController> bubble_controller_;
   TestingProfileManager testing_profile_manager_;
   raw_ptr<Profile> profile_;
-  std::unique_ptr<Browser> browser_;
+  std::unique_ptr<BrowserWindowInterface> browser_;
   raw_ptr<MockDownloadCoreService> mock_download_core_service_;
   std::unique_ptr<ChromeDownloadManagerDelegate> delegate_;
 };

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index c3d782dce51966627fc040fc063f2b734db26b59..b8c3b7a7b7be575c55cac0eb0bb2b81d85b50211 100644
+index c6402b9f7d83a67bce29375fef8183d0ecca138f..fcc4ff266a1514976844cd893af83008ab3814e4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -710,7 +710,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
@@ -11,7 +11,7 @@ index c3d782dce51966627fc040fc063f2b734db26b59..b8c3b7a7b7be575c55cac0eb0bb2b81d
                              this,
                              mBottomContainer,
                              windowAndroid,
-@@ -3396,6 +3396,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -3405,6 +3405,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
       */
      public void onExitVr() {}
  

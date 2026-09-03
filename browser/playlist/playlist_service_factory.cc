@@ -46,7 +46,6 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -115,7 +114,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
             return true;
           }
 
-          auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
+          auto* side_panel_ui = SidePanelUI::From(browser);
           if (!side_panel_ui || side_panel_ui->GetCurrentEntryId() !=
                                     SidePanelEntryId::kPlaylist) {
             return true;

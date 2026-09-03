@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Force the cookie controls icon to stay hidden, in Update.
+
+      Brave blocks third-party cookies via Shields, so the upstream cookie
+      controls page action is redundant. GetCookieControlsIconState has no
+      side effects, so skipping it is safe. `status` stays in use here for
+      the OnStatusChanged call just below. Anchoring on the `GetStatus(
+      web_contents)` call (rather than `GetStatus(GetWebContents())`, as in
+      UpdateCookieControlsIcon below) is what makes this substitution unique
+      to Update.
+    regex:
+      pattern: |-
+        auto status = GetStatus(web_contents);
+          const CookieControlsState icon_state =
+              GetCookieControlsIconState(status.controls_state);
+      replace: |-
+        auto status = GetStatus(web_contents);
+          const CookieControlsState icon_state = CookieControlsState::kHidden;
+
+  - description: |-
+      Force the cookie controls icon to stay hidden, in
+      UpdateCookieControlsIcon.
+
+      Same reasoning as the Update() substitution above, but `status` has no
+      other use in this function once GetCookieControlsIconState's call is
+      dropped, so the now-unused `auto status = GetStatus(...)` line goes
+      with it to avoid an unused-variable build error.
+    regex:
+      pattern: |-
+        auto status = GetStatus(GetWebContents());
+          const CookieControlsState icon_state =
+              GetCookieControlsIconState(status.controls_state);
+      replace:
+        'const CookieControlsState icon_state = CookieControlsState::kHidden;'

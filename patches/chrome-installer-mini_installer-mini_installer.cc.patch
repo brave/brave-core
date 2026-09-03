@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 6c1cf196a2fbec57de2e4a301ad213de8158d2ac..1662019b86a67267aee7f733d790e2031f3264bf 100644
+index c37d8d1409b309740c917a9e957d8b199f7ddec5..0906f4c64889917b7eae7924806a5bb7c46aec34 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -459,6 +459,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
+@@ -449,6 +449,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
    }
  #endif  // defined(COMPONENT_BUILD)
  
@@ -17,8 +17,8 @@ index 6c1cf196a2fbec57de2e4a301ad213de8158d2ac..1662019b86a67267aee7f733d790e203
 +  BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY
  
    // There could be three full paths in the command line for setup.exe (path
-   // to exe itself, path to archive and path to log file), so we declare
-@@ -496,6 +498,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+   // to exe itself, path to mini_installer and path to log file), so we declare
+@@ -499,6 +501,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -26,7 +26,7 @@ index 6c1cf196a2fbec57de2e4a301ad213de8158d2ac..1662019b86a67267aee7f733d790e203
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -726,6 +729,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -725,6 +728,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code)) {
      return exit_code;
    }
@@ -34,9 +34,9 @@ index 6c1cf196a2fbec57de2e4a301ad213de8158d2ac..1662019b86a67267aee7f733d790e203
  
    int max_delete_attempts = 0;
    PathString setup_path;
-@@ -735,6 +739,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -734,6 +738,7 @@ ProcessExitResult WMain(HMODULE module) {
    exit_code =
-       UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
+       UnpackBinaryResources(module, base_path.get(), setup_path, archive_name,
                              archive_type, max_delete_attempts);
 +  BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE
  

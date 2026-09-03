@@ -1,9 +1,9 @@
-diff --git a/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h b/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h
-index 85c32a2260816d0d4510ac23f9c2421168e12a93..9d7716efaf9e0fccbb4dfc5b48ecf04596a0d65a 100644
---- a/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h
-+++ b/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h
-@@ -47,11 +47,12 @@ class HorizontalTabStyleViews : public TabStyleViews {
-   GlowHoverController* GetHoverControllerForTesting() override;
+diff --git a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h
+index 7c4998c649fec42249fb58c647d1de940de880eb..1bd6df2696fb9e01dff6982b9b81f688561a475a 100644
+--- a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h
++++ b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.h
+@@ -50,11 +50,12 @@ class HorizontalTabStyleViews : public TabStyleViews {
+   TabStyle::SeparatorOpacities GetSeparatorOpacitiesForTesting() const override;
  
   private:
 +  friend class BraveVerticalTabStyle;
@@ -16,7 +16,7 @@ index 85c32a2260816d0d4510ac23f9c2421168e12a93..9d7716efaf9e0fccbb4dfc5b48ecf045
        TabStyle::TabSelectionState selection_state,
        bool hovered) const;
  
-@@ -72,7 +73,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
+@@ -75,7 +76,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
    // Returns a single separator's opacity based on whether it is the
    // logically `leading` separator. `for_layout` has the same meaning as in
    // GetSeparatorOpacities().
@@ -25,7 +25,7 @@ index 85c32a2260816d0d4510ac23f9c2421168e12a93..9d7716efaf9e0fccbb4dfc5b48ecf045
  
    // Helper that returns an interpolated opacity if the tab or its neighbor
    // `other_tab` is mid-hover-animation. Used in almost all cases when a
-@@ -85,7 +86,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
+@@ -88,7 +89,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
    // Gets the bounds for the leading and trailing separators for a tab.
@@ -34,7 +34,7 @@ index 85c32a2260816d0d4510ac23f9c2421168e12a93..9d7716efaf9e0fccbb4dfc5b48ecf045
  
    // Returns the opacities of the separators. If `for_layout` is true, returns
    // the "layout" opacities, which ignore the effects of surrounding tabs' hover
-@@ -93,7 +94,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
+@@ -96,7 +97,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
    TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
  
    // Returns whether the mouse is currently hovering this tab.

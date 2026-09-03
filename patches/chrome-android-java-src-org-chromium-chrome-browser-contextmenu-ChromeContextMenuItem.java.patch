@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index a93f09476aef8ee2095ff99947f8231c25505fe8..ef396365b312ace6c1de1c7835de361c220dd59a 100644
+index 2bb3fa92d384aebdde8aa593a9d4027a62cbe1fe..52444c5da3b4684ca8d76d7ebca2953f5c957fc4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -91,7 +91,8 @@ class ChromeContextMenuItem {
+@@ -92,7 +92,8 @@ class ChromeContextMenuItem {
          Item.SEND_TAB_TO_SELF,
          Item.TRANSLATE,
          Item.CREATE_QR_CODE,
@@ -12,7 +12,7 @@ index a93f09476aef8ee2095ff99947f8231c25505fe8..ef396365b312ace6c1de1c7835de361c
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -160,8 +161,9 @@ class ChromeContextMenuItem {
+@@ -161,8 +162,9 @@ class ChromeContextMenuItem {
          int TRANSLATE = 51;
          int CREATE_QR_CODE = 52;
          int ASK_GEMINI = 53;
@@ -23,7 +23,7 @@ index a93f09476aef8ee2095ff99947f8231c25505fe8..ef396365b312ace6c1de1c7835de361c
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -220,6 +222,7 @@ class ChromeContextMenuItem {
+@@ -221,6 +223,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_translate, // Item.TRANSLATE
          R.id.contextmenu_create_qr_code, // Item.CREATE_QR_CODE
          R.id.contextmenu_ask_gemini, // Item.ASK_GEMINI
@@ -31,7 +31,7 @@ index a93f09476aef8ee2095ff99947f8231c25505fe8..ef396365b312ace6c1de1c7835de361c
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -278,6 +281,7 @@ class ChromeContextMenuItem {
+@@ -279,6 +282,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_translate, // Item.TRANSLATE
          R.string.contextmenu_create_qr_code, // Item.CREATE_QR_CODE
          R.string.glic_button_entrypoint_ask_gemini_label, // Item.ASK_GEMINI

@@ -52,10 +52,3 @@ substitutions:
         const ExclusiveAccessManager* exclusive_access_manager() const {
           return exclusive_access_manager_.get();
         }
-
-  - description: 'Declare a const overload of side_panel_ui().'
-    regex:
-      pattern: 'SidePanelUI* side_panel_ui();'
-      replace: |-
-        SidePanelUI* side_panel_ui();
-          const SidePanelUI* side_panel_ui() const;

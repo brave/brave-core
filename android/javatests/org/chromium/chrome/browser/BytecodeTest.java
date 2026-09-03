@@ -1112,6 +1112,7 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         boolean.class,
+                        boolean.class,
                         int.class));
         Assert.assertTrue(
                 methodExists(
@@ -2097,7 +2098,6 @@ public class BytecodeTest {
                         Bundle.class,
                         PersistableBundle.class,
                         MultiInstanceManager.class,
-                        NonNullObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         EdgeToEdgeManager.class,
                         MonotonicObservableSupplier.class,

@@ -24,7 +24,7 @@ substitutions:
       Nullify toast controller in CloseTab() not to show toast when closing a
       pinned tab
     regex:
-      re_pattern: (void CloseTab\(.*?toast_controller\(\);)
+      re_pattern: (void CloseTab\(.*?ToastController::From\(browser\);)
       re_flags: [DOTALL]
       replace: \1\n  toast_controller = nullptr;
 

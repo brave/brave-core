@@ -1,0 +1,37 @@
+diff --git a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
+index ea5199ed41b877e02ef3b084217d4e8539b802dd..28a7c6d8eac4210eca6bf6db571b84c92204d944 100644
+--- a/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
++++ b/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc
+@@ -224,6 +224,7 @@ SkPath HorizontalTabStyleViews::GetPath(TabStyle::PathType path_type,
+     extension_corner_radius -= 0.5f * stroke_adjustment;
+   }
+ 
++  extension_corner_radius = 0;
+   float left_extension_corner_radius = extension_corner_radius;
+   if (delegate_->IsLeftSplitTab()) {
+     top_right_corner_radius = 0;
+@@ -864,18 +865,22 @@ void HorizontalTabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
+                                                    SK_AlphaOPAQUE));
+   };
+ 
++  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
++  // will be approximated with color, although extremely subtle and
++  // likely only on screens >= 2x (i.e. separator width is 2+px)!
++  const int separator_radius = separator_bounds.leading.width() / 2;
+   cc::PaintFlags flags;
+   flags.setAntiAlias(true);
+   if (separator_opacities.left > 0) {
+     flags.setColor(separator_color(separator_opacities.left));
+     canvas->DrawRoundRect(separator_bounds.leading,
+-                          tab_style()->GetSeparatorCornerRadius() * scale,
++                          separator_radius,
+                           flags);
+   }
+   if (separator_opacities.right > 0) {
+     flags.setColor(separator_color(separator_opacities.right));
+     canvas->DrawRoundRect(separator_bounds.trailing,
+-                          tab_style()->GetSeparatorCornerRadius() * scale,
++                          separator_radius,
+                           flags);
+   }
+ }

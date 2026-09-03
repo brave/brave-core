@@ -8,7 +8,7 @@ import type { SearchOptions } from './search-chromium.js'
 import type { ItemData, SplitViewData, TabData } from './tab_data.js'
 import { TabData as TabDataClass } from './tab_data.js'
 
-export type { OptionKeyObject, SearchOptions } from './search-chromium.js'
+export type { OptionKeyObject, Range, SearchOptions } from './search-chromium.js'
 
 // Lets BraveTabSearchPageElement inject semantic matches into the open-tab
 // list without patching upstream's `updateFilteredTabs_`.

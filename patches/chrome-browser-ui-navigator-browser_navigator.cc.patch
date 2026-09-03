@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index e762162e5f104f7dfbe514063adcff90131f6800..ea987246f5cd2526bde160fdcef96151321c3f07 100644
+index d3667627f957d8b380910ddd09c31f152e3b271f..91b8aefe937d8fca62a452025f458e59b442904f 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -193,6 +193,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
+@@ -197,6 +197,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
  // Returns true on success. Otherwise, if changing params leads the browser
  // into an erroneous state, returns false.
  bool AdjustNavigateParamsForURL(NavigateParams* params) {
@@ -10,7 +10,7 @@ index e762162e5f104f7dfbe514063adcff90131f6800..ea987246f5cd2526bde160fdcef96151
    // Check for some chrome:// pages which we always want to open in a
    // non-incognito window. Note that even though a ChromeOS guest session is
    // technically an incognito window, these URLs are allowed.
-@@ -485,7 +486,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+@@ -489,7 +490,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
    scoped_refptr<content::SiteInstance> initial_site_instance_for_new_contents =
        params.opener ? params.opener->GetSiteInstance()
                      : tab_util::GetSiteInstanceForNewTab(
@@ -23,7 +23,7 @@ index e762162e5f104f7dfbe514063adcff90131f6800..ea987246f5cd2526bde160fdcef96151
  
    WebContents::CreateParams create_params(
        params.browser->GetProfile(), initial_site_instance_for_new_contents);
-@@ -868,6 +873,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -872,6 +877,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
           params->user_gesture)) {
        tab_to_insert->set_opener(
            tabs::TabInterface::MaybeGetFromContents(params->source_contents));
@@ -33,7 +33,7 @@ index e762162e5f104f7dfbe514063adcff90131f6800..ea987246f5cd2526bde160fdcef96151
      }
    }
  
-@@ -885,6 +893,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -889,6 +897,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
             params->user_gesture)) {
          tab_to_insert->set_opener(
              tabs::TabInterface::MaybeGetFromContents(params->source_contents));

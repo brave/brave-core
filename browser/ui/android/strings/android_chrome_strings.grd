@@ -5071,8 +5071,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PDF_CANNOT_EDIT_PDF" desc="Toast message shown when a PDF document cannot be edited.">
         Cannot edit PDF
       </message>
-      <message name="IDS_PDF_DRAW" desc="Accessibility label and content description for the draw button to annotate a PDF.">
+      <message name="IDS_PDF_DRAW" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the draw button to annotate a PDF.">
         Draw
+      </message>
+      <message name="IDS_PDF_PAGE_NUMBER" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the current page in the PDF toolbar.">
+        Page <ph name="CURRENT_PAGE">%1$d<ex>1</ex></ph> of <ph name="TOTAL_PAGE_COUNT">%2$d<ex>10</ex></ph>
       </message>
 
       <!-- Accessibility -->
@@ -5086,6 +5089,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
+      </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_AI_OVERLAY_MIC" desc="Content description for the AI Overlay Microphone button." translateable="false">
+        TTC
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_COMPOSEPLATE" is_accessibility_with_no_ui="true" desc="Content description for the composeplate.">
         Start search
@@ -5904,6 +5910,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TWA_CLEAR_DATA_SITE_SELECTION_TITLE" desc="Title of screen showing the sites linked to TWA, allowing the user to clean data in any of them.">
         Linked sites
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TITLE" desc="Title for the notification sent after a TWA app is uninstalled">
+        <ph name="APP_NAME">%1$s<ex>YouTube</ex></ph> was uninstalled
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TITLE_GENERIC" desc="Title for the notification sent after a TWA app is uninstalled when the app name is unknown">
+        App was uninstalled
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TEXT" desc="Text for the notification sent after a TWA app is uninstalled">
+        Tap to delete browsing data in Brave
       </message>
 
       <message name="IDS_WEBAPP_TAP_TO_COPY_URL" desc="Message on the notification that indicates that taping it will copy a Web App's URL into the clipboard.">

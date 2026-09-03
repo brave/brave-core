@@ -527,7 +527,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 void BraveBrowserView::ToggleSidebar() {
-  browser_->GetFeatures().side_panel_ui()->Toggle();
+  SidePanelUI::From(browser_)->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {

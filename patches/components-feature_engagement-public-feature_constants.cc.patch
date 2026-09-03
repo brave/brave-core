@@ -1,11 +1,11 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d91922eba 100644
+index e44630c808775485e14cf96571c6182c8c6975cd..57da1896f9e73bd071e5a14cc3c90b8b2608c328 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -74,9 +74,10 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
  BASE_FEATURE(kIPHDesktopRealboxContextualSearchFeature,
               "IPH_DesktopRealboxContextualSearchFeature",
-              base::FEATURE_DISABLED_BY_DEFAULT);
+              base::FEATURE_ENABLED_BY_DEFAULT);
 +// kIPHDiscardRingFeature feature state is enforced via plaster rewrite.
  BASE_FEATURE(kIPHDiscardRingFeature,
               "IPH_DiscardRing",
@@ -107,6 +107,6 @@ index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3ccb07ef2d1c340b129473eed086f20d
               "IPH_AutofillAccountNameEmailSuggestion",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kIPHAutofillAiOptInFeature,
-              "IPH_AutofillAiOptIn",
+ BASE_FEATURE(kIPHAutofillAiValuablesFeature,
+              "IPH_AutofillAiValuables",
               base::FEATURE_ENABLED_BY_DEFAULT);

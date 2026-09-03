@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index e08d8f81ab59f2cb51b8eb8ef4deeed24a7c5c16..e75854eb07e6367d9e6e763547775a92fceb6c1d 100644
+index 5e7b84d0ef7ae938634c13e71119149912f2000d..56c605d0de55edf75df81e177f6b522793018c98 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
 @@ -495,7 +495,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
@@ -51,7 +51,7 @@ index e08d8f81ab59f2cb51b8eb8ef4deeed24a7c5c16..e75854eb07e6367d9e6e763547775a92
 @@ -1491,6 +1503,7 @@ void CloseTab(BrowserWindowInterface* browser) {
  #endif
  
-   ToastController* toast_controller = browser->GetFeatures().toast_controller();
+   ToastController* toast_controller = ToastController::From(browser);
 +  toast_controller = nullptr;
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);

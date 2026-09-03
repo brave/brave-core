@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 562496763d418d8e0d897a269ff3e3c7285030dc..eed1e0fa683f519bba9149d26cdd07f7a1d5e854 100644
+index 74bc0b00aab56d070df3e46fda9f55c65daa4787..67de4d2731185f052df856dc44c029f9fd4c7c56 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -293,29 +293,29 @@ class AppBrowserController;
+@@ -288,29 +288,29 @@ class AppBrowserController;
  // Do not add more public accessors. Instead use the UnownedUserData design
  // pattern, see ui/base/unowned_user_data/README.md.
  // TODO(crbug.com/481268779a): Remove existing public accessors.
@@ -27,8 +27,8 @@ index 562496763d418d8e0d897a269ff3e3c7285030dc..eed1e0fa683f519bba9149d26cdd07f7
  
    // Called exactly once to initialize features that depend on the window object
    // being created.
--  void InitPostWindowConstruction(Browser* browser);
-+  virtual void InitPostWindowConstruction(Browser* browser);
+-  void InitPostWindowConstruction(BrowserWindowInterface* browser);
++  virtual void InitPostWindowConstruction(BrowserWindowInterface* browser);
  
    // Called exactly once to initialize features that depend on the view
    // hierarchy in BrowserView.
@@ -41,15 +41,7 @@ index 562496763d418d8e0d897a269ff3e3c7285030dc..eed1e0fa683f519bba9149d26cdd07f7
  
    ui::AcceleratorProvider* accelerator_provider() {
      return accelerator_provider_;
-@@ -390,6 +390,7 @@ class BrowserWindowFeatures {
-   // of this class, we use lowercase_with_underscores even though the
-   // implementation is not inlined.
-   SidePanelUI* side_panel_ui();
-+  const SidePanelUI* side_panel_ui() const;
- 
-   SigninViewController* signin_view_controller() {
-     return signin_view_controller_.get();
-@@ -413,7 +414,12 @@ class BrowserWindowFeatures {
+@@ -386,7 +386,12 @@ class BrowserWindowFeatures {
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
    GetUserDataFactoryForTesting();
  
