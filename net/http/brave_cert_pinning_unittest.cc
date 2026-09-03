@@ -16,6 +16,7 @@
 #include "base/test/task_environment.h"
 #include "base/threading/platform_thread.h"
 #include "base/time/time.h"
+#include "build/build_config.h"
 #include "net/base/net_errors.h"
 #include "net/base/request_priority.h"
 #include "net/cert/caching_cert_verifier.h"
@@ -23,6 +24,8 @@
 #include "net/cert/coalescing_cert_verifier.h"
 #include "net/cert_net/cert_net_fetcher_url_request.h"
 #include "net/net_buildflags.h"
+#include "net/proxy_resolution/proxy_config_service_fixed.h"
+#include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request.h"
 #include "net/url_request/url_request_context.h"
@@ -58,6 +61,7 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
   void SetUp() override {
     // Build a minimal context for the fetcher's own requests (AIA, OCSP, CRL).
     net::URLRequestContextBuilder fetcher_builder;
+    SetDirectProxyConfig(fetcher_builder);
     fetcher_context_ = fetcher_builder.Build();
 
     // Create the fetcher and wire it to the fetcher context.
@@ -75,7 +79,21 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     builder.SetCertVerifier(std::make_unique<net::CachingCertVerifier>(
         std::make_unique<net::CoalescingCertVerifier>(
             std::move(base_verifier))));
+    SetDirectProxyConfig(builder);
     context_ = builder.Build();
+  }
+
+  // On Linux/ChromeOS/Android, URLRequestContextBuilder does not create a
+  // default system ProxyConfigService (see url_request_context_builder.cc),
+  // so Build() DCHECKs unless one is supplied. Windows/Mac already get a real
+  // system proxy config service from the builder, so leave those alone.
+  static void SetDirectProxyConfig(net::URLRequestContextBuilder& builder) {
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+    builder.set_proxy_config_service(
+        std::make_unique<net::ProxyConfigServiceFixed>(
+            net::ProxyConfigWithAnnotation::CreateDirect()));
+#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) ||
+        // BUILDFLAG(IS_ANDROID)
   }
 
   // Performs a single GET request to the host and checks if the pinning
