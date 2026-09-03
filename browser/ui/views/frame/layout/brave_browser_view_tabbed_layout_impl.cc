@@ -305,7 +305,7 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   UpdateInsetsForVerticalTabStrip();
   delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
 
-  if (delegate().ShouldDrawVerticalTabStrip()) {
+  if (delegate().GetTabStripType() == TabStripType::kVertical) {
     return;
   }
 
@@ -647,8 +647,8 @@ bool BraveBrowserViewTabbedLayoutImpl::IsContentsAtTopEdge() const {
   // occupying the top edge when the top container is still a child of the
   // browser view.
   if (IsParentedTo(views().top_container, views().browser_view)) {
-    if (delegate().ShouldDrawTabStrip() || delegate().IsToolbarVisible() ||
-        delegate().IsBookmarkBarVisible()) {
+    if (delegate().GetTabStripType() != TabStripType::kNone ||
+        delegate().IsToolbarVisible() || delegate().IsBookmarkBarVisible()) {
       return false;
     }
   }
