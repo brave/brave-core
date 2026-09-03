@@ -81,6 +81,7 @@ source_set("unit_tests") {
     "playlist_constants_unittest.cc",
     "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
+    "playlist_media_session_observer_unittest.cc",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",
     "playlist_unittest_base.cc",
@@ -96,7 +97,10 @@ source_set("unit_tests") {
     "//components/pref_registry",
     "//content/test:test_support",
     "//net",
+    "//services/media_session/public/cpp",
+    "//services/media_session/public/mojom",
     "//services/network/public/mojom",
+    "//ui/gfx/geometry",
     "//url",
   ]
 
