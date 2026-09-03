@@ -58,11 +58,6 @@ BASE_FEATURE(kBraveForgetFirstPartyStorage,
 BASE_FEATURE(kBraveProvisionalTLDEphemeralLifetime,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::FeatureParam<int>
-    kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds = {
-        &kBraveForgetFirstPartyStorage,
-        "BraveForgetFirstPartyStorageStartupCleanupDelayInSeconds", 5};
-
 const base::FeatureParam<bool> kBraveForgetFirstPartyStorageByDefault = {
     &kBraveForgetFirstPartyStorage, "BraveForgetFirstPartyStorageByDefault",
     false};
