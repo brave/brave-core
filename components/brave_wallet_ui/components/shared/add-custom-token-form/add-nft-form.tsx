@@ -46,6 +46,7 @@ import { NetworksDropdown } from '../dropdowns/networks_dropdown'
 import { FormErrorsList } from './form-errors-list'
 import { NftIcon } from '../nft-icon/nft-icon'
 import { InfoIconTooltip } from '../info_icon_tooltip/info_icon_tooltip'
+import { NumberInput } from '../number_input/number_input'
 
 // styles
 import {
@@ -495,14 +496,13 @@ export const AddNftForm = (props: Props) => {
         {customAssetsNetwork
           && customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL && (
             <FullWidthFormColumn>
-              <Input
+              <NumberInput
                 value={
                   customTokenID
                     ? new Amount(customTokenID).format(undefined, false)
                     : ''
                 }
                 onInput={handleTokenIDChanged}
-                type='number'
                 placeholder={getLocale(S.BRAVE_WALLET_EXEMPLI_GRATIA).replace(
                   '$1',
                   '1234',
@@ -520,7 +520,7 @@ export const AddNftForm = (props: Props) => {
                     text={getLocale(S.BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID)}
                   />
                 </Row>
-              </Input>
+              </NumberInput>
             </FullWidthFormColumn>
           )}
 

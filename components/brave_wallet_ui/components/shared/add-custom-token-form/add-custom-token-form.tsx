@@ -33,6 +33,7 @@ import {
 import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
 import { NetworksDropdown } from '../dropdowns/networks_dropdown'
+import { NumberInput } from '../number_input/number_input'
 
 // styles
 import {
@@ -404,16 +405,15 @@ export const AddCustomTokenForm = (props: Props) => {
             </Input>
           </FormColumn>
           <FormColumn>
-            <Input
+            <NumberInput
               value={decimals}
               onInput={handleTokenDecimalsChanged}
               disabled={isDecimalDisabled}
-              type='number'
             >
               <InputLabel>
                 {getLocale(S.BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS)}
               </InputLabel>
-            </Input>
+            </NumberInput>
           </FormColumn>
         </FormRow>
 

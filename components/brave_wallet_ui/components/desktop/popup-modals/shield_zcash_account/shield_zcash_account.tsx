@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import Input from '@brave/leo/react/input'
 import Button from '@brave/leo/react/button'
 
 // Slices
@@ -37,6 +36,7 @@ import {
   CollapseIcon,
 } from './shield_zcash_account.style'
 import { Column, Text, Row } from '../../../shared/style'
+import { NumberInput } from '../../../shared/number_input/number_input'
 
 const MIN_ACCOUNT_BIRTHDAY_BLOCK = 1687104
 
@@ -235,9 +235,8 @@ export const ShieldZCashAccountModal = (props: Props) => {
                 >
                   {getLocale(S.BRAVE_WALLET_SHIELDED_ACCOUNT_BIRTHDAY_BLOCK)}
                 </Text>
-                <Input
+                <NumberInput
                   size='small'
-                  type='number'
                   value={customBirthdayBlock}
                   onInput={(e) => setCustomBirthdayBlock(e.value)}
                   showErrors={invalidBirthdayBlock}
