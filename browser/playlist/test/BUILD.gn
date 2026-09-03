@@ -70,6 +70,7 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "media_stream_classifier_unittest.cc",
     "mime_util_unittest.cc",
     "mock_playlist_render_frame_observer_configurator.cc",
     "mock_playlist_render_frame_observer_configurator.h",
@@ -77,6 +78,7 @@ source_set("unit_tests") {
     "mock_playlist_service_observer.h",
     "playlist_background_web_contents_helper_unittest.cc",
     "playlist_background_web_contents_unittest.cc",
+    "playlist_constants_unittest.cc",
     "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
     "playlist_p3a_unittest.cc",
@@ -93,6 +95,9 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/pref_registry",
     "//content/test:test_support",
+    "//net",
+    "//services/network/public/mojom",
+    "//url",
   ]
 
   if (is_android) {

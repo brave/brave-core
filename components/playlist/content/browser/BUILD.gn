@@ -16,6 +16,8 @@ static_library("browser") {
     "media_detector_component_installer.h",
     "media_detector_component_manager.cc",
     "media_detector_component_manager.h",
+    "media_stream_classifier.cc",
+    "media_stream_classifier.h",
     "mime_util.cc",
     "mime_util.h",
     "playlist_background_web_contents_helper.cc",
