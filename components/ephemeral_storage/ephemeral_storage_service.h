@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -43,6 +44,8 @@ class BrowserContext;
 namespace permissions {
 class PermissionLifetimeManagerBrowserTest;
 }
+
+class ScopedListPrefUpdate;
 
 namespace ephemeral_storage {
 
@@ -133,14 +136,6 @@ class EphemeralStorageService : public KeyedService {
                                bool cleanup_first_party_storage_area,
                                bool cleanup_browsing_history_for_tld);
 
-  // If a website was closed, but not yet cleaned-up because of storage lifetime
-  // keepalive, we store the origin into a pref to perform a cleanup on browser
-  // startup. It's impossible to do a cleanup on shutdown, because the process
-  // is asynchronous and cannot block the browser shutdown.
-  void ScheduleFirstPartyStorageAreasCleanupOnStartup();
-  // Cleans up the stored areas whose keepalive already elapsed and leaves the
-  // rest scheduled for CleanupOnStartup().
-  void CleanupExpiredFirstPartyStorageAreasOnStartup();
   void CleanupOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
   // Cleans up an area that was queued for cleanup in prefs, i.e. its keepalive
@@ -149,9 +144,11 @@ class EphemeralStorageService : public KeyedService {
       const GURL& url,
       const content::StoragePartitionConfig& storage_partition_config,
       const std::optional<brave_shields::mojom::AutoShredMode>&
-          auto_shred_mode);
+          auto_shred_mode, base::OnceClosure callback);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
+
+  void SetUpdateFirstPartyStorageOriginToCleanUp(bool do_nothing);
 
   size_t FireCleanupTimersForTesting();
 
@@ -159,6 +156,10 @@ class EphemeralStorageService : public KeyedService {
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<EphemeralStorageServiceDelegate> delegate_;
   raw_ptr<PrefService> prefs_ = nullptr;
+  base::RepeatingCallback<void(ScopedListPrefUpdate&,
+                               const GURL&,
+                               const content::StoragePartitionConfig&)>
+      update_fp_storage_origins_to_cleanup_;
   // These patterns are removed on service Shutdown.
   base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
 

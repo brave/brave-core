@@ -113,6 +113,7 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {
+  LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::~EphemeralStorageTabHelper  url:" << (web_contents() ? web_contents()->GetURL().spec() : "n/a");
 #if BUILDFLAG(IS_ANDROID)
   // Always remove observer in destructor using the stored TabModel pointer.
   // We can't rely on web_contents() here as it may already be destroyed.
@@ -137,20 +138,19 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup(
   }
 }
 
-void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady(base::OnceClosure pre_reload_callback) {
+void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady() {
    auto& controller = web_contents()->GetController();
-  if (controller.GetPendingEntry() || controller.NeedsReload()) {
+  if (controller.GetPendingEntry()
+      //|| controller.NeedsReload()
+    ) {
     LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady #100 url:" << web_contents()->GetURL();
-    if(!reload_on_ready_callback_.is_null()) {
-      LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady Owerwritten #500 url:" << web_contents()->GetURL();
-    }
     reload_on_ready_callback_ =
         base::BindOnce(&EphemeralStorageTabHelper::ReloadBypassingCache,
-                       weak_factory_.GetWeakPtr(), std::move(pre_reload_callback));
+                       weak_factory_.GetWeakPtr());
     return;
   }
   LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady #200 url:" << web_contents()->GetURL();
-  ReloadBypassingCache(std::move(pre_reload_callback));
+  ReloadBypassingCache();
 }
 
 void EphemeralStorageTabHelper::DidStartNavigation(
@@ -184,33 +184,21 @@ void EphemeralStorageTabHelper::DidFinishNavigation(
   // is created in ReadyToCommitNavigation().
   provisional_tld_ephemeral_lifetimes_.clear();
 
-   if (reload_on_ready_callback_) {
-    // Cancel this navigation (which may be about to serve a stale response
-    // preferring cache, e.g. a tab restore) and reload it bypassing the
-    // cache. NavigationController::Reload() can't be called re-entrantly
-    // from here (DidStartNavigation() runs synchronously from within
-    // NavigateToExistingPendingEntry()), so post it instead.
-    
-    // base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-    //     FROM_HERE, base::BindOnce(&EphemeralStorageTabHelper::ReloadBypassingCache,
-    //                               weak_factory_.GetWeakPtr()));
-
-    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::DidFinishNavigation url:" << navigation_handle->GetURL();
-    std::move(reload_on_ready_callback_).Run();
-
-    return;
+  if (navigation_handle->HasCommitted() && !navigation_handle->IsErrorPage() &&
+      reload_on_ready_callback_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, std::move(reload_on_ready_callback_));
+    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::DidFinishNavigation url:"
+              << navigation_handle->GetURL();
   }
-
 }
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame()) {
-//    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReadyToCommitNavigation #100 url:" << navigation_handle->GetURL();
     return;
   }
   if (navigation_handle->IsSameDocument()) {
-//    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReadyToCommitNavigation #101 url:" << navigation_handle->GetURL();
     return;
   }
 
@@ -220,7 +208,6 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
       net::URLToEphemeralStorageDomain(last_committed_url);
-//LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReadyToCommitNavigation new_domain:" << new_domain << " previous_domain:" << previous_domain;
   if (new_domain != previous_domain) {
     // Create new storage areas for new ephemeral storage domain.
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
@@ -283,13 +270,30 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
       url.host(), shields_enabled && cookies_restricted);
 }
 
-void EphemeralStorageTabHelper::ReloadBypassingCache(base::OnceClosure pre_reload_callback) {
-  if(pre_reload_callback) {
-    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCache callback call url:" << web_contents()->GetURL();
-    std::move(pre_reload_callback).Run();
+void EphemeralStorageTabHelper::ReloadBypassingCache() {
+  if (!web_contents()) {
+    return;
   }
-  web_contents()->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
-                                         false);
+
+  auto& controller = web_contents()->GetController();
+  
+  // Check if a navigation is currently in progress
+  if (controller.GetPendingEntry()) {
+    LOG(WARNING) << "[SHRED] Reload skipped: Pending entry exists. URL: " << web_contents()->GetURL();
+    return;
+  }
+
+  // Check if the WebContents is currently loading (might catch more states)
+  if (web_contents()->IsLoading()) {
+     // Depending on your needs, you might want to force reload even here, 
+     // but usually it's safer to wait or abort.
+     LOG(WARNING) << "[SHRED] Reload skipped: Tab is currently loading. URL: " << web_contents()->GetURL();
+     // You might want to re-post this task or handle it differently
+     return;
+  }
+  
+  LOG(INFO) << "[SHRED] Executing ReloadBypassingCache. URL: " << web_contents()->GetURL();
+  controller.Reload(content::ReloadType::BYPASSING_CACHE, false);
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -300,6 +304,7 @@ void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
   // Reset TLDEphemeralLifetime when a tab closes, since on Android
   // it may be invoked much later after the tab has actually closed.
   provisional_tld_ephemeral_lifetimes_.clear();
+  LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::WillCloseTab" << web_contents()->GetURL();
   tld_ephemeral_lifetime_.reset();
   weak_factory_.InvalidateWeakPtrs();
   RemoveTabModelObserver(registered_tab_model_, this);

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/gurl.h"
@@ -21,12 +22,12 @@ class EphemeralStorageServiceDelegate {
   // Cleanups ephemeral storages (local storage, cookies).
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
-  virtual void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) = 0;
+  virtual void CleanupFirstPartyStorageArea(
+      const TLDEphemeralAreaKey& key,
+      base::OnceClosure callback = base::DoNothing()) = 0;
   // Forces already-loaded tabs matching ephemeral_domains to reload, bypassing
   // the HTTP cache, when ready.
-  virtual void ReloadTabIfMatchingEphemeralDomain(
-      std::vector<std::pair<std::string, base::OnceClosure>>
-          ephemeral_domains) = 0;
+  virtual void ReloadTabIfMatchingEphemeralDomain(const std::string& ephemeral_domain) = 0;
   virtual void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) = 0;
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(
@@ -49,6 +50,9 @@ class EphemeralStorageServiceDelegate {
   virtual void TriggerCurrentAppStateNotification() = 0;
 #endif
   virtual bool IsShredBrowsingHistoryEnabled() = 0;
+
+  // Returns a WeakPtr to the implementation instance.
+  virtual base::WeakPtr<EphemeralStorageServiceDelegate> AsWeakPtr() = 0;
 };
 
 }  // namespace ephemeral_storage
