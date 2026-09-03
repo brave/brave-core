@@ -15,6 +15,8 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/heap_array.h"
+#include "base/containers/span.h"
+#include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/memory_mapped_file.h"
@@ -28,6 +30,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/content/browser/mime_util.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/url_data_source.h"
@@ -43,6 +46,27 @@ namespace {
       << "This must be called on a background thread."
 
 constexpr base::ByteSize kMediaChunkSize = base::MiBU(1);  // 1MB
+
+// `FinalExtension()` keeps the leading dot, but the mime table is keyed
+// without it.
+std::string GetMimeTypeForPath(const base::FilePath& path) {
+  base::FilePath::StringType extension = path.FinalExtension();
+  if (extension.starts_with(FILE_PATH_LITERAL("."))) {
+    extension.erase(0, 1);
+  }
+
+  if (auto mime_type = mime_util::GetMimeTypeForFileExtension(extension)) {
+    return *mime_type;
+  }
+
+  // Not in the table because it's only ever a piece of a stream, never a file
+  // Playlist would save on its own.
+  if (extension == FILE_PATH_LITERAL("m4s")) {
+    return "video/mp4";
+  }
+
+  return "application/octet-stream";
+}
 
 class RefCountedMemMap : public base::RefCountedMemory {
  public:
@@ -149,15 +173,51 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
   const auto full_path = content::URLDataSource::URLToRequestPath(url);
   const auto paths = base::SplitStringPiece(
       full_path, "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  if (paths.size() != 2) {
-    LOG(ERROR) << "Invalid playlist data source URL, might be routed from "
-                  "saved .m3u8 file:  "
-               << url.spec();
+  if (paths.size() < 2) {
+    LOG(ERROR) << "Invalid playlist data source URL: " << url.spec();
     return;
   }
 
   id = paths.at(0);
   const auto& type_string = paths.at(1);
+
+  // Locally saved HLS streams: <id>/hls/<file>, where <file> may itself
+  // contain slashes because it comes verbatim from the local manifest.
+  if (type_string == "hls" &&
+      base::FeatureList::IsEnabled(features::kPlaylistServiceV2)) {
+    if (paths.size() < 3) {
+      LOG(ERROR) << "HLS request is missing a file name: " << url.spec();
+      return;
+    }
+
+    base::FilePath file;
+    for (const auto& component : base::span(paths).subspan(2u)) {
+      // The manifest we generate only ever names plain relative files, so
+      // anything that could climb out of the item directory is a rejection,
+      // not something to normalize.
+      if (component == "." || component == ".." ||
+          component.find('\\') != std::string_view::npos) {
+        LOG(ERROR) << "Rejecting HLS path component: " << url.spec();
+        return;
+      }
+      file = file.Append(base::FilePath::FromASCII(component));
+    }
+
+    if (file.ReferencesParent()) {
+      LOG(ERROR) << "Rejecting HLS path referencing parent: " << url.spec();
+      return;
+    }
+
+    type = DataRequest::Type::kHls;
+    hls_file = std::move(file);
+    return;
+  }
+
+  if (paths.size() != 2) {
+    LOG(ERROR) << "Invalid playlist data source URL: " << url.spec();
+    return;
+  }
+
   if (type_string == "thumbnail") {
     type = DataRequest::Type::kThumbnail;
   } else if (type_string == "media") {
@@ -166,9 +226,7 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
     type = DataRequest::Type::kFavicon;
   } else {
     type = DataRequest::Type::kNone;
-    LOG(ERROR) << "Invalid playlist data source URL, might be routed from "
-                  "saved .m3u8 file:  "
-               << url.spec();
+    LOG(ERROR) << "Invalid playlist data source URL: " << url.spec();
   }
 }
 
@@ -204,6 +262,10 @@ void PlaylistDataSource::StartDataRequest(
     case DataRequest::Type::kFavicon:
       GetFavicon(data_request, wc_getter, std::move(got_data_callback));
       break;
+    case DataRequest::Type::kHls:
+      // Only manifests come through here; segments support range requests.
+      GetHlsManifest(data_request, std::move(got_data_callback));
+      break;
     case DataRequest::Type::kMedia:
       NOTREACHED() << "This request should call StartRangeDataRequest()";
   }
@@ -215,7 +277,17 @@ void PlaylistDataSource::StartRangeDataRequest(
     const net::HttpByteRange& range,
     GotRangeDataCallback callback) {
   DataRequest data_request(url);
-  if (data_request.type != DataRequest::Type::kMedia || !range.IsValid()) {
+  if (!range.IsValid()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  if (data_request.type == DataRequest::Type::kHls) {
+    GetHlsSegment(data_request, range, std::move(callback));
+    return;
+  }
+
+  if (data_request.type != DataRequest::Type::kMedia) {
     std::move(callback).Run({});
     return;
   }
@@ -262,6 +334,54 @@ void PlaylistDataSource::GetMediaFile(
       std::move(got_data_callback));
 }
 
+base::FilePath PlaylistDataSource::ResolveHlsPath(
+    const DataRequest& request) const {
+  if (request.hls_file.empty() || !service_->HasPlaylistItem(request.id)) {
+    return base::FilePath();
+  }
+
+  // Stream files live in their own subdirectory so they can't collide with
+  // the item's `media_file` / `thumbnail`.
+  const base::FilePath item_dir =
+      service_->GetPlaylistItemDirPath(request.id).AppendASCII("hls");
+  const base::FilePath path = item_dir.Append(request.hls_file);
+
+  // `DataRequest` already rejects "..", but the item directory is the security
+  // boundary here, so confirm it rather than trusting that.
+  if (!item_dir.IsParent(path)) {
+    return base::FilePath();
+  }
+
+  return path;
+}
+
+void PlaylistDataSource::GetHlsManifest(const DataRequest& request,
+                                        GotDataCallback got_data_callback) {
+  const base::FilePath path = ResolveHlsPath(request);
+  if (path.empty()) {
+    std::move(got_data_callback).Run(nullptr);
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, base::MayBlock(), base::BindOnce(&ReadMemoryMappedFile, path),
+      std::move(got_data_callback));
+}
+
+void PlaylistDataSource::GetHlsSegment(const DataRequest& request,
+                                       const net::HttpByteRange& range,
+                                       GotRangeDataCallback got_data_callback) {
+  const base::FilePath path = ResolveHlsPath(request);
+  if (path.empty()) {
+    std::move(got_data_callback).Run({});
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, base::MayBlock(), base::BindOnce(&ReadFileRange, path, range),
+      std::move(got_data_callback));
+}
+
 void PlaylistDataSource::GetFavicon(
     const DataRequest& request,
     const content::WebContents::Getter& wc_getter,
@@ -294,6 +414,8 @@ std::string PlaylistDataSource::GetMimeType(const GURL& url) {
                            //  actual file extension in WebUIUrlLoader.
     case DataRequest::Type::kFavicon:
       return FaviconSource::GetMimeType(url);
+    case DataRequest::Type::kHls:
+      return GetMimeTypeForPath(data_request.hls_file);
     case DataRequest::Type::kNone:
       return {};
   }
@@ -309,7 +431,14 @@ bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
     return false;
   }
 
-  return DataRequest(url).type == DataRequest::Type::kMedia;
+  DataRequest data_request(url);
+  if (data_request.type == DataRequest::Type::kHls) {
+    // Manifests are small and read whole; only segments are worth ranging.
+    return !data_request.hls_file.MatchesFinalExtension(
+        FILE_PATH_LITERAL(".m3u8"));
+  }
+
+  return data_request.type == DataRequest::Type::kMedia;
 }
 
 }  // namespace playlist
