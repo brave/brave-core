@@ -175,49 +175,49 @@
   </message>
 
   <!-- Error toasts: -->
-  <message name="IDS_BRAVE_ACCOUNT_ERROR_TOAST_TITLE" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_TOAST_TITLE" desc="" formatter_data="webui=BraveAccountShared">
     An error occurred
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ERROR" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_ERROR" desc="" formatter_data="webui=BraveAccountShared android_java">
     error
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_CLIENT_ERROR" desc="" formatter_data="webui=BraveAccountShared android_java">
     The browser encountered an unexpected error<ph name="ERROR_CODE">$1</ph>. Please restart the browser and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" desc="" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_SERVER_ERROR" desc="" formatter_data="webui=BraveAccountShared android_java">
     Internal server error (<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED" desc="" formatter_data="webui=BraveAccountShared">
     This account is awaiting email verification.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL" desc="" formatter_data="webui=BraveAccountShared">
     No account found for that email address. Please try again, or create a new account.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD" desc="" formatter_data="webui=BraveAccountShared">
     Incorrect password. Please try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_ACCOUNT_EXISTS" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_ACCOUNT_EXISTS" desc="" formatter_data="webui=BraveAccountShared">
     An account already exists for this email address. Try logging in instead of creating an account.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED" desc="" formatter_data="webui=BraveAccountShared">
     The domain of this email address is not supported. Please use a different email address.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS" desc="Error message shown when too many email verifications have been requested and the user must wait before trying again" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS" desc="Error message shown when too many email verifications have been requested and the user must wait before trying again" formatter_data="webui=BraveAccountShared android_java">
     Email verification limit exceeded. Please wait 30 minutes before trying again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="Error message shown when the entered email verification code is incorrect" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="Error message shown when the entered email verification code is incorrect" formatter_data="webui=BraveAccountShared android_java">
     Wrong code, please try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL" desc="" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL" desc="" formatter_data="webui=BraveAccountShared">
     An account has already been requested for this email address. Please check your email or try again in 30 minutes.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_ACCOUNT_DOES_NOT_EXIST" desc="Error message shown when no account exists for the entered email address" formatter_data="webui=BraveAccount">
+  <message name="IDS_BRAVE_ACCOUNT_ACCOUNT_DOES_NOT_EXIST" desc="Error message shown when no account exists for the entered email address" formatter_data="webui=BraveAccountShared">
     No account found for this email address.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL" desc="Error message shown when the daily verification limit has been reached for this email address" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL" desc="Error message shown when the daily verification limit has been reached for this email address" formatter_data="webui=BraveAccountShared android_java">
     Too many verification attempts for this email address. Try again in 24 hours.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED" desc="Error message shown during password reset when the email is already verified, indicating an internal error" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED" desc="Error message shown during password reset when the email is already verified, indicating an internal error" formatter_data="webui=BraveAccountShared android_java">
     Internal error. Close the dialog, cancel the verification, and try again.
   </message>
 
@@ -257,25 +257,25 @@
     Spaces not allowed at the beginning or end of the password.
   </message>
 
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE" desc="Title for the alert shown after successfully resending the confirmation email" formatter_data="webui=BraveAccountShared android_java">
     Done
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" desc="Success message shown in an alert after successfully resending the confirmation email" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS" desc="Success message shown in an alert after successfully resending the confirmation email" formatter_data="webui=BraveAccountShared android_java">
     Confirmation email resent.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" desc="Title for the alert shown when resending the confirmation email fails" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE" desc="Title for the alert shown when resending the confirmation email fails" formatter_data="webui=BraveAccountShared android_java">
     Unable to resend
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED" desc="Error message shown in an alert when the maximum number of confirmation emails has been exceeded" formatter_data="webui=BraveAccountShared android_java">
     Too many verification emails have been sent already. Please check your spam folder.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED" desc="Error message shown in an alert when the email has already been verified" formatter_data="webui=BraveAccountShared android_java">
     Email already verified.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED" desc="Error message shown when too many incorrect verification codes have been entered" formatter_data="webui=BraveAccountShared android_java">
     You entered too many incorrect codes. Cancel the verification and try again.
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED" desc="Error message shown in an alert when the verification token has expired" formatter_data="webui=BraveAccount,BraveAccountSettings android_java">
+  <message name="IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED" desc="Error message shown in an alert when the verification token has expired" formatter_data="webui=BraveAccountShared android_java">
     The verification code has expired. Cancel the verification and try again.
   </message>
 </grit-part>

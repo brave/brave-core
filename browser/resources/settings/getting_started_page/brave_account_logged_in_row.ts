@@ -17,6 +17,7 @@ import {
   ChangePasswordClientErrorCode,
   ChangePasswordError,
 } from '../change_password.mojom-webui.js'
+import { getErrorMessage, toFlowError } from '../brave_account_shared.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_logged_in_row.css.js'
 import { getHtml } from './brave_account_logged_in_row.html.js'
@@ -81,14 +82,8 @@ export class BraveAccountLoggedInRowElement extends
       await this.browserProxy.authentication.changePasswordStep1(
         this.state.email)
     } catch (e) {
-      if (e && typeof e === 'object') {
-        error = e as ChangePasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ChangePasswordClientErrorCode.kUnexpected },
-        }
-      }
+      error = toFlowError<ChangePasswordError, ChangePasswordClientErrorCode>(
+        e, ChangePasswordClientErrorCode.kUnexpected)
     }
 
     if (error) {
@@ -97,7 +92,7 @@ export class BraveAccountLoggedInRowElement extends
         title: this.i18n(
           BraveAccountSettingsStrings
             .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE),
-        content: this.getErrorMessage({ kind: 'changePassword', details: error }),
+        content: getErrorMessage({ kind: 'changePassword', details: error }),
       }, 30000)
     } else {
       this.openBraveAccountDialog()

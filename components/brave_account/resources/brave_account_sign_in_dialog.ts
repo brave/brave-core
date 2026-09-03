@@ -12,7 +12,7 @@ import {
 import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
 import { LoginClientErrorCode, LoginError } from './login.mojom-webui.js'
-import { showError } from './brave_account_common.js'
+import { showError, toFlowError } from './brave_account_shared.js'
 
 import {
   invalidLoginError,
@@ -73,27 +73,16 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         clientMac,
       )
     } catch (e) {
-      let error: LoginError
-
-      if (e && typeof e === 'object') {
-        error = e as LoginError
-      } else if (typeof e === 'string') {
-        error = {
-          clientError: {
-            errorCode:
-              e === invalidLoginError()
-                ? LoginClientErrorCode.kInvalidLoginError
-                : LoginClientErrorCode.kOpaqueError,
-          },
-        }
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: LoginClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'login', details: error })
+      showError({
+        kind: 'login',
+        details: toFlowError<LoginError, LoginClientErrorCode>(
+          e,
+          LoginClientErrorCode.kUnexpected,
+          e === invalidLoginError()
+            ? LoginClientErrorCode.kInvalidLoginError
+            : LoginClientErrorCode.kOpaqueError,
+        ),
+      })
     }
 
     this.isSubmitting = false
