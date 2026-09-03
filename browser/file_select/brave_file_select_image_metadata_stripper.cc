@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
@@ -27,6 +28,10 @@
 namespace brave {
 
 namespace {
+
+// IN-TEST
+base::OnceCallback<void(std::vector<base::FilePath>)>*
+    g_on_strip_completed_callback_for_testing_ = nullptr;
 
 struct StripResult {
   // The final list of selected files where the original image file(s)
@@ -146,6 +151,17 @@ void OnStripComplete(
         notify,
     StripResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  // Test guarded code to get the list of temporary files we created from our
+  // component.
+  if (g_on_strip_completed_callback_for_testing_) {
+    CHECK_IS_TEST();
+    CHECK(!g_on_strip_completed_callback_for_testing_->is_null());
+    std::move(*g_on_strip_completed_callback_for_testing_)
+        .Run(result.temp_files);
+    g_on_strip_completed_callback_for_testing_ = nullptr;
+  }
+
   // Update the |temporary_files| list to mark the deletion of our newly created
   // temp files.
   base::Extend(temporary_files, std::move(result.temp_files));
@@ -189,6 +205,11 @@ bool MaybeStripImageMetadataForUpload(
       base::BindOnce(&OnStripComplete, std::ref(temporary_files),
                      std::move(notify)));
   return true;
+}
+
+void SetStripCompletedCallbackForTesting(  // IN-TEST
+    base::OnceCallback<void(std::vector<base::FilePath>)>* callback) {
+  g_on_strip_completed_callback_for_testing_ = callback;
 }
 
 }  // namespace brave

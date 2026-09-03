@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom-forward.h"
 
@@ -46,6 +47,11 @@ bool MaybeStripImageMetadataForUpload(
     std::vector<blink::mojom::FileChooserFileInfoPtr>& list,
     base::OnceCallback<void(std::vector<blink::mojom::FileChooserFileInfoPtr>)>
         notify);
+
+// Test-only: The caller owns |callback| and must keep
+// it alive until it fires; pass nullptr to clear it.
+void SetStripCompletedCallbackForTesting(  // IN-TEST
+    base::OnceCallback<void(std::vector<base::FilePath>)>* callback);
 
 }  // namespace brave
 
