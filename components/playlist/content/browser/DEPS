@@ -9,6 +9,7 @@ include_rules = [
   "+content/public/browser",
   "+content/public/common",
   "+crypto",
+  "+media/formats",
   "+services/data_decoder/public",
   "+services/media_session/public",
   "+services/network/public",
