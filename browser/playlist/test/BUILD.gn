@@ -82,6 +82,7 @@ source_set("unit_tests") {
     "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
     "playlist_p3a_unittest.cc",
+    "playlist_plain_video_detector_unittest.cc",
     "playlist_service_unittest.cc",
     "playlist_unittest_base.cc",
     "playlist_unittest_base.h",

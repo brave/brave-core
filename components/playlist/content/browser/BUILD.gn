@@ -35,6 +35,8 @@ static_library("browser") {
     "playlist_network_observer.h",
     "playlist_p3a.cc",
     "playlist_p3a.h",
+    "playlist_plain_video_detector.cc",
+    "playlist_plain_video_detector.h",
     "playlist_service.cc",
     "playlist_service.h",
     "playlist_streaming.cc",

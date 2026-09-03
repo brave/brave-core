@@ -10,12 +10,15 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/content/browser/playlist_plain_video_detector.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
@@ -36,6 +39,16 @@ void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
   PlaylistMediaHandler::CreateForWebContents(
       web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
                                         service->GetWeakPtr()));
+
+  if (base::FeatureList::IsEnabled(features::kPlaylistServiceV2)) {
+    // Demo of the network-observation approach, limited to the simplest
+    // case: a plain <video>/<audio src>. It runs alongside the DOM-scraping
+    // detector above rather than replacing it - the larger HLS/DASH/MSE
+    // design is a separate, later patch.
+    PlaylistPlainVideoDetector::CreateForWebContents(
+        web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
+                                          service->GetWeakPtr()));
+  }
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
