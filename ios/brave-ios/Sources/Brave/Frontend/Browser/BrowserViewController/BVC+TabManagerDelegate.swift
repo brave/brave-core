@@ -103,7 +103,9 @@ extension BrowserViewController: TabManagerDelegate {
     // https request via `tab.httpsUpgradeHelper?.pendingUpgrade` and only opens QuickView once
     // `tabDidFinishNavigation` confirms it actually landed on the upgraded (or
     // gracefully-rolled-back) page rather than a failure/interstitial.
-    if FeatureList.kBraveHttpsByDefault.enabled {
+    if !FeatureList.kTransitionToUpstreamHttpsUpgrades.enabled,
+      FeatureList.kBraveHttpsByDefault.enabled
+    {
       tab.httpsUpgradeHelper = .init(
         tab: tab,
         httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService
