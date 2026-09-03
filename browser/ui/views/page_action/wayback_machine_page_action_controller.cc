@@ -16,12 +16,15 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/actions/actions.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -71,6 +74,23 @@ class WaybackIconImageSource : public gfx::CanvasImageSource {
   const gfx::IconDescription badge_description_;
 };
 
+views::BubbleAnchor GetAnchorForBubble(tabs::TabInterface& tab) {
+  auto* bwi = tab.GetBrowserWindowInterface();
+  if (!bwi) {
+    return {};
+  }
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+  if (!browser_view) {
+    return {};
+  }
+  auto* toolbar_button_provider = browser_view->toolbar_button_provider();
+  if (!toolbar_button_provider) {
+    return {};
+  }
+  return toolbar_button_provider->GetPageActionBubbleAnchor(
+      kActionShowWaybackMachine);
+}
+
 }  // namespace
 
 WaybackMachinePageActionController::WaybackMachinePageActionController(
@@ -115,29 +135,8 @@ void WaybackMachinePageActionController::Init() {
 }
 
 void WaybackMachinePageActionController::ExecuteAction(
-    ToolbarButtonProvider* toolbar_button_provider,
     actions::ActionItem* item) {
-  content::WebContents* const contents = tab_->GetContents();
-  if (!contents) {
-    return;
-  }
-
-  if (bubble_tracker_.view()) {
-    return;
-  }
-
-  views::View* const anchor_view =
-      toolbar_button_provider
-          ->GetPageActionBubbleAnchor(kActionShowWaybackMachine)
-          .GetIfView();
-  if (!anchor_view || !anchor_view->GetWidget()) {
-    return;
-  }
-
-  auto bubble = std::make_unique<WaybackMachineBubbleView>(
-      contents->GetWeakPtr(), anchor_view, item);
-  bubble_tracker_.SetView(bubble.get());
-  views::BubbleDialogDelegateView::CreateBubble(std::move(bubble))->Show();
+  ShowBubble(item, /*user_gesture=*/true);
 }
 
 WaybackMachineBubbleView*
@@ -148,6 +147,34 @@ WaybackMachinePageActionController::GetBubbleViewForTesting() {
 void WaybackMachinePageActionController::OnWaybackStateChanged(
     WaybackState state) {
   UpdatePageAction(tab_->GetContents());
+}
+
+void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
+                                                    bool user_gesture) {
+  content::WebContents* contents = tab_->GetContents();
+  if (!contents) {
+    return;
+  }
+
+  if (bubble_tracker_.view()) {
+    return;
+  }
+
+  const views::BubbleAnchor anchor = GetAnchorForBubble(tab_.get());
+  const views::View* anchor_view = anchor.GetIfView();
+  if (!anchor_view || !anchor_view->GetWidget()) {
+    return;
+  }
+
+  auto bubble =
+      std::make_unique<WaybackMachineBubbleView>(anchor, contents, item);
+  WaybackMachineBubbleView* bubble_view = bubble.get();
+  bubble_tracker_.SetView(bubble_view);
+
+  views::BubbleDialogDelegateView::CreateBubble(std::move(bubble));
+  bubble_view->ShowForReason(user_gesture
+                                 ? LocationBarBubbleDelegateView::USER_GESTURE
+                                 : LocationBarBubbleDelegateView::AUTOMATIC);
 }
 
 void WaybackMachinePageActionController::AttachToTabHelper(

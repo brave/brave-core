@@ -69,8 +69,6 @@
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "components/tabs/public/tab_interface.h"
 #endif
 
@@ -286,10 +284,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
                   return;
                 }
 
-                BrowserView& browser_view =
-                    CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
-                controller->ExecuteAction(
-                    browser_view.toolbar_button_provider(), item);
+                controller->ExecuteAction(item);
               },
               bwi))
           .SetActionId(kActionShowWaybackMachine)

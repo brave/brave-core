@@ -7,9 +7,9 @@
 #define BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_WAYBACK_MACHINE_BUBBLE_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
-#include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/bubble/bubble_anchor.h"
 
 namespace actions {
 class ActionItem;
@@ -20,13 +20,15 @@ class WebContents;
 }  // namespace content
 
 // Offers to look up the current page in the Internet Archive after a failed
-// navigation.
-class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
-  METADATA_HEADER(WaybackMachineBubbleView, views::BubbleDialogDelegateView)
+// navigation. Derives from LocationBarBubbleDelegateView so that it can be
+// shown either in response to a user gesture or automatically, and so that it
+// closes when the tab is hidden or the browser enters fullscreen.
+class WaybackMachineBubbleView : public LocationBarBubbleDelegateView {
+  METADATA_HEADER(WaybackMachineBubbleView, LocationBarBubbleDelegateView)
 
  public:
-  WaybackMachineBubbleView(base::WeakPtr<content::WebContents> web_contents,
-                           views::View* anchor,
+  WaybackMachineBubbleView(views::BubbleAnchor anchor,
+                           content::WebContents* web_contents,
                            actions::ActionItem* item);
   ~WaybackMachineBubbleView() override;
 
@@ -34,7 +36,6 @@ class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
   void OnAccepted();
   void OnDontAskAgain();
 
-  base::WeakPtr<content::WebContents> web_contents_;
   raw_ptr<actions::ActionItem> item_;
 };
 
