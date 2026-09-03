@@ -171,7 +171,7 @@ class Patchfile:
 
                 if 'does not exist in index' in reason:
                     # This type of detection could occur in certain cases when
-                    # `npm run init` or `sync` were not run for the working
+                    # `pnpm run init` or `sync` were not run for the working
                     # branch. It may be useful to warn.
                     #
                     # It is also of notice that this error can also occur when

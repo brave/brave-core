@@ -416,7 +416,7 @@ class FakeChromiumRepoTest(unittest.TestCase):
 
 
 class FakeChromiumRepoLiftEmulationTest(unittest.TestCase):
-    """The emulation of the `npm run` commands a lift drives.
+    """The emulation of the `pnpm run` commands a lift drives.
 
     These cover the pieces `FakeChromiumRepo` grew for the brockit `lift`
     tests: syncing the checkout, the l10n and `gnrt` regeneration, and

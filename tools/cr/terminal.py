@@ -6,8 +6,6 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
-from pathlib import Path
-import json
 import logging
 import platform
 import secrets
@@ -39,19 +37,6 @@ def is_verbose() -> bool:
     time, before any `argparse` parser has had a chance to run.
     """
     return '--verbose' in sys.argv
-
-
-def get_package_manager() -> str:
-    """Returns the package manager configured in brave/package.json."""
-    package_json = Path(__file__).resolve().parents[2] / 'package.json'
-    package_config = json.loads(package_json.read_text(encoding='utf-8'))
-    package_manager = package_config.get('devEngines',
-                                         {}).get('packageManager',
-                                                 {}).get('name')
-    if not package_manager:
-        raise RuntimeError(
-            f'No devEngines.packageManager.name found in {package_json}.')
-    return package_manager
 
 
 class _PresetLoggingHandler(logging.Handler):
@@ -256,7 +241,7 @@ class Terminal:
 
         if platform.system() == 'Windows':
             # On Windows, resolve the command to an absolute path to avoid
-            # issues with bat/cmd wrappers (e.g. `npm` → `npm.cmd`). This
+            # issues with bat/cmd wrappers (e.g. `pnpm` → `pnpm.cmd`). This
             # avoids the use of shell=True.
             resolved = shutil.which(cmd[0])
             if resolved is None:
@@ -356,29 +341,21 @@ class Terminal:
         """
         console.log(f'[bold red]*[/] {message}')
 
-    def run_npm_command(self, *cmd):
-        """Runs an npm or pnpm build command.
+    def run_pnpm_command(self, *cmd):
+        """Runs a pnpm build command.
 
-        This function will run 'npm run' or 'pnpm run' (based on the lockfile in
-        the nearest ancestor directory containing package.json) with any extra
+        This function will run 'pnpm run' commands appended by any extra
         arguments passed into it.
 
         e.g:
-            self.run_npm_command('init')
+            self.run_pnpm_command('init')
         """
-        package_manager = get_package_manager()
-        args = list(cmd)
-        if package_manager == 'pnpm':
-            args = [arg for arg in args if arg != '--']
-        cmd = [package_manager, 'run'] + args
+        cmd = ['pnpm', 'run'] + list(cmd)
         if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
             # Special flag to avoid running into issues in jenkins when running
             # `gclient sync` with `--revision`. For more details see:
             # https://github.com/brave/brave-browser/issues/44921
-            if package_manager == 'pnpm':
-                cmd.append('--with_issue_44921')
-            else:
-                cmd += ['--', '--with_issue_44921']
+            cmd.append('--with_issue_44921')
         return self.run(cmd)
 
 

@@ -61,7 +61,7 @@ def cmd_mv(args: list[str]) -> int:
     parser.add_argument('--no-format',
                         action='store_true',
                         dest='no_format',
-                        help='Skip running `npm run format` after the move')
+                        help='Skip running `pnpm run format` after the move')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose logging')
@@ -100,15 +100,15 @@ def cmd_mv(args: list[str]) -> int:
 
 
 def _run_format() -> None:
-    """Runs `npm run format` to clean up files touched by the move.
+    """Runs `pnpm run format` to clean up files touched by the move.
 
     Failures are downgraded to warnings: format must not block a successful
     move.
     """
     try:
-        terminal.run_npm_command('format')
+        terminal.run_pnpm_command('format')
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        logging.warning('npm run format failed: %s', e)
+        logging.warning('pnpm run format failed: %s', e)
 
 
 def _step1_move(src: Path, dest: Path, mkdir: bool,

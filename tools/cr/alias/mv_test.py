@@ -30,7 +30,7 @@ class _Base(unittest.TestCase):
         self.addCleanup(self._repo.cleanup)
         # chromium_src/, rewrite/ created by FakeChromiumRepo.setup()
         # patches/ is created by FakeChromiumRepo.__init__
-        # `npm run format` is not available in the fake repo; suppress it.
+        # `pnpm run format` is not available in the fake repo; suppress it.
         self._format_mock = patch('alias.mv._run_format').start()
         self.addCleanup(patch.stopall)
 
@@ -686,7 +686,7 @@ class PlasterApplyTest(_Base):
 
 
 class FormatTest(_Base):
-    """`npm run format` runs after a successful move unless --no-format."""
+    """`pnpm run format` runs after a successful move unless --no-format."""
 
     def test_format_called_by_default(self) -> None:
         self._commit('foo/bar.h', '// header\n')

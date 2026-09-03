@@ -136,7 +136,7 @@ def is_path_enabled(source_rel: str, rules: list[tuple[str, str]]) -> bool:
 def blackhole_unwanted_includes() -> None:
     """Remove BLACKHOLE_INCLUDES from any file modified in the working tree.
 
-    Runs after `npm run format` to clean up includes IWYU/fix_includes
+    Runs after `pnpm run format` to clean up includes IWYU/fix_includes
     re-added that we never want.  Files to scan are taken from
     `git diff --name-only` against brave-core's HEAD, so only the files
     the pipeline actually touched get rewritten.
@@ -294,8 +294,8 @@ def main():
     blackhole_unwanted_includes()
 
     # Step 4: re-format the rewritten files so the resulting diff matches
-    logging.info('Running npm run format')
-    terminal.run_npm_command('format')
+    logging.info('Running pnpm run format')
+    terminal.run_pnpm_command('format')
 
     return 0
 

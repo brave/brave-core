@@ -77,7 +77,7 @@ The following steps will take place:
 
 1. A *Update from Chromium [from] to [to]* commit will be created. This commit
    contains changes to `package.json` and to the pinlist timestamp file.
-2. `npm run init` will be run with the newer version.
+2. `pnpm run init` will be run with the newer version.
 3. For any patches that fail to apply during `init`, there will be another
    attempt to apply them using `--3way`.
 4. If any patches still fail to apply, the process will stop. A summary of
@@ -88,7 +88,7 @@ The following steps will take place:
 6. Having resolved all conflicts. Restart *🚀Brockit!* with `--continue` and
    other similar arguments you may want to keep.
 7. *🚀Brockit!* will pick up from where it stopped, possibly running
-  `npm run update_patches`, staging all patches, and committing the under
+  `pnpm run update_patches`, staging all patches, and committing the under
   *Conflict-resolved patches from Chromium [from] to [to].*
 8. *Update patches from Chromium [from] to [to]* will be committed.
 9. *Updated strings for Chromium [to]* will be committed.
@@ -363,7 +363,7 @@ PINSLIST_TIMESTAMP_FILE = (
     'input_file_parsers.cc')
 # The continuation file for an in-progress lift. Resolved against the
 # brave-core root (rather than the current directory) because both `--continue`
-# and `npm run update_patches` look for it there.
+# and `pnpm run update_patches` look for it there.
 VERSION_UPGRADE_FILE = repository.brave.root / '.version_upgrade'
 
 # Commit subject prefixes that identify brockit-managed upgrade commits.
@@ -477,12 +477,12 @@ def _update_pinslist_timestamp() -> str:
 
 def _get_apply_patches_list() -> dict[Repository, list[Patchfile]] | None:
     """Retrieves the list of patches to be applied by running
-    `npm run apply_patches`, grouped by repository.
+    `pnpm run apply_patches`, grouped by repository.
     """
 
     try:
-        terminal.run_npm_command('apply_patches', '--',
-                                 '--print-patch-failures-in-json')
+        terminal.run_pnpm_command('apply_patches',
+                                  '--print-patch-failures-in-json')
     except subprocess.CalledProcessError as e:
         # This is a regex to match the json output of the patches that failed
         # to apply.
@@ -744,7 +744,7 @@ class Versioned(Task):
         """Creates string rebase change
 
     This function stages, and commits, all changed, updated, or deleted files
-    resulting from running npm run chromium_rebase_l10n.
+    resulting from running pnpm run chromium_rebase_l10n.
     """
         repository.brave.run_git('add', '*.grd', '*.grdp', '*.xtb')
         repository.brave.git_commit(
@@ -789,13 +789,13 @@ class Regen(Versioned):
             f'Processing changes for Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
 
-        terminal.run_npm_command('init')
+        terminal.run_pnpm_command('init')
 
-        terminal.run_npm_command('update_patches', '--', '--no-plaster-check')
+        terminal.run_pnpm_command('update_patches', '--no-plaster-check')
         if not dry_run:
             self._save_updated_patches()
 
-        terminal.run_npm_command('chromium_rebase_l10n')
+        terminal.run_pnpm_command('chromium_rebase_l10n')
         if not dry_run:
             self._save_rebased_l10n()
 
@@ -1336,7 +1336,7 @@ class Upgrade(Versioned):
         return:
           The GitStatus after running update_patches.
         """
-        terminal.run_npm_command('update_patches', '--', '--no-plaster-check')
+        terminal.run_pnpm_command('update_patches', '--no-plaster-check')
 
         status = GitStatus()
         if status.has_deleted_patch_files():
@@ -1513,9 +1513,9 @@ class Upgrade(Versioned):
         self._save_updated_patches()
         # Run init again to make sure nothing is missing after updating
         # patches.
-        terminal.run_npm_command('init')
+        terminal.run_pnpm_command('init')
 
-        terminal.run_npm_command('chromium_rebase_l10n')
+        terminal.run_pnpm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
         # With the continuation finished there's no need to keep the
@@ -1526,8 +1526,8 @@ class Upgrade(Versioned):
         """Starts the upgrade process.
 
     This function is responsible for starting the upgrade process. It will
-    update the package version, run `npm run init`, and then run
-    `npm run update_patches`. If any patches fail to apply, it will run
+    update the package version, run `pnpm run init`, and then run
+    `pnpm run update_patches`. If any patches fail to apply, it will run
     `apply_patches_3way` to allow for manual conflict resolution.
 
     For cases where no conflict resolution is required, the process will
@@ -1575,7 +1575,7 @@ class Upgrade(Versioned):
         self._update_package_version()
 
         try:
-            terminal.run_npm_command('init')
+            terminal.run_pnpm_command('init')
 
             # When no conflicts come back, we can proceed with the
             # update_patches.
@@ -1584,7 +1584,7 @@ class Upgrade(Versioned):
             if ('There were some failures during git reset of specific '
                     'repo paths' in e.stderr):
                 logging.warning(
-                    '[bold cyan]npm run init[/] is failing to reset some'
+                    '[bold cyan]pnpm run init[/] is failing to reset some'
                     ' paths. This could be happening because of a bad sync'
                     'state before starting the upgrade.')
 
@@ -1610,12 +1610,12 @@ class Upgrade(Versioned):
                 return
             if e.returncode != 0:
                 raise InvalidInputException(
-                    f'Failures found when running npm run init\n{e.stderr}'
+                    f'Failures found when running pnpm run init\n{e.stderr}'
                 ) from e
 
         self._save_updated_patches()
 
-        terminal.run_npm_command('chromium_rebase_l10n')
+        terminal.run_pnpm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
     def execute(self, no_conflict_continuation: bool, with_github: bool,
