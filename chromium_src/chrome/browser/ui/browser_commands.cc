@@ -16,30 +16,23 @@
 
 class ReadingListModel;
 
-namespace chrome {
+namespace {
 
-// Upstream function, renamed by rewrite rule.
-void ReloadBypassingCache_ChromiumImpl(BrowserWindowInterface* browser,
-                                       WindowOpenDisposition disposition);
-
-// We override upstream's ReloadBypassingCache_ChromiumImpl with this function.
-// This is needed to handle the case where the profile is a Tor profile,
-// in which case we want to trigger a new Tor connection instead of a regular
-// hard reload.
-void ReloadBypassingCache(BrowserWindowInterface* browser,
-                          WindowOpenDisposition disposition) {
+// Returns true if the reload was handled by Brave (a new Tor connection was
+// triggered) and the caller should return early.
+bool BraveMaybeHandleReloadBypassingCache(BrowserWindowInterface* browser) {
 #if BUILDFLAG(ENABLE_TOR)
   Profile* profile = browser->GetProfile();
   DCHECK(profile);
   // NewTorConnectionForSite will do hard reload after obtaining new identity
   if (profile->IsTor()) {
     brave::NewTorConnectionForSite(browser);
-    return;
+    return true;
   }
-#endif
-  ReloadBypassingCache_ChromiumImpl(browser, disposition);
+#endif  // BUILDFLAG(ENABLE_TOR)
+  return false;
 }
 
-}  // namespace chrome
+}  // namespace
 
 #include <chrome/browser/ui/browser_commands.cc>
