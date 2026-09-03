@@ -20,7 +20,9 @@ const hashValue = (() => {
 
   // FNV-1a hash, using the standard parameters for the 32-bit variant
   return (value) => {
-    const str = toCanonicalString(value)
+    // JSON.stringify returns undefined (not a string) for undefined, function
+    // and symbol inputs, so fall back to a stable sentinel.
+    const str = toCanonicalString(value) ?? 'undefined'
     let h = 0x811c9dc5
     for (let i = 0; i < str.length; i++) {
       h ^= str.charCodeAt(i)
@@ -88,17 +90,15 @@ const { getWebGlBasics, getWebGlExtensions } = (() => {
     }
 
     const debugExtension = gl.getExtension(rendererInfoExtensionName)
+    const getUnmasked = (parameter) =>
+      debugExtension ? gl.getParameter(parameter)?.toString() || '' : ''
 
     return {
       version: gl.getParameter(gl.VERSION)?.toString() || '',
       vendor: gl.getParameter(gl.VENDOR)?.toString() || '',
-      vendorUnmasked: debugExtension
-        ? gl.getParameter(debugExtension.UNMASKED_VENDOR_WEBGL)?.toString()
-        : '',
+      vendorUnmasked: getUnmasked(debugExtension?.UNMASKED_VENDOR_WEBGL),
       renderer: gl.getParameter(gl.RENDERER)?.toString() || '',
-      rendererUnmasked: debugExtension
-        ? gl.getParameter(debugExtension.UNMASKED_RENDERER_WEBGL)?.toString()
-        : '',
+      rendererUnmasked: getUnmasked(debugExtension?.UNMASKED_RENDERER_WEBGL),
       shadingLanguageVersion:
         gl.getParameter(gl.SHADING_LANGUAGE_VERSION)?.toString() || '',
     }
@@ -702,29 +702,43 @@ const getCanvasFingerprint = (() => {
 })()
 
 ;(async () => {
-  const webglBasics = getWebGlBasics()
-  const rawData = {
-    canvas: getCanvasFingerprint(),
-    fonts: await getFontsFingerprintPromise(),
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    navigator_deviceMemory: navigator.deviceMemory,
-    navigator_hardwareConcurrency: navigator.hardwareConcurrency,
-    navigator_languages: navigator.languages,
-    navigator_userAgent: navigator.userAgent,
-    screenAvailSize: { height: screen.availHeight, width: screen.availWidth },
-    screenSize: { height: screen.height, width: screen.width },
-    screen_pixelDepth: screen.pixelDepth,
-    webAudio: await getAudioFingerprintPromise(),
-    webglExtensions: getWebGlExtensions(),
-    webglRendererUnmasked: webglBasics.rendererUnmasked,
-    webglVendorUnmasked: webglBasics.vendorUnmasked,
-    windowDevicePixelRatio: window.devicePixelRatio,
-  }
+  try {
+    // `getWebGlBasics` returns a numeric status code instead of an object when
+    // no WebGL context is available. Hash that status rather than reading
+    // undefined properties off it.
+    const webglBasics = getWebGlBasics()
+    const webglValues =
+      typeof webglBasics === 'object' && webglBasics !== null
+        ? webglBasics
+        : { rendererUnmasked: webglBasics, vendorUnmasked: webglBasics }
 
-  const processedData = {}
-  for (const [key, value] of Object.entries(rawData)) {
-    processedData[key] = hashValue(value)
-  }
+    const rawData = {
+      canvas: getCanvasFingerprint(),
+      fonts: await getFontsFingerprintPromise(),
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      navigator_deviceMemory: navigator.deviceMemory,
+      navigator_hardwareConcurrency: navigator.hardwareConcurrency,
+      navigator_languages: navigator.languages,
+      navigator_userAgent: navigator.userAgent,
+      screenAvailSize: { height: screen.availHeight, width: screen.availWidth },
+      screenSize: { height: screen.height, width: screen.width },
+      screen_pixelDepth: screen.pixelDepth,
+      webAudio: await getAudioFingerprintPromise(),
+      webglExtensions: getWebGlExtensions(),
+      webglRendererUnmasked: webglValues.rendererUnmasked,
+      webglVendorUnmasked: webglValues.vendorUnmasked,
+      windowDevicePixelRatio: window.devicePixelRatio,
+    }
 
-  return processedData
+    const processedData = {}
+    for (const [key, value] of Object.entries(rawData)) {
+      processedData[key] = hashValue(value)
+    }
+
+    return processedData
+  } catch (error) {
+    // A rejected promise is indistinguishable from an empty result by the time
+    // it reaches the browser, so report the failure as a string instead.
+    return String(error?.stack || error)
+  }
 })()
