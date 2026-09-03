@@ -33,7 +33,6 @@ static_library("brave_wayback_machine") {
     "//content/public/common",
     "//net",
     "//services/network/public/cpp",
-    "//ui/gfx:native_ui_types",
     "//url",
   ]
 }

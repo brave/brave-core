@@ -9,6 +9,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -16,6 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/common/url_constants.h"
 #include "net/base/url_util.h"
+#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 #include "url/url_util.h"
@@ -45,6 +47,28 @@ bool IsWaybackMachineEnabledFor(const GURL& url) {
 
 bool IsWaybackMachineEnabled(PrefService* prefs) {
   return prefs->GetBoolean(kBraveWaybackMachineEnabled);
+}
+
+bool ShouldCheckWaybackMachine(int response_code) {
+  static constexpr auto responses = base::MakeFixedFlatSet<int>({
+      net::HTTP_NOT_FOUND,              // 404
+      net::HTTP_REQUEST_TIMEOUT,        // 408
+      net::HTTP_GONE,                   // 410
+      451,                              // Unavailable For Legal Reasons
+      net::HTTP_INTERNAL_SERVER_ERROR,  // 500
+      net::HTTP_BAD_GATEWAY,            // 502,
+      net::HTTP_SERVICE_UNAVAILABLE,    // 503,
+      net::HTTP_GATEWAY_TIMEOUT,        // 504,
+      509,                              // Bandwidth Limit Exceeded
+      520,                              // Web Server Returned an Unknown Error
+      521,                              // Web Server Is Down
+      523,                              // Origin Is Unreachable
+      524,                              // A Timeout Occurred
+      525,                              // SSL Handshake Failed
+      526                               // Invalid SSL Certificate
+  });
+
+  return responses.contains(response_code);
 }
 
 GURL FixupWaybackQueryURL(const GURL& url) {

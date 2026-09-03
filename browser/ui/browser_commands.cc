@@ -552,12 +552,6 @@ void ShowPlaylistBubble(Browser* browser) {
 }
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-void ShowWaybackMachineBubble(Browser* browser) {
-  BraveBrowserWindow::FromBrowser(browser)->ShowWaybackMachineBubble();
-}
-#endif
-
 void GroupTabsOnCurrentOrigin(Browser* browser) {
   auto url =
       browser->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();

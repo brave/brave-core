@@ -20,15 +20,11 @@ class WebContents;
 }  // namespace content
 
 // Offers to look up the current page in the Internet Archive after a failed
-// navigation. Call Show() to display.
+// navigation.
 class WaybackMachineBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(WaybackMachineBubbleView, views::BubbleDialogDelegateView)
 
  public:
-  static void Show(content::WebContents* web_contents,
-                   views::View* anchor,
-                   actions::ActionItem* item);
-
   WaybackMachineBubbleView(base::WeakPtr<content::WebContents> web_contents,
                            views::View* anchor,
                            actions::ActionItem* item);

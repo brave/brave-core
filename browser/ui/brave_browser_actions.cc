@@ -266,18 +266,28 @@ void BraveBrowserActions::InitializeBrowserActions() {
           base::BindRepeating(
               [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                  actions::ActionInvocationContext context) {
-                BrowserView& browser_view =
-                    CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
+                // This action can also be invoked by an accelerator, so the
+                // window may not have an active tab, and that tab may not have
+                // a page action controller.
+                tabs::TabInterface* const tab = bwi->GetActiveTabInterface();
+                if (!tab) {
+                  return;
+                }
 
                 tabs::BraveTabFeatures* const brave_tab_features =
                     tabs::BraveTabFeatures::FromTabFeatures(
-                        bwi->GetActiveTabInterface()->GetTabFeatures());
+                        tab->GetTabFeatures());
                 CHECK(brave_tab_features);
 
                 page_actions::WaybackMachinePageActionController* const
                     controller = brave_tab_features
                                      ->wayback_machine_page_action_controller();
-                CHECK(controller);
+                if (!controller) {
+                  return;
+                }
+
+                BrowserView& browser_view =
+                    CHECK_DEREF(BrowserView::GetBrowserViewForBrowser(bwi));
                 controller->ExecuteAction(
                     browser_view.toolbar_button_provider(), item);
               },
