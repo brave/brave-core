@@ -128,11 +128,6 @@ void FingerprintFrequencyMetrics::ExecuteRendererForTesting(
   RunScriptInRenderer();
 }
 
-void FingerprintFrequencyMetrics::SetExecutionTimeoutForTesting(
-    base::TimeDelta timeout) {
-  execution_timeout_for_testing_ = timeout;
-}
-
 void FingerprintFrequencyMetrics::StartExecution() {
   base::Time now = base::Time::Now();
   base::Time last_execution =
@@ -177,10 +172,9 @@ void FingerprintFrequencyMetrics::RunScriptInRenderer() {
       GURL(chrome::kChromeUIVersionURL), content::Referrer(),
       ui::PAGE_TRANSITION_TYPED, std::string());
 
-  timeout_timer_.Start(
-      FROM_HERE, execution_timeout_for_testing_.value_or(kExecutionTimeout),
-      base::BindOnce(&FingerprintFrequencyMetrics::Cleanup,
-                     base::Unretained(this)));
+  timeout_timer_.Start(FROM_HERE, kExecutionTimeout,
+                       base::BindOnce(&FingerprintFrequencyMetrics::Cleanup,
+                                      base::Unretained(this)));
 }
 
 void FingerprintFrequencyMetrics::DidFinishLoad(
