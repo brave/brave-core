@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/content_tool.h"
+#include "brave/components/ai_chat/content/browser/workspace_content_registry.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -51,6 +52,11 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
   set_uuid(uuid);
   set_url(url);
   SetTitle(u"Workspace");
+
+  // Make the folder servable at <this url>/files/ for as long as this
+  // workspace exists, so generated files can be previewed.
+  content_registration_ = WorkspaceContentRegistry::GetOrCreate(browser_context)
+                              ->Register(uuid, folder_path_);
 
   // Hidden, headless background WebContents that hosts the workspace page.
   content::WebContents::CreateParams params(browser_context);
@@ -139,9 +145,12 @@ void WorkspaceAssociatedContent::DeliverDirectoryHandle(
   const GURL committed_url = rfh->GetLastCommittedURL();
 
   // Auto-grant File System Access read/write for the workspace origin so the
-  // page can use the delivered handle without a permission prompt. The origin
-  // is our own system-owned chrome-untrusted://leo-workspace page, and access
-  // is scoped by the handle to the user-picked folder.
+  // page can use the delivered handle without a permission prompt. Access is
+  // scoped by the handle to the user-picked folder.
+  //
+  // The grant is origin-scoped and workspace files are served from that same
+  // origin, so it also covers model-authored script in a preview. See
+  // workspace_content_source.h.
   auto* map = permissions::PermissionsClient::Get()->GetSettingsMap(
       web_contents_->GetBrowserContext());
   map->SetContentSettingDefaultScope(

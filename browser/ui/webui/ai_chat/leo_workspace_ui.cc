@@ -6,10 +6,13 @@
 #include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "brave/components/ai_chat/content/browser/workspace_content_source.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -17,8 +20,10 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -49,17 +54,36 @@ LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEO_WORKSPACE_HTML);
 
-  // This page runs its own first-party module bundle only. No network, no
-  // frames, no embedding by other pages. The FileSystemDirectoryHandle it will
-  // operate on is delivered out-of-band (launchQueue), not fetched.
+  // Serves each workspace's folder under /<uuid>/files/; everything else on
+  // this host is the tool page and its bundle.
+  source->SetRequestFilter(
+      base::BindRepeating(&ShouldHandleWorkspaceFileRequest),
+      base::BindRepeating(&HandleWorkspaceFileRequest,
+                          browser_context->GetWeakPtr()));
+
+  // Per-data-source, so the tool page and the previews served alongside it
+  // share one policy; it is written for the previews and is no boundary between
+  // them. See workspace_content_source.h.
+  //
+  // 'unsafe-inline'/'unsafe-eval' cost nothing here: same-origin .js served out
+  // of the folder already runs either way.
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
+      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'self';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self' chrome-untrusted://resources;");
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' "
+      "chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' chrome-untrusted://resources;");
+      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc, "img-src 'self' data: blob:;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FontSrc, "font-src 'self' data:;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc,
+      "media-src 'self' data: blob:;");
+  // No network at all, so a preview cannot send a folder's contents anywhere.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
   source->OverrideContentSecurityPolicy(
@@ -67,14 +91,22 @@ LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameAncestors,
-      "frame-ancestors 'none';");
-  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'none';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
+
+  // Previews are shown inside Leo, which also makes the headless tool page
+  // framable. Serialising as an origin drops the constants' trailing slash,
+  // which Blink would otherwise report as an ignored path.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      absl::StrFormat(
+          "frame-ancestors %s %s;",
+          url::Origin::Create(GURL(kAIChatUIURL)).Serialize(),
+          url::Origin::Create(GURL(kAIChatUntrustedConversationUIURL))
+              .Serialize()));
 }
 
 LeoWorkspaceUI::~LeoWorkspaceUI() = default;
