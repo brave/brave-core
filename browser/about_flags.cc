@@ -1245,6 +1245,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveShieldsElementPicker),            \
       },                                                                       \
       {                                                                        \
+          "transition-to-upsteam-https-upgrades",                              \
+          "Transition to use upstream HTTPS upgrades",                         \
+          "Transition to upstream HTTPS upgrade implementation instead of "    \
+          "Brave's own.",                                                      \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kTransitionToUpstreamHttpsUpgrades),    \
+      },                                                                       \
+      {                                                                        \
           "brave-farbling",                                                    \
           "Enable Brave Farbling",                                             \
           "Enables randomization of fingerprinting-susceptible WebAPIs",       \
