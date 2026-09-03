@@ -79,6 +79,7 @@ source_set("unit_tests") {
     "playlist_background_web_contents_helper_unittest.cc",
     "playlist_background_web_contents_unittest.cc",
     "playlist_constants_unittest.cc",
+    "playlist_manifest_writer_unittest.cc",
     "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
     "playlist_media_session_observer_unittest.cc",
