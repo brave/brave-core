@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import logging
 import mmap
 import os
 import sys
@@ -26,9 +27,13 @@ from pathlib import Path
 # Import the shared version/platform definitions from the sibling downloader so
 # the Node version lives in exactly one place.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains'))
 
 # pylint: disable=wrong-import-position
 from download_node import NODE_VERSION, PLATFORMS
+from upload import S3Uploader, summarise
 
 # This directory: third_party/node.
 _NODE_DIR = Path(__file__).resolve().parent
@@ -79,20 +84,34 @@ def main() -> int:
         default=_NODE_DIR,
         help='Directory to write the tarballs into (defaults to this '
         'directory).')
+    parser.add_argument(
+        '--upload',
+        action='store_true',
+        help='Upload the packaged tarballs to our public bucket.')
     args = parser.parse_args()
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
+
+    uploader = None
+    if args.upload:
+        logging.basicConfig(level=logging.INFO, format='%(message)s')
+        uploader = S3Uploader(bucket='brave-build-deps-public')
 
     results: list[tuple[str, str, int]] = []
     for _archive, tarball_name, deployed_dir in PLATFORMS:
         tarball = package(tarball_name, deployed_dir, args.output_dir)
         if tarball is None:
             continue
-        sha256, size = sha256_and_size(tarball)
         print(f'Packaged {tarball.name}')
-        results.append((tarball.name, sha256, size))
+        if uploader is not None:
+            result = uploader.upload(tarball, prefix='nodejs', sign=False)
+            print(f'\nUpload summary:\n{summarise(result)}')
+            results.append((tarball.name, result.sha256, result.size_bytes))
+        else:
+            sha256, size = sha256_and_size(tarball)
+            results.append((tarball.name, sha256, size))
 
-    if results:
+    if results and uploader is None:
         # Echo the values needed to update the EXTRA_DEPS entry after upload.
         print('\nObject details for install_extra_deps.py:')
         for name, sha256, size in results:
