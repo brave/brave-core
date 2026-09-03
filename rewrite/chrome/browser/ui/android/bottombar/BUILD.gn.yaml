@@ -9,6 +9,7 @@ substitutions:
 
       BottomBarCoordinator constructs BraveBottomBarButtonManager, so a target of
       its own would have to be depended on by the component it depends on.
-    add_sources:
+    insert_into_list:
       target: java
-      sources: //brave/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarButtonManager.java
+      list_name: sources
+      values: //brave/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarButtonManager.java
