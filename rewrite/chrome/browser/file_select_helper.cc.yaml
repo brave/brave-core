@@ -15,7 +15,6 @@ substitutions:
       code: |-
         if (brave::MaybeStripImageMetadataForUpload(
                 image_metadata_processed_, temporary_files_, list,
-                base::BindOnce(&FileSelectHelper::NotifyListenerAndEnd,
-                               base::WrapRefCounted(this)))) {
+                base::BindOnce(&FileSelectHelper::NotifyListenerAndEnd, this))) {
           return;
         }
