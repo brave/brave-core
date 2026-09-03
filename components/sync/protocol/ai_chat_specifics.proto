@@ -134,7 +134,10 @@ message AIChatAssociatedContentProto {
   optional string uuid = 1;
   optional string title = 2;
   optional string url = 3;
-  // mojom::ContentType (0=PageContent, 1=VideoTranscript)
+  // mojom::ContentType (0=PageContent, 1=VideoTranscript).
+  // Note: 2=Workspace is never synced - a workspace names a local folder that
+  // is meaningless on another device - so it is filtered out on both send and
+  // receive.
   optional int32 content_type = 4;
   optional int32 content_used_percentage = 5;
   // Extracted text content used by the model.

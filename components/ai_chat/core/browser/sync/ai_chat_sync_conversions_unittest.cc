@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -21,6 +22,7 @@
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -323,6 +325,68 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersAssociatedContent) {
   EXPECT_EQ(proto_content.title(), "Mine");
   EXPECT_EQ(proto_content.url(), "https://example.com/mine");
   EXPECT_EQ(proto_content.content_used_percentage(), 50);
+}
+
+// A workspace names a local folder, so it must never leave the device - not
+// via sync, and not as a URL containing a filesystem path.
+TEST(AIChatSyncConversionsTest, EntryToSpecificsNeverUploadsWorkspaces) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+
+  std::vector<mojom::AssociatedContentPtr> content;
+
+  auto page = mojom::AssociatedContent::New();
+  page->uuid = "content-page";
+  page->url = GURL("https://example.com/page");
+  page->content_type = mojom::ContentType::PageContent;
+  page->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(page));
+
+  auto workspace = mojom::AssociatedContent::New();
+  workspace->uuid = "content-workspace";
+  workspace->url =
+      GURL("chrome-untrusted://leo-workspace/?folder=%2Fhome%2Fuser%2Fsecret");
+  workspace->content_type = mojom::ContentType::Workspace;
+  workspace->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(workspace));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, content);
+
+  ASSERT_TRUE(specifics.has_entry());
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  EXPECT_EQ(specifics.entry().associated_content(0).uuid(), "content-page");
+  EXPECT_THAT(specifics.SerializeAsString(),
+              testing::Not(testing::HasSubstr("/home/user/secret")));
+}
+
+// Workspaces are never uploaded, but a modified or future client could still
+// send one. Drop just that content - the turn itself is still valid.
+TEST(AIChatSyncConversionsTest, SpecificsToEntryDropsWorkspaceKeepsTheTurn) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+  entry->text = "What does this project do?";
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, {});
+  auto* content_proto = specifics.mutable_entry()->add_associated_content();
+  content_proto->set_uuid("content-workspace");
+  content_proto->set_url("chrome-untrusted://leo-workspace/?folder=%2Fgone");
+  content_proto->set_content_type(
+      std::to_underlying(mojom::ContentType::Workspace));
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
+
+  ASSERT_TRUE(rebuilt) << "the entry must survive an unsyncable content";
+  EXPECT_EQ(rebuilt->text, "What does this project do?");
+  EXPECT_TRUE(rebuilt_content.empty());
 }
 
 TEST(AIChatSyncConversionsTest, EntryToSpecificsCompletionEventCompressed) {

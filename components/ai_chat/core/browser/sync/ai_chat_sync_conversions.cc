@@ -505,6 +505,14 @@ bool ReadAssociatedContentFromEntry(
     std::vector<mojom::AssociatedContentPtr>& associated_content,
     base::flat_map<std::string, std::string>* associated_content_texts) {
   for (const auto& content_proto : proto.associated_content()) {
+    // Workspaces are never uploaded (see EntryToSpecifics). If one arrives
+    // anyway, from a modified or future client, drop just that content rather
+    // than rejecting the entry: the turn itself is still perfectly valid, and
+    // the folder it names would not exist on this device.
+    if (content_proto.content_type() ==
+        std::to_underlying(mojom::ContentType::Workspace)) {
+      continue;
+    }
     mojom::AssociatedContentPtr content_item =
         ProtoToAssociatedContent(content_proto, proto.uuid());
     if (!content_item) {
@@ -576,6 +584,13 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     for (const auto& content : associated_content) {
       if (!content->conversation_turn_uuid ||
           *content->conversation_turn_uuid != *entry.uuid) {
+        continue;
+      }
+      // A workspace is local to the device that created it: its URL records a
+      // filesystem path that means nothing on another machine. Never upload
+      // one - both to avoid sending a local path off the device, and because
+      // the receiver could not do anything useful with it.
+      if (content->content_type == mojom::ContentType::Workspace) {
         continue;
       }
       std::optional<std::string_view> text;
