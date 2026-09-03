@@ -46,6 +46,7 @@ BASE_DECLARE_FEATURE(kBlockAllCookiesToggle);
 BASE_DECLARE_FEATURE(kBraveShieldsElementPicker);
 BASE_DECLARE_FEATURE(kWebKitAdvancedPrivacyProtections);
 BASE_DECLARE_FEATURE(kWebKitGlobalPrivacyControl);
+BASE_DECLARE_FEATURE(kTransitionToUpstreamHttpsUpgrades);
 extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;
