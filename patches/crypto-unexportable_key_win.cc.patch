@@ -1,0 +1,22 @@
+diff --git a/crypto/unexportable_key_win.cc b/crypto/unexportable_key_win.cc
+index 1b61fd871d797c0b0c3a0ec5e9414530e20938a2..d2021d40972df98108a36ffa41fc69d4f28076a3 100644
+--- a/crypto/unexportable_key_win.cc
++++ b/crypto/unexportable_key_win.cc
+@@ -237,6 +237,8 @@ WindowsSrkHandle GetSrkHandleFor(SignatureVerifier::SignatureAlgorithm algo) {
+       return WindowsSrkHandle::kRsa;
+     case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
+       return WindowsSrkHandle::kEcc;
++    case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
++      return WindowsSrkHandle::kEcc;
+   }
+   NOTREACHED();
+ }
+@@ -843,6 +845,8 @@ constexpr hash::HashKind ToHashKind(
+     case SignatureVerifier::ECDSA_SHA256:
+     case SignatureVerifier::RSA_PSS_SHA256:
+       return hash::kSha256;
++    case SignatureVerifier::ECDSA_SHA384:
++      return hash::kSha384;
+   }
+   NOTREACHED();
+ }
