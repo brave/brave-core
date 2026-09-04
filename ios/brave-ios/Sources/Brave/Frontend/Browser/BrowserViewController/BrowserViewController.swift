@@ -1538,13 +1538,17 @@ public class BrowserViewController: UIViewController {
 
   override public func updateViewConstraints() {
     readerModeBar?.snp.remakeConstraints { make in
+      var insets: UIEdgeInsets = .zero
+      if #available(iOS 26, *) {
+        insets = UIEdgeInsets(equalInset: 8)
+      }
       if self.isUsingBottomBar {
         make.top.equalTo(self.view.safeArea.top)
       } else {
-        make.top.equalTo(self.header.snp.bottom)
+        make.top.equalTo(self.header.snp.bottom).offset(insets.top)
       }
       make.height.equalTo(UIConstants.toolbarHeight)
-      make.leading.trailing.equalTo(self.view)
+      make.leading.trailing.equalTo(self.view).inset(insets)
     }
 
     if let screenTimeViewController = screenTimeViewController,
