@@ -39,6 +39,7 @@ build_webui("build") {
     "brave_account_password_reset_dialog.ts",
     "brave_account_password_strength_meter.html.ts",
     "brave_account_password_strength_meter.ts",
+    "brave_account_shared.ts",
     "brave_account_sign_in_dialog.html.ts",
     "brave_account_sign_in_dialog.ts",
   ]

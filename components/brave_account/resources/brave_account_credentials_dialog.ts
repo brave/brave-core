@@ -29,7 +29,7 @@ import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
 } from './reset_password.mojom-webui.js'
-import { showError } from './brave_account_common.js'
+import { showError, toFlowError } from './brave_account_shared.js'
 import { CredentialsVerification } from './brave_account_dialogs.js'
 
 // @ts-expect-error: no type definitions are generated for opaque_ke.bundle.js
@@ -121,22 +121,14 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
         serializedRecord,
       )
     } catch (e) {
-      let error: RegisterError
-
-      if (e && typeof e === 'object') {
-        error = e as RegisterError
-      } else if (typeof e === 'string') {
-        error = {
-          clientError: { errorCode: RegisterClientErrorCode.kOpaqueError },
-        }
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'register', details: error })
+      showError({
+        kind: 'register',
+        details: toFlowError<RegisterError, RegisterClientErrorCode>(
+          e,
+          RegisterClientErrorCode.kUnexpected,
+          RegisterClientErrorCode.kOpaqueError,
+        ),
+      })
     }
   }
 
@@ -157,22 +149,14 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
         this.getEmail(),
       )
     } catch (e) {
-      let error: ResetPasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ResetPasswordError
-      } else if (typeof e === 'string') {
-        error = {
-          clientError: { errorCode: ResetPasswordClientErrorCode.kOpaqueError },
-        }
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ResetPasswordClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'resetPassword', details: error })
+      showError({
+        kind: 'resetPassword',
+        details: toFlowError<ResetPasswordError, ResetPasswordClientErrorCode>(
+          e,
+          ResetPasswordClientErrorCode.kUnexpected,
+          ResetPasswordClientErrorCode.kOpaqueError,
+        ),
+      })
     }
   }
 
@@ -192,26 +176,17 @@ export class BraveAccountCredentialsDialogElement extends CrLitElement {
         serializedRecord,
       )
     } catch (e) {
-      let error: ChangePasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ChangePasswordError
-      } else if (typeof e === 'string') {
-        error = {
-          clientError: {
-            errorCode: ChangePasswordClientErrorCode.kOpaqueError,
-          },
-        }
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: {
-            errorCode: ChangePasswordClientErrorCode.kUnexpected,
-          },
-        }
-      }
-
-      showError({ kind: 'changePassword', details: error })
+      showError({
+        kind: 'changePassword',
+        details: toFlowError<
+          ChangePasswordError,
+          ChangePasswordClientErrorCode
+        >(
+          e,
+          ChangePasswordClientErrorCode.kUnexpected,
+          ChangePasswordClientErrorCode.kOpaqueError,
+        ),
+      })
     }
   }
 

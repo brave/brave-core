@@ -15,7 +15,7 @@ import {
 } from './reset_password.mojom-webui.js'
 import { getCss } from './brave_account_password_reset_dialog.css.js'
 import { getHtml } from './brave_account_password_reset_dialog.html.js'
-import { showError } from './brave_account_common.js'
+import { showError, toFlowError } from './brave_account_shared.js'
 
 export class BraveAccountPasswordResetDialogElement extends CrLitElement {
   static get is() {
@@ -45,18 +45,13 @@ export class BraveAccountPasswordResetDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.resetPasswordStep1(this.email)
     } catch (e) {
-      let error: ResetPasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ResetPasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ResetPasswordClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'resetPassword', details: error })
+      showError({
+        kind: 'resetPassword',
+        details: toFlowError<ResetPasswordError, ResetPasswordClientErrorCode>(
+          e,
+          ResetPasswordClientErrorCode.kUnexpected,
+        ),
+      })
     }
 
     this.isSubmitting = false

@@ -10,8 +10,11 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
-import { BraveAccountStrings } from './brave_components_webui_strings.js'
-import { showError, showSuccess } from './brave_account_common.js'
+import {
+  showError,
+  showResendVerificationEmailResult,
+  toFlowError,
+} from './brave_account_shared.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
   LoggedInVerificationIntent,
@@ -95,18 +98,13 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.registerStep3(this.code)
     } catch (e) {
-      let error: RegisterError
-
-      if (e && typeof e === 'object') {
-        error = e as RegisterError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'register', details: error })
+      showError({
+        kind: 'register',
+        details: toFlowError<RegisterError, RegisterClientErrorCode>(
+          e,
+          RegisterClientErrorCode.kUnexpected,
+        ),
+      })
     }
   }
 
@@ -114,18 +112,13 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.resetPasswordStep2(this.code)
     } catch (e) {
-      let error: ResetPasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ResetPasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ResetPasswordClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'resetPassword', details: error })
+      showError({
+        kind: 'resetPassword',
+        details: toFlowError<ResetPasswordError, ResetPasswordClientErrorCode>(
+          e,
+          ResetPasswordClientErrorCode.kUnexpected,
+        ),
+      })
     }
   }
 
@@ -133,18 +126,13 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
     try {
       await this.browserProxy.authentication.changePasswordStep2(this.code)
     } catch (e) {
-      let error: ChangePasswordError
-
-      if (e && typeof e === 'object') {
-        error = e as ChangePasswordError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: { errorCode: ChangePasswordClientErrorCode.kUnexpected },
-        }
-      }
-
-      showError({ kind: 'changePassword', details: error })
+      showError({
+        kind: 'changePassword',
+        details: toFlowError<
+          ChangePasswordError,
+          ChangePasswordClientErrorCode
+        >(e, ChangePasswordClientErrorCode.kUnexpected),
+      })
     }
   }
 
@@ -159,29 +147,14 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         this.intent,
       )
     } catch (e) {
-      if (e && typeof e === 'object') {
-        error = e as ResendVerificationEmailError
-      } else {
-        console.error('Unexpected error:', e)
-        error = {
-          clientError: {
-            errorCode: ResendVerificationEmailClientErrorCode.kUnexpected,
-          },
-        }
-      }
+      error = toFlowError<
+        ResendVerificationEmailError,
+        ResendVerificationEmailClientErrorCode
+      >(e, ResendVerificationEmailClientErrorCode.kUnexpected)
     }
 
-    if (error) {
-      showError(
-        { kind: 'resendVerificationEmail', details: error },
-        BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE,
-      )
-    } else {
-      showSuccess(
-        BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS,
-        BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE,
-      )
-    }
+    // brave://account keeps the toast up until it is dismissed.
+    showResendVerificationEmailResult(error, 0)
 
     this.isResendingConfirmationEmail = false
   }
