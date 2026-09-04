@@ -671,7 +671,7 @@ size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   }
   const size_t first_party_storage_areas_to_cleanup_count =
       first_party_storage_areas_to_cleanup_on_startup_.size();
-  DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());
+  DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());  
   return timers.size() + first_party_storage_areas_to_cleanup_count;
 }
 
