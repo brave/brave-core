@@ -7,15 +7,4 @@
 
 #include "brave/browser/ui/color/brave_material_side_panel_color_mixer.h"
 
-#define AddMaterialSidePanelColorMixer \
-  AddMaterialSidePanelColorMixer_ChromiumImpl
 #include <chrome/browser/ui/color/material_side_panel_color_mixer.cc>
-#undef AddMaterialSidePanelColorMixer
-
-void AddMaterialSidePanelColorMixer(ui::ColorProvider* provider,
-                                    const ui::ColorProviderKey& key) {
-  AddMaterialSidePanelColorMixer_ChromiumImpl(provider, key);
-#if !BUILDFLAG(IS_ANDROID)
-  AddBraveMaterialSidePanelColorMixer(provider, key);
-#endif
-}

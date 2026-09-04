@@ -7,15 +7,4 @@
 
 #include "brave/browser/ui/color/brave_color_mixer.h"
 
-#define AddOmniboxColorMixer AddOmniboxColorMixer_ChromiumImpl
 #include <chrome/browser/ui/color/omnibox_color_mixer.cc>
-#undef AddOmniboxColorMixer
-
-void AddOmniboxColorMixer(ui::ColorProvider* provider,
-                          const ui::ColorProviderKey& key) {
-  AddOmniboxColorMixer_ChromiumImpl(provider, key);
-
-#if !BUILDFLAG(IS_ANDROID)
-  AddBraveOmniboxColorMixer(provider, key);
-#endif  // #if !BUILDFLAG(IS_ANDROID)
-}
