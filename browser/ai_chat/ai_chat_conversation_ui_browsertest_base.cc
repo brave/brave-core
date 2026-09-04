@@ -175,6 +175,14 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementState(
   auto result = content::EvalJs(
       frame,
       content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist));
+  // Surface a script failure (e.g. the frame's document was replaced while the
+  // promise was still pending) as a test failure: `ExtractBool` would `CHECK`
+  // and take the browser test process down, losing the error along with the
+  // rest of the test's output.
+  if (!result.is_ok()) {
+    ADD_FAILURE() << result.ExtractError();
+    return false;
+  }
   return result.ExtractBool();
 }
 
