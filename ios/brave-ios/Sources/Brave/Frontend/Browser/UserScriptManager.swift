@@ -125,6 +125,7 @@ class UserScriptManager {
     case cardanoProvider
     case searchResultAd
     case youtubeQuality
+    case youtubeDesktopCookie
     case braveLeoAIChat
     case braveTranslate
 
@@ -167,6 +168,8 @@ class UserScriptManager {
       case .youtubeQuality:
         return Preferences.UserScript.youtubeQuality.value
           ? YoutubeQualityScriptHandler.userScript : nil
+      case .youtubeDesktopCookie:
+        return loadScript(named: "YoutubeDesktopCookieScript")
       case .braveLeoAIChat:
         return Preferences.UserScript.leo.value ? BraveLeoScriptHandler.userScript : nil
       case .braveTranslate:
