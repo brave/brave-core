@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PrintHandler;
 @protocol RequestBlockingTabHelperBridge;
 @protocol CosmeticFilteringTabHelperBridge;
+@protocol ScriptletsTabHelperBridge;
 @protocol BraveWalletProviderDelegate;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -280,6 +281,12 @@ CWV_EXPORT
 /// A bridge for Cosmetic Filtering javascript feature
 - (void)setCosmeticFilteringTabHelperBridge:
     (id<CosmeticFilteringTabHelperBridge>)bridge;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Scriptlets)
+/// A bridge for the Scriptlets javascript feature
+- (void)setScriptletsTabHelperBridge:(id<ScriptletsTabHelperBridge>)bridge;
 @end
 
 NS_ASSUME_NONNULL_END
