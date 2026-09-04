@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("search_engines") {
+  sources = [
+    "template_url_bridge.h",
+    "template_url_bridge_impl.h",
+    "template_url_service_bridge.h",
+    "template_url_service_bridge_impl.h",
+    "template_url_service_bridge_impl.mm",
+    "template_url_service_factory_bridge.h",
+    "template_url_service_factory_bridge.mm",
+    "template_url_service_prefs.cc",
+    "template_url_service_prefs.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/ios/browser/keyed_service",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/search_engines",
+    "//ios/chrome/browser/search_engines/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//net",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}
