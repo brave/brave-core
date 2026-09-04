@@ -17,6 +17,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
@@ -36,7 +37,6 @@ using content::NavigationHandle;
 using content::WebContents;
 
 namespace ephemeral_storage {
-
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
@@ -138,15 +138,16 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup(
   }
 }
 
-void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady() {
-   auto& controller = web_contents()->GetController();
+void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady(
+    const std::string& cleaned_ephemeral_domain) {
+  auto& controller = web_contents()->GetController();
   if (controller.GetPendingEntry()) {
     reload_on_ready_callback_ =
-        base::BindOnce(&EphemeralStorageTabHelper::ReloadBypassingCache,
-                       weak_factory_.GetWeakPtr());
+        base::BindOnce(&EphemeralStorageTabHelper::MaybeReloadBypassingCache,
+                       weak_factory_.GetWeakPtr(), cleaned_ephemeral_domain);
     return;
   }
-  ReloadBypassingCache();
+  MaybeReloadBypassingCache(cleaned_ephemeral_domain);
 }
 
 void EphemeralStorageTabHelper::DidStartNavigation(
@@ -209,6 +210,10 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   UpdateShieldsState(new_url);
 }
 
+void EphemeralStorageTabHelper::WebContentsDestroyed() {
+  reload_on_ready_callback_.Reset();
+}
+
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     const std::string& new_domain,
     const GURL& new_url) {
@@ -264,19 +269,45 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
       url.host(), shields_enabled && cookies_restricted);
 }
 
-void EphemeralStorageTabHelper::ReloadBypassingCache() {
-  if (!web_contents()) {
+void EphemeralStorageTabHelper::MaybeReloadBypassingCache(
+    const std::string& cleaned_ephemeral_domain) {
+  auto& controller = web_contents()->GetController();
+
+  // Check if a navigation is currently in progress
+  if (controller.GetPendingEntry() || web_contents()->IsLoading()) {
+    const std::string pending_domain =
+        net::URLToEphemeralStorageDomain(web_contents()->GetVisibleURL());
+    if (pending_domain == cleaned_ephemeral_domain) {
+      reload_on_ready_callback_ =
+          base::BindOnce(&EphemeralStorageTabHelper::MaybeReloadBypassingCache,
+                         weak_factory_.GetWeakPtr(), cleaned_ephemeral_domain);
+    } else {
+      DVLOG(1) << __func__ << " Dropped cache-bypassing reload; user "
+               << "navigated to a different ephemeral domain: "
+               << web_contents()->GetVisibleURL();
+    }
     return;
   }
 
-  auto& controller = web_contents()->GetController();
-  
-  // Check if a navigation is currently in progress
-  if (controller.GetPendingEntry() || web_contents()->IsLoading()) {
-     DVLOG(1) << __func__ << " Could not reload while bypassing the cache " << web_contents()->GetURL();
-     return;
+  // Guard against reloading a page the user has navigated to since the
+  // cleanup was requested.
+  const std::string committed_domain =
+      net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
+  if (committed_domain != cleaned_ephemeral_domain) {
+    DVLOG(1) << __func__ << " Dropped cache-bypassing reload; committed "
+             << "domain changed: " << web_contents()->GetLastCommittedURL();
+    return;
   }
-  
+
+  // Prevent non-user-initiated reloads from re-triggering purchases, comments,
+  // and similar actions.
+  const content::NavigationEntry* entry =
+      web_contents()->GetController().GetLastCommittedEntry();
+  if (entry && entry->GetHasPostData()) {
+    DVLOG(1) << __func__ << " Dropped cache-bypassing reload; committed "
+             << "entry has POST data.";
+    return;
+  }
   controller.Reload(content::ReloadType::BYPASSING_CACHE, false);
 }
 
