@@ -17,8 +17,10 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 # start in a different path, we'll do the first step (move them to the generated
 # preprocessed path via preprocess_if_expr, but let chromium handle the rest of
 # the webui build pipeline.
-brave_settings_preprocess_deps =
-    [ "//brave/browser/resources/settings:preprocess" ]
+brave_settings_preprocess_deps = [
+  "//brave/browser/resources/settings:preprocess",
+  "//brave/browser/resources/settings:preprocess_brave_account",
+]
 
 # Preprocessor defines passed to build_webui() so that Chromium-patched
 # TypeScript files can use <if expr="..."> with Brave buildflags.
@@ -129,21 +131,21 @@ brave_settings_ts_files = [
   "brave_window.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "getting_started_page/brave_account_browser_proxy.ts",
-  "getting_started_page/brave_account_logged_in_row.html.ts",
-  "getting_started_page/brave_account_logged_in_row.ts",
-  "getting_started_page/brave_account_logged_out_row.html.ts",
-  "getting_started_page/brave_account_logged_out_row.ts",
   "getting_started_page/brave_account_row.html.ts",
   "getting_started_page/brave_account_row.ts",
-  "getting_started_page/brave_account_row_base.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
-brave_settings_local_css_files = [
-  "getting_started_page/brave_account_logged_in_row.css",
-  "getting_started_page/brave_account_row_common.css",
+# Shared with the Brave Account UI, so these are preprocessed by
+# :preprocess_brave_account out of //brave/components/brave_account/resources,
+# not out of this directory like brave_settings_local_css_files. They land flat
+# in the same preprocessed/ folder, hence no directory prefix.
+brave_account_settings_css_files = [
+  "brave_account_logged_in_row.css",
+  "brave_account_row_common.css",
 ]
+
+brave_settings_local_css_files = []
 
 if (enable_brave_vpn_wireguard) {
   brave_settings_web_component_files +=
@@ -222,6 +224,18 @@ brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/resend_verification_email.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/mojom/brave_origin_settings.mojom-webui.ts",
+
+  # Shared with the Brave Account UI, which serves the same rows as a page on
+  # Android/iOS where Settings is native. These land flat in preprocessed/,
+  # which is why they import each other as './' and are imported as '../' from
+  # getting_started_page/. Their .css counterparts cannot come through this
+  # list - see :preprocess_brave_account in BUILD.gn.
+  "//brave/components/brave_account/resources/brave_account_logged_in_row.html.ts",
+  "//brave/components/brave_account/resources/brave_account_logged_in_row.ts",
+  "//brave/components/brave_account/resources/brave_account_logged_out_row.html.ts",
+  "//brave/components/brave_account/resources/brave_account_logged_out_row.ts",
+  "//brave/components/brave_account/resources/brave_account_row_base.ts",
+  "//brave/components/brave_account/resources/brave_account_row_browser_proxy.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.

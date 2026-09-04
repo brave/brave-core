@@ -5,23 +5,28 @@
 
 import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
+import type { SanitizeInnerHtmlOpts } from '//resources/js/parse_html_subset.js'
+import {
+  parseHtmlSubset,
+  sanitizeInnerHtml,
+} from '//resources/js/parse_html_subset.js'
 // @ts-expect-error: no type definitions are generated for leo.bundle.js
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
-import { BraveAccountBrowserProxy } from './brave_account_browser_proxy.js'
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
-import { VerificationIntent } from '../brave_account.mojom-webui.js'
+import { BraveAccountRowBrowserProxy } from './brave_account_row_browser_proxy.js'
+import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
+import { VerificationIntent } from './brave_account.mojom-webui.js'
 import {
   ChangePasswordClientErrorCode,
   ChangePasswordError,
   ChangePasswordServerErrorCode,
-} from '../change_password.mojom-webui.js'
+} from './change_password.mojom-webui.js'
 import {
   ResendVerificationEmailClientErrorCode,
   ResendVerificationEmailError,
   ResendVerificationEmailServerErrorCode,
-} from '../resend_verification_email.mojom-webui.js'
+} from './resend_verification_email.mojom-webui.js'
 
 type Error =
   | { kind: 'changePassword'; details: ChangePasswordError }
@@ -82,7 +87,27 @@ const RESEND_VERIFICATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
 export abstract class BraveAccountRowBaseElement<
   Intent,
   State extends { verification: { intent: Intent } | null },
-> extends I18nMixinLit(CrLitElement) {
+> extends CrLitElement {
+  // cr_elements only builds i18n_mixin_lit.ts when !is_ios, but these rows are
+  // also served as a page there, so I18nMixinLit is not available. These are
+  // the two methods of it the rows use, over loadTimeData directly.
+  private i18nRaw(id: string, ...varArgs: Array<string | number>) {
+    return varArgs.length === 0
+      ? loadTimeData.getString(id)
+      : loadTimeData.getStringF(id, ...varArgs)
+  }
+
+  protected i18n(id: string, ...varArgs: Array<string | number>) {
+    return parseHtmlSubset(
+      `<b>${this.i18nRaw(id, ...varArgs)}</b>`).firstChild!.textContent!
+  }
+
+  protected i18nAdvanced(id: string, opts?: SanitizeInnerHtmlOpts) {
+    opts = opts || {}
+    return sanitizeInnerHtml(
+      this.i18nRaw(id, ...(opts.substitutions || [])), opts)
+  }
+
   static override get properties() {
     return {
       browserProxy: { type: Object },
@@ -91,7 +116,7 @@ export abstract class BraveAccountRowBaseElement<
     }
   }
 
-  accessor browserProxy!: BraveAccountBrowserProxy
+  accessor browserProxy!: BraveAccountRowBrowserProxy
   protected accessor initiatingServiceName = ''
   // `& object` is only here to satisfy the @webui-eslint/lit-property-accessor
   // lint rule, which expects Object reactive properties to be typed as objects.
@@ -153,8 +178,15 @@ export abstract class BraveAccountRowBaseElement<
       this.makeVerificationIntent(this.state.verification.intent))
   }
 
+  // How authentication is entered is the host's decision, not the row's:
+  // desktop opens a ConstrainedWebDialog over brave://settings via RowHandler,
+  // which is desktop-only (see //brave/components/brave_account/mojom/BUILD.gn),
+  // while mobile navigates to the authentication route in its own tab. So the
+  // rows only announce the intent and let their mount act on it.
   protected openBraveAccountDialog() {
-    this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
+    this.fire('open-brave-account-dialog', {
+      initiatingServiceName: this.initiatingServiceName,
+    })
   }
 
   protected getErrorMessage(error: Error): string {

@@ -25,6 +25,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -83,7 +84,11 @@ class BraveAccountUIBase {
         "require-trusted-types-for 'script';");
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::TrustedTypes,
-        "trusted-types lit-html-desktop;");
+        // parse-html-subset and sanitize-inner-html back the account rows'
+        // i18n helpers, which brave://settings gets from the default WebUI
+        // policy list (see webui::kDefaultTrustedTypesPolicies).
+        "trusted-types lit-html-desktop parse-html-subset "
+        "sanitize-inner-html;");
 
     source->UseStringsJs();
     source->EnableReplaceI18nInJS();
@@ -92,6 +97,13 @@ class BraveAccountUIBase {
     source->SetDefaultResource(IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
 
     source->AddLocalizedStrings(webui::kBraveAccountStrings);
+
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+    // Settings is native on Android/iOS, so this WebUI also serves the account
+    // rows as a page. They are strung from the settings bundle, which on
+    // desktop only brave://settings adds.
+    source->AddLocalizedStrings(webui::kBraveAccountSettingsStrings);
+#endif
 
     source->AddResourcePath("full_brave_brand.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);

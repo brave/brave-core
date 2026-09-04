@@ -316,8 +316,26 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
-    Static.Section(
-      rows: [
+    var rows: [Row] = []
+
+    // TODO: temporary - probe for the shared account settings UI served at
+    // brave://account/settings. Remove once the real entry point lands.
+    if IsBraveAccountEnabled() {
+      rows.append(
+        Row(
+          text: "Account and Sync",
+          selection: { [unowned self] in
+            openBraveAccountDialog(path: "/settings")
+          },
+          image: UIImage(sharedNamed: "brave.logo"),
+          accessory: .disclosureIndicator,
+          cellClass: BraveAccountIconCell.self
+        )
+      )
+    }
+
+    rows.append(
+      contentsOf: [
         Row(
           text: Strings.setDefaultBrowserSettingsCell,
           selection: { [unowned self] in
@@ -378,6 +396,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         ),
       ]
     )
+
+    return Static.Section(rows: rows)
   }()
 
   private func setCellEnabled(_ enabled: Bool, rowUUID: UUID, sectionUUID: UUID) {
@@ -397,11 +417,11 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     }
   }
 
-  private func openBraveAccountDialog() {
+  private func openBraveAccountDialog(path: String = "") {
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
-    controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+    controller.webView.load(URLRequest(url: URL(string: "brave://account\(path)")!))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
     }
