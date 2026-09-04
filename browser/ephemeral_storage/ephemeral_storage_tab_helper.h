@@ -71,7 +71,6 @@ class EphemeralStorageTabHelper
       content::NavigationHandle* navigation_handle) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void WebContentsDestroyed() override;
 
   void CreateProvisionalTLDEphemeralLifetime(
       content::NavigationHandle* navigation_handle);

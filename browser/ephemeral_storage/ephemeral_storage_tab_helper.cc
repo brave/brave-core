@@ -210,10 +210,6 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   UpdateShieldsState(new_url);
 }
 
-void EphemeralStorageTabHelper::WebContentsDestroyed() {
-  reload_on_ready_callback_.Reset();
-}
-
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     const std::string& new_domain,
     const GURL& new_url) {
@@ -276,7 +272,7 @@ void EphemeralStorageTabHelper::MaybeReloadBypassingCache(
   // Check if a navigation is currently in progress
   if (controller.GetPendingEntry() || web_contents()->IsLoading()) {
     const std::string pending_domain =
-        net::URLToEphemeralStorageDomain(web_contents()->GetVisibleURL());
+        net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
     if (pending_domain == cleaned_ephemeral_domain) {
       reload_on_ready_callback_ =
           base::BindOnce(&EphemeralStorageTabHelper::MaybeReloadBypassingCache,
@@ -284,7 +280,7 @@ void EphemeralStorageTabHelper::MaybeReloadBypassingCache(
     } else {
       DVLOG(1) << __func__ << " Dropped cache-bypassing reload; user "
                << "navigated to a different ephemeral domain: "
-               << web_contents()->GetVisibleURL();
+               << web_contents()->GetLastCommittedURL();
     }
     return;
   }
@@ -323,6 +319,7 @@ void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
   weak_factory_.InvalidateWeakPtrs();
   RemoveTabModelObserver(registered_tab_model_, this);
   registered_tab_model_ = nullptr;
+  reload_on_ready_callback_.Reset();
 }
 #endif
 

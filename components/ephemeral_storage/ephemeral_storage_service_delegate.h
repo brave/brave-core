@@ -22,8 +22,8 @@ class EphemeralStorageServiceDelegate {
   // Cleanups ephemeral storages (local storage, cookies).
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
-  virtual void CleanupFirstPartyStorageArea(
-      const TLDEphemeralAreaKey& key, base::OnceClosure callback) = 0;
+  virtual void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key,
+                                            base::OnceClosure callback) = 0;
   // Forces already-loaded tabs matching ephemeral_domains to reload, bypassing
   // the HTTP cache, when ready.
   virtual void ReloadTabIfMatchingEphemeralDomain(
