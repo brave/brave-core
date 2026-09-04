@@ -30,6 +30,8 @@ extern const base::FeatureParam<bool> kZCashIronwoodEnabled;
 BASE_DECLARE_FEATURE(kBraveWalletPolkadotFeature);
 // Discovers pallet_assets tokens held by Polkadot accounts.
 extern const base::FeatureParam<bool> kPolkadotAssetDiscovery;
+// Injects `window.injectedWeb3['brave-wallet']` for Polkadot dApps.
+extern const base::FeatureParam<bool> kPolkadotDAppSupport;
 
 #if !defined(OFFICIAL_BUILD)
 BASE_DECLARE_FEATURE(kBraveWalletDebugFeature);

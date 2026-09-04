@@ -186,9 +186,19 @@ const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryDisabled[] = {
 const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryEnabled[] = {
     {"polkadot_asset_discovery", "true"}};
 
+const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportDisabled[] = {
+    {"polkadot_dapp_support", "false"}};
+
+const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportEnabled[] = {
+    {"polkadot_dapp_support", "true"}};
+
 const flags_ui::FeatureEntry::FeatureVariation kPolkadotFeatureVariations[] = {
     {"- Asset discovery disabled", kPolkadotAssetDiscoveryDisabled, nullptr},
-    {"- Asset discovery enabled", kPolkadotAssetDiscoveryEnabled, nullptr}};
+    {"- Asset discovery enabled", kPolkadotAssetDiscoveryEnabled, nullptr},
+    {"- dApp support disabled", kPolkadotDappSupportDisabled, nullptr},
+    {"- dApp support enabled", kPolkadotDappSupportEnabled, nullptr},
+};
+
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if defined(TOOLKIT_VIEWS)
