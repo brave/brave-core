@@ -1,0 +1,58 @@
+diff --git a/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc b/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
+index 40be8a4313d0b3805318eec342df1a51406d9e4c..2619aaa518780cbcf40836822f0bfc41515857a4 100644
+--- a/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
++++ b/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
+@@ -294,7 +294,7 @@ std::vector<std::unique_ptr<views::View>> CreateSubtextViews(
+       // To make sure the popup width will not exceed its maximum value,
+       // divide the maximum label width by the number of labels.
+       FormatLabel(*label, label_text, main_filling_product,
+-                  kAutofillSuggestionMaxWidth / label_row.size());
++                  ((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth) / label_row.size());
+     }
+     result.push_back(std::move(label_row_container_view));
+   }
+@@ -535,7 +535,7 @@ std::unique_ptr<PopupRowContentView> CreateBnplPopupRowContentView(
+   std::unique_ptr<views::Label> main_text_label =
+       CreateMainTextLabel(suggestion, /*show_new_badge=*/std::nullopt);
+   FormatLabel(*main_text_label, suggestion.main_text, main_filling_product,
+-              kAutofillSuggestionMaxWidth);
++              ((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth));
+ 
+   // If the BNPL issuer is linked, add `BnplLinkedIssuerPill` to minor texts so
+   // that it appears on the first line of the suggestion with the BNPL issuer
+@@ -594,7 +594,7 @@ std::unique_ptr<PopupRowWithButtonView> CreateAutocompleteRowWithDeleteButton(
+   std::unique_ptr<views::Label> main_text_label =
+       CreateMainTextLabel(suggestion, /*show_new_badge=*/std::nullopt);
+   FormatLabel(*main_text_label, suggestion.main_text,
+-              FillingProduct::kAutocomplete, kAutofillSuggestionMaxWidth);
++              FillingProduct::kAutocomplete, ((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth));
+   popup_cell_utils::AddSuggestionContentToView(
+       suggestion, std::move(main_text_label), CreateMinorTextLabels(suggestion),
+       /*description_label=*/nullptr,
+@@ -657,7 +657,7 @@ std::unique_ptr<PopupRowContentView> CreatePopupRowContentView(
+   }
+ 
+   FormatLabel(*main_text_label, suggestion.main_text, main_filling_product,
+-              kAutofillSuggestionMaxWidth);
++              ((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth));
+   popup_cell_utils::AddSuggestionContentToView(
+       suggestion, std::move(main_text_label), CreateMinorTextLabels(suggestion),
+       /*description_label=*/nullptr,
+@@ -682,7 +682,7 @@ CreateAlternativePaymentMethodPopupRowContentView(
+   }
+ 
+   FormatLabel(*main_text_label, suggestion.main_text, main_filling_product,
+-              kAutofillSuggestionMaxWidth);
++              ((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth));
+   std::vector<std::unique_ptr<views::View>> minor_labels =
+       CreateMinorTextLabels(suggestion);
+ 
+@@ -733,7 +733,7 @@ std::unique_ptr<PopupRowView> CreatePopupRowView(
+   SuggestionType type = suggestion.type;
+   FillingProduct main_filling_product = controller->GetMainFillingProduct();
+ 
+-  if (type == SuggestionType::kAutocompleteEntry) {
++  if (type == SuggestionType::kAutocompleteEntry && !suggestion.brave_email_alias_suggestion) {
+     return CreateAutocompleteRowWithDeleteButton(
+         controller, a11y_selection_delegate, selection_delegate, line_number);
+   }

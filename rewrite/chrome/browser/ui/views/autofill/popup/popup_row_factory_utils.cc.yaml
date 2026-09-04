@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Replace kAutofillSuggestionMaxWidth argument in every call to FormatLabel.
+      It allows long descriptions for Email Alias suggestions to be shown.
+    count: 5
+    regex:
+      re_pattern: '^( *FormatLabel\([^;]*?)kAutofillSuggestionMaxWidth(.*?\);)'
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth)\2
+
+  - description: |-
+      Replace the view creation for kAutocompleteEntry in the case of email alias suggestions.
+      By default, the kAutocompleteEntry view contains a delete button, which is not needed
+      for email suggestions, so this patch switches to the base view that displays only the text
+      and description.
+    regex:
+      pattern: |-
+        if (type == SuggestionType::kAutocompleteEntry)
+      replace: |-
+        if (type == SuggestionType::kAutocompleteEntry && !suggestion.brave_email_alias_suggestion)
