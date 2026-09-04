@@ -18,6 +18,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
 #include "components/history_embeddings/content/history_embeddings_service.h"
 #include "components/history_embeddings/core/vector_database.h"
 #include "url/gurl.h"
