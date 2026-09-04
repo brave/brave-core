@@ -7,11 +7,13 @@ import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 import { createStateStore } from '$web-common/state_store'
 import { TopSitesContext } from '../../context/top_sites_context'
+import { RewardsContext } from '../../context/rewards_context'
 import {
   sponsoredSiteLearnMoreURL,
   TopSitesListKind,
   TopSitesState,
 } from '../../state/top_sites_store'
+import { RewardsState } from '../../state/rewards_store'
 import { TopSitesPanel } from './top_sites_panel'
 
 // The default $web-common/locale mock (see components/test/testSetup.ts)
@@ -56,15 +58,40 @@ function createStore(
   })
 }
 
+function createRewardsStore(state: Partial<RewardsState>) {
+  return createStateStore<RewardsState>({
+    initialized: true,
+    rewardsFeatureEnabled: true,
+    showRewardsWidget: false,
+    rewardsEnabled: false,
+    rewardsExternalWallet: null,
+    rewardsBalance: null,
+    rewardsExchangeRate: 0,
+    rewardsAdsViewed: null,
+    minEarningsPreviousMonth: 0,
+    payoutStatus: {},
+    tosUpdateRequired: false,
+    actions: {
+      setShowRewardsWidget() {},
+      recordNewTabOnboardingClick() {},
+    },
+    ...state,
+  })
+}
+
 function renderPanel(
   state: Partial<TopSitesState>,
   actions: Partial<TopSitesState['actions']> = {},
+  rewardsState: Partial<RewardsState> = {},
 ) {
   const store = createStore(state, actions)
+  const rewardsStore = createRewardsStore(rewardsState)
   render(
-    <TopSitesContext.Provider value={store}>
-      <TopSitesPanel />
-    </TopSitesContext.Provider>,
+    <RewardsContext.Provider value={rewardsStore}>
+      <TopSitesContext.Provider value={store}>
+        <TopSitesPanel />
+      </TopSitesContext.Provider>
+    </RewardsContext.Provider>,
   )
 }
 
@@ -81,6 +108,31 @@ describe('TopSitesPanel', () => {
     expect(
       screen.getByText('NEW_TAB_SHOW_SPONSORED_SITES_LABEL'),
     ).toBeInTheDocument()
+  })
+
+  it('should not render the sponsored sites toggle when an external wallet is connected', () => {
+    renderPanel(
+      { showTopSites: true },
+      {},
+      {
+        rewardsExternalWallet: {
+          provider: 'uphold',
+          authenticated: true,
+          name: '',
+          url: '',
+        },
+      },
+    )
+    expect(
+      screen.queryByText('NEW_TAB_SHOW_SPONSORED_SITES_LABEL'),
+    ).not.toBeInTheDocument()
+  })
+
+  it('should not render the sponsored sites toggle when the rewards feature is disabled', () => {
+    renderPanel({ showTopSites: true }, {}, { rewardsFeatureEnabled: false })
+    expect(
+      screen.queryByText('NEW_TAB_SHOW_SPONSORED_SITES_LABEL'),
+    ).not.toBeInTheDocument()
   })
 
   it('should render the sponsored sites description with a learn more link', () => {
