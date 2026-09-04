@@ -48,9 +48,9 @@ const AccountsDeleteTestCase* Success() {
 // - HTTP 5XX:
 //   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const AccountsDeleteTestCase* Unauthorized() {
+const AccountsDeleteTestCase* ApplicationJsonErrorCodeIsNull() {
   static const base::NoDestructor<AccountsDeleteTestCase> kUnauthorized(
-      {.test_name = "unauthorized",
+      {.test_name = "application_json_error_code_is_null",
        .http_status_code = net::HTTP_UNAUTHORIZED,
        .raw_response_body =
            R"({ "code": null,
@@ -61,21 +61,6 @@ const AccountsDeleteTestCase* Unauthorized() {
            .status_code = net::HTTP_UNAUTHORIZED,
            .body = base::unexpected(AccountsDelete::Response::ErrorBody())}});
   return kUnauthorized.get();
-}
-
-const AccountsDeleteTestCase* InternalServerError() {
-  static const base::NoDestructor<AccountsDeleteTestCase> kInternalServerError(
-      {.test_name = "internal_server_error",
-       .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-       .raw_response_body =
-           R"({ "code": null,
-                    "error": "Internal Server Error",
-                    "status": 500 })",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-           .body = base::unexpected(AccountsDelete::Response::ErrorBody())}});
-  return kInternalServerError.get();
 }
 
 // non-application/json errors:
@@ -104,8 +89,7 @@ TEST_P(AccountsDeleteTest, HandlesReplies) {
 INSTANTIATE_TEST_SUITE_P(AccountsDeleteTestCases,
                          AccountsDeleteTest,
                          testing::Values(Success(),
-                                         Unauthorized(),
-                                         InternalServerError(),
+                                         ApplicationJsonErrorCodeIsNull(),
                                          NonApplicationJsonError()),
                          AccountsDeleteTest::kNameGenerator);
 
