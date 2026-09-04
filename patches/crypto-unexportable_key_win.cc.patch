@@ -1,0 +1,22 @@
+diff --git a/crypto/unexportable_key_win.cc b/crypto/unexportable_key_win.cc
+index 9ff58f58785e21c566f4bf98fd13516512226b10..9225ef13fd43dd30812605c3252205c0b90802ea 100644
+--- a/crypto/unexportable_key_win.cc
++++ b/crypto/unexportable_key_win.cc
+@@ -244,6 +244,8 @@ WindowsSrkHandle GetSrkHandleFor(sign::SignatureKind algo) {
+     case sign::MLDSA_65:
+     case sign::MLDSA_87:
+       NOTREACHED();
++    case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
++      return WindowsSrkHandle::kEcc;
+   }
+ }
+ 
+@@ -859,6 +861,8 @@ constexpr std::optional<hash::HashKind> ToHashKind(
+     case sign::MLDSA_65:
+     case sign::MLDSA_87:
+       return std::nullopt;
++    case SignatureVerifier::ECDSA_SHA384:
++      return hash::kSha384;
+   }
+ }
+ 
