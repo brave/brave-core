@@ -66,15 +66,6 @@ FileTextExtractorBase::~FileTextExtractorBase() {
 
 void FileTextExtractorBase::ExtractText(
     content::BrowserContext* browser_context,
-    const base::FilePath& file_path,
-    ExtractTextCallback callback) {
-  CHECK(!callback_) << "ExtractText called while extraction in progress";
-  callback_ = std::move(callback);
-  LoadInWebContents(browser_context, file_path);
-}
-
-void FileTextExtractorBase::ExtractText(
-    content::BrowserContext* browser_context,
     std::vector<uint8_t> file_bytes,
     const base::FilePath::StringType& extension,
     ExtractTextCallback callback) {
@@ -90,32 +81,6 @@ FileTextExtractorBase::AdditionalUnsandboxFlags() const {
 
 GURL FileTextExtractorBase::GetLoadURL(const base::FilePath& file_path) const {
   return net::FilePathToFileURL(file_path);
-}
-
-void FileTextExtractorBase::LoadInWebContents(
-    content::BrowserContext* browser_context,
-    const base::FilePath& file_path) {
-  content::WebContents::CreateParams create_params(browser_context);
-  create_params.is_never_composited = true;
-  create_params.starting_sandbox_flags =
-      network::mojom::WebSandboxFlags::kAll &
-      ~network::mojom::WebSandboxFlags::kScripts &
-      ~network::mojom::WebSandboxFlags::kOrigin &
-      ~network::mojom::WebSandboxFlags::kNavigation &
-      ~AdditionalUnsandboxFlags();
-  web_contents_ = content::WebContents::Create(create_params);
-  web_contents_->SetOwnerLocationForDebug(FROM_HERE);
-  web_contents_->SetDelegate(this);
-  Observe(web_contents_.get());
-
-  timeout_timer_.Start(FROM_HERE, kExtractionTimeout,
-                       base::BindOnce(&FileTextExtractorBase::OnTimeout,
-                                      base::Unretained(this)));
-
-  const GURL load_url = GetLoadURL(file_path);
-  web_contents_->GetController().LoadURL(load_url, content::Referrer(),
-                                         ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
-                                         std::string());
 }
 
 void FileTextExtractorBase::WriteTempFileAndLoad(
@@ -176,7 +141,28 @@ void FileTextExtractorBase::OnTempFileWritten(
     return;
   }
   temp_file_path_ = *temp_path;
-  LoadInWebContents(browser_context, temp_file_path_);
+
+  content::WebContents::CreateParams create_params(browser_context);
+  create_params.is_never_composited = true;
+  create_params.starting_sandbox_flags =
+      network::mojom::WebSandboxFlags::kAll &
+      ~network::mojom::WebSandboxFlags::kScripts &
+      ~network::mojom::WebSandboxFlags::kOrigin &
+      ~network::mojom::WebSandboxFlags::kNavigation &
+      ~AdditionalUnsandboxFlags();
+  web_contents_ = content::WebContents::Create(create_params);
+  web_contents_->SetOwnerLocationForDebug(FROM_HERE);
+  web_contents_->SetDelegate(this);
+  Observe(web_contents_.get());
+
+  timeout_timer_.Start(FROM_HERE, kExtractionTimeout,
+                       base::BindOnce(&FileTextExtractorBase::OnTimeout,
+                                      base::Unretained(this)));
+
+  const GURL load_url = GetLoadURL(temp_file_path_);
+  web_contents_->GetController().LoadURL(load_url, content::Referrer(),
+                                         ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
+                                         std::string());
 }
 
 void FileTextExtractorBase::OnTimeout() {
