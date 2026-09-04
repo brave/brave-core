@@ -134,6 +134,18 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
         return
       }
 
+      // Internal pages are documents that must only load in the main frame. WKWebView does not
+      // enforce frame-ancestors/X-Frame-Options for custom scheme handlers, so refuse any
+      // non-resource internal load that is not the main document (e.g. an iframe pointing at a
+      // privileged internal page). Subframe navigations are also cancelled in the navigation
+      // policy; this is defense-in-depth for loads that reach the scheme handler directly.
+      if let mainDocumentURL = urlSchemeTask.request.mainDocumentURL,
+        mainDocumentURL != urlSchemeTask.request.url
+      {
+        urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.notAuthorized)
+        return
+      }
+
       // Need a better way to detect when WebKit is making a request from interactionState vs. a regular request by the user
       // instead of having to check the cache policy
       if !urlSchemeTask.request.isPrivileged
