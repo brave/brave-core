@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 618d86f0735a396830808d28466496509c7432ed..ccc1d8ae7edc8817ba8132b25a96d7aa620fce58 100644
+index 3dee13d5c55a841204bca7461f9a4d363d57001a..100bc9706fb2e9a19e05d2a080de34b00d59bd30 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1426,6 +1426,7 @@ const FeatureEntry::FeatureVariation kNewTabPageRedesignVariations[] = {

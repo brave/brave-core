@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 599dfa8af0b1c72f7a34e9f3b087ddbfdd78867d..b8cbcce731d2ffb3a2d43300cc861e4cbcad5776 100644
+index 888a4909baaf7b370d914179faf1aec8f72d0830..36a965ea816a3aaa7f919d3542898b90be2b7296 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -154,7 +154,7 @@ import org.chromium.chrome.browser.history.HistoryManagerUtils;
@@ -35,7 +35,7 @@ index 599dfa8af0b1c72f7a34e9f3b087ddbfdd78867d..b8cbcce731d2ffb3a2d43300cc861e4c
                          mBackPressManager,
                          getMenuOrKeyboardActionController(),
                          this::getSnackbarManager,
-@@ -3797,6 +3805,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -3796,6 +3804,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
                  new TabModelSelectorObserver() {
                      @Override
                      public void onTabStateInitialized() {
