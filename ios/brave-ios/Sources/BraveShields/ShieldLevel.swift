@@ -5,9 +5,10 @@
 
 import BraveCore
 import Foundation
+import Strings
 
 /// A 3 part option for shield levels varying in strength of blocking content
-public enum ShieldLevel: String, CaseIterable, Hashable {
+public enum ShieldLevel: String, CaseIterable, Hashable, Identifiable {
   /// Mode blocks all content
   case aggressive
   /// Mode indicating that 1st party content is not blocked for default and regional lists
@@ -44,6 +45,16 @@ public enum ShieldLevel: String, CaseIterable, Hashable {
     case .aggressive: return .aggressive
     case .standard: return .standard
     case .disabled: return .allow
+    }
+  }
+
+  public var id: Self { self }
+
+  public var localizedTitle: String {
+    switch self {
+    case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive
+    case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
+    case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
     }
   }
 }

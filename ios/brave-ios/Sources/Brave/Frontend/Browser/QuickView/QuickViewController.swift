@@ -294,48 +294,91 @@ class QuickViewController: UIViewController {
       return
     }
 
-    weak var weakPopover: PopoverController?
-    let popover = PopoverController(
-      contentController: PopoverNavigationController(
-        rootViewController: ShieldsPanelViewController(
-          url: url,
-          tab: tab,
-          domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
-          isAdvancedControlsEnabled: false
-        ) { [weak self] action in
-          guard let self else { return }
-          switch action {
-          case .navigate(let target, _):
-            switch target {
-            case .reportBrokenSite:
-              weakPopover?.dismiss(animated: true) {
-                self.showSubmitReportView(for: url)
-              }
-            case .shareStats:
-              weakPopover?.dismiss(animated: true) {
-                let activityController =
-                  ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
-                    isPrivateBrowsing: tab.isPrivate
-                  )
-                self.present(activityController, animated: true, completion: nil)
-              }
-            case .globalShields:  // not available in quickview mode
-              break
-            }
-          case .changedShieldSettings:
-            self.changedShieldSettings()
-          case .shredSiteData:  // not available in quickview mode
-            break
+    weak var weakShieldsPanelVC: UIViewController?
+    let shieldsPanelActionHandler: (ShieldsPanelAction) -> Void = { [weak self] action in
+      guard let self else { return }
+      switch action {
+      case .navigate(let target, _):
+        switch target {
+        case .reportBrokenSite:
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            self.showSubmitReportView(for: url)
           }
+        case .shareStats:
+          weakShieldsPanelVC?.dismiss(animated: true) {
+            let activityController =
+              ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+                isPrivateBrowsing: tab.isPrivate
+              )
+            self.present(activityController, animated: true, completion: nil)
+          }
+        case .globalShields:  // not available in quickview mode
+          break
         }
-      ),
-      contentSizeBehavior: .preferredContentSize
-    )
-    weakPopover = popover
-    popover.present(
-      from: toolbarHostingController.rootView.shieldBackgroundView.uiView,
-      on: self
-    )
+      case .changedShieldSettings:
+        self.changedShieldSettings()
+      case .shredSiteData:  // not available in quickview mode
+        break
+      }
+    }
+    if FeatureList.kShowUpdatedShieldsPanel.enabled {
+      let shieldsPanelViewController = ShieldsPanelViewController(
+        url: url,
+        viewModel: ShieldsPanelViewModel(
+          tab: tab,
+          stats: tab.contentBlocker?.$stats.eraseToAnyPublisher()
+            ?? Just(.init()).eraseToAnyPublisher(),
+          blockedRequests: tab.contentBlocker?.$blockedRequests.map(Array.init)
+            .eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher(),
+          isAdvancedControlsEnabled: false,
+          isShredEnabled: false
+        ),
+        action: shieldsPanelActionHandler
+      )
+      weakShieldsPanelVC = shieldsPanelViewController
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        shieldsPanelViewController.modalPresentationStyle = .popover
+      } else {
+        // A sheet stacked on top of this one only nests behind it at the `.large` detent, otherwise
+        // UIKit slides this one out of view for the duration of the presentation.
+        expandToLargeDetentForStackedSheet()
+      }
+      shieldsPanelViewController.popoverPresentationController?.sourceView =
+        toolbarHostingController.rootView.shieldBackgroundView.uiView
+      shieldsPanelViewController.popoverPresentationController?.sourceRect =
+        toolbarHostingController.rootView.shieldBackgroundView.uiView.bounds
+      shieldsPanelViewController.popoverPresentationController?.popoverLayoutMargins = .init(
+        equalInset: 4
+      )
+      shieldsPanelViewController.popoverPresentationController?.permittedArrowDirections = [
+        .up, .down,
+      ]
+      self.present(shieldsPanelViewController, animated: true)
+    } else {
+      let popover = PopoverController(
+        contentController: PopoverNavigationController(
+          rootViewController: LegacyShieldsPanelViewController(
+            url: url,
+            tab: tab,
+            domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
+            callback: shieldsPanelActionHandler
+          )
+        ),
+        contentSizeBehavior: .preferredContentSize
+      )
+      weakShieldsPanelVC = popover
+      popover.present(from: toolbarHostingController.rootView.shieldBackgroundView.uiView, on: self)
+    }
+  }
+
+  /// Moves this sheet to the `.large` detent so a sheet presented on top of it nests behind it
+  /// rather than pushing it out of view.
+  private func expandToLargeDetentForStackedSheet() {
+    guard let sheet = sheetPresentationController, sheet.selectedDetentIdentifier != .large
+    else { return }
+    sheet.animateChanges {
+      sheet.selectedDetentIdentifier = .large
+    }
   }
 
   private func presentSSLStatusView() {
@@ -425,6 +468,9 @@ class QuickViewController: UIViewController {
       sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
       sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
+    }
+    if UIDevice.current.userInterfaceIdiom != .pad {
+      expandToLargeDetentForStackedSheet()
     }
     present(viewController, animated: true)
   }
