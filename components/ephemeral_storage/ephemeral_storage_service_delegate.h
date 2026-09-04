@@ -23,11 +23,11 @@ class EphemeralStorageServiceDelegate {
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
   virtual void CleanupFirstPartyStorageArea(
-      const TLDEphemeralAreaKey& key,
-      base::OnceClosure callback = base::DoNothing()) = 0;
+      const TLDEphemeralAreaKey& key, base::OnceClosure callback) = 0;
   // Forces already-loaded tabs matching ephemeral_domains to reload, bypassing
   // the HTTP cache, when ready.
-  virtual void ReloadTabIfMatchingEphemeralDomain(const std::string& ephemeral_domain) = 0;
+  virtual void ReloadTabIfMatchingEphemeralDomain(
+      const std::string& ephemeral_domain) = 0;
   virtual void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) = 0;
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(

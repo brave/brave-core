@@ -143,8 +143,8 @@ class EphemeralStorageService : public KeyedService {
   void CleanupPendingFirstPartyStorageArea(
       const GURL& url,
       const content::StoragePartitionConfig& storage_partition_config,
-      const std::optional<brave_shields::mojom::AutoShredMode>&
-          auto_shred_mode, base::OnceClosure callback);
+      const std::optional<brave_shields::mojom::AutoShredMode>& auto_shred_mode,
+      base::OnceClosure callback);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
 

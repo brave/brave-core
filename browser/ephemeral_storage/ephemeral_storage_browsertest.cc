@@ -18,6 +18,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -51,8 +53,6 @@
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
-#include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 
 using content::RenderFrameHost;
 using content::WebContents;

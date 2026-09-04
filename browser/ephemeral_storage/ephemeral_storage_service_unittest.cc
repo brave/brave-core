@@ -75,8 +75,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (override));
   MOCK_METHOD(void,
               CleanupFirstPartyStorageArea,
-              (const TLDEphemeralAreaKey& key,
-               base::OnceClosure callback),
+              (const TLDEphemeralAreaKey& key, base::OnceClosure callback),
               (override));
   MOCK_METHOD(void,
               RegisterFirstWindowOpenedCallback,
@@ -95,7 +94,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               GetAutoShredMode,
               (const GURL& url),
               (override));
-MOCK_METHOD(void,
+  MOCK_METHOD(void,
               ReloadTabIfMatchingEphemeralDomain,
               (const std::string& ephemeral_domain),
               (override));
@@ -108,8 +107,9 @@ MOCK_METHOD(void,
 #endif
   MOCK_METHOD(bool, IsShredBrowsingHistoryEnabled, (), (override));
 
-  void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
-                                               std::optional<bool> trigger_callback) {
+  void ExpectRegisterFirstWindowOpenedCallback(
+      base::OnceClosure callback,
+      std::optional<bool> trigger_callback) {
     if (trigger_callback.has_value()) {
       EXPECT_CALL(*this, RegisterFirstWindowOpenedCallback(_))
           .WillOnce([this, trigger_callback](base::OnceClosure callback) {
@@ -135,8 +135,7 @@ MOCK_METHOD(void,
 
  private:
   base::OnceClosure first_window_opened_callback_;
-  base::WeakPtrFactory<EphemeralStorageServiceDelegate> weak_ptr_factory_{
-      this};
+  base::WeakPtrFactory<EphemeralStorageServiceDelegate> weak_ptr_factory_{this};
 };
 
 class MockObserver : public EphemeralStorageServiceObserver {
@@ -196,8 +195,8 @@ class EphemeralStorageServiceTest : public testing::Test {
 
     std::optional<bool> trigger_callback;
     if (expect_first_window_opened_callback) {
-        trigger_callback = expect_first_window_opened_callback.value() ==
-                                   ExpectFirstWindowOpenedCallback::kTrigger;
+      trigger_callback = expect_first_window_opened_callback.value() ==
+                         ExpectFirstWindowOpenedCallback::kTrigger;
     }
     mock_delegate->ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure(),
                                                            trigger_callback);
@@ -230,7 +229,7 @@ class EphemeralStorageServiceTest : public testing::Test {
       if (!dict) {
         continue;
       }
-    
+
       const std::string* url_spec = dict->FindString(kUrlKey);
       if (*url_spec != url.spec()) {
         continue;
@@ -1427,8 +1426,9 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
       EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _))
           .Times(test_case.cleanup_first_party_calls);
       ExpireFirstPartyStorageOriginFor(url);
-      if (!test_case.auto_shred_mode || test_case.auto_shred_mode !=
-          brave_shields::mojom::AutoShredMode::NEVER) {
+      if (!test_case.auto_shred_mode ||
+          test_case.auto_shred_mode !=
+              brave_shields::mojom::AutoShredMode::NEVER) {
         EXPECT_CALL(*mock_delegate_, AsWeakPtr());
       }
       mock_delegate_->TriggerFirstWindowOpenedCallback();

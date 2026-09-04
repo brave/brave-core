@@ -9,10 +9,10 @@
 #include <map>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
-#include "base/logging.h"
 
 namespace ephemeral_storage {
 
