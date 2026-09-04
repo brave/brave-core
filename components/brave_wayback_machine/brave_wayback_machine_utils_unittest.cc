@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
+
 #include <string>
 
-#include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/base/url_util.h"
+#include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -28,6 +30,11 @@ TEST(BraveWaybackMachineUtilsTest, DisabledURLTest) {
   EXPECT_TRUE(IsWaybackMachineEnabledFor(GURL("http://www.brave.com")));
   EXPECT_TRUE(
       IsWaybackMachineEnabledFor(GURL("https://archive.org/foobar.html")));
+}
+
+TEST(BraveWaybackMachineUtilsTest, ShouldCheckWaybackMachineTest) {
+  EXPECT_FALSE(ShouldCheckWaybackMachine(net::HTTP_OK));
+  EXPECT_TRUE(ShouldCheckWaybackMachine(net::HTTP_NOT_FOUND));
 }
 
 TEST(BraveWaybackMachineUtilsTest, FixupQueryURLTest) {

@@ -42,7 +42,9 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/send_tab_to_self/send_tab_to_self_util.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -58,6 +60,7 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/actions/actions.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -128,6 +131,12 @@ bool IsBraveOverrideCommands(int id) {
   });
   return kOverrideCommands.contains(id);
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+void InvokeAction(actions::ActionId id, actions::ActionItem* scope) {
+  actions::ActionManager::Get().FindAction(id, scope)->InvokeAction();
+}
+#endif
 
 }  // namespace
 
@@ -767,7 +776,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #endif
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-      brave::ShowWaybackMachineBubble(&*browser_);
+      InvokeAction(kActionShowWaybackMachine,
+                   BrowserActions::From(&*browser_)->root_action_item());
 #endif
       break;
     case IDC_GROUP_TABS_ON_CURRENT_ORIGIN:

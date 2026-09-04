@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -64,10 +63,6 @@ class BraveBrowserWindow : public BrowserWindow {
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   virtual void ShowPlaylistBubble() {}
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  virtual void ShowWaybackMachineBubble() {}
 #endif
 
   // Returns true if all tabs in this window is being dragged.

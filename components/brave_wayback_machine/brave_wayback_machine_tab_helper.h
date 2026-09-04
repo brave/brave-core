@@ -17,10 +17,8 @@
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "ui/gfx/native_ui_types.h"
 
 class PrefService;
-class BraveWaybackMachineTest;
 
 class BraveWaybackMachineTabHelper
     : public content::WebContentsObserver,
@@ -38,25 +36,20 @@ class BraveWaybackMachineTabHelper
   BraveWaybackMachineTabHelper& operator=(
       const BraveWaybackMachineTabHelper&) = delete;
 
+  // Registers a callback invoked when the WaybackState changes.
   void SetWaybackStateChangedCallback(WaybackStateChangedCallback callback);
-  void set_active_window(std::optional<gfx::NativeWindow> window) {
-    active_window_ = window;
-  }
-  std::optional<gfx::NativeWindow> active_window() const {
-    return active_window_;
-  }
+
+  // Returns the current WaybackState.
   WaybackState wayback_state() const { return wayback_state_; }
 
-  // Sets the wayback state directly and notifies the registered callback (see
-  // SetWaybackStateChangedCallback()), bypassing navigation and the real
-  // wayback-machine lookup. For unit tests only.
+  // Sets the wayback state directly and notifies the registered callback,
+  // bypassing navigation and the real wayback-machine lookup.
   void SetWaybackStateForTesting(WaybackState state) { SetWaybackState(state); }
 
+  // Initiates fetching the latest snapshot URL for the current page.
   void FetchWaybackURL();
 
  private:
-  friend class BraveWaybackMachineTest;
-
   explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
 
   // content::WebContentsObserver overrides:
@@ -67,7 +60,6 @@ class BraveWaybackMachineTabHelper
   void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
 
   void SetWaybackState(WaybackState state);
-  bool ShouldCheckWaybackMachine(int response_code) const;
   void OnWaybackEnabledChanged(const std::string& pref_name);
   void ResetState();
 
@@ -77,8 +69,6 @@ class BraveWaybackMachineTabHelper
   // we should not touch wayback state.
   std::optional<int64_t> wayback_url_navigation_id_;
 
-  // If not null, this tab has active window.
-  std::optional<gfx::NativeWindow> active_window_;
   WaybackState wayback_state_ = WaybackState::kInitial;
   WaybackStateChangedCallback wayback_state_changed_callback_;
   raw_ref<PrefService> pref_service_;

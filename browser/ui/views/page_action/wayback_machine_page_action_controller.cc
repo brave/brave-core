@@ -29,7 +29,10 @@
 #include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/bubble/bubble_anchor.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view.h"
+#include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 namespace page_actions {
 
@@ -79,6 +82,10 @@ WaybackMachinePageActionController::WaybackMachinePageActionController(
               page_action_controller)) {}
 
 WaybackMachinePageActionController::~WaybackMachinePageActionController() {
+  if (bubble_tracker_.view()) {
+    bubble_tracker_.view()->GetWidget()->CloseWithReason(
+        views::Widget::ClosedReason::kUnspecified);
+  }
   DetachFromTabHelper(tab_->GetContents());
 }
 
@@ -114,8 +121,8 @@ void WaybackMachinePageActionController::ExecuteAction(
   if (!contents) {
     return;
   }
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
-  if (!tab_helper || tab_helper->active_window().has_value()) {
+
+  if (bubble_tracker_.view()) {
     return;
   }
 
@@ -127,7 +134,15 @@ void WaybackMachinePageActionController::ExecuteAction(
     return;
   }
 
-  WaybackMachineBubbleView::Show(contents, anchor_view, item);
+  auto bubble = std::make_unique<WaybackMachineBubbleView>(
+      contents->GetWeakPtr(), anchor_view, item);
+  bubble_tracker_.SetView(bubble.get());
+  views::BubbleDialogDelegateView::CreateBubble(std::move(bubble))->Show();
+}
+
+WaybackMachineBubbleView*
+WaybackMachinePageActionController::GetBubbleViewForTesting() {
+  return views::AsViewClass<WaybackMachineBubbleView>(bubble_tracker_.view());
 }
 
 void WaybackMachinePageActionController::OnWaybackStateChanged(

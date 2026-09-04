@@ -12,8 +12,10 @@
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/views/view_tracker.h"
 
 class ToolbarButtonProvider;
+class WaybackMachineBubbleView;
 
 namespace actions {
 class ActionItem;
@@ -45,6 +47,8 @@ class WaybackMachinePageActionController {
   void ExecuteAction(ToolbarButtonProvider* toolbar_button_provider,
                      actions::ActionItem* item);
 
+  WaybackMachineBubbleView* GetBubbleViewForTesting();
+
  private:
   void OnWaybackStateChanged(WaybackState state);
 
@@ -65,6 +69,8 @@ class WaybackMachinePageActionController {
 
   base::CallbackListSubscription did_activate_subscription_;
   base::CallbackListSubscription will_discard_contents_subscription_;
+
+  views::ViewTracker bubble_tracker_;
 
   base::WeakPtrFactory<WaybackMachinePageActionController> weak_factory_{this};
 };

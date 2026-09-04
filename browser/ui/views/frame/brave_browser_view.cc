@@ -140,10 +140,6 @@
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
-#endif
-
 namespace {
 
 // Exposed for testing.
@@ -714,24 +710,6 @@ void BraveBrowserView::CleanAndCopySelectedURL() {
 void BraveBrowserView::ShowPlaylistBubble() {
   static_cast<BraveLocationBarView*>(GetLocationBarView())
       ->ShowPlaylistBubble();
-}
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-void BraveBrowserView::ShowWaybackMachineBubble() {
-  views::View* const anchor =
-      toolbar_button_provider()
-          ->GetPageActionBubbleAnchor(kActionShowWaybackMachine)
-          .GetIfView();
-  if (!anchor) {
-    return;
-  }
-
-  auto* item = actions::ActionManager::Get().FindAction(
-      kActionShowWaybackMachine,
-      BrowserActions::From(browser())->root_action_item());
-  WaybackMachineBubbleView::Show(
-      browser()->tab_strip_model()->GetActiveWebContents(), anchor, item);
 }
 #endif
 

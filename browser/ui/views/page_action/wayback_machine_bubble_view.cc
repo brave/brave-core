@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 
 #include <memory>
-#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -30,7 +29,6 @@
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 
 namespace {
@@ -54,27 +52,6 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 }
 
 }  // namespace
-
-// static
-void WaybackMachineBubbleView::Show(content::WebContents* web_contents,
-                                    views::View* anchor,
-                                    actions::ActionItem* item) {
-  auto* tab_helper = GetTabHelper(web_contents);
-  if (!tab_helper) {
-    return;
-  }
-
-  // Don't need to launch again if existed.
-  if (tab_helper->active_window().has_value()) {
-    return;
-  }
-
-  views::Widget* const widget = views::BubbleDialogDelegateView::CreateBubble(
-      std::make_unique<WaybackMachineBubbleView>(web_contents->GetWeakPtr(),
-                                                 anchor, item));
-  widget->Show();
-  tab_helper->set_active_window(widget->GetNativeWindow());
-}
 
 WaybackMachineBubbleView::WaybackMachineBubbleView(
     base::WeakPtr<content::WebContents> web_contents,
@@ -154,9 +131,6 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
 }
 
 WaybackMachineBubbleView::~WaybackMachineBubbleView() {
-  if (auto* tab_helper = GetTabHelper(web_contents_.get())) {
-    tab_helper->set_active_window(std::nullopt);
-  }
   if (item_) {
     item_->SetIsShowingBubble(false);
   }
