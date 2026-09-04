@@ -11,8 +11,10 @@
 
 #include "base/containers/queue.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/playlist/content/browser/playlist_media_file_downloader.h"
+#include "brave/components/playlist/content/browser/playlist_stream_downloader.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 
 namespace content {
@@ -106,6 +108,17 @@ class PlaylistMediaFileDownloadManager
   base::SequencedTaskRunner* GetTaskRunner() override;
 
   void TryStartingDownloadTask();
+  // Streams are downloaded and repackaged rather than saved as a single file,
+  // so they take a separate path from `PlaylistMediaFileDownloader`.
+  void StartHlsDownloadTask();
+  void OnHlsDirectoryCreated(const std::string& id,
+                             const GURL& manifest_url,
+                             const base::FilePath& directory,
+                             bool created);
+  void OnHlsDownloaded(const std::string& id,
+                       const base::FilePath& directory,
+                       base::expected<PlaylistStreamDownloader::Result,
+                                      PlaylistStreamDownloader::Error> result);
   std::unique_ptr<DownloadJob> PopNextJob();
   std::string GetCurrentDownloadingPlaylistItemID() const;
   void CancelCurrentDownloadingPlaylistItem();
@@ -117,6 +130,12 @@ class PlaylistMediaFileDownloadManager
   std::unique_ptr<DownloadJob> current_job_;
 
   std::unique_ptr<PlaylistMediaFileDownloader> media_file_downloader_;
+  std::unique_ptr<PlaylistStreamDownloader> hls_downloader_;
+  // True between asking for the stream's directory and getting it back, when
+  // there is no downloader yet but a job is nonetheless under way.
+  bool waiting_for_hls_directory_ = false;
+
+  raw_ptr<content::BrowserContext> context_ = nullptr;
 
   bool pause_download_for_testing_ = false;
 

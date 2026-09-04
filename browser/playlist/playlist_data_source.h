@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/files/file_path.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 
 class GURL;
@@ -20,6 +21,12 @@ class PlaylistService;
 // A URL data source for
 // chrome-untrusted://playlist-data/<playlist-id>/{thumbnail,media,favicon}/
 // resources, for use in webui pages that want to get thumbnails or media data.
+//
+// Streams saved as HLS are served under
+// chrome-untrusted://playlist-data/<playlist-id>/hls/<file>, where <file> is
+// relative to the item's "hls" subdirectory. Chromium's built-in HLS demuxer
+// selects itself based on the ".m3u8" suffix, then fetches the segments the
+// local manifest names through this same route.
 class PlaylistDataSource : public FaviconSource {
  public:
   PlaylistDataSource(Profile* profile, PlaylistService* service);
@@ -47,6 +54,7 @@ class PlaylistDataSource : public FaviconSource {
       kThumbnail,
       kMedia,
       kFavicon,
+      kHls,
     };
 
     explicit DataRequest(const GURL& url);
@@ -56,6 +64,9 @@ class PlaylistDataSource : public FaviconSource {
 
     std::string id;
     Type type = Type::kNone;
+    // For `kHls` only: the requested file, relative to the item's "hls"
+    // subdirectory.
+    base::FilePath hls_file;
   };
 
   void GetThumbnail(const DataRequest& request,
@@ -68,6 +79,14 @@ class PlaylistDataSource : public FaviconSource {
                     const content::WebContents::Getter& wc_getter,
                     const net::HttpByteRange& range,
                     GotRangeDataCallback got_data_callback);
+  void GetHlsManifest(const DataRequest& request,
+                      GotDataCallback got_data_callback);
+  void GetHlsSegment(const DataRequest& request,
+                     const net::HttpByteRange& range,
+                     GotRangeDataCallback got_data_callback);
+  // Returns the absolute path for a `kHls` request, or an empty path if the
+  // item is unknown or the request escapes the item's directory.
+  base::FilePath ResolveHlsPath(const DataRequest& request) const;
 
   raw_ptr<PlaylistService, DanglingUntriaged> service_ = nullptr;
 };

@@ -29,6 +29,17 @@ export function fixUpMediaURL(item: PlaylistItem) {
     return
   }
 
+  // A stream is stored as segments plus a local manifest, so point the player
+  // at the manifest and let the built-in HLS demuxer fetch the rest through
+  // the same data source.
+  const hlsManifest = item.hlsMediaPath?.url
+  if (hlsManifest) {
+    const fileName = hlsManifest.substring(hlsManifest.lastIndexOf('/') + 1)
+    item.mediaPath.url =
+      `chrome-untrusted://playlist-data/${item.id}/hls/${fileName}`
+    return
+  }
+
   // Set a url with chrome-untrusted:// protocol corresponding to the the local file.
   item.mediaPath.url = `chrome-untrusted://playlist-data/${item.id}/media/`
 }

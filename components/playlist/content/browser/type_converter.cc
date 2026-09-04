@@ -36,9 +36,7 @@ constexpr char kPlaylistItemMediaSrcKey[] = "mediaSrc";
 constexpr char kPlaylistItemThumbnailSrcKey[] = "thumbnailSrc";
 constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
 constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
-#if BUILDFLAG(IS_ANDROID)
 constexpr char kPlaylistItemHlsMediaFilePathKey[] = "hlsMediaFilePath";
-#endif  // BUILDFLAG(IS_ANDROID)
 constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
 constexpr char kPlaylistItemTitleKey[] = "title";
 constexpr char kPlaylistItemAuthorKey[] = "author";
@@ -115,10 +113,13 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(const base::DictValue& dict) {
   item->thumbnail_path = GURL(*dict.FindString(kPlaylistItemThumbnailPathKey));
   item->media_source = GURL(*dict.FindString(kPlaylistItemMediaSrcKey));
   item->media_path = GURL(*dict.FindString(kPlaylistItemMediaFilePathKey));
-#if BUILDFLAG(IS_ANDROID)
-  item->hls_media_path =
-      GURL(*dict.FindString(kPlaylistItemHlsMediaFilePathKey));
-#endif  // BUILDFLAG(IS_ANDROID)
+  // Desktop only started writing this in 2026, so items written by older
+  // builds won't have it. Read it defensively rather than adding it to the
+  // malformed check, which would discard every existing desktop item.
+  if (const auto* hls_media_path =
+          dict.FindString(kPlaylistItemHlsMediaFilePathKey)) {
+    item->hls_media_path = GURL(*hls_media_path);
+  }
   item->cached = *dict.FindBool(kPlaylistItemMediaFileCachedKey);
   item->duration = *dict.FindString(kPlaylistItemDurationKey);
   item->author = *dict.FindString(kPlaylistItemAuthorKey);
@@ -153,10 +154,10 @@ base::DictValue ConvertPlaylistItemToValue(const mojom::PlaylistItemPtr& item) {
           .Set(kPlaylistItemLastPlayedPositionKey, item->last_played_position)
           .Set(kPlaylistItemMediaFileBytesKey,
                static_cast<double>(item->media_file_bytes));
-#if BUILDFLAG(IS_ANDROID)
+  // Set on every platform: desktop uses it for streams saved as segments plus
+  // a local manifest, Android for its own locally assembled HLS files.
   playlist_value.Set(kPlaylistItemHlsMediaFilePathKey,
                      item->hls_media_path.spec());
-#endif  // BUILDFLAG(IS_ANDROID)
 
   base::ListValue parent;
   for (const auto& parent_playlist_id : item->parents) {

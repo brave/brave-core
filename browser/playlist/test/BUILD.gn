@@ -24,6 +24,7 @@ source_set("browser_tests") {
     sources += [
       "playlist_active_tab_tracker_browsertest.cc",
       "playlist_browsertest.cc",
+      "playlist_stream_playback_browsertest.cc",
     ]
 
     deps += [
@@ -47,6 +48,7 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//net",
     "//net:test_support",
+    "//services/network/public/cpp",
   ]
 
   if (is_android) {
@@ -70,6 +72,7 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "media_stream_classifier_unittest.cc",
     "mime_util_unittest.cc",
     "mock_playlist_render_frame_observer_configurator.cc",
     "mock_playlist_render_frame_observer_configurator.h",
@@ -77,8 +80,12 @@ source_set("unit_tests") {
     "mock_playlist_service_observer.h",
     "playlist_background_web_contents_helper_unittest.cc",
     "playlist_background_web_contents_unittest.cc",
+    "playlist_constants_unittest.cc",
+    "playlist_dash_parser_unittest.cc",
+    "playlist_manifest_writer_unittest.cc",
     "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
+    "playlist_media_session_observer_unittest.cc",
     "playlist_p3a_unittest.cc",
     "playlist_service_unittest.cc",
     "playlist_unittest_base.cc",
@@ -93,6 +100,13 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/pref_registry",
     "//content/test:test_support",
+    "//net",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/media_session/public/cpp",
+    "//services/media_session/public/mojom",
+    "//services/network/public/mojom",
+    "//ui/gfx/geometry",
+    "//url",
   ]
 
   if (is_android) {
