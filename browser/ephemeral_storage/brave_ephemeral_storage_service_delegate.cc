@@ -503,9 +503,4 @@ bool BraveEphemeralStorageServiceDelegate::IsShredBrowsingHistoryEnabled() {
   return shields_settings_service_->IsShredBrowsingHistoryEnabled();
 }
 
-base::WeakPtr<EphemeralStorageServiceDelegate>
-BraveEphemeralStorageServiceDelegate::AsWeakPtr() {
-  return weak_ptr_factory_.GetWeakPtr();
-}
-
 }  // namespace ephemeral_storage

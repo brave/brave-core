@@ -50,9 +50,6 @@ class EphemeralStorageServiceDelegate {
   virtual void TriggerCurrentAppStateNotification() = 0;
 #endif
   virtual bool IsShredBrowsingHistoryEnabled() = 0;
-
-  // Returns a WeakPtr to the implementation instance.
-  virtual base::WeakPtr<EphemeralStorageServiceDelegate> AsWeakPtr() = 0;
 };
 
 }  // namespace ephemeral_storage
