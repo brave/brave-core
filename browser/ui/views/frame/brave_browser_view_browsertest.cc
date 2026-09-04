@@ -755,14 +755,23 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 }
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
-                       ContentsBackgroundEventHandleTest) {
-  EXPECT_TRUE(brave_browser_view()->contents_background_view_);
+                       MainBackgroundRegionEventHandleTest) {
+  RunScheduledLayouts();
 
-  EXPECT_TRUE(
-      brave_browser_view()->contents_background_view_->bounds().Contains(
-          brave_browser_view()->contents_container()->bounds()))
-      << "Expected contents_background_view_ bounds ("
-      << brave_browser_view()->contents_background_view_->bounds().ToString()
+  auto* main_background_region =
+      brave_browser_view()->main_background_region_for_testing();
+  // main_background_region is only forced visible when rounded corners are
+  // in effect.
+  EXPECT_EQ(IsRoundedCornersEnabled(), main_background_region->GetVisible());
+
+  if (!main_background_region->GetVisible()) {
+    GTEST_SKIP();
+  }
+
+  EXPECT_TRUE(main_background_region->bounds().Contains(
+      brave_browser_view()->contents_container()->bounds()))
+      << "Expected main_background_region bounds ("
+      << main_background_region->bounds().ToString()
       << ") to contain contents_container bounds ("
       << brave_browser_view()->contents_container()->bounds().ToString() << ")";
 
@@ -770,10 +779,10 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   gfx::Point screen_point = web_contents->GetContainerBounds().CenterPoint();
 
-  // Check contents background is not event handler for web contents region
+  // Check main background region is not event handler for web contents region
   // point.
   views::View::ConvertPointFromScreen(browser_view(), &screen_point);
-  EXPECT_NE(brave_browser_view()->contents_background_view_,
+  EXPECT_NE(main_background_region,
             browser_view()->GetEventHandlerForPoint(screen_point));
 }
 

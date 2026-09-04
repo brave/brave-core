@@ -158,23 +158,6 @@ bool IsUnsupportedCommand(int command_id, Browser* browser) {
              browser->GetType() == BrowserWindowInterface::Type::TYPE_POPUP);
 }
 
-// A view that paints a background under the content area of the browser view so
-// that the web content area can be displayed with rounded corners and a shadow.
-class ContentsBackground : public views::View {
-  METADATA_HEADER(ContentsBackground, views::View)
- public:
-  ContentsBackground() {
-    SetBackground(views::CreateSolidBackground(kColorToolbar));
-    SetEnabled(false);
-
-    // Prevent to eat any events that goes to web contents because web contents
-    // could be behind this background.
-    SetCanProcessEventsWithinSubtree(false);
-  }
-};
-BEGIN_METADATA(ContentsBackground)
-END_METADATA
-
 }  // namespace
 
 // static
@@ -357,11 +340,6 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
       base::PassKey<BraveBrowserView>(), browser,
       horizontal_tab_strip_region_view_);
-
-  // Need this background view always as we have contents margin/rounded corners
-  // when split view is active regardless of rounded corners feature.
-  contents_background_view_ =
-      AddChildViewAt(std::make_unique<ContentsBackground>(), 0);
 
   compact_horizontal_tabs_.Init(
       brave_tabs::kCompactHorizontalTabs, g_browser_process->local_state(),
@@ -840,8 +818,6 @@ void BraveBrowserView::AddedToWidget() {
       std::make_unique<BrowserWindowMouseEventHandler>(this);
 
   // we must call all new views once BraveBrowserView is added to widget
-
-  GetBrowserViewLayout()->set_contents_background(contents_background_view_);
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
 
   if (vertical_tab_strip_host_view_) {
