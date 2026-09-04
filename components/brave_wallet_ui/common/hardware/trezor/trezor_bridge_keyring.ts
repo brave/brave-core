@@ -48,9 +48,9 @@ import { TrezorKeyring } from '../interfaces'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
-  private readonly transport: TrezorBridgeTransport
+  protected readonly transport?: TrezorBridgeTransport
 
-  constructor(transport: TrezorBridgeTransport) {
+  constructor(transport?: TrezorBridgeTransport) {
     this.transport = transport
   }
 
@@ -84,7 +84,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   cancelOperation = async () => {
-    closeTrezorBridge(this.transport)
+    closeTrezorBridge(this.transport!)
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {
@@ -291,7 +291,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   private async sendTrezorCommand<T>(
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> {
-    return this.transport.sendCommandToTrezorFrame<T>(command)
+    return this.transport!.sendCommandToTrezorFrame<T>(command)
   }
 
   private prepareTransactionPayload = (
@@ -358,7 +358,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return { path: path, message: message }
   }
 
-  private readonly publicKeyToAddress = (key: string) => {
+  protected readonly publicKeyToAddress = (key: string) => {
     const buffer = Buffer.from(key, 'hex')
     const address = publicToAddress(buffer, true).toString('hex')
     return toChecksumAddress(`0x${address}`)
