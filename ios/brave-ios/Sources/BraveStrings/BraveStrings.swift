@@ -2157,8 +2157,8 @@ extension Strings {
       "setDefaultBrowserCalloutTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave can now be set as your default browser in iOS. Tap here to open settings.",
-      comment: ""
+      value: "**Set Brave as your default browser and block ads on every site you visit.** Tap here to open Settings and set Brave as default.",
+      comment: "A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold."
     )
   public static let defaultBrowserCalloutCloseAccesabilityLabel =
     NSLocalizedString(

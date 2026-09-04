@@ -32,18 +32,53 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
   var imageInsets: UIEdgeInsets = UIEdgeInsets.zero
   var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
 
-  let textLabel = UILabel().then {
+  private let textLabel = UILabel().then {
     $0.setContentHuggingPriority(
       UILayoutPriority.defaultHigh,
       for: NSLayoutConstraint.Axis.vertical
     )
-    $0.font = DynamicFontHelper.defaultHelper.defaultSmallFont
+    $0.font = DynamicFontHelper.defaultHelper.defaultSmallFontBold
     $0.textAlignment = UI.labelAlignment
     $0.lineBreakMode = NSLineBreakMode.byWordWrapping
     $0.numberOfLines = 2
+    $0.textColor = .white
   }
 
-  let imageView = LargeFaviconView(config: FaviconConfiguration.defaultConfig)
+  var title: String? {
+    didSet {
+      textLabel.attributedText = title.map {
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor(white: 0, alpha: 0.35)
+        shadow.shadowOffset = CGSize(width: 0, height: 1)
+        shadow.shadowBlurRadius = 4
+        return NSAttributedString(
+          string: $0,
+          attributes: [
+            .shadow: shadow
+          ]
+        )
+      }
+    }
+  }
+
+  let imageContainerView: UIVisualEffectView = {
+    let view = UIVisualEffectView()
+    if #available(iOS 26, *) {
+      let glass = UIGlassEffect(style: .regular)
+      glass.isInteractive = true
+      view.effect = glass
+    } else {
+      view.effect = UIBlurEffect(style: .systemThinMaterial)
+    }
+    view.layer.cornerRadius = 16
+    view.layer.cornerCurve = .continuous
+    view.clipsToBounds = true
+    return view
+  }()
+
+  let imageView = LargeFaviconView(
+    config: .init(borderColor: .clear, borderWidth: 0, cornerRadius: 8, displayBackground: false)
+  )
 
   override var isHighlighted: Bool {
     didSet {
@@ -69,14 +104,20 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
     super.init(frame: frame)
 
     isAccessibilityElement = true
+    overrideUserInterfaceStyle = .dark
+
+    imageContainerView.contentView.addSubview(imageView)
 
     contentView.addSubview(stackView)
-    stackView.addArrangedSubview(imageView)
+    stackView.addArrangedSubview(imageContainerView)
     stackView.addArrangedSubview(textLabel)
 
+    imageContainerView.snp.makeConstraints {
+      $0.height.equalTo(imageContainerView.snp.width)
+      $0.leading.trailing.equalToSuperview().inset(4)
+    }
     imageView.snp.makeConstraints {
-      $0.height.equalTo(imageView.snp.width)
-      $0.leading.trailing.equalToSuperview().inset(12)
+      $0.edges.equalToSuperview().inset(8)
     }
     stackView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
@@ -111,8 +152,8 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   static func height(forWidth width: CGFloat) -> CGFloat {
-    let imageHeight = (width - 24)
-    let labelHeight = (DynamicFontHelper.defaultHelper.defaultSmallFont.lineHeight * 2)
+    let imageHeight = width - 8
+    let labelHeight = (DynamicFontHelper.defaultHelper.defaultSmallFontBold.lineHeight * 2)
     return ceil(imageHeight + UI.spacing + labelHeight)
   }
 }
@@ -122,7 +163,7 @@ extension FavoritesCell: UIPointerInteractionDelegate {
     _ interaction: UIPointerInteraction,
     styleFor region: UIPointerRegion
   ) -> UIPointerStyle? {
-    let preview = UITargetedPreview(view: imageView)
+    let preview = UITargetedPreview(view: imageContainerView)
     return UIPointerStyle(effect: .lift(preview))
   }
 }
