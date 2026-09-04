@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+##
+## Filters for tests that fail only in MSAN builds on Linux
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# Upstream Chromium tests (crbug.com/490213796), fixed upstream but not on the
+# 152 branch Brave pins. These are the only two tests in
+# OmniboxAutofillDelegateFillingTest and they share one root cause:
+# ~RoutingMockAutofillDriver() downcasts its client to MockAutofillClient to
+# reach MockAutofillClient::router_, but the drivers are destroyed by the base
+# ~TestAutofillClient(), i.e. after the MockAutofillClient sub-object is gone.
+# Sanitizers that police the destroyed sub-object flag it: UBSan/CFI on the
+# downcast itself, MSan on the subsequent read of the router's FormForest,
+# because member storage is poisoned in destructors
+# (msan_check_use_after_dtor defaults to true on Linux). Plain builds read the
+# stale-but-intact memory and pass, which is why the aggregate upstream LUCI
+# Analysis flake rate is 0.0% (144223 verdicts, 30-day lookback).
+# Upstream first disabled both tests on Linux MSan/UBSan in
+# crrev.com/c/8159001, then fixed them in crrev.com/c/8161485 (2026-07-28) by
+# calling GetAutofillDriverFactory().DeleteAll() from ~MockAutofillClient().
+# That fix landed after the 152 branch point and was not merged back, so
+# upstream's "Linux MSan Tests" builder now passes (249/252 over 60 days)
+# while Brave's linux-x64-msan nightly fails every run. This file rather than
+# a -linux-ubsan one because every failure reported on both issues comes from
+# linux-x64-msan; Brave's linux-x64-ubsan builder has not reported these
+# tests. Brave has no chromium_src override or patch for the test file or for
+# the autofill test client/driver infrastructure it uses, so no Brave code is
+# involved. Remove once Brave rolls to Chromium 153.
+# https://github.com/brave/brave-browser/issues/58152
+# https://github.com/brave/brave-browser/issues/58151
+-OmniboxAutofillDelegateFillingTest.FillOrPreviewCard_SubframeForm
+-OmniboxAutofillDelegateFillingTest.FillOrPreviewCard_MainFrameForm
