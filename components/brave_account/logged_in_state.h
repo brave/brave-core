@@ -12,9 +12,11 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
+#include "brave/components/brave_account/flows/cancel_verification.h"
 #include "brave/components/brave_account/flows/change_password.h"
 #include "brave/components/brave_account/flows/get_service_token.h"
 #include "brave/components/brave_account/flows/log_out.h"
+#include "brave/components/brave_account/flows/resend_verification_email.h"
 #include "brave/components/brave_account/flows/update_email.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/state_base.h"
@@ -31,8 +33,9 @@ namespace brave_account {
 // `log_out_`, `change_password_`, and `get_service_token_` helpers. The
 // `update_email_` helper additionally drives itself, periodically refreshing
 // the stored email in the background. `ResendVerificationEmail()` and
-// `CancelVerification()` are fully handled by `StateBase` for both states. All
-// other methods inherit `StateBase`'s wrong-state default.
+// `CancelVerification()` are valid in both states, so this state owns its own
+// `resend_verification_email_` and `cancel_verification_` helpers. All other
+// methods inherit `StateBase`'s wrong-state default.
 class LoggedInState : public StateBase {
  public:
   LoggedInState(
@@ -52,6 +55,8 @@ class LoggedInState : public StateBase {
   }
 
  private:
+  void CancelVerification(mojom::VerificationIntentPtr intent) override;
+
   void ChangePasswordStep1(const std::string& email,
                            ChangePasswordStep1Callback callback) override;
 
@@ -64,15 +69,21 @@ class LoggedInState : public StateBase {
   void ChangePasswordStep4(const std::string& serialized_record,
                            ChangePasswordStep4Callback callback) override;
 
-  void LogOut() override;
-
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
 
-  ChangePassword change_password_{*this};
-  class GetServiceToken get_service_token_{*this};
-  class LogOut log_out_{*this};
-  UpdateEmail update_email_{*this};
+  void LogOut() override;
+
+  void ResendVerificationEmail(
+      mojom::VerificationIntentPtr intent,
+      ResendVerificationEmailCallback callback) override;
+
+  class CancelVerification cancel_verification_;
+  ChangePassword change_password_;
+  class GetServiceToken get_service_token_;
+  class LogOut log_out_;
+  class ResendVerificationEmail resend_verification_email_;
+  UpdateEmail update_email_;
 };
 
 }  // namespace brave_account
