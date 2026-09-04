@@ -61,8 +61,13 @@ class PlaylistTabHelper: NSObject, TabObserver, PlaylistTabHelperBridge {
   func processPlaylistInfo(item: PlaylistInfo?) {
     guard let tab = self.tab else { return }
 
-    // If this URL is blocked from Playlist support, do nothing
-    if url?.isPlaylistBlockedSiteURL == true {
+    // If this URL is blocked from Playlist support, hide the add button.
+    // YouTube swaps home/search/watch in-place, so also clear any prior state.
+    let pageURL = tab.visibleURL ?? url
+    if pageURL?.isPlaylistBlockedSiteURL == true {
+      DispatchQueue.main.async { [weak self] in
+        self?.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
+      }
       return
     }
 

@@ -302,7 +302,9 @@ extension BrowserViewController: TabManagerDelegate {
       navigationToolbar.updateForwardStatus(tab.canGoForward)
     }
 
-    let shouldShowPlaylistURLBarButton = selected?.visibleURL?.isPlaylistSupportedSiteURL == true
+    let shouldShowPlaylistURLBarButton =
+      selected?.visibleURL?.isPlaylistSupportedSiteURL == true
+      && selected?.visibleURL?.isPlaylistBlockedSiteURL == false
 
     if !shouldShowPlaylistURLBarButton {
       let readerModeState = selected?.readerMode?.state

@@ -293,7 +293,11 @@ extension URL {
 
   public var isPlaylistBlockedSiteURL: Bool {
     let urlHost = self.host ?? self.hostSLD
-    return urlHost == "talk.brave.com"
+    if urlHost == "talk.brave.com" { return true }
+    // Pages the exclusion component marks as unresolvable (YouTube home,search, feed, channel pages).
+    // Note: Fail-open until the list is loaded.
+    guard FeatureList.kPlaylist.enabled else { return false }
+    return !PlaylistExclusionsFactory.sharedPlaylistExclusions().canResolvePageSrcLater(self)
   }
 
   /// Returns true if we should show Shred option for the given URL.
