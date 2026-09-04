@@ -769,6 +769,10 @@ bool ScopedWireguardFirewall::WithdrawTemporaryDnsLocked() {
   bool all_succeeded = true;
   for (const auto filter_id : temporary_dns_filter_ids_) {
     auto result = FwpmFilterDeleteById0(engine_, filter_id);
+    if (result == static_cast<DWORD>(FWP_E_FILTER_NOT_FOUND)) {
+      continue;
+    }
+
     if (result != ERROR_SUCCESS) {
       VLOG(1) << "FwpmFilterDeleteById0 failed, error: " << std::hex << result;
       all_succeeded = false;
