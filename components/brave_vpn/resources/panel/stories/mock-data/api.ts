@@ -52,6 +52,11 @@ BraveVPN.setPanelBrowserApiForTesting({
       enabled: true
     }),
     enableSmartProxyRouting: (enable: boolean) => {},
+    getBlockUntunneledTraffic: () => Promise.resolve({
+      available: true,
+      blocked: true
+    }),
+    blockUntunneledTraffic: (block: boolean) => {},
     getOnDemandState: () => Promise.resolve({
       available: true,
       enabled: false

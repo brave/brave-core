@@ -43,6 +43,8 @@ inline constexpr char kBraveVPNWireguardFallbackDialog[] =
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
 inline constexpr char kBraveVPNWireguardEnabled[] =
     "brave.brave_vpn.wireguard_enabled";
+inline constexpr char kBraveVPNWireguardBlockUntunneledTraffic[] =
+    "brave.brave_vpn.wireguard.block_untunneled_traffic";
 #endif
 
 #if BUILDFLAG(IS_MAC)
