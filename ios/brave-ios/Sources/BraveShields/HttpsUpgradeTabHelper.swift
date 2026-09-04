@@ -32,10 +32,25 @@ public class HttpsUpgradeTabHelper {
   private weak var tab: (any TabState)?
   private let httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService
 
-  /// The request that was upgraded to HTTPS.
+  /// An HTTP navigation that was rewritten to HTTPS, and the context needed to
+  /// validate/rollback it later.
+  public struct PendingUpgrade {
+    /// The original `http` request.
+    public let originalRequest: URLRequest
+    /// The `WebRequestInfo` that accompanied the original request, e.g. whether it
+    /// came from a user-initiated link click.
+    public let originalRequestInfo: WebRequestInfo
+    /// The `https` URL the original request was rewritten to.
+    public let upgradedURL: URL
+  }
+
+  /// The upgrade currently being attempted, if any.
   ///
   /// This allows us to rollback the upgrade when the upgraded navigation fails.
-  public private(set) var upgradedHTTPSRequest: URLRequest?
+  public private(set) var pendingUpgrade: PendingUpgrade?
+
+  /// The request that was upgraded to HTTPS.
+  public var upgradedHTTPSRequest: URLRequest? { pendingUpgrade?.originalRequest }
 
   /// A timer that's started on HTTPS upgrade. If the upgrade hasn't completed
   /// within `upgradeTimeout`, it is cancelled and we fallback to HTTP or show
@@ -60,7 +75,7 @@ public class HttpsUpgradeTabHelper {
 
   /// Clear any stored upgrade without rolling it back.
   public func cancelUpgrade() {
-    upgradedHTTPSRequest = nil
+    pendingUpgrade = nil
     upgradeTimeoutTimer?.invalidate()
     upgradeTimeoutTimer = nil
   }
@@ -154,7 +169,11 @@ extension HttpsUpgradeTabHelper: TabPolicyDecider {
 
     Logger.module.debug("Upgrading `\(requestURL.absoluteString)` to HTTPS")
 
-    upgradedHTTPSRequest = request
+    pendingUpgrade = PendingUpgrade(
+      originalRequest: request,
+      originalRequestInfo: requestInfo,
+      upgradedURL: upgradedURL
+    )
     upgradeTimeoutTimer?.invalidate()
 
     var modifiedRequest = request
@@ -179,8 +198,14 @@ extension HttpsUpgradeTabHelper: TabPolicyDecider {
 
 // MARK: - TabObserver
 extension HttpsUpgradeTabHelper: TabObserver {
+
   public func tabDidCommitNavigation(_ tab: some TabState) {
-    // Reset the stored http request now that the load has committed.
+    // Do NOT cancel the upgrade here: a navigation can commit and then immediately fail
+    // (see `didFailNavigationWithError`), so committing does not mean the upgraded load
+    // actually succeeded. Only clear the tracked upgrade once the navigation truly finishes.
+  }
+
+  public func tabDidFinishNavigation(_ tab: some TabState) {
     cancelUpgrade()
   }
 

@@ -71,9 +71,10 @@ class HTTPBlockedScriptHandler: TabContentScript {
   @MainActor private func didGoBack(tab: some TabState) {
     tab.httpsUpgradeHelper?.cancelUpgrade()
     if tab.backForwardList?.backList.isEmpty == true {
-      // interstitial was opened in a new tab
-      tabManager?.addTabToRecentlyClosed(tab)
-      tabManager?.removeTab(tab)
+      // we will redirect user back to NTP home screen if there is nothing to
+      // go back to. This is aligned with BlockedDomain handler
+      tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
+      return
     } else {
       tab.goBack()
     }
