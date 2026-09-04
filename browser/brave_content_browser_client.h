@@ -13,6 +13,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/resource_context_data.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
@@ -94,6 +95,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       content::BrowserContext* browser_context,
       const content::StoragePartitionConfig* storage_partition_config) override;
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession() override;
+#endif
 
   void RegisterBrowserInterfaceBindersForFrame(
       content::RenderFrameHost* render_frame_host,

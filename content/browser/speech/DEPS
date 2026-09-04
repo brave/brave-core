@@ -1,0 +1,18 @@
+include_rules = [
+  "+brave/components/local_ai/core/on_device_speech_recognition.mojom.h",
+  "+content/browser/speech",
+  "+content/common/content_export.h",
+  "+content/public/browser",
+  "+content/public/common",
+  "+media/base",
+  "+mojo/public/cpp/bindings",
+  "+services/on_device_model/public/mojom",
+]
+
+specific_include_rules = {
+  ".*_unittest\.cc": [
+    "+components/speech",
+    "+content/public/test",
+    "+media/mojo/mojom",
+  ],
+}

@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Take over the optimization guide path in CreateSession.
+
+      CreateSession serves an on-device session from either the optimization
+      guide engine or the SODA one, and Brave ships neither model. Brave's
+      engine subclasses the optimization guide one, so answering this method
+      true routes every on-device session onto that path, which the two
+      substitutions below carry through to the engine itself.
+      UsesBraveOnDeviceSpeechEngine is the predicate the chromium_src override
+      defines, and quality is not consulted because Brave's model serves all
+      of them.
+    preempt_function_impl:
+      function_name: SpeechRecognitionManagerImpl::IsOptimizationGuideSpeechModel
+      code: |-
+        if (UsesBraveOnDeviceSpeechEngine()) {
+          return true;
+        }
+
+  - description: |
+      Keep forwarded audio on the path taken over above.
+
+      A session that carries an audio forwarder is handed to the speech
+      recognition service process unless it is on the optimization guide path.
+      That process bypasses the browser, and with it Brave's engine.
+      CreateSession recomputes the method's condition inline here rather than
+      calling it, so the takeover has to be stated again for this guard to
+      agree with it.
+    regex:
+      re_pattern: '(const bool uses_optimization_guide_model =)\s*([^;]*);'
+      replace: |-
+        \1
+              (\2) || UsesBraveOnDeviceSpeechEngine();
+
+  - description: |
+      Build Brave's engine where that path constructs upstream's.
+
+      The optimization guide path ends here, so this is what the two
+      substitutions above lead to. MakeOnDeviceSpeechEngine, from the
+      chromium_src override, returns Brave's subclass, or upstream's engine
+      in a build without local AI.
+    regex:
+      pattern: 'std::make_unique<OnDeviceSpeechRecognitionEngine>(config)'
+      replace: 'MakeOnDeviceSpeechEngine(config)'
