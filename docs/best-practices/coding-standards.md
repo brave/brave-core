@@ -1374,29 +1374,35 @@ url::Origin::Create(url);
 url::SchemeHostPort(url);
 ```
 
-Origins come in three kinds. Start from `GetLastCommittedOrigin()`, then apply
-the extra rules for opaque and inherited cases.
+If not always, a decision is made on the render frame or the render process (if
+the render frame is null; possible for `WebSockets`, `WebTransport`) which is
+either making a n/w request or a request to access some browser functionality.
+There are generally three scenarios to keep in mind. Starting from
+`GetLastCommittedOrigin()` or the `SecurityOrigin`, then apply the extra rules
+for these scenarios.
 
-### Non-opaque origins
+### Frames with non-opaque origins
 
 The usual case: the frame has a tuple origin such as
 `https://www.example.com:8080`. Use that origin (or `SecurityOrigin`) directly.
 
-### Opaque origins
+### Frames with opaque origins
 
 Assigned to `file://`, `data:`, and sandboxed frames (`<iframe sandbox>`).
 Querying can yield a **null** origin, so there is often little to key a policy
-on.
+on. A frame with an opaque origin could have both a `null` security origin, and
+a "tuple origin" (e.g., https://www.example.com:8080).
 
 These frames already run with limited capabilities — **default to restricted**.
 If a decision is still required:
 
 - **Network request:** use the request's `initiator_origin`. See this
   [example change](https://github.com/brave/brave-core/pull/38539/changes#diff-6b02a30e91fdb3e3be80924c66018e9e434a29122f9f6846e2d6f043a05a9c69R84).
-- **Otherwise:** walk up to the nearest ancestor frame with a non-opaque origin
-  and use that.
+- **Otherwise:** If applicable, walk up to the nearest ancestor frame with a
+  non-opaque origin and use that. **Important!** Always verify whether that
+  non-opaque origin is what was reuqired to base the decisions on.
 
-### Inherited origins
+### Frames with inherited origins
 
 `blob:`, `about:blank`, and `about:srcdoc` **inherit** the embedder frame's
 origin. `GetLastCommittedOrigin()` on that `RenderFrameHost` therefore returns
