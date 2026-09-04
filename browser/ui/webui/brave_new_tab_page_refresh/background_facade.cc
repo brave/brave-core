@@ -11,6 +11,7 @@
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
+#include "base/strings/strcat.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -18,6 +19,7 @@
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "components/prefs/pref_service.h"
+#include "url/gurl.h"
 
 namespace brave_new_tab_page_refresh {
 
@@ -92,6 +94,19 @@ NTPBackgroundPrefs GetBackgroundPrefs(const raw_ref<PrefService>& prefs) {
   return NTPBackgroundPrefs(&prefs.get());
 }
 
+std::string GetBackgroundWallpaperUrlPrefix() {
+  return base::StrCat(
+      {"chrome://", ntp_background_images::kBackgroundWallpaperHost, "/"});
+}
+
+std::string BraveBackgroundUrlToFileName(const std::string& background_url) {
+  return GURL(background_url).ExtractFileName();
+}
+
+std::string BraveBackgroundFileNameToUrl(const std::string& file_name) {
+  return GetBackgroundWallpaperUrlPrefix() + file_name;
+}
+
 }  // namespace
 
 BackgroundFacade::BackgroundFacade(
@@ -143,6 +158,15 @@ std::vector<std::string> BackgroundFacade::GetCustomBackgrounds() {
   return backgrounds;
 }
 
+std::vector<std::string> BackgroundFacade::GetDisabledBraveBackgrounds() {
+  auto backgrounds =
+      GetBackgroundPrefs(pref_service_).GetDisabledBraveImageList();
+  for (auto& background : backgrounds) {
+    background = BraveBackgroundFileNameToUrl(background);
+  }
+  return backgrounds;
+}
+
 mojom::SelectedBackgroundPtr BackgroundFacade::GetSelectedBackground() {
   auto background = mojom::SelectedBackground::New();
 
@@ -150,6 +174,9 @@ mojom::SelectedBackgroundPtr BackgroundFacade::GetSelectedBackground() {
   switch (bg_prefs.GetType()) {
     case NTPBackgroundPrefs::Type::kBrave:
       background->type = mojom::SelectedBackgroundType::kBrave;
+      if (!bg_prefs.ShouldUseRandomValue()) {
+        background->value = bg_prefs.GetSelectedValue();
+      }
       break;
     case NTPBackgroundPrefs::Type::kCustomImage:
       background->type = mojom::SelectedBackgroundType::kCustom;
@@ -278,6 +305,31 @@ void BackgroundFacade::RemoveCustomBackground(const std::string& background_url,
       file_path, base::BindOnce(&BackgroundFacade::OnCustomBackgroundRemoved,
                                 weak_factory_.GetWeakPtr(), std::move(callback),
                                 file_path));
+}
+
+void BackgroundFacade::SetBraveBackgroundEnabled(
+    const std::string& background_url,
+    bool enabled) {
+  const std::string file_name = BraveBackgroundUrlToFileName(background_url);
+  if (file_name.empty()) {
+    return;
+  }
+
+  auto bg_prefs = GetBackgroundPrefs(pref_service_);
+  if (enabled) {
+    bg_prefs.RemoveDisabledBraveImage(file_name);
+    return;
+  }
+
+  bg_prefs.AddDisabledBraveImage(file_name);
+
+  // If the disabled image is currently pinned, fall back to a random Brave
+  // background.
+  if (bg_prefs.IsBraveType() && !bg_prefs.ShouldUseRandomValue() &&
+      bg_prefs.GetSelectedValue() == background_url) {
+    bg_prefs.SetSelectedValue("");
+    bg_prefs.SetShouldUseRandomValue(true);
+  }
 }
 
 void BackgroundFacade::NotifySponsoredImageLogoClicked(

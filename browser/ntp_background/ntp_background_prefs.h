@@ -54,6 +54,9 @@ class NTPBackgroundPrefs final {
   static constexpr char kCustomImageListPrefName[] =
       "brave.new_tab_page.custom_background_image_list";
 
+  static constexpr char kDisabledBraveImageListPrefName[] =
+      "brave.new_tab_page.disabled_brave_background_image_list";
+
   enum class Type {
     kBrave,  // Images that we supply.
     kCustomImage,
@@ -90,6 +93,10 @@ class NTPBackgroundPrefs final {
   void AddCustomImageToList(const std::string& file_name);
   void RemoveCustomImageFromList(const std::string& file_name);
   std::vector<std::string> GetCustomImageList() const;
+
+  void AddDisabledBraveImage(const std::string& file_name);
+  void RemoveDisabledBraveImage(const std::string& file_name);
+  std::vector<std::string> GetDisabledBraveImageList() const;
 
  private:
   const base::DictValue* GetPrefValue() const;
