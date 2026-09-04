@@ -2546,6 +2546,12 @@
 # model
 -AppMenuModelTest.ModelHasIcons
 
+# These tests fail because we disable identity docs and travel pages in
+# autofill settings and hamburger menu.
+-AutofillAiPolicyTest.SettingsNotDisabledByPolicy/*
+-BrowserCommandControllerBrowserTest.ExecuteShowIdentityDocs
+-BrowserCommandControllerBrowserTest.ExecuteShowTravel
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
