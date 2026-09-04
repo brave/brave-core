@@ -39,6 +39,7 @@ import {
 import {
   getDominantColorFromImageURL, //
 } from '../../../../utils/style.utils'
+import { isValidPolkadotAssetId } from '$wallet/utils/asset-utils'
 
 // Hooks
 import {
@@ -604,16 +605,37 @@ export const SendScreen = React.memo(() => {
       }
 
       case BraveWallet.CoinType.DOT: {
-        await sendPolkadotTransaction({
-          network: networkFromParams,
-          fromAccount,
-          to: toAddress,
-          sendingMaxAmount,
-          value: new Amount(sendAmount)
-            .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex(),
-        })
-        setSendAmount('')
+        setTransactionProcessFailedMessage(undefined)
+        try {
+          const { contractAddress } = tokenFromParams
+          let assetId: number | undefined
+          if (contractAddress !== '') {
+            if (!isValidPolkadotAssetId(contractAddress)) {
+              throw new Error(`invalid Polkadot asset id: ${contractAddress}`)
+            }
+            assetId = Number(contractAddress)
+          }
+
+          await sendPolkadotTransaction({
+            network: networkFromParams,
+            fromAccount,
+            to: toAddress,
+            sendingMaxAmount,
+            value: new Amount(sendAmount)
+              .multiplyByDecimals(tokenFromParams.decimals)
+              .toHex(),
+            assetId,
+          }).unwrap()
+          setSendAmount('')
+        } catch (error) {
+          console.error('Polkadot send failed:', error)
+          setTransactionProcessFailedMessage(
+            getLocale(S.BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE).replace(
+              '$1',
+              tokenFromParams.symbol,
+            ),
+          )
+        }
       }
     }
   }, [

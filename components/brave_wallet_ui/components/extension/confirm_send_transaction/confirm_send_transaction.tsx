@@ -17,7 +17,10 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
-import { getTransactionMemo } from '../../../utils/tx-utils'
+import {
+  getTransactionMemo,
+  isPolkadotAssetTransaction,
+} from '../../../utils/tx-utils'
 
 // Hooks
 import {
@@ -133,6 +136,7 @@ export function ConfirmSendTransaction() {
           .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
       || selectedPendingTransaction.txType
         === BraveWallet.TransactionType.CardanoSendToken
+      || isPolkadotAssetTransaction(selectedPendingTransaction)
     ) {
       return (
         new Amount(transactionDetails.valueExact).formatAsAsset(

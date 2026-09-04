@@ -749,6 +749,9 @@ export const transactionEndpoints = ({
         try {
           const { txService } = baseQuery(undefined).data
 
+          const assetId =
+            payload.assetId !== undefined ? { id: payload.assetId } : undefined
+
           const params: BraveWallet.NewPolkadotTransactionParams = {
             chainId: payload.network.chainId,
             from: payload.fromAccount.accountId,
@@ -756,7 +759,7 @@ export const transactionEndpoints = ({
             amount: bigIntToUint128(BigInt(payload.value)),
             sendingMaxAmount: payload.sendingMaxAmount,
             swapInfo: payload.swapInfo,
-            assetId: undefined,
+            assetId,
           }
 
           const { errorMessage, success } =

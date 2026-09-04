@@ -82,6 +82,7 @@ import {
   getBalanceFromRegistry,
 } from '../../../utils/balance-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
+import { bigIntToUint128 } from '../../../utils/polkadot-utils'
 
 export class MockedWalletApiProxy {
   /** used for simulating fired observers */
@@ -1465,6 +1466,70 @@ export class MockedWalletApiProxy {
       }
 
       return { address: account.address, errorMessage: null }
+    },
+    getAccountBalance: async (accountId, chainId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { account: null, errorMessage: 'invalid account' }
+      }
+
+      const free = bigIntToUint128(
+        BigInt(
+          getBalanceFromRegistry({
+            accountUniqueId: accountId.uniqueKey,
+            chainId,
+            contractAddress: '',
+            registry: this.tokenBalancesRegistry,
+            tokenId: '',
+            coin: BraveWallet.CoinType.DOT,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+          }),
+        ),
+      )
+
+      const zero = bigIntToUint128(BigInt(0))
+
+      return {
+        account: {
+          nonce: 0,
+          consumers: 0,
+          providers: 1,
+          sufficients: 0,
+          data: { free, reserved: zero, frozen: zero, flags: zero },
+        },
+        errorMessage: null,
+      }
+    },
+    // Returns one balance per requested asset id, in the requested order.
+    getAssetAccountBalances: async (accountId, assetIds, chainId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { assetAccounts: [], errorMessage: 'invalid account' }
+      }
+
+      return {
+        assetAccounts: assetIds.map((assetId) => ({
+          balance: bigIntToUint128(
+            BigInt(
+              getBalanceFromRegistry({
+                accountUniqueId: accountId.uniqueKey,
+                chainId,
+                // DOT asset tokens are keyed by their (decimal) asset id.
+                contractAddress: String(assetId),
+                registry: this.tokenBalancesRegistry,
+                tokenId: '',
+                coin: BraveWallet.CoinType.DOT,
+                zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+              }),
+            ),
+          ),
+        })),
+        errorMessage: null,
+      }
     },
   }
 
