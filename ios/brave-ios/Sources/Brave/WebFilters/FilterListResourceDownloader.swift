@@ -30,10 +30,10 @@ import os.log
   init() {}
 
   /// Start the adblock service to get adblock file updates
-  public func start(with adBlockService: AdblockService) {
+  public func start(with adBlockService: AdblockService) async {
     if let resourcesPath = adBlockService.resourcesPath {
       // Do an initial load of resources
-      AdBlockGroupsManager.shared.didUpdateResourcesComponent(
+      await AdBlockGroupsManager.shared.didUpdateResourcesComponent(
         resourcesFileURL: resourcesPath
       )
     }
@@ -45,7 +45,7 @@ import os.log
   private func subscribeToResourceChanges(with adBlockService: AdblockService) {
     Task {
       for await resourcesFileURL in adBlockService.resourcesComponentStream() {
-        AdBlockGroupsManager.shared.didUpdateResourcesComponent(
+        await AdBlockGroupsManager.shared.didUpdateResourcesComponent(
           resourcesFileURL: resourcesFileURL
         )
       }

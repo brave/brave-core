@@ -11,7 +11,60 @@ import Foundation
 import Preferences
 import WebKit
 
+/// A user provided scriptlet that is injected into the ad-block engine's resources
+struct CustomScriptlet: Identifiable, Hashable {
+  /// The name of the scriptlet. This is also the file name it is stored under and the
+  /// name filter list rules refer to (i.e. `user-my-scriptlet.js`)
+  let name: String
+  /// The javascript for this scriptlet
+  let content: String
+
+  var id: String { name }
+
+  /// The required prefix for a scriptlet's name
+  static let namePrefix = "user-"
+  /// The required extension for a scriptlet's name
+  static let nameExtension = ".js"
+
+  /// Tells us if the given name is a valid scriptlet name.
+  ///
+  /// A valid name is prefixed with `user-`, suffixed with `.js` and is safe to use as a
+  /// file name (i.e. contains no path separators or relative path components).
+  static func isValidName(_ name: String) -> Bool {
+    guard name.hasPrefix(namePrefix), name.hasSuffix(nameExtension) else { return false }
+    // Ensure there is something between the prefix and the extension
+    guard name.count > namePrefix.count + nameExtension.count else { return false }
+    guard !name.contains("/"), !name.contains(":"), !name.contains("..") else { return false }
+    return true
+  }
+}
+
 @MainActor class CustomFilterListStorage: ObservableObject {
+  enum CustomScriptletError: Error, LocalizedError {
+    /// The scriptlet's name is not prefixed with `user-`, not suffixed with `.js`
+    /// or is unsafe to use as a file name
+    case invalidName
+    /// The scriptlet has no javascript
+    case emptyContent
+    /// Failed to save the custom scriptlet
+    case failedToSave
+
+    var errorDescription: String? {
+      switch self {
+      case .invalidName:
+        return String.localizedStringWithFormat(
+          Strings.Shields.customScriptletInvalidNameError,
+          CustomScriptlet.namePrefix,
+          CustomScriptlet.nameExtension
+        )
+      case .emptyContent:
+        return Strings.Shields.customScriptletEmptyContentError
+      case .failedToSave:
+        return Strings.Shields.customScriptletFailedToSaveError
+      }
+    }
+  }
+
   enum CustomRulesError: Error, LocalizedError {
     /// We limit the number of lines because UITextView cannot handle large text
     case tooManyLines(max: Int)
@@ -52,6 +105,8 @@ import WebKit
   let persistChanges: Bool
   /// A list of filter list URLs and their enabled statuses
   @Published var filterListsURLs: [FilterListCustomURL]
+  /// All the saved custom scriptlets, sorted by name
+  @Published private(set) var customScriptlets: [CustomScriptlet] = []
 
   init(persistChanges: Bool) {
     self.persistChanges = persistChanges
@@ -119,6 +174,16 @@ import WebKit
       in: .userDomainMask
     ).appending(path: "custom_rules")
     return folderURL.appending(path: "exclusion_rules.txt")
+  }
+
+  /// Folder URL containing the custom scriptlets. Each scriptlet is stored as a
+  /// single file where the file name is the scriptlet's name.
+  private func customScriptletsFolderURL() throws -> URL {
+    let folderURL = try AsyncFileManager.default.url(
+      for: .applicationSupportDirectory,
+      in: .userDomainMask
+    ).appending(path: "custom_rules")
+    return folderURL.appending(path: "scriptlets")
   }
 
   /// Get the file URL to the custom filter list rules if it exists
@@ -218,6 +283,118 @@ import WebKit
     case .success(let date):
       filterListsURLs[index].downloadStatus = .downloaded(date)
     }
+  }
+
+  /// Load the saved custom scriptlets into memory.
+  ///
+  /// This must happen before the ad-block resources are loaded so the scriptlets are
+  /// included in every `ResourcesInfo` we hand to the engines.
+  func loadCachedCustomScriptlets() async {
+    self.customScriptlets = (try? await loadCustomScriptlets()) ?? []
+  }
+
+  /// Load all the saved custom scriptlets
+  public func loadCustomScriptlets() async throws -> [CustomScriptlet] {
+    let folderURL = try customScriptletsFolderURL()
+    guard await AsyncFileManager.default.fileExists(atPath: folderURL.path) else { return [] }
+
+    let fileURLs = try await AsyncFileManager.default.contentsOfDirectory(
+      at: folderURL,
+      includingPropertiesForKeys: nil,
+      options: [.skipsHiddenFiles]
+    )
+
+    return
+      await fileURLs
+      .filter({ CustomScriptlet.isValidName($0.lastPathComponent) })
+      .sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
+      .asyncCompactMap({ fileURL in
+        guard let content = await AsyncFileManager.default.utf8Contents(at: fileURL) else {
+          return nil
+        }
+        return CustomScriptlet(name: fileURL.lastPathComponent, content: content)
+      })
+  }
+
+  /// Save the given custom scriptlet, update engine resources and clear the
+  /// engine caches so it takes effect. Removes previous scriptlet, but doesn't
+  /// throw if failing to remove, only save failures.
+  /// - parameter customScriptlet: The CustomScriptlet to save
+  /// - parameter previousName: The previous name of the scriptlet (if
+  /// renaming) to remove when saving
+  public func save(
+    customScriptlet: CustomScriptlet,
+    replacing previousName: String? = nil
+  )
+    async throws
+  {
+    guard CustomScriptlet.isValidName(customScriptlet.name) else {
+      throw CustomScriptletError.invalidName
+    }
+    guard !customScriptlet.content.isEmpty else {
+      throw CustomScriptletError.emptyContent
+    }
+
+    let folderURL = try customScriptletsFolderURL()
+    let fileURL = folderURL.appending(path: customScriptlet.name)
+    if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
+      try await AsyncFileManager.default.removeItem(at: fileURL)
+    }
+    _ = try await getOrCreateCustomScriptletsFolder()
+    let savedSuccessfully = await AsyncFileManager.default.createUTF8File(
+      atPath: fileURL.path,
+      contents: customScriptlet.content
+    )
+
+    if let previousName, previousName != customScriptlet.name,
+      CustomScriptlet.isValidName(previousName)
+    {
+      let previousFileURL = folderURL.appending(path: previousName)
+      do {
+        if await AsyncFileManager.default.fileExists(atPath: previousFileURL.path) {
+          try await AsyncFileManager.default.removeItem(at: previousFileURL)
+        }
+        // Only remove if successful above so it reflects what's found on disk
+        customScriptlets.removeAll(where: { $0.name == previousName })
+      } catch {
+        ContentBlockerManager.log.error(
+          "Failed to remove renamed custom scriptlet `\(previousName)`: \(error.localizedDescription)"
+        )
+      }
+    }
+
+    customScriptlets.removeAll(where: { $0.name == customScriptlet.name })
+    customScriptlets.append(customScriptlet)
+    customScriptlets.sort(by: { $0.name < $1.name })
+    if !savedSuccessfully {
+      // Throw after updating `customScriptlets` as the existing scriptlet
+      // was already removed
+      throw CustomScriptletError.emptyContent
+    }
+    await AdBlockGroupsManager.shared.didUpdateCustomScriptlets()
+  }
+
+  /// Delete the saved custom scriptlet with the given name and, update engine resources and clear the
+  /// engine caches so it is no longer available
+  func deleteCustomScriptlet(named name: String) async throws {
+    guard CustomScriptlet.isValidName(name) else {
+      throw CustomScriptletError.invalidName
+    }
+
+    let fileURL = try customScriptletsFolderURL().appending(path: name)
+    guard await AsyncFileManager.default.fileExists(atPath: fileURL.path) else { return }
+    try await AsyncFileManager.default.removeItem(at: fileURL)
+    customScriptlets.removeAll(where: { $0.name == name })
+    await AdBlockGroupsManager.shared.didUpdateCustomScriptlets()
+  }
+
+  /// Get or create the folder that stores the custom scriptlets
+  private func getOrCreateCustomScriptletsFolder() async throws -> URL {
+    try await AsyncFileManager.default.url(
+      for: .applicationSupportDirectory,
+      appending: "custom_rules/scriptlets",
+      create: true
+    )
   }
 
   /// Load the custom exclusion rules (rules to be removed from AdBlockEngine &
