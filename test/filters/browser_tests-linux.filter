@@ -191,6 +191,67 @@
 # https://github.com/brave/brave-browser/issues/53717 (Windows, closed)
 -InstallableManagerBrowserTest.CheckWebapp
 
+# Upstream Chromium tests (chrome/browser/ui/views/payments/
+# payment_handler_web_flow_view_browsertest.cc). Four tests in that file
+# synthesize a mouse click into the payment handler web contents, but these
+# two are the only ones that have to hit a specific element: they use
+# content::SimulateMouseClickOrTapElementWithId(payment_handler_contents,
+# "reject-button"), whose listener posts 'reject' to the service worker, which
+# rejects the PaymentRequestEvent promise, and then they wait for the
+# resulting ERROR_MESSAGE_SHOWN / DIALOG_CLOSED. The other two,
+# UserInteractionRecorded and PaymentResponseDeferredUntilUserInteraction,
+# call content::SimulateMouseClick(), which only has to register user
+# activation somewhere on the page, and those sit at 0.1% upstream against
+# 0.6% and 0.4% for these two. That is suggestive rather than conclusive (the
+# stable pair also uses a different launcher and a different payment app), but
+# it is consistent with the click being delivered and not landing on the
+# button.
+#
+# Every failing log stops there. None of the console messages a successful run
+# emits after the click appear ("PaymentRequestEvent.respondWith() failed: the
+# promise passed to respondWith() was rejected." and "Uncaught (in promise)
+# Error: Rejected"), and the event waiter still has all of its expected events
+# pending when the 30s RunLoop timeout fires. Console output from both the
+# payment handler window and the service worker reaches browser_tests stderr
+# (content::LogConsoleMessage is on either path, and checked locally by
+# logging from that listener), so neither a rejection nor an exception thrown
+# inside the listener would go unlogged. Nothing is logged, so the listener
+# most likely never ran.
+#
+# Upstream has already had one round of flake fixes on this exact path:
+# crrev.com/c/8045781 ("[Payments] Fix user interaction flaky tests",
+# crbug.com/531590249, 530162399, 530434790) added the merchant /
+# service-worker / window-client readiness handshake these tests use, and both
+# already call SimulateEndOfPaintHoldingOnPrimaryMainFrame() before clicking.
+# Both mitigations are in our tree and neither closes this window.
+#
+# script/check-upstream-flake.py reports STABLE UPSTREAM for both — 0.6% and
+# 0.4% over 30 days, 0.7% and 0.5% over 60 — i.e. below the 1% bar, so the
+# flake rate alone does not justify the entry. The TUF-002 checks come back
+# clean: no chromium_src override under chrome/browser/ui/views/payments/ or
+# components/payments/, no patch touching either tree, and no Brave override
+# of the payments::features::kPaymentRequestMandatoryPaymentAppUi default that
+# the two fixtures toggle. All Brave code matching "payments" is credit card
+# autofill (components/autofill/core/browser/payments/ and its iOS and rewrite
+# counterparts), a different subsystem. Locally both tests pass — 38 runs on
+# Linux across single-process and test-launcher configurations, 30 of them at
+# --test-launcher-jobs=12 — too few to prove much on their own. So no Brave
+# cause was found, but the gap between the failure rate on these builders and
+# upstream's remains unexplained.
+#
+# Linux-only filter: every occurrence since the first report on 2026-08-13 is
+# linux-x64, on both the browser and origin builders (58146 on nightly and
+# release, 58147 on nightly and beta). Brave files browser_tests failures for
+# macOS and Windows too and neither has reported these, so there is no reason
+# to drop coverage there. Per TUF-001 a filter is preferred over patching
+# upstream test code for an intermittent failure, and since no Brave override
+# or patch is responsible, there is nothing on our side to fix instead.
+#
+# https://github.com/brave/brave-browser/issues/58146
+# https://github.com/brave/brave-browser/issues/58147
+-PaymentHandlerWebFlowViewMandatoryUiDisabledTest.ErrorMessageShownOnErrorAfterUserInteraction
+-PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
