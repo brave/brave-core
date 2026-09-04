@@ -240,6 +240,22 @@ class EphemeralStorageServiceTest : public testing::Test {
     }
   }
 
+  std::optional<base::Time> GetFirstPartyStorageClosedAtFor(const GURL& url) {
+    for (const auto& value :
+         profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup)) {
+      const base::DictValue* dict = value.GetIfDict();
+      if (!dict) {
+        continue;
+      }
+      const std::string* url_spec = dict->FindString(kUrlKey);
+      if (!url_spec || *url_spec != url.spec()) {
+        continue;
+      }
+      return base::ValueToTime(dict->Find(kClosedAtKey));
+    }
+    return std::nullopt;
+  }
+
  protected:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
@@ -805,6 +821,75 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   EXPECT_EQ(
       profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       1u);
+}
+
+TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
+       CloseTimeIsNotRefreshedForQueuedArea) {
+  const GURL url("https://a.com");
+  const std::string ephemeral_domain = std::string(url.host());
+  const auto storage_partition_config =
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
+
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .Times(2)
+        .WillRepeatedly(
+            testing::Return(brave_shields::mojom::AutoShredMode::APP_EXIT));
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+        .WillOnce(testing::Return(false));
+
+    service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
+                                          storage_partition_config);
+    service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
+                                            storage_partition_config, false,
+                                            StorageCleanupMode::kOnExitShred);
+    ASSERT_EQ(GetFirstPartyStorageClosedAtFor(url), base::Time::Min());
+  }
+
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .Times(2)
+        .WillRepeatedly(testing::Return(
+            brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED));
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+        .WillOnce(testing::Return(false));
+
+    // Reusing and closing the area again (this is what the Android cold start
+    // does with the tabs restored from the previous session) must not stamp a
+    // fresh close time onto the queued entry, otherwise it would never be seen
+    // as expired and would never be cleaned up.
+    service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
+                                          storage_partition_config);
+    service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
+                                            storage_partition_config, false,
+                                            StorageCleanupMode::kDefault);
+    EXPECT_GT(GetFirstPartyStorageClosedAtFor(url), base::Time::Min());
+  }
+
+  {
+    ShutdownEphemeralStorageService(service_);
+    service_ = CreateEphemeralStorageService(
+        profile_.get(), mock_delegate_, &mock_observer_,
+        ExpectFirstWindowOpenedCallback::kDontTrigger);
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+
+    TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(
+            testing::Return(brave_shields::mojom::AutoShredMode::APP_EXIT));
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+        .WillOnce(testing::Return(false));
+    EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
+    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
+    ExpireFirstPartyStorageOriginFor(url);
+    mock_delegate_->TriggerFirstWindowOpenedCallback();
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
+  }
 }
 
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest,

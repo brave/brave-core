@@ -14,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
-#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -44,8 +43,6 @@ class BrowserContext;
 namespace permissions {
 class PermissionLifetimeManagerBrowserTest;
 }
-
-class ScopedListPrefUpdate;
 
 namespace ephemeral_storage {
 
@@ -148,18 +145,12 @@ class EphemeralStorageService : public KeyedService {
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
 
-  void SetUpdateFirstPartyStorageOriginToCleanUp(bool do_nothing);
-
   size_t FireCleanupTimersForTesting();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<EphemeralStorageServiceDelegate> delegate_;
   raw_ptr<PrefService> prefs_ = nullptr;
-  base::RepeatingCallback<void(ScopedListPrefUpdate&,
-                               const GURL&,
-                               const content::StoragePartitionConfig&)>
-      update_fp_storage_origins_to_cleanup_;
   // These patterns are removed on service Shutdown.
   base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
 
