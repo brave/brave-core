@@ -1348,3 +1348,71 @@ This is a mojom-specific application of [CS-014](#CS-014). The
 target produces it.
 
 ---
+
+<a id="CS-071"></a>
+
+## ✅ Use Security Origins (Not URLs) for Security Decisions on Sites
+
+**When extending or limiting capabilities for a site, decide from `url::Origin`
+/ `SecurityOrigin` — never from a raw `GURL`.** Tie the decision to the exact
+`RenderFrameHost` under consideration, and read its origin with
+`GetLastCommittedOrigin()`:
+
+```cpp
+// ✅ CORRECT - origin of the frame you are deciding about
+const url::Origin& origin = render_frame_host->GetLastCommittedOrigin();
+```
+
+Converting a `GURL` to an origin is often **not** the origin you expect. See
+Chromium's
+[origin-vs-url guide](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/security/origin-vs-url.md)
+for the gotchas.
+
+```cpp
+// ⚠️ DANGEROUS - GURL → origin is frequently the wrong origin
+url::Origin::Create(url);
+url::SchemeHostPort(url);
+```
+
+If not always, a decision is made on the render frame or the render process (if
+the render frame is null; possible for `WebSockets`, `WebTransport`) which is
+either making a n/w request or a request to access some browser functionality.
+There are generally three scenarios to keep in mind. Starting from
+`GetLastCommittedOrigin()` or the `SecurityOrigin`, then apply the extra rules
+for these scenarios.
+
+### Frames with non-opaque origins
+
+The usual case: the frame has a tuple origin such as
+`https://www.example.com:8080`. Use that origin (or `SecurityOrigin`) directly.
+
+### Frames with opaque origins
+
+Assigned to `file://`, `data:`, and sandboxed frames (`<iframe sandbox>`).
+Querying can yield a **null** origin, so there is often little to key a policy
+on. A frame with an opaque origin could have both a `null` security origin, and
+a "tuple origin" (e.g., https://www.example.com:8080).
+
+These frames already run with limited capabilities — **default to restricted**.
+If a decision is still required:
+
+- **Network request:** use the request's `initiator_origin`. See this
+  [example change](https://github.com/brave/brave-core/pull/38539/changes#diff-6b02a30e91fdb3e3be80924c66018e9e434a29122f9f6846e2d6f043a05a9c69R84).
+- **Otherwise:** If applicable, walk up to the nearest ancestor frame with a
+  non-opaque origin and use that. **Important!** Always verify whether that
+  non-opaque origin is what was reuqired to base the decisions on.
+
+### Frames with inherited origins
+
+`blob:`, `about:blank`, and `about:srcdoc` **inherit** the embedder frame's
+origin. `GetLastCommittedOrigin()` on that `RenderFrameHost` therefore returns
+the embedder's origin — which is the origin you should use.
+
+[brave-browser#56048](https://github.com/brave/brave-browser/issues/56048) is an
+example of getting this wrong: any embedder of a `blob:` URL could bypass
+farbling because the decision was not based on the embedder's origin.
+
+`about:blank` and `about:srcdoc` can themselves be opaque if they were embedded
+in an opaque-origin context.
+
+---
