@@ -1,0 +1,123 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Creates a native launcher executable in $root_out_dir that runs another
+# binary with baked-in args/env (and optional cwd), then appends any
+# runtime CLI arguments the user passes.
+#
+# Outputs:
+#   $root_out_dir/<name>[.exe]  — copy of the shared native_launcher binary
+#   $root_out_dir/<name>.json   — sidecar config
+#
+# Relative "executable" / "cwd" values in the JSON are resolved at runtime
+# against the launcher's directory. If cwd is omitted from the template, it
+# is not written to JSON; the launcher defaults to its own directory.
+#
+# Example (paths relative to root_out_dir; Node path varies by host_os):
+#
+#   import("//brave/build/native_launcher/native_launcher.gni")
+#   import("//brave/build/node_action.gni")  # for platform Node path patterns
+#
+#   native_launcher("jest_tests") {
+#     executable = "//third_party/node/win/node.exe"
+#     args = [
+#       rebase_path("//brave/scripts/jest.js", root_out_dir),
+#       "--config",
+#       rebase_path("//brave/jest.config.ts", root_out_dir),
+#     ]
+#     env = {
+#       NODE_ENV = "test"
+#     }
+#   }
+#
+# Then: out/Default/jest_tests --testNamePattern=auth --updateSnapshot
+#
+# Variables:
+#   executable (required): path to the binary to run
+#   args (optional): list of string arguments baked into the sidecar
+#   env (optional): scope of string environment variables
+#   cwd (optional): working directory; relative paths are vs root_out_dir in
+#     the JSON and resolved vs the launcher dir at runtime. Omit to let the
+#     launcher use its own directory (do not GN-default this).
+#   deps, data, data_deps, testonly, visibility: forwarded as usual
+
+template("native_launcher") {
+  assert(defined(invoker.executable),
+         "native_launcher(\"$target_name\") requires executable")
+
+  _exe_suffix = ""
+  if (is_win) {
+    _exe_suffix = ".exe"
+  }
+
+  _output_name = target_name
+  if (defined(invoker.output_name)) {
+    _output_name = invoker.output_name
+  }
+
+  _native_launcher_path = "$root_out_dir/native_launcher${_exe_suffix}"
+  _output_path = "$root_out_dir/${_output_name}${_exe_suffix}"
+  _json_path = "$root_out_dir/${_output_name}.json"
+
+  _config = {
+    executable = rebase_path(invoker.executable, root_out_dir)
+  }
+  if (defined(invoker.args)) {
+    _config.args = invoker.args
+  }
+  if (defined(invoker.env)) {
+    _config.env = invoker.env
+  }
+  if (defined(invoker.cwd)) {
+    _config.cwd = rebase_path(invoker.cwd, root_out_dir)
+  }
+
+  generated_file("${target_name}__config") {
+    forward_variables_from(invoker,
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
+    outputs = [ _json_path ]
+    contents = _config
+    output_conversion = "json"
+  }
+
+  copy("${target_name}__exe") {
+    forward_variables_from(invoker,
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
+    sources = [ _native_launcher_path ]
+    outputs = [ _output_path ]
+    deps = [ "//brave/build/native_launcher" ]
+  }
+
+  group(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "data_deps",
+                             "testonly",
+                             "visibility",
+                           ])
+    deps = [
+      ":${target_name}__config",
+      ":${target_name}__exe",
+    ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    data = [
+      _output_path,
+      _json_path,
+      invoker.executable,
+    ]
+    if (defined(invoker.data)) {
+      data += invoker.data
+    }
+  }
+}
