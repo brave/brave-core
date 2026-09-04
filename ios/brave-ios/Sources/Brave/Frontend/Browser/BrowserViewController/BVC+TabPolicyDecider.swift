@@ -89,6 +89,14 @@ extension BrowserViewController: TabPolicyDecider {
 
     // Handle internal:// urls
     if InternalURL.isValid(url: requestURL) {
+      // Internal pages must only ever load as main-frame documents. WKWebView does not enforce
+      // frame-ancestors/X-Frame-Options for custom scheme handlers, so subframe loads must be
+      // blocked here.
+      guard requestInfo.isMainFrame else {
+        Logger.module.error("Denying non-main-frame navigation to internal URL: \(request)")
+        return .cancel
+      }
+
       // Requests for Internal pages have a 60s timeout by default
       let isPrivilegedRequest =
         Int64(request.timeoutInterval) < Int64(Int32.max) || request.isPrivileged
