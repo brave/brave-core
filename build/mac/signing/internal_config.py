@@ -30,8 +30,13 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     @property
     def distributions(self):
+        # Unsigned apps already contain KSChannelID so they report the correct
+        # channel when launched directly. Do not ask Chromium's packaging
+        # pipeline to append the same channel a second time.
+        packaging_channel = (None if self.invoker.args.skip_signing else
+                             BRAVE_CHANNEL)
         return [
-            Distribution(channel=BRAVE_CHANNEL,
+            Distribution(channel=packaging_channel,
                          package_as_dmg=True,
                          package_as_pkg=True,
                          package_as_zip=True)
