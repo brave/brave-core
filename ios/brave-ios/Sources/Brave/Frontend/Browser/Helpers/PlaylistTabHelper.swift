@@ -41,6 +41,7 @@ class PlaylistTabHelper: NSObject, TabObserver, PlaylistTabHelperBridge {
   weak var delegate: PlaylistTabHelperDelegate?
   private weak var tab: (any TabState)?
   private var url: URL?
+  private let playlistExclusions = PlaylistExclusionsFactory.sharedPlaylistExclusions()
   private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
 
   init(tab: some TabState, delegate: PlaylistTabHelperDelegate?) {
@@ -55,6 +56,13 @@ class PlaylistTabHelper: NSObject, TabObserver, PlaylistTabHelperBridge {
     tab.view.addGestureRecognizer(longPress)
   }
 
+  func isPlaylistBlocked(_ url: URL?) -> Bool {
+    guard let url else { return false }
+    if url.isPlaylistBlockedSiteURL { return true }
+    guard FeatureList.kPlaylist.enabled else { return false }
+    return !playlistExclusions.canResolvePageSrcLater(url)
+  }
+
   /// Processes a detected media item, updating the URL bar and prompting the
   /// user as needed. Shared by the legacy `PlaylistScript` and the
   /// `PlaylistJavaScriptFeature`, both of which deliver the same payload.
@@ -64,7 +72,7 @@ class PlaylistTabHelper: NSObject, TabObserver, PlaylistTabHelperBridge {
     // If this URL is blocked from Playlist support, hide the add button.
     // YouTube swaps home/search/watch in-place, so also clear any prior state.
     let pageURL = tab.visibleURL ?? url
-    if pageURL?.isPlaylistBlockedSiteURL == true {
+    if isPlaylistBlocked(pageURL) {
       DispatchQueue.main.async { [weak self] in
         self?.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
       }
@@ -228,7 +236,7 @@ class PlaylistTabHelper: NSObject, TabObserver, PlaylistTabHelperBridge {
     {
 
       // If this URL is blocked from Playlist support, do nothing
-      if tab.visibleURL?.isPlaylistBlockedSiteURL == true {
+      if isPlaylistBlocked(tab.visibleURL) {
         return
       }
 

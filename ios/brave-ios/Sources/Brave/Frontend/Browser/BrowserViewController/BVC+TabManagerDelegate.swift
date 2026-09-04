@@ -304,7 +304,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     let shouldShowPlaylistURLBarButton =
       selected?.visibleURL?.isPlaylistSupportedSiteURL == true
-      && selected?.visibleURL?.isPlaylistBlockedSiteURL == false
+      && selected?.playlist?.isPlaylistBlocked(selected?.visibleURL) == false
 
     if !shouldShowPlaylistURLBarButton {
       let readerModeState = selected?.readerMode?.state

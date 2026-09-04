@@ -77,7 +77,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
       let shouldShowPlaylistURLBarButton =
         tab.visibleURL?.isPlaylistSupportedSiteURL == true
-        && tab.visibleURL?.isPlaylistBlockedSiteURL == false
+        && tab.playlist?.isPlaylistBlocked(tab.visibleURL) == false
         && Preferences.Playlist.enablePlaylistURLBarButton.value
 
       let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
@@ -156,7 +156,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
     let shouldShowOnboarding =
       tab?.visibleURL?.isPlaylistSupportedSiteURL == true
-      && tab?.visibleURL?.isPlaylistBlockedSiteURL == false
+      && tab?.playlist?.isPlaylistBlocked(tab?.visibleURL) == false
 
     if shouldShowOnboarding {
       if Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value < 2,
