@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Retry the config lookup with the parent domain so a WebUIConfig whose
+      host was registered via RegisterUntrustedSubdomainHost() also serves its
+      single-label subdomains. GetRegisteredParentOrigin() is defined in the
+      chromium_src override.
+    regex:
+      re_pattern: '(auto origin_and_config = configs_map_\.find\(url::Origin::Create\(url\)\);)'
+      replace: |-
+        \1
+          if (origin_and_config == configs_map_.end()) {
+            origin_and_config = configs_map_.find(GetRegisteredParentOrigin(url));
+          }

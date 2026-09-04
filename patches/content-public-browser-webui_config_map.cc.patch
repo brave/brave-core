@@ -1,0 +1,14 @@
+diff --git a/content/public/browser/webui_config_map.cc b/content/public/browser/webui_config_map.cc
+index e74da278fedbfbc7a1b12bb8fb082bf5eebdba81..0bab2ca0069356941a7aff19cabd1a89e93dac11 100644
+--- a/content/public/browser/webui_config_map.cc
++++ b/content/public/browser/webui_config_map.cc
+@@ -100,6 +100,9 @@ WebUIConfig* WebUIConfigMap::GetConfig(BrowserContext* browser_context,
+   }
+ 
+   auto origin_and_config = configs_map_.find(url::Origin::Create(url));
++  if (origin_and_config == configs_map_.end()) {
++    origin_and_config = configs_map_.find(GetRegisteredParentOrigin(url));
++  }
+   if (origin_and_config == configs_map_.end()) {
+     return nullptr;
+   }
