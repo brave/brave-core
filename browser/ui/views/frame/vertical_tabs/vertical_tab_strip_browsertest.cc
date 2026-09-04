@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include "base/i18n/rtl.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -25,12 +26,14 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
+#include "cc/paint/display_item_list.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -58,6 +61,7 @@
 #include "content/public/test/browser_test.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/test/ui_controls.h"
+#include "ui/compositor/paint_context.h"
 #include "ui/display/screen.h"
 #include "ui/display/test/test_screen.h"
 #include "ui/events/event.h"
@@ -65,6 +69,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
+#include "ui/views/paint_info.h"
 #include "ui/views/test/views_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
@@ -1530,6 +1535,55 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   InvalidateAndRunLayoutForVerticalTabStrip();
   EXPECT_FALSE(GetTabAt(browser(), 0)->GetVisible());
   EXPECT_TRUE(GetTabAt(browser(), model->count() - 1)->GetVisible());
+}
+
+// BraveTabContainer::PaintChildren() paints slot views from the z-order cache
+// owned by TabContainerImpl. The cache must be refreshed by the paint when it
+// is dirty, so an activation change has to be reflected in the paint order of
+// the very next paint: the active tab is painted last, on top of the others.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       PaintOrderFollowsActiveTab) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
+  auto* model = browser()->tab_strip_model();
+  AppendTab(browser());
+  AppendTab(browser());
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(3, model->count());
+
+  // Paints the container into a throwaway display list. This goes through
+  // BraveTabContainer::PaintChildren() without waiting for a compositor frame.
+  auto paint = [&]() {
+    auto list = base::MakeRefCounted<cc::DisplayItemList>();
+    const gfx::Rect bounds(brave_tab_container->size());
+    brave_tab_container->Paint(views::PaintInfo::CreateRootPaintInfo(
+        ui::PaintContext(list.get(), 1.f, bounds, false), bounds.size()));
+  };
+  auto topmost = [&]() -> views::View* {
+    const auto& cache = brave_tab_container->GetZOrderCacheForTesting();
+    return cache.empty() ? nullptr : cache.back().view();
+  };
+
+  model->ActivateTabAt(0);
+  tab_strip->StopAnimating();
+  paint();
+  EXPECT_EQ(3u, brave_tab_container->GetZOrderCacheForTesting().size());
+  EXPECT_EQ(static_cast<views::View*>(GetTabAt(browser(), 0)), topmost());
+
+  // Activating another tab marks the cache dirty. The next paint must rebuild
+  // it so the new active tab is painted on top.
+  model->ActivateTabAt(2);
+  tab_strip->StopAnimating();
+  paint();
+  EXPECT_EQ(static_cast<views::View*>(GetTabAt(browser(), 2)), topmost());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
