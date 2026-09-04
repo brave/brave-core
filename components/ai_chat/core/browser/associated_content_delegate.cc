@@ -101,4 +101,10 @@ void AssociatedContentDelegate::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void AssociatedContentDelegate::NotifyContentToolsChanged() {
+  for (auto& observer : observers_) {
+    observer.OnContentToolsChanged(this);
+  }
+}
+
 }  // namespace ai_chat
