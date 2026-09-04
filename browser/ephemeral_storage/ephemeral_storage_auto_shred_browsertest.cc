@@ -8,6 +8,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -76,11 +77,15 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageAutoShredBrowserTest,
 
   // Cookies SHOULD exist for a.com.
   EXPECT_EQ(3u, GetAllCookies().size());
+
+  // Simulate that the tabs were closed more than 30 seconds ago
+  ExpireFirstPartyStorageOrigins(true);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageAutoShredBrowserTest,
                        OnAppCloseShredAfterRestart) {
-  EXPECT_EQ(2u, WaitForCleanupAfterKeepAlive());
+  // Nothing to clean — everything was already cleared when the browser started
+  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(1u, GetAllCookies().size());
 }
 
@@ -112,11 +117,14 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageAutoShredBrowserTest,
 
   // Cookies SHOULD exist for a.com, b.com, c.com.
   EXPECT_EQ(3u, GetAllCookies().size());
+
+  // Simulate that the tabs were closed more than 30 seconds ago
+  ExpireFirstPartyStorageOrigins(true);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageAutoShredBrowserTest,
                        OnAppCloseShredGlobalAfterRestart) {
-  EXPECT_EQ(2u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(1u, GetAllCookies().size());
   // Make sure that only b.com has not been cleaned
   EXPECT_EQ("name=bcom",

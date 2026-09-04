@@ -93,6 +93,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
                                                StorageType storage_type);
   void SetCookieInFrame(content::RenderFrameHost* host, std::string cookie);
   content::EvalJsResult GetCookiesInFrame(content::RenderFrameHost* host);
+  void ExpireFirstPartyStorageOrigins(bool stop_before_expiring, Profile* profile = nullptr);
   size_t WaitForCleanupAfterKeepAlive(Profile* profile = nullptr);
   void ExpectValuesFromFramesAreEmpty(const base::Location& location,
                                       const ValuesFromFrames& values);
