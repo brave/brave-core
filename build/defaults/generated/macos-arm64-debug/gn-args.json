@@ -1,0 +1,24 @@
+{
+  "gn_args": {
+    "branding_path_component": "brave",
+    "branding_path_product": "brave",
+    "disable_fieldtrial_testing_config": true,
+    "enable_hangout_services_extension": false,
+    "enable_hevc_parser_and_hw_decoder": true,
+    "enable_platform_hevc": true,
+    "enable_precompiled_headers": false,
+    "enable_pseudolocales": false,
+    "enable_widevine": true,
+    "ffmpeg_branding": "Chrome",
+    "ignore_missing_widevine_signing_cert": false,
+    "proprietary_codecs": true,
+    "root_extra_deps": [
+      "//brave"
+    ],
+    "safe_browsing_mode": 1,
+    "target_cpu": "arm64",
+    "target_os": "mac",
+    "translate_genders": false,
+    "use_system_xcode": false
+  }
+}
