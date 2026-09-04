@@ -5,11 +5,6 @@
 
 #include "chrome/browser/ui/color/chrome_color_mixers.h"
 
-#include "chrome/browser/ui/color/material_chrome_color_mixer.h"
-#include "chrome/browser/ui/color/material_omnibox_color_mixer.h"
-#include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
-#include "chrome/browser/ui/color/material_tab_strip_color_mixer.h"
-
 namespace {
 
 // There are some new color mixers that we don't need to call here.
@@ -22,14 +17,4 @@ void EmptyColorMixer(ui::ColorProvider* provider,
 
 }  // namespace
 
-#define AddMaterialChromeColorMixer EmptyColorMixer
-#define AddMaterialOmniboxColorMixer EmptyColorMixer
-#define AddMaterialSidePanelColorMixer EmptyColorMixer
-#define AddMaterialTabStripColorMixer EmptyColorMixer
-
 #include <chrome/browser/ui/color/chrome_color_mixers.cc>
-
-#undef AddMaterialTabStripColorMixer
-#undef AddMaterialSidePanelColorMixer
-#undef AddMaterialOmniboxColorMixer
-#undef AddMaterialChromeColorMixer
