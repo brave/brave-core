@@ -18,9 +18,7 @@ root_extra_deps = [ "//brave" ]
 # our use case since it was introduced in M140.
 translate_genders = false
 
-# Chromium_src overrides do not work with precompiled headers well.
-# Before Siso they were always disabled as we always used redirect_cc as a
-# cc_wrapper, but with Siso we need to disable it explicitly.
+# Chromium_src overrides do not work with precompiled headers.
 enable_precompiled_headers = false
 
 enable_pseudolocales = false

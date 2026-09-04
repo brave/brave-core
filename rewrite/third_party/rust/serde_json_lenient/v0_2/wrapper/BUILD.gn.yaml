@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Enable 64-bit JSON integer support.
+
+      Brave needs serde_json_lenient to preserve JSON integers outside the
+      32-bit range.
+    insert_into_list:
+      target: wrapper
+      list_name: features
+      values: json_64bit_int_support
+
+  - description: |-
+      Compile the large-integer bridge module.
+
+      The wrapper uses this module to pass JSON integers outside the 32-bit
+      range between Rust and C++.
+    insert_into_list:
+      target: wrapper
+      list_name: sources
+      values: //brave/chromium_src/third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs
+
+  - description: |-
+      Generate C++ bindings for the large-integer bridge.
+
+      The C++ side of the wrapper needs the bindings exported by this module
+      to receive JSON integers outside the 32-bit range.
+    insert_into_list:
+      target: wrapper
+      list_name: cxx_bindings
+      values: //brave/chromium_src/third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs
