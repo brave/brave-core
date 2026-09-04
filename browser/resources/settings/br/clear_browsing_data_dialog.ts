@@ -246,7 +246,6 @@ RegisterPolymerTemplateModifications({
               href="chrome://settings/privacy"
               hidden="[[braveRewardsEnabled_]]">
             <span id="clearBraveAdsDataLabel"></span>
-            <leo-icon name="launch"></leo-icon>
           </a>
           <a id="resetBraveRewardsData"
               href="chrome://rewards/#reset"
