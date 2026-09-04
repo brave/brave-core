@@ -10,7 +10,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/check.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/task_environment.h"
@@ -33,7 +32,6 @@
 #include "net/url_request/url_request_context_builder.h"
 #include "net/url_request/url_request_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 // Per transport_security_state_static.h:
@@ -43,13 +41,14 @@
 // any headers itself, since it's always included in a nested namespace.
 #include "net/http/transport_security_state_source.h"  // IWYU pragma: keep
 
-#if BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST)
+// Only fails on ChromeOS, which we don't build. Just assert.
+static_assert(BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST));
+
 namespace net {
 namespace {
 #include "net/http/transport_security_state_static.h"
 }  // namespace
 }  // namespace net
-#endif
 
 namespace brave {
 namespace {
@@ -83,11 +82,13 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     SetDirectProxyConfig(builder);
     context_ = builder.Build();
 
+#if BUILDFLAG(IS_IOS)
     // Without this, iOS (and only iOS) appears to bypass pin violations for
     // this test's CA, since CertVerifyProcIOS can't reliably determine
     // is_issued_by_known_root the way desktop's builtin verifier can.
     context_->transport_security_state()
         ->SetEnablePublicKeyPinningBypassForLocalTrustAnchors(false);
+#endif  // BUILDFLAG(IS_IOS)
   }
 
   // On Linux/ChromeOS/Android, URLRequestContextBuilder does not create a
@@ -105,10 +106,8 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
 
   // Performs a single GET request to the host and checks if the pinning
   // result (success or failure) matches the expectation.
-  bool CheckHostOnce(const std::string& host,
-                     bool expect_pin_failure,
-                     std::string* error_out) {
-    DCHECK(error_out);
+  testing::AssertionResult CheckHostOnce(const std::string& host,
+                                         bool expect_pin_failure) {
     net::TestDelegate delegate;
     GURL url(base::StrCat(
         {url::kHttpsScheme, url::kStandardSchemeSeparator, host, "/"}));
@@ -137,54 +136,53 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
 
     if (expect_pin_failure) {
       if (is_pin_failure) {
-        return true;
+        return testing::AssertionSuccess();
       }
-      *error_out = absl::StrFormat(
-          "Expected pinning failure, got status=%s, code=%d, cert_net_error=%s",
-          net::ErrorToShortString(status), delegate.response_code().value_or(0),
-          net::ErrorToShortString(cert_net_error));
-      return false;
+      return testing::AssertionFailure()
+             << "Expected pinning failure, got status="
+             << net::ErrorToShortString(status)
+             << ", code=" << delegate.response_code().value_or(0)
+             << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
     }
 
     // A pinned host is only healthy if the request completed cleanly. Merely
     // not tripping the pin check is not enough -- a DNS failure or an unrelated
     // certificate error would otherwise be reported as a pass.
     if (status == net::OK) {
-      return true;
+      return testing::AssertionSuccess();
     }
-    *error_out =
-        absl::StrFormat("Expected success, got status=%s, cert_net_error=%s",
-                        net::ErrorToShortString(status),
-                        net::ErrorToShortString(cert_net_error));
-    return false;
+    return testing::AssertionFailure()
+           << "Expected success, got status=" << net::ErrorToShortString(status)
+           << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
   }
 
   // Retries the pinning check per the backoff schedule: 0s, 0s, 2s.
-  // Returns true if any attempt matched the expectation.
-  bool CheckHostWithRetry(const std::string& host,
-                          bool expect_pin_failure,
-                          std::string* error_out) {
-    DCHECK(error_out);
+  // Returns the last attempt's result if any attempt matched the
+  // expectation, otherwise returns the final failure.
+  testing::AssertionResult CheckHostWithRetry(const std::string& host,
+                                              bool expect_pin_failure) {
     const int max_attempts = 3;
     // Delays (in seconds) before each attempt: no delay for attempts 1&2, then
     // 2s.
     const std::array<int, 3> delay_seconds_cfg = {0, 0, 2};
     static_assert(delay_seconds_cfg.size() == max_attempts);
 
+    testing::AssertionResult result = testing::AssertionFailure();
     for (int attempt = 0; attempt < max_attempts; ++attempt) {
       auto delay_seconds = delay_seconds_cfg[attempt];
       if (delay_seconds > 0) {
         base::PlatformThread::Sleep(base::Seconds(delay_seconds));
       }
 
-      if (CheckHostOnce(host, expect_pin_failure, error_out)) {
-        return true;  // Success on this attempt.
+      result = CheckHostOnce(host, expect_pin_failure);
+      if (result) {
+        return result;  // Success on this attempt.
       }
 
       LOG(WARNING) << "Attempt " << (attempt + 1) << " for " << host
-                   << " failed: " << *error_out;
+                   << " failed: " << result.message();
     }
-    return false;  // All attempts failed.
+    return result;  // All attempts failed; return the last failure.
   }
 
   void TearDown() override {
@@ -199,8 +197,6 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
   std::unique_ptr<net::URLRequestContext> fetcher_context_;
   std::unique_ptr<net::URLRequestContext> context_;
 };
-
-#if BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST)
 
 // Pinned hosts that cannot be checked from a developer or CI machine. Each
 // entry needs a dated reason so stale skips can be pruned.
@@ -256,17 +252,14 @@ TEST_P(BraveCertPinningTest, PinValidates) {
     GTEST_SKIP() << "Host is in kSkippedHosts";
   }
 
-  std::string error;
-  EXPECT_TRUE(CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost, &error))
-      << host << ": " << error;
+  EXPECT_TRUE(CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost))
+      << host;
 }
 
 INSTANTIATE_TEST_SUITE_P(All,
                          BraveCertPinningTest,
                          testing::ValuesIn(GetPinnedHosts()),
                          HostToTestName);
-
-#endif  // BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST)
 
 }  // namespace
 }  // namespace brave
