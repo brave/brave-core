@@ -34,12 +34,18 @@
                     <div class="label">[[item.name]]</div>
                 </div>
                 <div>
-                    <cr-icon-button id="edit" on-click="handleEdit_" class="size-20" iron-icon="edit-pencil"
-                        disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
-                    </cr-icon-button>
-                    <cr-icon-button id="delete" on-click="handleDelete_" class="size-20" iron-icon="trash"
-                        disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
-                    </cr-icon-button>
+                        <cr-icon-button id="move-up" on-click="handleMoveUp_" class="size-20" iron-icon="arrow-up"
+                             disabled="[[_isMoveUpDisabled_(index, prefs.brave.ad_block.developer_mode.value)]]">
+                        </cr-icon-button>
+                     <cr-icon-button id="move-down" on-click="handleMoveDown_" class="size-20" iron-icon="arrow-down"
+                             disabled="[[_isMoveDownDisabled_(index, customScriptletsList_.length, prefs.brave.ad_block.developer_mode.value)]]">
+                     </cr-icon-button>
+                     <cr-icon-button id="edit" on-click="handleEdit_" class="size-20" iron-icon="edit-pencil"
+                         disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
+                     </cr-icon-button>
+                     <cr-icon-button id="delete" on-click="handleDelete_" class="size-20" iron-icon="trash"
+                            disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
+                     </cr-icon-button>
                 </div>
             </div>
         </template>

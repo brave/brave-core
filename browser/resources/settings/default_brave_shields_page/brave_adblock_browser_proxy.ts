@@ -59,7 +59,9 @@ export interface BraveAdblockBrowserProxy {
   updateCustomScriptlet: (name: string, scriptlet: Scriptlet) =>
     Promise<ErrorCode>
   removeCustomScriptlet: (name: string) => Promise<ErrorCode>
+  reorderCustomScriptlet: (name: string, newIndex: number) => Promise<ErrorCode>  // ← ADD THIS
   addWebUiListener: (eventName: string, callback: Function) => void
+
 }
 
 export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
@@ -138,6 +140,11 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
 
   removeCustomScriptlet (name: string) {
     return sendWithPromise<ErrorCode>('brave_adblock.removeCustomScriptlet', name)
+  }
+  reorderCustomScriptlet (name: string, newIndex: number) {       // ← ADD THIS
+    return sendWithPromise<ErrorCode>(
+      'brave_adblock.reorderCustomScriptlet', name, newIndex
+    )
   }
 
   addWebUiListener (eventName: string, callback: Function) {
