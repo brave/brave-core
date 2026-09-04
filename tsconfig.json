@@ -4,8 +4,7 @@
     "noImplicitAny": true,
     // esnext modules supports import() async webpack modules
     "module": "esnext",
-    // chrome 80 supports 100% es2019
-    "target": "es2019",
+    "target": "es2020",
     "allowJs": true,
     // convert jsx to react components
     "jsx": "react",
