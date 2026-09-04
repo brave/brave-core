@@ -65,8 +65,14 @@ SidebarModel::~SidebarModel() = default;
 void SidebarModel::Init(history::HistoryService* history_service) {
   // Start with saved item list.
   int index = 0u;
-  for (const auto& item : GetAllSidebarItems())
+  for (const auto& item : GetAllSidebarItems()) {
+    // Skip invalid items (e.g., disabled built-in items like Wallet when
+    // the feature is disabled by policy).
+    if (!item.IsValidItem()) {
+      continue;
+    }
     AddItem(item, index++, false);
+  }
 
   sidebar_observed_.Observe(GetSidebarService(profile_));
   // Can be null in test.
@@ -103,6 +109,10 @@ void SidebarModel::AddItem(const SidebarItem& item,
 }
 
 void SidebarModel::OnItemAdded(const SidebarItem& item, size_t index) {
+  // Skip invalid items (e.g., disabled built-in items).
+  if (!item.IsValidItem()) {
+    return;
+  }
   AddItem(item, index, true);
 }
 
