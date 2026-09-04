@@ -57,6 +57,7 @@ overrides:
   'prismjs': '1.30.0'
   'protobufjs': '7.6.5'
   'tiny-secp256k1': '1.1.7'
+  'toml': '4.1.2'
   'uuid': '14.0.0'
 
 # Relax peer dependency version checks for listed packages.
