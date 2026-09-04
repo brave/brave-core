@@ -194,6 +194,20 @@ describe('endpointsFor', () => {
     expect(result).toEqual({ hi: 4 })
   })
 
+  it('should interpret a mapper with only onMutate as a mutation', async () => {
+    const onMutateObserver = jest.fn()
+    const testResult = endpointsFor(test, {
+      mutatesWithNoReturn: {
+        onMutate: ([arg1]) => {
+          onMutateObserver(arg1)
+        },
+      },
+    })
+    expect(testResult.mutatesWithNoReturn.mutation).toBeDefined()
+    // @ts-expect-error - should not have a query property
+    expect(testResult.mutatesWithNoReturn.query).toBeUndefined()
+  })
+
   it('should create an interface API with the endpoints', () => {
     // Can the combination of createInterfaceAPI and endpointsFor
     // infer the return type of the query, including placeholderData?
