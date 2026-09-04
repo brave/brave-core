@@ -250,3 +250,4 @@ include_rules = [
   "+brave/base",
   "+brave/brave_domains",
 ]
+
