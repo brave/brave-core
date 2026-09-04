@@ -115,6 +115,19 @@ group("brave_all_unit_tests") {
              "json")
 }
 
+brave_network_tests_deps = [ "//brave/net:brave_cert_pinning_tests" ]
+if (!is_android && !is_ios) {
+  brave_network_tests_deps += [ "//brave/test:brave_network_audit_tests" ]
+}
+
+group("brave_network_tests") {
+  testonly = true
+  data_deps = brave_network_tests_deps
+  write_file("$root_out_dir/brave_network_tests.json",
+             brave_network_tests_deps,
+             "json")
+}
+
 # This target serves as a canonical place to define all code that has to be
 # buildable in all platforms in a single build run.
 group("all") {
