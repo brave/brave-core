@@ -40,7 +40,6 @@ TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key)
       EphemeralStorageServiceFactory::GetForContext(key.browser_context)
           ->GetWeakPtr();
   DCHECK(ephemeral_storage_service_);
-  LOG(INFO) << "[SHRED] TLDEphemeralLifetime::TLDEphemeralLifetime key:" << key.storage_domain;
   ephemeral_storage_service_->TLDEphemeralLifetimeCreated(
       key.storage_domain, key.storage_partition_config);
 }
@@ -49,7 +48,6 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   if (ephemeral_storage_service_) {
     const bool shields_disabled_on_one_of_hosts = std::ranges::any_of(
         shields_state_on_hosts_, [](const auto& v) { return !v.second; });
-LOG(INFO) << "[SHRED] TLDEphemeralLifetime::~TLDEphemeralLifetime  key_.storage_domain:" << key_.storage_domain;
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
         key_.storage_domain, key_.storage_partition_config,
         shields_disabled_on_one_of_hosts, mode_);

@@ -408,7 +408,6 @@ void EphemeralStorageBrowserTest::ExpireFirstPartyStorageOrigins(
     if (!dict) {
       continue;
     }
-LOG(ERROR) << "[SHRED] Expire dict:" << dict->DebugString();
     // Set past last access time.
     dict->Set(kClosedAtKey, base::TimeToValue(base::Time::Min()));
   }
