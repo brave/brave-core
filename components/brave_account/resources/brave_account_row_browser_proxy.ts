@@ -7,28 +7,20 @@ import {
   Authentication,
   AuthenticationObserverCallbackRouter,
   AuthenticationRemote
-} from '../brave_account.mojom-webui.js'
-import {
-  RowHandler,
-  RowHandlerRemote
-} from '../brave_account_row.mojom-webui.js'
-
-export interface BraveAccountBrowserProxy {
+} from './brave_account.mojom-webui.js'
+export interface BraveAccountRowBrowserProxy {
   authentication: AuthenticationRemote
   authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
-  rowHandler: RowHandlerRemote;
 }
 
-export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
+export class BraveAccountRowBrowserProxyImpl implements BraveAccountRowBrowserProxy {
   authentication: AuthenticationRemote
   authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
-  rowHandler: RowHandlerRemote;
 
   constructor() {
     this.authentication = Authentication.getRemote()
     this.authenticationObserverCallbackRouter =
       new AuthenticationObserverCallbackRouter()
-    this.rowHandler = RowHandler.getRemote();
 
     this.authentication.addObserver(
       this.authenticationObserverCallbackRouter.$.bindNewPipeAndPassRemote());

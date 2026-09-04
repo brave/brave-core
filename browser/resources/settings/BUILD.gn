@@ -128,3 +128,19 @@ preprocess_if_expr("preprocess") {
   in_files = brave_settings_local_ts_files + brave_settings_local_html_files +
              brave_settings_local_css_files
 }
+
+# The Brave Account rows are shared with the Brave Account WebUI, so they live
+# in //brave/components/brave_account/resources. Their .ts files reach the
+# settings bundle through brave_settings_mojo_files, but .css files cannot -
+# build_webui() only accepts css_files relative to its own in_folder. So
+# preprocess them out of their own directory into the same preprocessed/ folder
+# the rest of the settings sources land in, and list them (by their flat names)
+# in brave_account_settings_css_files so chromium's build_webui() generates the
+# .css.ts wrappers while skipping the preprocessing it has already had here.
+preprocess_if_expr("preprocess_brave_account") {
+  in_folder = "//brave/components/brave_account/resources"
+  out_folder =
+      "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
+
+  in_files = brave_account_settings_css_files
+}

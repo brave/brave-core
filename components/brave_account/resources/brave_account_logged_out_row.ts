@@ -7,7 +7,7 @@ import {
   LoggedOutState,
   LoggedOutVerificationIntent,
   VerificationIntent,
-} from '../brave_account.mojom-webui.js'
+} from './brave_account.mojom-webui.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_row_common.css.js'
 import { getHtml } from './brave_account_logged_out_row.html.js'

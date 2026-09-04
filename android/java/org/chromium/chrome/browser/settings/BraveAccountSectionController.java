@@ -83,6 +83,9 @@ public class BraveAccountSectionController
                     ResendVerificationEmailServerErrorCode.TOKEN_HAS_EXPIRED,
                     R.string.brave_account_resend_confirmation_email_token_has_expired);
 
+    // TODO: temporary - second, in-progress entry point to Brave Account,
+    // served at brave://account/settings.
+    private static final String PREF_ACCOUNT_SETTINGS_PROBE = "account_settings_probe";
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_USER_INFO = "user_info";
     private static final String PREF_CHANGE_PASSWORD = "change_password";
@@ -94,6 +97,9 @@ public class BraveAccountSectionController
     private static final String PREF_GET_STARTED = "get_started";
     public static final String[] ALL_PREFERENCE_KEYS =
             new String[] {
+                // Ordered ahead of the section header, so it forms its own
+                // group above it rather than sitting under "Brave Account".
+                PREF_ACCOUNT_SETTINGS_PROBE,
                 PREF_BRAVE_ACCOUNT_SECTION,
                 PREF_USER_INFO,
                 PREF_CHANGE_PASSWORD,
@@ -143,17 +149,38 @@ public class BraveAccountSectionController
     }
 
     private boolean openBraveAccountDialog() {
-        if (!mFragment.isAdded() || mFragment.isDetached()) {
+        Activity activity = getActivityForBraveAccountTab();
+        if (activity == null) {
             return false;
+        }
+
+        BraveAccountCustomTabActivity.show(activity, "");
+        return true;
+    }
+
+    // TODO: temporary - probe for the shared account settings UI served at
+    // brave://account/settings. Remove once the real entry point lands.
+    private boolean openBraveAccountSettings() {
+        Activity activity = getActivityForBraveAccountTab();
+        if (activity == null) {
+            return false;
+        }
+
+        BraveAccountCustomTabActivity.show(activity, "/settings");
+        return true;
+    }
+
+    private @Nullable Activity getActivityForBraveAccountTab() {
+        if (!mFragment.isAdded() || mFragment.isDetached()) {
+            return null;
         }
 
         Activity activity = mFragment.getActivity();
         if (activity == null || activity.isFinishing()) {
-            return false;
+            return null;
         }
 
-        BraveAccountCustomTabActivity.show(activity);
-        return true;
+        return activity;
     }
 
     private void setupPreferenceListeners() {
@@ -178,6 +205,13 @@ public class BraveAccountSectionController
         if (getStartedPreference != null) {
             getStartedPreference.setOnPreferenceClickListener(
                     preference -> openBraveAccountDialog());
+        }
+
+        Preference accountSettingsProbePreference =
+                mFragment.findPreference(PREF_ACCOUNT_SETTINGS_PROBE);
+        if (accountSettingsProbePreference != null) {
+            accountSettingsProbePreference.setOnPreferenceClickListener(
+                    preference -> openBraveAccountSettings());
         }
     }
 
@@ -206,6 +240,10 @@ public class BraveAccountSectionController
         setVisibility(resendConfirmationEmailPref, false);
         setVisibility(cancelVerificationPref, false);
         setVisibility(getStartedPref, false);
+
+        // TODO: temporary - the probe row is state-independent, so it is shown
+        // in every state. Remove once the real entry point lands.
+        setVisibility(mFragment.findPreference(PREF_ACCOUNT_SETTINGS_PROBE), true);
 
         switch (state.which()) {
             case AccountState.Tag.LoggedIn:

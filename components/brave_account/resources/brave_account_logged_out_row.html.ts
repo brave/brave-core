@@ -3,12 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '//resources/cr_components/localized_link/localized_link.js'
+// TODO: localized_link asserts !is_ios, so it cannot be imported here now that
+// these rows are also served as a page on mobile. The <localized-link> below is
+// left unresolved on every platform - it renders as inert, without its link.
+// Needs a replacement that works everywhere.
+//
+// The logged-out description lost its "Learn more" link outright: the URL came
+// from braveAccountLearnMoreURL, which only the brave://settings data source
+// adds, so reading it threw here and left the row blank. The mobile copy of the
+// description carries no link anyway.
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { BraveAccountLoggedOutRowElement } from './brave_account_logged_out_row.js'
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
-import { LoggedOutVerificationIntent } from '../brave_account.mojom-webui.js'
+import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
+import { LoggedOutVerificationIntent } from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountLoggedOutRowElement) {
   return this.state.verification
@@ -40,9 +48,8 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                       this.i18n(
                         BraveAccountSettingsStrings
                              .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
-                      this.i18nAdvanced(BraveAccountSettingsStrings
-                        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
-                        {tags: ['a'], attrs: ['href']})}`}
+                      this.i18n(BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3)}`}
                     @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
                 </localized-link>`}
           </div>
@@ -83,13 +90,9 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                      .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE)}
           </div>
           <div class="description">
-            <localized-link
-                .localizedString=${this.i18nAdvanced(
-                  BraveAccountSettingsStrings
-                       .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION,
-                  {tags: ['a']})}
-                .linkUrl=${this.i18n('braveAccountLearnMoreURL')}>
-            </localized-link>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION)}
           </div>
         </div>
         <leo-button kind="filled"

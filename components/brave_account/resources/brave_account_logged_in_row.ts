@@ -5,13 +5,13 @@
 
 import { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
+import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 import {
   LoggedInState,
   LoggedInVerificationIntent,
   VerificationIntent,
-} from '../brave_account.mojom-webui.js'
-import { showError } from '../brave_account_shared.js'
+} from './brave_account.mojom-webui.js'
+import { showError } from './brave_account_shared.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_logged_in_row.css.js'
 import { getHtml } from './brave_account_logged_in_row.html.js'

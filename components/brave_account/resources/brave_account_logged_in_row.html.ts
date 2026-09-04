@@ -3,13 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '//resources/cr_components/localized_link/localized_link.js'
+// TODO: localized_link asserts !is_ios, so it cannot be imported here now that
+// these rows are also served as a page on mobile. <localized-link> below is
+// left unresolved on every platform - the elements render as inert, without
+// their links. Needs a replacement that works everywhere.
 import { assert } from '//resources/js/assert.js'
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { BraveAccountLoggedInRowElement } from './brave_account_logged_in_row.js'
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
-import { LoggedInVerificationIntent } from '../brave_account.mojom-webui.js'
+import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
+import { LoggedInVerificationIntent } from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountLoggedInRowElement) {
   // Logged-in verification is always a password change - there is no other
@@ -43,9 +46,8 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
                       this.i18n(
                         BraveAccountSettingsStrings
                              .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
-                      this.i18nAdvanced(BraveAccountSettingsStrings
-                        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
-                        {tags: ['a'], attrs: ['href']})}`}
+                      this.i18n(BraveAccountSettingsStrings
+                        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3)}`}
                     @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
                 </localized-link>`}
           </div>

@@ -30,7 +30,7 @@
     </message>
   </if>
   <if expr="is_android or is_ios">
-    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="android_java">
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it" formatter_data="webui=BraveAccountSettings android_java">
       Don't see the email? Check your spam folder or resend it.
     </message>
   </if>
@@ -232,6 +232,9 @@
   </if>
   <if expr="is_android or is_ios">
     <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount">
+      A Brave account will allow you to easily access Brave services.
+    </message>
+    <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account, shown above the button that starts sign-up or log-in." formatter_data="webui=BraveAccountSettings">
       A Brave account will allow you to easily access Brave services.
     </message>
   </if>

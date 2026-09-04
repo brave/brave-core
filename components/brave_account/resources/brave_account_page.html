@@ -18,12 +18,15 @@
     <script type="module" src="./strings.m.js"></script>
     <script type="module" src="//resources/brave/leo.bundle.js"></script>
     <script type="module" src="brave_account_dialogs.js"></script>
+    <if expr="is_android or is_ios">
+      <script type="module" src="brave_account_settings.js"></script>
+    </if>
     <if expr="is_ios">
       <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
       <script src="//resources/js/ios/mojo_api.js"></script>
       <script src="//resources/js/ios/web_ui.js"></script>
     </if>
     <leo-alertcenter></leo-alertcenter>
-    <brave-account-dialogs></brave-account-dialogs>
+    <script type="module" src="brave_account_route.js"></script>
   </body>
 </html>

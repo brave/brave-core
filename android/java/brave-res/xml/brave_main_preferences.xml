@@ -7,6 +7,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orderingFromXml="false">
+    <!-- TODO: temporary - second, in-progress entry point to Brave Account,
+         served at brave://account/settings. -->
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="account_settings_probe"
+        android:order="0"
+        android:icon="@drawable/ic_social_brave_release_favicon_fullheight_color"
+        android:title="Account and sync"/>
     <PreferenceCategory
         android:key="brave_account_section"
         android:order="1"
