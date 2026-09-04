@@ -22,7 +22,7 @@ namespace p3a {
 
 namespace {
 
-constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
+constexpr uint64_t kDefaultUploadIntervalSeconds = 300;  // 5 minutes.
 constexpr char kConstellationCollectorHostPrefix[] = "collector.bsg";
 constexpr char kRandomnessHostPrefix[] = "star-randsrv.bsg";
 
