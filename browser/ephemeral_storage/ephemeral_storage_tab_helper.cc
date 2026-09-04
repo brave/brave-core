@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -113,7 +114,6 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {
-  LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::~EphemeralStorageTabHelper  url:" << (web_contents() ? web_contents()->GetURL().spec() : "n/a");
 #if BUILDFLAG(IS_ANDROID)
   // Always remove observer in destructor using the stored TabModel pointer.
   // We can't rely on web_contents() here as it may already be destroyed.
@@ -140,16 +140,12 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup(
 
 void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady() {
    auto& controller = web_contents()->GetController();
-  if (controller.GetPendingEntry()
-      //|| controller.NeedsReload()
-    ) {
-    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady #100 url:" << web_contents()->GetURL();
+  if (controller.GetPendingEntry()) {
     reload_on_ready_callback_ =
         base::BindOnce(&EphemeralStorageTabHelper::ReloadBypassingCache,
                        weak_factory_.GetWeakPtr());
     return;
   }
-  LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady #200 url:" << web_contents()->GetURL();
   ReloadBypassingCache();
 }
 
@@ -188,8 +184,6 @@ void EphemeralStorageTabHelper::DidFinishNavigation(
       reload_on_ready_callback_) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, std::move(reload_on_ready_callback_));
-    LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::DidFinishNavigation url:"
-              << navigation_handle->GetURL();
   }
 }
 
@@ -278,21 +272,11 @@ void EphemeralStorageTabHelper::ReloadBypassingCache() {
   auto& controller = web_contents()->GetController();
   
   // Check if a navigation is currently in progress
-  if (controller.GetPendingEntry()) {
-    LOG(WARNING) << "[SHRED] Reload skipped: Pending entry exists. URL: " << web_contents()->GetURL();
-    return;
-  }
-
-  // Check if the WebContents is currently loading (might catch more states)
-  if (web_contents()->IsLoading()) {
-     // Depending on your needs, you might want to force reload even here, 
-     // but usually it's safer to wait or abort.
-     LOG(WARNING) << "[SHRED] Reload skipped: Tab is currently loading. URL: " << web_contents()->GetURL();
-     // You might want to re-post this task or handle it differently
+  if (controller.GetPendingEntry() || web_contents()->IsLoading()) {
+     DVLOG(1) << __func__ << " Could not reload while bypassing the cache " << web_contents()->GetURL();
      return;
   }
   
-  LOG(INFO) << "[SHRED] Executing ReloadBypassingCache. URL: " << web_contents()->GetURL();
   controller.Reload(content::ReloadType::BYPASSING_CACHE, false);
 }
 
@@ -304,7 +288,6 @@ void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
   // Reset TLDEphemeralLifetime when a tab closes, since on Android
   // it may be invoked much later after the tab has actually closed.
   provisional_tld_ephemeral_lifetimes_.clear();
-  LOG(INFO) << "[SHRED] EphemeralStorageTabHelper::WillCloseTab" << web_contents()->GetURL();
   tld_ephemeral_lifetime_.reset();
   weak_factory_.InvalidateWeakPtrs();
   RemoveTabModelObserver(registered_tab_model_, this);

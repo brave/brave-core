@@ -129,8 +129,6 @@ void ReloadBypassingCacheWhenReady(content::WebContents* contents) {
     return;
   }
 
-  LOG(INFO) << "[SHRED] ReloadTabsMatchingFirstPartyStorageAreaFromNetwork url:"
-            << contents->GetLastCommittedURL();
   ephemeral_storage_tab_helper->ReloadBypassingCacheWhenReady();
 }
 
@@ -221,7 +219,6 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
          base::FeatureList::IsEnabled(
              net::features::kThirdPartyStoragePartitioning));
 
-LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea key:" << key.first << " : " << key.second;
   content::BrowsingDataRemover::DataType data_to_remove =
       (content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
        chrome_browsing_data_remover::FILTERABLE_DATA_TYPES);
@@ -262,7 +259,6 @@ void BraveEphemeralStorageServiceDelegate::ReloadTabIfMatchingEphemeralDomain(co
 
       content::WebContents* contents = tab->GetContents();
       if (!contents) {
-        LOG(INFO) << "[SHRED] ReloadTabsMatchingFirstPartyStorageAreaFromNetwork #300";
         continue;
       }
 
@@ -284,7 +280,6 @@ void BraveEphemeralStorageServiceDelegate::ReloadTabIfMatchingEphemeralDomain(co
       }
       content::WebContents* contents = tab->GetContents();
       if (!contents) {
-        LOG(INFO) << "[SHRED] ReloadTabsMatchingFirstPartyStorageAreaFromNetwork #300";
         continue;
       }
 
@@ -325,7 +320,6 @@ void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
           brave_shields::features::kBraveShredFeature)) {
     return;
   }
-LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive";
   // Collect ephemeral domains from currently open tabs that have the "Shred on
   // App Close" mode enabled.
   const auto ephemeral_domains = GetEphemeralDomainsToCleanOnAppClose();
@@ -348,7 +342,6 @@ void BraveEphemeralStorageServiceDelegate::
   if (enforced_by_user) {
     brave_shields::RecordManualShredP3A(*g_browser_process->local_state());
   }
-LOG(INFO) << "[SHRED] PrepareTabsForFirstPartyStorageCleanup ephemeral_domains.size:" << ephemeral_domains.size();
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 
