@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/ui/views/exclusive_access/exclusive_access_bubble_views.cc b/chrome/browser/ui/views/exclusive_access/exclusive_access_bubble_views.cc
+--- a/chrome/browser/ui/views/exclusive_access/exclusive_access_bubble_views.cc
++++ b/chrome/browser/ui/views/exclusive_access/exclusive_access_bubble_views.cc
+@@ -462,5 +462,5 @@ void ExclusiveAccessBubbleViews::RunHideCallbackIfNeeded(
+ }
+ 
+ void ExclusiveAccessBubbleViews::OnPresentationTimeout() {
+-  bubble_view_context_->GetExclusiveAccessManager()->ExitExclusiveAccess();
++  Hide();
+ }
