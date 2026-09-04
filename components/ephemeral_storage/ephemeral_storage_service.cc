@@ -466,18 +466,25 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
   }
 
   bool keep_alive_expired = false;
-  ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
-  if (const base::Value* queued_area = FindFirstPartyStorageArea(
-          *pref_update, url, storage_partition_config)) {
+  auto& first_party_storage_areas_to_cleanup_on_startup =
+      prefs_->GetList(kFirstPartyStorageOriginsToCleanup);
+  auto queued_area_it =
+      std::ranges::find_if(first_party_storage_areas_to_cleanup_on_startup,
+                           [&](const base::Value& value) {
+                             return IsSameFirstPartyStorageArea(
+                                 value, url, storage_partition_config);
+                           });
+
+  if (queued_area_it != first_party_storage_areas_to_cleanup_on_startup.end()) {
     keep_alive_expired = IsFirstPartyStorageAreaKeepAliveExpired(
-        *queued_area, tld_ephemeral_area_keep_alive_);
+        *queued_area_it, tld_ephemeral_area_keep_alive_);
   }
 
   if (!keep_alive_expired) {
+    ScopedListPrefUpdate pref_update(prefs_,
+                                     kFirstPartyStorageOriginsToCleanup);
     // Make sure to cancel the scheduled cleanup for this area.
     EraseFirstPartyStorageArea(*pref_update, url, storage_partition_config);
-    EraseFirstPartyStorageArea(first_party_storage_areas_to_cleanup_on_startup_,
-                               url, storage_partition_config);
   }
 }
 
@@ -585,9 +592,9 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
 void EphemeralStorageService::CleanupPendingFirstPartyStorageArea(
     const GURL& url,
     const content::StoragePartitionConfig& storage_partition_config,
-    const std::optional<brave_shields::mojom::AutoShredMode>& auto_shred_mode,
     base::OnceClosure callback) {
   DVLOG(1) << __func__ << " " << url << " " << storage_partition_config;
+  const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
   const TLDEphemeralAreaKey key(std::string(url.host()),
                                 storage_partition_config);
   delegate_->CleanupFirstPartyStorageArea(key, std::move(callback));
@@ -603,15 +610,15 @@ void EphemeralStorageService::CleanupPendingFirstPartyStorageArea(
 
 void EphemeralStorageService::CleanupOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
-  first_party_storage_areas_to_cleanup_on_startup_ =
+  base::ListValue first_party_storage_areas_to_cleanup_on_startup =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
   DVLOG(1) << __func__ << " Queued for cleanup:"
-           << first_party_storage_areas_to_cleanup_on_startup_.DebugString();
+           << first_party_storage_areas_to_cleanup_on_startup.DebugString();
 
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
 
   for (base::Value& area_to_cleanup :
-       first_party_storage_areas_to_cleanup_on_startup_) {
+       first_party_storage_areas_to_cleanup_on_startup) {
     if (!IsFirstPartyStorageAreaKeepAliveExpired(
             area_to_cleanup, tld_ephemeral_area_keep_alive_)) {
       continue;
@@ -632,14 +639,13 @@ void EphemeralStorageService::CleanupOnStartup() {
     }
 
     CleanupPendingFirstPartyStorageArea(
-        url, storage_partition_config, delegate_->GetAutoShredMode(url),
-        base::BindOnce(&EphemeralStorageServiceDelegate::
-                           ReloadTabIfMatchingEphemeralDomain,
-                       delegate_->AsWeakPtr(),
+        url, storage_partition_config,
+        base::BindOnce(&EphemeralStorageService::ReloadTabsForEphemeralDomain,
+                       weak_ptr_factory_.GetWeakPtr(),
                        net::URLToEphemeralStorageDomain(url)));
   }
 
-  first_party_storage_areas_to_cleanup_on_startup_.clear();
+  first_party_storage_areas_to_cleanup_on_startup.clear();
 }
 
 void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
@@ -653,6 +659,11 @@ void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
   delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
 }
 
+void EphemeralStorageService::ReloadTabsForEphemeralDomain(
+    const std::string& ephemeral_domain) {
+  delegate_->ReloadTabIfMatchingEphemeralDomain(ephemeral_domain);
+}
+
 size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   std::vector<base::OneShotTimer*> timers;
   for (const auto& areas_to_cleanup : tld_ephemeral_areas_to_cleanup_) {
@@ -662,8 +673,7 @@ size_t EphemeralStorageService::FireCleanupTimersForTesting() {
     timer->FireNow();
   }
   const size_t first_party_storage_areas_to_cleanup_count =
-      first_party_storage_areas_to_cleanup_on_startup_.size();
-  DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());
+      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).size();
   return timers.size() + first_party_storage_areas_to_cleanup_count;
 }
 

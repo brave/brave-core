@@ -98,10 +98,6 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               ReloadTabIfMatchingEphemeralDomain,
               (const std::string& ephemeral_domain),
               (override));
-  MOCK_METHOD(base::WeakPtr<EphemeralStorageServiceDelegate>,
-              AsWeakPtr,
-              (),
-              (override));
 #if BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
 #endif
@@ -127,10 +123,6 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
   void TriggerFirstWindowOpenedCallback() {
     ASSERT_TRUE(first_window_opened_callback_);
     std::move(first_window_opened_callback_).Run();
-  }
-
-  base::WeakPtr<EphemeralStorageServiceDelegate> GetRealWeakPtr() {
-    return weak_ptr_factory_.GetWeakPtr();
   }
 
  private:
@@ -201,9 +193,6 @@ class EphemeralStorageServiceTest : public testing::Test {
     mock_delegate->ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure(),
                                                            trigger_callback);
     mock_delegate_ptr = mock_delegate.get();
-    ON_CALL(*mock_delegate_ptr, AsWeakPtr())
-        .WillByDefault(testing::Invoke(mock_delegate_ptr.get(),
-                                       &MockDelegate::GetRealWeakPtr));
     auto service = std::make_unique<EphemeralStorageService>(
         profile, HostContentSettingsMapFactory::GetForProfile(profile),
         std::move(mock_delegate));
@@ -548,7 +537,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
         .WillOnce(testing::Return(std::nullopt));
     EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
     ExpireFirstPartyStorageOriginFor(url);
     mock_delegate_->TriggerFirstWindowOpenedCallback();
     EXPECT_EQ(profile_->GetPrefs()
@@ -626,7 +614,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
         .WillOnce(testing::Return(std::nullopt));
     EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
     ExpireFirstPartyStorageOriginFor(url);
     mock_delegate_->TriggerFirstWindowOpenedCallback();
     EXPECT_EQ(profile_->GetPrefs()
@@ -734,7 +721,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
         .WillOnce(testing::Return(std::nullopt));
     EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
     mock_delegate_->TriggerFirstWindowOpenedCallback();
     EXPECT_EQ(profile_->GetPrefs()
                   ->GetList(kFirstPartyStorageOriginsToCleanup)
@@ -780,7 +766,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
   EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-  EXPECT_CALL(*mock_delegate_, AsWeakPtr());
   mock_delegate_->TriggerFirstWindowOpenedCallback();
   EXPECT_EQ(
       profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
@@ -882,7 +867,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
         .WillOnce(testing::Return(false));
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
     ExpireFirstPartyStorageOriginFor(url);
     mock_delegate_->TriggerFirstWindowOpenedCallback();
     EXPECT_EQ(profile_->GetPrefs()
@@ -962,7 +946,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
 
     EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
     ExpireFirstPartyStorageOriginFor(url);
     mock_delegate_->TriggerFirstWindowOpenedCallback();
     EXPECT_EQ(profile_->GetPrefs()
@@ -1034,7 +1017,6 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
         .WillOnce(testing::Return(std::nullopt));
     EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _));
-    EXPECT_CALL(*mock_delegate_, AsWeakPtr());
 
     ExpireFirstPartyStorageOriginFor(url);
 
@@ -1511,11 +1493,6 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
       EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key, _))
           .Times(test_case.cleanup_first_party_calls);
       ExpireFirstPartyStorageOriginFor(url);
-      if (!test_case.auto_shred_mode ||
-          test_case.auto_shred_mode !=
-              brave_shields::mojom::AutoShredMode::NEVER) {
-        EXPECT_CALL(*mock_delegate_, AsWeakPtr());
-      }
       mock_delegate_->TriggerFirstWindowOpenedCallback();
       EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)

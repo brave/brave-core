@@ -140,10 +140,10 @@ class EphemeralStorageService : public KeyedService {
   void CleanupPendingFirstPartyStorageArea(
       const GURL& url,
       const content::StoragePartitionConfig& storage_partition_config,
-      const std::optional<brave_shields::mojom::AutoShredMode>& auto_shred_mode,
       base::OnceClosure callback);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
+  void ReloadTabsForEphemeralDomain(const std::string& ephemeral_domain);
 
   size_t FireCleanupTimersForTesting();
 
@@ -157,12 +157,10 @@ class EphemeralStorageService : public KeyedService {
   base::ObserverList<EphemeralStorageServiceObserver> observer_list_;
 
   base::TimeDelta tld_ephemeral_area_keep_alive_;
-  base::TimeDelta first_party_storage_startup_cleanup_delay_;
   std::map<TLDEphemeralAreaKey, std::unique_ptr<base::OneShotTimer>>
       tld_ephemeral_areas_to_cleanup_;
   // Contains First Party Ephemeral Storage tokens to partition storage.
   base::flat_map<std::string, base::UnguessableToken> fpes_tokens_;
-  base::ListValue first_party_storage_areas_to_cleanup_on_startup_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };

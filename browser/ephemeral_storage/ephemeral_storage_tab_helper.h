@@ -75,10 +75,6 @@ class EphemeralStorageTabHelper
 
   void CreateProvisionalTLDEphemeralLifetime(
       content::NavigationHandle* navigation_handle);
-  // NavigationController::Reload() can't be called re-entrantly from within
-  // DidStartNavigation(), which runs synchronously inside
-  // NavigateToExistingPendingEntry(). This is posted as a separate task so it
-  // runs after that call has unwound.
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
 
