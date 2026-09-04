@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
+index e4548b2f1ae1f16bec004f318d62852bb724f0fe..ac332d39396c6cf0c264684fbb7e3750b034b0a2 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
+@@ -1618,7 +1618,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+         return new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, model);
+     }
+ 
+-    private boolean shouldShowDefaultBrowserPromo() {
++    protected boolean shouldShowDefaultBrowserPromo() {
+         return DefaultBrowserPromoUtils.getInstance().shouldShowAppMenuItemEntryPoint()
+                 && ChromeFeatureList.sDefaultBrowserPromoEntryPointShowAppMenu.getValue();
+     }
