@@ -16,7 +16,7 @@ import XCTest
 
   private func setupServices() -> (
     BraveWallet.TestKeyringService, MockJsonRpcService,
-    BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService
+    BraveWallet.TestBraveWalletService
   ) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
@@ -53,19 +53,16 @@ import XCTest
       completion(BraveWallet.AccountInfo.previewAccount.accountId)
     }
 
-    let swapService = BraveWallet.TestSwapService()
-
-    return (keyringService, rpcService, walletService, swapService)
+    return (keyringService, rpcService, walletService)
   }
 
   func testSetSelectedNetwork() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
@@ -81,7 +78,7 @@ import XCTest
   /// Test `setSelectedChain` will call `setNetwork` with the `Mode.select(isForOrigin: true)`.
   func testSetSelectedNetworkPanel() async {
     let origin: URLOrigin = .init(url: URL(string: "https://brave.com")!)
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
     rpcService._setNetwork = { chainId, coin, origin, completion in
       XCTAssertEqual(origin, origin)
       completion(true)
@@ -91,7 +88,6 @@ import XCTest
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager(),
       origin: origin
     )
@@ -109,13 +105,12 @@ import XCTest
   }
 
   func testSetSelectedNetworkNoAccounts() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
@@ -133,13 +128,12 @@ import XCTest
   }
 
   func testSelectedNetworkFormSelectionMode() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
@@ -151,13 +145,12 @@ import XCTest
   }
 
   func testAlertResponseCreateAccount() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
@@ -177,13 +170,12 @@ import XCTest
   }
 
   func testAlertResponseDontCreateAccount() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
@@ -204,13 +196,12 @@ import XCTest
   }
 
   func testDismissAddAccount() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let networkStore = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()
@@ -222,7 +213,7 @@ import XCTest
   }
 
   func testDismissAddAccountAfterCreation() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     var accountInfosDict: [BraveWallet.CoinType: [BraveWallet.AccountInfo]] = [
       .eth: [.mockEthAccount]
@@ -246,7 +237,6 @@ import XCTest
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await networkStore.setup()

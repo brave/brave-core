@@ -120,21 +120,12 @@ export class BaseQueryCache {
     if (!this._networksRegistry) {
       const { jsonRpcService } = getAPIProxy()
 
-      const visibleIds: string[] = []
-
       const allNetworks = (await jsonRpcService.getAllNetworks()).allNetworks
-
-      allNetworks.networks.forEach(({ chainId }) => {
-        if (!allNetworks.hiddenChainIds.includes(chainId)) {
-          visibleIds.push(chainId)
-        }
-      })
 
       this._networksRegistry = networkEntityAdapter.setAll(
         {
           ...networkEntityAdapter.getInitialState(),
           hiddenIds: allNetworks.hiddenChainIds,
-          visibleIds: visibleIds,
           offRampChainIds: allNetworks.offRampChainIds,
           ankrChainIds: allNetworks.ankrChainIds,
           swapChainIds: allNetworks.swapChainIds,

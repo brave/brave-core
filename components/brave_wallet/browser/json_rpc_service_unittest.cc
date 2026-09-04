@@ -1857,10 +1857,6 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeature(
-      features::kBraveWalletCardanoFeature);
-
   std::vector<base::DictValue> values;
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
   values.push_back(NetworkInfoToValue(chain1));
@@ -1881,47 +1877,53 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   for (const auto& network : all_networks->networks) {
     all_chain_ids.push_back(network->chain_id);
   }
-  EXPECT_THAT(all_chain_ids, ElementsAreArray(std::vector<std::string>{
-                                 mojom::kMainnetChainId,
-                                 mojom::kBaseMainnetChainId,
-                                 mojom::kPolygonMainnetChainId,
-                                 mojom::kBnbSmartChainMainnetChainId,
-                                 mojom::kOptimismMainnetChainId,
-                                 mojom::kAvalancheMainnetChainId,
-                                 mojom::kFilecoinEthereumMainnetChainId,
-                                 mojom::kNeonEVMMainnetChainId,
-                                 mojom::kSepoliaChainId,
-                                 mojom::kFilecoinEthereumTestnetChainId,
-                                 chain1.chain_id,
-                                 chain2.chain_id,
-                                 mojom::kSolanaMainnet,
-                                 mojom::kSolanaTestnet,
-                                 mojom::kSolanaDevnet,
-                                 mojom::kFilecoinMainnet,
-                                 mojom::kFilecoinTestnet,
-                                 mojom::kBitcoinMainnet,
-                                 mojom::kBitcoinTestnet,
-                                 mojom::kZCashMainnet,
-                                 mojom::kZCashTestnet,
-                                 mojom::kCardanoMainnet,
-                                 mojom::kCardanoTestnet,
-                             }));
+  std::vector<std::string> expected_chain_ids{
+      mojom::kMainnetChainId,
+      mojom::kBaseMainnetChainId,
+      mojom::kPolygonMainnetChainId,
+      mojom::kBnbSmartChainMainnetChainId,
+      mojom::kOptimismMainnetChainId,
+      mojom::kAvalancheMainnetChainId,
+      mojom::kFilecoinEthereumMainnetChainId,
+      mojom::kNeonEVMMainnetChainId,
+      mojom::kSepoliaChainId,
+      mojom::kFilecoinEthereumTestnetChainId,
+      chain1.chain_id,
+      chain2.chain_id,
+      mojom::kSolanaMainnet,
+      mojom::kSolanaTestnet,
+      mojom::kSolanaDevnet,
+      mojom::kFilecoinMainnet,
+      mojom::kFilecoinTestnet,
+      mojom::kBitcoinMainnet,
+      mojom::kBitcoinTestnet,
+      mojom::kZCashMainnet,
+      mojom::kZCashTestnet,
+  };
+  if (base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature)) {
+    expected_chain_ids.push_back(mojom::kCardanoMainnet);
+    expected_chain_ids.push_back(mojom::kCardanoTestnet);
+  }
+  EXPECT_THAT(all_chain_ids, ElementsAreArray(expected_chain_ids));
 
   EXPECT_THAT(all_networks->custom_chain_ids,
               ElementsAreArray({chain1.chain_id, chain2.chain_id}));
 
   // Testnets of all coins are hidden by default.
+  std::vector<std::string> expected_hidden_chain_ids{
+      mojom::kSepoliaChainId,  //
+      mojom::kFilecoinEthereumTestnetChainId,
+      mojom::kSolanaDevnet,
+      mojom::kSolanaTestnet,
+      mojom::kFilecoinTestnet,
+      mojom::kBitcoinTestnet,
+      mojom::kZCashTestnet,
+  };
+  if (base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature)) {
+    expected_hidden_chain_ids.push_back(mojom::kCardanoTestnet);
+  }
   EXPECT_THAT(all_networks->hidden_chain_ids,
-              ElementsAreArray({
-                  mojom::kSepoliaChainId,
-                  mojom::kFilecoinEthereumTestnetChainId,
-                  mojom::kSolanaDevnet,
-                  mojom::kSolanaTestnet,
-                  mojom::kFilecoinTestnet,
-                  mojom::kBitcoinTestnet,
-                  mojom::kZCashTestnet,
-                  mojom::kCardanoTestnet,
-              }));
+              ElementsAreArray(expected_hidden_chain_ids));
 
   EXPECT_THAT(all_networks->ankr_chain_ids,
               ElementsAreArray({
@@ -1933,20 +1935,23 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
                   mojom::kAvalancheMainnetChainId,
               }));
 
+  std::vector<std::string> expected_swap_chain_ids{
+      mojom::kMainnetChainId,
+      mojom::kBaseMainnetChainId,
+      mojom::kPolygonMainnetChainId,
+      mojom::kBnbSmartChainMainnetChainId,
+      mojom::kOptimismMainnetChainId,
+      mojom::kAvalancheMainnetChainId,
+      mojom::kFilecoinEthereumMainnetChainId,
+      mojom::kSolanaMainnet,
+      mojom::kBitcoinMainnet,
+      mojom::kZCashMainnet,
+  };
+  if (base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature)) {
+    expected_swap_chain_ids.push_back(mojom::kCardanoMainnet);
+  }
   EXPECT_THAT(all_networks->swap_chain_ids,
-              ElementsAreArray({
-                  mojom::kMainnetChainId,
-                  mojom::kBaseMainnetChainId,
-                  mojom::kPolygonMainnetChainId,
-                  mojom::kBnbSmartChainMainnetChainId,
-                  mojom::kOptimismMainnetChainId,
-                  mojom::kAvalancheMainnetChainId,
-                  mojom::kFilecoinEthereumMainnetChainId,
-                  mojom::kSolanaMainnet,
-                  mojom::kBitcoinMainnet,
-                  mojom::kZCashMainnet,
-                  mojom::kCardanoMainnet,
-              }));
+              ElementsAreArray(expected_swap_chain_ids));
 
   EXPECT_THAT(all_networks->off_ramp_chain_ids,
               ElementsAreArray({
@@ -1968,8 +1973,6 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   TestFuture<mojom::AllNetworksPtr> all_networks_future;
   TestFuture<bool> bool_future;
 
-  // GetAllNetworks returns hidden networks of all coins, so expectations below
-  // always contain testnets of non-ETH coins, hidden by default.
   const std::vector<std::string_view> k_other_hidden = {
       mojom::kSolanaDevnet,   mojom::kSolanaTestnet, mojom::kFilecoinTestnet,
       mojom::kBitcoinTestnet, mojom::kZCashTestnet,  mojom::kCardanoTestnet,

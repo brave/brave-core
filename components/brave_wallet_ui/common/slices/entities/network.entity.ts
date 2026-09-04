@@ -22,7 +22,6 @@ export const networkEntityAdapter: EntityAdapter<BraveWallet.NetworkInfo> =
 
 export type NetworksRegistry = EntityState<BraveWallet.NetworkInfo> & {
   hiddenIds: string[]
-  visibleIds: string[]
   offRampChainIds: string[]
   ankrChainIds: string[]
   swapChainIds: string[]
@@ -31,7 +30,6 @@ export type NetworksRegistry = EntityState<BraveWallet.NetworkInfo> & {
 export const emptyNetworksRegistry: NetworksRegistry = {
   ...networkEntityAdapter.getInitialState(),
   hiddenIds: [],
-  visibleIds: [],
   offRampChainIds: [],
   ankrChainIds: [],
   swapChainIds: [],
@@ -52,7 +50,12 @@ export const networkSelectors = {
   ),
   selectVisibleNetworks: createDraftSafeSelector(
     [selectNetworksRegistryFromQueryResult],
-    (registry) => getEntitiesListFromEntityState(registry, registry.visibleIds),
+    (registry) =>
+      Object.values(registry.entities).filter(
+        (network): network is BraveWallet.NetworkInfo =>
+          network !== undefined
+          && !registry.hiddenIds.includes(network.chainId),
+      ),
   ),
   selectSwapNetworks: createDraftSafeSelector(
     [selectNetworksRegistryFromQueryResult],

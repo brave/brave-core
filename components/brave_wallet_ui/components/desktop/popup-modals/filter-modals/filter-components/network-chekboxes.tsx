@@ -16,7 +16,7 @@ import {
 
 // Utils
 import {
-  networkEntityAdapter, //
+  getNetworkId, //
 } from '../../../../../common/slices/entities/network.entity'
 
 // Styled Components
@@ -67,19 +67,11 @@ export const NetworkCheckboxes = (props: Props) => {
             width='unset'
             justifyContent='flex-start'
             marginBottom={16}
-            key={networkEntityAdapter.selectId(network).toString()}
+            key={getNetworkId(network)}
           >
             <Checkbox
-              checked={
-                !isNetworkFilteredOut(
-                  networkEntityAdapter.selectId(network).toString(),
-                )
-              }
-              onChange={() =>
-                onCheckNetwork(
-                  networkEntityAdapter.selectId(network).toString(),
-                )
-              }
+              checked={!isNetworkFilteredOut(getNetworkId(network))}
+              onChange={() => onCheckNetwork(getNetworkId(network))}
             >
               <CreateNetworkIcon
                 network={network}

@@ -105,7 +105,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let swapService: BraveWalletSwapService
   let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
@@ -129,7 +128,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
-    swapService: BraveWalletSwapService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
@@ -145,7 +143,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.rpcService = rpcService
     self.walletService = walletService
     self.assetRatioService = assetRatioService
-    self.swapService = swapService
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
@@ -169,7 +166,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: userAssetManager,
       origin: origin
     )
@@ -371,7 +367,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
-      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,

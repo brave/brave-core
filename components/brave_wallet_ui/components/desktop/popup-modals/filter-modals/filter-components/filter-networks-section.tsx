@@ -27,9 +27,7 @@ import {
 } from '../../../../../options/network-filter-options'
 
 // Utils
-import {
-  networkEntityAdapter, //
-} from '../../../../../common/slices/entities/network.entity'
+import { getNetworkId } from '../../../../../common/slices/entities/network.entity'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -84,9 +82,7 @@ export const FilterNetworksSection = ({
     return (
       filteredOutNetworkKeys.length > 0
       && networks.some((network) =>
-        filteredOutNetworkKeys.includes(
-          networkEntityAdapter.selectId(network).toString(),
-        ),
+        filteredOutNetworkKeys.includes(getNetworkId(network)),
       )
     )
   }, [networks, filteredOutNetworkKeys])
@@ -116,11 +112,7 @@ export const FilterNetworksSection = ({
       setFilteredOutNetworkKeys([])
       return
     }
-    setFilteredOutNetworkKeys(
-      networks.map((network) =>
-        networkEntityAdapter.selectId(network).toString(),
-      ),
-    )
+    setFilteredOutNetworkKeys(networks.map((network) => getNetworkId(network)))
   }, [networks, setFilteredOutNetworkKeys, isSelectAll])
 
   return (

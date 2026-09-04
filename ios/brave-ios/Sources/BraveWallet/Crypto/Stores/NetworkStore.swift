@@ -58,7 +58,6 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
-  private let swapService: BraveWalletSwapService
   private let assetManager: WalletUserAssetManagerType
   private var rpcServiceObserver: JsonRpcServiceObserver?
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -73,14 +72,12 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
-    swapService: BraveWalletSwapService,
     userAssetManager: WalletUserAssetManagerType,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
-    self.swapService = swapService
     self.assetManager = userAssetManager
     self.origin = origin
 

@@ -17,7 +17,6 @@ extension WalletStore {
       rpcService: MockJsonRpcService(),
       walletService: MockBraveWalletService(),
       assetRatioService: MockAssetRatioService(),
-      swapService: MockSwapService(),
       blockchainRegistry: MockBlockchainRegistry(),
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
@@ -38,7 +37,6 @@ extension CryptoStore {
       rpcService: MockJsonRpcService(),
       walletService: MockBraveWalletService(),
       assetRatioService: MockAssetRatioService(),
-      swapService: MockSwapService(),
       blockchainRegistry: MockBlockchainRegistry(),
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
@@ -58,7 +56,6 @@ extension NetworkStore {
       keyringService: MockKeyringService(),
       rpcService: MockJsonRpcService(),
       walletService: MockBraveWalletService(),
-      swapService: MockSwapService(),
       userAssetManager: TestableWalletUserAssetManager()
     )
   }
@@ -67,7 +64,6 @@ extension NetworkStore {
     let keyringService = MockKeyringService()
     let rpcService = MockJsonRpcService()
     let walletService = MockBraveWalletService()
-    let swapService = MockSwapService()
     let userAssetManager = TestableWalletUserAssetManager()
     rpcService.addChain(
       .init(
@@ -89,7 +85,6 @@ extension NetworkStore {
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: userAssetManager
     )
     return store
@@ -123,7 +118,6 @@ extension AccountActivityStore {
       walletService: MockBraveWalletService(),
       rpcService: MockJsonRpcService(),
       assetRatioService: MockAssetRatioService(),
-      swapService: MockSwapService(),
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
