@@ -117,12 +117,18 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
     // 2. Click the file input. This should open the file picker dialog which we
     // wait for below.
     EXPECT_TRUE(ExecJs(web_contents, R"(
+      const input = document.getElementById('fileinput');
       window.fileInputChanged = new Promise(resolve => {
-        const input = document.getElementById('fileinput');
         input.addEventListener('change',
             () => resolve(input.files.length), {once: true});
       });
-      document.getElementById('fileinput').click();
+      // Blink dispatches a 'cancel' event on the input when the picker is
+      // dismissed. Awaiting this gives a real synchronization point for the
+      // cancel reply reaching the renderer.
+      window.fileInputCanceled = new Promise(resolve => {
+        input.addEventListener('cancel', () => resolve(true), {once: true});
+      });
+      input.click();
     )"));
 
     // Waits for the dialog.
@@ -136,9 +142,18 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
         .ExtractInt();
   }
 
+  // Waits for Blink to dispatch the 'cancel' event on the input, i.e. the
+  // cancel reply has reached the renderer.
+  void WaitForFileCanceled(content::WebContents* web_contents) {
+    EXPECT_EQ(true, content::EvalJs(web_contents, "window.fileInputCanceled")
+                        .ExtractBool());
+  }
+
   void SelectFilesInPicker(content::WebContents* web_contents,
                            const std::vector<base::FilePath>& files) {
-    OpenFilePicker(web_contents)->CallMultiFilesSelected(files);
+    ui::FakeSelectFileDialog* dialog = OpenFilePicker(web_contents);
+    ASSERT_TRUE(dialog);
+    dialog->CallMultiFilesSelected(files);
     EXPECT_EQ(static_cast<int>(files.size()),
               WaitForFileSelected(web_contents));
   }
@@ -154,7 +169,14 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
   // Cancel flow. Opens a fresh tab and cancels the picker.
   content::WebContents* OpenTabAndCancelPicker() {
     content::WebContents* web_contents = OpenUploadTab();
-    OpenFilePicker(web_contents)->CallFileSelectionCanceled();
+    ui::FakeSelectFileDialog* dialog = OpenFilePicker(web_contents);
+    EXPECT_TRUE(dialog);
+    if (dialog) {
+      dialog->CallFileSelectionCanceled();
+      // Synchronize on the cancel reaching the renderer before callers run
+      // EvalJs assertions over the frame's associated interface.
+      WaitForFileCanceled(web_contents);
+    }
     return web_contents;
   }
 
