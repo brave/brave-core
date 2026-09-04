@@ -12,3 +12,10 @@ substitutions:
     add_sources:
       target: java
       sources: //brave/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarButtonManager.java
+  - description: |-
+      Depend on Brave's bottom bar user settings.
+
+      isBottomBarEnabled() answers to the "Enable bottom bar" setting.
+    add_deps:
+      target: config_java
+      deps: //brave/browser/ui/android/bottombar:prefs_java

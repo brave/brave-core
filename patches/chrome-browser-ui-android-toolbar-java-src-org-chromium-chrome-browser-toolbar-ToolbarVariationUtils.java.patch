@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/ToolbarVariationUtils.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/ToolbarVariationUtils.java
+index 241d9954f7998033920ba6ffe1e2218506cf4acc..878810d46dbf7b8b81926afb1c0d43d88dd89cd6 100644
+--- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/ToolbarVariationUtils.java
++++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/ToolbarVariationUtils.java
+@@ -4,6 +4,7 @@
+ 
+ package org.chromium.chrome.browser.toolbar;
+ 
++import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarUserPrefs;
+ import android.content.Context;
+ 
+ import org.chromium.base.DeviceInfo;
+@@ -59,7 +60,8 @@ public final class ToolbarVariationUtils {
+      * behavior only for phone form factors when the Android Bottom Bar feature is enabled.
+      */
+     public static boolean isToolbarUiRefactorEnabled(Context context) {
+-        return !DeviceFormFactor.isNonMultiDisplayContextOnTablet(context)
++        return BraveBottomBarUserPrefs.isBottomBarEnabled()
++                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(context)
+                 && !DeviceInfo.isAutomotive()
+                 && ChromeFeatureList.sAndroidBottomBar.isEnabled();
+     }

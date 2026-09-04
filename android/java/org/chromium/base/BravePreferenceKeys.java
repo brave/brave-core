@@ -14,6 +14,10 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED =
             "brave_android_dynamic_colors_enabled";
     public static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_enabled";
+    // The bottom bar is a separate implementation of the bottom navigation toolbar, used while the
+    // Android bottom bar flag is on, and carries a setting of its own.
+    public static final String BRAVE_ENABLE_BOTTOM_BAR =
+            "org.chromium.chrome.browser.Brave_Enable_Bottom_Bar";
     public static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
     public static final String BRAVE_USE_CUSTOM_TABS = "use_custom_tabs";
     public static final String BRAVE_APP_OPEN_COUNT = "brave_app_open_count";

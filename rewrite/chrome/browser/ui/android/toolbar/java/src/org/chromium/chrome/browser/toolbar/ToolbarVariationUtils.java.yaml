@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Add Brave imports beneath the toolbar variation package declaration.'
+    regex:
+      re_pattern: '^(package [^;]+;\n)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+        import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarUserPrefs;
+  - description: |-
+      Let the "Enable bottom bar" setting turn the toolbar refactor off.
+
+      The refactor moves the tab switcher and app menu buttons out of the top
+      toolbar and into the bottom bar, so it has to go when the user switches the
+      bottom bar off - otherwise neither bar would carry them. Kept in step with
+      BottomBarConfigUtils#isBottomBarEnabled, which upstream pairs with this by
+      LINT.IfChange.
+    regex:
+      re_pattern: |-
+        (public static boolean isToolbarUiRefactorEnabled\(Context context\) \{\s+return )(!DeviceFormFactor)
+      replace: |-
+        \1BraveBottomBarUserPrefs.isBottomBarEnabled()
+                        && \2

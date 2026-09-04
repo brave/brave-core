@@ -34,6 +34,15 @@
         android:title="@string/bottom_toolbar_title"
         android:summary="@string/bottom_toolbar_summary" />
 
+    <!-- Shown in place of the switch above while the Android bottom bar flag is
+         on, which is when the bottom bar implements the bottom navigation
+         toolbar instead of Brave's own bottom controls. -->
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="org.chromium.chrome.browser.Brave_Enable_Bottom_Bar"
+        android:icon="@drawable/ic_browser_mobile_bottom_toolbar"
+        android:title="@string/enable_bottom_bar_title"
+        android:summary="@string/bottom_toolbar_summary" />
+
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="enable_multi_windows"
         android:icon="@drawable/ic_windows_open"

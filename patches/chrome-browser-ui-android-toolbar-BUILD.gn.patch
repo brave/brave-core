@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 6a600edbc35fcba73a98cf368c63625e20335c7c..e0824b28e0b834bdd6d2892e59d699097934d8cc 100644
+index 6a600edbc35fcba73a98cf368c63625e20335c7c..d0e5452d9fbcfd3b5f34ef176e4db0d7c43e7996 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
-@@ -226,6 +226,7 @@ android_library("core_java") {
+@@ -14,6 +14,7 @@ android_library("variation_utils_java") {
+   ]
+   deps = [
+     "//base:build_info_java",
++    "//brave/browser/ui/android/bottombar:prefs_java",
+     "//chrome/browser/flags:java",
+     "//third_party/androidx:androidx_annotation_annotation_java",
+     "//ui/android:ui_no_recycler_view_java",
+@@ -226,6 +227,7 @@ android_library("core_java") {
      "java/src/org/chromium/chrome/browser/toolbar/top/tab_strip/HeightTransitionHandler.java",
      "java/src/org/chromium/chrome/browser/toolbar/top/tab_strip/TabStripTransitionCoordinator.java",
    ]
@@ -10,11 +18,11 @@ index 6a600edbc35fcba73a98cf368c63625e20335c7c..e0824b28e0b834bdd6d2892e59d69909
  
    deps = [
      ":adaptive_features_java",
-@@ -449,6 +450,7 @@ android_resources("java_resources") {
-     "//components/browser_ui/styles/android:java_resources",
-     "//ui/android:ui_java_resources",
+@@ -442,6 +444,7 @@ android_resources("java_resources") {
    ]
-+  deps += [ "//brave/browser/ui/android/toolbar:java_resources" ]
- }
  
- robolectric_library("junit") {
+   deps = [
++    "//brave/browser/ui/android/toolbar:java_resources",
+     "//chrome/app:java_strings_grd",
+     "//chrome/browser/ui/android/bars_common:java_resources",
+     "//chrome/browser/ui/android/strings:ui_strings_grd",

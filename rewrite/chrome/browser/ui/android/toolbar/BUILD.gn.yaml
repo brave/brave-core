@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build Brave's toolbar sources into the upstream core component.
+
+      Migrated as is from the hand written patch this file replaced.
+    regex:
+      re_pattern: |-
+        (android_library\("core_java"\).*?\bsources = \[.*?\n  \])
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          sources += brave_browser_ui_android_toolbar_sources
+  - description: |-
+      Depend on Brave's toolbar resources.
+
+      Migrated from the hand written patch this file replaced, which appended to
+      `deps` rather than adding an entry to it.
+    add_deps:
+      target: java_resources
+      deps: //brave/browser/ui/android/toolbar:java_resources
+  - description: |-
+      Depend on Brave's bottom bar user settings.
+
+      isToolbarUiRefactorEnabled() answers to the "Enable bottom bar" setting.
+      The dependency is kept to Brave's leaf target rather than the bottom bar
+      component, which this one deliberately does not depend on.
+    add_deps:
+      target: variation_utils_java
+      deps: //brave/browser/ui/android/bottombar:prefs_java

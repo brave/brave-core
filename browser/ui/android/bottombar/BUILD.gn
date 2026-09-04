@@ -6,6 +6,20 @@
 import("//build/config/android/config.gni")
 import("//build/config/android/rules.gni")
 
+# Kept apart from ":java" and as small as its consumers are: the upstream
+# variation_utils_java is a leaf target, which is why upstream duplicates
+# isBottomBarEnabled() into it rather than depending on the bottom bar
+# component.
+android_library("prefs_java") {
+  sources = [ "java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarUserPrefs.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/preferences:java",
+  ]
+}
+
 # BraveBottomBarButtonManager sits in the same directory but is built into the
 # upstream component instead, because BottomBarCoordinator constructs it - see
 # //brave/rewrite/chrome/browser/ui/android/bottombar/BUILD.gn.yaml.
