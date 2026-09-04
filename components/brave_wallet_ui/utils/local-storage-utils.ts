@@ -44,24 +44,8 @@ export const parseJSONFromLocalStorage = <T = any>(
 
 export const makeInitialFilteredOutNetworkKeys = () => {
   const testNetworkKeys = SupportedTestNetworks.map((chainId) => {
-    if (
-      chainId === BraveWallet.SOLANA_DEVNET
-      || chainId === BraveWallet.SOLANA_TESTNET
-    ) {
-      return getNetworkId({
-        chainId: chainId,
-        coin: BraveWallet.CoinType.SOL,
-      })
-    }
-    if (chainId === BraveWallet.FILECOIN_TESTNET) {
-      return getNetworkId({
-        chainId: chainId,
-        coin: BraveWallet.CoinType.FIL,
-      })
-    }
     return getNetworkId({
-      chainId: chainId,
-      coin: BraveWallet.CoinType.ETH,
+      chainId,
     })
   })
   return [...testNetworkKeys]
@@ -159,9 +143,10 @@ export const getPersistedTokenBalancesSubset = (arg: {
         registrySubset.accounts[accountId.uniqueKey].chains,
       )
       for (const network of arg.networks) {
-        const networkId = getNetworkId(network)
-        if (!accountNetworkIds.includes(networkId)) {
-          delete registrySubset.accounts[accountId.uniqueKey].chains[networkId]
+        if (!accountNetworkIds.includes(network.chainId)) {
+          delete registrySubset.accounts[accountId.uniqueKey].chains[
+            network.chainId
+          ]
         }
       }
     }

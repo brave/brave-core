@@ -14,10 +14,7 @@ import Button from '@brave/leo/react/button'
 import { BraveWallet } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
-import {
-  networkEntityAdapter,
-  emptyNetworksRegistry,
-} from '../../../common/slices/entities/network.entity'
+import { networkSelectors } from '../../../common/slices/entities/network.entity'
 import withPlaceholderIcon from '../create-placeholder-icon'
 import {
   getAssetIdKey,
@@ -106,10 +103,9 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress,
   } = props
 
-  const { data: networksRegistry = emptyNetworksRegistry } =
-    useGetNetworksRegistryQuery()
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
   const selectedAssetNetwork = selectedAsset
-    ? networksRegistry.entities[networkEntityAdapter.selectId(selectedAsset)]
+    ? networkSelectors.selectById(networksRegistry, selectedAsset.chainId)
     : undefined
 
   // state

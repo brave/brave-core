@@ -15,8 +15,8 @@ import XCTest
   private var cancellables: Set<AnyCancellable> = .init()
 
   private func setupServices() -> (
-    BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
-    BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService
+    BraveWallet.TestKeyringService, MockJsonRpcService,
+    BraveWallet.TestBraveWalletService
   ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -42,20 +42,16 @@ import XCTest
       completion(BraveWallet.AccountInfo.previewAccount.accountId)
     }
 
-    let swapService = BraveWallet.TestSwapService()
-    swapService._isSwapSupported = { $1(true) }
-
-    return (keyringService, rpcService, walletService, swapService)
+    return (keyringService, rpcService, walletService)
   }
 
   func testSetSelectedNetwork() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await store.setup()
@@ -67,13 +63,12 @@ import XCTest
   }
 
   func testSetSelectedNetworkSameNetwork() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
 
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await store.setup()
@@ -87,7 +82,7 @@ import XCTest
   /// Test `setSelectedChain` will call `setNetwork` with the store's `origin: URLOrigin?` value.
   func testSetSelectedNetworkWithOrigin() async {
     let origin: URLOrigin = .init(url: URL(string: "https://brave.com")!)
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
     rpcService._setNetwork = { chainId, coin, origin, completion in
       XCTAssertEqual(origin, origin)
       completion(true)
@@ -97,7 +92,6 @@ import XCTest
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager(),
       origin: origin
     )
@@ -110,7 +104,7 @@ import XCTest
   }
 
   func testSetSelectedNetworkNoAccounts() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
+    let (keyringService, rpcService, walletService) = setupServices()
     keyringService._allAccounts = { completion in
       completion(
         .init(
@@ -127,7 +121,6 @@ import XCTest
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
     await store.setup()
@@ -153,19 +146,8 @@ import XCTest
   }
 
   func testUpdateChainList() async {
-    let (keyringService, rpcService, walletService, swapService) = setupServices()
-    rpcService._hiddenNetworks = { coin, completion in
-      if coin == .eth {
-        completion(
-          [
-            BraveWallet.NetworkInfo.mockSepolia.chainId,
-            BraveWallet.NetworkInfo.mockPolygon.chainId,
-          ]
-        )
-      } else {
-        completion([])
-      }
-    }
+    let (keyringService, rpcService, walletService) = setupServices()
+    rpcService.hiddenNetworks = [.mockSepolia, .mockPolygon]
     rpcService._network = { coin, _, completion in
       switch coin {
       case .eth:
@@ -189,7 +171,6 @@ import XCTest
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: TestableWalletUserAssetManager()
     )
 

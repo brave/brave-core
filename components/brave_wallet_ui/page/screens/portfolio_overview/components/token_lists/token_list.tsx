@@ -46,10 +46,8 @@ import {
 // Utils
 import Amount from '../../../../../utils/amount'
 import { getLocale } from '../../../../../../common/locale'
-import {
-  networkEntityAdapter, //
-} from '../../../../../common/slices/entities/network.entity'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
+import { getNetworkId } from '../../../../../common/slices/entities/network.entity'
 import {
   emptyNetwork,
   networkSupportsAccount,
@@ -259,13 +257,7 @@ export const TokenLists = ({
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
       return getSortedFungibleTokensList(filteredAssetList).filter(
-        (asset) =>
-          networkEntityAdapter
-            .selectId({
-              chainId: asset.asset.chainId,
-              coin: asset.asset.coin,
-            })
-            .toString() === networkEntityAdapter.selectId(network).toString(),
+        (asset) => asset.asset.chainId === network.chainId,
       )
     },
     [filteredAssetList, getSortedFungibleTokensList],
@@ -487,7 +479,7 @@ export const TokenLists = ({
       const networksAssets = getAssetsByNetwork(network)
       return (
         <AssetGroupContainer
-          key={networkEntityAdapter.selectId(network).toString()}
+          key={getNetworkId(network)}
           balance={
             networksFiatValue.isUndefined()
               ? ''

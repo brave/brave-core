@@ -117,7 +117,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
-      let allNetworks = await rpcService.allNetworks()
+      let allNetworks = await rpcService.allNetworks().networks
       guard let network = allNetworks.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234

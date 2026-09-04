@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <optional>
+#include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -15,6 +17,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -831,55 +834,63 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
+  base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+
   // Before parsing the list, an empty list should be returned
-  auto run_loop = std::make_unique<base::RunLoop>();
-  registry->GetSellTokens(
-      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_TRUE(token_list.empty());
-            run_loop->Quit();
-          }));
-  run_loop->Run();
+  registry->GetSellTokens(mojom::OffRampProvider::kRamp,
+                          {mojom::kMainnetChainId}, future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
 
   std::optional<RampTokenListMaps> ramp_token_lists =
       ParseRampTokenListMaps(ramp_token_lists_json);
   ASSERT_TRUE(ramp_token_lists);
   registry->UpdateOffRampTokenLists(std::move(*ramp_token_lists).second);
 
+  // Names and chain ids of the tokens returned by the last GetSellTokens call.
+  auto take_names_and_chain_ids = [&future] {
+    std::vector<std::string> names;
+    std::vector<std::string> chain_ids;
+    for (const auto& token : future.Take()) {
+      names.push_back(token->name);
+      chain_ids.push_back(token->chain_id);
+    }
+    return std::pair(std::move(names), std::move(chain_ids));
+  };
+  std::vector<std::string> names;
+  std::vector<std::string> chain_ids;
+
   // Get Ramp sell tokens
-  run_loop = std::make_unique<base::RunLoop>();
-  registry->GetSellTokens(
-      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_NE(token_list.size(), 0UL);
-            EXPECT_EQ(token_list[0]->name, "Ethereum");
-            run_loop->Quit();
-          }));
-  run_loop->Run();
+  registry->GetSellTokens(mojom::OffRampProvider::kRamp,
+                          {mojom::kMainnetChainId}, future.GetCallback());
+  std::tie(names, chain_ids) = take_names_and_chain_ids();
+  EXPECT_THAT(names, testing::Contains("Ethereum"));
+  EXPECT_THAT(chain_ids, testing::Each(mojom::kMainnetChainId));
 
-  run_loop = std::make_unique<base::RunLoop>();
-  registry->GetSellTokens(
-      mojom::OffRampProvider::kRamp, mojom::kPolygonMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_NE(token_list.size(), 0UL);
-            EXPECT_EQ(token_list[0]->name, "Polygon");
-            run_loop->Quit();
-          }));
-  run_loop->Run();
+  registry->GetSellTokens(mojom::OffRampProvider::kRamp,
+                          {mojom::kPolygonMainnetChainId},
+                          future.GetCallback());
+  std::tie(names, chain_ids) = take_names_and_chain_ids();
+  EXPECT_THAT(names, testing::Contains("Polygon"));
+  EXPECT_THAT(chain_ids, testing::Each(mojom::kPolygonMainnetChainId));
 
-  run_loop = std::make_unique<base::RunLoop>();
+  registry->GetSellTokens(mojom::OffRampProvider::kRamp,
+                          {mojom::kSolanaMainnet}, future.GetCallback());
+  std::tie(names, chain_ids) = take_names_and_chain_ids();
+  EXPECT_THAT(names, testing::Contains("Solana"));
+  EXPECT_THAT(chain_ids, testing::Each(mojom::kSolanaMainnet));
+
+  // Multiple chain ids return tokens of all requested chains.
   registry->GetSellTokens(
-      mojom::OffRampProvider::kRamp, mojom::kSolanaMainnet,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_NE(token_list.size(), 0UL);
-            EXPECT_EQ(token_list[0]->name, "Solana");
-            run_loop->Quit();
-          }));
-  run_loop->Run();
+      mojom::OffRampProvider::kRamp,
+      {mojom::kMainnetChainId, mojom::kPolygonMainnetChainId,
+       mojom::kSolanaMainnet},
+      future.GetCallback());
+  std::tie(names, chain_ids) = take_names_and_chain_ids();
+  EXPECT_THAT(names, testing::IsSupersetOf({"Ethereum", "Polygon", "Solana"}));
+  EXPECT_THAT(chain_ids,
+              testing::Each(testing::AnyOf(mojom::kMainnetChainId,
+                                           mojom::kPolygonMainnetChainId,
+                                           mojom::kSolanaMainnet)));
 }
 
 TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
@@ -1190,7 +1201,7 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
 
   run_loop = std::make_unique<base::RunLoop>();
   registry->GetSellTokens(
-      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
+      mojom::OffRampProvider::kRamp, {mojom::kMainnetChainId},
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);

@@ -105,7 +105,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let swapService: BraveWalletSwapService
   let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
@@ -129,7 +128,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
-    swapService: BraveWalletSwapService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
@@ -145,7 +143,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.rpcService = rpcService
     self.walletService = walletService
     self.assetRatioService = assetRatioService
-    self.swapService = swapService
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
@@ -169,7 +166,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
-      swapService: swapService,
       userAssetManager: userAssetManager,
       origin: origin
     )
@@ -303,7 +299,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         Task { @MainActor [self] in
           if let addNetworkDappRequestCompletion = self?.addNetworkDappRequestCompletion[chainId] {
             if error.isEmpty {
-              let allNetworks = await self?.rpcService.allNetworks()
+              let allNetworks = await self?.rpcService.allNetworks().networks
               if let network = allNetworks?.first(where: {
                 $0.coin == .eth && $0.chainId == chainId
               }) {
@@ -371,7 +367,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
-      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
@@ -519,7 +514,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
     let allAccounts = await keyringService.allAccounts().accounts
     var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
-    let allNetworks = await rpcService.allNetworks()
+    let allNetworks = await rpcService.allNetworks().networks
     for coin in WalletConstants.supportedCoinTypes() {
       allNetworksForCoin[coin] = allNetworks.filter({ $0.coin == coin })
     }

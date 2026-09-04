@@ -45,7 +45,7 @@ import { getAccountLabel, getAddressLabel } from './account-utils'
 import { makeSerializableTimeDelta } from './model-serialization-utils'
 import {
   NetworksRegistry,
-  networkEntityAdapter,
+  networkSelectors,
 } from '../common/slices/entities/network.entity'
 import { Uint128ToBigInt } from './polkadot-utils'
 
@@ -593,25 +593,19 @@ export const parseSwapInfo = ({
   }
 
   // Extract source network and native asset
-  const sourceNetwork =
-    networksRegistry?.entities[
-      networkEntityAdapter.selectId({
-        chainId: swapInfo.sourceChainId,
-        coin: swapInfo.sourceCoin,
-      })
-    ]
+  const sourceNetwork = networkSelectors.selectById(
+    networksRegistry,
+    swapInfo.sourceChainId,
+  )
   const sourceNativeAsset = sourceNetwork
     ? makeNetworkAsset(sourceNetwork)
     : undefined
 
   // Extract destination network and native asset
-  const destinationNetwork =
-    networksRegistry?.entities[
-      networkEntityAdapter.selectId({
-        chainId: swapInfo.destinationChainId,
-        coin: swapInfo.destinationCoin,
-      })
-    ]
+  const destinationNetwork = networkSelectors.selectById(
+    networksRegistry,
+    swapInfo.destinationChainId,
+  )
   const destinationNativeAsset = destinationNetwork
     ? makeNetworkAsset(destinationNetwork)
     : undefined

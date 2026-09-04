@@ -10,76 +10,43 @@ import {
   getPersistedSpotPrices,
   mergeAndPersistSpotPrices,
 } from './local-storage-utils'
-import { networkEntityAdapter } from '../common/slices/entities/network.entity'
+import { getNetworkId } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
 const mockInitialFilteredOutNetworkKeys = [
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.SEPOLIA_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.SOLANA_DEVNET,
-      coin: BraveWallet.CoinType.SOL,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.SOLANA_TESTNET,
-      coin: BraveWallet.CoinType.SOL,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.FILECOIN_TESTNET,
-      coin: BraveWallet.CoinType.FIL,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.BITCOIN_TESTNET,
-      coin: BraveWallet.CoinType.BTC,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.Z_CASH_TESTNET,
-      coin: BraveWallet.CoinType.ZEC,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.CARDANO_TESTNET,
-      coin: BraveWallet.CoinType.ADA,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.POLKADOT_TESTNET,
-      coin: BraveWallet.CoinType.DOT,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.POLKADOT_TESTNET_ASSET_HUB,
-      coin: BraveWallet.CoinType.DOT,
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
-      chainId: BraveWallet.POLKADOT_PASEO_ASSET_HUB,
-      coin: BraveWallet.CoinType.DOT,
-    })
-    .toString(),
+  getNetworkId({
+    chainId: BraveWallet.SEPOLIA_CHAIN_ID,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.SOLANA_DEVNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.SOLANA_TESTNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.FILECOIN_TESTNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.BITCOIN_TESTNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.Z_CASH_TESTNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.CARDANO_TESTNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.POLKADOT_TESTNET,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.POLKADOT_TESTNET_ASSET_HUB,
+  }),
+  getNetworkId({
+    chainId: BraveWallet.POLKADOT_PASEO_ASSET_HUB,
+  }),
 ]
 
 describe('Test parseJSONFromLocalStorage', () => {

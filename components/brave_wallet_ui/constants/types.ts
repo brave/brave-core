@@ -622,19 +622,6 @@ export interface TransactionProviderErrorRegistry {
   [transactionId: string]: TransactionProviderError
 }
 
-export const SupportedOffRampNetworks = [
-  BraveWallet.SOLANA_MAINNET,
-  BraveWallet.MAINNET_CHAIN_ID, // ETH
-  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-  BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
-  BraveWallet.FANTOM_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
-  BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
-  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
-  BraveWallet.BITCOIN_MAINNET,
-]
-
 export const SupportedTestNetworks = [
   BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,

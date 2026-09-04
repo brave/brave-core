@@ -134,8 +134,8 @@ public class BraveWalletAddNetworksFragment extends Fragment
             mButtonSubmit.setText(R.string.brave_wallet_add_network_submit);
             assert mJsonRpcService != null;
             mJsonRpcService.getAllNetworks(
-                    networks -> {
-                        for (NetworkInfo chain : networks) {
+                    allNetworks -> {
+                        for (NetworkInfo chain : allNetworks.networks) {
                             if (chain.coin != CoinType.ETH) {
                                 continue;
                             }

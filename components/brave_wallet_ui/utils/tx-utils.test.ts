@@ -26,6 +26,7 @@ import {
 } from '../stories/mock-data/mock-asset-options'
 import {
   NetworksRegistry,
+  getNetworkId,
   networkEntityAdapter,
 } from '../common/slices/entities/network.entity'
 import {
@@ -205,14 +206,12 @@ describe('getTransactionGas()', () => {
 
 describe('parseSwapInfo', () => {
   const createMockNetworksRegistry = (): NetworksRegistry => {
-    const sourceNetworkId = networkEntityAdapter.selectId({
+    const sourceNetworkId = getNetworkId({
       chainId: mockBasicAttentionToken.chainId,
-      coin: mockBasicAttentionToken.coin,
-    }) as string
-    const destinationNetworkId = networkEntityAdapter.selectId({
+    })
+    const destinationNetworkId = getNetworkId({
       chainId: mockBitcoinErc20Token.chainId,
-      coin: mockBitcoinErc20Token.coin,
-    }) as string
+    })
 
     return {
       ...networkEntityAdapter.getInitialState(),
@@ -222,12 +221,9 @@ describe('parseSwapInfo', () => {
       },
       ids: [sourceNetworkId, destinationNetworkId],
       hiddenIds: [],
-      hiddenIdsByCoinType: {},
-      visibleIdsByCoinType: {},
-      mainnetIds: [],
-      testnetIds: [],
-      offRampIds: [],
-      visibleIds: [sourceNetworkId, destinationNetworkId],
+      offRampChainIds: [],
+      ankrChainIds: [],
+      swapChainIds: [],
     }
   }
 

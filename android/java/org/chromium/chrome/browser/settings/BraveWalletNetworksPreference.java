@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Callback;
+import org.chromium.brave_wallet.mojom.AllNetworks;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -26,7 +27,9 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Brave Wallet network preference hosted by {@link BraveWalletNetworksPreferenceFragment}. It shows
@@ -34,19 +37,6 @@ import java.util.Arrays;
  */
 public class BraveWalletNetworksPreference extends Preference
         implements ConnectionErrorHandler, NetworkPreferenceAdapter.ItemClickListener {
-
-    /**
-     * A generic 4-argument callback.
-     *
-     * @param <T1> The type of the first argument.
-     * @param <T2> The type of the second argument.
-     * @param <T3> The type of the third argument.
-     * @param <T4> The type of the fourth argument.
-     */
-    public interface Callback4<T1, T2, T3, T4> {
-        /** Call the callback. */
-        void call(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
-    }
 
     private AppCompatButton mAddNetwork;
     private RecyclerView mRecyclerView;
@@ -137,73 +127,44 @@ public class BraveWalletNetworksPreference extends Preference
         mListener = listener;
     }
 
+    private static final int[] SUPPORTED_COIN_TYPES = {
+        CoinType.ETH, CoinType.FIL, CoinType.SOL, CoinType.BTC
+    };
+
     public void updateNetworks() {
         if (mJsonRpcService == null || mRecyclerView == null) {
             return;
         }
-        getAvailableChainIds(
-                CoinType.ETH,
-                (defaultEthChainId, ethNetworks, customEthChainIds, hiddenEthChainIds) -> {
-                    final NetworkPreferenceAdapter.NetworkListContainer networkListContainerEth =
-                            new NetworkPreferenceAdapter.NetworkListContainer(
-                                    ethNetworks,
-                                    defaultEthChainId,
-                                    hiddenEthChainIds,
-                                    customEthChainIds);
-                    getAvailableChainIds(
-                            CoinType.FIL,
-                            (defaultFilChainId,
-                                    filNetworks,
-                                    customFilChainIds,
-                                    hiddenFilChainIds) -> {
-                                final NetworkPreferenceAdapter.NetworkListContainer
-                                        networkListContainerFil =
-                                                new NetworkPreferenceAdapter.NetworkListContainer(
-                                                        filNetworks,
-                                                        defaultFilChainId,
-                                                        hiddenFilChainIds,
-                                                        customFilChainIds);
-                                getAvailableChainIds(
-                                        CoinType.SOL,
-                                        (defaultSolChainId,
-                                                solNetworks,
-                                                customSolChainIds,
-                                                hiddenSolChainIds) -> {
-                                            final NetworkPreferenceAdapter.NetworkListContainer
-                                                    networkListContainerSol =
-                                                            new NetworkPreferenceAdapter
-                                                                    .NetworkListContainer(
-                                                                    solNetworks,
-                                                                    defaultSolChainId,
-                                                                    hiddenSolChainIds,
-                                                                    customSolChainIds);
-                                            getAvailableChainIds(
-                                                    CoinType.BTC,
-                                                    (defaultBtcChainId,
-                                                            btcNetworks,
-                                                            customBtcChainIds,
-                                                            hiddenBtcChainIds) -> {
-                                                        final NetworkPreferenceAdapter
-                                                                        .NetworkListContainer
-                                                                networkListContainerBtc =
-                                                                        new NetworkPreferenceAdapter
-                                                                                .NetworkListContainer(
-                                                                                btcNetworks,
-                                                                                defaultBtcChainId,
-                                                                                hiddenBtcChainIds,
-                                                                                customBtcChainIds);
-                                                        final NetworkPreferenceAdapter adapter =
-                                                                new NetworkPreferenceAdapter(
-                                                                        getContext(),
-                                                                        networkListContainerEth,
-                                                                        networkListContainerFil,
-                                                                        networkListContainerSol,
-                                                                        networkListContainerBtc,
-                                                                        this);
-                                                        mRecyclerView.setAdapter(adapter);
-                                                    });
-                                        });
-                            });
+        mJsonRpcService.getAllNetworks(
+                allNetworks -> {
+                    final NetworkPreferenceAdapter.NetworkListContainer[] containers =
+                            new NetworkPreferenceAdapter.NetworkListContainer
+                                    [SUPPORTED_COIN_TYPES.length];
+                    for (int i = 0; i < SUPPORTED_COIN_TYPES.length; i++) {
+                        final int coinType = SUPPORTED_COIN_TYPES[i];
+                        final int index = i;
+                        mJsonRpcService.getDefaultChainId(
+                                coinType,
+                                defaultChainId -> {
+                                    containers[index] =
+                                            buildNetworkListContainer(
+                                                    coinType, allNetworks, defaultChainId);
+                                    for (NetworkPreferenceAdapter.NetworkListContainer container :
+                                            containers) {
+                                        if (container == null) {
+                                            return;
+                                        }
+                                    }
+                                    mRecyclerView.setAdapter(
+                                            new NetworkPreferenceAdapter(
+                                                    getContext(),
+                                                    containers[0],
+                                                    containers[1],
+                                                    containers[2],
+                                                    containers[3],
+                                                    this));
+                                });
+                    }
                 });
     }
 
@@ -214,34 +175,27 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     /**
-     * Gets all the available networks including default chain ID, custom chain IDs, and hidden
-     * chain IDs. The method can be called ONLY after the JSON RPC service has been correctly
-     * initialized.
-     *
-     * @param callback Callback returning four parameters: default chain ID, all networks available,
-     *     custom chain IDs, and hidden chain IDs (if any).
+     * Builds a {@link NetworkPreferenceAdapter.NetworkListContainer} for the given coin type out of
+     * a single, already-fetched {@link AllNetworks} result.
      */
-    private void getAvailableChainIds(
-            @CoinType.EnumType final int coinType,
-            @NonNull final Callback4<String, NetworkInfo[], String[], String[]> callback) {
-        mJsonRpcService.getDefaultChainId(
-                coinType,
-                defaultChainId ->
-                        mJsonRpcService.getAllNetworks(
-                                networks ->
-                                        mJsonRpcService.getCustomNetworks(
-                                                coinType,
-                                                customChainIds ->
-                                                        mJsonRpcService.getHiddenNetworks(
-                                                                coinType,
-                                                                hiddenChainIds ->
-                                                                        callback.call(
-                                                                                defaultChainId,
-                                                                                filterNetworksByCoin(
-                                                                                        coinType,
-                                                                                        networks),
-                                                                                customChainIds,
-                                                                                hiddenChainIds)))));
+    private NetworkPreferenceAdapter.NetworkListContainer buildNetworkListContainer(
+            @CoinType.EnumType final int coinType, AllNetworks allNetworks, String defaultChainId) {
+        NetworkInfo[] coinNetworks = filterNetworksByCoin(coinType, allNetworks.networks);
+        List<String> coinChainIds = new ArrayList<>();
+        for (NetworkInfo network : coinNetworks) {
+            coinChainIds.add(network.chainId);
+        }
+        List<String> customChainIdsList =
+                new ArrayList<>(Arrays.asList(allNetworks.customChainIds));
+        customChainIdsList.retainAll(coinChainIds);
+        List<String> hiddenChainIdsList =
+                new ArrayList<>(Arrays.asList(allNetworks.hiddenChainIds));
+        hiddenChainIdsList.retainAll(coinChainIds);
+        return new NetworkPreferenceAdapter.NetworkListContainer(
+                coinNetworks,
+                defaultChainId,
+                hiddenChainIdsList.toArray(new String[0]),
+                customChainIdsList.toArray(new String[0]));
     }
 
     /**

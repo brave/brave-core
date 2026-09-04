@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { BraveWallet, SupportedOffRampNetworks } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
@@ -31,19 +31,18 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             data: { blockchainRegistry },
             cache,
           } = baseQuery(undefined)
-          const { kRamp } = BraveWallet.OffRampProvider
 
-          const rampAssets = await mapLimit(
-            SupportedOffRampNetworks,
-            10,
-            async (chainId: string) =>
-              await blockchainRegistry.getSellTokens(kRamp, chainId),
+          const networkRegistry = await cache.getNetworksRegistry()
+
+          const { tokens: rampAssets } = await blockchainRegistry.getSellTokens(
+            BraveWallet.OffRampProvider.kRamp,
+            networkRegistry.offRampChainIds,
           )
 
           // add token logos
           const rampAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
-              rampAssets.flatMap((p) => p.tokens),
+              rampAssets,
               10,
               async (token: BraveWallet.BlockchainToken) => {
                 const tokenLogo = await cache.getTokenLogo(token)

@@ -43,6 +43,7 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -721,36 +722,37 @@ void JsonRpcService::GetChainIdForOrigin(
 }
 
 void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
-  std::move(callback).Run(network_manager_->GetAllChains());
-}
+  auto result = mojom::AllNetworks::New();
 
-void JsonRpcService::GetCustomNetworks(mojom::CoinType coin,
-                                       GetCustomNetworksCallback callback) {
-  std::vector<std::string> chain_ids;
-  for (const auto& it : network_manager_->GetAllCustomChains(coin)) {
-    chain_ids.push_back(it->chain_id);
+  result->networks = network_manager_->GetAllChains();
+
+  for (auto coin : GetEnabledCoins()) {
+    for (const auto& chain : network_manager_->GetAllCustomChains(coin)) {
+      result->custom_chain_ids.push_back(chain->chain_id);
+    }
+    base::Extend(result->hidden_chain_ids,
+                 network_manager_->GetHiddenNetworks(coin));
+
+    // Currently selected chain is never hidden for coin.
+    std::erase(result->hidden_chain_ids,
+               base::ToLowerASCII(GetChainIdSync(coin, std::nullopt)));
   }
-  std::move(callback).Run(std::move(chain_ids));
-}
 
-void JsonRpcService::GetKnownNetworks(mojom::CoinType coin,
-                                      GetKnownNetworksCallback callback) {
-  std::vector<std::string> chain_ids;
-  for (const auto& it : network_manager_->GetAllKnownChains(coin)) {
-    chain_ids.push_back(it->chain_id);
+  for (auto& network : result->networks) {
+    if (kAnkrBlockchains.contains(network->chain_id)) {
+      result->ankr_chain_ids.emplace_back(network->chain_id);
+    }
+
+    if (SwapService::IsChainIdSupportedBySwap(network->chain_id)) {
+      result->swap_chain_ids.emplace_back(network->chain_id);
+    }
+
+    if (kOffRampChains.contains(network->chain_id)) {
+      result->off_ramp_chain_ids.emplace_back(network->chain_id);
+    }
   }
-  std::move(callback).Run(std::move(chain_ids));
-}
 
-void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
-                                       GetHiddenNetworksCallback callback) {
-  auto hidden_networks = network_manager_->GetHiddenNetworks(coin);
-
-  // Currently selected chain is never hidden for coin.
-  std::erase(hidden_networks,
-             base::ToLowerASCII(GetChainIdSync(coin, std::nullopt)));
-
-  std::move(callback).Run(hidden_networks);
+  std::move(callback).Run(std::move(result));
 }
 
 void JsonRpcService::AddHiddenNetwork(mojom::CoinType coin,

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <ranges>
 #include <utility>
 
 #include "base/containers/flat_set.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
 
@@ -408,10 +410,13 @@ void BlockchainRegistry::GetProvidersBuyTokens(
   std::move(callback).Run(GetBuyTokens(providers, chain_id));
 }
 
-void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
-                                       const std::string& chain_id,
-                                       GetSellTokensCallback callback) {
+void BlockchainRegistry::GetSellTokens(
+    mojom::OffRampProvider provider,
+    const std::vector<std::string>& chain_ids,
+    GetSellTokensCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> blockchain_sell_tokens;
+
+  absl::flat_hash_set<std::string> chain_id_set(std::from_range, chain_ids);
 
   auto* sell_tokens = base::FindOrNull(off_ramp_token_lists_, provider);
 
@@ -423,7 +428,7 @@ void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
 
   // Filter out tokens that do not belong to the specified chain_id
   for (const auto& token : *sell_tokens) {
-    if (token->chain_id != chain_id) {
+    if (!chain_id_set.contains(token->chain_id)) {
       continue;
     }
 

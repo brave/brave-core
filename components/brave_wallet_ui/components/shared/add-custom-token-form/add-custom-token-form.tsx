@@ -26,7 +26,7 @@ import {
 } from '../../../common/slices/api.slice'
 import {
   emptyNetworksRegistry,
-  networkEntityAdapter,
+  networkSelectors,
 } from '../../../common/slices/entities/network.entity'
 
 // components
@@ -71,7 +71,7 @@ export const AddCustomTokenForm = (props: Props) => {
   const { data: networksRegistry = emptyNetworksRegistry } =
     useGetNetworksRegistryQuery()
   const selectedAssetNetwork = selectedAsset
-    ? networksRegistry.entities[networkEntityAdapter.selectId(selectedAsset)]
+    ? networkSelectors.selectById(networksRegistry, selectedAsset.chainId)
     : undefined
 
   // state
