@@ -103,7 +103,6 @@ export class Config {
   braveAndroidKeyPassword: string | undefined
   braveAndroidPkcs11Provider: string
   braveAndroidPkcs11Alias: string
-  nativeRedirectCCDir: string
   useRemoteExec: boolean
   useSiso: boolean
   useReclient: boolean
@@ -262,7 +261,6 @@ export class Config {
     ])
     this.braveAndroidPkcs11Provider = ''
     this.braveAndroidPkcs11Alias = ''
-    this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
     this.useRemoteExec = envConfig.getBoolean(['use_remoteexec'], false)
     this.useSiso = envConfig.getBoolean(['use_siso'], true)
     this.useReclient = envConfig.getBoolean(

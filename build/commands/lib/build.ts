@@ -24,7 +24,6 @@ export async function build(
   util.touchOverriddenFiles()
   branding.update()
   buildUtils.ensureVsFilesMount()
-  await util.buildNativeRedirectCC()
 
   if (options.prepare_only) {
     return

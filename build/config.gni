@@ -34,8 +34,6 @@ declare_args() {
   # Used for generating delta installer on macOS/Windows
   last_chrome_installer = ""
 
-  # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
-  # overrides with empty ones to make //base buildable for redirect_cc.
   android_aab_to_apk = false
 }
 
