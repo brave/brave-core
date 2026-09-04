@@ -38,6 +38,8 @@ class CreativeNotificationAds final : public TableInterface {
 
   void GetForActiveCampaigns(GetCreativeNotificationAdsCallback callback) const;
 
+  void GetAll(GetCreativeNotificationAdsCallback callback) const;
+
   void SetBatchSize(int batch_size) {
     CHECK_GT(batch_size, 0);
 

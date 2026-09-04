@@ -41,6 +41,16 @@ namespace brave_ads {
 
 namespace {
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
+
+// A failure that will retry isn't an error yet, it's just a transient setback
+// on the way to success or eventual, real failure.
+void BlogFailure(const std::string& message, bool should_retry) {
+  if (should_retry) {
+    BLOG(1, message << ", will retry");
+  } else {
+    BLOG(0, message << ", giving up");
+  }
+}
 }  // namespace
 
 RefillConfirmationTokens::RefillConfirmationTokens() = default;
@@ -140,7 +150,7 @@ void RefillConfirmationTokens::RequestSignedTokensCallback(
       HandleRequestSignedTokensUrlResponse(mojom_url_response);
   if (!url_response_result.has_value()) {
     const auto& error = url_response_result.error();
-    BLOG(0, error.message);
+    BlogFailure(error.message, error.should_retry);
     if (error.should_retry) {
       return FailedToRefillAndRetry();
     }
@@ -217,7 +227,7 @@ void RefillConfirmationTokens::GetSignedTokensCallback(
       HandleGetSignedTokensUrlResponse(mojom_url_response);
   if (!url_response_result.has_value()) {
     const auto& error = url_response_result.error();
-    BLOG(0, error.message);
+    BlogFailure(error.message, error.should_retry);
     if (error.should_retry) {
       return FailedToRefillAndRetry();
     }
@@ -306,7 +316,7 @@ void RefillConfirmationTokens::SuccessfullyRefilled() {
 }
 
 void RefillConfirmationTokens::FailedToRefillAndRetry() {
-  NotifyFailedToRefillConfirmationTokens();
+  NotifyFailedToRefillConfirmationTokens(/*will_retry=*/true);
 
   Retry();
 }
@@ -314,7 +324,7 @@ void RefillConfirmationTokens::FailedToRefillAndRetry() {
 void RefillConfirmationTokens::FailedToRefill() {
   Reset();
 
-  NotifyFailedToRefillConfirmationTokens();
+  NotifyFailedToRefillConfirmationTokens(/*will_retry=*/false);
 }
 
 void RefillConfirmationTokens::Retry() {
@@ -376,9 +386,10 @@ void RefillConfirmationTokens::NotifyDidRefillConfirmationTokens() const {
   }
 }
 
-void RefillConfirmationTokens::NotifyFailedToRefillConfirmationTokens() const {
+void RefillConfirmationTokens::NotifyFailedToRefillConfirmationTokens(
+    bool will_retry) const {
   if (delegate_) {
-    delegate_->OnFailedToRefillConfirmationTokens();
+    delegate_->OnFailedToRefillConfirmationTokens(will_retry);
   }
 }
 

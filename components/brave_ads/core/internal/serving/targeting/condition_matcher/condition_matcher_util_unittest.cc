@@ -292,6 +292,74 @@ TEST_F(BraveAdsConditionMatcherUtilTest, DoNotMatchRegexCondition) {
   VerifyDoesNotMatchConditionsExpectation(condition_matchers);
 }
 
+// "M" has no glob wildcard and no regex-specific syntax, so it must only
+// ever mean "the value is exactly M", never "the value contains M
+// somewhere", even though RE2::PartialMatch would otherwise find it as an
+// unanchored substring of "Mac OS X".
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchBareLiteralConditionViaLooseRegexFallback) {
+  // Arrange.
+  test::RegisterProfileStringPref("foo", "Mac OS X");
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "M"}};
+
+  // Act & Assert
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest, MatchBareLiteralConditionExactly) {
+  // Arrange
+  test::RegisterProfileStringPref("foo", "Mac OS X");
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "Mac OS X"}};
+
+  // Act & Assert
+  VerifyDoesMatchConditionsExpectation(condition_matchers);
+}
+
+// "^1\.*" has a "*", but it's a regex quantifier on the escaped dot before
+// it, not a glob wildcard. The regex-only syntax ("^"/"\") must still take
+// priority, even though a wildcard character is also present; treating
+// this as glob-only would require the value to literally start with the
+// characters "^1\.", which it never will.
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchRegexConditionContainingWildcardAsQuantifier) {
+  // Arrange.
+  test::RegisterProfileStringPref("foo", "1.1.95.0");
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "^1\\.*"}};
+
+  // Act & Assert
+  VerifyDoesMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchPatternConditionContainingDotAgainstValueStartingWithIt) {
+  // Arrange
+  test::RegisterProfileStringPref("foo", "1.81.99");
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "1.*"}};
+
+  // Act & Assert
+  VerifyDoesMatchConditionsExpectation(condition_matchers);
+}
+
+// "1.*" is a valid glob pattern (starts with "1.", then anything), but
+// "152.1.95.0" doesn't start with "1." so the glob interpretation correctly
+// fails. The regex fallback must not still match it just because "1.*" is
+// also parseable as a loose, unanchored regex that happens to find "1."
+// later in the string.
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchPatternConditionContainingDotViaLooseRegexFallback) {
+  // Arrange.
+  test::RegisterProfileStringPref("foo", "152.1.95.0");
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "1.*"}};
+
+  // Act & Assert
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
+}
+
 TEST_F(BraveAdsConditionMatcherUtilTest,
        DoNotMatchConditionsIfPrefPathWasNotFound) {
   // Arrange
@@ -509,6 +577,71 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
 
   // Act & Assert
   VerifyDoesMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchConditionReturnsInvalidForMalformedEpochOperator) {
+  // Arrange
+  test::RegisterProfileTimePref("foo", base::Time::Now());
+
+  // Act & Assert
+  EXPECT_EQ(
+      ConditionMatchResult::kInvalid,
+      MatchCondition(GetAdsClient().GetVirtualPrefs(), "foo", "[T=]: 7 "));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchConditionReturnsInvalidForUnresolvableNumericalOperand) {
+  // Act & Assert
+  EXPECT_EQ(ConditionMatchResult::kInvalid,
+            MatchCondition(GetAdsClient().GetVirtualPrefs(), "foo",
+                           "[R=]:[virtual]:bar"));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchConditionReturnsInvalidForNonNumericMatchedValue) {
+  // Arrange
+  test::RegisterProfileStringPref("foo", "not_a_number");
+
+  // Act & Assert
+  EXPECT_EQ(ConditionMatchResult::kInvalid,
+            MatchCondition(GetAdsClient().GetVirtualPrefs(), "foo", "[R=]:5"));
+}
+
+// "[R>=]:5" isn't a recognized operator prefix. Only a single operator
+// character is supported, e.g. "[R≥]:5", so this must not silently fall
+// through to the Pattern/Regex matcher.
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchConditionReturnsInvalidForMalformedNumericalOperatorPrefix) {
+  // Arrange
+  test::RegisterProfileIntegerPref("foo", 5);
+
+  // Act & Assert
+  EXPECT_EQ(ConditionMatchResult::kInvalid,
+            MatchCondition(GetAdsClient().GetVirtualPrefs(), "foo", "[R>=]:5"));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchConditionReturnsInvalidForMalformedEpochOperatorPrefix) {
+  // Arrange
+  test::RegisterProfileTimePref("foo", base::Time::Now());
+
+  // Act & Assert
+  EXPECT_EQ(ConditionMatchResult::kInvalid,
+            MatchCondition(GetAdsClient().GetVirtualPrefs(), "foo", "[T>=]:3"));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchConditionsFoldsInvalidConditionsToFalse) {
+  // Explicit regression test: `MatchConditions` (the plural, real ad-serving
+  // path) must treat an invalid/malformed condition exactly like a
+  // legitimate non-match, never as a match.
+  test::RegisterProfileStringPref("foo", "not_a_number");
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "[R=]:5"}};
+
+  // Act & Assert
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,

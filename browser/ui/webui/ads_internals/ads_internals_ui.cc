@@ -62,7 +62,13 @@ AdsInternalsUI::AdsInternalsUI(content::WebUI* web_ui)
     : content::WebUIController(web_ui),
       handler_(brave_ads::AdsServiceFactory::GetForProfile(
                    Profile::FromWebUI(web_ui)),
-               *Profile::FromWebUI(web_ui)->GetPrefs()),
+               *Profile::FromWebUI(web_ui)->GetPrefs(),
+               /*variations_service=*/nullptr,
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+               AdsInternalsHandler::GetComponentIdCallback()),
       rewards_service_(GetRewardsServiceForWebUI(web_ui))
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ,

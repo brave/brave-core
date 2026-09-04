@@ -43,6 +43,7 @@ class Account final : public AdsClientNotifierObserver,
 
   bool IsUserRewardsSupported() const { return !!user_rewards_; }
 
+  const std::optional<WalletInfo>& GetWallet() const { return wallet_; }
   void SetWallet(std::optional<WalletInfo> wallet);
 
   void GetStatement(GetStatementOfAccountsCallback callback);

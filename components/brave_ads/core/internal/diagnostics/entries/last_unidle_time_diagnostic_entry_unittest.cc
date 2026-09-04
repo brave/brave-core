@@ -24,7 +24,7 @@ TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
-  EXPECT_EQ("Monday, July 8, 1996 at 12:34:56\u202fPM",
+  EXPECT_EQ("Monday, July 8, 1996 at 12:34:56\u202fPM (less than a minute ago)",
             diagnostic_entry.GetValue());
 }
 

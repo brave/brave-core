@@ -227,4 +227,34 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
   EXPECT_THAT(creative_ads, ::testing::ElementsAre(creative_ad_2));
 }
 
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
+       GetAllIncludesExpiredCampaigns) {
+  // Arrange
+  CreativeNotificationAdInfo expired_creative_ad =
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
+  expired_creative_ad.start_at = test::DistantPast();
+  expired_creative_ad.end_at = test::Now();
+
+  CreativeNotificationAdInfo active_creative_ad =
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
+  active_creative_ad.start_at = test::DistantPast();
+  active_creative_ad.end_at = test::DistantFuture();
+
+  database::SaveCreativeNotificationAds(
+      {expired_creative_ad, active_creative_ad});
+
+  AdvanceClockBy(base::Hours(1));
+
+  // Act & Assert
+  base::test::TestFuture<bool, SegmentList, CreativeNotificationAdList>
+      test_future;
+  database_table_.GetAll(
+      test_future
+          .GetCallback<bool, const SegmentList&, CreativeNotificationAdList>());
+  const auto [success, segments, creative_ads] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_ads, ::testing::UnorderedElementsAre(
+                                expired_creative_ad, active_creative_ad));
+}
+
 }  // namespace brave_ads

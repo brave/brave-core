@@ -5,9 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_segment_exclusion_rule.h"
 
+#include <utility>
+
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/test/reactions_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -30,8 +37,11 @@ TEST_F(BraveAdsDislikeSegmentExclusionRuleTest,
 
 TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldIncludeForLikedReaction) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {test::kSegment, mojom::ReactionType::kLiked}};
+  test::MockTokenGenerator(/*count=*/1);
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleLikeSegment(
+      test::BuildReaction(mojom::AdType::kNotificationAd), callback.Get());
 
   CreativeAdInfo creative_ad;
   creative_ad.segment = test::kSegment;
@@ -43,8 +53,11 @@ TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldIncludeForLikedReaction) {
 TEST_F(BraveAdsDislikeSegmentExclusionRuleTest,
        ShouldExcludeForDislikedReaction) {
   // Arrange
-  GetReactions().SegmentsForTesting() = {
-      {test::kSegment, mojom::ReactionType::kDisliked}};
+  test::MockTokenGenerator(/*count=*/1);
+  base::MockCallback<ResultCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  GetReactions().ToggleDislikeSegment(
+      test::BuildReaction(mojom::AdType::kNotificationAd), callback.Get());
 
   CreativeAdInfo creative_ad;
   creative_ad.segment = test::kSegment;

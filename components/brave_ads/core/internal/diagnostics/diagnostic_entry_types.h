@@ -16,9 +16,31 @@ enum class DiagnosticEntryType {
   kOptedInToSearchResultAds,
   kLanguage,
   kCountry,
+  kSchemaVersion,
+  kLastDatabaseMigrationFailureReason,
+  kWalletValid,
+  kWalletConnected,
+  kIssuersValid,
   kCatalogId,
+  kCatalogVersion,
   kCatalogLastUpdated,
-  kLastUnIdleTime
+  kLastUnIdleTime,
+  kNewTabPageAdsSchemaVersion,
+  kCatalogNextUpdate,
+  kCatalogPermission,
+  kNetworkConnectionPermission,
+  kBrowserIsActivePermission,
+  kFullScreenModePermission,
+  kMediaPermission,
+  kDoNotDisturbPermission,
+  kIssuersPermission,
+  kConfirmationTokensPermission,
+  kUserActivityPermission,
+  kCommandLinePermission,
+  kCanShowNotificationsPermission,
+  kTextClassificationResource,
+  kPurchaseIntentResource,
+  kAntiTargetingResource
 };
 
 }  // namespace brave_ads
