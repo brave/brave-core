@@ -16,9 +16,6 @@ source_set("history_embeddings") {
   ]
 }
 
-# Reads the passages the history embeddings database already indexed for a
-# set of open-tab URLs. Used by the tab_search WebUI page handler to give the
-# tab organization engine page content alongside each tab's title.
 static_library("open_tab_passages") {
   public = [ "content/open_tab_passages.h" ]
   sources = [ "content/open_tab_passages.cc" ]
