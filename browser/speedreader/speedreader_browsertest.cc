@@ -283,7 +283,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     speedreader_service()->SetAllowedForAllReadableSites(false);
   }
 
-  void GoBack(Browser* browser) {
+  void GoBack(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(ActiveWebContents());
     chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
     observer.Wait();

@@ -903,7 +903,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotCreativeAdsServiceForIncognitoBrowser) {
-  const Browser* const browser = CreateIncognitoBrowser();
+  const BrowserWindowInterface* const browser = CreateIncognitoBrowser();
 
   content::WebContents* const web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
@@ -918,7 +918,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotCreativeAdsServiceForGuestBrowser) {
-  const Browser* const browser = CreateGuestBrowser();
+  const BrowserWindowInterface* const browser = CreateGuestBrowser();
 
   content::WebContents* const web_contents =
       browser->tab_strip_model()->GetActiveWebContents();

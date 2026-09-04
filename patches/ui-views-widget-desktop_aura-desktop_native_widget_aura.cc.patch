@@ -1,8 +1,8 @@
 diff --git a/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc b/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc
-index dd1a03dc9476a94328e3a680a87c44a21d6c9b31..c71a5bec8c4616cef40fe1dc885f2009fbc1e6b7 100644
+index 6829c858d54a37b8fa101801ad7937e454eb6748..21af64042aa186f70587beb9a80bd2202f42f435 100644
 --- a/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc
 +++ b/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc
-@@ -549,10 +549,10 @@ void DesktopNativeWidgetAura::UpdateWindowTransparency() {
+@@ -552,10 +552,10 @@ void DesktopNativeWidgetAura::UpdateWindowTransparency() {
        desktop_window_tree_host_->ShouldWindowContentsBeTransparent();
  
    auto* window_tree_host = desktop_window_tree_host_->AsWindowTreeHost();

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 4c382ee11228687a2b3417b3a12ab49c0523b7f4..8d48c1c85ca854e377735be945bcd4a154419ea0 100644
+index c9e85f3caae895e5fd345ec4f1623b78079b1d19..3cc01fcc971692473ca76fb566317b7cf27e13b5 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
 @@ -121,7 +121,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
@@ -11,7 +11,7 @@ index 4c382ee11228687a2b3417b3a12ab49c0523b7f4..8d48c1c85ca854e377735be945bcd4a1
        {"extensionWebsite", IDS_EXTENSIONS_ITEM_EXTENSION_WEBSITE},
        {"dropToInstall", IDS_EXTENSIONS_INSTALL_DROP_TARGET},
        {"editSitePermissionsAllowAllExtensions",
-@@ -247,7 +247,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -248,7 +248,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
        {"itemSourcePolicy", IDS_EXTENSIONS_ITEM_SOURCE_POLICY},
        {"itemSourceSideloaded", IDS_EXTENSIONS_ITEM_SOURCE_SIDELOADED},
        {"itemSourceUnpacked", IDS_EXTENSIONS_ITEM_SOURCE_UNPACKED},
@@ -20,7 +20,7 @@ index 4c382ee11228687a2b3417b3a12ab49c0523b7f4..8d48c1c85ca854e377735be945bcd4a1
        {"itemVersion", IDS_EXTENSIONS_ITEM_VERSION},
        {"itemReloaded", IDS_EXTENSIONS_ITEM_RELOADED},
        {"itemReloading", IDS_EXTENSIONS_ITEM_RELOADING},
-@@ -517,6 +517,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -528,6 +528,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
                                              ? "webui-refresh-2026"
                                              : "");
  

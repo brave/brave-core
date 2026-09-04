@@ -222,13 +222,13 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
   }
 
-  void GoBack(Browser* browser) {
+  void GoBack(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(web_contents());
     chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
     observer.Wait();
   }
 
-  void GoForward(Browser* browser) {
+  void GoForward(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(web_contents());
     chrome::GoForward(browser, WindowOpenDisposition::CURRENT_TAB);
     observer.Wait();

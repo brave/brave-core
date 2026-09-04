@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/devtools/features.cc b/chrome/browser/devtools/features.cc
-index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a31cce45c 100644
+index 0a458178f89cc69cf3e6c9fb333bcc98b02f8ef3..c8789a5398e69c6c42dddc88610c106761c48689 100644
 --- a/chrome/browser/devtools/features.cc
 +++ b/chrome/browser/devtools/features.cc
-@@ -11,7 +11,11 @@ namespace features {
+@@ -12,7 +12,11 @@ namespace features {
  
  // Let the DevTools front-end query an AIDA endpoint for explanations and
  // insights regarding console (error) messages.
@@ -14,7 +14,7 @@ index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a
  const base::FeatureParam<std::string> kDevToolsConsoleInsightsModelId{
      &kDevToolsConsoleInsights, "aida_model_id", /*default_value=*/""};
  const base::FeatureParam<double> kDevToolsConsoleInsightsTemperature{
-@@ -116,7 +120,8 @@ BASE_FEATURE(kDevToolsAiAssistanceStorageAgent,
+@@ -117,7 +121,8 @@ BASE_FEATURE(kDevToolsAiAssistanceStorageAgent,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Whether the DevTools AI Code Completion is enabled.
@@ -24,7 +24,7 @@ index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a
  const base::FeatureParam<std::string> kDevToolsAiCodeCompletionModelId{
      &kDevToolsAiCodeCompletion, "aida_model_id",
      /*default_value=*/""};
-@@ -130,7 +135,8 @@ const base::FeatureParam<DevToolsFreestylerUserTier>
+@@ -131,7 +136,8 @@ const base::FeatureParam<DevToolsFreestylerUserTier>
          &devtools_freestyler_user_tier_options};
  
  // Whether the DevTools AI Code Generation is enabled.
@@ -34,7 +34,7 @@ index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a
  const base::FeatureParam<std::string> kDevToolsAiCodeGenerationModelId{
      &kDevToolsAiCodeGeneration, "aida_model_id",
      /*default_value=*/""};
-@@ -170,7 +176,8 @@ BASE_FEATURE(kDevToolsAiGeneratedTimelineLabels,
+@@ -171,7 +177,8 @@ BASE_FEATURE(kDevToolsAiGeneratedTimelineLabels,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Whether the DevTools AI generated annotation labels in timeline are enabled.
@@ -44,7 +44,7 @@ index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a
  
  // Whether DevTools drawer can be toggled to vertical orientation.
  BASE_FEATURE(kDevToolsVerticalDrawer, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -208,8 +215,9 @@ BASE_FEATURE(kDevToolsAcceptDebuggingConnections,
+@@ -215,8 +222,9 @@ BASE_FEATURE(kDevToolsAcceptDebuggingConnections,
  // TODO(crbug.com/442892562): Remove this flag once the feature is launched.
  BASE_FEATURE(kDevToolsShowPolicyDialog, base::FEATURE_ENABLED_BY_DEFAULT);
  
@@ -55,7 +55,7 @@ index 5ff9ec98540e3c45f6c5a7d74f1d50dcc903d2b5..2017fb6a2d82b33d138759473c78615a
  
  // Whether Console Insights Teasers are enabled.
  BASE_FEATURE(kDevToolsConsoleInsightsTeasers,
-@@ -232,6 +240,7 @@ BASE_FEATURE(kDevToolsGeminiRebranding, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -239,6 +247,7 @@ BASE_FEATURE(kDevToolsGeminiRebranding, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kDevToolsAiOriginTrialsApis, base::FEATURE_ENABLED_BY_DEFAULT);
  

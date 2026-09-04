@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/notifications/notification_handler.h b/chrome/browser/notifications/notification_handler.h
+index 57dd57a2e345af224b11e59fb8907dcd772d756b..cbcc36c8215c93ffb3b84d8948652e91133c1341 100644
+--- a/chrome/browser/notifications/notification_handler.h
++++ b/chrome/browser/notifications/notification_handler.h
+@@ -41,7 +41,9 @@ class NotificationHandler {
+     TAILORED_SECURITY = 10,
+     DEFAULT_BROWSER_CHANGED = 11,
+     EXTENSION_REQUEST = 12,
+-    MAX = EXTENSION_REQUEST,
++    BRAVE_ADS,
++    BRAVE_WALLET,
++    MAX = BRAVE_WALLET,
+   };
+ 
+   virtual ~NotificationHandler();

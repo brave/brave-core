@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 namespace sidebar {
@@ -17,7 +18,7 @@ namespace sidebar {
 SidebarWebPanelController::SidebarWebPanelController(BrowserView& browser_view)
     : browser_view_(browser_view) {
   CHECK(IsWebPanelFeatureEnabled());
-  browser_view_->browser()->tab_strip_model()->AddObserver(this);
+  browser_view_->browser()->GetTabStripModel()->AddObserver(this);
 }
 
 SidebarWebPanelController::~SidebarWebPanelController() {

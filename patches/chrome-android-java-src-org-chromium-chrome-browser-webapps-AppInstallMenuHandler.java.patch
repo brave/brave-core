@@ -1,14 +1,14 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
-index 91d43bdea1804b9bf4cadc135e2b32aead20e688..a0875161def9a26d198eaaa0f7305e3f4e34a58d 100644
+index b942e6c2c9be4fe5a1b122cf3f221d479c1c2d87..122ef5dd86fb044e4d822bab38b70b1127146d35 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/webapps/AppInstallMenuHandler.java
-@@ -14,6 +14,7 @@ import org.chromium.base.ContextUtils;
+@@ -13,6 +13,7 @@ import org.chromium.base.ContextUtils;
  import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
  import org.chromium.chrome.R;
 +import org.chromium.components.embedder_support.util.UrlConstants;
- import org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl;
  import org.chromium.chrome.browser.banners.AppMenuVerbiage;
+ import org.chromium.chrome.browser.open_in_app.OpenInAppDelegate;
  import org.chromium.chrome.browser.tab.Tab;
 @@ -80,7 +81,7 @@ public class AppInstallMenuHandler {
  

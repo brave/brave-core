@@ -36,6 +36,7 @@
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_store/test_password_store.h"
+#include "components/password_manager/core/browser/password_string.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
@@ -91,7 +92,8 @@ class PasswordUiViewAndroidTest : public ::testing::Test {
     form.url = GURL(origin);
     form.signon_realm = origin;
     form.username_value = base::UTF8ToUTF16(username);
-    form.password_value = base::UTF8ToUTF16(password);
+    form.password_value =
+        password_manager::PasswordString(base::UTF8ToUTF16(password));
     store_->AddLogin(password_manager::FromPasswordForm(form));
     RunUntilIdle();
     return form;

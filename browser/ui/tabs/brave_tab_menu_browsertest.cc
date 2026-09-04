@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
-#include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -56,11 +55,10 @@ class BraveTabMenuBrowserTest : public InProcessBrowserTest {
   ui::SimpleMenuModel* CreateMenuModelAt(
       TabContextMenuController* context_menu_controller,
       int tab_index) {
-    brave::BraveTabMenuModelFactory factory;
-    auto model =
-        factory.Create(context_menu_controller,
-                       browser()->GetFeatures().tab_menu_model_delegate(),
-                       browser()->tab_strip_model(), tab_index);
+    auto model = std::make_unique<BraveTabMenuModel>(
+        context_menu_controller,
+        browser()->GetFeatures().tab_menu_model_delegate(),
+        browser()->tab_strip_model(), tab_index);
 
     auto* model_ptr = model.get();
     context_menu_controller->LoadModel(std::move(model));

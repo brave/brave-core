@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/bookmarks/android/BUILD.gn b/chrome/browser/bookmarks/android/BUILD.gn
-index fc84c72b4664d9a2ce5e7cf3dc441bed8e51cb59..8b076af8bc2df0a0044180cf60dcd427697ec1e8 100644
+index d406d951b82d7b3c216ab632cd0e9765b7765a44..c3b04c3b8bc698bf863811a27b3bd76dca104f54 100644
 --- a/chrome/browser/bookmarks/android/BUILD.gn
 +++ b/chrome/browser/bookmarks/android/BUILD.gn
 @@ -38,6 +38,7 @@ source_set("impl") {
@@ -10,7 +10,7 @@ index fc84c72b4664d9a2ce5e7cf3dc441bed8e51cb59..8b076af8bc2df0a0044180cf60dcd427
  }
  
  android_resources("java_resources") {
-@@ -117,6 +118,7 @@ android_library("java") {
+@@ -122,6 +123,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/bookmarks/bar/BookmarkBarViewBinder.java",
      "java/src/org/chromium/chrome/browser/bookmarks/bar/BookmarkBarVisibilityProvider.java",
    ]

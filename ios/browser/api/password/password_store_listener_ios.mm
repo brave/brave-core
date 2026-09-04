@@ -83,7 +83,8 @@ void PasswordStoreListenerIOS::OnLoginsRetained(
             usernameElement:base::SysUTF16ToNSString(form.username_element)
               usernameValue:base::SysUTF16ToNSString(form.username_value)
             passwordElement:base::SysUTF16ToNSString(form.password_element)
-              passwordValue:base::SysUTF16ToNSString(form.password_value)
+              passwordValue:base::SysUTF16ToNSString(
+                                form.password_value.value())
             isBlockedByUser:form.blocked_by_user
                      scheme:PasswordFormSchemeTypeHtml];
 

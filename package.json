@@ -79,7 +79,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "153.0.8010.18",
+        "tag": "154.0.8037.9",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/src.git"
         },
@@ -90,8 +90,7 @@
         "custom_vars": {
           "checkout_clang_coverage_tools": true,
           "checkout_clangd": true,
-          "download_reclient": true,
-          "gn_version": "git_revision:c7ffaf80713afbe5a4f4d95a605c0a98084374de"
+          "download_reclient": true
         }
       },
       "depot_tools": {

@@ -239,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
 
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
-  Browser* tor_browser = tor_browser_creation_observer.Wait();
+  BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
   ASSERT_TRUE(tor_browser);
   ASSERT_TRUE(tor_browser->GetProfile()->IsTor());
 

@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include "base/i18n/rtl.h"
+#include "base/i18n/test/scoped_rtl_for_testing.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -15,7 +16,6 @@
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
-#include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
@@ -112,27 +112,28 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
-  void AppendTab(Browser* browser) {
+  void AppendTab(BrowserWindowInterface* browser) {
     chrome::AddTabAt(browser, GURL(), -1, true);
   }
 
-  tab_groups::TabGroupId AddTabToNewGroup(Browser* browser, int tab_index) {
+  tab_groups::TabGroupId AddTabToNewGroup(BrowserWindowInterface* browser,
+                                          int tab_index) {
     return browser->tab_strip_model()->AddToNewGroup({tab_index});
   }
 
-  void AddTabToExistingGroup(Browser* browser,
+  void AddTabToExistingGroup(BrowserWindowInterface* browser,
                              int tab_index,
                              tab_groups::TabGroupId group) {
     ASSERT_TRUE(browser->tab_strip_model()->SupportsTabGroups());
     browser->tab_strip_model()->AddToExistingGroup({tab_index}, group);
   }
 
-  TabStrip* GetTabStrip(Browser* browser) {
+  TabStrip* GetTabStrip(BrowserWindowInterface* browser) {
     return BrowserView::GetBrowserViewForBrowser(browser)
         ->horizontal_tab_strip_for_testing();
   }
 
-  Tab* GetTabAt(Browser* browser, int index) {
+  Tab* GetTabAt(BrowserWindowInterface* browser, int index) {
     return GetTabStrip(browser)->tab_at(index);
   }
 
@@ -1158,11 +1159,10 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
   ui::SimpleMenuModel* CreateMenuModelAt(
       TabContextMenuController* context_menu_controller,
       int tab_index) {
-    brave::BraveTabMenuModelFactory factory;
-    auto model =
-        factory.Create(context_menu_controller,
-                       browser()->GetFeatures().tab_menu_model_delegate(),
-                       browser()->tab_strip_model(), tab_index);
+    auto model = std::make_unique<BraveTabMenuModel>(
+        context_menu_controller,
+        browser()->GetFeatures().tab_menu_model_delegate(),
+        browser()->tab_strip_model(), tab_index);
 
     auto* model_ptr = model.get();
     context_menu_controller->LoadModel(std::move(model));
@@ -1259,7 +1259,7 @@ class VerticalTabStripDragAndDropBrowserTest
     return GetBoundsInScreen(view, view->GetLocalBounds()).CenterPoint();
   }
 
-  void PressTabAt(Browser* browser, int index) {
+  void PressTabAt(BrowserWindowInterface* browser, int index) {
     ASSERT_TRUE(ui_test_utils::SendMouseMoveSync(
         GetCenterPointInScreen(GetTabAt(browser, index))));
     ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::LEFT,
@@ -1286,7 +1286,7 @@ class VerticalTabStripDragAndDropBrowserTest
     WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
   }
 
-  bool IsDraggingTabStrip(Browser* b) {
+  bool IsDraggingTabStrip(BrowserWindowInterface* b) {
     return GetTabStrip(b)->GetDragContext()->GetDragController() != nullptr;
   }
 
@@ -2238,29 +2238,19 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   EXPECT_LE(contents_bounds_right.right(), vertical_tab_bounds_right.x());
 }
 
-// Regression test: When Chromium's upstream vertical tabs feature is active,
+// Regression test: When Chromium's upstream vertical tabs are active,
 // TabStrip::Initialize() is never called so tab_container_ remains null.
 // BraveTabStrip::UpdateOrientation() was crashing by accessing the null
 // tab_container_ via SetAvailableWidthCallback() during startup.
-class UpstreamVerticalTabsCrashTest : public InProcessBrowserTest {
- public:
-  UpstreamVerticalTabsCrashTest() {
-    scoped_feature_list_.InitAndEnableFeature(tabs::kVerticalTabs);
-  }
-  ~UpstreamVerticalTabsCrashTest() override = default;
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
+using UpstreamVerticalTabsCrashTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   // Simulate the user choosing "Side" in Tab strip position settings,
-  // then opening a new window. verifies no crash when kVerticalTabs is active
-  // and kVerticalTabsEnabled is set, since tab_container_ may be null in that
-  // configuration.
+  // then opening a new window. Verifies no crash when kVerticalTabsEnabled is
+  // set, since tab_container_ may be null in that configuration.
   browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kVerticalTabsEnabled,
                                                   true);
-  Browser* new_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* new_browser = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
 }

@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -40,17 +41,16 @@ SharedPinnedTabServiceBrowserTest::SharedPinnedTabServiceBrowserTest()
 SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
     default;
 
-Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
+BrowserWindowInterface* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
   auto* new_browser =
       chrome::OpenEmptyWindow(browser()->GetProfile(),
-                              /*should_trigger_session_restore= */ false)
-          ->GetBrowserForMigrationOnly();
+                              /*should_trigger_session_restore= */ false);
   browsers_.push_back(new_browser->GetWeakPtr());
   return new_browser;
 }
 
 SharedPinnedTabService* SharedPinnedTabServiceBrowserTest::GetForBrowser(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   return SharedPinnedTabServiceFactory::GetForProfile(browser->GetProfile());
 }
 

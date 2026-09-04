@@ -123,20 +123,11 @@
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
 -AIProofreaderTest.*
--AIRewriterManifestTest.CanCreateAndCreateWithManifestGemma4
--AIRewriterManifestTest.CanCreateBeforeDownloadGemma4
--AISummarizerManifestTest.CanCreateAndCreateWithManifestAutoPreference
--AISummarizerManifestTest.CanCreateAndCreateWithManifestCapabilityPreference
--AISummarizerManifestTest.CanCreateAndCreateWithManifestGemma4
--AISummarizerManifestTest.CanCreateAndCreateWithManifestSpeedPreference
--AISummarizerManifestTest.CanCreateBeforeDownloadGemma4
--AISummarizerManifestTest.CanCreateSummarizerWithSpeedPreferenceDownloadable
--AISummarizerManifestTest.InputLimitExceededErrorSpeedPreference
--AISummarizerManifestTest.SummarizeWithSpeedPreferenceAndContextFails
+-AIRewriterWithFeatureConfigTest.*
 -AISummarizerTest.*
--AIWriterManifestTest.CanCreateAndCreateWithManifestGemma4
--AIWriterManifestTest.CanCreateBeforeDownloadGemma4
+-AISummarizerWithFeatureConfigTest.*
 -AIWriterTest.*
+-AIWriterWithFeatureConfigTest.*
 -ActorSitePolicyTest.*
 -ActorTaskListBubbleControllerTest.*
 -All/ChangePasswordFormFinderTest.*/*
@@ -165,6 +156,7 @@
 -ExecutionEngineUrlGatingTest.SafetyChecksForNextAction_PromptsForSensitiveSite
 -ExecutionEngineUrlGatingTest.ShouldDeferNavigation_CrossOriginNonSensitiveAllowed
 -ExecutionEngineUrlGatingTest.ShouldDeferNavigation_CrossOriginSensitiveBlocked
+-ExplainSelectionTriggerTest.RequestExplanationOptimizationGuide*
 -FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
@@ -179,6 +171,7 @@
 
 # These tests fail because we don't use upstream's material colors.
 -MaterialNewTabPageColorMixerTest.*
+-MaterialTabStripColorMixerTest.*
 
 # These tests fail because we disable kFirstPartySets.
 -FirstPartySetsPolicyServicePrefTest.*
@@ -374,6 +367,7 @@
 -All/LastDownloadFinderTest.NonBinaryOnly/1
 -All/LastDownloadFinderTest.SimpleEndToEnd/1
 -All/SiteFamiliarityUtilsJsOptimizerParameterizedTest.DefaultBehavior/EsbFeatureEnabled_EsbUser
+-AntiVirusMetricsProviderTest.CallAsyncInit*/*
 -BundledSettingsMetricsProviderUnitTest.EnhancedBundle_SafeBrowsingMetrics
 -BundledSettingsMetricsProviderUnitTest.StandardBundle_SafeBrowsingMetrics
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
@@ -392,8 +386,7 @@
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTracker*
 -DeveloperPrivateApiUnitTest.ExtensionUpdatedEventOnAllowlistWarningChange
 -DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
--DownloadRequestMakerTest.PopulateAntivirusProducts
--DownloadRequestMakerTest.PopulateAntivirusProduct_FeatureDisabled
+-DownloadRequestMakerTest.PopulateAntivirusProduct*
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExtensionDataCollectionTest.*
@@ -605,6 +598,11 @@
 # These tests fail because we modify tab/strip dimentions
 -TabStripLayoutTest.*
 
+# These tests fail because Brave uses different width defaults for tabs.
+-HorizontalTabStripLayoutTest.ActiveTabHoldsAtMinimumActiveWidthBelowCrossover
+-HorizontalTabStripLayoutTest.CrowdedStripTabActivationMaintainsMinimumInactiveWidths
+-HorizontalTabStripLayoutTest.SplitTabsAndStandardTabsProportionalShrinking
+
 # These tests fail because we disable one time permission functionality in
 # components/content_settings/core/browser/content_settings_utils.cc override.
 -All/OneTimePermissionProviderExpiryTest.RenewContentSetting_Noop/*
@@ -677,8 +675,7 @@
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
 -ContextualSearchboxHandlerTest.DriveDisclaimerControllerDoesNotCrashForIncognito
--ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
--ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
+-ContextualSearchboxHandlerTest.QueryAutocomplete_*
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 -ContextualTasksEligibilityManagerTest.*
 -ContextualTasksUiServiceTest.*
@@ -703,6 +700,7 @@
 
 # This test fails because we disable kDestroyProfileOnBrowserClose feature.
 -BookmarkDictImporterTest.FailsIfProfileIsDestroyed
+-ChromeContentVerifierTest.NonCfmChecksHashEvenWithForceFlag
 
 # These tests fail because we add IPH features but do not add associated UMA
 # histogram/actions XML entries (which are not needed for Brave since we don't
@@ -754,6 +752,8 @@
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
+-SmartTabSharingTest.QueryAutocomplete_*
+-WebuiOmniboxHandlerTabScopingTest.QueryAutocomplete_*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
 -WebuiOmniboxHandlerTest.OpenLensSearch
 
@@ -839,6 +839,10 @@
 # (crashes: no LayoutProvider in unit_tests).
 -SigninUtilsHandlerTest.SigninWithAccount
 
+# These tests fail because we disable `net::features::kTLSTrustAnchorIDs`.
+-SSLConfigServiceManagerTest.PrefsPreservedAfterTrustAnchorIDsUpdated
+-SSLConfigServiceManagerTest.TrustAnchorIDsAfterPrefChange
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -854,8 +858,6 @@
 -BookmarkTest.EmptyBookmarkBarNotShownOnNTP
 -BrowserBookmarkBarTest.StateOnActiveTabChanged
 -BrowserCommandHandlerTest.CanShowSafeBrowsingEnhancedProtectionCommandPromo_EnhancedProtectionEnabled
--BrowserCommandsTest.OnDefaultZoomLevelChanged
--BrowserCommandsTest.OnMaxZoomIn
 -CWSInfoServiceTest.IgnoresNonCWSExtensions
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromeComponentUpdaterConfiguratorTest.*
@@ -871,6 +873,7 @@
 -DeclarativeContentActionTest.*
 -DevToolsUIBindingsTest.SanitizeFrontendURL
 -DevToolsUIDataSourceTest.TestDevToolsRemoteURL
+-DevToolsUIDataSourceWithTaskEnvTest.GotDataCallbackOwnsDevToolsDataSource
 -DownloadProtectionServiceTest.*
 -DownloadRequestMakerTest.PopulatesEnhancedProtection
 -DownloadTargetDeterminerTest.*

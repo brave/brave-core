@@ -69,7 +69,7 @@ void SendInterstitialCommand(
 }
 
 void SendInterstitialCommandSync(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     security_interstitials::SecurityInterstitialCommand command) {
   content::WebContents* web_contents =
       browser->tab_strip_model()->GetActiveWebContents();

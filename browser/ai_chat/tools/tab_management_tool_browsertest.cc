@@ -277,12 +277,12 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   tool.UserPermissionGranted("");
 
   // Setup: create tabs across two windows
-  Browser* b1 = browser();
+  BrowserWindowInterface* b1 = browser();
   int initial_b1_count = b1->tab_strip_model()->count();
   AddTabAndGetHandle(b1, GURL("https://a.test/"));
   AddTabAndGetHandle(b1, GURL("https://b.test/"));
 
-  Browser* b2 = CreateBrowser(profile());
+  BrowserWindowInterface* b2 = CreateBrowser(profile());
   int initial_b2_count = b2->tab_strip_model()->count();
   AddTabAndGetHandle(b2, GURL("https://c.test/"));
   AddTabAndGetHandle(b2, GURL("https://d.test/"));
@@ -716,7 +716,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // being closed, and not returning a window with an empty tab strip.
   // This validates the timing of the result in such scenarios.
   {
-    Browser* bnew = CreateBrowser(profile());
+    BrowserWindowInterface* bnew = CreateBrowser(profile());
     auto bnew_session_id = bnew->GetSessionID();
     auto bnewa =
         bnew->tab_strip_model()->GetTabAtIndex(0)->GetHandle().raw_value();
@@ -743,7 +743,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // Similarly, moving all groups from a window should result in the window
   // being closed and not returning a window with an empty tab strip.
   {
-    Browser* bnew = CreateBrowser(profile());
+    BrowserWindowInterface* bnew = CreateBrowser(profile());
     auto bnew_session_id = bnew->GetSessionID();
     auto bnewa =
         bnew->tab_strip_model()->GetTabAtIndex(0)->GetHandle().raw_value();
@@ -781,7 +781,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
   TabManagementTool tool(profile());
   tool.UserPermissionGranted("");
 
-  Browser* b1 = browser();
+  BrowserWindowInterface* b1 = browser();
   TabStripModel* strip1 = b1->tab_strip_model();
 
   int t1 = AddTabAndGetHandle(b1, GURL("https://order1.test/"));
@@ -815,7 +815,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
   // Cross-window move: move the same tabs into a second window in request order
   // [t2, t3, t1].
   {
-    Browser* b2 = CreateBrowser(profile());
+    BrowserWindowInterface* b2 = CreateBrowser(profile());
     AddTabAndGetHandle(b2, GURL("https://other.test/"));
     int target_window_id = b2->GetSessionID().id();
 
@@ -842,8 +842,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, CloseTabsAcrossWindows) {
   TabManagementTool tool(profile());
   tool.UserPermissionGranted("");
 
-  Browser* b1 = browser();
-  Browser* b2 = CreateBrowser(profile());
+  BrowserWindowInterface* b1 = browser();
+  BrowserWindowInterface* b2 = CreateBrowser(profile());
 
   int t1 = AddTabAndGetHandle(b1, GURL("https://close1.test/"));
   int t2 = AddTabAndGetHandle(b2, GURL("https://close2.test/"));

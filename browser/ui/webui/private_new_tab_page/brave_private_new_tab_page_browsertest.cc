@@ -91,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
                        BraveSearchForTorBrowser) {
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
-  Browser* tor_browser = tor_browser_creation_observer.Wait();
+  BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->GetProfile()->IsTor());
 

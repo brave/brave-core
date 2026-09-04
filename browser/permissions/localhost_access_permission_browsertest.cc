@@ -141,9 +141,11 @@ class LocalhostAccessBrowserTest
     return prompt_factory_.get();
   }
 
-  Browser* browser() { return current_browser_; }
+  BrowserWindowInterface* browser() { return current_browser_; }
 
-  void SetBrowser(Browser* browser) { current_browser_ = browser; }
+  void SetBrowser(BrowserWindowInterface* browser) {
+    current_browser_ = browser;
+  }
 
   void SetPromptFactory(permissions::PermissionRequestManager* manager) {
     prompt_factory_ =
@@ -312,7 +314,7 @@ class LocalhostAccessBrowserTest
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<net::EmbeddedTestServer> localhost_server_;
   base::test::ScopedFeatureList feature_list_;
-  raw_ptr<Browser, DanglingUntriaged> current_browser_;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
 
  private:
@@ -372,7 +374,7 @@ IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritAllow) {
   CheckAskAndAcceptFlow(target_url);
   // Check incognito mode.
   Profile* profile = browser()->GetProfile();
-  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
 }
@@ -386,15 +388,15 @@ IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritBlock) {
   CheckAskAndDenyFlow(target_url);
   // Check Incognito mode.
   Profile* profile = browser()->GetProfile();
-  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
 }
 
 IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeDoesNotLeak) {
   // Permission set in Incognito does not leak back to normal mode.
-  Browser* original_browser = browser();
-  Browser* incognito_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* original_browser = browser();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser();
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
   std::string test_domain = "localhost";

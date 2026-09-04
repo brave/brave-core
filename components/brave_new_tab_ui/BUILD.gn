@@ -21,6 +21,7 @@ transpile_web_ui("brave_new_tab_ui") {
   ]
   if (!is_android && !is_ios) {
     public_deps += [
+      "//components/omnibox/browser:fusebox_action_mojo_bindings_js",
       "//components/omnibox/browser:mojo_bindings",
       "//components/omnibox/browser:mojo_bindings_js",
     ]

@@ -1,5 +1,5 @@
 diff --git a/components/heap_profiling/in_process/heap_profiler_parameters.cc b/components/heap_profiling/in_process/heap_profiler_parameters.cc
-index fb16321e89570ef25f378fb4890d2fe5cf308d2c..6e9b428585be82d0595ae02d820d870f26f5c2ab 100644
+index 3339556a64da17857f1a3fc579f8a58e97c7f5a3..a89fff2bf981e579a78485cdf8e0a3f5769c465f 100644
 --- a/components/heap_profiling/in_process/heap_profiler_parameters.cc
 +++ b/components/heap_profiling/in_process/heap_profiler_parameters.cc
 @@ -125,7 +125,8 @@ constexpr base::FeatureParam<double> kUtilityHashSetLoadFactor{
@@ -9,6 +9,6 @@ index fb16321e89570ef25f378fb4890d2fe5cf308d2c..6e9b428585be82d0595ae02d820d870f
 -BASE_FEATURE(kHeapProfilerReporting, base::FEATURE_ENABLED_BY_DEFAULT);
 +// kHeapProfilerReporting feature state is enforced via plaster rewrite.
 +BASE_FEATURE(kHeapProfilerReporting, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kHeapProfilerChurnReporting, base::FEATURE_ENABLED_BY_DEFAULT);
  
- const base::FeatureParam<double> kStableProbability{
-     &kHeapProfilerReporting, "stable-probability", kDefaultStableProbability};
+ const base::FeatureParam<double> kHeapChurnSubsamplingChance{

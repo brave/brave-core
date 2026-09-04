@@ -19,8 +19,8 @@
 #pragma pop_macro("DEFINE_JNI")
 #undef JNI_AboutSettingsBridge_GetApplicationVersion
 
-static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
-  JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl(env);
+static std::string JNI_AboutSettingsBridge_GetApplicationVersion() {
+  JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl();
 
   std::string application(base::android::apk_info::host_package_label());
   application.append(" ");

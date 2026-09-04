@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index 371904a3984e27a7d3c259410d4d0c0e23e6f035..4190c3b9dbea1b22edc3bc1e8fdf39e5ddd4d813 100644
+index f00fbfbfb2e33d106b290f08b9633eea4247d65c..2ee5519d04df43f44c0a8b946eea320fb578ad1e 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 371904a3984e27a7d3c259410d4d0c0e23e6f035..4190c3b9dbea1b22edc3bc1e8fdf39e5
  import("//extensions/buildflags/buildflags.gni")
  import("//tools/json_schema_compiler/json_features.gni")
  
-@@ -26,6 +27,7 @@ source_set("extensions") {
+@@ -27,6 +28,7 @@ source_set("extensions") {
      "permissions/chrome_permission_message_rules.h",
      "sync_helper.h",
    ]
@@ -18,7 +18,7 @@ index 371904a3984e27a7d3c259410d4d0c0e23e6f035..4190c3b9dbea1b22edc3bc1e8fdf39e5
  
    # Files that can only be included from here.
    sources = [
-@@ -50,6 +52,7 @@ source_set("extensions") {
+@@ -52,6 +54,7 @@ source_set("extensions") {
      "permissions/chrome_permission_message_rules.cc",
      "sync_helper.cc",
    ]
@@ -26,7 +26,7 @@ index 371904a3984e27a7d3c259410d4d0c0e23e6f035..4190c3b9dbea1b22edc3bc1e8fdf39e5
  
    public_deps = [
      "//base",
-@@ -62,6 +65,7 @@ source_set("extensions") {
+@@ -64,6 +67,7 @@ source_set("extensions") {
      "//ui/gfx/geometry",
      "//url",
    ]
@@ -34,7 +34,7 @@ index 371904a3984e27a7d3c259410d4d0c0e23e6f035..4190c3b9dbea1b22edc3bc1e8fdf39e5
  
    deps = [
      "//chrome/app:branded_strings",
-@@ -88,6 +92,7 @@ source_set("extensions") {
+@@ -90,6 +94,7 @@ source_set("extensions") {
      "//ui/message_center/public/cpp",
      "//url",
    ]

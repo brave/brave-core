@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/prefs/pref_change_registrar.h"
 
+class BrowserWindowInterface;
 class PrefRegistrySimple;
 class Profile;
 class SearchEngineTracker;
@@ -32,7 +33,7 @@ class PageMetrics;
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
   BraveOmniboxClientImpl(LocationBar* location_bar,
-                         Browser* browser,
+                         BrowserWindowInterface* browser,
                          Profile* profile);
   BraveOmniboxClientImpl(const BraveOmniboxClientImpl&) = delete;
   BraveOmniboxClientImpl& operator=(const BraveOmniboxClientImpl&) = delete;

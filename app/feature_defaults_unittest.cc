@@ -49,7 +49,6 @@
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
 #include "components/personal_context/core/personal_context_features.h"
-#include "components/plus_addresses/core/common/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/private_ai/features.h"
 #include "components/private_insights/private_insights_features.h"
@@ -59,6 +58,7 @@
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "components/signin/public/base/signin_buildflags.h"
 #include "components/signin/public/base/signin_switches.h"
+#include "components/site_token_provider/features.h"
 #include "components/skills/features.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
@@ -155,7 +155,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &contextual_tasks::kContextualTasksCookiePrefetch,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
-      &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &extensions_features::kApiGlicPrivate,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
@@ -276,7 +275,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &personal_context::features::kPersonalContext,
-      &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
 #if !BUILDFLAG(IS_ANDROID)
       &private_ai::kPrivateAi,
@@ -292,15 +290,13 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
+      &site_token_provider::features::kSiteTokenProviderEnabled,
       &subresource_filter::kAdTagging,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &switches::kFirstRunDesktopRefresh,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillValuableMetadata,
-#if !BUILDFLAG(IS_ANDROID)
-      &tabs::kVerticalTabsLaunch,
-#endif  // !BUILDFLAG(IS_ANDROID)
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_STORAGE_UTILS_H_
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_STORAGE_UTILS_H_
 
+#include <cstdint>
 #include <optional>
 
 #include "base/files/file_path.h"

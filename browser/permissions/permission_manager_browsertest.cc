@@ -375,7 +375,8 @@ class PermissionManagerIncognitoBrowserTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
-  void TestRequestPermissionsDoNotLeak(Browser* browser1, Browser* browser2) {
+  void TestRequestPermissionsDoNotLeak(BrowserWindowInterface* browser1,
+                                       BrowserWindowInterface* browser2) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(
         browser1, https_server()->GetURL("a.test", "/empty.html")));
 

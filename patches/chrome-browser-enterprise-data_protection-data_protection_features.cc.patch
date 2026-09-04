@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/enterprise/data_protection/data_protection_features.cc b/chrome/browser/enterprise/data_protection/data_protection_features.cc
-index d4e92f03e973ddd08da31b65a9266da5f4320547..f5a09375328dc35bba9682efccb725a4bd55f54f 100644
+index 2d0cfb3221fce8dcf6ee542c45df57e610c0201e..f33319ebbbced55bfe050e01f5d759bdde3dcadb 100644
 --- a/chrome/browser/enterprise/data_protection/data_protection_features.cc
 +++ b/chrome/browser/enterprise/data_protection/data_protection_features.cc
-@@ -8,9 +8,11 @@
+@@ -8,7 +8,8 @@
  
  namespace enterprise_data_protection {
  
@@ -10,9 +10,5 @@ index d4e92f03e973ddd08da31b65a9266da5f4320547..f5a09375328dc35bba9682efccb725a4
 +// kEnableForceDownloadToCloud feature state is enforced via plaster rewrite.
 +BASE_FEATURE(kEnableForceDownloadToCloud, base::FEATURE_DISABLED_BY_DEFAULT);
  
--BASE_FEATURE(kEnableForceDownloadToOneDrive, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kEnableForceDownloadToOneDrive feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kEnableForceDownloadToOneDrive, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kEnableTabSharingProtection, base::FEATURE_DISABLED_BY_DEFAULT);
- 

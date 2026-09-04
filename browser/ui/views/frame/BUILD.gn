@@ -29,6 +29,7 @@ source_set("frame") {
     "//brave/browser/ui/views/sidebar",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/views/bookmarks",
+    "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
     "//chrome/browser/ui/views/infobars",
     "//ui/compositor",
   ]
@@ -47,6 +48,7 @@ source_set("frame_impl") {
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:tab_ui_helper",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/tabs:tab_strip",
@@ -75,7 +77,10 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:tab_ui_helper",
     "//chrome/browser/ui/views:layout_provider",
+    "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
+    "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout_delegate",
     "//chrome/test:test_support",
     "//components/tabs:test_support",
     "//content/test:test_support",
@@ -162,5 +167,9 @@ source_set("browser_tests") {
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/views/frame",
     ]
+  }
+
+  if (is_mac) {
+    deps += [ "//chrome/browser/ui:fullscreen_util_mac" ]
   }
 }

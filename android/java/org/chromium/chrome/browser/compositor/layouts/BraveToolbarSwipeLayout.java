@@ -9,11 +9,15 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import org.chromium.base.supplier.NonNullObservableSupplier;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ControlContainer;
 
 /** Layout defining the animation and positioning of the tabs during the edge swipe effect. */
+@NullMarked
 public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
     /**
      * Whether or not to move toolbar with tab contents. Will be deleted in bytecode, value from the
@@ -26,21 +30,23 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
             Context context,
             LayoutUpdateHost updateHost,
             LayoutRenderHost renderHost,
-            BrowserControlsStateProvider browserControlsStateProvider,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager,
             LayoutManager layoutManager,
             ToolbarThemeColorProvider toolbarColorProvider,
             NonNullObservableSupplier<Integer> bottomControlsOffsetSupplier,
             ViewGroup contentContainer,
+            @Nullable ControlContainer controlContainer,
             Runnable forceLayoutUpdateAndCaptureRunnable) {
         super(
                 context,
                 updateHost,
                 renderHost,
-                browserControlsStateProvider,
+                browserControlsVisibilityManager,
                 layoutManager,
                 toolbarColorProvider,
                 bottomControlsOffsetSupplier,
                 contentContainer,
+                controlContainer,
                 forceLayoutUpdateAndCaptureRunnable);
 
         // To postpone toolbar transition animation to the end of the swipe.
