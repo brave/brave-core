@@ -899,3 +899,86 @@ another sequence (see [CSM-010](#CSM-010)), stored in a longer-lived object, or
 handed to an API whose lifetime is independent of `this`. A linter that flags
 every `base::Unretained(this)` produces mostly false positives, since
 member-owned callbacks are the dominant, correct usage.
+
+---
+
+<a id="CSM-039"></a>
+
+## ✅ Let Pointer Types in Signatures Express Ownership
+
+**The pointer type in a parameter or return type is the ownership contract.**
+Follow the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/)
+so callers don't have to read the implementation to learn who frees what.
+
+**Parameters:**
+
+| Declare              | Meaning                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `T*` / `T&`          | No ownership change; caller keeps `t` alive for the call                              |
+| `std::unique_ptr<T>` | The function takes ownership                                                          |
+| `scoped_refptr<T>`   | The function may take a ref; the caller chooses `std::move(t)` or keeping its own ref |
+
+**Return values:**
+
+| Return                                             | Meaning                                                                     |
+| -------------------------------------------------- | --------------------------------------------------------------------------- |
+| `T*`                                               | If and only if the caller does _not_ take ownership                         |
+| `std::unique_ptr<T>` / `scoped_refptr<T>` by value | The implementation is handing off ownership                                 |
+| `const scoped_refptr<T>&`                          | The implementation retains ownership; the caller isn't forced to take a ref |
+
+**A function must never take ownership of a parameter passed as `T*`.** That is
+the single most common violation, and it's invisible at the call site.
+
+```cpp
+// ❌ WRONG - silently deletes a pointer the caller still owns
+void SetDelegate(Delegate* delegate);  // impl does: delegate_.reset(delegate);
+
+// ✅ CORRECT - ownership transfer is visible at every call site
+void SetDelegate(std::unique_ptr<Delegate> delegate);
+
+// ✅ CORRECT - borrowing only
+void UseDelegate(Delegate* delegate);
+```
+
+Callers must `std::move()` a non-temporary `std::unique_ptr<T>` into such a
+parameter; no `std::move()` is needed when returning a temporary or local (see
+[CSA-010](coding-standards-apis.md#CSA-010),
+[CSA-047](coding-standards-apis.md#CSA-047)). For passing smart pointers by
+const reference, see [CSM-031](#CSM-031); for class fields, use
+`const raw_ref<T>`/`raw_ptr<T>` ([CSM-036](#CSM-036)).
+
+---
+
+<a id="CSM-040"></a>
+
+## ✅ Use Platform Scoper Types for Platform Handles
+
+**Don't manage OS handles and Core Foundation objects by hand — use the
+platform-specific scopers**, which release on destruction like any other smart
+pointer.
+
+| Platform                          | Type                              |
+| --------------------------------- | --------------------------------- |
+| Windows `HANDLE`                  | `base::win::ScopedHandle`         |
+| Core Foundation types (macOS/iOS) | `base::apple::ScopedCFTypeRef<T>` |
+
+```cpp
+// ❌ WRONG - leaks on every early return
+HANDLE file = ::CreateFile(...);
+if (!IsValid(file)) {
+  return false;
+}
+::CloseHandle(file);
+
+// ✅ CORRECT
+base::win::ScopedHandle file(::CreateFile(...));
+if (!file.IsValid()) {
+  return false;
+}
+```
+
+Note that the Core Foundation scoper lives in `base::apple::` — the old
+`base::mac::ScopedCFTypeRef` spelling (still referenced by the upstream smart
+pointer guidelines) no longer exists. See
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/).
