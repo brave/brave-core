@@ -104,8 +104,7 @@ class OpenTabPassagesTest : public testing::Test {
   void SeedPassages(const std::string& url,
                     history::URLID url_id,
                     const std::vector<std::string>& passages) {
-    history_service_->AddPage(GURL(url), base::Time::Now(),
-                              history::SOURCE_BROWSED);
+    AddToHistory(url);
     std::vector<passage_embeddings::Embedding> embeddings(
         passages.size(), passage_embeddings::Embedding({1.0f, 0.0f, 0.0f}));
     UrlData url_data(url_id, /*visit_id=*/1, base::Time::Now());
