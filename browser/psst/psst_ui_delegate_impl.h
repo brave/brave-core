@@ -21,6 +21,10 @@
 
 class PrefService;
 
+namespace brave_origin {
+class BraveOriginService;
+}  // namespace brave_origin
+
 namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
@@ -35,6 +39,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
 
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
                               PsstReporterService* psst_reporter_service,
+                              brave_origin::BraveOriginService* brave_origin_service,
                               PrefService* prefs,
                               std::unique_ptr<PsstUiPresenter> ui_presenter);
   ~PsstUiDelegateImpl() override;
@@ -85,6 +90,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   raw_ptr<PsstReporterService> psst_reporter_service_ = nullptr;
+  raw_ptr<brave_origin::BraveOriginService> brave_origin_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
   raw_ptr<PrefService> prefs_ = nullptr;  // not owned
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
