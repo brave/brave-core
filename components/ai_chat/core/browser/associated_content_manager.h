@@ -173,6 +173,13 @@ class AssociatedContentManager : public ToolProvider,
   mojom::ToolPermission GetToolPermission(const url::Origin& origin,
                                           std::string_view tool_name) const;
 
+  // Whether |origin| still has live (i.e. not archived) content here.
+  bool HasLiveContentForOrigin(const url::Origin& origin) const;
+
+  // Drops |origin|'s recorded choices once it has no live content left, so
+  // that attaching the site again starts from the kAsk default.
+  void MaybeResetToolPermissionsForOrigin(const url::Origin& origin);
+
   // Takes ownership of the tools |origin| exposes for the loop that's
   // starting, dropping the ones the user has blocked.
   void AddToolsForGenerationLoop(const url::Origin& origin,
@@ -185,7 +192,8 @@ class AssociatedContentManager : public ToolProvider,
   // Origin -> tool name -> choice, for anything moved off the kAsk default.
   // Deliberately in-memory and per-conversation: granting a site's tool is a
   // decision about this conversation's context, so it shouldn't silently
-  // carry over into the next one.
+  // carry over into the next one, nor outlive the site's content being
+  // attached here.
   base::flat_map<url::Origin,
                  base::flat_map<std::string, mojom::ToolPermission>>
       tool_permissions_;

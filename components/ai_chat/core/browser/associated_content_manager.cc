@@ -178,7 +178,10 @@ void AssociatedContentManager::RemoveContent(
 
   auto it = std::ranges::find(content_delegates_, delegate,
                               [](const auto& ptr) { return ptr; });
+  url::Origin origin;
   if (it != content_delegates_.end()) {
+    // Captured now, as erasing owned content below may delete |delegate|.
+    origin = url::Origin::Create(delegate->url());
     // Let the content know it isn't associated with this conversation
     // anymore.
     content_observations_.RemoveObservation(delegate);
@@ -192,6 +195,8 @@ void AssociatedContentManager::RemoveContent(
   if (owned_it != owned_content_.end()) {
     owned_content_.erase(owned_it);
   }
+
+  MaybeResetToolPermissionsForOrigin(origin);
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -687,6 +692,33 @@ void AssociatedContentManager::DetachContent() {
   content_observations_.RemoveAllObservations();
   content_delegates_.clear();
   owned_content_.clear();
+  tool_permissions_.clear();
+}
+
+bool AssociatedContentManager::HasLiveContentForOrigin(
+    const url::Origin& origin) const {
+  for (auto* delegate : content_delegates_) {
+    // Archived content can't expose tools.
+    auto owned_it =
+        std::ranges::find(owned_content_, delegate,
+                          [](const auto& owned) { return owned.get(); });
+    if (owned_it != owned_content_.end()) {
+      continue;
+    }
+    if (url::Origin::Create(delegate->url()) == origin) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void AssociatedContentManager::MaybeResetToolPermissionsForOrigin(
+    const url::Origin& origin) {
+  auto origin_it = tool_permissions_.find(origin);
+  if (origin_it == tool_permissions_.end() || HasLiveContentForOrigin(origin)) {
+    return;
+  }
+  tool_permissions_.erase(origin_it);
 }
 
 }  // namespace ai_chat
