@@ -24,12 +24,14 @@ void OriginTrialContext::AddFeature(blink::mojom::OriginTrialFeature feature) {
 // AddForceEnabledTrials only has a DCHECK with origin_trials::IsTrialValid.
 void OriginTrialContext::AddForceEnabledTrials(
     const Vector<String>& trial_names) {
+  Vector<String> filtered_trial_names;
   for (const String& trial_name : trial_names) {
-    if (origin_trials::IsTrialDisabledInBrave(trial_name.Utf8()))
-      return;
+    if (!origin_trials::IsTrialDisabledInBrave(trial_name.Utf8())) {
+      filtered_trial_names.push_back(trial_name);
+    }
   }
 
-  AddForceEnabledTrials_ChromiumImpl(trial_names);
+  AddForceEnabledTrials_ChromiumImpl(filtered_trial_names);
 }
 
 }  // namespace blink
