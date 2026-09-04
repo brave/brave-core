@@ -102,9 +102,6 @@ class BraveBrowserCommandController
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // containers::ContainersServiceObserver overrides:
   void OnContainersListChanged() override;
-#endif
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
   void UpdateContainerCommands();
 #endif
   void InitBraveCommandState();

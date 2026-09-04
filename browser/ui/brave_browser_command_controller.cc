@@ -397,11 +397,14 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   auto* containers_service =
       ContainersServiceFactory::GetForProfile(browser_->GetProfile());
 
-  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER,
-                       containers_service != nullptr);
+  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER, containers_service);
 
   if (containers_service) {
-    containers_service_observation_.Observe(containers_service);
+    if (!containers_service_observation_.IsObserving()) {
+      containers_service_observation_.Observe(containers_service);
+    }
+  } else {
+    containers_service_observation_.Reset();
   }
 
   UpdateContainerCommands();
