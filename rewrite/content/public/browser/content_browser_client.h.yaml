@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Include the global frame routing ID used by WebSocket request context.'
+    regex:
+      pattern:
+        '#include "content/public/browser/generated_code_cache_settings.h"'
+      replace: |-
+        #include "content/public/browser/generated_code_cache_settings.h"
+        #include "content/public/browser/global_routing_id.h"
+
+  - description:
+      'Include the initiator origin type used by WebSocket request context.'
+    regex:
+      pattern:
+        '#include
+        "third_party/blink/public/mojom/worker/shared_worker_info.mojom.h"'
+      replace: |-
+        #include "third_party/blink/public/mojom/worker/shared_worker_info.mojom.h"
+        #include "url/origin.h"
+
+  - description: |-
+      Append optional frame and initiator context to WebSocket interception.
+
+      SharedWorker WebSockets have no RenderFrameHost, so embedders need the
+      process-bearing frame ID and initiator origin as separate inputs.
+    regex:
+      re_pattern: '(\bvirtual void CreateWebSocket\([^;]*?)(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+              std::optional<GlobalRenderFrameHostId> frame_id = std::nullopt,
+              std::optional<url::Origin> initiator_origin = std::nullopt\2

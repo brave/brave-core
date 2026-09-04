@@ -514,6 +514,8 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     if (contents) {
       ctx->set_tab_origin(
           url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
+    } else if (request_initiator) {
+      ctx->set_tab_origin(request_initiator->GetURL());
     }
   }
 

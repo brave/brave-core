@@ -1,0 +1,31 @@
+diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
+index d8075263d172806096314b31c743cecf2eb0a3e1..7867ad8108e09d15a617a88ce0095782382acc3b 100644
+--- a/content/public/browser/content_browser_client.h
++++ b/content/public/browser/content_browser_client.h
+@@ -44,6 +44,7 @@
+ #include "content/public/browser/file_system_access_permission_context.h"
+ #include "content/public/browser/frame_tree_node_id.h"
+ #include "content/public/browser/generated_code_cache_settings.h"
++#include "content/public/browser/global_routing_id.h"
+ #include "content/public/browser/interest_group_api_operation.h"
+ #include "content/public/browser/interest_group_manager.h"
+ #include "content/public/browser/keep_alive_request_tracker.h"
+@@ -97,6 +98,7 @@
+ #include "third_party/blink/public/mojom/origin_trials/origin_trials_settings.mojom-forward.h"
+ #include "third_party/blink/public/mojom/payments/secure_payment_confirmation_service.mojom-forward.h"
+ #include "third_party/blink/public/mojom/worker/shared_worker_info.mojom.h"
++#include "url/origin.h"
+ #include "ui/base/clipboard/clipboard_metadata.h"
+ #include "ui/base/page_transition_types.h"
+ #include "ui/base/window_open_disposition.h"
+@@ -2178,7 +2180,9 @@ class CONTENT_EXPORT ContentBrowserClient {
+       const std::optional<std::string>& user_agent,
+       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+           handshake_client,
+-      WebSocketOptions options);
++      WebSocketOptions options,
++      std::optional<GlobalRenderFrameHostId> frame_id = std::nullopt,
++      std::optional<url::Origin> initiator_origin = std::nullopt);
+ 
+   // Allows the embedder to control if establishing a WebTransport connection is
+   // allowed.

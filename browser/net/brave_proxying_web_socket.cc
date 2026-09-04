@@ -17,8 +17,6 @@
 #include "brave/components/constants/network_constants.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/render_process_host.h"
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -60,7 +58,9 @@ BraveProxyingWebSocket<T>::~BraveProxyingWebSocket() {
 // static
 template <template <typename> class T>
 BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
-    content::RenderFrameHost* frame,
+    content::BrowserContext* browser_context,
+    content::GlobalRenderFrameHostToken render_frame_token,
+    const url::Origin& initiator_origin,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
@@ -68,9 +68,8 @@ BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   return ResourceContextData<T>::CreateProxyingWebSocket(
-      std::move(factory), url, site_for_cookies, user_agent,
-      frame->GetProcess()->GetBrowserContext(), frame->GetGlobalFrameToken(),
-      frame->GetLastCommittedOrigin());
+      std::move(factory), url, site_for_cookies, user_agent, browser_context,
+      render_frame_token, initiator_origin);
 }
 
 template <>
