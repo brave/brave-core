@@ -7,10 +7,6 @@
 
 #include "brave/browser/ui/color/brave_color_mixer.h"
 
-#define AddChromeColorMixer AddChromeColorMixer_ChromiumImpl
-#include <chrome/browser/ui/color/chrome_color_mixer.cc>
-#undef AddChromeColorMixer
-
 namespace {
 
 void AddBraveColorMixer(ui::ColorProvider* provider,
@@ -18,13 +14,9 @@ void AddBraveColorMixer(ui::ColorProvider* provider,
 #if !BUILDFLAG(IS_ANDROID)
   AddBraveThemeColorMixer(provider, key);
   AddBravifiedChromeThemeColorMixer(provider, key);
-#endif  // #if !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace
 
-void AddChromeColorMixer(ui::ColorProvider* provider,
-                         const ui::ColorProviderKey& key) {
-  AddChromeColorMixer_ChromiumImpl(provider, key);
-  AddBraveColorMixer(provider, key);
-}
+#include <chrome/browser/ui/color/chrome_color_mixer.cc>

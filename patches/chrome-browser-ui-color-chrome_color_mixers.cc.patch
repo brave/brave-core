@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/color/chrome_color_mixers.cc b/chrome/browser/ui/color/chrome_color_mixers.cc
+index 9698e807b11df1414c5fbed3b153a06e6b96c5aa..83aa9a4888b92cd62ba8ddb0e4314d2ff8ce3510 100644
+--- a/chrome/browser/ui/color/chrome_color_mixers.cc
++++ b/chrome/browser/ui/color/chrome_color_mixers.cc
+@@ -65,11 +65,11 @@ void AddChromeColorMixers(ui::ColorProvider* provider,
+   AddProductSpecificationsColorMixer(provider, key);
+   AddTabStripColorMixer(provider, key);
+ 
+-  AddMaterialChromeColorMixer(provider, key);
++  EmptyColorMixer(provider, key);
+   AddMaterialNewTabPageColorMixer(provider, key);
+-  AddMaterialOmniboxColorMixer(provider, key);
+-  AddMaterialSidePanelColorMixer(provider, key);
+-  AddMaterialTabStripColorMixer(provider, key);
++  EmptyColorMixer(provider, key);
++  EmptyColorMixer(provider, key);
++  EmptyColorMixer(provider, key);
+ 
+   // Must be the last one in order to override other mixer colors.
+   AddNativeChromeColorMixer(provider, key);
