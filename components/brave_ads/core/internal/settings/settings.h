@@ -14,6 +14,8 @@ bool UserHasJoinedBraveRewardsAndConnectedWallet();
 
 bool UserHasOptedInToNewTabPageAds();
 
+bool IsSponsoredAdsEnabled();
+
 bool IsNotificationAdsEnabled();
 int GetMaximumNotificationAdsPerHour();
 

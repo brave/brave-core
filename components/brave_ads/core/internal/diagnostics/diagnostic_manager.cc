@@ -16,8 +16,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/language_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/notification_ads_enabled_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_search_result_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/sponsored_ads_enabled_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
@@ -29,9 +28,8 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<LastUnIdleTimeDiagnosticEntry>());
   SetEntry(std::make_unique<LanguageDiagnosticEntry>());
   SetEntry(std::make_unique<CountryDiagnosticEntry>());
-  SetEntry(std::make_unique<OptedInToNewTabPageAdsDiagnosticEntry>());
+  SetEntry(std::make_unique<SponsoredAdsEnabledDiagnosticEntry>());
   SetEntry(std::make_unique<NotificationAdsEnabledDiagnosticEntry>());
-  SetEntry(std::make_unique<OptedInToSearchResultAdsDiagnosticEntry>());
 }
 
 DiagnosticManager::~DiagnosticManager() = default;

@@ -10,7 +10,6 @@ Diagnostic information to help identify the root cause of issues that users may 
 | last unidle at  |
 | locale  |
 | notification ads enabled  |
-| opted into new tab page ads  |
-| opted into search result ads  |
+| sponsored ads enabled  |
 
 Please add to it!
