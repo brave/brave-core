@@ -122,9 +122,15 @@ function ToolItem(props: {
 // pill above the input box.
 export default function WebsiteToolsModal(props: Props) {
   const conversation = useConversation()
-  // Placeholder data means the page hasn't answered yet.
-  const { getContentToolsData: tools, isPlaceholderData: isLoading } =
-    conversation.api.useGetContentTools(props.content.uuid)
+  // Placeholder data means the page hasn't answered yet. A cached answer isn't
+  // shown while re-fetching either: it could name a permission the browser has
+  // since forgotten.
+  const {
+    getContentToolsData: tools,
+    isPlaceholderData,
+    isFetching,
+  } = conversation.api.useGetContentTools(props.content.uuid)
+  const isLoading = isPlaceholderData || isFetching
   // Only one description is expanded at a time, to keep the list scannable.
   const [expandedToolName, setExpandedToolName] = React.useState<string | null>(
     null,
