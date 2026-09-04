@@ -1,0 +1,29 @@
+diff --git a/components/webui/version/resources/about_version.ts b/components/webui/version/resources/about_version.ts
+--- a/components/webui/version/resources/about_version.ts
++++ b/components/webui/version/resources/about_version.ts
+@@ -128,9 +128,23 @@
+ 
+ // </if>
+ 
++function getCopyVersionFieldText(id: string): string {
++  const valueElement = getRequiredElement(id);
++  const label =
++      valueElement.closest('td')?.previousElementSibling?.textContent?.trim();
++  const value = valueElement.innerText.trim();
++  return label ? `${label}: ${value}` : value;
++}
++
+ async function copyVersionToClipboard() {
+-  await navigator.clipboard.writeText(
+-      getRequiredElement('copy-content').innerText);
++  const lines = [
++    getCopyVersionFieldText('copy-content'),
++    getCopyVersionFieldText('copy-revision-content'),
++  ];
++  if (document.getElementById('copy-os-content')) {
++    lines.push(getCopyVersionFieldText('copy-os-content'));
++  }
++  await navigator.clipboard.writeText(lines.join('\n'));
+   announceCopy('copy_notice');
+ }
+ 
