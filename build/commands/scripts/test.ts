@@ -10,7 +10,7 @@ import { program } from 'commander'
 import * as buildOptions from '../lib/buildOptions.ts'
 import fs from 'fs-extra'
 import path from 'node:path'
-import config, { type Config } from '../lib/config.ts'
+import config from '../lib/config.ts'
 import * as Log from '../lib/log.ts'
 import util from '../lib/util.js'
 import assert from 'node:assert'
@@ -20,112 +20,94 @@ import {
   getTestsToRun,
   getApplicableFilters,
   getChromiumTestsSuites,
-} from '../lib/testUtils.js'
+  getDefaultTestSuiteArgs,
+} from '../lib/testUtils.ts'
 import { isCI, isTeamcity } from '../lib/ciDetect.ts'
 import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
-const deleteFile = (filePath: string) => {
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath)
-  }
-}
-
-const buildTests = async (testsToRun: string[], config: Config) => {
+async function buildTests(testsToRun: string[]) {
   config.buildTargets = testsToRun
   util.touchOverriddenFiles()
 
   await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
-const defaultTestSuiteArgs = (testSuite: string) => {
-  switch (testSuite) {
-    case 'brave_network_audit_tests':
-      return [
-        '--ui-test-action-timeout=320000',
-        '--test-launcher-timeout=2200000',
-      ]
-    default:
-      return []
-  }
-}
-
-const runTests = async (
-  passthroughArgs: string[],
-  { suite, testsToRun }: { suite: string; testsToRun: string[] },
-  config: Config,
+async function runTests(
+  mainTestSuite: string,
+  testSuitesToRun: string[],
   options: buildOptions.TestOptions,
-) => {
-  const isJunitTestSuite = suite.endsWith('_junit_tests')
-  const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
+  passthroughArgs: string[],
+) {
+  const allResultsFilePath = path.join(config.srcDir, `${mainTestSuite}.txt`)
   // Clear previous results file
-  deleteFile(allResultsFilePath)
-
-  let braveArgs: string[] = []
-
-  if (!isJunitTestSuite) {
-    braveArgs.push('--enable-logging=stderr')
-  }
-
-  // Android and ios don't support --v
-  if (!config.isMobile()) {
-    braveArgs.push('--v=' + options.v)
-
-    if (options.vmodule) {
-      braveArgs.push('--vmodule=' + options.vmodule)
-    }
-  }
-
-  if (options.filter) {
-    braveArgs.push('--gtest_filter=' + options.filter)
-  }
-
-  if (options.run_disabled_tests) {
-    if (config.isIOS()) {
-      braveArgs.push('--gtest_also_run_disabled_tests')
-    } else {
-      braveArgs.push('--output-disabled-tests')
-    }
-  }
-
-  if (options.disable_brave_extension && !config.isIOS()) {
-    braveArgs.push('--disable-brave-extension')
-  }
-
-  if (options.single_process && !config.isIOS()) {
-    braveArgs.push('--single_process')
-  }
-
-  if (!isJunitTestSuite) {
-    if (
-      options.test_launcher_jobs != null
-      // --clones doesn't produce any test results and fails with AppLaunchError
-      && !config.isIOS()
-    ) {
-      braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
-    }
-    braveArgs = braveArgs.concat(passthroughArgs)
-  } else {
-    // Retain --json-results-file for junit tests.
-    const jsonResultsArg = passthroughArgs.find((arg) =>
-      arg.startsWith('--json-results-file='),
-    )
-    if (jsonResultsArg) {
-      braveArgs.push(jsonResultsArg)
-    }
-  }
-
-  if (
-    ['brave_unit_tests', 'brave_all_unit_tests'].includes(suite)
-    && isTeamcity
-    && !config.isMobile()
-  ) {
-    runChromiumTestLauncherTeamcityReporterIntegrationTests(config)
+  if (fs.existsSync(allResultsFilePath)) {
+    fs.unlinkSync(allResultsFilePath)
   }
 
   const upstreamTestSuites = getChromiumTestsSuites(config)
 
   // Run the tests
-  testsToRun.every((testSuite) => {
+  testSuitesToRun.every((testSuite) => {
+    if (testSuite === 'brave_unit_tests' && isTeamcity && !config.isMobile()) {
+      runChromiumTestLauncherTeamcityReporterIntegrationTests()
+    }
+
+    const isJunitTestSuite = testSuite.endsWith('_junit_tests')
+
+    let braveArgs: string[] = []
+
+    if (!isJunitTestSuite) {
+      braveArgs.push('--enable-logging=stderr')
+    }
+
+    // Android and ios don't support --v
+    if (!config.isMobile()) {
+      braveArgs.push('--v=' + options.v)
+
+      if (options.vmodule) {
+        braveArgs.push('--vmodule=' + options.vmodule)
+      }
+    }
+
+    if (options.filter) {
+      braveArgs.push('--gtest_filter=' + options.filter)
+    }
+
+    if (options.run_disabled_tests) {
+      if (config.isIOS()) {
+        braveArgs.push('--gtest_also_run_disabled_tests')
+      } else {
+        braveArgs.push('--output-disabled-tests')
+      }
+    }
+
+    if (options.disable_brave_extension && !config.isIOS()) {
+      braveArgs.push('--disable-brave-extension')
+    }
+
+    if (options.single_process && !config.isIOS()) {
+      braveArgs.push('--single_process')
+    }
+
+    if (!isJunitTestSuite) {
+      if (
+        options.test_launcher_jobs != null
+        // --clones doesn't produce any test results and fails with AppLaunchError
+        && !config.isIOS()
+      ) {
+        braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
+      }
+      braveArgs = braveArgs.concat(passthroughArgs)
+    } else {
+      // Retain --json-results-file for junit tests.
+      const jsonResultsArg = passthroughArgs.find((arg) =>
+        arg.startsWith('--json-results-file='),
+      )
+      if (jsonResultsArg) {
+        braveArgs.push(jsonResultsArg)
+      }
+    }
+
     let runArgs = braveArgs.slice()
     let runOptions = config.defaultOptions
 
@@ -133,7 +115,7 @@ const runTests = async (
     runOptions.cwd = config.outputDir
 
     // Prepend default test suite args
-    runArgs = defaultTestSuiteArgs(testSuite).concat(runArgs)
+    runArgs = getDefaultTestSuiteArgs(testSuite).concat(runArgs)
 
     // Set ASAN_OPTIONS (if not already set) only for test launching.
     // Note: other stages (like build) shouldn't set ASAN_OPTIONS to avoid
@@ -329,9 +311,7 @@ const runTests = async (
   })
 }
 
-const runChromiumTestLauncherTeamcityReporterIntegrationTests = (
-  config: Config,
-) => {
+function runChromiumTestLauncherTeamcityReporterIntegrationTests() {
   const runnerPath = path.join(
     config.outputDir,
     'teamcity_reporter_integration_test.py',
@@ -352,7 +332,7 @@ program
   .apply(buildOptions.supportTestOptions)
   .allowUnknownOption(true)
   .allowExcessArguments(true)
-  .action(async (suite, buildConfig, options, command) => {
+  .action(async (mainTestSuite, buildConfig, options, command) => {
     if (buildConfig) {
       config.buildConfig = buildConfig
     }
@@ -363,17 +343,17 @@ program
       process.exit(1)
     }
 
-    const testsToRun = options.base
-      ? await getAffectedTests({ ...options, suite })
-      : getTestsToRun(config, suite)
+    const testsSuitesToRun = options.base
+      ? await getAffectedTests({ ...options, suite: mainTestSuite })
+      : getTestsToRun(config, mainTestSuite)
 
-    if (testsToRun.length === 0 && !options.quiet) {
+    if (testsSuitesToRun.length === 0 && !options.quiet) {
       console.warn('SKIP: No tests need to run')
       return
     }
 
     const passthroughArgs = getPassthroughArgs(command)
-    await buildTests(testsToRun, config)
-    await runTests(passthroughArgs, { suite, testsToRun }, config, options)
+    await buildTests(testsSuitesToRun)
+    await runTests(mainTestSuite, testsSuitesToRun, options, passthroughArgs)
   })
   .parseAsync()
