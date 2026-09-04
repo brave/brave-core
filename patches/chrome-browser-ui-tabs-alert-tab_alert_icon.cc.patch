@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/tabs/alert/tab_alert_icon.cc b/chrome/browser/ui/tabs/alert/tab_alert_icon.cc
+index 08e5d23de49822af84fb47d960ebcb8144052309..a3b86c24e821fb7b89823b6b7e04a23996049573 100644
+--- a/chrome/browser/ui/tabs/alert/tab_alert_icon.cc
++++ b/chrome/browser/ui/tabs/alert/tab_alert_icon.cc
+@@ -66,6 +66,10 @@ ui::ColorId GetAlertIndicatorColor(TabAlert state,
+ }
+ 
+ const gfx::VectorIcon& GetAlertIcon(TabAlert alert_state) {
++  if (alert_state == TabAlert::kActorAccessing ||
++      alert_state == TabAlert::kActorWaitingOnUser) {
++    return kLeoProductBraveLeoIcon;
++  }
+   switch (alert_state) {
+     case TabAlert::kAudioPlaying:
+       return features::IsRoundedIconsEnabled()
