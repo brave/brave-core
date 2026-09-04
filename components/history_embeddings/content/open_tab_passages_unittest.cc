@@ -109,10 +109,10 @@ class OpenTabPassagesTest : public testing::Test {
     std::vector<passage_embeddings::Embedding> embeddings(
         passages.size(), passage_embeddings::Embedding({1.0f, 0.0f, 0.0f}));
     UrlData url_data(url_id, /*visit_id=*/1, base::Time::Now());
-    for (const std::string& passage : passages) {
-      url_data.passages.add_passages(passage);
-      url_data.passage_embeddings.emplace_back(std::nullopt);
-    }
+    url_data.passages.mutable_passages()->Assign(passages.begin(),
+                                                 passages.end());
+    // Default-constructs each entry to nullopt.
+    url_data.passage_embeddings.resize(passages.size());
     service_->OnPassagesEmbeddingsComputed(
         std::move(url_data), passages, std::move(embeddings), /*job_id=*/0,
         passage_embeddings::ComputeEmbeddingsStatus::kSuccess);
