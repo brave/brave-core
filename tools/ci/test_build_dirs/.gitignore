@@ -1,0 +1,5 @@
+# Ignore generated build files, only commit args.gn
+*
+!*/
+!.gitignore
+!*/args.gn
