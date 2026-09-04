@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_CLIENT_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_AGENT_CLIENT_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_AGENT_CLIENT_H_
 
 #include <memory>
 #include <optional>
@@ -189,4 +189,4 @@ class AgentClient {
 
 }  // namespace brave_vpn::v2
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_AGENT_CLIENT_H_

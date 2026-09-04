@@ -34,7 +34,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
-#include "brave/components/brave_vpn/browser/v2/test/fake_agent.h"
+#include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace brave_vpn::v2 {

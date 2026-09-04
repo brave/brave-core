@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BROWSER_ENDPOINT_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BROWSER_ENDPOINT_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_BROWSER_ENDPOINT_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_BROWSER_ENDPOINT_IMPL_H_
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -48,4 +48,4 @@ class BrowserEndpointImpl : public brave_vpn::mojom::BrowserEndpoint {
 
 }  // namespace brave_vpn::v2
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BROWSER_ENDPOINT_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_BROWSER_ENDPOINT_IMPL_H_
