@@ -30,8 +30,7 @@ using v1::endpoints::kRegionCountryIsoCodeKey;
 BraveVPNRegionDataManager::BraveVPNRegionDataManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
-    : url_loader_factory_(url_loader_factory), local_prefs_(local_prefs) {
-}
+    : url_loader_factory_(url_loader_factory), local_prefs_(local_prefs) {}
 
 BraveVPNRegionDataManager::~BraveVPNRegionDataManager() = default;
 
@@ -89,7 +88,9 @@ std::string BraveVPNRegionDataManager::GetRegionPrecisionForName(
       }
     }
   }
-  NOTREACHED();
+  // Region may not be found if the user's cached selection was removed from
+  // the server-side list. Fall back to country precision rather than crashing.
+  return brave_vpn::mojom::kRegionPrecisionCountry;
 }
 
 void BraveVPNRegionDataManager::SetFallbackDeviceRegion() {
