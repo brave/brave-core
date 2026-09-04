@@ -17,6 +17,7 @@ struct ReportInfo {
   string? report_url;
   string? shields_enabled;
   string? adblock_only_mode_enabled;
+  string? adblock_extension_installed;
   string? ad_block_setting;
   string? fp_block_setting;
   string? ad_block_list_names;
