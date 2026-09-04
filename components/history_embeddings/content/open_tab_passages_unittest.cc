@@ -180,6 +180,12 @@ TEST_F(OpenTabPassagesTest, UnknownUrlKeepsItsSlot) {
       (std::vector<std::vector<std::string>>{{}, {"hello"}}));
 }
 
+TEST_F(OpenTabPassagesTest, AllUrlsUnknownToHistory) {
+  // None of the URLs resolve, so the lookup returns before any passage read.
+  EXPECT_EQ(GetPassages({GURL("http://a.com"), GURL("http://b.com")}),
+            (std::vector<std::vector<std::string>>{{}, {}}));
+}
+
 TEST_F(OpenTabPassagesTest, NoIndexedData) {
   AddToHistory("http://test1.com");
 
@@ -196,6 +202,24 @@ TEST_F(OpenTabPassagesTest, CapsAndTruncatesPassages) {
   // `kMaxPassageBytes`.
   EXPECT_EQ(GetPassages({GURL("http://test1.com")}),
             (std::vector<std::vector<std::string>>{{kept, "second"}}));
+}
+
+TEST_F(OpenTabPassagesTest, CapAppliesPerUrl) {
+  SeedPassages("http://test1.com", 1, {"one", "two", "three"});
+  SeedPassages("http://test2.com", 2, {"four", "five", "six"});
+
+  // `kMaxPassagesPerUrl` is a per-URL cap, not a budget for the request.
+  EXPECT_EQ(GetPassages({GURL("http://test1.com"), GURL("http://test2.com")}),
+            (std::vector<std::vector<std::string>>{{"one", "two"},
+                                                   {"four", "five"}}));
+}
+
+TEST_F(OpenTabPassagesTest, EmptyPassagesSkippedWithoutConsumingCap) {
+  SeedPassages("http://test1.com", 1, {"", "first", "second"});
+
+  // The empty passage is dropped and doesn't count against the cap of 2.
+  EXPECT_EQ(GetPassages({GURL("http://test1.com")}),
+            (std::vector<std::vector<std::string>>{{"first", "second"}}));
 }
 
 TEST_F(OpenTabPassagesTest, TruncationPreservesUtf8Boundaries) {
@@ -229,6 +253,21 @@ TEST_F(OpenTabPassagesTest, ResultsAlignToInputOrder) {
                          GURL("http://test2.com")}),
             (std::vector<std::vector<std::string>>{
                 {"third"}, {"first"}, {"second"}}));
+}
+
+TEST_F(OpenTabPassagesTest, HistoryUnavailable) {
+  // A history service with no database cannot resolve URLIDs at all.
+  base::ScopedTempDir no_db_dir;
+  ASSERT_TRUE(no_db_dir.CreateUniqueTempDir());
+  auto no_db_history =
+      history::CreateHistoryService(no_db_dir.GetPath(), /*create_db=*/false);
+
+  base::test::TestFuture<std::vector<std::vector<std::string>>> future;
+  GetPassagesForUrls(no_db_history.get(), service_->AsWeakPtr(),
+                     {GURL("http://test1.com")}, kMaxPassagesPerUrl,
+                     kMaxPassageBytes, future.GetCallback(), &task_tracker_);
+
+  EXPECT_EQ(future.Take(), (std::vector<std::vector<std::string>>{{}}));
 }
 
 TEST_F(OpenTabPassagesTest, ServiceShutDownDuringUrlLookup) {
