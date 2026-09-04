@@ -7,7 +7,7 @@ import { createSelector } from '@reduxjs/toolkit'
 
 import { WalletPanelState } from '../../constants/types'
 
-type State = Omit<WalletPanelState, 'wallet'>
+type State = Pick<WalletPanelState, 'panel'>
 
 const selectPanelState = (state: State) => state.panel
 
