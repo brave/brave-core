@@ -16,12 +16,16 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/browser_actions.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/actions/actions.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -71,6 +75,32 @@ class WaybackIconImageSource : public gfx::CanvasImageSource {
   const gfx::IconDescription badge_description_;
 };
 
+views::BubbleAnchor GetAnchorForBubble(tabs::TabInterface& tab) {
+  auto* bwi = tab.GetBrowserWindowInterface();
+  if (!bwi) {
+    return views::BubbleAnchor();
+  }
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+  if (!browser_view) {
+    return views::BubbleAnchor();
+  }
+  return browser_view->toolbar_button_provider()->GetPageActionBubbleAnchor(
+      kActionShowWaybackMachine);
+}
+
+actions::ActionItem* GetActionItem(tabs::TabInterface& tab) {
+  auto* bwi = tab.GetBrowserWindowInterface();
+  if (!bwi) {
+    return nullptr;
+  }
+  auto* browser_actions = BrowserActions::From(bwi);
+  if (!browser_actions) {
+    return nullptr;
+  }
+  return actions::ActionManager::Get().FindAction(
+      kActionShowWaybackMachine, browser_actions->root_action_item());
+}
+
 }  // namespace
 
 WaybackMachinePageActionController::WaybackMachinePageActionController(
@@ -115,9 +145,13 @@ void WaybackMachinePageActionController::Init() {
 }
 
 void WaybackMachinePageActionController::ExecuteAction(
-    ToolbarButtonProvider* toolbar_button_provider,
     actions::ActionItem* item) {
-  content::WebContents* const contents = tab_->GetContents();
+  ShowBubble(item, /*user_gesture=*/true);
+}
+
+void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
+                                                    bool user_gesture) {
+  content::WebContents* contents = tab_->GetContents();
   if (!contents) {
     return;
   }
@@ -126,18 +160,41 @@ void WaybackMachinePageActionController::ExecuteAction(
     return;
   }
 
-  views::View* const anchor_view =
-      toolbar_button_provider
-          ->GetPageActionBubbleAnchor(kActionShowWaybackMachine)
-          .GetIfView();
+  const views::BubbleAnchor anchor = GetAnchorForBubble(tab_.get());
+  const views::View* anchor_view = anchor.GetIfView();
   if (!anchor_view || !anchor_view->GetWidget()) {
     return;
   }
 
-  auto bubble = std::make_unique<WaybackMachineBubbleView>(
-      contents->GetWeakPtr(), anchor_view, item);
-  bubble_tracker_.SetView(bubble.get());
-  views::BubbleDialogDelegateView::CreateBubble(std::move(bubble))->Show();
+  auto bubble =
+      std::make_unique<WaybackMachineBubbleView>(anchor, contents, item);
+  WaybackMachineBubbleView* bubble_view = bubble.get();
+  bubble_tracker_.SetView(bubble_view);
+
+  views::BubbleDialogDelegateView::CreateBubble(std::move(bubble));
+  bubble_view->ShowForReason(user_gesture
+                                 ? LocationBarBubbleDelegateView::USER_GESTURE
+                                 : LocationBarBubbleDelegateView::AUTOMATIC);
+}
+
+void WaybackMachinePageActionController::MaybeAutoShowBubble() {
+  if (!tab_->IsActivated()) {
+    return;
+  }
+
+  content::WebContents* contents = tab_->GetContents();
+  if (!contents) {
+    return;
+  }
+
+  if (!IsWaybackMachineEnabled(
+          user_prefs::UserPrefs::Get(contents->GetBrowserContext()))) {
+    return;
+  }
+
+  if (actions::ActionItem* item = GetActionItem(tab_.get())) {
+    ShowBubble(item, /*user_gesture=*/false);
+  }
 }
 
 WaybackMachineBubbleView*
