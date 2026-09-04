@@ -110,6 +110,7 @@ test("brave_components_unittests") {
     deps += [
       "//brave/components/brave_vpn/app/v2/agent:unit_tests",
       "//brave/components/brave_vpn/app/v2/shared:unit_tests",
+      "//brave/components/brave_vpn/browser/v2/agent:unit_tests",
     ]
   }
 

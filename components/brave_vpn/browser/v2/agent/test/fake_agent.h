@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_TEST_FAKE_AGENT_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_TEST_FAKE_AGENT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_TEST_FAKE_AGENT_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_TEST_FAKE_AGENT_H_
 
 #include <stddef.h>
 #include <stdint.h>
@@ -16,7 +16,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
-#include "brave/components/brave_vpn/browser/v2/agent_client.h"
+#include "brave/components/brave_vpn/browser/v2/agent/agent_client.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -153,4 +153,4 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
 
 }  // namespace brave_vpn::v2
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_TEST_FAKE_AGENT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_TEST_FAKE_AGENT_H_

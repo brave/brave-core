@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/v2/agent_client.h"
+#include "brave/components/brave_vpn/browser/v2/agent/agent_client.h"
 
 #include <memory>
 #include <optional>
@@ -13,7 +13,7 @@
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/components/brave_vpn/browser/v2/test/fake_agent.h"
+#include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
