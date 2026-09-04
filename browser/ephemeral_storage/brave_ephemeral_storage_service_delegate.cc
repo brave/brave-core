@@ -13,12 +13,11 @@
 
 #include "base/check.h"
 #include "base/containers/flat_set.h"
-#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -97,9 +96,11 @@ bool PrepareTabForFirstPartyStorageCleanup(
   return false;
 }
 
+// Self-owned observer: destroys itself once the removal it observes is done.
 class RemovalObserver : public content::BrowsingDataRemover::Observer {
  public:
-  ~RemovalObserver() override { remover_->RemoveObserver(this); }
+  RemovalObserver(const RemovalObserver&) = delete;
+  RemovalObserver& operator=(const RemovalObserver&) = delete;
 
   static content::BrowsingDataRemover::Observer* Create(
       content::BrowserContext* context,
@@ -110,18 +111,22 @@ class RemovalObserver : public content::BrowsingDataRemover::Observer {
 
   void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override {
     std::move(callback_).Run();
+    delete this;  // Matches the `new` in Create().
   }
 
  private:
   RemovalObserver(content::BrowserContext* context, base::OnceClosure callback)
-      : remover_(context->GetBrowsingDataRemover()),
-        callback_(std::move(callback).Then(
-            base::BindOnce(&base::DeletePointer<RemovalObserver>, this))) {
-    CHECK(remover_);
-    remover_->AddObserver(this);
+      : callback_(std::move(callback)) {
+    content::BrowsingDataRemover* remover = context->GetBrowsingDataRemover();
+    CHECK(remover);
+    observation_.Observe(remover);
   }
 
-  raw_ptr<content::BrowsingDataRemover> remover_;
+  ~RemovalObserver() override = default;
+
+  base::ScopedObservation<content::BrowsingDataRemover,
+                          content::BrowsingDataRemover::Observer>
+      observation_{this};
   base::OnceClosure callback_;
 };
 
