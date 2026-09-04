@@ -154,6 +154,13 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (r.SYNC) {
     delete r.SYNC
   }
+  // Delete identity docs and travel autofill routes
+  if (r.IDENTITY_DOCS) {
+    delete r.IDENTITY_DOCS
+  }
+  if (r.TRAVEL) {
+    delete r.TRAVEL
+  }
   // Delete /syncSetup/advanced
   if (r.SYNC_ADVANCED) {
     delete r.SYNC_ADVANCED

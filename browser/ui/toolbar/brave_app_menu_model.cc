@@ -139,6 +139,17 @@ void BraveAppMenuModel::BuildPasswordsAndAutofillSubmenu() {
           GetIndexOfCommandId(kPasswordsAndAutofillMenuPlaceholder).value()));
   CHECK(autofill_menu_model);
 
+  if (IsCommandIdEnabled(IDC_SHOW_IDENTITY_DOCS)) {
+    autofill_menu_model->RemoveItemAt(
+        autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_IDENTITY_DOCS)
+            .value());
+  }
+
+  if (IsCommandIdEnabled(IDC_SHOW_TRAVEL)) {
+    autofill_menu_model->RemoveItemAt(
+        autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_TRAVEL).value());
+  }
+
   if (IsCommandIdEnabled(IDC_SHOW_EMAIL_ALIASES)) {
     const auto index =
         autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_PASSWORD_MANAGER);
