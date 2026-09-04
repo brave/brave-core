@@ -41,6 +41,7 @@
 #include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -632,6 +633,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC},
       {"braveLeoAssistantTabOrganizationLabel",
        IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL},
+      {"braveLeoAssistantTabOrganizationSendPageContentLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_LABEL},
       {"braveLeoAssistantTabOrganizationModelLabel",
        IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL},
       {"braveLeoAssistantHistoryPreferenceLabel",
@@ -1175,6 +1178,19 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString(
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
+
+  html_source->AddString(
+      "braveLeoAssistantTabOrganizationSendPageContentDesc",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC,
+          l10n_util::GetStringUTF16(
+              IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL)));
+
+  // The Local AI master switch lives in local state and only takes effect on
+  // relaunch, so the page reads it once here rather than binding a pref.
+  html_source->AddBoolean(
+      "isHistoryEmbeddingsFeatureEnabled",
+      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
 
   html_source->AddString("braveLeoAssistantTabOrganizationDesc",
                          l10n_util::GetStringFUTF16(

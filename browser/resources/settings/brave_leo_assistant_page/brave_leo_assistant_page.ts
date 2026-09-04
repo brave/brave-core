@@ -55,6 +55,11 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: () => loadTimeData.getBoolean(
             'isTabOrganizationFeatureEnabled')
         },
+        isHistoryEmbeddingsFeatureEnabled_: {
+          type: Boolean,
+          value: () => loadTimeData.getBoolean(
+            'isHistoryEmbeddingsFeatureEnabled')
+        },
       }
     }
 
@@ -62,6 +67,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     declare isHistoryFeatureEnabled_: boolean
     declare isTabOrganizationFeatureEnabled_: boolean
+    declare isHistoryEmbeddingsFeatureEnabled_: boolean
     declare leoAssistantShowOnToolbarPref_: boolean
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
@@ -140,6 +146,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     openManageAccountPage_() {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
+    }
+
+    isSendPageContentAvailable_(historyEmbeddingsEnabled: boolean) {
+      return this.isHistoryEmbeddingsFeatureEnabled_ && historyEmbeddingsEnabled
     }
 
     openTabOrganizationLearnMore_() {
