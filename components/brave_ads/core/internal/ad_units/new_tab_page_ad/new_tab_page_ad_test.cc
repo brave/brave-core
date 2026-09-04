@@ -366,4 +366,49 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   run_loop.Run();
 }
 
+TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotTriggerDuplicateClickedEvent) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
+  test::ForcePermissionRules();
+
+  MockCreativeNewTabPageAds();
+
+  NewTabPageAdInfo ad;
+  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run)
+      .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> served_ad) {
+        ASSERT_TRUE(served_ad);
+        ASSERT_TRUE(served_ad->IsValid());
+        TriggerNewTabPageAdEventAndVerifiyExpectations(
+            served_ad->placement_id, served_ad->creative_instance_id,
+            mojom::NewTabPageAdEventType::kViewedImpression,
+            /*should_fire_event=*/true);
+        ad = *served_ad;
+        run_loop.Quit();
+      });
+  GetAds().MaybeServeNewTabPageAd(callback.Get());
+  run_loop.Run();
+
+  // Act
+  base::test::TestFuture<bool> clicked_future;
+  GetAds().TriggerNewTabPageAdEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::NewTabPageAdMetricType::kConfirmation,
+      mojom::NewTabPageAdEventType::kClicked, clicked_future.GetCallback());
+
+  base::test::TestFuture<bool> duplicate_clicked_future;
+  GetAds().TriggerNewTabPageAdEvent(
+      ad.placement_id, ad.creative_instance_id,
+      mojom::NewTabPageAdMetricType::kConfirmation,
+      mojom::NewTabPageAdEventType::kClicked,
+      duplicate_clicked_future.GetCallback());
+
+  // Assert
+  EXPECT_TRUE(clicked_future.Get());
+  EXPECT_FALSE(duplicate_clicked_future.Get());
+}
+
 }  // namespace brave_ads
