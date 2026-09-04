@@ -96,6 +96,7 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
             /* [in] */ BSTR private_key,
             /* [in] */ BSTR address,
             /* [in] */ BSTR endpoint,
+            /* [in] */ BOOL block_untunneled_traffic,
             /* [out] */ DWORD *last_error) = 0;
         
         virtual HRESULT STDMETHODCALLTYPE DisableVpn( 
@@ -132,6 +133,7 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
             /* [in] */ BSTR private_key,
             /* [in] */ BSTR address,
             /* [in] */ BSTR endpoint,
+            /* [in] */ BOOL block_untunneled_traffic,
             /* [out] */ DWORD *last_error);
         
         DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, DisableVpn)
@@ -162,8 +164,8 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
     ( (This)->lpVtbl -> Release(This) ) 
 
 
-#define IBraveVpnWireguardManager_EnableVpn(This,public_key,private_key,address,endpoint,last_error)	\
-    ( (This)->lpVtbl -> EnableVpn(This,public_key,private_key,address,endpoint,last_error) ) 
+#define IBraveVpnWireguardManager_EnableVpn(This,public_key,private_key,address,endpoint,block_untunneled_traffic,last_error)	\
+    ( (This)->lpVtbl -> EnableVpn(This,public_key,private_key,address,endpoint,block_untunneled_traffic,last_error) ) 
 
 #define IBraveVpnWireguardManager_DisableVpn(This,last_error)	\
     ( (This)->lpVtbl -> DisableVpn(This,last_error) ) 

@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -65,7 +66,7 @@ void WireguardConnectionAPIImplWin::PlatformConnectImpl(
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
       credentials.server_public_key, credentials.client_private_key,
       credentials.mapped_ip4_address, vpn_server_hostname,
-      std::move(smart_proxy_url),
+      manager_->ShouldBlockUntunneledTraffic(), std::move(smart_proxy_url),
       base::BindOnce(&WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
                      weak_factory_.GetWeakPtr()));
 }

@@ -60,7 +60,8 @@ std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
     const std::string& vpn_server_hostname,
-    const std::string& mapped_ipv4_address) {
+    const std::string& mapped_ipv4_address,
+    const bool block_untunneled_traffic) {
   if (client_private_key.empty() || server_public_key.empty() ||
       vpn_server_hostname.empty() || mapped_ipv4_address.empty()) {
     return std::nullopt;
