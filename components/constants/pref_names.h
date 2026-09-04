@@ -117,6 +117,9 @@ inline constexpr char kBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
 inline constexpr char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 inline constexpr char kSafetynetStatus[] = "safetynet.status";
+// Google Ads click id from the Play Store install referrer.
+inline constexpr char kReferralAndroidGbraid[] =
+    "brave.referral.android_gbraid";
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

@@ -92,4 +92,57 @@ public class BraveReferrerTest {
 
         assertNull(result);
     }
+
+    @Test
+    @SmallTest
+    public void capturesGbraid() {
+        String result =
+                BraveReferrer.getGbraidForTesting("utm_source=TESTSOURCE&gbraid=GBRAIDTEST");
+
+        assertEquals("GBRAIDTEST", result);
+    }
+
+    @Test
+    @SmallTest
+    public void capturesGbraidAlongsideGclid() {
+        String result =
+                BraveReferrer.getGbraidForTesting(
+                        "utm_source=TESTSOURCE&gclid=GCLIDTEST&gbraid=GBRAIDTEST");
+
+        assertEquals("GBRAIDTEST", result);
+    }
+
+    @Test
+    @SmallTest
+    public void capturesNoGbraidWhenAbsent() {
+        String result = BraveReferrer.getGbraidForTesting("utm_source=TESTSOURCE&gclid=GCLIDTEST");
+
+        assertEquals("", result);
+    }
+
+    @Test
+    @SmallTest
+    public void capturesGbraidEvenWhenUrpcWinsTheReferralCode() {
+        String referrer = "utm_source=TESTSOURCE&gbraid=GBRAIDTEST&urpc=URPCTEST";
+
+        assertEquals("URPCTEST", BraveReferrer.getReferralCodeForTesting(referrer));
+        assertEquals("GBRAIDTEST", BraveReferrer.getGbraidForTesting(referrer));
+    }
+
+    @Test
+    @SmallTest
+    public void capturesGbraidEvenWhenChoiceScreenWinsTheReferralCode() {
+        String referrer = "utm_source=eea-search-choice&gbraid=GBRAIDTEST";
+
+        assertEquals("SCS001", BraveReferrer.getReferralCodeForTesting(referrer));
+        assertEquals("GBRAIDTEST", BraveReferrer.getGbraidForTesting(referrer));
+    }
+
+    @Test
+    @SmallTest
+    public void capturesNoGbraidWhenReferrerIsEmpty() {
+        String result = BraveReferrer.getGbraidForTesting("");
+
+        assertEquals("", result);
+    }
 }
