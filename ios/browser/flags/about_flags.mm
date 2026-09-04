@@ -201,6 +201,15 @@ const flags_ui::FeatureEntry::FeatureVariation
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kWebKitGlobalPrivacyControl),           \
+      },                                                                       \
+      {                                                                        \
+          "transition-to-upsteam-https-upgrades",                              \
+          "Transition to use upstream HTTPS upgrades",                         \
+          "Transition to upstream HTTPS upgrade implementation instead of "    \
+          "Brave's own.",                                                      \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kTransitionToUpstreamHttpsUpgrades),    \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                       \

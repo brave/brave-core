@@ -54,6 +54,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveIOSDebugAdblock;
 @property(class, nonatomic, readonly) Feature* kBraveIOSEnableFarblingPlugins;
 @property(class, nonatomic, readonly)
+    Feature* kTransitionToUpstreamHttpsUpgrades;
+@property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;
 @property(class, nonatomic, readonly, nullable)
