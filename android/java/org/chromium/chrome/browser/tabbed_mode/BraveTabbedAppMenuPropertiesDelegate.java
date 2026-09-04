@@ -168,7 +168,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.recent_tabs_menu_id,
                                 R.id.page_zoom_id,
                                 R.id.find_in_page_id,
-                                R.id.set_default_browser)),
+                                R.id.default_browser_promo_menu_id)),
                 new PolicyControlledMenuItem(
                         R.id.brave_rewards_id,
                         this::buildBraveRewardsItem,
@@ -702,7 +702,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(buildBravePlaylistItem());
             modelList.add(buildBraveAddToPlaylistItem());
         }
-        modelList.add(buildSetDefaultBrowserItem());
+        modelList.add(buildDefaultBrowserItem());
 
         // Add policy-controlled items based on policy states, respecting their position
         for (PolicyControlledMenuItem item : getPolicyControlledMenuItems()) {
@@ -1056,9 +1056,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             R.id.brave_wallet_id,
                             R.id.all_bookmarks_menu_id));
         }
-        if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {
-            modelList.add(buildSetDefaultBrowserItem());
-        }
         // Policy-controlled items (Leo, Rewards, News, VPN) are handled by
         // updateMenuItemsBasedOnPolicy() - they are not added here to avoid showing them
         // if policy disables them
@@ -1109,15 +1106,24 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         return super.shouldShowIconRow();
     }
 
-    private MVCListAdapter.ListItem buildSetDefaultBrowserItem() {
+    /**
+     * Shows the upstream default browser menu item whenever Brave is not the default browser,
+     * instead of following the upstream promo state and its feature flag.
+     */
+    @Override
+    protected boolean shouldShowDefaultBrowserPromo() {
+        return !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext);
+    }
+
+    private MVCListAdapter.ListItem buildDefaultBrowserItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
                 AppMenuItemUtils.buildModelForStandardMenuItem(
                         mContext,
                         mAppMenuItemTheme,
-                        R.id.set_default_browser,
-                        R.string.menu_set_default_browser,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_set_as_default : 0,
+                        R.id.default_browser_promo_menu_id,
+                        R.string.make_chrome_default,
+                        0,
                         isMenuIconAtStart()));
     }
 
