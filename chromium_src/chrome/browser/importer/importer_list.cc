@@ -15,8 +15,10 @@
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/user_data_importer/common/importer_type.h"
+#include "components/version_info/channel.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -132,13 +134,28 @@ void DetectChromeProfiles(
       user_data_importer::TYPE_OPERA);
 #endif
 
+  // Offer every Brave install (Brave Browser + Brave Origin, across all
+  // channels) as an import source, except the exact install that is currently
+  // running (importing from yourself makes no sense). Brave Browser and Brave
+  // Origin are separate side-by-side products, so a Brave Browser build still
+  // offers the matching Brave Origin channel and vice versa.
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  AddChromeToProfiles(
-      profiles,
-      GetChromeSourceProfiles(GetBraveUserDataFolder().Append(
-          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetBraveUserDataFolder(), kBraveBrowser, user_data_importer::TYPE_BRAVE);
+  constexpr BraveImporterProduct kCurrentProduct =
+      BraveImporterProduct::kBraveOrigin;
+#else
+  constexpr BraveImporterProduct kCurrentProduct =
+      BraveImporterProduct::kBraveBrowser;
 #endif
+  for (const auto& source :
+       GetBraveImporterSources(kCurrentProduct, chrome::GetChannel())) {
+    const base::FilePath user_data_folder =
+        GetBraveUserDataFolder(source.product, source.channel);
+    AddChromeToProfiles(
+        profiles,
+        GetChromeSourceProfiles(user_data_folder.Append(
+            base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+        user_data_folder, source.name, user_data_importer::TYPE_BRAVE);
+  }
 }
 
 }  // namespace

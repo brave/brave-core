@@ -29,6 +29,7 @@ source_set("importer") {
 
   deps = [
     "//components/user_data_importer/common",
+    "//components/version_info:channel",
     "//components/webdata/common",
     "//extensions/buildflags",
     "//sql",

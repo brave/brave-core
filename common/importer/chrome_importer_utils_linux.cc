@@ -5,6 +5,8 @@
 
 #include "brave/common/importer/chrome_importer_utils.h"
 
+#include <string>
+
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
@@ -119,12 +121,13 @@ base::FilePath GetWhaleUserDataFolder() {
   return result;
 }
 
-base::FilePath GetBraveUserDataFolder() {
+base::FilePath GetBraveUserDataFolder(BraveImporterProduct product,
+                                      version_info::Channel channel) {
   base::FilePath result = base::PathService::CheckedGet(base::DIR_HOME);
 
   result = result.Append(".config");
   result = result.Append("BraveSoftware");
-  result = result.Append("Brave-Browser");
+  result = result.Append(GetBraveUserDataDirName(product, channel));
 
   return result;
 }
