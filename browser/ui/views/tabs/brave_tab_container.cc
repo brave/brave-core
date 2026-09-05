@@ -623,17 +623,6 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
 }
 
 void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
-  // Exclude tabs that own layer.
-  std::vector<ZOrderableTabContainerElement> orderable_children;
-  for (views::View* child : children()) {
-    if (!ZOrderableTabContainerElement::CanOrderView(child)) {
-      continue;
-    }
-    orderable_children.emplace_back(child);
-  }
-
-  std::stable_sort(orderable_children.begin(), orderable_children.end());
-
   auto* tab_strip =
       static_cast<TabStrip*>(base::to_address(tab_slot_controller_));
   if (!tab_strip->controller() || !tab_strip->GetBrowserWindowInterface()) {
@@ -649,8 +638,20 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
     PaintBoundingBoxForSplitTabs(*recorder.canvas());
   }
 
-  for (const ZOrderableTabContainerElement& child : orderable_children) {
-    child.view()->Paint(paint_info);
+  // Paint slot views in z-order using the cache maintained by
+  // TabContainerImpl, exactly like TabContainerImpl::PaintChildren() does.
+  // The cache is only rebuilt after tabs are added, removed, reordered,
+  // activated, grouped or split, so the steady state costs nothing per paint.
+  // Collecting and sorting every slot view here on each paint was O(n log n)
+  // per frame, which is noticeable with many tabs since a scrollable strip
+  // repaints on every wheel tick and every animation frame.
+  UpdateZOrderCacheIfDirty();
+  for (const ZOrderableTabContainerElement& child :
+       z_ordered_children_cache_) {
+    // Views that own a layer are composited separately.
+    if (!child.view()->layer()) {
+      child.view()->Paint(paint_info);
+    }
   }
 
   if (!ShouldShowVerticalTabs()) {
@@ -946,10 +947,16 @@ std::optional<views::LayoutOrientation> BraveTabContainer::GetScrollDirection()
 
 void BraveTabContainer::OnSplitCreated(const std::vector<int>& indices) {
   UpdateTabsBorderInSplitTab(indices);
+  // TabContainerImpl::OnSplitCreated() is intentionally not called, so mirror
+  // its cache invalidation: tabs joining a split become selected, which
+  // changes their z-value (see Tab::GetZValue()).
+  MarkZOrderCacheDirty();
 }
 
 void BraveTabContainer::OnSplitRemoved(const std::vector<int>& indices) {
   UpdateTabsBorderInSplitTab(indices);
+  // See OnSplitCreated().
+  MarkZOrderCacheDirty();
 }
 
 void BraveTabContainer::OnSplitContentsChanged(
