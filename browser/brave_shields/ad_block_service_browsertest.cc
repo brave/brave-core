@@ -1061,9 +1061,22 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
   }
 }
 
+// CNAME uncloaking is disabled by default on Android; enable it for tests
+// that verify the feature-on path.
+class CnameUncloakingFlagEnabledTest : public AdBlockServiceTest {
+ public:
+  CnameUncloakingFlagEnabledTest() {
+    feature_list_.InitAndEnableFeature(kBraveAdblockCnameUncloaking);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
 // Make sure that CNAME cloaked network requests get blocked correctly and
 // issue the correct number of DNS resolutions
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
+IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagEnabledTest,
+                       CnameCloakedRequestsGetBlocked) {
   UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
   GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
   GURL direct_resource_url =
@@ -1154,7 +1167,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
 
 // Make sure that an exception for a URL can apply to a blocking decision made
 // to its CNAME-uncloaked equivalent.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
+IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagEnabledTest,
+                       CnameCloakedRequestsCanBeExcepted) {
   UpdateAdBlockInstanceWithRules(
       "||cname-cloak-endpoint.tracking.com^\n"
       "@@a.com*/logo.png?unblock^");
@@ -1260,7 +1274,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
 
 // `$removeparam` should happen for the original URL, not the CNAME-uncloaked
 // one
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
+IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagEnabledTest,
+                       NoRemoveparamOnCnameUncloakedUrl) {
   UpdateCustomAdBlockInstanceWithRules(
       "||frame.com^$subdocument,removeparam=evil\n"
       "||assets.cdn.net^$subdocument,removeparam=test");
