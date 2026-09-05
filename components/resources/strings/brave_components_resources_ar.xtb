@@ -262,6 +262,8 @@
 <translation id="1892970806832316900">معلّق حتى <ph name="DATE"/></translation>
 <translation id="7849926087559412554">عذرًا! تعذّر على متصفحك استقبال Brave Private Ads.</translation>
 <translation id="5177429570315095022">يحتاج متصفحك إلى التحديث لمواصلة مشاهدة الإعلانات.</translation>
+<translation id="4593680147181354667">معرف التشخيص</translation>
+<translation id="3995471429906554168">معلومات التشخيص</translation>
 <translation id="752216563428219524">لم تتم تهيئة الإعلانات، يرجى تحديث الصفحة.</translation>
 <translation id="7422678632904904341">المقدار:</translation>
 <translation id="6969783933307596818">يتم التحديث تلقائياً كل 5 ثوانٍ</translation>
@@ -307,6 +309,7 @@
 <translation id="8118649457152178086">بلد المكآفات:</translation>
 <translation id="2152423226436243241">المساهمة التلقائية</translation>
 <translation id="7504352885209484360">مساهمة متكررة</translation>
+<translation id="916115051162298064">تشخيصات الإعلانات</translation>
 <translation id="7806880412350961625">سجلات الأحداث</translation>
 <translation id="4309915981827077375">معلومات عامة</translation>
 <translation id="3662406032239313663">السجلات</translation>
@@ -1072,6 +1075,7 @@
 <translation id="1530109021798294736">الشبكة Mainnet الرئيسية</translation>
 <translation id="1613627717923045622">اختبار الشبكة</translation>
 <translation id="6742767287935968736">Sepolia</translation>
+<translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">تحديد حساب</translation>
 <translation id="6797737193502014008">البحث عن كلمة مرور</translation>
 <translation id="3505920073976671674">تحديد شبكة</translation>
@@ -1458,12 +1462,6 @@
 <translation id="3009178788565917040">الناتج</translation>
 <translation id="7953669802889559161">المدخلات</translation>
 <translation id="4554024082642878647">المخرجات</translation>
-<translation id="5371133472668945195">Mint (عملة)</translation>
-<translation id="6298850625966818206">عمليات السحب</translation>
-<translation id="797064699579611882">تجزئة بيانات البرنامج النصي</translation>
-<translation id="2317256716536338565">الضمان</translation>
-<translation id="4739988172452238850">إرجاع الضمان</translation>
-<translation id="4695732358958704457">إجمالي الضمان</translation>
 <translation id="1965889974717516497">شبكات ثانوية</translation>
 <translation id="7691821949666755802">شبكات اختبار</translation>
 <translation id="2816106784624007524">حد الغاز يجب أن يكون عددًا صحيحًا أكبر من 0</translation>
@@ -1523,6 +1521,7 @@
 <translation id="4100192671552260674">حساب تم تجميده</translation>
 <translation id="1865659351831046902">حساب رمز مميز أصلي</translation>
 <translation id="3430421677512658698">رمز مميز لـ Mint (عملة)</translation>
+<translation id="5371133472668945195">Mint (عملة)</translation>
 <translation id="3591768665664470087">الموقعين</translation>
 <translation id="2761935211528145049">تفويض</translation>
 <translation id="5048094297412542354">المالك/المفوض</translation>
@@ -1770,6 +1769,11 @@
 <translation id="5797060124625958778">أولوية السرعة</translation>
 <translation id="6213230117190778270">استلام</translation>
 <translation id="6748108480210050150">من</translation>
+<translation id="4875290286426670462"><ph name="ASSET_SYMBOL"/> غير محدود</translation>
+<translation id="6018568069962140636">لم يتم التحقق من هذا الرمز المميز</translation>
+<translation id="8549067157732633185">تم التحقق من هذا الرمز المميز</translation>
+<translation id="2130170065617939165">تم التحقق من هذا الرمز المميز في قوائم <ph name="NUMBER_OF_LISTS"/></translation>
+<translation id="1554316484739382186">المُنفق: <ph name="ADDRESS"/></translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">حساب <ph name="PROVIDER"/></translation>
@@ -1786,6 +1790,11 @@
 <translation id="1531836666020185856">مميزة</translation>
 <translation id="3225021799163709119">الشائع</translation>
 <translation id="6854651431635060919">حساب شبكة الاختبار</translation>
+<translation id="626850389704042219">تمكين محاكاة المعاملات</translation>
+<translation id="7414944309396133072">معاينة التغير في الرصيد المقدر</translation>
+<translation id="2761574758015819991">تحديد المعاملات الضارة المحتملة</translation>
+<translation id="168533464844528463">المساعدة في اكتشاف محاولات الاحتيال</translation>
+<translation id="2410455471299328417">يتم توفير هذه الخدمة بواسطة <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> وتخضع <ph name="TERMS_LINK_BEFORE"/>لشروط الخدمة<ph name="TERMS_LINK_AFTER"/> و<ph name="PRIVACY_POLICY_LINK_BEFORE"/>سياسة الخصوصية الخاصة بهم<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">متوفِّر</translation>
 <translation id="5296640085393149413">الأموال المتاحة لك لاستخدامها.</translation>
 <translation id="2515906149804238711">تغيير معلق في رصيد محفظتك.</translation>
@@ -1813,8 +1822,14 @@
 <translation id="2454691116905703258">يشير اسم الرمز المميز لـ NFT إلى الاسم المحدد المُعطى للرمز المميز غير القابل للاستبدال ضمن مجموعة أو مشروع معين. وهذا الاسم يميّز رمز NFT واحدًا عن الآخر ضمن المجموعة نفسها.</translation>
 <translation id="3212749868469431851">يشير رمز NFT إلى المعرّف الفريد المستخدم لتمييز مجموعة أو مشروع NFT.</translation>
 <translation id="8198838794018761504">للعرض فقط</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">لم يتم العثور على أي تطبيقات لامركزية (DApp)</translation>
+<translation id="4864082959618144988">محافظ نشطة</translation>
+<translation id="5445224754926400848">تفضّل بزيارة <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">عوامل التصفية</translation>
+<translation id="803703704549420287">مسح عوامل التصفية</translation>
+<translation id="1472675084647422956">عرض المزيد</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
-<translation id="7417602392941345608">يقوم Brave حاليًا بالترحيل إلى Zcash NU6.3. خلال هذا الترحيل، ستقتصر وظائف Zcash على إلغاء الحماية والإرسال الشفاف إلى الشفاف.</translation>
 <translation id="8713438253026855351">التبديل إلى حساب محمي</translation>
 <translation id="3526789880090101085">حساب درع</translation>
 <translation id="3155166394760577549">قم بتفعيل الحماية لتعزيز خصوصية المعاملات.</translation>
@@ -1858,6 +1873,41 @@
 <translation id="8631765320256788981">أنت ترسل الأموال من حسابك الشفاف إلى حسابك المحمي.</translation>
 <translation id="3860364671495430495">أنت ترسل الأموال من حسابك المحمي إلى حسابك الشفاف.</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
+<translation id="9094621390791852268">فشلت معاينة المعاملة.</translation>
+<translation id="4982713341035600933">تغير الرصيد التقديري</translation>
+<translation id="7197388583016272600">تفاصيل الموافقة</translation>
+<translation id="3785613860627641047">تغيير الصلاحية</translation>
+<translation id="5135378583369915147">مسح المعاملة ضوئيًا</translation>
+<translation id="4744699166186440">Staker</translation>
+<translation id="6313747204807079184">منسحب</translation>
+<translation id="4312670848214406213">أنت تمنح شخصًا آخر الإذن بنقل الرموز المميزة نيابةً عنك.</translation>
+<translation id="5465460394116463557">يتطلب هذا الإذن بنقل العديد من الرموز المميزة، والتي عادة ما تكون محاولة للسرقة.</translation>
+<translation id="7315935420455987651">قد يكون هذا الموقع مزيفًا.</translation>
+<translation id="7772576967285233002">سيتمكن DApp هذا من نقل الرموز المميزة من حسابك لاحقًا.</translation>
+<translation id="438039795179295571">تم وضع علامة على هذا الموقع على أنه عالي الخطورة وسيحاول على الأرجح سرقة أموالك.</translation>
+<translation id="4852394547793286745">لم يتم التحقق من هذا المجال بعد. تابع فقط إذا كنت تثق بالموقع.</translation>
+<translation id="5832443872711287128">تأكد من هذا العنوان لأنه قد ينتحل شخصية جهة اتصال سابقة لك.</translation>
+<translation id="5317646355693663165">يؤدي هذا إلى نقل ملكية رصيد الرمز المميز الخاص بك إلى شخص آخر.</translation>
+<translation id="3459325260212799301">تم وضع علامة على هذا الموقع على أنه غير آمن و/أو ضار. قد يؤدي الاستمرار في استخدامه إلى خسائر.</translation>
+<translation id="5409388443146954820">سيؤدي هذا إلى الموافقة على أكثر من 200 إجراء. ما لم يتم التخطيط لذلك، فقد يكون ذلك ضارًا.</translation>
+<translation id="6187462466381633445">يتطلب هذا أكثر من 200 موافقة؛ والتي عادة ما تكون محاولة لاستنزاف أرصدتك.</translation>
+<translation id="3322526234603442338">أنت تقوم بتبادل الرموز المميزة دون مقابل. من المحتمل أن يكون هذا خطأً.</translation>
+<translation id="4773052969794445878">أنت ترسل الأموال إلى عنوان الرمز المميز حيث سيتم فقدها إلى الأبد.</translation>
+<translation id="8144820760826901598">يؤدي هذا الأمر إلى نقل ملكية حسابك وأرصدته إلى شخص آخر.</translation>
+<translation id="6023771436430346631">عدم وجود أموال كافية لتغطية رسوم شبكة الغاز.</translation>
+<translation id="4753738223346804632">لا يوجد رصيد كاف لإتمام المعاملة.</translation>
+<translation id="8661124952575076441">من المرجح أن تفشل المعاملة وتعود إلى مسارها الطبيعي. وستؤدي المحاولة إلى تكبّد تكاليف الغاز.</translation>
+<translation id="7660840414862537846">حدث خطأ غير متوقع في معاينة المعاملة. قد تكون الموافقة غير آمنة.</translation>
+<translation id="4683335916231560287">لم يتم الكشف عن أي تغييرات</translation>
+<translation id="6769279318856228158">تغيير ملكية الحساب</translation>
+<translation id="3200658657457611958">محاكاة كيفية تصرف المعاملة قبل الموافقة عليها</translation>
+<translation id="8311005737513179222">لا يتم دعم معاينة المعاملة على هذه الشبكة.</translation>
+<translation id="4282496974850444428">تظهر لك هذه الرسالة لأنك اخترت الاشتراك في خدمة معاينة المعاملة.</translation>
+<translation id="6094399032955582807">عرض الشبكات المتاحة</translation>
+<translation id="6644973832009582039">لا يتم دعم مسح رسائل EVM حاليًا</translation>
+<translation id="5222675470118670784">ما المقصود بمسح رسائل EVM؟</translation>
+<translation id="4085714860536252628">إنه يضمن الأمان والدقة من خلال فحص الرسائل المرسلة من Ethereum Virtual Machine والتي تتفاعل مع العقد الذكي الخاص بك أو أي إجراءات.</translation>
+<translation id="7800112661494546348">يشير إلى التحقق مرتين من رسالة للتأكد من أنها صحيحة قبل التوقيع عليها.</translation>
 <translation id="4750109510113597688">قد تتضمن هذه المعاملة رسوم إنشاء حساب</translation>
 <translation id="6201709949885884577">كلمة المرور مطلوبة للقيام بهذا الإجراء.</translation>
 <translation id="3435015606307655951">تحويل آمن</translation>
@@ -1884,9 +1934,10 @@
 <translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
 <translation id="8300751939969131609">قم بتشغيل Brave News، ولا تفوت أي خبر</translation>
 <translation id="7758665172236842395">تابع المصادر التي تفضلها، في موجو واحد، ليس عليك سوى فتح علامة تبويب في منصة Brave، والتمرير لأسفل، و... ها هو ذا!</translation>
+<translation id="2376542729617592331">أخبار Brave هي خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة، وإعلانات مجهولة المصدر. <ph name="LINK_START"/> معرفة المزيد <ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">تشغيل أخبار Brave</translation>
 <translation id="1772301834467143364">Brave News</translation>
-<translation id="1717242776111689224">تمكين أخبار Brave</translation>
+<translation id="6265592479622441247">الرجوع إلى <ph name="BEGIN_BOLD"/>لوحة التحكم<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">اكتشف</translation>
 <translation id="8981973962043893066">بحث عن موقع، أو موضوع، أو موجز RSS</translation>
 <translation id="1498364270401875204">القنوات</translation>
@@ -1922,10 +1973,8 @@
 <translation id="736592699917579616">الطعام</translation>
 <translation id="5104499318017527547">المتعة والتسلية</translation>
 <translation id="2228584369802328636">الألعاب</translation>
-<translation id="1748819301509295490">الحكومة</translation>
 <translation id="6941852195052765076">الصحة</translation>
 <translation id="2233040275795129413">نمط الحياة</translation>
-<translation id="4102567721634170493">الأخبار المحلية</translation>
 <translation id="5178222043222938163">الموسيقى</translation>
 <translation id="1322083935398004629">السياسة</translation>
 <translation id="8739620487574841501">الأخبار الإقليمية</translation>
@@ -1967,7 +2016,6 @@
 <translation id="5210365745912300556">إغلاق علامة التبويب</translation>
 <translation id="8852436503814917529">التنقل إلى علامة التبويب التالية</translation>
 <translation id="1543046737011894871">التنقل إلى علامة التبويب السابقة</translation>
-<translation id="8577900867298864393">إغلاق جميع علامات التبويب المكررة</translation>
 <translation id="2291643155573394834">علامة التبويب التالية</translation>
 <translation id="7748528009589593815">علامة التبويب السابقة</translation>
 <translation id="3738690686686515962">تحديد علامة التبويب 0</translation>
@@ -2213,6 +2261,7 @@
 <translation id="8151638057146502721">إعداد</translation>
 <translation id="999273441077650169">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen VL 30B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Qwen من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-5، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-5 من خلال البنية التحتية الآمنة المتحققة من صحتها الخاصة بـ NEAR.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة GLM-5.1، وهو نموذج تم إنشاؤه من طرف Zhipu AI ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة GLM-5.1 من خلال البنية التحتية الآمنة المتحققة من صحتها الخاصة بـ NEAR.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">مرحبًا، أنا ليو. أنا مساعد ذكي من Brave. أعمل بواسطة Claude Instant، نموذج طورته Anthropic لأداء مهام المحادثة ومعالجة النصوص. يتم تشغيل Claude Instant عبر بنية Brave التحتية الآمنة الخاصة.<ph name="LINK_BEFORE"/>اعرف المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
@@ -2305,15 +2354,8 @@
 <translation id="903201991022343217">بدء محادثة جديدة</translation>
 <translation id="8742207701089910775">مشاركة هذه المحادثة</translation>
 <translation id="4014016095804982975">سيتم تحميل محادثتك مشفّرة ولا يمكن فك تشفيرها إلا بالرابط الذي تم إنشاؤه. لن يتمكن Brave من عرض محادثتك. فقط أنت والأشخاص الذين تشارك معهم هذا الرابط يمكنهم فك تشفير محادثتك المشتركة. ستنتهي صلاحية جميع المحادثات المشتركة بعد 7 أيام.</translation>
-<translation id="2796028253343262770">يمكنك <ph name="LINK_BEFORE"/>إدارة مشاركاتك<ph name="LINK_AFTER"/> للعثور عليها أو حذفها في أي وقت.</translation>
 <translation id="1390174375123434798">إنشاء رابط</translation>
 <translation id="8904787158537906492">تم نسخ الرابط إلى الحافظة</translation>
-<translation id="8271640637943225289">إدارة المحادثات المشتركة</translation>
-<translation id="8560840376878438871">يمكن لأي شخص لديه الرابط عرض هذه المحادثات حتى تنتهي صلاحيتها. احذف محادثة مشتركة لإيقاف عمل رابطها.</translation>
-<translation id="4502471087710059721">لم تشارك أي محادثات.</translation>
-<translation id="6181755214951367004">حذف المحادثة المشتركة</translation>
-<translation id="3987993985790029246">نسخ الرابط</translation>
-<translation id="5621789433179102273">تعذّر حذف المحادثة المشتركة. تحقق من اتصالك وحاول مرة أخرى.</translation>
 <translation id="8171760814579050200">إعادة تسمية المحادثة</translation>
 <translation id="402386227879573975">نسخ المحادثة بأكملها</translation>
 <translation id="5397794290049113714">أنت</translation>
@@ -2322,6 +2364,9 @@
 <translation id="4198859185714743678">انتهت عملية التعليل</translation>
 <translation id="6140948187512243695">عرض التفاصيل</translation>
 <translation id="4881695831933465202">افتح</translation>
+<translation id="1625889395409731085">فتح الرابط الخارجي؟</translation>
+<translation id="4211063437291114749">يريد Leo AI فتح موقع ويب في علامة تبويب جديدة. هل تريد المتابعة؟</translation>
+<translation id="5526001300821542157">فتح الروابط دون طلب الإذن مرة أخرى</translation>
 <translation id="1243966363662220847">تعليقات على الاستجابة</translation>
 <translation id="7417895556119762861">إبداء الإعجاب أو عدمه سيؤدي إلى إرسال التقييم والمحادثة والنموذج واللغة والإصدار وحالة العضوية المميزة إلى Brave لتحسين Leo. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
@@ -2413,9 +2458,6 @@
 <translation id="9088751620363630236">التقط صورة...</translation>
 <translation id="4250229828105606438">لقطة شاشة</translation>
 <translation id="7949596341600215809">لقطة كاملة للشاشة</translation>
-<translation id="3024277805447899099">معاينة الصورة</translation>
-<translation id="6671495933530132209">نسخ الصورة</translation>
-<translation id="6864459304226931083">تنزيل الصورة</translation>
 <translation id="6332876390231524389">محتويات علامة التبويب الحالية</translation>
 <translation id="6397861830483632092">فتح علامات التبويب…</translation>
 <translation id="802080272588201037">الإشارات المرجعية…</translation>
@@ -2544,7 +2586,6 @@
 <translation id="7087933122203937032">أنشئ عناوين فريدة وعشوائية يتم توجيهها إلى عنوان بريدك الإلكتروني في حساب Brave ويمكن حذفها في أي وقت. احمِ عنوان بريدك الإلكتروني الفعلي ضد الكشف أو استخدام المعلنين له.</translation>
 <translation id="8057865981284642090">لاستخدام الأسماء المستعارة للبريد الإلكتروني، تحتاج إلى تسجيل الدخول إلى حسابك على Brave. ابدأ بالنقر على الزر أدناه.</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
-<translation id="3000160751117721864">ما هي المواقع الدعائية؟</translation>
 <translation id="8370801182970639038">تلقائي (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">محركات البحث الممكّنة</translation>
 <translation id="8285901519864208412">إخفاء بطاقة المكافآت</translation>
@@ -2560,23 +2601,19 @@
 <translation id="9173319813356700250">الأخبار</translation>
 <translation id="6543799171249004861">الصورة بعدسة <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
-<translation id="2977532139641645513">إزالة المواقع الدعائية</translation>
 <translation id="466214682712474574">سجّل الدخول إلى حسابك <ph name="PROVIDER"/> لمعرفة رصيدك</translation>
 <translation id="8332875111286275890">سجّل الدخول لمعرفة رصيدك</translation>
 <translation id="5430001801813715388">المكافآت</translation>
 <translation id="988042349921505128">البحث والذكاء الاصطناعي</translation>
 <translation id="2430295257226173518">اطرح أي سؤال وابحث عن أي شيء…</translation>
-<translation id="4391352555758073798">إظهار صور الخلفية</translation>
+<translation id="167018310108390163">تخصيص صفحة تبويب جديدة</translation>
 <translation id="3500134717967948757">إظهار أداة Leo AI في علامات التبويب الجديدة</translation>
 <translation id="6851426306697017546">عرض الساعة</translation>
 <translation id="4844370919312937270">إظهار أداة البحث في علامات التبويب الجديدة</translation>
-<translation id="5088374130885640159">مع <ph name="REWARDS_LINK_BEGIN"/>مكافآت Brave<ph name="REWARDS_LINK_END"/>، يمكنك الربح عند رؤية إعلانات صفحة التبويب الجديدة. <ph name="LEARN_MORE_LINK_BEGIN"/>معرفة المزيد<ph name="LEARN_MORE_LINK_END"/>.</translation>
+<translation id="7328310113820087094">مع <ph name="LINK_BEGIN"/>مكافآت Brave<ph name="LINK_END"/>، يمكنك الربح عند رؤية إعلانات صفحة التبويب الجديدة.</translation>
 <translation id="4100520468072294616">عرض إعلانات صفحة التبويب الجديدة</translation>
-<translation id="1410408595862476783">إظهار المواقع الدعائية</translation>
 <translation id="5009354496127441090">عرض أفضل المواقع</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
-<translation id="3725423404048844760">تساعد المواقع الدعائية في إبقاء Brave مجانيًا. إذا كنت تستخدم <ph name="SITE_NAME"/>، فأنت تدعم مهمة Brave. يمكنك تعطيلها في أي وقت. <ph name="LINK_BEGIN"/>معرفة المزيد<ph name="LINK_END"/>.</translation>
-<translation id="4801943363579282909">تساعد المواقع الدعائية في إبقاء Brave مجانيًا. إذا كنت تستخدمها، فأنت تدعم مهمة Brave. <ph name="LINK_BEGIN"/>معرفة المزيد<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">إحصائيات</translation>
 <translation id="5236080651083907980">مكالمات الفيديو المشفرة مع Brave Talk</translation>
 <translation id="2671474274417808910">مكالمات مرتكزة على الخصوصية أولًا</translation>
@@ -2734,16 +2771,6 @@
 <translation id="2601678491007820794">استورد كل شيء من متصفحك القديم واجعل الانتقال سلسًا.</translation>
 <translation id="5291297136536006359">يمكنك أيضًا القيام بذلك لاحقًا في إعدادات Brave.</translation>
 <translation id="701087249209337256">أحضر معك محتوى متصفحك القديم</translation>
-<translation id="142389341645668510">تخصيص Brave</translation>
-<translation id="112005628409144325">خصص تجربة التصفح الخاصة بك من خلال تخطيط علامات التبويب وأوضاع الألوان التي تفضلها.</translation>
-<translation id="7376367936988732808">تخطيط علامات التبويب</translation>
-<translation id="4734965478015604180">أفقي</translation>
-<translation id="490375751687810070">عمودي</translation>
-<translation id="6278428485366576908">المظهر</translation>
-<translation id="6965978654500191972">جهاز</translation>
-<translation id="1807246157184219062">فاتح</translation>
-<translation id="2414886740292270097">داكن</translation>
-<translation id="1297301331745007533">رمادي (افتراضي)</translation>
 <translation id="7463724872882590240">حدّد متصفحك السابق</translation>
 <translation id="6091623542030502746">ماذا تريد أن تستورد؟</translation>
 <translation id="4740018245743691625">نتائج الاستيراد</translation>
@@ -2752,25 +2779,9 @@
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="5869522115854928033">كلمات المرور المحفوظة</translation>
 <translation id="4692623383562244444">محركات البحث</translation>
-<translation id="4820229477869533192">حدد الميزات التي ترغب في عرضها افتراضيًا في شريط الأدوات الرئيسي. يمكنك دائمًا إظهار هذه الميزات أو إخفاؤها لاحقًا في الإعدادات.</translation>
-<translation id="3723975047960999626">المساعد الذكي بالذكاء الاصطناعي المدمج مباشرة في متصفحك. اطرح الأسئلة، ولخّص الصفحات، وأنشئ محتوى جديدًا، والمزيد.</translation>
-<translation id="108658397513441308">محفظة Web3</translation>
-<translation id="277626258870089521">محفظة العملات المشفرة الآمنة والمدمجة التي تعزز متصفحك لـ Web3.</translation>
-<translation id="9019025288391074918">ادعم مُنشئي المحتوى واربح الرموز مقابل الإعلانات التي تراها في Brave.</translation>
-<translation id="7705524343798198388">VPN</translation>
-<translation id="3163354572023395604">أخفِ عنوان بروتوكول الإنترنت الخاص بك، وقنّع موقعك، واحصل على وصول إلى محتواك المفضل أثناء التنقل.</translation>
-<translation id="5561552922279152819">لنبنِ معًا شبكة إنترنت أفضل</translation>
-<translation id="2888496576732880897">ساعد Brave Search على النمو</translation>
-<translation id="3929158593488526786">اشترك في Web Discovery Project للمساعدة في تنمية الفهرس وتحسين نتائج البحث.</translation>
-<translation id="3772776117136934611">ساعدنا في تحسين المتصفح</translation>
-<translation id="9171227192121024771">شارك نتائج تحليلات المنتج الخاصة والمجهولة حول الميزات التي يستخدمها مستخدمو Brave</translation>
-<translation id="5298784657468199167">إرسال تقارير الأعطال</translation>
-<translation id="6718362830686703942">أرسل تقارير التشخيص إذا واجهت حالة عطل أو توقف.</translation>
-<translation id="8012286900922253352">ساعد في جعل Brave أفضل وإنشاء منتجات أفضل من خلال تمكين هذه المقاييس الخاصة.</translation>
-<translation id="6058364846991826201">يمكنك تغيير هذه الاختيارات في أي وقت في Brave من خلال <ph name="SETTINGS_LINK"/>. اقرأ <ph name="PRIVACY_POLICY_LINK_BEGIN"/>سياسة الخصوصية<ph name="PRIVACY_POLICY_LINK_END"/> الكاملة الخاصة بنا.</translation>
-<translation id="6871397658902960384">ابدأ التصفح</translation>
 <translation id="4988030440045495002">مظهر فائق الظلام</translation>
 <translation id="2422927186524098759">الشريط الجانبي</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">شريط الأدوات</translation>
 <translation id="6225572914528673855">شريط العناوين</translation>
 <translation id="6821966107067356137">إضافة موجز RSS</translation>

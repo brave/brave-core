@@ -75,6 +75,7 @@ class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class BrowserWindowInterface;
+class ContentsLayoutManager;
 class FocusModeTitleBarView;
 class FocusModeTopOverlay;
 class SidebarContainerView;

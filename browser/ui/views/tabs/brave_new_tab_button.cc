@@ -29,7 +29,6 @@
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/compositor/compositor.h"
@@ -98,7 +97,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
     auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
     CHECK(browser);
     brave::OpenUrlInContainer(base::to_address(browser_window_interface_),
-                              chrome::GetNewTabURL(browser), container,
+                              browser->GetNewTabURL(), container,
                               /*is_link=*/false);
   }
 
@@ -106,7 +105,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
     auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
     CHECK(browser);
     brave::OpenUrlWithoutContainer(base::to_address(browser_window_interface_),
-                                   chrome::GetNewTabURL(browser),
+                                   browser->GetNewTabURL(),
                                    /*is_link=*/false);
   }
 
@@ -114,8 +113,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
     auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
     CHECK(browser);
     brave::CreateTemporaryContainerAndOpenUrl(
-        base::to_address(browser_window_interface_),
-        chrome::GetNewTabURL(browser),
+        base::to_address(browser_window_interface_), browser->GetNewTabURL(),
         /*is_link=*/false);
   }
 

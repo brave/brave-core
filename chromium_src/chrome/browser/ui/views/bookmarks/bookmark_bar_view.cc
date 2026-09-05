@@ -24,7 +24,7 @@ BookmarkBarInstructionsView* GetInstructionView(
 
 void LayoutBookmarkBarInstructionsView(views::View* bookmark_bar_view,
                                        bookmarks::BookmarkModel* model,
-                                       BrowserWindowInterface* browser,
+                                       Browser* browser,
                                        int button_height,
                                        int x,
                                        int max_x,

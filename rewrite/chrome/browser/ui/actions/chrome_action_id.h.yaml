@@ -20,8 +20,3 @@ substitutions:
       replace: |
         \1  E(kActionShowPartitionedStorage) \
           E(kActionShowPsstIcon) \
-          E(kActionShowSpeedreader) \
-          E(kActionShowWaybackMachine) \
-          E(kActionShowPlaylistPageAction) \
-          E(kActionShowOnionLocation) \
-          E(kActionShowBraveNews) \

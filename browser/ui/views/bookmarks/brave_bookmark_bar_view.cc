@@ -7,12 +7,11 @@
 
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/views/controls/button/menu_button.h"
 
-BraveBookmarkBarView::BraveBookmarkBarView(BrowserWindowInterface* browser,
+BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
                                            BrowserView* browser_view)
     : BookmarkBarView(browser, browser_view) {
   show_all_bookmarks_button_pref_.Init(

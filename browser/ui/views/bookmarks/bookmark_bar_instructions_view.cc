@@ -14,7 +14,7 @@
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/accessibility/ax_node_data.h"
@@ -42,8 +42,7 @@ int GetViewPadding() {
 
 }  // namespace
 
-BookmarkBarInstructionsView::BookmarkBarInstructionsView(
-    BrowserWindowInterface* browser)
+BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
     : browser_(browser) {
   SetID(BRAVE_VIEW_ID_BOOKMARK_IMPORT_INSTRUCTION_VIEW);
   instructions_ =
@@ -58,8 +57,9 @@ BookmarkBarInstructionsView::BookmarkBarInstructionsView(
         new views::Link(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_IMPORT_LINK),
                         kBookmarkBarTextContext);
     // We don't want the link to alter tab navigation.
-    import_link_->SetCallback(base::BindRepeating(
-        &BookmarkBarInstructionsView::LinkClicked, base::Unretained(this)));
+    import_link_->SetCallback(
+        base::BindRepeating(&BookmarkBarInstructionsView::LinkClicked,
+                            base::Unretained(this)));
     import_link_->SetFocusBehavior(FocusBehavior::NEVER);
     import_link_->set_context_menu_controller(this);
     import_link_->SetAutoColorReadabilityEnabled(false);

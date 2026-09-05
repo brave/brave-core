@@ -43,7 +43,6 @@ if (enable_extensions) {
 
     deps = [
       "//base",
-      "//base:i18n",
       "//net",
       "//url",
     ]

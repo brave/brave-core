@@ -165,8 +165,7 @@ void PageContentExtractor::ExtractPageContent(
           blink::mojom::LoadEventBlockingOption::kDoNotBlock,
           std::move(script_callback), blink::BackForwardCacheAware::kAllow,
           blink::mojom::WantResultOption::kWantResult,
-          blink::mojom::PromiseResultOption::kAwait,
-          /*is_injected_extension_script=*/false);
+          blink::mojom::PromiseResultOption::kAwait);
       return;
     } else if (kVideoTrackHosts.contains(host)) {
       VLOG(1) << "Video track transcript type";
@@ -189,8 +188,7 @@ void PageContentExtractor::ExtractPageContent(
           blink::mojom::LoadEventBlockingOption::kDoNotBlock,
           std::move(script_callback), blink::BackForwardCacheAware::kAllow,
           blink::mojom::WantResultOption::kWantResult,
-          blink::mojom::PromiseResultOption::kAwait,
-          /*is_injected_extension_script=*/false);
+          blink::mojom::PromiseResultOption::kAwait);
       return;
     }
   }

@@ -340,9 +340,8 @@ void FaviconSource::SendDefaultResponse(
   std::move(callback).Run(LoadIconBytes(scale_factor, resource_id));
 }
 
-scoped_refptr<base::RefCountedMemory> FaviconSource::LoadIconBytes(
-    float scale_factor,
-    int resource_id) {
+base::RefCountedMemory* FaviconSource::LoadIconBytes(float scale_factor,
+                                                     int resource_id) {
   return ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytesForScale(
       resource_id, ui::GetSupportedResourceScaleFactor(scale_factor));
 }

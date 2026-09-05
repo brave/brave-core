@@ -110,7 +110,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     // Playlist panels.
     GlobalBrowserCollection::GetInstance()->ForEach(
         [this](BrowserWindowInterface* browser) {
-          if (browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
+          if (!browser->GetBrowserForMigrationOnly()->is_type_normal() ||
               browser->GetProfile() != profile_) {
             return true;
           }

@@ -262,6 +262,8 @@
 <translation id="1892970806832316900">Ootel kuni <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Oi-oi! Teie brauser ei saa Brave'i privaatseid reklaame vastu võtta.</translation>
 <translation id="5177429570315095022">Et jätkuvalt reklaame näha, tuleb brauser värskendada.</translation>
+<translation id="4593680147181354667">Diagnostika ID</translation>
+<translation id="3995471429906554168">Diagnostika teave</translation>
 <translation id="752216563428219524">Ads ei ole lähtestatud, värskendage lehte.</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="6969783933307596818">Värskenda automaatselt iga 5 sekundi järel</translation>
@@ -307,6 +309,7 @@
 <translation id="8118649457152178086">Preemiate riik:</translation>
 <translation id="2152423226436243241">Automaatne sissemakse</translation>
 <translation id="7504352885209484360">Korduvad panused</translation>
+<translation id="916115051162298064">Reklaamide diagnostika</translation>
 <translation id="7806880412350961625">Sündmuste logid</translation>
 <translation id="4309915981827077375">Üldine teave</translation>
 <translation id="3662406032239313663">Logid</translation>
@@ -1070,6 +1073,7 @@
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Kontrolli võrku</translation>
 <translation id="6742767287935968736">Sepolia</translation>
+<translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Valige konto</translation>
 <translation id="6797737193502014008">Otsi kontosid</translation>
 <translation id="3505920073976671674">Valige võrk</translation>
@@ -1455,12 +1459,6 @@
 <translation id="3009178788565917040">Väljund</translation>
 <translation id="7953669802889559161">Sisendid</translation>
 <translation id="4554024082642878647">Väljundid</translation>
-<translation id="5371133472668945195">Münt</translation>
-<translation id="6298850625966818206">Väljavõtmised</translation>
-<translation id="797064699579611882">Skripti andmete räsi</translation>
-<translation id="2317256716536338565">Tagatis</translation>
-<translation id="4739988172452238850">Tagatise tagastamine</translation>
-<translation id="4695732358958704457">Kogutagatis</translation>
 <translation id="1965889974717516497">Teisesed võrgud</translation>
 <translation id="7691821949666755802">Võrkude kontroll</translation>
 <translation id="2816106784624007524">Gaasi limiit peab olema täisarv ja suurem kui 0</translation>
@@ -1520,6 +1518,7 @@
 <translation id="4100192671552260674">Külmutatud konto</translation>
 <translation id="1865659351831046902">Omatokenite konto</translation>
 <translation id="3430421677512658698">Tokenite müntimine</translation>
+<translation id="5371133472668945195">Münt</translation>
 <translation id="3591768665664470087">Allkirjastajad</translation>
 <translation id="2761935211528145049">Esindaja</translation>
 <translation id="5048094297412542354">Omanik/esindaja</translation>
@@ -1767,6 +1766,11 @@
 <translation id="5797060124625958778">Kiiruse prioriteet</translation>
 <translation id="6213230117190778270">Võta vastu</translation>
 <translation id="6748108480210050150">Saatja</translation>
+<translation id="4875290286426670462">Piiramatu <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">See tõend on kinnitamata</translation>
+<translation id="8549067157732633185">See tõend on kinnitatud</translation>
+<translation id="2130170065617939165">See tõend on kinnitatud <ph name="NUMBER_OF_LISTS"/> nimekirjas</translation>
+<translation id="1554316484739382186">Kulutaja: <ph name="ADDRESS"/></translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">Pakkuja <ph name="PROVIDER"/> konto</translation>
@@ -1783,6 +1787,11 @@
 <translation id="1531836666020185856">Esiletõstetud</translation>
 <translation id="3225021799163709119">Populaarsed</translation>
 <translation id="6854651431635060919">Testvõrgu konto</translation>
+<translation id="626850389704042219">Lubage ülekande simulatsioon</translation>
+<translation id="7414944309396133072">Vaadake oma hinnangulise saldo muutuse eelvaadet</translation>
+<translation id="2761574758015819991">tuvastada võimalikud pahatahtlikud tehingud;</translation>
+<translation id="168533464844528463">aidata tuvastada andmepüügikatseid.</translation>
+<translation id="2410455471299328417">Seda teenust pakub <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> ja selle suhtes kehtivad nende <ph name="TERMS_LINK_BEFORE"/>teenusetingimused<ph name="TERMS_LINK_AFTER"/> ja <ph name="PRIVACY_POLICY_LINK_BEFORE"/>privaatsuspõhimõtted<ph name="PRIVACY_POLICY_LINK_AFTER"/></translation>
 <translation id="8688672835843460752">Saadaval</translation>
 <translation id="5296640085393149413">Teie käsutuses olevad rahalised vahendid.</translation>
 <translation id="2515906149804238711">Teie rahakoti saldo ootel muudatus.</translation>
@@ -1810,8 +1819,14 @@
 <translation id="2454691116905703258">NFT märgi nimi viitab konkreetsele nimele, mis on antud mittekasutatavale märgile konkreetses kogumis või projektis. See nimi eristab ühte NFT-d teistest sama kogumi piires.</translation>
 <translation id="3212749868469431851">NFT märk viitab unikaalsele identifikaatorile, mida kasutatakse NFT kogumi või projekti eristamiseks.</translation>
 <translation id="8198838794018761504">Ainult vaatamine</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">Ühtegi DAppsi ei leitud</translation>
+<translation id="4864082959618144988">Aktiivsed rahakotid</translation>
+<translation id="5445224754926400848">Külastage <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">Filtrid</translation>
+<translation id="803703704549420287">Tühjendage filtrid</translation>
+<translation id="1472675084647422956">Kuva rohkem</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
-<translation id="7417602392941345608">Brave migreerub praegu Zcash NU6.3-le. Selle migreerimise ajal on Zcashi funktsionaalsus piiratud varjestuse eemaldamise ning läbipaistvalt läbipaistvale saatmisega.</translation>
 <translation id="8713438253026855351">Üleminek kaitstud kontole</translation>
 <translation id="3526789880090101085">Kaitse kontot</translation>
 <translation id="3155166394760577549">Võimaldage varjestus, et suurendada tehingu privaatsust.</translation>
@@ -1855,6 +1870,41 @@
 <translation id="8631765320256788981">Sa saadad raha oma läbipaistvalt kontolt oma varjestuskontole.</translation>
 <translation id="3860364671495430495">Sa saadad raha oma varjestuskontolt oma läbipaistvale kontole.</translation>
 <translation id="7144878232160441200">Proovi uuesti</translation>
+<translation id="9094621390791852268">Ülekande eelvaade nurjus.</translation>
+<translation id="4982713341035600933">Saldo hinnanguline muutus</translation>
+<translation id="7197388583016272600">Heakskiidu üksikasjad</translation>
+<translation id="3785613860627641047">Volituse muutus</translation>
+<translation id="5135378583369915147">Ülekande skannimine</translation>
+<translation id="4744699166186440">Panustaja</translation>
+<translation id="6313747204807079184">Väljavõtja</translation>
+<translation id="4312670848214406213">Te annate kellelegi teisele loa kanda teie nimel tokeneid üle.</translation>
+<translation id="5465460394116463557">Sellega taotletakse luba paljude tokenite ülekandmiseks, mis on üldjuhul varguse katse.</translation>
+<translation id="7315935420455987651">See sait võib olla võltsing.</translation>
+<translation id="7772576967285233002">See DApp saab hiljem teie kontolt tokenid teisaldada.</translation>
+<translation id="438039795179295571">See sait on märgitud kui kõrge riskiga sait ja tõenäoliselt üritab see teie raha varastada.</translation>
+<translation id="4852394547793286745">Seda domeeni ei ole veel kontrollitud. Jätkake ainult siis, kui usaldate saiti.</translation>
+<translation id="5832443872711287128">Kontrollige seda aadressi veel kord, kuna see võib esineda teie varasema kontaktina.</translation>
+<translation id="5317646355693663165">Sellega annate oma tokenite saldo omandiõiguse kellelegi teisele.</translation>
+<translation id="3459325260212799301">See sait on märgitud ohtlikuks ja/või pahatahtlikuks. Jätkamine võib kaasa tuua kahjusid.</translation>
+<translation id="5409388443146954820">Sellega kiidetakse heaks üle 200 toimingu. Kui see ei ole kavandatud, võib see olla pahatahtlik.</translation>
+<translation id="6187462466381633445">Sellega taotletakse üle 200 kinnituse, mis on üldjuhul katse teie saldo tühjaks teha.</translation>
+<translation id="3322526234603442338">Te vahetate tokeneid mitte millegi vastu. See on tõenäoliselt viga.</translation>
+<translation id="4773052969794445878">Te saadate raha tokenite enda aadressile, kus see läheb igaveseks kaduma.</translation>
+<translation id="8144820760826901598">Sellega annate oma konto ja saldode omandiõiguse kellelegi teisele.</translation>
+<translation id="6023771436430346631">Ebapiisavad rahalised vahendid võrgugaasi tasu katmiseks.</translation>
+<translation id="4753738223346804632">Ebapiisavad rahalised vahendid ülekande lõpuleviimiseks.</translation>
+<translation id="8661124952575076441">Ülekanne tõenäoliselt ebaõnnestub ja see pööratakse tagasi. Katse tekitab siiski gaasikulusid.</translation>
+<translation id="7660840414862537846">Ootamatu viga ülekande eelvaatega. Kinnitamine võib olla ebaturvaline.</translation>
+<translation id="4683335916231560287">Ühtegi muudatust ei tuvastatud</translation>
+<translation id="6769279318856228158">Konto omandiõiguse muutus</translation>
+<translation id="3200658657457611958">Enne ülekande kinnitamiseks simuleerige, kuidas see käitub.</translation>
+<translation id="8311005737513179222">Ülekande eelvaade ei ole selles võrgus toetatud.</translation>
+<translation id="4282496974850444428">Te näete seda teadet, sest valisite selle ülekande eelvaate teenuse.</translation>
+<translation id="6094399032955582807">Vaadake saadaolevaid võrke</translation>
+<translation id="6644973832009582039">EVM teate skannimine ei ole hetkel toetatud</translation>
+<translation id="5222675470118670784">Mis on EVM-i teate skannimine?</translation>
+<translation id="4085714860536252628">See tagab ohutuse ja täpsuse, uurides Ethereumi virtuaalmasinast saadetud teateid, mis suhtlevad teie nutika lepinguga või mis tahes tegevustega.</translation>
+<translation id="7800112661494546348">See on nagu kirja ülekontrollimine enne allkirjastamist veendumaks, et see on õige.</translation>
 <translation id="4750109510113597688">See ülekanne võib sisaldada konto loomise tasu</translation>
 <translation id="6201709949885884577">Selle toimingu tegemiseks on vaja parooli.</translation>
 <translation id="3435015606307655951">Turvaline ülekanne</translation>
@@ -1881,9 +1931,10 @@
 <translation id="6024292492796847324">Tori lähtestamise edenemine</translation>
 <translation id="8300751939969131609">Lülitage sisse Brave'i uudised ja ükski lugu ei jää nägemata</translation>
 <translation id="7758665172236842395">Jälgige oma lemmikallikaid ühesainsas kanalis. Lihtsalt avage Brave'is vaheleht, kerige alla ja... ennäe!</translation>
+<translation id="2376542729617592331">Brave'i uudised toimivad täiesti privaatsete ja anonüümitud reklaamide toel. <ph name="LINK_START"/>Uurige lähemalt.<ph name="LINK_END"/></translation>
 <translation id="1765217911817124376">Lülita Brave'i uudised sisse</translation>
 <translation id="1772301834467143364">Brave'i uudised</translation>
-<translation id="1717242776111689224">Luba Brave Uudised</translation>
+<translation id="6265592479622441247">Tagasi <ph name="BEGIN_BOLD"/>juhtpaneelile<ph name="END_BOLD"/></translation>
 <translation id="3169472444629675720">Avasta</translation>
 <translation id="8981973962043893066">Veebisaidi, teema või RSS-kanali otsimine</translation>
 <translation id="1498364270401875204">Kanalid</translation>
@@ -1919,10 +1970,8 @@
 <translation id="736592699917579616">Toit</translation>
 <translation id="5104499318017527547">Ajaviide</translation>
 <translation id="2228584369802328636">Mängimine</translation>
-<translation id="1748819301509295490">Valitsus</translation>
 <translation id="6941852195052765076">Tervis</translation>
 <translation id="2233040275795129413">Elustiil</translation>
-<translation id="4102567721634170493">Kohalikud uudised</translation>
 <translation id="5178222043222938163">Muusika</translation>
 <translation id="1322083935398004629">Poliitika</translation>
 <translation id="8739620487574841501">Piirkondlikud uudised</translation>
@@ -1964,7 +2013,6 @@
 <translation id="5210365745912300556">Sule vaheleht</translation>
 <translation id="8852436503814917529">Liigu järgmisele vahekaardile</translation>
 <translation id="1543046737011894871">Liigu eelmisele vahekaardile</translation>
-<translation id="8577900867298864393">Sulge kõik korduvad vahekaardid</translation>
 <translation id="2291643155573394834">Järgmine vaheleht</translation>
 <translation id="7748528009589593815">Eelmine vaheleht</translation>
 <translation id="3738690686686515962">Vali vaheleht 0</translation>
@@ -2210,6 +2258,7 @@
 <translation id="8151638057146502721">Konfigureeri</translation>
 <translation id="999273441077650169">Mudel muutub dünaamiliselt, et kasutada ülesande jaoks parimat.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen Qwen VL 30B mudelil, mille on loonud Alibaba Cloud, sobides erinevate stsenaariumidega. Qwen on Brave'i majutatud meie oma turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GLM-5. See on Zhipu AI loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. GLM-5 on NEAR majutatud läbi kontrollitavalt privaatse turvalise infrastruktuuri.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GLM-5.1. See on Zhipu AI loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. GLM-5.1 on NEAR majutatud läbi kontrollitavalt privaatse turvalise infrastruktuuri.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Tere, mina olen Leo. Olen Brave’i tehisintellekti abiline. Minu mootoriks on Claude Instant – Anthropic'u loodud mudel vestluste ja tekstitöötluse jaoks. Claude Instant töötab Brave'i turvalises taristus.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Tere, ma olen Leo. Olen Brave'i poolt proxy'd ja kasutan Claude Haiku'd, mis on Anthropic'i poolt loodud mudel, mis on loodud vestlus- ja tekstitöötlusülesannete täitmiseks. Claude Haiku on Brave'i majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
@@ -2302,15 +2351,8 @@
 <translation id="903201991022343217">Alusta uut vestlust</translation>
 <translation id="8742207701089910775">Jaga seda vestlust</translation>
 <translation id="4014016095804982975">Teie vestlus laaditakse üles krüptitult ja seda saab dekrüptida ainult loodud lingiga. Brave ei saa teie vestlust näha. Ainult teie ja inimesed, kellega te selle lingi jagate, saavad teie jagatud vestlust dekrüptida. Kõik jagatud vestlused aeguvad 7 päeva pärast.</translation>
-<translation id="2796028253343262770">Saate <ph name="LINK_BEFORE"/>hallata oma jagamisi<ph name="LINK_AFTER"/>, et neid igal ajal leida või kustutada.</translation>
 <translation id="1390174375123434798">Loo link</translation>
 <translation id="8904787158537906492">Link kopeeriti lõikelauale</translation>
-<translation id="8271640637943225289">Halda jagatud vestlusi</translation>
-<translation id="8560840376878438871">Kõik lingi omanikud saavad neid vestlusi vaadata kuni nende aegumiseni. Kustutage jagatud vestlus, et selle link ei töötaks enam.</translation>
-<translation id="4502471087710059721">Te ei ole ühtegi vestlust jaganud.</translation>
-<translation id="6181755214951367004">Kustuta jagatud vestlus</translation>
-<translation id="3987993985790029246">Kopeeri link</translation>
-<translation id="5621789433179102273">Jagatud vestlust ei õnnestunud kustutada. Kontrollige oma ühendust ja proovige uuesti.</translation>
 <translation id="8171760814579050200">Nimeta vestlus ümber</translation>
 <translation id="402386227879573975">Kopeeri kogu vestlus</translation>
 <translation id="5397794290049113714">Teie</translation>
@@ -2319,6 +2361,9 @@
 <translation id="4198859185714743678">Arutlemine lõpetatud</translation>
 <translation id="6140948187512243695">Näita üksikasju</translation>
 <translation id="4881695831933465202">Ava</translation>
+<translation id="1625889395409731085">Avage väline link?</translation>
+<translation id="4211063437291114749">Leo AI soovib avada veebilehe uues vahekaardis. Kas soovite jätkata?</translation>
+<translation id="5526001300821542157">Avage lingid ilma minult uuesti küsimata</translation>
 <translation id="1243966363662220847">Tagasiside vastus</translation>
 <translation id="7417895556119762861">Vastuse meeldimine või mitte meeldimine saadab Brave'ile hinnangu, vestluse, mudeli, keele, versiooni ja preemiumstaatuse, et parandada Leot. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Saada Leole sõnum</translation>
@@ -2410,9 +2455,6 @@
 <translation id="9088751620363630236">Tee pilt...</translation>
 <translation id="4250229828105606438">Ekraanipilt</translation>
 <translation id="7949596341600215809">Täisekraani kuvatõmmis</translation>
-<translation id="3024277805447899099">Eelvaata pilti</translation>
-<translation id="6671495933530132209">Kopeeri pilt</translation>
-<translation id="6864459304226931083">Laadi pilt alla</translation>
 <translation id="6332876390231524389">Praeguse vahekaardi sisu</translation>
 <translation id="6397861830483632092">Avatud vahekaardid…</translation>
 <translation id="802080272588201037">Järjehoidjad…</translation>
@@ -2541,7 +2583,6 @@
 <translation id="7087933122203937032">Looge unikaalseid, juhuslikke aadresse, mis suunatakse edasi teie Brave konto e-posti aadressile ja mida saab igal ajal kustutada. Hoidke oma tegelik e-posti aadress reklaamijate eest kaitstud.</translation>
 <translation id="8057865981284642090">E-posti aliaste kasutamiseks peate olema oma Brave kontosse sisse logitud. Alustage, klõpsates allolevat nuppu.</translation>
 <translation id="4472575034687746823">Alustamine</translation>
-<translation id="3000160751117721864">Mis on sponsoreeritud saidid?</translation>
 <translation id="8370801182970639038">Automatic (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Lubatud otsingumootorid</translation>
 <translation id="8285901519864208412">Peida preemiate kaart</translation>
@@ -2557,23 +2598,19 @@
 <translation id="9173319813356700250">UUDISED</translation>
 <translation id="6543799171249004861">Foto autorilt <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="2977532139641645513">Eemalda sponsoreeritud saidid</translation>
 <translation id="466214682712474574">Oma saldo vaatamiseks logige sisse platvormi <ph name="PROVIDER"/> kontole</translation>
 <translation id="8332875111286275890">Saldo vaatamiseks logige sisse</translation>
 <translation id="5430001801813715388">PREEMIAD</translation>
 <translation id="988042349921505128">Otsing ja tehisintellekt</translation>
 <translation id="2430295257226173518">Küsige midagi, leidke midagi…</translation>
-<translation id="4391352555758073798">Kuva taustapildid</translation>
+<translation id="167018310108390163">Kohanda uue vahelehe lehekülge</translation>
 <translation id="3500134717967948757">Näita Leo AI vidinat uutel vahekaartidel</translation>
 <translation id="6851426306697017546">Näita kella</translation>
 <translation id="4844370919312937270">Näita otsinguvidinat uutel vahekaartidel</translation>
-<translation id="5088374130885640159">Kasutades <ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/>, saate teenida uue vahelehe reklaamide vaatamise eest. <ph name="LEARN_MORE_LINK_BEGIN"/>Lisateave<ph name="LEARN_MORE_LINK_END"/>.</translation>
+<translation id="7328310113820087094">Kasutades <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, saate teenida uue vahelehe reklaamide vaatamise eest.</translation>
 <translation id="4100520468072294616">Näita uue vahelehe reklaame</translation>
-<translation id="1410408595862476783">Kuva sponsoreeritud saidid</translation>
 <translation id="5009354496127441090">Näita parimaid saite</translation>
 <translation id="3960619311638643872">Brave'i VPN</translation>
-<translation id="3725423404048844760">Sponsoreeritud saidid aitavad hoida Brave'i tasuta. Kui kasutate teenust <ph name="SITE_NAME"/>, toetate Brave'i missiooni. Keelake need igal ajal. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/>.</translation>
-<translation id="4801943363579282909">Sponsoreeritud saidid aitavad hoida Brave'i tasuta. Kui neid kasutate, toetate Brave'i missiooni. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATS</translation>
 <translation id="5236080651083907980">Krüpteeritud videokõned Brave Talkiga</translation>
 <translation id="2671474274417808910">Privaatsus eelkõige-kõned</translation>
@@ -2731,16 +2768,6 @@
 <translation id="2601678491007820794">Importige kõik oma vanast brauserist ja muutke üleminek sujuvaks.</translation>
 <translation id="5291297136536006359">Saate seda teha ka hiljem Brave'i seadetes.</translation>
 <translation id="701087249209337256">Võtke oma vana brauseri sisu kaasa</translation>
-<translation id="142389341645668510">Kohanda Brave'i</translation>
-<translation id="112005628409144325">Isikupärastage oma sirvimiskogemust eelistatud vahekaartide paigutuse ja värvirežiimidega.</translation>
-<translation id="7376367936988732808">Vahekaartide paigutus</translation>
-<translation id="4734965478015604180">Horisontaalne</translation>
-<translation id="490375751687810070">Vertikaalne</translation>
-<translation id="6278428485366576908">Teema</translation>
-<translation id="6965978654500191972">Seade</translation>
-<translation id="1807246157184219062">Hele</translation>
-<translation id="2414886740292270097">Tume</translation>
-<translation id="1297301331745007533">Hall (vaikimisi)</translation>
 <translation id="7463724872882590240">Valige oma eelmine brauser</translation>
 <translation id="6091623542030502746">Mida soovite importida?</translation>
 <translation id="4740018245743691625">Impordi tulemused</translation>
@@ -2749,25 +2776,9 @@
 <translation id="6786747875388722282">Laiendused</translation>
 <translation id="5869522115854928033">Salvestatud paroolid</translation>
 <translation id="4692623383562244444">Otsingumootorid</translation>
-<translation id="4820229477869533192">Valige funktsioonid, mida soovite vaikimisi kuvada peamisel tööriistaribal. Neid saate hiljem seadetes alati kuvada või peita.</translation>
-<translation id="3723975047960999626">Nutikas AI-assistent, mis on integreeritud otse teie brauserisse. Esitage küsimusi, tehke lehtedest kokkuvõtteid, looge uut sisu ja palju muud.</translation>
-<translation id="108658397513441308">Web3 rahakott</translation>
-<translation id="277626258870089521">Turvaline sisseehitatud krüptorahakott, mis annab teie brauserile Web3 jaoks lisajõudu.</translation>
-<translation id="9019025288391074918">Toetage sisuloojaid ja teenige märke Brave'is nähtud reklaamide eest.</translation>
-<translation id="7705524343798198388">VPN</translation>
-<translation id="3163354572023395604">Peitke oma IP-aadress, varjake oma asukoht ja pääsege liikvel olles ligi oma lemmiksisule.</translation>
-<translation id="5561552922279152819">Ehitage koos meiega parem veeb</translation>
-<translation id="2888496576732880897">Aita Brave otsingul kasvada</translation>
-<translation id="3929158593488526786">Liitu projektiga Web Discovery Project, et aidata kasvatada indeksit ja parandada otsingutulemusi.</translation>
-<translation id="3772776117136934611">Aidake meil brauserit paremaks muuta</translation>
-<translation id="9171227192121024771">Jagage täiesti privaatselt ja anonüümselt tooteteavet funktsioonide kohta, mida Brave'i kasutajad tarvitavad</translation>
-<translation id="5298784657468199167">Saada krahhiaruanded</translation>
-<translation id="6718362830686703942">Saatke diagnostikaaruanne, kui kogete krahhi minekut või hangumist.</translation>
-<translation id="8012286900922253352">Aidake muuta Brave paremaks ja luua paremaid tooteid, lubades neid privaatseid mõõdikuid.</translation>
-<translation id="6058364846991826201">Neid valikuid saate Brave'is alati muuta lehel <ph name="SETTINGS_LINK"/>. Lugege meie täielikku <ph name="PRIVACY_POLICY_LINK_BEGIN"/>privaatsuspoliitikat<ph name="PRIVACY_POLICY_LINK_END"/>.</translation>
-<translation id="6871397658902960384">Alusta sirvimist</translation>
 <translation id="4988030440045495002">Ülim tume teema</translation>
 <translation id="2422927186524098759">Külgriba</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Tööriistariba</translation>
 <translation id="6225572914528673855">Aadressiriba</translation>
 <translation id="6821966107067356137">Lisa RSS-voog</translation>

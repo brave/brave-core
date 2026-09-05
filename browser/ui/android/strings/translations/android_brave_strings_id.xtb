@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Nilai Brave</translation>
 <translation id="4104400246019119780">Terima kasih!</translation>
 <translation id="5202255382948179481">Tambahkan saran Anda</translation>
+<translation id="7759809451544302770">Opsional</translation>
 <translation id="4748689412569009273">Dalam satu emoji, bagaimana pengalaman Anda menggunakan Brave?</translation>
 <translation id="7335142069363686805">Beri penilaian sekarang</translation>
 <translation id="6681362094306959654">Suka Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Sedih</translation>
 <translation id="5488843227043643519">Beri penilaian di Play Store?</translation>
 <translation id="5867854497245948308">Terima kasih atas umpan balik Anda!</translation>
-<translation id="5578122562331038807">Beri tahu kami cara untuk meningkatkan layanan Brave</translation>
-<translation id="1483493594462132177">Kirim</translation>
-<translation id="3889034478061064651">Tambahkan saran Anda (Opsional)</translation>
-<translation id="1769154760586570836">Masukan terkirim. Terima kasih!</translation>
-<translation id="4450893287417543264">Jangan tampilkan lagi</translation>
+<translation id="4935400164159327304">Beri tahu kami cara untuk meningkatkan layanan Brave.</translation>
 <translation id="8966035543003363155">Notifikasi Brave mempermudah Anda</translation>
 <translation id="7662771815233894695">Mengelola unduhan, mendapatkan token, melihat statistik penggunaan mingguan, dan banyak lagi.</translation>
 <translation id="4265429476391459783">Anda tidak mendapatkan Imbalan atau menerima Laporan Privasi</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Tindakan halaman</translation>
 <translation id="7104487676473617844">Item berikut hanya akan terlihat di menu saat didukung oleh halaman web yang sedang dibuka.</translation>
 <translation id="4159764849281393303">WebApp</translation>
+<translation id="8428213095426709021">Setelan</translation>
 <translation id="8038539967102225446">Iklan Brave sudah tiba!</translation>
 <translation id="222883304157347087">(perangkat ini)</translation>
 <translation id="4157741509680155021">PERANGKAT PADA RANTAI SINKRONISASI</translation>
@@ -534,6 +532,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1822560017823072927">Antarmuka pribadi dan umum baku</translation>
 <translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
 <translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
+<translation id="1483493594462132177">Kirim</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Peramban asli.\nPenyimpanan mandiri.\nDan multirantai.</translation>
 <translation id="7909462264772842773">Ambil kendali atas kripto dan NFT Anda. Dompet Brave mendukung rantai Ethereum, EVM, Solana, Filecoin, dan banyak lagi.</translation>
@@ -609,6 +608,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="569068482611873351">Impor...</translation>
 <translation id="4522570452068850558">Rincian</translation>
 <translation id="3114681061018999547">Melindungi</translation>
+<translation id="3784455785234192852">Kunci</translation>
 <translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="8239147115686034860">Secara otomatis mengunci Brave Wallet</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
@@ -804,10 +804,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="2478788592457735063">Ini akan mengalihkan jaringan ke jaringan yang sebelumnya telah ditambahkan.</translation>
 <translation id="8756686998207163764">Alihkan jaringan</translation>
 <translation id="8905793906896555159">Aktifkan grup tab</translation>
-<translation id="6735749683447943955">Nonaktifkan grup tab?</translation>
-<translation id="4616687974503500682">Grup yang ada akan dihapus, dan tab dalam grup tersebut akan menjadi tab terbuka yang tidak dikelompokkan di jendela browser Anda. Apakah Anda yakin ingin melanjutkan?</translation>
-<translation id="4394049700291259645">Nonaktifkan</translation>
-<translation id="3859027502409073633">Tampilkan grup tab tersinkronisasi</translation>
 <translation id="7632160823264702523">Bilah grup tab</translation>
 <translation id="2477807195394450274">Tampilkan bilah bawah untuk akses cepat ke tab dalam grup tab yang sedang dibuka</translation>
 <translation id="8374720587111523381">Buka tautan di grup tab saat ini</translation>
@@ -815,7 +811,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1227658541937938697">Buka semua tautan secara otomatis di grup tab saat ini</translation>
 <translation id="5242300593039211344">Kunci Dompet</translation>
 <translation id="1108298724135935307">Situs terkoneksi</translation>
-<translation id="8428213095426709021">Setelan</translation>
 <translation id="4255623233927788178">Tampilan blokir penjelajah</translation>
 <translation id="8274201358637112807">Halaman ini ingin berinteraksi dengan Dompet Brave</translation>
 <translation id="3355936511340229503">Kesalahan sambungan</translation>
@@ -857,6 +852,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6458565248779152483">Nonaktifkan VPN Brave</translation>
 <translation id="9080536793704001825">Jedakan selama 15 menit</translation>
 <translation id="803706420145725977">Jedakan selama 1 jam</translation>
+<translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="7733890291091968191">Tampilkan notifikasi Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda menyiapkan VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik unuk menyelesaikannya secepat mungkin. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNama Host VPN\n <ph name="VALUE"/></translation>

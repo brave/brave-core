@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">تقييم Brave</translation>
 <translation id="4104400246019119780">شكرًا!</translation>
 <translation id="5202255382948179481">أضف اقتراحاتك</translation>
+<translation id="7759809451544302770">اختياري</translation>
 <translation id="4748689412569009273">عبر بأحد رموز المشاعر، كيف كانت تجربتك مع Brave؟</translation>
 <translation id="7335142069363686805">قيّم الآن</translation>
 <translation id="6681362094306959654">هل تحب Brave؟</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">أشعر بالحزن</translation>
 <translation id="5488843227043643519">هل تريد ترك تقييم على متجر Play؟</translation>
 <translation id="5867854497245948308">شكرًا على تعليقاتك!</translation>
-<translation id="5578122562331038807">أخبرنا كيف يمكننا تحسين Brave</translation>
-<translation id="1483493594462132177">إرسال</translation>
-<translation id="3889034478061064651">أضف اقتراحاتك (اختياري)</translation>
-<translation id="1769154760586570836">تم إرسال الملاحظات. شكرًا لك!</translation>
-<translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
+<translation id="4935400164159327304">أخبرنا كيف يمكننا تحسين Brave.</translation>
 <translation id="8966035543003363155">تُسهل إشعارات Brave الأمر</translation>
 <translation id="7662771815233894695">يمكنك إدارة التنزيلات، والحصول على الرموز المميزة، والاطلاع على إحصائيات الاستخدام الأسبوعية وغير ذلك الكثير.</translation>
 <translation id="4265429476391459783">أنت لا تحصل على مكافآت أو تتلقى تقارير الخصوصية</translation>
@@ -284,6 +281,7 @@
 <translation id="7002271985859760052">إجراءات الصفحة</translation>
 <translation id="7104487676473617844">ستكون العناصر التالية مرئية فقط في القائمة عندما تكون مدعومة من قبل صفحة الويب المفتوحة حالياً.</translation>
 <translation id="4159764849281393303">تطبيق ويب</translation>
+<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="8038539967102225446">إعلانات Brave هنا!</translation>
 <translation id="222883304157347087">(هذا الجهاز)</translation>
 <translation id="4157741509680155021">الأجهزة المرتبطة بسلسلة التزامن</translation>
@@ -534,6 +532,7 @@
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
+<translation id="1483493594462132177">إرسال</translation>
 <translation id="538450413584738399">تبديل</translation>
 <translation id="4556086616242530072">متصفح native.\nSelf-custody.\nAnd متعدد السلاسل.</translation>
 <translation id="7909462264772842773">تحكم في التشفير والرموز المميزة غير القابلة للاستبدال (NFT) الخاصة بك. تدعم محفظة Brave سلاسل Ethereum وEVM وSolana وFilecoin والمزيد.</translation>
@@ -609,6 +608,7 @@
 <translation id="569068482611873351">استيراد...</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
 <translation id="3114681061018999547">جارٍ الحماية</translation>
+<translation id="3784455785234192852">القفل بإحكام</translation>
 <translation id="4412698727486357573">مركز المساعدة</translation>
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
@@ -804,10 +804,6 @@
 <translation id="2478788592457735063">سيؤدي هذا إلى تحويل الشبكة إلى شبكة مضافة مسبقًا.</translation>
 <translation id="8756686998207163764">قم بتبديل الشبكة</translation>
 <translation id="8905793906896555159">تمكين مجموعات علامات التبويب</translation>
-<translation id="6735749683447943955">تعطيل مجموعات علامات التبويب?</translation>
-<translation id="4616687974503500682">سيتم حذف أي مجموعات موجودة، وستصبح علامات التبويب الموجودة ضمن تلك المجموعات علامات تبويب مفتوحة وغير مجمّعة في نافذة المتصفح. هل أنت متأكد من أنك تريد المتابعة?</translation>
-<translation id="4394049700291259645">إيقاف</translation>
-<translation id="3859027502409073633">إظهار مجموعات علامات التبويب المتزامنة</translation>
 <translation id="7632160823264702523">شريط مجموعات علامات التبويب</translation>
 <translation id="2477807195394450274">إظهار شريط سفلي للوصول السريع إلى علامات التبويب في مجموعة علامات التبويب المفتوحة حاليًا</translation>
 <translation id="8374720587111523381">فتح الروابط في مجموعة علامات التبويب الحالية</translation>
@@ -815,7 +811,6 @@
 <translation id="1227658541937938697">فتح جميع الروابط تلقائيًا في مجموعة علامات التبويب الحالية</translation>
 <translation id="5242300593039211344">قفل المحفظة</translation>
 <translation id="1108298724135935307">المواقع المتصلة</translation>
-<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="4255623233927788178">عرض مستكشف الحظر</translation>
 <translation id="8274201358637112807">هذه الصفحة ترغب في التفاعل مع محفظة Brave</translation>
 <translation id="3355936511340229503">خطأ الاتصال</translation>
@@ -857,6 +852,7 @@
 <translation id="6458565248779152483">تعطيل VPN في متصفح Brave</translation>
 <translation id="9080536793704001825">إيقاف مؤقت لمدة 15 دقيقة</translation>
 <translation id="803706420145725977">إيقاف مؤقت لمدة ساعة ١</translation>
+<translation id="4394049700291259645">تعطيل</translation>
 <translation id="7733890291091968191">عرض إشعارات Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### لا يقوم Brave بتتبعك أو معرفة كيفية استخدامك لتطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة المعلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها بأسرع ما يمكن. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nاسم مضيف VPN\n <ph name="VALUE"/></translation>

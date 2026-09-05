@@ -13,7 +13,6 @@
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/toolbar/app_menu_icon_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
@@ -65,7 +64,7 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
-        chrome::BrowserCommandController::From(browser))
+        browser->command_controller())
         ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 

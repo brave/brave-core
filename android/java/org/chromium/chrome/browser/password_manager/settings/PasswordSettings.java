@@ -380,16 +380,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                 };
     }
 
-    @Override
-    public void initSearchView(SearchView searchView) {
-        SearchUtils.initializeSearchView(
-                searchView,
-                mSearchQuery,
-                getActivity(),
-                mSearchViewObserver,
-                this::filterPasswords);
-    }
-
     @Initializer
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

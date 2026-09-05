@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Brave අගයන්න</translation>
 <translation id="4104400246019119780">ස්තුතියි!</translation>
 <translation id="5202255382948179481">ඔබගේ යෝජනා එක් කරන්න</translation>
+<translation id="7759809451544302770">විකල්පයකි</translation>
 <translation id="4748689412569009273">එක් ඉමොජියක, බ්‍රේව් සමඟ ඔබගේ අත්දැකීම කෙසේද?</translation>
 <translation id="7335142069363686805">දැන් අගයන්න</translation>
 <translation id="6681362094306959654">Brave වලට කැමතිද?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">කණගාටුයි</translation>
 <translation id="5488843227043643519">ප්ලේ ස්ටෝර් ඇගයීමක් තබනවා ද?</translation>
 <translation id="5867854497245948308">ඔබගේ ප්‍රතිපෝෂණයට ස්තූතියි!</translation>
-<translation id="5578122562331038807">අපට බ්‍රේව් වැඩිදියුණු කළ හැකි ආකාරය පවසන්න</translation>
-<translation id="1483493594462132177">යවන්න</translation>
-<translation id="3889034478061064651">ඔබගේ යෝජනා එක් කරන්න (විකල්ප)</translation>
-<translation id="1769154760586570836">ප්‍රතිපෝෂණය යවන ලදී. ස්තූතියි!</translation>
-<translation id="4450893287417543264">නැවත පෙන්වන්න එපා</translation>
+<translation id="4935400164159327304">අපට බ්‍රේව් වැඩිදියුණු කළ හැකි ආකාරය පවසන්න.</translation>
 <translation id="8966035543003363155">බ්‍රේව් දැනුම්දීම් එය පහසු කරයි</translation>
 <translation id="7662771815233894695">බාගැනීම් කළමනාකරණය, නිමිති උපයන්න, සතිපතා භාවිත සංඛ්‍යාලේඛන බලන්න සහ තවත් දෑ.</translation>
 <translation id="4265429476391459783">ඔබ පාරිතෝෂික උපයන්නේ හෝ ඔබට රහස්‍යතා වාර්තා ලැබෙන්නේ නැත</translation>
@@ -282,6 +279,7 @@
 <translation id="7002271985859760052">පිටුව ක්‍රියාමාර්ග</translation>
 <translation id="7104487676473617844">පහත අයිතමවල් දැනට විවෘත වෙබ් පිටුවෙන් සහාය ලබා දිය හැකි විට පමණක් මෙනුවේ පෙනෙනු ඇත.</translation>
 <translation id="4159764849281393303">වෙබ් යෙදුම</translation>
+<translation id="8428213095426709021">සැකසුම්</translation>
 <translation id="8038539967102225446">Brave දැන්වීම් මෙහි ඇත!</translation>
 <translation id="222883304157347087">(මෙම උපාංගය)</translation>
 <translation id="4157741509680155021">සමමුහූර්ත දාමයේ උපාංග</translation>
@@ -527,6 +525,7 @@
 <translation id="1822560017823072927">පෙරනිමි ප්‍රසිද්ධ සහ පෞද්ගලික අතුරුමුහුණත්</translation>
 <translation id="5825943197137337319">පෙරනිමි ප්‍රසිද්ධ අතුරුමුහුණත පමණි</translation>
 <translation id="1689062823386843231">ප්‍රතියුක්තගත නොවන UDP අබල කරන්න</translation>
+<translation id="1483493594462132177">යවන්න</translation>
 <translation id="538450413584738399">හුවමාරු කරන්න</translation>
 <translation id="4556086616242530072">බ්‍රවුසරය ස්වදේශීය.\nස්වයං භාරකාරත්වය.\nසහ බහු දාම.</translation>
 <translation id="7909462264772842773">ඔබගේ ක්‍රිප්ටෝ සහ NFT වල පාලනය ගන්න. ඊතරම්, EVM දාම, සොලානා, ෆයිල්කොයින් සහ තවත් දෑ සඳහා බ්‍රේව් පසුම්බිය සහාය දක්වයි.</translation>
@@ -602,6 +601,7 @@
 <translation id="569068482611873351">ආයාත කරන්න</translation>
 <translation id="4522570452068850558">විස්තර</translation>
 <translation id="3114681061018999547">පලිහ</translation>
+<translation id="3784455785234192852">අගුළුලන්න</translation>
 <translation id="4412698727486357573">උපකාර මධ්‍යස්ථානය</translation>
 <translation id="8239147115686034860">Brave පසුම්බියට ස්වයංක්‍රීයව අගුළුලන්න</translation>
 <translation id="414639769490080648">Brave පසුම්බිය ස්වයංක්‍රීයව අගුළු වැටීමට ගතවන විනාඩි ගණන</translation>
@@ -797,10 +797,6 @@
 <translation id="2478788592457735063">මෙය ජාලය කලින් එක් කළ ජාලයකට මාරු කරනු ඇත.</translation>
 <translation id="8756686998207163764">ජාලය මාරු කරන්න</translation>
 <translation id="8905793906896555159">පටිති සමූහ සබල කරන්න</translation>
-<translation id="6735749683447943955">පටිති සමූහ අබල කරන්නද?</translation>
-<translation id="4616687974503500682">පවතින සියලුම සමූහ මකා දැමෙනු ඇති අතර, එම සමූහ තුළ ඇති පටිති ඔබගේ බ්‍රවුසර කවුළුවේ විවෘත, සමූහගත නොකළ පටිති බවට පත්වේ. ඔබට ඉදිරියට යාමට අවශ්‍ය බව විශ්වාසද?</translation>
-<translation id="4394049700291259645">අබල කරන්න</translation>
-<translation id="3859027502409073633">සමමුහුර්ත කළ පටිති සමූහ පෙන්වන්න</translation>
 <translation id="7632160823264702523">පටිති සමූහ තීරුව</translation>
 <translation id="2477807195394450274">දැනට විවෘත පටිති සමූහයේ පටිති වෙත ඉක්මන් ප්‍රවේශය සඳහා පහළ තීරුවක් පෙන්වන්න</translation>
 <translation id="8374720587111523381">වත්මන් පටිති සමූහයේ සබැඳි අරින්න</translation>
@@ -808,7 +804,6 @@
 <translation id="1227658541937938697">වත්මන් පටිති සමූහයේ සියලුම සබැඳි ස්වයංක්‍රීයව අරින්න</translation>
 <translation id="5242300593039211344">පසුම්බියට අගුළුලන්න</translation>
 <translation id="1108298724135935307">සම්බන්ධිත අඩවි</translation>
-<translation id="8428213095426709021">සැකසුම්</translation>
 <translation id="4255623233927788178">බ්ලොක් එක්ස්ප්ලෝරර් මත බලන්න</translation>
 <translation id="8274201358637112807">මෙම පිටුවට බ්‍රේව් පසුම්බිය සමඟ අන්තර් ක්‍රියාවට වුවමනාය</translation>
 <translation id="3355936511340229503">සම්බන්ධතාවේ දෝෂයකි</translation>
@@ -850,6 +845,7 @@
 <translation id="6458565248779152483">Brave VPN අබල කරන්න</translation>
 <translation id="9080536793704001825">විනාඩි 15 කට විරාමයක්</translation>
 <translation id="803706420145725977">පැයකට විරාමයක්</translation>
+<translation id="4394049700291259645">අබල කරන්න</translation>
 <translation id="7733890291091968191">වෙබ්3 දැනුම්දීම් පෙන්වන්න</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave ඔබව හඹා නොයන්නේ හෝ ඔබ අපගේ යෙදුම භාවිතා කරන්නේ කෙසේදැයි නොදනී, එබැවින් ඔබ සකසා ඇත්තේ කෙසේදැයි අපි නොදනිමු VPN. කරුණාකර ඔබ අත්විඳින ගැටලුව පිළිබඳ තොරතුරු බෙදා ගන්න, අපට හැකි ඉක්මනින් එය විසඳීමට අපි අපේ උපරිමය කරන්නෙමු. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN සත්කාරක නාමය\n <ph name="VALUE"/></translation>

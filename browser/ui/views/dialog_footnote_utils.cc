@@ -18,7 +18,7 @@
 namespace views {
 
 std::unique_ptr<StyledLabel> CreateStyledLabelForDialogFootnote(
-    BrowserWindowInterface* browser,
+    Browser* browser,
     const std::u16string& footnote,
     const std::vector<std::u16string>& replacements,
     const std::vector<GURL>& urls) {
@@ -41,7 +41,7 @@ std::unique_ptr<StyledLabel> CreateStyledLabelForDialogFootnote(
 
     StyledLabel::RangeStyleInfo link_style =
         StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
-            [](BrowserWindowInterface* browser, const GURL& url) {
+            [](Browser* browser, const GURL& url) {
               chrome::AddSelectedTabWithURL(browser, url,
                                             ui::PAGE_TRANSITION_LINK);
             },

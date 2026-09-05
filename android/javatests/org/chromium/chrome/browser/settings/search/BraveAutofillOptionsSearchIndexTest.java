@@ -52,7 +52,8 @@ import java.util.List;
     ChromeFeatureList.AUTOFILL_ENABLE_SEPARATE_PIX_PREFERENCE_ITEM,
     ChromeFeatureList.FACILITATED_PAYMENTS_ENABLE_A2A_PAYMENT,
     ChromeFeatureList.AUTOFILL_SYNC_EWALLET_ACCOUNTS,
-    ChromeFeatureList.DETAILED_LANGUAGE_SETTINGS
+    ChromeFeatureList.DETAILED_LANGUAGE_SETTINGS,
+    ChromeFeatureList.PLUS_ADDRESSES_ENABLED
 })
 @DisableLeakChecks("crbug.com/512492984 (SearchIndexProviderRegistryTest)")
 public class BraveAutofillOptionsSearchIndexTest {

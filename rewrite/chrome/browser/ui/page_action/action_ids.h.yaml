@@ -13,8 +13,3 @@ substitutions:
       replace: |
         \1    kActionShowPartitionedStorage,
             kActionShowPsstIcon,
-            kActionShowSpeedreader,
-            kActionShowWaybackMachine,
-            kActionShowPlaylistPageAction,
-            kActionShowOnionLocation,
-            kActionShowBraveNews,

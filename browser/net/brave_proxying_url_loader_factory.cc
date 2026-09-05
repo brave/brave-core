@@ -26,7 +26,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/common/url_utils.h"
 #include "mojo/public/cpp/system/data_pipe_producer.h"
@@ -154,31 +153,6 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::Restart() {
   UpdateRequestInfo();
   RestartInternal();
-}
-
-template <template <typename> class T>
-void BraveProxyingURLLoaderFactory<
-    T>::InProgressRequest::AuthorizeBypassRedirectChecks() {
-  if (!factory_->navigation_id_) {
-    return;
-  }
-  if (auto* rfh =
-          content::RenderFrameHost::FromFrameToken(render_frame_token_)) {
-    content::NavigationHandle::SetBypassRedirectChecksForNextRedirect(
-        rfh->GetFrameTreeNodeId(), *factory_->navigation_id_);
-  }
-}
-
-template <template <typename> class T>
-bool BraveProxyingURLLoaderFactory<
-    T>::InProgressRequest::IsBypassRedirectChecksAuthorized() const {
-  if (!factory_->navigation_id_) {
-    return false;
-  }
-  auto* rfh = content::RenderFrameHost::FromFrameToken(render_frame_token_);
-  return rfh &&
-         content::NavigationHandle::HasBypassRedirectChecksForNextRedirect(
-             rfh->GetFrameTreeNodeId(), *factory_->navigation_id_);
 }
 
 template <template <typename> class T>
@@ -326,7 +300,7 @@ template <template <typename> class T>
 void BraveProxyingURLLoaderFactory<T>::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
-  if (!IsBypassRedirectChecksAuthorized() &&
+  if (!head->bypass_redirect_checks &&
       !content::IsSafeRedirectTarget(request_.url, redirect_info.new_url)) {
     OnRequestError(
         network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
@@ -417,7 +391,7 @@ void BraveProxyingURLLoaderFactory<
   head->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
       net::HttpUtil::AssembleRawHeaders(headers));
   head->encoded_data_length = 0;
-  AuthorizeBypassRedirectChecks();
+  head->bypass_redirect_checks = true;
 
   current_response_head_ = std::move(head);
   ctx_->set_internal_redirect(true);
@@ -627,7 +601,7 @@ void BraveProxyingURLLoaderFactory<
     net::RedirectInfo redirect_info = CreateRedirectInfo(
         request_, new_url, override_headers_->response_code(),
         net::RedirectUtil::GetReferrerPolicyHeader(override_headers_.get()));
-    AuthorizeBypassRedirectChecks();
+    current_response_head_->bypass_redirect_checks = true;
 
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.
@@ -738,7 +712,6 @@ BraveProxyingURLLoaderFactory<T>::BraveProxyingURLLoaderFactory(
     content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
     const url::Origin& request_initiator,
     const net::IsolationInfo& isolation_info,
-    std::optional<int64_t> navigation_id,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     DisconnectCallback on_disconnect,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner)
@@ -748,7 +721,6 @@ BraveProxyingURLLoaderFactory<T>::BraveProxyingURLLoaderFactory(
       url_loader_factory_type_(url_loader_factory_type),
       request_initiator_(request_initiator),
       isolation_info_(isolation_info),
-      navigation_id_(navigation_id),
       request_id_generator_(request_id_generator),
       disconnect_callback_(std::move(on_disconnect)),
       navigation_response_task_runner_(
@@ -784,7 +756,6 @@ void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
     content::ContentBrowserClient::URLLoaderFactoryType url_loader_factory_type,
     const url::Origin& request_initiator,
     const net::IsolationInfo& isolation_info,
-    std::optional<int64_t> navigation_id,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ResourceContextData<T>::StartProxying(
@@ -792,7 +763,7 @@ void BraveProxyingURLLoaderFactory<T>::MaybeProxyRequest(
       render_frame_host ? render_frame_host->GetGlobalFrameToken()
                         : content::GlobalRenderFrameHostToken(),
       factory_builder, url_loader_factory_type, request_initiator,
-      isolation_info, navigation_id, navigation_response_task_runner);
+      isolation_info, navigation_response_task_runner);
 }
 
 template <template <typename> class T>

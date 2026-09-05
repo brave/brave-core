@@ -49,7 +49,6 @@
     *** setContentSetting(...);
 }
 
-# Needed by the gson use inside the prebuilt Brave Playlist AAR.
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 
 -keep class org.chromium.chrome.browser.tabmodel.TabCollectionTabModelImpl {

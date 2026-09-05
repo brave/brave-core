@@ -73,7 +73,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="5679816001365584346">Ladda ned Brave på telefonen för att öppna eller skapa nya flikgrupper när du är på språng.</translation>
 <translation id="4559627161887338743">Du kan hantera dina inloggade Brave-konton. Dina Brave-konton används för webbläsaren Brave, Play Butik, Gmail med mera. Om du vill lägga till ett konto åt någon annan, till exempel en familjemedlem, lägger du till en ny person på <ph name="DEVICE_TYPE"/> i stället. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Sök med bildsökning</translation>
-<translation id="2963742289915075304"><ph name="EXISTING_USER"/> är redan inloggad. Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>. Du får även dina bokmärken med mera från <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Markera text</translation>
 <translation id="4528406859989804913">Du loggar in med ett hanterat konto och ger dess administratör kontroll över din Brave-profil. Dina uppgifter i Brave, t.ex. dina appar, bokmärken, din historik, ditt lösenord och andra inställningar, kopplas då permanent till <ph name="USER_NAME"/>. Du kommer att kunna ta bort dessa uppgifter via instrumentpanelen i Brave Konton, men du kommer inte att kunna koppla dem till något annat konto. Du kan skapa en ny profil om du vill hålla dina befintliga Brave-uppgifter separata. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave sparar batteri genom att begränsa aktivitet i bakgrunden och visuella effekter, till exempel jämnare scrollning och bildfrekvenser för video. <ph name="BEGIN_LINK"/>Läs mer om strömsparläget<ph name="END_LINK"/></translation>
@@ -132,7 +131,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="5298352791080868905">Öppna länkar från appar i Brave och ha webbläsaren tillgänglig i aktivitetsfältet</translation>
 <translation id="2600233721598267627">Klicka på knappen Sammanfatta för att dela det här dokumentet med Gemini i Brave och få en snabb översikt och ställa följdfrågor</translation>
 <translation id="2118275934191847461">Med <ph name="BEGIN_LINK"/>verktyg från Brave<ph name="END_LINK"/> kan du surfa säkert och behålla kontrollen</translation>
-<translation id="7508460698788470991"><ph name="EXISTING_USER"/> är redan inloggad. Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>. Du får även dina lösenord med mera på alla dina enheter.</translation>
 <translation id="2451727308784734061">Använd genvägen för att snabbt öppna Lösenordshantering. Du kan flytta genvägen till startskärmen eller startprogrammet för appar på datorn.</translation>
 <translation id="6381750314821942592">Brave avslutas snart</translation>
 <translation id="6078442581074612226">I Brave</translation>
@@ -151,7 +149,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="7931230852267968641">Organisationen kan se och hantera webbinformation, till exempel bokmärken, historik och lösenord. Den kan inte se webbinformation i andra Brave-profiler</translation>
 <translation id="2257221826278123061">Verifiera din identitet för att använda och spara Brave-data i ditt konto, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">Använd kortkommandot för att lämna eller återgå till Gemini i Brave.</translation>
-<translation id="5655607968417451974">Starta Brave</translation>
 <translation id="7387051847644272380">Ett operativsystemsfel inträffade under installationen. Ladda ned Brave igen.</translation>
 <translation id="2648689842065142443">Om du delar en enhet med vänner och familj kan de konfigurera Brave precis som de vill och surfa separat.</translation>
 <translation id="1001521084148238686">Enkel åtkomst till Gemini i Brave på alla dina enheter, även när Brave är minimerat.</translation>
@@ -300,6 +297,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="4304713468139749426">Lösenordshantering</translation>
 <translation id="4334241893986177674">Sök i den här skärmbilden</translation>
 <translation id="242356249838681145">Starta Brave när Windows startas</translation>
+<translation id="4747339441562331861">Få enkel åtkomst till funktionerna du känner till, gillar och litar på genom att ställa in Brave som standardwebbläsare. Brave fästs i aktivitetsfältet för snabb åtkomst.</translation>
 <translation id="4400772909124543403">Det finns ingen tillgänglig uppdatering</translation>
 <translation id="9183662282810237335">Vill du avsluta Brave ändå?</translation>
 <translation id="4413205837991854510">Visa alltid genvägen för bildsökning</translation>
@@ -396,7 +394,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 
 Om sidan inte fungerar som förväntat kan du testa att tillåta optimering.</translation>
 <translation id="7074160267408082133">Visa Gemini i Brave i menyraden på Mac och aktivera kortkommandot</translation>
-<translation id="2938507901464407819"><ph name="EXISTING_USER"/> är redan inloggad. Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>. Du får även dina sparade uppgifter med mera från <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Startfel: Kör installationsprogrammet som vanlig användare, inte som administratör.</translation>
 <translation id="3588973534877826647">Använd Brave som standard och fäst den</translation>
 <translation id="5596627076506792578">Fler alternativ</translation>
@@ -570,12 +567,12 @@ Nya bokmärken kan inte sparas i ditt konto förrän du har raderat några. Om d
 <translation id="5755581833598928580">Använd Brave varje gång du klickar på länkar i meddelanden, dokument och andra appar</translation>
 <translation id="7216228761061470870">När du använder bildsökning på datorn skickas sidans rubrik, webbadress och innehåll, inklusive PDF-filer, till servern</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
-<translation id="2416155625082200759"><ph name="EXISTING_USER"/> är redan inloggad. Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>. Du får även din sparade information med mera på alla dina enheter.</translation>
 <translation id="1871621397473741084">Börja surfa direkt: Brave kan nu startas när Windows startar.</translation>
 <translation id="7274695763216404502">Fäst! Använd Bildsökning igen från verktygsfältet</translation>
 <translation id="7288567540154601580">Flikar och tillägg</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Vi rekommenderar att du tar bort detta}other{Vi rekommenderar att du tar bort dessa}}</translation>
 <translation id="4600669988724328687">Om du vill dela systemljud öppnar du systeminställningarna och tillåter att endast systemljud spelas in för Brave. Du måste sedan starta om Brave.</translation>
+<translation id="9068395155143628872">Genom annonsmätning kan webbplatser du besöker begära information från Brave som hjälper dem att mäta annonsernas resultat. Med annonsmätning begränsas spårningen från webbplats till webbplats genom att så lite information som möjligt överförs mellan webbplatserna.</translation>
 <translation id="1864557848095568223">Brave uppdateras</translation>
 <translation id="3403365884036456766">Inställningsfilen är skadad eller ogiltig.
 
@@ -638,7 +635,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="5687542525349822727">Ställ in Brave som standardwebbläsare</translation>
 <translation id="6396151137840491551">Brave uppgraderar automatiskt osäkra anslutningar till HTTPS när det är möjligt</translation>
 <translation id="2925193881330501265">Du var inloggad i Brave som <ph name="USER_EMAIL_ADDRESS"/>. Använd samma konto när du loggar in igen.</translation>
-<translation id="3744141798014187630"><ph name="EXISTING_USER"/> är redan inloggad. Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>. Du får även dina bokmärken med mera på alla dina enheter.</translation>
 <translation id="6915252145142862992">Det här är en sekundär installation av Brave. Det går inte att göra den till standardwebbläsare.</translation>
 <translation id="7766756101194440006">Få ut det bästa av Brave med Brave-appen på din <ph name="DEVICE_TYPE"/></translation>
 <translation id="8004582292198964060">Webbläsare</translation>
@@ -669,12 +665,10 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="1755067029031059271">Brave kan inte verifiera var tillägget kommer från. Det kan vara osäkert. Ta bort det från Brave så att det inte längre kan se och ändra data, inklusive personliga uppgifter, på webbplatser du besöker.</translation>
 <translation id="8207657266087451193">Om en bild inte har någon användbar beskrivning görs ett försök att beskriva den åt dig i Brave. Bilderna skickas till Brave så att beskrivningen kan genereras. Du kan när som helst inaktivera den här inställningen.</translation>
 <translation id="7792526144795244436">Vill du logga in i Brave på en ny profil?</translation>
-<translation id="784788600549915416"><ph name="EXISTING_USER"/> är redan inloggad. Du kan hålla isär webbinformationen genom att logga in i Brave i din egen profil med <ph name="USER_EMAIL_ADDRESS"/>. Du får även dina lösenord med mera från <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Visa Gemini i Brave i systemfältet och aktivera kortkommandot</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave visar en varning<ph name="END_LINK"/> om osäkra webbplatser och nedladdningar</translation>
 <translation id="8060549744348950090">Du har inte besökt webbplatsen på sistone. Brave har tagit bort <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Shoppa, översätt och identifiera det du ser med kameran i Brave-appen för iOS</translation>
-<translation id="4470171586042711152">QR-kod för att logga in på Brave som <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Startfel: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Organisationen avslutar Brave när det inte har använts på <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Spara som bild</translation>

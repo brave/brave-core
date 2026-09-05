@@ -21,6 +21,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/chrome_version_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/channel_info.h"
@@ -191,12 +192,12 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDoublePref(prefs::kWhatsNewLastVersion, 0);
 }
 
-void StartBraveWhatsNew(BrowserWindowInterface* browser) {
+void StartBraveWhatsNew(Browser* browser) {
   constexpr char kBraveWhatsNewURL[] = "https://brave.com/whats-new/";
   // Load whats-new url in the first foreground tab.
   chrome::AddTabAt(browser, GURL(kBraveWhatsNewURL), 0, true);
-  browser->GetTabStripModel()->ActivateTabAt(
-      browser->GetTabStripModel()->IndexOfFirstNonPinnedTab());
+  browser->tab_strip_model()->ActivateTabAt(
+      browser->tab_strip_model()->IndexOfFirstNonPinnedTab());
 }
 
 }  // namespace whats_new

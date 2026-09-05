@@ -20,7 +20,6 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -221,10 +220,9 @@ void TabSearchPageHandler::OnGetFocusTabs(
     return;
   }
 
-  auto create_params =
-      BrowserWindowCreateParams(Profile::FromWebUI(web_ui_), true);
+  auto create_params = Browser::CreateParams(Profile::FromWebUI(web_ui_), true);
   create_params.user_title = topic;
-  auto* new_browser = CreateBrowserWindow(std::move(create_params));
+  Browser* new_browser = Browser::Create(create_params);
   for (auto* tab : tabs_before_move) {
     int tab_index =
         tab->GetBrowserWindowInterface()->GetTabStripModel()->GetIndexOfTab(
@@ -234,8 +232,8 @@ void TabSearchPageHandler::OnGetFocusTabs(
         tab->GetBrowserWindowInterface()
             ->GetTabStripModel()
             ->DetachTabAtForInsertion(tab_index);
-    new_browser->GetTabStripModel()->AppendTab(std::move(detached_tab_model),
-                                               false /* foreground */);
+    new_browser->tab_strip_model()->AppendTab(std::move(detached_tab_model),
+                                              false /* foreground */);
   }
   BrowserWindow::FromBrowser(new_browser)->Show();
 
@@ -245,16 +243,16 @@ void TabSearchPageHandler::OnGetFocusTabs(
 void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
   for (auto& iter : original_tabs_info_by_window_) {
     // Find the browser with the session ID (key).
-    BrowserWindowInterface* target = nullptr;
+    Browser* target = nullptr;
     GlobalBrowserCollection::GetInstance()->ForEach(
         [&target, &iter, this](BrowserWindowInterface* bwi) {
-          if (!ShouldTrackBrowser(profile_,
-                                  bwi->GetBrowserForMigrationOnly())) {
+          Browser* browser = bwi->GetBrowserForMigrationOnly();
+          if (!ShouldTrackBrowser(profile_, browser)) {
             return true;
           }
 
-          if (bwi->GetSessionID() == iter.first) {
-            target = bwi;
+          if (browser->session_id() == iter.first) {
+            target = browser;
           }
           return target == nullptr;
         });
@@ -284,7 +282,7 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
           tab->GetBrowserWindowInterface()
               ->GetTabStripModel()
               ->DetachTabAtForInsertion(tab_index);
-      target->GetTabStripModel()->InsertDetachedTabAt(
+      target->tab_strip_model()->InsertDetachedTabAt(
           tab_info.index, std::move(detached_tab_model), AddTabTypes::ADD_NONE);
     }
   }

@@ -46,19 +46,19 @@ bool ShouldOverride(net::SecureDnsMode secure_dns_mode,
   return true;
 }
 
-net::InsecureDnsMode MaybeOverrideDnsClientEnabled(
+bool MaybeOverrideDnsClientEnabled(
     net::SecureDnsMode secure_dns_mode,
-    net::InsecureDnsMode insecure_dns_mode,
+    bool insecure_dns_client_enabled,
     PrefService* local_state,
     SecureDnsConfig::ManagementMode management_mode,
     bool is_managed) {
   if (ShouldOverride(secure_dns_mode, local_state, management_mode,
                      is_managed)) {
     // disable the insecure client for doh
-    return net::InsecureDnsMode::kDisabled;
+    return false;
   }
 
-  return insecure_dns_mode;
+  return insecure_dns_client_enabled;
 }
 
 net::SecureDnsMode MaybeOverrideDnsMode(
@@ -135,24 +135,25 @@ std::vector<net::IPEndPoint> MaybeOverrideFallbackDohNameservers(
                                           FORCED_MANAGEMENT_MODE, is_managed,  \
                                           FALLBACK_DOH_NAMESERVERS))
 
-#define ConfigureStubHostResolver(                                            \
-    INSECURE_DNS_MODE, HAPPY_EYEBALLS_V3_ENABLED, SECURE_DNS_MODE,            \
-    DNS_OVER_HTTPS_CONFIG, ADDITIONAL_DNS_TYPES_ENABLED,                      \
-    FALLBACK_DOH_NAMESERVERS)                                                 \
-  ConfigureStubHostResolver(                                                  \
-      MaybeOverrideDnsClientEnabled(SECURE_DNS_MODE, INSECURE_DNS_MODE,       \
-                                    local_state_, forced_management_mode,     \
-                                    is_managed),                              \
-      HAPPY_EYEBALLS_V3_ENABLED,                                              \
-      MaybeOverrideDnsMode(SECURE_DNS_MODE, local_state_,                     \
-                           forced_management_mode, is_managed),               \
-      MaybeOverrideDnsConfig(SECURE_DNS_MODE, DNS_OVER_HTTPS_CONFIG,          \
-                             local_state_, forced_management_mode,            \
-                             is_managed),                                     \
-      ADDITIONAL_DNS_TYPES_ENABLED,                                           \
-      MaybeOverrideFallbackDohNameservers(SECURE_DNS_MODE, local_state_,      \
-                                          forced_management_mode, is_managed, \
-                                          FALLBACK_DOH_NAMESERVERS))
+#define ConfigureStubHostResolver(                                             \
+    INSECURE_DNS_CLIENT_ENABLED, HAPPY_EYEBALLS_V3_ENABLED, SECURE_DNS_MODE,   \
+    DNS_OVER_HTTPS_CONFIG, ADDITIONAL_DNS_TYPES_ENABLED,                       \
+    FALLBACK_DOH_NAMESERVERS, INSECURE_DNS_VIA_PLATFORM_APIS_ENABLED)          \
+  ConfigureStubHostResolver(                                                   \
+      MaybeOverrideDnsClientEnabled(SECURE_DNS_MODE,                           \
+                                    INSECURE_DNS_CLIENT_ENABLED, local_state_, \
+                                    forced_management_mode, is_managed),       \
+      HAPPY_EYEBALLS_V3_ENABLED,                                               \
+      MaybeOverrideDnsMode(SECURE_DNS_MODE, local_state_,                      \
+                           forced_management_mode, is_managed),                \
+      MaybeOverrideDnsConfig(SECURE_DNS_MODE, DNS_OVER_HTTPS_CONFIG,           \
+                             local_state_, forced_management_mode,             \
+                             is_managed),                                      \
+      ADDITIONAL_DNS_TYPES_ENABLED,                                            \
+      MaybeOverrideFallbackDohNameservers(SECURE_DNS_MODE, local_state_,       \
+                                          forced_management_mode, is_managed,  \
+                                          FALLBACK_DOH_NAMESERVERS),           \
+      INSECURE_DNS_VIA_PLATFORM_APIS_ENABLED)
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #define StubResolverConfigReader StubResolverConfigReader_ChromiumImpl

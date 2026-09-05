@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Novērtēt Brave</translation>
 <translation id="4104400246019119780">Paldies!</translation>
 <translation id="5202255382948179481">Pievienojiet savus ieteikumus!</translation>
+<translation id="7759809451544302770">Pēc izvēles</translation>
 <translation id="4748689412569009273">Izmantojot vienu emocijzīmi pastāstiet, kāda ir Jūsu pieredze ar Brave?</translation>
 <translation id="7335142069363686805">Novērtējiet tagad</translation>
 <translation id="6681362094306959654">Vai Jums patīk Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Bēdīgs</translation>
 <translation id="5488843227043643519">Atstāt Play veikala vērtējumu?</translation>
 <translation id="5867854497245948308">Paldies par Jūsu atsauksmēm!</translation>
-<translation id="5578122562331038807">Pastāstiet mums, kā mēs varam uzlabot Brave</translation>
-<translation id="1483493594462132177">Sūtīt</translation>
-<translation id="3889034478061064651">Pievienojiet savus ieteikumus (neobligāti)</translation>
-<translation id="1769154760586570836">Atsauksme nosūtīta. Paldies!</translation>
-<translation id="4450893287417543264">Vairs nerādīt</translation>
+<translation id="4935400164159327304">Pastāstiet mums, kā mēs varam uzlabot Brave.</translation>
 <translation id="8966035543003363155">Brave paziņojumi atvieglo dzīvi</translation>
 <translation id="7662771815233894695">Pārvaldi lejupielādes, pelni marķierus, skati iknedēļas lietojuma statistiku un vēl.</translation>
 <translation id="4265429476391459783">Tu šobrīd nepelni balvas un nesaņem privātuma ziņojumus</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Lapas darbības</translation>
 <translation id="7104487676473617844">Tālāk norādītie vienumi būs redzami izvēlnē tikai tad, ja to atbalsta pašlaik atvērtā tīmekļa lapa.</translation>
 <translation id="4159764849281393303">Tīmekļa lietotne</translation>
+<translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="8038539967102225446">Brave reklāmas ir klāt!</translation>
 <translation id="222883304157347087">(šī ierīce)</translation>
 <translation id="4157741509680155021">SINHRONIZĀCIJAS ĶĒDĒ ESOŠAS IERĪCES</translation>
@@ -538,6 +536,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
 <translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
 <translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>
+<translation id="1483493594462132177">Sūtīt</translation>
 <translation id="538450413584738399">Mijmaiņa</translation>
 <translation id="4556086616242530072">Pielāgots pārlūkprogrammai.\nPilnībā jūsu kontrolē.\nUn piemērots dažāda veida kriptovalūtai.</translation>
 <translation id="7909462264772842773">Parūpējieties par savu kriptovalūtu un NFT. Brave makā var glabāt Ethereum, EVM ķēdes, Solana, Filecoin u. c.</translation>
@@ -613,6 +612,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="569068482611873351">Notiek importēšana...</translation>
 <translation id="4522570452068850558">Informācija</translation>
 <translation id="3114681061018999547">Šifrē</translation>
+<translation id="3784455785234192852">Bloķēt</translation>
 <translation id="4412698727486357573">Palīdzības centrs</translation>
 <translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
 <translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
@@ -808,10 +808,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2478788592457735063">Tā tīkls tiks pārslēgts uz iepriekš pievienotu tīklu.</translation>
 <translation id="8756686998207163764">Pārslēgt tīklu</translation>
 <translation id="8905793906896555159">Iespējot ciļņu grupas</translation>
-<translation id="6735749683447943955">Atspējot ciļņu grupas?</translation>
-<translation id="4616687974503500682">Visas esošās grupas tiks dzēstas, un šajās grupās esošās cilnes kļūs par atvērtām, negrupētām cilnēm jūsu pārlūka logā. Vai tiešām vēlaties turpināt?</translation>
-<translation id="4394049700291259645">Atspējot</translation>
-<translation id="3859027502409073633">Rādīt sinhronizētās ciļņu grupas</translation>
 <translation id="7632160823264702523">Ciļņu grupu josla</translation>
 <translation id="2477807195394450274">Rādīt apakšējo joslu ātrai piekļuvei cilnēm pašreiz atvērtajā ciļņu grupā</translation>
 <translation id="8374720587111523381">Atvērt saites pašreizējā ciļņu grupā</translation>
@@ -819,7 +815,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1227658541937938697">Automātiski atvērt visas saites pašreizējā ciļņu grupā</translation>
 <translation id="5242300593039211344">Bloķēt maku</translation>
 <translation id="1108298724135935307">Saistītās vietnes</translation>
-<translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="4255623233927788178">Skats uz pārlūka bloķēšanu</translation>
 <translation id="8274201358637112807">Šī lapa vēlas mijiedarboties ar Brave maku</translation>
 <translation id="3355936511340229503">Savienojuma kļūda</translation>
@@ -861,6 +856,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6458565248779152483">Atspējot Brave VPN</translation>
 <translation id="9080536793704001825">Apturēt uz 15 minūtēm</translation>
 <translation id="803706420145725977">Apturēt uz 1 stundu</translation>
+<translation id="4394049700291259645">Atspējot</translation>
 <translation id="7733890291091968191">Parādīt Web3 paziņojumus</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave neizseko jūs vai to, kā jūs izmantojat mūsu lietotni, tāpēc mēs nezinām, kā jūs esat uzstādījuši VPN. Lūdzu, pastāstiet par savu problēmu, un mēs darīsim, kas mūsu spēkos, lai to atrisinātu pēc iespējas ātrāk. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN resursdatora nosaukums\n <ph name="VALUE"/></translation>

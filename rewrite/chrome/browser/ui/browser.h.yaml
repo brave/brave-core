@@ -4,6 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: 'Make ScheduleUIUpdate virtual'
+    make_virtual:
+      class_name: Browser
+      method_name: ScheduleUIUpdate
+
   - description: 'Make OnTabClosing virtual'
     make_virtual:
       class_name: Browser

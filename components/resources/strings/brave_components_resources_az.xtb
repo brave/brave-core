@@ -262,6 +262,8 @@
 <translation id="1892970806832316900"><ph name="DATE"/> tarixinədək gözləmədədir</translation>
 <translation id="7849926087559412554">Oops! Brauzeriniz Brave Məxfi Reklamları ala bilmir.</translation>
 <translation id="5177429570315095022">Reklamları görməyə davam etmək üçün brauzerinizi yeniləməlisiniz.</translation>
+<translation id="4593680147181354667">Diaqnostik nömrə</translation>
+<translation id="3995471429906554168">Diaqnostik məlumatlar</translation>
 <translation id="752216563428219524">Reklamların başlanğıcı alınmadı, səhifəni yeniləyin.</translation>
 <translation id="7422678632904904341">Məbləğ:</translation>
 <translation id="6969783933307596818">Avtomatik olaraq hər 5 saniyədən bir yeniləyin</translation>
@@ -307,6 +309,7 @@
 <translation id="8118649457152178086">Mükafatlar ölkəsi:</translation>
 <translation id="2152423226436243241">Avtomatik Töhfə</translation>
 <translation id="7504352885209484360">Təkrarlanan töhfə</translation>
+<translation id="916115051162298064">Reklam diaqnostikası</translation>
 <translation id="7806880412350961625">Hadisə qeydləri</translation>
 <translation id="4309915981827077375">Ümumi məlumat</translation>
 <translation id="3662406032239313663">Qeydlər</translation>
@@ -1067,6 +1070,7 @@
 <translation id="1530109021798294736">Əsas şəbəkə</translation>
 <translation id="1613627717923045622">Test şəbəkəsi</translation>
 <translation id="6742767287935968736">Sepolia</translation>
+<translation id="6749024162985917640">Lokalhost</translation>
 <translation id="3792938779249970121">Hesabı seçin</translation>
 <translation id="6797737193502014008">Hesabları axtarın</translation>
 <translation id="3505920073976671674">Şəbəkəni seçin</translation>
@@ -1452,12 +1456,6 @@
 <translation id="3009178788565917040">Çıxış</translation>
 <translation id="7953669802889559161">Girişlər</translation>
 <translation id="4554024082642878647">Çıxışlar</translation>
-<translation id="5371133472668945195">Mint</translation>
-<translation id="6298850625966818206">Çıxarışlar</translation>
-<translation id="797064699579611882">Skript Məlumat Heşi</translation>
-<translation id="2317256716536338565">Girov</translation>
-<translation id="4739988172452238850">Girov Qaytarılması</translation>
-<translation id="4695732358958704457">Ümumi Girov</translation>
 <translation id="1965889974717516497">İkincil şəbəkələr</translation>
 <translation id="7691821949666755802">Test şəbəkələri</translation>
 <translation id="2816106784624007524">Qaz limiti 0-dan böyük tam ədəd olmalıdır</translation>
@@ -1517,6 +1515,7 @@
 <translation id="4100192671552260674">Dondurulmuş Hesab</translation>
 <translation id="1865659351831046902">Yerli Token Hesab</translation>
 <translation id="3430421677512658698">Token Mint</translation>
+<translation id="5371133472668945195">Mint</translation>
 <translation id="3591768665664470087">İmzalar</translation>
 <translation id="2761935211528145049">Delegat</translation>
 <translation id="5048094297412542354">Sahib/Delegat</translation>
@@ -1764,6 +1763,11 @@
 <translation id="5797060124625958778">Sürət prioriteti</translation>
 <translation id="6213230117190778270">Almaq</translation>
 <translation id="6748108480210050150">Kimdən</translation>
+<translation id="4875290286426670462">Limitsiz <ph name="ASSET_SYMBOL"/></translation>
+<translation id="6018568069962140636">Bu token təsdiqlənməmişdir</translation>
+<translation id="8549067157732633185">Bu token təsdiqlənmişdir</translation>
+<translation id="2130170065617939165">Bu token <ph name="NUMBER_OF_LISTS"/> siyahıda təsdiqlənib</translation>
+<translation id="1554316484739382186">Xərc çəkən: <ph name="ADDRESS"/></translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291"><ph name="PROVIDER"/> hesaba</translation>
@@ -1780,6 +1784,11 @@
 <translation id="1531836666020185856">Xüsusi seçilmişlər</translation>
 <translation id="3225021799163709119">Populyar</translation>
 <translation id="6854651431635060919">Test Şəbəkə Hesabı</translation>
+<translation id="626850389704042219">Əməliyyat simulyasiyasını aktiv edin</translation>
+<translation id="7414944309396133072">Təxmin edilmiş balans dəyişikliyinizi önizləyin</translation>
+<translation id="2761574758015819991">Potensial zərərli əməliyyatları müəyyən edin</translation>
+<translation id="168533464844528463">Fişinq cəhdlərini aşkar etməyə kömək edin</translation>
+<translation id="2410455471299328417">Bu xidmət <ph name="BOLD_BEFORE"/>Blowfish.xyz<ph name="BOLD_AFTER"/> tərəfindən təmin edilir və onların <ph name="TERMS_LINK_BEFORE"/>Xidmət Şərtlərinə<ph name="TERMS_LINK_AFTER"/> və <ph name="PRIVACY_POLICY_LINK_BEFORE"/>Məxfilik Siyasətinə<ph name="PRIVACY_POLICY_LINK_AFTER"/> tabedir</translation>
 <translation id="8688672835843460752">Mövcud</translation>
 <translation id="5296640085393149413">İstifadə edə biləcəyiniz vəsait.</translation>
 <translation id="2515906149804238711">Pulqabınızdakı balansda gözləyən dəyişiklik.</translation>
@@ -1807,8 +1816,14 @@
 <translation id="2454691116905703258">NFT üçün token adı müəyyən kolleksiya və ya layihə daxilində qeyri-fungible tokenə verilən xüsusi adı ifadə edir. Bu ad eyni kolleksiya daxilində bir NFT-ni digərindən fərqləndirir.</translation>
 <translation id="3212749868469431851">NFT simvolu, NFT kolleksiya və ya layihəsini fərqləndirmək üçün istifadə olunan unikal identifikatoru ifadə edir.</translation>
 <translation id="8198838794018761504">Yalnız baxış</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">Heç bir DApp tapılmadı</translation>
+<translation id="4864082959618144988">Aktiv cüzdanlar</translation>
+<translation id="5445224754926400848"><ph name="VALUE"/> ziyarət edin</translation>
+<translation id="8355371587927005068">Filtrlər</translation>
+<translation id="803703704549420287">Filtrləri təmizlə</translation>
+<translation id="1472675084647422956">Daha çox göstər</translation>
 <translation id="4522570452068850558">Təfərrüatlar</translation>
-<translation id="7417602392941345608">Brave hazırda Zcash NU6.3-ə keçir. Bu keçid müddətində Zcash funksionallığı ör­tü­nün çıxarılması və şəffafdan-şəffafa göndərmə ilə məhdudlaşacaq.</translation>
 <translation id="8713438253026855351">Qorunan hesaba keç</translation>
 <translation id="3526789880090101085">Əsas hesaba keç</translation>
 <translation id="3155166394760577549">Əməliyyatın məxfiliyini artırmaq üçün təhlükəsizlik qalxanlarını aktivləşdirin.</translation>
@@ -1852,6 +1867,41 @@
 <translation id="8631765320256788981">Şəffaf hesabınızdan təhlükəsizlik qalxanı ilə təchiz edilmiş hesabınıza pul köçürürsünüz.</translation>
 <translation id="3860364671495430495">Təhlükəsizlik qalxanı ilə təchiz edilmiş hesabınızdan şəffaf hesabınıza pul köçürürsünüz.</translation>
 <translation id="7144878232160441200">Təkrar cəhd edin</translation>
+<translation id="9094621390791852268">Əməliyyatın önizlənməsi uğursuz oldu.</translation>
+<translation id="4982713341035600933">Təxmin edilən balans dəyişikliyi</translation>
+<translation id="7197388583016272600">Təsdiq təfərrüatları</translation>
+<translation id="3785613860627641047">Səlahiyyət dəyişikliyi</translation>
+<translation id="5135378583369915147">Əməliyyatın taranması</translation>
+<translation id="4744699166186440">Staker</translation>
+<translation id="6313747204807079184">Çıxaran</translation>
+<translation id="4312670848214406213">Siz başqa birinə adınıza tokenləri köçürmək icazəsi verirsiniz.</translation>
+<translation id="5465460394116463557">Bu, adətən oğurluq cəhdidir ki, bir çox tokenlərin köçürülməsinə icazə istəyir.</translation>
+<translation id="7315935420455987651">Bu sayt saxta ola bilər.</translation>
+<translation id="7772576967285233002">Bu DApp gələcəkdə hesabınızdan tokenləri köçürə biləcək.</translation>
+<translation id="438039795179295571">Bu sayt yüksək riskli kimi işarələnmişdir və yəqin ki, pullarınızı oğurlamağa cəhd edəcək.</translation>
+<translation id="4852394547793286745">Bu domen hələ təsdiqlənməyib. Sayta etibar etmirsinizsə, davam etməyin.</translation>
+<translation id="5832443872711287128">Bu ünvanı iki dəfə yoxlayın, çünki o, əvvəlki əlaqə şəxsinizi təqlid edə bilər.</translation>
+<translation id="5317646355693663165">Bu, token balansınızın mülkiyyətini başqasına köçürür.</translation>
+<translation id="3459325260212799301">Bu sayt təhlükəli və ya zərərli kimi işarələnmişdir. Davam etmək itkiklərə səbəb ola bilər.</translation>
+<translation id="5409388443146954820">Bu, 200-dən çox hərəkəti təsdiqləyəcəkdir. Əgər planlaşdırılmayıbsa, bu zərərli ola bilər.</translation>
+<translation id="6187462466381633445">Bu, 200-dən çox təsdiq tələb edir; adətən bu, balanslarınızı boşaltmaq cəhdidir.</translation>
+<translation id="3322526234603442338">Siz qarşılığında heç nə almadan tokenləri dəyişirsiniz. Bu yəqin ki, səhvdir.</translation>
+<translation id="4773052969794445878">Siz tokenlərin öz ünvanına göndərirsiniz ki, onlar əbədi olaraq itiriləcək.</translation>
+<translation id="8144820760826901598">Bu, hesabınızın və balanslarınızın mülkiyyətini başqasına köçürür.</translation>
+<translation id="6023771436430346631">Şəbəkə qaz haqqını ödəmək üçün kifayət qədər vəsait yoxdur.</translation>
+<translation id="4753738223346804632">Əməliyyatı tamamlamaq üçün kifayət qədər vəsait yoxdur.</translation>
+<translation id="8661124952575076441">Əməliyyatın uğursuz olacağı və geri dönəcəyi ehtimalı var. Cəhd etmək qaz xərclərinə səbəb olacaq.</translation>
+<translation id="7660840414862537846">Əməliyyatın baxışında gözlənilməz bir səhv baş verdi. Təsdiqləmək təhlükəli ola bilər.</translation>
+<translation id="4683335916231560287">Heç bir dəyişiklik aşkarlanmadı</translation>
+<translation id="6769279318856228158">Hesab mülkiyyətinin dəyişməsi</translation>
+<translation id="3200658657457611958">Əməliyyatın necə davranacağını təsdiqləmədən əvvəl simulə edin</translation>
+<translation id="8311005737513179222">Bu şəbəkədə əməliyyatın önizlənməsi dəstəklənmir.</translation>
+<translation id="4282496974850444428">Siz bu xidmətdən istifadə etməyi seçdiyiniz üçün bu mesajı görürsünüz.</translation>
+<translation id="6094399032955582807">Mövcud şəbəkələri görün</translation>
+<translation id="6644973832009582039">EVM mesaj taraması hazırda dəstəklənmir</translation>
+<translation id="5222675470118670784">EVM mesaj taraması nədir?</translation>
+<translation id="4085714860536252628">Ethereum Virtual Machine-dən göndərilən mesajları yoxlayaraq təhlükəsizliyi və dəqiqliyi təmin edir ki, smart kontraktınız və ya hər hansı bir aksiyaya uyğun olsun.</translation>
+<translation id="7800112661494546348">Bu, məktubu imzalamadan əvvəl düzgün olduğundan əmin olmaq üçün iki dəfə yoxlamağa bənzəyir.</translation>
 <translation id="4750109510113597688">Bu əməliyyat hesab yaradılması ilə bağlı ödənişləri əhatə edə bilər</translation>
 <translation id="6201709949885884577">Bu əməliyyatı yerinə yetirmək üçün parol tələb olunur.</translation>
 <translation id="3435015606307655951">Təhlükəsiz Transfer</translation>
@@ -1878,9 +1928,10 @@
 <translation id="6024292492796847324">Tor Başlanğıc Proqresi</translation>
 <translation id="8300751939969131609">Brave Xəbərləri açın və heç bir hekayəni qaçırmayın</translation>
 <translation id="7758665172236842395">Sevimli mənbələrinizi bir yerdə izləyin. Sadəcə olaraq Brave-də tab açın, aşağı fırladın və... voila!</translation>
+<translation id="2376542729617592331">Brave Xəbərlər məxfiliyini qoruyan anonimləşdirilmiş reklamlara malikdir. <ph name="LINK_START"/>Ətraflı öyrənin.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Brave Xəbərləri aç</translation>
 <translation id="1772301834467143364">Brave Xəbərlər</translation>
-<translation id="1717242776111689224">Brave Xəbərləri Aktivləşdir</translation>
+<translation id="6265592479622441247"><ph name="BEGIN_BOLD"/>Dashboard<ph name="END_BOLD"/> sahəsinə geri dön</translation>
 <translation id="3169472444629675720">Kəşf et</translation>
 <translation id="8981973962043893066">Sayt, mövzu və ya RSS tökmək üçün axtarış edin</translation>
 <translation id="1498364270401875204">Kanallar</translation>
@@ -1916,10 +1967,8 @@
 <translation id="736592699917579616">Qida</translation>
 <translation id="5104499318017527547">Əyləncə</translation>
 <translation id="2228584369802328636">Oyun</translation>
-<translation id="1748819301509295490">Hökumət</translation>
 <translation id="6941852195052765076">Sağlamlıq</translation>
 <translation id="2233040275795129413">Yaşam tərzi</translation>
-<translation id="4102567721634170493">Yerli Xəbərlər</translation>
 <translation id="5178222043222938163">Musiqi</translation>
 <translation id="1322083935398004629">Siyasət</translation>
 <translation id="8739620487574841501">Regional Xəbərlər</translation>
@@ -1961,7 +2010,6 @@
 <translation id="5210365745912300556">Tabı bağla</translation>
 <translation id="8852436503814917529">Növbəti vərəqə keç</translation>
 <translation id="1543046737011894871">Əvvəlki vərəqə keç</translation>
-<translation id="8577900867298864393">Bütün təkrar tab-vərəqələri bağla</translation>
 <translation id="2291643155573394834">Növbəti tab</translation>
 <translation id="7748528009589593815">Əvvəlki tab</translation>
 <translation id="3738690686686515962">Tab 0-ı seç</translation>
@@ -2207,6 +2255,7 @@
 <translation id="8151638057146502721">Konfiqurasiya edin</translation>
 <translation id="999273441077650169">Model vəzifəni ən yaxşı yerinə yetirmək üçün dinamik olaraq dəyişir.<ph name="LINK_BEFORE"/>Daha çox öyrənin<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Alibaba Cloud tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Qwen VL 30B modeli ilə işləyirəm. Qwen modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən GLM-5 modeli ilə işləyirəm, Zhipu AI tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmışdır. GLM-5 NEAR-in öz təsdiqlənmiş şəxsi təhlükəsiz infrastrukturu vasitəsilə yerləşdirilib.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="784931275560506522">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Zhipu AI tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış GLM-5.1 modeli ilə işləyirəm. GLM-5.1 modeli NEAR-in öz təsdiqlənmiş şəxsi təhlükəsiz infrastrukturu vasitəsilə yerləşdirilib.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Salam, mən Leo. Mən Brave tərəfindən yaradılmış süni intellekt köməkçisiyəm. Söhbət və mətn emalı tapşırıqları üçün Anthropic tərəfindən yaradılan Claude Instant modeli ilə işləyirəm. Claude Instant Brave-in təhlükəsiz infrastrukturu üzərindən təqdim olunur.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Anthropic tərəfindən söhbət və mətn emalı vəzifələrini yerinə yetirmək üçün yaradılmış Claude Haiku modeli ilə işləyirəm. Claude Haiku modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
@@ -2299,15 +2348,8 @@
 <translation id="903201991022343217">Yeni söhbətə başla</translation>
 <translation id="8742207701089910775">Bu söhbəti paylaş</translation>
 <translation id="4014016095804982975">Söhbətiniz şifrələnmiş halda yüklənəcək və yalnız yaradılmış link ilə deşifrə edilə bilər. Brave söhbətinizə baxa bilməyəcək. Yalnız siz və bu linki paylaşdığınız insanlar paylaşdığınız söhbəti deşifrə edə bilərlər. Bütün paylaşılmış söhbətlərin müddəti 7 gündən sonra bitəcək.</translation>
-<translation id="2796028253343262770">Onları istənilən vaxt tapmaq və ya silmək üçün <ph name="LINK_BEFORE"/>paylaşdıqlarınızı idarə edə<ph name="LINK_AFTER"/> bilərsiniz.</translation>
 <translation id="1390174375123434798">Link yarat</translation>
 <translation id="8904787158537906492">Link mübadilə buferinə kopyalandı</translation>
-<translation id="8271640637943225289">Paylaşılan söhbətləri idarə et</translation>
-<translation id="8560840376878438871">Keçidi olan hər kəs bu söhbətləri müddəti bitənə qədər görə bilər. Keçidin işləməsini dayandırmaq üçün paylaşılan söhbəti silin.</translation>
-<translation id="4502471087710059721">Heç bir söhbət paylaşmamısınız.</translation>
-<translation id="6181755214951367004">Paylaşılan söhbəti sil</translation>
-<translation id="3987993985790029246">Keçidi kopyala</translation>
-<translation id="5621789433179102273">Paylaşılan söhbət silinə bilmədi. Bağlantınızı yoxlayın və yenidən cəhd edin.</translation>
 <translation id="8171760814579050200">Söhbətin adını dəyişdir</translation>
 <translation id="402386227879573975">Bütün söhbəti kopyala</translation>
 <translation id="5397794290049113714">Siz</translation>
@@ -2316,6 +2358,9 @@
 <translation id="4198859185714743678">Təhlil tamamlandı</translation>
 <translation id="6140948187512243695">Məlumatları göstər</translation>
 <translation id="4881695831933465202">Aç</translation>
+<translation id="1625889395409731085">Xarici keçidi aç?</translation>
+<translation id="4211063437291114749">Leo AI yeni tabda bir veb-sayt açmaq istəyir. Davam etmək istəyirsiniz?</translation>
+<translation id="5526001300821542157">Keçidləri məndən bir daha soruşmadan aç</translation>
 <translation id="1243966363662220847">Cavab Geribildirimi</translation>
 <translation id="7417895556119762861">Cavabı bəyənmək və ya bəyənməmək qiymətləndirməni, söhbəti, modeli, dili, versiyanı və mükafat statusunu Brave-ə göndərəcək ki, Leo-nu təkmilləşdirə bilək. <ph name="LINK_BEFORE"/>Daha çox öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Leo-ya mesaj göndərin</translation>
@@ -2407,9 +2452,6 @@
 <translation id="9088751620363630236">Şəkil çək...</translation>
 <translation id="4250229828105606438">Ekran görüntüsü</translation>
 <translation id="7949596341600215809">Tam səhifə ekran görüntüsü</translation>
-<translation id="3024277805447899099">Şəkli önizlə</translation>
-<translation id="6671495933530132209">Şəkli kopyala</translation>
-<translation id="6864459304226931083">Şəkli yüklə</translation>
 <translation id="6332876390231524389">Cari tabın məzmunu</translation>
 <translation id="6397861830483632092">Tab-vərəqələri aç…</translation>
 <translation id="802080272588201037">Əlfəcinlər…</translation>
@@ -2541,7 +2583,6 @@
 <translation id="8057865981284642090">E-poçt ləqəblərindən istifadə etmək üçün Brave hesabınıza daxil olmalısınız. Aşağıdakı
     düyməyə klikləyərək başlayın.</translation>
 <translation id="4472575034687746823">Başla</translation>
-<translation id="3000160751117721864">Sponsorlu saytlar nədir?</translation>
 <translation id="8370801182970639038">Avtomatik (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Axtarış mühərrikləri aktivdir</translation>
 <translation id="8285901519864208412">Mükafat kartını gizlədin</translation>
@@ -2557,23 +2598,19 @@
 <translation id="9173319813356700250">XƏBƏRLƏR</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/> tərəfindən foto</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="2977532139641645513">Sponsorlu saytları sil</translation>
 <translation id="466214682712474574">Balansınızı görmək üçün <ph name="PROVIDER"/> hesabınıza daxil olun</translation>
 <translation id="8332875111286275890">Balansınızı görmək üçün daxil olun</translation>
 <translation id="5430001801813715388">MÜKAFATLAR</translation>
 <translation id="988042349921505128">Axtarış və AI</translation>
 <translation id="2430295257226173518">Bir şey soruş, bir şey tap…</translation>
-<translation id="4391352555758073798">Fon şəkillərini göstər</translation>
+<translation id="167018310108390163">Yeni Tab Səhifəsini Fərdiləşdir</translation>
 <translation id="3500134717967948757">Yeni tablarda Leo AI vidceti göstər</translation>
 <translation id="6851426306697017546">Saatı göstər</translation>
 <translation id="4844370919312937270">Yeni tablarda axtarış widgetını göstər</translation>
-<translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave Mükafatları<ph name="REWARDS_LINK_END"/> ilə, Yeni Tab Səhifəsi reklamlarını gördüyünüz üçün qazana bilərsiniz. <ph name="LEARN_MORE_LINK_BEGIN"/>Ətraflı<ph name="LEARN_MORE_LINK_END"/>.</translation>
+<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Mükafatları<ph name="LINK_END"/> ilə, yeni tab səhifəsi reklamlarını gördüyünüz üçün qazana bilərsiniz.</translation>
 <translation id="4100520468072294616">Yeni tab səhifə reklamlarını göstər</translation>
-<translation id="1410408595862476783">Sponsorlu saytları göstər</translation>
 <translation id="5009354496127441090">Ən yuxarıda olan saytları göstər</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
-<translation id="3725423404048844760">Sponsorlu saytlar Brave-i pulsuz saxlamağa kömək edir. Əgər <ph name="SITE_NAME"/> istifadə edirsinizsə, Brave-in missiyasını dəstəkləyirsiniz. Onları istənilən vaxt söndürə bilərsiniz. <ph name="LINK_BEGIN"/>Ətraflı<ph name="LINK_END"/>.</translation>
-<translation id="4801943363579282909">Sponsorlu saytlar Brave-i pulsuz saxlamağa kömək edir. Əgər onlardan istifadə edirsinizsə, Brave-in missiyasını dəstəkləyirsiniz. <ph name="LINK_BEGIN"/>Ətraflı<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATİSTİKA</translation>
 <translation id="5236080651083907980">Şifrələnmiş video zəngləri Brave Söhbət ilə</translation>
 <translation id="2671474274417808910">Məxfilik-İlk Zənglər</translation>
@@ -2731,16 +2768,6 @@
 <translation id="2601678491007820794">Köhnə brauzerinizdən hər şeyi idxal edin və keçidi rahat edin.</translation>
 <translation id="5291297136536006359">Bunu daha sonra Brave-in ayarlarında da edə bilərsiniz.</translation>
 <translation id="701087249209337256">Köhnə brauzer məzmununuzu özünüzlə gətirin</translation>
-<translation id="142389341645668510">Brave-i fərdiləşdir</translation>
-<translation id="112005628409144325">Bəyəndiyiniz tab tərtibatı və rəng rejimləri ilə brauzer təcrübənizi fərdiləşdirin.</translation>
-<translation id="7376367936988732808">Tab tərtibatı</translation>
-<translation id="4734965478015604180">Üfüqi</translation>
-<translation id="490375751687810070">Şaquli</translation>
-<translation id="6278428485366576908">Tema</translation>
-<translation id="6965978654500191972">Cihaz</translation>
-<translation id="1807246157184219062">Aydınlıq</translation>
-<translation id="2414886740292270097">Qaranlıq</translation>
-<translation id="1297301331745007533">Boz (Varsayılan)</translation>
 <translation id="7463724872882590240">Əvvəlki brauzerinizi seçin</translation>
 <translation id="6091623542030502746">Nəyi idxal etmək istəyirsiniz?</translation>
 <translation id="4740018245743691625">İdxal nəticələri</translation>
@@ -2749,25 +2776,9 @@
 <translation id="6786747875388722282">Uzantılar</translation>
 <translation id="5869522115854928033">Yadda saxlanmış parollar</translation>
 <translation id="4692623383562244444">Axtarış mühərrikləri</translation>
-<translation id="4820229477869533192">Əsas alətlər panelində varsayılan olaraq göstərilməsini istədiyiniz xüsusiyyətləri seçin. Bunları daha sonra Parametrlərdə həmişə göstərə və ya gizlədə bilərsiniz.</translation>
-<translation id="3723975047960999626">Brauzerinizə birbaşa quraşdırılmış ağıllı AI köməkçisi. Suallar verin, səhifələri xülasə edin, yeni məzmun yaradın və daha çox.</translation>
-<translation id="108658397513441308">Web3 cüzdanı</translation>
-<translation id="277626258870089521">Brauzerinizi Web3 üçün gücləndirən təhlükəsiz, daxili kripto cüzdanı.</translation>
-<translation id="9019025288391074918">Məzmun yaradıcılarını dəstəkləyin və Brave-də gördüyünüz reklamlar üçün token qazanın.</translation>
-<translation id="7705524343798198388">VPN</translation>
-<translation id="3163354572023395604">IP ünvanınızı gizlədin, məkanınızı maskalayın və sevimli məzmununuza yol boyu daxil olun.</translation>
-<translation id="5561552922279152819">Bizimlə daha yaxşı bir veb qurun</translation>
-<translation id="2888496576732880897">Brave Axtarışı genişləndirməyə kömək edin</translation>
-<translation id="3929158593488526786">İndeksin böyüməsinə və axtarış nəticələrinin yaxşılaşmasına kömək etmək üçün Web Discovery Project-ə qoşulun.</translation>
-<translation id="3772776117136934611">Brauzeri daha yaxşı etməyimizə kömək edin</translation>
-<translation id="9171227192121024771">Brave istifadəçilərinin hansı funksiyalardan istifadə etdiyi ilə əlaqəli məxfi və anonim məhsul məlumatları paylaşın</translation>
-<translation id="5298784657468199167">Qəza hesabatları göndərin</translation>
-<translation id="6718362830686703942">Sistem qəzası və ya donmasına məruz qaldıqda diaqnostika hesabatları göndərin.</translation>
-<translation id="8012286900922253352">Bu şəxsi metrikləri aktivləşdirərək Brave-in daha yaxşı olmasına və daha yaxşı məhsullar yaratmağa kömək edin.</translation>
-<translation id="6058364846991826201">Bu seçimləri Brave-də <ph name="SETTINGS_LINK"/> yerində istənilən vaxt dəyişə bilərsiniz. Tam <ph name="PRIVACY_POLICY_LINK_BEGIN"/>Məxfilik Siyasətimizi<ph name="PRIVACY_POLICY_LINK_END"/> oxuyun.</translation>
-<translation id="6871397658902960384">Gəzməyə başlayın</translation>
 <translation id="4988030440045495002">Ultra tünd mövzu</translation>
 <translation id="2422927186524098759">Yan menyu</translation>
+<translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Alətlər paneli</translation>
 <translation id="6225572914528673855">Adres barı</translation>
 <translation id="6821966107067356137">RSS lenti əlavə et</translation>

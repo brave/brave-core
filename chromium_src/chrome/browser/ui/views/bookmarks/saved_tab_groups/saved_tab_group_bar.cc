@@ -14,7 +14,7 @@
           group,                                                           \
           base::BindRepeating(&SavedTabGroupBar::OnTabGroupButtonPressed,  \
                               base::Unretained(this), group.saved_guid()), \
-          browser_, animations_enabled_),                                  \
+          browser_->GetBrowserForMigrationOnly(), animations_enabled_),    \
       INDEX)
 
 #include <chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_bar.cc>

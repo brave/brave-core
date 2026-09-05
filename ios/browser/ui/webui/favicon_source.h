@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "components/favicon/core/favicon_service.h"
@@ -59,9 +58,8 @@ class FaviconSource : public web::URLDataSourceIOS {
 
  protected:
   virtual bool UseDarkMode();
-  virtual scoped_refptr<base::RefCountedMemory> LoadIconBytes(
-      float scale_factor,
-      int resource_id);
+  virtual base::RefCountedMemory* LoadIconBytes(float scale_factor,
+                                                int resource_id);
 
   raw_ptr<ProfileIOS> profile_;
 

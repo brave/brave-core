@@ -70,8 +70,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
             }
           },
           std::move(callback), want_result),
-      blink::BackForwardCacheAware::kAllow, want_result, await_promise,
-      /*is_injected_extension_script=*/false);
+      blink::BackForwardCacheAware::kAllow, want_result, await_promise);
 }
 
 }  // namespace script_injector

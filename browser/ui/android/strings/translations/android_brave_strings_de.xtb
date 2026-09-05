@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Brave bewerten</translation>
 <translation id="4104400246019119780">Danke!</translation>
 <translation id="5202255382948179481">Vorschläge hinzufügen</translation>
+<translation id="7759809451544302770">Optional</translation>
 <translation id="4748689412569009273">Wie würden Sie ihre Erfahrung mit Brave als Emoji darstellen?</translation>
 <translation id="7335142069363686805">Jetzt bewerten</translation>
 <translation id="6681362094306959654">Gefällt Ihnen Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Traurig</translation>
 <translation id="5488843227043643519">Möchten Sie eine Play Store-Bewertung abgeben?</translation>
 <translation id="5867854497245948308">Danke für Ihr Feedback!</translation>
-<translation id="5578122562331038807">Lassen Sie uns wissen, wie wir Brave verbessern können</translation>
-<translation id="1483493594462132177">Senden</translation>
-<translation id="3889034478061064651">Vorschläge hinzufügen (Optional)</translation>
-<translation id="1769154760586570836">Feedback gesendet. Vielen Dank!</translation>
-<translation id="4450893287417543264">Nicht noch einmal anzeigen</translation>
+<translation id="4935400164159327304">Lassen Sie uns wissen, wie wir Brave verbessern können.</translation>
 <translation id="8966035543003363155">Brave-Benachrichtigungen für einfacheren Zugriff</translation>
 <translation id="7662771815233894695">Verwalten Sie Downloads, verdienen Sie Token, sehen Sie sich die wöchentliche Nutzungsstatistik an und mehr.</translation>
 <translation id="4265429476391459783">Du erhältst keine Rewards oder Privatsphäreberichte</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Seitenaktionen</translation>
 <translation id="7104487676473617844">Die folgenden Elemente sind im Menü nur sichtbar, wenn sie von der aktuell geöffneten Website unterstützt werden.</translation>
 <translation id="4159764849281393303">WebApp</translation>
+<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="8038539967102225446">Brave Ads sind da!</translation>
 <translation id="222883304157347087">(dieses Gerät)</translation>
 <translation id="4157741509680155021">GERÄTE IN DER SYNC-KETTE</translation>
@@ -537,6 +535,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
+<translation id="1483493594462132177">Senden</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Browser-nativ.\nSelbstverwahrend.\nUnd Multi-Chain.</translation>
 <translation id="7909462264772842773">Übernehmen Sie die Kontrolle über Ihre Kryptowährungen und NFTs. Brave Wallet unterstützt Ethereum, EVM-Ketten, Solana, Filecoin und mehr.</translation>
@@ -612,6 +611,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="569068482611873351">Importieren …</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3114681061018999547">Abschirmung</translation>
+<translation id="3784455785234192852">Sperren</translation>
 <translation id="4412698727486357573">Hilfe-Center</translation>
 <translation id="8239147115686034860">Brave Wallet automatisch sperren</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
@@ -807,10 +807,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2478788592457735063">Dadurch wird das Netzwerk zu einem zuvor hinzugefügten Netzwerk gewechselt.</translation>
 <translation id="8756686998207163764">Netzwerk wechseln</translation>
 <translation id="8905793906896555159">Tab-Gruppen aktivieren</translation>
-<translation id="6735749683447943955">Tab-Gruppen deaktivieren?</translation>
-<translation id="4616687974503500682">Alle vorhandenen Gruppen werden gelöscht und die Tabs innerhalb dieser Gruppen werden zu offenen, nicht gruppierten Tabs in Ihrem Browser-Fenster. Möchten Sie wirklich fortfahren?</translation>
-<translation id="4394049700291259645">Deaktivieren</translation>
-<translation id="3859027502409073633">Synchronisierte Tab-Gruppen anzeigen</translation>
 <translation id="7632160823264702523">Tab-Gruppen-Leiste</translation>
 <translation id="2477807195394450274">Untere Leiste für schnellen Zugriff auf Tabs in der aktuell geöffneten Tab-Gruppe anzeigen</translation>
 <translation id="8374720587111523381">Links in aktueller Tab-Gruppe öffnen</translation>
@@ -818,7 +814,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1227658541937938697">Alle Links automatisch in der aktuellen Tab-Gruppe öffnen</translation>
 <translation id="5242300593039211344">Wallet schließen</translation>
 <translation id="1108298724135935307">Verbundene Websites</translation>
-<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="4255623233927788178">Im Block-Explorer anzeigen</translation>
 <translation id="8274201358637112807">Diese Seite möchte mit der Brave-Wallet interagieren</translation>
 <translation id="3355936511340229503">Verbindungsfehler</translation>
@@ -860,6 +855,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6458565248779152483">Brave VPN deaktivieren</translation>
 <translation id="9080536793704001825">Für 15 Minuten anhalten</translation>
 <translation id="803706420145725977">Für 1 Stunde anhalten</translation>
+<translation id="4394049700291259645">Deaktivieren</translation>
 <translation id="7733890291091968191">Web3-Benachrichtigung anzeigen</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave verfolgt Ihre Aktivitäten nicht und wir wissen nicht, wie Sie unsere App nutzen. Daher ist uns auch nicht bekannt, wie Sie Ihr VPN eingerichtet haben. Bitte erklären Sie uns Ihr Problem und wir werden unser Bestes tun, es schnellstmöglich zu beheben. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-Hostname\n <ph name="VALUE"/></translation>

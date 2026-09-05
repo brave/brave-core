@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Nilaikan Brave</translation>
 <translation id="4104400246019119780">Terima kasih!</translation>
 <translation id="5202255382948179481">Tambah cadangan anda</translation>
+<translation id="7759809451544302770">Pilihan</translation>
 <translation id="4748689412569009273">Nyatakan pengalaman anda menggunakan Brave dalam bentuk satu emoji?</translation>
 <translation id="7335142069363686805">Berikan penilaian sekarang</translation>
 <translation id="6681362094306959654">Sukai Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Sedih</translation>
 <translation id="5488843227043643519">Berikan penilaian untuk Play Store?</translation>
 <translation id="5867854497245948308">Terima kasih atas maklum balas anda!</translation>
-<translation id="5578122562331038807">Beritahu kami cara kami boleh tingkatkan Brave</translation>
-<translation id="1483493594462132177">Hantar</translation>
-<translation id="3889034478061064651">Tambah cadangan anda (Pilihan)</translation>
-<translation id="1769154760586570836">Maklum balas dihantar. Terima kasih!</translation>
-<translation id="4450893287417543264">Jangan tunjuk lagi</translation>
+<translation id="4935400164159327304">Beritahu kami cara kami boleh tingkatkan Brave.</translation>
 <translation id="8966035543003363155">Pemberitahuan Brave memudahkan lagi</translation>
 <translation id="7662771815233894695">Urus muat turun, peroleh token, lihat stat penggunaan mingguan dan pelbagai lagi.</translation>
 <translation id="4265429476391459783">Anda tidak memperoleh Ganjaran atau menerima Laporan Privasi</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Tindakan halaman</translation>
 <translation id="7104487676473617844">Item berikut hanya akan kelihatan dalam menu apabila disokong oleh laman web semasa yang sedang dibuka.</translation>
 <translation id="4159764849281393303">Apl Web</translation>
+<translation id="8428213095426709021">Tetapan</translation>
 <translation id="8038539967102225446">Iklan Brave ada di sini!</translation>
 <translation id="222883304157347087">(peranti ini)</translation>
 <translation id="4157741509680155021">PERANTI PADA RANTAIAN DISELARAS</translation>
@@ -537,6 +535,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1822560017823072927">Antara muka awam dan peribadi yang asal</translation>
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
+<translation id="1483493594462132177">Hantar</translation>
 <translation id="538450413584738399">Pertukaran</translation>
 <translation id="4556086616242530072">Natif penyemak imbas.\nJagaan sendiri.\nDan berbilang rantaian.</translation>
 <translation id="7909462264772842773">Kawal kripto dan NFT anda. Brave Wallet menyokong Ethereum, rantaian EVM, Solana dan banyak lagi.</translation>
@@ -612,6 +611,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Butiran</translation>
 <translation id="3114681061018999547">Sedang melindung</translation>
+<translation id="3784455785234192852">Kunci</translation>
 <translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
 <translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
@@ -807,10 +807,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2478788592457735063">Ini akan menukarkan rangkaian kepada rangkaian yang ditambah sebelum ini.</translation>
 <translation id="8756686998207163764">Tukar rangkaian</translation>
 <translation id="8905793906896555159">Dayakan kumpulan tab</translation>
-<translation id="6735749683447943955">Nyahdayakan kumpulan tab?</translation>
-<translation id="4616687974503500682">Sebarang kumpulan sedia ada akan dipadamkan, dan tab dalam kumpulan tersebut akan menjadi tab terbuka yang tidak berkumpulan dalam tetingkap pelayar anda. Adakah anda pasti mahu meneruskan?</translation>
-<translation id="4394049700291259645">Lumpuhkan</translation>
-<translation id="3859027502409073633">Tunjukkan kumpulan tab yang disegerakkan</translation>
 <translation id="7632160823264702523">Bar kumpulan tab</translation>
 <translation id="2477807195394450274">Tunjukkan bar bawah untuk akses pantas ke tab dalam kumpulan tab yang sedang dibuka</translation>
 <translation id="8374720587111523381">Buka pautan dalam kumpulan tab semasa</translation>
@@ -818,7 +814,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1227658541937938697">Buka semua pautan secara automatik dalam kumpulan tab semasa</translation>
 <translation id="5242300593039211344">Kuncikan Dompet</translation>
 <translation id="1108298724135935307">Laman web bersambung</translation>
-<translation id="8428213095426709021">Tetapan</translation>
 <translation id="4255623233927788178">Lihat pada sekatan penjelajah</translation>
 <translation id="8274201358637112807">Halaman ini ingin berinteraksi dengan Dompet Brave</translation>
 <translation id="3355936511340229503">Ralat sambungan</translation>
@@ -860,6 +855,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6458565248779152483">Nyahdayakan VPN Brave</translation>
 <translation id="9080536793704001825">Jeda selama 15 minit</translation>
 <translation id="803706420145725977">Jeda selama 1 jam</translation>
+<translation id="4394049700291259645">Lumpuhkan</translation>
 <translation id="7733890291091968191">Paparkan pemberitahuan Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave tidak menjejaki anda atau tahu cara anda menggunakan apl kami, jadi, kami tidak tahu cara anda menyediakan VPN. Sila kongsikan maklumat tentang isu yang anda alami dan kami akan berusaha sedaya upaya untuk menyelesaikan isu tersebut secepat mungkin. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNama hos VPN\n <ph name="VALUE"/></translation>

@@ -40,7 +40,7 @@ const ChildrenVector& BraveTabStripCollection::GetChildrenForDelegate(
 }
 
 void BraveTabStripCollection::AddTabRecursive(
-    ScopedTab tab,
+    std::unique_ptr<TabInterface> tab,
     size_t index,
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state,
@@ -49,14 +49,15 @@ void BraveTabStripCollection::AddTabRecursive(
                                       new_pinned_state);
 }
 
-ScopedTab BraveTabStripCollection::RemoveTabAtIndexRecursive(
+std::unique_ptr<TabInterface>
+BraveTabStripCollection::RemoveTabAtIndexRecursive(
     size_t index,
     base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
   return TabStripCollection::RemoveTabAtIndexRecursive(index);
 }
 
 void BraveTabStripCollection::AddTabRecursive(
-    ScopedTab tab,
+    std::unique_ptr<TabInterface> tab,
     size_t index,
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state,
@@ -88,7 +89,8 @@ void BraveTabStripCollection::MoveTabsRecursive(
                                         retain_collection_types);
 }
 
-ScopedTab BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
+std::unique_ptr<TabInterface>
+BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
     return delegate_->RemoveTabAtIndexRecursive(index);
   }

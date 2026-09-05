@@ -212,7 +212,6 @@
 <translation id="8707615221880318679">આ ખાનગી જવાબો Brave ના ચોક્કસ સુવિધાઓના આકસ્મિક ઉપયોગનો અંદાજ લગાવી તેમને તમારા માટે વધુ સારી બનાવવા મદદ કરે છે</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 ડોમેઇન્સ</translation>
-<translation id="1458638489455808030">વેબેક મશીન</translation>
 <translation id="4552520379838695057">માફ કરશો, તે પાનું ગાયબ છે.</translation>
 <translation id="7299769530898469069">સાચવેલી આવૃત્તિ લોડ કરી શક્યા નહીં</translation>
 <translation id="2609895996619941644">શું તમે જોવા માંગો છો કે Wayback Machine પર સાચવેલી આવૃત્તિ ઉપલબ્ધ છે?</translation>
@@ -248,7 +247,6 @@
 <translation id="1185644444415356776">કન્ટેનરમાં લિંક ખોલો</translation>
 <translation id="6745991613881384719">કન્ટેનર્સ મેનેજ કરો</translation>
 <translation id="8523788649219117880">નવું ટેમ્પરરી કન્ટેનર</translation>
-<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> કન્ટેનર</translation>
 <translation id="3704707436873245822">છબીમાંથી લખાણ કોપી કરો</translation>
 <translation id="5268098808165185458">લખાણ છબીમાંથી કોપી કરાઈ રહ્યું છે...</translation>
 <translation id="4046485130884276245">છબીમાંથી લખાણ કોપી કર્યું</translation>
@@ -380,7 +378,6 @@
 <translation id="6724227215236550330">સાચવેલા પાસવર્ડ્સ અહીં દેખાશે. આ ડિવાઇસ પર <ph name="BRAND"/> પર પાસવર્ડ ઇમ્પોર્ટ કરવા માટે, <ph name="BEGIN_LINK"/> એક CSV ફાઇલ પસંદ કરો<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">આ ડિવાઇસ પર <ph name="BRAND"/> પર પાસવર્ડ ઇમ્પોર્ટ કરવા માટે, એક CSV ફાઇલ પસંદ કરો</translation>
 <translation id="8570228839666486945">ઑન-ડિવાઇસ AI</translation>
-<translation id="7447041379556102185">ઓન-ડિવાઇસ સ્પીચ રેકગ્નિશન</translation>
 <translation id="3456536577668402695">તમારી શોધો અને પૃષ્ઠ સામગ્રીઓ આ ઉપકરણ પર પ્રક્રિયા કરવામાં આવે છે. કંઈપણ Brave ને મોકલવામાં આવતું નથી અથવા માનવ સમીક્ષકો દ્વારા જોવામાં આવતું નથી.</translation>
 <translation id="4751537843966994505">સિમેન્ટિક ઇતિહાસ શોધ</translation>
 <translation id="6175973371938222040">તમે સ્થાનિક રીતે મુલાકાત લો છો તે પૃષ્ઠોને અનુક્રમિત કરો જેથી તમે તમારા ઇતિહાસને અર્થ દ્વારા શોધી શકો. બધી પ્રક્રિયા આ ડિવાઇસ પર જ રહે છે.</translation>
@@ -411,7 +408,6 @@
 <translation id="6017560037265964523">કન્ટેનર્સ</translation>
 <translation id="3718176486689879621">કન્ટેનર્સ એ રંગ-કોડેડ બ્રાઉઝર ટૅબ્સ છે જે તમારા બ્રાઉઝિંગ ડેટા, જેમ કે cookies, cache, અને site storage ને અલગ સંદર્ભોમાં અલગ કરે છે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">કન્ટેનર્સ સક્ષમ કરો</translation>
-<translation id="4858772568604670131">કન્ટેનર માટે હંમેશા મિની આઇકન વાપરો</translation>
 <translation id="7773735778926921278">નવી કન્ટેનર ઉમેરો</translation>
 <translation id="8900907990448657776">કન્ટેનર સંપાદિત કરો</translation>
 <translation id="7900511996284443779">કન્ટેનર કાઢી નાખો</translation>
@@ -560,6 +556,7 @@
 <translation id="1799030480311994998">ફીચર્સ</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="6297791103122079275">ટોક</translation>
+<translation id="1458638489455808030">વેબેક મશીન</translation>
 <translation id="4590997608186539865">પ્લેલિસ્ટ</translation>
 <translation id="1199170151481311646">ગોપનીયતા જાળવતો વિશ્લેષણ</translation>
 <translation id="5990642573624858459">આંકડાકીય અહેવાલ</translation>
@@ -607,14 +604,11 @@
 <translation id="4891600875049212418">સંવેદનશીલ સાઇટ્સની મુલાકાત લેતી વખતે રેકોર્ડ-થી-દૂર થઈ જાઓ</translation>
 <translation id="1022603984240541480">સુસંગત સાઇટ્સ પર Privacy સેટિંગ્સ ટ્યુનિંગ સૂચના બતાવો</translation>
 <translation id="3528176629974273019">Braveને આપમેળે (અને ગોઠવીને) સાઇટ-વિશિષ્ટ privacy સેટિંગ્સ સૂચવવાની મંજૂરી આપે છે.</translation>
-<translation id="2740687181110647855">ગોપનીયતા સેટિંગ્સ ટ્યુનિંગ ટૂલ</translation>
 <translation id="509873765238158442">Microsoft Recallને બ્લોક કરો</translation>
 <translation id="4763421121695677716">Microsoft Windows કમ્પ્યુટર પરથી Recall ફીચરને કોઈપણ ખુલ્લી Brave ટૅબના આપમેળે સ્ક્રીનશૉટ લેવાથી બ્લોક કરો.</translation>
 <translation id="1968895725257436430">માહિતી સંગ્રહ</translation>
 <translation id="1700052872056357670">બહાર નીકળતી વખતે ડેટા સાફ કરો</translation>
 <translation id="216468847346280584">Brave આધારનાં ડેટા સાફ કરો...</translation>
-<translation id="96212973142796240">Brave Ads ડેટા સાફ કરાયો</translation>
-<translation id="6665923829462527507">Brave Ads ડેટા સાફ કરી શકાયો નહીં. ફરી પ્રયાસ કરો.</translation>
 <translation id="2808630562319398131">Brave Rewards ડેટા ફરીથી સેટ કરો...</translation>
 <translation id="6438096877646138757">તેઓને બંધ કરવાથી તમે કૂકીઝ સાફ કરવી/ કરવું છે તેવી સાઇટ્સ</translation>
 <translation id="2988792685798128092">સાઇટ બંધ કરતી વખતે સાફ કરો</translation>
@@ -881,7 +875,6 @@
 <translation id="8631951653187535788">શું તમે ખરેખર આ મોડલને હટાવવા માંગો છો? જો આ મોડલ કોઈપણ સક્રિય વાતચીતમાં વપરાઈ રહ્યું છે, તો તે વાતચીત Leo ડિફૉલ્ટ મોડલનો ઉપયોગ કરવા માટે બદલાઈ જશે.</translation>
 <translation id="1907126221851170941">મોડલ ઉમેરો</translation>
 <translation id="8346224718149026088">મોડલ સંપાદિત કરો</translation>
-<translation id="3914173277599553213">જરૂરી</translation>
 <translation id="3468298837301810372">લેબલ</translation>
 <translation id="3553035516792776805">મોડલ વિનંતિ નામ</translation>
 <translation id="7634775528597575156">સર્વર સમાપ્તી બિંદુ</translation>

@@ -31,6 +31,7 @@
 <translation id="1321110954513621549">Allowed • Approximate</translation>
 <translation id="1323433172918577554">Show More</translation>
 <translation id="1333965224356556482">Don't allow sites to see your location</translation>
+<translation id="1343356790768851700">This site determines things that you like and then suggests ads to other sites</translation>
 <translation id="1369915414381695676">Site <ph name="SITE_NAME"/> added</translation>
 <translation id="1371239764779356792">Allow a site to save data on your device</translation>
 <translation id="1383876407941801731">Search</translation>
@@ -424,6 +425,7 @@
 <translation id="5317780077021120954">Save</translation>
 <translation id="5335288049665977812">Allow sites to run JavaScript (recommended)</translation>
 <translation id="534295439873310000">NFC devices</translation>
+<translation id="5344522958567249764">Manage ads privacy</translation>
 <translation id="5373874281522292782">Your tab groups are saved</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 more)}other{(+ # more)}}</translation>
 <translation id="5403592356182871684">Names</translation>
@@ -508,6 +510,7 @@
 <translation id="6181444274883918285">Add site exception</translation>
 <translation id="7938602278189860250">{DAYS,plural, =1{Brave will block cookies again tomorrow}other{# days until cookies are blocked again}}</translation>
 <translation id="6196640612572343990">Block third-party cookies</translation>
+<translation id="6205314730813004066">Ads privacy</translation>
 <translation id="6207207788774442484">Delete data and reset permissions</translation>
 <translation id="6211409961905616543">Sites can use motion and light sensors</translation>
 <translation id="6218508144653756827">Fuchsia theme</translation>
@@ -578,6 +581,7 @@
 <translation id="6992014788289743568">Strengthen your security and keep your data safer by checking your passwords</translation>
 <translation id="6992289844737586249">Ask first before allowing sites to use your microphone (recommended)</translation>
 <translation id="7000754031042624318">Turned off in Android settings</translation>
+<translation id="8683151724374457021">This site determines things that you like and then suggests ads to other sites. This site also gets your ad topics from Brave to show you more relevant ads.</translation>
 <translation id="7036823721811529709">Listen in the background</translation>
 <translation id="7044081119134178347">Camera allowed this time</translation>
 <translation id="7053983685419859001">Block</translation>
@@ -721,6 +725,7 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="8514955299594277296">Don't allow sites to save data on your device (not recommended)</translation>
 <translation id="851751545965956758">Block sites from connecting to devices</translation>
 <translation id="8525306231823319788">Full screen</translation>
+<translation id="3275395224965468352">This site gets your ad topics from Brave to show you more relevant ads</translation>
 <translation id="854876774113449365">Sites that you visit can embed content from other sites. For example, images, ads and text. These other sites can ask for permission to use information that they've saved about you as you browse the site. <ph name="BEGIN_LINK"/>Learn more about embedded content<ph name="END_LINK"/></translation>
 <translation id="8549127125482561383">How to show requests</translation>
 <translation id="4273503381657013953">You can now use Brave any time that you browse or tap links in messages, documents and other apps.</translation>

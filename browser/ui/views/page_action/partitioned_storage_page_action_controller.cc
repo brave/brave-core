@@ -94,30 +94,21 @@ PartitionedStoragePageActionController::
 }
 
 void PartitionedStoragePageActionController::Init() {
-  did_activate_subscription_ = tab_->RegisterDidActivate(base::BindRepeating(
-      [](PartitionedStoragePageActionController* self,
-         tabs::TabInterface* tab) {
-        self->UpdatePageAction(tab->GetContents());
-      },
-      base::Unretained(this)));
-  did_become_visible_subscription_ =
-      tab_->RegisterDidBecomeVisible(base::BindRepeating(
-          [](PartitionedStoragePageActionController* self,
-             tabs::TabInterface* tab) {
-            self->UpdatePageAction(tab->GetContents());
-          },
-          base::Unretained(this)));
+  did_activate_subscription_ = tab_->RegisterDidActivate(
+      base::BindRepeating([](PartitionedStoragePageActionController* self,
+                             tabs::TabInterface*) { self->UpdatePageAction(); },
+                          base::Unretained(this)));
+  did_become_visible_subscription_ = tab_->RegisterDidBecomeVisible(
+      base::BindRepeating([](PartitionedStoragePageActionController* self,
+                             tabs::TabInterface*) { self->UpdatePageAction(); },
+                          base::Unretained(this)));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](PartitionedStoragePageActionController* self, tabs::TabInterface*,
-             content::WebContents*, content::WebContents* new_contents) {
-            // TabInterface::GetContents() still returns the outgoing contents
-            // at this point, so the swapped in contents has to be taken from
-            // the argument.
-            self->UpdatePageAction(new_contents);
-          },
+             content::WebContents*,
+             content::WebContents*) { self->UpdatePageAction(); },
           base::Unretained(this)));
-  UpdatePageAction(tab_->GetContents());
+  UpdatePageAction();
 }
 
 void PartitionedStoragePageActionController::ExecuteAction(
@@ -179,8 +170,8 @@ void PartitionedStoragePageActionController::ExecuteAction(
       views::MenuAnchorPosition::kTopLeft, ui::mojom::MenuSourceType::kMouse);
 }
 
-void PartitionedStoragePageActionController::UpdatePageAction(
-    content::WebContents* web_contents) {
+void PartitionedStoragePageActionController::UpdatePageAction() {
+  content::WebContents* web_contents = tab_->GetContents();
   std::optional<containers::ContainerModel> model =
       GetContainerModelForWebContents(web_contents);
   if (!model) {

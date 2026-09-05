@@ -1569,8 +1569,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
     ASSERT_TRUE(popup_browser);
 
     // Verify a popup window was created
-    EXPECT_EQ(popup_browser->GetType(),
-              BrowserWindowInterface::Type::TYPE_POPUP)
+    EXPECT_TRUE(popup_browser->is_type_popup())
         << "window.open() with features should create a popup window";
 
     // Verify the original split view tabs remain unchanged

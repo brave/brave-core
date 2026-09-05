@@ -212,7 +212,6 @@
 <translation id="8707615221880318679">Тези поверителни известия помагат на Brave да оцени цялостното използване на определени функции и да ги направи по-добри за вас</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 домейни</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4552520379838695057">За съжаление тази страница липсва.</translation>
 <translation id="7299769530898469069">Запазената версия не може да бъде заредена</translation>
 <translation id="2609895996619941644">Искате ли да проверите дали запазената версия е налична на Wayback Machine?</translation>
@@ -248,7 +247,6 @@
 <translation id="1185644444415356776">Отваряне на връзка в контейнер</translation>
 <translation id="6745991613881384719">Управление на контейнерите</translation>
 <translation id="8523788649219117880">Нов временен контейнер</translation>
-<translation id="6738770788727894934"><ph name="TOOLTIP"/> - контейнер <ph name="CONTAINER_NAME"/></translation>
 <translation id="3704707436873245822">Копиране на текст от изображение</translation>
 <translation id="5268098808165185458">Копиране на текст от изображение...</translation>
 <translation id="4046485130884276245">Копиран е текст от изображение</translation>
@@ -380,7 +378,6 @@
 <translation id="6724227215236550330">Запаметените пароли ще се показват тук. За да импортираш пароли в <ph name="BRAND"/> на това устройство, <ph name="BEGIN_LINK"/> избери CSV файл<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">За да импортираш пароли в <ph name="BRAND"/> на това устройство, избери CSV файл</translation>
 <translation id="8570228839666486945">Локално ИИ</translation>
-<translation id="7447041379556102185">Разпознаване на реч на устройството</translation>
 <translation id="3456536577668402695">Вашите търсения и съдържанието на страниците се обработват на това устройство. Нищо не се изпраща до Brave и не се преглежда от хора.</translation>
 <translation id="4751537843966994505">Семантично търсене в историята</translation>
 <translation id="6175973371938222040">Индексирайте локално страниците, които посещавате, за да можете да търсите в историята си по смисъл. Цялата обработка остава на това устройство.</translation>
@@ -411,7 +408,6 @@
 <translation id="6017560037265964523">Контейнери</translation>
 <translation id="3718176486689879621">Контейнерите са цветово кодирани раздели на браузъра, които изолират данните ви за сърфиране, като бисквитки, кеш и хранилище на сайтове, в отделни контексти. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">Включване на контейнери</translation>
-<translation id="4858772568604670131">Винаги използвай мини икона за контейнерите</translation>
 <translation id="7773735778926921278">Добавяне на нов контейнер</translation>
 <translation id="8900907990448657776">Редактиране на контейнер</translation>
 <translation id="7900511996284443779">Изтриване на контейнер</translation>
@@ -560,6 +556,7 @@
 <translation id="1799030480311994998">Функции</translation>
 <translation id="6709133671862442373">Новини</translation>
 <translation id="6297791103122079275">Talk</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">Плейлист</translation>
 <translation id="1199170151481311646">Анализи за запазване на поверителността</translation>
 <translation id="5990642573624858459">Отчитане на статистически данни</translation>
@@ -607,14 +604,11 @@
 <translation id="4891600875049212418">Преминете в режим „Off-The-Record“, когато посещавате чувствителни сайтове</translation>
 <translation id="1022603984240541480">Показване на известие за настройване на настройките за поверителност на съвместими сайтове</translation>
 <translation id="3528176629974273019">Позволява на Brave автоматично да предлага (и коригира) специфични за сайта настройки за поверителност.</translation>
-<translation id="2740687181110647855">Инструмент за настройка на поверителността</translation>
 <translation id="509873765238158442">Блокиране на Microsoft Recall</translation>
 <translation id="4763421121695677716">Блокиране на функцията Recall в компютрите с Microsoft Windows, за да не прави автоматични снимки на екрана на отворени раздели в Brave.</translation>
 <translation id="1968895725257436430">Събиране на данни</translation>
 <translation id="1700052872056357670">Изчистване на данните при излизане</translation>
 <translation id="216468847346280584">Изчистване на данни за Brave Ads...</translation>
-<translation id="96212973142796240">Данните за Brave реклами са изчистени</translation>
-<translation id="6665923829462527507">Данните за Brave реклами не можаха да бъдат изчистени. Опитайте отново.</translation>
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
 <translation id="2988792685798128092">Изчистване при затваряне на сайта</translation>
@@ -882,7 +876,6 @@
 <translation id="8631951653187535788">Сигурни ли сте, че искате да изтриете този модел? Ако този модел се използва в активен разговор, този разговор ще се промени, за да използва модела по подразбиране на Leo.</translation>
 <translation id="1907126221851170941">Добавяне на модел</translation>
 <translation id="8346224718149026088">Редактиране на модел</translation>
-<translation id="3914173277599553213">Задължително</translation>
 <translation id="3468298837301810372">Етикет</translation>
 <translation id="3553035516792776805">Име на заявка за модел</translation>
 <translation id="7634775528597575156">Крайна точка на сървъра</translation>

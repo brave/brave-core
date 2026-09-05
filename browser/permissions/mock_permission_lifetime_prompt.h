@@ -27,6 +27,7 @@ class MockPermissionLifetimePrompt : public PermissionPrompt {
   PermissionPromptDisposition GetPromptDisposition() const override;
   bool IsAskPrompt() const override;
   std::optional<gfx::Rect> GetViewBoundsInScreen() const override;
+  bool ShouldFinalizeRequestAfterDecided() const override;
   std::vector<permissions::ElementAnchoredBubbleVariant> GetPromptVariants()
       const override;
   std::optional<feature_params::PermissionElementPromptPosition>

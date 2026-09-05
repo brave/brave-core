@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,13 +22,7 @@ public class BraveSettingsIntentUtil {
             @Nullable String fragmentName,
             @Nullable Bundle fragmentArgs,
             boolean addToBackStack) {
-        return createIntent(
-                context,
-                fragmentName,
-                fragmentArgs,
-                addToBackStack,
-                /* tag= */ null,
-                SettingsInTab.isEnabled());
+        return createIntent(context, fragmentName, fragmentArgs, addToBackStack, /* tag= */ null);
     }
 
     public static Intent createIntent(
@@ -37,18 +30,11 @@ public class BraveSettingsIntentUtil {
             @Nullable String fragmentName,
             @Nullable Bundle fragmentArgs,
             boolean addToBackStack,
-            @Nullable String tag,
-            boolean useSettingsInTab) {
+            @Nullable String tag) {
         Intent intent =
                 SettingsIntentUtil.createIntent(
-                        context, fragmentName, fragmentArgs, addToBackStack, tag, useSettingsInTab);
-        // When settings are shown in a tab, the intent targets ChromeLauncherActivity with a
-        // chrome://settings URL, so it must be left untouched.
-        ComponentName component = intent.getComponent();
-        if (component != null
-                && SettingsActivity.class.getName().equals(component.getClassName())) {
-            intent.setClass(context, BraveSettingsActivity.class);
-        }
+                        context, fragmentName, fragmentArgs, addToBackStack, tag);
+        intent.setClass(context, BraveSettingsActivity.class);
         return intent;
     }
 }

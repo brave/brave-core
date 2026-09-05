@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Valora Brave</translation>
 <translation id="4104400246019119780">Gràcies!</translation>
 <translation id="5202255382948179481">Afegeix els teus suggeriments</translation>
+<translation id="7759809451544302770">Opcional</translation>
 <translation id="4748689412569009273">En un emoji, com és la teva experiència amb Brave?</translation>
 <translation id="7335142069363686805">Valora ara</translation>
 <translation id="6681362094306959654">Us agrada Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Trist</translation>
 <translation id="5488843227043643519">Vols deixar una valoració de Play Store?</translation>
 <translation id="5867854497245948308">Gràcies pels comentaris!</translation>
-<translation id="5578122562331038807">Fes-nos saber com podem millorar Brave</translation>
-<translation id="1483493594462132177">Envia</translation>
-<translation id="3889034478061064651">Afegeix els teus suggeriments (opcional)</translation>
-<translation id="1769154760586570836">Comentaris enviats. Gràcies!</translation>
-<translation id="4450893287417543264">No m'ho tornis a mostrar</translation>
+<translation id="4935400164159327304">Fes-nos saber com podem millorar Brave.</translation>
 <translation id="8966035543003363155">Les notificacions ràpides t'ho fan més fàcil</translation>
 <translation id="7662771815233894695">Gestiona les descàrregues, guanya tokens, consulta les estadístiques d'ús setmanal i més.</translation>
 <translation id="4265429476391459783">No estàs guanyant recompenses ni rebent informes de privacitat</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Accions de la pàgina</translation>
 <translation id="7104487676473617844">Els elements següents només seran visibles al menú quan la pàgina web oberta actualment els permeti.</translation>
 <translation id="4159764849281393303">Aplicació web</translation>
+<translation id="8428213095426709021">Configuració</translation>
 <translation id="8038539967102225446">Els anuncis de Brave són aquí!</translation>
 <translation id="222883304157347087">(aquest dispositiu)</translation>
 <translation id="4157741509680155021">DISPOSITIUS A LA CADENA DE SINCRONITZACIÓ</translation>
@@ -534,6 +532,7 @@ Segur que vols continuar?</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
+<translation id="1483493594462132177">Envia</translation>
 <translation id="538450413584738399">Intercanvi</translation>
 <translation id="4556086616242530072">Navegador natiu.\nAutocustòdia.\nI multicadena.</translation>
 <translation id="7909462264772842773">Preneu el control de la criptografia i els NFT. Brave Wallet és compatible amb Ethereum, cadenes EVM, Solana, Filecoin i molts més.</translation>
@@ -609,6 +608,7 @@ Segur que vols continuar?</translation>
 <translation id="569068482611873351">Importa...</translation>
 <translation id="4522570452068850558">Detalls</translation>
 <translation id="3114681061018999547">Protegint</translation>
+<translation id="3784455785234192852">Bloqueig</translation>
 <translation id="4412698727486357573">Centre d'ajuda</translation>
 <translation id="8239147115686034860">Bloqueja la Cartera de Brave de forma automàtica</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
@@ -804,10 +804,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2478788592457735063">Això canviarà la xarxa per una xarxa afegida prèviament.</translation>
 <translation id="8756686998207163764">Canvia la xarxa</translation>
 <translation id="8905793906896555159">Activa els grups de pestanyes</translation>
-<translation id="6735749683447943955">Voleu desactivar els grups de pestanyes?</translation>
-<translation id="4616687974503500682">S'eliminaran tots els grups existents i les pestanyes d'aquests grups quedaran obertes i sense agrupar a la finestra del navegador. Segur que voleu continuar?</translation>
-<translation id="4394049700291259645">Desactiva</translation>
-<translation id="3859027502409073633">Mostra els grups de pestanyes sincronitzats</translation>
 <translation id="7632160823264702523">Barra de grups de pestanyes</translation>
 <translation id="2477807195394450274">Mostra una barra inferior per accedir ràpidament a les pestanyes del grup de pestanyes obert actualment</translation>
 <translation id="8374720587111523381">Obre els enllaços en el grup de pestanyes actual</translation>
@@ -815,7 +811,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="1227658541937938697">Obre automàticament tots els enllaços del grup de pestanyes actual</translation>
 <translation id="5242300593039211344">Bloqueja la cartera</translation>
 <translation id="1108298724135935307">Webs connectats</translation>
-<translation id="8428213095426709021">Configuració</translation>
 <translation id="4255623233927788178">Veure a l'explorador de blocs</translation>
 <translation id="8274201358637112807">Aquesta pàgina vol interactuar amb la Cartera de Brave</translation>
 <translation id="3355936511340229503">Error de connexió</translation>
@@ -857,6 +852,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6458565248779152483">Desactiva la VPN de Brave</translation>
 <translation id="9080536793704001825">Posa en pausa durant 15 minuts</translation>
 <translation id="803706420145725977">Posa en pausa durant 1 hora</translation>
+<translation id="4394049700291259645">Desactiva</translation>
 <translation id="7733890291091968191">Mostra les notificacions de Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave no et fa el seguiment ni sap com utilitzes la nostra aplicació, així que no sabem com has configurat la VPN. Comparteix informació sobre el problema que experimentes i farem tot el possible per resoldre'l tan aviat com puguem. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNom de l'amfitrió VPN\n <ph name="VALUE"/></translation>

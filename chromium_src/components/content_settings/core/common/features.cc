@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/content_settings/core/common/features.h"
-
-#include "base/feature_list.h"
+#include "base/feature_override.h"
 
 #include <components/content_settings/core/common/features.cc>
 

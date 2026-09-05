@@ -5,10 +5,8 @@
 
 #include <memory>
 
-#include "build/buildflag.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
 
-#if !BUILDFLAG(IS_IOS)
 namespace base {
 class File;
 }  // namespace base
@@ -53,7 +51,6 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
                           int num_threads);
 
 }  // namespace brave_history_embeddings
-#endif  // !BUILDFLAG(IS_IOS)
 
 // Injected at the top of PassageEmbedderImpl::BuildExecutionTask so
 // EmbeddingGemma runs through LiteRT's CompiledModel, falling through to the
@@ -63,7 +60,6 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
 //
 // The patch must keep this after executor_.reset(): the executor being replaced
 // borrows the cached runner that MaybeCreateLitertExecutor may free.
-#if !BUILDFLAG(IS_IOS)
 #define BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK                   \
   if (std::unique_ptr<PassageEmbedderExecutor> executor =                  \
           brave_history_embeddings::MaybeCreateLitertExecutor(             \
@@ -76,9 +72,6 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
     executor_ = std::move(executor);                                       \
     return true;                                                           \
   }
-#else
-#define BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK
-#endif  // !BUILDFLAG(IS_IOS)
 
 #include <services/passage_embeddings/passage_embedder_impl.cc>
 

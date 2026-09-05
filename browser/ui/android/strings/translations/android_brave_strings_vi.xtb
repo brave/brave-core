@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Xếp hạng Brave</translation>
 <translation id="4104400246019119780">Cảm ơn!</translation>
 <translation id="5202255382948179481">Thêm gợi ý của bạn</translation>
+<translation id="7759809451544302770">Không bắt buộc</translation>
 <translation id="4748689412569009273">Trong một biểu tượng cảm xúc, trải nghiệm của bạn với Brave như thế nào?</translation>
 <translation id="7335142069363686805">Đánh giá ngay</translation>
 <translation id="6681362094306959654">Thích Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Buồn</translation>
 <translation id="5488843227043643519">Để lại đánh giá trên Cửa hàng Play?</translation>
 <translation id="5867854497245948308">Cảm ơn phản hồi của bạn!</translation>
-<translation id="5578122562331038807">Hãy cho chúng tôi biết cách chúng tôi có thể cải thiện Brave</translation>
-<translation id="1483493594462132177">Gửi</translation>
-<translation id="3889034478061064651">Thêm gợi ý của bạn (Tùy chọn)</translation>
-<translation id="1769154760586570836">Đã gửi phản hồi. Cảm ơn bạn!</translation>
-<translation id="4450893287417543264">Không hiển thị lại</translation>
+<translation id="4935400164159327304">Hãy cho chúng tôi biết cách chúng tôi có thể cải thiện Brave.</translation>
 <translation id="8966035543003363155">Thông báo Brave làm cho mọi thứ dễ dàng hơn</translation>
 <translation id="7662771815233894695">Quản lý tải xuống, kiếm mã thông báo, xem số liệu thống kê sử dụng hàng tuần và hơn thế nữa.</translation>
 <translation id="4265429476391459783">Bạn không kiếm được Phần thưởng hoặc không nhận được Báo cáo về quyền riêng tư</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Hành động trên trang</translation>
 <translation id="7104487676473617844">Các mục sau sẽ chỉ hiển thị trong menu khi được trang web đang mở hiện tại hỗ trợ.</translation>
 <translation id="4159764849281393303">Ứng dụng Web</translation>
+<translation id="8428213095426709021">Cài đặt</translation>
 <translation id="8038539967102225446">Đây là Quảng cáo Brave!</translation>
 <translation id="222883304157347087">(thiết bị này)</translation>
 <translation id="4157741509680155021">THIẾT BỊ TRÊN CHUỖI ĐỒNG BỘ</translation>
@@ -537,6 +535,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
+<translation id="1483493594462132177">Gửi</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Trình duyệt gốc.\nTự lưu ký.\nVà đa chuỗi.</translation>
 <translation id="7909462264772842773">Kiểm soát tiền điện tử và NFT của bạn. Ví Brave hỗ trợ Ethereum, chuỗi EVM, Solana, Filecoin, v.v.</translation>
@@ -612,6 +611,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="569068482611873351">Nhập khẩu...</translation>
 <translation id="4522570452068850558">Thông tin chi tiết</translation>
 <translation id="3114681061018999547">Đang bảo vệ</translation>
+<translation id="3784455785234192852">Khóa</translation>
 <translation id="4412698727486357573">Trung tâm trợ giúp</translation>
 <translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
 <translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
@@ -807,10 +807,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2478788592457735063">Điều này sẽ chuyển đổi mạng sang một mạng đã thêm trước đó.</translation>
 <translation id="8756686998207163764">Chuyển đổi mạng</translation>
 <translation id="8905793906896555159">Bật nhóm thẻ</translation>
-<translation id="6735749683447943955">Tắt nhóm thẻ?</translation>
-<translation id="4616687974503500682">Mọi nhóm hiện có sẽ bị xóa, và các thẻ trong những nhóm đó sẽ trở thành các thẻ mở, không được nhóm trong cửa sổ trình duyệt của bạn. Bạn có chắc chắn muốn tiếp tục không?</translation>
-<translation id="4394049700291259645">Vô hiệu hóa</translation>
-<translation id="3859027502409073633">Hiển thị nhóm thẻ đã đồng bộ</translation>
 <translation id="7632160823264702523">Thanh nhóm thẻ</translation>
 <translation id="2477807195394450274">Hiển thị thanh dưới cùng để truy cập nhanh vào các thẻ trong nhóm thẻ đang mở</translation>
 <translation id="8374720587111523381">Mở các liên kết trong nhóm thẻ hiện tại</translation>
@@ -818,7 +814,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1227658541937938697">Tự động mở tất cả các liên kết trong nhóm thẻ hiện tại</translation>
 <translation id="5242300593039211344">Khóa Ví</translation>
 <translation id="1108298724135935307">Các website đã kết nối</translation>
-<translation id="8428213095426709021">Cài đặt</translation>
 <translation id="4255623233927788178">Xem trên trình khám phá khối</translation>
 <translation id="8274201358637112807">Trang này muốn tương tác với Ví Brave</translation>
 <translation id="3355936511340229503">Lỗi kết nối</translation>
@@ -860,6 +855,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="6458565248779152483">Tắt Brave VPN</translation>
 <translation id="9080536793704001825">Tạm dừng trong 15 phút</translation>
 <translation id="803706420145725977">Tạm dừng trong 1 giờ</translation>
+<translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="7733890291091968191">Hiển thị thông báo Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave không theo dõi bạn hoặc không biết cách bạn sử dụng ứng dụng của chúng tôi, vì vậy chúng tôi không biết bạn đã thiết lập VPN như thế nào. Vui lòng chia sẻ thông tin về sự cố bạn đang gặp phải và chúng tôi sẽ cố gắng hết sức để giải quyết ngay khi có thể. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nTên máy chủ VPN\n <ph name="VALUE"/></translation>

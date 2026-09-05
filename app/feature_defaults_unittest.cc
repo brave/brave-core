@@ -5,6 +5,7 @@
 
 #include "base/debug/debugging_buildflags.h"
 #include "base/feature_list.h"
+#include "base/feature_override.h"
 #include "base/features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
@@ -15,6 +16,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
+#include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
@@ -34,6 +36,7 @@
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
+#include "components/metrics/private_metrics/private_insights/private_insights_features.h"
 #include "components/metrics/private_metrics/private_metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/multistep_filter/core/features.h"
@@ -52,7 +55,6 @@
 #include "components/plus_addresses/core/common/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/private_ai/features.h"
-#include "components/private_insights/private_insights_features.h"
 #include "components/safe_browsing/core/common/features.h"
 #include "components/search/ntp_features.h"
 #include "components/segmentation_platform/public/features.h"
@@ -71,7 +73,6 @@
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
 #include "net/base/features.h"
-#include "pdf/buildflags.h"
 #include "services/network/public/cpp/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
@@ -91,30 +92,27 @@
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/enterprise/connectors/core/features.h"
 #include "components/translate/core/common/translate_util.h"
-#include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/startup/startup_features.h"
+#include "chrome/browser/win/mica_titlebar.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
 #include "chrome/browser/media/webrtc/display_media_access_handler.h"
 #endif
 
-#if BUILDFLAG(ENABLE_PDF)
-#include "pdf/pdf_features.h"
-#endif
-
 TEST(FeatureDefaultsTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
+      &aggregation_service::kAggregationServiceMultipleCloudProviders,
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
-      &autofill::features::kAutofillAiWithDataSchema,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
+      &autofill::features::kYourSavedInfoSettingsPage,
       &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
@@ -139,10 +137,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAndroidPageInfoAsAppMenuItem,
 #endif
-#if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
-      &chrome_pdf::features::kPdfSaveToDrive,
-      &chrome_pdf::features::kPdfSaveToDriveSurvey,
-#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
@@ -156,7 +150,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
-      &extensions_features::kApiGlicPrivate,
 #endif
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHAutofillAccountNameEmailSuggestionFeature,
@@ -199,7 +192,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &features::kPdfInfoBar,
 #endif
-      &features::kPrefetchProxy,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -233,6 +225,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
+#if BUILDFLAG(IS_WIN)
+      &kWindows11MicaTitlebar,
+#endif
       &lens::features::kLensOverlay,
       &lens::features::kLensOverlayOmniboxEntryPoint,
       &lens::features::kLensStandalone,
@@ -244,6 +239,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTLSTrustAnchorIDs,
       &network::features::kBrowsingTopics,
+      &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,
@@ -278,6 +274,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &personal_context::features::kPersonalContext,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
+      &privacy_sandbox::kPrivacySandboxSettings4,
 #if !BUILDFLAG(IS_ANDROID)
       &private_ai::kPrivateAi,
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -297,7 +294,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kFirstRunDesktopRefresh,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
-      &syncer::kSyncAutofillValuableMetadata,
 #if !BUILDFLAG(IS_ANDROID)
       &tabs::kVerticalTabsLaunch,
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -312,7 +308,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 TEST(FeatureDefaultsTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
       &omnibox::kAblateSearchProviderWarmup,
-      &blink::features::kMixedContentAutoupgrade,
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,

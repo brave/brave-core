@@ -72,7 +72,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="5679816001365584346">Download Brave op je telefoon om onderweg nieuwe tabbladgroepen te openen of te maken.</translation>
 <translation id="4559627161887338743">Je kunt je ingelogde Brave-accounts beheren. Je Brave-accounts worden gebruikt voor onder andere de Brave-browser, Play Store, en Gmail. Als je een account wilt toevoegen voor iemand anders, bijvoorbeeld een gezinslid, voeg je een nieuw persoon toe aan je <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Zoeken met afbeelding</translation>
-<translation id="2963742289915075304"><ph name="EXISTING_USER"/> is al ingelogd. Als je je browsegegevens gescheiden wilt houden, log je in Brave in op je eigen profiel bij als <ph name="USER_EMAIL_ADDRESS"/>. Je krijgt ook onder andere je bookmarks van <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Tekst selecteren</translation>
 <translation id="4528406859989804913">Je logt in op een beheerd account waarmee de eigenaar van dat account beheer krijgt over je Brave-profiel. Je Brave-gegevens zoals je apps, bookmarks, geschiedenis, wachtwoorden en andere instellingen worden permanent gekoppeld aan <ph name="USER_NAME"/>. Je kunt deze gegevens verwijderen via het Brave sync chains Dashboard, maar je kunt deze gegevens niet koppelen aan een ander account. Je kunt een nieuw profiel maken om je bestaande Brave-gegevens apart te houden. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave spaart de batterij door achtergrondactiviteit en visuele effecten te beperken, zoals vloeiend scrollen en videoframesnelheden. <ph name="BEGIN_LINK"/>Meer informatie over Energiebesparing<ph name="END_LINK"/></translation>
@@ -131,7 +130,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="5298352791080868905">Open links in Brave vanuit elke app en houd de browser toegankelijk op je taakbalk</translation>
 <translation id="2600233721598267627">Klik op de knop Samenvatten om dit document te delen met Gemini in Brave voor een snel overzicht en om follow-upvragen te stellen</translation>
 <translation id="2118275934191847461">Met <ph name="BEGIN_LINK"/>tools van Brave<ph name="END_LINK"/> kun je beveiligd browsen en de controle behouden</translation>
-<translation id="7508460698788470991"><ph name="EXISTING_USER"/> is al ingelogd. Als je je browsegegevens gescheiden wilt houden, log je in Brave in op je eigen profiel bij als <ph name="USER_EMAIL_ADDRESS"/>. Je kunt ook onder andere je wachtwoorden op al je apparaten gebruiken.</translation>
 <translation id="2451727308784734061">Gebruik je snelkoppeling om snel naar Wachtwoordmanager te gaan. Je kunt je snelkoppeling verplaatsen naar het startscherm of de App Launcher van je computer.</translation>
 <translation id="6381750314821942592">Brave wordt zo meteen gesloten</translation>
 <translation id="6078442581074612226">In Brave</translation>
@@ -150,7 +148,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="7931230852267968641">Je organisatie kan browsegegevens bekijken en beheren, zoals je bookmarks, geschiedenis en wachtwoorden. Je organisatie kan geen browsegegevens in andere Brave-profielen bekijken.</translation>
 <translation id="2257221826278123061">Laat verifiëren dat jij het bent om Brave-gegevens in je account <ph name="ACCOUNT_EMAIL"/> te gebruiken en op te slaan</translation>
 <translation id="7048234400304379082">Gebruik de sneltoets om Gemini in Brave te verlaten of terug te keren.</translation>
-<translation id="5655607968417451974">Brave starten</translation>
 <translation id="7387051847644272380">Er is tijdens de installatie een fout opgetreden in het besturingssysteem. Download Brave opnieuw.</translation>
 <translation id="2648689842065142443">Als je een apparaat deelt, kunnen vrienden en familie afzonderlijk surfen en Brave instellen zoals zij dat willen.</translation>
 <translation id="1001521084148238686">Makkelijke toegang om Gemini te gebruiken in Brave op je apparaat, zelfs als Brave is geminimaliseerd.</translation>
@@ -299,6 +296,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="4304713468139749426">Wachtwoordmanager</translation>
 <translation id="4334241893986177674">Zoeken in dit screenshot</translation>
 <translation id="242356249838681145">Brave starten als Windows wordt opgestart</translation>
+<translation id="4747339441562331861">Krijg makkelijk toegang tot je de functies die je kent, gebruikt en vertrouwt door Brave in te stellen als je standaardbrowser. Brave wordt vastgezet op je taakbalk voor snelle toegang.</translation>
 <translation id="4400772909124543403">Er is geen update beschikbaar</translation>
 <translation id="9183662282810237335">Brave toch sluiten?</translation>
 <translation id="4413205837991854510">Snelkoppeling voor Zoeken met afbeelding altijd tonen</translation>
@@ -395,7 +393,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 
 Als deze pagina niet werkt zoals verwacht, kun je optimalisatie toestaan.</translation>
 <translation id="7074160267408082133">Gemini tonen in Brave in de Mac-menubalk en sneltoets aanzetten</translation>
-<translation id="2938507901464407819"><ph name="EXISTING_USER"/> is al ingelogd. Als je je browsegegevens gescheiden wilt houden, log je in Brave in op je eigen profiel bij als <ph name="USER_EMAIL_ADDRESS"/>. Je krijgt ook onder andere je opgeslagen informatie van <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Opstartfout: voer het installatieprogramma uit als normale gebruiker, niet als beheerder.</translation>
 <translation id="3588973534877826647">Brave standaard gebruiken en vastzetten</translation>
 <translation id="5596627076506792578">Meer opties</translation>
@@ -569,12 +566,12 @@ Je kunt pas nieuwe bookmarks opslaan in je account als je er een paar hebt verwi
 <translation id="5755581833598928580">Brave gebruiken als je op links in berichten, documenten en andere apps klikt</translation>
 <translation id="7216228761061470870">Als je Zoeken met afbeelding gebruikt, worden de paginatitel, URL en content, waaronder pdf's, naar de server gestuurd</translation>
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
-<translation id="2416155625082200759"><ph name="EXISTING_USER"/> is al ingelogd. Als je je browsegegevens gescheiden wilt houden, log je in Brave in op je eigen profiel bij als <ph name="USER_EMAIL_ADDRESS"/>. Je kunt ook onder andere je opgeslagen informatie op al je apparaten gebruiken.</translation>
 <translation id="1871621397473741084">Begin meteen met browsen: Brave kan nu worden gestart als Windows wordt opgestart.</translation>
 <translation id="7274695763216404502">Vastgezet. Gebruik Zoeken met afbeelding opnieuw via de werkbalk.</translation>
 <translation id="7288567540154601580">Tabbladen en extensies</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave raadt je aan deze te verwijderen}other{Brave raadt je aan deze te verwijderen}}</translation>
 <translation id="4600669988724328687">Als je systeemgeluid wilt delen, open je Systeeminstellingen en sta je Alleen systeemgeluid opnemen toe voor Brave. Start Brave daarna opnieuw op.</translation>
+<translation id="9068395155143628872">Via Advertentiemeting kunnen sites die je bezoekt Brave om informatie vragen zodat ze de prestaties van hun advertenties kunnen meten. Advertentiemeting beperkt tracking op meerdere sites door zo min mogelijk informatie over te dragen tussen sites.</translation>
 <translation id="1864557848095568223">Brave updaten</translation>
 <translation id="3403365884036456766">Je bestand met voorkeuren is beschadigd of ongeldig.
 
@@ -637,7 +634,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="5687542525349822727">Brave instellen als je standaardbrowser</translation>
 <translation id="6396151137840491551">Brave upgradet niet-beveiligde verbindingen automatisch naar HTTPS als dat mogelijk is</translation>
 <translation id="2925193881330501265">Je bent ingelogd bij Brave als <ph name="USER_EMAIL_ADDRESS"/>. Gebruik hetzelfde account om opnieuw in te loggen.</translation>
-<translation id="3744141798014187630"><ph name="EXISTING_USER"/> is al ingelogd. Als je je browsegegevens gescheiden wilt houden, log je in Brave in op je eigen profiel bij als <ph name="USER_EMAIL_ADDRESS"/>. Je kunt ook onder andere je bookmarks op al je apparaten gebruiken.</translation>
 <translation id="6915252145142862992">Dit is een tweede installatie van Brave en kan niet als standaardbrowser worden ingesteld.</translation>
 <translation id="7766756101194440006">Krijg het beste van Brave met de Brave-app op je <ph name="DEVICE_TYPE"/></translation>
 <translation id="8004582292198964060">Browser</translation>
@@ -668,12 +664,10 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="1755067029031059271">Brave kan niet verifiëren waar deze extensie vandaan komt en de extensie is misschien onveilig. Verwijder de extensie uit Brave zodat deze je gegevens (waaronder je persoonlijke informatie) niet meer kan bekijken en wijzigen op sites die je bezoekt.</translation>
 <translation id="8207657266087451193">Als een afbeelding geen nuttige beschrijving bevat, probeert Brave je er een te geven. Afbeeldingen worden naar Brave gestuurd om beschrijvingen te maken. Je kunt dit op elk gewenst moment uitzetten in Instellingen.</translation>
 <translation id="7792526144795244436">Inloggen bij Brave in een nieuw profiel?</translation>
-<translation id="784788600549915416"><ph name="EXISTING_USER"/> is al ingelogd. Als je je browsegegevens gescheiden wilt houden, log je in Brave in op je eigen profiel bij als <ph name="USER_EMAIL_ADDRESS"/>. Je kunt ook onder andere je wachtwoorden van <ph name="DEVICE"/> gebruiken.</translation>
 <translation id="183102473074922918">Gemini tonen in Brave in het systeemvak en de sneltoets aanzetten</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave waarschuwt je<ph name="END_LINK"/> voor onveilige sites en downloads</translation>
 <translation id="8060549744348950090">Je bent hier niet recent geweest. Brave heeft <ph name="PERMISSION"/> verwijderd.</translation>
 <translation id="7402663241490331652">Winkel, vertaal en herken wat je ziet met je camera in de Brave iOS-app</translation>
-<translation id="4470171586042711152">QR-code om in te loggen bij Brave als <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Opstartfout: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Je organisatie sluit Brave als deze <ph name="TIMEOUT_DURATION"/> niet wordt gebruikt.</translation>
 <translation id="8321888067342493336">Opslaan als afbeelding</translation>

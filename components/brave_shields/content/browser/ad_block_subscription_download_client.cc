@@ -119,8 +119,7 @@ void AdBlockSubscriptionDownloadClient::GetUploadData(
     const std::string& guid,
     download::GetUploadDataCallback callback) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback),
-                                download::DownloadRequestParameters()));
+      FROM_HERE, base::BindOnce(std::move(callback), nullptr));
 }
 
 }  // namespace brave_shields

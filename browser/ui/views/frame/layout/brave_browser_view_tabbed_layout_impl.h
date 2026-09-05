@@ -22,6 +22,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
  public:
   BraveBrowserViewTabbedLayoutImpl(
       std::unique_ptr<BrowserViewLayoutDelegate> delegate,
+      Browser* browser,
       BrowserViewLayoutViews views);
   ~BraveBrowserViewTabbedLayoutImpl() override;
 
@@ -60,6 +61,8 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
       const gfx::Rect& current_bounds,
       int full_window_width,
       std::optional<gfx::Insets> vtab_insets);
+
+  views::View* contents_container() { return views().contents_container; }
 
   // Returns the ideal sidebar width, given the current available width. Used
   // for determining the target width in sidebar width animations.

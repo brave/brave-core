@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Brave-ті бағалаңыз</translation>
 <translation id="4104400246019119780">Рақмет!</translation>
 <translation id="5202255382948179481">Ұсыныстарыңызды қосыңыз</translation>
+<translation id="7759809451544302770">Қосымша</translation>
 <translation id="4748689412569009273">Brave-пен жұмыс жасау қалай болғанын бір эмодзимен білдіріңіз</translation>
 <translation id="7335142069363686805">Дәл қазір баға беріңіз</translation>
 <translation id="6681362094306959654">Brave ұнап жатыр ма?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Көңілсіз</translation>
 <translation id="5488843227043643519">Play Store-да баға бересіз бе?</translation>
 <translation id="5867854497245948308">Кері байланысыңыз үшін рақмет!</translation>
-<translation id="5578122562331038807">Brave-ді қалай жақсартуға болатынын айтыңыз</translation>
-<translation id="1483493594462132177">Жіберу</translation>
-<translation id="3889034478061064651">Ұсыныстарыңызды қосыңыз (Міндетті емес)</translation>
-<translation id="1769154760586570836">Пікір жіберілді. Рахмет!</translation>
-<translation id="4450893287417543264">Қайталауды көрсетпеу</translation>
+<translation id="4935400164159327304">Brave-ді қалай жақсартуға болатынын айтыңыз.</translation>
 <translation id="8966035543003363155">Brave хабарламалары жеңілдетеді</translation>
 <translation id="7662771815233894695">Жүктеулерді басқару, токендер табу, апта сайынғы пайдалану статистикасын көру және т.б.</translation>
 <translation id="4265429476391459783">Сіз Brave Rewards және Құпиялылық есептерінен кірісіп жатқан жоқсыз</translation>
@@ -286,6 +283,7 @@ Brave News арнайы, анонимді жарнамалармен қолда�
 <translation id="7002271985859760052">Бет әрекеттері</translation>
 <translation id="7104487676473617844">Келесі элементтер тек ағымдағы ашық веб-бет қолдаған жағдайда ғана мәзірде көрінеді.</translation>
 <translation id="4159764849281393303">ВебҚосымша</translation>
+<translation id="8428213095426709021">Баптаулар</translation>
 <translation id="8038539967102225446">Brave жарнамалары осында!</translation>
 <translation id="222883304157347087">(бұл құрылғы)</translation>
 <translation id="4157741509680155021">SYNC CHAIN ҚҰРЫЛҒЫЛАРЫ</translation>
@@ -544,6 +542,7 @@ Brave News арнайы, анонимді жарнамалармен қолда�
 <translation id="1822560017823072927">Әдепкі ашық және жеке интерфейстер</translation>
 <translation id="5825943197137337319">Тек әдепкі ашық интерфейс</translation>
 <translation id="1689062823386843231">Прокси қолданбайтын UDP-ді өшіру</translation>
+<translation id="1483493594462132177">Жіберу</translation>
 <translation id="538450413584738399">Ауыстыру</translation>
 <translation id="4556086616242530072">Браузерге арналған.\nӨздігінше сұрыптау.\nЖәне көпжүйелі.</translation>
 <translation id="7909462264772842773">Криптовалютаңыз бен NFTs бақылауда болсын. Brave Әмияны Ethereum, EVM тізбектері, Solana, Filecoin және басқаларын қолдайды.</translation>
@@ -619,6 +618,7 @@ Brave News арнайы, анонимді жарнамалармен қолда�
 <translation id="569068482611873351">Импорттау...</translation>
 <translation id="4522570452068850558">Мәліметтер</translation>
 <translation id="3114681061018999547">Қорғау</translation>
+<translation id="3784455785234192852">Блоктау</translation>
 <translation id="4412698727486357573">Анықтама орталығы</translation>
 <translation id="8239147115686034860">Brave Әмиянын автоматты түрде құлыптау</translation>
 <translation id="414639769490080648">Brave Әмияны автоматты түрде құлыпталғанша күту уақыты (минут)</translation>
@@ -808,10 +808,6 @@ Brave News арнайы, анонимді жарнамалармен қолда�
 <translation id="2478788592457735063">Бұл бұрын қосылған желіге желіні ауыстырады.</translation>
 <translation id="8756686998207163764">Желіні ауыстыру</translation>
 <translation id="8905793906896555159">Бет топтарын қосу</translation>
-<translation id="6735749683447943955">Бет топтарын өшіру?</translation>
-<translation id="4616687974503500682">Кез келген бар топтар жойылады, ал сол топтардағы беттер браузер терезеңізде ашық, топталмаған беттер болады. Жалғастырғыңыз келетініне сенімдісіз бе?</translation>
-<translation id="4394049700291259645">Өшіру</translation>
-<translation id="3859027502409073633">Синхрондалған бет топтарын көрсету</translation>
 <translation id="7632160823264702523">Бет топтары тақтасы</translation>
 <translation id="2477807195394450274">Ағымдағы ашық бет тобындағы беттерге жылдам қатынау үшін төменгі тақтаны көрсету</translation>
 <translation id="8374720587111523381">Сілтемелерді ағымдағы бет тобында ашу</translation>
@@ -819,7 +815,6 @@ Brave News арнайы, анонимді жарнамалармен қолда�
 <translation id="1227658541937938697">Барлық сілтемелерді ағымдағы бет тобында автоматты түрде ашу</translation>
 <translation id="5242300593039211344">Әмиянды құлыптау</translation>
 <translation id="1108298724135935307">Қосылған сайттар</translation>
-<translation id="8428213095426709021">Баптаулар</translation>
 <translation id="4255623233927788178">Блок зерттеушісінде қарау</translation>
 <translation id="8274201358637112807">Бұл бет Brave әмиянымен әрекеттесуді қалайды</translation>
 <translation id="3355936511340229503">Қосылым қатесі</translation>
@@ -861,6 +856,7 @@ Brave News арнайы, анонимді жарнамалармен қолда�
 <translation id="6458565248779152483">Brave VPN өшіру</translation>
 <translation id="9080536793704001825">15 минутқа кідірту</translation>
 <translation id="803706420145725977">1 сағатқа кідірту</translation>
+<translation id="4394049700291259645">Өшіру</translation>
 <translation id="7733890291091968191">Web3 хабарландыруларын көрсету</translation>
 <translation id="1371627247679035769">#### Brave сізді қадағаламайды немесе қолданбаны қалай пайдалану жолыңызды білмейді, сондықтан VPN қай жолмен орнатқаныңызды білмейді. Қолданған кезде қандай мәселелерге тап болғаныңыз туралы ақпаратпен бөлісіңіз, біз оны тезірек шешуге тырысамыз. ####</translation>
 <translation id="3367162038532116157">VPN Хост аты

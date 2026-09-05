@@ -9,7 +9,14 @@
 #include <services/device/public/cpp/device_features.cc>
 #undef kLocationProviderManagerParam
 
+#include "base/feature_override.h"
+
 namespace features {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kLocationProviderManager, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kSensorsAllowAskBlockPermissionModel, base::FEATURE_ENABLED_BY_DEFAULT},
+}});
 
 const base::FeatureParam<device::mojom::LocationProviderManagerMode>
     kLocationProviderManagerParam{

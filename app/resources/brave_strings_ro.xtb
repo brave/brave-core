@@ -71,7 +71,6 @@
 <translation id="5679816001365584346">Descarcă Brave pe telefon pentru a deschide sau a crea grupuri de file noi din mers.</translation>
 <translation id="4559627161887338743">Îți poți gestiona Conturile Brave la care te-ai conectat. Conturile tale Brave sunt folosite pentru browserul Brave, pentru Magazinul Play, pentru Gmail și pentru multe altele. Dacă vrei să adaugi un cont pentru altcineva, de exemplu, pentru un membru al familiei, adaugă noua persoană pe <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Află mai multe<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Caută folosind Căutarea de imagini</translation>
-<translation id="2963742289915075304"><ph name="EXISTING_USER"/> s-a conectat deja. Pentru a separa navigarea, conectează-te la Brave în propriul profil ca <ph name="USER_EMAIL_ADDRESS"/>. În plus, vei putea accesa marcajele și alte date de pe <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Selectează text</translation>
 <translation id="4528406859989804913">Vă conectați cu un cont gestionat și îi permiteți administratorului acestuia controlul asupra profilului dvs. Brave. Datele Brave, cum ar fi aplicațiile, marcajele, istoricul, parolele și alte setări vor fi asociate definitiv cu <ph name="USER_NAME"/>. Veți putea să ștergeți aceste date prin intermediul Tabloului de bord pentru Conturi Brave, însă nu veți putea să asociați aceste date cu alt cont. Aveți opțiunea de a crea un profil nou, pentru a păstra separat datele Brave existente. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave economisește energia bateriei limitând activitatea de fundal și efectele vizuale, cum ar fi derularea lină și ratele de cadre video. <ph name="BEGIN_LINK"/>Află mai multe despre Economisirea energiei<ph name="END_LINK"/></translation>
@@ -130,7 +129,6 @@
 <translation id="5298352791080868905">Deschide linkuri în Brave din orice aplicație și menține browserul accesibil în bara de activități</translation>
 <translation id="2600233721598267627">Dă clic pe butonul Rezumă pentru a trimite acest document la Gemini în Brave pentru a obține o prezentare generală rapidă și a pune întrebări suplimentare</translation>
 <translation id="2118275934191847461">Cu <ph name="BEGIN_LINK"/>instrumentele din Brave<ph name="END_LINK"/>, navighezi în siguranță și deții controlul</translation>
-<translation id="7508460698788470991"><ph name="EXISTING_USER"/> s-a conectat deja. Pentru a separa navigarea, conectează-te la Brave în propriul profil ca <ph name="USER_EMAIL_ADDRESS"/>. În plus, vei putea accesa parolele și alte date pe toate dispozitivele.</translation>
 <translation id="2451727308784734061">Folosește comanda rapidă pentru a accesa rapid Managerul de parole. Poți muta comanda rapidă pe ecranul de pornire sau în lansatorul de aplicații al computerului.</translation>
 <translation id="6381750314821942592">Brave se va închide în curând</translation>
 <translation id="6078442581074612226">În Brave</translation>
@@ -149,7 +147,6 @@
 <translation id="7931230852267968641">Organizația ta poate să vadă și să gestioneze datele de navigare, cum ar fi marcajele, istoricul și parolele. Nu poate să vadă datele de navigare din alte profiluri Brave</translation>
 <translation id="2257221826278123061">Confirmă-ți identitatea pentru a folosi și a salva datele Brave în contul <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">Pentru a ieși din Gemini sau a reveni la Gemini în Brave, folosește comanda rapidă de la tastatură.</translation>
-<translation id="5655607968417451974">Porniți Brave</translation>
 <translation id="7387051847644272380">S-a produs o eroare de sistem de operare în timpul instalării. Descărcați din nou Brave.</translation>
 <translation id="2648689842065142443">Dacă permiți accesul la un dispozitiv, familia și prietenii pot să navigheze separat și să configureze Brave cum doresc</translation>
 <translation id="1001521084148238686">Acces ușor pentru a folosi Gemini în Brave pe dispozitiv, chiar dacă Brave este minimizat.</translation>
@@ -298,6 +295,7 @@
 <translation id="4304713468139749426">Manager de parole</translation>
 <translation id="4334241893986177674">Caută în această captură de ecran</translation>
 <translation id="242356249838681145">Lansează Brave când pornește Windows</translation>
+<translation id="4747339441562331861">Accesează cu ușurință funcțiile pe care le cunoști, le apreciezi și în care ai încredere setând Brave ca browser prestabilit. Brave va fi fixat în bara de activități pentru acces rapid.</translation>
 <translation id="4400772909124543403">Nu este disponibilă nicio actualizare</translation>
 <translation id="9183662282810237335">Ieși din Brave oricum?</translation>
 <translation id="4413205837991854510">Afișează întotdeauna comanda rapidă pentru Căutarea de imagini</translation>
@@ -394,7 +392,6 @@
 
 Dacă această pagină nu funcționează conform așteptărilor, încearcă să permiți optimizarea.</translation>
 <translation id="7074160267408082133">Afișează Gemini în Brave în bara de meniu Mac și activează comanda rapidă de la tastatură</translation>
-<translation id="2938507901464407819"><ph name="EXISTING_USER"/> s-a conectat deja. Pentru a separa navigarea, conectează-te la Brave în propriul profil ca <ph name="USER_EMAIL_ADDRESS"/>. În plus, vei putea accesa informațiile salvate și alte date de pe <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Eroare la pornire: rulează programul de instalare ca utilizator obișnuit, nu ca administrator.</translation>
 <translation id="3588973534877826647">Folosește Brave în mod prestabilit și fixează-l</translation>
 <translation id="5596627076506792578">Mai multe opțiuni</translation>
@@ -568,12 +565,12 @@ Nu poți salva marcaje noi în cont până când nu ștergi câteva. Dacă te de
 <translation id="5755581833598928580">Folosește Brave când dai clic pe linkuri în mesaje, documente și alte aplicații</translation>
 <translation id="7216228761061470870">Când folosești Căutarea de imagini pe computer, titlul paginii, adresa URL și conținutul, inclusiv PDF-urile, sunt trimise la server</translation>
 <translation id="5516268345616100622">Manager de activități - Brave</translation>
-<translation id="2416155625082200759"><ph name="EXISTING_USER"/> s-a conectat deja. Pentru a separa navigarea, conectează-te la Brave în propriul profil ca <ph name="USER_EMAIL_ADDRESS"/>. În plus, vei putea accesa informațiile salvate și alte date pe toate dispozitivele.</translation>
 <translation id="1871621397473741084">Începe să navighezi instantaneu: Brave se poate lansa acum când pornește Windows.</translation>
 <translation id="7274695763216404502">S-a fixat! Folosește din nou Căutarea de imagini din bara de instrumente</translation>
 <translation id="7288567540154601580">File și extensii</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave recomandă să o elimini}few{Brave recomandă să le elimini.}other{Brave recomandă să le elimini.}}</translation>
 <translation id="4600669988724328687">Pentru a permite accesul la conținutul audio de pe sistem, deschide Setările de sistem și permite Înregistrarea audio numai de pe sistem pentru Brave. Apoi va trebui să repornești Brave.</translation>
+<translation id="9068395155143628872">Ad measurement le dă site-urilor pe care le accesezi posibilitatea de a solicita informații de la Brave care le ajută să măsoare performanța anunțurilor asociate. Ad measurement restricționează urmărirea pe mai multe site-uri prin transferul câtor mai puține informații între site-uri.</translation>
 <translation id="1864557848095568223">Brave se actualizează</translation>
 <translation id="3403365884036456766">Fișierul de preferințe este fie deteriorat, fie nevalid.
 
@@ -636,7 +633,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="5687542525349822727">Setează Brave ca browser prestabilit</translation>
 <translation id="6396151137840491551">Brave face automat upgrade conexiunilor nesecurizate la HTTPS, dacă este posibil</translation>
 <translation id="2925193881330501265">Ai fost conectat(ă) la Brave ca <ph name="USER_EMAIL_ADDRESS"/>. Folosește același cont pentru a te conecta din nou.</translation>
-<translation id="3744141798014187630"><ph name="EXISTING_USER"/> s-a conectat deja. Pentru a separa navigarea, conectează-te la Brave în propriul profil ca <ph name="USER_EMAIL_ADDRESS"/>. În plus, vei putea accesa marcajele și alte date pe toate dispozitivele.</translation>
 <translation id="6915252145142862992">Aceasta este o instalare secundară a browserului Brave și nu poate fi setat ca browser prestabilit.</translation>
 <translation id="7766756101194440006">Beneficiază de tot ce este mai bun la Brave cu aplicația Brave pe <ph name="DEVICE_TYPE"/></translation>
 <translation id="8004582292198964060">Browser</translation>
@@ -667,12 +663,10 @@ Brave nu poate recupera setările.</translation>
 <translation id="1755067029031059271">Brave nu poate verifica de unde provine această extensie. Ar putea fi nesigură. Elimin-o din Brave ca să nu mai poată vedea și modifica datele tale de pe site-urile pe care le accesezi, inclusiv informațiile cu caracter personal.</translation>
 <translation id="8207657266087451193">Dacă o imagine nu are o descriere utilă, Brave va încerca să o completeze. Pentru a crea descrieri, imaginile sunt trimise la Brave. Poți dezactiva această opțiune oricând din setări.</translation>
 <translation id="7792526144795244436">Te conectezi la Brave cu un profil nou?</translation>
-<translation id="784788600549915416"><ph name="EXISTING_USER"/> s-a conectat deja. Pentru a separa navigarea, conectează-te la Brave în propriul profil ca <ph name="USER_EMAIL_ADDRESS"/>. În plus, vei putea accesa parolele și alte date de pe <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Afișează Gemini în Brave în bara de sistem și activează comanda rapidă de la tastatură</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave te avertizează<ph name="END_LINK"/> cu privire la site-urile și descărcările nesigure</translation>
 <translation id="8060549744348950090">Nu ai accesat recent site-ul. Brave a eliminat <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Cumpără, tradu și identifică ceea ce vezi cu camera foto în Brave pentru iOS</translation>
-<translation id="4470171586042711152">Cod QR pentru conectarea la Brave ca <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Eroare la pornire: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Organizația ta închide Brave dacă nu este folosit timp de <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Salvează ca imagine</translation>

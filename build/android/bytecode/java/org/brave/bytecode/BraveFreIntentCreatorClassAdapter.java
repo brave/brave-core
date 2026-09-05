@@ -17,7 +17,6 @@ public class BraveFreIntentCreatorClassAdapter extends BraveClassVisitor {
     public BraveFreIntentCreatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(
-                sFreIntentCreatorClassName, "createInternal", sBraveFreIntentCreatorClassName);
+        redirectConstructor(sFreIntentCreatorClassName, sBraveFreIntentCreatorClassName);
     }
 }

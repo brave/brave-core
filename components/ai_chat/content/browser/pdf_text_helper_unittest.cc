@@ -29,7 +29,10 @@ class FakePdfListener : public pdf::mojom::PdfListener {
 
   MOCK_METHOD(void, SetCaretPosition, (const gfx::PointF&), (override));
   MOCK_METHOD(void, MoveRangeSelectionExtent, (const gfx::PointF&), (override));
-  MOCK_METHOD(void, SetSelectionBase, (const gfx::PointF&), (override));
+  MOCK_METHOD(void,
+              SetSelectionBounds,
+              (const gfx::PointF&, const gfx::PointF&),
+              (override));
   MOCK_METHOD(void, GetPdfBytes, (uint32_t, GetPdfBytesCallback), (override));
   MOCK_METHOD(void, GetPageText, (int32_t, GetPageTextCallback), (override));
   MOCK_METHOD(void,
@@ -83,7 +86,7 @@ class PdfTextHelperTest : public content::RenderViewHostTestHarness {
 
 TEST_F(PdfTextHelperTest, NoPdfDocumentHelper_ReturnsNullopt) {
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
   EXPECT_FALSE(future.Get().has_value());
 }
 
@@ -104,7 +107,7 @@ TEST_F(PdfTextHelperTest, SinglePage_ExtractsText) {
           });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
 
   auto result = future.Get();
   ASSERT_TRUE(result.has_value());
@@ -138,7 +141,7 @@ TEST_F(PdfTextHelperTest, MultiPage_JoinsWithNewline) {
       });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
 
   auto result = future.Get();
   ASSERT_TRUE(result.has_value());
@@ -157,7 +160,7 @@ TEST_F(PdfTextHelperTest, GetPdfBytesFailed_ReturnsNullopt) {
       });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
   EXPECT_FALSE(future.Get().has_value());
 }
 
@@ -173,7 +176,7 @@ TEST_F(PdfTextHelperTest, ZeroPages_ReturnsNullopt) {
       });
 
   base::test::TestFuture<std::optional<std::string>> future;
-  ExtractTextFromLoadedPdf(*web_contents(), future.GetCallback());
+  ExtractTextFromLoadedPdf(web_contents(), future.GetCallback());
   EXPECT_FALSE(future.Get().has_value());
 }
 

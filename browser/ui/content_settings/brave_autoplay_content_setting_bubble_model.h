@@ -10,15 +10,11 @@
 
 class Profile;
 
-namespace content {
-class Page;
-}
-
 class BraveAutoplayContentSettingBubbleModel
     : public ContentSettingSimpleBubbleModel {
  public:
   BraveAutoplayContentSettingBubbleModel(Delegate* delegate,
-                                         content::Page& page);
+                                         content::WebContents* web_contents);
   BraveAutoplayContentSettingBubbleModel(
       const BraveAutoplayContentSettingBubbleModel&) = delete;
   BraveAutoplayContentSettingBubbleModel& operator=(

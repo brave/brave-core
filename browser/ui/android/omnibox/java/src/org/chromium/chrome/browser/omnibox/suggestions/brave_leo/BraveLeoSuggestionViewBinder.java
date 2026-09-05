@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.omnibox.R;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.SuggestionViewProperties;
 import org.chromium.ui.modelutil.PropertyKey;
@@ -17,6 +18,10 @@ import org.chromium.ui.modelutil.PropertyModel;
 
 @NullMarked
 public class BraveLeoSuggestionViewBinder extends BaseSuggestionViewBinder<View> {
+    public BraveLeoSuggestionViewBinder(OmniboxResourceProvider resourceProvider) {
+        super(resourceProvider);
+    }
+
     @Override
     protected void bindContent(PropertyModel model, View contentView, PropertyKey propertyKey) {
         if (propertyKey == SuggestionViewProperties.TEXT_LINE_1_TEXT) {

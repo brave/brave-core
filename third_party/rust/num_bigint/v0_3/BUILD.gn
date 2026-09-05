@@ -83,8 +83,6 @@ cargo_crate("lib") {
   rustflags += [
     "-A",
     "unused_variables",
-    "-A",
-    "deprecated",
   ]
 
   #####################################################################

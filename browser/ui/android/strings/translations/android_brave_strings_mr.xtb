@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">ब्रेव्हला रेटिंग द्या</translation>
 <translation id="4104400246019119780">धन्यवाद!</translation>
 <translation id="5202255382948179481">तुम्हाला सूचना जोडा</translation>
+<translation id="7759809451544302770">पर्यायी</translation>
 <translation id="4748689412569009273">एका ईमोजीत सांगा, तुमचा ब्रेव्ह अनुभव कसा आहे?</translation>
 <translation id="7335142069363686805">आता रेट करा</translation>
 <translation id="6681362094306959654">ब्रेव्ह आवडतोय?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">दुःखी</translation>
 <translation id="5488843227043643519">प्ले स्टोरवर रेटिंग द्याल?</translation>
 <translation id="5867854497245948308">तुमच्या अभिप्रायाबद्दल धन्यवाद!</translation>
-<translation id="5578122562331038807">Brave मध्ये आम्ही कसे सुधारू शकतो ते आम्हाला कळवा</translation>
-<translation id="1483493594462132177">पाठवा</translation>
-<translation id="3889034478061064651">तुमच्या सूचना जोडा (पर्यायी)</translation>
-<translation id="1769154760586570836">अभिप्राय पाठवला. धन्यवाद!</translation>
-<translation id="4450893287417543264">पुन्हा दाखवू नका</translation>
+<translation id="4935400164159327304">Brave मध्ये आम्ही कसे सुधारू शकतो ते आम्हाला कळवा.</translation>
 <translation id="8966035543003363155">Brave सूचना सुलभ करतात</translation>
 <translation id="7662771815233894695">डाउनलोड व्यवस्थापित करा, टोकन्स मिळवा, साप्ताहिक वापर आकडेवारी पहा आणि बरेच काही.</translation>
 <translation id="4265429476391459783">आपण रिवार्ड्स कमवत नाही किंवा गोपनीयतेचे रिपोर्ट प्राप्त करीत नाही आहात</translation>
@@ -284,6 +281,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="7002271985859760052">पृष्ठ क्रिया</translation>
 <translation id="7104487676473617844">खालील आयटम फक्त तेव्हा मेनूमध्ये दिसतील जेव्हा चालू वेबपृष्ठ त्यांना समर्थन देईल.</translation>
 <translation id="4159764849281393303">वेबऍप</translation>
+<translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="8038539967102225446">Brave ॲड्स येथे आहेत!</translation>
 <translation id="222883304157347087">(हा डिव्हाइस)</translation>
 <translation id="4157741509680155021">SYNC चेनवर डिव्हाइस</translation>
@@ -535,6 +533,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1822560017823072927">डीफॉल्ट सार्वजनिक आणि खासगी इंटरफेस</translation>
 <translation id="5825943197137337319">फक्त डीफॉल्ट सार्वजनिक इंटरफेस</translation>
 <translation id="1689062823386843231">नॉन-प्रॉक्सिड UDP बंद करा</translation>
+<translation id="1483493594462132177">पाठवा</translation>
 <translation id="538450413584738399">स्वॅप</translation>
 <translation id="4556086616242530072">ब्राउझर नेटिव. स्वयं-कस्टडी. आणि बहु-चेन.</translation>
 <translation id="7909462264772842773">तुमच्या क्रिप्टो आणि NFTs वर नियंत्रण ठेवा. Brave वॉलेट Ethereum, EVM चेन, Solana, Filecoin, आणि आणखी बरेच काही समर्थन करते.</translation>
@@ -610,6 +609,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="569068482611873351">आयात...</translation>
 <translation id="4522570452068850558">तपशील</translation>
 <translation id="3114681061018999547">शिल्डिंग</translation>
+<translation id="3784455785234192852">लॉक</translation>
 <translation id="4412698727486357573">मदत केंद्र</translation>
 <translation id="8239147115686034860">Brave वॉलेट आपोआप लॉक करा</translation>
 <translation id="414639769490080648">Brave वॉलेट आपोआप लॉक होईपर्यंत किती मिनिटे वाट पाहायची</translation>
@@ -797,10 +797,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="2478788592457735063">यामुळे पूर्वी जोडलेले एक नेटवर्क चालू होईल.</translation>
 <translation id="8756686998207163764">नेटवर्क बदला</translation>
 <translation id="8905793906896555159">टॅब गट सक्षम करा</translation>
-<translation id="6735749683447943955">टॅब गट अक्षम करायचे?</translation>
-<translation id="4616687974503500682">कोणतेही अस्तित्वात असलेले गट हटवले जातील आणि त्या गटांमधील टॅब तुमच्या ब्राउझर विंडोमध्ये उघडे, गटरहित टॅब बनतील. तुम्हाला खात्री आहे की तुम्ही पुढे सुरू ठेवू इच्छिता?</translation>
-<translation id="4394049700291259645">अक्षम करा</translation>
-<translation id="3859027502409073633">सिंक केलेले टॅब गट दाखवा</translation>
 <translation id="7632160823264702523">टॅब गट बार</translation>
 <translation id="2477807195394450274">सध्या उघडलेल्या टॅब गटातील टॅबच्या जलद ऍक्सेससाठी खालचा बार दाखवा</translation>
 <translation id="8374720587111523381">सध्याच्या टॅब गटामध्ये लिंक उघडा</translation>
@@ -808,7 +804,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1227658541937938697">स्वयंचलितपणे सर्व लिंक सध्याच्या टॅब गटात उघडा</translation>
 <translation id="5242300593039211344">वॉलेट लॉक करा</translation>
 <translation id="1108298724135935307">कनेक्ट केलेल्या साइट्स</translation>
-<translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="4255623233927788178">ब्लॉक एक्सप्लोररवर पाहा</translation>
 <translation id="8274201358637112807">हे पृष्ठ Brave Wallet सह संवाद साधू इच्छित आहे</translation>
 <translation id="3355936511340229503">कनेक्शन एरर</translation>
@@ -850,6 +845,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="6458565248779152483">Brave VPN अक्षम करा</translation>
 <translation id="9080536793704001825">15 मिनिटांपर्यंत स्थगित करा</translation>
 <translation id="803706420145725977">1 तासासाठी विराम द्या</translation>
+<translation id="4394049700291259645">अक्षम करा</translation>
 <translation id="7733890291091968191">Web3 सूचना दाखवा</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave तुम्हाला ट्रॅक करत नाही आणि तुम्ही आमचा अ‍ॅप कसा वापरत आहात ते कळत नाही, त्यामुळे तुम्ही VPN कसे सेट अप केले आहे ते आम्हाला माहीत नाही. कृपया तुम्ही अनुभवत असलेल्या समस्येची माहिती सांगा आणि आम्ही ती लवकरात लवकर सोडवण्यासाठी प्रयत्न करू. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>

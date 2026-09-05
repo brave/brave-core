@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_icon_controller.h b/chrome/browser/ui/views/page_action/page_action_icon_controller.h
+index 9ce560248fbc180140543613a62371fbca85fac3..a219ff7f87f8177d61547d48f1f90683e5e0c6f0 100644
+--- a/chrome/browser/ui/views/page_action/page_action_icon_controller.h
++++ b/chrome/browser/ui/views/page_action/page_action_icon_controller.h
+@@ -59,6 +59,17 @@ class PageActionIconController : public PageActionIconViewObserver,
+   std::vector<const PageActionIconView*> GetPageActionIconViewsForTesting()
+       const;
+ 
++  PageActionIconView* GetPlaylistActionIconView();
++
++ protected:
++  PageActionIconView* AddPageActionIcon(
++      PageActionIconType type,
++      std::unique_ptr<PageActionIconView> icon,
++      const PageActionIconParams& params);
++
++  // A direct reference to `PlaylistActionIconView`, avoiding `GetIconView() lookup.`
++  raw_ptr<PageActionIconView> playlist_action_icon_view_ = nullptr;
++
+  private:
+   using IconViews =
+       base::flat_map<PageActionIconType,

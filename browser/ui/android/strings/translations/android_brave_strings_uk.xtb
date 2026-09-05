@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Оцінити Brave</translation>
 <translation id="4104400246019119780">Дякуємо!</translation>
 <translation id="5202255382948179481">Додайте свої пропозиції</translation>
+<translation id="7759809451544302770">Необов’язково</translation>
 <translation id="4748689412569009273">Оберіть емодзі, що найкраще передає ваші враження від роботи з Brave?</translation>
 <translation id="7335142069363686805">Оцінити</translation>
 <translation id="6681362094306959654">Подобається Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Сум</translation>
 <translation id="5488843227043643519">Оцінити в Play Маркеті?</translation>
 <translation id="5867854497245948308">Дякуємо за відгук!</translation>
-<translation id="5578122562331038807">Розкажіть, як ми можемо покращити Brave</translation>
-<translation id="1483493594462132177">Надіслати</translation>
-<translation id="3889034478061064651">Додайте свої пропозиції (необов'язково)</translation>
-<translation id="1769154760586570836">Відгук надіслано. Дякуємо!</translation>
-<translation id="4450893287417543264">Не показувати знову</translation>
+<translation id="4935400164159327304">Розкажіть, як ми можемо покращити Brave.</translation>
 <translation id="8966035543003363155">Це простіше зі сповіщеннями Brave</translation>
 <translation id="7662771815233894695">Керуйте завантаженнями, отримуйте токени, переглядайте тижневу статистику використання тощо.</translation>
 <translation id="4265429476391459783">Ви не заробляєте винагороди й не отримуєте звіти щодо приватності</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Дії на сторінці</translation>
 <translation id="7104487676473617844">Наступні елементи будуть видимі в меню лише тоді, коли їх підтримує поточна відкрита вебсторінка.</translation>
 <translation id="4159764849281393303">Вебдодаток</translation>
+<translation id="8428213095426709021">Налаштування</translation>
 <translation id="8038539967102225446">Маємо для вас рекламу Brave!</translation>
 <translation id="222883304157347087">(цей пристрій)</translation>
 <translation id="4157741509680155021">ПРИСТРОЇ В ЛАНЦЮГУ СИНХРОНІЗАЦІЇ</translation>
@@ -537,6 +535,7 @@
 <translation id="1822560017823072927">Типові публічний і приватний інтерфейси</translation>
 <translation id="5825943197137337319">Лише типовий публічний інтерфейс</translation>
 <translation id="1689062823386843231">Вимкнути non-proxied UDP</translation>
+<translation id="1483493594462132177">Надіслати</translation>
 <translation id="538450413584738399">Своп</translation>
 <translation id="4556086616242530072">Інтегрований в браузер.\nНекастодіальний.\nМультимережевий.</translation>
 <translation id="7909462264772842773">Візьміть під контроль свою криптовалюту та NFT. Гаманець Brave підтримує Ethereum, мережі EVM, Solana, Filecoin тощо.</translation>
@@ -612,6 +611,7 @@
 <translation id="569068482611873351">Імпорт…</translation>
 <translation id="4522570452068850558">Подробиці</translation>
 <translation id="3114681061018999547">Захист</translation>
+<translation id="3784455785234192852">Заблокувати</translation>
 <translation id="4412698727486357573">Довідковий центр</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
 <translation id="414639769490080648">Кількість хвилин до автоматичного блокування гаманця Brave</translation>
@@ -807,10 +807,6 @@
 <translation id="2478788592457735063">Ця дія призведе до перемикання на раніше додану мережу.</translation>
 <translation id="8756686998207163764">Переключити мережу</translation>
 <translation id="8905793906896555159">Увімкнути групи вкладок</translation>
-<translation id="6735749683447943955">Вимкнути групи вкладок?</translation>
-<translation id="4616687974503500682">Будь-які наявні групи буде видалено, а вкладки в цих групах стануть відкритими, негрупованими вкладками у вікні браузера. Ви впевнені, що хочете продовжити?</translation>
-<translation id="4394049700291259645">Вимкнути</translation>
-<translation id="3859027502409073633">Показувати синхронізовані групи вкладок</translation>
 <translation id="7632160823264702523">Панель груп вкладок</translation>
 <translation id="2477807195394450274">Показувати нижню панель для швидкого доступу до вкладок у поточній відкритій групі вкладок</translation>
 <translation id="8374720587111523381">Відкривати посилання в поточній групі вкладок</translation>
@@ -818,7 +814,6 @@
 <translation id="1227658541937938697">Автоматично відкривати всі посилання в поточній групі вкладок</translation>
 <translation id="5242300593039211344">Блокувати гаманець</translation>
 <translation id="1108298724135935307">Пов’язані сайти</translation>
-<translation id="8428213095426709021">Налаштування</translation>
 <translation id="4255623233927788178">Переглянути в диспетчері блоків</translation>
 <translation id="8274201358637112807">Ця сторінка хоче взаємодіяти з Brave Wallet</translation>
 <translation id="3355936511340229503">Помилка з’єднання</translation>
@@ -860,6 +855,7 @@
 <translation id="6458565248779152483">Вимкнути Brave VPN</translation>
 <translation id="9080536793704001825">Призупинити на 15 хвилин</translation>
 <translation id="803706420145725977">Призупинити на 1 годину</translation>
+<translation id="4394049700291259645">Вимкнути</translation>
 <translation id="7733890291091968191">Показувати сповіщення Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave не відстежує вас і не знає, як ви використовуєте додаток, тож ми не знаємо, як ви налаштували VPN. Надішліть нам інформацію про проблему, з якою ви зіткнулися, щоб ми могли вирішити її якомога скоріше. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nІм’я хосту VPN\n <ph name="VALUE"/></translation>
