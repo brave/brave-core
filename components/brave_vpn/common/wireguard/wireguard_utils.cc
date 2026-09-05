@@ -40,6 +40,15 @@ std::string EncodeBase64(base::span<const uint8_t> in) {
 
 namespace {
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
+
+// Covers the whole address space, but split in half so that no prefix is a
+// default route. tunnel.dll installs its own blockAll/blockDNS WFP filters only
+// when a peer routes a literal /0, and those filters block the local network.
+// We install an equivalent filter set ourselves, plus permits for the LAN, in
+// brave_vpn_wireguard_service. See
+// https://git.zx2c4.com/wireguard-windows/about/docs/netquirk.md
+constexpr char kAllowedIPs[] = "0.0.0.0/1, 128.0.0.0/1, ::/1, 8000::/1";
+
 // Template for wireguard config generation.
 // For a quick reference on the keys/values, please see:
 // https://github.com/pirate/wireguard-docs?tab=readme-ov-file#config-reference
@@ -50,7 +59,7 @@ constexpr char kWireguardConfigTemplate[] = R"(
   DNS = {dns_servers}
   [Peer]
   PublicKey = {server_public_key}
-  AllowedIPs = 0.0.0.0/0, ::/0
+  AllowedIPs = {allowed_ips}
   Endpoint = {vpn_server_hostname}:51821
 )";
 
@@ -76,6 +85,7 @@ std::optional<std::string> CreateWireguardConfig(
                                      mapped_ipv4_address);
   base::ReplaceSubstringsAfterOffset(&config, 0, "{dns_servers}",
                                      kCloudflareIPv4);
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{allowed_ips}", kAllowedIPs);
   return config;
 }
 
