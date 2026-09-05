@@ -1,18 +1,13 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index f13add2012b08f6814c000390ecc811f14407369..391ecf5ca480763db602ec8701196bc8b5bd0bf2 100644
+index f13add2012b08f6814c000390ecc811f14407369..6a19fc45741d3efb38ea53e1f8baf7c2501b4782 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
-@@ -399,13 +399,6 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
-     return BLOCK;
-   }
+@@ -401,7 +401,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
  
--  // The mailto scheme is allowed explicitly because of its ubiquity on the web
--  // and because every platform provides a default handler for it.
+   // The mailto scheme is allowed explicitly because of its ubiquity on the web
+   // and because every platform provides a default handler for it.
 -  if (scheme == "mailto") {
--    base::UmaHistogramEnumeration(kBlockStateMetric,
--                                  BlockStateMetric::kAllowedDefaultMail);
--    return DONT_BLOCK;
--  }
- 
-   PrefService* profile_prefs = profile->GetPrefs();
-   if (profile_prefs) {  // May be NULL during testing.
++  if ((false) && scheme == "mailto") {
+     base::UmaHistogramEnumeration(kBlockStateMetric,
+                                   BlockStateMetric::kAllowedDefaultMail);
+     return DONT_BLOCK;
