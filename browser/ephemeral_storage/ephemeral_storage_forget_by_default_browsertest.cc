@@ -721,18 +721,17 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
         return true;
       });
 
-  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
-  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive(
+  // Still queued, data untouched.
+  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive(
                     browser()->GetProfile()->GetOriginalProfile()));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
                        DontForgetFirstPartyIfNoBrowserWindowIsActive) {
-  // Expect the cleanup on start to have already cleaned the data.
-  EXPECT_EQ(0u, GetAllCookies().size());
-
-  // So nothing is queued.
+  // A normal window is open again: the deferred cleanup runs on startup.
   EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(0u, GetAllCookies().size());
 }
 
 class EphemeralStorageForgetByDefaultDisabledByPolicyTest
