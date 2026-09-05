@@ -52,13 +52,10 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
 
   base::FilePath GetWalletBaseDirectory() override;
 
-  bool IsPrivateWindow() override;
-
   bool IsAutolockEnabled() override;
 
  protected:
   base::FilePath wallet_base_directory_;
-  bool is_private_window_ = false;
   raw_ptr<content::BrowserContext> context_ = nullptr;
 };
 

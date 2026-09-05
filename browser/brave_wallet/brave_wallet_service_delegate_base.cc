@@ -24,8 +24,6 @@ BraveWalletServiceDelegateBase::BraveWalletServiceDelegateBase(
     content::BrowserContext* context)
     : context_(context) {
   wallet_base_directory_ = context->GetPath().AppendASCII(kWalletBaseDirectory);
-  is_private_window_ =
-      Profile::FromBrowserContext(context)->IsIncognitoProfile();
 }
 
 BraveWalletServiceDelegateBase::~BraveWalletServiceDelegateBase() = default;
@@ -90,10 +88,6 @@ void BraveWalletServiceDelegateBase::ResetAllPermissions() {
 
 base::FilePath BraveWalletServiceDelegateBase::GetWalletBaseDirectory() {
   return wallet_base_directory_;
-}
-
-bool BraveWalletServiceDelegateBase::IsPrivateWindow() {
-  return is_private_window_;
 }
 
 bool BraveWalletServiceDelegateBase::IsAutolockEnabled() {
