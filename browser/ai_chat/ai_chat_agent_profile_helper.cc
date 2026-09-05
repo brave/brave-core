@@ -20,7 +20,6 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
@@ -42,23 +41,16 @@ void OpenBrowserWindowAndSidePanel(base::OnceCallback<void(Browser*)> callback,
   // Open browser window
   profiles::OpenBrowserWindowForProfile(
       base::BindOnce(
-          [](base::OnceCallback<void(Browser*)> callback,
-             BrowserWindowInterface* browser_window) {
-            if (!browser_window) {
-              std::move(callback).Run(nullptr);
-              return;
-            }
+          [](base::OnceCallback<void(Browser*)> callback, Browser* browser) {
             // Open sidebar when a browser window first opens
             // TODO(petemill): Move this to the AIChatAgentProfileManager
             // on `BrowserListObserver::OnBrowserAdded` when the kChatUI side
             // panel is global and not per-tab.
-            SidePanelUI* side_panel_ui =
-                browser_window->GetFeatures().side_panel_ui();
+            SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
             if (side_panel_ui) {
               side_panel_ui->Show(SidePanelEntryId::kChatUI);
             }
-            std::move(callback).Run(
-                browser_window->GetBrowserForMigrationOnly());
+            std::move(callback).Run(browser);
           },
           std::move(callback)),
       /*always_create=*/false, /*is_new_profile=*/false,

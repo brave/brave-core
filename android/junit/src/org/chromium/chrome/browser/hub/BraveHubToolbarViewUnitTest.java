@@ -28,7 +28,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
-import org.chromium.base.BaseSwitches;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -49,7 +48,7 @@ import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 @Config(manifest = Config.NONE)
 @CommandLineFlags.Add({
     ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE,
-    BaseSwitches.DISABLE_NATIVE_INITIALIZATION
+    ChromeSwitches.DISABLE_NATIVE_INITIALIZATION
 })
 public class BraveHubToolbarViewUnitTest {
     @Rule
@@ -94,10 +93,7 @@ public class BraveHubToolbarViewUnitTest {
         mColorMixer =
                 spy(
                         new HubColorMixerImpl(
-                                mActivity,
-                                ObservableSuppliers.alwaysTrue(),
-                                mFocusedPaneSupplier,
-                                ObservableSuppliers.alwaysNull()));
+                                mActivity, ObservableSuppliers.alwaysTrue(), mFocusedPaneSupplier));
         mPropertyModel =
                 new PropertyModel.Builder(HubToolbarProperties.ALL_KEYS)
                         .with(COLOR_MIXER, mColorMixer)

@@ -1,0 +1,13 @@
+diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
+index dd8ac3aec7045ee02656658bdefecb3a4a896df6..15d3a2004bbcfa0295334b1d65591732ca07908d 100644
+--- a/third_party/rust/regex_automata/v0_4/BUILD.gn
++++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
+@@ -136,7 +136,7 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
++  testonly = false
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.

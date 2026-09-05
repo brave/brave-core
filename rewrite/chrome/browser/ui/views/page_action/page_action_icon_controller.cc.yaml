@@ -1,0 +1,60 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add cases for Brave's page action icon types to Init()'s switch.
+    regex:
+      re_pattern: |-
+        (PageActionIconController::Init\(.*?switch \(type\) \{\n)
+      re_flags: [DOTALL]
+      replace: |
+        \1#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+              case brave::kPlaylistPageActionIconType:
+                playlist_action_icon_view_ = AddPageActionIcon(
+                    type,
+                    std::make_unique<PlaylistActionIconView>(
+                        params.command_updater, params.browser,
+                        params.icon_label_bubble_delegate,
+                        params.page_action_icon_delegate),
+                    params);
+                break;
+        #else
+              case brave::kPlaylistPageActionIconType:
+                break;
+        #endif
+        #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+              case brave::kWaybackMachineActionIconType:
+                AddPageActionIcon(
+                    type,
+                    std::make_unique<WaybackMachineActionIconView>(
+                        params.command_updater, params.browser,
+                        params.icon_label_bubble_delegate,
+                        params.page_action_icon_delegate),
+                    params);
+                break;
+        #endif
+        #if BUILDFLAG(ENABLE_SPEEDREADER)
+              case brave::kSpeedreaderPageActionIconType:
+                AddPageActionIcon(
+                    type,
+                    std::make_unique<SpeedreaderIconView>(
+                        params.command_updater, params.icon_label_bubble_delegate,
+                        params.page_action_icon_delegate),
+                    params);
+                break;
+        #endif
+              case brave::kUndefinedPageActionIconType:
+                break;
+
+  - description: |
+      Skip metrics for Brave's synthetic (negative) page action icon types.
+
+      We cannot report metrics for Brave's synthetic page action icon types,
+      which are negative values, resulting in a crash. However we also don't
+      care about these metrics in general.
+    preempt_function_impl:
+      function_name: PageActionIconController::RecordIndividualMetrics
+      return_if: 'static_cast<int>(type) < 0'

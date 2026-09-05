@@ -6,8 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DEVICE_CHOOSER_CONTENT_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DEVICE_CHOOSER_CONTENT_VIEW_H_
 
-class BrowserWindowInterface;  // NOLINT(build/forward_decl)
+class Browser;
+
+#define CreateExtraView(...)    \
+  CreateExtraView(__VA_ARGS__); \
+  std::unique_ptr<views::View> CreateFootnoteView(Browser* browser)
 
 #include <chrome/browser/ui/views/device_chooser_content_view.h>  // IWYU pragma: export
+
+#undef CreateExtraView
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DEVICE_CHOOSER_CONTENT_VIEW_H_

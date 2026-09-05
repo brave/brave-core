@@ -32,10 +32,6 @@ class OnionLocationTabHelper
     return initiator_origin_;
   }
 
-  void SetOnionLocationForTesting(
-      const GURL& onion_location,
-      std::optional<url::Origin> initiator_origin = std::nullopt);
-
  private:
   friend class content::WebContentsUserData<OnionLocationTabHelper>;
   friend class OnionLocationNavigationThrottle;

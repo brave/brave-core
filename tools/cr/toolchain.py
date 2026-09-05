@@ -872,7 +872,9 @@ class WindowsToolchain(Toolchain):
                 'nothing to commit.')
 
         commit_hash = self.find_culprit(ref, culprit)
-        title = f'Switch to Windows SDK {sdk_info.sdk_version_in_comment}'
+        title = (f'Switch to Windows SDK {sdk_info.sdk_version_in_comment} '
+                 f'({index["installed_vs_display_name"]} '
+                 f'{index["installed_vs_version"]})')
         repository.brave.run_git('add', self.spec.script)
         repository.brave.git_commit(title,
                                     env={

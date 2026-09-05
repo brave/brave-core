@@ -73,7 +73,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5679816001365584346">Download Brave on your phone to open or create new tab groups on the go.</translation>
 <translation id="4559627161887338743">You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail and more. If you want to add an account for someone else, like a family member, add a new person to your <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Search with image search</translation>
-<translation id="2963742289915075304"><ph name="EXISTING_USER"/> is already signed in. To keep your browsing separate, sign in to Brave in your own profile as <ph name="USER_EMAIL_ADDRESS"/>. You'll also get your bookmarks and more from <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Select text</translation>
 <translation id="4528406859989804913">You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords and other settings will become permanently tied to <ph name="USER_NAME"/>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave conserves battery power by limiting background activity and visual effects, such as smooth scrolling and video frame rates. <ph name="BEGIN_LINK"/>Learn more about Energy Saver<ph name="END_LINK"/></translation>
@@ -132,7 +131,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5298352791080868905">Open links in Brave from any app and keep the browser accessible on your taskbar</translation>
 <translation id="2600233721598267627">Click the Summarise button to share this document with Gemini in Brave to get a quick overview and ask follow-up questions</translation>
 <translation id="2118275934191847461">With <ph name="BEGIN_LINK"/>tools from Brave<ph name="END_LINK"/>, you can browse safely and stay in control</translation>
-<translation id="7508460698788470991"><ph name="EXISTING_USER"/> is already signed in. To keep your browsing separate, sign in to Brave in your own profile as <ph name="USER_EMAIL_ADDRESS"/>. You'll also get your passwords and more on all your devices.</translation>
 <translation id="2451727308784734061">Use your shortcut to quickly get to the Password Manager. You can move your shortcut to your computer's home screen or app launcher.</translation>
 <translation id="6381750314821942592">Brave will soon close</translation>
 <translation id="6078442581074612226">In Brave</translation>
@@ -151,7 +149,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7931230852267968641">Your organisation can see and manage browsing data, such as your bookmarks, history and passwords. It can't see browsing data in other Brave profiles</translation>
 <translation id="2257221826278123061">Verify that it's you to use and save Brave data in your account, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">To leave or return to Gemini in Brave, use keyboard shortcut.</translation>
-<translation id="5655607968417451974">Start Brave</translation>
 <translation id="7387051847644272380">An operating system error occurred during installation. Please download Brave again.</translation>
 <translation id="2648689842065142443">If you share a device, friends and family can browse separately and set up Brave just the way they want</translation>
 <translation id="1001521084148238686">Easy access to use Gemini in Brave across your device, even if Brave is minimised.</translation>
@@ -300,6 +297,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4304713468139749426">Password Manager</translation>
 <translation id="4334241893986177674">Search this screenshot</translation>
 <translation id="242356249838681145">Launch Brave when Windows starts</translation>
+<translation id="4747339441562331861">Get easy access to the features that you know, love and trust by setting Brave as your default browser. Brave will be pinned to your taskbar for quick access.</translation>
 <translation id="4400772909124543403">No update is available</translation>
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
 <translation id="4413205837991854510">Always show image search shortcut</translation>
@@ -396,7 +394,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 
 If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="7074160267408082133">Show Gemini in Brave in Mac menu bar and turn on keyboard shortcut</translation>
-<translation id="2938507901464407819"><ph name="EXISTING_USER"/> is already signed in. To keep your browsing separate, sign in to Brave in your own profile as <ph name="USER_EMAIL_ADDRESS"/>. You'll also get your saved info and more from <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Startup error: Please run the installer as a regular user, not as administrator.</translation>
 <translation id="3588973534877826647">Use Brave by default and get it pinned</translation>
 <translation id="5596627076506792578">More options</translation>
@@ -570,12 +567,12 @@ New bookmarks can't be saved in your account until you delete some. If you sign 
 <translation id="5755581833598928580">Use Brave any time that you click links in messages, documents and other apps</translation>
 <translation id="7216228761061470870">When you use image search on desktop, the page title, URL and content, including PDFs, are sent to the server</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
-<translation id="2416155625082200759"><ph name="EXISTING_USER"/> is already signed in. To keep your browsing separate, sign in to Brave in your own profile as <ph name="USER_EMAIL_ADDRESS"/>. You'll also get your saved info and more on all your devices.</translation>
 <translation id="1871621397473741084">Begin browsing instantly: Brave can now launch when Windows starts.</translation>
 <translation id="7274695763216404502">Pinned! Use image search again from the toolbar</translation>
 <translation id="7288567540154601580">Tabs and extensions</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave recommends that you remove it}other{Brave recommends that you remove them}}</translation>
 <translation id="4600669988724328687">To share system audio, open System Settings and allow 'System audio recording only' for Brave. You'll then need to restart Brave.</translation>
+<translation id="9068395155143628872">Ad measurement allows sites that you visit to request information from Brave that helps the site measure the performance of their ads. Ad measurement restricts cross-site tracking by transferring as little information as possible between sites.</translation>
 <translation id="1864557848095568223">Updating Brave</translation>
 <translation id="3403365884036456766">Your preferences file is corrupt or invalid.
 
@@ -638,7 +635,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="5687542525349822727">Set Brave as your default</translation>
 <translation id="6396151137840491551">Brave upgrades insecure connections to HTTPS automatically when possible</translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
-<translation id="3744141798014187630"><ph name="EXISTING_USER"/> is already signed in. To keep your browsing separate, sign in to Brave in your own profile as <ph name="USER_EMAIL_ADDRESS"/>. You’ll also get your bookmarks and more on all your devices.</translation>
 <translation id="6915252145142862992">This is a secondary installation of Brave, and cannot be made your default browser.</translation>
 <translation id="7766756101194440006">Get the best of Brave with the Brave app on your <ph name="DEVICE_TYPE"/></translation>
 <translation id="8004582292198964060">Browser</translation>
@@ -669,12 +665,10 @@ Brave is unable to recover your settings.</translation>
 <translation id="1755067029031059271">Brave can't verify where this extension comes from, and it might be unsafe. Remove it from Brave so that it can no longer see and change your data on sites that you visit, including personal info.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.</translation>
 <translation id="7792526144795244436">Sign in to Brave in a new profile?</translation>
-<translation id="784788600549915416"><ph name="EXISTING_USER"/> is already signed in. To keep your browsing separate, sign in to Brave in your own profile as <ph name="USER_EMAIL_ADDRESS"/>. You'll also get your passwords and more from <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Show Gemini in Brave in system tray and turn on keyboard shortcut</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave warns you<ph name="END_LINK"/> about unsafe sites and downloads</translation>
 <translation id="8060549744348950090">You haven't visited recently. Brave removed <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Shop, translate and identify what you see with your camera on the Brave iOS app</translation>
-<translation id="4470171586042711152">QR code to sign in to Brave as <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Startup error: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Your organisation closes Brave when it isn't used for <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Save as image</translation>

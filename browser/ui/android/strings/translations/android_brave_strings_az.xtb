@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Brave-i qiymətləndirin</translation>
 <translation id="4104400246019119780">Təşəkkürlər!</translation>
 <translation id="5202255382948179481">Təkliflərinizi əlavə edin</translation>
+<translation id="7759809451544302770">İstəyə görə</translation>
 <translation id="4748689412569009273">Brave təcrübənizi bir emoji ilə ifadə etsəniz hansı olurdu?</translation>
 <translation id="7335142069363686805">İndi qiymətləndir</translation>
 <translation id="6681362094306959654">Brave-i sevdiniz?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Kədərli</translation>
 <translation id="5488843227043643519">Play Store-da qiymətləndirmək istəyirsiniz?</translation>
 <translation id="5867854497245948308">Geri dönüşünüz üçün təşəkkürlər!</translation>
-<translation id="5578122562331038807">Brave-i necə yaxşılaşdıra biləcəyimizi bizə bildirin</translation>
-<translation id="1483493594462132177">Göndər</translation>
-<translation id="3889034478061064651">Təkliflərinizi əlavə edin (İstəyə bağlı)</translation>
-<translation id="1769154760586570836">Rəy göndərildi. Təşəkkür edirik!</translation>
-<translation id="4450893287417543264">Yenidən göstərmə</translation>
+<translation id="4935400164159327304">Brave-i necə yaxşılaşdıra biləcəyimizi bizə bildirin.</translation>
 <translation id="8966035543003363155">Brave bildirişləri onu istifadəsi asan edəcək</translation>
 <translation id="7662771815233894695">Yükləmələri idarə edin, token qazanın, həftəlik istifadə statistikasına baxın və daha çox.</translation>
 <translation id="4265429476391459783">Mükafat qazanmırsınız və Məxfilik Hesabatlarını almırsınız</translation>
@@ -285,6 +282,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="7002271985859760052">Səhifə əməliyyatları</translation>
 <translation id="7104487676473617844">Aşağıdakı elementlər yalnız cari açıq veb səhifə tərəfindən dəstəklənərsə menyuda görünəcək.</translation>
 <translation id="4159764849281393303">VebTətbiq</translation>
+<translation id="8428213095426709021">Parametrlər</translation>
 <translation id="8038539967102225446">Brave Reklamlar burada!</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="4157741509680155021">SYNC ZƏNCİRİNDƏKI CİHAZLAR</translation>
@@ -532,6 +530,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="1822560017823072927">Standart ictimai və şəxsi interfeyslər</translation>
 <translation id="5825943197137337319">Yalnız standart ictimai interfeys</translation>
 <translation id="1689062823386843231">Proksi edilməyən UDP-ni deaktiv et</translation>
+<translation id="1483493594462132177">Göndər</translation>
 <translation id="538450413584738399">Dəyişdir</translation>
 <translation id="4556086616242530072">Brauzerə məxsus.\nÖzünə nəzarət.\nVə çox şəbəkəli.</translation>
 <translation id="7909462264772842773">Kriptonuzu və NFT-lərinizi idarə edin. Brave Wallet Ethereum, EVM şəbəkələri, Solana, Filecoin və daha çoxunu dəstəkləyir.</translation>
@@ -607,6 +606,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="569068482611873351">İdxal...</translation>
 <translation id="4522570452068850558">Təfərrüatlar</translation>
 <translation id="3114681061018999547">Qoruma</translation>
+<translation id="3784455785234192852">Kilidlə</translation>
 <translation id="4412698727486357573">Kömək mərkəzi</translation>
 <translation id="8239147115686034860">Brave Wallet-i avtomatik olaraq kilidlə</translation>
 <translation id="414639769490080648">Brave Wallet avtomatik kilidlənənə qədər gözləmə dəqiqələrinin sayı</translation>
@@ -806,10 +806,6 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="2478788592457735063">Bu, şəbəkəni əvvəlcədən əlavə edilmiş şəbəkəyə dəyişəcək.</translation>
 <translation id="8756686998207163764">Şəbəkəni dəyiş</translation>
 <translation id="8905793906896555159">Tab qruplarını aktiv edin</translation>
-<translation id="6735749683447943955">Tab qruplarını deaktiv edin?</translation>
-<translation id="4616687974503500682">Mövcud olan hər hansı qruplar silinəcək və həmin qruplardakı tablar brauzer pəncərənizdə açıq, qruplaşdırılmamış tablara çevriləcək. Davam etmək istədiyinizə əminsiniz?</translation>
-<translation id="4394049700291259645">Deaktiv et</translation>
-<translation id="3859027502409073633">Sinxronlaşdırılmış tab qruplarını göstərin</translation>
 <translation id="7632160823264702523">Tab qrupları çubuğu</translation>
 <translation id="2477807195394450274">Hazırda açıq olan tab qrupundakı tablara cəld giriş üçün alt çubuğu göstərin</translation>
 <translation id="8374720587111523381">Cari tab qrupunda linkləri aç</translation>
@@ -817,7 +813,6 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="1227658541937938697">Cari tab qrupunda bütün linkləri avtomatik açın</translation>
 <translation id="5242300593039211344">Hesabı Bloklayın</translation>
 <translation id="1108298724135935307">Qoşulmuş saytlar</translation>
-<translation id="8428213095426709021">Parametrlər</translation>
 <translation id="4255623233927788178">Blok tədqiqatçısında bax</translation>
 <translation id="8274201358637112807">Bu səhifə Brave Wallet ilə qarşılıqlı əlaqədə olmaq istəyir</translation>
 <translation id="3355936511340229503">Bağlantı xətası</translation>
@@ -859,6 +854,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="6458565248779152483">Brave VPN -i deaktiv edin</translation>
 <translation id="9080536793704001825">15 dəqiqə dayan</translation>
 <translation id="803706420145725977">1 saat dayan</translation>
+<translation id="4394049700291259645">Deaktiv et</translation>
 <translation id="7733890291091968191">Web3 bildirişlərini göstərin</translation>
 <translation id="1371627247679035769">#### Brave tətbiqindən necə istifadə etdiyinizi təqib etmir və bilməz, bu səbəbdən VPN-i necə quraşdırdığınızı bilmirik. Yaşadığınız problemi paylaşaraq, həll etmək üçün çalışacağıq. ####</translation>
 <translation id="3367162038532116157">\n\nVPN Hostları\n <ph name="VALUE"/></translation>

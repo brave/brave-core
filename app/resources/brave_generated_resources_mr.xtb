@@ -212,7 +212,6 @@
 <translation id="8707615221880318679">या खाजगी प्रतिक्रिया Brave ला एकंदर वापराचे अंदाज लावण्यासाठी मदत करतात आणि तुम्हाला अधिक चांगले करण्यास मदत करतात</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 डोमेन</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4552520379838695057">क्षमस्व, ती पृष्ठ सापडली नाही.</translation>
 <translation id="7299769530898469069">संचयित आवृत्ती लोड करण्यात अक्षम</translation>
 <translation id="2609895996619941644">Wayback Machine वर उपलब्ध असल्यास संचयित आवृत्ती तपासण्याची इच्छा आहे का?</translation>
@@ -248,7 +247,6 @@
 <translation id="1185644444415356776">कंटेनरमध्ये लिंक उघडा</translation>
 <translation id="6745991613881384719">कंटेनर व्यवस्थापित करा</translation>
 <translation id="8523788649219117880">नवीन तात्पुरता कंटेनर</translation>
-<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> कंटेनर</translation>
 <translation id="3704707436873245822">प्रतिमा मधून मजकूर कॉपी करा</translation>
 <translation id="5268098808165185458">प्रतिमा मधून मजकूर कॉपी करीत आहे...</translation>
 <translation id="4046485130884276245">प्रतिमा मधून मजकूर कॉपी केला</translation>
@@ -380,7 +378,6 @@
 <translation id="6724227215236550330">येथे सहेत असलेले पासवर्ड दिसतील. या डिव्हाइसवरील <ph name="BRAND"/> करण्‍यासाठी पासवर्ड आयात करण्‍यासाठी, <ph name="BEGIN_LINK"/> एक CSV फाइल निवडा<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610"><ph name="BRAND"/> या डिव्हाइसवरील Passcode आयात करण्‍यासाठी, एक CSV फाइल निवडा</translation>
 <translation id="8570228839666486945">डिव्‍हाइसवर AI</translation>
-<translation id="7447041379556102185">डिव्हाइसवरील स्पीच रेकग्निशन</translation>
 <translation id="3456536577668402695">तुमचे शोध आणि पृष्ठ सामग्री या डिव्हाइसवर प्रक्रिया केल्या जातात. काहीही Brave ला पाठवले जात नाही किंवा मानवी पुनरावलोकनकर्त्यांद्वारे पाहिले जात नाही.</translation>
 <translation id="4751537843966994505">सिमेंटिक इतिहास शोध</translation>
 <translation id="6175973371938222040">तुम्ही भेट देत असलेली पेजेस स्थानिकरित्या इंडेक्स करा जेणेकरून तुम्ही तुमचा इतिहास अर्थानुसार शोधू शकाल. सर्व प्रोसेसिंग या डिव्हाइसवरच राहते.</translation>
@@ -411,7 +408,6 @@
 <translation id="6017560037265964523">कंटेनर्स</translation>
 <translation id="3718176486689879621">कंटेनर हे रंग-कोडेड browser टॅब्स आहेत जे तुमचा ब्राउझिंग डेटा, जसे की cookies, cache, आणि site storage वेगवेगळ्या संदर्भांमध्ये विलग करतात. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">कंटेनर सक्षम करा</translation>
-<translation id="4858772568604670131">कंटेनरसाठी नेहमी मिनी आयकॉन वापरा</translation>
 <translation id="7773735778926921278">नवीन कंटेनर जोडा</translation>
 <translation id="8900907990448657776">कंटेनर संपादित करा</translation>
 <translation id="7900511996284443779">कंटेनर हटवा</translation>
@@ -560,6 +556,7 @@
 <translation id="1799030480311994998">वैशिष्ट्ये</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="6297791103122079275">बातचीत</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">प्लेलिस्ट</translation>
 <translation id="1199170151481311646">गोपनीयता जपणारे विश्लेषण</translation>
 <translation id="5990642573624858459">सांख्यिकी अहवाल</translation>
@@ -607,14 +604,11 @@
 <translation id="4891600875049212418">संवेदनशील साइट्सना भेट देताना ऑफ-द-रेकॉर्ड जा</translation>
 <translation id="1022603984240541480">सुसंगत साइट्सवर गोपनीयता सेटिंग्ज ट्युनिंग सूचना दर्शवा</translation>
 <translation id="3528176629974273019">Brave ला साइट-विशिष्ट गोपनीयता सेटिंग्ज आपोआप सुचवण्याची (आणि समायोजित करण्याची) परवानगी देते.</translation>
-<translation id="2740687181110647855">गोपनीयता सेटिंग्ज ट्यूनिंग टूल</translation>
 <translation id="509873765238158442">Microsoft रीकॉल ब्लॉक करा</translation>
 <translation id="4763421121695677716">कोणत्याही चालू Brave टॅब्सचे आपोआप स्क्रीनशॉट घेणाऱ्या Microsoft Windows कंप्युटर्स वरील रीकॉल फीचर ब्लॉक करा.</translation>
 <translation id="1968895725257436430">डेटा संकलन</translation>
 <translation id="1700052872056357670">बाहेर पडल्यानंतर सर्व डेटा क्लियर करा</translation>
 <translation id="216468847346280584">Brave ॲड्स डेटा क्लियर करा...</translation>
-<translation id="96212973142796240">Brave ॲड्स डेटा साफ केला</translation>
-<translation id="6665923829462527507">Brave ॲड्स डेटा साफ करता आला नाही. पुन्हा प्रयत्न करा.</translation>
 <translation id="2808630562319398131">Brave रीवॉर्ड्स डेटा रीसेट करा...</translation>
 <translation id="6438096877646138757">आपण बंद केलेल्या साइट्सची कुकीज त्वरीत काढा</translation>
 <translation id="2988792685798128092">वेबसाइट बंद केल्यावर कुकीज क्लियर करा</translation>
@@ -881,7 +875,6 @@
 <translation id="8631951653187535788">आपण हे मॉडेल हटविण्याची खात्री आहे का? हे मॉडेल कोणत्याही सक्रिय संभाषणात वापरण्यात आले असल्यास त्या संभाषणात Leo चे डीफॉल्ट मॉडेल वापरण्यात येईल.</translation>
 <translation id="1907126221851170941">मॉडेल जोडा</translation>
 <translation id="8346224718149026088">मॉडेल संपादित करा</translation>
-<translation id="3914173277599553213">आवश्यक</translation>
 <translation id="3468298837301810372">लेबल</translation>
 <translation id="3553035516792776805">मॉडेल विनंतीचे नाव</translation>
 <translation id="7634775528597575156">सवर एंडपॉइंट</translation>

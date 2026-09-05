@@ -28,7 +28,6 @@
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #endif
@@ -68,10 +67,11 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
     return;
   }
 
-  auto* browser =
-      ProfileBrowserCollection::GetForProfile(&*profile_)->FindTabbedBrowser();
+  auto* browser = ProfileBrowserCollection::GetForProfile(&*profile_)
+                      ->FindTabbedBrowser()
+                      ->GetBrowserForMigrationOnly();
   if (!browser) {
-    browser = CreateBrowserWindow(BrowserWindowCreateParams(&*profile_, true));
+    browser = Browser::Create(Browser::CreateParams(&*profile_, true));
   }
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;

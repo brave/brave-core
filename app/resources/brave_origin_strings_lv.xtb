@@ -70,7 +70,6 @@
 <translation id="5679816001365584346">Lejupielādējiet pārlūku Brave savā tālrunī, lai atvērtu vai izveidotu jaunas ciļņu grupas, atrodoties ceļā.</translation>
 <translation id="4559627161887338743">Varat pārvaldīt Brave kontus, kuros esat pierakstījies. Jūsu Brave konti tiek izmantoti pārlūkā Brave, Play veikalā, pakalpojumā Gmail un citur. Ja vēlaties pievienot kontu kādam citam, piemēram, ģimenes loceklim, pievienojiet jaunu personu savai <ph name="DEVICE_TYPE"/> ierīcei. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="1862852878885210965">Meklēšana, izmantojot funkciju Attēlu meklēšana</translation>
-<translation id="2963742289915075304">Jau ir pierakstījies lietotājs <ph name="EXISTING_USER"/>. Lai atdalītu pārlūkošanu, pierakstieties pārlūkā Brave savā profilā, izmantojot e-pasta adresi <ph name="USER_EMAIL_ADDRESS"/>. Varēsiet arī piekļūt grāmatzīmēm un citiem datiem no <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Atlasīt tekstu</translation>
 <translation id="4528406859989804913">Jūs pierakstāties ar pārvaldītu kontu, kura administrators var kontrolēt jūsu profilu. Jūsu Brave dati, piemēram, lietotnes, grāmatzīmes, vēsture, paroles un citi iestatījumi, tiks neatgriezeniski saistīti ar lietotāju <ph name="USER_NAME"/>. Varēsiet dzēst šos datus, izmantojot Brave kontu informācijas paneli, taču nevarēsiet šos datus saistīt ar citu kontu. Ja vēlaties, varat izveidot jaunu profilu, lai atsevišķi glabātu Brave datus. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Pārlūkā Brave tiek taupīta akumulatora enerģija, ierobežojot darbības fonā un vizuālos efektus, piemēram, vienmērīgu ritināšanu un video kadru nomaiņas ātrumu. Varat <ph name="BEGIN_LINK"/>uzzināt vairāk par enerģijas taupīšanas režīmu<ph name="END_LINK"/>.</translation>
@@ -129,7 +128,6 @@
 <translation id="5298352791080868905">Atveriet saites pārlūkā Brave no jebkuras lietotnes un saglabājiet pārlūku pieejamu uzdevumu joslā.</translation>
 <translation id="2600233721598267627">Noklikšķiniet uz pogas Apkopot, lai kopīgotu šo dokumentu ar Gemini pārlūkā Brave, iegūtu īsu kopsavilkumu un uzdotu papildu jautājumus.</translation>
 <translation id="2118275934191847461">Izmantojot <ph name="BEGIN_LINK"/>Brave rīkus<ph name="END_LINK"/>, varat droši pārlūkot saturu un pārvaldīt jums pieejamās iespējas.</translation>
-<translation id="7508460698788470991">Jau ir pierakstījies lietotājs <ph name="EXISTING_USER"/>. Lai atdalītu pārlūkošanu, pierakstieties pārlūkā Brave savā profilā, izmantojot e-pasta adresi <ph name="USER_EMAIL_ADDRESS"/>. Varēsiet arī piekļūt parolēm un citiem datiem visās savās ierīcēs.</translation>
 <translation id="2451727308784734061">Izmantojot saīsni, varat ātri piekļūt Brave paroļu pārvaldniekam. Varat pārvietot saīsni uz datora sākuma ekrānu vai lietotņu palaidēju.</translation>
 <translation id="6381750314821942592">Brave drīz tiks aizvērts</translation>
 <translation id="6078442581074612226">Pārlūkā Brave</translation>
@@ -148,7 +146,6 @@
 <translation id="7931230852267968641">Jūsu organizācija var skatīt un pārvaldīt pārlūkošanas datus, piemēram, grāmatzīmes, vēsturi un paroles. Tā nevar skatīt pārlūkošanas datus citos Brave profilos.</translation>
 <translation id="2257221826278123061">Lai izmantotu un saglabātu Brave datus savā kontā (<ph name="ACCOUNT_EMAIL"/>), apstipriniet savu identitāti.</translation>
 <translation id="7048234400304379082">Lai izietu no pakalpojuma Gemini pārlūkā Brave vai atgrieztos tajā, izmantojiet īsinājumtaustiņu.</translation>
-<translation id="5655607968417451974">Startēt Brave</translation>
 <translation id="7387051847644272380">Instalācijas laikā radās operētājsistēmas kļūda. Lejupielādējiet Brave vēlreiz.</translation>
 <translation id="2648689842065142443">Ja ierīci izmanto arī jūsu draugi un ģimenes locekļi, viņi var iestatīt pārlūku Brave atbilstoši savām vēlmēm un pārlūkot saturu atsevišķos profilos.</translation>
 <translation id="1001521084148238686">Ērti piekļūstiet pakalpojumam Gemini pārlūkā Brave savā ierīcē, pat ja pārlūka Brave logs ir minimizēts.</translation>
@@ -297,6 +294,7 @@
 <translation id="4304713468139749426">Paroļu pārvaldnieks</translation>
 <translation id="4334241893986177674">Meklēt šajā ekrānuzņēmumā</translation>
 <translation id="242356249838681145">Palaist pārlūku Brave, kad tiek palaista operētājsistēma Windows</translation>
+<translation id="4747339441562331861">Iegūstiet ērtu piekļuvi zināmajām, iecienītajām un uzticamajām funkcijām, iestatot Brave kā noklusējuma pārlūku. Lai nodrošinātu ātru piekļuvi, pārlūks Brave tiks piesprausts uzdevumu joslai.</translation>
 <translation id="4400772909124543403">Neviens atjauninājums nav pieejams.</translation>
 <translation id="9183662282810237335">Vai tik un tā aizvērt pārlūku Brave?</translation>
 <translation id="4413205837991854510">Vienmēr rādīt funkcijas Attēlu meklēšana saīsni</translation>
@@ -393,7 +391,6 @@
 
 Ja šī lapa nedarbojas, kā paredzēts, mēģiniet atļaut optimizāciju.</translation>
 <translation id="7074160267408082133">Rādīt pakalpojumu Gemini pārlūkā Brave Mac izvēļņu joslā un ieslēgt īsinājumtaustiņu</translation>
-<translation id="2938507901464407819">Jau ir pierakstījies lietotājs <ph name="EXISTING_USER"/>. Lai atdalītu pārlūkošanu, pierakstieties pārlūkā Brave savā profilā, izmantojot e-pasta adresi <ph name="USER_EMAIL_ADDRESS"/>. Varēsiet arī piekļūt saglabātajai informācijai un citiem datiem no <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Palaišanas kļūda: lūdzu, palaidiet instalēšanas programmu kā parasts lietotājs, nevis kā administrators.</translation>
 <translation id="3588973534877826647">Izmantojiet pārlūku Brave pēc noklusējuma un piespraudiet to</translation>
 <translation id="5596627076506792578">Citas opcijas</translation>
@@ -567,12 +564,12 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="5755581833598928580">Izmantojiet Brave ikreiz, kad noklikšķināt uz saitēm ziņojumos, dokumentos un citās lietotnēs</translation>
 <translation id="7216228761061470870">Kad izmantojat attēlu meklēšanu, serverim tiek nosūtīts lapas nosaukums, URL un saturs, tostarp PDF faili.</translation>
 <translation id="5516268345616100622">Uzdevumu pārvaldnieks — Brave</translation>
-<translation id="2416155625082200759">Jau ir pierakstījies lietotājs <ph name="EXISTING_USER"/>. Lai atdalītu pārlūkošanu, pierakstieties pārlūkā Brave savā profilā, izmantojot e-pasta adresi <ph name="USER_EMAIL_ADDRESS"/>. Varēsiet arī piekļūt saglabātajai informācijai un citiem datiem visās savās ierīcēs.</translation>
 <translation id="1871621397473741084">Sāciet pārlūkošanu uzreiz: tagad pārlūks Brave var tikt palaists, kad tiek palaista operētājsistēma Windows.</translation>
 <translation id="7274695763216404502">Piesprausts! Varat atkal piekļūt funkcijai Attēlu meklēšana no rīkjoslas.</translation>
 <translation id="7288567540154601580">Cilnes un paplašinājumi</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave iesaka to noņemt.}zero{Brave iesaka tos noņemt.}one{Brave iesaka tos noņemt.}other{Brave iesaka tos noņemt.}}</translation>
 <translation id="4600669988724328687">Lai kopīgotu sistēmas audio, pārejiet uz sistēmas iestatījumiem un iespējojiet iestatījumu “Tikai sistēmas audio ierakstīšana” pārlūkam Brave. Pēc tam jums būs jārestartē pārlūks Brave.</translation>
+<translation id="9068395155143628872">Reklāmu izvērtēšana ļauj jūsu apmeklētajām vietnēm pieprasīt informāciju no Brave, lai efektīvāk novērtētu vietnēs rādīto reklāmu veiktspēju. Reklāmu izvērtēšana ierobežo starpvietņu izsekošanu, pārsūtot starp vietnēm pēc iespējas mazāk informācijas.</translation>
 <translation id="1864557848095568223">Notiek Brave atjaunināšana</translation>
 <translation id="3403365884036456766">Jūsu preferenču fails ir bojāts vai nederīgs. Brave nespēj atkopt jūsu iestatījumus.</translation>
 <translation id="3511996232906761537">Šeit atrodas jūsu tīmekļa saturs, grāmatzīmes un cits Brave saturs.</translation>
@@ -633,7 +630,6 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="5687542525349822727">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="6396151137840491551">Pārlūkā Brave nedrošie savienojumi tiek automātiski jaunināti uz HTTPS, ja iespējams.</translation>
 <translation id="2925193881330501265">Operētājsistēmā Brave iepriekš pierakstījāties kā lietotājs <ph name="USER_EMAIL_ADDRESS"/>. Lai pierakstītos vēlreiz, lūdzu, izmantojiet to pašu kontu.</translation>
-<translation id="3744141798014187630">Jau ir pierakstījies lietotājs <ph name="EXISTING_USER"/>. Lai atdalītu pārlūkošanu, pierakstieties pārlūkā Brave savā profilā, izmantojot e-pasta adresi <ph name="USER_EMAIL_ADDRESS"/>. Varēsiet arī piekļūt grāmatzīmēm un citiem datiem visās savās ierīcēs.</translation>
 <translation id="6915252145142862992">Šī ir Brave papildu instalācija, un to nevar izmantot kā noklusējuma pārlūku.</translation>
 <translation id="7766756101194440006">Izmantojiet pārlūku Brave savā ierīcē (<ph name="DEVICE_TYPE"/>), lai pilnvērtīgi izmantotu Brave piedāvātās iespējas</translation>
 <translation id="8004582292198964060">Pārlūkprogramma</translation>
@@ -664,12 +660,10 @@ Jaunas grāmatzīmes nevar saglabāt jūsu kontā, kamēr neizdzēsīsiet dažas
 <translation id="1755067029031059271">Brave nevar pārbaudīt šī paplašinājuma izcelsmi, un, iespējams, tas nav drošs. Noņemiet to no pārlūka Brave, lai tas jūsu apmeklētajās vietnēs vairs nevarētu skatīt un mainīt jūsu datus, tostarp personas informāciju.</translation>
 <translation id="8207657266087451193">Ja attēlam nav vērtīga apraksta, pārlūks Brave mēģinās jums tādu nodrošināt. Lai izveidotu aprakstus, attēli tiek nosūtīti uzņēmumam Brave. Jebkurā brīdī iestatījumos varat izslēgt šo iespēju.</translation>
 <translation id="7792526144795244436">Vai pierakstīties pārlūkā Brave, izmantojot jaunu profilu?</translation>
-<translation id="784788600549915416">Jau ir pierakstījies lietotājs <ph name="EXISTING_USER"/>. Lai atdalītu pārlūkošanu, pierakstieties pārlūkā Brave savā profilā, izmantojot e-pasta adresi <ph name="USER_EMAIL_ADDRESS"/>. Varēsiet arī piekļūt parolēm un citiem datiem no <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Rādīt pakalpojumu Gemini pārlūkā Brave sistēmas teknē un ieslēgt īsinājumtaustiņu</translation>
 <translation id="976541154724186511">Pārlūkā <ph name="BEGIN_LINK"/>Brave tiek rādīti brīdinājumi<ph name="END_LINK"/> par nedrošām vietnēm un lejupielādēm</translation>
 <translation id="8060549744348950090">Pēdējā laikā šī vietne nav apmeklēta. Pārlūkā Brave tika noņemta šāda atļauja: <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Iepērcieties, tulkojiet un identificējiet redzamo saturu, izmantojot kameru iOS lietotnē Brave.</translation>
-<translation id="4470171586042711152">Kvadrātkods, lai pierakstītos pārlūkā Brave ar kontu <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Palaišanas kļūda: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Jūsu organizācija aizver pārlūku Brave, ja tas <ph name="TIMEOUT_DURATION"/> netiek izmantots.</translation>
 <translation id="8321888067342493336">Saglabāt kā attēlu</translation>

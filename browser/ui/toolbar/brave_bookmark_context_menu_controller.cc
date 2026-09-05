@@ -32,7 +32,7 @@
 BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
     gfx::NativeWindow parent_window,
     BookmarkContextMenuControllerDelegate* delegate,
-    BrowserWindowInterface* browser,
+    Browser* browser,
     Profile* profile,
     BookmarkLaunchLocation opened_from,
     const std::vector<

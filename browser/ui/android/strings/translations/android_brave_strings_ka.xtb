@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">შეაფასეთ Brave</translation>
 <translation id="4104400246019119780">გმადლობთ!</translation>
 <translation id="5202255382948179481">დაამატეთ თქვენი შემოთავაზებები</translation>
+<translation id="7759809451544302770">არასავალდებულო</translation>
 <translation id="4748689412569009273">აირჩიეთ emoji, რომელიც საუკეთესოდ აღწერს   თქვენს გამოცდილებას Brave-თან</translation>
 <translation id="7335142069363686805">შეაფასეთ</translation>
 <translation id="6681362094306959654">მოგწონთ Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">სევდიანი</translation>
 <translation id="5488843227043643519">დატოვეთ შეფასება Play Store-ში</translation>
 <translation id="5867854497245948308">დიადი გამოხმაურებისთვის დიდი მადლობა!</translation>
-<translation id="5578122562331038807">გვითხარით, როგორ შეგვიძლია Brave-ის გაუმჯობესება</translation>
-<translation id="1483493594462132177">გაგზავნა</translation>
-<translation id="3889034478061064651">დაამატეთ თქვენი შემოთავაზებები (არასავალდებულო)</translation>
-<translation id="1769154760586570836">უკუკავშირი გაიგზავნა. გმადლობთ!</translation>
-<translation id="4450893287417543264">აღარ გაეშვას</translation>
+<translation id="4935400164159327304">გვითხარით, როგორ შეგვიძლია Brave-ის გაუმჯობესება.</translation>
 <translation id="8966035543003363155">Brave-ის შეტყობინებებს ხელს გიორიერთებთ</translation>
 <translation id="7662771815233894695">მართეთ ჩამოტვირთვები, მიიღეთ ტოკენები, ნახეთ ყოველკვირეული გამოყენების სტატისტიკა და მეტი.</translation>
 <translation id="4265429476391459783">თქვენ არ იღებთ Privacy Reports ან Brave Rewards-ს</translation>
@@ -286,6 +283,7 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="7002271985859760052">გვერდის ქმედებები</translation>
 <translation id="7104487676473617844">შემდეგი ელემენტები მენიუში მხოლოდ მაშინ გამოჩნდება, თუ მათი მხარდაჭერა აქვს გვერდს, რომელსაც თქვენ ხსნით.</translation>
 <translation id="4159764849281393303">ვებ-აპი</translation>
+<translation id="8428213095426709021">პარამეტრები</translation>
 <translation id="8038539967102225446">Brave რეკლამები უკვე აქაა!</translation>
 <translation id="222883304157347087">(ეს მოწყობილობა)</translation>
 <translation id="4157741509680155021">მოწყობილობები სინქრონიზაციის ჯაჭვზე</translation>
@@ -545,6 +543,7 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="1822560017823072927">ნაგულისხმევი საჯარო და კერძო ინტერფეისები</translation>
 <translation id="5825943197137337319">ნაგულისხმევი საჯარო ინტერფეისი</translation>
 <translation id="1689062823386843231">არაპროქსირებული UDP-ის გამორთვა</translation>
+<translation id="1483493594462132177">გაგზავნა</translation>
 <translation id="538450413584738399">შეცვლა</translation>
 <translation id="4556086616242530072">ბრაუზერის მორგებული.
 თვით-კონტროლი.
@@ -622,6 +621,7 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="569068482611873351">იმპორტი...</translation>
 <translation id="4522570452068850558">დეტალები</translation>
 <translation id="3114681061018999547">შილდების გამოყენება</translation>
+<translation id="3784455785234192852">დაბლოკვა</translation>
 <translation id="4412698727486357573">დახმარების ცენტრი</translation>
 <translation id="8239147115686034860">Brave საფულის ავტომატურად დაბლოკვა</translation>
 <translation id="414639769490080648">წუთების რაოდენობა, რომლის შემდეგაც Brave საფულე ავტომატურად დაიბლოკება</translation>
@@ -821,10 +821,6 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="2478788592457735063">ეს ქსელს გადართავს წინასწარ დამატებულ ქსელზე.</translation>
 <translation id="8756686998207163764">ქსელის გადართვა</translation>
 <translation id="8905793906896555159">ჩანართების ჯგუფების ჩართვა</translation>
-<translation id="6735749683447943955">გამოვრთოთ ჩანართების ჯგუფები?</translation>
-<translation id="4616687974503500682">ნებისმიერი არსებული ჯგუფი წაიშლება, ხოლო ამ ჯგუფებში არსებული ჩანართები გახდება ღია, დაუჯგუფებელი ჩანართები თქვენს ბრაუზერის ფანჯარაში. დარწმუნებული ხართ, რომ გსურთ გაგრძელება?</translation>
-<translation id="4394049700291259645">გამორთვა</translation>
-<translation id="3859027502409073633">დასინქრონებული ჩანართების ჯგუფების ჩვენება</translation>
 <translation id="7632160823264702523">ჩანართების ჯგუფების ზოლი</translation>
 <translation id="2477807195394450274">აჩვენე ქვედა ზოლი მიმდინარე გახსნილ ჩანართების ჯგუფში ჩანართებზე სწრაფი წვდომისთვის</translation>
 <translation id="8374720587111523381">ბმულების გახსნა მიმდინარე ჩანართების ჯგუფში</translation>
@@ -832,7 +828,6 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="1227658541937938697">ავტომატურად გახსენი ყველა ბმული მიმდინარე ჩანართების ჯგუფში</translation>
 <translation id="5242300593039211344">საფულის დაბლოკვა</translation>
 <translation id="1108298724135935307">დაკავშირებული საიტები</translation>
-<translation id="8428213095426709021">პარამეტრები</translation>
 <translation id="4255623233927788178">ბლოკის გამკვლევში ნახვა</translation>
 <translation id="8274201358637112807">ეს გვერდი სურს ინტერაქცია Brave საფულესთან</translation>
 <translation id="3355936511340229503">კავშირის შეცდომა</translation>
@@ -874,6 +869,7 @@ Brave News უზრუნველყოფს პირადი, ანონ
 <translation id="6458565248779152483">Brave VPN-ის გათიშვა</translation>
 <translation id="9080536793704001825">გაჩერება 15 წთ-ით</translation>
 <translation id="803706420145725977">გაჩერება 1 სთ-ით</translation>
+<translation id="4394049700291259645">გამორთვა</translation>
 <translation id="7733890291091968191">ვებ3 შეტყობინებების ჩვენება</translation>
 <translation id="1371627247679035769">#### Brave არ გითვალთვალებთ და არ იცის, როგორ იყენებთ ჩვენს აპლიკაციას, ამრიგად ჩვენ არ ვიცით როგორ გააკონფიგურირეთ VPN. გთხოვთ, გაგვიზიაროთ ინფორმაცია იმ პრობლემის შესახებ, რომელსაც წააწყდით და ჩვენ მაქსიმალურად გავწელვებთ მის გადაჭრას ####</translation>
 <translation id="3367162038532116157">VPN ჰოსტნეიმი

@@ -215,6 +215,7 @@ void BraveWalletServiceDelegateImpl::OnTabStripModelChanged(
 }
 
 void BraveWalletServiceDelegateImpl::OnTabChangedAt(tabs::TabInterface* tab,
+                                                    int index,
                                                     TabChangeType change_type) {
   if (!tab || tab->GetContents() != GetActiveWebContents()) {
     return;

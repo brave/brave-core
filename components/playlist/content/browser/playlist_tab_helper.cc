@@ -163,12 +163,7 @@ void PlaylistTabHelper::DidFinishNavigation(
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
   DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec();
-  if (!*playlist_enabled_) {
-    return;
-  }
-
-  auto* contents = web_contents();
-  if (!contents || item->page_source != contents->GetLastCommittedURL()) {
+  if (item->page_source != web_contents()->GetLastCommittedURL()) {
     return;
   }
 

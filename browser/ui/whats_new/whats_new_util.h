@@ -10,14 +10,14 @@
 
 class PrefRegistrySimple;
 class PrefService;
-class BrowserWindowInterface;
+class Browser;
 
 namespace whats_new {
 
 // Returns true when we want to show whats-new page in foreground tab.
 bool ShouldShowBraveWhatsNewForState(PrefService* local_state);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-void StartBraveWhatsNew(BrowserWindowInterface* browser);
+void StartBraveWhatsNew(Browser* browser);
 void SetCurrentVersionForTesting(double major_version);
 
 // Param name is different for each channels.

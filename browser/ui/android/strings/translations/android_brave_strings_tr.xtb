@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Brave'i Puanlayın</translation>
 <translation id="4104400246019119780">Teşekkürler!</translation>
 <translation id="5202255382948179481">Önerilerini ekle</translation>
+<translation id="7759809451544302770">İsteğe bağlı</translation>
 <translation id="4748689412569009273">Brave deneyiminizi tek bir emojiyle nasıl ifade edersiniz?</translation>
 <translation id="7335142069363686805">Hemen puanla</translation>
 <translation id="6681362094306959654">Brave'den memnun musunuz?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Üzgün</translation>
 <translation id="5488843227043643519">Play Store değerlendirmesi yapmak ister misiniz?</translation>
 <translation id="5867854497245948308">Geri bildiriminiz için teşekkür ederiz!</translation>
-<translation id="5578122562331038807">Brave'i nasıl geliştirebileceğimize dair önerilerde bulunun</translation>
-<translation id="1483493594462132177">Gönder</translation>
-<translation id="3889034478061064651">Önerilerini ekle (İsteğe bağlı)</translation>
-<translation id="1769154760586570836">Geri bildirim gönderildi. Teşekkürler!</translation>
-<translation id="4450893287417543264">Tekrar gösterme</translation>
+<translation id="4935400164159327304">Brave'i nasıl geliştirebileceğimize dair önerilerde bulunun.</translation>
 <translation id="8966035543003363155">Brave bildirimleri işleri kolaylaştırır</translation>
 <translation id="7662771815233894695">İndirmeleri yönetin, token'lar kazanın, haftalık kullanım istatistiklerini ve daha fazlasını görün.</translation>
 <translation id="4265429476391459783">Ödülleri kazanmıyorsunuz veya Gizlilik Raporlarını almıyorsunuz</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Sayfa eylemleri</translation>
 <translation id="7104487676473617844">Aşağıdaki öğeler yalnızca açık olan web sayfası tarafından destekleniyorsa menüde görünür.</translation>
 <translation id="4159764849281393303">WebUygulaması</translation>
+<translation id="8428213095426709021">Ayarlar</translation>
 <translation id="8038539967102225446">Brave Reklamları burada!</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="4157741509680155021">EŞİTLEME ZİNCİRİNDEKİ CİHAZLAR</translation>
@@ -535,6 +533,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1822560017823072927">Varsayılan genel ve özel arabirimler</translation>
 <translation id="5825943197137337319">Sadece varsayılan genel arayüz</translation>
 <translation id="1689062823386843231">Non-proxied UDP'yi devre dışı bırak</translation>
+<translation id="1483493594462132177">Gönder</translation>
 <translation id="538450413584738399">Takas</translation>
 <translation id="4556086616242530072">Tarayıcıya özgü.\nKendi kendini koruyan.\nVe çok zincirli.</translation>
 <translation id="7909462264772842773">Kripto ve NFT'lerinizin kontrolünü elinize alın. Brave Cüzdanı Ethereum, EVM zincirleri, Solana, Filecoin ve daha fazlasını destekler.</translation>
@@ -610,6 +609,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="569068482611873351">İçe aktar...</translation>
 <translation id="4522570452068850558">Detaylar</translation>
 <translation id="3114681061018999547">Kalkanla Gizleme</translation>
+<translation id="3784455785234192852">Kilit</translation>
 <translation id="4412698727486357573">Yardım merkezi</translation>
 <translation id="8239147115686034860">Brave Cüzdan'ı otomatik olarak kilitle</translation>
 <translation id="414639769490080648">Brave Cüzdan'ın otomatik olarak kilitlenmesi için beklenilmesi gereken dakika</translation>
@@ -805,10 +805,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2478788592457735063">Bu, ağı daha önce eklenmiş bir ağa çevirir.</translation>
 <translation id="8756686998207163764">Ağı değiştir</translation>
 <translation id="8905793906896555159">Sekme gruplarını etkinleştir</translation>
-<translation id="6735749683447943955">Sekme grupları devre dışı bırakılsın mı?</translation>
-<translation id="4616687974503500682">Mevcut tüm gruplar silinir ve bu gruplardaki sekmeler tarayıcı pencerenizde açık, gruplanmamış sekmeler haline gelir. Devam etmek istediğinizden emin misiniz?</translation>
-<translation id="4394049700291259645">Devre dışı bırak</translation>
-<translation id="3859027502409073633">Senkronize edilen sekme gruplarını göster</translation>
 <translation id="7632160823264702523">Sekme grupları çubuğu</translation>
 <translation id="2477807195394450274">Şu anda açık olan sekme grubundaki sekmelere hızlı erişim için bir alt çubuk göster</translation>
 <translation id="8374720587111523381">Bağlantıları mevcut sekme grubunda aç</translation>
@@ -816,7 +812,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1227658541937938697">Tüm bağlantıları otomatik olarak mevcut sekme grubunda aç</translation>
 <translation id="5242300593039211344">Cüzdanı Kilitle</translation>
 <translation id="1108298724135935307">Bağlı siteler</translation>
-<translation id="8428213095426709021">Ayarlar</translation>
 <translation id="4255623233927788178">Blok gezgininde görüntüleyin</translation>
 <translation id="8274201358637112807">Bu sayfa Brave Cüzdan'la etkileşime geçmek istiyor</translation>
 <translation id="3355936511340229503">Bağlantı hatası</translation>
@@ -858,6 +853,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6458565248779152483">Brave VPN'i Devre Dışı Bırak</translation>
 <translation id="9080536793704001825">15 dakikalığına durdur</translation>
 <translation id="803706420145725977">1 saatliğine durdur</translation>
+<translation id="4394049700291259645">Devre dışı bırak</translation>
 <translation id="7733890291091968191">Web3 bildirimlerini göster</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave sizi izlemez veya uygulamamızı nasıl kullandığınızı bilmez, bu nedenle VPN'i nasıl kurduğunuzu bilmiyoruz. Lütfen yaşadığınız sorunla ilgili bilgileri paylaşın, böylece sorunu olabilecek en kısa sürede çözmek için elimizden gelenin en iyisini yapalım. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN Ana Bilgisayar Adı\n <ph name="VALUE"/></translation>

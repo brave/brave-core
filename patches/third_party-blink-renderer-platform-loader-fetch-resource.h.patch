@@ -1,0 +1,24 @@
+diff --git a/third_party/blink/renderer/platform/loader/fetch/resource.h b/third_party/blink/renderer/platform/loader/fetch/resource.h
+index a6abed969b442b8122e3f4a0eb7eb9e1d7ae5f17..c0e823db6b20314e121cd680492235e1200674e3 100644
+--- a/third_party/blink/renderer/platform/loader/fetch/resource.h
++++ b/third_party/blink/renderer/platform/loader/fetch/resource.h
+@@ -30,6 +30,7 @@
+ 
+ #include "base/auto_reset.h"
+ #include "base/containers/span.h"
++#include "base/feature_list.h"
+ #include "base/gtest_prod_util.h"
+ #include "base/memory_coordinator/memory_consumer.h"
+ #include "base/task/single_thread_task_runner.h"
+@@ -72,6 +73,11 @@ class Clock;
+ 
+ namespace blink {
+ 
++PLATFORM_EXPORT BASE_DECLARE_FEATURE(
++    kPreventExtensionResourceFetchAcrossIsolatedWorlds);
++PLATFORM_EXPORT BASE_DECLARE_FEATURE(
++    kPreventCrossWorldServiceWorkerResourceReuse);
++
+ class BackgroundResponseProcessorFactory;
+ class BlobDataHandle;
+ class FetchParameters;

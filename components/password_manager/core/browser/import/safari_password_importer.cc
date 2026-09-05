@@ -30,7 +30,6 @@
 #include "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "components/password_manager/core/browser/password_form.h"
-#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
 #include "components/password_manager/core/browser/ui/credential_utils.h"
 #include "components/password_manager/core/browser/ui/saved_passwords_presenter.h"
@@ -52,7 +51,7 @@ SafariIncomingPasswords& SafariIncomingPasswords::operator=(
 struct ConflictsResolutionCache {
   ConflictsResolutionCache(
       SafariIncomingPasswords incoming_passwords,
-      std::vector<std::vector<password_manager::StoredCredential>> conflicts,
+      std::vector<std::vector<password_manager::PasswordForm>> conflicts,
       SafariImportResults results,
       base::Time start_time)
       : incoming_passwords(std::move(incoming_passwords)),
@@ -62,7 +61,7 @@ struct ConflictsResolutionCache {
   ~ConflictsResolutionCache() = default;
 
   SafariIncomingPasswords incoming_passwords;
-  std::vector<std::vector<password_manager::StoredCredential>> conflicts;
+  std::vector<std::vector<password_manager::PasswordForm>> conflicts;
   SafariImportResults results;
   base::Time start_time;
 };
@@ -210,21 +209,20 @@ std::optional<CredentialUIEntry> GetConflictingCredential(
   return std::nullopt;
 }
 
-std::vector<StoredCredential> GetMatchingStoredCredentials(
+std::vector<PasswordForm> GetMatchingPasswordForms(
     SavedPasswordsPresenter* presenter,
     const CredentialUIEntry& credential,
     PasswordForm::Store store) {
-  // Returns matching local credentials for a given `credential`, excluding
-  // grouped credentials with different `signon_realm`.
+  // Returns matching local forms for a given `credential`, excluding grouped
+  // forms with different `signon_realm`.
   CHECK(presenter);
-  std::vector<StoredCredential> results;
-  for (StoredCredential& stored_credential :
-       presenter->GetCorrespondingStoredCredentials(credential)) {
-    if (stored_credential.signon_realm == credential.GetFirstSignonRealm() &&
-        store == stored_credential.in_store) {
-      results.push_back(std::move(stored_credential));
-    }
-  }
+  std::vector<PasswordForm> results;
+  std::ranges::copy_if(
+      presenter->GetCorrespondingPasswordForms(credential),
+      std::back_inserter(results), [&](const PasswordForm& form) {
+        return form.signon_realm == credential.GetFirstSignonRealm() &&
+               store == form.in_store;
+      });
   return results;
 }
 
@@ -255,13 +253,12 @@ std::u16string ComputeNotesConcatenation(const std::u16string& local_note,
   return base::JoinString(/*parts=*/{local_note, imported_note}, u"\n");
 }
 
-void MergeNotesOrReportError(
-    const std::vector<StoredCredential>& local_credentials,
-    const CredentialUIEntry& imported_credential,
-    SafariImportResults& results,
-    std::vector<StoredCredential>& edit_credentials,
-    SafariNotesImportMetrics& metrics) {
-  const std::u16string local_note = CredentialUIEntry(local_credentials).note;
+void MergeNotesOrReportError(const std::vector<PasswordForm>& local_forms,
+                             const CredentialUIEntry& imported_credential,
+                             SafariImportResults& results,
+                             std::vector<PasswordForm>& edit_forms,
+                             SafariNotesImportMetrics& metrics) {
+  const std::u16string local_note = CredentialUIEntry(local_forms).note;
   const std::u16string& imported_note = imported_credential.note;
   const std::u16string concatenation =
       ComputeNotesConcatenation(local_note, imported_note, metrics);
@@ -276,10 +273,9 @@ void MergeNotesOrReportError(
 
   if (concatenation != local_note) {
     // Local credential needs to be updated with concatenation.
-    for (const StoredCredential& cred : local_credentials) {
-      StoredCredential updated_credential = CloneStoredCredential(cred);
-      updated_credential.SetPasswordNote(concatenation);
-      edit_credentials.emplace_back(std::move(updated_credential));
+    for (PasswordForm form : local_forms) {
+      form.SetNoteWithEmptyUniqueDisplayName(concatenation);
+      edit_forms.emplace_back(std::move(form));
     }
     metrics.notes_concatenations_per_file_count++;
   }
@@ -298,7 +294,7 @@ void ProcessParsedCredential(
         credentials_by_username,
     PasswordForm::Store to_store,
     SafariIncomingPasswords& incoming_passwords,
-    std::vector<std::vector<StoredCredential>>& conflicts,
+    std::vector<std::vector<PasswordForm>>& conflicts,
     SafariImportResults& results,
     SafariNotesImportMetrics& notes_metrics,
     size_t& duplicates_count) {
@@ -312,23 +308,21 @@ void ProcessParsedCredential(
   std::optional<CredentialUIEntry> conflicting_credential =
       GetConflictingCredential(credentials_by_username, imported_credential);
   if (conflicting_credential.has_value()) {
-    std::vector<StoredCredential> conflicting_credentials =
-        GetMatchingStoredCredentials(presenter, conflicting_credential.value(),
-                                     to_store);
+    std::vector<PasswordForm> forms = GetMatchingPasswordForms(
+        presenter, conflicting_credential.value(), to_store);
     // Password notes are not taken into account when conflicting passwords
     // are overwritten. Only the local note is persisted.
-    for (StoredCredential& credential : conflicting_credentials) {
-      credential.password_value =
-          PasswordString(std::u16string(imported_credential.password));
+    for (PasswordForm& form : forms) {
+      form.password_value = imported_credential.password;
     }
-    conflicts.push_back(std::move(conflicting_credentials));
+    conflicts.push_back(std::move(forms));
     return;
   }
 
   // Check for duplicates.
-  std::vector<StoredCredential> matching_credentials =
-      GetMatchingStoredCredentials(presenter, imported_credential, to_store);
-  if (!matching_credentials.empty()) {
+  std::vector<PasswordForm> forms =
+      GetMatchingPasswordForms(presenter, imported_credential, to_store);
+  if (!forms.empty()) {
     duplicates_count++;
 
     if (imported_credential.note.empty()) {
@@ -338,10 +332,8 @@ void ProcessParsedCredential(
     }
 
     MergeNotesOrReportError(
-        /*local_credentials=*/matching_credentials,
-        /*imported_credential=*/imported_credential,
-        /*results=*/results,
-        /*edit_credentials=*/incoming_passwords.edit_credentials,
+        /*local_forms=*/forms, /*imported_credential=*/imported_credential,
+        /*results=*/results, /*edit_forms=*/incoming_passwords.edit_forms,
         /*metrics=*/notes_metrics);
     return;
   }
@@ -427,9 +419,8 @@ void SafariPasswordImporter::ContinueImport(
   for (int id : selected_ids) {
     conflicts_cache_->results.number_imported++;
     CHECK_LT(static_cast<size_t>(id), conflicts_cache_->conflicts.size());
-    for (const StoredCredential& credential : conflicts_cache_->conflicts[id]) {
-      conflicts_cache_->incoming_passwords.edit_credentials.push_back(
-          CloneStoredCredential(credential));
+    for (const PasswordForm& form : conflicts_cache_->conflicts[id]) {
+      conflicts_cache_->incoming_passwords.edit_forms.push_back(form);
     }
   }
 
@@ -486,9 +477,9 @@ void SafariPasswordImporter::ConsumePasswords(
   SafariIncomingPasswords incoming_passwords;
 
   // Conflicting credential that could be updated. Each nested vector
-  // represents one credential, i.e. all StoredCredential's in such a vector
-  // have the same signon_ream, username, password.
-  std::vector<std::vector<StoredCredential>> conflicts;
+  // represents one credential, i.e. all PasswordForm's in such a vector have
+  // the same signon_ream, username, password.
+  std::vector<std::vector<PasswordForm>> conflicts;
 
   // Go over all canonically parsed passwords:
   // 1) aggregate all valid ones in `incoming_passwords` to be passed over to
@@ -511,9 +502,9 @@ void SafariPasswordImporter::ConsumePasswords(
   results.number_imported += incoming_passwords.add_credentials.size();
 
   if (conflicts.empty()) {
-    for (const std::vector<StoredCredential>& credentials : conflicts) {
+    for (const std::vector<PasswordForm>& forms : conflicts) {
       results.displayed_entries.push_back(CreateFailedSafariImportEntry(
-          CredentialUIEntry(credentials), GetConflictType(to_store)));
+          CredentialUIEntry(forms), GetConflictType(to_store)));
     }
 
     ExecuteImport(std::move(results_callback), std::move(results),
@@ -543,7 +534,7 @@ void SafariPasswordImporter::ExecuteImport(
     base::Time start_time,
     size_t conflicts_count) {
   // Run `results_callback` when both `AddCredentials` and
-  // `UpdateStoredCredentials` have finished running.
+  // `UpdatePasswordForms` have finished running.
   auto barrier_done_callback = base::BarrierClosure(
       2, base::BindOnce(base::BindOnce(
              &SafariPasswordImporter::ImportFinished,
@@ -553,8 +544,8 @@ void SafariPasswordImporter::ExecuteImport(
   presenter_->AddCredentials(incoming_passwords.add_credentials,
                              PasswordForm::Type::kImported,
                              barrier_done_callback);
-  presenter_->UpdateStoredCredentials(
-      std::move(incoming_passwords.edit_credentials), barrier_done_callback);
+  presenter_->UpdatePasswordForms(incoming_passwords.edit_forms,
+                                  barrier_done_callback);
 }
 
 void SafariPasswordImporter::ImportFinished(

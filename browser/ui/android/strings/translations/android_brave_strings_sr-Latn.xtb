@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Ocenite Brave</translation>
 <translation id="4104400246019119780">Hvala!</translation>
 <translation id="5202255382948179481">Dajte svoje predloge</translation>
+<translation id="7759809451544302770">Opciono</translation>
 <translation id="4748689412569009273">Kako biste jednim emodžijem ocenili svoje iskustvo sa Brave-om?</translation>
 <translation id="7335142069363686805">Ocenite sada</translation>
 <translation id="6681362094306959654">Sviđa vam se Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Tužan</translation>
 <translation id="5488843227043643519">Dajte ocenu u Play prodavnici?</translation>
 <translation id="5867854497245948308">Hvala vam za povratne informacije!</translation>
-<translation id="5578122562331038807">Recite nam kako možemo da poboljšamo Brave</translation>
-<translation id="1483493594462132177">Pošalji</translation>
-<translation id="3889034478061064651">Dodajte svoje predloge (opciono)</translation>
-<translation id="1769154760586570836">Povratna informacija je poslata. Hvala vam!</translation>
-<translation id="4450893287417543264">Ne prikazuj ponovo</translation>
+<translation id="4935400164159327304">Recite nam kako možemo da poboljšamo Brave.</translation>
 <translation id="8966035543003363155">Brave obaveštenja olakšavaju korišćenje</translation>
 <translation id="7662771815233894695">Upravljanje preuzimanjima, zarađivanje tokena, pregled statističkih podataka o nedeljnom korišćenju i još toga.</translation>
 <translation id="4265429476391459783">Ne zarađujete nagrade i ne dobijate izveštaje o privatnosti</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Akcije stranice</translation>
 <translation id="7104487676473617844">Sledeće stavke će biti prikazane u meniju samo kada ih trenutna otvorena stranica podržava.</translation>
 <translation id="4159764849281393303">Web aplikacija</translation>
+<translation id="8428213095426709021">Podešavanja</translation>
 <translation id="8038539967102225446">Brave oglasi su stigli!</translation>
 <translation id="222883304157347087">(ovaj uređaj)</translation>
 <translation id="4157741509680155021">UREĐAJI U LANCU SINHRONIZACIJE</translation>
@@ -538,6 +536,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1822560017823072927">Podrazumevani javni i privatni interfejsi</translation>
 <translation id="5825943197137337319">Samo podrazumevani javni interfejs</translation>
 <translation id="1689062823386843231">Isključi UDP bez proksija</translation>
+<translation id="1483493594462132177">Pošalji</translation>
 <translation id="538450413584738399">Razmeni</translation>
 <translation id="4556086616242530072">Ugrađen u pregledač, sa samostalnim vođenjem naloga i sa više lanaca.</translation>
 <translation id="7909462264772842773">Preuzmite kontrolu nad svojim kriptovalutama i NFT-ovima. Brave novčanik podržava Ethereum, EVM lance, Solana, Filecoin i još toga.</translation>
@@ -613,6 +612,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="569068482611873351">Uvoz…</translation>
 <translation id="4522570452068850558">Detalji</translation>
 <translation id="3114681061018999547">Zaštita</translation>
+<translation id="3784455785234192852">Zaključaj</translation>
 <translation id="4412698727486357573">Centar za pomoć</translation>
 <translation id="8239147115686034860">Automatski zaključaj Brave novčanik</translation>
 <translation id="414639769490080648">Broj minuta koliko treba sačekati da se Brave novčanik automatski zaključa</translation>
@@ -808,10 +808,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="2478788592457735063">Ovim će se prebaciti mreža na prethodno dodatu mrežu.</translation>
 <translation id="8756686998207163764">Prebaci mrežu</translation>
 <translation id="8905793906896555159">Aktiviraj grupe kartica</translation>
-<translation id="6735749683447943955">Onemogućiti grupe kartica?</translation>
-<translation id="4616687974503500682">Sve postojeće grupe biće obrisane, a kartice unutar tih grupa postaće otvorene, negrupisane kartice u prozoru vašeg pregledača. Da li ste sigurni da želite da nastavite?</translation>
-<translation id="4394049700291259645">Isključi</translation>
-<translation id="3859027502409073633">Prikaži sinhronizovane grupe kartica</translation>
 <translation id="7632160823264702523">Traka grupa kartica</translation>
 <translation id="2477807195394450274">Prikaži donju traku za brzi pristup karticama u trenutno otvorenoj grupi kartica</translation>
 <translation id="8374720587111523381">Otvori linkove u trenutnoj grupi kartica</translation>
@@ -819,7 +815,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="1227658541937938697">Automatski otvara sve linkove u trenutnoj grupi kartica</translation>
 <translation id="5242300593039211344">Zaključaj novčanik</translation>
 <translation id="1108298724135935307">Povezani sajtovi</translation>
-<translation id="8428213095426709021">Podešavanja</translation>
 <translation id="4255623233927788178">Prikaži u istraživaču blokova</translation>
 <translation id="8274201358637112807">Ova stranica želi da komunicira sa Brave novčanikom</translation>
 <translation id="3355936511340229503">Greška pri povezivanju</translation>
@@ -861,6 +856,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6458565248779152483">Isključi Brave VPN</translation>
 <translation id="9080536793704001825">Pauziraj 15 minuta</translation>
 <translation id="803706420145725977">Pauziraj 1 sat</translation>
+<translation id="4394049700291259645">Isključi</translation>
 <translation id="7733890291091968191">Prikaži Web3 obaveštenja</translation>
 <translation id="1371627247679035769">#### Brave vas ne prati niti ima uvid u to kako koristite našu aplikaciju, tako da ne znamo kako ste podesili VPN. Pošaljite nam informacije o problemu koji imate i daćemo sve od sebe da ga što pre rešimo. ####</translation>
 <translation id="3367162038532116157">Naziv hosta VPN-a <ph name="VALUE"/></translation>

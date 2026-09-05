@@ -17,7 +17,6 @@
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -46,11 +45,10 @@ class BraveVpnButtonUnitTest : public testing::Test {
 
   Browser* GetBrowser() {
     if (!browser_) {
-      BrowserWindowCreateParams params(profile(), true);
+      Browser::CreateParams params(profile(), true);
       auto test_window = std::make_unique<TestBrowserWindow>();
       params.window = test_window.release();
-      browser_ =
-          DeprecatedCreateOwnedBrowserWindowForTesting(std::move(params));
+      browser_ = Browser::DeprecatedCreateOwnedForTesting(params);
     }
     return browser_.get();
   }

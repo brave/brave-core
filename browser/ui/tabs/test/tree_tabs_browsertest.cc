@@ -162,8 +162,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   TabStripController* controller() { return tab_strip()->controller(); }
 
   TabStrip* tab_strip() {
-    return BrowserView::GetBrowserViewForBrowser(browser())
-        ->horizontal_tab_strip_for_testing();
+    return browser()->GetBrowserView().horizontal_tab_strip_for_testing();
   }
 
   // Simulates clicking |model_index| with a plain (unmodified) left click,
@@ -2733,9 +2732,9 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                 ->type(),
             tabs::TabCollection::Type::SPLIT);
 
-  EXPECT_TRUE(std::holds_alternative<tabs::ScopedTab>(
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
       pinned_collection().GetChildren()[1]));
-  EXPECT_TRUE(std::holds_alternative<tabs::ScopedTab>(
+  EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
       pinned_collection().GetChildren()[2]));
   EXPECT_TRUE(std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
 

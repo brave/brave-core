@@ -19,7 +19,6 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -74,12 +73,11 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
 
   Browser* GetBrowser() {
     if (!browser_) {
-      BrowserWindowCreateParams params(profile_.get(), true);
+      Browser::CreateParams params(profile_.get(), true);
       // Browser takes ownership of test_window
       auto test_window = std::make_unique<TestBrowserWindow>();
       params.window = test_window.release();
-      browser_ =
-          DeprecatedCreateOwnedBrowserWindowForTesting(std::move(params));
+      browser_ = Browser::DeprecatedCreateOwnedForTesting(params);
     }
     return browser_.get();
   }

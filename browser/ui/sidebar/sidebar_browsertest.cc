@@ -132,16 +132,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // asynchronously. Toggling again before the panel is actually showing makes
   // SidePanelCoordinator::Toggle() re-show instead of close, so wait on both.
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
-  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
-      IDC_TOGGLE_SIDEBAR);
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !!model()->active_index() && panel_ui->IsSidePanelShowing();
   }));
   // Check active index is non-null.
   EXPECT_THAT(model()->active_index(), Ne(std::nullopt));
 
-  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
-      IDC_TOGGLE_SIDEBAR);
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !model()->active_index() && !panel_ui->IsSidePanelShowing();
   }));
@@ -539,15 +537,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Make left split view as active to make secondary container put
   // at right side(end).
   tab_strip_model->ActivateTabAt(0);
-
-  // Split containers are positioned by a scheduled layout. Flush it before
-  // reading their bounds, otherwise the end container still has its initial
-  // empty bounds at the contents area's origin.
-  RunScheduledLayouts();
-
   auto* left_split_view = GetStartSplitContentsView();
   auto* right_split_view = GetEndSplitContentsView();
-  ASSERT_FALSE(right_split_view->bounds().IsEmpty());
 
   // Check left split view's left hot corner handles.
   mouse_position = left_split_view->GetLocalBounds().origin();
@@ -1382,8 +1373,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarLayoutInRTLTest) {
             sidebar_container->GetMirroredBounds().x());
 
   // Open the side panel to verify panel/control positioning.
-  chrome::BrowserCommandController::From(browser())->ExecuteCommand(
-      IDC_TOGGLE_SIDEBAR);
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
   RunScheduledLayouts();
   ASSERT_TRUE(base::test::RunUntil([&]() {
     // panel can have border insets.

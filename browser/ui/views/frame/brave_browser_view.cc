@@ -34,6 +34,7 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -62,7 +63,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
-#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -77,6 +77,7 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
+#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
@@ -104,9 +105,11 @@
 #include "ui/base/hit_test.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
 #include "ui/events/event.h"
 #include "ui/events/event_observer.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/native/native_view_host.h"
@@ -140,7 +143,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
+#include "brave/browser/ui/views/wayback_machine_bubble_view.h"
 #endif
 
 namespace {
@@ -152,9 +155,7 @@ std::optional<bool> g_download_confirm_return_allow_for_testing;
 
 bool IsUnsupportedCommand(int command_id, Browser* browser) {
   return IsRunningInForcedAppMode() &&
-         !IsCommandAllowedInAppMode(
-             command_id,
-             browser->GetType() == BrowserWindowInterface::Type::TYPE_POPUP);
+         !IsCommandAllowedInAppMode(command_id, browser->is_type_popup());
 }
 
 // A view that paints a background under the content area of the browser view so
@@ -320,7 +321,7 @@ BraveBrowserView* BraveBrowserView::GetBrowserViewForBrowser(
 
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const BrowserWindowInterface* browser) {
-  if (browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+  if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {
     return false;
   }
 
@@ -349,7 +350,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   // default via WindowFeatureController::SupportsWindowfeatures. In brave, we
   // support kFeatureTitleBar so it's set to true when browser is launched with
   // vertical tab mode. Set to false as we don't want to icon in title bar.
-  if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+  if (browser_->is_type_normal()) {
     SetShowIcon(false);
   }
 
@@ -740,19 +741,12 @@ void BraveBrowserView::ShowPlaylistBubble() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void BraveBrowserView::ShowWaybackMachineBubble() {
-  views::View* const anchor =
-      toolbar_button_provider()
-          ->GetPageActionBubbleAnchor(kActionShowWaybackMachine)
-          .GetIfView();
-  if (!anchor) {
-    return;
+  if (auto* anchor = toolbar_button_provider()->GetPageActionIconView(
+          brave::kWaybackMachineActionIconType)) {
+    DCHECK(anchor->GetVisible());
+    // Launch bubble with this anchor.
+    WaybackMachineBubbleView::Show(browser(), anchor);
   }
-
-  auto* item = actions::ActionManager::Get().FindAction(
-      kActionShowWaybackMachine,
-      BrowserActions::From(browser())->root_action_item());
-  WaybackMachineBubbleView::Show(
-      browser()->tab_strip_model()->GetActiveWebContents(), anchor, item);
 }
 #endif
 
@@ -1135,7 +1129,7 @@ void BraveBrowserView::UpdateTabSearchBubbleHost() {
   BrowserView::UpdateTabSearchBubbleHost();
 
   auto* tab_search_action = actions::ActionManager::Get().FindAction(
-      kActionTabSearch, BrowserActions::From(browser_)->root_action_item());
+      kActionTabSearch, browser_->GetActions()->root_action_item());
   CHECK(tab_search_action);
 
   // As we use toolbar's combo button in vertical tab mode, host should be

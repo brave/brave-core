@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Beoordeel Brave</translation>
 <translation id="4104400246019119780">Bedankt!</translation>
 <translation id="5202255382948179481">Voeg uw suggesties toe</translation>
+<translation id="7759809451544302770">Optioneel</translation>
 <translation id="4748689412569009273">Geef in één emoji weer wat u van Brave vindt</translation>
 <translation id="7335142069363686805">Nu beoordelen</translation>
 <translation id="6681362094306959654">Bevalt Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Verdrietig</translation>
 <translation id="5488843227043643519">Wilt u een beoordeling in de Play Store geven?</translation>
 <translation id="5867854497245948308">Bedankt voor uw feedback!</translation>
-<translation id="5578122562331038807">Laat ons weten hoe we Brave kunnen verbeteren</translation>
-<translation id="1483493594462132177">Verzenden</translation>
-<translation id="3889034478061064651">Voeg uw suggesties toe (optioneel)</translation>
-<translation id="1769154760586570836">Feedback verzonden. Bedankt!</translation>
-<translation id="4450893287417543264">Laat niet weer zien</translation>
+<translation id="4935400164159327304">Laat ons weten hoe we Brave kunnen verbeteren.</translation>
 <translation id="8966035543003363155">Meer gemak met Brave-meldingen</translation>
 <translation id="7662771815233894695">Beheer downloads, verdien tokens, bekijk wekelijkse gebruiksstatistieken en meer.</translation>
 <translation id="4265429476391459783">U ontvangt geen Rewards of privacyrapporten</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Paginahandelingen</translation>
 <translation id="7104487676473617844">De volgende items zijn alleen zichtbaar in het menu als ze worden ondersteund door de momenteel geopende webpagina.</translation>
 <translation id="4159764849281393303">WebApp</translation>
+<translation id="8428213095426709021">instellingen</translation>
 <translation id="8038539967102225446">Brave Ads zijn hier!</translation>
 <translation id="222883304157347087">(dit apparaat)</translation>
 <translation id="4157741509680155021">APPARATEN IN SYNCHRONISATIEKETEN</translation>
@@ -534,6 +532,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
+<translation id="1483493594462132177">Sturen</translation>
 <translation id="538450413584738399">Wisselen</translation>
 <translation id="4556086616242530072">Direct in de browser.\nEigen beheer.\nEn multi-chain.</translation>
 <translation id="7909462264772842773">Neem de controle over uw crypto en NFT's. Brave Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin en meer.</translation>
@@ -609,6 +608,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="569068482611873351">Importeren...</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3114681061018999547">Beschermen</translation>
+<translation id="3784455785234192852">Vergrendelen</translation>
 <translation id="4412698727486357573">Helpcentrum</translation>
 <translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
 <translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
@@ -804,10 +804,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2478788592457735063">Hiermee schakel je over naar een netwerk dat je eerder hebt toegevoegd.</translation>
 <translation id="8756686998207163764">Van netwerk wisselen</translation>
 <translation id="8905793906896555159">Tabbladgroepen inschakelen</translation>
-<translation id="6735749683447943955">Tabbladgroepen uitschakelen?</translation>
-<translation id="4616687974503500682">Alle bestaande groepen worden verwijderd en de tabbladen binnen die groepen worden open, niet-gegroepeerde tabbladen in uw browservenster. Weet u zeker dat u wilt doorgaan?</translation>
-<translation id="4394049700291259645">Uitschakelen</translation>
-<translation id="3859027502409073633">Gesynchroniseerde tabbladgroepen weergeven</translation>
 <translation id="7632160823264702523">Tabbladgroepenbalk</translation>
 <translation id="2477807195394450274">Toon een onderste balk voor snelle toegang tot tabbladen in de momenteel geopende tabbladgroep</translation>
 <translation id="8374720587111523381">Links openen in de huidige tabbladgroep</translation>
@@ -815,7 +811,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1227658541937938697">Alle links automatisch openen in de huidige tabbladgroep</translation>
 <translation id="5242300593039211344">Wallet vergrendelen</translation>
 <translation id="1108298724135935307">Gekoppelde sites</translation>
-<translation id="8428213095426709021">instellingen</translation>
 <translation id="4255623233927788178">Weergeven op Blokkering Explorer</translation>
 <translation id="8274201358637112807">Deze pagina wil communiceren met Brave Wallet</translation>
 <translation id="3355936511340229503">Verbindingsfout</translation>
@@ -857,6 +852,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6458565248779152483">Brave VPN uitschakelen</translation>
 <translation id="9080536793704001825">15 minuten pauzeren</translation>
 <translation id="803706420145725977">1 uur pauzeren</translation>
+<translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="7733890291091968191">Web3-meldingen weergeven</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave volgt u niet en weet niet hoe u uw app gebruikt, dus we weten niet hoe u uw VPN hebt ingesteld. Deel informatie over het probleem dat u ervaart en dan doen wij ons best om het zo snel mogelijk op te lossen. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-hostnaam\n <ph name="VALUE"/></translation>

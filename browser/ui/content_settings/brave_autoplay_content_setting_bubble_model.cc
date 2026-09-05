@@ -31,9 +31,9 @@ using SettingSource::kUser;
 
 BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
     Delegate* delegate,
-    content::Page& page)
+    content::WebContents* web_contents)
     : ContentSettingSimpleBubbleModel(delegate,
-                                      page,
+                                      web_contents,
                                       ContentSettingsType::AUTOPLAY),
       block_setting_(CONTENT_SETTING_BLOCK) {
   SetTitle();

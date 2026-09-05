@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Braveを評価する</translation>
 <translation id="4104400246019119780">ありがとうございます！</translation>
 <translation id="5202255382948179481">おすすめを追加</translation>
+<translation id="7759809451544302770">オプション</translation>
 <translation id="4748689412569009273">Braveでの体験を1つの絵文字で表現すると？</translation>
 <translation id="7335142069363686805">今すぐ評価</translation>
 <translation id="6681362094306959654">Braveをリンクしますか？</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">不満</translation>
 <translation id="5488843227043643519">Play Storeに評価を登録しますか？</translation>
 <translation id="5867854497245948308">フィードバックありがとうございます！</translation>
-<translation id="5578122562331038807">Braveをどのように改善できるかについてご意見をお聞かせください</translation>
-<translation id="1483493594462132177">送信</translation>
-<translation id="3889034478061064651">おすすめを追加(任意)</translation>
-<translation id="1769154760586570836">フィードバックを送信しました。ありがとうございます!</translation>
-<translation id="4450893287417543264">次回から表示しない</translation>
+<translation id="4935400164159327304">Braveをどのように改善できるかについてご意見をお聞かせください。</translation>
 <translation id="8966035543003363155">Braveの通知で最新情報を入手</translation>
 <translation id="7662771815233894695">ダウンロードの管理、トークンの獲得、毎週の利用統計の確認などが可能になります。</translation>
 <translation id="4265429476391459783">リワードを獲得していない、またはプライバシーレポートを受け取っていません</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">ページアクション</translation>
 <translation id="7104487676473617844">次の項目は、現在開いているウェブページが対応している場合のみメニューに表示されます。</translation>
 <translation id="4159764849281393303">WebApp</translation>
+<translation id="8428213095426709021">設定</translation>
 <translation id="8038539967102225446">Brave広告はここにあります！</translation>
 <translation id="222883304157347087">（このデバイス）</translation>
 <translation id="4157741509680155021">同期チェーン上のデバイス</translation>
@@ -537,6 +535,7 @@
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
+<translation id="1483493594462132177">送信</translation>
 <translation id="538450413584738399">スワップ</translation>
 <translation id="4556086616242530072">ブラウザネイティブ\nセルフカストディ\nマルチチェーン</translation>
 <translation id="7909462264772842773">暗号通貨とNFTの管理がこの上なく快適に。Braveウォレットはイーサリアム、EVMチェーン、Solana、Filecoinなどをサポートしています。</translation>
@@ -612,6 +611,7 @@
 <translation id="569068482611873351">インポート…</translation>
 <translation id="4522570452068850558">詳細</translation>
 <translation id="3114681061018999547">シールド中</translation>
+<translation id="3784455785234192852">ロック</translation>
 <translation id="4412698727486357573">ヘルプセンター</translation>
 <translation id="8239147115686034860">Braveウォレット を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
@@ -807,10 +807,6 @@
 <translation id="2478788592457735063">この操作を行うと、現在のネットワークを以前に追加されたネットワークに切り替えます。</translation>
 <translation id="8756686998207163764">ネットワークを切り替え</translation>
 <translation id="8905793906896555159">タブグループを有効にする</translation>
-<translation id="6735749683447943955">タブグループを無効にする?</translation>
-<translation id="4616687974503500682">既存のグループはすべて削除され、それらのグループ内のタブはブラウザウィンドウ内で開いたグループ化されていないタブになります。続行してもよろしいですか?</translation>
-<translation id="4394049700291259645">無効にする</translation>
-<translation id="3859027502409073633">同期されたタブグループを表示</translation>
 <translation id="7632160823264702523">タブグループバー</translation>
 <translation id="2477807195394450274">現在開いているタブグループ内のタブにすばやくアクセスするための下部バーを表示</translation>
 <translation id="8374720587111523381">現在のタブグループでリンクを開く</translation>
@@ -818,7 +814,6 @@
 <translation id="1227658541937938697">現在のタブグループ内のすべてのリンクを自動的に開く</translation>
 <translation id="5242300593039211344">ウォレットをロックする</translation>
 <translation id="1108298724135935307">接続したサイト</translation>
-<translation id="8428213095426709021">設定</translation>
 <translation id="4255623233927788178">ブロックエクスプローラーで表示</translation>
 <translation id="8274201358637112807">このページは、Braveウォレットとの通信をリクエストしています</translation>
 <translation id="3355936511340229503">接続エラー</translation>
@@ -860,6 +855,7 @@
 <translation id="6458565248779152483">Brave VPNを無効化</translation>
 <translation id="9080536793704001825">15分停止する</translation>
 <translation id="803706420145725977">1時間停止する</translation>
+<translation id="4394049700291259645">無効にする</translation>
 <translation id="7733890291091968191">Web3の通知を表示</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Braveはユーザーを追跡したり、ユーザーがどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。お困りの点ついて詳細をお知らせください。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPNホスト名\n <ph name="VALUE"/></translation>

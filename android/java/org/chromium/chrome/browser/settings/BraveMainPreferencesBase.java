@@ -403,12 +403,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_BRAVE_ORIGIN);
         }
 
-        // Only present when the upstream default browser entry point is enabled.
-        Preference defaultBrowser = findPreference(MainSettings.PREF_DEFAULT_BROWSER);
-        if (defaultBrowser != null) {
-            defaultBrowser.setOrder(++generalOrder);
-        }
-
         int displaySectionOrder = generalOrder;
         setPreferenceOrder(PREF_DISPLAY_SECTION, ++displaySectionOrder);
 
@@ -509,9 +503,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_code);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_browser_home);
         updatePreferenceIcon(MainSettings.PREF_TABS, R.drawable.ic_browser_mobile_tabs);
-        // Same icon as the "Set as default browser" main menu item.
-        updatePreferenceIcon(
-                MainSettings.PREF_DEFAULT_BROWSER, R.drawable.brave_menu_set_as_default);
         updatePreferenceIcon(
                 MainSettings.PREF_ADDRESS_BAR,
                 BottomToolbarConfiguration.isToolbarTopAnchored()

@@ -19,7 +19,6 @@ class SplitViewBrowserTest;
  private:                                                                      \
   void UpdateTabIsHiddenWithTabActivationState();                              \
   bool ShouldBeGrouppedInRequests(PermissionRequest* a) const;                 \
-  bool IsCurrentRequestBraveWalletInitiated() const;                           \
   friend class ::WidevinePermissionAndroidTest;                                \
   friend class ::SplitViewBrowserTest;                                         \
   bool tab_is_active_for_testing() const {                                     \

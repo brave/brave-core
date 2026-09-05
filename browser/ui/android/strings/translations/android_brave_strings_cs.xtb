@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Ohodnotit Brave</translation>
 <translation id="4104400246019119780">Děkujeme!</translation>
 <translation id="5202255382948179481">Přidejte své návrhy</translation>
+<translation id="7759809451544302770">Volitelné</translation>
 <translation id="4748689412569009273">Jak byste jedním emotikonem ohodnotili svou zkušenost s Brave?</translation>
 <translation id="7335142069363686805">Ohodnotit</translation>
 <translation id="6681362094306959654">Líbí se vám Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Smutný</translation>
 <translation id="5488843227043643519">Chcete udělit hodnocení v obchodě Play Store?</translation>
 <translation id="5867854497245948308">Děkujeme za vaši zpětnou vazbu!</translation>
-<translation id="5578122562331038807">Dejte nám vědět, jak můžeme Brave zlepšit</translation>
-<translation id="1483493594462132177">Odeslat</translation>
-<translation id="3889034478061064651">Přidejte své návrhy (nepovinné)</translation>
-<translation id="1769154760586570836">Zpětná vazba odeslána. Děkujeme!</translation>
-<translation id="4450893287417543264">Znovu neukazovat</translation>
+<translation id="4935400164159327304">Dejte nám vědět, jak můžeme Brave zlepšit.</translation>
 <translation id="8966035543003363155">Oznámení Brave vám to usnadní</translation>
 <translation id="7662771815233894695">Správa stahování, vydělané tokeny, týdenní statistiky používání a další.</translation>
 <translation id="4265429476391459783">Nevyděláváte si žádné odměny ani nedostáváte hlášení o ochraně soukromí</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Akce stránky</translation>
 <translation id="7104487676473617844">Následující položky budou zobrazeny v nabídce pouze tehdy, pokud je podporuje aktuálně otevřená webová stránka.</translation>
 <translation id="4159764849281393303">Webová aplikace</translation>
+<translation id="8428213095426709021">Nastavení</translation>
 <translation id="8038539967102225446">Reklamy Brave jsou tady!</translation>
 <translation id="222883304157347087">(toto zařízení)</translation>
 <translation id="4157741509680155021">ZAŘÍZENÍ V SYNCHRONIZAČNÍM ŘETĚZCI</translation>
@@ -534,6 +532,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
 <translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
 <translation id="1689062823386843231">Deaktivujte službu UDP bez proxy</translation>
+<translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Vyměnit</translation>
 <translation id="4556086616242530072">Nativní prohlížeč.\nVlastní úschova.\nA pro více řetězců.</translation>
 <translation id="7909462264772842773">Převezměte kontrolu nad svými kryptoměnami a NFT. Peněženka Brave podporuje Ethereum, řetězce EVM, Solana, Filecoin a další.</translation>
@@ -609,6 +608,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="3114681061018999547">Chrání se</translation>
+<translation id="3784455785234192852">Uzamknout</translation>
 <translation id="4412698727486357573">Centrum nápovědy</translation>
 <translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
 <translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
@@ -804,10 +804,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2478788592457735063">Tím se síť přepne na dříve přidanou síť.</translation>
 <translation id="8756686998207163764">Přepnutí sítě</translation>
 <translation id="8905793906896555159">Povolit skupiny karet</translation>
-<translation id="6735749683447943955">Zakázat skupiny karet?</translation>
-<translation id="4616687974503500682">Všechny stávající skupiny budou odstraněny a karty v těchto skupinách se stanou otevřenými, neseskupenými kartami v okně vašeho prohlížeče. Opravdu chcete pokračovat?</translation>
-<translation id="4394049700291259645">Deaktivovat</translation>
-<translation id="3859027502409073633">Zobrazit synchronizované skupiny karet</translation>
 <translation id="7632160823264702523">Lišta skupin karet</translation>
 <translation id="2477807195394450274">Zobrazit spodní lištu pro rychlý přístup ke kartám v aktuálně otevřené skupině karet</translation>
 <translation id="8374720587111523381">Otevírat odkazy v aktuální skupině karet</translation>
@@ -815,7 +811,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1227658541937938697">Automaticky otevírat všechny odkazy v aktuální skupině karet</translation>
 <translation id="5242300593039211344">Uzamknout peněženku</translation>
 <translation id="1108298724135935307">Připojené weby</translation>
-<translation id="8428213095426709021">Nastavení</translation>
 <translation id="4255623233927788178">Zobrazení v průzkumníku bloků</translation>
 <translation id="8274201358637112807">Tato stránka chce interagovat s peněženkou Brave</translation>
 <translation id="3355936511340229503">Chyba připojení</translation>
@@ -857,6 +852,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6458565248779152483">Deaktivovat Brave VPN</translation>
 <translation id="9080536793704001825">Pauza na 15 minut</translation>
 <translation id="803706420145725977">Pauza na 1 hodinu</translation>
+<translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="7733890291091968191">Zobrazit oznámení Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Služba Brave vás nesleduje ani neví, jak naši aplikaci používáte, takže nevíme, jak jste si nastavili VPN. Podělte se s námi o informace o problému, se kterým se potýkáte, a my se jej budeme snažit co nejdříve vyřešit. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>

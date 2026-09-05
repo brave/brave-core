@@ -1,0 +1,22 @@
+diff --git a/net/nqe/network_quality_estimator.cc b/net/nqe/network_quality_estimator.cc
+index cae75078b455220646cfb29b2798e0fa3d642e1e..a42a504caef106bc99ace802c81749aacf6a8e0c 100644
+--- a/net/nqe/network_quality_estimator.cc
++++ b/net/nqe/network_quality_estimator.cc
+@@ -52,7 +52,7 @@ BASE_FEATURE(kNetworkQualityEstimatorAsyncNotifyStartTransaction,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kNetworkQualityEstimatorAsyncNotifyHeadersReceived,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ namespace {
+ 
+@@ -70,7 +70,7 @@ BASE_FEATURE_PARAM(bool,
+                    kDeferHeadersReceivedUntilNextStep,
+                    &kNetworkQualityEstimatorAsyncNotifyHeadersReceived,
+                    "defer_notify_headers_until_next_step",
+-                   true);
++                   false);
+ 
+ #if BUILDFLAG(IS_CHROMEOS)
+ // SequencedTaskRunner to get the network id. A SequencedTaskRunner is used

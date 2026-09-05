@@ -37,11 +37,9 @@ import org.chromium.components.browser_ui.settings.SettingsNavigation.SettingsFr
 /** Tests for {@link BraveSettingsLauncherImpl}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-// Settings fragments are EmbeddableSettingsPages, so SettingsIntentUtil reads these flags while
-// building the intent. Pin them so these tests don't depend on the field trial state. With
-// SettingsInTab the intent targets ChromeLauncherActivity with a chrome://settings URL instead of
-// the settings activity, which is a separate code path from the substitution tested here.
-@DisableFeatures({ChromeFeatureList.SETTINGS_SINGLE_ACTIVITY, ChromeFeatureList.SETTINGS_IN_TAB})
+// Settings fragments are EmbeddableSettingsPages, so SettingsIntentUtil reads this flag while
+// building the intent. Pin it so these tests don't depend on the field trial state.
+@DisableFeatures(ChromeFeatureList.SETTINGS_SINGLE_ACTIVITY)
 public class BraveSettingsLauncherImplTest {
     private Application mContext;
     private BraveSettingsLauncherImpl mSettingsNavigation;

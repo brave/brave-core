@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Ocijenite preglednik Brave</translation>
 <translation id="4104400246019119780">Hvala!</translation>
 <translation id="5202255382948179481">Dodaj svoje prijedloge</translation>
+<translation id="7759809451544302770">Neobvezno</translation>
 <translation id="4748689412569009273">Jednim emotikonom opišite svoje iskustvo s preglednikom Brave?</translation>
 <translation id="7335142069363686805">Ocijeni sada</translation>
 <translation id="6681362094306959654">Sviđa vam se preglednik Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Tužan sam</translation>
 <translation id="5488843227043643519">Želite li dati ocjenu u Trgovini Play?</translation>
 <translation id="5867854497245948308">Hvala vam na povratnoj informaciji!</translation>
-<translation id="5578122562331038807">Recite nam kako možemo poboljšati preglednik Brave</translation>
-<translation id="1483493594462132177">Pošalji</translation>
-<translation id="3889034478061064651">Dodaj svoje prijedloge (opcionalno)</translation>
-<translation id="1769154760586570836">Povratna informacija je poslana. Hvala vam!</translation>
-<translation id="4450893287417543264">Ne prikazuj ponovo</translation>
+<translation id="4935400164159327304">Recite nam kako možemo poboljšati preglednik Brave.</translation>
 <translation id="8966035543003363155">Obavijesti Brave to olakšavaju</translation>
 <translation id="7662771815233894695">Upravljajte preuzimanjima, zaradite tokene, pogledajte statistike o tjednoj uporabi i više.</translation>
 <translation id="4265429476391459783">Ne zarađujete Nagrade niti primate izvješća o privatnosti</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Radnje stranice</translation>
 <translation id="7104487676473617844">Sljedeće stavke bit će vidljive u izborniku samo kada ih podržava trenutno otvorena web-stranica.</translation>
 <translation id="4159764849281393303">Web-aplikacija</translation>
+<translation id="8428213095426709021">Postavke</translation>
 <translation id="8038539967102225446">Oglasi su Brave ovdje!</translation>
 <translation id="222883304157347087">(ovaj uređaj)</translation>
 <translation id="4157741509680155021">UREĐAJI U LANCU ZA SINKRONIZIRANJE</translation>
@@ -537,6 +535,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="1822560017823072927">Zadana javna i privatna sučelja</translation>
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez uporabe proxyja</translation>
+<translation id="1483493594462132177">Pošalji</translation>
 <translation id="538450413584738399">Usluga Swap</translation>
 <translation id="4556086616242530072">Izvorni preglednik.\nNeskrbništvo.\nViše lanaca.</translation>
 <translation id="7909462264772842773">Preuzmite kontrolu nad svojim kriptovalutama i NFT-ovima. Braveov novčanik podržava platforme: Ethereum, lanci EVM, Solana, Filecoin i više.</translation>
@@ -614,6 +613,7 @@ Račun
 <translation id="569068482611873351">Uvoz...</translation>
 <translation id="4522570452068850558">Pojedinosti</translation>
 <translation id="3114681061018999547">Zaštita</translation>
+<translation id="3784455785234192852">Zaključaj</translation>
 <translation id="4412698727486357573">Centar za pomoć</translation>
 <translation id="8239147115686034860">Automatski zaključaj novčanik preglednika Brave</translation>
 <translation id="414639769490080648">Broj minuta čekanja dok se novčanik preglednika Brave automatski ne zaključa</translation>
@@ -809,10 +809,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="2478788592457735063">Time prebacujete mrežu na prethodno dodanu mrežu.</translation>
 <translation id="8756686998207163764">Promijeni mrežu</translation>
 <translation id="8905793906896555159">Omogući grupe kartica</translation>
-<translation id="6735749683447943955">Onemogućiti grupe kartica?</translation>
-<translation id="4616687974503500682">Sve postojeće grupe će biti izbrisane, a kartice unutar tih grupa postat će otvorene, nesvrstane kartice u prozoru vašeg preglednika. Jeste li sigurni da želite nastaviti?</translation>
-<translation id="4394049700291259645">Onemogući</translation>
-<translation id="3859027502409073633">Prikaži sinhronizirane grupe kartica</translation>
 <translation id="7632160823264702523">Traka grupa kartica</translation>
 <translation id="2477807195394450274">Prikaži donju traku za brzi pristup karticama u trenutno otvorenoj grupi kartica</translation>
 <translation id="8374720587111523381">Otvori poveznice u trenutnoj grupi kartica</translation>
@@ -820,7 +816,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="1227658541937938697">Automatski otvori sve poveznice u trenutnoj grupi kartica</translation>
 <translation id="5242300593039211344">Zaključaj novčanik</translation>
 <translation id="1108298724135935307">Povezana mrežna mjesta</translation>
-<translation id="8428213095426709021">Postavke</translation>
 <translation id="4255623233927788178">Prikaži u tražilici Block Explorer</translation>
 <translation id="8274201358637112807">Ova se stranica želi povezati s novčanikom Brave</translation>
 <translation id="3355936511340229503">Pogreška veze</translation>
@@ -863,6 +858,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="6458565248779152483">Onemogući Brave VPN</translation>
 <translation id="9080536793704001825">Zaustavite na 15 minuta</translation>
 <translation id="803706420145725977">Zaustavite na jedan sat</translation>
+<translation id="4394049700291259645">Onemogući</translation>
 <translation id="7733890291091968191">Prikaz obavijesti Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili VPN. Pošaljite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNaziv glavnog računala mreže VPN\n <ph name="VALUE"/></translation>

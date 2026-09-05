@@ -5,6 +5,7 @@
 
 #include "components/sync_preferences/common_syncable_prefs_database.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
@@ -99,18 +100,18 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
 
 namespace sync_preferences {
 
-const SyncablePrefMetadata*
+std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
     std::string_view pref_name) const {
   const auto* metadata =
       base::FindOrNull(kBraveCommonSyncablePrefsAllowlist, pref_name);
   if (metadata) {
-    return metadata;
+    return *metadata;
   }
   return GetSyncablePrefMetadata_ChromiumOriginalImpl(pref_name);
 }
 
-const SyncablePrefMetadata*
+std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata_ChromiumImpl(
     std::string_view pref_name) const {
   return GetSyncablePrefMetadata(pref_name);

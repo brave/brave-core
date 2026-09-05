@@ -13,14 +13,14 @@
 #include "ui/views/controls/styled_label.h"
 #include "url/gurl.h"
 
-class BrowserWindowInterface;
+class Browser;
 
 namespace views {
 
 // Creates a styled label with clickable links that can be shown in dialog
 // footnotes (such as Permission prompt and similar).
 std::unique_ptr<StyledLabel> CreateStyledLabelForDialogFootnote(
-    BrowserWindowInterface* browser,
+    Browser* browser,
     const std::u16string& footnote,
     const std::vector<std::u16string>& replacements,
     const std::vector<GURL>& urls);

@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Valore Brave</translation>
 <translation id="4104400246019119780">Grazas!</translation>
 <translation id="5202255382948179481">Engade as túas suxestións</translation>
+<translation id="7759809451544302770">Opcional</translation>
 <translation id="4748689412569009273">Nun emoji, como é a túa experiencia con Brave?</translation>
 <translation id="7335142069363686805">Valorar</translation>
 <translation id="6681362094306959654">Gústache Brave?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Triste</translation>
 <translation id="5488843227043643519">Queres deixarnos unha valoración en Play Store?</translation>
 <translation id="5867854497245948308">Grazas polos teus comentarios!</translation>
-<translation id="5578122562331038807">Fainos saber como podemos mellorar Brave</translation>
-<translation id="1483493594462132177">Enviar</translation>
-<translation id="3889034478061064651">Engade as túas suxestións (opcional)</translation>
-<translation id="1769154760586570836">Comentarios enviados. Grazas!</translation>
-<translation id="4450893287417543264">Non mostrar de novo</translation>
+<translation id="4935400164159327304">Fainos saber como podemos mellorar Brave.</translation>
 <translation id="8966035543003363155">Coas notificacións de Brave, é máis sinxelo</translation>
 <translation id="7662771815233894695">Xestiona as descargas, gaña tokens ou consulta as estadísticas semanais, entre outras cousas.</translation>
 <translation id="4265429476391459783">Non vas gañar recompensas nin vas recibir informes de privacidade</translation>
@@ -283,6 +280,7 @@
 <translation id="7002271985859760052">Accións da páxina</translation>
 <translation id="7104487676473617844">Os seguintes elementos só serán visibles no menú cando sexan compatibles coa páxina web aberta.</translation>
 <translation id="4159764849281393303">WebApp</translation>
+<translation id="8428213095426709021">Configuración</translation>
 <translation id="8038539967102225446">Os anuncios de Brave están aquí!</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="4157741509680155021">DISPOSITIVOS DA CADEA DE SINCRONIZACIÓN</translation>
@@ -534,6 +532,7 @@ Seguro que queres facelo?</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas predeterminadas</translation>
 <translation id="5825943197137337319">Só interface pública predeterminada</translation>
 <translation id="1689062823386843231">Desactivar UDP non proxied</translation>
+<translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Navegador nativo.\nCustodia propia.\nE multicadea.</translation>
 <translation id="7909462264772842773">Toma o control da túas criptomoedas e NFT. A Carteira de Brave admite Ethereum, cadeas EVM, Solana, Filecoin e moito máis</translation>
@@ -609,6 +608,7 @@ Seguro que queres facelo?</translation>
 <translation id="569068482611873351">Importar…</translation>
 <translation id="4522570452068850558">Detalles</translation>
 <translation id="3114681061018999547">Activando escudo</translation>
+<translation id="3784455785234192852">Bloquear</translation>
 <translation id="4412698727486357573">Centro de axuda</translation>
 <translation id="8239147115686034860">Bloquear Brave Wallet automaticamente</translation>
 <translation id="414639769490080648">Número de minutos que é preciso agardar para que Brave Wallet se bloquee automaticamente</translation>
@@ -803,10 +803,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2478788592457735063">Isto cambiará a rede por outra engadida con anterioridade.</translation>
 <translation id="8756686998207163764">Cambiar rede</translation>
 <translation id="8905793906896555159">Activar os grupos de separadores</translation>
-<translation id="6735749683447943955">Desactivar os grupos de separadores?</translation>
-<translation id="4616687974503500682">Calquera grupo existente eliminarase, e os separadores dentro deses grupos convertiranse en separadores abertos e sen agrupar na fiestra do navegador. Estás seguro de que queres continuar?</translation>
-<translation id="4394049700291259645">Desactivar</translation>
-<translation id="3859027502409073633">Amosar os grupos de separadores sincronizados</translation>
 <translation id="7632160823264702523">Barra dos grupos de separadores</translation>
 <translation id="2477807195394450274">Mostra unha barra inferior para acceder rapidamente aos separadores do grupo de separadores aberto</translation>
 <translation id="8374720587111523381">Abrir as ligazóns no grupo de separadores actual</translation>
@@ -814,7 +810,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1227658541937938697">Abre automaticamente todas as ligazóns do grupo de separadores actual</translation>
 <translation id="5242300593039211344">Bloquear carteira</translation>
 <translation id="1108298724135935307">Sitios conectados</translation>
-<translation id="8428213095426709021">Configuración</translation>
 <translation id="4255623233927788178">Ver no explorador de bloques</translation>
 <translation id="8274201358637112807">Esta páxina quere interactuar con Carteira de Brave</translation>
 <translation id="3355936511340229503">Erro de conexión</translation>
@@ -856,6 +851,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6458565248779152483">Desactivar VPN de Brave</translation>
 <translation id="9080536793704001825">Pausar durante 15 minutos</translation>
 <translation id="803706420145725977">Pausar durante 1 hora</translation>
+<translation id="4394049700291259645">Desactivar</translation>
 <translation id="7733890291091968191">Mostrar notificacións de Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave non rastrexa a túa actividade nin sabe como usar a nosa aplicación, polo que descoñecemos como configuraches a túa VPN. Danos información sobre o problema e faremos todo o que poidamos para resolvelo canto antes. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNome do servidor da VPN\n <ph name="VALUE"/></translation>

@@ -71,7 +71,6 @@
 <translation id="5679816001365584346">Download Brave på din telefon for at åbne eller oprette nye fanegrupper på farten.</translation>
 <translation id="4559627161887338743">Du kan administrere de Brave-konti, du er logget ind på. Dine Brave-konti bruges i Brave-browseren, Play Butik, Gmail m.m. Hvis du vil tilføje en konto, der tilhører en anden, f.eks. et familiemedlem, skal du føje en ny person til din <ph name="DEVICE_TYPE"/> i stedet. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Søg med billedsøgning</translation>
-<translation id="2963742289915075304"><ph name="EXISTING_USER"/> er allerede logget ind. Hvis du vil holde din browsing adskilt, skal du logge ind i Brave på din egen profil som <ph name="USER_EMAIL_ADDRESS"/>. Du kan også se dine bogmærker og meget mere fra <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Vælg tekst</translation>
 <translation id="4528406859989804913">Du er ved at logge ind med en managerstyret konto og give dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via kontrolpanelet for Brave Konti, men du kan ikke knytte disse data til en anden konto. Du kan eventuelt oprette en ny profil for at holde dine Brave-data adskilt. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave sparer på batteriet ved at begrænse aktivitet i baggrunden og visuelle effekter, f.eks. smooth scrolling og videobilledfrekvenser. <ph name="BEGIN_LINK"/>Få flere oplysninger om Energisparefunktion<ph name="END_LINK"/></translation>
@@ -130,7 +129,6 @@
 <translation id="5298352791080868905">Åbn links i Brave fra en hvilken som helst app, og sørg for, at browseren altid er tilgængelig på proceslinjen</translation>
 <translation id="2600233721598267627">Klik på knappen Opsummer for at dele dette dokument med Gemini i Brave for at få en hurtig oversigt og stille opfølgende spørgsmål</translation>
 <translation id="2118275934191847461">Med <ph name="BEGIN_LINK"/>værktøjer fra Brave<ph name="END_LINK"/> kan du søge sikkert på nettet og bevare styringen</translation>
-<translation id="7508460698788470991"><ph name="EXISTING_USER"/> er allerede logget ind. Hvis du vil holde din browsing adskilt, skal du logge ind i Brave på din egen profil som <ph name="USER_EMAIL_ADDRESS"/>. Du kan også se dine adgangskoder og meget mere på alle dine enheder.</translation>
 <translation id="2451727308784734061">Brug din genvej til hurtigt at gå til Adgangs­kode­admin­istrator. Du kan flytte din genvej til din computers startskærm eller appliste.</translation>
 <translation id="6381750314821942592">Brave lukkes snart</translation>
 <translation id="6078442581074612226">I Brave</translation>
@@ -149,7 +147,6 @@
 <translation id="7931230852267968641">Din organisation kan se og administrere browserdata, f.eks. bogmærker, historik og adgangskoder. Den kan ikke se browserdata på dine andre Brave-profiler</translation>
 <translation id="2257221826278123061">Verificer din identitet for at bruge og gemme Brave-data på din konto, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">Brug tastaturgenvejen for at forlade eller vende tilbage til Gemini i Brave.</translation>
-<translation id="5655607968417451974">Start Brave</translation>
 <translation id="7387051847644272380">Der opstod en fejl i operativsystemet under installationen. Download Brave igen.</translation>
 <translation id="2648689842065142443">Hvis du deler en enhed, kan venner og familie browse individuelt og konfigurere Brave hver især</translation>
 <translation id="1001521084148238686">Nem adgang til Gemini i Brave overalt på din enhed, selvom Brave er minimeret.</translation>
@@ -298,6 +295,7 @@
 <translation id="4304713468139749426">Adgangskode­administrator</translation>
 <translation id="4334241893986177674">Søg i dette screenshot</translation>
 <translation id="242356249838681145">Åbn Brave, når Windows starter</translation>
+<translation id="4747339441562331861">Få nem adgang til de funktioner, du kender, elsker og har tillid til, ved at angive Brave som din standardbrowser. Brave fastgøres til proceslinjen, så du hurtigt kan tilgå den.</translation>
 <translation id="4400772909124543403">Der er ingen tilgængelig opdatering</translation>
 <translation id="9183662282810237335">Vil du afslutte Brave alligevel?</translation>
 <translation id="4413205837991854510">Vis altid genvejen til billedsøgning</translation>
@@ -394,7 +392,6 @@
 
 Hvis denne side ikke fungerer som forventet, kan du prøve at tillade optimering.</translation>
 <translation id="7074160267408082133">Vis Gemini i Brave på Mac-menulinjen, og aktivér tastaturgenvejen</translation>
-<translation id="2938507901464407819"><ph name="EXISTING_USER"/> er allerede logget ind. Hvis du vil holde din browsing adskilt, skal du logge ind i Brave på din egen profil som <ph name="USER_EMAIL_ADDRESS"/>. Du kan også se dine gemte oplysninger og meget mere fra <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Opstartsfejl: Kør installationsprogrammet som almindelig bruger, ikke som administrator.</translation>
 <translation id="3588973534877826647">Brug Brave som standard, og fastgør den</translation>
 <translation id="5596627076506792578">Flere valgmuligheder</translation>
@@ -568,12 +565,12 @@ Nye bogmærker kan ikke gemmes på din konto, før du sletter nogle. Hvis du log
 <translation id="5755581833598928580">Brug Brave, hver gang du klikker på links i beskeder, dokumenter og andre apps</translation>
 <translation id="7216228761061470870">Når du bruger Billedsøgning på en computer, sendes sidetitlen, webadressen og indholdet, herunder PDF-filer, til serveren</translation>
 <translation id="5516268345616100622">Jobliste – Brave</translation>
-<translation id="2416155625082200759"><ph name="EXISTING_USER"/> er allerede logget ind. Hvis du vil holde din browsing adskilt, skal du logge ind i Brave på din egen profil som <ph name="USER_EMAIL_ADDRESS"/>. Du kan også se dine gemte oplysninger og meget mere på alle dine enheder.</translation>
 <translation id="1871621397473741084">Begynd at browse med det samme: Brave kan nu åbnes, når Windows starter.</translation>
 <translation id="7274695763216404502">Panelet er fastgjort. Brug billedsøgning igen via værktøjslinjen</translation>
 <translation id="7288567540154601580">Faner og udvidelser</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave anbefaler, at du fjerner den}one{Brave anbefaler, at du fjerner den}other{Brave anbefaler, at du fjerner dem}}</translation>
 <translation id="4600669988724328687">Hvis du vil dele systemlyd, skal du åbne Systemindstillinger og tillade "Kun optagelse af systemlyd" for Brave. Genstart derefter Brave.</translation>
+<translation id="9068395155143628872">Ad measurement giver websites, du besøger, mulighed for at anmode om oplysninger fra Brave, som hjælper websitet med at måle, hvor godt dets annoncer klarer sig. Ad measurement begrænser sporing på tværs af websites ved at overføre så få oplysninger som muligt mellem websites.</translation>
 <translation id="1864557848095568223">Brave opdateres</translation>
 <translation id="3403365884036456766">Din præferencefil er beskadiget eller ugyldig.
 
@@ -636,7 +633,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="5687542525349822727">Angiv Brave som standardbrowser</translation>
 <translation id="6396151137840491551">Brave opgraderer automatisk usikre forbindelser til HTTPS, når det er muligt</translation>
 <translation id="2925193881330501265">Du loggede ind på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Brug den samme konto til at logge ind igen.</translation>
-<translation id="3744141798014187630"><ph name="EXISTING_USER"/> er allerede logget ind. Hvis du vil holde din browsing adskilt, skal du logge ind i Brave på din egen profil som <ph name="USER_EMAIL_ADDRESS"/>. Du kan også se dine bogmærker og meget mere på alle dine enheder.</translation>
 <translation id="6915252145142862992">Dette er en sekundær installation af Brave, og den kan ikke gøres til din standardbrowser.</translation>
 <translation id="7766756101194440006">Få det bedste fra Brave med Brave-appen på din <ph name="DEVICE_TYPE"/></translation>
 <translation id="8004582292198964060">Browser</translation>
@@ -667,12 +663,10 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="1755067029031059271">Brave kan ikke verificere, hvor denne udvidelse kommer fra, og den kan derfor være skadelig. Du bør fjerne udvidelsen fra Brave, så den ikke længere kan se og ændre dine data på de websites, du besøger, bl.a. dine personlige oplysninger.</translation>
 <translation id="8207657266087451193">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave, så der kan oprettes beskrivelser. Du kan til enhver tid deaktivere denne funktion i indstillingerne.</translation>
 <translation id="7792526144795244436">Vil du logge ind i Brave med en ny profil?</translation>
-<translation id="784788600549915416"><ph name="EXISTING_USER"/> er allerede logget ind. Hvis du vil holde din browsing adskilt, skal du logge ind i Brave på din egen profil som <ph name="USER_EMAIL_ADDRESS"/>. Du kan også se dine adgangskoder og meget mere fra <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Vis Gemini i Brave i systembakken, og aktivér tastaturgenvejen</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave advarer dig<ph name="END_LINK"/> om usikre websites og downloads</translation>
 <translation id="8060549744348950090">Du har ikke besøgt websitet for nylig. Brave har fjernet <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Køb, oversæt og identificer det, du ser gennem dit kamera, i Brave-appen til iOS</translation>
-<translation id="4470171586042711152">QR-kode til at logge ind i Brave som <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Opstartsfejl: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Din organisation lukker Brave, når browseren ikke har været i brug i <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Gem som billede</translation>

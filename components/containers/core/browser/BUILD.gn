@@ -36,7 +36,6 @@ static_library("browser") {
   friend = [
     "//brave/browser/containers:browser_tests",
     "//brave/browser/ui/containers:unit_tests",
-    "//brave/browser/ui/views/page_action:unit_tests",
     ":test_support",
     ":unit_tests",
   ]

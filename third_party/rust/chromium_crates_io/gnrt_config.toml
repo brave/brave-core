@@ -632,8 +632,6 @@ if (epoch != "0.2") {
 rustflags += [
   "-A",
   "unused_variables",
-  "-A",
-  "deprecated",
 ]
 ''', allow_unsafe = true }
 

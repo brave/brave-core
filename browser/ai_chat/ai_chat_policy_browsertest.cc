@@ -209,7 +209,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
 
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Command) {
   chrome::BrowserCommandController* command_controller =
-      chrome::BrowserCommandController::From(browser());
+      browser()->command_controller();
   EXPECT_EQ(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT),
             IsAIChatEnabledTest());
 }

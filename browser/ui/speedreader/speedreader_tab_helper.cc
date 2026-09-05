@@ -196,7 +196,9 @@ void SpeedreaderTabHelper::OnBubbleClosed() {
   speedreader_bubble_ = nullptr;
   UpdateUI();
 
-  observers_.Notify(&Observer::OnTuneBubbleClosed);
+  for (auto& o : observers_) {
+    o.OnTuneBubbleClosed();
+  }
 }
 
 void SpeedreaderTabHelper::AddObserver(Observer* observer) {
@@ -341,8 +343,6 @@ void SpeedreaderTabHelper::UpdateUI() {
     UpdateState(State::kNotDistillable);
   }
 
-  observers_.Notify(&Observer::OnDistillStateUpdated);
-
   if (!is_visible_) {
     return;
   }
@@ -350,6 +350,7 @@ void SpeedreaderTabHelper::UpdateUI() {
   if (auto* browser_window = BraveBrowserWindow::From(
           BrowserWindow::FindBrowserWindowWithWebContents(web_contents()))) {
     browser_window->UpdateReaderModeToolbar();
+    browser_window->UpdatePageActionIcon(brave::kSpeedreaderPageActionIconType);
   }
 #endif
 }
@@ -418,7 +419,9 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
       *kLoadScript, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
-  observers_.Notify(&Observer::OnContentsReady);
+  for (auto& o : observers_) {
+    o.OnContentsReady();
+  }
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {

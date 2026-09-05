@@ -142,8 +142,7 @@ void SidebarControlView::ShowContextMenuForViewImpl(
 
 void SidebarControlView::ExecuteCommand(int command_id, int event_flags) {
   if (command_id == IDC_SIDEBAR_TOGGLE_POSITION) {
-    chrome::BrowserCommandController::From(browser_)->ExecuteCommand(
-        command_id);
+    browser_->command_controller()->ExecuteCommand(command_id);
     return;
   }
   auto* service =

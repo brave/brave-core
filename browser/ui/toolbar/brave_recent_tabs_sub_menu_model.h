@@ -8,7 +8,7 @@
 
 #include "chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h"
 
-class BrowserWindowInterface;
+class Browser;
 
 namespace ui {
 class AcceleratorProvider;
@@ -17,7 +17,7 @@ class AcceleratorProvider;
 class BraveRecentTabsSubMenuModel : public RecentTabsSubMenuModel {
  public:
   BraveRecentTabsSubMenuModel(ui::AcceleratorProvider* accelerator_provider,
-                              BrowserWindowInterface* browser);
+                         Browser* browser);
 
   BraveRecentTabsSubMenuModel(const BraveRecentTabsSubMenuModel&) = delete;
   BraveRecentTabsSubMenuModel& operator=(const BraveRecentTabsSubMenuModel&) =

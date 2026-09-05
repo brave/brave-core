@@ -24,7 +24,6 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/skia_paint_util.h"
@@ -301,8 +300,7 @@ void BraveTooltipPopup::RecomputeAlignment() {
 }
 
 const gfx::ShadowDetails& BraveTooltipPopup::GetShadowDetails() const {
-  return gfx::ShadowDetails::Get(kShadowElevation,
-                                 gfx::RoundedCornersF(kCornerRadius));
+  return gfx::ShadowDetails::Get(kShadowElevation, kCornerRadius);
 }
 
 gfx::Insets BraveTooltipPopup::GetShadowMargin() const {

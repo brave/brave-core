@@ -148,7 +148,7 @@ namespace brave {
 namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
-  return from != to && from->GetType() == Browser::TYPE_NORMAL &&
+  return from != to && from->type() == Browser::TYPE_NORMAL &&
          !UnloadController::From(from)->is_attempting_to_close_browser() &&
          !from->IsDeleteScheduled() && to->GetProfile() == from->GetProfile();
 }
@@ -1078,7 +1078,7 @@ void ExportAllBookmarks(Browser* browser) {
   (new BookmarksExportListener(browser->GetProfile()))->ShowFileDialog(browser);
 }
 
-void ToggleAllBookmarksButtonVisibility(BrowserWindowInterface* browser) {
+void ToggleAllBookmarksButtonVisibility(Browser* browser) {
   auto* prefs = browser->GetProfile()->GetPrefs();
   prefs->SetBoolean(
       brave::bookmarks::prefs::kShowAllBookmarksButton,
@@ -1207,7 +1207,7 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void OpenTabUrlsInContainer(BrowserWindowInterface* bwi,
+void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
                             const std::vector<tabs::TabHandle>& tabs,
                             const containers::mojom::ContainerPtr& container) {
   for (const auto& tab : tabs) {
@@ -1218,11 +1218,11 @@ void OpenTabUrlsInContainer(BrowserWindowInterface* bwi,
     }
 
     const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
-    OpenUrlInContainer(bwi, url, container);
+    OpenUrlInContainer(browser_window, url, container);
   }
 }
 
-void OpenUrlInContainer(BrowserWindowInterface* bwi,
+void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
                         const containers::mojom::ContainerPtr& container,
                         bool is_link,
@@ -1236,18 +1236,20 @@ void OpenUrlInContainer(BrowserWindowInterface* bwi,
   CHECK(container);
 
   NavigateParams params(
-      bwi, url, is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
+      browser_window, url,
+      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      bwi->GetProfile(), containers::kContainersStoragePartitionDomain,
-      container->id, bwi->GetProfile()->IsOffTheRecord());
+      browser_window->GetProfile(),
+      containers::kContainersStoragePartitionDomain, container->id,
+      browser_window->GetProfile()->IsOffTheRecord());
 
   Navigate(&params);
 }
 
-void OpenTabUrlsWithoutContainer(BrowserWindowInterface* bwi,
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
                                  const std::vector<tabs::TabHandle>& tabs) {
   for (const auto& tab : tabs) {
     const auto* tab_ptr = tab.Get();
@@ -1257,11 +1259,11 @@ void OpenTabUrlsWithoutContainer(BrowserWindowInterface* bwi,
     }
 
     const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
-    OpenUrlWithoutContainer(bwi, url);
+    OpenUrlWithoutContainer(browser_window, url);
   }
 }
 
-void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
+void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
                              const GURL& url,
                              bool is_link,
                              std::optional<url::Origin> initiator_origin,
@@ -1272,7 +1274,8 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
   }
 
   NavigateParams params(
-      bwi, url, is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
+      browser_window, url,
+      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.initiator_origin = std::move(initiator_origin);
   params.started_from_context_menu = started_from_context_menu;
@@ -1280,49 +1283,62 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* bwi,
 }
 
 void CreateTemporaryContainerAndOpenTabUrls(
-    BrowserWindowInterface* bwi,
+    BrowserWindowInterface* browser_window,
     const std::vector<tabs::TabHandle>& tabs) {
   auto* containers_service =
-      ContainersServiceFactory::GetForProfile(bwi->GetProfile());
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
   CHECK(containers_service);
   OpenTabUrlsInContainer(
-      bwi, tabs, containers_service->CreateAndPersistTemporaryContainer());
+      browser_window, tabs,
+      containers_service->CreateAndPersistTemporaryContainer());
 }
 
 void CreateTemporaryContainerAndOpenUrl(
-    BrowserWindowInterface* bwi,
+    BrowserWindowInterface* browser_window,
     const GURL& url,
     bool is_link,
     std::optional<url::Origin> initiator_origin,
     bool started_from_context_menu) {
-  CHECK(bwi);
+  CHECK(browser_window);
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
     return;
   }
 
   auto* containers_service =
-      ContainersServiceFactory::GetForProfile(bwi->GetProfile());
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
   CHECK(containers_service);
-  OpenUrlInContainer(
-      bwi, url, containers_service->CreateAndPersistTemporaryContainer(),
-      is_link, std::move(initiator_origin), started_from_context_menu);
+  OpenUrlInContainer(browser_window, url,
+                     containers_service->CreateAndPersistTemporaryContainer(),
+                     is_link, std::move(initiator_origin),
+                     started_from_context_menu);
 }
 
-void OpenContainerMenuOnPageActionView(BrowserWindowInterface* bwi,
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
                                        actions::ActionItem* item) {
+  if (!browser_window) {
+    DVLOG(1) << "Browser window is not valid";
+    return;
+  }
+
 #if !defined(TOOLKIT_VIEWS)
   return;
 #else
-  BrowserView* const browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser_window);
   if (!browser_view || !browser_view->toolbar_button_provider()) {
     DVLOG(1) << "Browser view or toolbar button provider is not valid";
     return;
   }
 
+  tabs::TabInterface* tab = browser_window->GetActiveTabInterface();
+  if (!tab) {
+    DVLOG(1) << "Tab is not valid";
+    return;
+  }
+
   tabs::BraveTabFeatures* brave_tab_features =
-      tabs::BraveTabFeatures::FromTabFeatures(
-          bwi->GetActiveTabInterface()->GetTabFeatures());
+      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures());
   CHECK(brave_tab_features);
 
   page_actions::PartitionedStoragePageActionController* const controller =
@@ -1334,18 +1350,28 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* bwi,
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-void OpenPsstMenuOnPageActionView(BrowserWindowInterface* bwi,
+void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
                                   actions::ActionItem* item,
                                   int event_flags) {
-  BrowserView* const browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
+  if (!browser_window) {
+    DVLOG(1) << "Browser window is not valid";
+    return;
+  }
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser_window);
   if (!browser_view || !browser_view->toolbar_button_provider()) {
     DVLOG(1) << "Browser view or toolbar button provider is not valid";
     return;
   }
 
+  tabs::TabInterface* tab = browser_window->GetActiveTabInterface();
+  if (!tab) {
+    DVLOG(1) << "Tab is not valid";
+    return;
+  }
+
   tabs::BraveTabFeatures* brave_tab_features =
-      tabs::BraveTabFeatures::FromTabFeatures(
-          bwi->GetActiveTabInterface()->GetTabFeatures());
+      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures());
   CHECK(brave_tab_features);
 
   page_actions::PsstActionController* const controller =

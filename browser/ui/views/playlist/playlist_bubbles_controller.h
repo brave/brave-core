@@ -9,11 +9,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "ui/views/view_tracker.h"
 
-namespace views {
-class View;
-}  // namespace views
+class PlaylistActionIconView;
 
 namespace content {
 class WebContents;
@@ -32,14 +29,8 @@ class PlaylistBubblesController
 
   ~PlaylistBubblesController() override;
 
-  void ShowBubble(views::View* anchor_view,
+  void ShowBubble(base::WeakPtr<PlaylistActionIconView> anchor_view,
                   BubbleType bubble_type = BubbleType::kInfer);
-
-  // Re-shows the bubble using the anchor view passed to the most recent
-  // ShowBubble() call, if it's still alive. Used to chain from one bubble
-  // type to another (e.g. "Add" to "Edit") across the async gap of a posted
-  // task, when the original caller's own view may no longer be reachable.
-  void ShowBubbleWithLastAnchor(BubbleType bubble_type);
 
   PlaylistBubbleView* GetBubble();
 
@@ -54,7 +45,6 @@ class PlaylistBubblesController
   explicit PlaylistBubblesController(content::WebContents* web_contents);
 
   raw_ptr<PlaylistBubbleView> bubble_ = nullptr;
-  views::ViewTracker last_anchor_view_tracker_;
 
   base::WeakPtrFactory<PlaylistBubblesController> weak_ptr_factory_{this};
 };

@@ -24,7 +24,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
-import org.chromium.base.BaseSwitches;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -40,7 +39,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.Snackbar
 @Config(manifest = Config.NONE)
 @CommandLineFlags.Add({
     ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE,
-    BaseSwitches.DISABLE_NATIVE_INITIALIZATION
+    ChromeSwitches.DISABLE_NATIVE_INITIALIZATION
 })
 public class BraveSnackbarManagerNewTabTakeoverTest {
     @Rule

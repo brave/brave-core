@@ -38,7 +38,7 @@ class MockPermissionPromptDelegate
   ~MockPermissionPromptDelegate() override = default;
 
   const std::vector<std::unique_ptr<permissions::PermissionRequest>>& Requests()
-      const override {
+      override {
     return request_;
   }
 

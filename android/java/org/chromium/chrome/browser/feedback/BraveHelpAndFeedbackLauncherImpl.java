@@ -36,16 +36,8 @@ public class BraveHelpAndFeedbackLauncherImpl implements HelpAndFeedbackLauncher
     }
 
     @Override
-    public void showHelpAndFeedbackForUrl(Activity activity, String url, String recordAction) {
-        launchFallbackSupportUri(activity);
-    }
-
-    @Override
-    public void showFeedback(
-            final Activity activity,
-            @Nullable String url,
-            @Nullable final String categoryTag,
-            int screenshotMode,
+    public void showFeedback(final Activity activity, @Nullable String url,
+            @Nullable final String categoryTag, int screenshotMode,
             @Nullable final String feedbackContext) {
         showFeedback(activity, url, categoryTag);
     }

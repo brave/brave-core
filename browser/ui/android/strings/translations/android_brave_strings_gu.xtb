@@ -9,6 +9,7 @@
 <translation id="2524310205387880526">Braveને રેટિંગ આપો</translation>
 <translation id="4104400246019119780">આભાર!</translation>
 <translation id="5202255382948179481">Add your suggestions</translation>
+<translation id="7759809451544302770">Optional</translation>
 <translation id="4748689412569009273">એક ઇમોજીમાં કહો, Brave સાથે તમારો અનુભવ કેવો રહ્યો?</translation>
 <translation id="7335142069363686805">હમણાં રેટ કરો</translation>
 <translation id="6681362094306959654">Brave પસંદ છે?</translation>
@@ -16,11 +17,7 @@
 <translation id="6826743502395386800">Sad</translation>
 <translation id="5488843227043643519">Play Store સ્ટોરમાં રેટિંગ આપશો?</translation>
 <translation id="5867854497245948308">Thanks for your feedback!</translation>
-<translation id="5578122562331038807">અમને જણાવો કે અમે Brave ને કેવી રીતે સુધારી શકીએ</translation>
-<translation id="1483493594462132177">મોકલો</translation>
-<translation id="3889034478061064651">તમારા સૂચનો ઉમેરો (વૈકલ્પિક)</translation>
-<translation id="1769154760586570836">પ્રતિસાદ મોકલવામાં આવ્યો. આભાર!</translation>
-<translation id="4450893287417543264">ફરીથી બતાવશો નહીં</translation>
+<translation id="4935400164159327304">Let us know how we can improve Brave.</translation>
 <translation id="8966035543003363155">Brave notifications make it easier</translation>
 <translation id="7662771815233894695">Manage downloads, earn tokens, see weekly usage stats, and more.</translation>
 <translation id="4265429476391459783">તમે રિવોર્ડ કમાઇ રહ્યા નથી અથવા પ્રાઇવસી રિપોર્ટ્સ મેળવી રહ્યા નથી</translation>
@@ -284,6 +281,7 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="7002271985859760052">પૃષ્ઠ ક્રિયાઓ</translation>
 <translation id="7104487676473617844">નીચેના વસ્તુઓ માત્ર ત્યારે જ મેનુમાં જોવા મળશે જ્યારે હાલની ખુલેલી વેબપૃષ્ઠ વડે તેને સપોર્ટ કરવામાં આવતી હોય.</translation>
 <translation id="4159764849281393303">વેબએપ</translation>
+<translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="8038539967102225446">Brave જાહેરાતો અહીં છે!</translation>
 <translation id="222883304157347087">(આ ઉપકરણ)</translation>
 <translation id="4157741509680155021">સિંક ચેઈન પર ઉપકરણો</translation>
@@ -542,6 +540,7 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="1822560017823072927">ડિફૉલ્ટ જાહેર અને ખાનગી ઇન્ટરફેસ</translation>
 <translation id="5825943197137337319">માત્ર ડિફૉલ્ટ જાહેર ઇન્ટરફેસ</translation>
 <translation id="1689062823386843231">બિન-પ્રોક્સી UDPને નિષ્ક્રિય કરો</translation>
+<translation id="1483493594462132177">મોકલો</translation>
 <translation id="538450413584738399">સ્વેપ</translation>
 <translation id="4556086616242530072">બ્રાઉઝર નેટિવ.
 સેલ્ફ-કસ્ટોડી.
@@ -619,6 +618,7 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="569068482611873351">આયાત...</translation>
 <translation id="4522570452068850558">વિગતો</translation>
 <translation id="3114681061018999547">શિલ્ડિંગ</translation>
+<translation id="3784455785234192852">લાક</translation>
 <translation id="4412698727486357573">સહાયતા કેન્દ્ર</translation>
 <translation id="8239147115686034860">Brave વૉલેટ આપમેળે લૉક કરો</translation>
 <translation id="414639769490080648">Brave વૉલેટ આપમેળે લૉક થાય તે પહેલા કેટલી મિનિટ રાહ જોવી</translation>
@@ -810,10 +810,6 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="2478788592457735063">આ નેટવર્કને પહેલાંથી ઉમેરેલા નેટવર્કમાં બદલી દેશે.</translation>
 <translation id="8756686998207163764">નેટવર્ક બદલો</translation>
 <translation id="8905793906896555159">ટૅબ જૂથો સક્ષમ કરો</translation>
-<translation id="6735749683447943955">ટૅબ જૂથો અક્ષમ કરીએ?</translation>
-<translation id="4616687974503500682">કોઈપણ હાલના જૂથો કાઢી નાખવામાં આવશે, અને તે જૂથોમાંની ટૅબ્સ તમારી બ્રાઉઝર વિન્ડોમાં ખુલ્લી, જૂથ વગરની ટૅબ્સ બની જશે. શું તમે ખરેખર ચાલુ રાખવા માંગો છો?</translation>
-<translation id="4394049700291259645">બંધ કરો</translation>
-<translation id="3859027502409073633">સિંક કરેલ ટૅબ જૂથો બતાવો</translation>
 <translation id="7632160823264702523">ટૅબ જૂથો બાર</translation>
 <translation id="2477807195394450274">હાલમાં ખુલ્લા ટૅબ જૂથમાં ટૅબ્સ પર ઝડપી ઍક્સેસ કરવા નીચે એક બાર બતાવો</translation>
 <translation id="8374720587111523381">વર્તમાન ટૅબ જૂથમાં લિંક્સ ખોલો</translation>
@@ -821,7 +817,6 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="1227658541937938697">આપોઆપ તમામ લિંક્સ વર્તમાન ટૅબ જૂથમાં ખોલો</translation>
 <translation id="5242300593039211344">વૉલેટ લોક કરો</translation>
 <translation id="1108298724135935307">જોડાયેલ સાઇટ્સ</translation>
-<translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="4255623233927788178">બ્લોક એક્સ્પ્લોરરમાં જુઓ</translation>
 <translation id="8274201358637112807">આ પેજ Brave વૉલેટ સાથે સંકળાવું માંગે છે</translation>
 <translation id="3355936511340229503">કનેક્શન ભૂલ</translation>
@@ -863,6 +858,7 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="6458565248779152483">Brave VPN અક્ષમ કરો</translation>
 <translation id="9080536793704001825">પંદર મિનિટ માટે રોકો</translation>
 <translation id="803706420145725977">એક કલાક માટે રોકો</translation>
+<translation id="4394049700291259645">બંધ કરો</translation>
 <translation id="7733890291091968191">Web3 સૂચનાઓ પ્રદર્શિત કરો</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave તમારી ક્રિયાને ટ્રેક કરતું નથી કે તમે અમારી એપ કેવી રીતે ઉપયોગ કરો છો તે જાણતું નથી, તેથી અમને ખબર નથી કે તમે VPN કેવી રીતે સેટ કર્યો છે. કૃપા કરીને તમારો અનુભવ જણાવો અને અમે તાકીદે તમારા પ્રશ્નને ઉકેલવા માટે શ્રેષ્ઠ પ્રયાસ કરીશું. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN હોસ્ટનામ\n <ph name="VALUE"/></translation>

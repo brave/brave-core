@@ -73,7 +73,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="5679816001365584346">Pakua Brave kwenye simu yako ili ufungue au uanzishe vikundi vipya vya vichupo popote ulipo.</translation>
 <translation id="4559627161887338743">Unaweza kudhibiti Akaunti zako za Brave ulizotumia kuingia katika tovuti na programu. Akaunti zako za Brave hutumiwa kwenye kivinjari cha Brave, Duka la Google Play, Gmail na kwingineko. Iwapo ungependa kuweka akaunti ya mtu mwingine, kama vile mwanafamilia, ongeza mtu mpya kwenye <ph name="DEVICE_TYPE"/> yako badala yake. <ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Tafuta ukitumia kipengele cha Kutafuta kwa Picha</translation>
-<translation id="2963742289915075304">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti ya Brave kwenye wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata alamisho zako na zaidi kwenye <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Chagua maandishi</translation>
 <translation id="4528406859989804913">Unaingia katika akaunti ukitumia akaunti inayodhibitiwa na kumpa msimamizi wa akaunti hiyo udhibiti wa wasifu wako kwenye Brave. Data yako ya Brave, kama vile programu zako, alamisho, historia, manenosiri, na mipangilio nyingine itahusishwa na<ph name="USER_NAME"/> kabisa. Utaweza kufuta data hii kupitia Dashibodi ya Akaunti za Brave, lakini hutaweza  kuunganisha data hii na akaunti nyingine. Unaweza kwa hiari kuunda wasifu mpya ili kuweka data yako ya Brave iliyo kando. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave huhifadhi chaji ya betri kwa kudhibiti shughuli za chinichini na madoido ya picha, kama vile usogezaji rahisi na kasi za picha za video. <ph name="BEGIN_LINK"/>Pata maelezo zaidi kuhusu Kiokoa Nishati<ph name="END_LINK"/></translation>
@@ -132,7 +131,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="5298352791080868905">Fungua viungo katika Brave kwenye programu yoyote na ufanye kivinjari kiweze kufikiwa kwenye upauzana wako</translation>
 <translation id="2600233721598267627">Ruhusu Gemini kwenye Brave ifikie hati hii kwa kubofya kitufe cha Andaa muhtasari ili upate muhtasari wa haraka na uulize maswali ya nyongeza</translation>
 <translation id="2118275934191847461">Kwa kutumia <ph name="BEGIN_LINK"/>zana kutoka Brave<ph name="END_LINK"/>, unaweza kuvinjari kwa usalama na kuwa na udhibiti</translation>
-<translation id="7508460698788470991">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti ya Brave kwenye wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata manenosiri yako na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="2451727308784734061">Tumia njia yako ya mkato ili ufikie Kidhibiti cha Manenosiri kwa haraka. Unaweza kuhamishia njia yako ya mkato kwenye skrini ya kwanza ya kompyuta yako au kifungua programu.</translation>
 <translation id="6381750314821942592">Brave itafungwa hivi karibuni</translation>
 <translation id="6078442581074612226">Katika Brave</translation>
@@ -151,7 +149,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="7931230852267968641">Shirika lako linaweza kuona na kudhibiti data ya kuvinjari, kama vile alamisho, historia na manenosiri yako. Haliwezi kuona data ya kuvinjari katika wasifu mwingine kwenye Brave</translation>
 <translation id="2257221826278123061">Thibitisha kuwa ni wewe ili utumie na uhifadhi data ya Brave katika akaunti yako, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">Tumia mikato ya kibodi kuondoka au kurudi katika Gemini kwenye Brave.</translation>
-<translation id="5655607968417451974">Anzisha Brave</translation>
 <translation id="7387051847644272380">Hitilafu ya mfumo wa uendeshaji imetokea wakati wa usakinishaji. Tafadhali pakua Brave tena.</translation>
 <translation id="2648689842065142443">Kama unatumia kifaa pamoja na wengine, marafiki na familia wanaweza kuvinjari kivyao na kuweka mipangilio ya Brave wapendavyo</translation>
 <translation id="1001521084148238686">Njia rahisi ya kufikia Gemini kwenye Brave katika kifaa chako, hata wakati Brave imepunguzwa.</translation>
@@ -300,6 +297,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="4304713468139749426">Kidhibiti cha Manenosiri</translation>
 <translation id="4334241893986177674">Tafuta picha hii ya skrini</translation>
 <translation id="242356249838681145">Fungua Brave unapowasha Windows</translation>
+<translation id="4747339441562331861">Pata uwezo wa kufikia vipengele unavyovifahamu, kuvipenda na kuviamini kwa urahisi kwa kuweka Brave iwe kivinjari chako chaguomsingi. Brave itabandikwa kwenye upauzana wako ili uifikie kwa haraka.</translation>
 <translation id="4400772909124543403">Hakuna sasisho linalopatikana</translation>
 <translation id="9183662282810237335">Ungependa kufunga Brave?</translation>
 <translation id="4413205837991854510">Onyesha Njia Mkato ya Kutafuta kwa Picha kila Wakati</translation>
@@ -396,7 +394,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 
 Jaribu kuruhusu uboreshaji ikiwa ukurasa huu haufanyi kazi inavyotarajiwa.</translation>
 <translation id="7074160267408082133">Onyesha Gemini kwenye Brave katika upau wa menyu wa Mac kisha uwashe mikato ya kibodi</translation>
-<translation id="2938507901464407819">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti ya Brave kwenye wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata taarifa zako zilizohifadhiwa na zaidi kwenye <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Hitilafu ya kuwasha: tafadhali washa kisakinishaji kama mtumiaji wa kawaida, si kama msimamizi.</translation>
 <translation id="3588973534877826647">Kutumia Brave kwa chaguomsingi na kuibandika</translation>
 <translation id="5596627076506792578">Chaguo zaidi</translation>
@@ -570,12 +567,12 @@ Huwezi kuhifadhi alamisho mpya kwenye akaunti yako hadi ufute baadhi ya alamisho
 <translation id="5755581833598928580">Tumia Brave wakati wowote unabofya viungo kwenye ujumbe, hati na programu nyinginezo</translation>
 <translation id="7216228761061470870">Unapotumia kipengele cha Kutafuta kwa Picha katika kompyuta ya mezani, jina la ukurasa, URL na maudhui, ikiwa ni pamoja na PDF hutumwa kwenye seva</translation>
 <translation id="5516268345616100622">Kidhibiti cha Shughuli - Brave</translation>
-<translation id="2416155625082200759">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti ya Brave kwenye wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata taarifa zako zilizohifadhiwa na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="1871621397473741084">Anza kuvinjari papo hapo: Sasa Brave inaweza kufunguka unapowasha Windows.</translation>
 <translation id="7274695763216404502">Kimebandikwa! Tumia kipengele cha Kutafuta kwa Picha tena katika upau wa vidhibiti</translation>
 <translation id="7288567540154601580">Vichupo na viendelezi</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave inapendekeza ukiondoe}other{Brave inapendekeza uviondoe}}</translation>
 <translation id="4600669988724328687">Ili utume sauti ya mfumo, fungua Mipangilio ya Mfumo kisha uruhusu 'Kurekodi Sauti ya Mfumo Pekee' kwenye Brave. Utahitaji kuzima kisha uwashe Brave.</translation>
+<translation id="9068395155143628872">Upimaji wa tangazo huruhusu tovuti unazotembelea ziombe maelezo kutoka Brave ambayo yanasaidia tovuti kupima ufanisi wa matangazo yao. Upimaji wa tangazo huzuia ufuatiliaji katika tovuti mbalimbali kwa kuhamisha maelezo machache kadiri iwezekanavyo miongoni mwa tovuti.</translation>
 <translation id="1864557848095568223">Inasasisha Brave</translation>
 <translation id="3403365884036456766">Faili yako ya mapendeleo imeharibika au ni batili. 
 
@@ -638,7 +635,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="5687542525349822727">Ifanye Brave iwe kivinjari chako chaguomsingi</translation>
 <translation id="6396151137840491551">Brave husasisha kiotomatiki miunganisho isiyo salama kuwa HTTPS inapowezekana</translation>
 <translation id="2925193881330501265">Uliingia kwenye Brave kama <ph name="USER_EMAIL_ADDRESS"/>. Tafadhali tumia akaunti hiyo hiyo kuingia tena.</translation>
-<translation id="3744141798014187630">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti ya Brave kwenye wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata alamisho zako na zaidi kwenye vifaa vyako vyote.</translation>
 <translation id="6915252145142862992">Huu ni usakinishaji wa pili wa Brave, na haiwezi kufanywa kuwa kivinjari chako chaguomsingi.</translation>
 <translation id="7766756101194440006">Nufaika zaidi na Brave ukitumia programu ya Brave kwenye <ph name="DEVICE_TYPE"/> yako</translation>
 <translation id="8004582292198964060">Kivinjari</translation>
@@ -669,12 +665,10 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="1755067029031059271">Brave haiwezi kuthibitisha chanzo cha kiendelezi hiki na huenda si salama. Kiondoe kwenye Brave ili kisiweze tena kuona na kubadilisha data yako kwenye tovuti unazotembelea, ikiwa ni pamoja na taarifa zako binafsi.</translation>
 <translation id="8207657266087451193">Ikiwa picha haina ufafanuzi muhimu, Brave itajaribu kukuwekea. Ili kuweka ufafanuzi, tutatuma picha kwa Brave. Unaweza kuzima mipangilio hii wakati wowote.</translation>
 <translation id="7792526144795244436">Ungependa kuingia katika akaunti kwenye Brave ukitumia wasifu mpya?</translation>
-<translation id="784788600549915416">Tayari umeingia katika akaunti ya <ph name="EXISTING_USER"/>. Ili utenganishe shughuli zako za kuvinjari, ingia katika akaunti ya Brave kwenye wasifu wako binafsi ukitumia <ph name="USER_EMAIL_ADDRESS"/>. Pia utapata manenosiri yako na zaidi kwenye <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Onyesha Gemini kwenye Brave katika ubao wa aikoni kisha uwashe mikato ya kibodi</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave inakuonya<ph name="END_LINK"/> kuhusu tovuti na vipakuliwa ambavyo si salama</translation>
 <translation id="8060549744348950090">Hujazitembelea hivi majuzi. Brave imeondoa <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Nunua, tafsiri na utambue unachokiona ukitumia kamera yako katika programu ya Brave inayotumika kwenye iOS</translation>
-<translation id="4470171586042711152">Msimbo wa QR wa kuingia katika Brave ukitumia <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Hitilafu ya kuwasha: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Shirika lako hufunga Brave isipotumika kwa <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Hifadhi ikiwa picha</translation>

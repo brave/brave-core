@@ -71,7 +71,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="5679816001365584346">Muat turun Brave pada telefon anda untuk membuka atau membuat kumpulan tab baharu semasa dalam perjalanan.</translation>
 <translation id="4559627161887338743">Anda boleh mengurus Brave sync chain anda yang dilog masuk. Brave sync chain anda digunakan untuk penyemak imbas Brave, Play Store, Gmail dan pelbagai lagi. Jika anda ingin menambah akaun untuk orang lain, seperti ahli keluarga, tambahkan sahaja orang baharu pada <ph name="DEVICE_TYPE"/> anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Cari menggunakan Carian Imej</translation>
-<translation id="2963742289915075304"><ph name="EXISTING_USER"/> sudah log masuk. Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapat penanda halaman anda dan pelbagai lagi daripada <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Pilih teks</translation>
 <translation id="4528406859989804913">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Brave sync chain, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. Anda boleh memilih untuk membuat profil baharu untuk mengasingkan data Brave anda yang sedia ada. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave menjimatkan kuasa bateri dengan mengehadkan aktiviti latar dan kesan visual, seperti penatalan lancar dan kadar bingkai video. <ph name="BEGIN_LINK"/>Ketahui Penjimat Tenaga dengan lebih lanjut<ph name="END_LINK"/></translation>
@@ -130,7 +129,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="5298352791080868905">Buka pautan dalam Brave daripada mana-mana apl dan pastikan penyemak imbas boleh diakses pada bar tugas anda</translation>
 <translation id="2600233721598267627">Klik butang Ringkaskan untuk berkongsi dokumen ini dengan Gemini dalam Brave untuk mendapatkan ikhtisar pantas dan mengemukakan pertanyaan susulan</translation>
 <translation id="2118275934191847461">Dengan <ph name="BEGIN_LINK"/>alatan daripada Brave<ph name="END_LINK"/>, anda boleh menyemak imbas dengan selamat dan mengekalkan kawalan anda</translation>
-<translation id="7508460698788470991"><ph name="EXISTING_USER"/> sudah log masuk. Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapat kata laluan anda dan pelbagai lagi pada semua peranti anda.</translation>
 <translation id="2451727308784734061">Gunakan pintasan anda untuk mengakses Password Manager dengan pantas. Anda boleh mengalihkan pintasan anda kepada skrin utama atau pelancar apl komputer anda.</translation>
 <translation id="6381750314821942592">Brave akan ditutup sebentar lagi</translation>
 <translation id="6078442581074612226">Dalam Brave</translation>
@@ -149,7 +147,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="7931230852267968641">Organisasi anda dapat melihat dan mengurus data penyemakan imbas, seperti penanda halaman, sejarah dan kata laluan anda. Organisasi anda tidak dapat melihat data semakan imbas dalam profil Brave peribadi</translation>
 <translation id="2257221826278123061">Sahkan identiti anda untuk menggunakan dan menyimpan data Brave dalam akaun anda, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">Untuk meninggalkan atau kembali kepada Gemini dalam Brave, gunakan pintasan papan kekunci.</translation>
-<translation id="5655607968417451974">Mulakan Brave</translation>
 <translation id="7387051847644272380">Ralat sistem pengendalian berlaku semasa pemasangan. Sila muat turun Brave semula.</translation>
 <translation id="2648689842065142443">Jika anda berkongsi peranti, rakan dan keluarga boleh menyemak imbas secara terpisah dan menyediakan Brave sebagaimana yang mereka ingini</translation>
 <translation id="1001521084148238686">Akses mudah untuk menggunakan Gemini dalam Brave merentas peranti anda walaupun Brave diminimumkan.</translation>
@@ -298,6 +295,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="4304713468139749426">Pengurus Kata Laluan</translation>
 <translation id="4334241893986177674">Cari pada tangkapan skrin ini</translation>
 <translation id="242356249838681145">Lancarkan Brave apabila Windows dimulakan</translation>
+<translation id="4747339441562331861">Dapatkan akses mudah kepada ciri yang anda ketahui, sukai dan percayai dengan menetapkan Brave sebagai penyemak imbas lalai anda. Brave akan disematkan pada bar tugas anda untuk akses pantas.</translation>
 <translation id="4400772909124543403">Tiada kemaskinian tersedia</translation>
 <translation id="9183662282810237335">Keluar daripada Brave juga?</translation>
 <translation id="4413205837991854510">Pintasan Sentiasa Paparkan Carian Imej</translation>
@@ -394,7 +392,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 
 Jika halaman ini tidak berfungsi seperti yang dijangkakan, cuba benarkan pengoptimuman.</translation>
 <translation id="7074160267408082133">Tunjukkan Gemini dalam Brave dalam bar menu Mac dan hidupkan pintasan papan kekunci</translation>
-<translation id="2938507901464407819"><ph name="EXISTING_USER"/> sudah log masuk. Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapat maklumat anda yang disimpan dan pelbagai lagi daripada <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Ralat permulaan: sila jalankan pemasang sebagai pengguna biasa, bukan sebagai pentadbir.</translation>
 <translation id="3588973534877826647">Gunakan Brave secara lalai dan sematkan Brave</translation>
 <translation id="5596627076506792578">Lagi pilihan</translation>
@@ -568,12 +565,12 @@ Penanda halaman baharu tidak boleh disimpan dalam akaun anda sehingga anda memad
 <translation id="5755581833598928580">Gunakan Brave pada bila-bila masa anda mengklik pautan dalam mesej, dokumen dan apl lain</translation>
 <translation id="7216228761061470870">Apabila anda menggunakan Carian Imej pada desktop, tajuk halaman, URL dan kandungan, termasuk PDF, akan dihantar kepada pelayan</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
-<translation id="2416155625082200759"><ph name="EXISTING_USER"/> sudah log masuk. Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapat maklumat anda yang disimpan dan pelbagai lagi pada semua peranti anda.</translation>
 <translation id="1871621397473741084">Mula menyemak imbas dengan serta-merta: Kini Brave boleh dilancarkan apabila Windows dimulakan.</translation>
 <translation id="7274695763216404502">Disematkan! Gunakan Carian Imej lagi daripada bar alat</translation>
 <translation id="7288567540154601580">Tab &amp; sambungan</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave mengesyorkan supaya anda mengalih keluar sambungan tersebut}other{Brave mengesyorkan supaya anda mengalih keluar sambungan tersebut}}</translation>
 <translation id="4600669988724328687">Untuk berkongsi audio sistem, buka Tetapan Sistem dan benarkan 'Rakaman Audio Sistem Sahaja' untuk Brave. Kemudian, anda perlu memulakan semula Brave.</translation>
+<translation id="9068395155143628872">Pengukuran iklan membolehkan laman yang anda lawati meminta maklumat daripada Brave yang membantu laman tersebut mengukur prestasi iklan mereka. Pengukuran iklan mengehadkan penjejakan rentas laman dengan memindahkan maklumat antara laman sedikit yang mungkin.</translation>
 <translation id="1864557848095568223">Mengemas kini Brave</translation>
 <translation id="3403365884036456766">Fail pilihan anda rosak atau tidak sah.
 
@@ -636,7 +633,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="5687542525349822727">Tetapkan Brave sebagai lalai anda</translation>
 <translation id="6396151137840491551">Brave meningkatkan sambungan tidak selamat kepada HTTPS secara automatik jika boleh</translation>
 <translation id="2925193881330501265">Anda telah log masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sila gunakan akaun yang sama untuk log masuk lagi.</translation>
-<translation id="3744141798014187630"><ph name="EXISTING_USER"/> sudah log masuk. Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapat penanda halaman anda dan pelbagai lagi pada semua peranti anda.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan kedua Brave dan tidak boleh dijadikan penyemak imbas lalai anda.</translation>
 <translation id="7766756101194440006">Manfaatkan Brave sepenuhnya dengan apl Brave pada <ph name="DEVICE_TYPE"/> anda</translation>
 <translation id="8004582292198964060">Penyemak Imbas</translation>
@@ -667,12 +663,10 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="1755067029031059271">Brave tidak dapat mengesahkan tempat asal sambungan ini, maka tindakan ini mungkin tidak selamat. Alih keluar sambungan ini daripada Brave supaya sambungan ini tidak dapat melihat dan mengubah data anda pada laman yang anda lawati lagi, termasuk maklumat peribadi.</translation>
 <translation id="8207657266087451193">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave. Anda boleh mematikan pilihan ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="7792526144795244436">Log masuk ke Brave dalam profil baharu?</translation>
-<translation id="784788600549915416"><ph name="EXISTING_USER"/> sudah log masuk. Untuk memastikan penyemakan imbas anda terpisah, log masuk ke Brave dalam profil anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapat kata laluan anda dan pelbagai lagi daripada <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Tunjukkan Gemini dalam Brave dalam dulang sistem dan hidupkan pintasan papan kekunci</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave memberi anda amaran<ph name="END_LINK"/> tentang laman dan muat turun tidak selamat</translation>
 <translation id="8060549744348950090">Anda belum melawati laman web ini baru-baru ini. Brave mengalih keluar <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Beli-belah, terjemahkan dan kenal pasti perkara yang anda lihat menggunakan kamera anda pada apl Brave iOS</translation>
-<translation id="4470171586042711152">Kod QR untuk log masuk ke Brave sebagai <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Ralat permulaan: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Organisasi anda menutup Brave apabila apl tersebut tidak digunakan selama <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Simpan sebagai imej</translation>
