@@ -69,6 +69,8 @@ class StateBase : public mojom::Authentication {
 
   void LogOut() override;
 
+  void DeleteAccount(DeleteAccountCallback callback) override;
+
   void LoginStep1(mojom::Service initiating_service,
                   const std::string& email,
                   const std::string& serialized_ke1,

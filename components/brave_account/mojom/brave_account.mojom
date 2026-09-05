@@ -6,6 +6,7 @@
 module brave_account.mojom;
 
 import "brave/components/brave_account/mojom/change_password.mojom";
+import "brave/components/brave_account/mojom/delete_account.mojom";
 import "brave/components/brave_account/mojom/get_service_token.mojom";
 import "brave/components/brave_account/mojom/login.mojom";
 import "brave/components/brave_account/mojom/register.mojom";
@@ -219,6 +220,12 @@ interface Authentication {
 
   // Logs out the user by clearing the authentication token.
   LogOut();
+
+  // Deletes the user's account, logging out on success.
+  // Returns `DeleteAccountResult` on success, or
+  //         `DeleteAccountError` on failure.
+  DeleteAccount()
+    => result<DeleteAccountResult, DeleteAccountError>;
 
   // Retrieves a service token for the specified service.
   // `service`: the service for which to retrieve the token.

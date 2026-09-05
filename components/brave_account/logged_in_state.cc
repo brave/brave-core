@@ -21,6 +21,7 @@ LoggedInState::LoggedInState(
       change_password_(account_state_prefs, url_loader_factory, encryptor),
       get_service_token_(account_state_prefs, url_loader_factory, encryptor),
       log_out_(account_state_prefs, url_loader_factory, encryptor),
+      delete_account_(account_state_prefs, url_loader_factory, encryptor),
       resend_verification_email_(account_state_prefs,
                                  url_loader_factory,
                                  encryptor),
@@ -61,6 +62,10 @@ void LoggedInState::GetServiceToken(mojom::Service service,
 
 void LoggedInState::LogOut() {
   log_out_();
+}
+
+void LoggedInState::DeleteAccount(DeleteAccountCallback callback) {
+  delete_account_(std::move(callback));
 }
 
 void LoggedInState::ResendVerificationEmail(

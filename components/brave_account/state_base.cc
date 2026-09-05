@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_account/mojom/change_password.mojom.h"
+#include "brave/components/brave_account/mojom/delete_account.mojom.h"
 #include "brave/components/brave_account/mojom/login.mojom.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
 #include "brave/components/brave_account/mojom/reset_password.mojom.h"
@@ -71,6 +72,11 @@ void StateBase::GetServiceToken(mojom::Service,
 }
 
 void StateBase::LogOut() {}
+
+void StateBase::DeleteAccount(DeleteAccountCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::DeleteAccountError>());
+}
 
 void StateBase::LoginStep1(mojom::Service initiating_service,
                            const std::string& email,
