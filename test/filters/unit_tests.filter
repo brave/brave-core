@@ -104,6 +104,14 @@
 # kWidevineEnabled. This needs further investigation.
 -ExtensionWebRequestTest.BrowserContextShutdown
 
+# We comment out upstream's mailto fast path in GetBlockState(), which returned
+# DONT_BLOCK before the policy and per-origin preference checks ran, so mailto
+# now returns UNKNOWN and the kAllowedDefaultMail bucket is never recorded.
+# See brave/rewrite/chrome/browser/external_protocol/
+# external_protocol_handler.cc.yaml. Brave-side coverage lives in
+# BraveExternalProtocolHandlerTest (//brave/browser/external_protocol).
+-ExternalProtocolHandlerTest.TestGetBlockStateDefaultDontBlock
+
 # These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
 # always return false
 -SearchEngineChoiceDialogServiceTest.*
