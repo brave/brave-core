@@ -136,6 +136,10 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 /.github/CODEOWNERS @brave/codeowners
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
 
+# PR template auto-close bot (auto-closes external PRs, needs security review)
+/.github/workflows/check-prs.yml @brave/devops-team @brave/sec-team
+/script/check_pr_template.py @brave/sec-team
+
 # Semgrep configuration
 /.semgrepignore @thypon
 
