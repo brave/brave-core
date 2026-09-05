@@ -699,6 +699,15 @@
   <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the website tools dialog. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
     Available tools (<ph name="TOOL_COUNT">$1<ex>10</ex></ph>)
   </message>
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW" desc="Dropdown option letting Leo use a website tool without asking each time" formatter_data="webui=AiChat">
+    Always allow
+  </message>
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ASK" desc="Dropdown option asking for approval each time Leo wants to use a website tool" formatter_data="webui=AiChat">
+    Ask every time
+  </message>
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_NEVER_ALLOW" desc="Dropdown option preventing Leo from using a website tool at all" formatter_data="webui=AiChat">
+    Never allow
+  </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices" formatter_data="webui=AiChat">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>

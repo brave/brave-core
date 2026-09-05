@@ -35,6 +35,10 @@ export interface MockContextProps {
   metrics?: Partial<Mojom.MetricsInterface>
   conversationHandler?: Partial<Mojom.ConversationHandlerInterface>
 
+  // Receives the observer the browser pushes conversation events to, so tests
+  // can simulate them.
+  conversationUIObserverRef?: { current?: Mojom.ConversationUIInterface }
+
   // Initial state for state-type endpoints
   initialState?: {
     tabs?: Mojom.TabData[]
@@ -119,6 +123,7 @@ export function MockContext(props: MockContextProps) {
     initialState = {},
     aiChatOverrides,
     conversationHandler,
+    conversationUIObserverRef,
     conversationOverrides,
     conversationProps = {},
     deps = [],
@@ -154,6 +159,10 @@ export function MockContext(props: MockContextProps) {
     )
 
     const conversation = createConversationApi(mockHandler)
+
+    if (conversationUIObserverRef) {
+      conversationUIObserverRef.current = conversation.conversationUIObserver
+    }
 
     return conversation
   })

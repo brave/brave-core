@@ -137,6 +137,7 @@ export function createMockConversationHandler(
     resumeTask: () => {},
     stopTask: () => {},
     setToolsAttached: () => {},
+    setContentToolPermission: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,

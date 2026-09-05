@@ -360,6 +360,14 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   }
 }
 
+void ConversationHandler::OnContentToolsChanged(
+    const std::string& content_uuid,
+    std::vector<mojom::ToolInfoPtr> tools) {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnContentToolsChanged(content_uuid, mojo::Clone(tools));
+  }
+}
+
 bool ConversationHandler::IsAnyClientConnected() {
   return !receivers_.empty() || !conversation_ui_handlers_.empty();
 }
@@ -1992,6 +2000,14 @@ void ConversationHandler::SetToolsAttached(mojom::AssociatedContentPtr content,
 void ConversationHandler::GetContentTools(const std::string& content_uuid,
                                           GetContentToolsCallback callback) {
   associated_content_manager_->GetToolInfos(content_uuid, std::move(callback));
+}
+
+void ConversationHandler::SetContentToolPermission(
+    const std::string& content_uuid,
+    const std::string& tool_name,
+    mojom::ToolPermission permission) {
+  associated_content_manager_->SetToolPermission(content_uuid, tool_name,
+                                                 permission);
 }
 
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {

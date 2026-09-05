@@ -36,6 +36,7 @@ export default function createConversationApi(
         'resumeTask',
         'stopTask',
         'setToolsAttached',
+        'setContentToolPermission',
       ]),
     },
 
@@ -172,6 +173,13 @@ export default function createConversationApi(
 
           onAssociatedContentInfoChanged: (associatedContent) => {
             api.getState.update({ associatedContent })
+          },
+
+          // Pushed by the browser when it changes a content's tools, so the
+          // dialog settles on the browser's list without re-asking the page
+          // itself - that could return a different list mid-interaction.
+          onContentToolsChanged: (contentUuid, tools) => {
+            api.getContentTools.update(contentUuid, tools)
           },
 
           // This event is subscribable by the UI

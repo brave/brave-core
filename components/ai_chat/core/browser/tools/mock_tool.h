@@ -79,6 +79,11 @@ class MockTool : public Tool {
               (override));
 
   MOCK_METHOD(void,
+              SetUserPermissionStrategy,
+              (mojom::ToolPermission permission),
+              (override));
+
+  MOCK_METHOD(void,
               UseTool,
               (const std::string& input_json, UseToolCallback callback),
               (override));
