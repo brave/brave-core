@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 
 #include <algorithm>
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -17,6 +18,7 @@
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
+#include "base/functional/function_ref.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -521,7 +523,241 @@ bool ReadAssociatedContentFromEntry(
   return true;
 }
 
+// --- Size-budget policy: which fields may be omitted, and in what order ---
+
+// One category of omittable field. A pass invokes |visit| for every
+// AIChatCompressibleString it covers; FitEntryWithinSyncBudget omits a whole
+// category at a time, and ForEachOmittableString runs every pass so that the
+// restore side sees the same fields.
+using OmissionPass = void (*)(sync_pb::AIChatConversationSpecifics_Entry*,
+                              CompressibleStringVisitor);
+
+void VisitEachString(google::protobuf::RepeatedPtrField<
+                         sync_pb::AIChatCompressibleString>* strings,
+                     CompressibleStringVisitor visit) {
+  for (auto& value : *strings) {
+    visit(value);
+  }
+}
+
+void VisitEachPageContent(
+    google::protobuf::RepeatedPtrField<sync_pb::AIChatWebSource>* sources,
+    CompressibleStringVisitor visit) {
+  for (auto& source : *sources) {
+    if (source.has_page_content()) {
+      visit(*source.mutable_page_content());
+    }
+  }
+}
+
+// Invokes |visit| for each persisted content block in tool output. Web sources
+// and text both appear here as well as at the event level, so three passes
+// share this walk.
+void ForEachToolOutputBlock(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    base::FunctionRef<void(sync_pb::AIChatContentBlock&)> visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_tool_use()) {
+      continue;
+    }
+    for (auto& block : *event.mutable_tool_use()->mutable_output()) {
+      visit(block);
+    }
+  }
+}
+
+void VisitAssociatedContentTexts(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& content : *entry->mutable_associated_content()) {
+    if (content.has_last_contents()) {
+      visit(*content.mutable_last_contents());
+    }
+  }
+}
+
+void VisitUploadedFileTexts(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                            CompressibleStringVisitor visit) {
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (file.has_extracted_text()) {
+      visit(*file.mutable_extracted_text());
+    }
+  }
+}
+
+void VisitInlineSearchResults(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                              CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_inline_search() && event.inline_search().has_results_json()) {
+      visit(*event.mutable_inline_search()->mutable_results_json());
+    }
+  }
+}
+
+void VisitWebSourcePageContents(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_web_sources()) {
+      VisitEachPageContent(event.mutable_web_sources()->mutable_sources(),
+                           visit);
+    }
+  }
+  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+    if (block.has_web_sources_content_block()) {
+      VisitEachPageContent(
+          block.mutable_web_sources_content_block()->mutable_sources(), visit);
+    }
+  });
+}
+
+void VisitToolOutputTexts(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                          CompressibleStringVisitor visit) {
+  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+    if (block.has_text_content_block() &&
+        block.text_content_block().has_text()) {
+      visit(*block.mutable_text_content_block()->mutable_text());
+    }
+  });
+}
+
+void VisitToolArguments(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                        CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_tool_use() && event.tool_use().has_arguments_json()) {
+      visit(*event.mutable_tool_use()->mutable_arguments_json());
+    }
+  }
+}
+
+void VisitWebSourceRichResults(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_web_sources()) {
+      VisitEachString(event.mutable_web_sources()->mutable_rich_results(),
+                      visit);
+    }
+  }
+  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+    if (block.has_web_sources_content_block()) {
+      VisitEachString(
+          block.mutable_web_sources_content_block()->mutable_rich_results(),
+          visit);
+    }
+  });
+}
+
+void VisitToolArtifactContents(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_tool_use()) {
+      continue;
+    }
+    for (auto& artifact : *event.mutable_tool_use()->mutable_artifacts()) {
+      if (artifact.has_content_json()) {
+        visit(*artifact.mutable_content_json());
+      }
+    }
+  }
+}
+
+void VisitCompletions(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                      CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_completion()) {
+      visit(*event.mutable_completion());
+    }
+  }
+}
+
+// Every AIChatCompressibleString the size-budget policy may drop, in the order
+// it drops them. The order weighs what a field is worth as context for
+// continuing the conversation on another device against how much of the budget
+// it costs to carry. Most of it the model can do without or regenerate; what it
+// cannot replace is what the conversation actually said, so that goes last.
+// Adding a compressible field to the proto without listing it here means it can
+// never be omitted, and an entry that only that field makes oversized becomes
+// uncommittable.
+constexpr auto kOmissionPasses = std::to_array<OmissionPass>({
+    // Page text. Bulk context the replies already reflect, and the receiver
+    // still has the URL to re-derive it from.
+    &VisitAssociatedContentTexts,
+    // Text extracted from an attachment. Bulk context, same reasoning.
+    &VisitUploadedFileTexts,
+    // Raw inline-search JSON. Never reaches the model, and not read directly.
+    &VisitInlineSearchResults,
+    // Snippets fetched for cited pages. Costly, and the replies drew on them
+    // already.
+    &VisitWebSourcePageContents,
+    // Tool output the model worked from, likewise reflected in the replies.
+    &VisitToolOutputTexts,
+    // Tool call arguments. Small, and the model can produce them again.
+    &VisitToolArguments,
+    // Rich search result JSON. Costly, and only used to re-render results.
+    &VisitWebSourceRichResults,
+    // Artifact content. Never reaches the model, but the user opens these.
+    &VisitToolArtifactContents,
+    // The assistant's replies — the conversation itself, and the one thing
+    // nothing else can stand in for.
+    &VisitCompletions,
+});
+
+bool FitsWithinBudget(const sync_pb::AIChatConversationSpecifics_Entry& entry) {
+  return entry.ByteSizeLong() <= kSyncMaxRecordBytes;
+}
+
 }  // namespace
+
+void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                            CompressibleStringVisitor visit) {
+  for (OmissionPass pass : kOmissionPasses) {
+    pass(entry, visit);
+  }
+}
+
+bool FitEntryWithinSyncBudget(
+    sync_pb::AIChatConversationSpecifics_Entry* entry) {
+  if (FitsWithinBudget(*entry)) {
+    return true;
+  }
+
+  // Uploaded file bytes go before any of kOmissionPasses. They are real
+  // context — without them the receiver cannot open the attachment at all —
+  // but one file can take most of the budget, and already-compressed image or
+  // PDF data will not shrink any further.
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (!file.data().empty()) {
+      OmitUploadedFileData(&file);
+    }
+  }
+
+  for (OmissionPass pass : kOmissionPasses) {
+    if (FitsWithinBudget(*entry)) {
+      return true;
+    }
+    pass(entry, [](sync_pb::AIChatCompressibleString& value) {
+      // Skip fields that are absent or that a previous pass already omitted;
+      // re-omitting would hash the empty string over the original hash.
+      if (value.has_raw() || value.has_gzipped()) {
+        OmitCompressibleString(&value);
+      }
+    });
+  }
+
+  if (FitsWithinBudget(*entry)) {
+    return true;
+  }
+  // Nothing omittable is left, so the entry is over budget on fields that
+  // cannot be dropped (plain proto strings such as selected_text). Refuse the
+  // commit rather than sending a record the server will reject.
+  DLOG(ERROR) << "AI Chat entry " << entry->uuid()
+              << " exceeds the sync record budget after omitting every "
+                 "omittable field; refusing to commit. Size="
+              << entry->ByteSizeLong();
+  return false;
+}
 
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
     const mojom::Conversation& conversation) {
