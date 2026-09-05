@@ -1,0 +1,249 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream unit_tests tests with a flake rate >= 1.0% on
+## linux-ubsan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 7.7% flake rate over 30 days per LUCI Analysis (398 passed, 0 failed, 33 flaky).
+-ActorUiStateManagerTest.OnActorTaskState_kCreatedNewStateCrashes
+
+# 3.9% flake rate over 30 days per LUCI Analysis (414 passed, 0 failed, 17 flaky).
+-All/GlicEnablingAutoOpenForPdfTest.ExpectedBehavior/0
+
+# 3.5% flake rate over 30 days per LUCI Analysis (416 passed, 0 failed, 15 flaky).
+-All/GlicEnablingAutoOpenForPdfTest.ExpectedBehavior/1
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-All/GlicEnablingAutoOpenForPdfTest.ExpectedBehavior/3
+
+# 1.2% flake rate over 30 days per LUCI Analysis (426 passed, 0 failed, 5 flaky).
+-All/GlicEnablingContextMenuTest.ExpectedBehavior/2
+
+# 1.2% flake rate over 30 days per LUCI Analysis (325 passed, 0 failed, 4 flaky).
+-All/GlicEnablingGeminiEnterpriseSettingsTest.ExpectedBehavior/8
+
+# 3.5% flake rate over 30 days per LUCI Analysis (416 passed, 0 failed, 15 flaky).
+-AllOTRProfileTypes/ProfileDestroyerTest.CrashOTRProfileDestructionNowWithHosts/0
+
+# 5.6% flake rate over 30 days per LUCI Analysis (407 passed, 0 failed, 24 flaky).
+-AllOTRProfileTypes/ProfileDestroyerTest.CrashOTRProfileDestructionNowWithHosts/1
+
+# 5.1% flake rate over 30 days per LUCI Analysis (409 passed, 0 failed, 22 flaky).
+-AllOTRProfileTypes/ProfileDestroyerTest.CrashShutdownAllPendingProfilesOTRWithHosts/0
+
+# 5.6% flake rate over 30 days per LUCI Analysis (407 passed, 0 failed, 24 flaky).
+-AllOTRProfileTypes/ProfileDestroyerTest.CrashShutdownAllPendingProfilesOTRWithHosts/1
+
+# 3.9% flake rate over 30 days per LUCI Analysis (414 passed, 0 failed, 17 flaky).
+-AllOTRProfileTypes/ProfileDestroyerTest.CrashShutdownAllPendingProfilesOriginalWithHosts/0
+
+# 3.0% flake rate over 30 days per LUCI Analysis (418 passed, 0 failed, 13 flaky).
+-AllOTRProfileTypes/ProfileDestroyerTest.CrashShutdownAllPendingProfilesOriginalWithHosts/1
+
+# 7.0% flake rate over 30 days per LUCI Analysis (401 passed, 0 failed, 30 flaky).
+-AutofillClientProviderBaseTest.ProvidesNoServiceWithoutProfile
+
+# 6.7% flake rate over 30 days per LUCI Analysis (402 passed, 0 failed, 29 flaky).
+-BackgroundContentsServiceTest.BackgroundContentsUrlAdded
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-BackgroundContentsServiceTest.BackgroundContentsUrlAddedAndClosed
+
+# 5.8% flake rate over 30 days per LUCI Analysis (406 passed, 0 failed, 25 flaky).
+-BackgroundContentsServiceTest.Create
+
+# 1.8% flake rate over 30 days per LUCI Analysis (272 passed, 0 failed, 5 flaky).
+-BackgroundContentsServiceTest.NavigatedUrlOutsideExtentNotRegistered
+
+# 3.0% flake rate over 30 days per LUCI Analysis (418 passed, 0 failed, 13 flaky).
+-BackgroundContentsServiceTest.RestartBackgroundContents
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-BackgroundContentsServiceTest.TestApplicationIDLinkage
+
+# 2.8% flake rate over 30 days per LUCI Analysis (419 passed, 0 failed, 12 flaky).
+-BackgroundModeManagerTest.BackgroundPersistentAppWhileTransientRunning
+
+# 2.6% flake rate over 30 days per LUCI Analysis (420 passed, 0 failed, 11 flaky).
+-BackgroundModeManagerTest.DisableBackgroundModeUnderTestFlag
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-BackgroundModeManagerTest.EnableAfterBackgroundAppInstall
+
+# 1.9% flake rate over 30 days per LUCI Analysis (423 passed, 0 failed, 8 flaky).
+-BackgroundModeManagerTest.MultiProfile
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-BackgroundModeManagerTest.ProfileAttributesStorage
+
+# 4.6% flake rate over 30 days per LUCI Analysis (411 passed, 0 failed, 20 flaky).
+-ChromeBrowsingDataRemoverDelegateWithAccountPasswordsTest.CheckFailWhenRemovePasswordsByOrigin
+
+# 4.6% flake rate over 30 days per LUCI Analysis (411 passed, 0 failed, 20 flaky).
+-ChromeBrowsingDataRemoverDelegateWithPasswordsTest.CheckFailWhenRemovePasswordsByOrigin
+
+# 3.2% flake rate over 30 days per LUCI Analysis (417 passed, 0 failed, 14 flaky).
+-ChromeComposeClientTest.NoStateCrashesAtOtherUrls
+
+# 3.5% flake rate over 30 days per LUCI Analysis (416 passed, 0 failed, 15 flaky).
+-ChromeComposeClientTest.TestCannotCloseNotShownDialog
+
+# 3.9% flake rate over 30 days per LUCI Analysis (414 passed, 0 failed, 17 flaky).
+-ChromeComposeClientTest.TestCannotSendMessagesAfterClosingDialogAtChromeCompose
+
+# 5.8% flake rate over 30 days per LUCI Analysis (406 passed, 0 failed, 25 flaky).
+-ChromeComposeClientTest.TestCannotSendMessagesToNotShownDialog
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-DefaultBrowserManagerTest.CreateControllerForSettingsPage
+
+# 2.3% flake rate over 30 days per LUCI Analysis (421 passed, 0 failed, 10 flaky).
+-DefaultBrowserManagerTest.GetDefaultBrowserState
+
+# 2.1% flake rate over 30 days per LUCI Analysis (422 passed, 0 failed, 9 flaky).
+-DefaultBrowserManagerTest.TrackTimeAfterSetterFailureChangeDetected
+
+# 4.9% flake rate over 30 days per LUCI Analysis (410 passed, 0 failed, 21 flaky).
+-DownloadBubbleContentsViewTest.ShowSecurityPage/0
+
+# 4.6% flake rate over 30 days per LUCI Analysis (411 passed, 0 failed, 20 flaky).
+-DownloadBubbleContentsViewTest.ShowSecurityPage/1
+
+# 1.2% flake rate over 30 days per LUCI Analysis (426 passed, 0 failed, 5 flaky).
+-GlicEnablingAnchorEntryPointTestBase.PrimaryAccountNotCapable_ReturnsIneligibleAccountWhenAnchored
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-GlicEnablingProfileEligibilityTest.Eligible
+
+# 1.2% flake rate over 30 days per LUCI Analysis (426 passed, 0 failed, 5 flaky).
+-GlicEnablingWebActuationToggleTest.CapabilityIneligible
+
+# 2.6% flake rate over 30 days per LUCI Analysis (420 passed, 0 failed, 11 flaky).
+-GlicMetricsFeaturesEnabledTest.TimeToEnabledFromStartupDelayed
+
+# 6.0% flake rate over 30 days per LUCI Analysis (405 passed, 0 failed, 26 flaky).
+-GlicMetricsProviderTest.ProvideCurrentSessionData
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-GlicMetricsTest.BasicUkm
+
+# 2.8% flake rate over 30 days per LUCI Analysis (419 passed, 0 failed, 12 flaky).
+-GlicMetricsTest.ClosedCaptionsResponse_PrefLogsFalse
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-GlicMetricsTest.ClosedCaptionsResponse_PrefLogsTrue
+
+# 2.1% flake rate over 30 days per LUCI Analysis (422 passed, 0 failed, 9 flaky).
+-GlicMetricsTest.InputModesUsed
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-GlicMetricsTest.LogGetContextFromFocusedTabError_UnknownMode
+
+# 8.8% flake rate over 30 days per LUCI Analysis (393 passed, 0 failed, 38 flaky).
+-GlicMetricsTest.RecordGlicProfilePreferences
+
+# 1.2% flake rate over 30 days per LUCI Analysis (426 passed, 0 failed, 5 flaky).
+-GlicMetricsTest.SessionDuration_LogsError
+
+# 2.3% flake rate over 30 days per LUCI Analysis (421 passed, 0 failed, 10 flaky).
+-GlicMetricsTrustFirstOnboardingTest.NotShownIfConsented
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-NonWorkerExtension/ExtensionsPushMessagingServiceTest.GetSubscriptionPersistsUserVisibleOnlyFalse/1
+
+# 6.0% flake rate over 30 days per LUCI Analysis (252 passed, 0 failed, 16 flaky).
+-PageInfoBubbleSpecificationTest.InvalidSpec
+
+# 6.7% flake rate over 30 days per LUCI Analysis (402 passed, 0 failed, 29 flaky).
+-PageInfoPreviewsCoordinatorDeathTest.NeitherCameraNorMic
+
+# 4.2% flake rate over 30 days per LUCI Analysis (159 passed, 3 failed, 4 flaky).
+-PageLoadMetricsInitializeTest.NonBrowserClassification
+
+# 1.9% flake rate over 30 days per LUCI Analysis (364 passed, 3 failed, 4 flaky).
+-PageLoadMetricsInitializeTest.SameWindowClassification
+
+# 4.2% flake rate over 30 days per LUCI Analysis (159 passed, 3 failed, 4 flaky).
+-PageLoadMetricsInitializeTest.SameWindowDiscardedTabClassification
+
+# 1.9% flake rate over 30 days per LUCI Analysis (364 passed, 7 failed, 0 flaky).
+-PageLoadMetricsInitializeTest.StartupClassification
+
+# 5.3% flake rate over 30 days per LUCI Analysis (408 passed, 0 failed, 23 flaky).
+-PermissionPromptPreviewsCoordinatorDeathTest.NoEligibleDevices
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-SessionDataServiceTest.NoContinuedDeletionWithoutSettings
+
+# 1.2% flake rate over 30 days per LUCI Analysis (426 passed, 0 failed, 5 flaky).
+-SessionDataServiceTest.SkipOnForceSessionState
+
+# 1.9% flake rate over 30 days per LUCI Analysis (423 passed, 0 failed, 8 flaky).
+-SessionDataServiceTest.SkipOnShutdown
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-SiteSettingsHandlerIsolatedWebAppTest.GetSubAppsPermissionExplanation_ParentApp
+
+# 1.4% flake rate over 30 days per LUCI Analysis (425 passed, 0 failed, 6 flaky).
+-SiteSettingsHandlerIsolatedWebAppTest.ZoomLevel
+
+# 2.6% flake rate over 30 days per LUCI Analysis (420 passed, 0 failed, 11 flaky).
+-SiteSettingsHelperTest.AutomaticFullscreenVisibility
+
+# 1.9% flake rate over 30 days per LUCI Analysis (423 passed, 0 failed, 8 flaky).
+-SiteSettingsHelperTest.ContentSettingSource
+
+# 4.2% flake rate over 30 days per LUCI Analysis (413 passed, 0 failed, 18 flaky).
+-SiteSettingsHelperTest.CreateChooserExceptionObject
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-SiteSettingsHelperTest.ExceptionListIgnoresWebUIAllowlist
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-SiteSettingsHelperTest.ExceptionListShowsIncognitoEmbargoed
+
+# 1.6% flake rate over 30 days per LUCI Analysis (424 passed, 0 failed, 7 flaky).
+-SiteSettingsHelperTest.GetExpirationDescription
+
+# 3.0% flake rate over 30 days per LUCI Analysis (418 passed, 0 failed, 13 flaky).
+-SiteSettingsHelperTest.GetExpirationDescription_Expired
+
+# 2.3% flake rate over 30 days per LUCI Analysis (421 passed, 0 failed, 10 flaky).
+-SiteSettingsHelperTest.GetExpirationDescription_Tomorrow
+
+# 3.2% flake rate over 30 days per LUCI Analysis (417 passed, 0 failed, 14 flaky).
+-SiteSettingsHelperTest.GetExpirationDescription_Tomorrow_LessThan24_AfterMidnight
+
+# 3.2% flake rate over 30 days per LUCI Analysis (417 passed, 1 failed, 13 flaky).
+-SiteSettingsHelperTest.GetExpirationDescription_Tomorrow_LessThan24_BeforeMidnight
+
+# 2.3% flake rate over 30 days per LUCI Analysis (421 passed, 0 failed, 10 flaky).
+-SiteSettingsHelperTest.HideAutograntedRWSPermissions
+
+# 99.5% flake rate over 30 days per LUCI Analysis (2 passed, 1 failed, 428 flaky).
+-TabStripModelTest.AppendTab
+
+# 4.2% flake rate over 30 days per LUCI Analysis (413 passed, 0 failed, 18 flaky).
+-TabStripModelTest.TestTabHandlesAcrossModels
+
+# 99.1% flake rate over 30 days per LUCI Analysis (4 passed, 0 failed, 427 flaky).
+-TabStripModelTest.TestTabHandlesOutOfBounds
+
+# 5.1% flake rate over 30 days per LUCI Analysis (409 passed, 0 failed, 22 flaky).
+-ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithInvalidItemId
+
+# 12.5% flake rate over 30 days per LUCI Analysis (377 passed, 0 failed, 54 flaky).
+-ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithInvalidItemIdType
+
+# 13.0% flake rate over 30 days per LUCI Analysis (375 passed, 0 failed, 56 flaky).
+-ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithMoreThanOneItem
+
+# 3.2% flake rate over 30 days per LUCI Analysis (417 passed, 0 failed, 14 flaky).
+-TrustAndSignatureVerifierDeathTest.MismatchedNonProxyIdAndProxySourceCrashes
+
+# 5.6% flake rate over 30 days per LUCI Analysis (407 passed, 0 failed, 24 flaky).
+-TrustAndSignatureVerifierDeathTest.MismatchedProxyIdAndBundleSourceCrashes
+
+# 3.5% flake rate over 30 days per LUCI Analysis (416 passed, 0 failed, 15 flaky).
+-WebUIPageActionControlTest.GetPageActionViewInterfaceAndMethods

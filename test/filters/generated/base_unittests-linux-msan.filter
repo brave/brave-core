@@ -1,0 +1,27 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream base_unittests tests with a flake rate >= 1.0% on
+## linux-msan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 88.6% flake rate over 30 days per LUCI Analysis (97 passed, 0 failed, 753 flaky).
+-HangWatcherTest.HistogramsLoggedWithShutdownFlag
+
+# 1.1% flake rate over 30 days per LUCI Analysis (608 passed, 0 failed, 7 flaky).
+-ImportantFileWriterCleanerTest.PreservesLatestPrefixedTempFilePerPrefix
+
+# 16.0% flake rate over 30 days per LUCI Analysis (268 passed, 0 failed, 51 flaky).
+-LoggingTest.DuplicateLogFile
+
+# 2.2% flake rate over 30 days per LUCI Analysis (831 passed, 0 failed, 19 flaky).
+-PostJobTest.PostJobSimple
+
+# 82.3% flake rate over 30 days per LUCI Analysis (150 passed, 0 failed, 699 flaky).
+-ThreadControllerWithMessagePumpTest.EnsureWorkScheduled
+
+# 27.4% flake rate over 30 days per LUCI Analysis (616 passed, 0 failed, 233 flaky).
+-ThreadControllerWithMessagePumpTest.MessagePumpPhasesWithQueuingTime
+
+# 25.2% flake rate over 30 days per LUCI Analysis (635 passed, 0 failed, 214 flaky).
+-ThreadControllerWithMessagePumpTest.WorkIdIncrementedForEveryWorkItemInBatches

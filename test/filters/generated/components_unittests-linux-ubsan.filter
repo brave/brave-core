@@ -1,0 +1,27 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream components_unittests tests with a flake rate >= 1.0% on
+## linux-ubsan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 2.4% flake rate over 30 days per LUCI Analysis (415 passed, 0 failed, 10 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/11
+
+# 1.9% flake rate over 30 days per LUCI Analysis (417 passed, 0 failed, 8 flaky).
+-All/HeapProfilerControllerProcessTest.ChildProcess/12
+
+# 1.2% flake rate over 30 days per LUCI Analysis (421 passed, 0 failed, 5 flaky).
+-All/PaintPreviewBaseServiceTest.CaptureDisallowed/FileSystem
+
+# 12.0% flake rate over 30 days per LUCI Analysis (374 passed, 0 failed, 51 flaky).
+-HintsManagerTest.OptimizationFiltersAreOnlyLoadedIfTypeIsRegistered
+
+# 97.9% flake rate over 30 days per LUCI Analysis (9 passed, 0 failed, 416 flaky).
+-MemoryPressureLevelReporterTest.IntegerOverflowFixWithSaturatedCast
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-PaymentsDataManagerTest.IsAutofillPaymentMethodsEnabled_EnterprisePolicy
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-ValuablesDataManagerTest.GetLoyaltyCardsWhenEnterprisePolicyBlocksPayments

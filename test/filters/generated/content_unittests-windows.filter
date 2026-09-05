@@ -1,0 +1,87 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream content_unittests tests with a flake rate >= 1.0% on
+## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-BackgroundSyncManagerTest.WakeBrowserCalledForOneShotSync
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-BtmServiceHistogramTest.Deletion_Enforced
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-BtmServiceStateRemovalTest.BrowsingDataDeletion_Enabled
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-BtmServiceStateRemovalTest.BrowsingDataDeletion_RespectsStorageAccessGrantExceptions
+
+# 9.1% flake rate over 30 days per LUCI Analysis (10 passed, 1 failed, 0 flaky).
+-DatabaseConnectionOpenCorruptionTest.DirectoryAtDatabasePath
+
+# 23.1% flake rate over 30 days per LUCI Analysis (10 passed, 3 failed, 0 flaky).
+-IndexedDB/SqliteBackingStoreRolloutStageTest.MigrateDataToSqliteGentle/Default
+
+# 23.1% flake rate over 30 days per LUCI Analysis (10 passed, 3 failed, 0 flaky).
+-IndexedDB/SqliteBackingStoreRolloutStageTest.MigrateDataToSqliteGentle/NonDefault
+
+# 7.7% flake rate over 30 days per LUCI Analysis (12 passed, 1 failed, 0 flaky).
+-IndexedDB/SqliteBackingStoreRolloutStageTest.MigrateDataToSqliteGentleIsGentle/Default
+
+# 7.7% flake rate over 30 days per LUCI Analysis (12 passed, 1 failed, 0 flaky).
+-IndexedDB/SqliteBackingStoreRolloutStageTest.MigrateDataToSqliteGentleIsGentle/NonDefault
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-IndexedDBTest.PutWithInvalidBlob/LevelDB
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-IndexedDBTest.PutWithInvalidBlob/SQLite
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-InputRouterImplTest.TimeoutMonitorStopWithMainThreadTouchAction
+
+# 55.6% flake rate over 30 days per LUCI Analysis (9811 passed, 0 failed, 12288 flaky).
+-LevelDbBackingStoreTest.CompactionTaskTiming
+
+# 64.1% flake rate over 30 days per LUCI Analysis (7931 passed, 0 failed, 14168 flaky).
+-LevelDbBackingStoreTest.TombstoneSweeperTiming
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/0
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/1
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/2
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/3
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/4
+
+# 1.3% flake rate over 30 days per LUCI Analysis (21814 passed, 2 failed, 283 flaky).
+-NavigationURLLoaderImplTest.ForceAsyncInterceptorForRedirect
+
+# 1.4% flake rate over 30 days per LUCI Analysis (21789 passed, 2 failed, 308 flaky).
+-NavigationURLLoaderImplTest.ForceAsyncParseHeaders
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-PrefetchCanaryCheckerTest.NetworkConnectionShardsCache
+
+# 2.2% flake rate over 30 days per LUCI Analysis (21614 passed, 2 failed, 485 flaky).
+-RenderFrameHostImplTest.CalculateStorageKeyFirstPartyOverride
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-RenderWidgetHostViewAuraOverscrollTest.ReverseFlingCancelsOverscroll
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-RendererWebAudioDeviceImplBufferSizeTest.ExactLatency_HighHardwareBufferSize_CapsAtMaxBufferSize
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+-WebContentsImplTest.NoEarlyStop
+
+# 7.1% flake rate over 30 days per LUCI Analysis (22829 passed, 1 failed, 1742 flaky).
+-WebRtcInternalsMessageHandlerTest.DontRunJSBeforeNavigationCommitted

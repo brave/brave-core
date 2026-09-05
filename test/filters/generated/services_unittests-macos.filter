@@ -1,0 +1,30 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## macos bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 2.2% flake rate over 30 days per LUCI Analysis (26541 passed, 2 failed, 594 flaky).
+-CertNetFetcherURLLoaderTest.CancelAll
+
+# 5.8% flake rate over 30 days per LUCI Analysis (25569 passed, 2 failed, 1566 flaky).
+-CertNetFetcherURLLoaderTest.ParallelFetchDuplicates
+
+# 99.5% flake rate over 30 days per LUCI Analysis (62 passed, 7 failed, 12315 flaky).
+-HeapProfilingDataSourceTest.EmitSamples
+
+# 1.2% flake rate over 30 days per LUCI Analysis (12233 passed, 42 failed, 106 flaky).
+-HeapProfilingDataSourceTest.MultipleInstances
+
+# 19.4% flake rate over 30 days per LUCI Analysis (431 passed, 14 failed, 90 flaky).
+-HeapProfilingDataSourceTest.StartOnSetup
+
+# 25.3% flake rate over 30 days per LUCI Analysis (12383 passed, 0 failed, 4201 flaky).
+-HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
+
+# 61.8% flake rate over 30 days per LUCI Analysis (10378 passed, 2 failed, 16758 flaky).
+-TracingServiceTest.PerfettoClientConsumer
+
+# 9.4% flake rate over 30 days per LUCI Analysis (24579 passed, 2 failed, 2557 flaky).
+-TracingServiceTest.TracingServiceInstantiate

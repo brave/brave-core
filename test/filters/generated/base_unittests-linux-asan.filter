@@ -1,0 +1,15 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream base_unittests tests with a flake rate >= 1.0% on
+## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 10.4% flake rate over 30 days per LUCI Analysis (5618 passed, 0 failed, 649 flaky).
+-AsanBackupRefPtrTest.Dereference
+
+# 93.5% flake rate over 30 days per LUCI Analysis (409 passed, 0 failed, 5858 flaky).
+-HangWatcherTest.HistogramsLoggedWithShutdownFlag
+
+# 1.6% flake rate over 30 days per LUCI Analysis (6165 passed, 0 failed, 102 flaky).
+-LapTimer.ThreadTicksUsageExample

@@ -530,8 +530,8 @@ def check_upstream_flake(test_name):
     """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     flake_script = os.path.normpath(
-        os.path.join(script_dir, "..", "..", "..", "scripts",
-                     "check-upstream-flake.py"))
+        os.path.join(script_dir, "..", "..", "..", "tools",
+                     "chromium_tests_analysis", "check-upstream-flake.py"))
 
     if not os.path.exists(flake_script):
         print(

@@ -341,6 +341,7 @@
 -InfoBarContainerSplitTabTest.InfobarsAreIndependentInSplitTabs
 -InfoBarRefreshViewBrowserTest.InfoBarBackgroundColorUpdatesOnThemeChange
 -InfoBarViewBrowserTest.ThemeAppliesToContentContainerLabels
+-KnownInterceptionDisclosurePlatformBrowserTest.*
 -PageSpecificSiteDataDialogBrowserTest.*
 
 # These tests fail because they expect an additional Manifest V2 deprecation
@@ -609,6 +610,10 @@
 -All/DeclarativeNetRequestBrowserTest.ProtectedAudienceNetworkRequestsBlockRedirect/*
 -All/DeclarativeNetRequestBrowserTest.ProtectedAudienceNetworkRequestsBlockRequests/*
 -All/DeclarativeNetRequestBrowserTest.ProtectedAudienceNetworkRequestsModifyHeaders/*
+
+# These tests fail because we disable privacy_sandbox::kPrivacySandboxSettings4
+-PrivacySandboxRestrictedNoticeConfirmationTest.RestrictedNoticeTest/*
+-RollBackModeBInfoBarControllerBrowserTest.*
 
 # These tests fail because we override privacy sandbox settings config
 -PrivacySandboxConsentConfirmationTest.*/*
@@ -1250,11 +1255,9 @@
 # locally.
 -BrowsingTopicsInternalsBrowserTest.TopicsState_OverrideStatusMessage
 -GlicDragAndDropPolicyTest.testWebToGlicDragMaterialization*
--TabSearchPageHandlerTest.RemoveSplit_NTP
 
 # Occasionally flaky upstream as well (via LUCI). Flaky on our CI and locally.
 -IndigoImageReplacementManagerBrowserTest.HandlesDelayedResponseAfterNewPrimaryIsRegistered
--TabViewTest.IconDataChanged
 -UiaClient/LeakedNodeDetectionBrowsertest.DetectGhostNodeLeaks/0
 
 # Known upstream flake: 10.5% flake rate over 30 days per LUCI Analysis.
@@ -1485,13 +1488,9 @@
 -MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCbcsVideo_Success
 -MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCencVideo_Success
 -OnDeviceTranslationBrowserTest.FrameDeletedWhileCreatingATranslator
--PaymentRequestMetricsTest.NotShownBackgroundTab
 -PersistentBackground/ExecuteScriptApiTest.RemovedFrames/0
 -ProfileNetworkContextServiceCache*.TestCacheResetParameter
 -ServiceWorker/ExecuteScriptApiTest.RemovedFrames/0
--WebViewPdfTest.ContextMenuNavigationInWebView/PdfOopifEnabled_InnerWebContents
--WebViewPdfTest.PdfContainerBounds/PdfOopifEnabled_InnerWebContents
--WebViewPdfTest.Shim_TestDialogInPdf/PdfOopifEnabled_InnerWebContents
 -WorkerTest.WorkerInBackgroundPage
 
 # This test fails because we override the support article URL to point to our
@@ -2308,18 +2307,6 @@
 # https://github.com/brave/brave-browser/issues/54187
 -PersistentBackground/ExtensionModuleApiTest.CognitoFile/0
 
-# Chromium test: known upstream flake (3.4% flake rate over 30 days,
-# 112k+ verdicts). No Brave modifications in chrome/browser/save_to_drive/.
-# Test times out during PDF extension host loading in SetUpOnMainThread.
-# https://github.com/brave/brave-browser/issues/54219
--All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadInProgress/0
-
-# Chromium test: known upstream flake (3.7% flake rate over 30 days,
-# 114k+ verdicts). No Brave modifications in chrome/browser/save_to_drive/.
-# Test times out during QuitBrowsers in PostRunTestOnMainThread teardown.
-# https://github.com/brave/brave-browser/issues/54240
--All/SaveToDriveEventDispatcherBrowserTest.Notify/0
-
 # Known upstream flake (4.5% flake rate over 30 days, 20k+ verdicts). Race
 # condition between autofill form classification and APC extraction:
 # GetAutofillFieldData() returns nullopt when autofill hasn't cached the
@@ -2409,11 +2396,7 @@
 # above, is why these go in the all-platform filter file rather than a
 # per-platform one.
 # PaintDelayed: https://github.com/brave/brave-browser/issues/56915
--PageSettledMonitorChromeBrowserTest.WaitOnNetworkFetch
 -PageStabilityMetricsMinWaitTest.NetworkAndMainThreadIdleDelayed
--PageStabilityMetricsMinWaitTest.PaintDelayed
--PageStabilityMetricsTest.NetworkAndMainThreadIdle
--PageStabilityMetricsTest.Paint
 
 # Per Claude: these tests fail because the P3A consent infobar
 # (BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE) is shown in the web‑app window during
@@ -2488,20 +2471,6 @@
 -AppMenuBrowserTest.InvokeUi_profile_menu_in_app_menu_signed_in
 -AppMenuBrowserTest.InvokeUi_profile_menu_in_app_menu_signin_not_allowed
 
-# Occasional upstream flake: 3.3% flake rate over 30 days per Chromium LUCI
-# Analysis (107008 pass / 131 fail / 3501 flaky of 110640 verdicts). This is an
-# upstream Chromium test (chrome/browser/ssl/https_upgrades_browsertest.cc).
-# Brave disables net::features::kBraveHttpsByDefault for this fixture via a
-# chromium_src override, so HttpsUpgradesInterceptor::MaybeCreateLoader falls
-# through to the upstream Chromium implementation -- the test exercises the
-# upstream code path and inherits its flakiness. The failure is an upstream
-# timing race between the asynchronous Safe Browsing URL check and the
-# HTTPS-Upgrades fallback-to-HTTP path: when the Safe Browsing verdict is slow,
-# the navigation falls back to HTTP before the Safe Browsing interstitial is
-# committed, so the test observes no interstitial and the visible URL on HTTP
-# instead of the HTTPS URL. https://github.com/brave/brave-browser/issues/56511
--HttpsUpgradesSafeBrowsingTest.SafeBrowsingBlock_ShouldNotTriggerHFM
-
 # This test is disabled until the associated upstream issue is fixed (should be
 # in CR152), see https://issues.chromium.org/issues/539681873
 -ContextualSearchboxHandlerBrowserTest.WaitForTabFaviconLoad_Cached
@@ -2512,15 +2481,6 @@
 # fallback behavior.
 -PKIMetadataComponentChromeRootStoreMtcMetadataTest.EndToEnd/1
 -PKIMetadataComponentChromeRootStoreMtcMetadataTest.Revocation/1
-
-# Known upstream flake: 10.5% flake rate for TakesScreenshot_AddsIframeInfoToAPC
-# (127k+ verdicts) and 12.3% for the _IframeHasNoBorderAndLowOpacity variant
-# (91k+ verdicts) over 30 days per LUCI Analysis. Filtered on all platforms
-# because the upstream flake rate is not platform specific. No Brave
-# chromium_src overrides or patches touch the page context fetcher or the APC
-# iframe info path. https://github.com/brave/brave-browser/issues/58217
--IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC
--IframeInfoMultiSourcePageContextFetcherBrowserTest.TakesScreenshot_AddsIframeInfoToAPC_IframeHasNoBorderAndLowOpacity
 
 # These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
 # the sign-in-promo behavior that Brave unconditionally disables,
@@ -2708,7 +2668,6 @@
 -ExtensionInstallUIBrowserTest.*
 
 # https://github.com/brave/brave-browser/issues/53781 upstream flaky test (14% flake rate)
--ExtensionInstallPolicyServiceTest.CanInstallExtensionServerUnreachable
 -ExtensionOverrideTest.*
 -ExtensionPolicyTest.*
 -ExtensionPreferenceApiTest.*
@@ -2744,7 +2703,6 @@
 -HTMLCSSSyncScriptFontNoStatePrefetchBrowserTest.*
 -HTMLCSSSyncScriptNoStatePrefetchBrowserTest.*
 -HTMLOnlyNoStatePrefetchBrowserTest.*
--HeadlessModeCommandBrowserTest_MAYBE_DumpDomWithBeforeUnloadPreventDefault.DumpDomWithBeforeUnloadPreventDefault
 -HeadlessModeDumpDomCommandBrowserTest.HeadlessDumpDom*
 -HeadlessModeDumpDomCommandBrowserTestWithTimeout.HeadlessDumpDomWithTimeout
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
@@ -2791,10 +2749,8 @@
 -KeepAliveDevToolsTest.*
 -LazyBackgroundPageApiTest.*
 -LiveCaptionSpeechRecognitionHostTest.*
--LoadAndLaunchExtensionBrowserTest.*
 -LoadImageBrowserTest.*
 -LogWebUIUrlTest.*
--ManagedUiTest.*
 -MediaEngagementBrowserTest.*
 -MediaRouterUIBrowserTest.*
 -MetricsLogBrowserTest.CommandLineKeyHash
@@ -2810,7 +2766,6 @@
 -NavigationEntryRemoverTest.*
 -NetInfoBrowserTest.*
 -NetworkConnectionTrackerBrowserTest.SimulateNetworkServiceCrash
--NetworkQualityTrackerBrowserTest.SimulateNetworkServiceCrash
 -NewTabPageHandlerWithCustomizeChromeIPHAutoOpenTest.ShouldShowSidePanelForTheSecondTimeIndependentlyOfIPH
 -NewTabPageHandlerWithCustomizeChromePromoFirstNTPOnlyBrowserTest.DontOpenPanelWhenPromoAutoopenedInTheSameSession
 -NewTabPageHandlerWithCustomizeChromeTutorialBrowserTest.DontOpenPanelWhenTutorialShouldBeShown
@@ -2855,8 +2810,6 @@
 -PageInfoBubbleViewIsolatedWebApp*.*
 -PageInfoBubbleViewSyncBrowserTest.*
 -PageLoadMetricsBrowserTest.*
--PageLoadMetricsBrowserTestWithBackForwardCache.*
--PageLoadTrackerDecoratorTest.*
 -PasswordBubbleBrowserTest.*
 -PasswordManagerAutofillPopupBrowserTest.InFrameNavigationDoesNotClearPopupState
 -PasswordManagerBackForwardCacheBrowserTest.*
@@ -2866,7 +2819,6 @@
 -PasswordManagerVotingBrowserTest.VerifyPasswordGenerationUpload
 -PermissionDashboardBrowserTest.DisplayLHSIndicatorForCamera*
 -PermissionDashboardBrowserTest.DisplayLHSIndicatorTooltip
--PermissionRequestManagerWithBackForwardCacheBrowserTest.*
 -PersistentBackground/ExtensionManagementApiTest.*
 -PersistentBackground/NTPInterceptionWebRequestAPITest.NTPRendererRequestsHidden/*
 -PersistentBackground/NativeMessagingApiTest.*
@@ -2903,7 +2855,6 @@
 -ProfileMainNetworkContext/NetworkContextConfigurationProxyOnStartBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
--ProfileManagerNonAsciiBrowserTest.*
 -ProfileMenuViewExtensionsTest.*
 -ProfileMenuViewSignoutTest.*
 -ProfileMenuViewSignoutTestWithNetwork.Signout/*
@@ -3000,7 +2951,6 @@
 -ServiceWorkerMessagingTest.TabToWorker_StopWorkerDisconnects
 -ServiceWorkerTest.*
 -SessionRestoreObserverTest.MultipleTabSessionRestore
--SessionRestorePageLoadMetricsBrowserTest.InitialVisibilityOfMultipleRestoredTabs
 -SessionRestoreSilentLaunchTest.*
 -SessionRestoreTest.*
 -SessionServiceLogTest.*
@@ -3016,6 +2966,7 @@
 -SiteEngagementHelperBrowserTest.*
 -SitePerProcessWebViewTest.*
 -SmartSessionRestoreTest.CorrectLoadingOrder
+
 # Known upstream flake: 5.8% rate (83k verdicts, 30d). TCP read() returns
 # partial data. Disabled on Windows by Chromium (crbug.com/1319604).
 # https://github.com/brave/brave-browser/issues/54922
@@ -3064,7 +3015,6 @@
 -TaskManagerBrowserTest.*
 -TemplateURLScraperTest.*
 -TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
--ThemeServiceBrowserTest.GetColorForToolbarButton
 -ThirdPartyMetricsObserverBrowserTest.*
 -TrustSafetySentimentServiceBrowserTest.*
 -UkmBrowserTest.*
@@ -3098,7 +3048,6 @@
 -WebNavigationApiTest.CrossProcessHistory
 -WebNavigationApiTest.Download
 -WebRtcDesktopCaptureBrowserTest.*
--WebRtcSameOriginPolicyBrowserTest.*
 -WebSocketBrowserTest.*
 -WebSocketBrowserTestWebSocketHSTS.*
 -WebUIJSErrorReportingTest.*

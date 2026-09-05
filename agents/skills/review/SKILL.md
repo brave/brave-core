@@ -724,7 +724,7 @@ Available specificity levels (prefer most specific):
    For Chromium tests, check the LUCI Analysis database:
 
    ```bash
-   python3 ./script/check-upstream-flake.py "<TestName>"
+   python3 ./tools/chromium_tests_analysis/check-upstream-flake.py "<TestName>"
    ```
 
    The script queries `analysis.api.luci.app` and returns a verdict:

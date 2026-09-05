@@ -1,0 +1,300 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream components_unittests tests with a flake rate >= 1.0% on
+## macos bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/AppRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/AppRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/AppRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/SessionRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/SessionRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/SessionRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/SessionRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/TabRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 15 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/TabRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/TabRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadCommandsMismatch/TabRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/AppRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/AppRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/AppRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 15 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/AppRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/SessionRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/SessionRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/SessionRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/SessionRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/TabRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/TabRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithBadEncryptedFile/TabRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/AppRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/AppRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/AppRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/AppRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/SessionRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/SessionRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 15 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/SessionRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/SessionRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/TabRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/TabRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/TabRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadErrorWithMissingEncryptedFile/TabRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/AppRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/AppRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/AppRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/AppRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/SessionRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/SessionRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/SessionRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/SessionRestore_EncryptionStageWriteEncryptedReadPreferEncrypted
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/TabRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/TabRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.EncryptedReadMatch/TabRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/AppRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/AppRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 12 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/SessionRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/SessionRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 15 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/SessionRestore_EncryptionStageInvalid
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 14 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/TabRestore_Cleartext
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/TabRestore_EncryptionStageEmpty
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 13 failed, 0 flaky).
+-All/CommandStorageManagerTest.FallbackToCleartextFailsWithNoCleartextFile/TabRestore_EncryptionStageInvalid
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32065 passed, 12 failed, 1197 flaky).
+-All/HeapProfilerControllerChannelTest.CanaryChannel/2
+
+# 46.3% flake rate over 30 days per LUCI Analysis (17870 passed, 24 failed, 15383 flaky).
+-All/HeapProfilerControllerChannelTest.CanaryChannel/4
+
+# 2.7% flake rate over 30 days per LUCI Analysis (32394 passed, 13 failed, 873 flaky).
+-All/HeapProfilerControllerChannelTest.StableChannel/2
+
+# 34.7% flake rate over 30 days per LUCI Analysis (21747 passed, 15 failed, 11521 flaky).
+-All/HeapProfilerControllerChannelTest.UnknownChannel/2
+
+# 47.1% flake rate over 30 days per LUCI Analysis (17607 passed, 21 failed, 15650 flaky).
+-All/HeapProfilerControllerChannelTest.UnknownChannel/3
+
+# 49.7% flake rate over 30 days per LUCI Analysis (16500 passed, 77 failed, 16231 flaky).
+-All/HeapProfilerControllerMultipleChildTest.EndToEnd/0
+
+# 48.8% flake rate over 30 days per LUCI Analysis (17028 passed, 20 failed, 16233 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/0
+
+# 44.2% flake rate over 30 days per LUCI Analysis (18563 passed, 19 failed, 14699 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/1
+
+# 27.2% flake rate over 30 days per LUCI Analysis (24233 passed, 21 failed, 9029 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/10
+
+# 33.9% flake rate over 30 days per LUCI Analysis (21996 passed, 20 failed, 11258 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/11
+
+# 44.6% flake rate over 30 days per LUCI Analysis (18450 passed, 14 failed, 14812 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/12
+
+# 48.8% flake rate over 30 days per LUCI Analysis (17045 passed, 18 failed, 16216 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/13
+
+# 48.2% flake rate over 30 days per LUCI Analysis (17247 passed, 18 failed, 16015 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/14
+
+# 50.6% flake rate over 30 days per LUCI Analysis (16442 passed, 20 failed, 16814 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/2
+
+# 49.4% flake rate over 30 days per LUCI Analysis (16839 passed, 18 failed, 16424 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/3
+
+# 51.6% flake rate over 30 days per LUCI Analysis (16098 passed, 15 failed, 17165 flaky).
+-All/HeapProfilerControllerProcessTest.BrowserProcess/4
+
+# 3.7% flake rate over 30 days per LUCI Analysis (32046 passed, 15 failed, 1210 flaky).
+-All/HeapProfilerControllerTest.SamplingIntervalVariance/0
+
+# 1.8% flake rate over 30 days per LUCI Analysis (32218 passed, 11 failed, 579 flaky).
+-HelpBubbleViewsTest.MinimizeAnchorWidget
+
+# 11.0% flake rate over 30 days per LUCI Analysis (29616 passed, 15 failed, 3649 flaky).
+-HintsManagerTest.OptimizationFiltersAreOnlyLoadedIfTypeIsRegistered
+
+# 3.6% flake rate over 30 days per LUCI Analysis (32076 passed, 14 failed, 1192 flaky).
+-LocalStorageImplStaleDeletionTest.Orphan/LevelDB
+
+# 2.3% flake rate over 30 days per LUCI Analysis (32510 passed, 12 failed, 753 flaky).
+-LocalStorageImplStaleDeletionTest.StaleStorageAreaDeletion/LevelDB
+
+# 78.6% flake rate over 30 days per LUCI Analysis (101 passed, 0 failed, 370 flaky).
+-PolicyLoaderIosTest.ReloadIntervalWhenBrowserManagedPostStartup
+
+# 20.2% flake rate over 30 days per LUCI Analysis (375 passed, 0 failed, 95 flaky).
+-PolicyLoaderIosTest.ReloadIntervalWhenManagedByPlatformBeforeStartup
+
+# 21.0% flake rate over 30 days per LUCI Analysis (372 passed, 0 failed, 99 flaky).
+-PolicyProviderIOSChromePolicyJSONTest/ConfigurationPolicyProviderTest.BooleanValue/0
+
+# 24.0% flake rate over 30 days per LUCI Analysis (358 passed, 0 failed, 113 flaky).
+-PolicyProviderIOSChromePolicyJSONTest/ConfigurationPolicyProviderTest.DictionaryValue/0
+
+# 22.1% flake rate over 30 days per LUCI Analysis (367 passed, 0 failed, 104 flaky).
+-PolicyProviderIOSChromePolicyJSONTest/ConfigurationPolicyProviderTest.IntegerValue/0
+
+# 23.8% flake rate over 30 days per LUCI Analysis (359 passed, 0 failed, 112 flaky).
+-PolicyProviderIOSChromePolicyJSONTest/ConfigurationPolicyProviderTest.RefreshPolicies/0
+
+# 24.4% flake rate over 30 days per LUCI Analysis (356 passed, 0 failed, 115 flaky).
+-PolicyProviderIOSChromePolicyJSONTest/ConfigurationPolicyProviderTest.StringListValue/0
+
+# 20.8% flake rate over 30 days per LUCI Analysis (373 passed, 0 failed, 98 flaky).
+-PolicyProviderIOSChromePolicyJSONTest/ConfigurationPolicyProviderTest.StringValue/0
+
+# 21.2% flake rate over 30 days per LUCI Analysis (371 passed, 0 failed, 100 flaky).
+-PolicyProviderIOSChromePolicyTest/ConfigurationPolicyProviderTest.BooleanValue/0
+
+# 15.5% flake rate over 30 days per LUCI Analysis (398 passed, 0 failed, 73 flaky).
+-PolicyProviderIOSChromePolicyTest/ConfigurationPolicyProviderTest.DictionaryValue/0
+
+# 20.2% flake rate over 30 days per LUCI Analysis (376 passed, 0 failed, 95 flaky).
+-PolicyProviderIOSChromePolicyTest/ConfigurationPolicyProviderTest.IntegerValue/0
+
+# 24.2% flake rate over 30 days per LUCI Analysis (357 passed, 0 failed, 114 flaky).
+-PolicyProviderIOSChromePolicyTest/ConfigurationPolicyProviderTest.RefreshPolicies/0
+
+# 20.2% flake rate over 30 days per LUCI Analysis (376 passed, 0 failed, 95 flaky).
+-PolicyProviderIOSChromePolicyTest/ConfigurationPolicyProviderTest.StringListValue/0
+
+# 16.1% flake rate over 30 days per LUCI Analysis (395 passed, 0 failed, 76 flaky).
+-PolicyProviderIOSChromePolicyTest/ConfigurationPolicyProviderTest.StringValue/0
+
+# 1.5% flake rate over 30 days per LUCI Analysis (32795 passed, 13 failed, 470 flaky).
+-SavedTabGroupModelTest.UpdateTabLastSeenTimeFromLocal
+
+# 1.3% flake rate over 30 days per LUCI Analysis (32851 passed, 21 failed, 405 flaky).
+-SigninPrefsTest.BookmarkBatchUploadPromo
+
+# 2.7% flake rate over 30 days per LUCI Analysis (471 passed, 13 failed, 0 flaky).
+-SqliteVfsMultiprocessTest.WalSourceTest/Rollback
+
+# 5.6% flake rate over 30 days per LUCI Analysis (14585 passed, 652 failed, 215 flaky).
+-StandaloneTrustedVaultClientTest.ShouldFollowKeyRotationOnUserEnrolment
+
+# 2.1% flake rate over 30 days per LUCI Analysis (26051 passed, 143 failed, 406 flaky).
+-StandaloneTrustedVaultClientTest.ShouldResolveErrorAndRegisterFactorsAfterFollowingKeyRotation
+
+# 2.3% flake rate over 30 days per LUCI Analysis (471 passed, 11 failed, 0 flaky).
+-TemplateURLPrepopulateDataListTest.QuickEeaEngineListIsRandomPerCountry/BL
+
+# 2.5% flake rate over 30 days per LUCI Analysis (471 passed, 12 failed, 0 flaky).
+-TemplateURLPrepopulateDataListTest.QuickEeaEngineListIsRandomPerCountry/IC
+
+# 2.5% flake rate over 30 days per LUCI Analysis (471 passed, 12 failed, 0 flaky).
+-TemplateURLPrepopulateDataListTest.QuickEeaEngineListIsRandomPerCountry/MF
+
+# 91.4% flake rate over 30 days per LUCI Analysis (2824 passed, 25 failed, 29963 flaky).
+-UmaPageLoadMetricsObserverTest.TestTracingDomContentLoadedEventStart
+
+# 21.1% flake rate over 30 days per LUCI Analysis (25897 passed, 25 failed, 6881 flaky).
+-UmaPageLoadMetricsObserverTest.TestTracingLoadEventStart
