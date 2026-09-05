@@ -8,6 +8,7 @@
 #include <memory>
 #include <string_view>
 
+#include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/escape.h"
@@ -17,6 +18,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
@@ -24,6 +26,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -35,6 +38,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/storage_partition.h"
@@ -59,6 +63,8 @@ using net::test_server::HttpRequest;
 using net::test_server::HttpResponse;
 
 namespace {
+
+constexpr char kClosedAtKey[] = "t";
 
 const char* ToString(EphemeralStorageBrowserTest::StorageType storage_type) {
   switch (storage_type) {
@@ -374,11 +380,45 @@ void WaitForCleanup(Profile* profile) {
   remover->RemoveObserver(&data_remover_observer);
 }
 
+void EphemeralStorageBrowserTest::ExpireFirstPartyStorageOrigins(
+    bool stop_before_expiring,
+    Profile* profile) {
+  if (!profile) {
+    profile = browser()->GetProfile();
+  }
+
+  if (stop_before_expiring) {
+    auto* service =
+        EphemeralStorageServiceFactory::GetInstance()->GetForContext(profile);
+    auto* delegate =
+        static_cast<ephemeral_storage::BraveEphemeralStorageServiceDelegate*>(
+            service->delegate_.get());
+    static_cast<ephemeral_storage::ApplicationStateObserver::Observer*>(
+        delegate)
+        ->OnApplicationBecameInactive();
+    content::RunAllTasksUntilIdle();  // let tab Close() +
+                                      // TLDEphemeralLifetimeDestroyed run
+  }
+
+  ScopedListPrefUpdate pref_update(
+      profile->GetPrefs(),
+      ephemeral_storage::kFirstPartyStorageOriginsToCleanup);
+  for (auto& value : *pref_update) {
+    base::DictValue* dict = value.GetIfDict();
+    if (!dict) {
+      continue;
+    }
+    // Set past last access time.
+    dict->Set(kClosedAtKey, base::TimeToValue(base::Time::Min()));
+  }
+}
+
 size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(
     Profile* profile) {
   if (!profile) {
     profile = browser()->GetProfile();
   }
+
   const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
                                ->GetForContext(profile)
                                ->FireCleanupTimersForTesting();

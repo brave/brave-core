@@ -354,11 +354,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
   // Navigate to b.com to activate a deferred cleanup for a.com.
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  ExpireFirstPartyStorageOrigins(true);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
-  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 
@@ -536,11 +538,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
   // Navigate to b.com to activate a deferred cleanup for a.com.
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  ExpireFirstPartyStorageOrigins(true);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
                        ForgetFirstPartyAfterRestart) {
-  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 
@@ -698,6 +702,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
   // Navigate to b.com to activate a deferred cleanup for a.com.
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  // Simulate that the tabs were closed more than 30 seconds ago
+  ExpireFirstPartyStorageOrigins(true);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
@@ -714,18 +721,16 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
         return true;
       });
 
-  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
-  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive(
+  // Still queued, data untouched.
+  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive(
                     browser()->GetProfile()->GetOriginalProfile()));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
                        DontForgetFirstPartyIfNoBrowserWindowIsActive) {
-  // Expect the cleanup did not happen (yet).
-  EXPECT_EQ(1u, GetAllCookies().size());
-
-  // But it is queued and should happen eventually.
-  EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
+  // A normal window is open again: the deferred cleanup runs on startup.
+  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, GetAllCookies().size());
 }
 
