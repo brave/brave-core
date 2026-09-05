@@ -44,6 +44,7 @@ class PageActionControllerImpl : public PageActionControllerImpl_ChromiumImpl {
   std::unique_ptr<PageActionModelInterface> CreateModel(
       actions::ActionId action_id,
       bool is_ephemeral) override;
+  void Show(actions::ActionId action_id) override;
 };
 
 }  // namespace page_actions

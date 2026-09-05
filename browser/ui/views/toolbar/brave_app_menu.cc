@@ -30,6 +30,7 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -204,8 +205,9 @@ BraveAppMenu::BraveAppMenu(Browser* browser,
 
 BraveAppMenu::~BraveAppMenu() = default;
 
-void BraveAppMenu::RunMenu(views::MenuButtonController* host) {
-  AppMenu::RunMenu(host);
+void BraveAppMenu::RunMenu(views::MenuButtonController* host,
+                           ui::mojom::MenuSourceType source_type) {
+  AppMenu::RunMenu(host, source_type);
   menu_metrics_->RecordMenuShown();
 }
 

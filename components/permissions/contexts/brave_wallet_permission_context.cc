@@ -6,12 +6,12 @@
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 
 #include <optional>
+#include <ranges>
 #include <utility>
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/strings/string_util.h"
-#include "base/types/zip.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
@@ -230,7 +230,7 @@ void BraveWalletPermissionContext::RequestWalletPermissions(
       base::BindOnce(&AggregatePermissionResults, std::move(callback)));
 
   for (auto [address, origin_with_address] :
-       base::zip(addresses, addresses_with_origin)) {
+       std::views::zip(addresses, addresses_with_origin)) {
     content::PermissionRequestDescription desc(
         content::PermissionDescriptorUtil::
             CreatePermissionDescriptorForPermissionTypes({permission}),

@@ -11,12 +11,12 @@
 #include "brave/browser/ui/toolbar/bookmark_bar_sub_menu_model.h"
 #include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 class BraveBookmarkSubMenuModel : public BookmarkSubMenuModel {
  public:
   BraveBookmarkSubMenuModel(ui::SimpleMenuModel::Delegate* delegate,
-                            Browser* browser);
+                            BrowserWindowInterface* browser);
 
   BraveBookmarkSubMenuModel(const BraveBookmarkSubMenuModel&) = delete;
   BraveBookmarkSubMenuModel& operator=(const BraveBookmarkSubMenuModel&) =
@@ -25,7 +25,7 @@ class BraveBookmarkSubMenuModel : public BookmarkSubMenuModel {
   ~BraveBookmarkSubMenuModel() override;
 
  private:
-  void Build(Browser* browser);
+  void Build(BrowserWindowInterface* browser);
 
   std::unique_ptr<BookmarkBarSubMenuModel> brave_bookmarks_submenu_model_;
 };

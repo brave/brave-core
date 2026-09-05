@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/update_package_provides.py b/chrome/installer/linux/rpm/update_package_provides.py
-index 6a0ca25d25169cbef54d99d75ba299d106cd1bef..275ce853174c8d5be8ba554cea6c9ef1c7a4262e 100755
+index f2b01da6f6efe18047762b660f61d23c9a33f244..613089041e19b0e3eb71baaadee8ab77b4487eb5 100755
 --- a/chrome/installer/linux/rpm/update_package_provides.py
 +++ b/chrome/installer/linux/rpm/update_package_provides.py
 @@ -33,6 +33,7 @@ LIBRARY_FILTER = {

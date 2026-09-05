@@ -130,7 +130,7 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 
 void AddWidevineFootnoteView(
     views::BubbleDialogDelegateView* dialog_delegate_view,
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   const std::u16string footnote =
       l10n_util::GetStringUTF16(IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
   const std::vector<std::u16string> replacements{
@@ -203,7 +203,7 @@ BEGIN_METADATA(PermissionLifetimeCombobox)
 END_METADATA
 
 std::unique_ptr<views::View> CreateGeolocationDescLabel(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     bool enable_high_accuracy,
     bool location_service_is_on) {
   // The text shown in dialog is different depending on if person has location
@@ -250,7 +250,7 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   // that |browser| and bubble is destroyed earlier than browser.
   views::StyledLabel::RangeStyleInfo learn_more_style =
       views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
-          [](Browser* browser) {
+          [](BrowserWindowInterface* browser) {
             chrome::AddSelectedTabWithURL(
                 browser, GURL(kGeolocationPermissionLearnMoreURL),
                 ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
@@ -282,7 +282,7 @@ std::unique_ptr<views::View> CreateGeolocationDescIcon(
 
 void AddGeolocationDescription(
     views::BubbleDialogDelegateView* dialog_delegate_view,
-    Browser* browser,
+    BrowserWindowInterface* browser,
     bool enable_high_accuracy,
     bool location_service_is_on) {
   auto container = std::make_unique<views::View>();
@@ -304,7 +304,7 @@ void AddGeolocationDescription(
 void AddGeolocationDescriptionIfNeeded(
     PermissionPromptBubbleBaseView* bubble_base_view,
     permissions::PermissionPrompt::Delegate* delegate,
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   if (!geolocation::CanGiveDetailedGeolocationRequestInfo()) {
     return;
   }
@@ -333,8 +333,8 @@ void AddGeolocationDescriptionIfNeeded(
 
   geolocation::IsSystemLocationSettingEnabled(base::BindOnce(
       [](base::WeakPtr<views::WidgetDelegate> widget_delegate,
-         base::WeakPtr<Browser> browser, bool enable_high_accuracy,
-         bool settings_enabled) {
+         base::WeakPtr<BrowserWindowInterface> browser,
+         bool enable_high_accuracy, bool settings_enabled) {
         // Browser or Bubble is already gone.
         if (!browser || !widget_delegate) {
           return;
@@ -349,7 +349,7 @@ void AddGeolocationDescriptionIfNeeded(
         // To update widget layout after adding another child view.
         bubble_base_view->UpdateAnchorPosition();
       },
-      bubble_base_view->GetWeakPtr(), browser->AsWeakPtr(),
+      bubble_base_view->GetWeakPtr(), browser->GetWeakPtr(),
       enable_high_accuracy));
 }
 
@@ -391,7 +391,7 @@ void AddFootnoteViewIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<std::unique_ptr<permissions::PermissionRequest>>&
         requests,
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   // Widevine permission bubble has custom footnote.
   if (HasWidevinePermissionRequest(requests)) {
@@ -491,32 +491,4 @@ void PermissionPromptBubbleZOrderManager::RestoreZOrder() {
   z_order_elevated_ = false;
 }
 
-#define BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW                           \
-  Browser* const brave_browser =                                           \
-      GetBrowser() ? GetBrowser()->GetBrowserForMigrationOnly() : nullptr; \
-  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());  \
-  auto* permission_lifetime_view =                                         \
-      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());        \
-  AddFootnoteViewIfNeeded(this, delegate_->Requests(), brave_browser);     \
-  if (permission_lifetime_view) {                                          \
-    set_fixed_width(                                                       \
-        std::max(GetPreferredSize().width(),                               \
-                 permission_lifetime_view->GetPreferredSize().width()) +   \
-        margins().width());                                                \
-    set_should_ignore_snapping(true);                                      \
-  }                                                                        \
-  AddGeolocationDescriptionIfNeeded(this, delegate_.get(), brave_browser);
-
-// Creates PermissionPromptBubbleZOrdermanager instance to manage the z-order
-// of the bubble and its parent widget. Note that we need to do this at this
-// point so that widget is ready.
-#define SetZOrderSublevel(...)    \
-  SetZOrderSublevel(__VA_ARGS__); \
-  z_order_manager_ =              \
-      std::make_unique<PermissionPromptBubbleZOrderManager>(*this);
-
 #include <chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc>
-
-#undef SetCloseCallback
-#undef SetZOrderSublevel
-#undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW

@@ -13,8 +13,8 @@
 class BraveBookmarkBarView : public BookmarkBarView {
   METADATA_HEADER(BraveBookmarkBarView, BookmarkBarView)
  public:
-
-  BraveBookmarkBarView(Browser* browser, BrowserView* browser_view);
+  BraveBookmarkBarView(BrowserWindowInterface* browser,
+                       BrowserView* browser_view);
   ~BraveBookmarkBarView() override;
 
   // BookmarkBarView:

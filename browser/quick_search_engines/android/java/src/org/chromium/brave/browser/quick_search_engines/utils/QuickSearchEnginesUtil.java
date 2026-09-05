@@ -65,8 +65,10 @@ public class QuickSearchEnginesUtil {
      */
     public static void saveSearchEnginesIntoPref(
             Map<String, QuickSearchEnginesModel> searchEnginesMap) {
-        new SharedPreferencesHelper()
-                .saveMap(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, searchEnginesMap);
+        String json = QuickSearchEnginesSerializer.serialize(searchEnginesMap);
+        if (json == null) return;
+        ChromeSharedPreferences.getInstance()
+                .writeString(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, json);
     }
 
     /**
@@ -75,11 +77,9 @@ public class QuickSearchEnginesUtil {
      * @return Map of search engine keywords to their QuickSearchEnginesModel, or null if not found
      */
     public static Map<String, QuickSearchEnginesModel> getQuickSearchEnginesFromPref() {
-        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper();
-        return sharedPreferencesHelper.getMap(
-                BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES,
-                String.class,
-                QuickSearchEnginesModel.class);
+        return QuickSearchEnginesSerializer.deserialize(
+                ChromeSharedPreferences.getInstance()
+                        .readString(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES, ""));
     }
 
     /**
@@ -265,15 +265,15 @@ public class QuickSearchEnginesUtil {
             Map<String, QuickSearchEnginesModel> ytSearchEnginesMap =
                     new LinkedHashMap<String, QuickSearchEnginesModel>();
 
-            // Iterate through existing engines
+            // Iterate through existing engines, keeping each entry under the key it already
+            // has. Re-keying by the model's own keyword instead would let an entry whose
+            // keyword does not match its key silently move, or drop out of the map entirely
+            // if that keyword were null.
             for (Map.Entry<String, QuickSearchEnginesModel> entry : searchEnginesMap.entrySet()) {
-                QuickSearchEnginesModel quickSearchEnginesModel = entry.getValue();
-                ytSearchEnginesMap.put(
-                        quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
+                ytSearchEnginesMap.put(entry.getKey(), entry.getValue());
 
                 // Add YouTube search right after Google if it's not already present
-                if (QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(
-                                quickSearchEnginesModel.getKeyword())
+                if (QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(entry.getKey())
                         && !searchEnginesMap.containsKey(
                                 QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
                     addYtQuickSearchEnginesModel(ytSearchEnginesMap);

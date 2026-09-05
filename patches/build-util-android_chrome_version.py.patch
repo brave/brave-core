@@ -1,21 +1,21 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index f408f6851b77f669aa8345948d858b2c1a15f3b8..c069eb00a6a6b1ee84cb0ef2d4c60581dca1b735 100755
+index e1d83ce9ac2f96c053e3d9e6017dd5ed1ebaddbb..1585917f699d58f1e13047850ca6762827822ebb 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
 @@ -236,6 +236,7 @@ def _GetAbisToDigitMask(build_number, patch_number):
-     mapped to version code suffix.
-   """
-   # Scheme change was made directly to M113 and M114 branches.
-+  from brave_version_utils import remap_build_number; build_number = remap_build_number(build_number)
-   use_new_scheme = (build_number >= 5750
-                     or (build_number == 5672 and patch_number >= 176)
-                     or (build_number == 5735 and patch_number >= 53))
-@@ -372,7 +373,7 @@ def GenerateVersionCodes(build_number, patch_number, arch):
+       mapped to version code suffix.
+     """
+     # Scheme change was made directly to M113 and M114 branches.
++    from brave_version_utils import remap_build_number; build_number = remap_build_number(build_number)
+     use_new_scheme = (
+         build_number >= 5750
+         or (build_number == 5672 and patch_number >= 176)
+@@ -381,7 +382,7 @@ def GenerateVersionCodes(build_number, patch_number, arch):
  
-   Thus, this method is responsible for the final two digits of versionCode.
-   """
--  base_version_code = (build_number * 1000 + patch_number) * 100
-+  from brave_version_utils import generate_base_version_code; base_version_code = generate_base_version_code(build_number, patch_number)
+     Thus, this method is responsible for the final two digits of versionCode.
+     """
+-    base_version_code = (build_number * 1000 + patch_number) * 100
++    from brave_version_utils import generate_base_version_code; base_version_code = generate_base_version_code(build_number, patch_number)
  
-   mfg, bitness = _ARCH_TO_MFG_AND_BITNESS[arch]
+     mfg, bitness = _ARCH_TO_MFG_AND_BITNESS[arch]
  

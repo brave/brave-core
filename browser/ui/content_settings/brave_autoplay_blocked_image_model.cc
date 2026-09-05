@@ -42,7 +42,7 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
 std::unique_ptr<ContentSettingBubbleModel>
 BraveAutoplayBlockedImageModel::CreateBubbleModelImpl(
     ContentSettingBubbleModel::Delegate* delegate,
-    content::WebContents* web_contents) {
+    content::Page& page) {
   return std::make_unique<BraveAutoplayContentSettingBubbleModel>(delegate,
-                                                                  web_contents);
+                                                                  page);
 }

@@ -1,5 +1,5 @@
 diff --git a/components/private_ai/features.cc b/components/private_ai/features.cc
-index 23a6613594abb721a2a81bdb0d1c445a59cf02c8..04f239b26945064ec6be90a5314ee4f9da1691da 100644
+index 19098ac71a00026d56b622a373e900011e650a09..71da93a0a9f07989c11138f862458b403d23eb95 100644
 --- a/components/private_ai/features.cc
 +++ b/components/private_ai/features.cc
 @@ -9,7 +9,11 @@

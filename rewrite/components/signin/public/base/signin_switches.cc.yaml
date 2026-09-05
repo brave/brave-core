@@ -20,3 +20,11 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kSyncEnableBookmarksInTransportMode
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kReadIsSubjectToUniversalOptOutCapability disabled, because Chromium
+      seems to be trying to determine if a user is eligible for GPC? As best as
+      I can tell, it’s very sparse right now.
+    set_feature_flag_default_state:
+      feature_name: kReadIsSubjectToUniversalOptOutCapability
+      value: base::FEATURE_DISABLED_BY_DEFAULT

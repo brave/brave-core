@@ -160,13 +160,13 @@ using BrowserAddPersonDisabledPolicyTest = BrowserAddPersonPolicyTest<false>;
 
 IN_PROC_BROWSER_TEST_F(BrowserAddPersonEnabledPolicyTest,
                        AddNewProfileEnabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
 }
 
 IN_PROC_BROWSER_TEST_F(BrowserAddPersonDisabledPolicyTest,
                        AddNewProfileDisabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
 }
 
@@ -192,13 +192,13 @@ using BrowserGuestModeDisabledPolicyTest = BrowserGuestModePolicyTest<false>;
 
 IN_PROC_BROWSER_TEST_F(BrowserGuestModeEnabledPolicyTest,
                        OpenGuestProfileEnabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
 }
 
 IN_PROC_BROWSER_TEST_F(BrowserGuestModeDisabledPolicyTest,
                        OpenGuestProfileDisabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
 }
 

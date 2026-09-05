@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Update the sidebar UI when the active tab's URL changes.
+
+      This used to live in BraveBrowser::ScheduleUIUpdate, but
+      Browser::ScheduleUIUpdate moved into BrowserUiController and is no
+      longer virtual, so hook into it here instead.
+    preempt_function_impl:
+      function_name: BrowserUiController::ScheduleUIUpdate
+      code: |-
+        MaybeUpdateSidebarForUrlChange(*browser_, *tab_strip_model_, source,
+                                       changed_flags);

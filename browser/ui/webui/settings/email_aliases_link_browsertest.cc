@@ -36,14 +36,14 @@ class BraveSettingsEmailAliasesRowBrowserTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-// Tests that the Email Aliases link row is visible only if the feature is
+// Tests that the Email Aliases card is visible only if the feature is
 // enabled and that clicking on it navigates to the Email Aliases page.
 IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
                        EmailAliasesRow_VisibilityAndNavigation) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
                                            chrome::GetSettingsUrl("autofill")));
 
-  // Inject a local helper to pierce shadow DOMs and store the row globally.
+  // Inject a local helper to pierce shadow DOMs and store the card globally.
   ASSERT_TRUE(content::ExecJs(contents(), R"JS(
     (function() {
       function deepQuerySelector(root, selector) {
@@ -58,25 +58,24 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
         }
         return null;
       }
-      window.emailAliasesRow =
-        deepQuerySelector(document, '#emailAliasesLinkRow');
+      window.emailAliasesCard =
+        deepQuerySelector(document, '#emailAliasesCard');
     })();
   )JS"));
 
   const bool enabled = FeatureEnabled();
 
-  // Email Aliases link row should exist only if the feature is enabled.
+  // Email Aliases card should exist only if the feature is enabled.
   EXPECT_EQ(enabled,
-            content::EvalJs(contents(), R"JS(!!window.emailAliasesRow)JS"));
+            content::EvalJs(contents(), R"JS(!!window.emailAliasesCard)JS"));
 
   if (!enabled) {
     return;
   }
 
-  // Clicking on the Email Aliases link row should navigate to the Email Aliases
-  // page.
+  // Clicking the card's title row should navigate to the Email Aliases page.
   ASSERT_TRUE(content::ExecJs(contents(), R"JS(
-    window.emailAliasesRow.click();
+    window.emailAliasesCard.shadowRoot.querySelector('cr-link-row').click();
   )JS"));
 
   EXPECT_EQ(chrome::GetSettingsUrl("email-aliases"),

@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.h b/chrome/browser/ui/tabs/split_tab_menu_model.h
+index 6d8db4344e032892fc34624aa23efae3f7165bd2..9debaaa61cb949a0df2ab0cead8761ead1dd1de0 100644
+--- a/chrome/browser/ui/tabs/split_tab_menu_model.h
++++ b/chrome/browser/ui/tabs/split_tab_menu_model.h
+@@ -54,7 +54,8 @@ class SplitTabMenuModel : public ui::SimpleMenuModel,
+     kExitSplit,
+     kSendFeedback,
+     kToggleOrientation,
+-    kMaxValue = kToggleOrientation,
++    kToggleLinkState,
++    kMaxValue = kToggleLinkState,
+   };
+   // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/enums.xml:SplitViewMenuEntry)
+ 
+@@ -77,10 +78,17 @@ class SplitTabMenuModel : public ui::SimpleMenuModel,
+   ui::ImageModel GetIconForCommandId(int command_id) const override;
+   void ExecuteCommand(int command_id, int event_flags) override;
+ 
++ protected:
++  static CommandId GetCommandIdEnum(int command_id);
++  static int GetCommandIdInt(CommandId command_id);
++
+  private:
++  friend class BraveSplitTabMenuModel;
++  FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,
++                           SplitViewMenuCustomizationTest);
+   // Returns the split id for the split tabs that this menu is acting on.
+   split_tabs::SplitTabId GetSplitTabId() const;
+-  const gfx::VectorIcon& GetReversePositionIcon(
++  virtual const gfx::VectorIcon& GetReversePositionIcon(
+       split_tabs::SplitTabActiveLocation active_split_tab_location) const;
+   split_tabs::SplitTabLayout GetSplitLayout() const;
+   void CloseWebContents(content::WebContents* contents);

@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
-index 6ac45ae0ad07f012db8db5b0b5002d193e6d4468..d93b5fc00ef162795033242eafe622f4657b61a1 100644
+index be651d72b6e14347bf02b8d079ed3b1365db02ab..11f82b548d9b53dbea4ae46fdb77dc851be663b0 100644
 --- a/components/sync/base/data_type.cc
 +++ b/components/sync/base/data_type.cc
-@@ -1213,10 +1213,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+@@ -1229,10 +1229,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
              .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
              .local_sync_support_policy = LocalSyncSupportPolicy::kUnsupported,
          },
@@ -24,14 +24,14 @@ index 6ac45ae0ad07f012db8db5b0b5002d193e6d4468..d93b5fc00ef162795033242eafe622f4
      }};
  
  // LINT.IfChange(DataTypeHistogramSuffix)
--static_assert(GetNumDataTypes() == 66,
-+static_assert(GetNumDataTypes() == 66 + 1,
+-static_assert(GetNumDataTypes() == 67,
++static_assert(GetNumDataTypes() == 67 + 1,
                "When adding a new type, update kDataTypeInfoTable, update "
                "histograms.xml and follow the integration checklist in "
                "https://www.chromium.org/developers/design-documents/sync/"
-@@ -1442,6 +1457,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
-     case NOTEBOOK:
-       specifics->mutable_notebook();
+@@ -1461,6 +1476,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+     case JOURNEY:
+       specifics->mutable_journey();
        break;
 +    case AI_CHAT_CONVERSATION:
 +      specifics->mutable_ai_chat_conversation();
@@ -39,10 +39,10 @@ index 6ac45ae0ad07f012db8db5b0b5002d193e6d4468..d93b5fc00ef162795033242eafe622f4
    }
  }
  
-@@ -1782,6 +1800,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
-       return DataTypeForHistograms::kThemesAndroid;
-     case NOTEBOOK:
+@@ -1803,6 +1821,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
        return DataTypeForHistograms::kNotebook;
+     case JOURNEY:
+       return DataTypeForHistograms::kJourney;
 +    case AI_CHAT_CONVERSATION:
 +      return DataTypeForHistograms::kAIChatConversation;
    }

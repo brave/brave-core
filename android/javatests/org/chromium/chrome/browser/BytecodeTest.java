@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel.BookmarkDeleteObserver;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs;
 import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
@@ -1082,7 +1083,8 @@ public class BytecodeTest {
                         String.class,
                         Bundle.class,
                         boolean.class,
-                        String.class));
+                        String.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
@@ -1275,6 +1277,16 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         void.class,
                         List.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/firstrun/FreIntentCreator",
+                        "createInternal",
+                        MethodModifier.STATIC,
+                        Intent.class,
+                        Context.class,
+                        Intent.class,
+                        boolean.class,
+                        String.class));
     }
 
     @Test
@@ -1517,7 +1529,7 @@ public class BytecodeTest {
                         OpenInAppMenuItemProvider.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class,
+                        NonNullObservableSupplier.class,
                         BooleanSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1825,8 +1837,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/OmniboxViewHolderFactory",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory",
-                        OmniboxResourceProvider.class));
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -1897,7 +1908,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         ModelList.class,
                         Context.class,
-                        NonNullObservableSupplier.class));
+                        NonNullObservableSupplier.class,
+                        OmniboxResourceProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
@@ -1967,7 +1979,8 @@ public class BytecodeTest {
                         FuseboxCoordinator.class,
                         LocationBarEmbedder.class,
                         OmniboxChipManager.class,
-                        LocationBarFocusScrimHandler.class));
+                        LocationBarFocusScrimHandler.class,
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -2124,7 +2137,8 @@ public class BytecodeTest {
                         BooleanSupplier.class,
                         BookmarkManagerOpener.class,
                         SnackbarManager.class,
-                        View.class));
+                        View.class,
+                        BookmarkDeleteObserver.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
@@ -2216,10 +2230,6 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
                         Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/firstrun/FreIntentCreator",
-                        "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ui/appmenu/BraveAppMenu",

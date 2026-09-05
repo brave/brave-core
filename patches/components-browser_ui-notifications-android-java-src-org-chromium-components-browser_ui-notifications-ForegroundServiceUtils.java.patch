@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java b/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java
-index 43421cebe7002f35024a6bb357a5f5674f7966f8..6f406ec349ae70a0db76fea87bb2033c55468258 100644
+index af499d3f46d116ad1b45eb1d39f238d8e53f6314..7e849eb10c120819dba8494b4dbc4c3ca62c81dd 100644
 --- a/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java
 +++ b/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java
-@@ -26,7 +26,7 @@ import org.chromium.build.annotations.NullMarked;
+@@ -27,7 +27,7 @@ import org.chromium.build.annotations.NullMarked;
  public class ForegroundServiceUtils {
      private static final String TAG = "ForegroundService";
  

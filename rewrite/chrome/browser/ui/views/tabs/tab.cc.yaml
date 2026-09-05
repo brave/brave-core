@@ -4,22 +4,49 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Check if tab can be closed via middle mouse button click based on prefs'
+  - description: |-
+      Respect the "close tab with middle click" setting.
     regex:
       pattern: 'if (event.IsOnlyMiddleMouseButton())'
       replace:
         'if (event.IsOnlyMiddleMouseButton() &&
         controller_->CanCloseTabViaMiddleButtonClick())'
 
-  - description: 'Add BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION'
+  - description: |-
+      Center the favicon vertically within the tab.
+
+      Upstream no longer centers the tab favicon vertically (likely because
+      their tab contents rect happens to be the same height as the favicon);
+      restore that centering.
     regex:
       re_pattern:
-        '(gfx::Rect favicon_bounds\(start, contents_rect\.y\(\), 0, 0\);\s+if
+        '(gfx::Rect favicon_bounds\(start, contents_rect\.y\(\), 0, 0\);\n\s*if
         \(showing_icon_\) \{\n)'
-      replace: '\1    BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION\n'
+      replace: |
+        \1    favicon_bounds.set_y(contents_rect.y() +
+                             Center(contents_rect.height(), gfx::kFaviconSize));
 
-  - description: 'Add BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION'
+  - description: |-
+      Position the alert indicator at the start of the title, moving the
+      title after it, respecting the close button's space.
     regex:
       re_pattern: '(if\s*\(showing_alert_indicator_\)\s*\{\n\s*title_right\s*=\s*alert_indicator_button_->x\(\)\s*-\s*after_title_padding;)'
-      replace: '\1\n      BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION'
+      replace: |-
+        \1
+              alert_indicator_button_->SetX(title_left - after_title_padding);
+              title_right = close_x - after_title_padding;
+              if (showing_close_button_)
+                title_right = close_x - after_title_padding;
+              title_left = alert_indicator_button_->x() +
+                           alert_indicator_button_->width() + after_title_padding;
+
+  - description: |-
+      Use the vertical tab height when in vertical tabs mode.
+
+      `UpdateIconVisibility()` and `CalculatePreferredSize()` rely on
+      kTabHeight to size the tab; using it unconditionally would hide the
+      favicon and close button when vertical tabs are enabled.
+    count: 2 # Once in CalculatePreferredSize, once in UpdateIconVisibility.
+    regex:
+      pattern: 'GetLayoutConstant(LayoutConstant::kTabHeight)'
+      replace: 'GetTabHeight()'

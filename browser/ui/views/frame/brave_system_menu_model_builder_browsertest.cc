@@ -5,6 +5,7 @@
 
 #include "base/check.h"
 #include "brave/app/brave_command_ids.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"

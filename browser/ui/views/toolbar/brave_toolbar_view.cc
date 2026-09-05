@@ -221,8 +221,8 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   CHECK_DEREF(browser())
-      .browser_window_features()
-      ->brave_non_client_hit_test_helper()
+      .GetFeatures()
+      .brave_non_client_hit_test_helper()
       ->RegisterCaptionArea(this);
 
   // For non-normal mode, we don't have to do any more work.
@@ -372,8 +372,7 @@ void BraveToolbarView::Init() {
 
   side_panel_ = AddChildViewAt(
       std::make_unique<SidePanelButton>(
-          browser()->browser_window_features()->sidebar_controller(),
-          profile->GetPrefs()),
+          browser()->GetFeatures().sidebar_controller(), profile->GetPrefs()),
       *GetIndexOf(app_menu_button_) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 
@@ -843,8 +842,7 @@ void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
 }
 
 void BraveToolbarView::OnWorkspacesButtonPressed() {
-  auto* controller =
-      browser_->browser_window_features()->workspaces_bubble_controller();
+  auto* controller = browser_->GetFeatures().workspaces_bubble_controller();
   CHECK(controller);
   controller->ShowBubble(workspaces_button_, browser_->GetProfile());
 }

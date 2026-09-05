@@ -2,10 +2,16 @@
 <!-- Glic specific strings (included from generated_resources.grd). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_ACCESSING" desc="Extra tool tip text, when the tab's context is being shared with Gemini">
+  <message name="IDS_GLIC_TASK_WAITING_FOR_CONSENT_TITLE" desc="Title of task in task list bubble showing that the task is waiting for user consent.">
+    Review Important Information
+  </message>
+  <message name="IDS_GLIC_TASK_WAITING_FOR_CONSENT_SUBTITLE" desc="Subtitle of task in task list bubble showing that the task is waiting for user consent.">
+    Working on your task
+  </message>
+  <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_ACCESSING" desc="Extra tool tip text, when the tab's context is being shared with Gemini" formatter_data="android_java">
     You're sharing this tab with Gemini
   </message>
-  <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_SHARING" desc="Extra tool tip text, when the tab's context is being shared with Gemini">
+  <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_SHARING" desc="Extra tool tip text, when the tab's context is being shared with Gemini" formatter_data="android_java">
     You're sharing this tab with Gemini
   </message>
   <message name="IDS_TOOLTIP_GLIC_CLOSE" desc="The tooltip for the close button within the Glic nudge button." formatter_data="android_java">
@@ -130,23 +136,32 @@
   <message name="IDS_SETTINGS_GLIC_POLICY_DISABLED_MESSAGE" desc="Message shown when Gemini is disabled by enterprise policy.">
     This feature is disabled by your organization
   </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_INLINE_CUE_MENU" desc="Label for the inline cue menu content setting.">
-    Floating menu on selected text
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_MID_SENTENCE" desc="Label for the inline cue menu content setting when referenced mid-sentence.">
+    select text to ask Gemini
   </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_INLINE_CUE_MENU_MID_SENTENCE" desc="Label for the inline cue menu content setting when referenced mid-sentence.">
-    floating menu on selected text
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU" desc="Label for the inline cue menu setting and toggle.">
+    Select text to ask Gemini
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_ALLOWED" desc="Label for the enabled option of the inline cue menu content setting.">
-    Show the floating menu when text is selected
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_DESCRIPTION" desc="Description for the inline cue menu setting page.">
+    Get a definition or learn more about a topic
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_BLOCKED" desc="Label for the disabled option of the inline cue menu content setting.">
-    Don't show the floating menu when text is selected
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_TOGGLE_SUBLABEL" desc="Sublabel for the main toggle on the inline cue menu settings page.">
+    Get a definition or learn more about a topic by selecting text on a page
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_DESCRIPTION" desc="Description for the inline cue menu setting page.">
-    Brave can show a floating menu with actions when you select text on a site.
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_PREVIEW" desc="Header for the preview section of the inline cue menu settings page.">
+    Preview
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_BLOCKED_EXCEPTIONS" desc="Header for the list of sites blocked from showing the inline cue menu.">
-    Sites where the floating menu is blocked
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_PREVIEW_TEXT" desc="Text displayed in the preview box with highlighted words.">
+    Brave is made possible by the Brave open source project and other <ph name="BEGIN_HIGHLIGHT">&lt;span class="preview-highlight-box"&gt;&lt;span class="preview-highlight-text"&gt;</ph>open source<ph name="END_HIGHLIGHT">&lt;/span&gt;&lt;/span&gt;</ph> software.
+  </message>
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_PREVIEW_PILL" desc="Text inside the floating pill in the preview box.">
+    Explain
+  </message>
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_BLOCKED_EXCEPTIONS" desc="Header for the list of sites blocked from showing the inline cue menu.">
+    Not allowed to show text actions
+  </message>
+  <message name="IDS_SETTINGS_GLIC_INLINE_CUE_MENU_ADD_SITE" desc="Label for the Add Site button on the inline cue menu exceptions list.">
+    Add site
   </message>
   <message name="IDS_SETTINGS_GLIC_PREFERENCES_SECTION" desc="Heading on settings page for basic preferences." formatter_data="android_java">
     Preferences
@@ -210,6 +225,12 @@
   </message>
   <message name="IDS_SETTINGS_GLIC_KEEP_SIDEPANEL_OPEN_ON_NEW_TABS" desc="Name of the setting to keep side panel open on new tabs.">
     Keep browsing with Gemini when you open new tabs
+  </message>
+  <message name="IDS_SETTINGS_GLIC_SHAKE_TRIGGER_TOGGLE" desc="Name of the shake trigger setting.">
+    Shake cursor to select from screen
+  </message>
+  <message name="IDS_SETTINGS_GLIC_SHAKE_TRIGGER_TOGGLE_SUBLABEL" desc="Sublabel describing that shaking the cursor captures a region.">
+    Quickly shake the mouse cursor back and forth to select from the screen
   </message>
   <message name="IDS_SETTINGS_GLIC_MEDIA_UNDERSTANDING" desc="Name of the media understanding setting.">
     Media Understanding
@@ -499,6 +520,9 @@
   <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_GEMINI_LABEL" desc="Label on the button used to open Gemini in Brave." formatter_data="android_java">
     Ask Gemini
   </message>
+  <message name="IDS_GLIC_OPEN_GEMINI_LABEL" desc="Label on the menu item used to open Gemini in Brave." formatter_data="android_java">
+    Open Chat
+  </message>
   <message name="IDS_GLIC_SELECTION_CTA_TELL_ME" desc="Experimental CTA label on selection button.">
     Tell me about this
   </message>
@@ -560,7 +584,19 @@
     Hide for this site
   </message>
   <message name="IDS_GLIC_SELECTION_HIDDEN_TOAST_BODY" desc="Body text for the toast notification when the selection widget is hidden on the current page.">
-    Hidden
+    Hidden until the page refreshes
+  </message>
+  <message name="IDS_GLIC_SELECTION_ASK_MORE_ABOUT_THIS" desc="Label for the button at the bottom of the inline explanation box to open Gemini in the side panel for follow-up questions.">
+    Ask Gemini more about this
+  </message>
+  <message name="IDS_GLIC_SELECTION_MORE_SKILLS" desc="Label for the submenu item showing all user skills in the selection widget context menu.">
+    More
+  </message>
+  <message name="IDS_GLIC_SELECTION_YOUR_SKILLS" desc="Section heading for user-created skills in the selection widget context menu.">
+    Your skills
+  </message>
+  <message name="IDS_GLIC_SELECTION_FOR_THIS_PAGE" desc="Section heading for contextual skills relevant to the current page in the selection widget context menu.">
+    For this page
   </message>
 
   <!-- Educational Tip -->

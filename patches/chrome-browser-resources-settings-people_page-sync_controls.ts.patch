@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index 19d037da1ed8d050f500fbcf297840ca210ffec4..78783f7f1412914bd2848876e26467af9ffe1a22 100644
+index 1e5afaf147008936350b929ba416d992423bee00..ead63e5d272c6bbde6d42db1a07c62291c4843aa 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -167,7 +167,7 @@ export class SettingsSyncControlsElement extends
+@@ -145,7 +145,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      const currentRoute = router.getCurrentRoute();
@@ -11,11 +11,20 @@ index 19d037da1ed8d050f500fbcf297840ca210ffec4..78783f7f1412914bd2848876e26467af
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
      if (loadTimeData.getBoolean('replaceSyncPromosWithSignInPromos') &&
-@@ -362,6 +362,7 @@ export class SettingsSyncControlsElement extends
-   private disableTypeCheckBox_(
-       syncStatus: SyncStatus, syncAllDataTypes: boolean,
-       dataTypeManaged: boolean): boolean {
-+    if (dataTypeManaged) { return true; } if (!syncStatus || !this.syncPrefs) { return syncAllDataTypes }
-     if (!syncStatus) {
+@@ -377,6 +377,7 @@ export class SettingsSyncControlsElement extends
+ 
+   protected disableTypeCheckBox_(dataTypeManaged: boolean|undefined|null):
+       boolean {
++    if (dataTypeManaged) { return true; } if (!this.syncStatus || !this.syncPrefs) { return !!this.syncPrefs?.syncAllDataTypes; }
+     if (!this.syncStatus) {
        return true;
      }
+@@ -386,7 +387,7 @@ export class SettingsSyncControlsElement extends
+     }
+ 
+     if (this.syncStatus.signedInState === SignedInState.SYNCING) {
+-      return !!this.syncPrefs?.syncAllDataTypes;
++      return this.syncPrefs?.syncAllDataTypes;
+     }
+ 
+     // Toggles should be disabled on the account settings page if sync is

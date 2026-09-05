@@ -16,15 +16,6 @@ substitutions:
               {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},\2
 
   - description: |
-      Change the `IDC_NEW_SPLIT_TAB` shortcut key from `kVK_ANSI_N` to
-      `kVK_ANSI_T` (Cmd+Shift+T) in the `keys.push_back` call.
-    regex:
-      re_pattern: 'keys\.push_back\(\{true,\s*false,\s*false,\s*true,\s*kVK_ANSI_N,\s*IDC_NEW_SPLIT_TAB\}\)'
-      replace:
-        'keys.push_back({true, false, false, true, kVK_ANSI_T,
-        IDC_NEW_SPLIT_TAB})'
-
-  - description: |
       Suppress static-table shortcuts managed by commands::AcceleratorService.
 
       When kBraveCommands is enabled, the shortcuts that aren't backed by a

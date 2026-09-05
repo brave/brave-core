@@ -9,15 +9,16 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/download_manager.h"
@@ -122,17 +123,15 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     return test_http_server_.get();
   }
 
-  PageActionIconView* GetOnionLocationView(Browser* browser) {
+  IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     if (!browser_view) {
       return nullptr;
     }
-    BraveLocationBarView* brave_location_bar_view =
-        static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-    if (!brave_location_bar_view) {
-      return nullptr;
-    }
-    return brave_location_bar_view->GetOnionLocationView();
+    auto* provider = browser_view->toolbar_button_provider();
+    return page_actions::GetIconLabelBubbleViewForTesting(
+        provider->GetPageActionViewInterface(kActionShowOnionLocation),
+        kActionShowOnionLocation);
   }
 
   void CheckOnionLocationLabel(Browser* browser,
@@ -142,12 +141,11 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     auto* onion_location_view = GetOnionLocationView(browser);
     ASSERT_TRUE(onion_location_view);
     EXPECT_TRUE(onion_location_view->GetVisible());
-    EXPECT_TRUE(
-        onion_location_view->GetTextForTooltipAndAccessibleName().starts_with(
-            l10n_util::GetStringFUTF16(
-                is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT
-                       : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
-                u"")));
+    EXPECT_TRUE(onion_location_view->GetTooltipText().starts_with(
+        l10n_util::GetStringFUTF16(
+            is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT
+                   : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
+            u"")));
 
     ui_test_utils::BrowserCreatedObserver browser_creation_observer;
 

@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/content_settings/content_setting_image_model.h"
 #include "chrome/browser/ui/views/permissions/chip/permission_chip_view.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "ui/base/l10n/l10n_util.h"

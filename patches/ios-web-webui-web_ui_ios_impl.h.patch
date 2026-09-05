@@ -1,0 +1,14 @@
+diff --git a/ios/web/webui/web_ui_ios_impl.h b/ios/web/webui/web_ui_ios_impl.h
+index 9a5ef11df41afd38629e0c19ff9323c5d289fde0..3578ca26042d01276f34acd8821d2021139da626 100644
+--- a/ios/web/webui/web_ui_ios_impl.h
++++ b/ios/web/webui/web_ui_ios_impl.h
+@@ -21,7 +21,8 @@ class MojoFacade;
+ 
+ class WebUIIOSImpl : public web::WebUIIOS {
+  public:
+-  explicit WebUIIOSImpl(WebState* web_state);
++  explicit WebUIIOSImpl(WebState* web_state,
++                        const std::string& webui_host = std::string());
+ 
+   WebUIIOSImpl(const WebUIIOSImpl&) = delete;
+   WebUIIOSImpl& operator=(const WebUIIOSImpl&) = delete;
