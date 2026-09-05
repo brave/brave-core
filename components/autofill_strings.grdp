@@ -2,11 +2,6 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
 
-  <!-- TODO(crbug.com/40266549): Remove when Undo launches on iOS. -->
-  <message name="IDS_AUTOFILL_CLEAR_FORM_MENU_ITEM" desc="iOS: The entry in the suggestions keyboard accessory that clears an auto-filled form.">
-    Clear form
-  </message>
-
   <message name="IDS_AUTOFILL_UNDO_MENU_ITEM" desc="The entry in the suggestions dropdown that undoes the last filling operation on a field.">
     Undo autofill
   </message>
@@ -98,6 +93,13 @@
   <message name="IDS_AUTOFILL_REMOVE_ACCOUNT_NAME_AND_EMAIL_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Title in a dialog to confirm that the user wants to delete their account name and email address from Autofill." formatter_data="android_java">
     You can edit your name in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph> <ph name="ACCOUNT">$1<ex>example@gmail.com</ex></ph>
   </message>
+  <message name="IDS_AUTOFILL_REMOVE_VERIFIED_EMAIL_TITLE" desc="Title in a dialog to confirm that the user wants to delete a verified email address." formatter_data="android_java">
+    Remove verified email?
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_VERIFIED_EMAIL_BODY" desc="Text in a dialog to confirm that the user wants to delete a verified email address." formatter_data="android_java">
+    Brave will stop automatically confirming this email on supported sites.
+  </message>
+
   <message name="IDS_AUTOFILL_REMOVE_SUGGESTION_BUTTON" desc="Text in a remove button for Autofill suggestion." formatter_data="android_java">
     Remove
   </message>
@@ -402,14 +404,17 @@
   <message name="IDS_AUTOFILL_ADDRESSES_SETTINGS_TITLE" desc="Title for the Autofill settings page that allows user to manage their list of saved addresses and Autofill preferences for addresses. Sentence-Cased." formatter_data="android_java">
     Addresses and more
   </message>
-  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_LABEL" desc="Label for a toggle that allows users to control whether email addresses should be automatically confirmed on supported sites.">
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_LABEL" desc="Label for a toggle that allows users to control whether email addresses should be automatically confirmed on supported sites." formatter_data="android_java">
     Automatically confirm your emails
   </message>
-  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SECTION_TITLE" desc="Title for the email verification section in settings.">
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SECTION_TITLE" desc="Title for the email verification section in settings." formatter_data="android_java">
     Verified Email
   </message>
-  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_EMPTY_LABEL" desc="Label shown when no verified email addresses are stored.">
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_EMPTY_LABEL" desc="Label shown when no verified email addresses are stored." formatter_data="android_java">
     Verified email addresses will appear here
+  </message>
+  <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SUMMARY" desc="Text shown below a verified email address indicating which identity provider verified it." formatter_data="android_java">
+    Verified by <ph name="IDP_ORIGIN">%1$s<ex>accounts.google.com</ex></ph>
   </message>
   <!-- TODO(crbug.com/447113309): will no longer be used for title, update desc -->
   <message name="IDS_AUTOFILL_PAYMENT_METHODS" desc="Title for the list of saved payment methods that can be used to fill in forms. Also used as the title for the Autofill settings page that allows user to manage their list of saved payment methods and Autofill preferences for payment methods. Sentence-Cased." formatter_data="android_java">
@@ -513,6 +518,14 @@
       Your loyalty cards
     </message>
   </if>
+
+  <!-- Wallet Reminder Notice strings -->
+  <message name="IDS_AUTOFILL_WALLET_REMINDER_NOTICE_TITLE" desc="Title for the Wallet Reminder Notice prompt explaining that Brave Wallet settings apply to info saved from Brave.">
+    Your Brave Wallet settings apply to info saved from Brave
+  </message>
+  <message name="IDS_AUTOFILL_WALLET_REMINDER_NOTICE_CONFIRM_BUTTON_LABEL" desc="Button label to acknowledge and dismiss the Wallet Reminder Notice prompt.">
+    Got it
+  </message>
 
   <!-- Explicit save/update address prompt strings -->
   <!-- Common on all platforms (platform-specific defined later): -->
@@ -823,17 +836,44 @@
   <message name="IDS_AUTOFILL_AT_MEMORY_GENERIC_ERROR" desc="Message shown when @memory search fails due to a generic or internal error." translateable="false">
     Something went wrong
   </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCH_ERROR_NOTIFICATION" desc="A toast message appearing at the top of the screen when fetching AtMemory information fails." translateable="false">
+    Something went wrong. Try again
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_REAUTH_IN_PROGRESS_ERROR_NOTIFICATION" desc="A toast message appearing at the top of the screen when fetching AtMemory information fails due to reauth already in progress." translateable="false">
+    Another verification is in progress. Try again later.
+  </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_SEARCH_AFFORDANCE_TITLE" desc="Title of the AtMemory search trigger affordance." translateable="false">
     Try searching in Brave Memory
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_SEARCH_AFFORDANCE_SUBTITLE" desc="Descriptor under the query for enhanced autofill. 'Gemini' is a brand name and should match standard branding guidelines across languages.">
     Find and fill with Gemini
   </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING" desc="Descriptor for the loading state when enhanced autofill is fetching results. 'Gemini' is a brand name and should match standard branding guidelines across languages.">
+    Find and fill with Gemini
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING_FINDING_INFO_WITH_GEMINI" desc="Loading message shown while finding info with Gemini during enhanced autofill search." translateable="false">
+    Finding info with Gemini...
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING_REVIEWING_CONNECTED_APPS" desc="Loading message shown while reviewing info from connected apps during enhanced autofill search." translateable="false">
+    Reviewing info from Connected Apps...
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_FETCHING_PUTTING_IT_TOGETHER" desc="Loading message shown while putting information together during enhanced autofill search." translateable="false">
+    Putting it all together...
+  </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_UNSUPPORTED_QUERY_TITLE" desc="This error message is to help users understand that enhanced autofill wasn't able to find and fill relevant info. The technical reason is that the query is not supported by enhanced autofill. It appears on the query results empty state.">
     Couldn't find this info
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_UNSUPPORTED_QUERY_DESCRIPTION" desc="A linkout that suggests using Gemini for a broader search or query, as the current recall feature could not handle the request. This text is a verb phrase short for the longer phrase: 'Try submitting your query to the Gemini in Brave side panel'.">
     Ask Gemini in Brave instead
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_PREVIOUSLY_FILLED" desc="Title shown in the @memory suggestions above suggestions that was previously filled on this page." translateable="false">
+    Previously filled
+  </message>
+  <message name="IDS_AT_MEMORY_NOTICE_TEXT_NO_LOGGING" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
+    Powered by Personal Intelligence with Gemini. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
+  </message>
+  <message name="IDS_AT_MEMORY_NOTICE_TITLE" desc="Headline of an informational notice introducing a new enhanced autofill feature. 'Gmail' is a proper branding name and should remain unlocalized and match standard guidelines across languages." formatter_data="android_java">
+    Now you can find and fill info from Gmail and more
   </message>
   <if expr="is_android">
     <message name="IDS_AT_MEMORY_SEARCH_HINT" desc="Hint text for the search bar in the @memory bottom sheet." formatter_data="android_java" translateable="false">
@@ -845,17 +885,14 @@
     <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_TITLE" desc="Title text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
       You’ll find your autofill suggestions here
     </message>
-    <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE" desc="Subtitle text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
-      Type what you need to find and fill info from your Connected Apps
-    </message>
-    <message name="IDS_AT_MEMORY_NOTICE_TITLE" desc="Title for the notice shown in the @memory bottom sheet." formatter_data="android_java">
-      Now you can find and fill info from Gmail and more
-    </message>
-    <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Text for the notice shown in the @memory bottom sheet." formatter_data="android_java">
+    <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
       Powered by Personal Intelligence with Gemini. Your requests, page titles, and URLs may be reviewed to improve enhanced autofill. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
     </message>
-    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Button text to acknowledge the notice in the @memory bottom sheet." formatter_data="android_java">
+    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Standard acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
       OK
+    </message>
+    <message name="IDS_AT_MEMORY_AI_DISCLOSURE" desc="The text shown at the bottom of the @memory bottom sheet to set user expectations regarding potential incorrect suggestions." formatter_data="android_java" translateable="false">
+      Gemini is AI and can make mistakes. <ph name="BEGIN_LINK">&lt;link&gt;</ph>More about relevant data sent to Brave<ph name="END_LINK">&lt;/link&gt;</ph>
     </message>
   </if>
    <message name="IDS_AUTOFILL_AT_MEMORY_SUGGESTION_SOURCE_TEXT" desc="The label for a text in the At Memory flyout that shows the source of the autofill suggestion." formatter_data="android_java" translateable="false">
@@ -864,9 +901,17 @@
   <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI" desc="Sublabel text indicating that a suggestion is sourced from Gemini.">
     Suggested by Gemini
   </message>
+  <message name="IDS_AUTOFILL_AI_REMOVE_INFO" desc="Text for a child menu option to remove an Autofill AI suggestion.">
+    Remove this info
+  </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_MANAGE_CONTACT_INFO" desc="The text displayed at the bottom of the AtMemory popup to allow the user to manage their Autofill preferences for contact information. When the user clicks on it, opens the Contact info settings page." translateable="false">
     Manage contact info
   </message>
+  <if expr="is_android or is_ios">
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE" desc="Subtitle text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
+    Type what you need to find and fill info from your Connected Apps
+  </message>
+  </if>
 
   <!-- Autofill Address Edit Dialog -->
   <!-- Common on all platforms -->
@@ -1297,20 +1342,56 @@
     <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save driver's license in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save driver's license securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save driver's license securely
+    </message>
     <message name="IDS_AUTOFILL_AI_SAVE_ID_CARD_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save ID card in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_ID_CARD_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save ID card securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_ID_CARD_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save ID card securely
     </message>
     <message name="IDS_AUTOFILL_AI_SAVE_PASSPORT_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save passport in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_PASSPORT_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save passport securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_PASSPORT_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save passport securely
+    </message>
     <message name="IDS_AUTOFILL_AI_SAVE_VEHICLE_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save vehicle in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_VEHICLE_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save vehicle securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_VEHICLE_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save vehicle securely
     </message>
     <message name="IDS_AUTOFILL_AI_SAVE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save KTN in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save KTN securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save KTN securely
+    </message>
     <message name="IDS_AUTOFILL_AI_SAVE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save redress number in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save redress number securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save redress number securely
     </message>
 
     <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved. For example, the user previously saved information related to their driver’s license. Now, the user is filling out a new form either with additional details associated with the driver’s license or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the driver’s license that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
@@ -1338,20 +1419,56 @@
     <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
       Update driver's license in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
+      Update driver's license securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved.">
+      Update driver's license securely
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_ID_CARD_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
       Update ID card in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_ID_CARD_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
+      Update ID card securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_ID_CARD_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved.">
+      Update ID card securely
     </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_PASSPORT_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
       Update passport in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_PASSPORT_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
+      Update passport securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_PASSPORT_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved.">
+      Update passport securely
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_VEHICLE_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
       Update vehicle in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_VEHICLE_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
+      Update vehicle securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_VEHICLE_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved.">
+      Update vehicle securely
     </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
       Update KTN in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
+      Update KTN securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved.">
+      Update KTN securely
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
       Update redress number in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved, with Brave Wallet branding.">
+      Update redress number securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved.">
+      Update redress number securely
     </message>
 
     <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_DIALOG_SUBTITLE" desc="A description that appears beneath the Update title prompt asking users whether they want to update their data stored locally. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
@@ -1419,6 +1536,9 @@
   <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_PRIMARY_BUTTON_TEXT" desc="A primary button text of the notice that infroms the user that page content will be processed privately in the cloud.">
     Got it
   </message>
+  <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_PRIMARY_BUTTON_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for a standard acknowledgment button label to dismiss the informational notice. Clicking the button will close only the notice row, but not the whole popup.">
+    Got it, close notice
+  </message>
 
   <!-- Prompt strings used on Android -->
   <if expr="is_android">
@@ -1444,20 +1564,56 @@
     <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save driver's license in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save driver's license securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save driver's license securely
+    </message>
     <message name="IDS_AUTOFILL_AI_SAVE_NATIONAL_ID_CARD_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save identity card in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_NATIONAL_ID_CARD_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save identity card securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_NATIONAL_ID_CARD_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save identity card securely
     </message>
     <message name="IDS_AUTOFILL_AI_SAVE_PASSPORT_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save passport in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_PASSPORT_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save passport securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_PASSPORT_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save passport securely
+    </message>
     <message name="IDS_AUTOFILL_AI_SAVE_VEHICLE_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save vehicle in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_VEHICLE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save vehicle securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_VEHICLE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save vehicle securely
     </message>
     <message name="IDS_AUTOFILL_AI_SAVE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save Known Traveler Number in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save Known Traveler Number securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save Known Traveler Number securely
+    </message>
     <message name="IDS_AUTOFILL_AI_SAVE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
       Save redress number in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to save information they just filled in on a form, with Brave Wallet branding.">
+      Save redress number securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_SAVE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to save information they just filled in on a form.">
+      Save redress number securely
     </message>
 
     <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved. For example, the user previously saved information related to their driver’s license. Now, the user is filling out a new form either with additional details associated with the driver’s license or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the driver’s license that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
@@ -1482,20 +1638,56 @@
     <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their driver’s license. Now, the user is filling out a new form either with additional details associated with the driver’s license or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the driver’s license that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
       Update driver's license in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their driver’s license. Now, the user is filling out a new form either with additional details associated with the driver’s license or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the driver’s license that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
+      Update driver's license securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their driver’s license. Now, the user is filling out a new form either with additional details associated with the driver’s license or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the driver’s license that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
+      Update driver's license securely
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_NATIONAL_ID_CARD_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their national identity card. Now, the user is filling out a new form either with additional details associated with the national identity card or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the national identity card that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. Important: Avoid translations that refer to a single, specific government document. Instead try to find a general term that is inclusive of all identity cards that meet the definition below, including documents issued by foreign governments. DEFINITION OF “NATIONAL IDENTITY CARD”: The definition we use for this feature is: “An identity document that meets the following criteria: 1) Issued by the government 2) Primary purpose is proving a natural person's identity (as opposed to e.g. their residence) 3) Common form of identification that most copy keep with them 4) Not a passport or driver’s license.” EXAMPLES: This definition would include https://www.service-public.fr/particuliers/vosdroits/N358?lang=en. It would not include a United States Social Security Number or https://www.bzst.de/EN/Private_individuals/Tax_identification_number/tax_identification_number_node.html">
       Update identity card in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_NATIONAL_ID_CARD_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their national identity card. Now, the user is filling out a new form either with additional details associated with the national identity card or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the national identity card that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. Important: Avoid translations that refer to a single, specific government document. Instead try to find a general term that is inclusive of all identity cards that meet the definition below, including documents issued by foreign governments. DEFINITION OF “NATIONAL IDENTITY CARD”: The definition we use for this feature is: “An identity document that meets the following criteria: 1) Issued by the government 2) Primary purpose is proving a natural person's identity (as opposed to e.g. their residence) 3) Common form of identification that most copy keep with them 4) Not a passport or driver’s license.” EXAMPLES: This definition would include https://www.service-public.fr/particuliers/vosdroits/N358?lang=en. It would not include a United States Social Security Number or https://www.bzst.de/EN/Private_individuals/Tax_identification_number/tax_identification_number_node.html">
+      Update identity card securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_NATIONAL_ID_CARD_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their national identity card. Now, the user is filling out a new form either with additional details associated with the national identity card or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the national identity card that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. Important: Avoid translations that refer to a single, specific government document. Instead try to find a general term that is inclusive of all identity cards that meet the definition below, including documents issued by foreign governments. DEFINITION OF “NATIONAL IDENTITY CARD”: The definition we use for this feature is: “An identity document that meets the following criteria: 1) Issued by the government 2) Primary purpose is proving a natural person's identity (as opposed to e.g. their residence) 3) Common form of identification that most copy keep with them 4) Not a passport or driver’s license.” EXAMPLES: This definition would include https://www.service-public.fr/particuliers/vosdroits/N358?lang=en. It would not include a United States Social Security Number or https://www.bzst.de/EN/Private_individuals/Tax_identification_number/tax_identification_number_node.html">
+      Update identity card securely
     </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_PASSPORT_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
       Update passport in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_PASSPORT_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
+      Update passport securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_PASSPORT_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
+      Update passport securely
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_VEHICLE_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their car. Now, the user is filling out a new form either with additional details associated with the car or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the vehicle that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
       Update vehicle in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_VEHICLE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their car. Now, the user is filling out a new form either with additional details associated with the car or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the vehicle that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
+      Update vehicle securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_VEHICLE_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their car. Now, the user is filling out a new form either with additional details associated with the car or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the vehicle that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
+      Update vehicle securely
     </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their Known Traveler Number. Now, the user is filling out a new form either with additional details associated with the Known Traveler Number or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the Known Traveler Number that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. This is designed for Known Traveler Numbers issued by the United States only. For more info, see https://www.tsa.gov/travel/frequently-asked-questions/what-known-traveler-number-ktn.">
       Update KTN in Brave Wallet
     </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their Known Traveler Number. Now, the user is filling out a new form either with additional details associated with the Known Traveler Number or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the Known Traveler Number that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. This is designed for Known Traveler Numbers issued by the United States only. For more info, see https://www.tsa.gov/travel/frequently-asked-questions/what-known-traveler-number-ktn.">
+      Update KTN securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_KNOWN_TRAVELER_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their Known Traveler Number. Now, the user is filling out a new form either with additional details associated with the Known Traveler Number or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the Known Traveler Number that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. This is designed for Known Traveler Numbers issued by the United States only. For more info, see https://www.tsa.gov/travel/frequently-asked-questions/what-known-traveler-number-ktn.">
+      Update KTN securely
+    </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their known redress number. Now, the user is filling out a new form either with additional details associated with the redress number or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the redress number that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. Now a user can also save a “Redress number”. This is designed for redress numbers issued by the United States only. For more info, see https://www.dhs.gov/dhs-trip.">
       Update redress number in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_1_BRANDED" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their known redress number. Now, the user is filling out a new form either with additional details associated with the redress number or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the redress number that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. Now a user can also save a “Redress number”. This is designed for redress numbers issued by the United States only. For more info, see https://www.dhs.gov/dhs-trip.">
+      Update redress number securely in Brave Wallet
+    </message>
+    <message name="IDS_AUTOFILL_AI_UPDATE_REDRESS_NUMBER_ENTITY_DIALOG_TITLE_ANDROID_VARIANT_2_SECURELY" desc="The title of a dialog that prompts the user to update information associated with something they have previously saved in Brave Wallet. For example, the user previously saved information related to their known redress number. Now, the user is filling out a new form either with additional details associated with the redress number or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the redress number that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave. Now a user can also save a “Redress number”. This is designed for redress numbers issued by the United States only. For more info, see https://www.dhs.gov/dhs-trip.">
+      Update redress number securely
     </message>
 
     <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_MESSAGE_SUBTITLE" desc="A description that appears beneath the Save title message. This sentence notifies the user that their data will be stored locally. We prompt the user to save their information with Brave with the promise that Brave can then help the user fill out forms more quickly using their saved info.">
@@ -1628,23 +1820,26 @@
   <message name="IDS_SETTINGS_AUTOFILL_AI_TO_CONSIDER_DATA_USAGE" desc="Bullet 1 of 2 that appears beneath the 'Things to consider' title. The point of this bullet is to convey to the user the types of data that get shared with Brave to support this feature. There are 2 data types: 1) 'the page’s URL' and 2) 'content', by which we mean the words, visuals, and layout of the pages the user visits. This notion that Brave is considering 'page content' is new. We want to lead with 'To offer suggestions' even though it might be a bit grammatically awkward, because we want to express the need / value before explaining the data that gets shared." formatter_data="android_java">
     To offer suggestions and improve this feature, the page’s URL and content are shared with Brave
   </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_TO_CONSIDER_DATA_USAGE_V2" desc="Bullet 1 of 2 that appears beneath the 'Things to consider' title. The point of this bullet is to convey to the user the types of data that get shared with Brave to support this feature. There are 2 data types: 1) 'the page’s URL' and 2) 'content', by which we mean the words, visuals, and layout of the pages the user visits. Crucially, we convey to users that this data is shared privately and they cannot be reviewed by anyone." formatter_data="android_java">
+    The content and URLs of the pages you visit can be processed in a private space in the cloud
+  </message>
   <if expr="_google_chrome">
-    <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION" desc="The description of the smarter form understanding button on chrome://settings/autofill." formatter_data="android_java">
+    <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL" desc="The description of the setting. By 'understand forms better', we mean that when a user submits a form on a website, and if they're using smarter form understanding, this feature can offer to save the user's submitted info. When Brave saves that info, we save the submitted values and consider the page context." formatter_data="android_java">
       Brave understands forms better and can autofill them faster for you
     </message>
-    <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL" desc="The description of the setting. By 'understand forms better', we mean that when a user submits a form on a website, and if they're using smarter form understanding, this feature can offer to save the user's submitted info. When Brave saves that info, we save the submitted values and consider the page context.">
-      Brave understands forms better and can autofill them faster for you
+    <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL_V2" desc="The description of the setting. This explains to users that Brave can process page data in Brave servers as a way to provide a better experience. Importantly, it mentions that this is done safely and cannot be viewed by anyone." formatter_data="android_java">
+      Help Brave better understand and fill complex forms by securely processing data on Brave's servers. Your info remains private and isn't reviewed by anyone.
     </message>
     <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_CAN_FILL_DIFFICULT_FIELDS" desc="Bullet point that appears beneath appears beneath the 'When on' title when seeing the Smarter Form Understanding description page. This string explains one of the advantages users will get from enabling the feature and serves as a way to incentivize the user to do so." formatter_data="android_java">
       Brave can autofill difficult fields that standard autofill might miss
     </message>
   </if>
   <if expr="not _google_chrome">
-    <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION" desc="The description of the smarter form understanding button on chrome://settings/autofill." formatter_data="android_java">
+    <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL" desc="The description of the setting. By 'understand forms better', we mean that when a user submits a form on a website, and if they're using smarter form understanding, this feature can offer to save the user's submitted info. When Brave saves that info, we save the submitted values and consider the page context." formatter_data="android_java">
       Brave understands forms better and can autofill them faster for you
     </message>
-    <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL" desc="The description of the setting. By 'understand forms better', we mean that when a user submits a form on a website, and if they're using smarter form understanding, this feature can offer to save the user's submitted info. When Brave saves that info, we save the submitted values and consider the page context.">
-      Brave understands forms better and can autofill them faster for you
+    <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL_V2" desc="The description of the setting. This explains to users that Brave can process page data in Brave servers as a way to provide a better experience. Importantly, it mentions that this is done safely and cannot be viewed by anyone." formatter_data="android_java">
+      Help Brave better understand and fill complex forms by securely processing data on Brave's servers. Your info remains private and isn't reviewed by anyone.
     </message>
     <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_CAN_FILL_DIFFICULT_FIELDS" desc="Bullet point that appears beneath the 'When on' title when seeing the Smarter Form Understanding description page. This string explains one of the advantages users will get from enabling the feature and serves as a way to incentivize the user to do so." formatter_data="android_java">
       Brave can autofill difficult fields that standard autofill might miss
@@ -1682,22 +1877,28 @@
     Your content will not be used to improve AI. Your organization may change these settings at any time.
   </message>
 
-  <!-- Personal Context Notice in Ambient Autofill/AtMemory Popup on Desktop -->
+<!-- Personal Context Notice in Ambient Autofill/AtMemory Popup on Desktop -->
   <if expr="not is_android and not is_ios">
-    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_TITLE" translateable="false" desc="Title for the personal context notice in Ambient Autofill/AtMemory popup.">
+    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_TITLE" desc="Headline of an informational notice introducing a new enhanced autofill feature. 'Gmail' is a proper branding name and should remain unlocalized and match standard guidelines across languages.">
       Now you can find and fill info from Gmail and more.
     </message>
-    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_CONTEXT" translateable="false" desc="Context text for the default personal context notice in AmbientAutofill popup or in AtMemory popup when the logging is disabled by policy.">
+    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_SUBTITLE" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages.">
       Powered by Personal Intelligence with Gemini.
     </message>
-    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_CONTEXT_WITH_LOGGING" translateable="false" desc="Context text for the personal context notice in AtMemory popup when the logging is enabled.">
+    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_SUBTITLE_WITH_LOGGING" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages.">
       Powered by Personal Intelligence with Gemini. Your requests, page titles, and URLs may be reviewed to improve enhanced autofill.
     </message>
-    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_LINK_TEXT" translateable="false" desc="Link text for the personal context notice in Ambient Autofill/AtMemory popup.">
+    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_LINK_TEXT" desc="Link that navigates the user to the Brave settings page to adjust their preferences.">
       Manage settings
     </message>
-    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_OK_BUTTON" translateable="false" desc="Got it button text for the personal context notice in Ambient Autofill/AtMemory popup.">
+    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_OK_BUTTON" desc="Standard acknowledgment button label to dismiss the informational notice.">
       OK
+    </message>
+    <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_OK_BUTTON_A11Y_LABEL" translateable="false" is_accessibility_with_no_ui="true" desc="Accessibility label for a standard acknowledgment button label to dismiss the informational notice. Clicking the button will close only the notice row, but not the whole popup.">
+      OK, close notice
+    </message>
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_LINK_TEXT" desc="Link text for the private inference notice in Autofill AI popup.">
+      Manage settings
     </message>
   </if>
 
@@ -1711,16 +1912,16 @@
   <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SHEET_CLOSED" desc="Accessibility string read upon closing the autofill personal context notice sheet." formatter_data="android_java">
     Autofill from Gmail and more notice closed
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_TITLE" desc="Headline of an informational notice or consent dialog introducing a new autofill feature. 'Gmail' is a Brave product name and must remain unlocalized." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_TITLE" desc="Headline of an informational notice introducing a new autofill feature. 'Gmail' is a Brave product name and must remain unlocalized." formatter_data="android_java">
     Now you can find and fill info from Gmail and more
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_DESCRIPTION" desc="Body text of the feature notice. 'Personal Intelligence' and 'Gemini' are proper branding names and should match standard branding guidelines across languages." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_DESCRIPTION" desc="Body text of an informational notice introducing a new autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should match standard branding guidelines across languages." formatter_data="android_java">
     Powered by Personal Intelligence with Gemini. Manage your choices in settings.
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_OK_BUTTON" desc="Label for the OK button on the autofill notice sheet." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_OK_BUTTON" desc="Acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
     OK
   </message>
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SETTINGS_LINK" desc="Label for the Manage settings link on the autofill notice sheet." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SETTINGS_LINK" desc="Standard navigation button label to open the Brave settings menu." formatter_data="android_java">
     Settings
   </message>
 </grit-part>

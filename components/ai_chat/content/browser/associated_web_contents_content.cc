@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
@@ -164,7 +165,7 @@ void AssociatedWebContentsContent::GetPageContent(
   if (is_pdf) {
 #if BUILDFLAG(ENABLE_PDF)
     auto* pdf_helper =
-        pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
+        pdf::PDFDocumentHelper::MaybeGetForWebContents(*web_contents());
     if (pdf_helper) {
       pdf_helper->RegisterForDocumentLoadComplete(base::BindOnce(
           &AssociatedWebContentsContent::OnPDFDocumentLoadComplete,
@@ -274,7 +275,7 @@ void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
 void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
     FetchPageContentCallback callback) {
   ExtractTextFromLoadedPdf(
-      web_contents(),
+      CHECK_DEREF(web_contents()),
       base::BindOnce(
           [](FetchPageContentCallback cb, std::optional<std::string> result) {
             std::move(cb).Run(result.value_or(""), false, "");

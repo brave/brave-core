@@ -36,6 +36,7 @@ source_set("browser_tests") {
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/components/resources:scaled_resources",
       "//chrome/browser/ui:ui_features",
+      "//chrome/browser/ui/browser_web_contents_delegate",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/toasts",

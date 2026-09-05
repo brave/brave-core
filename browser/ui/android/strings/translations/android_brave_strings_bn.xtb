@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">ব্রেভ-এর মূল্যায়ন করুন</translation>
 <translation id="4104400246019119780">ধন্যবাদ!</translation>
 <translation id="5202255382948179481">আপনার সাজেশন লিখুন</translation>
-<translation id="7759809451544302770">ঐচ্ছিক</translation>
 <translation id="4748689412569009273">একটি ইমোজি দিয়ে আপনার Brave ব্যবহারের অভিজ্ঞতা আমাদের জানাতে চান?</translation>
 <translation id="7335142069363686805">এখনই রেটিং দিন</translation>
 <translation id="6681362094306959654">Brave পছন্দ করছেন?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">দুঃখ</translation>
 <translation id="5488843227043643519">Play Store-এ রেটিং দিতে চান?</translation>
 <translation id="5867854497245948308">আপনার মতামত দেওয়ার জন্য ধন্যবাদ!</translation>
-<translation id="4935400164159327304">আমরা Brave আরও ভালো কীভাবে করতে পারি আমাদের জানান।</translation>
+<translation id="5578122562331038807">আমরা Brave আরও ভালো কীভাবে করতে পারি আমাদের জানান</translation>
+<translation id="1483493594462132177">পাঠান</translation>
+<translation id="3889034478061064651">আপনার সাজেশন লিখুন (ঐচ্ছিক)</translation>
+<translation id="1769154760586570836">ফিডব্যাক পাঠানো হয়েছে। ধন্যবাদ!</translation>
+<translation id="4450893287417543264">আবার দেখাবেন না</translation>
 <translation id="8966035543003363155">Brave নোটিফিকেশন এটি সহজ করেছে</translation>
 <translation id="7662771815233894695">ডাউনলোড পরিচালনা করুন, টোকেন অর্জন করুন, সাপ্তাহিক ব্যবহারের পরিসংখ্যান দেখুন এবং আরও অনেক কিছু করুন।</translation>
 <translation id="4265429476391459783">আপনি পুরস্কার অর্জন করছেন না বা প্রাইভেসি রিপোর্ট পাচ্ছেন না</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">পৃষ্ঠা অ্যাকশন</translation>
 <translation id="7104487676473617844">নিম্নোক্ত আইটেমগুলো শুধুমাত্র বর্তমান খোলা ওয়েবপেজে সমর্থিত হলে মেনুতে দৃশ্যমান হবে।</translation>
 <translation id="4159764849281393303">ওয়েব অ্যাপ</translation>
-<translation id="8428213095426709021">সেটিংস</translation>
 <translation id="8038539967102225446">Brave বিজ্ঞাপনগুলি এখানে রয়েছে!</translation>
 <translation id="222883304157347087">(এই ডিভাইসটি)</translation>
 <translation id="4157741509680155021">সিঙ্ক চেইন ডিভাইসগুলি</translation>
@@ -532,7 +534,6 @@
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
-<translation id="1483493594462132177">পাঠান</translation>
 <translation id="538450413584738399">সোয়াপ করুন</translation>
 <translation id="4556086616242530072">ব্রাউজার নেটিভ।\nনিজের হেফাজত।\nএবং মাল্টি-চেইন।</translation>
 <translation id="7909462264772842773">আপনার ক্রিপ্টো এবং NFT-এর নিয়ন্ত্রণ নিন। Brave ওয়ালেট Ethereum, EVM চেইন, Solana, Filecoin এবং আরও অনেক কিছু সমর্থন করে।</translation>
@@ -608,7 +609,6 @@
 <translation id="569068482611873351">ইম্পোর্ট করুন...</translation>
 <translation id="4522570452068850558">বিস্তারিত বিবরণগুলি</translation>
 <translation id="3114681061018999547">রক্ষাকবচ করা হচ্ছে</translation>
-<translation id="3784455785234192852">লক</translation>
 <translation id="4412698727486357573">সহায়তা কেন্দ্র</translation>
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
@@ -804,6 +804,10 @@
 <translation id="2478788592457735063">এটি নেটওয়ার্কটিকে পূর্বে যোগ করা নেটওয়ার্কে স্যুইচ করবে।</translation>
 <translation id="8756686998207163764">নেটওয়ার্ক স্যুইচ করুন</translation>
 <translation id="8905793906896555159">ট্যাব গ্রুপ সক্রিয় করুন</translation>
+<translation id="6735749683447943955">ট্যাব গ্রুপ নিষ্ক্রিয় করবেন?</translation>
+<translation id="4616687974503500682">যেকোনো বিদ্যমান গ্রুপ মুছে ফেলা হবে, এবং সেই গ্রুপগুলোর ভেতরের ট্যাবগুলো আপনার ব্রাউজার উইন্ডোতে খোলা, গ্রুপবিহীন ট্যাব হয়ে যাবে। আপনি কি নিশ্চিত যে আপনি চালিয়ে যেতে চান?</translation>
+<translation id="4394049700291259645">অক্ষম</translation>
+<translation id="3859027502409073633">সিঙ্ক করা ট্যাব গ্রুপ দেখান</translation>
 <translation id="7632160823264702523">ট্যাব গ্রুপ বার</translation>
 <translation id="2477807195394450274">বর্তমানে খোলা ট্যাব গ্রুপের ট্যাবগুলোতে দ্রুত প্রবেশের জন্য একটি নিচের বার দেখান</translation>
 <translation id="8374720587111523381">বর্তমান ট্যাব গ্রুপে লিঙ্ক খুলুন</translation>
@@ -811,6 +815,7 @@
 <translation id="1227658541937938697">বর্তমান ট্যাব গ্রুপের সমস্ত লিঙ্ক স্বয়ংক্রিয়ভাবে খুলুন</translation>
 <translation id="5242300593039211344">ওয়ালেট লক করুন</translation>
 <translation id="1108298724135935307">সংযুক্ত সাইটগুলি</translation>
+<translation id="8428213095426709021">সেটিংস</translation>
 <translation id="4255623233927788178">ব্লক এক্সপ্লোরারে দেখুন</translation>
 <translation id="8274201358637112807">এই পৃষ্ঠাটি Brave ওয়ালেটের সাথে ইন্ট্যার‍্যাক্ট করতে চায়</translation>
 <translation id="3355936511340229503">সংযোগ ত্রুটি</translation>
@@ -852,7 +857,6 @@
 <translation id="6458565248779152483">Brave VPN বন্ধ করুন</translation>
 <translation id="9080536793704001825">15 মিনিটের জন্য বিরতি দিন</translation>
 <translation id="803706420145725977">1 ঘণ্টার বিরতি দিন</translation>
-<translation id="4394049700291259645">অক্ষম</translation>
 <translation id="7733890291091968191">Web3 বিজ্ঞপ্তি প্রদর্শন করুন</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave আপনাকে ট্র্যাক করে না বা আপনি কীভাবে আমাদের অ্যাপ ব্যবহার করেন তা জানেন না, তাই আপনি কীভাবে VPN সেট আপ করেছেন তা আমরা জানি না। আপনি যে সমস্যার সম্মুখীন হচ্ছেন সে সম্পর্কে তথ্য শেয়ার করুন এবং আমরা যত তাড়াতাড়ি সম্ভব এটি সমাধান করার জন্য যথাসাধ্য চেষ্টা করব। ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN হোস্টনাম\n <ph name="VALUE"/></translation>

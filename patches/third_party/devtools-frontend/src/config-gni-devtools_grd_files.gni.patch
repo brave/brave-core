@@ -1,8 +1,8 @@
 diff --git a/config/gni/devtools_grd_files.gni b/config/gni/devtools_grd_files.gni
-index eab3eb686053ccfa85400b97c1b7894a287e9f9a..108f2f187d412a6951826c203d1080d63c162f11 100644
+index c8f7387d94e4b357b7d8b731c027eae9221d248e..c7eee1a7e6dedd45e8b4b3609a2c92ca48dfe604 100644
 --- a/config/gni/devtools_grd_files.gni
 +++ b/config/gni/devtools_grd_files.gni
-@@ -2825,6 +2825,7 @@ grd_files_unbundled_sources = [
+@@ -2807,6 +2807,7 @@ grd_files_unbundled_sources = [
    "front_end/ui/visual_logging/LoggingState.js",
    "front_end/ui/visual_logging/NonDomState.js",
  ]

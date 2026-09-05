@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml b/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml
-index 5fbdaf2b7e1d11c59ea29a3fdb73388389e38163..6d344c84136b601932d6914bfc4bb11b5ca88a1f 100644
+index e5d72ba9ac7b1995cd3bfd826c5eadad36355e2a..0e05f78894b9809f5f1c323fae0d559aa19486ce 100644
 --- a/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml
 +++ b/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml
 @@ -77,6 +77,7 @@ found in the LICENSE file.

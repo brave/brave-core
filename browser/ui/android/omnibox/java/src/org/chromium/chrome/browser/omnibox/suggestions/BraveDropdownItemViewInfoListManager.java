@@ -12,6 +12,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManager {
@@ -20,8 +21,9 @@ class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManag
     BraveDropdownItemViewInfoListManager(
             @NonNull ModelList managedModel,
             @NonNull Context context,
-            @NonNull NonNullObservableSupplier<Integer> roundSidesSupplier) {
-        super(managedModel, context, roundSidesSupplier);
+            @NonNull NonNullObservableSupplier<Integer> roundSidesSupplier,
+            @NonNull OmniboxResourceProvider resourceProvider) {
+        super(managedModel, context, roundSidesSupplier, resourceProvider);
 
         mManagedModel = managedModel;
     }

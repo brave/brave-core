@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3301ef495 100644
+index 341c2953d06d3163e91bfcc94d80ae2208039ca2..e7dfc0077cd28c5ec2d99b91d5f1a88a3bb90467 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3
  import("//build/config/features.gni")
  import(
      "//tools/code_coverage/js_source_maps/create_js_source_maps/create_js_source_maps.gni")
-@@ -243,6 +244,12 @@ template("build_webui") {
+@@ -245,6 +246,12 @@ template("build_webui") {
          enable_removal_comments = enable_source_maps
        }
        in_files = all_ts_files
@@ -23,7 +23,7 @@ index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3
      }
    }
  
-@@ -301,6 +308,12 @@ template("build_webui") {
+@@ -303,6 +310,12 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
@@ -36,7 +36,7 @@ index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3
      }
    }
  
-@@ -567,7 +580,7 @@ template("build_webui") {
+@@ -569,7 +582,7 @@ template("build_webui") {
        }
  
        # Enable by default on non-Ash WebUIs.
@@ -45,7 +45,7 @@ index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3
        if (is_ash_webui) {
          enable_web_component_missing_deps = false
        }
-@@ -651,6 +664,7 @@ template("build_webui") {
+@@ -653,6 +666,7 @@ template("build_webui") {
          "//chrome/browser/resources/tab_search",
          "//ui/webui/resources/js",
        ]
@@ -53,7 +53,7 @@ index 78ecdeb2e635cda67ce7564f9c854d2cca5daff8..a25d5d7bf99d18ae915ce1282ed882b3
  
        if (is_android) {
          no_explicit_any_exceptions +=
-@@ -874,7 +888,8 @@ template("build_webui") {
+@@ -876,7 +890,8 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {

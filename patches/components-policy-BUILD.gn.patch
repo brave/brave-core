@@ -1,5 +1,5 @@
 diff --git a/components/policy/BUILD.gn b/components/policy/BUILD.gn
-index 640d16727dbbab2c518545b1d9c78916de4a8df8..96bb037ced67deaad313d1729e931fceff63c2b9 100644
+index 5f345583e6c6f2bfdc486ebcc0a0112c2b953a3f..c2fddd260df9d9b89793839ccb857aabc2c5db95 100644
 --- a/components/policy/BUILD.gn
 +++ b/components/policy/BUILD.gn
 @@ -106,6 +106,7 @@ action("generate_policy_templates") {

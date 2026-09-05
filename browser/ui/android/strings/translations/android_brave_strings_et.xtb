@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Hinda Brave’i</translation>
 <translation id="4104400246019119780">Täname!</translation>
 <translation id="5202255382948179481">Lisage oma soovitused</translation>
-<translation id="7759809451544302770">Valikuline</translation>
 <translation id="4748689412569009273">Millise emojiga väljendaksite oma kogemust Brave’iga?</translation>
 <translation id="7335142069363686805">Hinda kohe</translation>
 <translation id="6681362094306959654">Kas teile meeldib Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Kurb</translation>
 <translation id="5488843227043643519">Kas soovite jätta Play poe hinnangu?</translation>
 <translation id="5867854497245948308">Täname tagasiside eest!</translation>
-<translation id="4935400164159327304">Andke meile teada, kuidas saame Brave’i täiustada.</translation>
+<translation id="5578122562331038807">Andke meile teada, kuidas saame Brave’i täiustada</translation>
+<translation id="1483493594462132177">Saada</translation>
+<translation id="3889034478061064651">Lisage oma soovitused (valikuline)</translation>
+<translation id="1769154760586570836">Tagasiside on saadetud. Aitäh!</translation>
+<translation id="4450893287417543264">Ära enam näita</translation>
 <translation id="8966035543003363155">Brave'i teated lihtsustavad seda</translation>
 <translation id="7662771815233894695">Saate hallata allalaadimisi, teenida tokeneid, vaadata nädala kasutusstatistikat ja teha palju muud.</translation>
 <translation id="4265429476391459783">Te ei teeni preemiaid ega saa privaatsusaruandeid</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Lehe toimingud</translation>
 <translation id="7104487676473617844">Järgmised üksused kuvatakse menüüs ainult siis, kui avatud veebileht neid toetab.</translation>
 <translation id="4159764849281393303">Veebirakendus</translation>
-<translation id="8428213095426709021">Seaded</translation>
 <translation id="8038539967102225446">Brave’i reklaamid on siin!</translation>
 <translation id="222883304157347087">(see seade)</translation>
 <translation id="4157741509680155021">SEADMED SÜNKIMISAHELAS</translation>
@@ -533,7 +535,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
-<translation id="1483493594462132177">Saada</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Oma brauser.\nTäielik valdus.\nJa mitmeahelaline.</translation>
 <translation id="7909462264772842773">Võtke oma krüpto- ja NFT-d kontrolli alla. Brave Wallet toetab Ethereumi, EVM-i ahelaid, Solanat, Filecoini ja muud.</translation>
@@ -609,7 +610,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="569068482611873351">Importimine...</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
 <translation id="3114681061018999547">Varjestus</translation>
-<translation id="3784455785234192852">Lukusta</translation>
 <translation id="4412698727486357573">Abikeskus</translation>
 <translation id="8239147115686034860">Lukusta Brave'i rahakott automaatselt</translation>
 <translation id="414639769490080648">Minutite arv enne Brave’i rahakoti automaatset lukustamist</translation>
@@ -805,6 +805,10 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="2478788592457735063">Selle tulemusel vahetatakse võrk varem lisatud võrguks.</translation>
 <translation id="8756686998207163764">Vaheta võrku</translation>
 <translation id="8905793906896555159">Luba vahekaardirühmad</translation>
+<translation id="6735749683447943955">Kas keelata vahekaardirühmad?</translation>
+<translation id="4616687974503500682">Kõik olemasolevad rühmad kustutatakse ning nendes rühmades olnud vahekaardid muutuvad avatud, rühmitamata vahekaartideks teie brauseriaknas. Kas olete kindel, et soovite jätkata?</translation>
+<translation id="4394049700291259645">Keela</translation>
+<translation id="3859027502409073633">Kuva sünkroonitud vahekaardirühmad</translation>
 <translation id="7632160823264702523">Vahekaardirühmade riba</translation>
 <translation id="2477807195394450274">Kuva alumine riba, et pääseks kiiresti juurde parasjagu avatud vahekaardirühma vahekaartidele</translation>
 <translation id="8374720587111523381">Ava lingid praeguses vahekaardirühmas</translation>
@@ -812,6 +816,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="1227658541937938697">Avab kõik lingid automaatselt praeguses vahekaardirühmas</translation>
 <translation id="5242300593039211344">Lukusta rahakott</translation>
 <translation id="1108298724135935307">Ühendatud saidid</translation>
+<translation id="8428213095426709021">Seaded</translation>
 <translation id="4255623233927788178">Kuva plokiuurijas</translation>
 <translation id="8274201358637112807">See leht soovib suhelda Brave'i rahakotiga</translation>
 <translation id="3355936511340229503">Ühenduse viga</translation>
@@ -853,7 +858,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="6458565248779152483">Keela Brave'i VPN</translation>
 <translation id="9080536793704001825">Peata 15 minutiks</translation>
 <translation id="803706420145725977">Peata 1 tunniks</translation>
-<translation id="4394049700291259645">Keela</translation>
 <translation id="7733890291091968191">Kuva Web3 märguanded</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave ei jälgi teid ega tea, kuidas te meie rakendust kasutate, mistõttu me ei tea, kuidas olete VPN-i seadistanud. Jagage probleemi kohta teavet ja anname endast parima, et see võimalikult kiiresti lahendada. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-i hostinimi\n <ph name="VALUE"/></translation>

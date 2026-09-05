@@ -512,6 +512,12 @@
   <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_GLOBAL" desc="The label to indicate that a shortcut will be triggerable globally (including outside of the Brave application).">
     Global
   </message>
+  <message name="IDS_EXTENSIONS_SHORTCUT_INPUT_LABEL" desc="The visual text label above the shortcut input field.">
+    Type a shortcut
+  </message>
+  <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE" desc="The visual text label above the shortcut scope dropdown.">
+    Scope
+  </message>
   <message name="IDS_EXTENSIONS_APPS_TITLE" desc="The text displayed in the sidebar to go to the apps section of the page.">
     Brave Apps
   </message>
@@ -570,7 +576,7 @@
     All Extensions
   </message>
   <message name="IDS_EXTENSIONS_PIN_NEW_EXTENSIONS" desc="The label for the toggle to pin new extensions in chrome://extensions.">
-    Pin new extensions
+    Pin new extensions to Toolbar
   </message>
   <!-- Extension Safety Check Review Panel strings -->
   <message name="IDS_EXTENSIONS_SAFETY_HUB_HEADER" desc="Name of a section in chrome://extensions that gives users an overview over their safety status and where users can take action to improve their safety.">

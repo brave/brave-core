@@ -48,10 +48,6 @@ std::optional<gfx::Rect> MockPermissionLifetimePrompt::GetViewBoundsInScreen()
   return std::nullopt;
 }
 
-bool MockPermissionLifetimePrompt::ShouldFinalizeRequestAfterDecided() const {
-  return true;
-}
-
 std::vector<permissions::ElementAnchoredBubbleVariant>
 MockPermissionLifetimePrompt::GetPromptVariants() const {
   return {};

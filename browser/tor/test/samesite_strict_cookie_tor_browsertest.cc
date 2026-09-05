@@ -5,15 +5,15 @@
 
 #include "base/strings/string_split.h"
 #include "brave/browser/tor/tor_profile_manager.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
-#include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
+#include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -72,12 +72,10 @@ IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
   if (!browser_view) {
     return nullptr;
   }
-  BraveLocationBarView* brave_location_bar_view =
-      static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
-  if (!brave_location_bar_view) {
-    return nullptr;
-  }
-  return brave_location_bar_view->GetOnionLocationView();
+  auto* provider = browser_view->toolbar_button_provider();
+  return page_actions::GetIconLabelBubbleViewForTesting(
+      provider->GetPageActionViewInterface(kActionShowOnionLocation),
+      kActionShowOnionLocation);
 }
 
 void ClickOnionLocationIcon(Browser* browser) {

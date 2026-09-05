@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.h b/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.h
+index d343908db941277d1ca7b8cce2e0e90c7969fb27..697f4c194ea9d6a51d43c43a91360c4390d0c5d7 100644
+--- a/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.h
++++ b/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.h
+@@ -49,6 +49,7 @@ class SidePanelControllerViews : public SidePanelControllerBase {
+   // Caches a request to scroll to a section in case the request happens before
+   // the front-end is ready to receive the request.
+   std::optional<CustomizeChromeSection> section_;
++  base::WeakPtrFactory<SidePanelControllerViews> weak_ptr_factory_{this};
+ };
+ 
+ }  // namespace customize_chrome

@@ -15,7 +15,6 @@
 #include "base/task/task_runner.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"

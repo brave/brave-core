@@ -497,7 +497,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_NoFallbackWhenNotPDF) {
   NavigateTo(GURL("https://www.brave.com"));
 #if BUILDFLAG(ENABLE_PDF)
-  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
+  ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(*web_contents()));
 #endif  // BUILDFLAG(ENABLE_PDF)
 
   content::WebContentsTester::For(web_contents())

@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/history_types.h b/components/history/core/browser/history_types.h
-index fcc6807fc973dc4d357b460c471af7abe467d254..22ed82d09f07980f30aeb4f0db58ceffc1d6be7e 100644
+index 206da59e816e0fc8a77c61895154a4859c2f8547..43aa34ec663d2b7f1ebcd66ba492326a063bcfb3 100644
 --- a/components/history/core/browser/history_types.h
 +++ b/components/history/core/browser/history_types.h
 @@ -56,6 +56,8 @@ enum VisitSource {
@@ -10,4 +10,4 @@ index fcc6807fc973dc4d357b460c471af7abe467d254..22ed82d09f07980f30aeb4f0db58ceff
 +  SOURCE_BRAVE_IMPORTED = 9,
  };
  
- // Corresponds to the "id" column of the "visits" SQL table.
+ // Corresponds to the "id" column of the "visited_links" SQL table.

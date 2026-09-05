@@ -212,6 +212,7 @@
 <translation id="8707615221880318679">這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 網域</translation>
+<translation id="1458638489455808030">回溯機</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="7299769530898469069">無法載入已儲存的版本</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
@@ -247,6 +248,7 @@
 <translation id="1185644444415356776">在容器中開啟連結</translation>
 <translation id="6745991613881384719">管理容器</translation>
 <translation id="8523788649219117880">新增臨時容器</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> 容器</translation>
 <translation id="3704707436873245822">從圖片複製文字</translation>
 <translation id="5268098808165185458">正在從圖片複製文字…</translation>
 <translation id="4046485130884276245">已從圖片複製文字</translation>
@@ -378,6 +380,7 @@
 <translation id="6724227215236550330">已儲存的密碼將顯示於此處。若要將密碼匯入本裝置上的 <ph name="BRAND"/>，<ph name="BEGIN_LINK"/> 請點選 CSV 檔案<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">若要將密碼匯入本裝置上的 <ph name="BRAND"/>，請選擇 CSV 檔案</translation>
 <translation id="8570228839666486945">裝置內AI</translation>
+<translation id="7447041379556102185">裝置端語音辨識</translation>
 <translation id="3456536577668402695">您的搜尋和頁面內容會在此裝置上處理。不會傳送至 Brave 或被人工審查員看到。</translation>
 <translation id="4751537843966994505">語意記錄搜尋</translation>
 <translation id="6175973371938222040">在本機為您造訪的頁面建立索引，讓您能依語意搜尋您的記錄。所有處理都保留在此裝置上。</translation>
@@ -408,6 +411,7 @@
 <translation id="6017560037265964523">容器</translation>
 <translation id="3718176486689879621">容器是以顏色區分的瀏覽器分頁，可將您的瀏覽資料（例如 cookie、快取和網站儲存空間）隔離至各自獨立的環境中。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">啟用容器</translation>
+<translation id="4858772568604670131">容器一律使用迷你圖示</translation>
 <translation id="7773735778926921278">新增容器</translation>
 <translation id="8900907990448657776">編輯容器</translation>
 <translation id="7900511996284443779">刪除容器</translation>
@@ -556,7 +560,6 @@
 <translation id="1799030480311994998">功能</translation>
 <translation id="6709133671862442373">新聞</translation>
 <translation id="6297791103122079275">通話</translation>
-<translation id="1458638489455808030">回溯機</translation>
 <translation id="4590997608186539865">播放清單</translation>
 <translation id="1199170151481311646">隱私權保護分析</translation>
 <translation id="5990642573624858459">統計報告</translation>
@@ -604,11 +607,14 @@
 <translation id="4891600875049212418">造訪敏感網站時停止記錄</translation>
 <translation id="1022603984240541480">在相容的網站上顯示隱私設定調整通知</translation>
 <translation id="3528176629974273019">允許 Brave 自動建議（並調整）特定網站的隱私設定。</translation>
+<translation id="2740687181110647855">隱私設定調整工具</translation>
 <translation id="509873765238158442">阻止 Microsoft 召回</translation>
 <translation id="4763421121695677716">阻止 Microsoft Windows 電腦上的 Recall 功能自動為任何開啟的 Brave 分頁截圖。</translation>
 <translation id="1968895725257436430">資料集合</translation>
 <translation id="1700052872056357670">結束時清除資料</translation>
 <translation id="216468847346280584">清除 Brave Ads 資料...</translation>
+<translation id="96212973142796240">Brave 廣告資料已清除</translation>
+<translation id="6665923829462527507">無法清除 Brave 廣告資料。請再試一次。</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
 <translation id="2988792685798128092">網站關閉時清除</translation>
@@ -877,6 +883,7 @@
 <translation id="8631951653187535788">確定要刪除這個模型？如果目前在任何進行中的對話使用這個模型，該對話會改用 Leo 的預設模型。</translation>
 <translation id="1907126221851170941">新增模型</translation>
 <translation id="8346224718149026088">編輯模型</translation>
+<translation id="3914173277599553213">必需</translation>
 <translation id="3468298837301810372">標籤</translation>
 <translation id="3553035516792776805">模型要求名稱</translation>
 <translation id="7634775528597575156">伺服器端點</translation>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/cookies/cookies_api.cc b/chrome/browser/extensions/api/cookies/cookies_api.cc
-index b605d8520b10243c1e22bc427c5a6a5d5a38b122..7d19ed7fe9f48f4f5583a2b0ae8b76a70ff26edc 100644
+index 46d1698f07cb9ed2866073489fbc4391ae23e337..e897e65fac5714736ceed081575016ac27acbe91 100644
 --- a/chrome/browser/extensions/api/cookies/cookies_api.cc
 +++ b/chrome/browser/extensions/api/cookies/cookies_api.cc
-@@ -147,6 +147,7 @@ CookiesEventRouter::~CookiesEventRouter() = default;
+@@ -155,6 +155,7 @@ CookiesEventRouter::~CookiesEventRouter() = default;
  
  void CookiesEventRouter::OnCookieChange(bool otr,
                                          const net::CookieChangeInfo& change) {
@@ -10,7 +10,7 @@ index b605d8520b10243c1e22bc427c5a6a5d5a38b122..7d19ed7fe9f48f4f5583a2b0ae8b76a7
    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
    // There is no way to represent non-serializable
    // partition keys in JS so return to prevent a crash.
-@@ -215,6 +216,7 @@ void CookiesEventRouter::OnCookieChange(bool otr,
+@@ -223,6 +224,7 @@ void CookiesEventRouter::OnCookieChange(bool otr,
  }
  
  void CookiesEventRouter::OnOffTheRecordProfileCreated(Profile* off_the_record) {

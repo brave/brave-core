@@ -72,6 +72,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="5679816001365584346">Stiahnite si Brave do telefónu a otvárajte alebo vytvárajte nové skupiny kariet, nech ste kdekoľvek.</translation>
 <translation id="4559627161887338743">Svoje prihlásené účty Brave môžete spravovať. Účty Brave sa používajú pre prehliadač Brave, Obchod Play, Gmail a ďalšie služby. Ak chcete pridať účet inej osoby, napríklad člena rodiny, pridajte radšej novú osobu do svojho zariadenia <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Vyhľadávanie podľa obrázkov</translation>
+<translation id="2963742289915075304">Používateľ <ph name="EXISTING_USER"/> je už prihlásený. Ak chcete, aby bolo vaše prehliadanie naďalej samostatné, prihláste sa vo svojom profile do prehliadača Brave účtom <ph name="USER_EMAIL_ADDRESS"/>. Získate aj záložky a ďalšie položky zo zariadenia <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Vybrať text</translation>
 <translation id="4528406859989804913">Prihlasujete sa pomocou spravovaného účtu a jeho správcovi dávate kontrolu nad vaším profilom Brave. Vaše údaje prehliadača Brave, ako sú aplikácie, záložky, história, heslá a iné nastavenia, sa natrvalo priradia k účtu <ph name="USER_NAME"/>. Tieto údaje budete môcť odstrániť len pomocou panela Dashboard v Účtoch Brave, ale nebudete ich môcť priradiť k inému účtu. Ak chcete, aby boli existujúce údaje prehliadača Brave oddelené, môžete vytvoriť nový profil. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave šetrí batériu tým, že obmedzí aktivitu na pozadí a vizuálne efekty, napríklad plynulé posúvanie a snímkové frekvencie videa. <ph name="BEGIN_LINK"/>Ďalšie informácie o šetriči energie<ph name="END_LINK"/></translation>
@@ -130,6 +131,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="5298352791080868905">Otvárajte odkazy v prehliadači Brave z ľubovoľnej aplikácie a majte prehliadač k dispozícii na paneli aplikácií</translation>
 <translation id="2600233721598267627">Kliknutím na tlačidlo Zhrnúť zdieľajte tento dokument s Gemini v prehliadači Brave, získajte rýchly prehľad a položte ďalšie otázky</translation>
 <translation id="2118275934191847461">Pomocou <ph name="BEGIN_LINK"/>nástrojov prehliadača Brave<ph name="END_LINK"/> môžete bezpečne prehliadať a mať všetko pod kontrolou</translation>
+<translation id="7508460698788470991">Používateľ <ph name="EXISTING_USER"/> je už prihlásený. Ak chcete, aby bolo vaše prehliadanie naďalej samostatné, prihláste sa vo svojom profile do prehliadača Brave účtom <ph name="USER_EMAIL_ADDRESS"/>. Navyše budete mať k dispozícii heslá a ďalší obsah vo všetkých svojich zariadeniach.</translation>
 <translation id="2451727308784734061">Pomocou odkazu rýchlo prejdete do Správcu hesiel. Odkaz môžete v počítači presunúť na plochu alebo do Spúšťača aplikácií.</translation>
 <translation id="6381750314821942592">Brave sa čoskoro zavrie</translation>
 <translation id="6078442581074612226">V prehliadači Brave</translation>
@@ -148,6 +150,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="7931230852267968641">Vaša organizácia si môže zobraziť a spravovať dáta prehliadania, napríklad záložky, históriu a heslá. Nemôže si zobraziť dáta prehliadania v profiloch prehliadača Brave.</translation>
 <translation id="2257221826278123061">Ak chcete používať a ukladať údaje prehliadača Brave vo svojom účte <ph name="ACCOUNT_EMAIL"/>, overte svoju totožnosť</translation>
 <translation id="7048234400304379082">Na opustenie panela Gemini v prehliadači Brave alebo návrat doň môžete používať klávesovú skratku.</translation>
+<translation id="5655607968417451974">Spustiť prehliadač Brave</translation>
 <translation id="7387051847644272380">V priebehu inštalácie sa vyskytla chyba operačného systému. Stiahnite prehliadač Brave znova.</translation>
 <translation id="2648689842065142443">Ak zdieľate zariadenie s rodinou a priateľmi, môžu v prehliadači Brave prehliadať samostatne a tiež si ho nastaviť podľa vlastných požiadaviek</translation>
 <translation id="1001521084148238686">Jednoducho otvárajte Gemini v prehliadači Brave v celom zariadení, a to aj vtedy, keď je Brave minimalizovaný.</translation>
@@ -296,7 +299,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="4304713468139749426">Správca hesiel</translation>
 <translation id="4334241893986177674">Nájsť túto snímku obrazovky</translation>
 <translation id="242356249838681145">Spúšťať Brave pri spustení systému Windows</translation>
-<translation id="4747339441562331861">Nastavte si Brave ako predvolený prehliadač, aby ste mali jednoduchý prístup k funkciám, ktoré poznáte, obľubujete a ktorým dôverujete. Brave bude pripnutý na paneli aplikácií, aby ste k nemu mali rýchly prístup.</translation>
 <translation id="4400772909124543403">K dispozícii nie je žiadna aktualizácia</translation>
 <translation id="9183662282810237335">Chcete Brave napriek tomu ukončiť?</translation>
 <translation id="4413205837991854510">Vždy zobrazovať odkaz na vyhľadávanie podľa obrázkov</translation>
@@ -393,6 +395,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 
 Ak stránka nefunguje podľa očakávaní, skúste optimalizáciu povoliť.</translation>
 <translation id="7074160267408082133">Zobrazovať Gemini v prehliadači Brave na paneli s ponukami Macu a zapnúť klávesovú skratku</translation>
+<translation id="2938507901464407819">Používateľ <ph name="EXISTING_USER"/> je už prihlásený. Ak chcete, aby bolo vaše prehliadanie naďalej samostatné, prihláste sa vo svojom profile do prehliadača Brave účtom <ph name="USER_EMAIL_ADDRESS"/>. Získate aj uložené informácie a ďalšie položky zo zariadenia <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Chyba pri spustení: spustite inštalátor ako bežný používateľ, nie ako správca.</translation>
 <translation id="3588973534877826647">Používajte Brave ako predvolený prehliadač a pripnite si ho</translation>
 <translation id="5596627076506792578">Ďalšie možnosti</translation>
@@ -566,12 +569,12 @@ Nové záložky sa nebudú môcť ukladať do vášho účtu, kým niektoré neo
 <translation id="5755581833598928580">Brave môžete kedykoľvek použiť kliknutím na odkazy v správach, dokumentoch a ďalších aplikáciách</translation>
 <translation id="7216228761061470870">Pri používaní vyhľadávania podľa obrázkov v počítači sa názov stránky, webová adresa a obsah vrátane súborov PDF odosielajú na server</translation>
 <translation id="5516268345616100622">Správca úloh – Brave</translation>
+<translation id="2416155625082200759">Používateľ <ph name="EXISTING_USER"/> je už prihlásený. Ak chcete, aby bolo vaše prehliadanie naďalej samostatné, prihláste sa vo svojom profile do prehliadača Brave účtom <ph name="USER_EMAIL_ADDRESS"/>. Navyše budete mať k dispozícii informácie a ďalšie položky uložené vo všetkých svojich zariadeniach.</translation>
 <translation id="1871621397473741084">Začnite prehliadať okamžite: Brave sa teraz môže spúšťať pri spustení systému Windows.</translation>
 <translation id="7274695763216404502">Pripnuté! Vyhľadávanie podľa obrázkov môžete znova používať z panela s nástrojmi.</translation>
 <translation id="7288567540154601580">Karty a rozšírenia</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave odporúča, aby ste ho odstránili}few{Brave odporúča, aby ste ich odstránili}many{Brave recommends that you remove them}other{Brave odporúča, aby ste ich odstránili}}</translation>
 <translation id="4600669988724328687">Ak chcete zdieľať zvuk systému, otvorte nastavenia systému a povoľte pre Brave možnosť Iba zvukové nahrávky systému. Potom budete musieť Brave reštartovať.</translation>
-<translation id="9068395155143628872">Meranie reklám umožňuje webom, ktoré navštívite, požadovať od prehliadača Brave údaje, ktoré im pomáhajú merať výkonnosť reklám. Meranie reklám obmedzuje sledovanie na rôznych weboch presúvaním minimálneho množstva údajov medzi webmi.</translation>
 <translation id="1864557848095568223">Brave sa aktualizuje</translation>
 <translation id="3403365884036456766">Súbor predvolieb je poškodený alebo neplatný. 
 
@@ -634,6 +637,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="5687542525349822727">Nastavte si Brave ako predvolený prehliadač</translation>
 <translation id="6396151137840491551">Keď je to možné, Brave automaticky inovuje nezabezpečené pripojenia na HTTPS</translation>
 <translation id="2925193881330501265">Do prehliadača Brave ste boli prihlásený/-á ako <ph name="USER_EMAIL_ADDRESS"/>. Ak sa chcete prihlásiť znova, použite rovnaký účet.</translation>
+<translation id="3744141798014187630">Používateľ <ph name="EXISTING_USER"/> je už prihlásený. Ak chcete, aby bolo vaše prehliadanie naďalej samostatné, prihláste sa vo svojom profile do prehliadača Brave účtom <ph name="USER_EMAIL_ADDRESS"/>. Navyše budete mať k dispozícii záložky a ďalšie položky vo všetkých svojich zariadeniach.</translation>
 <translation id="6915252145142862992">Toto je sekundárna inštalácia prehliadača Brave – nemôže byť nastavený ako váš predvolený prehliadač.</translation>
 <translation id="7766756101194440006">Získajte to najlepšie od Googlu s aplikáciou Brave v zariadení <ph name="DEVICE_TYPE"/></translation>
 <translation id="8004582292198964060">Prehliadač</translation>
@@ -664,10 +668,12 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="1755067029031059271">Brave nedokáže overiť, odkiaľ toto rozšírenie pochádza, takže môže byť nebezpečné. Odstráňte ho z prehliadača Brave, aby sa mu nezobrazovali vaše údaje na weboch, ktoré navštevujete (vrátane vašich osobných údajov), a nemohlo ich meniť.</translation>
 <translation id="8207657266087451193">Ak obrázok nemá užitočný popis, Brave sa vám ho pokúsi poskytnúť. Obrázky sa odosielajú Googlu, aby bolo možné vytvoriť popisy. Môžete to kedykoľvek vypnúť v nastaveniach.</translation>
 <translation id="7792526144795244436">Chcete sa prihlásiť do prehliadača Brave v novom profile?</translation>
+<translation id="784788600549915416">Používateľ <ph name="EXISTING_USER"/> je už prihlásený. Ak chcete, aby bolo vaše prehliadanie naďalej samostatné, prihláste sa vo svojom profile do prehliadača Brave účtom <ph name="USER_EMAIL_ADDRESS"/>. Budete mať k dispozícii aj heslá a ďalšie položky zo zariadenia <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Zobrazovať Gemini v prehliadači Brave v oblasti oznámení a zapnúť klávesovú skratku</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave vás upozorňuje<ph name="END_LINK"/> na nebezpečné weby a súbory na stiahnutie</translation>
 <translation id="8060549744348950090">Tento web ste v poslednom čase nenavštívili. Brave odstránil povolenie <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Nakupujte, prekladajte a identifikujte to, čo vidíte, pomocou kamery v aplikácii Brave pre iOS</translation>
+<translation id="4470171586042711152">QR kód na prihlásenie do prehliadača Brave ako <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Chyba pri spustení: <ph name="STARTUP_ERROR"/></translation>
 <translation id="6098476632210317894">Ak sa prehliadač Brave nebude používať <ph name="TIMEOUT_DURATION"/>, vaša organizácia ho zavrie.</translation>
 <translation id="8321888067342493336">Uložiť ako obrázok</translation>

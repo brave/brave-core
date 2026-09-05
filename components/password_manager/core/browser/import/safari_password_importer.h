@@ -16,6 +16,7 @@
 #include "brave/components/password_manager/core/browser/import/safari_import_results.h"
 #include "brave/components/password_manager/services/csv_password/public/mojom/csv_safari_password_parser.mojom.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_store/stored_credential.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -36,7 +37,7 @@ struct SafariIncomingPasswords {
   SafariIncomingPasswords& operator=(SafariIncomingPasswords&& other);
 
   std::vector<password_manager::CredentialUIEntry> add_credentials;
-  std::vector<password_manager::PasswordForm> edit_forms;
+  std::vector<password_manager::StoredCredential> edit_credentials;
 };
 
 struct ConflictsResolutionCache;

@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Vlerëso Brave</translation>
 <translation id="4104400246019119780">Faleminderit!</translation>
 <translation id="5202255382948179481">Shto sugjerimet e tua</translation>
-<translation id="7759809451544302770">Opsionale</translation>
 <translation id="4748689412569009273">Me një emoji, si është përvoja jote me Brave?</translation>
 <translation id="7335142069363686805">Vlerëso tani</translation>
 <translation id="6681362094306959654">Të pëlqen Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">I trishtuar</translation>
 <translation id="5488843227043643519">Do të lësh një vlerësim në Play Store?</translation>
 <translation id="5867854497245948308">Faleminderit për komentin tuaj!</translation>
-<translation id="4935400164159327304">Na trego si mund të përmirësojmë Brave-in.</translation>
+<translation id="5578122562331038807">Na trego si mund të përmirësojmë Brave-in</translation>
+<translation id="1483493594462132177">Dërgo</translation>
+<translation id="3889034478061064651">Shto sugjerimet e tua (Opsionale)</translation>
+<translation id="1769154760586570836">Reagimi u dërgua. Faleminderit!</translation>
+<translation id="4450893287417543264">Mos e shfaq sërish</translation>
 <translation id="8966035543003363155">Njoftimet Brave e bëjnë më të lehtë</translation>
 <translation id="7662771815233894695">Menaxho shkarkimet, fito shenja, shiko statistikat javore të përdorimit dhe më shumë.</translation>
 <translation id="4265429476391459783">Nuk po fitoni Shpërblime apo duke marrë Raporte të Privatësisë</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Veprimet e faqes</translation>
 <translation id="7104487676473617844">Elementet në vijim do të duken në menu vetëm kur mbështeten nga faqja aktuale e hapur.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Konfigurime</translation>
 <translation id="8038539967102225446">Reklamat Brave Mbërritën!</translation>
 <translation id="222883304157347087">(kjo pajisje)</translation>
 <translation id="4157741509680155021">PAJISJET NË ZINXHIRIN SINKRON</translation>
@@ -534,7 +536,6 @@ Të Bllokuara</translation>
 <translation id="1822560017823072927">Ndërfaqe parazgjedhje publike dhe private</translation>
 <translation id="5825943197137337319">Vetëm ndërfaqe parazgjedhje publike</translation>
 <translation id="1689062823386843231">Çaktivizo UDP të pakaluara në ndërmjetës</translation>
-<translation id="1483493594462132177">Dërgo</translation>
 <translation id="538450413584738399">Ndërro</translation>
 <translation id="4556086616242530072">Browser i natyrës.\nVet-kustodi.\nDhe multi-chain.</translation>
 <translation id="7909462264772842773">Merr kontroll mbi kripto-n dhe NFT-të. Kuleta Brave mbështet Ethereum, zinxhirët EVM, Solana, Filecoin dhe më shumë.</translation>
@@ -610,7 +611,6 @@ Të Bllokuara</translation>
 <translation id="569068482611873351">Importo...</translation>
 <translation id="4522570452068850558">Hollësi</translation>
 <translation id="3114681061018999547">Mbrojtja</translation>
-<translation id="3784455785234192852">Kyç</translation>
 <translation id="4412698727486357573">Qendra e ndihmës</translation>
 <translation id="8239147115686034860">Automatikisht blloko Brave Wallet</translation>
 <translation id="414639769490080648">Numri i minutave për të pritur deri sa Brave Wallet të bllokohet automatikisht</translation>
@@ -800,6 +800,10 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="2478788592457735063">Kjo do të kalojë rrjetin në një rrjet të shtuar më parë.</translation>
 <translation id="8756686998207163764">Ndërro rrjetin</translation>
 <translation id="8905793906896555159">Aktivizo grupet e skedave</translation>
+<translation id="6735749683447943955">Të çaktivizohen grupet e skedave?</translation>
+<translation id="4616687974503500682">Çdo grup ekzistues do të fshihet, dhe skedat brenda atyre grupeve do të bëhen skeda të hapura e të pagrupuara në dritaren e shfletuesit tënd. Je i sigurt që dëshiron të vazhdosh?</translation>
+<translation id="4394049700291259645">Çaktivizoje</translation>
+<translation id="3859027502409073633">Shfaq grupet e sinkronizuara të skedave</translation>
 <translation id="7632160823264702523">Shiriti i grupeve të skedave</translation>
 <translation id="2477807195394450274">Shfaq një shirit të poshtëm për qasje të shpejtë te skedat në grupin e skedave aktualisht të hapur</translation>
 <translation id="8374720587111523381">Hap lidhjet në grupin aktual të skedave</translation>
@@ -807,6 +811,7 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="1227658541937938697">Hap automatikisht të gjitha lidhjet në grupin aktual të skedave</translation>
 <translation id="5242300593039211344">Kyç Kuletën</translation>
 <translation id="1108298724135935307">Faqe të lidhura</translation>
+<translation id="8428213095426709021">Konfigurime</translation>
 <translation id="4255623233927788178">Shih te eksploruesi i blloqeve</translation>
 <translation id="8274201358637112807">Kjo faqe dëshiron të ndërveprojë me Kuletën Brave</translation>
 <translation id="3355936511340229503">Gabim lidhjeje</translation>
@@ -848,7 +853,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="6458565248779152483">Çaktivizo VPN-në Brave</translation>
 <translation id="9080536793704001825">Pauzo për 15 minuta</translation>
 <translation id="803706420145725977">Pauzo për 1 orë</translation>
-<translation id="4394049700291259645">Çaktivizoje</translation>
 <translation id="7733890291091968191">Trego njoftimet Web3</translation>
 <translation id="1371627247679035769">#### Brave nuk ju gjurmon apo di si e përdorni aplikacionin tonë, kështu që ne nuk dimë si e keni konfiguruar VPN-në. Ju lutemi ndani informata për problemin që po përjetoni dhe ne do të përpiqemi ta zgjidhim sa më shpejt që të jetë e mundur. ####</translation>
 <translation id="3367162038532116157">VPN Hostname

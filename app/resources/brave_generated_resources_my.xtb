@@ -212,6 +212,7 @@
 <translation id="8707615221880318679">ဤပုဂ္ဂိုလ်ရေးတုံ့ပြန်ချက်များက Brave ကိုအထူးအင်္ဂါရပ်အချို့၏စုစုပေါင်းအသုံးပြုမှုကိုခန့်မှန်းရန်ကူညီကာ သင်အတွက်ပိုမိုကောင်းမွန်အောင်ပြုလုပ်ပေးသည်</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 နယ်မြေများ</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4552520379838695057">သနားတယ်၊ အဲဒီစာမျက်နှာ မရှိပါ။</translation>
 <translation id="7299769530898469069">သိမ်းထားသောဗားရှင်းကို မတင်နိုင်ပါ</translation>
 <translation id="2609895996619941644">သိမ်းထားသောဗားရှင်းရှိသည် မဟုတ်ဘဲ Wayback Machine ကစစ်ဆေးပါသလား?</translation>
@@ -247,6 +248,7 @@
 <translation id="1185644444415356776">link ကို container တွင် ဖွင့်ရန်</translation>
 <translation id="6745991613881384719">container များကို စီမံရန်</translation>
 <translation id="8523788649219117880">ယာယီ Container အသစ်</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> ကွန်တိန်နာ</translation>
 <translation id="3704707436873245822">ပုံမှ စာသားကို ကူးမည်</translation>
 <translation id="5268098808165185458">ပုံမှ စာသားကို ကူးနေသည်...</translation>
 <translation id="4046485130884276245">ပုံ မှ စာသားကို ကူးယူပြီးပါပြီ</translation>
@@ -378,6 +380,7 @@
 <translation id="6724227215236550330">သိမ်းဆည်းထားသော စကားဝှက်များသည် ဤနေရာ၌ပေါ်လာမည်။ <ph name="BRAND"/> တွင်စာသားများကိုသွင်းခွင့်ရရှိရန်, <ph name="BEGIN_LINK"/> CSV ဖိုင်ရွေးချယ်ပါ<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610"><ph name="BRAND"/> တွင်စာသားများသွင်းရန်, CSV ဖိုင်ရွေးချယ်ပါ</translation>
 <translation id="8570228839666486945">ကိရိယာတွင် AI</translation>
+<translation id="7447041379556102185">စက်ပေါ်ရှိ စကားပြောသိမြင်ခြင်း</translation>
 <translation id="3456536577668402695">သင်၏ ရှာဖွေမှုများနှင့် စာမျက်နှာအကြောင်းအရာများကို ဤ device ပေါ်တွင် လုပ်ဆောင်ပါသည်။ Brave သို့ မည်သည့်အရာမျှ ပေးပို့မထားပါ၊ လူသား စစ်ဆေးသူများလည်း မြင်တွေ့မည် မဟုတ်ပါ။</translation>
 <translation id="4751537843966994505">အဓိပ္ပာယ်ဆိုင်ရာ မှတ်တမ်း ရှာဖွေမှု</translation>
 <translation id="6175973371938222040">သင်လည်ပတ်သည့် စာမျက်နှာများကို စက်တွင်း အညွှန်းပြုလုပ်ခြင်းဖြင့် သင့်မှတ်တမ်းကို အဓိပ္ပာယ်အလိုက် ရှာဖွေနိုင်ပါသည်။ လုပ်ဆောင်မှုအားလုံးသည် ဤစက်ပစ္စည်းတွင်သာ ရှိနေပါသည်။</translation>
@@ -408,6 +411,7 @@
 <translation id="6017560037265964523">container များ</translation>
 <translation id="3718176486689879621">Container များသည် သင့်ရဲ့ browsing ဒေတာများဖြစ်သော cookie, cache နှင့် site storage တို့ကို သီးခြားအခြေအနေများအဖြစ် ခွဲထုတ်ထားသော အရောင်ဖြင့်သတ်မှတ်ထားသည့် browser တဘ်များဖြစ်ပါသည်။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">Container များ ဖွင့်မည်</translation>
+<translation id="4858772568604670131">ကွန်တိန်နာများအတွက် အမြဲတမ်း အသေးစား သင်္ကေတ ကို အသုံးပြုပါ</translation>
 <translation id="7773735778926921278">ခွဲမှုအသစ် ပေါင်းထည့်ပါ</translation>
 <translation id="8900907990448657776">container ကို ပြင်ဆင်ပါ</translation>
 <translation id="7900511996284443779">container ကို ဖျက်ပါ</translation>
@@ -556,7 +560,6 @@
 <translation id="1799030480311994998">လုပ်ဆောင်ချက်များ</translation>
 <translation id="6709133671862442373">သတင်း</translation>
 <translation id="6297791103122079275">ပြောပါ။</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">ပလေးလစ်</translation>
 <translation id="1199170151481311646">ကိုယ်ရေးကိုယ်တာကိုကာကွယ်ထားသော သုံးစွဲမှုသရုပ်အချက်အလက်</translation>
 <translation id="5990642573624858459">စာရင်းအင်းအစီရင်ခံခြင်း</translation>
@@ -604,11 +607,14 @@
 <translation id="4891600875049212418">သွေးတိုးနေသာဆိုက်များကို သွေးထွက်သောအချိန်တွင်ပင်တိုင်ပါ</translation>
 <translation id="1022603984240541480">တွဲဖက်နိုင်သည့် site များတွင် ကိုယ်ရေးကိုယ်တာ ဆက်တင် ချိန်ညှိမှု အသိပေးချက် ပြပါ</translation>
 <translation id="3528176629974273019">Brave အား site-specific ကိုယ်ရေးကိုယ်တာ ဆက်တင်များကို အလိုအလျောက် အကြံပြု (နှင့် ချိန်ညှိ) ခွင့်ပြုသည်။</translation>
+<translation id="2740687181110647855">ကိုယ်ရေးကိုယ်တာ ဆက်တင်များ ညှိနှိုင်းသည့် ကိရိယာ</translation>
 <translation id="509873765238158442">Microsoft Recall ကိုပိတ်ရန်</translation>
 <translation id="4763421121695677716">Microsoft Windows ကွန်ပျူတာများတွင်ထားရှိထားသော Brave tab များ၏ screenshot များကို အလိုအလျောက်ယူမှီ မည်ဆိုသော Recall လုပ်ဆောင်ချက်ကိုပိတ်ရန်။</translation>
 <translation id="1968895725257436430">အချက်အလက် စုဆောင်းခြင်း</translation>
 <translation id="1700052872056357670">ပိတ်ပြီးနောက်ဒေတာအားလုံးရှင်းပစ်ရန်</translation>
 <translation id="216468847346280584">Brave ကြော်ငြာများ အချက်အလက်ကို ရှင်းပစ်ပါ...</translation>
+<translation id="96212973142796240">Brave ကြော်ငြာ ဒေတာ ရှင်းလင်းပြီးပြီ</translation>
+<translation id="6665923829462527507">Brave ကြော်ငြာ ဒေတာကို မရှင်းလင်းနိုင်ပါ။ ထပ်မံ ကြိုးစားပါ။</translation>
 <translation id="2808630562319398131">Brave ဆုလက်ဆောင်များ အချက်အလက်ကို ပြန်စပါ...</translation>
 <translation id="6438096877646138757">အက်ပြေးဆcookies များနှင့် အခြားအမျိုးမျိုး</translation>
 <translation id="2988792685798128092">ဆိုက်ပိတ်ထားချိန်တွင် ရှင်းပစ်ပါ</translation>
@@ -871,6 +877,7 @@
 <translation id="8631951653187535788">ဒါကို ဖျက်ချင်ပါသလား? ဒီပုံသေလမ်းစဉ်ကို အသုံးပြုနေတဲ့ ဆွေးနွေးချက်တွေရှိခဲ့ရင် အဲ့ဒီဆွေးနွေးချက်တွေက Leo ရဲ့ ပုံသေလမ်းစဉ်မှန်ကန်တဲ့ပုံသေလမ်းစဉ်ကို ပြန်ပြောင်းသွားမယ်</translation>
 <translation id="1907126221851170941">မော်ဒယ်ထည့်ရန်</translation>
 <translation id="8346224718149026088">ပုံသေလမ်းစဉ် ပြင်ဆင်ပါ</translation>
+<translation id="3914173277599553213">လိုအပ်ပါသည်</translation>
 <translation id="3468298837301810372">တင်ပါ</translation>
 <translation id="3553035516792776805">ပုံသေလမ်းစဉ်မေးမြန်းမှုအမည်</translation>
 <translation id="7634775528597575156">ကွန်ယက်တည်ချက်</translation>

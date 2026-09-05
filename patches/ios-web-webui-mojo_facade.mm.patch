@@ -1,0 +1,98 @@
+diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
+index cbc39d0594174bb896c7f79198325959c7d304be..cc7962fa32ea71666f20d8d4613961af1ec883dd 100644
+--- a/ios/web/webui/mojo_facade.mm
++++ b/ios/web/webui/mojo_facade.mm
+@@ -51,14 +51,22 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
+   return std::nullopt;
+ }
+ 
+-MojoFacade::MojoFacade(WebState* web_state) : web_state_(web_state) {
++MojoFacade::MojoFacade(WebState* web_state, const std::string& webui_host)
++    : web_state_(web_state) {
++  served_host_ = webui_host;
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+   DCHECK(web_state_);
+   web_state_->AddObserver(this);
+   web_state_->GetPageWorldWebFramesManager()->AddObserver(this);
+ 
+-  WebFrame* main_frame =
+-      web_state_->GetPageWorldWebFramesManager()->GetMainWebFrame();
++  WebFrame* main_frame = nullptr;
++  for (WebFrame* frame :
++       web_state_->GetPageWorldWebFramesManager()->GetAllWebFrames()) {
++    if (ServesFrame(frame)) {
++      main_frame = frame;
++      break;
++    }
++  }
+   if (main_frame) {
+     main_frame_ = main_frame->AsWeakPtr();
+     if (!web_state_->IsLoading() && web_state_->GetInterfaceBinderForMainFrame()
+@@ -124,13 +132,16 @@ void MojoFacade::OnAwaitNextMessageCompleted(const std::string& web_frame_id,
+       !web_state_->IsBeingDestroyed() && GetMainFrameId() == web_frame_id;
+ 
+   if (error || !is_same_frame || !value) {
+-    if (error && is_same_frame) {
+-      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+-          FROM_HERE, base::BindOnce(&MojoFacade::AwaitNextMessage,
+-                                    weak_ptr_factory_.GetWeakPtr()));
++    if (is_same_frame && ShouldRetryPoll()) {
++      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
++          FROM_HERE,
++          base::BindOnce(&MojoFacade::AwaitNextMessage,
++                         weak_ptr_factory_.GetWeakPtr()),
++          kPollRetryDelay);
+     }
+     return;
+   }
++  consecutive_poll_failures_ = 0;
+ 
+   const base::DictValue* dict = value->GetIfDict();
+   if (dict) {
+@@ -231,6 +242,7 @@ void MojoFacade::HandleMojoMessage(
+ }
+ 
+ bool MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
++  if (!IsBindInterfaceAllowedForFrame(args)) return false;
+   const std::string* interface_name = args.FindString("interfaceName");
+   std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
+ 
+@@ -279,9 +291,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
+ base::Value MojoFacade::HandleMojoHandleWriteMessage(
+     const base::DictValue& args) {
+   std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
+-  CHECK(pipe_id.has_value());
+-  mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
+-  CHECK(pipe.is_valid());
++  mojo::MessagePipeHandle pipe =
++      pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
++  if (!pipe.is_valid()) {
++    ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
++    return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
++  }
+ 
+   const base::ListValue* handles_list = args.FindList("handles");
+   CHECK(handles_list);
+@@ -449,8 +464,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+ void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
+                                          WebFrame* web_frame) {
+   DCHECK_CURRENTLY_ON(WebThread::UI);
+-  if (web_frame && web_frame->IsMainFrame()) {
++  if (web_frame && ServesFrame(web_frame)) {
+     main_frame_ = web_frame->AsWeakPtr();
++    AwaitNextMessage();
+   }
+ }
+ 
+@@ -473,11 +489,6 @@ void MojoFacade::PageLoaded(WebState* web_state,
+   if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
+       GetMainWebFrame() &&
+       web_state_->GetInterfaceBinderForMainFrame()->HasRegisteredInterfaces()) {
+-    pipes_.clear();
+-    watchers_.clear();
+-    last_watch_id_ = 0;
+-    is_awaiting_message_ = false;
+-    weak_ptr_factory_.InvalidateWeakPtrs();
+     AwaitNextMessage();
+   }
+ }

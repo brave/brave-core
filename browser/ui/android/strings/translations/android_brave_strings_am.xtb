@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">ለ Brave ደረጃ ስጥ</translation>
 <translation id="4104400246019119780">እናመሰግናለን!</translation>
 <translation id="5202255382948179481">የእርስዎን የአስተያየት ጥቆማዎች ያክሉ</translation>
-<translation id="7759809451544302770">በአማራጭነት የቀረበ</translation>
 <translation id="4748689412569009273">በአንድ ስሜት ገላጭ ምስል ከ Brave ጋር ያለዎት ተሞክሮ እንዴት ይገለጻል?</translation>
 <translation id="7335142069363686805">አሁን ደረጃ ይስጡ</translation>
 <translation id="6681362094306959654">Braveን እየወደዱት ነው?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">የተከፋ</translation>
 <translation id="5488843227043643519">ከ Play Store ደረጃ አሰጣጥ ለቀው ይውጡ?</translation>
 <translation id="5867854497245948308">ለግብረመልስዎ እናመሰግናለን!</translation>
-<translation id="4935400164159327304">Braveን እንዴት ማሻሻል እንደምንችል ያሳውቁን።</translation>
+<translation id="5578122562331038807">Braveን እንዴት ማሻሻል እንደምንችል ያሳውቁን</translation>
+<translation id="1483493594462132177">ላክ</translation>
+<translation id="3889034478061064651">የእርስዎን የአስተያየት ጥቆማዎች ያክሉ (አማራጭ)</translation>
+<translation id="1769154760586570836">አስተያየት ተልኳል። እናመሰግናለን!</translation>
+<translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="8966035543003363155">የ Brave ማሳወቂያዎች ቀላል ያደርጉታል</translation>
 <translation id="7662771815233894695">ዳውንሎዶችን ያስተዳድሩ፣ ተለዋጭ ስሞችን ያግኙ፣ ሳምንታዊ የአጠቃቀም ስታቲስቲክስን ይመልከቱ እና ሌሎችም።</translation>
 <translation id="4265429476391459783">ሽልማቶችን እያገኙ ወይም የግላዊነት ሪፖርቶችን እየተቀበሉ አይደሉም</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">የገፅ ተግባራት</translation>
 <translation id="7104487676473617844">የሚከተሉት ንጥሎች በአሁኑ ከፍተኛ ዌብጤት ድጋፍ ያገኛሉ ብቻ በምናሌ ላይ የሚታዩ ይሆናሉ።</translation>
 <translation id="4159764849281393303">ዌብአፕ</translation>
-<translation id="8428213095426709021">ቅንብሮች</translation>
 <translation id="8038539967102225446">የ Brave ማስታወቂያዎች እዚህ ናቸው!</translation>
 <translation id="222883304157347087">(ይህ መሳሪያ)</translation>
 <translation id="4157741509680155021">በ አስምር ሰንሰለት ውስጥ ያሉ መሳሪያዎች</translation>
@@ -526,7 +528,6 @@
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
-<translation id="1483493594462132177">ላክ</translation>
 <translation id="538450413584738399">ይለውጡ</translation>
 <translation id="4556086616242530072">የአሳሽ native.\nSelf-custody.\nAnd ባለብዙ ሰንሰለት።</translation>
 <translation id="7909462264772842773">የእርስዎን crypto እና NFTs ይቆጣጠሩ። Brave Wallet Ethereum፣ EVM ሰንሰለቶችን፣ Solana፣ Filecoin እና ሌሎችንም ይደግፋል።</translation>
@@ -602,7 +603,6 @@
 <translation id="569068482611873351">ኣስመጣ...</translation>
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="3114681061018999547">መከላከያ</translation>
-<translation id="3784455785234192852">ቆልፍ</translation>
 <translation id="4412698727486357573">የእገዛ ማዕከል</translation>
 <translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
@@ -790,6 +790,10 @@
 <translation id="2478788592457735063">ይህ ቀድሞ ወደተጨመረ አውታረ መረብ ይለውጠዋል።</translation>
 <translation id="8756686998207163764">ኔትዎርኩን ይቀይሩ</translation>
 <translation id="8905793906896555159">የታብ ቡድኖችን አንቃ</translation>
+<translation id="6735749683447943955">የታብ ቡድኖችን አሰናክል?</translation>
+<translation id="4616687974503500682">ማንኛውም ነባር ቡድኖች ይሰረዛሉ፣ እና በእነዚያ ቡድኖች ውስጥ ያሉት ታቦች በአሳሽ መስኮትዎ ውስጥ ክፍት፣ ያልተመደቡ ታቦች ይሆናሉ። መቀጠል እንደሚፈልጉ እርግጠኛ ነዎት?</translation>
+<translation id="4394049700291259645">አሰናክል</translation>
+<translation id="3859027502409073633">የተመሳሰሉ የታብ ቡድኖችን አሳይ</translation>
 <translation id="7632160823264702523">የታብ ቡድኖች አሞሌ</translation>
 <translation id="2477807195394450274">አሁን በከፈቱት የታብ ቡድን ውስጥ ላሉ ታቦች ፈጣን መዳረሻ የታች አሞሌ አሳይ</translation>
 <translation id="8374720587111523381">አገናኞችን አሁን በከፈቱት የታብ ቡድን ውስጥ ይክፈቱ</translation>
@@ -797,6 +801,7 @@
 <translation id="1227658541937938697">አሁን ባለው የታብ ቡድን ውስጥ ያሉትን ሁሉንም አገናኞች በራስ ሰር ይክፈቱ</translation>
 <translation id="5242300593039211344">ዋሌቱን ይቆልፉ</translation>
 <translation id="1108298724135935307">የተገናኙ ጣቢያዎች</translation>
+<translation id="8428213095426709021">ቅንብሮች</translation>
 <translation id="4255623233927788178">በBlock explorer ላይ ይመልከቱ</translation>
 <translation id="8274201358637112807">ይህ ገጽ ከ Brave ዋሌት ጋር መስተጋብር መፍጠር ይፈልጋል</translation>
 <translation id="3355936511340229503">የግንኙነት ስህተት</translation>
@@ -842,7 +847,6 @@
 <translation id="6458565248779152483">Brave ቪፒኤንን አሰናክል</translation>
 <translation id="9080536793704001825">ለ15 ደቂቃዎች ባለበት አቁም</translation>
 <translation id="803706420145725977">ለ1 ሰዓት ባለበት አቁም</translation>
-<translation id="4394049700291259645">አሰናክል</translation>
 <translation id="7733890291091968191">የዊብ3 ማሳወቂያዎችን አሳይ</translation>
 <translation id="1371627247679035769">\n\n\n\n#### ብሬቭ እርስዎን አይከታተልዎትም ወይም የእኛን መተግበሪያ እንዴት እንደሚጠቀሙ አያውቅም፣ ስለዚህ VPNን እንዴት እንዳዋቀሩ አናውቅም። እባክዎ እያጋጠሞት ስላለው ችግር መረጃ ያጋሩን እና በተቻለን ፍጥነት ለመፍታት የተቻለንን ሁሉ እናደርጋለን። ####\n\n</translation>
 <translation id="3367162038532116157">\n\nየቪፒኤን አስተናጋጅ ስም\n <ph name="VALUE"/></translation>

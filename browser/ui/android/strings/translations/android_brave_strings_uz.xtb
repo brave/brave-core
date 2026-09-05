@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Brave brauzerini baholang</translation>
 <translation id="4104400246019119780">Rahmat!</translation>
 <translation id="5202255382948179481">Tavsiyalaringizni qo‘shing</translation>
-<translation id="7759809451544302770">Ixtiyoriy</translation>
 <translation id="4748689412569009273">Brave brauzeridan olgan taassurotingizni bitta emojida qanday ifodalaysiz?</translation>
 <translation id="7335142069363686805">Baholash</translation>
 <translation id="6681362094306959654">Brave yoqdimi?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Xafa</translation>
 <translation id="5488843227043643519">Play Store orqali baholaysizmi?</translation>
 <translation id="5867854497245948308">Fikringiz uchun rahmat!</translation>
-<translation id="4935400164159327304">Brave ni qanday yaxshilashimiz mumkinligini bizga xabar bering.</translation>
+<translation id="5578122562331038807">Brave ni qanday yaxshilashimiz mumkinligini bizga xabar bering</translation>
+<translation id="1483493594462132177">Yuborish</translation>
+<translation id="3889034478061064651">Tavsiyalaringizni qo‘shing (Ixtiyoriy)</translation>
+<translation id="1769154760586570836">Fikr-mulohaza yuborildi. Rahmat!</translation>
+<translation id="4450893287417543264">Boshqa koʻrsatilmasin</translation>
 <translation id="8966035543003363155">Brave bildirishnomalari barchasini osonlashtiradi</translation>
 <translation id="7662771815233894695">Yuklamalarni boshqaring, token oling, haftalik foydalanish statistikasini ko‘ring va h.o.</translation>
 <translation id="4265429476391459783">Mukofotlar yigʻmayapsiz yoki Maxfiylik hisobotlarini olmayapsiz</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Sahifa amallari</translation>
 <translation id="7104487676473617844">Quyidagi elementlar faqat joriy ochilgan veb-sahifa tomonidan qoʻllab-quvvatlanganda menyuda koʻrinadi.</translation>
 <translation id="4159764849281393303">Veb-ilova</translation>
-<translation id="8428213095426709021">Sozlamalar</translation>
 <translation id="8038539967102225446">Brave Ads mana bu yerda!</translation>
 <translation id="222883304157347087">(bu qurilma)</translation>
 <translation id="4157741509680155021">SYNC CHAIN'DAGI QURILMALAR</translation>
@@ -541,7 +543,6 @@ bloklandi</translation>
 <translation id="1822560017823072927">Birlamchi ommaviy va maxfiy interfeyslar</translation>
 <translation id="5825943197137337319">Faqat birlamchi ommaviy interfeys</translation>
 <translation id="1689062823386843231">Proksi boʻlmagan UDP'ni faolsizlantirish</translation>
-<translation id="1483493594462132177">Yuborish</translation>
 <translation id="538450413584738399">Almashtirish</translation>
 <translation id="4556086616242530072">Brauzer mahalliy.
 O'z-o'zini himoya qilish.
@@ -619,7 +620,6 @@ Va ko'p zanjirli.</translation>
 <translation id="569068482611873351">Import qilish...</translation>
 <translation id="4522570452068850558">Tafsilotlar</translation>
 <translation id="3114681061018999547">Qalqonlar</translation>
-<translation id="3784455785234192852">Qulf</translation>
 <translation id="4412698727486357573">Yordam markazi</translation>
 <translation id="8239147115686034860">Brave Hamyon avtomatik qulflanadi</translation>
 <translation id="414639769490080648">Brave Hamyon avtomatik qulflanishini kutish uchun daqiqalar soni</translation>
@@ -819,6 +819,10 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="2478788592457735063">Bunda tarmoq avval qoʻshilgan tarmoqqa almashtiriladi.</translation>
 <translation id="8756686998207163764">Tarmoqni almashtirish</translation>
 <translation id="8905793906896555159">Varaq guruhlarini yoqish</translation>
+<translation id="6735749683447943955">Varaq guruhlari o‘chirilsinmi?</translation>
+<translation id="4616687974503500682">Har qanday mavjud guruhlar o‘chiriladi va bu guruhlardagi varaqlar brauzer oynasida ochiq, guruhlanmagan varaqlarga aylanadi. Davom etishga ishonchingiz komilmi?</translation>
+<translation id="4394049700291259645">O‘chirish</translation>
+<translation id="3859027502409073633">Sinxronlangan varaq guruhlarini ko‘rsatish</translation>
 <translation id="7632160823264702523">Varaq guruhlari paneli</translation>
 <translation id="2477807195394450274">Hozirda ochiq varaq guruhidagi varaqlarga tez kirish uchun pastki panelni ko'rsatish</translation>
 <translation id="8374720587111523381">Havolalarni joriy varaq guruhida ochish</translation>
@@ -826,6 +830,7 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="1227658541937938697">Barcha havolalarni avtomatik ravishda joriy varaq guruhida ochish</translation>
 <translation id="5242300593039211344">Hamyonni qulflash</translation>
 <translation id="1108298724135935307">Ulangan saytlar</translation>
+<translation id="8428213095426709021">Sozlamalar</translation>
 <translation id="4255623233927788178">Blok tekshiruvchida koʻrish</translation>
 <translation id="8274201358637112807">Ushbu sahifa Brave Hamyon bilan o'zaro ta'sir qilishni istaydi</translation>
 <translation id="3355936511340229503">Ulanish xatosi</translation>
@@ -867,7 +872,6 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="6458565248779152483">Brave VPN faol emaslandi</translation>
 <translation id="9080536793704001825">15 daqiqaga to'xtatish</translation>
 <translation id="803706420145725977">1 soatga to'xtatish</translation>
-<translation id="4394049700291259645">Faolsizlantirish</translation>
 <translation id="7733890291091968191">Web3 bildirishnomalarini ko'rsatish</translation>
 <translation id="1371627247679035769">#### Brave sizni kuzatmaydi yoki ilovamizni qanday ishlatayotganingizni bilmaydi, shuning uchun VPN sozlamalaringizni qanday qilib o’rnatganingizni bilmaymiz. Iltimos, duch kelayotgan muammo haqida ma'lumot bering va uni iloji boricha tezroq hal qilishga harakat qilamiz. ####</translation>
 <translation id="3367162038532116157">VPN Hostname

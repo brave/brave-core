@@ -1,13 +1,13 @@
 diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
-index 311fc1b2527207aa2126d33051cfc248f03dfc98..28c56447487ea1cca47ee764d318feee26b4d47b 100644
+index d8f7028e7b166b2218dc2677a26516e4f3ef469c..18cf4146f79013fa422a57ae4c19fdbdf4649545 100644
 --- a/third_party/rust/aho_corasick/v1/BUILD.gn
 +++ b/third_party/rust/aho_corasick/v1/BUILD.gn
-@@ -70,7 +70,7 @@ cargo_crate("lib") {
-   # //third_party/rust/chromium_crates_io/Cargo.toml to use
-   # it from first-party code.
-   visibility = [ "//third_party/rust/*" ]
--  testonly = true
-+  testonly = false
+@@ -58,7 +58,7 @@ cargo_crate("lib") {
+   cargo_pkg_repository = "https://github.com/BurntSushi/aho-corasick"
+   cargo_pkg_version = "1.1.5"
  
-   #####################################################################
-   # Tweaking which GN `config`s apply to this target.
+-  allow_unsafe = false
++  allow_unsafe = true
+ 
+   deps = [ "//third_party/rust/memchr/v2:lib" ]
+   features = [

@@ -68,7 +68,7 @@ BraveContentClient::BraveContentClient() = default;
 
 BraveContentClient::~BraveContentClient() = default;
 
-base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
+scoped_refptr<base::RefCountedMemory> BraveContentClient::GetDataResourceBytes(
     int resource_id) {
   if (resource_id == IDR_FLAGS_UI_APP_JS) {
     const ui::ResourceBundle& resource_bundle =
@@ -77,7 +77,7 @@ base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
         resource_bundle.LoadDataResourceString(resource_id) +
         resource_bundle.LoadDataResourceString(
             IDR_FLAGS_UI_BRAVE_FLAGS_OVERRIDES_JS);
-    base::RefCountedString* bytes = new base::RefCountedString();
+    auto bytes = base::MakeRefCounted<base::RefCountedString>();
     bytes->as_string().assign(flags_js.data(), flags_js.length());
     return bytes;
   }

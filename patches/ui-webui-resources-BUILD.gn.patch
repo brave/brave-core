@@ -1,10 +1,10 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index c42f55eaef4640eeeb03fb5d643f51114821507e..fad2ec9f06dff5c7810b605d6fafcfdd6177c3c3 100644
+index e395a144cbeefaa22902d3fc041ea5de8a7b76fe..0b748c22a20781126b6e348acfc176a316141dd3 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -120,6 +120,7 @@ generate_grd("build_grd") {
-     public_deps += [ ":build_cros_styles_grdp" ]
-     grdp_files += [ "$target_gen_dir/cros_styles_resources.grdp" ]
+@@ -126,6 +126,7 @@ generate_grd("build_grd") {
+     public_deps += [ "cr_components/signin:build_grdp" ]
+     grdp_files += [ "$target_gen_dir/cr_components/signin/resources.grdp" ]
    }
 +  import("//brave/ui/webui/resources/sources.gni") grdp_files += brave_resources_extra_grdps public_deps += brave_resources_extra_grdps_deps
  }

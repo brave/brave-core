@@ -1,0 +1,16 @@
+diff --git a/ios/web/webui/web_ui_ios_impl.mm b/ios/web/webui/web_ui_ios_impl.mm
+index 7b41618e5c2c24329a2fb0872027a34e2d9b780f..4ab4e16285b6447e69af9812eb1bc98cde2ede53 100644
+--- a/ios/web/webui/web_ui_ios_impl.mm
++++ b/ios/web/webui/web_ui_ios_impl.mm
+@@ -41,8 +41,9 @@ std::u16string WebUIIOS::GetJavascriptCall(
+   return base::ASCIIToUTF16(function_name) + u'(' + parameters + u");";
+ }
+ 
+-WebUIIOSImpl::WebUIIOSImpl(WebState* web_state)
+-    : mojo_facade_(std::make_unique<MojoFacade>(web_state)),
++WebUIIOSImpl::WebUIIOSImpl(WebState* web_state,
++                           const std::string& webui_host)
++    : mojo_facade_(std::make_unique<MojoFacade>(web_state, webui_host)),
+       web_state_(web_state) {}
+ 
+ WebUIIOSImpl::~WebUIIOSImpl() {

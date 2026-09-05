@@ -803,7 +803,7 @@ export class Config {
       // Use hermetic toolchain only internally.
       env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
-      env.GYP_MSVS_HASH_e66617bc68 = 'e66617bc68'
+      env.GYP_MSVS_HASH_3bfcb536c8 = '3dce9a2ec1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
     }
 

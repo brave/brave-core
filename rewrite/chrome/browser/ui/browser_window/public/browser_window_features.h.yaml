@@ -1,0 +1,61 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Rename BrowserWindowFeatures to BrowserWindowFeatures_ChromiumImpl
+
+      This allows brave/browser/ui/browser_window/public/browser_window_features.h
+      to provide a Brave-specific BrowserWindowFeatures subclass.
+    rename_class:
+      class_name: BrowserWindowFeatures
+      rename: BrowserWindowFeatures_ChromiumImpl
+
+  - description: 'Make the destructor virtual for subclassing.'
+    make_virtual:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      method_name: '~BrowserWindowFeatures_ChromiumImpl'
+
+  - description: 'Make Init virtual.'
+    make_virtual:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      method_name: Init
+
+  - description: 'Make InitPostWindowConstruction virtual.'
+    make_virtual:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      method_name: InitPostWindowConstruction
+
+  - description: 'Make InitPostBrowserViewConstruction virtual.'
+    make_virtual:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      method_name: InitPostBrowserViewConstruction
+
+  - description: 'Make TearDownPreBrowserWindowDestruction virtual.'
+    make_virtual:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      method_name: TearDownPreBrowserWindowDestruction
+
+  - description: 'Let the Brave subclass reach private members.'
+    add_friend:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      friend_type: class BrowserWindowFeatures
+
+  - description: 'Add a const overload of exclusive_access_manager().'
+    add_to_public:
+      class_name: BrowserWindowFeatures_ChromiumImpl
+      code: |-
+        const ExclusiveAccessManager* exclusive_access_manager() const {
+          return exclusive_access_manager_.get();
+        }
+
+  - description: 'Declare a const overload of side_panel_ui().'
+    regex:
+      pattern: 'SidePanelUI* side_panel_ui();'
+      replace: |-
+        SidePanelUI* side_panel_ui();
+          const SidePanelUI* side_panel_ui() const;

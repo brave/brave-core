@@ -71,6 +71,7 @@
 <translation id="5679816001365584346">Download Brave di ponsel untuk membuka atau membuat grup tab baru kapan saja di mana saja</translation>
 <translation id="4559627161887338743">Anda dapat mengelola Akun Brave yang Anda gunakan untuk login. Akun Brave Anda digunakan untuk browser Brave, Play Store, Gmail, dan lainnya. Jika Anda ingin menambahkan akun untuk orang lain, seperti anggota keluarga, tambahkan pengguna baru ke <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Telusuri dengan Penelusuran Gambar</translation>
+<translation id="2963742289915075304"><ph name="EXISTING_USER"/> sudah login. Agar penjelajahan Anda tetap terpisah, login ke Brave di profil Anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapatkan bookmark dan data lainnya dari <ph name="DEVICE"/>.</translation>
 <translation id="1880677175115548835">Pilih teks</translation>
 <translation id="4528406859989804913">Anda masuk dengan akun terkelola dan memberikan administratornya kontrol atas profil Brave Anda. Data Brave Anda, seperti aplikasi, bookmark, histori, sandi, dan setelan lain selamanya akan dikaitkan ke <ph name="USER_NAME"/>. Anda dapat menghapus data ini melalui Dasbor Akun Brave, namun Anda tidak akan dapat mengaitkan data ini dengan akun yang lain. Secara opsional, Anda dapat membuat profil untuk menjaga data Brave Anda yang sudah ada tetap terpisah. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave akan menghemat daya baterai dengan membatasi aktivitas latar belakang dan efek visual, seperti scroll yang lancar dan kecepatan frame video. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut Penghemat Energi<ph name="END_LINK"/></translation>
@@ -129,6 +130,7 @@
 <translation id="5298352791080868905">Buka link di Brave dari aplikasi apa pun dan buat browser tetap dapat diakses di taskbar Anda</translation>
 <translation id="2600233721598267627">Klik tombol Ringkas untuk membagikan dokumen ini ke Gemini di Brave guna mendapatkan ringkasan cepat dan mengajukan pertanyaan lanjutan</translation>
 <translation id="2118275934191847461">Dengan <ph name="BEGIN_LINK"/>alat dari Brave<ph name="END_LINK"/>, Anda dapat menjelajah dengan aman dan tetap memegang kendali</translation>
+<translation id="7508460698788470991"><ph name="EXISTING_USER"/> sudah login. Agar penjelajahan Anda tetap terpisah, login ke Brave di profil Anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapatkan sandi dan data lainnya semua perangkat Anda.</translation>
 <translation id="2451727308784734061">Gunakan pintasan Anda untuk mengakses Pengelola Sandi dengan cepat. Anda dapat memindahkan pintasan ke layar utama atau peluncur aplikasi di komputer.</translation>
 <translation id="6381750314821942592">Brave akan segera ditutup</translation>
 <translation id="6078442581074612226">Di Brave</translation>
@@ -147,6 +149,7 @@
 <translation id="7931230852267968641">Organisasi Anda dapat melihat dan mengelola data penjelajahan, seperti bookmark, histori, dan sandi. Organisasi Anda tidak dapat melihat data penjelajahan di profil Brave lain</translation>
 <translation id="2257221826278123061">Verifikasi diri Anda untuk menggunakan dan menyimpan data Brave di akun Anda, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7048234400304379082">Untuk keluar dari atau kembali ke Gemini di Brave, gunakan pintasan keyboard.</translation>
+<translation id="5655607968417451974">Mulai Brave</translation>
 <translation id="7387051847644272380">Terjadi error pada sistem operasi saat pemasangan berlangsung. Download Brave lagi.</translation>
 <translation id="2648689842065142443">Jika Anda berbagi perangkat, teman dan keluarga dapat menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya</translation>
 <translation id="1001521084148238686">Akses mudah untuk menggunakan Gemini di Brave di berbagai perangkat Anda, bahkan saat Brave diperkecil.</translation>
@@ -295,7 +298,6 @@
 <translation id="4304713468139749426">Pengelola Sandi</translation>
 <translation id="4334241893986177674">Telusuri screenshot ini</translation>
 <translation id="242356249838681145">Luncurkan Brave saat Windows dimulai</translation>
-<translation id="4747339441562331861">Dapatkan akses mudah ke fitur yang Anda kenal, suka, dan percaya dengan menyetel Brave sebagai browser default. Brave akan disematkan ke taskbar agar dapat diakses dengan cepat.</translation>
 <translation id="4400772909124543403">Tidak ada update yang tersedia</translation>
 <translation id="9183662282810237335">Tetap keluar dari Brave?</translation>
 <translation id="4413205837991854510">Selalu Tampilkan Pintasan Penelusuran Gambar</translation>
@@ -392,6 +394,7 @@
 
 Jika halaman ini tidak berfungsi sebagaimana mestinya, coba izinkan pengoptimalan.</translation>
 <translation id="7074160267408082133">Tampilkan Gemini di Brave di panel menu Mac dan aktifkan pintasan keyboard</translation>
+<translation id="2938507901464407819"><ph name="EXISTING_USER"/> sudah login. Agar penjelajahan Anda tetap terpisah, login ke Brave di profil Anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapatkan info tersimpan dan data lainnya dari <ph name="DEVICE"/>.</translation>
 <translation id="5579324208890605088">Error saat sistem dimulai: jalankan penginstal sebagai pengguna biasa, bukan sebagai administrator.</translation>
 <translation id="3588973534877826647">Gunakan Brave sebagai browser default dan sematkan ke taskbar</translation>
 <translation id="5596627076506792578">Opsi lainnya</translation>
@@ -565,12 +568,12 @@ Bookmark baru tidak dapat disimpan di akun hingga Anda menghapus beberapa bookma
 <translation id="5755581833598928580">Gunakan Brave kapan pun Anda mengklik link di pesan, dokumen, dan aplikasi lainnya</translation>
 <translation id="7216228761061470870">Saat Anda menggunakan Penelusuran Gambar di desktop, judul halaman, URL, dan konten, termasuk PDF, akan dikirim ke server</translation>
 <translation id="5516268345616100622">Pengelola Tugas - Brave</translation>
+<translation id="2416155625082200759"><ph name="EXISTING_USER"/> sudah login. Agar penjelajahan Anda tetap terpisah, login ke Brave di profil Anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapatkan info tersimpan dan data lainnya di semua perangkat Anda.</translation>
 <translation id="1871621397473741084">Langsung menjelajahi internet: Brave kini dapat diluncurkan saat Windows dimulai.</translation>
 <translation id="7274695763216404502">Disematkan. Gunakan Penelusuran Gambar lagi dari toolbar</translation>
 <translation id="7288567540154601580">Tab &amp; ekstensi</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave merekomendasikan agar Anda menghapusnya}other{Brave merekomendasikan agar Anda menghapusnya}}</translation>
 <translation id="4600669988724328687">Untuk membagikan audio sistem, buka Setelan Sistem dan izinkan 'Hanya Perekaman Audio Sistem' untuk Brave. Kemudian, Anda harus memulai ulang Brave.</translation>
-<translation id="9068395155143628872">Pengukuran iklan memungkinkan situs yang Anda buka untuk meminta informasi dari Brave yang membantu situs mengukur performa iklannya. Pengukuran iklan membatasi pelacakan lintas situs dengan mentransfer sesedikit mungkin informasi antar-situs.</translation>
 <translation id="1864557848095568223">Memperbarui Brave</translation>
 <translation id="3403365884036456766">File preferensi Anda rusak atau tidak valid.
 
@@ -631,6 +634,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="5687542525349822727">Setel Brave sebagai browser default</translation>
 <translation id="6396151137840491551">Brave mengupgrade koneksi yang tidak aman ke HTTPS secara otomatis jika memungkinkan</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
+<translation id="3744141798014187630"><ph name="EXISTING_USER"/> sudah login. Agar penjelajahan Anda tetap terpisah, login ke Brave di profil Anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapatkan bookmark dan data lainnya semua perangkat Anda.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
 <translation id="7766756101194440006">Optimalkan penggunaan Brave dengan aplikasi Brave di <ph name="DEVICE_TYPE"/> Anda</translation>
 <translation id="8004582292198964060">Browser</translation>
@@ -661,10 +665,12 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="1755067029031059271">Brave tidak dapat memverifikasi asal ekstensi ini, dan mungkin ekstensi ini tidak aman. Hapus dari Brave agar ekstensi ini tidak dapat lagi melihat dan mengubah data Anda di situs yang Anda kunjungi, termasuk info pribadi Anda.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave. Anda dapat menonaktifkannya kapan saja di setelan.</translation>
 <translation id="7792526144795244436">Login ke Brave di profil baru?</translation>
+<translation id="784788600549915416"><ph name="EXISTING_USER"/> sudah login. Agar penjelajahan Anda tetap terpisah, login ke Brave di profil Anda sendiri sebagai <ph name="USER_EMAIL_ADDRESS"/>. Anda juga akan mendapatkan sandi dan data lainnya dari <ph name="DEVICE"/>.</translation>
 <translation id="183102473074922918">Tampilkan Gemini di Brave di area notifikasi dan aktifkan pintasan keyboard</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave akan memperingatkan Anda<ph name="END_LINK"/> tentang situs dan download yang tidak aman</translation>
 <translation id="8060549744348950090">Anda tidak membuka situs ini baru-baru ini. Brave menghapus izin <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Gunakan kamera di aplikasi Brave versi iOS untuk berbelanja, menerjemahkan teks, dan mengidentifikasi objek yang Anda lihat</translation>
+<translation id="4470171586042711152">Kode QR untuk login ke Brave sebagai <ph name="USER_NAME"/></translation>
 <translation id="8313851650939857356">Error saat sistem dimulai: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Organisasi Anda menutup Brave saat tidak digunakan selama <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Simpan sebagai gambar</translation>

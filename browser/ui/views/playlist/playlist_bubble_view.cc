@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
+#include "base/functional/bind.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/bubble/bubble_border.h"
-#include "ui/views/view_utils.h"
 
 namespace playlist {
 
@@ -44,20 +44,12 @@ void PlaylistBubbleView::OnWidgetDestroyed(views::Widget*) {
     return;
   }
 
-  auto* anchor_view = GetAnchorView();
-  if (!anchor_view) {
-    return;
-  }
-
-  auto* action_icon_view =
-      views::AsViewClass<PlaylistActionIconView>(anchor_view);
-  CHECK(action_icon_view);
   // Post as task, otherwise
   // "|anchor_view| has already anchored a focusable widget."
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(&PlaylistBubblesController::ShowBubble, controller_,
-                     action_icon_view->AsWeakPtr(), next_bubble_));
+      base::BindOnce(&PlaylistBubblesController::ShowBubbleWithLastAnchor,
+                     controller_, next_bubble_));
 }
 
 BEGIN_METADATA(PlaylistBubbleView)

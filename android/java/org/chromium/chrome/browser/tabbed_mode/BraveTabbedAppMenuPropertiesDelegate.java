@@ -23,8 +23,8 @@ import com.google.android.material.button.MaterialButton;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.DeviceInfo;
-import org.chromium.base.library_loader.LibraryLoader;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
@@ -173,7 +173,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         this::buildBraveRewardsItem,
                         () -> {
                             // Native methods are not available in unit tests (Robolectric)
-                            if (!LibraryLoader.getInstance().isInitialized()) {
+                            if (mJunitIsTesting) {
                                 return false;
                             }
                             BraveRewardsNativeWorker worker =
@@ -248,7 +248,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider,
             Supplier<RecentlyClosedEntriesManager> recentlyClosedEntriesManagerSupplier,
             Supplier<SideUiStateProvider> sideUiStateProviderSupplier,
-            Supplier<Boolean> isXrFullSpaceModeSupplier,
+            NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             BooleanSupplier canActivateTabLayoutToggleMenu) {
         super(
                 context,
@@ -269,7 +269,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 openInAppMenuItemProvider,
                 recentlyClosedEntriesManagerSupplier,
                 sideUiStateProviderSupplier,
-                isXrFullSpaceModeSupplier,
+                xrSpaceModeObservableSupplier,
                 canActivateTabLayoutToggleMenu);
 
         mBraveAppMenuDelegate = appMenuDelegate;

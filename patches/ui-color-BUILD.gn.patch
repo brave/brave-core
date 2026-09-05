@@ -1,5 +1,5 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index 453ee6ec121900aaf5917d835df4d8e9235a7396..cc244bd35aba4e96ef01983ee1889957c136a89c 100644
+index 51bead4a5c3aab3496782b24b3853cc0342f0cd3..5008828c7b50d6e287691b30abfacf8bebd8551b 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
 @@ -96,6 +96,9 @@ component("color") {
@@ -12,7 +12,7 @@ index 453ee6ec121900aaf5917d835df4d8e9235a7396..cc244bd35aba4e96ef01983ee1889957
  }
  
  source_set("test_support") {
-@@ -213,6 +216,9 @@ component("mixers") {
+@@ -214,6 +217,9 @@ component("mixers") {
        "android/sys_color_mixer_android.h",
      ]
    }

@@ -70,6 +70,7 @@
 <translation id="5679816001365584346">在手机上下载 Brave，随时随地打开现有标签页分组或创建新标签页分组。</translation>
 <translation id="4559627161887338743">您可以管理您已登录的 Brave 账号。您可通过登录自己的 Brave 账号使用 Brave 浏览器、Play 商店、Gmail 等产品。如果您想添加他人（比如某个家庭成员）的账号，请改为将这个新人添加到您的 <ph name="DEVICE_TYPE"/>。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">使用图片搜索功能进行搜索</translation>
+<translation id="2963742289915075304"><ph name="EXISTING_USER"/>已登录。若要区分您的浏览数据，请使用您自己的个人资料 (<ph name="USER_EMAIL_ADDRESS"/>) 登录 Brave。登录后，您还可以获取<ph name="DEVICE"/>中的书签等信息。</translation>
 <translation id="1880677175115548835">选择文字</translation>
 <translation id="4528406859989804913">您目前登录的账号是一个受管理账号，该账号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave 账号信息中心删除这些数据，但无法将这些数据与其他账号相关联。您可以选择创建新的个人资料来单独存储您现有的 Brave 数据。<ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave 会通过限制后台活动和视觉效果（例如流畅滚动和视频帧速率）来节省电池电量。<ph name="BEGIN_LINK"/>详细了解节能模式<ph name="END_LINK"/></translation>
@@ -128,6 +129,7 @@
 <translation id="5298352791080868905">在任意应用内通过 Brave 打开链接，并让浏览器始终显示在任务栏中</translation>
 <translation id="2600233721598267627">点击“总结”按钮，即可与 Brave 中的 Gemini 分享此文档，快速获取内容概览并进行追问</translation>
 <translation id="2118275934191847461">借助 <ph name="BEGIN_LINK"/>Brave 中的工具<ph name="END_LINK"/>，您可以安全地浏览并掌控个人数据的安全</translation>
+<translation id="7508460698788470991"><ph name="EXISTING_USER"/>已登录。若要区分您的浏览数据，请使用您自己的个人资料 (<ph name="USER_EMAIL_ADDRESS"/>) 登录 Brave。登录后，您还可在自己的所有设备上获取密码等信息。</translation>
 <translation id="2451727308784734061">使用快捷方式可快速访问密码管理工具。您可将快捷方式移到电脑的主屏幕上或应用启动器中。</translation>
 <translation id="6381750314821942592">Brave 即将关闭</translation>
 <translation id="6078442581074612226">在 Brave 中</translation>
@@ -146,6 +148,7 @@
 <translation id="7931230852267968641">您的组织可以查看和管理浏览数据，例如您的书签、历史记录和密码，但无法查看其他 Brave 资料中的浏览数据</translation>
 <translation id="2257221826278123061">请验证您的身份，以便将 Brave 数据保存在您的账号 <ph name="ACCOUNT_EMAIL"/> 中并使用这些数据</translation>
 <translation id="7048234400304379082">可以使用键盘快捷键退出或返回 Brave 中的 Gemini。</translation>
+<translation id="5655607968417451974">启动 Brave</translation>
 <translation id="7387051847644272380">安装过程中出现操作系统错误。请重新下载 Brave。</translation>
 <translation id="2648689842065142443">如果您是与亲朋好友共用一部设备，他们将能够使用单独的账号进行浏览，并可随心所欲地设置 Brave</translation>
 <translation id="1001521084148238686">在设备上轻松使用 Brave 中的 Gemini，即使 Brave 已最小化也无妨。</translation>
@@ -294,7 +297,6 @@
 <translation id="4304713468139749426">密码管理工具</translation>
 <translation id="4334241893986177674">搜索此屏幕截图</translation>
 <translation id="242356249838681145">在 Windows 启动时启动 Brave</translation>
-<translation id="4747339441562331861">将 Brave 设为默认浏览器，即可轻松使用您熟悉、喜爱和信任的功能。Brave 将固定到任务栏，以便您快速访问。</translation>
 <translation id="4400772909124543403">没有可用的更新</translation>
 <translation id="9183662282810237335">仍要退出 Brave？</translation>
 <translation id="4413205837991854510">始终显示图片搜索快捷方式</translation>
@@ -391,6 +393,7 @@
 
 如果此网页无法按预期运行，请尝试允许优化。</translation>
 <translation id="7074160267408082133">在 Mac 菜单栏中显示 Brave 中的 Gemini 并开启键盘快捷键</translation>
+<translation id="2938507901464407819"><ph name="EXISTING_USER"/>已登录。若要区分您的浏览数据，请使用您自己的个人资料 (<ph name="USER_EMAIL_ADDRESS"/>) 登录 Brave。登录后，您还可以获取<ph name="DEVICE"/>中保存的信息等内容。</translation>
 <translation id="5579324208890605088">启动错误：请以普通用户身份（非管理员身份）运行安装程序。</translation>
 <translation id="3588973534877826647">默认使用 Brave 并将其固定</translation>
 <translation id="5596627076506792578">更多选项</translation>
@@ -564,12 +567,12 @@
 <translation id="5755581833598928580">随时使用 Brave 打开您在消息、文档和其他应用内点击的链接</translation>
 <translation id="7216228761061470870">当您在桌面设备上使用“图片搜索”功能时，系统会将网页标题、网址和内容（包括 PDF 文件）发送给服务器</translation>
 <translation id="5516268345616100622">任务管理器 - Brave</translation>
+<translation id="2416155625082200759"><ph name="EXISTING_USER"/>已登录。若要区分您的浏览数据，请使用您自己的个人资料 (<ph name="USER_EMAIL_ADDRESS"/>) 登录 Brave。登录后，您还可在自己的所有设备上获取保存的信息等内容。</translation>
 <translation id="1871621397473741084">即刻开启浏览之旅：Brave 现在可以在 Windows 启动时启动。</translation>
 <translation id="7274695763216404502">已固定！可通过工具栏再次使用图片搜索功能</translation>
 <translation id="7288567540154601580">标签页和扩展程序</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave 建议您移除它}other{Brave 建议您移除它们}}</translation>
 <translation id="4600669988724328687">如需分享系统音频，请打开“系统设置”，并为 Brave 启用“仅系统录音”。然后，您需要重启 Brave。</translation>
-<translation id="9068395155143628872">借助 Ad measurement，您访问的网站可向 Brave 请求信息，以便对网站上的广告进行效果衡量。Ad measurement 会在网站间传输尽可能少的信息，从而限制跨网站跟踪。</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
 <translation id="3403365884036456766">您的偏好设置文件已损坏或无效。
 
@@ -632,6 +635,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5687542525349822727">将 Brave 设为默认浏览器</translation>
 <translation id="6396151137840491551">Brave 会尽可能将不安全的连接自动升级为 HTTPS</translation>
 <translation id="2925193881330501265">您之前登录 Brave 时使用的账号为 <ph name="USER_EMAIL_ADDRESS"/>，请使用同一账号再次登录。</translation>
+<translation id="3744141798014187630"><ph name="EXISTING_USER"/>已登录。若要区分您的浏览数据，请使用您自己的个人资料 (<ph name="USER_EMAIL_ADDRESS"/>) 登录 Brave。登录后，您还可在自己的所有设备上获取书签等信息。</translation>
 <translation id="6915252145142862992">这是 Brave 的并行安装，您无法将此浏览器设为默认浏览器。</translation>
 <translation id="7766756101194440006">在 <ph name="DEVICE_TYPE"/> 上使用 Brave 应用，领略 Brave 的无限精彩</translation>
 <translation id="8004582292198964060">浏览器</translation>
@@ -662,10 +666,12 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1755067029031059271">Brave 无法验证此扩展程序的来源，它可能不安全。请将其从 Brave 中移除，这样它便无法再查看和更改您在所访问的网站上的数据，包括个人信息。</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。您可以随时在“设置”中关闭此功能。</translation>
 <translation id="7792526144795244436">要使用新的个人资料登录 Brave 吗？</translation>
+<translation id="784788600549915416"><ph name="EXISTING_USER"/>已登录。若要区分您的浏览数据，请使用您自己的个人资料 (<ph name="USER_EMAIL_ADDRESS"/>) 登录 Brave。登录后，您还可以获取<ph name="DEVICE"/>中的密码等信息。</translation>
 <translation id="183102473074922918">在系统任务栏中显示 Brave 中的 Gemini 并开启键盘快捷键</translation>
 <translation id="976541154724186511">在检测到不安全的网站和下载内容时，<ph name="BEGIN_LINK"/>Brave 会向您发出警告<ph name="END_LINK"/></translation>
 <translation id="8060549744348950090">您近期未访问过该网站，因此 Brave 撤消了该网站的<ph name="PERMISSION"/>权限。</translation>
 <translation id="7402663241490331652">在 iOS 版 Brave 应用中，借助摄像头轻松购买、翻译和识别所见内容</translation>
+<translation id="4470171586042711152">用于以<ph name="USER_NAME"/>的身份登录 Brave 的二维码</translation>
 <translation id="8313851650939857356">启动错误：<ph name="STARTUP_ERROR"/>。</translation>
 <translation id="6098476632210317894">贵组织会在 Brave 闲置 <ph name="TIMEOUT_DURATION"/>后将其关闭。</translation>
 <translation id="8321888067342493336">另存为图片</translation>

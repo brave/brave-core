@@ -28,6 +28,8 @@ source_set("split_view") {
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:contents_container_outline",
+    "//chrome/browser/ui/views/frame:scrim_view",
     "//ui/base/metadata",
     "//ui/compositor",
     "//ui/views",

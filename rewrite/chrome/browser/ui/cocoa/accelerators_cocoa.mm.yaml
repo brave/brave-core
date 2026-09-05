@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Change the `IDC_NEW_SPLIT_TAB` accelerator from Cmd+Option+N to
+      Cmd+Option+T.
+
+      Cmd+Option+N is reserved for `IDC_NEW_OFFTHERECORD_WINDOW_TOR` (see
+      global_keyboard_shortcuts_mac.mm.yaml). This entry is checked by the
+      real main menu before that fallback shortcut, so it must not collide.
+    regex:
+      re_pattern: '(\{IDC_NEW_SPLIT_TAB,\s*ui::EF_COMMAND_DOWN\s*\|\s*ui::EF_ALT_DOWN,\s*)ui::VKEY_N(\})'
+      replace: '\1ui::VKEY_T\2'

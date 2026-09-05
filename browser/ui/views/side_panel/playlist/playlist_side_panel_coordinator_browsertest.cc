@@ -94,7 +94,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
 
   // Popups are not the normal browser view.
   EXPECT_FALSE(popup_view->GetIsNormalType());
-  EXPECT_TRUE(popup->is_type_popup());
+  EXPECT_EQ(popup->GetType(), BrowserWindowInterface::Type::TYPE_POPUP);
   EXPECT_FALSE(sidebar::CanUseSidebar(popup));
   EXPECT_FALSE(popup->GetFeatures().playlist_side_panel_coordinator());
 }
@@ -114,10 +114,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
   EXPECT_NE(app_view, browser_view);
 
   EXPECT_FALSE(app_view->GetIsNormalType());
-  EXPECT_TRUE(app_browser->is_type_app());
+  EXPECT_EQ(app_browser->GetType(), BrowserWindowInterface::Type::TYPE_APP);
 
   EXPECT_FALSE(app_view->GetIsNormalType());
-  EXPECT_TRUE(app_browser->is_type_app());
+  EXPECT_EQ(app_browser->GetType(), BrowserWindowInterface::Type::TYPE_APP);
   EXPECT_FALSE(sidebar::CanUseSidebar(app_browser));
   EXPECT_FALSE(app_browser->GetFeatures().playlist_side_panel_coordinator());
 }
