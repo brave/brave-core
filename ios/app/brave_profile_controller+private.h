@@ -14,6 +14,7 @@ class ScopedProfileKeepAliveIOS;
 @interface BraveProfileController (Private)
 - (instancetype)initWithProfileKeepAlive:
     (ScopedProfileKeepAliveIOS)profileKeepAlive;
+- (void)shutDown;
 @end
 
 #endif  // BRAVE_IOS_APP_BRAVE_PROFILE_CONTROLLER_PRIVATE_H_
