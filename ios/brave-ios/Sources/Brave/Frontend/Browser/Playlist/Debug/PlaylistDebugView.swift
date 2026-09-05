@@ -219,6 +219,10 @@ struct PlaylistDebugView: View {
       .sheet(isPresented: $isShowingPlaylistFiles) {
         PlaylistDebugFilesView()
       }
+
+      Divider()
+      PlaylistDebugCacheManagementView()
+        .padding(.top, 40)
     }
     .padding()
   }

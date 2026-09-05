@@ -41,6 +41,13 @@ public class PlaylistCoordinator: NSObject {
   // in use at any given moment
   public static let shared = PlaylistCoordinator()
 
+  private override init() {
+    super.init()
+    PlaylistManager.shared.currentlyPlayingItemIDProvider = { [weak self] in
+      self?.playerModel?.currentlyPlayingItemUUID
+    }
+  }
+
   /// Whether or not playlist is available and CarPlay should display playlist data
   public var isPlaylistAvailable: Bool = true
 
