@@ -191,16 +191,22 @@ void UpdateBraveVpn(const base::FilePath& target_path,
 // BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS used to be upstream and had to be
 // restored in Brave to support delta updates on Windows until we are on Omaha
 // 4. See github.com/brave/brave-core/pull/31937.
+// `uncompressed_archive` is empty when the archive was unpacked straight out of
+// a mini_installer resource, in which case there is nothing on disk to keep
+// around for a future differential update.
 #define BRAVE_ADD_INSTALLER_COPY_TASKS                                         \
   const base::FilePath& archive_path = installer_state.uncompressed_archive;   \
-  base::FilePath archive_dst(installer_dir.Append(archive_path.BaseName()));   \
-  if (archive_path != archive_dst) {                                           \
-    if (temp_path.IsParent(archive_path)) {                                    \
-      install_list->AddMoveTreeWorkItem(                                       \
-          archive_path, archive_dst, temp_path,                                \
-          WorkItem::MoveTreeOptions{.lenient_deletion = true});                \
-    } else {                                                                   \
-      install_list->AddCopyTreeWorkItem(archive_path, archive_dst, temp_path); \
+  if (!archive_path.empty()) {                                                 \
+    base::FilePath archive_dst(installer_dir.Append(archive_path.BaseName())); \
+    if (archive_path != archive_dst) {                                         \
+      if (temp_path.IsParent(archive_path)) {                                  \
+        install_list->AddMoveTreeWorkItem(                                     \
+            archive_path, archive_dst, temp_path,                              \
+            WorkItem::MoveTreeOptions{.lenient_deletion = true});              \
+      } else {                                                                 \
+        install_list->AddCopyTreeWorkItem(archive_path, archive_dst,           \
+                                          temp_path);                          \
+      }                                                                        \
     }                                                                          \
   }
 #define BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS            \
