@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-index d4a02850a0b6492154ebcc5c7ca497abf9afecb1..6c3bd22d9038f94a3f9f4a53579001cff375ff46 100644
+index 646569489682fd90fc3dcecdb28e6c30dc685b7e..312a971448c2f9ad135b75435cad0f4c3196db9e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 @@ -198,7 +198,7 @@ import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetManagerImpl;
