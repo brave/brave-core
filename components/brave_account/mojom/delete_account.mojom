@@ -1,0 +1,39 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+struct DeleteAccountResult {
+  // Currently empty, serves as a placeholder for success.
+};
+
+enum DeleteAccountClientErrorCode {
+  kCalledInWrongState,
+  kUnexpected,
+  kAuthenticationTokenDecryptionFailed,
+};
+
+struct DeleteAccountClientError {
+  DeleteAccountClientErrorCode error_code;
+};
+
+enum DeleteAccountServerErrorCode {
+  // Sentinel: server returned "code": null in the JSON body.
+  // /v2/accounts has no user-facing error codes, so this is the only one.
+  kNull = 0,
+};
+
+struct DeleteAccountServerError {
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32 net_error_or_http_status;
+  DeleteAccountServerErrorCode error_code;
+};
+
+union DeleteAccountError {
+  DeleteAccountClientError client_error;
+  DeleteAccountServerError server_error;
+};
