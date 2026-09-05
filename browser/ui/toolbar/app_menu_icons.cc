@@ -63,7 +63,7 @@ constexpr auto kCommandIcons =
         // The `Bookmarks` submenu
         {IDC_BOOKMARK_THIS_TAB, &kLeoBrowserBookmarkAddIcon},
         {IDC_BOOKMARK_ALL_TABS, &kLeoBrowserBookmarkPluralIcon},
-        {IDC_BRAVE_BOOKMARK_BAR_SUBMENU, &kLeoProductBookmarksIcon},
+        {IDC_BOOKMARK_BAR_SUBMENU, &kLeoProductBookmarksIcon},
         {IDC_SHOW_BOOKMARK_MANAGER, &kLeoWindowBookmarkIcon},
         {IDC_SHOW_BOOKMARK_SIDE_PANEL, &kLeoProductBookmarksIcon},
         {IDC_IMPORT_SETTINGS, &kLeoImportArrowIcon},
