@@ -6,7 +6,9 @@
 #include "brave/components/p3a/metric_log_store.h"
 
 #include <memory>
+#include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/strings/string_number_conversions.h"
@@ -56,6 +58,10 @@ class P3AMetricLogStoreTest : public testing::Test,
     return defer_metrics_.contains(histogram_name);
   }
 
+  bool IsPriorityMetric(std::string_view histogram_name) const override {
+    return priority_metrics_.contains(histogram_name);
+  }
+
  protected:
   void SetUp() override {
     MetricLogStore::RegisterPrefs(local_state.registry());
@@ -78,7 +84,7 @@ class P3AMetricLogStoreTest : public testing::Test,
   }
 
   void ConsumeMessages(size_t message_count) {
-    std::set<std::string> consumed_log_set;
+    base::flat_set<std::string> consumed_log_set;
 
     ASSERT_TRUE(log_store->has_unsent_logs());
     ASSERT_FALSE(log_store->has_staged_log());
@@ -101,6 +107,7 @@ class P3AMetricLogStoreTest : public testing::Test,
   std::unique_ptr<MetricLogStore> log_store;
   TestingPrefServiceSimple local_state;
   base::flat_set<std::string> defer_metrics_;
+  base::flat_set<std::string> priority_metrics_;
 };
 
 TEST_F(P3AMetricLogStoreTest, GetAllLogs) {
@@ -113,7 +120,7 @@ TEST_F(P3AMetricLogStoreTest, GetAllLogsAfterReload) {
 
   SetUpLogStore();
   log_store->LoadPersistedUnsentLogs();
-  log_store->RemoveObsoleteLogs();
+  log_store->NotifyConfigReady();
 
   ConsumeMessages(15);
 }
@@ -134,7 +141,7 @@ TEST_F(P3AMetricLogStoreTest, ShouldNotLoadUnknownMetric) {
 
   SetUpLogStore();
   log_store->LoadPersistedUnsentLogs();
-  log_store->RemoveObsoleteLogs();
+  log_store->NotifyConfigReady();
 
   ASSERT_FALSE(log_store->has_unsent_logs());
 }
@@ -202,6 +209,100 @@ TEST_F(P3AMetricLogStoreTest, DeferredMetricPersistedAndReloaded) {
   defer_metrics_.erase(kTestDeferredMetric);
   log_store->ReevaluateDeferredEntries();
   ASSERT_TRUE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, PriorityMetricsStagedFirst) {
+  auto histogram_it = p3a::kCollectedTypicalHistograms.begin();
+  std::vector<std::string> metrics;
+  for (size_t i = 0; i < 6; i++, histogram_it++) {
+    metrics.push_back(std::string(histogram_it->first));
+  }
+  priority_metrics_.insert(metrics[3]);
+  priority_metrics_.insert(metrics[5]);
+
+  for (const auto& metric : metrics) {
+    log_store->UpdateValue(metric, 2);
+  }
+
+  ASSERT_TRUE(log_store->has_unsent_priority_logs());
+
+  base::flat_set<std::string> staged_priority;
+  for (size_t i = 0; i < 2; i++) {
+    log_store->StageNextLog();
+    staged_priority.insert(log_store->staged_log_key());
+    log_store->DiscardStagedLog();
+  }
+  EXPECT_EQ(staged_priority,
+            base::flat_set<std::string>({metrics[3], metrics[5]}));
+
+  EXPECT_FALSE(log_store->has_unsent_priority_logs());
+  EXPECT_TRUE(log_store->has_unsent_logs());
+
+  for (size_t i = 0; i < 4; i++) {
+    log_store->StageNextLog();
+    EXPECT_FALSE(priority_metrics_.contains(log_store->staged_log_key()));
+    log_store->DiscardStagedLog();
+  }
+  EXPECT_FALSE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, PriorityMetricStagedFirstAfterResetUploadStamps) {
+  auto first_typical =
+      std::string(p3a::kCollectedTypicalHistograms.begin()->first);
+  auto second_typical =
+      std::string((p3a::kCollectedTypicalHistograms.begin() + 1)->first);
+  priority_metrics_.insert(second_typical);
+
+  log_store->UpdateValue(first_typical, 1);
+  log_store->UpdateValue(second_typical, 2);
+  ConsumeMessages(2);
+
+  log_store->ResetUploadStamps();
+  ASSERT_TRUE(log_store->has_unsent_priority_logs());
+
+  log_store->StageNextLog();
+  EXPECT_EQ(log_store->staged_log_key(), second_typical);
+  log_store->DiscardStagedLog();
+  EXPECT_FALSE(log_store->has_unsent_priority_logs());
+  EXPECT_TRUE(log_store->has_unsent_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, PriorityAppliedAfterConfigChange) {
+  auto first_typical =
+      std::string(p3a::kCollectedTypicalHistograms.begin()->first);
+  auto second_typical =
+      std::string((p3a::kCollectedTypicalHistograms.begin() + 1)->first);
+
+  // Values are routed before the remote configuration is available.
+  log_store->UpdateValue(first_typical, 1);
+  log_store->UpdateValue(second_typical, 2);
+  ASSERT_FALSE(log_store->has_unsent_priority_logs());
+
+  priority_metrics_.insert(second_typical);
+  log_store->NotifyConfigReady();
+  ASSERT_TRUE(log_store->has_unsent_priority_logs());
+
+  log_store->StageNextLog();
+  EXPECT_EQ(log_store->staged_log_key(), second_typical);
+  log_store->DiscardStagedLog();
+  EXPECT_FALSE(log_store->has_unsent_priority_logs());
+
+  priority_metrics_.insert(first_typical);
+  log_store->NotifyConfigReady();
+  EXPECT_TRUE(log_store->has_unsent_priority_logs());
+}
+
+TEST_F(P3AMetricLogStoreTest, PriorityDeferredMetricNotReportedUntilPromoted) {
+  defer_metrics_.insert(kTestDeferredMetric);
+  priority_metrics_.insert(kTestDeferredMetric);
+
+  log_store->UpdateValue(kTestDeferredMetric, 5);
+  EXPECT_FALSE(log_store->has_unsent_logs());
+  EXPECT_FALSE(log_store->has_unsent_priority_logs());
+
+  defer_metrics_.erase(kTestDeferredMetric);
+  log_store->ReevaluateDeferredEntries();
+  EXPECT_TRUE(log_store->has_unsent_priority_logs());
 }
 
 }  // namespace p3a

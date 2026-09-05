@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
+#include "brave/components/p3a/constellation_log_store.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_message.h"
@@ -31,7 +32,6 @@ namespace p3a {
 struct P3AConfig;
 
 class Uploader;
-class ConstellationLogStore;
 class RotationScheduler;
 class Scheduler;
 class ConstellationHelper;
@@ -46,7 +46,8 @@ struct RandomnessServerInfo;
 // Uploader. The RotationScheduler also calls methods in this
 // class to handle reporting period rotation. Constellation message preparation
 // is also triggered from this class.
-class MessageManager : public MetricLogStore::Delegate {
+class MessageManager : public MetricLogStore::Delegate,
+                       public ConstellationLogStore::Delegate {
  public:
   using IsDynamicMetricRegisteredCallback =
       base::RepeatingCallback<bool(const std::string& histogram_name)>;
@@ -77,18 +78,25 @@ class MessageManager : public MetricLogStore::Delegate {
   void Start(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void Stop();
 
-  void RemoveObsoleteLogs();
-
   void UpdateMetricValue(std::string_view histogram_name, size_t bucket);
   void RemoveMetricValue(std::string_view histogram_name);
 
   void SetIsBrowserDefault(bool is_default);
+
+  // Must be called whenever metric configurations may have changed, so that
+  // log stores can discard obsolete logs and redo priority routing.
+  void NotifyConfigReady();
 
   bool IsActive() const;
 
  private:
   void StartScheduledUpload(MetricLogType log_type);
   void StartScheduledConstellationPrep(MetricLogType log_type);
+
+  // Expedites Constellation preparation if a priority metric is awaiting
+  // preparation. No-op if the schedulers do not exist yet, since metrics may be
+  // recorded before Start() or after Stop().
+  void MaybeExpeditePrepForPriority(MetricLogType log_type);
 
   std::optional<MetricLogType> GetLogTypeForHistogram(
       std::string_view histogram_name) const override;
@@ -118,6 +126,8 @@ class MessageManager : public MetricLogStore::Delegate {
                            const std::string& upload_type) override;
   bool IsEphemeralMetric(std::string_view histogram_name) const override;
   bool ShouldDeferMetric(std::string_view histogram_name) const override;
+
+  bool IsPriorityMetric(std::string_view histogram_name) const override;
 
   const raw_ref<PrefService, DanglingUntriaged> local_state_;
 
