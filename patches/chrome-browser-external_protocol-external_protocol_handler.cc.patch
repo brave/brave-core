@@ -1,22 +1,18 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index f13add2012b08f6814c000390ecc811f14407369..6e16b08025751e3a454961dcea56a31faed3ca9a 100644
+index f13add2012b08f6814c000390ecc811f14407369..391ecf5ca480763db602ec8701196bc8b5bd0bf2 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
-@@ -401,11 +401,12 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
+@@ -399,13 +399,6 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
+     return BLOCK;
+   }
  
-   // The mailto scheme is allowed explicitly because of its ubiquity on the web
-   // and because every platform provides a default handler for it.
+-  // The mailto scheme is allowed explicitly because of its ubiquity on the web
+-  // and because every platform provides a default handler for it.
 -  if (scheme == "mailto") {
 -    base::UmaHistogramEnumeration(kBlockStateMetric,
 -                                  BlockStateMetric::kAllowedDefaultMail);
 -    return DONT_BLOCK;
 -  }
-+  // Brave: mailto is treated like any other external scheme.
-+  // if (scheme == "mailto") {
-+  //   base::UmaHistogramEnumeration(kBlockStateMetric,
-+  //                                 BlockStateMetric::kAllowedDefaultMail);
-+  //   return DONT_BLOCK;
-+  // }
  
    PrefService* profile_prefs = profile->GetPrefs();
    if (profile_prefs) {  // May be NULL during testing.

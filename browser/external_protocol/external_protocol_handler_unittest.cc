@@ -33,8 +33,6 @@ TEST_F(BraveExternalProtocolHandlerTest, MailtoIsNotAllowedByDefault) {
       ExternalProtocolHandler::GetBlockState("mailto", nullptr, &profile_));
 }
 
-// Falling through to the checks below the removed fast path means enterprise
-// policy now applies to mailto, as it does to any other external scheme.
 TEST_F(BraveExternalProtocolHandlerTest, MailtoAllowedByEnterprisePolicy) {
   const url::Origin origin = url::Origin::Create(GURL("https://example.test"));
 
@@ -53,8 +51,6 @@ TEST_F(BraveExternalProtocolHandlerTest, MailtoAllowedByEnterprisePolicy) {
       ExternalProtocolHandler::GetBlockState("mailto", &origin, &profile_));
 }
 
-// A remembered "always allow" is honoured for mailto too, which it was not
-// while the fast path short-circuited GetBlockState().
 TEST_F(BraveExternalProtocolHandlerTest, MailtoAllowedByRememberedPreference) {
   const url::Origin origin = url::Origin::Create(GURL("https://example.test"));
 

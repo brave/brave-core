@@ -9,20 +9,16 @@ substitutions:
 
       Upstream returns DONT_BLOCK for mailto before the policy and per-origin
       preference checks run, launching the OS mail client without asking.
-      Disabling the block lets mailto follow the same path as every other
+      Removing the fast path lets mailto follow the same path as every other
       external scheme, so enterprise policy and a remembered "always allow"
       still apply, and otherwise the user is prompted.
     regex:
-      re_pattern: |-
-        if \(scheme == "mailto"\) \{
-            base::UmaHistogramEnumeration\(kBlockStateMetric,
-                                          BlockStateMetric::kAllowedDefaultMail\);
+      pattern: |2
+          // The mailto scheme is allowed explicitly because of its ubiquity on the web
+          // and because every platform provides a default handler for it.
+          if (scheme == "mailto") {
+            base::UmaHistogramEnumeration(kBlockStateMetric,
+                                          BlockStateMetric::kAllowedDefaultMail);
             return DONT_BLOCK;
-          \}
-      replace: |-
-        // Brave: mailto is treated like any other external scheme.
-          // if (scheme == "mailto") {
-          //   base::UmaHistogramEnumeration(kBlockStateMetric,
-          //                                 BlockStateMetric::kAllowedDefaultMail);
-          //   return DONT_BLOCK;
-          // }
+          }
+      replace: ''
