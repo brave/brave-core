@@ -8,16 +8,9 @@
 
 #include <stdint.h>
 
-#include "brave/components/json/buildflags/buildflags.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
-// We only disable 64-bit integer support when building redirect_cc, which means
-// that `chromium_src` shadow inclusions like the one below do not work, and
-// therefore we have to cancel it, that both header and override file are being
-// added by the visitor.
-#if BUILDFLAG(ENABLE_JSON_64BIT_INT_SUPPORT)
 #include <third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h>  // IWYU pragma: export
-#endif
 
 namespace base {
 class DictValue;

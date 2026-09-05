@@ -161,14 +161,6 @@ export function getBuildArgs(config: Config) {
     args.enable_profiling = true
   }
 
-  if (!config.useSiso) {
-    if (config.useRemoteExec) {
-      args.reclient_bin_dir = path.join(config.nativeRedirectCCDir)
-    } else {
-      args.cc_wrapper = path.join(config.nativeRedirectCCDir, 'redirect_cc')
-    }
-  }
-
   // Adjust symbol_level to 1 to workaround size restrictions:
   // 1. On Linux x86, ELF32 cannot be > 4GiB.
   // 2. On Linux Static builds, enable symbols (symbol_level is 0 by default in

@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/build/redirect_cc.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
@@ -812,11 +811,6 @@ if (current_toolchain == host_toolchain) {
   }
 }
 
-if (is_redirect_cc_build) {
-  group("redirect_cc") {
-    deps = [ "//brave/tools/redirect_cc" ]
-  }
-}
 if (is_win && enable_resource_allowlist_generation) {
   # Merge chrome_resource_allowlist and wireguard resources allowlist to keep
   # wireguard resources in pak files. When VPN is disabled, just copy the chrome
