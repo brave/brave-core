@@ -83,6 +83,7 @@ public class BraveSyncAccountDeletedInformer {
             if (snackbarManager instanceof BraveSnackbarManager) {
                 BraveSnackbarManager braveSnackbarManager = (BraveSnackbarManager) snackbarManager;
                 braveSnackbarManager.setActionBelowMessage(
+                        snackbar,
                         R.drawable.ic_close,
                         activity.getString(R.string.close),
                         () -> braveSnackbarManager.dismissSnackbars(controller));

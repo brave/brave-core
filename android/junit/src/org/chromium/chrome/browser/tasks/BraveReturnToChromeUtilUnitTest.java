@@ -144,7 +144,7 @@ public class BraveReturnToChromeUtilUnitTest {
     }
 
     /**
-     * Configures variant B (1-hour threshold) with the "new tab after inactivity" opening screen
+     * Configures variant B (12-hour threshold) with the "new tab after inactivity" opening screen
      * option and a background duration that comfortably exceeds the threshold.
      */
     private void setUpInactivityVariant() {
@@ -155,8 +155,8 @@ public class BraveReturnToChromeUtilUnitTest {
                         BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
-        // Two hours, well beyond variant B's 1-hour threshold.
-        when(mInactivityTracker.getTimeSinceLastBackgroundedMs()).thenReturn(2 * 60 * 60 * 1000L);
+        // Thirteen hours, well beyond variant B's 12-hour threshold.
+        when(mInactivityTracker.getTimeSinceLastBackgroundedMs()).thenReturn(13 * 60 * 60 * 1000L);
     }
 
     /** Registers a media playback notification controller in the given paused state. */

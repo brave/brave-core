@@ -28,8 +28,9 @@ import org.chromium.url.GURL;
 @NullMarked
 public final class BraveReturnToChromeUtil {
 
-    // Inactivity threshold for variant B: 1 hour in milliseconds
-    private static final long INACTIVITY_THRESHOLD_MS = 60 * 60 * 1000L; // 1 hour
+    // Inactivity threshold for variant B: 12 hours in milliseconds. Keep in sync with
+    // BraveRadioButtonGroupOpeningScreenPreference.INACTIVITY_HOURS, which labels the setting.
+    private static final long INACTIVITY_THRESHOLD_MS = 12 * 60 * 60 * 1000L; // 12 hours
 
     /** Returns whether should show a NTP as the home surface at startup. */
     public static boolean shouldShowNtpAsHomeSurfaceAtStartup(
@@ -45,7 +46,7 @@ public final class BraveReturnToChromeUtil {
             return false;
         }
 
-        // Variant B, the default, shows the NTP if the app has been backgrounded for ≥ 1 hour and
+        // Variant B, the default, shows the NTP if the app has been backgrounded for ≥ 12 hours and
         // OPTION_NEW_TAB_AFTER_INACTIVITY is selected. Variant A is the study's control arm and
         // keeps the pre-experiment behavior of restoring the last open tab.
         boolean shouldShow =
@@ -169,7 +170,7 @@ public final class BraveReturnToChromeUtil {
      * <p>Note: unlike upstream's shouldShowNtpAsHomeSurfaceAtStartup which bails out on activity
      * recreate (isFromRecreate check), we intentionally allow the NTP to show in recreate scenarios
      * (e.g., rotation, process death restore, foldable transitions). This is because our
-     * inactivity-based NTP logic should still apply — if the user was away for 1+ hours, we want
+     * inactivity-based NTP logic should still apply — if the user was away for 12+ hours, we want
      * the NTP shown regardless of whether the activity was recreated on return.
      */
     public static boolean setInitialOverviewStateOnResumeWithNtp(
