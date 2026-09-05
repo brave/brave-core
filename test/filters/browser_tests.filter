@@ -890,6 +890,7 @@
 -SearchPrefetchServiceEnabledBrowserTest.*
 -SearchPrefetchThrottleBrowserTest.ThrottleSearchPrefetchRequest
 -SearchPrefetchXGeoEnabledBrowserTest.*
+-SearchPreloadUnifiedMetricsDisabledBrowserTest.SearchPrefetchServedNavigationHandleUserDataFeatureDisabled
 
 # The tests below are being disabled due to current incompatibilities between
 # Chromium storage partitioning and Brave epehemeral storage.
