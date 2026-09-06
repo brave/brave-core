@@ -220,7 +220,7 @@ class EphemeralStorageServiceTest : public testing::Test {
       }
 
       const std::string* url_spec = dict->FindString(kUrlKey);
-      if (*url_spec != url.spec()) {
+      if (!url_spec || *url_spec != url.spec()) {
         continue;
       }
 
