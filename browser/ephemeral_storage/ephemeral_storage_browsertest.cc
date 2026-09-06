@@ -393,9 +393,7 @@ void EphemeralStorageBrowserTest::ExpireFirstPartyStorageOrigins(
     auto* delegate =
         static_cast<ephemeral_storage::BraveEphemeralStorageServiceDelegate*>(
             service->delegate_.get());
-    static_cast<ephemeral_storage::ApplicationStateObserver::Observer*>(
-        delegate)
-        ->OnApplicationBecameInactive();
+    delegate->OnApplicationBecameInactive();
     content::RunAllTasksUntilIdle();  // let tab Close() +
                                       // TLDEphemeralLifetimeDestroyed run
   }
