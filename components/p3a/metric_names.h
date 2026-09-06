@@ -407,7 +407,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kVersion, MetricAttribute::kYoi, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kWoi},
       .record_activation_date = true
     }},
-    {misc_metrics::kCaptchaCountHistogramName, MetricConfig{.ephemeral = true}},
+    {misc_metrics::kCaptchaTotalCountHistogramName, MetricConfig{.ephemeral = true}},
     {"Brave.Uptime.BrowserOpenTime.2", MetricConfig{.ephemeral = true}},
     {"Brave.Welcome.InteractionStatus.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kSubregion, MetricAttribute::kVersion},

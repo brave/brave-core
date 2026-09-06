@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/notreached.h"
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "brave/components/misc_metrics/features.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer_interface.h"
 #define InitializePageLoadMetricsForWebContents \
   InitializePageLoadMetricsForWebContents_Chromium
@@ -70,14 +72,19 @@ class BraveCaptchaPageLoadMetricsObserver
 
   ObservePolicy OnPrerenderStart(content::NavigationHandle*,
                                  const GURL&) override {
-    // Brave does not support pre-rendering.
-    NOTREACHED();
+    // Brave disables prerender. If this runs, captcha metrics need a real
+    // prerender policy instead of ignoring the page.
+    DCHECK(false) << "OnPrerenderStart called; prerender is disabled in Brave.";
+    return STOP_OBSERVING;
   }
 
   ObservePolicy OnFencedFramesStart(content::NavigationHandle*,
                                     const GURL&) override {
-    // Brave does not support fenced frames either.
-    NOTREACHED();
+    // Brave disables fenced frames. If this runs, captcha metrics need a real
+    // fenced-frame policy instead of ignoring the page.
+    DCHECK(false)
+        << "OnFencedFramesStart called; fenced frames are disabled in Brave.";
+    return STOP_OBSERVING;
   }
 
   // Full-page captchas loaded in the top level frame.
@@ -137,7 +144,11 @@ void BravePageLoadMetricsEmbedder::RegisterObservers(
       std::make_unique<
           brave_perf_predictor::PerfPredictorPageMetricsObserver>());
 
-  tracker->AddObserver(std::make_unique<BraveCaptchaPageLoadMetricsObserver>());
+  if (base::FeatureList::IsEnabled(
+          misc_metrics::features::kCaptchaMetricsCollection)) {
+    tracker->AddObserver(
+        std::make_unique<BraveCaptchaPageLoadMetricsObserver>());
+  }
 }
 
 }  // namespace

@@ -24,6 +24,19 @@ class CaptchaMetricsTest : public testing::Test {
   void SetUp() override {
     CaptchaMetrics::RegisterPrefs(pref_service_.registry());
     metrics_ = std::make_unique<CaptchaMetrics>(&pref_service_);
+
+    // Construction sets last-report time to t=0 without emitting. Events
+    // recorded at t=0 would be dropped when the timer fires at t=24h
+    // (DailyStorage excludes timestamps <= now-24h). Advance, so later
+    // RecordCaptcha() calls stay inside [1,24*60*60] window.
+    task_environment_.FastForwardBy(base::Seconds(1));
+  }
+
+  void ExpectNoSamples() {
+    histogram_tester_.ExpectTotalCount(kCaptchaTotalCountHistogramName, 0);
+    histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 0);
+    histogram_tester_.ExpectTotalCount(kCaptchaCloudflareCountHistogramName, 0);
+    histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
   }
 
  protected:
@@ -33,73 +46,90 @@ class CaptchaMetricsTest : public testing::Test {
   base::HistogramTester histogram_tester_;
 };
 
-TEST_F(CaptchaMetricsTest, ReportsZeroOnConstruction) {
-  histogram_tester_.ExpectUniqueSample(kCaptchaCountHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 0,
-                                       1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaHCaptchaCountHistogramName, 0,
-                                       1);
+TEST_F(CaptchaMetricsTest, DoesNotReportOnConstruction) {
+  ExpectNoSamples();
+}
+
+TEST_F(CaptchaMetricsTest, DoesNotReportUntilInterval) {
+  metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
+  metrics_->RecordCaptcha(CaptchaProvider::kCloudflare);
+  metrics_->RecordCaptcha(CaptchaProvider::kHCaptcha);
+  metrics_->RecordCaptcha(CaptchaProvider::kOther);
+
+  ExpectNoSamples();
+}
+
+TEST_F(CaptchaMetricsTest, DoesNotRereportOnRestartWithinInterval) {
+  metrics_ = std::make_unique<CaptchaMetrics>(&pref_service_);
+
+  ExpectNoSamples();
 }
 
 TEST_F(CaptchaMetricsTest, BucketsDailyCounts) {
+  auto record_and_report = [this](int count) {
+    for (int i = 0; i < count; ++i) {
+      metrics_->RecordCaptcha(CaptchaProvider::kOther);
+    }
+    task_environment_.FastForwardBy(base::Days(1));
+  };
+
   // 1
-  metrics_->RecordCaptcha(CaptchaProvider::kOther);
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 1, 1);
+  record_and_report(1);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 1, 1);
+  // Move to the next window.
+  task_environment_.FastForwardBy(base::Seconds(1));
 
   // 2
-  metrics_->RecordCaptcha(CaptchaProvider::kOther);
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 2, 1);
+  record_and_report(2);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 2, 1);
+  // Move to the next window.
+  task_environment_.FastForwardBy(base::Seconds(1));
 
   // 3-5
-  for (int i = 0; i < 3; ++i) {
-    metrics_->RecordCaptcha(CaptchaProvider::kOther);
-  }
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 3, 3);
+  record_and_report(5);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 3, 1);
+  // Move to the next window.
+  task_environment_.FastForwardBy(base::Seconds(1));
 
   // 6-10
-  for (int i = 0; i < 5; ++i) {
-    metrics_->RecordCaptcha(CaptchaProvider::kOther);
-  }
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 4, 5);
+  record_and_report(10);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 4, 1);
+  // Move to the next window.
+  task_environment_.FastForwardBy(base::Seconds(1));
 
   // 11+
-  metrics_->RecordCaptcha(CaptchaProvider::kOther);
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 5, 1);
+  record_and_report(11);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 5, 1);
 }
 
 TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
   metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
   metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
-  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 2, 1);
-
   metrics_->RecordCaptcha(CaptchaProvider::kCloudflare);
+  metrics_->RecordCaptcha(CaptchaProvider::kHCaptcha);
+  metrics_->RecordCaptcha(CaptchaProvider::kOther);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  // total=5 → 3-5, google=2, cloudflare=1, hcaptcha=1
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 3, 1);
+  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 2, 1);
   histogram_tester_.ExpectBucketCount(kCaptchaCloudflareCountHistogramName, 1,
                                       1);
-
-  metrics_->RecordCaptcha(CaptchaProvider::kHCaptcha);
   histogram_tester_.ExpectBucketCount(kCaptchaHCaptchaCountHistogramName, 1, 1);
-
-  metrics_->RecordCaptcha(CaptchaProvider::kOther);
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 3, 3);
-
-  for (int i = 0; i < 4; ++i) {
-    metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
-  }
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 4, 4);
-  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 4, 1);
 }
 
 TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   for (int i = 0; i < 6; ++i) {
     metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
   }
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 4, 1);
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 4, 1);
   histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 4, 1);
 
   task_environment_.FastForwardBy(base::Days(1));
-  histogram_tester_.ExpectBucketCount(kCaptchaCountHistogramName, 0, 2);
-  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 0, 2);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 0, 1);
+  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 0, 1);
 }
 
 }  // namespace misc_metrics

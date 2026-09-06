@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
@@ -12,6 +13,7 @@
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
+#include "brave/components/misc_metrics/features.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -49,7 +51,9 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   privacy_hub_metrics_ = std::make_unique<PrivacyHubMetrics>(local_state);
   tab_metrics_ = std::make_unique<TabMetrics>(local_state);
 #endif
-  captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
+  if (base::FeatureList::IsEnabled(features::kCaptchaMetricsCollection)) {
+    captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
+  }
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(

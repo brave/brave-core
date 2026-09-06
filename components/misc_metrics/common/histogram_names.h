@@ -9,7 +9,8 @@
 namespace misc_metrics {
 
 // Captcha related histograms goes here.
-inline constexpr char kCaptchaCountHistogramName[] = "Brave.CaptchaCount.Total";
+inline constexpr char kCaptchaTotalCountHistogramName[] =
+    "Brave.CaptchaCount.Total";
 inline constexpr char kCaptchaGoogleCountHistogramName[] =
     "Brave.CaptchaCount.Google";
 inline constexpr char kCaptchaCloudflareCountHistogramName[] =

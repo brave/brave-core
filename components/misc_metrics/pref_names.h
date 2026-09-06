@@ -120,6 +120,14 @@ inline constexpr char kMiscMetricsCaptchaCloudflareCount[] =
     "brave.misc_metrics.captcha_cloudflare_count";
 inline constexpr char kMiscMetricsCaptchaHCaptchaCount[] =
     "brave.misc_metrics.captcha_hcaptcha_count";
+// This helps in respecting the 24 hours boundary from the last time the metrics
+// was recorded. Metrics are recorded from inside the browser process which
+// keeps track of a 24 hour timer in-memory. So, if the process dies and
+// restarted again within the 24h mark, we wouldn't want to emit the histogram
+// again. So, keeping this last track timer helps to keep that window tight
+// across process restarts. See captcha_metrics.cc for implemenation details.
+inline constexpr char kMiscMetricsCaptchaLastRecordTime[] =
+    "brave.misc_metrics.captcha_last_record_time";
 
 }  // namespace misc_metrics
 

@@ -10,6 +10,7 @@
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace misc_metrics {
 
@@ -25,7 +26,8 @@ CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
     : total_storage_(local_state, kMiscMetricsCaptchaCount),
       google_storage_(local_state, kMiscMetricsCaptchaGoogleCount),
       cloudflare_storage_(local_state, kMiscMetricsCaptchaCloudflareCount),
-      hcaptcha_storage_(local_state, kMiscMetricsCaptchaHCaptchaCount) {
+      hcaptcha_storage_(local_state, kMiscMetricsCaptchaHCaptchaCount),
+      local_state_(local_state) {
   ReportCounts();
 }
 
@@ -36,6 +38,7 @@ void CaptchaMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsCaptchaGoogleCount);
   registry->RegisterListPref(kMiscMetricsCaptchaCloudflareCount);
   registry->RegisterListPref(kMiscMetricsCaptchaHCaptchaCount);
+  registry->RegisterTimePref(kMiscMetricsCaptchaLastRecordTime, {});
 }
 
 void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
@@ -53,23 +56,45 @@ void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
     case CaptchaProvider::kOther:
       break;
   }
-  ReportCounts();
 }
 
 void CaptchaMetrics::ReportCounts() {
-  p3a_utils::RecordToHistogramBucket(
-      kCaptchaCountHistogramName, kCaptchaCountBuckets,
-      static_cast<int>(total_storage_.GetLast24HourSum()));
-  p3a_utils::RecordToHistogramBucket(
-      kCaptchaGoogleCountHistogramName, kCaptchaCountBuckets,
-      static_cast<int>(google_storage_.GetLast24HourSum()));
-  p3a_utils::RecordToHistogramBucket(
-      kCaptchaCloudflareCountHistogramName, kCaptchaCountBuckets,
-      static_cast<int>(cloudflare_storage_.GetLast24HourSum()));
-  p3a_utils::RecordToHistogramBucket(
-      kCaptchaHCaptchaCountHistogramName, kCaptchaCountBuckets,
-      static_cast<int>(hcaptcha_storage_.GetLast24HourSum()));
-  report_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval, this,
+  base::Time now = base::Time::Now();
+  base::Time last_recorded_time =
+      local_state_->GetTime(kMiscMetricsCaptchaLastRecordTime);
+
+  // We have already collected the metrics at the |last_recorded_time| but
+  // if hit this condition, it means the browser process was destroyed
+  // in between. So, we need to re-schedule the timer again to capture the
+  // reports.
+  if (!last_recorded_time.is_null() &&
+      now - last_recorded_time < kReportInterval) {
+    report_timer_.Start(FROM_HERE, last_recorded_time + kReportInterval, this,
+                        &CaptchaMetrics::ReportCounts);
+    return;
+  }
+
+  // In the first ever recorded run, last_recorded_time is null and so are the
+  // various captcha storages. So, we can skip emitting as it doesn't reflect no
+  // captchas were seen.
+  if (!last_recorded_time.is_null()) {
+    p3a_utils::RecordToHistogramBucket(
+        kCaptchaTotalCountHistogramName, kCaptchaCountBuckets,
+        static_cast<int>(total_storage_.GetLast24HourSum()));
+    p3a_utils::RecordToHistogramBucket(
+        kCaptchaGoogleCountHistogramName, kCaptchaCountBuckets,
+        static_cast<int>(google_storage_.GetLast24HourSum()));
+    p3a_utils::RecordToHistogramBucket(
+        kCaptchaCloudflareCountHistogramName, kCaptchaCountBuckets,
+        static_cast<int>(cloudflare_storage_.GetLast24HourSum()));
+    p3a_utils::RecordToHistogramBucket(
+        kCaptchaHCaptchaCountHistogramName, kCaptchaCountBuckets,
+        static_cast<int>(hcaptcha_storage_.GetLast24HourSum()));
+  }
+
+  // Update the last recorded time to now, and start the timer.
+  local_state_->SetTime(kMiscMetricsCaptchaLastRecordTime, now);
+  report_timer_.Start(FROM_HERE, now + kReportInterval, this,
                       &CaptchaMetrics::ReportCounts);
 }
 
