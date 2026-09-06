@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/page_load_metrics/browser/page_load_metrics_observer_interface.h"
 #define InitializePageLoadMetricsForWebContents \
   InitializePageLoadMetricsForWebContents_Chromium
 #include <chrome/browser/page_load_metrics/page_load_metrics_initialize.cc>

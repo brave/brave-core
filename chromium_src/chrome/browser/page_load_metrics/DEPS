@@ -1,6 +1,9 @@
 include_rules = [
-  "+brave/browser",
-  "+brave/browser/misc_metrics",
   "+brave/components/brave_perf_predictor/browser",
-  "+brave/components/misc_metrics",
 ]
+
+specific_include_rules = {
+  "page_load_metrics_initialize\\.cc": [
+    "+brave/browser/misc_metrics/captcha_metrics.h",
+  ],
+}
