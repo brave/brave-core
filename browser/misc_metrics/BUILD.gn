@@ -9,7 +9,6 @@ import("//extensions/buildflags/buildflags.gni")
 
 source_set("misc_metrics") {
   sources = [
-    "//brave/browser/misc_metrics/captcha_metrics.h",
     "//brave/browser/misc_metrics/media_session_metrics_impl.h",
     "//brave/browser/misc_metrics/process_misc_metrics.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
@@ -228,7 +227,10 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "fingerprint_frequency_metrics_browsertest.cc" ]
+  sources = [
+    "captcha_metrics_browsertest.cc",
+    "fingerprint_frequency_metrics_browsertest.cc",
+  ]
 
   # The web3 proxy is only injected alongside a wallet provider.
   if (enable_brave_wallet) {
@@ -242,14 +244,20 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser:browser_process",
     "//brave/browser/misc_metrics",
+    "//brave/browser/misc_metrics:captcha_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
+    "//brave/components/misc_metrics/common:histogram_names",
+    "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/test:test_support",
     "//components/language/core/browser",
+    "//components/page_load_metrics/browser:test_support",
+    "//components/prefs",
     "//components/prefs:test_support",
     "//content/test:test_support",
     "//net:test_support",

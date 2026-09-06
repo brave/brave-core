@@ -49,6 +49,7 @@ class CaptchaMetrics {
 
  private:
   friend class BraveCaptchaPageLoadMetricsObserver;
+  friend class CaptchaMetricsBrowserTest;
   friend class CaptchaMetricsTest;
 
   // Records a captcha for |provider| in DailyStorage. Does not emit P3A.
