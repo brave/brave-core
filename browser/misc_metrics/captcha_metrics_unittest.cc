@@ -39,6 +39,10 @@ class CaptchaMetricsTest : public testing::Test {
     histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
   }
 
+  void RecordCaptcha(CaptchaProvider provider) {
+    metrics_->RecordCaptcha(provider);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
@@ -51,10 +55,10 @@ TEST_F(CaptchaMetricsTest, DoesNotReportOnConstruction) {
 }
 
 TEST_F(CaptchaMetricsTest, DoesNotReportUntilInterval) {
-  metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
-  metrics_->RecordCaptcha(CaptchaProvider::kCloudflare);
-  metrics_->RecordCaptcha(CaptchaProvider::kHCaptcha);
-  metrics_->RecordCaptcha(CaptchaProvider::kOther);
+  RecordCaptcha(CaptchaProvider::kGoogle);
+  RecordCaptcha(CaptchaProvider::kCloudflare);
+  RecordCaptcha(CaptchaProvider::kHCaptcha);
+  RecordCaptcha(CaptchaProvider::kOther);
 
   ExpectNoSamples();
 }
@@ -68,7 +72,7 @@ TEST_F(CaptchaMetricsTest, DoesNotRereportOnRestartWithinInterval) {
 TEST_F(CaptchaMetricsTest, BucketsDailyCounts) {
   auto record_and_report = [this](int count) {
     for (int i = 0; i < count; ++i) {
-      metrics_->RecordCaptcha(CaptchaProvider::kOther);
+      RecordCaptcha(CaptchaProvider::kOther);
     }
     task_environment_.FastForwardBy(base::Days(1));
   };
@@ -103,11 +107,11 @@ TEST_F(CaptchaMetricsTest, BucketsDailyCounts) {
 }
 
 TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
-  metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
-  metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
-  metrics_->RecordCaptcha(CaptchaProvider::kCloudflare);
-  metrics_->RecordCaptcha(CaptchaProvider::kHCaptcha);
-  metrics_->RecordCaptcha(CaptchaProvider::kOther);
+  RecordCaptcha(CaptchaProvider::kGoogle);
+  RecordCaptcha(CaptchaProvider::kGoogle);
+  RecordCaptcha(CaptchaProvider::kCloudflare);
+  RecordCaptcha(CaptchaProvider::kHCaptcha);
+  RecordCaptcha(CaptchaProvider::kOther);
 
   task_environment_.FastForwardBy(base::Days(1));
 
@@ -121,7 +125,7 @@ TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
 
 TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   for (int i = 0; i < 6; ++i) {
-    metrics_->RecordCaptcha(CaptchaProvider::kGoogle);
+    RecordCaptcha(CaptchaProvider::kGoogle);
   }
   task_environment_.FastForwardBy(base::Days(1));
   histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 4, 1);

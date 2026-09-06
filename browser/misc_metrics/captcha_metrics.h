@@ -6,12 +6,19 @@
 #ifndef BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
 #define BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/daily_storage.h"
 
+class GURL;
 class PrefRegistrySimple;
 class PrefService;
+
+namespace page_load_metrics {
+class PageLoadMetricsObserverInterface;
+}  // namespace page_load_metrics
 
 namespace misc_metrics {
 
@@ -36,12 +43,25 @@ class CaptchaMetrics {
   // Registers the captcha related prefs to store the histogram count.
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  // Returns a page-load observer when captcha metrics collection is enabled.
+  static std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
+  CreatePageLoadMetricsObserver();
+
+ private:
+  friend class BraveCaptchaPageLoadMetricsObserver;
+  friend class CaptchaMetricsTest;
+
   // Records a captcha for |provider| in DailyStorage. Does not emit P3A.
   void RecordCaptcha(CaptchaProvider provider);
 
- private:
+  // Records a captcha if |url| matches a known provider. Does not emit P3A.
+  void MaybeRecordCaptchaForUrl(const GURL& url);
+
   // Emits the last 24h counts to P3A and schedules the next report.
   void ReportCounts();
+
+  // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
+  static void EnsureDefaultCaptchaProviders();
 
   DailyStorage total_storage_;
   DailyStorage google_storage_;

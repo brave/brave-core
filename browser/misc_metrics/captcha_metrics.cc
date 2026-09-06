@@ -5,12 +5,21 @@
 
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 
+#include <optional>
+
+#include "base/check.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/misc_metrics/common/histogram_names.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "chrome/browser/page_load_metrics/observers/captcha_provider_manager.h"
+#include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_handle.h"
+#include "url/gurl.h"
 
 namespace misc_metrics {
 
@@ -21,6 +30,65 @@ constexpr base::TimeDelta kReportInterval = base::Days(1);
 constexpr int kCaptchaCountBuckets[] = {0, 1, 2, 5, 10};
 
 }  // namespace
+
+class BraveCaptchaPageLoadMetricsObserver
+    : public page_load_metrics::PageLoadMetricsObserver {
+ public:
+  explicit BraveCaptchaPageLoadMetricsObserver(CaptchaMetrics* captcha_metrics)
+      : captcha_metrics_(captcha_metrics) {}
+
+  const char* GetObserverName() const override {
+    static const char kName[] = "BraveCaptchaPageLoadMetricsObserver";
+    return kName;
+  }
+
+  ObservePolicy OnPrerenderStart(content::NavigationHandle*,
+                                 const GURL&) override {
+    // Brave disables prerender. If this runs, captcha metrics need a real
+    // prerender policy instead of ignoring the page.
+    DCHECK(false) << "OnPrerenderStart called; prerender is disabled in Brave.";
+    return STOP_OBSERVING;
+  }
+
+  ObservePolicy OnFencedFramesStart(content::NavigationHandle*,
+                                    const GURL&) override {
+    // Brave disables fenced frames. If this runs, captcha metrics need a real
+    // fenced-frame policy instead of ignoring the page.
+    DCHECK(false)
+        << "OnFencedFramesStart called; fenced frames are disabled in Brave.";
+    return STOP_OBSERVING;
+  }
+
+  // Full-page captchas loaded in the top level frame.
+  ObservePolicy OnCommit(
+      content::NavigationHandle* navigation_handle) override {
+    captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
+    return CONTINUE_OBSERVING;
+  }
+
+  // Captcha's loaded in a subframe.
+  void OnDidFinishSubFrameNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    if (!navigation_handle->HasCommitted()) {
+      return;
+    }
+
+    // Check if the mainframe already has a captcha provider, if so then skip
+    // recording for embedded iframes. This is the situation where we are on
+    // a fullpage captcha which may embed iframes with the same origin. We would
+    // not want to double count here.
+    if (page_load_metrics::CaptchaProviderManager::GetInstance()
+            ->GetCaptchaProviderForUrl(GetDelegate().GetUrl())
+            .has_value()) {
+      return;
+    }
+
+    captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
+  }
+
+ private:
+  raw_ptr<CaptchaMetrics> captcha_metrics_;
+};
 
 CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
     : total_storage_(local_state, kMiscMetricsCaptchaCount),
@@ -41,6 +109,40 @@ void CaptchaMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kMiscMetricsCaptchaLastRecordTime, {});
 }
 
+std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
+CaptchaMetrics::CreatePageLoadMetricsObserver() {
+  if (!g_brave_browser_process ||
+      !g_brave_browser_process->process_misc_metrics() ||
+      !g_brave_browser_process->process_misc_metrics()->captcha_metrics()) {
+    return nullptr;
+  }
+
+  EnsureDefaultCaptchaProviders();
+  return std::make_unique<BraveCaptchaPageLoadMetricsObserver>(
+      g_brave_browser_process->process_misc_metrics()->captcha_metrics());
+}
+
+void CaptchaMetrics::EnsureDefaultCaptchaProviders() {
+  auto* manager = page_load_metrics::CaptchaProviderManager::GetInstance();
+  if (!manager->empty()) {
+    return;
+  }
+  // List taken from Chromium's Captcha Providers component. Brave blocks that
+  // CRX, so load the same URL patterns locally.
+  manager->SetCaptchaProviders({
+      "*google.com/recaptcha/api2/anchor",
+      "*google.com/recaptcha/api2/bframe",
+      "*google.com/recaptcha/enterprise/anchor",
+      "*google.com/recaptcha/enterprise/bframe",
+      "*recaptcha.net/recaptcha/api2/anchor",
+      "*recaptcha.net/recaptcha/api2/bframe",
+      "*recaptcha.net/recaptcha/enterprise/anchor",
+      "*recaptcha.net/recaptcha/enterprise/bframe",
+      "*hcaptcha.com/captcha/*",
+      "*challenges.cloudflare.com/*",
+  });
+}
+
 void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
   total_storage_.RecordValueNow(1);
   switch (provider) {
@@ -56,6 +158,31 @@ void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
     case CaptchaProvider::kOther:
       break;
   }
+}
+
+void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
+  std::optional<page_load_metrics::CaptchaProvider> captcha_provider =
+      page_load_metrics::CaptchaProviderManager::GetInstance()
+          ->GetCaptchaProviderForUrl(url);
+  if (!captcha_provider.has_value()) {
+    return;
+  }
+
+  CaptchaProvider provider = CaptchaProvider::kOther;
+  switch (*captcha_provider) {
+    case page_load_metrics::CaptchaProvider::kReCaptcha:
+      provider = CaptchaProvider::kGoogle;
+      break;
+    case page_load_metrics::CaptchaProvider::kCloudflareTurnstile:
+      provider = CaptchaProvider::kCloudflare;
+      break;
+    case page_load_metrics::CaptchaProvider::kHCaptcha:
+      provider = CaptchaProvider::kHCaptcha;
+      break;
+    case page_load_metrics::CaptchaProvider::kUnknown:
+      break;
+  }
+  RecordCaptcha(provider);
 }
 
 void CaptchaMetrics::ReportCounts() {
