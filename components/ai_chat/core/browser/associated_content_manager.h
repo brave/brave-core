@@ -146,13 +146,19 @@ class AssociatedContentManager : public ToolProvider,
  private:
   void DetachContent();
 
-  // Attaches |delegate| if it exposes tools, detaching it otherwise.
+  // Fetches the tools |delegate| exposes, updating its tools_attached state via
+  // OnContentToolsDetected().
   void DetectContentTools(AssociatedContentDelegate* delegate);
+
+  // Attaches |delegate| when the tools it exposes are non-empty (and detaches
+  // it otherwise), so its tools are surfaced (via the tools pill) before any
+  // generation occurs. Invoked with the result of GetContentTools().
   void OnContentToolsDetected(base::WeakPtr<AssociatedContentDelegate> delegate,
                               std::vector<std::unique_ptr<Tool>> tools);
 
-  // Whether |uuid| is staged and the user hasn't overridden its attachment.
-  bool IsEligibleForAutoToolsUpdate(const std::string& uuid) const;
+  // Whether |content_uuid| is staged and the user hasn't overridden its
+  // attachment.
+  bool IsEligibleForAutoToolsUpdate(const std::string& content_uuid) const;
 
   raw_ptr<ConversationHandler> conversation_;
 

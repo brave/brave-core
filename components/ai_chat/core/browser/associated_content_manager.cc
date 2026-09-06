@@ -281,9 +281,9 @@ void AssociatedContentManager::OnContentToolsDetected(
 }
 
 bool AssociatedContentManager::IsEligibleForAutoToolsUpdate(
-    const std::string& uuid) const {
-  return !content_uuid_to_conversation_turns_.contains(uuid) &&
-         !tools_attachment_overridden_.contains(uuid);
+    const std::string& content_uuid) const {
+  return !content_uuid_to_conversation_turns_.contains(content_uuid) &&
+         !tools_attachment_overridden_.contains(content_uuid);
 }
 
 void AssociatedContentManager::OnContentToolsChanged(

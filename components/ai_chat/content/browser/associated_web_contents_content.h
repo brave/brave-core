@@ -138,6 +138,7 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   // mojom::ContentToolsListener
   void OnContentToolsChanged() override;
 
+  // Never unbound, as the content may be attached to several conversations.
   void SubscribeToContentToolChanges();
 
   // Called when an event of significance occurs that, if the page is a
