@@ -82,7 +82,6 @@ export class Config {
   rbeService: string
   rbeTlsClientAuthCert: string | undefined
   rbeTlsClientAuthKey: string | undefined
-  realRewrapperDir: string
   ignore_compile_failure: boolean
   enable_hangout_services_extension: boolean
   sign_widevine_cert: string
@@ -104,8 +103,6 @@ export class Config {
   braveAndroidPkcs11Provider: string
   braveAndroidPkcs11Alias: string
   useRemoteExec: boolean
-  useSiso: boolean
-  useReclient: boolean
   offline: boolean
   readonly rbeReadOnly: boolean
   use_libfuzzer: boolean
@@ -219,8 +216,6 @@ export class Config {
     this.rbeService = envConfig.getString(['rbe_service'], '')
     this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
     this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
-    this.realRewrapperDir =
-      process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
     this.ignore_compile_failure = false
     this.enable_hangout_services_extension = false
     this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
@@ -262,11 +257,6 @@ export class Config {
     this.braveAndroidPkcs11Provider = ''
     this.braveAndroidPkcs11Alias = ''
     this.useRemoteExec = envConfig.getBoolean(['use_remoteexec'], false)
-    this.useSiso = envConfig.getBoolean(['use_siso'], true)
-    this.useReclient = envConfig.getBoolean(
-      ['use_reclient'],
-      this.useRemoteExec && !this.useSiso,
-    )
     this.offline = envConfig.getBoolean(['offline'], false)
     this.rbeReadOnly = envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
@@ -649,7 +639,7 @@ export class Config {
         this.extraNinjaOpts,
         (opts, key, value) => {
           // Workaround siso unable to handle -j if REAPI is not configured.
-          if (key === 'j' && this.useSiso) {
+          if (key === 'j') {
             this.sisoJobsLimit = parseInt(value)
             return
           }
@@ -848,7 +838,6 @@ export class Config {
       const defaultSisoLimits = {
         local: this.sisoJobsLimit,
         remote: this.sisoJobsLimit || kRemoteLimit,
-        rewrap: this.sisoJobsLimit || kRemoteLimit,
         ...this.sisoLimits,
       }
       // Parse SISO_LIMITS from env if set (comma-separated key=value pairs).

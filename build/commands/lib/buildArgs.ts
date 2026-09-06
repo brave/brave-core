@@ -56,8 +56,6 @@ export function getBuildArgs(config: Config) {
     enable_cdm_host_verification: config.enableCDMHostVerification(),
     skip_signing: !config.shouldSign(),
     use_remoteexec: config.useRemoteExec,
-    use_reclient: config.useReclient,
-    use_siso: config.useSiso,
     use_libfuzzer: config.use_libfuzzer,
     enable_update_notifications: config.isOfficialBuild(),
   }
@@ -188,8 +186,7 @@ export function getBuildArgs(config: Config) {
   }
 
   // For Linux Release builds, upstream doesn't want to use symbol_level = 2
-  // unless use_debug_fission is set. However, they don't set it when a
-  // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
+  // unless use_debug_fission is set.
   if (config.targetOS === 'linux' && config.isReleaseBuild()) {
     // use_debug_fission requires symbol_level >= 1
     args.symbol_level = 1
