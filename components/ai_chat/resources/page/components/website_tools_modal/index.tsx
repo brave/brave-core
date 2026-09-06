@@ -10,7 +10,10 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { useConversation } from '../../state/conversation_context'
+import {
+  useConversation,
+  useConversationState,
+} from '../../state/conversation_context'
 import { AttachmentPageItem } from '../attachment_item'
 import styles from './style.module.scss'
 
@@ -44,6 +47,7 @@ const DEFAULT_PERMISSION_OPTION = PERMISSION_OPTIONS.find(
 function ToolItem(props: {
   tool: Mojom.ToolInfo
   isExpanded: boolean
+  isPermissionChangeDisabled: boolean
   onToggle: () => void
   onPermissionChange: (permission: Mojom.ToolPermission) => void
 }) {
@@ -78,6 +82,7 @@ function ToolItem(props: {
           size='small'
           className={styles.toolPermission}
           value={String(selected.permission)}
+          disabled={props.isPermissionChangeDisabled}
           // The dialog scrolls, which would clip an absolutely positioned menu.
           positionStrategy='fixed'
           onChange={(e: { value: string }) =>
@@ -131,6 +136,9 @@ export default function WebsiteToolsModal(props: Props) {
     isFetching,
   } = conversation.api.useGetContentTools(props.content.uuid)
   const isLoading = isPlaceholderData || isFetching
+
+  // Don't allow changing permissions while a request is in progress
+  const { isRequestInProgress } = useConversationState()
   // Only one description is expanded at a time, to keep the list scannable.
   const [expandedToolName, setExpandedToolName] = React.useState<string | null>(
     null,
@@ -178,6 +186,7 @@ export default function WebsiteToolsModal(props: Props) {
                   key={tool.name}
                   tool={tool}
                   isExpanded={tool.name === expandedToolName}
+                  isPermissionChangeDisabled={isRequestInProgress}
                   onToggle={() =>
                     setExpandedToolName((expanded) =>
                       expanded === tool.name ? null : tool.name,

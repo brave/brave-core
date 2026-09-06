@@ -293,16 +293,16 @@ void AssociatedContentManager::SetToolPermission(
 
   // kAsk is the default, so drop the entry rather than storing it.
   if (permission == mojom::ToolPermission::kAsk) {
-    auto origin_it = tool_permissions_.find(origin);
-    if (origin_it == tool_permissions_.end()) {
+    auto origin_it = content_tool_permissions_.find(origin);
+    if (origin_it == content_tool_permissions_.end()) {
       return;
     }
     origin_it->second.erase(tool_name);
     if (origin_it->second.empty()) {
-      tool_permissions_.erase(origin_it);
+      content_tool_permissions_.erase(origin_it);
     }
   } else {
-    tool_permissions_[origin][std::string(tool_name)] = permission;
+    content_tool_permissions_[origin][std::string(tool_name)] = permission;
   }
 
   // The choice is conversation-wide, so tell every UI bound to the
@@ -323,8 +323,8 @@ void AssociatedContentManager::NotifyContentToolsChanged(
 mojom::ToolPermission AssociatedContentManager::GetToolPermission(
     const url::Origin& origin,
     std::string_view tool_name) const {
-  auto origin_it = tool_permissions_.find(origin);
-  if (origin_it == tool_permissions_.end()) {
+  auto origin_it = content_tool_permissions_.find(origin);
+  if (origin_it == content_tool_permissions_.end()) {
     return mojom::ToolPermission::kAsk;
   }
   auto tool_it = origin_it->second.find(tool_name);
@@ -718,7 +718,7 @@ void AssociatedContentManager::DetachContent() {
   content_delegates_.clear();
   owned_content_.clear();
   tools_attachment_overridden_.clear();
-  tool_permissions_.clear();
+  content_tool_permissions_.clear();
 }
 
 bool AssociatedContentManager::HasLiveContentForOrigin(
@@ -740,11 +740,12 @@ bool AssociatedContentManager::HasLiveContentForOrigin(
 
 void AssociatedContentManager::MaybeResetToolPermissionsForOrigin(
     const url::Origin& origin) {
-  auto origin_it = tool_permissions_.find(origin);
-  if (origin_it == tool_permissions_.end() || HasLiveContentForOrigin(origin)) {
+  auto origin_it = content_tool_permissions_.find(origin);
+  if (origin_it == content_tool_permissions_.end() ||
+      HasLiveContentForOrigin(origin)) {
     return;
   }
-  tool_permissions_.erase(origin_it);
+  content_tool_permissions_.erase(origin_it);
 }
 
 }  // namespace ai_chat

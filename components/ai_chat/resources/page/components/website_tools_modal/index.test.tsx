@@ -181,6 +181,29 @@ describe('WebsiteToolsModal', () => {
     expect(getContentTools).toHaveBeenCalledTimes(1)
   })
 
+  it('locks the permission pickers while a response is generating', async () => {
+    const { container } = await renderModal(
+      <MockContext
+        conversationHandler={{
+          getContentTools: () => Promise.resolve({ tools: TOOLS }),
+        }}
+        initialState={{ conversationState: { isRequestInProgress: true } }}
+      >
+        <WebsiteToolsModal
+          content={CONTENT}
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+    })
+    for (const dropdown of container.querySelectorAll('leo-dropdown')) {
+      expect(dropdown).toHaveProperty('disabled', true)
+    }
+  })
+
   it('counts the tools it lists', async () => {
     await renderModal(
       <MockContext

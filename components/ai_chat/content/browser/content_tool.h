@@ -49,8 +49,8 @@ class ContentTool : public Tool {
  private:
   // Granted for this tool use loop only, by answering a permission challenge.
   bool user_permission_granted_ = false;
-  // Never kNeverAllow: those tools are withheld from the model by
-  // AssociatedContentManager and so never reach here.
+  // When the permission is set to kNeverAllow the content tool will be
+  // discarded so we don't need to handle it here.
   mojom::ToolPermission user_permission_strategy_ = mojom::ToolPermission::kAsk;
 
   content::WeakDocumentPtr rfh_;

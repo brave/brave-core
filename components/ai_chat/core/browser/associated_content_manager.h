@@ -199,14 +199,15 @@ class AssociatedContentManager : public ToolProvider,
 
   std::vector<std::unique_ptr<Tool>> tools_;
 
-  // Origin -> tool name -> choice, for anything moved off the kAsk default.
+  // Content tools only (i.e. those a page exposes): origin -> tool name ->
+  // choice, for anything moved off the kAsk default.
   // Deliberately in-memory and per-conversation: granting a site's tool is a
   // decision about this conversation's context, so it shouldn't silently
   // carry over into the next one, nor outlive the site's content being
   // attached here.
   base::flat_map<url::Origin,
                  base::flat_map<std::string, mojom::ToolPermission>>
-      tool_permissions_;
+      content_tool_permissions_;
 
   std::vector<AssociatedContentDelegate*> content_delegates_;
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
