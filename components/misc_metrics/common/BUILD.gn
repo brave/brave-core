@@ -5,6 +5,10 @@
 
 import("//mojo/public/tools/bindings/mojom.gni")
 
+source_set("histogram_names") {
+  sources = [ "histogram_names.h" ]
+}
+
 mojom("mojom") {
   generate_java = true
   sources = [ "misc_metrics.mojom" ]

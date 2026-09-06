@@ -60,7 +60,10 @@ static_library("p3a") {
     "utils.h",
   ]
 
-  public_deps = [ "//brave/components/p3a_utils" ]
+  public_deps = [
+    "//brave/components/misc_metrics/common:histogram_names",
+    "//brave/components/p3a_utils",
+  ]
 
   deps = [
     "constellation/rs/cxx:rust_lib",

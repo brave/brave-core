@@ -111,6 +111,16 @@ inline constexpr char kMiscMetricsFingerprintReportFrameStartTime[] =
 inline constexpr char kMiscMetricsFingerprintLastExecutionTime[] =
     "brave.misc_metrics.fp_last_execution_time";
 
+// Recorded in page_load_metrics_initialize.cc via captcha_metrics.cc
+inline constexpr char kMiscMetricsCaptchaCount[] =
+    "brave.misc_metrics.captcha_count";
+inline constexpr char kMiscMetricsCaptchaGoogleCount[] =
+    "brave.misc_metrics.captcha_google_count";
+inline constexpr char kMiscMetricsCaptchaCloudflareCount[] =
+    "brave.misc_metrics.captcha_cloudflare_count";
+inline constexpr char kMiscMetricsCaptchaHCaptchaCount[] =
+    "brave.misc_metrics.captcha_hcaptcha_count";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

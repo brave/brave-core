@@ -76,6 +76,7 @@ static_library("misc_metrics") {
 
   public_deps = [
     ":default_browser_monitor",
+    "//brave/components/misc_metrics/common:histogram_names",
     "//brave/components/misc_metrics/common:mojom",
   ]
 }

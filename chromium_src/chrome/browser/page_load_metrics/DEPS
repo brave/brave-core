@@ -1,3 +1,5 @@
 include_rules = [
+  "+brave/browser",
+  "+brave/browser/misc_metrics",
   "+brave/components/brave_perf_predictor/browser",
 ]

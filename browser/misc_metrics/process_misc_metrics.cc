@@ -6,6 +6,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
@@ -48,6 +49,7 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   privacy_hub_metrics_ = std::make_unique<PrivacyHubMetrics>(local_state);
   tab_metrics_ = std::make_unique<TabMetrics>(local_state);
 #endif
+  captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
@@ -96,6 +98,10 @@ MediaSessionMetricsImpl* ProcessMiscMetrics::media_session_metrics() {
   return media_session_metrics_.get();
 }
 
+CaptchaMetrics* ProcessMiscMetrics::captcha_metrics() {
+  return captcha_metrics_.get();
+}
+
 Web3Metrics& ProcessMiscMetrics::web3_metrics() {
   return web3_metrics_;
 }
@@ -115,6 +121,7 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   PrivacyHubMetrics::RegisterPrefs(registry);
   TabMetrics::RegisterPrefs(registry);
 #endif
+  CaptchaMetrics::RegisterPrefs(registry);
   DohMetrics::RegisterPrefs(registry);
   MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);

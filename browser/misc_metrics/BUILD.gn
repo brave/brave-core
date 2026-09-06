@@ -9,6 +9,7 @@ import("//extensions/buildflags/buildflags.gni")
 
 source_set("misc_metrics") {
   sources = [
+    "//brave/browser/misc_metrics/captcha_metrics.h",
     "//brave/browser/misc_metrics/media_session_metrics_impl.h",
     "//brave/browser/misc_metrics/process_misc_metrics.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
@@ -16,6 +17,7 @@ source_set("misc_metrics") {
   ]
 
   deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/misc_metrics",
     "//brave/components/time_period_storage",
@@ -36,6 +38,8 @@ static_library("misc_metrics_impl") {
   ]
 
   sources = [
+    "//brave/browser/misc_metrics/captcha_metrics.cc",
+    "//brave/browser/misc_metrics/captcha_metrics.h",
     "//brave/browser/misc_metrics/doh_metrics.cc",
     "//brave/browser/misc_metrics/doh_metrics.h",
     "//brave/browser/misc_metrics/fingerprint_frequency_metrics.cc",
@@ -140,6 +144,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "captcha_metrics_unittest.cc",
     "doh_metrics_unittest.cc",
     "fingerprint_frequency_metrics_unittest.cc",
     "media_session_metrics_impl_unittest.cc",
