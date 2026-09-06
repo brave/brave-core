@@ -31,7 +31,7 @@ namespace ai_chat {
 
 namespace {
 constexpr size_t kMaxToolsPerContent = 30;
-}
+}  // namespace
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -152,11 +152,13 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
 
+    // Let the content start watching for tool changes now that there's a
+    // conversation to report them to.
+    delegate->OnAssociatedWithConversation();
+
     // Discover whether this content exposes tools so it can be attached and
     // surfaced in the tools pill without waiting for a generation loop.
-    delegate->GetContentTools(
-        base::BindOnce(&AssociatedContentManager::OnContentToolsDetected,
-                       weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
+    DetectContentTools(delegate);
   }
 
   if (notify_updated) {
@@ -183,6 +185,7 @@ void AssociatedContentManager::RemoveContent(
     // anymore.
     content_observations_.RemoveObservation(delegate);
     content_delegates_.erase(it);
+    tools_attachment_overridden_.erase(delegate->uuid());
   }
 
   // If this is owned content, delete it.
@@ -214,6 +217,9 @@ void AssociatedContentManager::RemoveContent(std::string_view content_uuid,
 void AssociatedContentManager::SetToolsAttached(std::string_view content_uuid,
                                                 bool tools_attached) {
   DVLOG(1) << __func__;
+
+  // Record even when it matches the current state, so auto-updates stop.
+  tools_attachment_overridden_.insert(std::string(content_uuid));
 
   auto it = std::ranges::find_if(content_delegates_,
                                  [&content_uuid](const auto& delegate) {
@@ -254,11 +260,16 @@ void AssociatedContentManager::GetToolInfos(std::string_view content_uuid,
       std::move(callback)));
 }
 
+void AssociatedContentManager::DetectContentTools(
+    AssociatedContentDelegate* delegate) {
+  delegate->GetContentTools(
+      base::BindOnce(&AssociatedContentManager::OnContentToolsDetected,
+                     weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr()));
+}
+
 void AssociatedContentManager::OnContentToolsDetected(
     base::WeakPtr<AssociatedContentDelegate> delegate,
     std::vector<std::unique_ptr<Tool>> tools) {
-  // Attach content when it exposes any tools, detach it otherwise. The user
-  // can subsequently override this via SetToolsAttached.
   if (!delegate) {
     return;
   }
@@ -267,6 +278,20 @@ void AssociatedContentManager::OnContentToolsDetected(
     return;
   }
   delegate->set_tools_attached(tools_attached);
+}
+
+bool AssociatedContentManager::IsEligibleForAutoToolsUpdate(
+    const std::string& uuid) const {
+  return !content_uuid_to_conversation_turns_.contains(uuid) &&
+         !tools_attachment_overridden_.contains(uuid);
+}
+
+void AssociatedContentManager::OnContentToolsChanged(
+    AssociatedContentDelegate* delegate) {
+  if (!IsEligibleForAutoToolsUpdate(delegate->uuid())) {
+    return;
+  }
+  DetectContentTools(delegate);
 }
 
 void AssociatedContentManager::ClearContent() {
@@ -603,6 +628,7 @@ void AssociatedContentManager::DetachContent() {
   content_observations_.RemoveAllObservations();
   content_delegates_.clear();
   owned_content_.clear();
+  tools_attachment_overridden_.clear();
 }
 
 }  // namespace ai_chat

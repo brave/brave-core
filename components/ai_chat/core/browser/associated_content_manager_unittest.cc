@@ -11,7 +11,9 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -766,6 +768,176 @@ TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsBeingDetached) {
 
   ASSERT_EQ(1u, conversation_->associated_content.size());
   EXPECT_FALSE(conversation_->associated_content[0]->tools_attached);
+}
+
+namespace {
+
+// Counts how many times the manager probes the page's tools.
+class FakePageTools {
+ public:
+  FakePageTools(NiceMock<MockAssociatedContent>& content, bool has_tools)
+      : has_tools_(has_tools) {
+    // Real content fetches tools from a renderer, so reply asynchronously.
+    // Replying inline would re-enter the delegate's observer list while it is
+    // still notifying OnContentToolsChanged().
+    ON_CALL(content, GetContentTools)
+        .WillByDefault(
+            [this](
+                AssociatedContentDelegate::GetContentToolsCallback callback) {
+              ++probe_count_;
+              std::vector<std::unique_ptr<Tool>> tools;
+              if (has_tools_) {
+                tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+              }
+              base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+                  FROM_HERE,
+                  base::BindOnce(std::move(callback), std::move(tools)));
+            });
+  }
+
+  void set_has_tools(bool has_tools) { has_tools_ = has_tools; }
+  int probe_count() const { return probe_count_; }
+
+ private:
+  bool has_tools_;
+  int probe_count_ = 0;
+};
+
+}  // namespace
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_TellsContentItWasAssociatedWithAConversation) {
+  // Content only watches for tool changes once a conversation is listening for
+  // them, so attaching must notify it.
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  EXPECT_CALL(content, OnAssociatedWithConversation());
+  manager->AddContent(&content);
+  testing::Mock::VerifyAndClearExpectations(&content);
+
+  // Re-attaching after a detach notifies again, so the content can re-subscribe
+  // to whatever document it is now showing.
+  manager->RemoveContent(&content);
+  EXPECT_CALL(content, OnAssociatedWithConversation());
+  manager->AddContent(&content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_AttachesStagedContentWhenToolsAppear) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  page_tools.set_has_tools(true);
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_TRUE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_DetachesStagedContentWhenToolsDisappear) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/true);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+
+  page_tools.set_has_tools(false);
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return !content.tools_attached(); }));
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_FALSE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_IgnoresContentAssociatedWithTurn) {
+  // Associated content is no longer staged, so changes are ignored.
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+  manager->AssociateUnsentContentWithTurn(turn);
+
+  page_tools.set_has_tools(true);
+  content.NotifyContentToolsChanged();
+
+  // Drive a change we do expect to be probed, so the ignored one has had its
+  // chance to run.
+  NiceMock<MockAssociatedContent> other_content;
+  FakePageTools other_page_tools(other_content, /*has_tools=*/true);
+  manager->AddContent(&other_content);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return other_content.tools_attached(); }));
+
+  EXPECT_EQ(1, page_tools.probe_count());
+  EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_IgnoresUserOverriddenContent) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+
+  page_tools.set_has_tools(true);
+  content.NotifyContentToolsChanged();
+
+  // Drive a change we do expect to be probed, so the ignored one has had its
+  // chance to run.
+  NiceMock<MockAssociatedContent> other_content;
+  FakePageTools other_page_tools(other_content, /*has_tools=*/true);
+  manager->AddContent(&other_content);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return other_content.tools_attached(); }));
+
+  EXPECT_EQ(1, page_tools.probe_count());
+  EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_ReprobesForEachChange) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/true);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  content.NotifyContentToolsChanged();
+  content.NotifyContentToolsChanged();
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return page_tools.probe_count() == 4; }));
 }
 
 }  // namespace ai_chat
