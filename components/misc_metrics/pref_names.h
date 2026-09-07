@@ -111,7 +111,8 @@ inline constexpr char kMiscMetricsFingerprintReportFrameStartTime[] =
 inline constexpr char kMiscMetricsFingerprintLastExecutionTime[] =
     "brave.misc_metrics.fp_last_execution_time";
 
-// Recorded in page_load_metrics_initialize.cc via captcha_metrics.cc
+// Recorded in page_load_metrics_initialize.cc via
+// browser/misc_metrics/captcha_metrics/captcha_metrics.cc
 inline constexpr char kMiscMetricsCaptchaCount[] =
     "brave.misc_metrics.captcha_count";
 inline constexpr char kMiscMetricsCaptchaGoogleCount[] =
@@ -125,7 +126,9 @@ inline constexpr char kMiscMetricsCaptchaHCaptchaCount[] =
 // keeps track of a 24 hour timer in-memory. So, if the process dies and
 // restarted again within the 24h mark, we wouldn't want to emit the histogram
 // again. So, keeping this last track timer helps to keep that window tight
-// across process restarts. See captcha_metrics.cc for implemenation details.
+// across process restarts. See
+// browser/misc_metrics/captcha_metrics/captcha_metrics.cc for implementation
+// details.
 inline constexpr char kMiscMetricsCaptchaLastRecordTime[] =
     "brave.misc_metrics.captcha_last_record_time";
 

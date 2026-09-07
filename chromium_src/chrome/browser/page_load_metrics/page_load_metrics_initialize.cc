@@ -10,8 +10,13 @@
 
 #include <memory>
 
-#include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"
+#include "chrome/browser/profiles/profile.h"
+
+// Forward-declared to avoid adding a compile-time dependency.
+// impl target is //brave/browser/misc_metrics/captcha_metrics.
+std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
+BraveCreateCaptchaPageLoadMetricsObserver();
 
 namespace {
 
@@ -44,9 +49,13 @@ void BravePageLoadMetricsEmbedder::RegisterObservers(
       std::make_unique<
           brave_perf_predictor::PerfPredictorPageMetricsObserver>());
 
-  if (auto observer =
-          misc_metrics::CaptchaMetrics::CreatePageLoadMetricsObserver()) {
-    tracker->AddObserver(std::move(observer));
+  auto* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  // Capture metrics only in regular mode.
+  if (profile && profile->IsRegularProfile()) {
+    if (auto observer = BraveCreateCaptchaPageLoadMetricsObserver()) {
+      tracker->AddObserver(std::move(observer));
+    }
   }
 }
 

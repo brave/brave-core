@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/captcha_metrics/captcha_metrics.h"
 
 #include <memory>
 #include <string_view>
@@ -18,10 +18,13 @@
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/page_load_metrics/page_load_metrics_initialize.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/page_load_metrics/browser/page_load_metrics_test_waiter.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -82,16 +85,31 @@ class CaptchaMetricsBrowserTestBase : public PlatformBrowserTest {
     return embedded_https_test_server().GetURL(host, path);
   }
 
-  std::unique_ptr<page_load_metrics::PageLoadMetricsTestWaiter> CreateWaiter() {
+  std::unique_ptr<page_load_metrics::PageLoadMetricsTestWaiter> CreateWaiter(
+      content::WebContents* contents = nullptr) {
     return std::make_unique<page_load_metrics::PageLoadMetricsTestWaiter>(
-        web_contents(), "captcha-metrics-waiter");
+        contents ? contents : web_contents(), "captcha-metrics-waiter");
   }
 
-  void NavigateAndWaitForLoad(const GURL& url) {
-    auto waiter = CreateWaiter();
+  void NavigateAndWaitForLoad(const GURL& url,
+                              content::WebContents* contents = nullptr) {
+    if (!contents) {
+      contents = web_contents();
+    }
+    auto waiter = CreateWaiter(contents);
     waiter->AddPageExpectation(TimingField::kLoadEvent);
-    ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+    ASSERT_TRUE(content::NavigateToURL(contents, url));
     waiter->Wait();
+  }
+
+  std::unique_ptr<content::WebContents> CreateIncognitoWebContents() {
+    Profile* otr_profile =
+        chrome_test_utils::GetProfile(this)->GetPrimaryOTRProfile(
+            /*create_if_needed=*/true);
+    auto contents = content::WebContents::Create(
+        content::WebContents::CreateParams(otr_profile));
+    InitializePageLoadMetricsForWebContents(contents.get());
+    return contents;
   }
 
   GURL GoogleCaptchaUrl() {
@@ -164,6 +182,21 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotReportUntilInterval) {
   histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kCaptchaCloudflareCountHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotRecordInIncognito) {
+  auto incognito_contents = CreateIncognitoWebContents();
+  ASSERT_TRUE(incognito_contents->GetBrowserContext()->IsOffTheRecord());
+
+  NavigateAndWaitForLoad(GoogleCaptchaUrl(), incognito_contents.get());
+
+  EXPECT_TRUE(g_browser_process->local_state()
+                  ->GetList(kMiscMetricsCaptchaCount)
+                  .empty());
+
+  ReportPendingCounts();
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 0, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 0, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsMainFrameGoogle) {

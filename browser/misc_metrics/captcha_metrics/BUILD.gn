@@ -1,0 +1,76 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("captcha_metrics") {
+  visibility = [
+    ":*",
+    "//brave/browser:core",
+    "//brave/browser/misc_metrics:*",
+  ]
+
+  sources = [
+    "captcha_metrics.cc",
+    "captcha_metrics.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/components/misc_metrics",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//chrome/browser/page_load_metrics",
+    "//components/page_load_metrics/browser",
+    "//components/prefs",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "captcha_metrics_unittest.cc" ]
+
+  deps = [
+    ":captcha_metrics",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/misc_metrics/common:histogram_names",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "captcha_metrics_browsertest.cc" ]
+
+  deps = [
+    ":captcha_metrics",
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/components/misc_metrics",
+    "//brave/components/misc_metrics/common:histogram_names",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/page_load_metrics",
+    "//chrome/browser/profiles:profile",
+    "//chrome/test:test_support",
+    "//components/page_load_metrics/browser:test_support",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

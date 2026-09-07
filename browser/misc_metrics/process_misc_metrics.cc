@@ -7,7 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/misc_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/captcha_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
