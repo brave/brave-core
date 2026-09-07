@@ -208,23 +208,17 @@ export class GitPatcher {
     const prepOps = []
     this.logProgress(os.EOL + 'Getting patch data...')
     for (const patchData of patchesToApply) {
-      if (patchData.reason === patchApplyReasons.SRC_REMOVED) {
-        // Skip patches that the target file is gone, and flag them as
-        // failures. This is necessary to filter out these patches, so they are
-        // not passed along to `git reset`, as that causes an early bailing out
-        // by git, failing to reset any files listed after.
-        prepOps.push(
-          Promise.resolve({
-            error: new Error('Target file does not exist'),
-            ...patchData,
-          }),
-        )
-        continue
-      }
+      // Flagging patches that failed due to their source being deleted, so we
+      // avoid `git reset` on those.
+      const error =
+        patchData.reason === patchApplyReasons.SRC_REMOVED
+          ? new Error('Target file does not exist')
+          : undefined
       prepOps.push(
         this.getAppliesTo(patchData.patchPath)
           .then((appliesTo) => ({
             appliesTo,
+            error,
             ...patchData,
           }))
           .catch((err) => ({

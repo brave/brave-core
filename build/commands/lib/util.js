@@ -32,6 +32,27 @@ async function generateInstrumentationFile(instrumentationFile) {
   await writeFile(instrumentationFile, paths.join('\n'), 'utf-8')
 }
 
+/**
+ * Prefixes the repo a patch status came from onto its path, so that statuses
+ * from the several repos patches are applied to can be told apart once logged.
+ *
+ * A status carries no path when the files its patch applies to could not be
+ * read out of it, which is what a patch too malformed to parse reports. There
+ * is nothing to prefix for those, so they are left as they are.
+ *
+ * Exported for tests.
+ *
+ * @param {{path?: string}[]} patchStatus The statuses, prefixed in place.
+ * @param {...string} prefix The path segments of the repo they came from.
+ */
+export function prefixPatchPaths(patchStatus, ...prefix) {
+  for (const status of patchStatus) {
+    if (status.path) {
+      status.path = path.join(...prefix, status.path)
+    }
+  }
+}
+
 async function applyPatches(printPatchFailuresInJson) {
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
@@ -98,20 +119,21 @@ async function applyPatches(printPatchFailuresInJson) {
   const ffmpegPatchStatus = await ffmpegPatcher.applyPatches()
 
   // Log status for all patches
-  // Differentiate entries for logging
-  v8PatchStatus.forEach((s) => (s.path = path.join('v8', s.path)))
-  catapultPatchStatus.forEach(
-    (s) => (s.path = path.join('third_party', 'catapult', s.path)),
+  prefixPatchPaths(v8PatchStatus, 'v8')
+  prefixPatchPaths(catapultPatchStatus, 'third_party', 'catapult')
+  prefixPatchPaths(
+    devtoolsFrontendPatchStatus,
+    'third_party',
+    'devtools-frontend',
+    'src',
   )
-  devtoolsFrontendPatchStatus.forEach(
-    (s) =>
-      (s.path = path.join('third_party', 'devtools-frontend', 'src', s.path)),
+  prefixPatchPaths(
+    searchEngineDataPatchStatus,
+    'third_party',
+    'search_engines_data',
+    'resources',
   )
-  ffmpegPatchStatus.forEach((s) => {
-    if (s.path) {
-      s.path = path.join('third_party', 'ffmpeg', s.path)
-    }
-  })
+  prefixPatchPaths(ffmpegPatchStatus, 'third_party', 'ffmpeg')
   const allPatchStatus = [
     ...chromiumPatchStatus,
     ...v8PatchStatus,
