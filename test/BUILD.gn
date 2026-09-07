@@ -90,6 +90,7 @@ static_library("brave_test_support_unit") {
     "//chrome/browser",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_unit_test_suite",
   ]
 
   deps = [
