@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index 9b7c30c3b2f7c3489d32a0e82a3ce0288d249f98..68db99d19aeffe40a6abdcb7685c96978f59e09b 100644
+index 9b7c30c3b2f7c3489d32a0e82a3ce0288d249f98..ac017342d09b20ecdbcfdbf561a91392ba63c7ee 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
-@@ -463,6 +463,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
+@@ -73,6 +73,7 @@ DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kCancelButtonId);
+ namespace {
+ 
+ void DeleteFiles(std::vector<base::FilePath> paths) {
++  brave::DeleteImageMetadataStripperTemporaryDir(paths);
+   for (auto& file_path : paths)
+     base::DeleteFile(file_path);
+ }
+@@ -463,6 +464,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
  
  void FileSelectHelper::NotifyListenerAndEnd(
      std::vector<blink::mojom::FileChooserFileInfoPtr> list) {

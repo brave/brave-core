@@ -213,6 +213,26 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
     return base::PathExists(path);
   }
 
+  // The stripper copies the first JPEG to |parent|/0/<original basename>.
+  base::FilePath StrippedCopyIn(const base::FilePath& parent) {
+    return parent.AppendASCII("0").AppendASCII(kUploadTestFileName);
+  }
+
+  bool DoesNotExists(const std::vector<base::FilePath>& paths) {
+    for (const auto& path : paths) {
+      if (PathExists(path)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  std::string SelectedFileName(content::WebContents* web_contents) {
+    return content::EvalJs(web_contents,
+                           "document.getElementById('fileinput').files[0].name")
+        .ExtractString();
+  }
+
   base::FilePath fbmd_test_image_path_;
   // Provides the callback for SetStripCompletedCallbackForTesting to intercept
   // the temporary files to test clean-up behaviour.
@@ -267,10 +287,14 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   content::WebContents* web_contents =
       OpenTabAndSelectFiles({fbmd_test_image_path_});
 
-  // 1. Check stripping created a temporary file.
-  const std::vector<base::FilePath> temp_files = strip_completed_future_.Take();
-  ASSERT_EQ(1u, temp_files.size());
-  const base::FilePath temp_path = temp_files[0];
+  EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
+
+  // Only the parent temp directory is queued for cleanup.
+  const std::vector<base::FilePath> temp_paths = strip_completed_future_.Take();
+  ASSERT_EQ(1u, temp_paths.size());
+  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
+            StrippedCopyIn(temp_paths[0]).BaseName());
+  EXPECT_TRUE(PathExists(StrippedCopyIn(temp_paths[0])));
 
   // 2. Check the bytes the server received are the scrubbed bytes.
   EXPECT_FALSE(ContainsFbmd(UploadFileAndInterceptContent(web_contents)))
@@ -281,8 +305,8 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   // upload flow.
   browser()->tab_strip_model()->CloseWebContentsAt(
       1, TabCloseTypes::CLOSE_USER_GESTURE);
-  EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(temp_path); }))
-      << "Temporary upload file should be deleted after the upload completes";
+  EXPECT_TRUE(base::test::RunUntil([&]() { return DoesNotExists(temp_paths); }))
+      << "Temporary upload files should be deleted after the upload completes";
 }
 
 IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
@@ -291,13 +315,11 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   content::WebContents* web_contents =
       OpenTabAndSelectFiles({fbmd_test_image_path_});
 
-  // Keep track of the temporary file which was created for this selection. Will
-  // be used later.
-  const std::vector<base::FilePath> first_temp_files =
+  // Keep track of the temporary paths which were created for this selection.
+  const std::vector<base::FilePath> first_temp_paths =
       strip_completed_future_.Take();
-  ASSERT_EQ(1u, first_temp_files.size());
-  const base::FilePath first_temp = first_temp_files[0];
-  EXPECT_TRUE(PathExists(first_temp));
+  ASSERT_EQ(1u, first_temp_paths.size());
+  EXPECT_TRUE(PathExists(StrippedCopyIn(first_temp_paths[0])));
 
   // Pick again.
   // This resets the callback provided to the
@@ -307,17 +329,20 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   // Pick the same file.
   SelectFilesInPicker(web_contents, {fbmd_test_image_path_});
 
-  // Temporary file created for this new upload.
-  const std::vector<base::FilePath> second_temp_files =
+  const std::vector<base::FilePath> second_temp_paths =
       strip_completed_future_.Take();
-  ASSERT_EQ(1u, second_temp_files.size());
-  const base::FilePath second_temp = second_temp_files[0];
+  ASSERT_EQ(1u, second_temp_paths.size());
 
   // 1. Check each pick creates a distinct temporary copy, and the earlier one
   // is kept alive (by its own FileSelectHelper) until the tab goes away.
-  EXPECT_NE(first_temp, second_temp);
-  EXPECT_TRUE(PathExists(first_temp));
-  EXPECT_TRUE(PathExists(second_temp));
+  EXPECT_NE(first_temp_paths[0], second_temp_paths[0]);
+  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
+            StrippedCopyIn(first_temp_paths[0]).BaseName());
+  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
+            StrippedCopyIn(second_temp_paths[0]).BaseName());
+  EXPECT_TRUE(PathExists(StrippedCopyIn(first_temp_paths[0])));
+  EXPECT_TRUE(PathExists(StrippedCopyIn(second_temp_paths[0])));
+  EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
 
   // The most recently picked file is scrubbed and is what gets uploaded.
   EXPECT_FALSE(ContainsFbmd(UploadFileAndInterceptContent(web_contents)))
@@ -328,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   browser()->tab_strip_model()->CloseWebContentsAt(
       1, TabCloseTypes::CLOSE_USER_GESTURE);
   EXPECT_TRUE(base::test::RunUntil([&]() {
-    return !PathExists(first_temp) && !PathExists(second_temp);
+    return DoesNotExists(first_temp_paths) && DoesNotExists(second_temp_paths);
   })) << "All temporary upload files should be deleted after the tab closes";
 }
 
@@ -350,10 +375,13 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   content::WebContents* web_contents =
       OpenTabAndSelectFiles({fbmd_test_image_path_, text_path});
 
-  // 1. Check since only the JPEG is strippable, exactly one temporary copy
-  // is created.
-  const std::vector<base::FilePath> temp_files = strip_completed_future_.Take();
-  ASSERT_EQ(1u, temp_files.size());
+  // 1. Check since only the JPEG is strippable, exactly one parent temp
+  // directory is queued (holding the stripped copy).
+  const std::vector<base::FilePath> temp_paths = strip_completed_future_.Take();
+  ASSERT_EQ(1u, temp_paths.size());
+  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
+            StrippedCopyIn(temp_paths[0]).BaseName());
+  EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
 
   // 2. Check the uploaded payload carries both files: the image scrubbed of
   // FBMD and the text file intact.

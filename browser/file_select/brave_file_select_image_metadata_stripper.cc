@@ -6,10 +6,10 @@
 #include "brave/browser/file_select/brave_file_select_image_metadata_stripper.h"
 
 #include <algorithm>
-#include <functional>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "base/feature_list.h"
@@ -18,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -70,76 +71,124 @@ bool HasStrippableImage(
       });
 }
 
+// Helps to ensure we only touch files in the |temp_root_dir| we created.
+bool CanDeleteTempPath(const base::FilePath& temp_root_dir,
+                       const base::FilePath& temp_path) {
+  return !temp_path.empty() && !temp_path.ReferencesParent() &&
+         (temp_path == temp_root_dir || temp_root_dir.IsParent(temp_path));
+}
+
 // Algorithm:
-// 1) Iterate over each item in the |selected_files|.
-// 2) If the "ith" item is not strippable, continue with 1.
-// 3) If the "ith" is stripppable then:
-//    3.a) Copy the contents of "ith" item into a temporary file.
-//    3.b) Try and strip the metadata from the temporary file.
-//         3.b.1) If failed: Delete the temporary file and go to Step 1.
-//         3.b.2) Otherwise, mark the temporay file for upload and then later
-//         for deletion.
+// 1) Create one unique temporary root directory for this selection.
+// 2) Iterate over each item in the |selected_files|.
+// 3) If the "ith" item is not strippable, continue with 2.
+// 4) If the "ith" is strippable then:
+//    4.a) Copy it into a unique subdir of the root, and use the filename of
+//    the original file. On macOS file controls show the name the user picked.
+//    4.b) Try and strip the metadata from that copy.
+//         4.b.1) If failed: Delete the subdir and go to Step 2.
+//         4.b.2) Otherwise, mark the copy for upload.
+// 5) If nothing was stripped, delete the temporary root directory created in
+// step 1.
+// 6) Else we queue the temporary root directory created in step 1 for
+// deletion via |temporary_files|.
 StripResult StripListOnBlockingThread(
     std::vector<blink::mojom::FileChooserFileInfoPtr> selected_files) {
   StripResult result;
-  auto temp_file_deleter = [&result](base::FilePath&& temp) {
-    // The guard helps to schedule the delete to upstream's delete lifecycle
-    // if ever our own attempt to delete the temporary file failed.
-    if (!base::DeleteFile(temp)) {
-      result.temp_files.push_back(std::move(temp));
+
+  // 1) Create one unique temporary root directory for this selection.
+  base::FilePath temp_root_dir;
+  if (!base::CreateNewTempDirectory(kUploadStripTempDirPrefix,
+                                    &temp_root_dir)) {
+    LOG(ERROR) << "Upload strip skipped; temp directory could not be created.";
+    result.selected_files = std::move(selected_files);
+    return result;
+  }
+
+  // This will be used to create teh sub directory inside the |temp_root_dir|.
+  size_t temp_sub_dir_index = 0;
+
+  // Delete the |temp_root_dir| if no stripping was done, or a sub
+  // directory. If the deletion fails, we push the path to be cleaned up in
+  // upstream's DeleteTemporaryFiles cleanup.
+  auto temp_dir_deleter = [root = temp_root_dir, &result](base::FilePath path) {
+    if (!CanDeleteTempPath(root, path) || !base::DeletePathRecursively(path)) {
+      result.temp_files.push_back(std::move(path));
     }
   };
 
+  bool stripped_any = false;
+  // 2. Iterate over each item in the |selected_files|.
   for (auto& info : selected_files) {
+    // File issues. Skip.
     if (!info || !info->is_native_file()) {
       continue;
     }
-    const base::FilePath& src = info->get_native_file()->file_path;
+    auto& native = info->get_native_file();
+    const base::FilePath src = native->file_path;
+
+    const base::FilePath basename = src.BaseName();
+    // File issues. Skip. "" or "../" as they can't be used to create a
+    // corresponding temporary file with the same base name. The later could
+    // escpae the |temp_root_dir| isolation.
+    if (basename.empty() || basename.ReferencesParent()) {
+      continue;
+    }
+
+    // 3. If the "ith" item is not strippable, continue with 2.
     if (!IsStrippableImagePath(src)) {
       continue;
     }
 
-    base::FilePath temp;
-    if (!base::CreateTemporaryFile(&temp)) {
-      LOG(ERROR) << "Upload strip skipped; temp file could not be created: "
+    // 4.a) Copy it into a unique subdir of the root, ...
+    const base::FilePath sub_dir_path =
+        temp_root_dir.AppendASCII(base::NumberToString(temp_sub_dir_index++));
+    if (!base::CreateDirectory(sub_dir_path)) {
+      LOG(ERROR) << "Upload strip skipped; temp subdir could not be created: "
                  << src;
       continue;
     }
 
-    if (!base::CopyFile(src, temp)) {
+    // 4.a) ... and use the filename of the original file.
+    const base::FilePath temp_stripped_file = sub_dir_path.Append(basename);
+    if (!base::CopyFile(src, temp_stripped_file)) {
       DVLOG(1) << "Upload strip skipped; Failed to copy the image file to a "
                   "temporary file.";
-      temp_file_deleter(std::move(temp));
+      temp_dir_deleter(sub_dir_path);
       continue;
     }
 
-    // We try and remove the iptc metadata from the file.
-    const bool success = RemoveIptcMetadata(
-        image_metadata_stripper::StrippingClient::kFileSelect, temp);
-    if (!success) {
+    // 4.b) Try and strip the metadata from that copy.
+    if (!RemoveIptcMetadata(
+            image_metadata_stripper::StrippingClient::kFileSelect,
+            temp_stripped_file)) {
       DVLOG(1) << "No stripping occured; keeping original: " << src;
-      temp_file_deleter(std::move(temp));
+      // 4.b.1) If failed: Delete the subdir and go to Step 2.
+      temp_dir_deleter(sub_dir_path);
       continue;
     }
 
-    // Re-write the file path of the original upload file, with our temporary's
-    // file path. This keeps the overall |selected_files| untouched which is
-    // then moved directly to the result.
-    // TODO(https://github.com/brave/brave-browser/issues/5238): On macOS the
-    // file control shows the temp basename (e.g.
-    // .com.brave.Browser.channelNameHere.XXXXXX).
-    // LayoutThemeMac::DisplayNameForFile uses NSFileManager displayNameAtPath
-    // of the backing path so even setting display_name / File.name is not
-    // enough. See
-    // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/
-    // renderer/core/layout/layout_theme_mac.mm;l=60 for details.
-    // Need to figure out how to handle this issue.
-    info->get_native_file()->file_path = temp;
-
-    // Mark the temporary file for deletion later via the upstream's
-    // DeleteTemporaryFiles method.
-    result.temp_files.push_back(std::move(temp));
+    // 4.b.2) Otherwise, mark the copy for upload.
+    // We are swapping out the path of the original file with
+    // |temp_stripped_file| which has been stripped of metadata.
+    native->file_path = temp_stripped_file;
+    if (native->display_name.empty()) {
+      native->display_name = basename.AsUTF16Unsafe();
+    }
+    // This would defer the deletion of the |temp_root_dir| cleanup to the
+    // upstream which will delete it once the tab is closed.
+    stripped_any = true;
   }
+
+  if (!stripped_any) {
+    // 5) If nothing was stripped, delete the temporary root directory.
+    temp_dir_deleter(std::move(temp_root_dir));
+  } else {
+    // Else we queue the temporary root directory created in step 1 for deletion
+    // via |temporary_files|.
+    result.temp_files.push_back(std::move(temp_root_dir));
+  }
+
   result.selected_files = std::move(selected_files);
   return result;
 }
@@ -210,6 +259,30 @@ bool MaybeStripImageMetadataForUpload(
 void SetStripCompletedCallbackForTesting(  // IN-TEST
     base::OnceCallback<void(std::vector<base::FilePath>)>* callback) {
   g_on_strip_completed_callback_for_testing_ = callback;
+}
+
+void DeleteImageMetadataStripperTemporaryDir(
+    std::vector<base::FilePath>& paths) {
+  const auto temp_root_dir =
+      std::ranges::find_if(paths, [](const base::FilePath& path) {
+        return !path.empty() && !path.ReferencesParent() &&
+               path.BaseName().value().find(kUploadStripTempDirPrefix) !=
+                   base::FilePath::StringType::npos &&
+               base::DirectoryExists(path);
+      });
+
+  if (temp_root_dir == paths.end()) {
+    return;
+  }
+
+  if (!base::DeletePathRecursively(*temp_root_dir)) {
+    LOG(ERROR) << "Failed to delete the temporary directory for image metadata "
+                  "stripper. dir:"
+               << *temp_root_dir;
+  }
+
+  // Remove from the list.
+  paths.erase(temp_root_dir);
 }
 
 }  // namespace brave

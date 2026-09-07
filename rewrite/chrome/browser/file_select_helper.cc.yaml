@@ -18,3 +18,15 @@ substitutions:
                 base::BindOnce(&FileSelectHelper::NotifyListenerAndEnd, this))) {
           return;
         }
+
+  - description: |-
+      Recursively delete Brave-owned upload-strip temp directories.
+
+      FileSelectHelper::DeleteFiles uses DeleteFile, which cannot remove a
+      non-empty directory. The metadata stripper creates one temporary root directory
+      which contains K sub-directories where each sub-directory is mapped to one stripped image.
+      This method helps to recursively delete only the temporary root directory we created for a stripping stage.
+    preempt_function_impl:
+      function_name: DeleteFiles
+      code: |-
+        brave::DeleteImageMetadataStripperTemporaryDir(paths);
