@@ -34,12 +34,25 @@ namespace tabs {
 
 namespace {
 
+// An achromatic user color carries no hue - SkColorToHSL() reports 0 for it,
+// which HSLShift() would then apply as red. Its generated palette is already
+// neutral, so use the palette colors without any tinting.
+bool ShouldTintWithUserColor(const ui::ColorProviderKey& key) {
+  if (!ShouldUseAccentTintedPalette(key)) {
+    return false;
+  }
+
+  const SkColor user_color = *key.user_color;
+  return SkColorGetR(user_color) != SkColorGetG(user_color) ||
+         SkColorGetG(user_color) != SkColorGetB(user_color);
+}
+
 SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
                                             SkColor input,
                                             const ui::ColorMixer& mixer) {
   const auto default_color =
       mixer.GetResultColor(nala::kColorDesktopbrowserTabbarActiveTabVertical);
-  if (!ShouldUseAccentTintedPalette(key)) {
+  if (!ShouldTintWithUserColor(key)) {
     return default_color;
   }
 
@@ -62,7 +75,7 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
         default_color_id == nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
 
   const auto default_color = mixer.GetResultColor(default_color_id);
-  if (!ShouldUseAccentTintedPalette(key)) {
+  if (!ShouldTintWithUserColor(key)) {
     // Defaults to Nala if no user color.
     return default_color;
   }
@@ -99,7 +112,7 @@ SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
                                         SkColor input,
                                         const ui::ColorMixer& mixer) {
   const auto default_color = mixer.GetResultColor(default_color_id);
-  if (!ShouldUseAccentTintedPalette(key)) {
+  if (!ShouldTintWithUserColor(key)) {
     return default_color;
   }
 

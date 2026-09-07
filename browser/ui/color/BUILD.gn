@@ -9,9 +9,12 @@ source_set("unit_tests") {
   sources = [ "brave_color_mixers_unittest.cc" ]
 
   deps = [
+    "//brave/ui/color:nala_color_id",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
+    "//skia",
     "//testing/gtest",
     "//ui/color",
+    "//ui/color:mixers",
   ]
 }
