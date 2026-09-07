@@ -170,13 +170,14 @@ def get_flakiness_stats(test_id, days):
     """
     all_groups = []
     page_token = None
+    partition_time_range = _partition_time_range(days)
 
     while True:
         body = {
             "project": CHROMIUM_PROJECT,
             "testId": test_id,
             "predicate": {
-                "partitionTimeRange": _partition_time_range(days),
+                "partitionTimeRange": partition_time_range,
             },
             "pageSize": 1000,
         }
