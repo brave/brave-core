@@ -101,9 +101,9 @@ extra_deps = {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
         'objects': [
             {
-                'object_name': 'node_modules-4c3f83a.tar.gz',
-                'sha256sum': 'e9e855fa7a7ab58beb438fac7562a6e24742c298db1d6b9d78a7b7b846d7df98',
-                'size_bytes': 4574220,
+                'object_name': 'node_modules-42138ce.tar.gz',
+                'sha256sum': 'dbd8fd89b95bcf7d63418e575112a9a42c853a4fa0f1a2085c08d29269849169',
+                'size_bytes': 5041166,
             },
         ],
     },
