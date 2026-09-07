@@ -4,12 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Remove the unused `LayerType` import.'
-    regex:
-      pattern:
-        "import
-        org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;\n"
-      replace: ''
   - description: |-
       Remove the obsolete bottom-chin layer field.
 

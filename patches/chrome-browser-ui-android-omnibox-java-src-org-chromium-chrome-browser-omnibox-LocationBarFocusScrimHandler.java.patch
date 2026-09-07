@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-index b967a844d73b6e830be27d78b9f1a21d20fab023..f616e8533732012ea3fda02558e2dbf2e5bdee1f 100644
+index b967a844d73b6e830be27d78b9f1a21d20fab023..f829fd99b57bfde67a6a377ab8e59c8f8f5b941c 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-@@ -17,7 +17,6 @@ import org.chromium.base.supplier.ObservableSuppliers;
- import org.chromium.base.supplier.SettableNonNullObservableSupplier;
- import org.chromium.build.annotations.NullMarked;
- import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
--import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
- import org.chromium.chrome.browser.flags.ChromeFeatureList;
- import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
- import org.chromium.components.browser_ui.widget.scrim.ScrimProperties;
-@@ -47,7 +46,6 @@ public class LocationBarFocusScrimHandler {
+@@ -47,7 +47,6 @@ public class LocationBarFocusScrimHandler {
      private final Context mContext;
      private final NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
      private final Callback<Integer> mTabStripHeightChangeCallback;
@@ -18,7 +10,7 @@ index b967a844d73b6e830be27d78b9f1a21d20fab023..f616e8533732012ea3fda02558e2dbf2
      private final SettableNonNullObservableSupplier<Boolean> mScrimVisibilitySupplier =
              ObservableSuppliers.createNonNull(false);
  
-@@ -72,7 +70,6 @@ public class LocationBarFocusScrimHandler {
+@@ -72,7 +71,6 @@ public class LocationBarFocusScrimHandler {
              BottomControlsStacker bottomControlsStacker) {
          mScrimManager = scrimManager;
          mLocationBarDataProvider = locationBarDataProvider;
@@ -26,7 +18,7 @@ index b967a844d73b6e830be27d78b9f1a21d20fab023..f616e8533732012ea3fda02558e2dbf2
          mContext = context;
          Callback<Boolean> visibilityChangeCallbackWrapper =
                  visible -> {
-@@ -107,6 +104,7 @@ public class LocationBarFocusScrimHandler {
+@@ -107,6 +105,7 @@ public class LocationBarFocusScrimHandler {
                      mScrimModel.set(ScrimProperties.TOP_MARGIN, newHeight);
                  };
          mTabStripHeightSupplier.addSyncObserverAndPostIfNonNull(mTabStripHeightChangeCallback);
@@ -34,7 +26,7 @@ index b967a844d73b6e830be27d78b9f1a21d20fab023..f616e8533732012ea3fda02558e2dbf2
      }
  
  
-@@ -128,9 +126,7 @@ public class LocationBarFocusScrimHandler {
+@@ -128,9 +127,7 @@ public class LocationBarFocusScrimHandler {
              scrimColor = mLightScrimColor;
          }
          mScrimModel.set(ScrimProperties.BACKGROUND_COLOR, scrimColor);
