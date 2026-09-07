@@ -95,8 +95,8 @@ GENERATED_FILTERS_DIR = os.path.join(BRAVE_CORE_ROOT, "test", "filters",
 # Platforms Brave runs upstream test suites on, mapped to the "os"
 # prefixes of the corresponding upstream bots. Bots for other platforms
 # (e.g. ChromeOS) are ignored. The platform names must match those used by
-# getApplicableFilters in build/commands/lib/testUtils.ts. This is why we also
-# currently do not handle Android here.
+# getApplicableFilters in build/commands/lib/testUtils.ts, which has no
+# Android filters yet.
 PLATFORM_OS_PREFIXES = {
     "linux": ("Ubuntu", "Linux"),
     "macos": ("Mac", ),
@@ -110,10 +110,11 @@ SANITIZERS = ("asan", "msan", "ubsan")
 
 # Bots whose builder name contains one of these don't correspond to any
 # generated filter file: Brave doesn't build for ChromeOS/Fuchsia or run
-# tests under TSan, and iOS has no filter files (iOS bots report a Mac
-# "os", so they can't be excluded via PLATFORM_OS_PREFIXES).
-EXCLUDED_BUILDER_KEYWORDS = ("chromeos", "chromium os", "fuchsia", "ios",
-                             "tsan")
+# tests under TSan, and Android/iOS have no filter files. These bots can't
+# be excluded via PLATFORM_OS_PREFIXES because Android emulator bots report
+# the Linux host "os" and iOS bots a Mac "os".
+EXCLUDED_BUILDER_KEYWORDS = ("android", "chromeos", "chromium os", "fuchsia",
+                             "ios", "tsan")
 
 # For clusters spanning many tests (parameterized families, bug rules),
 # only the test IDs with the most recent failures are checked
@@ -309,7 +310,10 @@ def config_for_variant(variant_def):
             break
     if platform is None:
         return None
-    builder = variant_def.get("builder", "").lower()
+    # Chromium's flake-retry bots run as builder "runner" in bucket
+    # "reviver"; the bot whose failures they retry is in "reviver_builder".
+    builder = " ".join((variant_def.get("builder", ""),
+                        variant_def.get("reviver_builder", ""))).lower()
     if any(keyword in builder for keyword in EXCLUDED_BUILDER_KEYWORDS):
         return None
     for sanitizer in SANITIZERS:
