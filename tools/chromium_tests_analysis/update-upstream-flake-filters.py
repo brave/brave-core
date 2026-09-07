@@ -312,8 +312,9 @@ def config_for_variant(variant_def):
         return None
     # Chromium's flake-retry bots run as builder "runner" in bucket
     # "reviver"; the bot whose failures they retry is in "reviver_builder".
-    builder = " ".join((variant_def.get("builder", ""),
-                        variant_def.get("reviver_builder", ""))).lower()
+    builder_names = (variant_def.get("builder", ""),
+                     variant_def.get("reviver_builder", ""))
+    builder = " ".join(filter(None, builder_names)).lower()
     if any(keyword in builder for keyword in EXCLUDED_BUILDER_KEYWORDS):
         return None
     for sanitizer in SANITIZERS:
