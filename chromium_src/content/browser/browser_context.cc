@@ -12,12 +12,12 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
-#include "content/browser/dom_storage/session_storage_namespace_impl.h"
+#include "content/browser/dom_storage/session_storage_namespace_handle_impl.h"
 #include "content/browser/renderer_host/navigation_controller_impl.h"
 #include "content/browser/renderer_host/render_view_host_delegate.h"
 #include "content/browser/site_instance_impl.h"
 #include "content/public/browser/render_view_host.h"
-#include "content/public/browser/session_storage_namespace.h"
+#include "content/public/browser/session_storage_namespace_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 
@@ -28,7 +28,8 @@ GetRemoteBlobStorageContextFor(BrowserContext* browser_context) {
   return content::ChromeBlobStorageContext::GetRemoteFor(browser_context);
 }
 
-scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
+scoped_refptr<content::SessionStorageNamespaceHandle>
+CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,
     std::optional<std::string> clone_from_namespace_id) {
@@ -37,11 +38,11 @@ scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
           partition->GetDOMStorageContext());
 
   if (clone_from_namespace_id) {
-    return content::SessionStorageNamespaceImpl::CloneFrom(
+    return content::SessionStorageNamespaceHandleImpl::CloneFrom(
         context_wrapper, namespace_id, clone_from_namespace_id.value(), true);
   } else {
-    return content::SessionStorageNamespaceImpl::Create(context_wrapper,
-                                                        namespace_id);
+    return content::SessionStorageNamespaceHandleImpl::Create(context_wrapper,
+                                                              namespace_id);
   }
 }
 
