@@ -9108,6 +9108,7 @@ class GnEditDispatchTest(unittest.TestCase):
             'BUILD.gn', 'source_set("a") {\n'
             '  deps = []\n'
             '}\n'
+            '\n'
             'source_set("b") {\n'
             '  deps = []\n'
             '}\n', 'substitutions:\n'
@@ -9120,6 +9121,7 @@ class GnEditDispatchTest(unittest.TestCase):
             result, 'source_set("a") {\n'
             '  deps = [ "//brave/a" ]\n'
             '}\n'
+            '\n'
             'source_set("b") {\n'
             '  deps = []\n'
             '}\n')
