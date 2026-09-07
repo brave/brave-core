@@ -25,7 +25,6 @@
 #include "components/omnibox/common/omnibox_feature_configs.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
-#include "third_party/omnibox_proto/entity_info.pb.h"
 #include "third_party/omnibox_proto/navigational_intent.pb.h"
 #include "ui/base/device_form_factor.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -44,7 +43,6 @@ SearchSuggestionParser::SuggestResult MakeCalculatorSuggestResult(
     const std::u16string& expression,
     const std::u16string& answer,
     const std::u16string& input_text,
-    omnibox::EntityInfo entity_info,
     int relevance,
     bool from_keyword) {
   std::u16string match_contents = answer;
@@ -65,7 +63,7 @@ SearchSuggestionParser::SuggestResult MakeCalculatorSuggestResult(
       // An annotation would become the match description, which restores the
       // separator the desktop match cell suppresses for CALCULATOR -- the row
       // would read "<answer> - <annotation>".
-      /*annotation*/ {}, std::move(entity_info),
+      /*annotation*/ {},
       /*deletion_url*/ {}, from_keyword, omnibox::NAV_INTENT_NONE, relevance,
       /*relevance_from_server*/ false, /*should_prefetch*/ false,
       /*should_prerender*/ false, base::CollapseWhitespace(input_text, false));
@@ -138,7 +136,7 @@ void BraveSearchProvider::UpdateMatches() {
     // destination URL, search terms, classifications and dedup keys.
     default_results_.suggest_results.push_back(MakeCalculatorSuggestResult(
         /*expression=*/input_.text(), *calculator_answer_,
-        /*input_text=*/input_.text(), /*entity_info=*/{},
+        /*input_text=*/input_.text(),
         omnibox_feature_configs::CalcProvider::Get().score,
         /*from_keyword=*/false));
   }
