@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toasts/toast_controller_unittest.cc b/chrome/browser/ui/toasts/toast_controller_unittest.cc
-index 15537b8ec7187b49ca4c36ec72ff0986e170fad1..0ad9362f80542ad34c7c764c8688338df5ffa432 100644
+index f0b9a3720f33583f29fc8fc4adc482714ae310b0..f64a09d59d98d082970803b228f1e5d6bafb181b 100644
 --- a/chrome/browser/ui/toasts/toast_controller_unittest.cc
 +++ b/chrome/browser/ui/toasts/toast_controller_unittest.cc
 @@ -70,7 +70,7 @@ class ToastControllerUnitTest : public testing::Test {
@@ -189,4 +189,55 @@ index 15537b8ec7187b49ca4c36ec72ff0986e170fad1..0ad9362f80542ad34c7c764c8688338d
 +  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kClearBrowsingData)));
    ::testing::Mock::VerifyAndClear(controller.get());
    EXPECT_TRUE(controller->IsShowingToast());
+ 
+@@ -282,13 +282,13 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+ 
+ TEST_F(ToastControllerUnitTest, RecordToastDismissReasonHistogram) {
+   base::HistogramTester histogram_tester;
+-  RecordToastDismissReason(ToastId::kLinkCopied,
++  RecordToastDismissReason(ToastId::kLinkToHighlightCopied,
+                            toasts::ToastCloseReason::kFeatureDismiss);
+   histogram_tester.ExpectUniqueSample("Toast.LinkCopied.Dismissed",
+                                       toasts::ToastCloseReason::kFeatureDismiss,
+                                       1);
+ 
+-  RecordToastDismissReason(ToastId::kLinkCopied,
++  RecordToastDismissReason(ToastId::kLinkToHighlightCopied,
+                            toasts::ToastCloseReason::kAutoDismissed);
+   histogram_tester.ExpectBucketCount("Toast.LinkCopied.Dismissed",
+                                      toasts::ToastCloseReason::kAutoDismissed,
+@@ -299,14 +299,14 @@ TEST_F(ToastControllerUnitTest,
+        NavigationDismissesRegularToastButNotPersistOnNavigationToast) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+                                   kTestStringResId)
+           .Build());
+   registry->RegisterToast(
+-      ToastId::kImageCopied,
++      ToastId::kClearBrowsingData,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -318,7 +318,7 @@ TEST_F(ToastControllerUnitTest,
+ 
+   // 1. Regular toast has persist_on_navigation = false.
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kLinkToHighlightCopied)));
+   EXPECT_TRUE(controller->IsShowingToast());
+   EXPECT_TRUE(controller->GetToastCloseTimerForTesting()->IsRunning());
+ 
+@@ -329,7 +329,7 @@ TEST_F(ToastControllerUnitTest,
+ 
+   // 2. Toast with persist_on_navigation = true.
+   EXPECT_CALL(*controller, CreateToast);
+-  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kImageCopied)));
++  EXPECT_TRUE(controller->MaybeShowToast(ToastParams(ToastId::kClearBrowsingData)));
+   EXPECT_TRUE(controller->IsShowingToast());
+   EXPECT_TRUE(controller->GetToastCloseTimerForTesting()->IsRunning());
  
