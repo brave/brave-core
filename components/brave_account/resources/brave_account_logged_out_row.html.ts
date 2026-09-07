@@ -11,7 +11,7 @@ import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js
 import { LoggedOutVerificationIntent } from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountLoggedOutRowElement) {
-  return this.state.verification
+  return html`${this.state.verification
     ? html` <div class="first-row">
           <leo-icon name="social-brave-release-favicon-fullheight-color">
           </leo-icon>
@@ -89,5 +89,5 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
             BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL,
           )}
         </leo-button>
-      </div>`
+      </div>`}`
 }

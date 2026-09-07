@@ -21,7 +21,7 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
         === LoggedInVerificationIntent.kChangePassword,
   )
 
-  return this.state.verification
+  return html`${this.state.verification
     ? html` <div class="first-row">
           <leo-icon name="social-brave-release-favicon-fullheight-color">
           </leo-icon>
@@ -110,5 +110,5 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
             )}
           </leo-menu-item>
         </leo-buttonmenu>
-      </div>`
+      </div>`}`
 }
