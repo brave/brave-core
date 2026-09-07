@@ -51,12 +51,25 @@ TEST_F(BraveColorMixersTest, ColorOverrideTest) {
             color_provider().GetColor(kColorOmniboxSecurityChipDangerous));
 }
 
-// The "Grey" theme's user color is achromatic, so tab colors must not be
-// tinted - HSLShift() would read its hue as 0 and turn them red.
-TEST_F(BraveColorMixersTest, AchromaticUserColorLeavesTabColorsUntintedTest) {
-  color_provider_key().user_color = SkColorSetRGB(0x88, 0x88, 0x88);
+// Tab colors come straight from the generated Nala palette. Shifting them in
+// HSL on top of that amplifies the hue that 8-bit rounding leaves in these
+// near-grey colors, which tinted the neutral themes ("Grey" red, "Cool grey"
+// pink).
+class BraveTabPaletteColorMixersTest
+    : public BraveColorMixersTest,
+      public testing::WithParamInterface<SkColor> {};
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         BraveTabPaletteColorMixersTest,
+                         testing::Values(SkColorSetRGB(0x88, 0x88, 0x88),
+                                         SkColorSetRGB(0x8C, 0xAB, 0xE4)));
+
+TEST_P(BraveTabPaletteColorMixersTest, AccentColorLeavesTabColorsUntintedTest) {
+  color_provider_key().user_color = GetParam();
   color_provider_key().user_color_source =
       ui::ColorProviderKey::UserColorSource::kAccent;
+  color_provider_key().scheme_variant =
+      ui::ColorProviderKey::SchemeVariant::kNeutral;
   AddUiAndChromeColorMixers();
 
   EXPECT_EQ(color_provider().GetColor(kColorBraveVerticalTabActiveBackground),
@@ -69,4 +82,12 @@ TEST_F(BraveColorMixersTest, AchromaticUserColorLeavesTabColorsUntintedTest) {
       color_provider().GetColor(kColorTabBackgroundInactiveHoverFrameActive),
       color_provider().GetColor(
           nala::kColorDesktopbrowserTabbarHoverTabHorizontal));
+  EXPECT_EQ(
+      color_provider().GetColor(kColorBraveSplitViewTileBackgroundHorizontal),
+      color_provider().GetColor(
+          nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal));
+  EXPECT_EQ(
+      color_provider().GetColor(kColorBraveSplitViewTileBackgroundVertical),
+      color_provider().GetColor(
+          nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical));
 }
