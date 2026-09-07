@@ -31,7 +31,8 @@ their integrity. Everything is installed into a single `node_modules/` tree.
   `package.json` using whatever `node`/`npm` is on the system PATH, and
   refreshes the lockfile.
 - [`package_node_modules.py`](package_node_modules.py) packs the `node_modules/`
-  contents into `node_modules.tar.gz` and prints the object details to record.
+  contents into `node_modules.tar.gz` and prints the
+  `install_extra_deps.py setdep` command that repins its `EXTRA_DEPS` entry.
 
 Tools installed this way are run via their in-package entry point, e.g. pnpm:
 
