@@ -5,5 +5,8 @@
 
 brave_devtools_front_end_panels_network_sources = [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/RequestAdblockView.ts" ]
 
-brave_devtools_front_end_panels_network_deps =
+# Type-checking dependency: RequestAdblockView.ts and the NetworkItemView
+# chromium_src override both import legacy_wrapper, and only `ts_deps` puts a
+# project reference for it in the target's tsconfig.
+brave_devtools_front_end_panels_network_ts_deps =
     [ "../../ui/components/legacy_wrapper:bundle" ]
