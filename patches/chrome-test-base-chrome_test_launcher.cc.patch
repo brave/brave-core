@@ -10,12 +10,13 @@ index cf96f5cdd460dbb380ec91f5e1176777e58f72a1..1fd406183015d5bbaf86f58a140e2ece
  #include "content/public/common/content_switches.h"
  #include "content/public/renderer/render_frame.h"
  #include "content/public/renderer/render_frame_observer.h"
-@@ -208,7 +209,9 @@ ChromeTestChromeMainDelegate::ChromeTestChromeMainDelegate()
+@@ -208,7 +209,10 @@ ChromeTestChromeMainDelegate::ChromeTestChromeMainDelegate()
      : ChromeMainDelegate({.exe_entry_point_ticks = base::TimeTicks::Now()}) {}
  #endif
  
 -ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate() = default;
 +ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate() {
++  content::SetContentClient(&chrome_content_client_);
 +  content::SetRendererClientForTesting(nullptr);
 +}
  

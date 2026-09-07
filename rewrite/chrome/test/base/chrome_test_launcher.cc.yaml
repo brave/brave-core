@@ -36,7 +36,14 @@ substitutions:
       which PartitionAlloc's BackupRefPtr flags as a dangling-pointer bug
       once chrome_content_renderer_client_ is actually freed. Null it out
       first so the later raw_ptr release sees an already-cleared pointer.
+
+      SetRendererClientForTesting() writes through the global ContentClient
+      (g_client). RenderViewTest-based browser tests replace g_client with a
+      heap TestContentClient and destroy it in ~RenderViewTest, before this
+      destructor runs. Rebind g_client to chrome_content_client_ first so
+      we clear our renderer_ raw_ptr.
     preempt_function_impl:
       function_name: ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate
       code: |
+        content::SetContentClient(&chrome_content_client_);
         content::SetRendererClientForTesting(nullptr);
