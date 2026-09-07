@@ -24,13 +24,13 @@
 namespace content {
 
 class WebContents;
-class SessionStorageNamespace;
+class SessionStorageNamespaceHandle;
 class StoragePartition;
 
 CONTENT_EXPORT mojo::PendingRemote<storage::mojom::BlobStorageContext>
 GetRemoteBlobStorageContextFor(BrowserContext* browser_context);
 
-CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace>
+CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespaceHandle>
 CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,
