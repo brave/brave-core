@@ -1,12 +1,58 @@
 diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
-index 67bd2274cf80b2bb7fe4d52125dbd3ca14e86629..325019e2f0de42422a6ff326aa709ee3c07ee7b8 100644
+index c93acc3dfdb5d0a94461b97d94c740fff828f0b2..ecd1b9d39b2f1f763ee55aeaa705a27700743288 100644
 --- a/scripts/build/typescript/typescript.gni
 +++ b/scripts/build/typescript/typescript.gni
-@@ -219,6 +219,7 @@ template("legacy_ts_library") {
+@@ -127,6 +127,26 @@ template("ts_library") {
+     _all_sources += invoker.additional_type_definitions
+   }
  
-       foreach(src, sources) {
-         _extension = get_path_info(src, "extension")
-+        if (label_matches(src, ["//brave/*"])) { src = get_path_info(src, "name") }
++  # Brave adds new DevTools files from //brave/..., which sit outside this
++  # target's rootDir. run_with_restat.py hardlinks them next to the upstream
++  # sources before tsc runs, so everything tsc is told about them -- the
++  # tsconfig `files` list, the -dts source list and the computed output paths
++  # -- has to name that in-tree copy instead. `_all_sources` keeps the original
++  # path, so the actions still list the real file as an input.
++  # See //brave/docs/devtools_frontend_patching.md.
++  _rooted_sources = []
++  foreach(src, invoker.sources) {
++    if (label_matches(src, [ "//brave/*" ])) {
++      _rooted_sources += [ get_path_info(src, "file") ]
++    } else {
++      _rooted_sources += [ src ]
++    }
++  }
++  _all_rooted_sources = _rooted_sources + typescript_global_definition_files
++  if (defined(invoker.additional_type_definitions)) {
++    _all_rooted_sources += invoker.additional_type_definitions
++  }
++
+   _ts_references = []
+   _ts_deps = []
+   _sources_deps = []
+@@ -214,7 +234,7 @@ template("ts_library") {
+                                       "*.d.mts",
+                                       "*.d.cts",
+                                     ])
+-  _non_dts_sources = filter_exclude(invoker.sources,
++  _non_dts_sources = filter_exclude(_rooted_sources,
+                                     [
+                                       "*.d.ts",
+                                       "*.d.mts",
+@@ -246,7 +266,7 @@ template("ts_library") {
+   if (!_no_js_emit) {
+     _js_outputs = []
+   }
+-  foreach(src, invoker.sources) {
++  foreach(src, _rooted_sources) {
+     _ext = get_path_info(src, "extension")
+     _rel_name = rebase_path(src, _rootdir)
+     _rel_dir = get_path_info(_rel_name, "dir")
+@@ -298,7 +318,7 @@ template("ts_library") {
+           rebase_path(target_gen_dir, root_build_dir),
+           "--rootDir",
+           rebase_path(_rootdir, root_build_dir),
+-        ] + rebase_path(_all_sources, root_build_dir)
++        ] + rebase_path(_all_rooted_sources, root_build_dir)
  
-         # Any .d.ts file does not generate a corresponding a .js file, but we
-         # copy it over into the generated build folder instead, as tsc doesn't
+     args = [ "@{{response_file_name}}" ]
+ 
