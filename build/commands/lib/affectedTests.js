@@ -159,7 +159,9 @@ async function getAffectedTests(args = {}) {
   // Changes in GTestFilters are currently not tracked by GN
   const testAffectedDueModifiedFilterFiles = allTestExecutablesToConsider
     .flatMap((test) =>
-      getApplicableFilters(config, test).map((filter) => ({ test, filter })),
+      getApplicableFilters(config, test, { includeMissing: true }).map(
+        (filter) => ({ test, filter }),
+      ),
     )
     .filter(({ filter }) =>
       modified.has('//brave/' + path.relative(config.srcDir, filter)),

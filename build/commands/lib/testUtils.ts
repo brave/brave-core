@@ -60,7 +60,8 @@ export function getTestsToRun(config: Config, suite: string) {
 }
 
 // Returns a list of paths to files containing all the filters that would apply
-// to the current test suite, as long as such files exist in the filesystem.
+// to the current test suite. Include missing paths when detecting changes to
+// deleted filters.
 //
 // For instance, for Windows 64-bit and assuming all the filters files exist
 // in the filesystem, this method would return paths to the following files:
@@ -71,7 +72,11 @@ export function getTestsToRun(config: Config, suite: string) {
 // Each filter is looked up both in test/filters/ (hand-written) and in
 // test/filters/generated/ (auto-generated upstream flake filters, see
 // tools/chromium_tests_analysis/update-upstream-flake-filters.py).
-export function getApplicableFilters(config: Config, suite: string) {
+export function getApplicableFilters(
+  config: Config,
+  suite: string,
+  { includeMissing = false } = {},
+) {
   let filterFilePaths: string[] = []
 
   let targetPlatform: string = process.platform
@@ -108,7 +113,7 @@ export function getApplicableFilters(config: Config, suite: string) {
   possibleFilters.forEach((filterName) => {
     for (const filterDir of filterDirs) {
       let filterFilePath = path.join(filterDir, `${filterName}.filter`)
-      if (fs.existsSync(filterFilePath)) {
+      if (includeMissing || fs.existsSync(filterFilePath)) {
         filterFilePaths.push(filterFilePath)
       }
     }
