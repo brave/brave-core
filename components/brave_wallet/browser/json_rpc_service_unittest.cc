@@ -1900,7 +1900,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
       mojom::kZCashMainnet,
       mojom::kZCashTestnet,
   };
-  if (base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature)) {
+  if (IsCardanoEnabled()) {
     expected_chain_ids.push_back(mojom::kCardanoMainnet);
     expected_chain_ids.push_back(mojom::kCardanoTestnet);
   }
@@ -1919,7 +1919,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
       mojom::kBitcoinTestnet,
       mojom::kZCashTestnet,
   };
-  if (base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature)) {
+  if (IsCardanoEnabled()) {
     expected_hidden_chain_ids.push_back(mojom::kCardanoTestnet);
   }
   EXPECT_THAT(all_networks->hidden_chain_ids,
@@ -1947,7 +1947,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
       mojom::kBitcoinMainnet,
       mojom::kZCashMainnet,
   };
-  if (base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature)) {
+  if (IsCardanoEnabled()) {
     expected_swap_chain_ids.push_back(mojom::kCardanoMainnet);
   }
   EXPECT_THAT(all_networks->swap_chain_ids,
