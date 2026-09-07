@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/network/BUILD.gn b/front_end/panels/network/BUILD.gn
-index 9dc2a8478e5a1a2a583ace5b0828dc6604e55eb4..517fbf31a3b2c1e3d99eb6646b661d84a4fe490f 100644
+index 9dc2a8478e5a1a2a583ace5b0828dc6604e55eb4..a37b748c926b3ff1fa03597dd36701da28a0ee23 100644
 --- a/front_end/panels/network/BUILD.gn
 +++ b/front_end/panels/network/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,15 +10,7 @@ index 9dc2a8478e5a1a2a583ace5b0828dc6604e55eb4..517fbf31a3b2c1e3d99eb6646b661d84
  import("../../../scripts/build/ninja/devtools_entrypoint.gni")
  import("../../../scripts/build/ninja/devtools_module.gni")
  import("../../../scripts/build/ninja/generate_css.gni")
-@@ -34,6 +35,7 @@ generate_css("css_files") {
- }
- 
- devtools_ui_module("network") {
-+  deps = brave_devtools_front_end_panels_network_deps
-   sources = [
-     "BinaryResourceView.ts",
-     "EventSourceMessagesView.ts",
-@@ -66,6 +68,7 @@ devtools_ui_module("network") {
+@@ -66,6 +67,7 @@ devtools_ui_module("network") {
      "ShowMoreDetailsWidget.ts",
      "SignedExchangeInfoView.ts",
    ]
@@ -26,3 +18,11 @@ index 9dc2a8478e5a1a2a583ace5b0828dc6604e55eb4..517fbf31a3b2c1e3d99eb6646b661d84
  
    ts_deps = [
      "../../core/common:bundle",
+@@ -113,6 +115,7 @@ devtools_ui_module("network") {
+     "./components:bundle",
+     "./forward:bundle",
+   ]
++  ts_deps += brave_devtools_front_end_panels_network_ts_deps
+ }
+ 
+ devtools_entrypoint("bundle") {

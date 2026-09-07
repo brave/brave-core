@@ -1,12 +1,45 @@
 diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
-index 67bd2274cf80b2bb7fe4d52125dbd3ca14e86629..325019e2f0de42422a6ff326aa709ee3c07ee7b8 100644
+index bc030591cfc829235d07a62e95f898f334e12df7..02b76b053673249c9cf280d34691cd543bbb21a3 100644
 --- a/scripts/build/typescript/typescript.gni
 +++ b/scripts/build/typescript/typescript.gni
-@@ -219,6 +219,7 @@ template("legacy_ts_library") {
+@@ -94,7 +94,7 @@ import("./typescript_vars.gni")
+ #    causing Ninja to prune recompilation of :module_b_checked.
  
-       foreach(src, sources) {
-         _extension = get_path_info(src, "extension")
-+        if (label_matches(src, ["//brave/*"])) { src = get_path_info(src, "name") }
+ # Defines a TypeScript library target using tsc v7+.
+-template("ts_library") {
++template("ts_library_chromium") {
+   assert(defined(invoker.sources),
+          "You must specify 'sources' for $target_name")
  
-         # Any .d.ts file does not generate a corresponding a .js file, but we
-         # copy it over into the generated build folder instead, as tsc doesn't
+@@ -498,6 +498,31 @@ template("ts_library") {
+   }
+ }
+ 
++template("ts_library") {
++  assert(defined(invoker.sources),
++         "You must specify 'sources' for $target_name")
++
++  ts_library_chromium(target_name) {
++    forward_variables_from(invoker, "*")
++
++    # Brave adds new DevTools files from //brave/..., which sit outside this
++    # target's rootDir. run_with_restat.py hardlinks them next to the upstream
++    # sources before tsc runs, so everything tsc is told about them -- the
++    # tsconfig `files` list, the -dts source list and the computed output paths
++    # -- has to name that in-tree copy instead. `_all_sources` keeps the
++    # original path, so the actions still list the real file as an input. See
++    # //brave/docs/devtools_frontend_patching.md.
++    sources = []
++    foreach(src, invoker.sources) {
++      if (label_matches(src, [ "//brave/*" ])) {
++        sources += [ get_path_info(src, "file") ]
++      } else {
++        sources += [ src ]
++      }
++    }
++  }
++}
++
+ set_defaults("ts_library") {
+   # Build output should be private and directories should export all relevant
+   # components in a group
