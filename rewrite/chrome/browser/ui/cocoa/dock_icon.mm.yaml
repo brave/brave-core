@@ -1,0 +1,125 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Report download progress through the Dock tile's badge label rather than
+# through a custom content view.
+#
+# Brave ships a layered app icon, whose light, dark and tinted variants live in
+# the asset catalog as `IconImageStack` renditions that only the Dock knows how
+# to composite. Setting `NSDockTile.contentView` takes that compositing away and
+# leaves the app to draw the icon itself, and the only thing an app can get hold
+# of is the single flattened `Icon Image` rendition, which carries no appearance
+# variants at all. `-[NSImage imageNamed:NSImageNameApplicationIcon]`,
+# `-[NSApplication applicationIconImage]`, `-[NSWorkspace iconForFile:]` and
+# `NSURLEffectiveIconKey` all return that same flattened image, under either
+# appearance and whether or not the lookup is made inside
+# `-[NSAppearance performAsCurrentDrawingAppearance:]`.
+#
+# So for as long as a content view is attached the icon cannot follow the system
+# appearance, and upstream attaches one for the whole of the process lifetime.
+# That is why the icon only picked up a light/dark switch across a restart, and
+# why it went flat as soon as anything was downloaded. Upstream does not see
+# this because Chrome's icon is the same in either appearance.
+#
+# The badge label leaves the tile's content view alone, so the Dock keeps
+# compositing the icon for the current appearance.
+
+substitutions:
+  - description: |
+      Drop the includes for the removed drawing code.
+    count: 2
+    regex:
+      re_pattern:
+        '#include "base/apple/foundation_util\.h"\n|#include
+        "ui/gfx/scoped_ns_graphics_context_save_gstate_mac\.h"\n'
+      replace: ''
+
+  - description: |
+      Remove the custom Dock tile view.
+
+      Drawing the badge over the app icon means drawing the app icon, and the
+      only icon available to do that with is the flattened one, which is stuck
+      in a single appearance.
+    regex:
+      re_pattern: 'namespace \{[\s\S]*?\n@end\n\n(?=@implementation DockIcon)'
+      replace: ''
+
+  - description: |
+      Report the number of downloads in progress through the Dock tile's badge
+      label.
+
+      The count now lives on `DockIcon`, as there is no longer a view to park it
+      on. A badge is too small to describe progress in, so the progress itself
+      is no longer reported; the download button in the toolbar still shows it.
+      Throttling is unchanged.
+    regex:
+      re_pattern: '@implementation DockIcon \{[\s\S]*\n@end'
+      replace: |-
+        @implementation DockIcon {
+          // The number of downloads in progress.
+          int _downloads;
+
+          // The time that the icon was last updated.
+          base::TimeTicks _lastUpdate;
+
+          // If true, the state has changed in a significant way since the last icon
+          // update and throttling should not prevent icon redraw.
+          BOOL _forceUpdate;
+        }
+
+        + (DockIcon*)sharedDockIcon {
+          static DockIcon* icon = [[DockIcon alloc] init];
+
+          return icon;
+        }
+
+        // The badge to describe the downloads in progress with, or nil for none.
+        - (NSString*)badgeLabel {
+          if (_downloads == 0) {
+            return nil;
+          }
+
+          return [NSNumberFormatter localizedStringFromNumber:@(_downloads)
+                                                  numberStyle:NSNumberFormatterNoStyle];
+        }
+
+        - (void)updateIcon {
+          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+
+          constexpr base::TimeDelta kUpdateFrequencyCap = base::Hertz(5);
+
+          base::TimeTicks now = base::TimeTicks::Now();
+          base::TimeDelta timeSinceLastUpdate = now - _lastUpdate;
+          if (!_forceUpdate && timeSinceLastUpdate < kUpdateFrequencyCap) {
+            return;
+          }
+
+          _lastUpdate = now;
+          _forceUpdate = NO;
+
+          NSApp.dockTile.badgeLabel = [self badgeLabel];
+        }
+
+        - (void)setDownloads:(int)downloads {
+          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+
+          if (downloads != _downloads) {
+            _downloads = downloads;
+            _forceUpdate = YES;
+          }
+        }
+
+        // The badge describes how many downloads there are rather than how far
+        // along they are, so there is nothing to report for either of these.
+
+        - (void)setIndeterminate:(BOOL)indeterminate {
+          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+        }
+
+        - (void)setProgress:(float)progress {
+          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+        }
+
+        @end
