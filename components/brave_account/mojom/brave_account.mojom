@@ -220,6 +220,18 @@ interface Authentication {
   // Logs out the user by clearing the authentication token.
   LogOut();
 
+  // Establishes the sync chain for the signed-in Brave Account using a seed
+  // (64 hex chars encoding 32 bytes) derived entirely on the client from the
+  // account credentials. The sync server never sees the seed, preserving
+  // end-to-end encryption. Every device signed into the same account derives
+  // the identical seed and therefore automatically joins the same chain.
+  // Returns whether establishment succeeded.
+  EstablishAccountSync(string seedHex) => (bool success);
+
+  // Stops the account-linked sync chain. `keepLocalData` keeps the local copy
+  // of synced data on this device; otherwise it is wiped.
+  StopAccountSync(bool keepLocalData) => (bool success);
+
   // Retrieves a service token for the specified service.
   // `service`: the service for which to retrieve the token.
   // Returns `GetServiceTokenResult` on success, or

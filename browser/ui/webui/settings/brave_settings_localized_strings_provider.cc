@@ -1329,6 +1329,9 @@ void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
     html_source->AddLocalizedStrings(webui::kBraveAccountSettingsStrings);
     html_source->AddString("braveAccountLearnMoreURL",
                            kBraveAccountLearnMoreURL);
+    html_source->AddBoolean(
+        "braveAccountSyncEnabled",
+        brave_account::features::IsBraveAccountSyncEnabled());
   }
 }
 

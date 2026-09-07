@@ -15,6 +15,7 @@
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
@@ -264,6 +265,51 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
   sync_code_monitor_.RecordCodeSet();
 
   return true;
+}
+
+bool BraveSyncServiceImpl::EstablishAccountChain(const std::string& seed_hex,
+                                                const std::string& email) {
+  std::vector<uint8_t> seed;
+  if (!base::HexStringToBytes(seed_hex, &seed) || seed.size() != 32) {
+    LOG(ERROR) << "EstablishAccountChain: invalid seed hex (expected 32 bytes)";
+    return false;
+  }
+
+  const std::string sync_code =
+      brave_sync::crypto::PassphraseFromBytes32(seed);
+  if (!brave_sync::crypto::IsPassphraseValid(sync_code)) {
+    LOG(ERROR) << "EstablishAccountChain: derived passphrase is not valid";
+    return false;
+  }
+
+  if (!this->SetSeed(sync_code)) {
+    LOG(ERROR) << "EstablishAccountChain: failed to store seed";
+    return false;
+  }
+
+  brave_sync_prefs_.SetAccountSyncEmail(email);
+  brave_sync_prefs_.SetAccountSyncEnabled(true);
+
+  initiated_delete_account_ = false;
+  initiated_self_device_info_deleted_ = false;
+  initiated_join_chain_ = true;
+
+  sync_code_monitor_.RecordCodeSet();
+
+  GetUserSettings()->SetInitialSyncFeatureSetupComplete();
+  return true;
+}
+
+void BraveSyncServiceImpl::StopAccountChain(bool keep_local_data) {
+  brave_sync_prefs_.SetAccountSyncEnabled(false);
+  brave_sync_prefs_.SetAccountSyncEmail(std::string());
+
+  if (keep_local_data) {
+    StopAndClear(ResetEngineReason::kNotSignedIn);
+  } else {
+    // Wipe the local copy of synced data along with leaving the chain.
+    StopAndClear(ResetEngineReason::kResetLocalData);
+  }
 }
 
 void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {

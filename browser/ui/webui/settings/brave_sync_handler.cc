@@ -110,6 +110,18 @@ void BraveSyncHandler::RegisterMessages() {
       "SyncCopySyncCodeToClipboard",
       base::BindRepeating(&BraveSyncHandler::HandleCopySyncCodeToClipboard,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "SyncEstablishAccountSync",
+      base::BindRepeating(&BraveSyncHandler::HandleEstablishAccountSync,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "SyncStopAccountSync",
+      base::BindRepeating(&BraveSyncHandler::HandleStopAccountSync,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "SyncGetAccountSyncState",
+      base::BindRepeating(&BraveSyncHandler::HandleGetAccountSyncState,
+                          base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
@@ -437,4 +449,57 @@ void BraveSyncHandler::HandleSyncGetWordsCount(const base::ListValue& args) {
   ResolveJavascriptCallback(
       args[0].Clone(),
       base::Value(TimeLimitedWords::GetWordsCount(time_limited_sync_code)));
+}
+
+void BraveSyncHandler::HandleEstablishAccountSync(const base::ListValue& args) {
+  AllowJavascript();
+  CHECK_EQ(3U, args.size());
+  CHECK(args[1].is_string());
+  CHECK(args[2].is_string());
+  const std::string seed_hex = args[1].GetString();
+  const std::string email = args[2].GetString();
+
+  auto* sync_service = GetSyncService();
+  if (!sync_service) {
+    LOG(ERROR) << "Cannot get sync_service";
+    RejectJavascriptCallback(
+        args[0].Clone(),
+        l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_INTERNAL_SETUP_ERROR));
+    return;
+  }
+
+  const bool result = sync_service->EstablishAccountChain(seed_hex, email);
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(result));
+}
+
+void BraveSyncHandler::HandleStopAccountSync(const base::ListValue& args) {
+  AllowJavascript();
+  CHECK_EQ(2U, args.size());
+  CHECK(args[1].is_bool());
+  const bool keep_local_data = args[1].GetBool();
+
+  auto* sync_service = GetSyncService();
+  if (!sync_service) {
+    ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
+    return;
+  }
+
+  sync_service->StopAccountChain(keep_local_data);
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
+}
+
+void BraveSyncHandler::HandleGetAccountSyncState(const base::ListValue& args) {
+  AllowJavascript();
+  CHECK_EQ(1U, args.size());
+
+  auto* sync_service = GetSyncService();
+  base::Value::Dict state;
+  if (sync_service) {
+    state.Set("email", sync_service->prefs().GetAccountSyncEmail());
+    state.Set("enabled", sync_service->prefs().IsAccountSyncEnabled());
+  } else {
+    state.Set("email", std::string());
+    state.Set("enabled", false);
+  }
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(std::move(state)));
 }

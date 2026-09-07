@@ -57,6 +57,14 @@ class Prefs {
   std::string GetEncryptedSeed() const;
   void SetEncryptedSeed(const std::string& encrypted_seed);
 
+  static std::string GetAccountSyncEmailPath();
+  std::string GetAccountSyncEmail() const;
+  void SetAccountSyncEmail(const std::string& email);
+
+  static std::string GetAccountSyncEnabledPath();
+  bool IsAccountSyncEnabled() const;
+  void SetAccountSyncEnabled(bool enabled);
+
  private:
   const raw_ref<PrefService> pref_service_;
   AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;

@@ -7,8 +7,10 @@
 
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -47,11 +49,21 @@ std::unique_ptr<KeyedService>
 BraveAccountServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   CHECK(context);
+  auto* profile = Profile::FromBrowserContext(context);
   return std::make_unique<BraveAccountService>(
-      Profile::FromBrowserContext(context)->GetPrefs(),
+      profile->GetPrefs(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      g_browser_process->os_crypt_async());
+      g_browser_process->os_crypt_async(),
+      base::BindRepeating(
+          [](Profile* profile) -> syncer::BraveSyncServiceImpl* {
+            if (!SyncServiceFactory::IsSyncAllowed(profile)) {
+              return nullptr;
+            }
+            return static_cast<syncer::BraveSyncServiceImpl*>(
+                SyncServiceFactory::GetForProfile(profile));
+          },
+          profile));
 }
 
 }  // namespace brave_account

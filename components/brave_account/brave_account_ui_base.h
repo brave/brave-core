@@ -93,6 +93,10 @@ class BraveAccountUIBase {
 
     source->AddLocalizedStrings(webui::kBraveAccountStrings);
 
+    source->AddBoolean(
+        "braveAccountSyncEnabled",
+        brave_account::features::IsBraveAccountSyncEnabled());
+
     source->AddResourcePath("full_brave_brand.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
     source->AddResourcePath("full_brave_brand_dark.svg",

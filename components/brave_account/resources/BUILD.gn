@@ -16,6 +16,7 @@ build_webui("build") {
   ts_files = [
     "brave_account_browser_proxy.ts",
     "brave_account_common.ts",
+    "derive_account_seed.ts",
     "brave_account_credentials_dialog.html.ts",
     "brave_account_credentials_dialog.ts",
     "brave_account_dialog.html.ts",

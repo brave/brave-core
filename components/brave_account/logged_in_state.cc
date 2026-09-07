@@ -15,8 +15,11 @@ LoggedInState::LoggedInState(
     AccountStatePrefs& account_state_prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     const os_crypt_async::Encryptor& encryptor,
-    AddObserverCallback add_observer)
-    : StateBase(std::move(add_observer)),
+    AddObserverCallback add_observer,
+    EstablishAccountSyncForwardCallback establish_account_sync,
+    StopAccountSyncForwardCallback stop_account_sync)
+    : StateBase(std::move(add_observer), std::move(establish_account_sync),
+                std::move(stop_account_sync)),
       cancel_verification_(account_state_prefs, url_loader_factory, encryptor),
       change_password_(account_state_prefs, url_loader_factory, encryptor),
       get_service_token_(account_state_prefs, url_loader_factory, encryptor),

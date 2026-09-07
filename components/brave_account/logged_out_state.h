@@ -38,7 +38,9 @@ class LoggedOutState : public StateBase {
       AccountStatePrefs& account_state_prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       const os_crypt_async::Encryptor& encryptor,
-      AddObserverCallback add_observer);
+      AddObserverCallback add_observer,
+      EstablishAccountSyncForwardCallback establish_account_sync,
+      StopAccountSyncForwardCallback stop_account_sync);
 
   LoggedOutState(const LoggedOutState&) = delete;
   LoggedOutState& operator=(const LoggedOutState&) = delete;

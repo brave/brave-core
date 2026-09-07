@@ -69,6 +69,18 @@ export class BraveSyncBrowserProxy {
   getWordsCount(syncCode: string): Promise<number> {
     return sendWithPromise('SyncGetWordsCount', syncCode);
   }
+
+  establishAccountSync(seedHex: string, email: string): Promise<boolean> {
+    return sendWithPromise('SyncEstablishAccountSync', seedHex, email);
+  }
+
+  stopAccountSync(keepLocalData: boolean): Promise<boolean> {
+    return sendWithPromise('SyncStopAccountSync', keepLocalData);
+  }
+
+  getAccountSyncState(): Promise<{email: string, enabled: boolean}> {
+    return sendWithPromise('SyncGetAccountSyncState');
+  }
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }

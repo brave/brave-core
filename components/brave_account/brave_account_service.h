@@ -24,6 +24,10 @@
 
 class PrefService;
 
+namespace syncer {
+class BraveSyncServiceImpl;
+}  // namespace syncer
+
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
@@ -61,10 +65,14 @@ namespace brave_account {
 // on the service.
 class BraveAccountService : public KeyedService {
  public:
+  using GetSyncServiceCallback =
+      base::RepeatingCallback<syncer::BraveSyncServiceImpl*()>;
+
   BraveAccountService(
       PrefService* pref_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      os_crypt_async::OSCryptAsync* os_crypt_async);
+      os_crypt_async::OSCryptAsync* os_crypt_async,
+      GetSyncServiceCallback get_sync_service);
 
   BraveAccountService(const BraveAccountService&) = delete;
   BraveAccountService& operator=(const BraveAccountService&) = delete;
@@ -81,6 +89,14 @@ class BraveAccountService : public KeyedService {
 
   void AddObserver(mojo::PendingRemote<mojom::AuthenticationObserver> observer);
 
+  void EstablishAccountSync(
+      const std::string& seed_hex,
+      mojom::Authentication::EstablishAccountSyncCallback callback);
+
+  void StopAccountSync(
+      bool keep_local_data,
+      mojom::Authentication::StopAccountSyncCallback callback);
+
   void OnAccountStateChanged();
 
   void EnsureState(mojom::AccountState::Tag which);
@@ -90,6 +106,7 @@ class BraveAccountService : public KeyedService {
   AccountStatePrefs account_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
+  GetSyncServiceCallback get_sync_service_;
   std::vector<mojo::PendingReceiver<mojom::Authentication>> pending_receivers_;
   mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
   std::variant<std::monostate, LoggedOutState, LoggedInState> state_;
