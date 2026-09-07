@@ -9,7 +9,10 @@ substitutions:
 
       It allows long descriptions for Email Alias suggestions to be shown.
     regex:
-      re_pattern: '(FormatLabel\(\*label, label_text, main_filling_product,\s*)kAutofillSuggestionMaxWidth( / label_row\.size\(\)\);)'
+      re_pattern:
+        '(FormatLabel\(\*label, label_text,
+        main_filling_product,\s*)kAutofillSuggestionMaxWidth( /
+        label_row\.size\(\)\);)'
       replace: |-
         \1((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth)\2
 
@@ -20,7 +23,10 @@ substitutions:
       alias emails are longer than the upstream maximum. Other suggestions keep
       passing no width, so upstream still derives it from the filling product.
     regex:
-      re_pattern: '(std::unique_ptr<PopupRowContentView> CreatePopupRowContentView\(.*?FormatLabel\(\*main_text_label, suggestion\.main_text,\s*main_filling_product)(\);)'
+      re_pattern:
+        '(std::unique_ptr<PopupRowContentView>
+        CreatePopupRowContentView\(.*?FormatLabel\(\*main_text_label,
+        suggestion\.main_text,\s*main_filling_product)(\);)'
       re_flags: [DOTALL]
       replace: |-
         \1, (suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? std::optional<int>(512): std::nullopt\2
