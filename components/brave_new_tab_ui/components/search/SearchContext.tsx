@@ -89,6 +89,7 @@ class SearchPage implements PageInterface {
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
   onContextualInputStatusChanged(token: string, status: ContextUploadStatus, errorType: ContextUploadErrorType | null) { }
+  setKeywordSpaceTriggeringEnabled(enabled: boolean): void { }
   onTabStripChanged() { }
   addFileContext(token: string, fileInfo: SelectedFileInfo) { }
   setKeywordSelected(isKeywordSelected: boolean): void {}
