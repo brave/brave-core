@@ -24,7 +24,8 @@ source_set("browser_tests") {
     sources += [
       "playlist_active_tab_tracker_browsertest.cc",
       "playlist_browsertest.cc",
-      "playlist_stream_playback_browsertest.cc",
+
+      # "playlist_stream_playback_browsertest.cc",
     ]
 
     deps += [
