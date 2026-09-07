@@ -393,30 +393,26 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
-  // Check toolbar corner radius is always kTabstripCurve regardless of active
-  // tab index.
+  // Check toolbar corner radius is always kToolbarCornerRadius regardless of
+  // active tab index.
   auto* custom_corners_background =
       static_cast<CustomCornersBackground*>(toolbar_view_->background());
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(
-      custom_corners_background->GetCorners()[CornerOrientation::kTopLeading]
-          .type,
-      CustomCornersBackground::CornerType::kRoundedWithBackground);
-  EXPECT_EQ(
-      custom_corners_background->GetCorners()[CornerOrientation::kTopTrailing]
-          .type,
-      CustomCornersBackground::CornerType::kRoundedWithBackground);
+  auto rounded_corners = custom_corners_background->GetRoundedCornerRadii();
+  ASSERT_TRUE(rounded_corners);
+  EXPECT_EQ(rounded_corners->upper_left(),
+            GetLayoutConstant(LayoutConstant::kToolbarCornerRadius));
+  EXPECT_EQ(rounded_corners->upper_right(),
+            GetLayoutConstant(LayoutConstant::kToolbarCornerRadius));
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(
-      custom_corners_background->GetCorners()[CornerOrientation::kTopLeading]
-          .type,
-      CustomCornersBackground::CornerType::kRoundedWithBackground);
-  EXPECT_EQ(
-      custom_corners_background->GetCorners()[CornerOrientation::kTopTrailing]
-          .type,
-      CustomCornersBackground::CornerType::kRoundedWithBackground);
+  rounded_corners = custom_corners_background->GetRoundedCornerRadii();
+  ASSERT_TRUE(rounded_corners);
+  EXPECT_EQ(rounded_corners->upper_left(),
+            GetLayoutConstant(LayoutConstant::kToolbarCornerRadius));
+  EXPECT_EQ(rounded_corners->upper_right(),
+            GetLayoutConstant(LayoutConstant::kToolbarCornerRadius));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
