@@ -73,6 +73,14 @@ void MyClass::Shutdown() {
 **Always check a `base::WeakPtr` is valid before dereferencing, especially after
 async operations.** Add thread checkers to methods using WeakPtrs.
 
+**A `base::WeakPtr` may only be dereferenced on the sequence where it was
+created.** Per the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/),
+`WeakPtr` is not thread-safe and is not a substitute for cross-sequence
+synchronization — hand it to a callback that runs on the owning sequence
+instead. If you need to act immediately before or after destruction, use an
+explicit callback or observer notification rather than polling a `WeakPtr`.
+
 ```cpp
 // ❌ WRONG
 void OnCallback() {
@@ -605,8 +613,21 @@ void Process(Foo* foo);
 void Process(Foo& foo);
 ```
 
-**Exception:** Lambda functions in STL algorithms operating on containers of
-smart pointers may need this pattern.
+The same applies to **returning** smart pointers by reference — return
+`std::unique_ptr<T>`/`scoped_refptr<T>` by value to transfer ownership, or `T*`
+when the caller takes no ownership.
+
+**Exceptions:**
+
+- Lambda functions in STL algorithms operating on containers of smart pointers
+  may need `const std::unique_ptr<T>&`.
+- `const scoped_refptr<T>&` **is** the documented return type when the
+  implementation retains ownership and you want to spare callers a refcount
+  bump. This is a return-value-only exception; it does not license
+  `const scoped_refptr<T>&` parameters.
+
+See [CS-077](coding-standards.md#CS-077) for the full parameter/return ownership
+table.
 
 ---
 
@@ -899,3 +920,33 @@ another sequence (see [CSM-010](#CSM-010)), stored in a longer-lived object, or
 handed to an API whose lifetime is independent of `this`. A linter that flags
 every `base::Unretained(this)` produces mostly false positives, since
 member-owned callbacks are the dominant, correct usage.
+
+---
+
+<a id="CSM-039"></a>
+
+## ✅ Use Platform-Specific Scopers for Platform Resources
+
+**Platform handles and CF/ObjC types have their own scoping objects — use them
+instead of raw handles or hand-written cleanup.** Per the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/),
+these are the platform equivalent of `std::unique_ptr` and give the same
+exception-free, early-return-safe cleanup.
+
+```cpp
+// ❌ WRONG - manual CloseHandle, leaks on every early return
+HANDLE file = ::CreateFile(...);
+if (!Validate(file)) {
+  return false;  // leaked
+}
+::CloseHandle(file);
+
+// ✅ CORRECT - scoper closes on every path
+base::win::ScopedHandle file(::CreateFile(...));
+if (!Validate(file.get())) {
+  return false;
+}
+```
+
+Common scopers: `base::win::ScopedHandle`, `base::apple::ScopedCFTypeRef`,
+`base::ScopedFD`, `base::ScopedTempDir`.
