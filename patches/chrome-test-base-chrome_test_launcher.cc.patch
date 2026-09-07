@@ -1,5 +1,5 @@
 diff --git a/chrome/test/base/chrome_test_launcher.cc b/chrome/test/base/chrome_test_launcher.cc
-index cf96f5cdd460dbb380ec91f5e1176777e58f72a1..1fd406183015d5bbaf86f58a140e2eceac3669c7 100644
+index cf96f5cdd460dbb380ec91f5e1176777e58f72a1..16b9de03b9f564c81307708367989f42c699cf6d 100644
 --- a/chrome/test/base/chrome_test_launcher.cc
 +++ b/chrome/test/base/chrome_test_launcher.cc
 @@ -42,6 +42,7 @@
