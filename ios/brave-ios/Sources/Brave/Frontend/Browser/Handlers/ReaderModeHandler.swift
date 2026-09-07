@@ -156,22 +156,45 @@ public class ReaderModeHandler: InternalSchemeResponse {
       ("script-src", "'nonce-\(scriptNonce)'"),
     ]
 
+    // The original value may be a comma-separated list of policies since `allHeaderFields`
+    // coalesces repeated CSP headers. Each policy is enforced in conjunction with the others,
+    // so an `img-src` is adopted from each one.
+    var adoptedBaseImageSource = false
+    var additionalImageSources: [String] = []
     if let originalCSP {
-      let policiesStrings = originalCSP.components(separatedBy: ";")
-        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-      for policy in policiesStrings {
-        let components = policy.components(separatedBy: " ").filter({ !$0.isEmpty })
-        guard components.count > 1, components[0].lowercased() == "img-src" else { continue }
-        // Strip control characters so the value cannot break header serialization
-        let value = components[1...].joined(separator: " ").filter({ !$0.isNewline })
-        guard !value.isEmpty else { continue }
-        policies.removeAll(where: { key, _ in key == "img-src" })
-        policies.append(("img-src", value))
+      for originalPolicy in originalCSP.components(separatedBy: ",") {
+        let directives = originalPolicy.components(separatedBy: ";")
+          .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        for directive in directives {
+          // Directive tokens may be separated by any whitespace, not just spaces
+          let components = directive.components(separatedBy: .whitespacesAndNewlines).filter({
+            !$0.isEmpty
+          })
+          guard components.first?.lowercased() == "img-src" else { continue }
+          // Strip newline characters so the value cannot break header serialization
+          // An empty source list (a bare `img-src`) is valid and blocks all image loads
+          let value = components.dropFirst().joined(separator: " ").filter({ !$0.isNewline })
+          if !adoptedBaseImageSource {
+            policies.removeAll(where: { key, _ in key == "img-src" })
+            policies.append(("img-src", value))
+            adoptedBaseImageSource = true
+          } else {
+            // The base policy already adopted an `img-src`, so retain this one as its own
+            // policy to preserve the intersection semantics of the original policies
+            additionalImageSources.append(value)
+          }
+          // CSP uses the first occurrence of a directive and ignores later duplicates
+          break
+        }
       }
     }
 
-    return policies.map({ (key, value) in
+    var serialized = policies.map({ (key, value) in
       return value.isEmpty ? "\(key);" : "\(key) \(value);"
     }).joined(separator: " ")
+    for source in additionalImageSources {
+      serialized += source.isEmpty ? ", img-src" : ", img-src \(source)"
+    }
+    return serialized
   }
 }

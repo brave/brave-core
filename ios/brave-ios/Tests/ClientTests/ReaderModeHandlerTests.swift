@@ -26,6 +26,11 @@ final class ReaderModeHandlerTests: XCTestCase {
     ReaderModeHandler.contentSecurityPolicy(originalCSP: originalCSP, scriptNonce: nonce)
   }
 
+  /// Splits a serialized CSP into its comma-separated policies, each parsed into directives
+  private func policies(of csp: String) -> [[(String, String)]] {
+    csp.components(separatedBy: ",").map { directives(of: $0) }
+  }
+
   func testBasePolicyWithoutOriginalCSP() {
     let directives = directives(of: makeCSP())
     XCTAssertTrue(directives.contains(where: { $0 == ("script-src", "'nonce-test-nonce'") }))
@@ -40,7 +45,7 @@ final class ReaderModeHandlerTests: XCTestCase {
   func testOriginalCSPDirectivesOtherThanImgSrcAreDropped() {
     let csp = makeCSP(
       originalCSP:
-        "script-src-attr 'unsafe-inline'; frame-src internal: *; script-src 'unsafe-inline'; style-src *"
+        "script-src-attr 'unsafe-inline'; script-src-elem *; frame-src internal: *; script-src 'unsafe-inline'; style-src *"
     )
     let directives = directives(of: csp)
     XCTAssertFalse(directives.contains(where: { $0.0 == "script-src-attr" }))
@@ -72,10 +77,67 @@ final class ReaderModeHandlerTests: XCTestCase {
     XCTAssertEqual(imgSrc.first?.1, "https:")
   }
 
-  /// A malformed directive must not be able to smuggle in additional directives or remove our
-  /// default `img-src`
-  func testOriginalCSPMalformedImgSrcIsIgnored() {
+  /// A bare `img-src` is a valid directive with an empty source list which blocks all image
+  /// loads. It must be preserved rather than falling back to the permissive `img-src *`
+  func testOriginalCSPEmptyImgSrcIsAdopted() {
     let directives = directives(of: makeCSP(originalCSP: "img-src"))
-    XCTAssertTrue(directives.contains(where: { $0 == ("img-src", "*") }))
+    let imgSrc = directives.filter { $0.0 == "img-src" }
+    XCTAssertEqual(imgSrc.count, 1)
+    XCTAssertEqual(imgSrc.first?.1, "")
+  }
+
+  /// Directive tokens may be separated by any whitespace, not just spaces
+  func testOriginalCSPImgSrcTabSeparatedIsAdopted() {
+    let directives = directives(of: makeCSP(originalCSP: "img-src\thttps:"))
+    let imgSrc = directives.filter { $0.0 == "img-src" }
+    XCTAssertEqual(imgSrc.count, 1)
+    XCTAssertEqual(imgSrc.first?.1, "https:")
+  }
+
+  /// CSP uses the first occurrence of a directive and ignores later duplicates, so a page
+  /// cannot loosen its own restrictive `img-src` by appending a second one
+  func testOriginalCSPDuplicateImgSrcUsesFirstOccurrence() {
+    let directives = directives(
+      of: makeCSP(originalCSP: "img-src 'none'; img-src *")
+    )
+    let imgSrc = directives.filter { $0.0 == "img-src" }
+    XCTAssertEqual(imgSrc.count, 1)
+    XCTAssertEqual(imgSrc.first?.1, "'none'")
+  }
+
+  /// `allHeaderFields` coalesces repeated CSP headers into a comma-separated policy list, so an
+  /// `img-src` appearing after the comma must still be adopted
+  func testOriginalCSPImgSrcInSecondPolicyIsAdopted() {
+    let policies = policies(
+      of: makeCSP(originalCSP: "default-src 'none', img-src https:")
+    )
+    XCTAssertEqual(policies.count, 1)
+    let imgSrc = policies[0].filter { $0.0 == "img-src" }
+    XCTAssertEqual(imgSrc.count, 1)
+    XCTAssertEqual(imgSrc.first?.1, "https:")
+  }
+
+  /// Directives from a subsequent coalesced policy must not leak into the base policy
+  func testOriginalCSPSecondPolicyDirectivesAreDropped() {
+    let policies = policies(
+      of: makeCSP(originalCSP: "img-src https:, default-src 'none'")
+    )
+    XCTAssertEqual(policies.count, 1)
+    let imgSrc = policies[0].filter { $0.0 == "img-src" }
+    XCTAssertEqual(imgSrc.count, 1)
+    XCTAssertEqual(imgSrc.first?.1, "https:")
+  }
+
+  /// When multiple coalesced policies each specify `img-src`, the restrictions must intersect,
+  /// so each additional `img-src` is emitted as its own policy
+  func testOriginalCSPImgSrcInMultiplePoliciesIntersect() {
+    let policies = policies(
+      of: makeCSP(originalCSP: "img-src data:, img-src https:")
+    )
+    XCTAssertEqual(policies.count, 2)
+    XCTAssertEqual(policies[0].filter { $0.0 == "img-src" }.first?.1, "data:")
+    XCTAssertEqual(policies[1].count, 1)
+    XCTAssertEqual(policies[1].first?.0, "img-src")
+    XCTAssertEqual(policies[1].first?.1, "https:")
   }
 }
