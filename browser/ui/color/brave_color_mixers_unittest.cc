@@ -34,6 +34,12 @@ class BraveColorMixersTest : public testing::Test {
     AddColorMixers();
   }
 
+  void SetAccentUserColor(SkColor color) {
+    color_provider_key_.user_color = color;
+    color_provider_key_.user_color_source =
+        ui::ColorProviderKey::UserColorSource::kAccent;
+  }
+
  private:
   ui::ColorProvider color_provider_;
   ui::ColorProviderKey color_provider_key_;
@@ -54,9 +60,7 @@ TEST_F(BraveColorMixersTest, ColorOverrideTest) {
 // The "Grey" theme's user color is achromatic, so tab colors must not be
 // tinted - HSLShift() would read its hue as 0 and turn them red.
 TEST_F(BraveColorMixersTest, AchromaticUserColorLeavesTabColorsUntintedTest) {
-  color_provider_key().user_color = SkColorSetRGB(0x88, 0x88, 0x88);
-  color_provider_key().user_color_source =
-      ui::ColorProviderKey::UserColorSource::kAccent;
+  SetAccentUserColor(SkColorSetRGB(0x88, 0x88, 0x88));
   AddUiAndChromeColorMixers();
 
   EXPECT_EQ(color_provider().GetColor(kColorBraveVerticalTabActiveBackground),
@@ -66,6 +70,24 @@ TEST_F(BraveColorMixersTest, AchromaticUserColorLeavesTabColorsUntintedTest) {
             color_provider().GetColor(
                 nala::kColorDesktopbrowserTabbarHoverTabVertical));
   EXPECT_EQ(
+      color_provider().GetColor(kColorTabBackgroundInactiveHoverFrameActive),
+      color_provider().GetColor(
+          nala::kColorDesktopbrowserTabbarHoverTabHorizontal));
+}
+
+// The counterpart of the test above: a user color with a hue must still be
+// tinted, so that disabling tinting altogether can't pass as a fix.
+TEST_F(BraveColorMixersTest, ChromaticUserColorTintsTabColorsTest) {
+  SetAccentUserColor(SkColorSetRGB(0xFF, 0x00, 0x00));
+  AddUiAndChromeColorMixers();
+
+  EXPECT_NE(color_provider().GetColor(kColorBraveVerticalTabActiveBackground),
+            color_provider().GetColor(
+                nala::kColorDesktopbrowserTabbarActiveTabVertical));
+  EXPECT_NE(color_provider().GetColor(kColorBraveVerticalTabHoveredBackground),
+            color_provider().GetColor(
+                nala::kColorDesktopbrowserTabbarHoverTabVertical));
+  EXPECT_NE(
       color_provider().GetColor(kColorTabBackgroundInactiveHoverFrameActive),
       color_provider().GetColor(
           nala::kColorDesktopbrowserTabbarHoverTabHorizontal));
