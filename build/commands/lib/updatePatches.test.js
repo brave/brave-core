@@ -25,6 +25,7 @@ function runGit(repoPath, args) {
 async function writePatchAsPlaster(repoPath, patchDirPath, repoRelativePath) {
   const patchContents = await runGit(repoPath, [
     'diff',
+    '--no-ext-diff',
     '--src-prefix=a/',
     '--dst-prefix=b/',
     '--default-prefix',

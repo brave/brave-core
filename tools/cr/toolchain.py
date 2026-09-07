@@ -259,8 +259,12 @@ class Toolchain:
 
     def _diff(self, working: Version | str, target: Version | str) -> str:
         """Diffs this toolchain's files across the `working..target` range."""
-        return repository.chromium.run_git('diff', str(working), str(target),
-                                           '--', *self.spec.files)
+        # `--no-ext-diff` because a `diff.external` driver would render the
+        # change its own way, without the +/- prefixes `get_assigned_value`
+        # looks for, silently reporting every toolchain as unchanged.
+        return repository.chromium.run_git('diff',
+                                           '--no-ext-diff', str(working),
+                                           str(target), '--', *self.spec.files)
 
     def was_updated(self, working: Version | str,
                     target: Version | str) -> bool:

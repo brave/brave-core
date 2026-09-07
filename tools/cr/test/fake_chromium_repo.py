@@ -383,8 +383,8 @@ class FakeChromiumRepo:
                 # returns from the diff file.
                 result = subprocess.run(
                     [
-                        'git', 'diff', '--src-prefix=a/', '--dst-prefix=b/',
-                        '--default-prefix', '--full-index',
+                        'git', 'diff', '--no-ext-diff', '--src-prefix=a/',
+                        '--dst-prefix=b/', '--default-prefix', '--full-index',
                         '--ignore-space-at-eol', filename
                     ],
                     stdout=subprocess.PIPE,

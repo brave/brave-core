@@ -131,6 +131,7 @@ async function writePatchFiles(
     const singleDiffArgs = [
       ...gitConfigArgs,
       'diff',
+      '--no-ext-diff',
       '--src-prefix=a/',
       '--dst-prefix=b/',
       '--default-prefix',
