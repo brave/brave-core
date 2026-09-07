@@ -82,8 +82,6 @@ class BraveWalletServiceDelegate {
 
   virtual base::FilePath GetWalletBaseDirectory() = 0;
 
-  virtual bool IsPrivateWindow() = 0;
-
   virtual void DisplayTxNotification(mojom::TransactionStatus status,
                                      const std::string& account_name,
                                      const std::string& tx_id,

@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -139,4 +140,9 @@ void WalletPanelHandler::RequestPermission(
                               allowed_addresses.front() == address);
           },
           std::move(callback), address));
+}
+
+void WalletPanelHandler::IsPrivateWindow(IsPrivateWindowCallback callback) {
+  std::move(callback).Run(
+      active_web_contents_->GetBrowserContext()->IsOffTheRecord());
 }

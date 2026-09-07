@@ -450,10 +450,6 @@ base::FilePath TestBraveWalletServiceDelegate::GetWalletBaseDirectory() {
   return temp_dir_.GetPath();
 }
 
-bool TestBraveWalletServiceDelegate::IsPrivateWindow() {
-  return false;
-}
-
 bool TestBraveWalletServiceDelegate::IsAutolockEnabled() {
   return enable_autolock_;
 }

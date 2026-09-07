@@ -152,7 +152,6 @@ class TestBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
   TestBraveWalletServiceDelegate();
 
   base::FilePath GetWalletBaseDirectory() override;
-  bool IsPrivateWindow() override;
   bool IsAutolockEnabled() override;
 
   void set_enable_autolock(bool enable) { enable_autolock_ = enable; }

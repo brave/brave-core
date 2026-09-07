@@ -309,9 +309,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(false)
   }
 
-  func isPrivateWindow(completion: @escaping (Bool) -> Void) {
-  }
-
   func setPrivateWindowsEnabled(_ enabled: Bool) {
   }
 

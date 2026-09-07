@@ -63,7 +63,7 @@ BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return context;
+  return GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {

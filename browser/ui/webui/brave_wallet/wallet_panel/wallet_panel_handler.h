@@ -41,6 +41,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
       IsSolanaAccountConnectedCallback callback) override;
   void RequestPermission(brave_wallet::mojom::AccountIdPtr account_id,
                          RequestPermissionCallback callback) override;
+  void IsPrivateWindow(IsPrivateWindowCallback callback) override;
 
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;

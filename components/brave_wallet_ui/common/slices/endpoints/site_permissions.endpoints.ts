@@ -56,9 +56,11 @@ export const sitePermissionEndpoints = ({
       queryFn: async (_, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { braveWalletService } = api
+          const { panelHandler } = api
 
-          const { isPrivateWindow } = await braveWalletService.isPrivateWindow()
+          const isPrivateWindow = panelHandler
+            ? (await panelHandler.isPrivateWindow()).isPrivateWindow
+            : false
 
           return {
             data: isPrivateWindow,

@@ -113,7 +113,6 @@ class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
   explicit BraveWalletServiceDelegateIos(ProfileIOS* profile)
       : profile_(profile), cleaner_runner_(web::GetUIThreadTaskRunner({})) {
     wallet_base_directory_ = profile->GetStatePath();
-    is_private_window_ = profile->IsOffTheRecord();
   }
 
   void ClearWalletUIStoragePartition() override {
@@ -124,7 +123,6 @@ class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
   base::FilePath GetWalletBaseDirectory() override {
     return wallet_base_directory_;
   }
-  bool IsPrivateWindow() override { return is_private_window_; }
   bool IsAutolockEnabled() override { return true; }
 
  protected:
