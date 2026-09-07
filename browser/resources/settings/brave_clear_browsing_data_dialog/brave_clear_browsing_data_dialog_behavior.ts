@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import {PrefService} from '/shared/settings/prefs2/pref_service.js';
 import {assert} from 'chrome://resources/js/assert.js';
 import {sanitizeInnerHtml} from 'chrome://resources/js/parse_html_subset.js';
 
@@ -190,14 +191,14 @@ export class BraveSettingsClearBrowsingDataDialogElement
       moreBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[]
     }
     const leoExpandedIndex = priv.expandedBrowsingDataTypeOptionsList_.map(
-        (option: BrowsingDataTypeOption) => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
+        (option: BrowsingDataTypeOption) => option.prefKey).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
     if (leoExpandedIndex !== -1) {
       priv.expandedBrowsingDataTypeOptionsList_.splice(leoExpandedIndex, 1);
       return
     }
 
     const leoMoreIndex = priv.moreBrowsingDataTypeOptionsList_.map(
-        (option: BrowsingDataTypeOption) => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
+        (option: BrowsingDataTypeOption) => option.prefKey).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
     assert(leoMoreIndex !== -1)
     priv.moreBrowsingDataTypeOptionsList_.splice(leoMoreIndex, 1);
   }
@@ -210,8 +211,9 @@ export class BraveSettingsClearBrowsingDataDialogElement
     const changed = this.shadowRoot!.
       querySelector<SettingsBraveClearBrowsingDataOnExitPageElement>(
         '#onExitTab')!.getChangedSettings()
+    const prefService = PrefService.getInstance()
     changed.forEach((change) => {
-      this.set('prefs.' + change.key + '.value', change.value)
+      prefService.setPrefValue(change.key, change.value)
     })
     this.$.deleteBrowsingDataDialog.close()
   }

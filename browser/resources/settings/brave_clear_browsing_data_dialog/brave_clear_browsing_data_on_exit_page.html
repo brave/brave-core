@@ -18,7 +18,7 @@
 <div id="checkboxContainer">
   <template is="dom-repeat"
     items="[[browsingDataTypeOptionsList_]]">
-    <settings-checkbox pref="{{item.pref}}" no-set-pref>
+    <settings-checkbox pref-key="[[item.prefKey]]" no-set-pref>
       <div class="checkbox-title">[[item.label]]</div>
     </settings-checkbox>
   </template>
