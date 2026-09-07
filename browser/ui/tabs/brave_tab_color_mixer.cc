@@ -5,10 +5,17 @@
 
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
+#include <utility>
+
+#include "base/containers/fixed_flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/ui/color/brave_ref_color_mixer.h"
 #include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_mixer.h"
@@ -16,6 +23,7 @@
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
 #include "ui/color/color_transform.h"
+#include "ui/gfx/color_utils.h"
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/darker_theme/darker_theme_color_transform_factory.h"
@@ -23,6 +31,113 @@
 #endif  // defined(TOOLKIT_VIEWS)
 
 namespace tabs {
+
+namespace {
+
+// An achromatic user color carries no hue - SkColorToHSL() reports 0 for it,
+// which HSLShift() would then apply as red. Its generated palette is already
+// neutral, so use the palette colors without any tinting.
+bool ShouldTintWithUserColor(const ui::ColorProviderKey& key) {
+  if (!ShouldUseAccentTintedPalette(key)) {
+    return false;
+  }
+
+  const SkColor user_color = *key.user_color;
+  return SkColorGetR(user_color) != SkColorGetG(user_color) ||
+         SkColorGetG(user_color) != SkColorGetB(user_color);
+}
+
+SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
+                                            SkColor input,
+                                            const ui::ColorMixer& mixer) {
+  const auto default_color =
+      mixer.GetResultColor(nala::kColorDesktopbrowserTabbarActiveTabVertical);
+  if (!ShouldTintWithUserColor(key)) {
+    return default_color;
+  }
+
+  // Extract Hue of tab foreground color and apply Saturation and Lightness for
+  // vertical tabs.
+  color_utils::HSL hsl;
+  color_utils::SkColorToHSL(*key.user_color, &hsl);
+
+  hsl.s = 0.6;    // A little more saturation as default color is grayish.
+  hsl.l = 0.485;  // A little bit darker
+
+  return color_utils::HSLShift(default_color, hsl);
+}
+
+SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
+                                     nala::Color default_color_id,
+                                     SkColor input,
+                                     const ui::ColorMixer& mixer) {
+  CHECK(default_color_id == nala::kColorDesktopbrowserTabbarHoverTabVertical ||
+        default_color_id == nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
+
+  const auto default_color = mixer.GetResultColor(default_color_id);
+  if (!ShouldTintWithUserColor(key)) {
+    // Defaults to Nala if no user color.
+    return default_color;
+  }
+
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+
+  constexpr auto kHSLShiftMap =
+      base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
+          {nala::kColorDesktopbrowserTabbarHoverTabVertical,
+           {color_utils::HSL{
+                .h = -1, .s = 0.5, .l = 0.8},  // Light mode : lighter
+            color_utils::HSL{
+                .h = -1, .s = 0.6, .l = 0.5}}},  // Dark mode : More saturation
+          {nala::kColorDesktopbrowserTabbarHoverTabHorizontal,
+           {color_utils::HSL{
+                .h = -1,
+                .s = 0.9,
+                .l = 0.8},  // Light-mode: More saturation and lighter
+            color_utils::HSL{
+                .h = -1,
+                .s = 0.55,
+                .l = 0.52}}},  // Dark-mode: A little more saturation
+                               // and a little bit darker
+      });
+
+  const color_utils::HSL& shift =
+      kHSLShiftMap.at(default_color_id).at(std::to_underlying(key.color_mode));
+  return color_utils::HSLShift(default_color, shift);
+}
+
+SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
+                                        nala::Color default_color_id,
+                                        SkColor input,
+                                        const ui::ColorMixer& mixer) {
+  const auto default_color = mixer.GetResultColor(default_color_id);
+  if (!ShouldTintWithUserColor(key)) {
+    return default_color;
+  }
+
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+
+  // Derive split view tile backgrounds similarly to hovered tab backgrounds,
+  // keeping the original hue while adjusting saturation and lightness
+  // depending on the color mode and orientation.
+  constexpr auto kHSLShiftMap =
+      base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
+          {nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal,
+           {color_utils::HSL{.h = -1, .s = 0.65, .l = 0.59},   // Light mode
+            color_utils::HSL{.h = -1, .s = 0.55, .l = 0.4}}},  // Dark mode
+          {nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical,
+           {color_utils::HSL{.h = -1, .s = 0.5, .l = 0.52},    // Light mode
+            color_utils::HSL{.h = -1, .s = 0.6, .l = 0.52}}},  // Dark mode
+      });
+
+  const color_utils::HSL& shift =
+      kHSLShiftMap.at(default_color_id).at(std::to_underlying(key.color_mode));
+  return color_utils::HSLShift(default_color, shift);
+}
+
+}  // namespace
 
 void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
                                 const ui::ColorProviderKey& key) {
@@ -43,19 +158,23 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
                        kColorBraveVerticalTabInactiveBackground,
                        /* 40% opacity */ 0.4 * SK_AlphaOPAQUE)};
   } else {
-    mixer[kColorBraveSplitViewTileBackgroundHorizontal] = {
-        nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal};
-    mixer[kColorBraveSplitViewTileBackgroundVertical] = {
-        nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical};
+    mixer[kColorBraveSplitViewTileBackgroundHorizontal] = {base::BindRepeating(
+        &GetSplitViewTileBackgroundColor, key,
+        nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal)};
+    mixer[kColorBraveSplitViewTileBackgroundVertical] = {base::BindRepeating(
+        &GetSplitViewTileBackgroundColor, key,
+        nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical)};
     mixer[kColorBraveSplitViewTileBackgroundBorder] = {SK_ColorTRANSPARENT};
     mixer[kColorBraveSplitViewTileDivider] = {
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
     mixer[kColorBraveVerticalTabActiveBackground] = {
-        nala::kColorDesktopbrowserTabbarActiveTabVertical};
-    mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
-        nala::kColorDesktopbrowserTabbarHoverTabHorizontal};
+        base::BindRepeating(&GetActiveVerticalTabBackgroundColor, key)};
+    mixer[kColorTabBackgroundInactiveHoverFrameActive] = {base::BindRepeating(
+        &GetHoveredTabBackgroundColor, key,
+        nala::kColorDesktopbrowserTabbarHoverTabHorizontal)};
     mixer[kColorBraveVerticalTabHoveredBackground] = {
-        nala::kColorDesktopbrowserTabbarHoverTabVertical};
+        base::BindRepeating(&GetHoveredTabBackgroundColor, key,
+                            nala::kColorDesktopbrowserTabbarHoverTabVertical)};
   }
 
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
