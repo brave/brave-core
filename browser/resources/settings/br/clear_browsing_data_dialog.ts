@@ -216,9 +216,7 @@ RegisterPolymerTemplateModifications({
       getTrustedHTML`
         <div slot="body" id="onExitBody"
              hidden="[[!isTabSelected_(selectedTabIndex_, 1)]]">
-          <settings-brave-clear-browsing-data-on-exit-page
-            id="onExitTab"
-            prefs="{{prefs}}">
+          <settings-brave-clear-browsing-data-on-exit-page id="onExitTab">
           </settings-brave-clear-browsing-data-on-exit-page>
         </div>
       `
