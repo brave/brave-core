@@ -6,9 +6,6 @@
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
--AdsPageLoadMetricsObserverResourceBrowserTest.HeavyAdInterventionEnabled_ErrorPageLoaded
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -All/ChromeKeepAliveURLBrowserTest.ReceiveRedirectAfterPageUnload/GET
 
 # 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
@@ -20,59 +17,26 @@
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -All/MimeHandlerFallbackBrowserTest.AbortAndFallbackDistinguishesConcurrentIframesSameUrl/0
 
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
--All/MimeHandlerFallbackBrowserTest.AbortAndFallbackLeavesMainFrameIntactForIframeEmbedder/1
-
-# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
--All/PopupViewViewsBrowsertest.InvokeUi_MultiSuggestionNotice/LightBrowserRTL
-
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -All/SafeBrowsingPrerenderBrowserTest.UnsafePrerender/17
 
-# 11.1% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 3 flaky).
+# 7.4% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 2 flaky).
 -All/SaveToDriveEventDispatcherBrowserTest.Notify/0
-
-# 3.8% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 1 flaky).
--All/ScreenAIServiceRouterTest.RepeatedInitializationWithoutWait/Library_Available_OCR_Disabled_MCE_Disabled
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
--All/TabCollectionNodeBrowserTest.GroupContiguousTabs/Vertical
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--All/TabGroupHoverCardTest.TabGroupHeaderHoverCardNamed/Vertical
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--All/TabGroupHoverCardTest.TabGroupHeaderHoverCardUnnamed/Vertical
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--All/TabGroupHoverCardTest.TabGroupHeaderHoverCardWithExcessTabs/Vertical
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--All/TabStripCollectionControllerBrowserTest.ShiftTabIntoGroup/Vertical
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--All/TabStripCollectionControllerBrowserTest.ShiftTabOutOfGroup/Vertical
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
--All/TabStripCollectionControllerBrowserTest.ShiftTabPastCollapsedGroup/Vertical
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--All/TabStripCollectionControllerBrowserTest.TabGroupCollapseFreezing/Vertical
 
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -All/WebAppScopeExtensionsBrowserTest.PrimaryScopeTakesPriorityOverExtendedScope/V2DefaultOff
 
+# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+-All_LeftClick/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureOff_AppWnd_ScopeA2B_Direct_ViaLink_LeftClick_WithoutOpener_TargetNoFrame
+
+# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+-All_LeftClick/NavCaptureParameterizedBrowserTest.VerifyNavCapture/BothStandalone_CaptureOn_AppWnd_ScopeA2X_Direct_ViaLink_LeftClick_WithoutOpener_TargetBlank
+
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -BatchUploadDialogViewPixelTest.InvokeUi_default/ThemesSectionOnlyWithLongName
 
-# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 2 flaky).
--BookmarksTest.Router
-
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
--BoundSessionOAuthMultiloginPersistentErrorTest.RefreshTokensBoundToDifferentKeys/StandardInvalidInput
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--ComposeSessionBrowserTest.OpenFeedbackPage
+-BookmarksTest.Router
 
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -ControlledFrameAvailabilityTest.Verify/25
@@ -80,11 +44,20 @@
 # 3.8% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 1 flaky).
 -DictationOnboardingInteractiveTest.ResponsiveAfterTabSwitching
 
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
--HttpsUpgradesBrowserTest.TogglingSettingClearsAllowlist/HttpsFirstBalancedMode
+# 3.8% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 1 flaky).
+-ExtensionAILanguageModelBrowserTest.AvailableInWorker/WithAPIFlag_NoAPIKillswitch
 
-# 17.9% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 5 flaky).
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-HttpsUpgradesBrowserTest.BadHttpsFollowedByGoodHttps/AllFeatures
+
+# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 2 flaky).
+-IsolatedWebAppLinkCapturingFromAppWindowBrowserTest.ShiftClickOpensNewAppWindow/NavigateNew
+
+# 14.3% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 4 flaky).
 -LaunchQueueLatencyMetricBrowserTest.ReloadsDoNotMeasure
+
+# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+-LensOverlayControllerBrowserTest.CorrectAnalyticsAndRequestIdSentWithGen204s
 
 # 3.8% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 1 flaky).
 -NavigationPredictorPreconnectClientBrowserTestWithSearch.PreconnectSearchWithFeature
@@ -98,59 +71,17 @@
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -PrerenderPageLoadMetricsObserverBrowserTest.Activate_SpeculationRule
 
-# 74.1% flake rate over 30 days per LUCI Analysis (7 passed, 20 failed, 0 flaky).
+# 55.6% flake rate over 30 days per LUCI Analysis (12 passed, 15 failed, 0 flaky).
 -ProfileBrowserTestWithoutDestroyProfile.DestroyRegularProfileBeforeOTRs
 
 # 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
 -SafetyTipPageInfoBubbleViewBrowserTest.ShowLookalikeDialog
 
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
--SearchPrefetchServiceEnabledBrowserTest.OmniboxNavigateToMatchingEntryStreaming
+# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+-SavedTabGroupV2PromoTest.TestShowingIPHOnSavedTabGroupBar
 
-# 3.8% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 1 flaky).
--SearchPrefetchServiceEnabledBrowserTest.PrefetchSecureSecurityState
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.ActiveTabFromCollapsedGroup
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.ClickingTabGroupHeaderTogglesCollapse
-
-# 3.8% flake rate over 30 days per LUCI Analysis (25 passed, 1 failed, 0 flaky).
--TabGroupViewTest.CollapsingGroupWithActiveTabActivatesNextTab
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
--TabGroupViewTest.CollapsingGroupWithOnlyTabInStripAddsNewTab
-
-# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 1 failed, 0 flaky).
--TabGroupViewTest.GroupLineHiddenAndTabsAlignedInFocusMode
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.HeaderCollapseIconUpdatesWithCollapseState
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.MousePressFalseWhileEditorBubbleOpen
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.OpenEditorBubble
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
--TabGroupViewTest.ShiftGroupDown_PastTabGroup
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.ShiftGroupUp_AlreadyAtTop
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
--TabGroupViewTest.ShiftGroupUp_PastSingleTab
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
--TabGroupViewTest.UngroupingTabsFromCollapsedGroup
-
-# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
--UpdateMetricsProviderBrowserTest.UpdateAvailableMultipleTabs
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
--VerticalTabStripRegionViewTest.MoveGroupToNewWindowPreservesVerticalTabsState
+# 7.4% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 2 flaky).
+-WebAppEngagementBrowserTest.ManyUserApps
 
 # 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -WebAppIntegration.ManifestUpdatePolicyAppTitle

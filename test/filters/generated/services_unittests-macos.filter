@@ -5,26 +5,26 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.2% flake rate over 30 days per LUCI Analysis (26541 passed, 2 failed, 594 flaky).
+# 2.4% flake rate over 30 days per LUCI Analysis (25582 passed, 1 failed, 624 flaky).
 -CertNetFetcherURLLoaderTest.CancelAll
 
-# 5.8% flake rate over 30 days per LUCI Analysis (25569 passed, 2 failed, 1566 flaky).
+# 5.2% flake rate over 30 days per LUCI Analysis (24856 passed, 1 failed, 1350 flaky).
 -CertNetFetcherURLLoaderTest.ParallelFetchDuplicates
 
-# 99.5% flake rate over 30 days per LUCI Analysis (62 passed, 7 failed, 12315 flaky).
+# 99.5% flake rate over 30 days per LUCI Analysis (81 passed, 89 failed, 17012 flaky).
 -HeapProfilingDataSourceTest.EmitSamples
 
-# 1.2% flake rate over 30 days per LUCI Analysis (12233 passed, 42 failed, 106 flaky).
+# 2.6% flake rate over 30 days per LUCI Analysis (16736 passed, 161 failed, 281 flaky).
 -HeapProfilingDataSourceTest.MultipleInstances
 
-# 19.4% flake rate over 30 days per LUCI Analysis (431 passed, 14 failed, 90 flaky).
+# 8.7% flake rate over 30 days per LUCI Analysis (4868 passed, 161 failed, 303 flaky).
 -HeapProfilingDataSourceTest.StartOnSetup
 
-# 25.3% flake rate over 30 days per LUCI Analysis (12383 passed, 0 failed, 4201 flaky).
+# 19.7% flake rate over 30 days per LUCI Analysis (17179 passed, 1 failed, 4201 flaky).
 -HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
 
-# 61.8% flake rate over 30 days per LUCI Analysis (10378 passed, 2 failed, 16758 flaky).
+# 51.9% flake rate over 30 days per LUCI Analysis (12609 passed, 1 failed, 13600 flaky).
 -TracingServiceTest.PerfettoClientConsumer
 
-# 9.4% flake rate over 30 days per LUCI Analysis (24579 passed, 2 failed, 2557 flaky).
+# 8.8% flake rate over 30 days per LUCI Analysis (23911 passed, 1 failed, 2298 flaky).
 -TracingServiceTest.TracingServiceInstantiate

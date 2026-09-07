@@ -5,17 +5,14 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 5.8% flake rate over 30 days per LUCI Analysis (277 passed, 0 failed, 17 flaky).
+# 4.1% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 12 flaky).
 -AudioServiceOutputDeviceTest.VerifyDataFlow
 
-# 1.4% flake rate over 30 days per LUCI Analysis (290 passed, 0 failed, 4 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (293 passed, 0 failed, 3 flaky).
 -NetworkContextTest.PreconnectFour
 
-# 5.8% flake rate over 30 days per LUCI Analysis (277 passed, 0 failed, 17 flaky).
+# 3.7% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 11 flaky).
 -SoundsManagerTest.Play
 
-# 1.7% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 5 flaky).
--TracingSampleProfilerTest.SampleLoaderLockOnMainThread
-
-# 1.4% flake rate over 30 days per LUCI Analysis (290 passed, 0 failed, 4 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (293 passed, 0 failed, 3 flaky).
 -TracingSampleProfilerTest.SamplingChildThread

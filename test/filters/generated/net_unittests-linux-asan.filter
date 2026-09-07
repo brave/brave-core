@@ -5,5 +5,8 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 9.4% flake rate over 30 days per LUCI Analysis (665 passed, 0 failed, 69 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (1542 passed, 0 failed, 16 flaky).
+-EndToEndTests/EndToEndTest.SconeProtocolServerToClientAsynchronousWithPacketLoss/RFCv1_B2ON_poll_2__16
+
+# 9.5% flake rate over 30 days per LUCI Analysis (1747 passed, 0 failed, 183 flaky).
 -HttpCacheTest.GenerateCacheKeyUploadDataIdentifier

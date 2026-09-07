@@ -5,17 +5,17 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
+-AuthenticatorCableV2Test.PairingBased
+
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -AuthenticatorCableV2Test.PairingBasedWithConnectionSignal
 
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -FilePathWatcherWithChangeInfoTest.DirectoryInDirectory/2
 
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -FilePathWatcherWithChangeInfoTest.DirectoryInDirectory/3
 
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
--NavigationURLLoaderImplTest.ForceAsyncInterceptor
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 1 flaky).
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 0 failed, 1 flaky).
 -ParametrizedTests/PrefetchDataPipeTeeTest.FirstTargetAddedThenExceedLimit/0

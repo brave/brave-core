@@ -5,5 +5,5 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 6.4% flake rate over 30 days per LUCI Analysis (398 passed, 0 failed, 27 flaky).
+# 4.8% flake rate over 30 days per LUCI Analysis (412 passed, 0 failed, 21 flaky).
 -NetworkServiceTestWithService.StartsNetLogBounded

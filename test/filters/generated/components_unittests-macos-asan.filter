@@ -5,26 +5,23 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.6% flake rate over 30 days per LUCI Analysis (634 passed, 0 failed, 17 flaky).
+# 4.6% flake rate over 30 days per LUCI Analysis (623 passed, 0 failed, 30 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/10
 
-# 2.9% flake rate over 30 days per LUCI Analysis (632 passed, 0 failed, 19 flaky).
+# 3.7% flake rate over 30 days per LUCI Analysis (629 passed, 0 failed, 24 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/11
 
-# 1.1% flake rate over 30 days per LUCI Analysis (644 passed, 0 failed, 7 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (644 passed, 0 failed, 9 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/12
 
-# 1.1% flake rate over 30 days per LUCI Analysis (644 passed, 0 failed, 7 flaky).
+# 1.2% flake rate over 30 days per LUCI Analysis (645 passed, 0 failed, 8 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/13
 
-# 1.4% flake rate over 30 days per LUCI Analysis (642 passed, 0 failed, 9 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (642 passed, 0 failed, 11 flaky).
 -LocalStorageImplStaleDeletionTest.Orphan/SQLite
 
-# 1.7% flake rate over 30 days per LUCI Analysis (640 passed, 0 failed, 11 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (644 passed, 0 failed, 9 flaky).
 -LocalStorageImplStaleDeletionTest.StaleStorageAreaDeletion/SQLite
 
-# 1.2% flake rate over 30 days per LUCI Analysis (559 passed, 0 failed, 7 flaky).
--OnDeviceModelServiceControllerTest.MidSessionModelUpdate
-
-# 1.2% flake rate over 30 days per LUCI Analysis (643 passed, 0 failed, 8 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (642 passed, 0 failed, 11 flaky).
 -ReceivedTabFormsFillerFillTriggerTests/ReceivedTabFormsFillerFillTriggerTest.ShouldConditionallyFill/NormalFieldShouldFill

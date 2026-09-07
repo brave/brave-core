@@ -1,0 +1,9 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 1.4% flake rate over 30 days per LUCI Analysis (15123 passed, 0 failed, 216 flaky).
+-All/SnooperNodeTest.ContinuousAudioFlowAdaptsToSkew/Surround5_1ToSurround5_1

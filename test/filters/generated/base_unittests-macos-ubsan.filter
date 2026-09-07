@@ -5,8 +5,8 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 7.4% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 2 flaky).
+# 7.1% flake rate over 30 days per LUCI Analysis (26 passed, 0 failed, 2 flaky).
 -TaskEnvironmentTest.MultiThreadedMockTimeAndThreadPoolQueuedMode
 
-# 40.7% flake rate over 30 days per LUCI Analysis (16 passed, 0 failed, 11 flaky).
+# 39.3% flake rate over 30 days per LUCI Analysis (17 passed, 0 failed, 11 flaky).
 -ThreadGroupImplImplStartInBodyTest.RepeatedWillBlockDoesNotCreateTooManyWorkers

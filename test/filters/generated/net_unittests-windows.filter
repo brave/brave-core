@@ -23,9 +23,6 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
 -QuicSentPacketManagerTest.RetransmitTwiceThenAckPreviousBeforeSend
 
-# 25.0% flake rate over 30 days per LUCI Analysis (7765 passed, 0 failed, 2585 flaky).
--RegistrationTest.AttestationKeyGenerationFailure
-
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
 -Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/RFCv1
 
@@ -34,15 +31,3 @@
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
 -Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/draft29
-
-# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
--VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionNonPreconnect/RFCv1
-
-# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
--VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionNonPreconnect/RFCv2
-
-# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
--VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionPreconnect/RFCv1
-
-# 7.1% flake rate over 30 days per LUCI Analysis (13 passed, 1 failed, 0 flaky).
--VersionIncludeStreamDependencySequence/QuicSessionPoolTest.GoogleSearchEstablishmentReasonMetrics_InflightSessionPreconnect/RFCv2

@@ -5,14 +5,14 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.5% flake rate over 30 days per LUCI Analysis (636 passed, 0 failed, 16 flaky).
+# 2.6% flake rate over 30 days per LUCI Analysis (636 passed, 0 failed, 17 flaky).
 -FilePathWatcherWithChangeInfoTest.MultipleWatchersSingleFile/0
 
-# 1.5% flake rate over 30 days per LUCI Analysis (642 passed, 0 failed, 10 flaky).
+# 1.5% flake rate over 30 days per LUCI Analysis (643 passed, 0 failed, 10 flaky).
 -FilePathWatcherWithChangeInfoTest.MultipleWatchersSingleFile/1
 
-# 2.0% flake rate over 30 days per LUCI Analysis (639 passed, 0 failed, 13 flaky).
+# 1.2% flake rate over 30 days per LUCI Analysis (645 passed, 0 failed, 8 flaky).
 -FilePathWatcherWithChangeInfoTest.MultipleWatchersSingleFile/2
 
-# 2.5% flake rate over 30 days per LUCI Analysis (636 passed, 0 failed, 16 flaky).
+# 2.6% flake rate over 30 days per LUCI Analysis (636 passed, 0 failed, 17 flaky).
 -FilePathWatcherWithChangeInfoTest.MultipleWatchersSingleFile/3

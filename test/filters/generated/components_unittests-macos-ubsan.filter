@@ -5,11 +5,11 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 77.8% flake rate over 30 days per LUCI Analysis (6 passed, 0 failed, 21 flaky).
+# 21.4% flake rate over 30 days per LUCI Analysis (22 passed, 0 failed, 6 flaky).
+-MemoryPressureLevelReporterTest.Customization
+
+# 78.6% flake rate over 30 days per LUCI Analysis (6 passed, 0 failed, 22 flaky).
 -MemoryPressureLevelReporterTest.IntegerOverflowFixWithSaturatedCast
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
--StandaloneTrustedVaultClientTest.ShouldFallbackToKeyRetrievalWhenPreEnrollmentRejected
-
-# 3.7% flake rate over 30 days per LUCI Analysis (26 passed, 1 failed, 0 flaky).
+# 3.6% flake rate over 30 days per LUCI Analysis (27 passed, 1 failed, 0 flaky).
 -WebInputEventBuilderMacTest.ControlSequence

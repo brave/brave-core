@@ -5,11 +5,11 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 10.4% flake rate over 30 days per LUCI Analysis (5618 passed, 0 failed, 649 flaky).
+# 9.3% flake rate over 30 days per LUCI Analysis (5571 passed, 0 failed, 570 flaky).
 -AsanBackupRefPtrTest.Dereference
 
-# 93.5% flake rate over 30 days per LUCI Analysis (409 passed, 0 failed, 5858 flaky).
+# 93.9% flake rate over 30 days per LUCI Analysis (374 passed, 0 failed, 5767 flaky).
 -HangWatcherTest.HistogramsLoggedWithShutdownFlag
 
-# 1.6% flake rate over 30 days per LUCI Analysis (6165 passed, 0 failed, 102 flaky).
+# 1.6% flake rate over 30 days per LUCI Analysis (6045 passed, 0 failed, 96 flaky).
 -LapTimer.ThreadTicksUsageExample

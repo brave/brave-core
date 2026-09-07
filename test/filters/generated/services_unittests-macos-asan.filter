@@ -5,5 +5,5 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 1.5% flake rate over 30 days per LUCI Analysis (640 passed, 0 failed, 10 flaky).
--SoundsManagerTest.Stop
+# 1.2% flake rate over 30 days per LUCI Analysis (643 passed, 0 failed, 8 flaky).
+-AudioServiceOutputDeviceTest.VerifyDataFlow

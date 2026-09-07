@@ -5,29 +5,14 @@
 ## Regenerate with:
 ##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 3.4% flake rate over 30 days per LUCI Analysis (719 passed, 0 failed, 25 flaky).
+# 4.4% flake rate over 30 days per LUCI Analysis (735 passed, 0 failed, 34 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/10
 
-# 4.8% flake rate over 30 days per LUCI Analysis (708 passed, 0 failed, 36 flaky).
--All/HeapProfilerControllerProcessTest.ChildProcess/11
-
-# 4.8% flake rate over 30 days per LUCI Analysis (708 passed, 0 failed, 36 flaky).
--All/HeapProfilerControllerProcessTest.ChildProcess/12
-
-# 3.4% flake rate over 30 days per LUCI Analysis (719 passed, 0 failed, 25 flaky).
--All/HeapProfilerControllerProcessTest.ChildProcess/13
-
-# 1.1% flake rate over 30 days per LUCI Analysis (736 passed, 0 failed, 8 flaky).
+# 1.2% flake rate over 30 days per LUCI Analysis (760 passed, 0 failed, 9 flaky).
 -GaiaCookieManagerServiceTest.GaiaCookieLastListAccountsDataSaved
 
-# 10.1% flake rate over 30 days per LUCI Analysis (669 passed, 0 failed, 75 flaky).
--HintsManagerTest.OptimizationFiltersAreOnlyLoadedIfTypeIsRegistered
-
-# 5.8% flake rate over 30 days per LUCI Analysis (701 passed, 0 failed, 43 flaky).
+# 5.5% flake rate over 30 days per LUCI Analysis (727 passed, 0 failed, 42 flaky).
 -PredictionServiceTest.ResponsesAreCorrect
 
-# 1.1% flake rate over 30 days per LUCI Analysis (86 passed, 0 failed, 1 flaky).
--PrivacyPassTest.TokenRequestInboundBatchFromBytesErrors
-
-# 1.1% flake rate over 30 days per LUCI Analysis (738 passed, 0 failed, 8 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (761 passed, 0 failed, 8 flaky).
 -TabGroupSyncServiceImplTest.MoveTab
