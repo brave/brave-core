@@ -137,8 +137,13 @@ export default function WebsiteToolsModal(props: Props) {
   } = conversation.api.useGetContentTools(props.content.uuid)
   const isLoading = isPlaceholderData || isFetching
 
-  // Don't allow changing permissions while a request is in progress
-  const { isRequestInProgress } = useConversationState()
+  // Don't allow changing permissions while a request is in progress, or while a
+  // tool loop is still in flight.
+  const { isRequestInProgress, toolUseTaskState } = useConversationState()
+  const isPermissionChangeDisabled =
+    isRequestInProgress
+    || (toolUseTaskState !== Mojom.TaskState.kNone
+      && toolUseTaskState !== Mojom.TaskState.kStopped)
   // Only one description is expanded at a time, to keep the list scannable.
   const [expandedToolName, setExpandedToolName] = React.useState<string | null>(
     null,
@@ -186,7 +191,7 @@ export default function WebsiteToolsModal(props: Props) {
                   key={tool.name}
                   tool={tool}
                   isExpanded={tool.name === expandedToolName}
-                  isPermissionChangeDisabled={isRequestInProgress}
+                  isPermissionChangeDisabled={isPermissionChangeDisabled}
                   onToggle={() =>
                     setExpandedToolName((expanded) =>
                       expanded === tool.name ? null : tool.name,

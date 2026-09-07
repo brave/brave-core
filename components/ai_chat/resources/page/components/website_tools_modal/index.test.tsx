@@ -181,28 +181,80 @@ describe('WebsiteToolsModal', () => {
     expect(getContentTools).toHaveBeenCalledTimes(1)
   })
 
-  it('locks the permission pickers while a response is generating', async () => {
-    const { container } = await renderModal(
-      <MockContext
-        conversationHandler={{
-          getContentTools: () => Promise.resolve({ tools: TOOLS }),
-        }}
-        initialState={{ conversationState: { isRequestInProgress: true } }}
-      >
-        <WebsiteToolsModal
-          content={CONTENT}
-          onClose={() => {}}
-        />
-      </MockContext>,
-    )
+  it.each([
+    // The loop reads the choices once, when it starts, so a change made part
+    // way through wouldn't apply until the next one.
+    ['a response is generating', { isRequestInProgress: true }],
+    // The request is over by the time the tools run, so it's the task state
+    // that says the loop is still in flight - including while it waits on a
+    // permission challenge.
+    [
+      'a tool loop is running',
+      {
+        isRequestInProgress: false,
+        toolUseTaskState: Mojom.TaskState.kRunning,
+      },
+    ],
+    [
+      'a tool loop is paused',
+      { isRequestInProgress: false, toolUseTaskState: Mojom.TaskState.kPaused },
+    ],
+  ])(
+    'locks the permission pickers while %s',
+    async (_, conversationState: Partial<Mojom.ConversationState>) => {
+      const { container } = await renderModal(
+        <MockContext
+          conversationHandler={{
+            getContentTools: () => Promise.resolve({ tools: TOOLS }),
+          }}
+          initialState={{ conversationState }}
+        >
+          <WebsiteToolsModal
+            content={CONTENT}
+            onClose={() => {}}
+          />
+        </MockContext>,
+      )
 
-    await waitFor(() => {
-      expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
-    })
-    for (const dropdown of container.querySelectorAll('leo-dropdown')) {
-      expect(dropdown).toHaveProperty('disabled', true)
-    }
-  })
+      await waitFor(() => {
+        expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+      })
+      for (const dropdown of container.querySelectorAll('leo-dropdown')) {
+        expect(dropdown).toHaveProperty('disabled', true)
+      }
+    },
+  )
+
+  it.each([
+    ['no tool loop has started', Mojom.TaskState.kNone],
+    ['the tool loop was stopped', Mojom.TaskState.kStopped],
+  ])(
+    'leaves the permission pickers usable when %s',
+    async (_, toolUseTaskState: Mojom.TaskState) => {
+      const { container } = await renderModal(
+        <MockContext
+          conversationHandler={{
+            getContentTools: () => Promise.resolve({ tools: TOOLS }),
+          }}
+          initialState={{
+            conversationState: { isRequestInProgress: false, toolUseTaskState },
+          }}
+        >
+          <WebsiteToolsModal
+            content={CONTENT}
+            onClose={() => {}}
+          />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+      })
+      for (const dropdown of container.querySelectorAll('leo-dropdown')) {
+        expect(dropdown).toHaveProperty('disabled', false)
+      }
+    },
+  )
 
   it('counts the tools it lists', async () => {
     await renderModal(
