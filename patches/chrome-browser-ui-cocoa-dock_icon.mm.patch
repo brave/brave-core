@@ -178,6 +178,7 @@ index 3cb3285ab04fa7042369858ae868adc04db50c25..23b7346f3c1921a59f9e224ec4f6c183
 -}
 -
 -@end
+-
  @implementation DockIcon {
 +  // The number of downloads in progress.
 +  int _downloads;
@@ -187,6 +188,7 @@ index 3cb3285ab04fa7042369858ae868adc04db50c25..23b7346f3c1921a59f9e224ec4f6c183
 +
 +  // The progress made on those downloads. Ranges from [0..1].
 +  float _progress;
++
    // The time that the icon was last updated.
    base::TimeTicks _lastUpdate;
  
@@ -221,6 +223,7 @@ index 3cb3285ab04fa7042369858ae868adc04db50c25..23b7346f3c1921a59f9e224ec4f6c183
 +  formatter.maximumFractionDigits = 0;
 +  return [formatter stringFromNumber:@(_progress)];
 +}
++
  - (void)updateIcon {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
  
