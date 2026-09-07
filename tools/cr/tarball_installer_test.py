@@ -587,8 +587,9 @@ class MainTest(unittest.TestCase):
         install.assert_called_once()
         installer = install.call_args.args[0]
         self.assertEqual(installer.dest_dir, m._WORKSPACE_ROOT / dep)
+        # Read from the table, so bumping the pinned node does not fail here.
         self.assertEqual(installer.object_name,
-                         'node-v24.18.0-linux-x64.tar.gz')
+                         m.EXTRA_DEPS[dep]['objects'][0]['object_name'])
 
     def test_rejects_unknown_dep(self):
         with contextlib.redirect_stderr(io.StringIO()):

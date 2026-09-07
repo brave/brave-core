@@ -190,6 +190,9 @@ STAGE1_RUSTLIB = Path('stage1') / 'lib' / 'rustlib'
 STAGE0_STD = Path('stage0-std')
 STAGE0_RUSTLIB = Path('stage0-sysroot') / 'lib' / 'rustlib'
 
+# Relative path to the beta `cargo`.
+STAGE0_CARGO = Path('stage0') / 'bin' / CARGO
+
 # vpython3 that is selected by `depot_tools` from `$PATH`.
 # This little Windows specific quirk is only needed when calling this script on
 # Windows using git bash.
@@ -553,15 +556,14 @@ class ToolchainBuilder:
             prebuilt_bin = (
                 Path(self._build_rust_module.RUST_TOOLCHAIN_OUT_DIR) / 'bin')
             rustc = prebuilt_bin / RUSTC
-            cargo = prebuilt_bin / CARGO
-            for tool in (rustc, cargo):
-                if not tool.is_file():
-                    raise RuntimeError(
-                        f'Prebuilt Rust tool not found: {tool}. The '
-                        f'--no-full-toolchain build uses the toolchain gclient '
-                        f'syncs to {prebuilt_bin.parent} as bootstrap\'s '
-                        f'stage-0; run `gclient sync` or pass --full-toolchain.'
-                    )
+            if not rustc.is_file():
+                raise RuntimeError(
+                    f'Prebuilt Rust tool not found: {rustc}. The '
+                    f'--no-full-toolchain build uses the toolchain gclient '
+                    f'syncs to {prebuilt_bin.parent} as bootstrap\'s '
+                    f'stage-0')
+            cargo = (Path(self._build_rust_module.RUST_BUILD_DIR) /
+                     target_triple / STAGE0_CARGO)
             _check_call(str(self._vpython_path),
                         'build_rust.py',
                         '--run-xpy',

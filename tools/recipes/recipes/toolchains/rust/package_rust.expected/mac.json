@@ -320,7 +320,8 @@
       "1",
       "--clear",
       "--no-full-toolchain",
-      "--upload"
+      "--upload",
+      "--use-prebuilt-rustc"
     ],
     "name": "build rust toolchain"
   },

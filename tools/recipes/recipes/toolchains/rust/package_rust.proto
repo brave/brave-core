@@ -13,5 +13,8 @@ message InputProperties {
   int32 brave_subrevision = 1;
   // Chromium ref (tag or branch) whose Rust toolchain is packaged.
   string chromium_ref = 2;
+  // Build a stage-1 rustc from scratch, rather than compiling the wasm32 std
+  // against the prebuilt rustc gclient syncs (the default).
+  bool build_rustc_from_scratch = 3;
 }
 

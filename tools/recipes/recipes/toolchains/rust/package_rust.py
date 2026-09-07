@@ -28,20 +28,24 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 
     vpython3 = api.depot_tools.vpython3()
+    cmd = [
+        vpython3,
+        brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
+        '--out-dir',
+        api.path.out,
+        '--chromium-src',
+        chromium_src,
+        '--brave-subrevision',
+        str(properties.brave_subrevision),
+        '--clear',
+        '--no-full-toolchain',
+        '--upload',
+    ]
+    cmd.append('--no-use-prebuilt-rustc' if properties.
+               build_rustc_from_scratch else '--use-prebuilt-rustc')
+
     with api.osx_sdk.ensure(chromium_src):
-        api.step('build rust toolchain', [
-            vpython3,
-            brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
-            '--out-dir',
-            api.path.out,
-            '--chromium-src',
-            chromium_src,
-            '--brave-subrevision',
-            str(properties.brave_subrevision),
-            '--clear',
-            '--no-full-toolchain',
-            '--upload',
-        ])
+        api.step('build rust toolchain', cmd)
 
 
 def GenTests(api):
@@ -66,7 +70,25 @@ def GenTests(api):
                          'build rust toolchain', ['--brave-subrevision', '1']),
         api.post_process(post_process.StepCommandContains,
                          'build rust toolchain', ['--upload']),
+        api.post_process(post_process.StepCommandContains,
+                         'build rust toolchain', ['--use-prebuilt-rustc']),
         api.post_process(post_process.StatusSuccess),
+    )
+    # `build_rustc_from_scratch` flips the build script's compiler flag; unset
+    # (every other test) is the prebuilt rustc.
+    yield api.test(
+        'build rustc from scratch',
+        api.platform.name('linux'),
+        api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.git_cache_populated(),
+        api.brave_core_checkout.deployed('tools/cr/toolchains'),
+        api.properties(brave_subrevision=1,
+                       chromium_ref='151.0.7917.1',
+                       build_rustc_from_scratch=True),
+        api.post_process(post_process.StepCommandContains,
+                         'build rust toolchain', ['--no-use-prebuilt-rustc']),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     # On mac, the checkout's pinned Xcode is installed/selected around the
     # build step, then reset afterward.
