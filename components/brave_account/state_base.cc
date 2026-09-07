@@ -28,9 +28,15 @@ StateBase::TakeReceivers() {
   return receivers_.TakeReceivers();
 }
 
-StateBase::StateBase(AddObserverCallback add_observer)
-    : add_observer_(std::move(add_observer)) {
+StateBase::StateBase(AddObserverCallback add_observer,
+                       EstablishAccountSyncForwardCallback establish_account_sync,
+                       StopAccountSyncForwardCallback stop_account_sync)
+    : add_observer_(std::move(add_observer)),
+      establish_account_sync_(std::move(establish_account_sync)),
+      stop_account_sync_(std::move(stop_account_sync)) {
   CHECK(add_observer_);
+  CHECK(establish_account_sync_);
+  CHECK(stop_account_sync_);
 }
 
 StateBase::~StateBase() = default;
@@ -38,6 +44,18 @@ StateBase::~StateBase() = default;
 void StateBase::AddObserver(
     mojo::PendingRemote<mojom::AuthenticationObserver> observer) {
   add_observer_.Run(std::move(observer));
+}
+
+void StateBase::EstablishAccountSync(
+    const std::string& seed_hex,
+    mojom::Authentication::EstablishAccountSyncCallback callback) {
+  establish_account_sync_.Run(seed_hex, std::move(callback));
+}
+
+void StateBase::StopAccountSync(
+    bool keep_local_data,
+    mojom::Authentication::StopAccountSyncCallback callback) {
+  stop_account_sync_.Run(keep_local_data, std::move(callback));
 }
 
 void StateBase::ChangePasswordStep1(const std::string& email,

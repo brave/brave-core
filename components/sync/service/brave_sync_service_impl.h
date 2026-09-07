@@ -51,6 +51,19 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
 
+  // Account-based sync: establishes the sync chain using a deterministic,
+  // client-side-derived seed (64 hex chars encoding 32 bytes) shared by every
+  // device signed into the same Brave Account. `email` identifies the linked
+  // account for UI. The seed is derived from the account credentials entirely
+  // on the client, so the sync server never sees it. Returns false if the seed
+  // is invalid or could not be stored.
+  bool EstablishAccountChain(const std::string& seed_hex,
+                            const std::string& email);
+
+  // Stops the account-linked sync chain. When `keep_local_data` is false the
+  // local copy of synced data is also wiped.
+  void StopAccountChain(bool keep_local_data);
+
   // This should only be called by helper function, brave_sync::ResetSync, or by
   // OnDeviceInfoChange internally
   void OnSelfDeviceInfoDeleted(base::OnceClosure cb);

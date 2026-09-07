@@ -14,6 +14,7 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/notreached.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -23,9 +24,11 @@ namespace brave_account {
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    os_crypt_async::OSCryptAsync* os_crypt_async)
+    os_crypt_async::OSCryptAsync* os_crypt_async,
+    GetSyncServiceCallback get_sync_service)
     : account_state_prefs_(CHECK_DEREF(pref_service)),
-      url_loader_factory_(std::move(url_loader_factory)) {
+      url_loader_factory_(std::move(url_loader_factory)),
+      get_sync_service_(std::move(get_sync_service)) {
   CHECK(url_loader_factory_);
 
   CHECK_DEREF(os_crypt_async)
@@ -94,10 +97,14 @@ void BraveAccountService::EnsureState(mojom::AccountState::Tag which) {
                          return std::exchange(pending_receivers_, {});
                        }},
         state_);
-    state_.emplace<State>(account_state_prefs_, url_loader_factory_,
-                          *encryptor_,
-                          base::BindRepeating(&BraveAccountService::AddObserver,
-                                              base::Unretained(this)));
+    state_.emplace<State>(
+        account_state_prefs_, url_loader_factory_, *encryptor_,
+        base::BindRepeating(&BraveAccountService::AddObserver,
+                            base::Unretained(this)),
+        base::BindRepeating(&BraveAccountService::EstablishAccountSync,
+                            base::Unretained(this)),
+        base::BindRepeating(&BraveAccountService::StopAccountSync,
+                            base::Unretained(this)));
     for (auto& receiver : receivers) {
       ActiveState().AddReceiver(std::move(receiver));
     }
@@ -124,6 +131,35 @@ StateBase& BraveAccountService::ActiveState() {
                        NOTREACHED();
                      }},
       state_);
+}
+
+void BraveAccountService::EstablishAccountSync(
+    const std::string& seed_hex,
+    mojom::Authentication::EstablishAccountSyncCallback callback) {
+  auto* sync_service = get_sync_service_.Run();
+  if (!sync_service) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  const auto account_state = account_state_prefs_.GetAccountState();
+  std::string email;
+  if (account_state->is_logged_in()) {
+    email = account_state->get_logged_in()->email;
+  }
+
+  const bool success = sync_service->EstablishAccountChain(seed_hex, email);
+  std::move(callback).Run(success);
+}
+
+void BraveAccountService::StopAccountSync(
+    bool keep_local_data,
+    mojom::Authentication::StopAccountSyncCallback callback) {
+  auto* sync_service = get_sync_service_.Run();
+  if (sync_service) {
+    sync_service->StopAccountChain(keep_local_data);
+  }
+  std::move(callback).Run(true);
 }
 
 }  // namespace brave_account

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 // @ts-expect-error: no type definitions are generated for leo.bundle.js
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
@@ -67,7 +68,12 @@ export class BraveAccountLoggedInRowElement extends
     }
   }
 
-  protected onLogOutButtonClicked() {
+  protected async onLogOutButtonClicked() {
+    if (loadTimeData.getBoolean('braveAccountSyncEnabled')) {
+      const wipeLocalData = confirm(
+        this.i18n('braveSyncAccountSignoutWipe'))
+      await this.browserProxy.authentication.stopAccountSync(!wipeLocalData)
+    }
     this.browserProxy.authentication.logOut()
   }
 

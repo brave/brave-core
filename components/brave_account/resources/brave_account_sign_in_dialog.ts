@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
   BraveAccountBrowserProxy,
@@ -12,6 +13,7 @@ import {
 import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
 import { LoginClientErrorCode, LoginError } from './login.mojom-webui.js'
+import { deriveAccountSyncSeed } from './derive_account_seed.js'
 import { showError } from './brave_account_common.js'
 
 import {
@@ -72,6 +74,12 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         encryptedLoginToken,
         clientMac,
       )
+
+      if (loadTimeData.valueExists('braveAccountSyncEnabled') &&
+          loadTimeData.getBoolean('braveAccountSyncEnabled')) {
+        const seedHex = await deriveAccountSyncSeed(this.email, this.password)
+        await this.browserProxy.authentication.establishAccountSync(seedHex)
+      }
     } catch (e) {
       let error: LoginError
 

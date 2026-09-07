@@ -15,6 +15,11 @@ namespace brave_account::features {
 bool IsBraveAccountEnabled();
 bool IsBraveAccountEnabledForProfile(const PrefService& pref_service);
 
+// True when the account-based sync integration (automatic chain establishment
+// for devices sharing a Brave Account) is enabled. Requires the account
+// feature itself to be on.
+bool IsBraveAccountSyncEnabled();
+
 const base::Feature& BraveAccountFeatureForTesting();
 
 }  // namespace brave_account::features

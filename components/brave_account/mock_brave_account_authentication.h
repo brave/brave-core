@@ -119,6 +119,18 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
   MOCK_METHOD(void, LogOut, (), (override));
 
   MOCK_METHOD(void,
+              EstablishAccountSync,
+              (const std::string& seed_hex,
+               mojom::Authentication::EstablishAccountSyncCallback callback),
+              (override));
+
+  MOCK_METHOD(void,
+              StopAccountSync,
+              (bool keep_local_data,
+               mojom::Authentication::StopAccountSyncCallback callback),
+              (override));
+
+  MOCK_METHOD(void,
               GetServiceToken,
               (mojom::Service service, GetServiceTokenCallback callback),
               (override));

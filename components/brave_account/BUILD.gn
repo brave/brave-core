@@ -56,6 +56,7 @@ source_set("brave_account") {
     "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
+    "//components/sync/service",
     "//brave/components/password_strength_meter",
     "//brave/components/password_strength_meter:mojom",
     "//brave/components/resources:static_resources_grit",

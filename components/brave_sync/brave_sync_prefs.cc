@@ -22,6 +22,8 @@ namespace {
 
 // Stored as bip39 keywords (encrypted)
 constexpr char kSyncV2Seed[] = "brave_sync_v2.seed";
+constexpr char kAccountSyncEmail[] = "brave_sync_v2.account_sync_email";
+constexpr char kAccountSyncEnabled[] = "brave_sync_v2.account_sync_enabled";
 constexpr char kSyncFailedDecryptSeedNoticeDismissed[] =
     "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
 constexpr char kSyncAccountDeletedNoticePending[] =
@@ -85,6 +87,8 @@ void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSyncAccountDeletedNoticePending, false);
   registry->RegisterStringPref(kSyncLeaveChainDetails, std::string());
   registry->RegisterStringPref(kCustomSyncServiceUrl, std::string());
+  registry->RegisterStringPref(kAccountSyncEmail, std::string());
+  registry->RegisterBooleanPref(kAccountSyncEnabled, false);
 }
 
 // static
@@ -120,6 +124,32 @@ void Prefs::RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 // static
 std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
+}
+
+// static
+std::string Prefs::GetAccountSyncEmailPath() {
+  return kAccountSyncEmail;
+}
+
+std::string Prefs::GetAccountSyncEmail() const {
+  return pref_service_->GetString(kAccountSyncEmail);
+}
+
+void Prefs::SetAccountSyncEmail(const std::string& email) {
+  pref_service_->SetString(kAccountSyncEmail, email);
+}
+
+// static
+std::string Prefs::GetAccountSyncEnabledPath() {
+  return kAccountSyncEnabled;
+}
+
+bool Prefs::IsAccountSyncEnabled() const {
+  return pref_service_->GetBoolean(kAccountSyncEnabled);
+}
+
+void Prefs::SetAccountSyncEnabled(bool enabled) {
+  pref_service_->SetBoolean(kAccountSyncEnabled, enabled);
 }
 
 std::string Prefs::GetEncryptedSeed() const {
@@ -198,6 +228,8 @@ void Prefs::SetAddLeaveChainDetailBehaviourForTesting(
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
   pref_service_->ClearPref(kSyncFailedDecryptSeedNoticeDismissed);
+  pref_service_->ClearPref(kAccountSyncEmail);
+  pref_service_->ClearPref(kAccountSyncEnabled);
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {

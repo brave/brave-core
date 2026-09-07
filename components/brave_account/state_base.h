@@ -44,13 +44,31 @@ class StateBase : public mojom::Authentication {
   using AddObserverCallback = base::RepeatingCallback<void(
       mojo::PendingRemote<mojom::AuthenticationObserver>)>;
 
-  explicit StateBase(AddObserverCallback add_observer);
+  using EstablishAccountSyncForwardCallback = base::RepeatingCallback<void(
+      const std::string& seed_hex,
+      mojom::Authentication::EstablishAccountSyncCallback callback)>;
+
+  using StopAccountSyncForwardCallback = base::RepeatingCallback<void(
+      bool keep_local_data,
+      mojom::Authentication::StopAccountSyncCallback callback)>;
+
+  explicit StateBase(AddObserverCallback add_observer,
+                     EstablishAccountSyncForwardCallback establish_account_sync,
+                     StopAccountSyncForwardCallback stop_account_sync);
 
   ~StateBase() override;
 
  private:
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) final;
+
+  void EstablishAccountSync(
+      const std::string& seed_hex,
+      mojom::Authentication::EstablishAccountSyncCallback callback) final;
+
+  void StopAccountSync(
+      bool keep_local_data,
+      mojom::Authentication::StopAccountSyncCallback callback) final;
 
   void ChangePasswordStep1(const std::string& email,
                            ChangePasswordStep1Callback callback) override;
@@ -104,6 +122,8 @@ class StateBase : public mojom::Authentication {
                           ResetPasswordStep4Callback callback) override;
 
   const AddObserverCallback add_observer_;
+  const EstablishAccountSyncForwardCallback establish_account_sync_;
+  const StopAccountSyncForwardCallback stop_account_sync_;
   mojo::ReceiverSet<mojom::Authentication> receivers_;
 };
 

@@ -1,0 +1,76 @@
+name: Build Brave (account-sync) for Windows
+
+# Builds a Brave for Windows .exe from the account-sync brave-core changes.
+#
+# IMPORTANT: This CANNOT run on GitHub-hosted runners. A full Chromium/Brave
+# Windows build needs ~16+ cores, 32+ GB RAM, 150-200 GB free disk, and several
+# hours. Brave's own CI uses self-hosted runners for this reason.
+#
+# Setup on your build machine (a strong Windows box):
+#   1. Install: Visual Studio 2022 (C++ desktop + ATL/MFC), Windows 10/11 SDK,
+#      Node.js (LTS), Git, Python 3.
+#   2. Register a self-hosted runner for this repo (GitHub > Settings > Actions >
+#      Runners) and give it the label `windows-build`. It must run as a user with
+#      access to the VS toolchain (e.g. launch the runner service from a
+#      developer command prompt / with the VS environment).
+#   3. Ensure ~200 GB free on the runner's working drive.
+#
+# The workflow clones the official `brave-browser` build repo, runs `npm run init`
+# (this fetches the entire Chromium source), then overrides `src/brave` (which is
+# the brave-core tree) with this fork's `account-sync` branch before building.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [account-sync]
+
+concurrency:
+  group: build-brave-account-sync
+  cancel-in-progress: false
+
+jobs:
+  build-windows:
+    runs-on: [self-hosted, windows-build]
+    timeout-minutes: 360
+    env:
+      BRAVE_CORE_BRANCH: account-sync
+      BRAVE_CORE_FORK: https://github.com/${{ github.repository_owner }}/brave-core.git
+    steps:
+      - name: Checkout brave-browser build repo
+        run: |
+          if (!(Test-Path brave-browser)) {
+            git clone --depth 1 https://github.com/brave/brave-browser.git
+          }
+          cd brave-browser
+          git fetch --tags
+          npm install
+
+      - name: Init Chromium checkout (fetches full src tree)
+        working-directory: brave-browser
+        run: npm run init -- --skip_gclient_sync=false
+
+      - name: Override brave-core with account-sync branch
+        working-directory: brave-browser/src/brave
+        run: |
+          git remote add fork $env:BRAVE_CORE_FORK 2>$null
+          git fetch fork
+          git checkout "fork/$env:BRAVE_CORE_BRANCH"
+          git log -1 --oneline
+
+      - name: Build Brave (Release) for Windows
+        working-directory: brave-browser
+        run: npm run build -- Release
+
+      - name: Build installer (.exe)
+        working-directory: brave-browser
+        run: npm run create_dist -- Release
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: brave-account-sync-installer
+          path: |
+            brave-browser/src/out/*/brave_installer.exe
+            brave-browser/src/out/*/brave_installer-*.*.*
+          if-no-files-found: warn
+          retention-days: 14

@@ -15,6 +15,7 @@ namespace brave_account::features {
 
 namespace {
 BASE_FEATURE(kBraveAccount, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAccountSync, base::FEATURE_DISABLED_BY_DEFAULT);
 }  // namespace
 
 // Process-wide: true if kBraveAccount is on, or a dependent feature (e.g.
@@ -43,6 +44,11 @@ bool IsBraveAccountEnabledForProfile(const PrefService& pref_service) {
 
 const base::Feature& BraveAccountFeatureForTesting() {
   return kBraveAccount;
+}
+
+bool IsBraveAccountSyncEnabled() {
+  return IsBraveAccountEnabled() &&
+         base::FeatureList::IsEnabled(kBraveAccountSync);
 }
 
 }  // namespace brave_account::features
