@@ -24,7 +24,8 @@
 # this because Chrome's icon is the same in either appearance.
 #
 # The badge label leaves the tile's content view alone, so the Dock keeps
-# compositing the icon for the current appearance.
+# compositing the icon for the current appearance. A single determinate
+# download is shown as a percentage; otherwise the badge is the count.
 
 substitutions:
   - description: |
@@ -47,19 +48,23 @@ substitutions:
       replace: ''
 
   - description: |
-      Report the number of downloads in progress through the Dock tile's badge
-      label.
+      Report downloads through the Dock tile's badge label.
 
-      The count now lives on `DockIcon`, as there is no longer a view to park it
-      on. A badge is too small to describe progress in, so the progress itself
-      is no longer reported; the download button in the toolbar still shows it.
-      Throttling is unchanged.
+      State now lives on `DockIcon`, as there is no longer a view to park it on.
+      A single determinate download is shown as a percentage; otherwise the
+      badge is the number of downloads in progress. Throttling is unchanged.
     regex:
       re_pattern: '@implementation DockIcon \{[\s\S]*\n@end'
       replace: |-
         @implementation DockIcon {
           // The number of downloads in progress.
           int _downloads;
+
+          // Whether the progress of those downloads is known yet.
+          BOOL _indeterminate;
+
+          // The progress made on those downloads. Ranges from [0..1].
+          float _progress;
 
           // The time that the icon was last updated.
           base::TimeTicks _lastUpdate;
@@ -81,8 +86,17 @@ substitutions:
             return nil;
           }
 
-          return [NSNumberFormatter localizedStringFromNumber:@(_downloads)
-                                                  numberStyle:NSNumberFormatterNoStyle];
+          NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+
+          // A percentage can only speak for a single download, and only once enough
+          // of it has been seen to know how much there is to come.
+          if (_downloads > 1 || _indeterminate) {
+            return [formatter stringFromNumber:@(_downloads)];
+          }
+
+          formatter.numberStyle = NSNumberFormatterPercentStyle;
+          formatter.maximumFractionDigits = 0;
+          return [formatter stringFromNumber:@(_progress)];
         }
 
         - (void)updateIcon {
@@ -111,15 +125,19 @@ substitutions:
           }
         }
 
-        // The badge describes how many downloads there are rather than how far
-        // along they are, so there is nothing to report for either of these.
-
         - (void)setIndeterminate:(BOOL)indeterminate {
           DCHECK_CURRENTLY_ON(BrowserThread::UI);
+
+          if (indeterminate != _indeterminate) {
+            _indeterminate = indeterminate;
+            _forceUpdate = YES;
+          }
         }
 
         - (void)setProgress:(float)progress {
           DCHECK_CURRENTLY_ON(BrowserThread::UI);
+
+          _progress = progress;
         }
 
         @end

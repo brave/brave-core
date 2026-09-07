@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/cocoa/dock_icon.mm b/chrome/browser/ui/cocoa/dock_icon.mm
-index 3cb3285ab04fa7042369858ae868adc04db50c25..5f266988203996f7ab05ce97bd9bf24f6c92c8a4 100644
+index 3cb3285ab04fa7042369858ae868adc04db50c25..23b7346f3c1921a59f9e224ec4f6c18372e1b3f6 100644
 --- a/chrome/browser/ui/cocoa/dock_icon.mm
 +++ b/chrome/browser/ui/cocoa/dock_icon.mm
-@@ -7,180 +7,16 @@
+@@ -7,180 +7,22 @@
  #include <stdint.h>
  
  #include "base/apple/bundle_locations.h"
@@ -183,10 +183,16 @@ index 3cb3285ab04fa7042369858ae868adc04db50c25..5f266988203996f7ab05ce97bd9bf24f
 +  // The number of downloads in progress.
 +  int _downloads;
 +
++  // Whether the progress of those downloads is known yet.
++  BOOL _indeterminate;
++
++  // The progress made on those downloads. Ranges from [0..1].
++  float _progress;
++
    // The time that the icon was last updated.
    base::TimeTicks _lastUpdate;
  
-@@ -190,14 +26,21 @@ constexpr struct {
+@@ -190,14 +32,30 @@ constexpr struct {
  }
  
  + (DockIcon*)sharedDockIcon {
@@ -205,14 +211,23 @@ index 3cb3285ab04fa7042369858ae868adc04db50c25..5f266988203996f7ab05ce97bd9bf24f
 +    return nil;
 +  }
 +
-+  return [NSNumberFormatter localizedStringFromNumber:@(_downloads)
-+                                          numberStyle:NSNumberFormatterNoStyle];
++  NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
++
++  // A percentage can only speak for a single download, and only once enough
++  // of it has been seen to know how much there is to come.
++  if (_downloads > 1 || _indeterminate) {
++    return [formatter stringFromNumber:@(_downloads)];
++  }
++
++  formatter.numberStyle = NSNumberFormatterPercentStyle;
++  formatter.maximumFractionDigits = 0;
++  return [formatter stringFromNumber:@(_progress)];
 +}
 +
  - (void)updateIcon {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
  
-@@ -212,37 +55,27 @@ constexpr struct {
+@@ -212,37 +70,31 @@ constexpr struct {
    _lastUpdate = now;
    _forceUpdate = NO;
  
@@ -233,26 +248,26 @@ index 3cb3285ab04fa7042369858ae868adc04db50c25..5f266988203996f7ab05ce97bd9bf24f
    }
  }
  
-+// The badge describes how many downloads there are rather than how far
-+// along they are, so there is nothing to report for either of these.
-+
  - (void)setIndeterminate:(BOOL)indeterminate {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
 -  DockTileView* dockTileView =
 -      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
--
+ 
 -  if (indeterminate != dockTileView.indeterminate) {
 -    dockTileView.indeterminate = indeterminate;
--    _forceUpdate = YES;
--  }
++  if (indeterminate != _indeterminate) {
++    _indeterminate = indeterminate;
+     _forceUpdate = YES;
+   }
  }
  
  - (void)setProgress:(float)progress {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
 -  DockTileView* dockTileView =
 -      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
--
+ 
 -  dockTileView.progress = progress;
++  _progress = progress;
  }
  
  @end
