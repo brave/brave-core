@@ -7,7 +7,7 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import type { TabFocusPageElement } from './tab_focus_page.js'
 
 export function getHtml(this: TabFocusPageElement) {
-  return this.showFRE_
+  return html`${this.showFRE_
     ? html`
         <div class="enable-tab-focus-wrapper">
           <div class="title-row">
@@ -213,5 +213,5 @@ export function getHtml(this: TabFocusPageElement) {
               `
             : ''}
         </div>
-        <!--_html_template_end_-->`
+        <!--_html_template_end_-->`}`
 }
