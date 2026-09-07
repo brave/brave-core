@@ -32,5 +32,7 @@ substitutions:
       reaches them once the accessors below answer false.
     count: 6
     regex:
-      re_pattern: 'return GlicEnablingJni\.get\(\)\.(isEnabledByFlags|isProfileEligible|isEnabledForProfile|isReadyForProfile|shouldShowSettingsPage|shouldShowWebActuationToggle)\([^)]*\);'
+      re_pattern:
+        'return
+        GlicEnablingJni\.get\(\)\.(isEnabledByFlags|isProfileEligible|isEnabledForProfile|isReadyForProfile|shouldShowSettingsPage|shouldShowWebActuationToggle)\([^)]*\);'
       replace: 'return false;'
