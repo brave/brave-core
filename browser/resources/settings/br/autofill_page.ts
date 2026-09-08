@@ -6,8 +6,10 @@
 import {
   html,
   RegisterPolymerPrototypeModification,
-  RegisterPolymerTemplateModifications
+  RegisterPolymerTemplateModifications,
+  RegisterStyleOverride
 } from 'chrome://resources/brave/polymer_overriding.js'
+import { html as polymerHtml } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { loadTimeData } from '../i18n_setup.js'
 import { YourSavedInfoDataChip } from '../metrics_browser_proxy.js'
 import { routes } from '../route.js'
@@ -20,8 +22,40 @@ import '../email_aliases_page/email_aliases_page.js'
 import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 // </if>
 
+// Make this page's section-header title style the same as the
+// settings-section's '#header .title' style.
+RegisterStyleOverride(
+  'settings-autofill-page',
+  polymerHtml`
+    <style>
+      h2.section-header
+      {
+        margin-top: calc(var(--cr-section-vertical-margin) - var(--leo-spacing-xl)) !important;
+        font-size: var(--leo-typography-heading-h4-font-size) !important;
+        font-weight: 600 !important;
+        padding-top: var(--leo-spacing-xl) !important;
+        padding-bottom: var(--leo-spacing-xl) !important;
+        margin-bottom: 0 !important;
+        letter-spacing: 0 !important;
+      }
+    </style>
+  `
+)
+
 RegisterPolymerTemplateModifications({
   'settings-autofill-page': (templateContent) => {
+    // Hide top level title and subtitle - we don't need them, each section's
+    // title is enough.
+    const topTitle = templateContent.querySelector('#title')
+    if (!topTitle) {
+        throw new Error('[Settings] Unable to find the title on autofill-page')
+    }
+    topTitle.hidden = true
+    const topSubTitle = templateContent.querySelector('#subtitle')
+    if (!topSubTitle) {
+        throw new Error('[Settings] Unable to find the title on autofill-page')
+    }
+    topSubTitle.hidden = true
     // Hide the category cards for the data types only Autofill AI fills. They
     // are hidden rather than removed, since upstream still resolves them as the
     // control that its identity docs and travel child views are associated

@@ -13,6 +13,7 @@ import { CrSettingsPrefs } from '/shared/settings/prefs/prefs_types.js'
 import type { SettingsPrefsElement } from '/shared/settings/prefs/prefs.js'
 import type { Route } from '../router.js'
 
+import { loadTimeData } from '../i18n_setup.js'
 import { routes } from '../route.js'
 import { Router } from '../router.js'
 import {
@@ -64,6 +65,19 @@ class SettingsSearchPageElement extends SettingsSearchPageElementChromium {
   }
 
   override connectedCallback() {
+    // The `...super.properties` spread above makes Lit re-run
+    // createProperty() for this inherited property against this prototype.
+    // Finding no own accessor here, Lit gives it a disconnected one, so the
+    // upstream field initializer's value never reaches it -- it reads back
+    // permanently undefined, starving the upstream willUpdate() check that
+    // computes searchPageTitle_ (the page title never renders). Can't fix
+    // with a field redeclaration: that gives this protected member a new
+    // declaring class, same issue as onOpenDialogButtonClick_ below. Assign
+    // it explicitly instead, before super.connectedCallback() (which reads
+    // it synchronously to pick a search-engines fetch path).
+    this.searchSettingsUpdateEnabled_ =
+        loadTimeData.getBoolean('searchSettingsUpdate')
+
     super.connectedCallback()
 
     const prefsElement = getPrefsElement()
