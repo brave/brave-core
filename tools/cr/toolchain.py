@@ -37,7 +37,8 @@ from versioning import Version
 #              `properties` tuple (the field names the job reads from a JSON
 #              PROPERTIES payload).
 #   publish -- (optional) `{revision}`-templated URL of the published artifact,
-#              used to tell whether CI already built this toolchain.
+#              used to tell whether CI already built this toolchain, and so
+#              whether `recover` can skip straight to repinning.
 #   repin   -- (optional) the in-tree pin the `repin` command rewrites and any
 #              upstream file it mirrors. Absent when there is no automated
 #              repin.
@@ -45,6 +46,9 @@ from versioning import Version
 #
 # `ToolchainSpec` is a thin typed view over one entry.
 # ---------------------------------------------------------------------------
+
+# The default starting point for rust/wasm brave subrevisions.
+FIRST_BRAVE_SUBREVISION = 1
 
 TOOLCHAINS = {
     'windows': {
@@ -83,13 +87,11 @@ TOOLCHAINS = {
             'script': 'build/mac/download_hermetic_xcode.py',
             'upstream_min_os_file': 'build/mac_toolchain.py',
         },
-        'advice': (
-            'Contact DevOps to ask for an updated macOS toolchain node to '
-            'be used to generate a new toolchain, then generate the new '
-            'toolchain in https://ci.brave.com/view/toolchains/. Once the '
-            'new toolchain is published, call '
-            '`brockit.py update-xcode-toolchain --to=<chromium-ref>` to '
-            'repin it.'),
+        'advice': ('Generate the new toolchain in '
+                   'https://ci.brave.com/view/toolchains/ (or via '
+                   '`brockit.py gen-xcode-toolchain`), then call '
+                   '`brockit.py update-xcode-toolchain --to=<chromium-ref>` '
+                   'to repin it.'),
     },
     'rust': {
         'label': 'Rust toolchain',
@@ -109,16 +111,9 @@ TOOLCHAINS = {
                 'https://ci.brave.com/view/toolchains/job/'
                 'brave-browser-rust-toolchain-aux-build-windows-x64/',
             ),
-            # The Rust jobs take no build parameter; they read a JSON
-            # PROPERTIES payload with these fields instead. `chromium_ref` is
-            # filled from the triggered version; the rest are supplied by the
-            # caller of `trigger`.
             'properties': ('brave_subrevision', 'chromium_ref'),
         },
         'publish': {
-            # `-1` is the first brave sub-revision: if any toolchain exists for
-            # a revision, this archive does. `{revision}` is the Rust/Clang
-            # triple `is_published` fills in.
             'url': ('https://brave-build-deps-public.s3.brave.com/'
                     'rust-toolchain-aux/'
                     'linux-x64-rust-toolchain-{revision}-1.tar.xz'),
@@ -167,9 +162,7 @@ class ToolchainSpec:
     build_param: str | None = None
     properties: tuple[str, ...] | None = None
 
-    # Availability probe: a `{revision}`-templated URL for the published
-    # artifact, letting `is_published` suppress the advisory once CI uploads it.
-    # None when no probe exists (the advisory then always fires).
+    # A url template for the published toolchain.
     published_url: str | None = None
 
     # Repin particulars (absent for toolchains with no automated repin):
@@ -369,12 +362,10 @@ class Toolchain:
               target: Version | str) -> ToolchainAdvisory | None:
         """Returns an advisory when a new toolchain is needed, else None.
 
-        A new toolchain is needed when a detection constant changed across the
-        range and no built artifact is already published for `target`.
+        The advisory is only produced if a change is detected for the current
+        version upgrade range.
         """
         if not self.was_updated(working, target):
-            return None
-        if self.is_published(target):
             return None
 
         commit_hash, subject = self._pickaxe(target, since=working)
@@ -397,9 +388,9 @@ class Toolchain:
 
         Toolchains with a `build_param` carry the tag there and take no
         `properties`. Toolchains that declare `spec.properties` instead receive
-        a JSON `PROPERTIES` payload: `chromium_ref` (when declared) defaults to
-        the triggered version, and every other declared field must be supplied
-        here as a keyword argument.
+        a JSON `PROPERTIES` payload, which `_properties_payload` builds:
+        declared fields it can default are filled in, and any it cannot must be
+        supplied here as a keyword argument.
 
         Returns whether the pipelines finished successfully (see
         `ci.JenkinsCi.trigger`): always True when not watching.
@@ -419,12 +410,6 @@ class Toolchain:
     def _properties_payload(self, version: Version | str,
                             provided: dict) -> dict | None:
         """Builds the `PROPERTIES` payload, checking every field is provided.
-
-        `chromium_ref`/`chromium_tag` (whichever the toolchain declares)
-        defaults to the triggered version; all other declared fields must come
-        from `provided`. Raises if a toolchain that takes no properties is
-        given any, or if the supplied fields don't match exactly what the
-        toolchain declares.
         """
         if self.spec.properties is None:
             if provided:
@@ -437,6 +422,8 @@ class Toolchain:
             payload.setdefault('chromium_ref', str(version))
         if 'chromium_tag' in self.spec.properties:
             payload.setdefault('chromium_tag', str(version))
+        if 'brave_subrevision' in self.spec.properties:
+            payload.setdefault('brave_subrevision', FIRST_BRAVE_SUBREVISION)
         if set(payload) != set(self.spec.properties):
             raise InvalidInputException(
                 f'The {self.spec.label} toolchain requires the properties '
@@ -448,15 +435,21 @@ class Toolchain:
     def recover(self, target: Version, culprit: str) -> bool:
         """Best-effort auto-resolution of a needed toolchain during a lift.
 
-        The idea is to close the loop without the user: kick off the CI job(s),
-        wait for them, and repin the freshly published result. Returns True when
-        fully recovered (nothing left for the user), so the caller can drop the
-        advisory.
+        This method basically builds the toolchain if nobody has, then repins
+        the published result. A toolchain that is already published is just
+        used with no need for a CI job.
 
-        The base class cannot recover automatically and returns False.
+        Returns True when fully recovered (nothing left for the user), so the
+        caller can drop the advisory.
         """
-        del target, culprit
-        return False
+        try:
+            if not self.is_published(target) and not self.trigger(target,
+                                                                  watch=True):
+                return False
+            self.repin(target, culprit)
+        except (InvalidInputException, BadOutcomeException):
+            return False
+        return True
 
     # -- repin (in-tree pin + commit), overridden where applicable ----------
 
@@ -506,10 +499,6 @@ class ToolchainAdvisory:
 class RustToolchain(Toolchain):
     """The Rust/WASM toolchain, pinned in `EXTRA_DEPS`."""
 
-    # A recovery is the first build for a revision, so it triggers (and probes,
-    # via the `publish` URL) brave sub-revision 1.
-    _FIRST_BRAVE_SUBREVISION = 1
-
     def __init__(self) -> None:
         super().__init__(ToolchainSpec.from_entry('rust', TOOLCHAINS['rust']))
 
@@ -525,25 +514,6 @@ class RustToolchain(Toolchain):
         except requests.RequestException:
             # Assume the toolchain is not available if the request fails.
             return False
-
-    def recover(self, target: Version, culprit: str) -> bool:
-        """Trigger the Rust jobs, watch them, and repin on success.
-
-        Any failure returns False so the caller keeps the advisory for the user
-        to resolve.
-        """
-        try:
-            if not self.trigger(
-                    target,
-                    watch=True,
-                    brave_subrevision=self._FIRST_BRAVE_SUBREVISION):
-                return False
-            self.repin(target,
-                       culprit,
-                       brave_subrevision=self._FIRST_BRAVE_SUBREVISION)
-        except (InvalidInputException, BadOutcomeException):
-            return False
-        return True
 
     @staticmethod
     def _upstream_stem(text: str) -> str:
@@ -595,24 +565,13 @@ class RustToolchain(Toolchain):
         return (f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
                 f'{match["clang"]}, sub {match["sub"]})')
 
-    # `brave_subrevision` is required here (unlike the base's `**kwargs`
-    # catch-all) since this toolchain has no side index to auto-discover it
-    # from; see the base `repin`'s docstring.
     # pylint: disable=arguments-differ
     def repin(self,
               version: Version,
               culprit: str | None = None,
               *,
-              brave_subrevision: int) -> None:
+              brave_subrevision: int = FIRST_BRAVE_SUBREVISION) -> None:
         """Repins the Rust/WASM `EXTRA_DEPS` entry and commits it.
-
-        `brave_subrevision` must name the exact respin already published for
-        this Chromium tag's Rust+Clang revision (e.g. `1` for a fresh
-        Chromium-version bump, or whatever `gen-rust-toolchain
-        --brave-subrevision` last built) -- there is no side index to
-        auto-discover it from; every platform's object is read straight from
-        its sibling index (see
-        `build_rust_toolchain.rust_toolchain_extra_dep`).
         """
         self._require_no_staged_files()
 
@@ -676,6 +635,18 @@ class XcodeToolchain(Toolchain):
     def __init__(self) -> None:
         super().__init__(ToolchainSpec.from_entry('xcode',
                                                   TOOLCHAINS['xcode']))
+
+    def is_published(self, target: Version | str) -> bool:
+        """Whether a published Xcode toolchain index exists for `target`.
+        """
+        try:
+            mac_sdk_gni = repository.chromium.read_file(self.spec.files[0],
+                                                        commit=str(target))
+            sdk_info = build_xcode_toolchain.MacSdkInfo.from_gni(mac_sdk_gni)
+            build_xcode_toolchain.fetch_published_index(sdk_info)
+        except (RuntimeError, OSError):
+            return False
+        return True
 
     @staticmethod
     def _provenance_comment(sdk_info: build_xcode_toolchain.MacSdkInfo,
@@ -777,9 +748,9 @@ class XcodeToolchain(Toolchain):
 
         if not self._rewrite_hermetic_xcode_script(sdk_info, index,
                                                    mac_toolchain_py):
-            raise InvalidInputException(
-                f'{self.spec.script} is already pinned to these values; '
-                'nothing to commit.')
+            terminal.log_task(f'{self.spec.script} is already pinned to these '
+                              'values; nothing to commit.')
+            return
 
         commit_hash = self.find_culprit(ref, culprit)
         title = (f'Switch to Xcode {index["xcode_version"]} '
@@ -807,14 +778,16 @@ class WindowsToolchain(Toolchain):
         super().__init__(
             ToolchainSpec.from_entry('windows', TOOLCHAINS['windows']))
 
-    def recover(self, target: Version, culprit: str) -> bool:
-        """Trigger the Windows toolchain job, watch it, and repin on success.
+    def is_published(self, target: Version | str) -> bool:
+        """Whether a published Windows toolchain index exists for `target`.
         """
         try:
-            if not self.trigger(target, watch=True):
-                return False
-            self.repin(target, culprit)
-        except (InvalidInputException, BadOutcomeException):
+            vs_toolchain_py = repository.chromium.read_file(self.spec.files[0],
+                                                            commit=str(target))
+            sdk_info = (build_windows_toolchain.WinSdkInfo.
+                        from_vs_toolchain_py(vs_toolchain_py))
+            build_windows_toolchain.fetch_published_index(sdk_info)
+        except (RuntimeError, OSError):
             return False
         return True
 
@@ -871,9 +844,9 @@ class WindowsToolchain(Toolchain):
             raise BadOutcomeException(str(e)) from e
 
         if not self._rewrite_config_ts(sdk_info, index):
-            raise InvalidInputException(
-                f'{self.spec.script} is already pinned to these values; '
-                'nothing to commit.')
+            terminal.log_task(f'{self.spec.script} is already pinned to these '
+                              'values; nothing to commit.')
+            return
 
         commit_hash = self.find_culprit(ref, culprit)
         title = f'Switch to Windows SDK {sdk_info.sdk_version_in_comment}'

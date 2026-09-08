@@ -463,6 +463,23 @@ class MainTest(unittest.TestCase):
         },
     }
 
+    def setUp(self):
+        # `main()` sets the module logger's level, which outlives the call, so
+        # restore it or these tests leak into each other (and into the rest of
+        # the file) depending on execution order.
+        level = m._LOG.level
+        self.addCleanup(m._LOG.setLevel, level)
+
+    def _run_setdep(self, *extra_argv: str) -> None:
+        """Runs `main()` on a stubbed `setdep`, with `extra_argv` appended."""
+        argv = [
+            'install_extra_deps', 'setdep', '-r',
+            'src/path/to/dep@pkg.tar.gz,abc,1', *extra_argv
+        ]
+        with mock.patch.object(m, 'setdep'):
+            with mock.patch.object(sys, 'argv', argv):
+                self.assertEqual(m.main(), 0)
+
     def test_dispatches_selected_dep_to_runner(self):
         """A valid dep key resolves a runner and installs that entry's spec."""
         runner = mock.Mock()
@@ -520,6 +537,22 @@ class MainTest(unittest.TestCase):
                     self.assertEqual(m.main(), 0)
         setdep.assert_called_once_with([revision])
         checkout.assert_not_called()
+
+    def test_reporting_is_off_until_main_enables_it(self):
+        """At import the logger sits above INFO, so in-process consumers (see
+        `toolchain.RustToolchain.repin`) don't inherit the root logger's INFO
+        and print this script's reporting inside their own."""
+        self.assertGreater(m._LOG.level, logging.INFO)
+
+    def test_cli_enables_reporting(self):
+        """A plain CLI run opts into INFO, so `Repinned ...` surfaces."""
+        self._run_setdep()
+        self.assertEqual(m._LOG.level, logging.INFO)
+
+    def test_quiet_leaves_reporting_off(self):
+        """`--quiet` skips that opt-in, leaving the import-time level."""
+        self._run_setdep('--quiet')
+        self.assertGreater(m._LOG.level, logging.INFO)
 
     def test_setdep_requires_a_revision(self):
         """`setdep` with no `-r` is rejected by argparse before any work."""
@@ -676,6 +709,14 @@ extra_deps = {
                       result)
         self.assertIn("'overlayed_on': 'upstream/old.tar.gz',", result)
         self.assertIn("'bucket': 'https://downloads.invalid/',", result)
+
+    def test_reports_each_entry_repinned(self):
+        """Every repinned entry is reported, for the CLI's benefit."""
+        with self.assertLogs(m._LOG, level='INFO') as logs:
+            m.setdep(['src/path/to/dep@new.tar.gz,newsha,222'],
+                     extra_deps_file=self._path)
+        self.assertEqual(logs.output,
+                         ['INFO:install_extra_deps:Repinned src/path/to/dep'])
 
     def test_updates_overlayed_on_when_given(self):
         """A fourth field rewrites `overlayed_on` alongside the other three."""
