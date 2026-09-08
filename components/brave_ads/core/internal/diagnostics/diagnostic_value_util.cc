@@ -7,8 +7,7 @@
 
 #include <string_view>
 
-#include "base/check.h"
-#include "base/functional/callback.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/diagnostic_entry_interface.h"
 
 namespace brave_ads {
 
@@ -19,24 +18,11 @@ constexpr std::string_view kValueKey = "value";
 
 }  // namespace
 
-base::ListValue DiagnosticsToList(
-    const DiagnosticMap& diagnostics,
-    const base::RepeatingCallback<bool(DiagnosticEntryType)>& should_include) {
-  base::ListValue list;
-
-  for (const auto& [type, entry] : diagnostics) {
-    CHECK(entry);
-
-    if (!should_include.Run(type)) {
-      continue;
-    }
-
-    list.Append(base::DictValue()
-                    .Set(kNameKey, entry->GetName())
-                    .Set(kValueKey, entry->GetValue()));
-  }
-
-  return list;
+void AppendDiagnosticEntry(base::ListValue& list,
+                           const DiagnosticEntryInterface& entry) {
+  list.Append(base::DictValue()
+                  .Set(kNameKey, entry.GetName())
+                  .Set(kValueKey, entry.GetValue()));
 }
 
 }  // namespace brave_ads

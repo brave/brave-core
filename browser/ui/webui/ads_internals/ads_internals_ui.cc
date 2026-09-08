@@ -5,17 +5,27 @@
 
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 
+#include <optional>
+#include <string>
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_ads/browser/component_updater/component_util.h"
 #include "brave/components/brave_ads/browser/resources/grit/ads_internals_generated_map.h"
 #include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/new_tab_page/prefs/ntp_pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/service/variations_service.h"
@@ -49,6 +59,109 @@ bool IsVerboseLoggingEnabled() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 }
 
+AdsInternalsHandler::GetComponentIdCallback
+GetNtpSponsoredImagesComponentIdCallback() {
+  auto* const ntp_background_images_service =
+      g_brave_browser_process->ntp_background_images_service();
+  if (!ntp_background_images_service) {
+    return AdsInternalsHandler::GetComponentIdCallback();
+  }
+
+  return base::BindRepeating(
+      [](ntp_background_images::NTPBackgroundImagesService* service) {
+        return service->GetSponsoredImagesComponentId();
+      },
+      base::Unretained(ntp_background_images_service));
+}
+
+AdsInternalsHandler::GetComponentIdCallback
+GetCountryResourceComponentIdCallback() {
+  return base::BindRepeating([]() -> std::optional<std::string> {
+    // The text classification, purchase intent, and anti-targeting resources
+    // all ship inside the two component-updater components below (one per
+    // country, one per language) rather than having their own individual
+    // component IDs. See `ResourceComponent::RegisterCountryComponent`/
+    // `RegisterLanguageComponent`.
+    const std::optional<brave_ads::ComponentInfo> component =
+        brave_ads::GetComponent(brave_ads::CurrentCountryCode());
+    if (!component) {
+      return std::nullopt;
+    }
+    return std::string(component->id);
+  });
+}
+
+AdsInternalsHandler::GetComponentIdCallback
+GetLanguageResourceComponentIdCallback() {
+  return base::BindRepeating([]() -> std::optional<std::string> {
+    // Same rationale as `GetCountryResourceComponentIdCallback` above.
+    const std::optional<brave_ads::ComponentInfo> component =
+        brave_ads::GetComponent(brave_ads::CurrentLanguageCode());
+    if (!component) {
+      return std::nullopt;
+    }
+    return std::string(component->id);
+  });
+}
+
+AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback
+GetIsSponsoredImagesLoadedCallback() {
+  auto* const ntp_background_images_service =
+      g_brave_browser_process->ntp_background_images_service();
+  if (!ntp_background_images_service) {
+    return AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback();
+  }
+
+  return base::BindRepeating(
+      [](ntp_background_images::NTPBackgroundImagesService* service) {
+        return service->GetSponsoredImagesData(
+                   /*supports_rich_media=*/true) != nullptr;
+      },
+      base::Unretained(ntp_background_images_service));
+}
+
+AdsInternalsHandler::GetComponentIdCallback
+GetNtpSponsoredImagesManifestVersionCallback() {
+  auto* const ntp_background_images_service =
+      g_brave_browser_process->ntp_background_images_service();
+  auto* const component_update_service = g_browser_process->component_updater();
+  if (!ntp_background_images_service || !component_update_service) {
+    return AdsInternalsHandler::GetComponentIdCallback();
+  }
+
+  return base::BindRepeating(
+      [](ntp_background_images::NTPBackgroundImagesService* service,
+         component_updater::ComponentUpdateService* component_update_service)
+          -> std::optional<std::string> {
+        const std::optional<std::string>& component_id =
+            service->GetSponsoredImagesComponentId();
+        if (!component_id) {
+          return std::nullopt;
+        }
+
+        for (const auto& component :
+             component_update_service->GetComponents()) {
+          if (component.id == *component_id) {
+            return component.version.GetString();
+          }
+        }
+
+        return std::nullopt;
+      },
+      base::Unretained(ntp_background_images_service),
+      base::Unretained(component_update_service));
+}
+
+AdsInternalsHandler::GetIsSponsoredTilesShownCallback
+GetIsSponsoredTilesShownCallback(PrefService* prefs) {
+  return base::BindRepeating(
+      [](PrefService* prefs) {
+        return prefs->GetBoolean(ntp_prefs::kNtpShortcutsVisible) &&
+               prefs->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
+      },
+      base::Unretained(prefs));
+}
+
 }  // namespace
 
 bool AdsInternalsUIConfig::IsWebUIEnabled(
@@ -65,13 +178,13 @@ AdsInternalsUI::AdsInternalsUI(content::WebUI* web_ui)
                    Profile::FromWebUI(web_ui)),
                *Profile::FromWebUI(web_ui)->GetPrefs(),
                g_browser_process->variations_service(),
-               // Nothing reads these diagnostics yet; wired up once the
-               // Resources tab lands.
-               AdsInternalsHandler::GetComponentIdCallback(),
-               AdsInternalsHandler::GetComponentIdCallback(),
-               AdsInternalsHandler::GetComponentIdCallback(),
-               AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
-               AdsInternalsHandler::GetComponentIdCallback()),
+               GetNtpSponsoredImagesComponentIdCallback(),
+               GetCountryResourceComponentIdCallback(),
+               GetLanguageResourceComponentIdCallback(),
+               GetIsSponsoredImagesLoadedCallback(),
+               GetNtpSponsoredImagesManifestVersionCallback(),
+               GetIsSponsoredTilesShownCallback(
+                   Profile::FromWebUI(web_ui)->GetPrefs())),
       rewards_service_(GetRewardsServiceForWebUI(web_ui))
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ,

@@ -39,12 +39,14 @@ export function ClearAdsDataButton() {
 
   return (
     <>
-      <Button
-        size='small'
-        onClick={clearAdsData}
-      >
-        Clear Ads Data
-      </Button>
+      <span className='fixed-flex-item'>
+        <Button
+          size='small'
+          onClick={clearAdsData}
+        >
+          Clear Ads Data
+        </Button>
+      </span>
       {status &&
         createPortal(
           <Alert

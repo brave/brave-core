@@ -6,17 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_VALUE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_VALUE_UTIL_H_
 
-#include "base/functional/callback_forward.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_types.h"
 
 namespace brave_ads {
 
-// Builds the `name`/`value` list for every registered entry in `diagnostics`
-// for which `should_include` returns `true`.
-base::ListValue DiagnosticsToList(
-    const DiagnosticMap& diagnostics,
-    const base::RepeatingCallback<bool(DiagnosticEntryType)>& should_include);
+class DiagnosticEntryInterface;
+
+// Appends `entry`'s name/value to `list`.
+void AppendDiagnosticEntry(base::ListValue& list,
+                           const DiagnosticEntryInterface& entry);
 
 }  // namespace brave_ads
 

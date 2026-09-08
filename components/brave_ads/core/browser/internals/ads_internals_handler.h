@@ -47,6 +47,11 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals,
   // Same rationale as `GetComponentIdCallback` above.
   using GetIsSponsoredImagesLoadedCallback = base::RepeatingCallback<bool()>;
 
+  // Avoids a direct dependency on `chrome/browser/new_tab_page`'s shortcuts
+  // visibility pref, which would introduce a build dependency cycle back to
+  // this component the same way `GetComponentIdCallback` does above.
+  using GetIsSponsoredTilesShownCallback = base::RepeatingCallback<bool()>;
+
   AdsInternalsHandler(
       brave_ads::AdsService* ads_service,
       PrefService& prefs,
@@ -56,8 +61,8 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals,
       GetComponentIdCallback get_language_resource_component_id_callback,
       GetIsSponsoredImagesLoadedCallback
           get_is_sponsored_images_loaded_callback,
-      GetComponentIdCallback
-          get_ntp_sponsored_images_manifest_version_callback);
+      GetComponentIdCallback get_ntp_sponsored_images_manifest_version_callback,
+      GetIsSponsoredTilesShownCallback get_is_sponsored_tiles_shown_callback);
 
   AdsInternalsHandler(const AdsInternalsHandler&) = delete;
   AdsInternalsHandler& operator=(const AdsInternalsHandler&) = delete;
@@ -118,6 +123,7 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals,
       get_is_sponsored_images_loaded_callback_;
   const GetComponentIdCallback
       get_ntp_sponsored_images_manifest_version_callback_;
+  const GetIsSponsoredTilesShownCallback get_is_sponsored_tiles_shown_callback_;
 
   mojo::Receiver<bat_ads::mojom::AdsInternals> ads_internals_receiver_{this};
 

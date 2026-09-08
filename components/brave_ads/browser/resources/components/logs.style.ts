@@ -26,16 +26,88 @@ export const style = scoped.css`
     flex: 1 1 auto;
   }
 
-  textarea {
+  .log-view {
     font-family: monospace;
     font-size: 13px;
     padding: 8px;
-    white-space: pre;
-    height: calc(100vh - 240px);
+    white-space: pre-wrap;
+    /* Set inline in JS (see logs.tsx): a fixed calc(dvh - Npx) is only
+       correct for whatever happens to render above this element right
+       now, and silently breaks again the next time that changes. */
     width: 100%;
     border-radius: 12px;
     background: ${color.container.background};
     border: none;
+    overflow-y: auto;
+    box-sizing: border-box;
+    /* Without this, the browser's own scroll anchoring can adjust
+       scrollTop when a toggle (Errors only, Plain text) changes how many
+       lines render, firing a scroll event that looks like the user
+       scrolled up and incorrectly turns off auto-scroll. */
+    overflow-anchor: none;
+  }
+
+  .log-line-error {
+    color: ${color.systemfeedback.errorText};
+  }
+
+  .log-line-warning {
+    color: ${color.systemfeedback.warningText};
+  }
+
+  .log-line-request-response {
+    font-weight: bold;
+  }
+
+  .log-line-response-success {
+    color: ${color.systemfeedback.successText};
+  }
+
+  .log-line-response-client-error {
+    color: ${color.systemfeedback.warningText};
+  }
+
+  .log-line-response-server-error {
+    color: ${color.systemfeedback.errorText};
+  }
+
+  .log-line-response-error {
+    color: ${color.systemfeedback.errorText};
+  }
+
+  .log-line-prefix {
+    color: ${color.text.tertiary};
+  }
+
+  /* Matches the full (unfiltered) log's line number, so it's usable to find
+     the same line after downloading the full log. A distinct color from
+     .log-line-prefix so it doesn't blend into the timestamp/file text next
+     to it. */
+  .log-line-number {
+    display: inline-block;
+    font-family: monospace;
+    width: 5em;
+    text-align: right;
+    margin-inline-end: 8px;
+    user-select: none;
+    color: ${color.icon.disabled};
+  }
+
+  .log-line-jump-to-full {
+    cursor: pointer;
+    margin-inline-start: 4px;
+  }
+
+  .log-line-marker {
+    --leo-icon-size: 8px;
+    --leo-icon-color: ${color.icon.interactive};
+    margin-inline-end: 4px;
+  }
+
+  .log-divider {
+    border: none;
+    border-top: solid 1px ${color.divider.subtle};
+    margin: 8px 0;
   }
 
   leo-toggle {

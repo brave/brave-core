@@ -7,15 +7,33 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
+import { useAppState } from '../lib/app_context'
+import { isWalletConnected } from '../lib/diagnostics'
 import { useRoute, useRouter } from '../lib/router'
+import { Rewards } from './rewards'
+import { AdFormats } from './ad_formats'
+import { PermissionRules } from './permission_rules'
+import { Storage } from './storage'
+import { UserAttention } from './user_attention'
+import { Resources } from './resources'
+import { Campaigns } from './campaigns'
+import { DayParts } from './day_parts'
+import { Segments } from './segments'
+import { ConditionMatchers } from './condition_matchers'
+import { ConfirmationQueue } from './confirmation_queue'
 import { Conversions } from './conversions'
+import { Transactions } from './transactions'
+import { ConfirmationTokens } from './confirmation_tokens'
+import { PaymentTokens } from './payment_tokens'
+// <if expr="!is_ios">
+import { Reactions } from './reactions'
+// </if>
 import { Events } from './events'
 import { Diagnostics } from './diagnostics'
 // <if expr="enable_brave_rewards && !is_ios">
-import { useAppState } from '../lib/app_context'
 import { Logs } from './logs'
 // </if>
-import { ClearAdsDataButton } from './clear_ads_data_button'
+import { CopyToastProvider } from './copy_toast'
 import * as routes from '../lib/app_routes'
 
 import { style } from './app.style'
@@ -29,14 +47,28 @@ interface TabConfig {
 
 // Single source of truth for the sidebar list and the routed content below,
 // so a tab's visibility rule can't drift between the two the way it could
-// when each kept its own copy. Every entry (even one gated off) still
-// handles its own route by falling back to `<Diagnostics />`, so navigating
-// there directly never falls through to `NavList`'s own "not found" case
-// instead.
+// when each kept its own copy. Every entry (even one gated off, e.g. by
+// Rewards not being joined) still handles its own route by falling back to
+// `<Diagnostics />`, so navigating there directly never falls through to
+// `NavList`'s own "not found" case instead.
 function useTabs(): TabConfig[] {
+  const rewardsEnabled = useAppState((state) => state.rewardsEnabled)
+  const adsInternalsVerboseModeEnabled =
+    useAppState((state) => state.adsInternalsVerboseModeEnabled)
+  const rewardsDiagnosticEntries =
+    useAppState((state) => state.rewardsDiagnosticEntries)
   // <if expr="enable_brave_rewards && !is_ios">
   const logsSupported = useAppState((state) => state.logsSupported)
   // </if>
+  const walletConnected = isWalletConnected(rewardsDiagnosticEntries)
+  // Permission Rules/User Attention/Transactions are all gated the same way:
+  // only meaningful once Rewards is joined, and only worth the extra detail
+  // once verbose mode is on.
+  const verboseRewardsTabVisible =
+    rewardsEnabled && adsInternalsVerboseModeEnabled
+  // Confirmation Tokens/Payment Tokens are only refilled/earned once a
+  // wallet is connected, not just once Rewards is joined.
+  const connectedRewardsTabVisible = rewardsEnabled && walletConnected
 
   const tabs: TabConfig[] = [
     {
@@ -46,18 +78,127 @@ function useTabs(): TabConfig[] {
       content: <Diagnostics />,
     },
     {
+      route: routes.rewards,
+      label: 'Rewards',
+      isVisible: true,
+      content: <Rewards />,
+    },
+    {
+      route: routes.adFormats,
+      label: 'Ad Formats',
+      isVisible: true,
+      content: <AdFormats />,
+    },
+    {
+      route: routes.permissionRules,
+      label: 'Permission Rules',
+      isVisible: verboseRewardsTabVisible,
+      content: verboseRewardsTabVisible
+        ? <PermissionRules />
+        : <Diagnostics />,
+    },
+    {
+      route: routes.storage,
+      label: 'Storage',
+      isVisible: true,
+      content: <Storage />,
+    },
+    {
+      route: routes.userAttention,
+      label: 'User Attention',
+      isVisible: verboseRewardsTabVisible,
+      content: verboseRewardsTabVisible
+        ? <UserAttention />
+        : <Diagnostics />,
+    },
+    {
+      route: routes.resources,
+      label: 'Resources',
+      isVisible: true,
+      content: <Resources />,
+    },
+    {
+      route: routes.campaigns,
+      label: 'Campaigns',
+      isVisible: true,
+      content: <Campaigns />,
+    },
+    {
+      route: routes.dayParts,
+      label: 'Dayparts',
+      isVisible: true,
+      content: <DayParts />,
+    },
+    {
+      route: routes.segments,
+      label: 'Segments',
+      isVisible: true,
+      content: <Segments />,
+    },
+    {
+      route: routes.conditionMatchers,
+      label: 'Condition Matchers',
+      isVisible: true,
+      content: <ConditionMatchers />,
+    },
+    {
+      route: routes.confirmationQueue,
+      label: 'Confirmation Queue',
+      isVisible: true,
+      content: <ConfirmationQueue />,
+    },
+    {
       route: routes.conversions,
       label: 'Conversions',
       isVisible: true,
       content: <Conversions />,
     },
     {
-      route: routes.events,
-      label: 'Events',
-      isVisible: true,
-      content: <Events />,
+      route: routes.transactions,
+      label: 'Transactions',
+      isVisible: verboseRewardsTabVisible,
+      content: verboseRewardsTabVisible
+        ? <Transactions />
+        : <Diagnostics />,
+    },
+    {
+      route: routes.confirmationTokens,
+      label: 'Confirmation Tokens',
+      isVisible: connectedRewardsTabVisible,
+      content: connectedRewardsTabVisible
+        ? <ConfirmationTokens />
+        : <Diagnostics />,
+    },
+    {
+      route: routes.paymentTokens,
+      label: 'Payment Tokens',
+      isVisible: connectedRewardsTabVisible,
+      content: connectedRewardsTabVisible
+        ? <PaymentTokens />
+        : <Diagnostics />,
     },
   ]
+
+  // There's no iOS UI to generate a reaction (like/dislike an ad, etc.), so
+  // this tab doesn't exist there at all.
+  // <if expr="!is_ios">
+  tabs.push({
+    route: routes.reactions,
+    label: 'Reactions',
+    isVisible: rewardsEnabled,
+    content: rewardsEnabled ? <Reactions /> : <Diagnostics />,
+  })
+  // </if>
+
+  // Not part of the literal array above: this needs to land between the
+  // platform-gated Reactions and Logs entries to preserve nav order, even
+  // though it isn't itself platform-gated.
+  tabs.push({
+    route: routes.events,
+    label: 'Events',
+    isVisible: true,
+    content: <Events />,
+  })
 
   // <if expr="enable_brave_rewards && !is_ios">
   tabs.push({
@@ -171,54 +312,53 @@ export function App() {
     tabs.find((tab) => tab.route === route)?.content ?? <Diagnostics />
 
   return (
-    <div data-css-scope={style.scope}>
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <header className='sidebar-close'>
-          <span className='fixed-flex-item'>
-            <Button
-              size='small'
-              kind='plain-faint'
-              aria-label='Close menu'
-              onClick={() => setSidebarOpen(false)}
-            >
-              <Icon name='hamburger-menu' />
-            </Button>
-          </span>
-        </header>
-        <nav>
-          <NavList tabs={tabs} />
-        </nav>
-      </div>
-      {sidebarOpen && (
-        <div
-          className='sidebar-backdrop'
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      <div ref={pageContentRef} className='page-content'>
-        <div className='page-header'>
-          <div className='sidebar-toggle'>
-            <Button
-              size='small'
-              kind='plain-faint'
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              <Icon name='hamburger-menu' />
-            </Button>
-          </div>
-          <h1>Ads internals</h1>
-          <div className='disclaimer'>
-            WARNING: data on these pages may be sensitive. Be careful who
-            you share it with.
-          </div>
+    <CopyToastProvider>
+      <div data-css-scope={style.scope}>
+        <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+          <header className='sidebar-close'>
+            <span className='fixed-flex-item'>
+              <Button
+                size='small'
+                kind='plain-faint'
+                aria-label='Close menu'
+                onClick={() => setSidebarOpen(false)}
+              >
+                <Icon name='hamburger-menu' />
+              </Button>
+            </span>
+          </header>
+          <nav>
+            <NavList tabs={tabs} />
+          </nav>
         </div>
-        <main>
-          <div className='header-actions'>
-            <ClearAdsDataButton />
+        {sidebarOpen && (
+          <div
+            className='sidebar-backdrop'
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+        <div ref={pageContentRef} className='page-content'>
+          <div className='page-header'>
+            <div className='sidebar-toggle'>
+              <Button
+                size='small'
+                kind='plain-faint'
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              >
+                <Icon name='hamburger-menu' />
+              </Button>
+            </div>
+            <h1>Ads internals</h1>
+            <div className='disclaimer'>
+              WARNING: data on these pages may be sensitive. Be careful who
+              you share it with.
+            </div>
           </div>
-          {content}
-        </main>
+          <main>
+            {content}
+          </main>
+        </div>
       </div>
-    </div>
+    </CopyToastProvider>
   )
 }

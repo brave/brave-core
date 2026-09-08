@@ -270,6 +270,23 @@ style.passthrough.css`
     flex: 1 1 100%;
   }
 
+  /* A flex-basis of 100% claims the whole row for itself, which always
+     pushes a following h4 child onto its own line below, regardless of
+     whether both would otherwise fit side by side; e.g. a Campaign ID and
+     its Advertiser ID, which read as two separate facts rather than one
+     title. */
+  .title-own-line {
+    flex: 1 1 100%;
+  }
+
+  /* Wraps a leo-button rather than applying to it directly: leo-button's
+     own shadow DOM sets width: 100%, which becomes its flex-basis and
+     balloons it to fill the row instead of its content. */
+  .fixed-flex-item {
+    display: flex;
+    flex: 0 0 auto;
+  }
+
   input, select {
     font: ${font.default.regular};
     /* iOS zooms the whole page on focus for any input with a computed
@@ -540,6 +557,17 @@ style.passthrough.css`
 
   .test-condition-matcher-input {
     flex: 0 0 auto;
+  }
+
+  .test-condition-matcher-value-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .test-condition-matcher-hint {
+    text-align: right;
+    font: ${font.xSmall.regular};
+    color: ${color.text.tertiary};
   }
 
   .icon-success {
