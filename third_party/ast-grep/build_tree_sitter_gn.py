@@ -10,15 +10,17 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 
 import build_utils
-from build_utils import AST_GREP_PLATFORM_DIR, CHROMIUM_ROOT, LLVM_BIN_DIR, \
+from build_utils import AST_GREP_PLATFORM_DIR, BRAVE_ROOT, CHROMIUM_ROOT, \
     THIRD_PARTY
+
+sys.path.insert(0, str(BRAVE_ROOT / 'tools' / 'cr' / 'toolchains'))
+
+from cherry_picks import _check_call
 
 # Pinning the `v1.0.0` tag's commit.
 TREE_SITTER_GN_GIT_URL = (
@@ -27,7 +29,22 @@ TREE_SITTER_GN_REF = 'bc06955bc1e3c9ff8e9b2b2a55b38b94da923c05'
 
 TREE_SITTER_GN_SRC_DIR: Path = THIRD_PARTY / 'tree-sitter-gn-src'
 
-_SHARED_LIB_EXT = {'win32': 'dll', 'darwin': 'dylib'}.get(sys.platform, 'so')
+# The output dir used when building the tree sitter
+GN_OUT_DIR: Path = CHROMIUM_ROOT / 'out' / 'ast-grep-tree-sitter-gn'
+
+# the target for the tree-sitter shared library
+GN_LABEL = '//brave/third_party/ast-grep:tree_sitter_gn'
+
+# the target for the unit test.
+GN_TEST_LABEL = '//brave/third_party/ast-grep:tree_sitter_gn_unittests'
+
+_GN_ARGS = ' '.join([
+    f'root_extra_deps = ["{GN_LABEL}", "{GN_TEST_LABEL}"]',
+    'is_debug = false',
+    'is_component_build = false',
+    'dcheck_always_on = false',
+    'symbol_level = 0',
+])
 
 # `The file providing details of how to load the custom tree-sitter.
 _SGCONFIG_TEMPLATE = """\
@@ -39,64 +56,66 @@ customLanguages:
 """
 
 
-def _windows_sdk_lib_dirs() -> list[Path]:
-    """VC tools + Windows SDK import-library directories.
+def _gn_built_output(label: str) -> Path:
+    """The file `label` builds to, as GN reports it.
     """
-    sys.path.insert(0, str(CHROMIUM_ROOT / 'build'))
-    from vs_toolchain import (
-        FindVCComponentRoot,  # noqa: E402
-        SDK_VERSION,
-        SetEnvironmentAndGetSDKDir)
-    sdk_dir = Path(SetEnvironmentAndGetSDKDir())
-    return [
-        Path(FindVCComponentRoot('Tools')) / 'lib' / 'x64',
-        sdk_dir / 'Lib' / SDK_VERSION / 'um' / 'x64',
-        sdk_dir / 'Lib' / SDK_VERSION / 'ucrt' / 'x64',
-    ]
+    outputs = _check_call('gn',
+                          'desc',
+                          str(GN_OUT_DIR),
+                          label,
+                          'outputs',
+                          cwd=CHROMIUM_ROOT,
+                          capture_output=True).stdout.split()
+    if not outputs:
+        raise RuntimeError(f'`gn desc` reported no outputs for {label}')
+
+    # GN lists the primary output first, with any others are link byproducts,
+    # such as a `.TOC` file or an import library.
+    built = CHROMIUM_ROOT / outputs[0].removeprefix('//')
+    if not built.is_file():
+        raise RuntimeError(f'ninja finished but {label} left no {built}')
+    return built
 
 
-def _compile(output: Path) -> None:
-    """Compile `parser.c` + `scanner.c` into the shared library at `output`.
-
-    `parser.c`'s pre-generated ABI (14) sits within ast-grep's tree-sitter
-    compatible range ([13, 15] as of tree-sitter 0.26), so it is used as-is,
-    with no `tree-sitter generate` step.
+def _compile() -> Path:
+    """Build the grammar and its test, returning the shared library's path.
     """
-    src_dir = TREE_SITTER_GN_SRC_DIR / 'src'
-    sources = [src_dir / 'parser.c', src_dir / 'scanner.c']
+    logging.info('Generating %s', GN_OUT_DIR)
+    _check_call('gn',
+                'gen',
+                str(GN_OUT_DIR),
+                f'--args={_GN_ARGS}',
+                cwd=CHROMIUM_ROOT)
 
-    env = dict(os.environ)
-    if sys.platform == 'win32':
-        clang_cl = LLVM_BIN_DIR / 'clang-cl.exe'
-        cmd = [
-            str(clang_cl), '/LD', '/O2', f'-I{src_dir}', *map(str, sources),
-            f'-Fe:{output}', '-fuse-ld=lld', '-link', '/EXPORT:tree_sitter_gn'
-        ]
-        env['LIB'] = os.pathsep.join(str(p) for p in _windows_sdk_lib_dirs())
-    else:
-        clang = LLVM_BIN_DIR / 'clang'
-        shared_flag = '-dynamiclib' if sys.platform == 'darwin' else '-shared'
-        cmd = [
-            str(clang), shared_flag, '-fPIC', '-O2', '-fuse-ld=lld',
-            f'-I{src_dir}', *map(str, sources), '-o',
-            str(output)
-        ]
-        if sys.platform == 'darwin':
-            sdk_path = subprocess.run(['xcrun', '--show-sdk-path'],
-                                      check=True,
-                                      capture_output=True,
-                                      text=True).stdout.strip()
-            cmd += ['-isysroot', sdk_path]
+    logging.info('Compiling tree-sitter-gn')
+    targets = [label.removeprefix('//') for label in (GN_LABEL, GN_TEST_LABEL)]
+    # `autoninja` rather than `ninja`, so whichever of siso or ninja the
+    # generated `args.gn` calls for is the one that runs.
+    _check_call('autoninja',
+                '-C',
+                str(GN_OUT_DIR),
+                *targets,
+                cwd=CHROMIUM_ROOT)
 
-    logging.info('Compiling tree-sitter-gn -> %s', output)
-    subprocess.run(cmd, check=True, env=env)
+    return _gn_built_output(GN_LABEL)
+
+
+def _run_test() -> None:
+    """Check ast-grep loads the freshly installed grammar.
+
+    Runs after installation, since the test scans with the `sgconfig.yml` and
+    library that land in `AST_GREP_PLATFORM_DIR`, not the build output.
+    """
+    test_bin = _gn_built_output(GN_TEST_LABEL)
+    logging.info('Running %s', test_bin.name)
+    _check_call(str(test_bin))
 
 
 def build(clean: bool = False) -> Path:
     """Build the `gn` custom-language library into `AST_GREP_PLATFORM_DIR/lib/`.
 
     Also (re)writes `AST_GREP_PLATFORM_DIR/sgconfig.yml` registering it.
-    Returns the compiled library's path.
+    Returns the installed library's path.
     """
     if clean and TREE_SITTER_GN_SRC_DIR.exists():
         logging.info('Removing %s', TREE_SITTER_GN_SRC_DIR)
@@ -106,10 +125,14 @@ def build(clean: bool = False) -> Path:
                                      TREE_SITTER_GN_REF,
                                      TREE_SITTER_GN_SRC_DIR)
 
+    library = _compile()
+
     lib_dir = AST_GREP_PLATFORM_DIR / 'lib'
     lib_dir.mkdir(parents=True, exist_ok=True)
-    output = lib_dir / f'gn.{_SHARED_LIB_EXT}'
-    _compile(output)
+    # GN's own extension is reused, dropping its platform-specific prefix.
+    output = lib_dir / f'gn{library.suffix}'
+    logging.info('Installing %s -> %s', library, output)
+    shutil.copy2(library, output)
 
     # Write the `sgconfig.yml` registering the library, so ast-grep can find it.
     sgconfig_path = AST_GREP_PLATFORM_DIR / 'sgconfig.yml'
@@ -117,6 +140,8 @@ def build(clean: bool = False) -> Path:
     sgconfig_path.write_text(_SGCONFIG_TEMPLATE %
                              {'library_path': lib_rel.as_posix()},
                              newline='\n')
+
+    _run_test()
     return output
 
 
