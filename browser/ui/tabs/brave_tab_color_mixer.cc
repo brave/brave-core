@@ -42,6 +42,10 @@ bool ShouldTintWithUserColor(const ui::ColorProviderKey& key) {
     return false;
   }
 
+  if (!key.user_color.has_value()) {
+    return false;
+  }
+
   const SkColor user_color = *key.user_color;
   return SkColorGetR(user_color) != SkColorGetG(user_color) ||
          SkColorGetG(user_color) != SkColorGetB(user_color);
