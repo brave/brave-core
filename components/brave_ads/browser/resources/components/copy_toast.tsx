@@ -20,6 +20,11 @@ const ShowToastContext = React.createContext((_message: string) => {})
 export function useCopyToClipboard() {
   const showToast = React.useContext(ShowToastContext)
   return React.useCallback((text: string) => {
+    // `navigator.clipboard` is not available in every WebUI context (e.g.
+    // iOS); only claim success once the write actually happens.
+    if (!navigator.clipboard) {
+      return
+    }
     navigator.clipboard.writeText(text)
     showToast('Copied to clipboard.')
   }, [showToast])

@@ -148,7 +148,12 @@ interface BatAds {
 
   GetInternals() => (mojo_base.mojom.DictionaryValue? value);
 
-  GetDiagnostics() => (mojo_base.mojom.ListValue? value);
+  GetDiagnostics() => (mojo_base.mojom.DictionaryValue? value);
+
+  EvaluateConditionMatcher(string pref_path,
+                       string condition,
+                       string? test_value) =>
+      (string current_value, string matches);
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? mojom_statement);
 
@@ -199,10 +204,16 @@ interface AdsInternals {
   ClearAdsData() => (bool success);
   GetDiagnostics() => (string response);
   SetDiagnosticId(string diagnostic_id);
+  EvaluateConditionMatcher(string pref_path,
+                       string condition,
+                       string? test_value) =>
+      (string current_value, string matches);
 };
 
 interface AdsInternalsPage {
   UpdateBraveRewardsEnabled(bool enabled);
+  UpdateBraveRewardsWalletConnected(bool connected);
+  UpdateDidInitializeAdsService();
 };
 
 // Exposes the Brave Rewards diagnostic log to brave://ads-internals so it can

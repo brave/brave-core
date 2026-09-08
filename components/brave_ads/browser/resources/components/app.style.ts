@@ -11,8 +11,11 @@ const wideWidth = '800px'
 export const style = scoped.css`
   & {
     display: flex;
-    block-size: 100vh;
-    container-type: inline-size;
+    /* 100vh is pinned to the initial viewport, not WKWebView's toolbar
+       hiding/reappearing on scroll, so the true bottom becomes
+       unreachable once the toolbar's height no longer matches. 100dvh
+       tracks the actual viewport. */
+    block-size: 100dvh;
 
     @media (prefers-color-scheme: dark) {
       scrollbar-color: rgba(255, 255, 255, 0.25) rgba(0, 0, 0, 0);
@@ -24,45 +27,90 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     background: ${color.container.background};
+    /* Stops a drag on the sidebar's own chrome from chaining to
+       page-content's scroll. Not enough for nav's own list, which needs
+       its own overscroll-behavior below. */
+    overscroll-behavior: contain;
 
-    @container (width < ${wideWidth}) {
+    /* Plain media query, not container query: container-type on an
+       ancestor would make it the containing block for this fixed sidebar
+       instead of the viewport, clipping it. */
+    @media (width < ${wideWidth}) {
       position: fixed;
       inset-block-start: 0;
       inset-block-end: 0;
       inset-inline-start: 0;
-      z-index: 2;
+      /* Without an upper bound, min-width alone sizes to the widest
+         content (e.g. "Confirmation Queue"), which can exceed a narrow
+         phone's viewport and force a horizontal scrollbar. */
+      width: min(320px, 85vw);
+      z-index: 4;
       border-inline-end: solid 1px ${color.divider.subtle};
       box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.08);
 
-      transform: translateX(-110%);
-      transition: transform 250ms;
+      /* display: none, not a transform slide: this WKWebView can leave a
+         transformed fixed element hit-testable/paintable at its old
+         position despite the correct computed style. Loses the slide
+         animation but leaves no remnant. */
+      display: none;
 
       &.open {
-        transform: translateX(0);
+        display: flex;
       }
     }
   }
 
+  /* Sits above .page-content but below .sidebar, so a touch outside the
+     drawer hits this instead of the content underneath. Hidden at wide
+     widths in case sidebarOpen is stale from before a resize. */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+
+    @media (width >= ${wideWidth}) {
+      display: none;
+    }
+  }
+
   nav {
-    flex: 1 0 auto;
+    /* flex-shrink: 1, not 0: nav must shrink to .sidebar's leftover
+       space to actually overflow and scroll. flex-shrink: 0 kept it at
+       full content height with nothing to scroll, cutting the list off
+       instead. */
+    flex: 1 1 auto;
+    min-block-size: 0;
     overflow: auto;
+    /* nav is the actual scrollable element being dragged; only its own
+       containment stops a chain once the tab list itself hits its scroll
+       limit (a non-scrolling ancestor's overscroll-behavior doesn't help). */
+    overscroll-behavior: contain;
   }
 
   .page-content {
     flex: 1 1 auto;
-    padding: 32px;
     overflow: auto;
     scrollbar-gutter: stable;
-    position: relative;
+    /* A normal overflow: auto element contains the bounce locally on its
+       own; without this, dragging past the top/bottom chains into the
+       WKWebView's own document-level bounce. */
+    overscroll-behavior: contain;
   }
 
+  .page-header {
+    position: relative;
+    padding: 32px 32px 0;
+  }
+
+  /* Relative to .page-header, not the viewport, so it scrolls away with
+     the title instead of floating over whatever content is underneath. */
   .sidebar-toggle {
     position: absolute;
     inset-block-start: 24px;
     inset-inline-start: 24px;
     z-index: 1;
 
-    @container (width >= ${wideWidth}) {
+    @media (width >= ${wideWidth}) {
       display: none;
     }
   }
@@ -71,9 +119,22 @@ export const style = scoped.css`
     padding: 24px;
   }
 
+  /* Needs its own close control since .page-header's toggle button lives
+     in .page-content and may be scrolled out of view. Only relevant once
+     .sidebar is an overlay. */
+  .sidebar-close {
+    display: flex;
+    justify-content: flex-end;
+
+    @media (width >= ${wideWidth}) {
+      display: none;
+    }
+  }
+
   main {
     margin: 0 auto;
     max-width: 1024px;
+    padding: 0 32px 32px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -86,6 +147,7 @@ export const style = scoped.css`
   }
 
   h1 {
+    max-width: 1024px;
     padding: 0 32px;
   }
 
@@ -139,12 +201,15 @@ style.passthrough.css`
   }
 
   h1 {
-    margin: 0;
+    margin: 0 auto;
     font: ${font.heading.h3};
     text-align: center;
   }
 
   .disclaimer {
+    max-width: 1024px;
+    margin: 0 auto 24px;
+    padding: 0 32px;
     text-align: center;
   }
 
@@ -171,6 +236,13 @@ style.passthrough.css`
     }
   }
 
+  /* Pins this element (and anything after it) to the end of an h4 row,
+     regardless of whether a sibling ".title" actually grows enough to push
+     it there on its own. */
+  .header-end-action {
+    margin-inline-start: auto;
+  }
+
   leo-toggle {
     font: ${font.small.semibold};
     margin-inline-end: 4px;
@@ -178,10 +250,31 @@ style.passthrough.css`
 
   .title {
     flex: 1 1 auto;
+
+    /* white-space: nowrap so a title's own words (and any id/value inside
+       it) move to the next line together as one unit via h4's own
+       flex-wrap: wrap, rather than the browser's default text wrapping
+       breaking the phrase apart mid-title when the row runs out of room.
+       Only needed once the row is narrow enough to run out of room. */
+    @media (width < ${wideWidth}) {
+      white-space: nowrap;
+    }
+  }
+
+  /* A flex-basis of 100% claims the whole row for itself, which always
+     pushes a following h4 child onto its own line below, regardless of
+     whether both would otherwise fit side by side; e.g. a Campaign ID and
+     its Advertiser ID, which read as two separate facts rather than one
+     title. */
+  .title-own-line {
+    flex: 1 1 100%;
   }
 
   input, select {
     font: ${font.default.regular};
+    /* iOS zooms the whole page on focus for any input with a computed
+       font-size under 16px; overrides the token's smaller size here only. */
+    font-size: 16px;
     color: ${color.text.primary};
     background: ${color.container.background};
     padding: 8px;
@@ -214,12 +307,40 @@ style.passthrough.css`
     gap: 4px;
     padding: 8px;
 
+    /* .copyable-text's own narrow-screen 16ch cap (see its definition
+       below) is for an id floating in free-flowing text with nothing else
+       to clip against; here the row's own flex layout already gives the
+       value its real available width, which is usually wider than 16ch,
+       so deferring to it means this only ellipsizes once it actually
+       doesn't fit rather than always. */
+    .copyable-text {
+      max-width: 100%;
+    }
+
     > div {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+
+      /* The label never shrinks or wraps; a long value stays on the same
+         line and wraps its own text instead of pushing the whole row onto
+         a new line below the label. Only needed once the row is narrow
+         enough that flex-wrap above would otherwise kick in. */
+      @media (width < ${wideWidth}) {
+        flex-wrap: nowrap;
+
+        > :first-child {
+          flex: 0 0 auto;
+        }
+
+        > :last-child {
+          flex: 1 1 auto;
+          min-width: 0;
+          text-align: right;
+        }
+      }
     }
   }
 
@@ -252,6 +373,10 @@ style.passthrough.css`
 
   .diagnostic-muted {
     color: ${color.text.tertiary};
+  }
+
+  .diagnostic-success {
+    color: ${color.systemfeedback.successText};
   }
 
   .monospace-value {
@@ -314,6 +439,10 @@ style.passthrough.css`
     align-items: center;
     gap: 4px;
     cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
   }
 
   .diagnostic-masked-dot {
@@ -337,12 +466,44 @@ style.passthrough.css`
     pointer-events: none;
   }
 
+  /* Groups the "ID" label with its input as a single atomic flex item, so
+     h4's own flex-wrap: wrap moves them to the next line together rather
+     than treating them as independently-wrappable items (which could split
+     the label from its input across two lines). */
+  .id-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    /* flex-grow: 1 so this (and the input inside it) can actually claim
+       leftover row space on a narrow screen once copy/generate have
+       wrapped away, instead of sitting at its narrow min-content width.
+       flex-shrink: 1 and min-width: 0: once alone on its own line, it
+       still needs to be able to shrink to the card's own width rather
+       than overflowing past it outright if 38ch doesn't fit. Not needed
+       on a wide screen, where the input keeps its fixed 38ch box. */
+    @media (width < ${wideWidth}) {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+  }
+
   .diagnostic-id-input {
     font-family: monospace;
     box-sizing: border-box;
     /* A v4 UUID is always 36 characters; a bit of headroom over 36ch since
        ch-unit sizing is only an approximation of the widest glyph. */
     width: 38ch;
+
+    /* Shrinks along with .id-input-group rather than spilling past the
+       card if even 38ch alone doesn't fit. */
+    @media (width < ${wideWidth}) {
+      flex: 1 1 38ch;
+      width: auto;
+      min-width: 0;
+      max-width: 100%;
+    }
   }
 
   /* Sized down from the default icon size so it reads as part of the
@@ -366,6 +527,15 @@ style.passthrough.css`
     align-items: center;
     gap: 4px;
     width: 356px;
+
+    /* The trailing validation icon (warning or match) sits flush right
+       regardless of the input's own (fixed, sometimes narrower) width,
+       rather than immediately after it with a gap. Targets the icon type
+       specifically, not :last-child: when no icon is shown yet, the input
+       itself is last, and this must not apply to it. */
+    > leo-icon {
+      margin-inline-start: auto;
+    }
   }
 
   .test-condition-matcher-input {
@@ -395,6 +565,14 @@ style.passthrough.css`
   .copyable-text {
     display: inline-block;
     max-width: 100%;
+    /* Only forced down to a fixed 16ch on narrow screens, where an ID
+       inline in free-flowing text has nothing else to clip against and
+       would otherwise grow to its full length on a narrow line. On wider
+       screens there's usually room to show the full value, so this
+       shouldn't force an ellipsis that isn't actually needed. */
+    @media (width < ${wideWidth}) {
+      max-width: 16ch;
+    }
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -409,8 +587,9 @@ style.passthrough.css`
 
   /* A URL within free-flowing log text should read in full and wrap like
      the rest of the line, not clip with an ellipsis the way a short ID
-     does in a narrow table column. */
+     does. */
   .copyable-text-wrap {
+    max-width: 100%;
     overflow: visible;
     text-overflow: clip;
     white-space: normal;
@@ -511,6 +690,35 @@ style.passthrough.css`
 
     .nowrap-cell {
       white-space: nowrap;
+    }
+
+    /* .copyable-text's narrow-screen 16ch cap (see its definition below)
+       is for an id floating in free-flowing text with nothing else to
+       clip against. Inside a cell, the width classes above already
+       constrain the real available space, which can be under 16ch on
+       mobile; deferring to the cell's own width here lets its
+       overflow/ellipsis apply correctly instead. */
+    .copyable-text {
+      max-width: 100%;
+    }
+
+    /* .id-with-reaction's white-space: nowrap makes it size to its full
+       content width regardless of the cell's real width (shrink-to-fit
+       never goes below min-content), overflowing the cell. width: 100%
+       forces it to the cell's actual width; its copyable-text child needs
+       min-width: 0 to actually shrink and ellipsize within that row,
+       while the reaction icon keeps its own fixed size. */
+    .id-with-reaction {
+      width: 100%;
+      min-width: 0;
+
+      .copyable-text {
+        min-width: 0;
+      }
+
+      leo-icon {
+        flex-shrink: 0;
+      }
     }
 
     /* Always present, even with zero rows, unlike a border on the first

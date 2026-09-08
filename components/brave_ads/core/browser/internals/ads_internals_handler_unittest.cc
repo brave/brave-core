@@ -21,6 +21,8 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -48,6 +50,8 @@ class BraveAdsInternalsHandlerTest : public testing::Test {
   void SetUp() override {
     profile_prefs_.registry()->RegisterBooleanPref(
         brave_rewards::prefs::kEnabled, false);
+    profile_prefs_.registry()->RegisterStringPref(
+        brave_rewards::prefs::kExternalWalletType, "");
     profile_prefs_.registry()->RegisterStringPref(prefs::kDiagnosticId, "");
   }
 
@@ -305,7 +309,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
         base::ListValue entries;
         entries.Append(
             base::DictValue().Set("name", "foo").Set("value", "bar"));
-        std::move(callback).Run(std::move(entries));
+        std::move(callback).Run(
+            base::DictValue().Set("entries", std::move(entries)));
       });
 
   base::test::TestFuture<std::string> test_future;
@@ -426,7 +431,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
   EXPECT_EQ("diagnostic-id", profile_prefs_.GetString(prefs::kDiagnosticId));
 }
 
-TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdIgnoresEmptyValue) {
+TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdClearsPrefWithEmptyValue) {
   // Arrange
   profile_prefs_.SetString(prefs::kDiagnosticId, "diagnostic-id");
 
@@ -450,7 +455,103 @@ TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdIgnoresEmptyValue) {
   ads_internals_remote.FlushForTesting();
 
   // Assert
-  EXPECT_EQ("diagnostic-id", profile_prefs_.GetString(prefs::kDiagnosticId));
+  EXPECT_EQ("", profile_prefs_.GetString(prefs::kDiagnosticId));
+}
+
+namespace {
+
+class FakeAdsInternalsPage final : public bat_ads::mojom::AdsInternalsPage {
+ public:
+  mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> BindNewPipe() {
+    return receiver_.BindNewPipeAndPassRemote();
+  }
+
+  void FlushForTesting() { receiver_.FlushForTesting(); }
+
+  std::optional<bool> last_rewards_enabled;
+  std::optional<bool> last_wallet_connected;
+  bool did_initialize_ads_service = false;
+
+ private:
+  // bat_ads::mojom::AdsInternalsPage:
+  void UpdateBraveRewardsEnabled(bool enabled) override {
+    last_rewards_enabled = enabled;
+  }
+
+  void UpdateBraveRewardsWalletConnected(bool connected) override {
+    last_wallet_connected = connected;
+  }
+
+  void UpdateDidInitializeAdsService() override {
+    did_initialize_ads_service = true;
+  }
+
+  mojo::Receiver<bat_ads::mojom::AdsInternalsPage> receiver_{this};
+};
+
+}  // namespace
+
+TEST_F(BraveAdsInternalsHandlerTest,
+       CreateAdsInternalsPageHandlerPushesInitialState) {
+  // Arrange
+  profile_prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  profile_prefs_.SetString(brave_rewards::prefs::kExternalWalletType, "uphold");
+
+  AdsInternalsHandler handler(
+      /*ads_service=*/nullptr, profile_prefs_,
+      /*variations_service=*/nullptr,
+      /*get_ntp_sponsored_images_component_id_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      /*get_country_resource_component_id_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      /*get_language_resource_component_id_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      AdsInternalsHandler::GetComponentIdCallback());
+
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
+
+  FakeAdsInternalsPage page;
+
+  // Act
+  ads_internals_remote->CreateAdsInternalsPageHandler(page.BindNewPipe());
+  page.FlushForTesting();
+
+  // Assert
+  EXPECT_EQ(true, page.last_rewards_enabled);
+  EXPECT_EQ(true, page.last_wallet_connected);
+}
+
+TEST_F(BraveAdsInternalsHandlerTest,
+       WalletConnectedPrefChangePushesUpdatedState) {
+  // Arrange
+  AdsInternalsHandler handler(
+      /*ads_service=*/nullptr, profile_prefs_,
+      /*variations_service=*/nullptr,
+      /*get_ntp_sponsored_images_component_id_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      /*get_country_resource_component_id_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      /*get_language_resource_component_id_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      AdsInternalsHandler::GetComponentIdCallback());
+
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
+
+  FakeAdsInternalsPage page;
+  ads_internals_remote->CreateAdsInternalsPageHandler(page.BindNewPipe());
+  page.FlushForTesting();
+  ASSERT_EQ(false, page.last_wallet_connected);
+
+  // Act
+  profile_prefs_.SetString(brave_rewards::prefs::kExternalWalletType, "uphold");
+  page.FlushForTesting();
+
+  // Assert
+  EXPECT_EQ(true, page.last_wallet_connected);
 }
 
 }  // namespace brave_ads

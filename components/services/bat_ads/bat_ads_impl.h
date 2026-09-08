@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/task/sequenced_task_runner.h"
@@ -54,6 +55,12 @@ class BatAdsImpl final : public mojom::BatAds {
   void GetInternals(GetInternalsCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
+
+  void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      const std::optional<std::string>& test_value,
+      EvaluateConditionMatcherCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

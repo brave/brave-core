@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -102,9 +103,21 @@ class AdsService : public KeyedService {
   // `base::ListValue` containing info of the obtained internals.
   virtual void GetInternals(GetInternalsCallback callback) = 0;
 
-  // Called to get diagnostics to help identify issues. The callback takes one
-  // argument - `base::ListValue` containing info of the obtained diagnostics.
+  // Called to get diagnostics to help identify issues, keyed by
+  // `brave://ads-internals` tab. The callback takes one argument:
+  // `base::DictValue` containing the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
+
+  // Called to test whether `condition` matches the current value at
+  // `pref_path`, for debugging condition matchers on brave://ads-internals.
+  // If `test_value` is set, it's matched against instead of the real
+  // value resolved from `pref_path`, so a hypothetical value can be tested
+  // without needing a device that's actually in that state.
+  virtual void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      std::optional<std::string> test_value,
+      EvaluateConditionMatcherCallback callback) = 0;
 
   // Called to get the statement of accounts. The callback takes one argument -
   // `mojom::StatementInfo` containing info of the obtained statement of

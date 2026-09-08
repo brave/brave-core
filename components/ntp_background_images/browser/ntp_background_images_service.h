@@ -89,6 +89,7 @@ class NTPBackgroundImagesService {
   // (e.g. "amazon.png"), or nullopt if unavailable or invalid.
   std::optional<base::FilePath> MaybeGetSponsoredSiteImageFilePath(
       const base::FilePath& request_path) const;
+  const std::optional<std::string>& GetSponsoredImagesComponentId() const;
   virtual void RegisterSponsoredImagesComponent();
 
   void MaybeCheckForSponsoredComponentUpdate();

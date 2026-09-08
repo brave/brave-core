@@ -24,6 +24,14 @@
   <script type="module" src="/strings.m.js"></script>
   <script type="module" src="/ads_internals.bundle.js"></script>
   <style>
+    /* Real scrolling happens only in nested elements (.page-content, nav);
+       without this, dragging a fixed overlay (e.g. the mobile sidebar)
+       still rubber-bands the document's own scroll. overflow: hidden was
+       tried first but broke nested elements' own touch scrolling, a
+       known WebKit quirk. */
+    html, body {
+      overscroll-behavior: none;
+    }
     body {
       margin: 0;
     }

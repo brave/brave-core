@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_TEST_FAKE_BAT_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_TEST_FAKE_BAT_ADS_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -58,6 +59,12 @@ class FakeBatAds : public bat_ads::mojom::BatAds {
   void Shutdown(ShutdownCallback callback) override;
   void GetInternals(GetInternalsCallback callback) override;
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
+  void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      const std::optional<std::string>& test_value,
+      bat_ads::mojom::BatAds::EvaluateConditionMatcherCallback callback)
+      override;
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
   void ParseAndSaveNewTabPageAds(
       base::DictValue /*value*/,
