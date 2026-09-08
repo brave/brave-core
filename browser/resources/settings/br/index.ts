@@ -18,8 +18,6 @@ import './autofill_section.js'
 // autofill-page components this modifies.
 import './autofill_page.js'
 import './basic_page.js'
-import './clear_browsing_data_dialog.js'
-import './clear_browsing_data_time_picker.js'
 import './contact_info_page.js'
 import './add_site_dialog.js'
 import './cookies_page.js'

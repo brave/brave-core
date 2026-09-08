@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
-index e35bd2838f9c247e0132ce84c40a7e0f13009839..7d3e53fa97c3cd86bca610947879c2edaef98903 100644
+index 4c5d092d29a9e282575f1da99acfe1e7879bc32b..f318ce23cfee8eb19f82bfa14b5f8fb87670ce59 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
 @@ -80,10 +80,14 @@ export interface SettingsClearBrowsingDataDialogElement {
@@ -52,3 +52,10 @@ index e35bd2838f9c247e0132ce84c40a7e0f13009839..7d3e53fa97c3cd86bca610947879c2ed
      default:
        assertNotReachedCase(datatypes);
    }
+@@ -515,6 +527,3 @@ declare global {
+   }
+ }
+ 
+-customElements.define(
+-    SettingsClearBrowsingDataDialogElement.is,
+-    SettingsClearBrowsingDataDialogElement);

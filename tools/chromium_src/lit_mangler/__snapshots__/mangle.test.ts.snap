@@ -52,7 +52,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -365,16 +365,13 @@
+@@ -368,16 +368,13 @@
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>
          \` : ''}
@@ -118,7 +118,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
        \${this.showSevereWarnings() ? html\`
          <div id="warnings">
-@@ -136,28 +134,22 @@
+@@ -141,28 +139,22 @@
              </div>
            </div>
          \` : ''}
@@ -151,7 +151,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
          <cr-button id="errors-button"
-@@ -195,20 +187,11 @@
+@@ -200,20 +192,11 @@
            aria-describedby="a11yAssociation" class="action-button">
          $i18n{itemReload}
        </cr-button>
@@ -866,6 +866,135 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  <!--_html_template_end_-->\`;
    // clang-format on
  }
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
+@@ -3,18 +3,18 @@
+ import type {SettingsClearBrowsingDataDialogElement} from './clear_browsing_data_dialog.js';
+ 
+ export function getHtml(this: SettingsClearBrowsingDataDialogElement) {
+   return html\`<!--_html_template_start_-->
+-<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}"
+-    show-on-attach ignore-popstate ignore-enter-key
+-    ?hidden="\${this.showOtherGoogleDataDialog_}">
+-  <div slot="title" class="dialog-title">$i18n{clearBrowsingData}</div>
+-  <div slot="header">
+-    <settings-clear-browsing-data-time-picker id="timePicker"
+-        @selected-time-period-change="\${this.onSelectedTimePeriodChange_}">
++<cr-dialog id="deleteBrowsingDataDialog" close-text="$i18n{close}" show-on-attach="" ignore-popstate="" ignore-enter-key="" ?hidden="\${this.showOtherGoogleDataDialog_}">
++  <div slot="title" class="dialog-title" hidden="">$i18n{clearBrowsingData}</div><div slot="header">
++       \${this.renderBraveTabs_()}
++       <div id="tabsDivider"></div>
++     </div>
++  <div ?hidden="\${!(this.isDeleteNowTabSelected_())}" slot="header">
++    <settings-clear-browsing-data-time-picker id="timePicker" @selected-time-period-change="\${this.onSelectedTimePeriodChange_}">
+     </settings-clear-browsing-data-time-picker>
+   </div>
+-  <div slot="body">
++  <div ?hidden="\${!(this.isDeleteNowTabSelected_())}" slot="body">
+     <div id="checkboxContainer">
+       \${this.expandedBrowsingDataTypeOptionsList_.map(item => html\`
+         <settings-checkbox pref-key="\${item.prefKey}" no-set-pref
+             .subLabelHtml="\${item.subLabel || ''}"
+@@ -35,39 +35,39 @@
+           \`)}
+         \` : ''}
+       </div>
+     </div>
+-    <cr-button id="showMoreButton" @click="\${this.onShowMoreClick_}"
+-        ?hidden="\${this.shouldHideShowMoreButton_()}">
+-      $i18n{clearBrowsingDataShowMore}
+-      <cr-icon icon="cr:keyboard-arrow-down" aria-hidden="true"
+-          role="presentation">
+-      </cr-icon>
+-    </cr-button>
+-    <cr-link-row id="manageOtherGoogleDataRow"
+-        label="\${this.computeOtherGoogleDataRowLabel_()}"
+-        sub-label="\${this.computeOtherGoogleDataRowSubLabel_()}"
+-        @click="\${this.onManageOtherGoogleDataRowClick_}"
+-        role-description="$i18n{subpageArrowRoleDescription}">
+-    </cr-link-row>
+-  </div>
+-  <div slot="button-container" class="row-aligned">
+-<if expr="not is_chromeos">
++    
++    
++  </div><div slot="body" id="onExitBody" ?hidden="\${!this.isOnExitTabSelected_()}">
++       <settings-brave-clear-browsing-data-on-exit-page id="onExitTab" @clear-data-on-exit-page-change="\${this.onClearDataOnExitPageChange_}">
++       </settings-brave-clear-browsing-data-on-exit-page>
++     </div>
++  \${this.showBraveDataOptions_ ? html\`
++       <div slot="body" id="braveDataOptions">
++         <a id="clearBraveAdsData" href="chrome://settings/privacy" ?hidden="\${this.braveRewardsEnabled_}" @click="\${this.onClearBraveAdsDataClick_}">
++           <span id="clearBraveAdsDataLabel">$i18n{clearBraveAdsData}</span>
++         </a>
++         <a id="resetBraveRewardsData" href="chrome://rewards/#reset" ?hidden="\${!this.braveRewardsEnabled_}">
++           <leo-icon name="product-bat-outline"></leo-icon>
++           <span id="resetBraveRewardsDataLabel">$i18n{resetRewardsData}</span>
++           <leo-icon name="launch"></leo-icon>
++         </a>
++       </div>
++     \` : ''}<div slot="button-container" class="row-aligned">
++
+     <settings-clear-browsing-data-account-indicator>
+     </settings-clear-browsing-data-account-indicator>
+-</if>
+-    <div id="spinner" class="spinner"
+-        ?hidden="\${!this.isDeletionInProgress_}"></div>
+-    <cr-button id="cancelButton" class="cancel-button"
+-        @click="\${this.onCancelClick_}"
+-        ?disabled="\${this.isDeletionInProgress_}" autofocus>
++
++    <div id="spinner" class="spinner" ?hidden="\${!this.isDeletionInProgress_}"></div>
++    <cr-button id="cancelButton" class="cancel-button" @click="\${this.onCancelClick_}" ?disabled="\${this.isDeletionInProgress_}" autofocus="">
+       $i18n{cancel}
+     </cr-button>
+-    <cr-button id="deleteButton" class="action-button"
+-        @click="\${this.onDeleteBrowsingDataClick_}"
+-        ?disabled="\${this.shouldDisableDeleteButton_()}">
++    <cr-button ?hidden="\${!(this.isDeleteNowTabSelected_())}" id="deleteButton" class="action-button" @click="\${this.onDeleteBrowsingDataClick_}" ?disabled="\${this.shouldDisableDeleteButton_()}">
+       \${this.computeDeleteButtonLabel_()}
+-    </cr-button>
++    </cr-button><cr-button id="saveOnExitSettingsConfirm" class="action-button" ?hidden="\${!this.isOnExitTabSelected_()}" ?disabled="\${!this.onExitSettingsModified_}" @click="\${this.onSaveOnExitSettingsClick_}">
++       $i18n{save}
++     </cr-button>
+     <!-- The alert must be inside the dialog for it to be read while the
+          dialog is open. -->
+     <div id="deletingDataAlert" role="alert">
+       \${this.deletingDataAlertString_}
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/clear_browsing_data_dialog/clear_browsing_data_time_picker.html.ts
+@@ -5,17 +5,13 @@
+ export function getHtml(this: SettingsClearBrowsingDataTimePickerElement) {
+   return html\`<!--_html_template_start_-->
+ <div class="row" id="timePicker">
+   \${this.expandedOptionList_.map(item => html\`
+-    <cr-chip class="time-period-chip"
+-        ?selected="\${this.isTimePeriodSelected_(item.value)}"
+-        data-time-period="\${item.value}"
+-        @click="\${this.onTimePeriodClick_}">
+-      <cr-icon icon="cr:check"
+-          ?hidden="\${!this.isTimePeriodSelected_(item.value)}">
+-      </cr-icon>
++    <cr-chip class="time-period-chip" ?selected="\${this.isTimePeriodSelected_(item.value)}" data-time-period="\${item.value}" @click="\${this.onTimePeriodClick_}">
++      
+       \${item.label}
+-    </cr-chip>
++    <cr-icon icon="check-circle-outline" ?hidden="\${!this.isTimePeriodSelected_(item.value)}">
++      </cr-icon></cr-chip>
+   \`)}
+   <cr-chip id="moreButton" ?hidden="\${!this.moreOptionList_.length}"
+       @click="\${this.onMoreTimePeriodsButtonClick_}">
+     $i18n{clearBrowsingDataMore}
 "
 `;
 

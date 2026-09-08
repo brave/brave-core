@@ -5,6 +5,8 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
@@ -22,7 +24,11 @@ brave_settings_preprocess_deps =
 
 # Preprocessor defines passed to build_webui() so that Chromium-patched
 # TypeScript files can use <if expr="..."> with Brave buildflags.
-brave_settings_preprocessor_defines = [ "enable_ai_chat=$enable_ai_chat" ]
+brave_settings_preprocessor_defines = [
+  "enable_ai_chat=$enable_ai_chat",
+  "enable_brave_ads=$enable_brave_ads",
+  "enable_brave_rewards=$enable_brave_rewards",
+]
 
 brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_alert.ts",
@@ -79,8 +85,6 @@ brave_settings_ts_files = [
   "br/about_page.ts",
   "br/autofill_section.ts",
   "br/basic_page.ts",
-  "br/clear_browsing_data_dialog.ts",
-  "br/clear_browsing_data_time_picker.ts",
   "br/config.ts",
   "br/contact_info_page.ts",
   "br/cookies_page.ts",
@@ -114,7 +118,6 @@ brave_settings_ts_files = [
   "br/site_settings_page.ts",
   "br/sync_controls.ts",
   "br/autofill_page.ts",
-  "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_add_site_dialog/brave_add_site_dialog.ts",
   "brave_data_collection_page/brave_data_collection_browser_proxy.ts",
