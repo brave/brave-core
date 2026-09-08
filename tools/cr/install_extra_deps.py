@@ -47,6 +47,10 @@ from tarball_installer import (  # pylint: disable=wrong-import-position
 # normal runs, to avoid cluttering the sync output.
 _LOG = logging.getLogger('install_extra_deps')
 
+# Level defaults to WARNING for users of this file that import it. For the
+# application mode, the CLI determines that based on the presence of `--quiet`.
+_LOG.setLevel(logging.WARNING)
+
 
 def _select_object(objects: list[dict],
                    variables: dict[str, object]) -> dict | None:
@@ -357,18 +361,26 @@ class ExtraDepsRunner:
 def main() -> int:
     # The gclient machinery used to resolve DEPS conditions logs very verbosely
     # on the root logger (every dependency's `verify_validity`, recursedeps,
-    # etc.). Keep the root at ERROR to silence that chatter, and emit this
-    # script's own messages through `_LOG` (at INFO) so they still surface.
+    # etc.). Keep the root at ERROR to silence that chatter; this script's own
+    # messages go through `_LOG`, whose level is set from `--quiet` below.
     logging.basicConfig(level=logging.ERROR, format='%(message)s')
-    _LOG.setLevel(logging.INFO)
 
     parser = argparse.ArgumentParser(
         description='Download and install the bucket-hosted archive(s) for the '
         'given EXTRA_DEPS entries.')
     subparsers = parser.add_subparsers(dest='command', required=True)
 
+    # Shared by every subcommand, so `--quiet` is accepted after the command
+    # name rather than only ahead of it.
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument('-q',
+                               '--quiet',
+                               action='store_true',
+                               help='Report nothing but warnings and errors.')
+
     sync_parser = subparsers.add_parser(
         'sync',
+        parents=[common_parser],
         help='Download and install the bucket-hosted archive(s) for the given '
         'EXTRA_DEPS entries.')
     sync_parser.add_argument(
@@ -382,6 +394,7 @@ def main() -> int:
 
     setdep_parser = subparsers.add_parser(
         'setdep',
+        parents=[common_parser],
         help='Repin EXTRA_DEPS entries in place, preserving comments and '
         'formatting (like `gclient setdep`).')
     setdep_parser.add_argument(
@@ -399,6 +412,8 @@ def main() -> int:
         'invocation.')
 
     args = parser.parse_args()
+    if not args.quiet:
+        _LOG.setLevel(logging.INFO)
 
     if args.command == 'setdep':
         setdep(args.revisions)
