@@ -17,8 +17,8 @@ Useful flags: `--clean` (wipe source and build dirs, start fresh), `-j N`,
 ## Prerequisites
 
 The Chromium Rust toolchain must be available at
-`src/third_party/rust-toolchain/`, and Chromium's clang/lld at
-`src/third_party/llvm-build/`, so only vanilla Chromium is required.
+`src/third_party/rust-toolchain/`, and `gn` on `PATH` (depot_tools) for the
+grammar, so only a synced checkout is required.
 
 ## Outputs
 
@@ -27,6 +27,7 @@ The Chromium Rust toolchain must be available at
 | `third_party/ast-grep-src/`                          | ast-grep source clone         |
 | `third_party/tree-sitter-gn-src/`                    | tree-sitter-gn source clone   |
 | `third_party/ast-grep-intermediate/`                 | `cargo-home/`, `target/`      |
+| `../out/ast-grep-tree-sitter-gn/`                   | grammar-only GN build dir     |
 | `third_party/ast-grep/ast-grep-<os>/bin/ast-grep`    | final ast-grep binary         |
 | `third_party/ast-grep/ast-grep-<os>/lib/gn.<ext>`    | `gn` custom-language library  |
 | `third_party/ast-grep/ast-grep-<os>/sgconfig.yml`    | registers `gn` for ast-grep   |
