@@ -83,8 +83,7 @@ void BraveAppearanceHandler::RegisterMessages() {
     // Unretained() is safe: |fullscreen_subscription_| is a member, so it
     // unsubscribes this callback on our destruction, before |this| dangles.
     fullscreen_subscription_ =
-        browser_window_interface->GetFeatures()
-            .exclusive_access_manager()
+        ExclusiveAccessManager::From(browser_window_interface)
             ->fullscreen_controller()
             ->RegisterOnFullscreenStateChanged(base::BindRepeating(
                 &BraveAppearanceHandler::OnFullscreenStateChanged,
@@ -113,7 +112,7 @@ bool BraveAppearanceHandler::IsCompactModeToggleEnabled() {
   auto* browser_window_interface = tab->GetBrowserWindowInterface();
   auto* exclusive_access_manager =
       browser_window_interface
-          ? browser_window_interface->GetFeatures().exclusive_access_manager()
+          ? ExclusiveAccessManager::From(browser_window_interface)
           : nullptr;
 
   // Compact mode is incompatible with immersive fullscreen (see

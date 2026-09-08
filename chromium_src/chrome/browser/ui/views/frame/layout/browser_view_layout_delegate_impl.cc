@@ -79,7 +79,7 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() const {
     return false;
   }
   const ExclusiveAccessManager* exclusive_access_manager =
-      browser_view().browser()->GetFeatures().exclusive_access_manager();
+      ExclusiveAccessManager::From(browser_view().browser());
   if (!exclusive_access_manager) {
     return false;
   }
@@ -94,7 +94,7 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
     return false;
   }
   const ExclusiveAccessManager* exclusive_access_manager =
-      browser_view().browser()->GetFeatures().exclusive_access_manager();
+      ExclusiveAccessManager::From(browser_view().browser());
   if (!exclusive_access_manager) {
     return false;
   }
