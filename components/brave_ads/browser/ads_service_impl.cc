@@ -285,14 +285,14 @@ bool AdsServiceImpl::IsNotificationAdsEnabled() const {
 bool AdsServiceImpl::CanStartBatAdsService() const {
   if (!brave_rewards::IsSupported(&*prefs_)) {
     // Never start if Rewards is disabled by policy, feature flag, or
-    // unsupported region, regardless of which ad unit the user has opted into.
+    // unsupported region, regardless of which ad units are enabled.
     return false;
   }
 
   if (UserHasJoinedBraveRewards()) {
     // Always start the service to update brave://ads-internals,
     // brave://rewards, and brave://rewards-internals if the user has joined
-    // Brave Rewards, even if all ad units are opted out.
+    // Brave Rewards, even if all ad units are disabled.
     return true;
   }
 

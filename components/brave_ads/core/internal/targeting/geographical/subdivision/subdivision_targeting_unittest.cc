@@ -48,9 +48,9 @@ class BraveAdsSubdivisionTargetingTest : public test::TestBase {
 };
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       AllowAndFetchWhenOptingInToNotificationAds) {
+       AllowAndFetchWhenNotificationAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -68,9 +68,9 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
-       DoNotFetchWhenOptingOutOfNotificationAds) {
+       DoNotFetchWhenNotificationAdsAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 

@@ -38,13 +38,13 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_database_migration_failure_reason_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/new_tab_page_ads_schema_version_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/new_tab_page_ads_shown_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/notification_ads_enabled_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_search_result_ads_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/optional_bool_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/permission_rule_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/resource_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/schema_version_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/sponsored_ads_enabled_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/browser_is_active_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
@@ -238,9 +238,9 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<SchemaVersionDiagnosticEntry>());
   SetEntry(
       std::make_unique<LastDatabaseMigrationFailureReasonDiagnosticEntry>());
-  SetEntry(std::make_unique<OptedInToNewTabPageAdsDiagnosticEntry>());
   SetEntry(std::make_unique<NotificationAdsEnabledDiagnosticEntry>());
-  SetEntry(std::make_unique<OptedInToSearchResultAdsDiagnosticEntry>());
+  SetEntry(std::make_unique<SponsoredAdsEnabledDiagnosticEntry>());
+  SetEntry(std::make_unique<NewTabPageAdsShownDiagnosticEntry>());
   for (const auto& entry : kResourceTable) {
     SetEntry(std::make_unique<ResourceDiagnosticEntry>(
         entry.type, entry.name, base::BindRepeating(entry.is_loaded),

@@ -97,9 +97,10 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   EXPECT_FALSE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadResourceIfOptedOutOfAllAds) {
+TEST_F(BraveAdsAntiTargetingResourceTest,
+       DoNotLoadResourceIfAllAdsAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -109,9 +110,9 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadResourceIfOptedOutOfAllAds) {
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
-       LoadResourceWhenOptingInToNewTabPageAds) {
+       LoadResourceWhenNewTabPageAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -127,7 +128,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToNewTabPageAds) {
+       DoNotResetResourceIfNewTabPageAdsAlreadyEnabled) {
   // Arrange
   test::DisableNotificationAds();
 
@@ -145,9 +146,9 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 }
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
-       LoadResourceWhenOptingInToNotificationAds) {
+       LoadResourceWhenNotificationAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -163,7 +164,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 TEST_F(BraveAdsAntiTargetingResourceTest,
        DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableSponsoredAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -176,10 +177,11 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   EXPECT_TRUE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsAntiTargetingResourceTest,
-       DoNotLoadResourceWhenOptingInToSearchResultAds) {
+TEST_F(
+    BraveAdsAntiTargetingResourceTest,
+    DoNotLoadResourceWhenSponsoredAdsAreEnabledAndNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);

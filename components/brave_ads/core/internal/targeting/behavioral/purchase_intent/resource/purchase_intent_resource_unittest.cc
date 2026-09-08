@@ -98,9 +98,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotLoadResourceIfOptedOutOfAllAds) {
+       DoNotLoadResourceIfAllAdsAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -110,9 +110,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotLoadResourceWhenOptingInToNewTabPageAds) {
+       DoNotLoadResourceWhenNewTabPageAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -128,9 +128,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       LoadResourceWhenOptingInToNotificationAds) {
+       LoadResourceWhenNotificationAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -146,7 +146,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableSponsoredAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
@@ -159,10 +159,11 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   EXPECT_TRUE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotLoadResourceWhenOptingInToSearchResultAds) {
+TEST_F(
+    BraveAdsPurchaseIntentResourceTest,
+    DoNotLoadResourceWhenSponsoredAdsAreEnabledAndNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);

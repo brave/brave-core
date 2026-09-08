@@ -24,7 +24,7 @@ class BraveAdsConversionsSearchResultAdTest
     : public test::BraveAdsConversionsTestBase {};
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
-       ConvertViewedAdIfOptedInToSearchResultAds) {
+       ConvertViewedAdIfSponsoredAdsAreEnabled) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);
@@ -43,9 +43,9 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
-       DoNotConvertViewedAdIfOptedOutOfSearchResultAds) {
+       DoNotConvertViewedAdIfSponsoredAdsAreDisabled) {
   // Arrange
-  test::OptOutOfSearchResultAds();
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);
@@ -61,7 +61,7 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
-       ConvertClickedAdIfOptedInToSearchResultAds) {
+       ConvertClickedAdIfSponsoredAdsAreEnabled) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);
@@ -81,9 +81,9 @@ TEST_F(BraveAdsConversionsSearchResultAdTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
-       DoNotConvertClickedAdIfOptedOutOfSearchResultAds) {
+       DoNotConvertClickedAdIfSponsoredAdsAreDisabled) {
   // Arrange
-  test::OptOutOfSearchResultAds();
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*use_random_uuids=*/false);

@@ -138,7 +138,7 @@ TEST_F(BraveAdsVirtualPrefProviderTest, IsSurveyPanelist) {
 }
 
 TEST_F(BraveAdsVirtualPrefProviderTest,
-       IsNotSurveyPanelistWhenOptedOutOfNewTabPageAds) {
+       IsNotSurveyPanelistWhenNewTabPageAdsAreDisabled) {
   // Arrange
   prefs_.SetBoolean(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);

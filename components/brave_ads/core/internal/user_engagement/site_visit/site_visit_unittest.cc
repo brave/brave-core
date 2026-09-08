@@ -75,11 +75,29 @@ TEST_F(BraveAdsSiteVisitTest, LandOnNewTabPageAdPage) {
 }
 
 TEST_F(BraveAdsSiteVisitTest,
-       DoNotLandOnNewTabPageAdPageIfOptedOutOfNewTabPageAds) {
+       DoNotLandOnNewTabPageAdPageIfNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
 
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
+                                  /*use_random_uuids=*/true);
+  SimulateClickingAd(ad, /*tab_id=*/1,
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
+  FastForwardClockBy(kPageLandAfter.Get());
+}
+
+TEST_F(BraveAdsSiteVisitTest,
+       DoNotLandOnNewTabPageAdPageIfSponsoredAdsAreDisabled) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  test::DisableSponsoredAds();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*use_random_uuids=*/true);

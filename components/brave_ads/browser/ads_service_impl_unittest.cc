@@ -159,25 +159,12 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   std::unique_ptr<AdsServiceImpl> ads_service_;
 };
 
-TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenOptedInToSearchResultAds) {
+TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenSponsoredAdsAreEnabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   Startup();
 
   // Act
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
-
-  // Assert
-  EXPECT_EQ(1U, bat_ads_service_factory_->launch_count());
-}
-
-TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenOptedInToNewTabPageAds) {
-  // Arrange
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
-  Startup();
-
-  // Act
-  ASSERT_EQ(0U, bat_ads_service_factory_->launch_count());
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
 
   // Assert
@@ -255,7 +242,7 @@ TEST_F(BraveAdsAdsServiceImplTest, ServiceDoesNotStartAfterProfileShutdown) {
   EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
 }
 
-TEST_F(BraveAdsAdsServiceImplTest, ServiceStopsWhenOptedOutOfAllAds) {
+TEST_F(BraveAdsAdsServiceImplTest, ServiceStopsWhenSponsoredAdsAreDisabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   Startup();
@@ -271,24 +258,7 @@ TEST_F(BraveAdsAdsServiceImplTest, ServiceStopsWhenOptedOutOfAllAds) {
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceStartsAgainAfterOptingOutThenBackInToSearchResultAds) {
-  // Arrange
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
-  Startup();
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
-  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
-
-  // Act
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
-  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
-
-  // Assert
-  EXPECT_EQ(2U, bat_ads_service_factory_->launch_count());
-}
-
-TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceStartsAgainAfterOptingOutThenBackInToNewTabPageAds) {
+       ServiceStartsAgainAfterSponsoredAdsAreDisabledThenReenabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   Startup();
@@ -350,7 +320,7 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-// Search result ads are opted out so the service does not start during
+// Sponsored ads are disabled so the service does not start during
 // `Startup`, keeping each test's trigger isolated.
 TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenNotificationAdsAreEnabled) {
   // Arrange
@@ -380,7 +350,7 @@ TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenUserHasJoinedBraveRewards) {
 
 TEST_F(
     BraveAdsAdsServiceImplTest,
-    ServiceDoesNotStopWhenNotificationAdsAreDisabledWhileOptedInToSearchResultAds) {
+    ServiceDoesNotStopWhenNotificationAdsAreDisabledWhileSponsoredAdsAreEnabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -398,21 +368,7 @@ TEST_F(
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceDoesNotStartForSearchResultAdsWhenRewardsIsDisabledByPolicy) {
-  // Arrange
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
-  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
-                        base::Value(true));
-
-  // Act
-  Startup();
-
-  // Assert
-  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
-}
-
-TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceDoesNotStartForNewTabPageAdsWhenRewardsIsDisabledByPolicy) {
+       ServiceDoesNotStartForSponsoredAdsWhenRewardsIsDisabledByPolicy) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
@@ -673,8 +629,8 @@ TEST_F(
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 TEST_F(BraveAdsAdsServiceImplTest,
-       RegistersLanguageResourceComponentWhenUserOptsInToNotificationAds) {
-  // Arrange: start the service via search result ads and wait for
+       RegistersLanguageResourceComponentWhenNotificationAdsAreEnabled) {
+  // Arrange: start the service via sponsored ads and wait for
   // initialization so `bat_ads_service_remote_` is bound.
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -690,9 +646,9 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       UnregistersLanguageResourceComponentWhenUserOptsOutOfNotificationAds) {
+       UnregistersLanguageResourceComponentWhenNotificationAdsAreDisabled) {
   // Arrange: start with notification ads enabled so the language component
-  // is already registered; service must be running before opting out.
+  // is already registered; service must be running before they are disabled.
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
   prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
@@ -760,7 +716,7 @@ TEST_F(BraveAdsAdsServiceImplTest, ClearDataClearsAdsPrefs) {
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ClearDataPreservesSponsoredEnabledPrefWhenOptedOut) {
+       ClearDataPreservesSponsoredEnabledPrefWhenSponsoredAdsAreDisabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   Startup();
@@ -776,7 +732,7 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ClearDataPreservesSponsoredEnabledPrefWhenOptedIn) {
+       ClearDataPreservesSponsoredEnabledPrefWhenSponsoredAdsAreEnabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   Startup();

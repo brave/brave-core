@@ -111,9 +111,9 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotLoadResourceIfOptedOutOfAllAds) {
+       DoNotLoadResourceIfAllAdsAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
@@ -123,9 +123,9 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotLoadResourceWhenOptingInToNewTabPageAds) {
+       DoNotLoadResourceWhenNewTabPageAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
@@ -141,9 +141,9 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       LoadResourceWhenOptingInToNotificationAds) {
+       LoadResourceWhenNotificationAdsAreEnabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
@@ -159,7 +159,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotResetResourceIfNotificationAdsAlreadyEnabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableSponsoredAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
@@ -172,10 +172,11 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   EXPECT_TRUE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotLoadResourceWhenOptingInToSearchResultAds) {
+TEST_F(
+    BraveAdsTextClassificationResourceTest,
+    DoNotLoadResourceWhenSponsoredAdsAreEnabledAndNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfAllAds();
+  test::DisableAllAds();
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);

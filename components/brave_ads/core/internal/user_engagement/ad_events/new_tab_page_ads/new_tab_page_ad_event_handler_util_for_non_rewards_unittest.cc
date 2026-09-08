@@ -34,9 +34,18 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
-       IsNotAllowedToFireAdEvent) {
+       IsNotAllowedToFireAdEventWhenNewTabPageBackgroundImagesAreDisabled) {
   // Arrange
-  test::OptOutOfNewTabPageAds();
+  test::DisableNewTabPageBackgroundImages();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToFireAdEvent());
+}
+
+TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
+       IsNotAllowedToFireAdEventWhenSponsoredAdsAreDisabled) {
+  // Arrange
+  test::DisableSponsoredAds();
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent());
