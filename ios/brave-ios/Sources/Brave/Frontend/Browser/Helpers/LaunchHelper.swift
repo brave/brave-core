@@ -38,6 +38,8 @@ public actor LaunchHelper {
 
       // Load cached data
       // This is done first because compileResources need their results
+      // The scriptlets are loaded before the resources as they are injected into them
+      await CustomFilterListStorage.shared.loadCachedCustomScriptlets()
       await AdBlockGroupsManager.shared.loadResourcesFromCache()
       async let loadEngines: Void = AdBlockGroupsManager.shared.loadEnginesFromCache()
       async let adblockResourceCache: Void = AdBlockGroupsManager.shared.loadBundledDataIfNeeded()
