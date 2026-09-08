@@ -133,7 +133,7 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.brave_leo_id, R.drawable.ic_product_brave_leo);
         MENU_ICON_MAP.put(R.id.request_brave_vpn_id, R.drawable.ic_product_vpn);
         MENU_ICON_MAP.put(R.id.brave_rewards_id, R.drawable.ic_product_bat_outline);
-        MENU_ICON_MAP.put(R.id.set_default_browser, R.drawable.ic_set_as_default);
+        MENU_ICON_MAP.put(R.id.default_browser_promo_menu_id, R.drawable.ic_set_as_default);
         MENU_ICON_MAP.put(R.id.exit_id, R.drawable.ic_outside);
 
         // Page action items

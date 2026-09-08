@@ -931,9 +931,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SET_DEFAULT_BROWSER" desc="Button text for dormant users engagement dialog">
         Set as default browser
       </message>
-      <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
-        Set as Default Browser
-      </message>
       <message name="IDS_SCAN_QR_CODE" desc="Title for scan qr code dialog from addressbar">
         Scan QR Code
       </message>
