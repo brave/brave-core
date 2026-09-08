@@ -51,7 +51,6 @@ namespace {
 }  // namespace net
 
 namespace brave {
-namespace {
 
 class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
  protected:
@@ -91,17 +90,16 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
 #endif  // BUILDFLAG(IS_IOS)
   }
 
-  // On Linux/ChromeOS/Android, URLRequestContextBuilder does not create a
-  // default system ProxyConfigService (see url_request_context_builder.cc),
-  // so Build() DCHECKs unless one is supplied. Windows/Mac already get a real
-  // system proxy config service from the builder, so leave those alone.
+  // On Linux and Android, URLRequestContextBuilder does not create a default
+  // system ProxyConfigService (see url_request_context_builder.cc), so Build()
+  // DCHECKs unless one is supplied. Windows/Mac already get a real system proxy
+  // config service from the builder, so leave those alone.
   static void SetDirectProxyConfig(net::URLRequestContextBuilder& builder) {
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_ANDROID)
     builder.set_proxy_config_service(
         std::make_unique<net::ProxyConfigServiceFixed>(
             net::ProxyConfigWithAnnotation::CreateDirect()));
-#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) ||
-        // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_ANDROID)
   }
 
   // Performs a single GET request to the host and checks if the pinning
@@ -261,5 +259,4 @@ INSTANTIATE_TEST_SUITE_P(All,
                          testing::ValuesIn(GetPinnedHosts()),
                          HostToTestName);
 
-}  // namespace
 }  // namespace brave
