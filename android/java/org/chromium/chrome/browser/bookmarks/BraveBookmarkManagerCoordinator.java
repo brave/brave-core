@@ -14,7 +14,9 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.WindowAndroid;
@@ -41,7 +43,9 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
             BookmarkManagerOpener bookmarkManagerOpener,
             PriceDropNotificationManager priceDropNotificationManager,
             @Nullable Function<View, EdgeToEdgePadAdjuster> edgeToEdgePadAdjusterGenerator,
-            @Nullable BackPressManager backPressManager) {
+            @Nullable BackPressManager backPressManager,
+            SigninAndHistorySyncActivityLauncher signinAndHistorySyncActivityLauncher,
+            DeviceLockActivityLauncher deviceLockActivityLauncher) {
         super(
                 windowAndroid,
                 activity,
@@ -55,7 +59,9 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
                 bookmarkManagerOpener,
                 priceDropNotificationManager,
                 edgeToEdgePadAdjusterGenerator,
-                backPressManager);
+                backPressManager,
+                signinAndHistorySyncActivityLauncher,
+                deviceLockActivityLauncher);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
