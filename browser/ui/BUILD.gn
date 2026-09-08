@@ -840,7 +840,10 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.h",
       ]
 
-      deps += [ "//chrome/browser:titlebar_config" ]
+      deps += [
+        "//chrome/browser:titlebar_config",
+        "//chrome/browser/ui/views/frame:browser_caption_button_container_win",
+      ]
     }
 
     if (is_linux) {
