@@ -20,7 +20,6 @@ class BraveColorMixersTest : public testing::Test {
   BraveColorMixersTest() = default;
 
   ui::ColorProvider& color_provider() { return color_provider_; }
-  ui::ColorProviderKey& color_provider_key() { return color_provider_key_; }
 
   void AddColorMixers() {
     // AddChromeColorMixers() calls all our mixers.
@@ -75,8 +74,9 @@ TEST_F(BraveColorMixersTest, AchromaticUserColorLeavesTabColorsUntintedTest) {
           nala::kColorDesktopbrowserTabbarHoverTabHorizontal));
 }
 
-// The counterpart of the test above: a user color with a hue must still be
-// tinted, so that disabling tinting altogether can't pass as a fix.
+// The counterpart of AchromaticUserColorLeavesTabColorsUntintedTest: a user
+// color with a hue must still be tinted, so that disabling tinting altogether
+// can't pass as a fix.
 TEST_F(BraveColorMixersTest, ChromaticUserColorTintsTabColorsTest) {
   SetAccentUserColor(SkColorSetRGB(0xFF, 0x00, 0x00));
   AddUiAndChromeColorMixers();
