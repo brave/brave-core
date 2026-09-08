@@ -118,9 +118,22 @@ export const ToAsset = (props: Props) => {
   // methods
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(event.target.value)
+      const { value } = event.target
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
+      onChange(value)
     },
     [onChange],
+  )
+
+  const onInputKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === '-' || event.key === '+') {
+        event.preventDefault()
+      }
+    },
+    [],
   )
 
   const handleRefreshQuote = React.useCallback(() => {
@@ -227,8 +240,10 @@ export const ToAsset = (props: Props) => {
         <AmountInput
           placeholder='0.0'
           type='number'
+          min={0}
           spellCheck={false}
           onChange={onInputChange}
+          onKeyDown={onInputKeyDown}
           value={inputValue}
           hasError={hasInputError}
           disabled={inputDisabled}

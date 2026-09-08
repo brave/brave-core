@@ -51,6 +51,20 @@ export default class Amount {
     return new Amount('')
   }
 
+  /**
+   * Returns true if a typed amount should be ignored.
+   * Rejects negatives and a leading 0 not followed by `.` (05.5).
+   * Allows empty, `0`, `0.`, `0.5`, and other in-progress input.
+   * Does not validate that the string is numeric.
+   */
+  static isNegativeOrPaddedZeroAmount(value: string): boolean {
+    if (value.startsWith('-') || new Amount(value).isNegative()) {
+      return true
+    }
+
+    return value.length > 1 && value.startsWith('0') && value[1] !== '.'
+  }
+
   plus(value: AmountLike): Amount {
     if (value instanceof Amount) {
       return this.plus(value.value || '')

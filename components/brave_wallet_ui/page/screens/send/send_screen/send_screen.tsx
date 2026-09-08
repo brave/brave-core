@@ -640,6 +640,9 @@ export const SendScreen = React.memo(() => {
 
   const handleFromAssetValueChange = React.useCallback(
     (value: string, maxValue: boolean) => {
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
       setSendAmount(value)
       setSendingMaxAmount(maxValue)
     },

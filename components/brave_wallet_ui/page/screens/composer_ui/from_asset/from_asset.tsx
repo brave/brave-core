@@ -168,9 +168,22 @@ export const FromAsset = (props: Props) => {
 
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(event.target.value, false)
+      const { value } = event.target
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
+      onChange(value, false)
     },
     [onChange],
+  )
+
+  const onInputKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === '-' || event.key === '+') {
+        event.preventDefault()
+      }
+    },
+    [],
   )
 
   const tokenBalance = React.useMemo(() => {
@@ -340,8 +353,10 @@ export const FromAsset = (props: Props) => {
             <AmountInput
               placeholder='0.0'
               type='number'
+              min={0}
               spellCheck={false}
               onChange={onInputChange}
+              onKeyDown={onInputKeyDown}
               value={inputValue}
               hasError={hasInputError}
               autoFocus={true}

@@ -281,6 +281,21 @@ describe('Amount class', () => {
       expect(new Amount('0.1').isNegative()).toBeFalsy()
     })
 
+    it('should return the correct result for .isNegativeOrPaddedZeroAmount()', () => {
+      expect(Amount.isNegativeOrPaddedZeroAmount('-')).toBeTruthy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('-1')).toBeTruthy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('0')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('1e-8')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('0.5')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('0.')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('0.05')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('10.5')).toBeFalsy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('05')).toBeTruthy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('05.5')).toBeTruthy()
+      expect(Amount.isNegativeOrPaddedZeroAmount('00')).toBeTruthy()
+    })
+
     it('should return the correct result for .toHex()', () => {
       expect(new Amount('12345').toHex()).toBe('0x3039')
       expect(new Amount('0').toHex()).toBe('0x0')
