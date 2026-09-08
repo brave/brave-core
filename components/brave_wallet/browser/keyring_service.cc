@@ -2693,6 +2693,10 @@ void KeyringService::Unlock(const std::string& password,
   }
   ResetAutoLockTimer();
 
+  // Defer BlockchainRegistry list parsing until unlock so startup does not
+  // pay for ParseLists when the wallet is never opened.
+  WalletDataFilesInstaller::GetInstance().OnWalletUnlocked();
+
   std::move(callback).Run(true);
 }
 
