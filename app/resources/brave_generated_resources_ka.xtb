@@ -212,6 +212,7 @@
 <translation id="8707615221880318679">ეს პირადი პასუხები ეხმარება Brave-ს განიხილოს გარკვეული მახასიათებლების საერთო გამოყენება და გახადოს ისინი უკეთესი თქვენთვის.</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 Domains</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4552520379838695057">ბოდიში, ამ გვერდი არ არსებობს.</translation>
 <translation id="7299769530898469069">შენახული ვერსიის ჩატვირთვა ვერ მოხერხდა</translation>
 <translation id="2609895996619941644">გსურთ შეამოწმოთ არის თუ არა შენახული ვერსია ხელმისაწვდომი Wayback Machine-ში?</translation>
@@ -247,6 +248,7 @@
 <translation id="1185644444415356776">ბმულის გახსნა კონტეინერში</translation>
 <translation id="6745991613881384719">კონტეინერების მართვა</translation>
 <translation id="8523788649219117880">ახალი დროებითი კონტეინერი</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> კონტეინერი</translation>
 <translation id="3704707436873245822">ტექსტის კოპირება გამოსახულებიდან</translation>
 <translation id="5268098808165185458">ტექსტის კოპირება გამოსახულებიდან...</translation>
 <translation id="4046485130884276245">ტექსტი კოპირებულია გამოსახულებიდან</translation>
@@ -378,6 +380,7 @@
 <translation id="6724227215236550330">შენახული პაროლები აქ გამოჩნდება. პაროლების ამ მოწყობილობაზე <ph name="BRAND"/> იმპორტისთვის, <ph name="BEGIN_LINK"/> აირჩიეთ CSV ფაილი <ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">პაროლების <ph name="BRAND"/> ამ მოწყობილობაზე იმპორტისთვის, აირჩიეთ CSV ფაილი</translation>
 <translation id="8570228839666486945">მოწყობილობაზე AI</translation>
+<translation id="7447041379556102185">მოწყობილობაზე მეტყველების ამოცნობა</translation>
 <translation id="3456536577668402695">თქვენი ძიებები და გვერდის შიგთავსი მუშავდება ამ მოწყობილობაზე. Brave-ისთვის არაფერი იგზავნება და ადამიანი მიმომხილველი ვერაფერს ხედავს.</translation>
 <translation id="4751537843966994505">ისტორიის სემანტიკური ძიება</translation>
 <translation id="6175973371938222040">დაათრიალეთ თქვენ მიერ მონახულებული გვერდები ლოკალურად, რათა ისტორიაში მნიშვნელობის მიხედვით მოძებნოთ. მთელი დამუშავება რჩება ამ მოწყობილობაზე.</translation>
@@ -408,6 +411,7 @@
 <translation id="6017560037265964523">კონტეინერები</translation>
 <translation id="3718176486689879621">კონტეინერები ფერად-კოდირებული browser-ის ჩანართებია, რომლებიც გათიშავს თქვენი ვებგვერდის მონაცემებს, როგორიცაა cookie-ები, cache და site-ის storage ცალკეულ კონტექსტებად. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">კონტეინერების ჩართვა</translation>
+<translation id="4858772568604670131">კონტეინერებისთვის ყოველთვის მინი ხატულის გამოყენება</translation>
 <translation id="7773735778926921278">ახალი კონტეინერის დამატება</translation>
 <translation id="8900907990448657776">კონტეინერის რედაქტირება</translation>
 <translation id="7900511996284443779">კონტეინერის წაშლა</translation>
@@ -556,7 +560,6 @@
 <translation id="1799030480311994998">ფუნქციები</translation>
 <translation id="6709133671862442373">სიახლეები</translation>
 <translation id="6297791103122079275">Brave Talk</translation>
-<translation id="1458638489455808030">Wayback Machine</translation>
 <translation id="4590997608186539865">ფლეილისთი</translation>
 <translation id="1199170151481311646">კონფიდენციალურობის დამცველი ანალიტიკა</translation>
 <translation id="5990642573624858459">სტატისტიკის გაგზავნა</translation>
@@ -604,11 +607,14 @@
 <translation id="4891600875049212418">მგრძნობიარე საიტებზე ვიზიტისას გამოიყენეთ „Off-The-Record“ კონფიდენციალობის რეჟიმი</translation>
 <translation id="1022603984240541480">კონფიდენციალურობის პარამეტრების მორგების შეტყობინების ჩვენება თავსებად საიტებზე</translation>
 <translation id="3528176629974273019">საშუალებას აძლევს Brave-ს ავტომატურად შემოგთავაზოთ (და დაარეგულიროს) კონკრეტული საიტის კონფიდენციალურობის პარამეტრები.</translation>
+<translation id="2740687181110647855">კონფიდენციალურობის პარამეტრების მორგების ხელსაწყო</translation>
 <translation id="509873765238158442">Microsoft Recall-ის დაბლოკვა</translation>
 <translation id="4763421121695677716">არ დაუშვათ Microsoft Windows-ის Recall ფუნქციამ ავტომატურად გადაიღოს ეკრანის სურათები Brave-ის გახსნილი ტაბებიდან.</translation>
 <translation id="1968895725257436430">მონაცემთა შეგროვება</translation>
 <translation id="1700052872056357670">წაშალეთ მონაცემები გასვლისას</translation>
 <translation id="216468847346280584">Brave რეკლამების მონაცემების წაშლა...</translation>
+<translation id="96212973142796240">Brave რეკლამების მონაცემები გასუფთავდა</translation>
+<translation id="6665923829462527507">Brave რეკლამების მონაცემების გასუფთავება ვერ მოხერხდა. სცადეთ თავიდან.</translation>
 <translation id="2808630562319398131">Brave Rewards მონაცემების გადატვირთვა...</translation>
 <translation id="6438096877646138757">ვებგვერდები, რომლებიც cookies-ებს ხურავენ დახურვისას</translation>
 <translation id="2988792685798128092">დახურვისას წაშლა</translation>
@@ -871,6 +877,7 @@
 <translation id="8631951653187535788">დარწმუნებული ხართ, რომ გსურთ ამ მოდელის წაშლა? თუ ეს მოდელი გამოიყენება ნებისმიერ აქტიურ საუბრაში, ეს საუბარი შეიცვლება ვეფხვის ნაგულისხმები მოდელით.</translation>
 <translation id="1907126221851170941">მოდელის დამატება</translation>
 <translation id="8346224718149026088">მოდელის რედაქტირება</translation>
+<translation id="3914173277599553213">აუცილებელია</translation>
 <translation id="3468298837301810372">ლეიბლი</translation>
 <translation id="3553035516792776805">მოდელების მოთხოვნის სახელი</translation>
 <translation id="7634775528597575156">სერვერის ბოლო წერტილი</translation>
