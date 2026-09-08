@@ -64,6 +64,11 @@ class FlowBaseTest : public testing::Test {
         *encryptor_);
   }
 
+  void TearDown() override {
+    flow_.reset();
+    task_environment_.RunUntilIdle();
+  }
+
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<AccountStatePrefs> account_state_prefs_;
