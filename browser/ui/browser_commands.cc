@@ -136,6 +136,7 @@
 #include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/tabs/public/tab_interface.h"
 #if defined(TOOLKIT_VIEWS)
 #include "chrome/browser/ui/views/frame/browser_view.h"
