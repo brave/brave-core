@@ -369,6 +369,7 @@ class PatchinfoBuilder:
             '-c',
             'diff.algorithm=histogram',
             'diff',
+            '--no-ext-diff',
             '--src-prefix=a/',
             '--dst-prefix=b/',
             '--default-prefix',

@@ -202,6 +202,9 @@ class PlasterTest(unittest.TestCase):
             ('-c',
              f'core.attributesFile={plaster.PLASTER_GITATTRIBUTES_PATH}'),
             pinned_options)
+        # The env below cancels out the global and system config, but not the
+        # repository's own, so an external driver has to be turned off by flag.
+        self.assertIn('--no-ext-diff', diff_args)
         diff_env = diff_calls[0].kwargs.get('env', {})
         self.assertEqual(diff_env.get('GIT_ATTR_NOSYSTEM'), '1')
         self.assertEqual(diff_env.get('GIT_CONFIG_GLOBAL'), '/dev/null')
@@ -1214,6 +1217,7 @@ class PlasterTest(unittest.TestCase):
         # pass without exercising anything.
         objc_diff = self.fake_chromium_src._run_git_command([
             '-c', f'core.attributesFile={ambient_attributes}', 'diff',
+            '--no-ext-diff',
             str(test_file)
         ], self.fake_chromium_src.chromium)
         objc_header = next(line for line in objc_diff.splitlines()
