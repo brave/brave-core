@@ -23,7 +23,7 @@ PROPERTIES = InputProperties
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref, depth=1)
+        ref=properties.chromium_ref)
 
     brave_core_root = api.brave_core_checkout.deploy('tools/cr/toolchains')
 

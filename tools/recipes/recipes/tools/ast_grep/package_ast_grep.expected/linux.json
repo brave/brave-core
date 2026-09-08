@@ -107,8 +107,6 @@
       "--no-checkout",
       "--local",
       "--shared",
-      "--depth",
-      "1",
       "/b/cache/chromium.googlesource.com-chromium-src",
       "[WORKSPACE]/b/src"
     ],

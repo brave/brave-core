@@ -132,6 +132,7 @@
     "cmd": [
       "git",
       "fetch",
+      "--no-show-forced-updates",
       "--no-tags",
       "origin",
       "refs/tags/151.0.7917.1:refs/tags/151.0.7917.1"
