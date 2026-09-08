@@ -111,10 +111,15 @@ describe('mangled files should have up to date snapshots', () => {
       const mangledText = fs
         .readFileSync(mangledPath, 'utf8')
         .replaceAll('\r\n', '\n')
-      const originalText = fs
+      const original = fs
         .readFileSync(originalPath, 'utf8')
         .replaceAll('\r\n', '\n')
-        .substring(header.length)
+      // Raw .html templates -- mangled before html_to_wrapper turns them into
+      // .html.ts -- have no header to strip.
+      const hasHeader = original.startsWith('//') || original.startsWith('/*')
+      const originalText = hasHeader
+        ? original.substring(header.length)
+        : original
       const linesDiff = diff.createTwoFilesPatch(
         originalPath.replaceAll(path.sep, '/'),
         path.relative(outputPath, mangledPath).replaceAll(path.sep, '/'),
