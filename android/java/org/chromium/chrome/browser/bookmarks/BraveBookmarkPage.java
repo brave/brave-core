@@ -6,15 +6,16 @@
 package org.chromium.chrome.browser.bookmarks;
 
 import android.app.Activity;
-import android.content.ComponentName;
 
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
+import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -32,7 +33,11 @@ public class BraveBookmarkPage extends BookmarkPage {
             ActivityResultTracker activityResultTracker,
             Profile profile,
             NativePageHost host,
-            @Nullable ComponentName componentName,
+            BookmarkOpener bookmarkOpener,
+            BookmarkManagerOpener bookmarkManagerOpener,
+            PriceDropNotificationManager priceDropNotificationManager,
+            SigninAndHistorySyncActivityLauncher signinAndHistorySyncActivityLauncher,
+            DeviceLockActivityLauncher deviceLockActivityLauncher,
             BackPressManager backPressManager) {
         super(
                 windowAndroid,
@@ -42,7 +47,11 @@ public class BraveBookmarkPage extends BookmarkPage {
                 activityResultTracker,
                 profile,
                 host,
-                componentName,
+                bookmarkOpener,
+                bookmarkManagerOpener,
+                priceDropNotificationManager,
+                signinAndHistorySyncActivityLauncher,
+                deviceLockActivityLauncher,
                 backPressManager);
 
         if (mBookmarkManagerCoordinator instanceof BraveBookmarkManagerCoordinator
