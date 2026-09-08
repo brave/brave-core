@@ -29,12 +29,18 @@ struct CustomScriptlet: Identifiable, Hashable {
   /// Tells us if the given name is a valid scriptlet name.
   ///
   /// A valid name is prefixed with `user-`, suffixed with `.js` and is safe to use as a
-  /// file name (i.e. contains no path separators or relative path components).
+  /// file name (i.e. only contains `[a-zA-Z0-9_\-.]` and no relative path components).
   static func isValidName(_ name: String) -> Bool {
     guard name.hasPrefix(namePrefix), name.hasSuffix(nameExtension) else { return false }
     // Ensure there is something between the prefix and the extension
     guard name.count > namePrefix.count + nameExtension.count else { return false }
-    guard !name.contains("/"), !name.contains(":"), !name.contains("..") else { return false }
+    // Intentionally not using `CharacterSet.alphanumerics` which includes
+    // unicode for filenames.
+    let allowed = CharacterSet(
+      charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-."
+    )
+    guard name.unicodeScalars.allSatisfy(allowed.contains) else { return false }
+    guard !name.contains("..") else { return false }
     return true
   }
 }
