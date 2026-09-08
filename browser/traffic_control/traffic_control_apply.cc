@@ -74,18 +74,15 @@ bool TrafficControlApplier::AlreadyAtTarget(content::WebContents* web_contents,
     return true;
   }
 
-  // Applier falls back to a non-contained tab when the container id is unknown.
-  // Treat that as the effective destination so the replacement tab's navigation
-  // is not cancelled and re-applied in a loop.
-  if (current.empty()) {
-    Profile* profile =
-        Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    containers::ContainersService* containers_service =
-        profile ? ContainersServiceFactory::GetForProfile(profile) : nullptr;
-    if (containers_service &&
-        !containers_service->GetRuntimeContainerById(*target.container_id)) {
-      return true;
-    }
+  // A missing destination is a no-op. In particular, do not move a tab from
+  // another container into the default partition when a rule is stale.
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  containers::ContainersService* containers_service =
+      profile ? ContainersServiceFactory::GetForProfile(profile) : nullptr;
+  if (containers_service &&
+      !containers_service->GetRuntimeContainerById(*target.container_id)) {
+    return true;
   }
   return false;
 }
@@ -168,9 +165,8 @@ bool TrafficControlApplier::OpenTargetTab() {
       containers_service->GetRuntimeContainerById(*target_->container_id);
   if (!container) {
     LOG(WARNING) << "Traffic Control: unknown container id "
-                 << *target_->container_id << ", opening without container";
-    OpenUrl({});
-    return true;
+                 << *target_->container_id;
+    return false;
   }
 
   OpenUrl(container);

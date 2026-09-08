@@ -20,12 +20,7 @@ bool IsEmptyOrNtpUrl(const GURL& url) {
   if (!url.is_valid() || url.IsAboutBlank() || url.spec() == "about:blank") {
     return true;
   }
-  if (NewTabUI::IsNewTab(url)) {
-    return true;
-  }
-  // Brave NTP uses chrome://newtab/ as well.
-  return url.DeprecatedGetOriginAsURL() ==
-         GURL(chrome::kChromeUINewTabURL).DeprecatedGetOriginAsURL();
+  return NewTabUI::IsNewTab(url);
 }
 
 }  // namespace

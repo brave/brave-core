@@ -238,16 +238,24 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, PrefOffDoesNotReroute) {
 }
 
 IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest,
-                       UnknownContainerOpensWithoutContainer) {
+                       UnknownContainerLeavesTabInCurrentContainer) {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser()->GetProfile());
+  auto container = containers_service->GetRuntimeContainerById(container_id_);
+  ASSERT_TRUE(container);
+  OpenUrlInContainerForTest(TestUrl("a.test"), container);
+  content::WebContents* contained =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contained));
+
   std::vector<mojom::TrafficRulePtr> rules;
   rules.push_back(MakeRule("r1", true, "example.com", "missing-container-id"));
   SetRules(std::move(rules));
 
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl("a.test")));
-  content::WebContents* new_tab = NavigateExpectingReroute(TestUrl());
-  ASSERT_TRUE(new_tab);
-  EXPECT_TRUE(containers::GetContainerIdForWebContents(new_tab).empty());
-  EXPECT_EQ(new_tab->GetLastCommittedURL().host(), "example.com");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), TestUrl()));
+  EXPECT_EQ(browser()->tab_strip_model()->GetActiveWebContents(), contained);
+  EXPECT_EQ(containers::GetContainerIdForWebContents(contained), container_id_);
+  EXPECT_EQ(contained->GetLastCommittedURL().host(), "example.com");
 }
 
 IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, OpenWithoutContainer) {

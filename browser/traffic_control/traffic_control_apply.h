@@ -6,8 +6,7 @@
 #ifndef BRAVE_BROWSER_TRAFFIC_CONTROL_TRAFFIC_CONTROL_APPLY_H_
 #define BRAVE_BROWSER_TRAFFIC_CONTROL_TRAFFIC_CONTROL_APPLY_H_
 
-#include <optional>
-
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
