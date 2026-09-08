@@ -79,7 +79,7 @@ SyncAccountInfo BraveSyncAuthManager::DetermineAccountToUse(
     const signin::IdentityManager* identity_manager) const {
   if (!public_key_.empty()) {
     const std::string client_id = base::HexEncode(public_key_);
-    AccountInfo account_info;
+    CoreAccountInfo account_info;
     account_info.account_id = CoreAccountId::FromString(client_id);
     account_info.gaia = GaiaId(client_id);
     // about:sync-internals needs space separator in order to confine table
