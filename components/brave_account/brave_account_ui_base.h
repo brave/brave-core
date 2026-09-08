@@ -92,6 +92,7 @@ class BraveAccountUIBase {
     source->SetDefaultResource(IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
 
     source->AddLocalizedStrings(webui::kBraveAccountStrings);
+    source->AddLocalizedStrings(webui::kBraveAccountSharedStrings);
 
     source->AddResourcePath("full_brave_brand.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
