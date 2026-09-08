@@ -73,8 +73,8 @@ struct ParamInfo final {
     {"en_RU", true, "en", "RU", true},
 
     // Syria.
-    {"en_SY", false, "en", "SY", true},
-    {"en_SY", true, "en", "SY", true},
+    {"en_SY", false, "en", "SY", false},
+    {"en_SY", true, "en", "SY", false},
 
     // Ukraine.
     {"en_UA", false, "en", "UA", true},
@@ -112,8 +112,8 @@ struct ParamInfo final {
     {"en_643", true, "en", "643", true},
 
     // Syria.
-    {"en_760", false, "en", "760", true},
-    {"en_760", true, "en", "760", true},
+    {"en_760", false, "en", "760", false},
+    {"en_760", true, "en", "760", false},
 
     // Ukraine.
     {"en_804", false, "en", "804", true},
@@ -140,9 +140,9 @@ struct ParamInfo final {
     {"en_034", false, "en", "034", false},
     {"en_034", true, "en", "034", true},
 
-    // Western Asia which includes sanctioned Syria.
+    // Western Asia which includes Syria.
     {"en_145", false, "en", "145", false},
-    {"en_145", true, "en", "145", true},
+    {"en_145", true, "en", "145", false},
 
     // Eastern Europe (including Northern Asia) which includes sanctioned
     // Belarus, Moldova, Russia, and Ukraine.
