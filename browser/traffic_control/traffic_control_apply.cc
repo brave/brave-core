@@ -36,11 +36,15 @@ TrafficControlApplier::TrafficControlApplier(
     mojom::TargetPtr target,
     std::optional<url::Origin> initiator_origin,
     ui::PageTransition page_transition)
-    : source_(source),
-      url_(url),
+    : url_(url),
       target_(std::move(target)),
       initiator_origin_(std::move(initiator_origin)),
-      page_transition_(page_transition) {}
+      page_transition_(page_transition) {
+  if (tabs::TabInterface* source_tab =
+          tabs::TabInterface::MaybeGetFromContents(source)) {
+    source_tab_ = source_tab->GetHandle();
+  }
+}
 
 TrafficControlApplier::~TrafficControlApplier() = default;
 
@@ -102,7 +106,6 @@ void TrafficControlApplier::Apply(base::WeakPtr<content::WebContents> source,
 }
 
 void TrafficControlApplier::Run() {
-  CHECK(source_);
   CHECK(target_);
   if (!url_.is_valid()) {
     return;
@@ -117,8 +120,7 @@ void TrafficControlApplier::Run() {
 }
 
 bool TrafficControlApplier::Initialize() {
-  tabs::TabInterface* source_tab =
-      tabs::TabInterface::MaybeGetFromContents(source_);
+  tabs::TabInterface* source_tab = source_tab_.Get();
   if (!source_tab) {
     LOG(ERROR) << "Traffic Control: source tab not found";
     return false;
@@ -132,11 +134,12 @@ bool TrafficControlApplier::Initialize() {
 
   profile_ = browser_window_->GetProfile();
   tab_strip_ = browser_window_->GetTabStripModel();
-  close_source_after_ = IsDiscardableEmptyTab(source_);
+  content::WebContents* source = source_tab->GetContents();
+  close_source_after_ = IsDiscardableEmptyTab(source);
   // A background source tab (middle-click, open-in-new-tab) must not steal
   // focus when it is replaced by the re-routed tab.
   source_was_active_ =
-      tab_strip_ && tab_strip_->GetActiveWebContents() == source_;
+      tab_strip_ && tab_strip_->GetActiveWebContents() == source;
   return true;
 }
 
@@ -197,10 +200,14 @@ void TrafficControlApplier::MaybeCloseEmptySourceTab() {
     return;
   }
 
-  // Re-resolve by pointer; indices can shift when the new tab is inserted.
-  const int source_index_after = tab_strip_->GetIndexOfWebContents(source_);
+  tabs::TabInterface* source_tab = source_tab_.Get();
+  if (!source_tab) {
+    return;
+  }
+
+  // Re-resolve by handle; indices can shift when the new tab is inserted.
+  const int source_index_after = tab_strip_->GetIndexOfTab(source_tab);
   if (source_index_after != TabStripModel::kNoTab) {
-    source_ = nullptr;
     tab_strip_->CloseWebContentsAt(source_index_after,
                                    TabCloseTypes::CLOSE_NONE);
   }

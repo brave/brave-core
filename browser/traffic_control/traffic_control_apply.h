@@ -10,6 +10,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
@@ -60,7 +61,7 @@ class TrafficControlApplier {
   void OpenUrl(const containers::mojom::ContainerPtr& container);
   void MaybeCloseEmptySourceTab();
 
-  raw_ptr<content::WebContents> source_;
+  tabs::TabHandle source_tab_;
   GURL url_;
   mojom::TargetPtr target_;
   std::optional<url::Origin> initiator_origin_;
