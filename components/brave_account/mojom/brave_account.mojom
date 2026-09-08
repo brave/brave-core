@@ -235,7 +235,19 @@ interface Authentication {
     => result<GetServiceTokenResult, GetServiceTokenError>;
 };
 
+// What the page was opened to do.
+enum DialogMode {
+  // The page follows account state, showing whichever dialog it calls for.
+  kDefault,
+  // The page only ever shows the account deletion dialog. It closes as soon as
+  // the account leaves a plain logged-in state - which is how it closes once
+  // deletion succeeds.
+  kAccountDeletion,
+};
+
 // Interface for controlling the Brave Account dialog.
 interface DialogController {
   CloseDialog();
+  // The dialog mode this page was opened in.
+  GetDialogMode() => (DialogMode dialog_mode);
 };
