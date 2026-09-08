@@ -253,9 +253,11 @@ export const Container = () => {
           </WalletPageWrapper>
         </ProtectedRoute>
 
+        {/* Keep this route in the page container so panels can use it, but
+            redirect if opened from the full wallet page. */}
         <ProtectedRoute
           path={WalletRoutes.Connections}
-          requirement={!isWalletLocked && !walletNotYetCreated}
+          requirement={!isWalletLocked && !walletNotYetCreated && isPanel}
           redirectRoute={defaultRedirect}
           exact={true}
         >
