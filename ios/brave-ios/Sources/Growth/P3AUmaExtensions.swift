@@ -14,7 +14,8 @@ public func UmaHistogramEnumeration<E: RawRepresentable & CaseIterable>(
   _ name: String,
   sample: E
 ) where E.RawValue == Int {
-  UmaHistogramExactLinear(name, sample.rawValue, E.allCases.count + 1)
+  assert(!E.allCases.isEmpty)
+  UmaHistogramExactLinear(name, sample.rawValue, E.allCases.map(\.rawValue).max()! + 1)
 }
 
 /// A bucket that may span a single value or a range of values
@@ -53,7 +54,7 @@ public func UmaHistogramRecordValueToBucket(
     Logger.module.warning("Value (\(value)) not found in any bucket for histogram \(name)")
     return
   }
-  UmaHistogramExactLinear(name, answer, buckets.count + 1)
+  UmaHistogramExactLinear(name, answer, buckets.count)
 }
 
 // swift-format-ignore
