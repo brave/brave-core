@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 74bc0b00aab56d070df3e46fda9f55c65daa4787..67de4d2731185f052df856dc44c029f9fd4c7c56 100644
+index fe0fc8c3f2537bc58a879eadc20502468d170961..7c5a1bcf6b1d753a09462fc383c3ca4d905a2617 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -288,29 +288,29 @@ class AppBrowserController;
+@@ -278,29 +278,29 @@ class AppBrowserController;
  // Do not add more public accessors. Instead use the UnownedUserData design
  // pattern, see ui/base/unowned_user_data/README.md.
  // TODO(crbug.com/481268779a): Remove existing public accessors.
@@ -39,16 +39,11 @@ index 74bc0b00aab56d070df3e46fda9f55c65daa4787..67de4d2731185f052df856dc44c029f9
 -  void TearDownPreBrowserWindowDestruction();
 +  virtual void TearDownPreBrowserWindowDestruction();
  
-   ui::AcceleratorProvider* accelerator_provider() {
-     return accelerator_provider_;
-@@ -386,7 +386,12 @@ class BrowserWindowFeatures {
-   static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
+   // Get the FindBarController for this browser window, creating it if it does
+   // not yet exist.
+@@ -334,6 +334,7 @@ class BrowserWindowFeatures {
    GetUserDataFactoryForTesting();
  
-+  const ExclusiveAccessManager* exclusive_access_manager() const {
-+    return exclusive_access_manager_.get();
-+  }
-+
   private:
 +  friend class BrowserWindowFeatures;
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&

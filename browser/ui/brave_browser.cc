@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -71,7 +72,7 @@ BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
-  CHECK(GetFeatures().exclusive_access_manager());
+  CHECK(ExclusiveAccessManager::From(this));
   BraveBrowserWindow::FromBrowser(this)->ReadyToListenFullscreenChanges();
 }
 
