@@ -25,10 +25,10 @@ import subprocess
 GIT_METADATA_OVERRIDES = {
     'GIT_AUTHOR_NAME': 'Dummy Author',
     'GIT_AUTHOR_EMAIL': 'none@none.com',
-    'GIT_AUTHOR_DATE': '2099-01-01 10:10:10',
+    'GIT_AUTHOR_DATE': '2099-01-01 10:10:10 -0800',
     'GIT_COMMITTER_NAME': 'Dummy Committer',
     'GIT_COMMITTER_EMAIL': 'none@none.com',
-    'GIT_COMMITTER_DATE': '2099-01-01 10:10:10',
+    'GIT_COMMITTER_DATE': '2099-01-01 10:10:10 -0800',
 }
 
 

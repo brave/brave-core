@@ -20,8 +20,9 @@ Coverage:
   and HEAD is restored on exit, including when the body raises and when the
   commit must first be fetched from `origin`.
 * `MetadataTest` — the committer identity and date are pinned (author is left as
-  the original, matching `git cherry-pick` semantics) and the override table is
-  configurable.
+  the original, matching `git cherry-pick` semantics), the pinned date carries
+  an explicit timezone so the resulting hash doesn't depend on the builder's
+  local zone, and the override table is configurable.
 * `ShallowCloneTest` — a commit already folded into the tree is still skipped
   when the checkout is shallow, where its object is absent and its commit-graph
   ancestry can't be determined at all.
@@ -29,11 +30,14 @@ Coverage:
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -244,6 +248,41 @@ class MetadataTest(_RepoTestCase):
         # The author is the original commit's, not the override.
         self.assertEqual(got['author_name'], 'Test')
         self.assertEqual(got['author_email'], 'test@example.com')
+
+    def test_pinned_committer_date_is_timezone_independent(self) -> None:
+        repo = self._new_repo('repo')
+        _git(repo, 'checkout', '-q', '-b', 'feature')
+        commit = _commit_file(repo, 'feature.txt', 'feature\n',
+                              'feature commit')
+        _git(repo, 'checkout', '-q', 'main')
+
+        def pick_under(tz: str) -> tuple[str, str]:
+            """Return (HEAD, committer date) for the pick applied under *tz*.
+
+            Only the pick itself runs under *tz*: the repo is built once by the
+            enclosing test, before either call so both runs share the original
+            commit's own dates and pick onto the same parent (`cherry_picks`
+            restores HEAD on exit). Any difference between the two HEADs is
+            therefore down to the pinned metadata alone.
+            """
+            with mock.patch.dict(os.environ, {'TZ': tz}):
+                with m.cherry_picks(repo, [commit]):
+                    head, date = _git(repo, 'log', '-1',
+                                      '--format=%H%n%cI').splitlines()
+                    return head, date
+
+        # A committer date with no offset is parsed in the machine's local
+        # zone, stamping a different instant -- and so a different hash -- on
+        # every builder. Neither zone here is the pinned one, so both would
+        # drift.
+        self.assertEqual(pick_under('UTC'), pick_under('Asia/Tokyo'))
+        # And the instant is the one the override asks for, not the local
+        # reading of it.
+        _, committed = pick_under('UTC')
+        self.assertEqual(
+            datetime.fromisoformat(committed),
+            datetime.strptime(m.GIT_METADATA_OVERRIDES['GIT_COMMITTER_DATE'],
+                              '%Y-%m-%d %H:%M:%S %z'))
 
     def test_custom_overrides_are_honoured(self) -> None:
         overrides = {
