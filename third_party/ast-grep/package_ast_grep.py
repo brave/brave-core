@@ -70,6 +70,13 @@ def _package_name() -> str:
     return f'ast-grep-{_ast_grep_version()}-{_platform_tag()}.tar.gz'
 
 
+def _extra_deps_path() -> str:
+    """This host's `EXTRA_DEPS` key: the install dir, checkout-relative.
+    """
+    return build_utils.AST_GREP_PLATFORM_DIR.relative_to(
+        build_utils.CHROMIUM_ROOT.parent).as_posix()
+
+
 def _create_archive(out_dir: Path) -> Path:
     """Archive the *contents* of this host's `ast-grep-<os>/` tree into *out_dir*.
 
@@ -134,6 +141,10 @@ def main() -> int:
     logging.info('Done.')
     logging.info('ast-grep package: %s', archive)
     logging.info('  sha256: %s  (%d bytes)', sha256, size)
+    logging.info(
+        'Update EXTRA_DEPS with (from src/brave):\n\n'
+        'vpython3 tools/cr/install_extra_deps.py setdep \\\n'
+        '  -r %s@%s,%s,%d', _extra_deps_path(), archive.name, sha256, size)
     return 0
 
 

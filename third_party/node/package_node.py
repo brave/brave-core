@@ -38,6 +38,20 @@ from upload import S3Uploader, summarise
 # This directory: third_party/node.
 _NODE_DIR = Path(__file__).resolve().parent
 
+# `EXTRA_DEPS` keys its entries by checkout-relative install path, so every
+# entry packaged here hangs off this prefix (e.g. `<prefix>/node-linux-x64`).
+EXTRA_DEPS_PREFIX = 'src/brave/third_party/node'
+
+
+def print_setdep_command(revisions: list[str]) -> None:
+    """Print the `install_extra_deps.py setdep` command repinning `revisions`.
+    """
+    command = ' \\\n'.join([
+        'vpython3 tools/cr/install_extra_deps.py setdep',
+        *(f'  -r {revision}' for revision in revisions),
+    ])
+    print(f'\nRepin EXTRA_DEPS with (from src/brave):\n\n{command}')
+
 
 def package(tarball_name: str, deployed_dir: str,
             output_dir: Path) -> Path | None:
@@ -97,8 +111,10 @@ def main() -> int:
         logging.basicConfig(level=logging.INFO, format='%(message)s')
         uploader = S3Uploader(bucket='brave-build-deps-public')
 
-    results: list[tuple[str, str, int]] = []
-    for _archive, tarball_name, deployed_dir in PLATFORMS:
+    # Sorted so the `-r` arguments come out in a stable order run to run
+    # (`PLATFORMS` is a frozenset).
+    revisions: list[str] = []
+    for _archive, tarball_name, deployed_dir in sorted(PLATFORMS):
         tarball = package(tarball_name, deployed_dir, args.output_dir)
         if tarball is None:
             continue
@@ -106,17 +122,14 @@ def main() -> int:
         if uploader is not None:
             result = uploader.upload(tarball, prefix='nodejs', sign=False)
             print(f'\nUpload summary:\n{summarise(result)}')
-            results.append((tarball.name, result.sha256, result.size_bytes))
+            sha256, size = result.sha256, result.size_bytes
         else:
             sha256, size = sha256_and_size(tarball)
-            results.append((tarball.name, sha256, size))
+        revisions.append(f'{EXTRA_DEPS_PREFIX}/{deployed_dir}@'
+                         f'{tarball.name},{sha256},{size}')
 
-    if results and uploader is None:
-        # Echo the values needed to update the EXTRA_DEPS entry after upload.
-        print('\nObject details for install_extra_deps.py:')
-        for name, sha256, size in results:
-            print(f"  object_name: '{name}'")
-            print(f"  sha256sum:   '{sha256}'  ({size} bytes)")
+    if revisions:
+        print_setdep_command(revisions)
     return 0
 
 
