@@ -140,6 +140,7 @@ source_set("unit_tests") {
     "//chrome/browser/media/webrtc",
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/preloading",
+    "//chrome/browser/ttc",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/omnibox",
