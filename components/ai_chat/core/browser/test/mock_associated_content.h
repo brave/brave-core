@@ -32,6 +32,9 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
   void SetTitle(std::u16string title);
 
+  // Simulates the page registering or unregistering a tool.
+  using AssociatedContentDelegate::NotifyContentToolsChanged;
+
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
   void OnNewPage(int64_t navigation_id) override;
@@ -46,6 +49,7 @@ class MockAssociatedContent : public AssociatedContentDelegate {
               (mojom::ConversationHandler::GetScreenshotsCallback),
               (override));
   MOCK_METHOD(void, GetContentTools, (GetContentToolsCallback), (override));
+  MOCK_METHOD(void, OnAssociatedWithConversation, (), (override));
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
