@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Do not treat a failed OSCrypt init as a programming error.
+
+      Brave declines to mint a replacement key when the stored one cannot be
+      read or decrypted, so `Init()` now returns false for an ordinary
+      environment condition that resolves on a later launch. Asserting on it
+      would crash developer builds every time it happened.
+      See https://github.com/brave/brave-browser/issues/40375.
+    regex:
+      pattern: 'DCHECK(os_crypt_init);'
+      replace: |-
+        LOG_IF(ERROR, !os_crypt_init)
+              << "OSCrypt was not initialized; encrypted data is unavailable "
+                 "for this session.";

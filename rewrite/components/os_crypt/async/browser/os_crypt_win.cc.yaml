@@ -1,0 +1,52 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Refuse to initialize when `Local State` could not be read.
+
+      `Init()` reaches its key-minting path whenever `InitWithExistingKey()`
+      reports no stored key, but a `Local State` that failed to load reports
+      exactly the same thing while the real key is still on disk.
+    regex:
+      pattern: |-
+        bool Init(PrefService* local_state) {
+      replace: |-
+        bool Init(PrefService* local_state) {
+          if (!BraveCanConcludeKeyIsAbsent(local_state)) {
+            return false;
+          }
+
+  - description: |
+      Do not mint a new key when the stored one merely failed to decrypt.
+
+      A failed `CryptUnprotectData()` is not evidence that the key is gone, and
+      is frequently transient. Treat it as temporary, the way
+      `DPAPIKeyProvider::GetKey()` and `AppBoundEncryptionProviderWin` already
+      treat their own decryption failures, and leave the stored key alone.
+    regex:
+      re_pattern: 'case InitResult::kKeyDoesNotExist:\s+case InitResult::kDecryptionFailed:\s+break;'
+      replace: |-
+        case InitResult::kKeyDoesNotExist:
+              break;
+            case InitResult::kDecryptionFailed:
+              return false;
+
+  - description: |
+      Keep a copy of any key that is about to be replaced.
+    regex:
+      pattern: 'local_state->SetString(kOsCryptEncryptedKeyPrefName, base64_key);'
+      replace: |-
+        BraveBackUpKeyBeforeReplacing(local_state, kOsCryptEncryptedKeyPrefName);
+          local_state->SetString(kOsCryptEncryptedKeyPrefName, base64_key);
+
+  - description: |
+      Register the pref holding the backup key.
+    regex:
+      pattern: 'registry->RegisterBooleanPref(kOsCryptAuditEnabledPrefName, false);'
+      replace: |-
+        registry->RegisterBooleanPref(kOsCryptAuditEnabledPrefName, false);
+          registry->RegisterStringPref(kBraveEncryptedKeyBackupPrefName,
+                                       std::string());

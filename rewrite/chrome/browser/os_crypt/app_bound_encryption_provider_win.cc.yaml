@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Keep a copy of any app-bound key that is about to be replaced.
+
+      `StoreKey()` is the single point through which every new app-bound key
+      reaches `Local State`, including the one minted after a decryption failure
+      is classified as permanent.
+    regex:
+      pattern: 'local_state_->SetString(kAppBoundEncryptedKeyPrefName, base64_key);'
+      replace: |-
+        BraveBackUpAppBoundKeyBeforeReplacing(local_state_,
+                                                kAppBoundEncryptedKeyPrefName);
+          local_state_->SetString(kAppBoundEncryptedKeyPrefName, base64_key);
+
+  - description: |
+      Register the pref holding the backup app-bound key.
+    regex:
+      pattern: 'registry->RegisterStringPref(kAppBoundEncryptedKeyPrefName, std::string());'
+      replace: |-
+        registry->RegisterStringPref(kAppBoundEncryptedKeyPrefName, std::string());
+          registry->RegisterStringPref(kBraveAppBoundEncryptedKeyBackupPrefName,
+                                       std::string());

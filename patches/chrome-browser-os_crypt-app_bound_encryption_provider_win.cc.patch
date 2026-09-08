@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/os_crypt/app_bound_encryption_provider_win.cc b/chrome/browser/os_crypt/app_bound_encryption_provider_win.cc
+index ea4e17cea3c0591eec351d1c8bfe6dc1bec30284..dfd24db3dd434dc7596ba59979150e459faad05e 100644
+--- a/chrome/browser/os_crypt/app_bound_encryption_provider_win.cc
++++ b/chrome/browser/os_crypt/app_bound_encryption_provider_win.cc
+@@ -165,6 +165,8 @@ class AppBoundEncryptionProviderWin::COMWorker {
+ void AppBoundEncryptionProviderWin::RegisterLocalPrefs(
+     PrefRegistrySimple* registry) {
+   registry->RegisterStringPref(kAppBoundEncryptedKeyPrefName, std::string());
++  registry->RegisterStringPref(kBraveAppBoundEncryptedKeyBackupPrefName,
++                               std::string());
+ }
+ 
+ bool AppBoundEncryptionProviderWin::IsKeyStored() const {
+@@ -311,6 +313,8 @@ void AppBoundEncryptionProviderWin::StoreKey(
+       .copy_from_nonoverlapping(encrypted_key);
+   std::string base64_key = base::Base64Encode(key);
+   // Store key.
++  BraveBackUpAppBoundKeyBeforeReplacing(local_state_,
++                                        kAppBoundEncryptedKeyPrefName);
+   local_state_->SetString(kAppBoundEncryptedKeyPrefName, base64_key);
+ }
+ 

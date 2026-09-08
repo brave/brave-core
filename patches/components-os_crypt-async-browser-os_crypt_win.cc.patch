@@ -1,0 +1,39 @@
+diff --git a/components/os_crypt/async/browser/os_crypt_win.cc b/components/os_crypt/async/browser/os_crypt_win.cc
+index 59482db22dc112914fc293dd85f2ed6cb670106c..d6dc41f04b5a0681fd54f50683c41db38526d59a 100644
+--- a/components/os_crypt/async/browser/os_crypt_win.cc
++++ b/components/os_crypt/async/browser/os_crypt_win.cc
+@@ -100,6 +100,7 @@ bool EncryptAndStoreKey(const std::string& key, PrefService* local_state) {
+ 
+   encrypted_key.insert(0, kDPAPIKeyPrefix);
+   std::string base64_key = base::Base64Encode(encrypted_key);
++  BraveBackUpKeyBeforeReplacing(local_state, kOsCryptEncryptedKeyPrefName);
+   local_state->SetString(kOsCryptEncryptedKeyPrefName, base64_key);
+   return true;
+ }
+@@ -107,12 +108,16 @@ bool EncryptAndStoreKey(const std::string& key, PrefService* local_state) {
+ }  // namespace
+ 
+ bool Init(PrefService* local_state) {
++  if (!BraveCanConcludeKeyIsAbsent(local_state)) {
++    return false;
++  }
+   switch (InitWithExistingKey(local_state)) {
+     case InitResult::kSuccess:
+       return true;
+     case InitResult::kKeyDoesNotExist:
+-    case InitResult::kDecryptionFailed:
+       break;
++    case InitResult::kDecryptionFailed:
++      return false;
+     case InitResult::kInvalidKeyFormat:
+       return false;
+   }
+@@ -164,6 +169,8 @@ InitResult InitWithExistingKey(PrefService* local_state) {
+ void RegisterLocalPrefs(PrefRegistrySimple* registry) {
+   registry->RegisterStringPref(kOsCryptEncryptedKeyPrefName, "");
+   registry->RegisterBooleanPref(kOsCryptAuditEnabledPrefName, false);
++  registry->RegisterStringPref(kBraveEncryptedKeyBackupPrefName,
++                               std::string());
+ }
+ 
+ }  // namespace os_crypt_async

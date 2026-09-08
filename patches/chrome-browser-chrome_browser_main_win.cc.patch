@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/chrome_browser_main_win.cc b/chrome/browser/chrome_browser_main_win.cc
+index d0083fd565d66e150bb3dd06fc9a2a6360eca9e3..89790c6a71d7999fb0549d2b570f3b947c7ce82e 100644
+--- a/chrome/browser/chrome_browser_main_win.cc
++++ b/chrome/browser/chrome_browser_main_win.cc
+@@ -565,7 +565,9 @@ void ChromeBrowserMainPartsWin::PreCreateMainMessageLoop() {
+ 
+   // Initialize the OSCrypt.
+   bool os_crypt_init = os_crypt_async::Init(local_state);
+-  DCHECK(os_crypt_init);
++  LOG_IF(ERROR, !os_crypt_init)
++      << "OSCrypt was not initialized; encrypted data is unavailable "
++         "for this session.";
+ 
+   base::SetExtraNoExecuteAllowedPath(chrome::DIR_USER_DATA);
+ 
