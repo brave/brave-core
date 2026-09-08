@@ -104,6 +104,10 @@ stored history rather than mix vector spaces. The file is generated in
   handler and the semantic tab search chat tool. Builds regardless of
   `enable_local_ai` since it only wraps upstream Chromium APIs.
 
+- **`../../components/history_embeddings/content/open_tab_passages.{h,cc}`** —
+  reads the passages already indexed for a set of open-tab URLs, for Tab Focus.
+  No embedder deps, so it lives in the components layer.
+
 ## The LiteRT embedder
 
 The native embedder lives in
