@@ -535,9 +535,7 @@ using OmissionPass = void (*)(sync_pb::AIChatConversationSpecifics_Entry*,
 void VisitEachString(google::protobuf::RepeatedPtrField<
                          sync_pb::AIChatCompressibleString>* strings,
                      CompressibleStringVisitor visit) {
-  for (auto& value : *strings) {
-    visit(value);
-  }
+  std::ranges::for_each(*strings, visit);
 }
 
 void VisitEachPageContent(
@@ -726,11 +724,26 @@ bool FitEntryWithinSyncBudget(
   // Uploaded file bytes go before any of kOmissionPasses. They are real
   // context — without them the receiver cannot open the attachment at all —
   // but one file can take most of the budget, and already-compressed image or
-  // PDF data will not shrink any further.
+  // PDF data will not shrink any further. Drop the biggest first and stop as
+  // soon as the entry fits, so one oversized attachment does not cost the
+  // small ones. Only the visit order is sorted; |uploaded_files| keeps its
+  // original order on the wire.
+  std::vector<sync_pb::AIChatUploadedFile*> files_by_size;
+  files_by_size.reserve(entry->uploaded_files_size());
   for (auto& file : *entry->mutable_uploaded_files()) {
     if (!file.data().empty()) {
-      OmitUploadedFileData(&file);
+      files_by_size.push_back(&file);
     }
+  }
+  std::ranges::sort(files_by_size, std::ranges::greater(),
+                    [](const sync_pb::AIChatUploadedFile* file) {
+                      return file->data().size();
+                    });
+  for (sync_pb::AIChatUploadedFile* file : files_by_size) {
+    if (FitsWithinBudget(*entry)) {
+      return true;
+    }
+    OmitUploadedFileData(file);
   }
 
   for (OmissionPass pass : kOmissionPasses) {
@@ -739,8 +752,12 @@ bool FitEntryWithinSyncBudget(
     }
     pass(entry, [](sync_pb::AIChatCompressibleString& value) {
       // Skip fields that are absent or that a previous pass already omitted;
-      // re-omitting would hash the empty string over the original hash.
-      if (value.has_raw() || value.has_gzipped()) {
+      // re-omitting would hash the empty string over the original hash. An
+      // explicitly-empty raw string is skipped too: ReadCompressibleString()
+      // reports that as a value rather than an omission, and replacing it with
+      // a hash would both lose that distinction and cost more bytes than the
+      // empty string it replaced.
+      if (value.has_gzipped() || (value.has_raw() && !value.raw().empty())) {
         OmitCompressibleString(&value);
       }
     });

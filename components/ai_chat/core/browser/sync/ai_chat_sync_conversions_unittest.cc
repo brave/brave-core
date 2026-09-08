@@ -1234,6 +1234,54 @@ TEST(AIChatSyncConversionsTest, FitEntryOmitsFileBytesFirst) {
   EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
 }
 
+TEST(AIChatSyncConversionsTest, FitEntryOmitsLargestFileAndStopsWhenItFits) {
+  // Three attachments where dropping the big one alone is enough. The small
+  // two must survive, and they must keep their original order on the wire.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  auto* small = entry.add_uploaded_files();
+  small->set_filename("small.bin");
+  small->set_data(std::string(8 * 1024, '\x01'));
+
+  auto* big = entry.add_uploaded_files();
+  big->set_filename("big.bin");
+  big->set_data(std::string(kSyncMaxRecordBytes + 1024, '\x02'));
+
+  auto* medium = entry.add_uploaded_files();
+  medium->set_filename("medium.bin");
+  medium->set_data(std::string(16 * 1024, '\x03'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+
+  // Only the largest went, even though it is not first in the list.
+  EXPECT_TRUE(entry.uploaded_files(1).has_omitted_data_hash());
+  EXPECT_FALSE(entry.uploaded_files(0).has_omitted_data_hash());
+  EXPECT_FALSE(entry.uploaded_files(2).has_omitted_data_hash());
+  // Sorting is only about which bytes to drop; the wire order is untouched.
+  EXPECT_EQ(entry.uploaded_files(0).filename(), "small.bin");
+  EXPECT_EQ(entry.uploaded_files(1).filename(), "big.bin");
+  EXPECT_EQ(entry.uploaded_files(2).filename(), "medium.bin");
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryKeepsExplicitlyEmptyStrings) {
+  // An empty raw string is a value, not an omission: replacing it with a
+  // content hash would tell the receiver to restore from local instead.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.add_events()->mutable_completion()->set_raw("");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_TRUE(entry.events(0).completion().has_raw());
+  EXPECT_FALSE(entry.events(0).completion().has_omitted_content_hash());
+}
+
 TEST(AIChatSyncConversionsTest, FitEntryOmitsLowerPriorityFieldsFirst) {
   // Needs more than one category to go: dropping the file bytes alone leaves
   // the entry over budget, so the associated content text — the first of the

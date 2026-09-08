@@ -39,11 +39,16 @@ inline constexpr std::string_view kEntryStorageKeyPrefix = "e:";
 // gain little and may grow under compression overhead.
 inline constexpr size_t kSyncCompressionThresholdBytes = 256;
 
-// Soft cap on the serialized size of a single sync record. Leaves headroom
-// under the 400 KB-per-entity server limit for sync framing and encryption
-// overhead. When an Entry would exceed this size, the size-budget policy omits
-// low-priority fields until it fits.
-inline constexpr size_t kSyncMaxRecordBytes = 350 * 1024;
+// Soft cap on the serialized size of a single sync record, measured on the
+// plaintext specifics. AI_CHAT_CONVERSATION is an encryptable type, so what
+// reaches the server is Nigori::Encrypt() of these bytes: an IV, AES-CBC
+// ciphertext and an HMAC, the whole thing base64-encoded. Base64 makes that
+// overhead multiplicative rather than additive — a record at this cap commits
+// at roughly 4/3 * (size + 64) bytes — so 256 KB arrives near 341 KB, leaving
+// ~59 KB under the 400 KB-per-entity server limit for the rest of the
+// SyncEntity. When an Entry would exceed this size, the size-budget policy
+// omits low-priority fields until it fits.
+inline constexpr size_t kSyncMaxRecordBytes = 256 * 1024;
 
 // Hard cap on the decompressed size of a single field. Protection against
 // malicious or corrupted data that might otherwise allocate unbounded memory.
