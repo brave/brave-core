@@ -10,6 +10,7 @@ import {
 } from '../stories/mock-data/mock-wallet-accounts'
 import { mockEthToken } from '../stories/mock-data/mock-asset-options'
 import {
+  isPersistableSessionRoute,
   makeAccountRoute,
   makeAccountTransactionRoute,
   makePortfolioNftCollectionRoute,
@@ -79,6 +80,20 @@ describe('makePortfolioNftCollectionRoute', () => {
     expect(routeWithPage).toBe(
       '/crypto/portfolio/collections/MoonCatsRescue?page=2',
     )
+  })
+})
+
+describe('isPersistableSessionRoute', () => {
+  it('persists Connections only when opened from a panel', () => {
+    expect(
+      isPersistableSessionRoute(WalletRoutes.Connections, true, false),
+    ).toBe(true)
+    expect(
+      isPersistableSessionRoute(WalletRoutes.Connections, true, true),
+    ).toBe(true)
+    expect(
+      isPersistableSessionRoute(WalletRoutes.Connections, false, false),
+    ).toBe(false)
   })
 })
 
