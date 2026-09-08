@@ -53,49 +53,40 @@ substitutions:
       re_flags: [MULTILINE]
       replace: '\1\2\n\1base_feature: "none",'
 
-  # FencedFrames declares `base_feature: "none"` upstream, so the runtime flag
-  # has no backing `base::Feature` and its state cannot be forced. Give it one
-  # (a generated `kFencedFramesRuntime`, not the manual `kFencedFrames` in
-  # third_party/blink/common/features.cc, which would collide) so the disabled
-  # state below is synced into the runtime flag at startup.
-  - description: 'Give FencedFrames a backing base::Feature.'
-    regex:
-      re_pattern: '(name: "FencedFrames",\n *)base_feature: "none",'
-      replace: '\1base_feature: "FencedFramesRuntime",'
-
-  # These plaster override the `base::Feature` value for the blink runtime
-  # features. Keep them in alphabetical order.
+  # These plaster force the state the blink runtime features ship in, both
+  # the `base::Feature` default and the runtime flag's own. Keep them in
+  # alphabetical order.
   - description: 'Ship the interest-group ad-targeting API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AdInterestGroupAPI
       value: disabled
 
-  - description: "Ship the Prompt API's base feature disabled."
+  - description: 'Ship the Prompt API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AIPromptAPI
       value: disabled
 
-  - description: "Ship the Prompt API's multimodal input base feature disabled."
+  - description: "Ship the Prompt API's multimodal input disabled."
     set_blink_runtime_enabled_feature_state:
       feature_name: AIPromptAPIMultimodalInput
       value: disabled
 
-  - description: "Ship the Proofreader API's base feature disabled."
+  - description: 'Ship the Proofreader API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AIProofreadingAPI
       value: disabled
 
-  - description: "Ship the Rewriter API's base feature disabled."
+  - description: 'Ship the Rewriter API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AIRewriterAPI
       value: disabled
 
-  - description: "Ship the Summarizer API's base feature disabled."
+  - description: 'Ship the Summarizer API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AISummarizationAPI
       value: disabled
 
-  - description: "Ship the Writer API's base feature disabled."
+  - description: 'Ship the Writer API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AIWriterAPI
       value: disabled
@@ -105,17 +96,17 @@ substitutions:
       feature_name: ControlledFrame
       value: disabled
 
-  - description: 'Ship the Protected Audience ad auction API disabled.'
-    set_blink_runtime_enabled_feature_state:
-      feature_name: Fledge
-      value: disabled
-
   - description: 'Ship the fenced frames API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: FencedFrames
       value: disabled
 
-  - description: "Ship the Language Detection API's base feature disabled."
+  - description: 'Ship the Protected Audience ad auction API disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: Fledge
+      value: disabled
+
+  - description: 'Ship the Language Detection API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: LanguageDetectionAPI
       value: disabled
@@ -140,12 +131,12 @@ substitutions:
       feature_name: ReduceUserAgentMinorVersion
       value: enabled
 
-  - description: "Ship the Translation API's base feature disabled."
+  - description: 'Ship the Translation API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: TranslationAPI
       value: disabled
 
-  - description: 'Ship the user media element base feature disabled.'
+  - description: 'Ship the user media element disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: UserMediaElement
       value: disabled

@@ -3866,7 +3866,16 @@ class RewriterFormsTest(unittest.TestCase):
                      '      feature_name: MyFeature\n'
                      '      value: disabled\n')
 
+    _ENABLED_FEATURE_YAML = ('substitutions:\n'
+                             '  - description: Ship MyFeature enabled.\n'
+                             '    set_blink_runtime_enabled_feature_state:\n'
+                             '      feature_name: MyFeature\n'
+                             '      value: enabled\n')
+
     def test_blink_runtime_enabled_feature_state_adds_a_missing_field(self):
+        # `status` goes with the disable: left as upstream had it, the runtime
+        # flag -- and the web-exposed API behind it -- would stay on, since
+        # only an enabled or overridden `base::Feature` reaches the flag.
         result = self._apply(
             'runtime_enabled_features.json5', '[\n'
             '  {\n'
@@ -3880,7 +3889,81 @@ class RewriterFormsTest(unittest.TestCase):
             '    name: "MyFeature",\n'
             '    base_feature_status: "disabled",  '
             '// feature state is enforced via plaster rewrite.\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_clears_a_dict_status(self):
+        # The per-platform form spans several lines and has to go whole.
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    status: {\n'
+            '      "Win": "stable",\n'
+            '      "default": "",\n'
+            '    },\n'
+            '    public: true,\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
+            '    public: true,\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_enabled_states_a_status(self):
+        # `enabled` has to restate the status it cleared, or the value would
+        # disable the runtime flag it means to keep on.
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    status: "experimental",\n'
+            '  },\n'
+            '];\n', self._ENABLED_FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "enabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
             '    status: "stable",\n'
+            '  },\n'
+            '];\n')
+
+    def test_blink_runtime_enabled_feature_state_enabled_reapplies_unchanged(
+            self):
+        once = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    status: "experimental",\n'
+            '  },\n'
+            '];\n', self._ENABLED_FEATURE_YAML)
+        twice = self._apply('runtime_enabled_features.json5', once,
+                            self._ENABLED_FEATURE_YAML)
+        self.assertEqual(once, twice)
+
+    def test_blink_runtime_enabled_feature_state_accepts_a_status_less_entry(
+            self):
+        # Nothing to clear is not a shortfall: the entry already ships the way
+        # a `disabled` value wants it.
+        result = self._apply(
+            'runtime_enabled_features.json5', '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '  },\n'
+            '];\n', self._FEATURE_YAML)
+        self.assertEqual(
+            result, '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "disabled",  '
+            '// feature state is enforced via plaster rewrite.\n'
             '  },\n'
             '];\n')
 
@@ -3970,7 +4053,6 @@ class RewriterFormsTest(unittest.TestCase):
             '    name: "MyFeature",\n'
             '    base_feature_status: "disabled",  '
             '// feature state is enforced via plaster rewrite.\n'
-            '    status: "stable",\n'
             '  },\n'
             '];\n')
 

@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.cc.tmpl b/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.cc.tmpl
+index 3fdcb18fadcf364a6c8d2bfe5c1c1042a0386a4d..a63414fc19879139bf71c6423ae3b0fead6c2e60 100644
+--- a/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.cc.tmpl
++++ b/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.cc.tmpl
+@@ -178,6 +178,15 @@ bool RuntimeEnabledFeaturesBase::IsFeatureEnabledFromString(
+   }
+ }
+ 
++// static
++bool RuntimeEnabledFeaturesBase::IsFeatureEnabledFromStringForTesting(
++    std::string_view name) {
++  std::optional<uint16_t> flag_index = FindFeatureFlagIndex(name);
++  CHECK(flag_index.has_value())
++      << "RuntimeEnabledFeature not recognized: " << name;
++  return feature_states_[*flag_index];
++}
++
+ // static
+ void RuntimeEnabledFeaturesBase::UpdateStatusFromBaseFeatures() {
+   // Parallel arrays rather than an array-of-structs avoid per-entry padding.

@@ -662,15 +662,12 @@ has:
             },
         },
 
-        # Both ops below set a feature entry's `base_feature_status`, which is
-        # what forces the default state of the `base::Feature` the entry
-        # generates. Which one applies depends on whether the entry already
-        # declares the field, so the two are paired and chosen between by
-        # `js.set_blink_runtime_enabled_feature_state`'s frontend rewriter.
-        #
-        # We leave a trailing comment on the field, so the substitution always
-        # produces a diff even when upstream's own value already agrees with
-        # ours, as feature flags are preemtively overridden most of the time.
+        # The four ops below force a feature entry's shipped state, and are
+        # driven together by `js.set_blink_runtime_enabled_feature_state`'s
+        # frontend rewriter. Two fields decide that state and both have to be
+        # stated: `base_feature_status` fixes the default of the
+        # `base::Feature` the entry generates, and `status` fixes the default
+        # of the Blink runtime flag itself.
 
         # The field is absent, so it is inserted directly after `name`. The
         # negative lookahead is what establishes absence; with the field
@@ -707,6 +704,43 @@ has:
                 "replace":
                     "\\1{value}\\2  "
                     "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # Drops whatever `status` the entry declares, which is what leaves the
+        # runtime flag off: a feature with no status is enabled nowhere by
+        # default. It runs for either value, since stating a status means
+        # clearing the one already there first. An entry that declares none is
+        # already in the wanted shape, so this op is allowed to match nothing.
+        "js.clear_blink_runtime_feature_status": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name"],
+            "replace": {
+                "re_pattern":
+                    "\\n[ \\t]*status:\\s*(?:\"[^\"]*\"|\\{[^{}]*\\})\\s*,"
+                    "(?:[ \\t]*//[^\\n]*)?",
+                "replace": "",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # States the `status` an `enabled` value wants, the entry having been
+        # cleared of its own by the op above. It anchors on
+        # `base_feature_status`, which the ops above guarantee is present by
+        # the time this runs, so the two fields end up stated together.
+        "js.add_blink_runtime_feature_status": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "status"],
+            "replace": {
+                "re_pattern":
+                    "([ \\t]*)(base_feature_status:\\s*\"[^\"]*\","
+                    "(?:[ \\t]*//[^\\n]*)?)",
+                "replace": "\\1\\2\\n\\1status: \"{status}\",",
             },
             "result": {
                 "node": "object",
