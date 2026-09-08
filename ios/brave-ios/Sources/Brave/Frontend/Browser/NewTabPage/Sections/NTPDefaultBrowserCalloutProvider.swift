@@ -5,6 +5,7 @@
 
 import BraveUI
 import Foundation
+import Onboarding
 import Preferences
 import Shared
 import UIKit
@@ -37,7 +38,7 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(for: indexPath) as DefaultBrowserCalloutCell
-    cell.view.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+    cell.view.addTarget(self, action: #selector(openSettings(_:)), for: .touchUpInside)
     cell.view.closeHaandler = { [weak self] in
       Preferences.General.defaultBrowserCalloutDismissed.value = true
       self?.sectionDidChange?()
@@ -102,13 +103,18 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     return defaultBrowserDisplayCriteria && defaultBrowserTimeConstraintCriteria
   }
 
-  @objc func openSettings() {
+  @objc func openSettings(_ sender: UIView) {
     guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
       return
     }
 
     Preferences.General.defaultBrowserCalloutDismissed.value = true
-    UIApplication.shared.open(settingsUrl)
+    Task {
+      if let windowScene = sender.window?.windowScene {
+        await DefaultBrowserPictureInPictureController.present(in: windowScene)
+      }
+      await UIApplication.shared.open(settingsUrl)
+    }
   }
 }
 

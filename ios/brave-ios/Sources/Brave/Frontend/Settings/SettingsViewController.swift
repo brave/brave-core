@@ -324,7 +324,12 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
               return
             }
-            UIApplication.shared.open(settingsUrl)
+            Task {
+              if let windowScene = viewIfLoaded?.window?.windowScene {
+                await DefaultBrowserPictureInPictureController.present(in: windowScene)
+              }
+              await UIApplication.shared.open(settingsUrl)
+            }
           },
           image: UIImage(braveSystemNamed: "leo.set.as-default"),
           cellClass: MultilineButtonCell.self
