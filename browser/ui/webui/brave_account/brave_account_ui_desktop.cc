@@ -58,18 +58,23 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveAccountDialogTracker);
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
  public:
   BraveAccountDialogDelegate(content::WebContents* web_contents,
-                             const std::string& initiating_service_name)
+                             const std::string& initiating_service_name,
+                             bool is_account_deletion)
       : web_contents_(CHECK_DEREF(web_contents).GetWeakPtr()) {
     BraveAccountDialogTracker::CreateForWebContents(web_contents);
 
     set_delete_on_close(false);
-    const GURL url(kBraveAccountURL);
-    set_dialog_content_url(
-        initiating_service_name.empty()
-            ? url
-            : net::AppendQueryParameter(
-                  url, brave_account::kInitiatingServiceNameQueryParam,
-                  initiating_service_name));
+    GURL url(kBraveAccountURL);
+    if (!initiating_service_name.empty()) {
+      url = net::AppendQueryParameter(
+          url, brave_account::kInitiatingServiceNameQueryParam,
+          initiating_service_name);
+    }
+    if (is_account_deletion) {
+      url = net::AppendQueryParameter(
+          url, brave_account::kAccountDeletionQueryParam, "");
+    }
+    set_dialog_content_url(url);
     set_show_dialog_title(false);
   }
 
@@ -121,7 +126,8 @@ BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
 }
 
 void ShowBraveAccountDialog(content::WebUI* web_ui,
-                            const std::string& initiating_service_name) {
+                            const std::string& initiating_service_name,
+                            bool is_account_deletion) {
   auto* web_contents = CHECK_DEREF(web_ui).GetWebContents();
   CHECK(web_contents);
 
@@ -131,8 +137,8 @@ void ShowBraveAccountDialog(content::WebUI* web_ui,
 
   auto* delegate = ShowConstrainedWebDialogWithAutoResize(
       Profile::FromWebUI(web_ui),
-      std::make_unique<BraveAccountDialogDelegate>(web_contents,
-                                                   initiating_service_name),
+      std::make_unique<BraveAccountDialogDelegate>(
+          web_contents, initiating_service_name, is_account_deletion),
       web_contents, kDialogMinSize, kDialogMaxSize);
 
   auto* widget = views::Widget::GetWidgetForNativeWindow(

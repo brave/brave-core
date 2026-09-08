@@ -24,6 +24,7 @@ export interface BraveAccountBrowserProxy {
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
   getInitiatingService: () => Service
+  isAccountDeletion: () => boolean
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
@@ -53,6 +54,11 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
     return loadTimeData.valueExists(id)
       ? (loadTimeData.getInteger(id) as Service)
       : Service.kAccounts
+  }
+
+  isAccountDeletion(): boolean {
+    const id = 'accountDeletion'
+    return loadTimeData.valueExists(id) ? loadTimeData.getBoolean(id) : false
   }
 
   static getInstance(): BraveAccountBrowserProxy {

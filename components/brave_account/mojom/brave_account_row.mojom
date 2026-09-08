@@ -6,5 +6,5 @@
 module brave_account.mojom;
 
 interface RowHandler {
-  OpenDialog(string initiating_service_name);
+  OpenDialog(string initiating_service_name, bool is_account_deletion);
 };

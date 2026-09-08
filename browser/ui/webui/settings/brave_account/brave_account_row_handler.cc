@@ -15,8 +15,9 @@ BraveAccountRowHandler::BraveAccountRowHandler(content::WebUI* web_ui)
 BraveAccountRowHandler::~BraveAccountRowHandler() = default;
 
 void BraveAccountRowHandler::OpenDialog(
-    const std::string& initiating_service_name) {
-  ShowBraveAccountDialog(web_ui_, initiating_service_name);
+    const std::string& initiating_service_name,
+    bool is_account_deletion) {
+  ShowBraveAccountDialog(web_ui_, initiating_service_name, is_account_deletion);
 }
 
 }  // namespace brave_account

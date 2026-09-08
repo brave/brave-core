@@ -99,6 +99,11 @@ class BraveAccountUIBase {
     source->AddResourcePath("full_brave_brand_dark.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
 
+    source->AddBoolean(
+        "accountDeletion",
+        net::GetValueForKeyInQuery(
+            url, brave_account::kAccountDeletionQueryParam, nullptr));
+
     if (std::string initiating_service_name; net::GetValueForKeyInQuery(
             url, brave_account::kInitiatingServiceNameQueryParam,
             &initiating_service_name)) {

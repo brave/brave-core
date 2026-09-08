@@ -64,8 +64,11 @@ export abstract class BraveAccountRowBaseElement<
       this.makeVerificationIntent(this.state.verification.intent))
   }
 
-  protected openBraveAccountDialog() {
-    this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
+  protected openBraveAccountDialog(isAccountDeletion: boolean = false) {
+    this.browserProxy.rowHandler.openDialog(
+      this.initiatingServiceName,
+      isAccountDeletion === true,
+    )
   }
 
 }

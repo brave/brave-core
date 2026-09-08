@@ -174,6 +174,26 @@
     Resend email code
   </message>
 
+  <!-- 'Account deletion' dialog: -->
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_DIALOG_TITLE" desc="Title for the dialog where the user can delete their Brave Account" formatter_data="webui=BraveAccount">
+    Delete your Brave account?
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_DIALOG_DESCRIPTION" desc="Description for the Brave Account deletion dialog explaining that account deletion cannot be undone" formatter_data="webui=BraveAccount">
+    By deleting your Brave account, you will remove access for any email aliases. This action cannot be undone. Are you sure you want to proceed?
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_CONFIRMATION_KEYWORD" desc="Word the user must type to confirm account deletion" formatter_data="webui=BraveAccount">
+    DELETE
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_CONFIRMATION_LABEL" desc="Label for the text box requiring the user to type DELETE" formatter_data="webui=BraveAccount">
+    Type DELETE to enable account deletion
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL" desc="Label for the button that initiates account deletion" formatter_data="webui=BraveAccount">
+    Delete Brave account
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL" desc="Label for the button that cancels an action and closes the dialog" formatter_data="webui=BraveAccount">
+    Cancel
+  </message>
+
   <!-- Error toasts: -->
   <message name="IDS_BRAVE_ACCOUNT_ERROR_TOAST_TITLE" desc="" formatter_data="webui=BraveAccountShared">
     An error occurred
