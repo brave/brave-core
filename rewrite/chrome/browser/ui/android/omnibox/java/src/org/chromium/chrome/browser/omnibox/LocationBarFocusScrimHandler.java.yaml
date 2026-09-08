@@ -30,21 +30,17 @@ substitutions:
       navigation area must use the same scrim treatment as the focused page.
     regex:
       re_pattern:
-        '(public LocationBarFocusScrimHandler\([^)]*\)
-        \{.*?mTabStripHeightSupplier\.addSyncObserverAndPostIfNonNull\(mTabStripHeightChangeCallback\);)(\n[
-        \t]*\})'
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-                mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR, true);\2
+        '^( *)(public LocationBarFocusScrimHandler.*?\{.*?)(\n^\1\})'
+      re_flags: [DOTALL, MULTILINE]
+      replace:
+        '\1\2\n\1\1mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR,
+        true);\3'
   - description: |-
       Set the omnibox focus scrim bottom margin to zero.
 
       The focused omnibox hides Brave's bottom toolbar, so it must not reserve
       the bottom-chin area. This keeps the gesture-navigation region covered.
     regex:
-      re_pattern:
-        '(public void updateScrimVisualState\(\)
-        \{.*?)(\s*)mScrimModel\.set\(\s*ScrimProperties\.BOTTOM_MARGIN,\s*mBottomControlsStacker\.getHeightFromLayerToBottom\(LayerType\.BOTTOM_CHIN\)\);'
+      re_pattern: 'mScrimModel\.set\(\s*ScrimProperties\.BOTTOM_MARGIN,.*?\);'
       re_flags: [DOTALL]
-      replace: '\g<1>\g<2>mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);'
+      replace: 'mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);'
