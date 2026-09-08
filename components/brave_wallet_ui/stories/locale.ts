@@ -1496,6 +1496,8 @@ provideStrings({
   braveWalletDetails: 'Details',
 
   // ZCash
+  braveWalletZCashMigrationBannerDescription:
+    'Brave is currently migrating to Zcash NU6.3. During this migration, Zcash functionality will be limited to unshielding and transparent-to-transparent sending.',
   braveWalletSwitchToShieldedAccount: 'Switch to a shielded account',
   braveWalletShieldAccount: 'Shield account',
   braveWalletShieldAccountAlertDescription:
