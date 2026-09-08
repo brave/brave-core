@@ -9,19 +9,32 @@
 allowBuilds:
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d': true
   '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a': true
-  '@parcel/watcher': true
-  blake-hash: true
-  bufferutil: true
-  core-js: true
+  # No-op unless npm_config_build_from_source is set; prebuilt binaries ship as optionalDependencies.
+  '@parcel/watcher': false
+  # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
+  blake-hash: false
+  # ws falls back to pure-JS framing/masking if unavailable.
+  bufferutil: false
+  # postinstall only prints a donation banner.
+  core-js: false
+  # Required: hardlinks the platform binary into bin/esbuild and verifies its version; no JS fallback exists (engine is a Go binary).
   esbuild: true
-  keccak: true
-  protobufjs: true
-  secp256k1: true
-  svelte-preprocess: true
-  tiny-secp256k1: true
-  unrs-resolver: true
-  usb: true
-  utf-8-validate: true
+  # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
+  keccak: false
+  # postinstall only warns about version-scheme mismatches.
+  protobufjs: false
+  # Falls back to the pure-JS elliptic implementation if the native binding is unavailable.
+  secp256k1: false
+  # postinstall only echoes a reminder message.
+  svelte-preprocess: false
+  # Falls back to the pure-JS implementation (js.js); otherwise always recompiles from source (no prebuilds shipped).
+  tiny-secp256k1: false
+  # Dev/test-only (jest-resolve); runtime loader requires the platform package directly.
+  unrs-resolver: false
+  # @trezor/transport's "browser" field swaps this for WebUSB in the actual webui bundle; never loaded.
+  usb: false
+  # ws falls back to pure-JS framing/masking if unavailable.
+  utf-8-validate: false
 
 catalog:
   '@types/react': '19.2.17'
