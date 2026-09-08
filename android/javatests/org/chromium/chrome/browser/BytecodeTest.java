@@ -8,7 +8,6 @@ package org.chromium.chrome.browser;
 import static org.junit.Assert.fail;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -2150,7 +2149,9 @@ public class BytecodeTest {
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class,
                         Function.class,
-                        BackPressManager.class));
+                        BackPressManager.class,
+                        SigninAndHistorySyncActivityLauncher.class,
+                        DeviceLockActivityLauncher.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -2206,7 +2207,11 @@ public class BytecodeTest {
                         ActivityResultTracker.class,
                         Profile.class,
                         NativePageHost.class,
-                        ComponentName.class,
+                        BookmarkOpener.class,
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class,
+                        SigninAndHistorySyncActivityLauncher.class,
+                        DeviceLockActivityLauncher.class,
                         BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
