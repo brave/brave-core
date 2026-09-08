@@ -182,19 +182,24 @@ export function Transactions() {
   // Defaults to showing every transaction; the date inputs narrow the range
   // only once the user picks one.
   const { filtered, notReconciled, reconciled } = React.useMemo(() => {
-    const filteredTransactions = transactions.filter((transaction) => {
-      const createdAt = transaction['Created At']
-      if (createdAt === undefined) {
+    const filteredTransactions = transactions
+      .filter((transaction) => {
+        const createdAt = transaction['Created At']
+        if (createdAt === undefined) {
+          return true
+        }
+        if (fromSeconds !== null && createdAt < fromSeconds) {
+          return false
+        }
+        if (toSeconds !== null && createdAt > toSeconds) {
+          return false
+        }
         return true
-      }
-      if (fromSeconds !== null && createdAt < fromSeconds) {
-        return false
-      }
-      if (toSeconds !== null && createdAt > toSeconds) {
-        return false
-      }
-      return true
-    })
+      })
+      // Sorted most recent first, since the backend returns them oldest
+      // first; transactions without a "Created At" sort last.
+      .sort((a, b) =>
+        (b['Created At'] ?? 0) - (a['Created At'] ?? 0))
 
     return {
       filtered: filteredTransactions,

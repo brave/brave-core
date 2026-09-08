@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { useAppState, useAppActions } from '../lib/app_context'
-import { getDiagnosticValue } from '../lib/diagnostics'
+import { getDiagnosticValue, isWalletConnected } from '../lib/diagnostics'
 import { MatchIcon } from './match_icon'
 import { TabHeader } from './tab_header'
 
@@ -23,9 +23,11 @@ export function AdFormats() {
   const actions = useAppActions()
   const rawEntries = useAppState((state) => state.diagnosticEntries)
   const rewardsEnabled = useAppState((state) => state.rewardsEnabled)
+  const rewardsEntries = useAppState((state) => state.rewardsDiagnosticEntries)
   const isSponsoredTilesShown = useAppState(
     (state) => state.isSponsoredTilesShown,
   )
+  const walletConnected = isWalletConnected(rewardsEntries)
 
   React.useEffect(() => {
     actions.loadDiagnostics()
@@ -69,17 +71,17 @@ export function AdFormats() {
             <span>New tab page ads shown</span>
             <MatchIcon isMatch={isMatch('New tab page ads shown')} />
           </div>
-          {/* Unlike new tab page ads, search result ads don't need a
-              connected wallet or Rewards at all, so this mirrors "Enabled"
-              directly rather than a separate diagnostic entry. */}
+          {/* Search result ads are always shown regardless of Rewards state;
+              it's only the ad event metrics sent for them that depend on
+              whether a wallet is connected. */}
           <div>
-            <span>Search result ads shown</span>
-            <MatchIcon isMatch={isMatch('Sponsored ads enabled')} />
+            <span>Search result ad metrics</span>
+            <MatchIcon isMatch={!walletConnected} />
           </div>
           {TILES_SUPPORTED && (
             <div>
               <span>Tiles shown</span>
-              <MatchIcon isMatch={isSponsoredTilesShown} />
+              <MatchIcon isMatch={isSponsoredTilesShown && !walletConnected} />
             </div>
           )}
         </section>
