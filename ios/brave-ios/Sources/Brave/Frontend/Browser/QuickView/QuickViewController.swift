@@ -41,6 +41,7 @@ class QuickViewController: UIViewController {
   private let onOpenInNewTab: ((URLRequest, Bool) -> Void)?
   private let onOpenInNewWindow: ((URL, Bool) -> Void)?
   private let onAttachTab: ((any TabState) -> Void)?
+  private let onShowConfirmationAlert: (() -> Void)?
 
   private var preKeyboardToolbarState: ToolbarVisibilityViewModel.ToolbarState?
   private var toolbarHeightConstraint: Constraint?
@@ -64,7 +65,8 @@ class QuickViewController: UIViewController {
     historyAPI: BraveHistoryAPI,
     onOpenInNewTab: ((URLRequest, Bool) -> Void)?,
     onOpenInNewWindow: ((URL, Bool) -> Void)?,
-    onAttachTab: ((any TabState) -> Void)?
+    onAttachTab: ((any TabState) -> Void)?,
+    onShowConfirmationAlert: (() -> Void)?
   ) {
     self.url = url
     self.profile = profile
@@ -78,12 +80,21 @@ class QuickViewController: UIViewController {
     self.onOpenInNewTab = onOpenInNewTab
     self.onOpenInNewWindow = onOpenInNewWindow
     self.onAttachTab = onAttachTab
+    self.onShowConfirmationAlert = onShowConfirmationAlert
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .pageSheet
   }
 
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) { fatalError() }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    if !Preferences.General.openLinkInQuickViewModeConfirmationShown.value {
+      Preferences.General.openLinkInQuickViewModeConfirmationShown.value = true
+      onShowConfirmationAlert?()
+    }
+  }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
