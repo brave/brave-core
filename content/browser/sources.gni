@@ -28,6 +28,7 @@ if (enable_local_ai) {
   brave_content_browser_sources += [
     "//brave/content/browser/speech/brave_on_device_speech_recognition_engine.cc",
     "//brave/content/browser/speech/brave_on_device_speech_recognition_engine.h",
+    "//brave/content/browser/speech/brave_speech_recognition_manager_impl.cc",
   ]
   brave_content_browser_deps += [
     "//brave/components/local_ai/core:features",

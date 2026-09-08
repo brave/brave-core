@@ -13,7 +13,7 @@ substitutions:
       true routes every on-device session onto that path, which the two
       substitutions below carry through to the engine itself.
       UsesBraveOnDeviceSpeechEngine is the predicate the chromium_src override
-      defines, and quality is not consulted because Brave's model serves all
+      declares, and quality is not consulted because Brave's model serves all
       of them.
     preempt_function_impl:
       function_name: SpeechRecognitionManagerImpl::IsOptimizationGuideSpeechModel
@@ -41,9 +41,8 @@ substitutions:
       Build Brave's engine where that path constructs upstream's.
 
       The optimization guide path ends here, so this is what the two
-      substitutions above lead to. MakeOnDeviceSpeechEngine, from the
-      chromium_src override, returns Brave's subclass, or upstream's engine
-      in a build without local AI.
+      substitutions above lead to. MakeOnDeviceSpeechEngine returns Brave's
+      subclass while the feature is on and upstream's engine otherwise.
     regex:
       pattern: 'std::make_unique<OnDeviceSpeechRecognitionEngine>(config)'
       replace: 'MakeOnDeviceSpeechEngine(config)'

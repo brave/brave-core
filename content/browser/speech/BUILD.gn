@@ -17,6 +17,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/local_ai/core:features",
     "//brave/components/local_ai/core:speech_recognition_mojom",
     "//components/speech",
     "//content/public/browser",

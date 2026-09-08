@@ -10,13 +10,17 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "components/speech/audio_buffer.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/speech_recognition_session_config.h"
 #include "content/public/test/browser_task_environment.h"
@@ -34,13 +38,22 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// gn check cannot resolve these: both headers are sources of //content/browser
-// (the Brave one via brave_content_browser_sources), and that target is not
-// visible to targets outside content.
+// These headers are private to //content/browser (the Brave one via
+// brave_content_browser_sources) and can only be reached from content's own
+// test targets, which brave_unit_tests is not, so we workaround it with
+// `nogncheck`.
 #include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"  // nogncheck
 #include "content/browser/speech/speech_recognition_engine.h"  // nogncheck
 
 namespace content {
+
+// Defined in brave/content/browser/speech/
+// brave_speech_recognition_manager_impl.cc. Declared here rather than included
+// because they have no header: the chromium_src override that calls them
+// declares them the same way, so that override depends on no Brave target.
+bool UsesBraveOnDeviceSpeechEngine();
+std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
+    const SpeechRecognitionSessionConfig& config);
 
 namespace {
 
@@ -328,6 +341,54 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, WorkerDeathReportsError) {
 
   // The error path ends recognition, which drops the session remote.
   EXPECT_TRUE(session_closed.Wait());
+}
+
+// The manager builds the engine for an on-device session through
+// MakeOnDeviceSpeechEngine, so this is where the feature decides whether that
+// session is served by Brave or by upstream.
+class OnDeviceSpeechEngineSelectionTest : public testing::Test {
+ protected:
+  OnDeviceSpeechEngineSelectionTest()
+      : client_(session_), client_setting_(&client_) {}
+
+  // Runs a task queued after the engine's constructor, so an engine that asks
+  // the embedder for a session has asked by the time this returns.
+  [[nodiscard]] bool WaitForConstructionTasks() {
+    base::test::TestFuture<void> drained;
+    GetUIThreadTaskRunner({})->PostTask(FROM_HERE, drained.GetCallback());
+    return drained.Wait();
+  }
+
+  base::test::ScopedFeatureList features_;
+  BrowserTaskEnvironment task_environment_;
+  FakeAsrSession session_;
+  FakeContentBrowserClient client_;
+  ScopedContentBrowserClientSetting client_setting_;
+};
+
+TEST_F(OnDeviceSpeechEngineSelectionTest, BuildsBraveEngineWhenEnabled) {
+  features_.InitAndEnableFeature(local_ai::kBraveOnDeviceSpeechRecognition);
+  ASSERT_TRUE(UsesBraveOnDeviceSpeechEngine());
+
+  SpeechRecognitionSessionConfig config;
+  std::unique_ptr<SpeechRecognitionEngine> engine =
+      MakeOnDeviceSpeechEngine(config);
+
+  // Asking the embedder for a session is what only Brave's engine does.
+  EXPECT_TRUE(client_.requested.Wait());
+}
+
+TEST_F(OnDeviceSpeechEngineSelectionTest, BuildsUpstreamEngineWhenDisabled) {
+  ASSERT_FALSE(UsesBraveOnDeviceSpeechEngine());
+
+  SpeechRecognitionSessionConfig config;
+  std::unique_ptr<SpeechRecognitionEngine> engine =
+      MakeOnDeviceSpeechEngine(config);
+
+  // Upstream's engine goes to the model broker instead, so the embedder is
+  // never asked, and by now it would have been.
+  ASSERT_TRUE(WaitForConstructionTasks());
+  EXPECT_FALSE(client_.requested.IsReady());
 }
 
 }  // namespace content
