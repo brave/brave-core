@@ -54,7 +54,7 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
       <div class="second-row">
         <leo-button kind="plain"
                     size="small"
-                    @click=${this.openBraveAccountDialog}>
+                    @click=${this.openDialogInDefaultMode}>
           ${this.i18n(this.state.verification.verifiedEmail
               ? BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL
