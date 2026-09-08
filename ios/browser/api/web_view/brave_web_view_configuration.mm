@@ -50,10 +50,6 @@
   // Reimplements CWVWebViewConfiguration's `autofillDataManager` method to
   // instead create a CWVAutofillDataManager using Chrome factories instead
   // of `//ios/web_view` specific factories.
-  if (!base::FeatureList::IsEnabled(
-          brave::features::kUseChromiumWebViewsAutofill)) {
-    return nil;
-  }
   if (!_autofillDataManager && self.persistent) {
     ProfileIOS* profile = ProfileIOS::FromBrowserState(self.browserState);
     autofill::PersonalDataManager* personalDataManager =
