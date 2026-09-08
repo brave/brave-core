@@ -33,7 +33,7 @@ BraveBrowserWidget::BraveBrowserWidget(BrowserView* browser_view)
 BraveBrowserWidget::~BraveBrowserWidget() {
   // Some modules need to get fullscreen state change but they can't
   // know the observing stop timing by themselves.
-  // As exclusive_access_manager() is destroyed from BrowserWindowFeatures
+  // As the ExclusiveAccessManager is destroyed from BrowserWindowFeatures
   // at the start of BrowserWidget dtor, this method is should be called here.
   BraveBrowserView::From(view_)->StopListeningFullscreenChanges();
 }
