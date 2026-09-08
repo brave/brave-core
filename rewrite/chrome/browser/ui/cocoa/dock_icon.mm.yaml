@@ -24,40 +24,24 @@
 # this because Chrome's icon is the same in either appearance.
 #
 # The badge label leaves the tile's content view alone, so the Dock keeps
-# compositing the icon for the current appearance. A single determinate
-# download is shown as a percentage; otherwise the badge is the count.
+# compositing the icon for the current appearance. `DockTileView` is left in
+# place unused: deleting it would swell the patch without changing behaviour.
+# A single determinate download is shown as a percentage; otherwise the badge
+# is the count.
 
 substitutions:
   - description: |
-      Drop the includes for the removed drawing code.
-    count: 2
+      Keep download state on DockIcon.
+
+      The Dock tile's content view is left unset so the Dock can keep
+      compositing the layered icon; the counts that used to live on that
+      view therefore have to live here.
     regex:
       re_pattern:
-        '#include "base/apple/foundation_util\.h"\n|#include
-        "ui/gfx/scoped_ns_graphics_context_save_gstate_mac\.h"\n'
-      replace: ''
-
-  - description: |
-      Remove the custom Dock tile view.
-
-      Drawing the badge over the app icon means drawing the app icon, and the
-      only icon available to do that with is the flattened one, which is stuck
-      in a single appearance.
-    regex:
-      re_pattern: 'namespace \{[\s\S]*?\n@end\n\n(?=@implementation DockIcon)'
-      replace: ''
-
-  - description: |
-      Report downloads through the Dock tile's badge label.
-
-      State now lives on `DockIcon`, as there is no longer a view to park it on.
-      A single determinate download is shown as a percentage; otherwise the
-      badge is the number of downloads in progress. Throttling is unchanged.
-    regex:
-      re_pattern: '@implementation DockIcon \{[\s\S]*\n@end'
+        '(@implementation DockIcon \{\n)(\s*//[^\n]+\n  base::TimeTicks
+        _lastUpdate;)'
       replace: |-
-        @implementation DockIcon {
-          // The number of downloads in progress.
+        \1  // The number of downloads in progress.
           int _downloads;
 
           // Whether the progress of those downloads is known yet.
@@ -66,21 +50,29 @@ substitutions:
           // The progress made on those downloads. Ranges from [0..1].
           float _progress;
 
-          // The time that the icon was last updated.
-          base::TimeTicks _lastUpdate;
+        \2
 
-          // If true, the state has changed in a significant way since the last icon
-          // update and throttling should not prevent icon redraw.
-          BOOL _forceUpdate;
-        }
+  - description: |
+      Do not install a custom Dock tile content view.
 
-        + (DockIcon*)sharedDockIcon {
-          static DockIcon* icon = [[DockIcon alloc] init];
+      A content view replaces the icon rather than drawing over it, which
+      is what stops the layered icon from following the system appearance.
+    regex:
+      re_pattern:
+        'static DockIcon\* icon = \[\] \{.*?return \[\[DockIcon alloc\]
+        init\];\s*\}\(\);'
+      re_flags: [DOTALL]
+      replace: 'static DockIcon* icon = [[DockIcon alloc] init];'
 
-          return icon;
-        }
+  - description: |
+      Report downloads through the Dock tile's badge label.
 
-        // The badge to describe the downloads in progress with, or nil for none.
+      A single determinate download is shown as a percentage; otherwise the
+      badge is the number of downloads in progress.
+    regex:
+      re_pattern: '(\n)(- \(void\)updateIcon \{)'
+      replace: |-
+        \1// The badge to describe the downloads in progress with, or nil for none.
         - (NSString*)badgeLabel {
           if (_downloads == 0) {
             return nil;
@@ -99,23 +91,26 @@ substitutions:
           return [formatter stringFromNumber:@(_progress)];
         }
 
-        - (void)updateIcon {
-          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+        \2
 
-          constexpr base::TimeDelta kUpdateFrequencyCap = base::Hertz(5);
+  - description: |
+      Update the badge instead of redrawing a content view.
+    regex:
+      pattern: '[NSApp.dockTile display];'
+      replace: 'NSApp.dockTile.badgeLabel = [self badgeLabel];'
 
-          base::TimeTicks now = base::TimeTicks::Now();
-          base::TimeDelta timeSinceLastUpdate = now - _lastUpdate;
-          if (!_forceUpdate && timeSinceLastUpdate < kUpdateFrequencyCap) {
-            return;
-          }
-
-          _lastUpdate = now;
-          _forceUpdate = NO;
-
-          NSApp.dockTile.badgeLabel = [self badgeLabel];
-        }
-
+  - description: |
+      Store the in-progress download count on DockIcon.
+    regex:
+      re_pattern:
+        '- \(void\)setDownloads:\(int\)downloads
+        \{\s*DCHECK_CURRENTLY_ON\(BrowserThread::UI\);\s*DockTileView\*
+        dockTileView
+        =\s*base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);\s*if
+        \(downloads != dockTileView\.downloads\) \{\s*dockTileView\.downloads =
+        downloads;\s*_forceUpdate = YES;\s*\}\s*\}'
+      re_flags: [DOTALL]
+      replace: |-
         - (void)setDownloads:(int)downloads {
           DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
@@ -125,6 +120,19 @@ substitutions:
           }
         }
 
+  - description: |
+      Store whether download progress is still unknown on DockIcon.
+    regex:
+      re_pattern:
+        '- \(void\)setIndeterminate:\(BOOL\)indeterminate
+        \{\s*DCHECK_CURRENTLY_ON\(BrowserThread::UI\);\s*DockTileView\*
+        dockTileView
+        =\s*base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);\s*if
+        \(indeterminate != dockTileView\.indeterminate\)
+        \{\s*dockTileView\.indeterminate = indeterminate;\s*_forceUpdate =
+        YES;\s*\}\s*\}'
+      re_flags: [DOTALL]
+      replace: |-
         - (void)setIndeterminate:(BOOL)indeterminate {
           DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
@@ -134,10 +142,19 @@ substitutions:
           }
         }
 
+  - description: |
+      Store download progress on DockIcon.
+    regex:
+      re_pattern:
+        '- \(void\)setProgress:\(float\)progress
+        \{\s*DCHECK_CURRENTLY_ON\(BrowserThread::UI\);\s*DockTileView\*
+        dockTileView
+        =\s*base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);\s*dockTileView\.progress
+        = progress;\s*\}'
+      re_flags: [DOTALL]
+      replace: |-
         - (void)setProgress:(float)progress {
           DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
           _progress = progress;
         }
-
-        @end
