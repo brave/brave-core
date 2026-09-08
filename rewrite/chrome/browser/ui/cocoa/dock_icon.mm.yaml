@@ -37,11 +37,10 @@ substitutions:
       compositing the layered icon; the counts that used to live on that
       view therefore have to live here.
     regex:
-      re_pattern:
-        '(@implementation DockIcon \{\n)(\s*//[^\n]+\n  base::TimeTicks
-        _lastUpdate;)'
-      replace: |-
-        \1  // The number of downloads in progress.
+      pattern: '@implementation DockIcon {'
+      replace: |
+        @implementation DockIcon {
+          // The number of downloads in progress.
           int _downloads;
 
           // Whether the progress of those downloads is known yet.
@@ -49,8 +48,6 @@ substitutions:
 
           // The progress made on those downloads. Ranges from [0..1].
           float _progress;
-
-        \2
 
   - description: |
       Do not install a custom Dock tile content view.
@@ -70,9 +67,9 @@ substitutions:
       A single determinate download is shown as a percentage; otherwise the
       badge is the number of downloads in progress.
     regex:
-      re_pattern: '(\n)(- \(void\)updateIcon \{)'
+      pattern: '- (void)updateIcon {'
       replace: |-
-        \1// The badge to describe the downloads in progress with, or nil for none.
+        // The badge to describe the downloads in progress with, or nil for none.
         - (NSString*)badgeLabel {
           if (_downloads == 0) {
             return nil;
@@ -91,7 +88,7 @@ substitutions:
           return [formatter stringFromNumber:@(_progress)];
         }
 
-        \2
+        - (void)updateIcon {
 
   - description: |
       Update the badge instead of redrawing a content view.
