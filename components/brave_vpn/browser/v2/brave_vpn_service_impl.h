@@ -18,7 +18,7 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
-#include "brave/components/brave_vpn/browser/v2/agent_client.h"
+#include "brave/components/brave_vpn/browser/v2/agent/agent_client.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace network {
