@@ -132,6 +132,7 @@
     "cmd": [
       "git",
       "fetch",
+      "--no-show-forced-updates",
       "origin",
       "main"
     ],

@@ -320,8 +320,7 @@ class Repo:
         <parent>" unpack error instead -- so a shallow cache repo is deepened
         here, unconditionally, rather than ever letting that push be attempted.
 
-        A cache repo can end up shallow if something else (e.g. a recipe using
-        `chromium_checkout.ensure_checkout(depth=...)`) populated this same
+        A cache repo can end up shallow if something else populated this same
         `GIT_CACHE_PATH` with a depth-limited fetch before a full mirror pass
         ever ran; a plain fetch afterwards only extends history forward from
         that boundary; it never backfills it.

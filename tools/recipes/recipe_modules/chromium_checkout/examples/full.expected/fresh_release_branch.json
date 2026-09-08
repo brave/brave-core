@@ -171,6 +171,7 @@
     "cmd": [
       "git",
       "fetch",
+      "--no-show-forced-updates",
       "origin",
       "refs/branch-heads/6834"
     ],

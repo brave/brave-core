@@ -26,6 +26,9 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
 # The URL for Chromium's googlesource.
 CHROMIUM_URL = 'https://chromium.googlesource.com/chromium/src.git'
 
+# Flags we wanted passed in in every fetch.
+FETCH_ARGS = ('--no-show-forced-updates', )
+
 
 def _is_tag_ref(ref: str) -> bool:
     """Whether *ref* looks like a Chromium release tag (e.g. `150.0.7850.1`),
@@ -89,7 +92,6 @@ class ChromiumCheckoutApi(RecipeApi):
                         *,
                         chromium_src: str | Path | None = None,
                         ref: str | None = None,
-                        depth: int | None = None,
                         run_hooks: bool = True,
                         git_deps_only: bool = False) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
@@ -104,10 +106,6 @@ class ChromiumCheckoutApi(RecipeApi):
             chromium_src: Path to the Chromium `src/` directory. Defaults to the
                 `path` module's `chromium_src`, the standard job layout.
             ref: Optional git ref (branch, tag, or commit) to check out.
-            depth: Optional history depth for this working checkout (see
-                `checkout_ref`). The shared git-cache mirror is always
-                populated with full history regardless; `None` here checks
-                out full history too.
             run_hooks: Whether the sync runs the DEPS hooks (the default). See
                 `checkout_ref`.
             git_deps_only: Sync only the git dependencies. See `checkout_ref`.
@@ -125,7 +123,6 @@ class ChromiumCheckoutApi(RecipeApi):
 
         self.checkout_ref(chromium_src,
                           ref,
-                          depth=depth,
                           run_hooks=run_hooks,
                           git_deps_only=git_deps_only)
         return chromium_src
@@ -153,7 +150,6 @@ class ChromiumCheckoutApi(RecipeApi):
                      ref: str | None = None,
                      *,
                      should_clone: bool = True,
-                     depth: int | None = None,
                      run_hooks: bool = True,
                      git_deps_only: bool = False) -> None:
         """Ensure *chromium_src* is checked out at *ref*.
@@ -167,7 +163,6 @@ class ChromiumCheckoutApi(RecipeApi):
                 doesn't already hold a valid checkout (the default). Set to
                 False to require an existing checkout, raising instead of
                 cloning one.
-            depth: Optional history depth for this working checkout.
             run_hooks: Whether the sync runs the DEPS hooks (the default).
             git_deps_only: Sync only the git dependencies, skipping the CIPD
                 packages and GCS objects DEPS.
@@ -212,12 +207,10 @@ class ChromiumCheckoutApi(RecipeApi):
                 commit=ref if is_commit else None,
                 populate_step='git cache populate',
                 exists_step='git cache exists')
-            # `--local --shared`: a same-volume, hardlink-sharing clone of
-            # the mirror, effectively free compared to a network clone.
-            depth_args = ['--depth', str(depth)] if depth else []
+
             self.m.step('clone from git cache', [
                 'git', 'clone', '--no-checkout', '--local', '--shared',
-                *depth_args, mirror_dir, chromium_src
+                mirror_dir, chromium_src
             ])
             self.m.git.disable_auto_gc(chromium_src)
 
@@ -226,7 +219,7 @@ class ChromiumCheckoutApi(RecipeApi):
                 # `refs/tags/*` (e.g. a Chromium release branch under
                 # `refs/branch-heads/*`).
                 self.m.step('fetch ref',
-                            ['git', 'fetch', *depth_args, 'origin', ref],
+                            ['git', 'fetch', *FETCH_ARGS, 'origin', ref],
                             cwd=chromium_src)
                 self.m.step('checkout ref',
                             ['git', 'checkout', '--force', 'FETCH_HEAD'],
@@ -272,20 +265,11 @@ class ChromiumCheckoutApi(RecipeApi):
                 ['git', 'remote', 'set-url', '--push', 'origin', CHROMIUM_URL],
                 cwd=chromium_src)
 
-            # `chromium_src` may already be shallow at a different commit
-            # than this ref (e.g. re-checking out a branch after it moved
-            # on): a plain `git fetch` tries to extend the existing shallow
-            # history and fails outright ("did not send all necessary
-            # objects") once the (fully-populated) mirror can no longer
-            # connect the two. Passing `--depth` here instead negotiates a
-            # fresh, self-contained shallow window for the requested ref,
-            # independent of that connection.
-            depth_args = ['--depth', str(depth)] if depth else []
             if is_tag:
                 # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a
                 # tag so it lands at `refs/tags/<ref>` in the local repo.
                 self.m.step('fetch tag', [
-                    'git', 'fetch', *depth_args, '--no-tags', 'origin',
+                    'git', 'fetch', *FETCH_ARGS, '--no-tags', 'origin',
                     f'refs/tags/{ref}:refs/tags/{ref}'
                 ],
                             cwd=chromium_src)
@@ -293,7 +277,7 @@ class ChromiumCheckoutApi(RecipeApi):
                 # A branch name or a bare commit hash both resolve directly
                 # against `origin` -- no destination refspec needed.
                 self.m.step('fetch commit' if is_commit else 'fetch ref',
-                            ['git', 'fetch', *depth_args, 'origin', ref],
+                            ['git', 'fetch', *FETCH_ARGS, 'origin', ref],
                             cwd=chromium_src)
 
             # A manual `git checkout --force` rather than `gclient sync -r
