@@ -5,6 +5,7 @@
 
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -65,6 +66,7 @@ base::Value GetFirstPartyStorageValueToCleanup(
   dict.Set(kClosedAtKey, base::TimeToValue(time.value_or(base::Time::Now())));
   return base::Value(std::move(dict));
 }
+
 
 // Returns the time the last tab using the area was closed. Entries stored by
 // older versions don't have it.
@@ -154,15 +156,27 @@ bool IsFirstPartyStorageAreaKeepAliveExpired(const base::Value& value,
   DVLOG(1) << __func__ << " closed_at:" << closed_at.value()
            << " elapsed:" << elapsed.InSeconds()
            << " keep_alive:" << keep_alive;
+  LOG(INFO) << "[SHRED] " << __func__ << " elapsed:" << elapsed.InSeconds()
+           << " keep_alive:" << keep_alive;
   // A backwards clock jump is treated as an expired keepalive.
   return elapsed.is_negative() || elapsed >= keep_alive;
 }
+
+// bool IsTabKeepAliveExpired(base::TimeDelta keep_alive, base::Time lastaccess) {
+//   const base::TimeDelta elapsed = base::Time::Now() - lastaccess;
+//   DVLOG(1) << __func__ << " elapsed:" << elapsed.InSeconds()
+//            << " keep_alive:" << keep_alive;
+
+//   LOG(INFO) << "[SHRED] " << __func__ << " elapsed:" << elapsed.InSeconds()
+//            << " keep_alive:" << keep_alive;
+//   // A backwards clock jump is treated as an expired keepalive.
+//   return elapsed.is_negative() || elapsed >= keep_alive;
+// }
 
 std::optional<std::pair<GURL, content::StoragePartitionConfig>>
 GetFirstPartyStorageURLAndStoragePartitionConfig(
     const base::Value& value,
     content::BrowserContext* browser_context) {
-  // Support old format
   if (value.is_string()) {
     return std::make_pair(
         GURL(value.GetString()),
@@ -172,9 +186,9 @@ GetFirstPartyStorageURLAndStoragePartitionConfig(
     return std::nullopt;
   }
   const auto& dict = value.GetDict();
-  const std::string* url_spec = dict.FindString(kUrlKey);
-  const std::string* partition_domain = dict.FindString(kPartitionDomainKey);
-  const std::string* partition_name = dict.FindString(kPartitionNameKey);
+  const std::string* url_spec = dict.FindString("u");
+  const std::string* partition_domain = dict.FindString("pd");
+  const std::string* partition_name = dict.FindString("pn");
   if (!url_spec || !partition_domain || !partition_name) {
     return std::nullopt;
   }
@@ -209,9 +223,9 @@ EphemeralStorageService::EphemeralStorageService(
   tld_ephemeral_area_keep_alive_ = base::Seconds(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
 
-  RegisterFirstWindowOpenedCallback(
-      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
-                     weak_ptr_factory_.GetWeakPtr()));
+  // RegisterFirstWindowOpenedCallback(
+  //     base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
+  //                    weak_ptr_factory_.GetWeakPtr()));
 }
 
 EphemeralStorageService::~EphemeralStorageService() = default;
@@ -450,7 +464,7 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
     return;
   }
 
-  if (context_->IsOffTheRecord()) {
+   if (context_->IsOffTheRecord()) {
     return;
   }
 
@@ -580,7 +594,7 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
 void EphemeralStorageService::CleanupFirstPartyStorageArea(
     const TLDEphemeralAreaKey& key) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
-  delegate_->CleanupFirstPartyStorageArea(key, base::NullCallback());
+  delegate_->CleanupFirstPartyStorageArea(key);
   if (!context_->IsOffTheRecord()) {
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
@@ -589,63 +603,86 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
   }
 }
 
-void EphemeralStorageService::CleanupPendingFirstPartyStorageArea(
-    const GURL& url,
-    const content::StoragePartitionConfig& storage_partition_config,
-    base::OnceClosure callback) {
-  DVLOG(1) << __func__ << " " << url << " " << storage_partition_config;
-  const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-  const TLDEphemeralAreaKey key(std::string(url.host()),
-                                storage_partition_config);
-  delegate_->CleanupFirstPartyStorageArea(key, std::move(callback));
+// void EphemeralStorageService::CleanupPendingFirstPartyStorageArea(
+//     const GURL& url,
+//     const content::StoragePartitionConfig& storage_partition_config,
+//     base::OnceClosure callback) {
+//   DVLOG(1) << __func__ << " " << url << " " << storage_partition_config;
+//   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+//   const TLDEphemeralAreaKey key(std::string(url.host()),
+//                                 storage_partition_config);
+//   delegate_->CleanupFirstPartyStorageArea(key, std::move(callback));
 
-  if (auto_shred_mode.has_value() &&
-      auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
-      delegate_->IsShredBrowsingHistoryEnabled()) {
-    // We should clean up the browsing history if shred for browsing history is
-    // enabled.
-    delegate_->CleanupTLDBrowsingHistory(key);
-  }
-}
+//   if (auto_shred_mode.has_value() &&
+//       auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
+//       delegate_->IsShredBrowsingHistoryEnabled()) {
+//     // We should clean up the browsing history if shred for browsing history is
+//     // enabled.
+//     delegate_->CleanupTLDBrowsingHistory(key);
+//   }
+// }
 
-void EphemeralStorageService::CleanupOnStartup() {
+// TODO remove base::Time timestamp parameter
+bool EphemeralStorageService::MaybeCleanupOnSessionRestore(
+    const std::string& ephemeral_domain,
+    base::Time timestamp) {
   DCHECK(!context_->IsOffTheRecord());
+
+  bool result = false;
+  const GURL first_party_storage_url =
+      GetFirstPartyStorageURL(ephemeral_domain);
+
   base::ListValue first_party_storage_areas_to_cleanup_on_startup =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
   DVLOG(1) << __func__ << " Queued for cleanup:"
            << first_party_storage_areas_to_cleanup_on_startup.DebugString();
+  LOG(INFO) << "[SHRED] EphemeralStorageService::MaybeCleanupOnSessionRestore \nephemeral_domain:" << ephemeral_domain 
+    << " \ntimestamp:" << timestamp
+    << " \nfirst_party_storage_url:" << first_party_storage_url
+    << " \nqueued:" << first_party_storage_areas_to_cleanup_on_startup.DebugString()
+    ;
 
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
-
   for (base::Value& area_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup) {
-    if (!IsFirstPartyStorageAreaKeepAliveExpired(
-            area_to_cleanup, tld_ephemeral_area_keep_alive_)) {
-      continue;
-    }
-    pref_update->EraseValue(area_to_cleanup);
-
     const auto url_and_storage_partition_config =
         GetFirstPartyStorageURLAndStoragePartitionConfig(area_to_cleanup,
-                                                         context_);
+                                                          context_);
     if (!url_and_storage_partition_config) {
       continue;
     }
 
     const auto& [url, storage_partition_config] =
         *url_and_storage_partition_config;
-    if (!url.is_valid()) {
+    if (!url.is_valid() || url != first_party_storage_url) {
       continue;
     }
 
-    CleanupPendingFirstPartyStorageArea(
-        url, storage_partition_config,
-        base::BindOnce(&EphemeralStorageService::ReloadTabsForEphemeralDomain,
-                       weak_ptr_factory_.GetWeakPtr(),
-                       net::URLToEphemeralStorageDomain(url)));
-  }
+    // The tab for this domain is being restored, so it no longer needs to
+    // wait in the cleanup queue.
+    pref_update->EraseValue(area_to_cleanup);
 
-  first_party_storage_areas_to_cleanup_on_startup.clear();
+    if (!IsFirstPartyStorageAreaKeepAliveExpired(
+            area_to_cleanup, tld_ephemeral_area_keep_alive_)) {
+      continue;
+    }
+
+    const TLDEphemeralAreaKey key(std::string(url.host()),
+                                   storage_partition_config);
+    delegate_->CleanupFirstPartyStorageArea(key);
+
+    const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+    if (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
+        delegate_->IsShredBrowsingHistoryEnabled()) {
+      // We should clean up the browsing history if shred for browsing
+      // history is enabled.
+      delegate_->CleanupTLDBrowsingHistory(key);
+    }
+    result = true;
+  }
+LOG(INFO) << "[SHRED] EphemeralStorageService::MaybeCleanupOnSessionRestore \nephemeral_domain:" << ephemeral_domain << " result:" << result;
+  return result;
 }
 
 void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
@@ -659,10 +696,10 @@ void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
   delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
 }
 
-void EphemeralStorageService::ReloadTabsForEphemeralDomain(
-    const std::string& ephemeral_domain) {
-  delegate_->ReloadTabIfMatchingEphemeralDomain(ephemeral_domain);
-}
+// void EphemeralStorageService::ReloadTabsForEphemeralDomain(
+//     const std::string& ephemeral_domain) {
+//   delegate_->ReloadTabIfMatchingEphemeralDomain(ephemeral_domain);
+// }
 
 size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   std::vector<base::OneShotTimer*> timers;

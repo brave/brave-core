@@ -96,53 +96,6 @@ bool PrepareTabForFirstPartyStorageCleanup(
   return false;
 }
 
-// Self-owned observer: destroys itself once the removal it observes is done.
-class RemovalObserver : public content::BrowsingDataRemover::Observer {
- public:
-  RemovalObserver(const RemovalObserver&) = delete;
-  RemovalObserver& operator=(const RemovalObserver&) = delete;
-
-  static content::BrowsingDataRemover::Observer* Create(
-      content::BrowserContext* context,
-      base::OnceClosure callback) {
-    CHECK(context);
-    return new RemovalObserver(context, std::move(callback));
-  }
-
-  void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override {
-    std::move(callback_).Run();
-    delete this;  // Matches the `new` in Create().
-  }
-
- private:
-  RemovalObserver(content::BrowserContext* context, base::OnceClosure callback)
-      : callback_(std::move(callback)) {
-    content::BrowsingDataRemover* remover = context->GetBrowsingDataRemover();
-    CHECK(remover);
-    observation_.Observe(remover);
-  }
-
-  ~RemovalObserver() override = default;
-
-  base::ScopedObservation<content::BrowsingDataRemover,
-                          content::BrowsingDataRemover::Observer>
-      observation_{this};
-  base::OnceClosure callback_;
-};
-
-void ReloadBypassingCacheWhenReady(
-    content::WebContents* contents,
-    const std::string& cleaned_ephemeral_domain) {
-  auto* ephemeral_storage_tab_helper =
-      ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(contents);
-  if (!ephemeral_storage_tab_helper) {
-    return;
-  }
-
-  ephemeral_storage_tab_helper->ReloadBypassingCacheWhenReady(
-      cleaned_ephemeral_domain);
-}
-
 }  // namespace
 
 namespace ephemeral_storage {
@@ -223,8 +176,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
 }
 
 void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
-    const TLDEphemeralAreaKey& key,
-    base::OnceClosure callback) {
+    const TLDEphemeralAreaKey& key) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   DCHECK(base::FeatureList::IsEnabled(
              net::features::kBraveForgetFirstPartyStorage) ||
@@ -245,67 +197,8 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   filter_builder->SetStoragePartitionConfig(key.second);
 
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
-  if (callback) {
-    remover->RemoveWithFilterAndReply(
-        base::Time(), base::Time::Max(), data_to_remove, origin_type,
-        std::move(filter_builder),
-        RemovalObserver::Create(context_, std::move(callback)));
-  } else {
-    remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
-                              origin_type, std::move(filter_builder));
-  }
-}
-
-void BraveEphemeralStorageServiceDelegate::ReloadTabIfMatchingEphemeralDomain(
-    const std::string& ephemeral_domain) {
-  auto* profile = Profile::FromBrowserContext(context_);
-  CHECK(profile);
-
-#if !BUILDFLAG(IS_ANDROID)
-  for (auto* browser : GetAllBrowserWindowInterfaces()) {
-    if (profile != browser->GetProfile()) {
-      continue;
-    }
-    auto* tab_strip = browser->GetTabStripModel();
-    if (!tab_strip) {
-      continue;
-    }
-    for (auto* tab : *tab_strip) {
-      if (!tab || !tab->GetContents()) {
-        continue;
-      }
-
-      content::WebContents* contents = tab->GetContents();
-      if (ShouldSkipCleanupForURL(contents->GetLastCommittedURL(),
-                                  {ephemeral_domain})) {
-        continue;
-      }
-
-      ReloadBypassingCacheWhenReady(contents, ephemeral_domain);
-    }
-  }
-#else
-  for (TabModel* model : TabModelList::models()) {
-    const size_t tab_count = model->GetTabCount();
-    for (size_t index = 0; index < tab_count; index++) {
-      auto* tab = static_cast<TabAndroid*>(model->GetTabAt(index));
-      if (!tab || profile != tab->profile()) {
-        continue;
-      }
-      content::WebContents* contents = tab->GetContents();
-      if (!contents) {
-        continue;
-      }
-
-      if (ShouldSkipCleanupForURL(contents->GetLastCommittedURL(),
-                                  {ephemeral_domain})) {
-        continue;
-      }
-
-      ReloadBypassingCacheWhenReady(contents, ephemeral_domain);
-    }
-  }
-#endif
+  remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
+                            origin_type, std::move(filter_builder));
 }
 
 void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
@@ -334,6 +227,7 @@ void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
           brave_shields::features::kBraveShredFeature)) {
     return;
   }
+
   // Collect ephemeral domains from currently open tabs that have the "Shred on
   // App Close" mode enabled.
   const auto ephemeral_domains = GetEphemeralDomainsToCleanOnAppClose();
@@ -356,6 +250,7 @@ void BraveEphemeralStorageServiceDelegate::
   if (enforced_by_user) {
     brave_shields::RecordManualShredP3A(*g_browser_process->local_state());
   }
+
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 

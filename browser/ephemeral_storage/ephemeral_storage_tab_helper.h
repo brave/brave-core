@@ -56,8 +56,6 @@ class EphemeralStorageTabHelper
       const url::Origin& origin);
 
   void EnforceFirstPartyStorageCleanup(StorageCleanupMode mode);
-  void ReloadBypassingCacheWhenReady(
-      const std::string& cleaned_ephemeral_domain);
 
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
@@ -78,7 +76,6 @@ class EphemeralStorageTabHelper
                                                   const GURL& new_url);
 
   void UpdateShieldsState(const GURL& url);
-  void MaybeReloadBypassingCache(const std::string& cleaned_ephemeral_domain);
 
 #if BUILDFLAG(IS_ANDROID)
   // TabModelObserver
@@ -94,7 +91,6 @@ class EphemeralStorageTabHelper
   base::flat_set<scoped_refptr<TLDEphemeralLifetime>>
       provisional_tld_ephemeral_lifetimes_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
-  base::OnceClosure reload_on_ready_callback_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 

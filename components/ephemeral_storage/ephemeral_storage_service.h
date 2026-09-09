@@ -93,6 +93,7 @@ class EphemeralStorageService : public KeyedService {
 #if BUILDFLAG(IS_ANDROID)
   void TriggerCurrentAppStateNotification();
 #endif  // BUILDFLAG(IS_ANDROID)
+  bool MaybeCleanupOnSessionRestore(const std::string& ephemeral_domain, base::Time timestamp);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
@@ -133,17 +134,16 @@ class EphemeralStorageService : public KeyedService {
                                bool cleanup_first_party_storage_area,
                                bool cleanup_browsing_history_for_tld);
 
-  void CleanupOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
-  // Cleans up an area that was queued for cleanup in prefs, i.e. its keepalive
-  // was still pending when the browser was closed.
-  void CleanupPendingFirstPartyStorageArea(
-      const GURL& url,
-      const content::StoragePartitionConfig& storage_partition_config,
-      base::OnceClosure callback);
+//   // Cleans up an area that was queued for cleanup in prefs, i.e. its keepalive
+//   // was still pending when the browser was closed.
+//   void CleanupPendingFirstPartyStorageArea(
+//       const GURL& url,
+//       const content::StoragePartitionConfig& storage_partition_config,
+//       base::OnceClosure callback);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
-  void ReloadTabsForEphemeralDomain(const std::string& ephemeral_domain);
+//   void ReloadTabsForEphemeralDomain(const std::string& ephemeral_domain);
 
   size_t FireCleanupTimersForTesting();
 
