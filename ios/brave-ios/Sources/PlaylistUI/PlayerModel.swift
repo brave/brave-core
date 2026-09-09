@@ -166,6 +166,9 @@ public final class PlayerModel: ObservableObject {
     if case .seconds(let duration) = duration, currentTime == duration {
       player.seek(to: .zero)
     }
+    if let uuid = selectedItemUUID {
+      PlaylistItem.updateLastPlayedDate(uuid: uuid, date: .now)
+    }
     player.play()
   }
 
@@ -402,6 +405,8 @@ public final class PlayerModel: ObservableObject {
   public let mediaStreamer: PlaylistMediaStreamer?
   public let initialPlaybackInfo: InitialPlaybackInfo?
 
+  private(set) var selectedItemUUID: String?
+
   @MainActor @Published var selectedItemID: PlaylistItem.ID? {
     willSet {
       if selectedItem != nil {
@@ -414,6 +419,7 @@ public final class PlayerModel: ObservableObject {
       }
     }
     didSet {
+      selectedItemUUID = selectedItemID.flatMap { PlaylistItem.getItem(id: $0)?.uuid }
       updateSystemPlayer(loadArtwork: true)
     }
   }
@@ -430,6 +436,10 @@ public final class PlayerModel: ObservableObject {
 
   @MainActor private var selectedItem: PlaylistItem? {
     selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
+  }
+
+  public var currentlyPlayingItemUUID: String? {
+    selectedItemUUID
   }
 
   @MainActor public func prepareItemQueue() async {
