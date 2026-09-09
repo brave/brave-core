@@ -11,8 +11,10 @@
 
 #include "base/check.h"
 #include "base/containers/span.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/browser/resources/grit/ads_internals_generated_map.h"
+#include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
@@ -45,6 +47,9 @@ AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
   // LoadDiagnosticLog`, so the Logs tab has nothing to show here.
   source->AddBoolean("logsSupported", false);
   source->AddBoolean("verboseLoggingEnabled", false);
+  source->AddBoolean(
+      "adsInternalsVerboseModeEnabled",
+      base::FeatureList::IsEnabled(brave_ads::kAdsInternalsVerboseModeFeature));
 
   // Bind Mojom Interface
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(

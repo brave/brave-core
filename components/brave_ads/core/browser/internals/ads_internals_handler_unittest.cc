@@ -74,6 +74,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -102,6 +103,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -135,6 +137,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -168,6 +171,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -195,6 +199,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -227,6 +232,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -261,6 +267,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -299,6 +306,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -347,6 +355,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -387,6 +396,7 @@ TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdUpdatesPrefWithValidUuid) {
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -418,6 +428,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -445,6 +456,7 @@ TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdClearsPrefWithEmptyValue) {
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -507,6 +519,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
@@ -536,6 +549,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
       AdsInternalsHandler::GetComponentIdCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;

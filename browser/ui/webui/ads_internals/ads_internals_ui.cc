@@ -7,9 +7,11 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/resources/grit/ads_internals_generated_map.h"
+#include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -81,6 +83,9 @@ AdsInternalsUI::AdsInternalsUI(content::WebUI* web_ui)
       IDR_ADS_INTERNALS_HTML);
   source->AddBoolean("logsSupported", rewards_service_ != nullptr);
   source->AddBoolean("verboseLoggingEnabled", IsVerboseLoggingEnabled());
+  source->AddBoolean(
+      "adsInternalsVerboseModeEnabled",
+      base::FeatureList::IsEnabled(brave_ads::kAdsInternalsVerboseModeFeature));
 }
 
 AdsInternalsUI::~AdsInternalsUI() = default;
