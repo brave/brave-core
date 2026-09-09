@@ -7,15 +7,12 @@
 
 #include <map>
 #include <memory>
-#include <string>
 #include <string_view>
 
-#include "base/strings/strcat.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "url/url_constants.h"
 
 namespace content {
 namespace {
@@ -34,17 +31,18 @@ FindConfigForSubdomain(
   // Only chrome-untrusted:// WebUIs may be served from subdomains. A subdomain
   // is always a new origin; for chrome:// that new origin would be granted
   // WebUI bindings, which we don't want to hand out implicitly.
-  if (url.GetScheme() != kChromeUIUntrustedScheme) {
+  if (url.scheme() != kChromeUIUntrustedScheme) {
     return configs.end();
   }
-  const std::string host = url.GetHost();
+  const std::string_view host = url.host();
   const size_t dot = host.find('.');
-  if (dot == std::string::npos) {
+  if (dot == std::string_view::npos) {
     return configs.end();
   }
-  const auto parent_origin = url::Origin::Create(
-      GURL(base::StrCat({url.GetScheme(), url::kStandardSchemeSeparator,
-                         std::string_view(host).substr(dot + 1)})));
+  GURL::Replacements replacements;
+  replacements.SetHostStr(host.substr(dot + 1));
+  const auto parent_origin =
+      url::Origin::Create(url.ReplaceComponents(replacements));
   const auto origin_and_config = configs.find(parent_origin);
   if (origin_and_config != configs.end() &&
       !origin_and_config->second->ShouldHandleSubdomains()) {

@@ -5,10 +5,13 @@
 
 substitutions:
   - description: |
-      Retry the config lookup against the parent host, so a WebUIConfig that
-      opts in via ShouldHandleSubdomains() also serves the single-label
-      subdomains of its host as distinct origins. FindConfigForSubdomain() is
-      defined in the chromium_src override.
+      Retry the config lookup against the parent host.
+
+      A WebUIConfig that opts in via `ShouldHandleSubdomains()` also serves the
+      single-label subdomains of its host, each as a distinct origin, so a
+      lookup that misses on the exact origin has to fall back to the config
+      registered for the parent host. `FindConfigForSubdomain()` is defined in
+      the chromium_src override.
     regex:
       re_pattern:
         '(auto origin_and_config =
