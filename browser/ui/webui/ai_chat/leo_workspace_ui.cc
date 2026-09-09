@@ -33,13 +33,18 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context) {
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEO_WORKSPACE_HTML);
 
+  // Not bundled, so it is not in |kAiChatUiGenerated|, and it has to keep the
+  // path the worker is registered for.
+  source->AddResourcePath(kAIChatLeoWorkspaceServiceWorkerScript,
+                          IDR_AI_CHAT_LEO_WORKSPACE_SERVICE_WORKER_JS);
+
   // This page runs its own first-party module bundle only. No network, no
   // frames, no embedding by other pages. The FileSystemDirectoryHandle it will
   // operate on is delivered out-of-band (launchQueue), not fetched.
   //
-  // A service worker registered for this host is not served by this data
-  // source and does not get this policy: its responses carry headers of their
-  // own.
+  // This is the whole policy for this data source, and the folder's files do
+  // not get it: they are served by the service worker, whose responses carry
+  // headers of their own. See workspace_service_worker.h.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
   source->OverrideContentSecurityPolicy(

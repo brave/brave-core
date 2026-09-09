@@ -45,6 +45,8 @@ class FakeFileHandle {
       name: this.name,
       size: this.contents.length,
       text: async () => this.contents,
+      arrayBuffer: async () =>
+        new TextEncoder().encode(this.contents).buffer as ArrayBuffer,
     }
   }
 
