@@ -6,6 +6,7 @@
 #include "brave/browser/file_select/brave_file_select_image_metadata_stripper.h"
 
 #include <algorithm>
+#include <functional>
 #include <utility>
 #include <vector>
 
@@ -125,7 +126,7 @@ StripResult StripListOnBlockingThread(
       continue;
     }
     auto& native = info->get_native_file();
-    const base::FilePath src = native->file_path;
+    const base::FilePath& src = native->file_path;
 
     const base::FilePath basename = src.BaseName();
     // File issues. Skip. "" or "../" as they can't be used to create a
@@ -256,12 +257,7 @@ bool MaybeStripImageMetadataForUpload(
   return true;
 }
 
-void SetStripCompletedCallbackForTesting(  // IN-TEST
-    base::OnceCallback<void(std::vector<base::FilePath>)>* callback) {
-  g_on_strip_completed_callback_for_testing_ = callback;
-}
-
-void DeleteImageMetadataStripperTemporaryDir(
+void MaybeDeleteImageMetadataStripperTemporaryDir(
     std::vector<base::FilePath>& paths) {
   const auto temp_root_dir =
       std::ranges::find_if(paths, [](const base::FilePath& path) {
@@ -283,6 +279,11 @@ void DeleteImageMetadataStripperTemporaryDir(
 
   // Remove from the list.
   paths.erase(temp_root_dir);
+}
+
+void SetStripCompletedCallbackForTesting(  // IN-TEST
+    base::OnceCallback<void(std::vector<base::FilePath>)>* callback) {
+  g_on_strip_completed_callback_for_testing_ = callback;
 }
 
 }  // namespace brave

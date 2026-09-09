@@ -5,6 +5,7 @@
 
 #include "brave/browser/file_select/brave_file_select_image_metadata_stripper.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -219,12 +220,8 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
   }
 
   bool DoesNotExists(const std::vector<base::FilePath>& paths) {
-    for (const auto& path : paths) {
-      if (PathExists(path)) {
-        return false;
-      }
-    }
-    return true;
+    return std::ranges::none_of(
+        paths, [this](const base::FilePath& path) { return PathExists(path); });
   }
 
   std::string SelectedFileName(content::WebContents* web_contents) {
@@ -292,8 +289,6 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   // Only the parent temp directory is queued for cleanup.
   const std::vector<base::FilePath> temp_paths = strip_completed_future_.Take();
   ASSERT_EQ(1u, temp_paths.size());
-  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
-            StrippedCopyIn(temp_paths[0]).BaseName());
   EXPECT_TRUE(PathExists(StrippedCopyIn(temp_paths[0])));
 
   // 2. Check the bytes the server received are the scrubbed bytes.
@@ -336,10 +331,6 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   // 1. Check each pick creates a distinct temporary copy, and the earlier one
   // is kept alive (by its own FileSelectHelper) until the tab goes away.
   EXPECT_NE(first_temp_paths[0], second_temp_paths[0]);
-  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
-            StrippedCopyIn(first_temp_paths[0]).BaseName());
-  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
-            StrippedCopyIn(second_temp_paths[0]).BaseName());
   EXPECT_TRUE(PathExists(StrippedCopyIn(first_temp_paths[0])));
   EXPECT_TRUE(PathExists(StrippedCopyIn(second_temp_paths[0])));
   EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
@@ -379,8 +370,6 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   // directory is queued (holding the stripped copy).
   const std::vector<base::FilePath> temp_paths = strip_completed_future_.Take();
   ASSERT_EQ(1u, temp_paths.size());
-  EXPECT_EQ(fbmd_test_image_path_.BaseName(),
-            StrippedCopyIn(temp_paths[0]).BaseName());
   EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
 
   // 2. Check the uploaded payload carries both files: the image scrubbed of

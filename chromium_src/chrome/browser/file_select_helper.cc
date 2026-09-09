@@ -32,7 +32,7 @@ bool MaybeStripImageMetadataForUpload(
 // |paths| to find the temporary root directory that was created by our stripper
 // and deletes it recursively. It also removes the entry from |paths| after
 // deletion.
-void DeleteImageMetadataStripperTemporaryDir(
+void MaybeDeleteImageMetadataStripperTemporaryDir(
     std::vector<base::FilePath>& paths);
 
 }  // namespace brave

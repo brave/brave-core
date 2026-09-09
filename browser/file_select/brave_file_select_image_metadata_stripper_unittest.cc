@@ -55,7 +55,7 @@ TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
       base::WriteFile(temp_root_dir.AppendASCII("photo.jpg"), "stripped"));
 
   std::vector<base::FilePath> paths = {temp_root_dir};
-  DeleteImageMetadataStripperTemporaryDir(paths);
+  MaybeDeleteImageMetadataStripperTemporaryDir(paths);
 
   EXPECT_TRUE(paths.empty());
   EXPECT_FALSE(base::PathExists(temp_root_dir));
@@ -67,7 +67,7 @@ TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
   const base::FilePath leftover = CreateUnrelatedTempFile();
 
   std::vector<base::FilePath> paths = {leftover};
-  DeleteImageMetadataStripperTemporaryDir(paths);
+  MaybeDeleteImageMetadataStripperTemporaryDir(paths);
 
   ASSERT_EQ(1u, paths.size());
   EXPECT_EQ(leftover, paths[0]);
@@ -85,7 +85,7 @@ TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
   cleanup_.push_back(prefixed_file);
 
   std::vector<base::FilePath> paths = {prefixed_file};
-  DeleteImageMetadataStripperTemporaryDir(paths);
+  MaybeDeleteImageMetadataStripperTemporaryDir(paths);
 
   ASSERT_EQ(1u, paths.size());
   EXPECT_EQ(prefixed_file, paths[0]);

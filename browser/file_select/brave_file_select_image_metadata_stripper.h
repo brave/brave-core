@@ -33,8 +33,8 @@ inline constexpr base::FilePath::CharType kUploadStripTempDirPrefix[] =
 // strippable JPEG into a unique subdirectory of one temporary parent directory
 // (so the original basename is preserved) and that copy is what gets uploaded.
 // Only the parent directory is added to |temporary_files|;
-// `DeleteImageMetadataStripperTemporaryDir` recursively deletes it after the
-// upload completes.
+// `MaybeDeleteImageMetadataStripperTemporaryDir` recursively deletes it
+// after the upload completes.
 //
 // |already_processed| helps to avoid looping between `NotifyListenerAndEnd`
 // and `MaybeStripImageMetadataForUpload` by letting `NotifyListenerAndEnd` know
@@ -52,8 +52,9 @@ bool MaybeStripImageMetadataForUpload(
         notify);
 
 // Recursively deletes the upload-strip temp directory (basename contains
-// `kUploadStripTempDirPrefix`) which holds the stripped copies.
-void DeleteImageMetadataStripperTemporaryDir(
+// `kUploadStripTempDirPrefix`) which holds the stripped copies. No-ops if
+// |paths| has no matching directory.
+void MaybeDeleteImageMetadataStripperTemporaryDir(
     std::vector<base::FilePath>& paths);
 
 // Test-only: The caller owns |callback| and must keep
