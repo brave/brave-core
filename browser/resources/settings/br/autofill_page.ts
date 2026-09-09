@@ -56,6 +56,16 @@ RegisterPolymerTemplateModifications({
         throw new Error('[Settings] Unable to find the title on autofill-page')
     }
     topSubTitle.hidden = true
+
+    // Hide account-card - it's used for promotion/status of google sync
+    // account.
+    const accountCard = templateContent.querySelector('settings-account-card')
+    if (!accountCard) {
+      throw new Error('[Settings] Unable to find ' +
+        'settings-account-card on autofill-page')
+    }
+    accountCard.hidden = true
+
     // Hide the category cards for the data types only Autofill AI fills. They
     // are hidden rather than removed, since upstream still resolves them as the
     // control that its identity docs and travel child views are associated
