@@ -79,6 +79,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void DoPreLayoutComputations(const BrowserLayoutParams& params) override;
   void DoPostLayoutVisualAdjustments(
       const BrowserLayoutParams& params) override;
+  void OnGlassModeChanged() override;
   // SeparatorInfo is the upstream's private nested type. Friend access (added
   // via the chromium_src .h shadow) lets this subclass name it here; the body
   // of the override lives in

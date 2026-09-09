@@ -345,6 +345,21 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   toolbar_background->SetCorners(toolbar_corners);
 }
 
+void BraveBrowserViewTabbedLayoutImpl::OnGlassModeChanged() {
+  BrowserViewTabbedLayoutImpl::OnGlassModeChanged();
+
+  // Upstream only invalidates its own tab strip region views here, and with
+  // Brave's vertical tabs neither of them is laid out by the browser view. The
+  // backgrounds that follow the glass state are updated from
+  // DoPostLayoutVisualAdjustments(), so without a layout pass the chrome stays
+  // opaque and hides the glass until something else happens to relayout. The
+  // first window of the session hits this, as it only becomes glass eligible
+  // once it activates, which is after its initial layout.
+  if (views().browser_view) {
+    views().browser_view->InvalidateLayout();
+  }
+}
+
 int BraveBrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin(
     const BrowserLayoutParams& params) const {
   // Compact, with no leading exclusion padding (i.e. not an alternate
