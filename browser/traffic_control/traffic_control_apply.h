@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_TRAFFIC_CONTROL_TRAFFIC_CONTROL_APPLY_H_
 #define BRAVE_BROWSER_TRAFFIC_CONTROL_TRAFFIC_CONTROL_APPLY_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
@@ -45,9 +47,9 @@ class TrafficControlApplier {
                     std::optional<url::Origin> initiator_origin,
                     ui::PageTransition page_transition);
 
-  // Returns true when |web_contents| already satisfies |target| and re-routing
-  // should not run. Unset destinations and unknown-container fallback to
-  // non-contained tabs are treated as already at target.
+  // Returns true when re-routing should not run because |web_contents| already
+  // satisfies |target| or the target has no usable destination. Unset and
+  // unknown container destinations leave the current tab unchanged.
   static bool AlreadyAtTarget(content::WebContents* web_contents,
                               const mojom::Target& target);
 

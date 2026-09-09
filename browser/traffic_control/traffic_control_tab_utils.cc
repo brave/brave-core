@@ -6,7 +6,6 @@
 #include "brave/browser/traffic_control/traffic_control_tab_utils.h"
 
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
-#include "chrome/common/webui_url_constants.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
