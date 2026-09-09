@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Fetch a WebUI service worker's script from its data source.
+
+      The fetch is browser-initiated, so it reaches none of the
+      ContentBrowserClient factory hooks that would otherwise supply a factory
+      for the scheme, and it runs without a WebUIController, which is what would
+      ordinarily have registered the data source it comes from.
+    regex:
+      re_pattern: '(loader_factory_bundle_for_update_check\(\)->Clone\(\);\n)'
+      replace: |-
+        \1
+          MaybeAddUntrustedWebUIScriptFactory(browser_context(), scope,
+                                              loader_factory_bundle_info.get());
