@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index 8af84cb52cbfbe86fc4da83cf15479264d019784..fe481def877406942ecf18ebd7e1dc5cb0a3c65b 100644
+index d16c4997d7049d79ad6298b67d362004f2ab7e99..37fd153f1eb1458eed563da825bd226d98fbabb6 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
-@@ -213,7 +213,8 @@ enum DataType {
+@@ -204,7 +204,8 @@ enum DataType {
    // Information about a history journey.
    JOURNEY,
  
@@ -12,7 +12,7 @@ index 8af84cb52cbfbe86fc4da83cf15479264d019784..fe481def877406942ecf18ebd7e1dc5c
  
    // ---- Control Types ----
    // An object representing a set of Nigori keys.
-@@ -327,7 +328,8 @@ enum class DataTypeForHistograms {
+@@ -318,7 +319,8 @@ enum class DataTypeForHistograms {
    kEncryptedTabContextItem = 82,
    kNotebook = 83,
    kJourney = 84,

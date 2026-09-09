@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/settings/personalization_options_test.ts b/chrome/test/data/webui/settings/personalization_options_test.ts
-index dc7a00b2646c01af5984c8fd09125894b8c823e3..6b2f154859a84899d8dc45a4449c3b7d0d306e83 100644
+index fe07b258893f8fdccd1eb46a9cd9137131979183..df2936892e43936a5ece55477348ee258c65f7bd 100644
 --- a/chrome/test/data/webui/settings/personalization_options_test.ts
 +++ b/chrome/test/data/webui/settings/personalization_options_test.ts
 @@ -14,11 +14,11 @@ import {OpenWindowProxyImpl} from 'chrome://settings/settings.js';

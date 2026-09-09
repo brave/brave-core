@@ -1,5 +1,5 @@
 diff --git a/components/history_embeddings/core/history_embeddings_features.cc b/components/history_embeddings/core/history_embeddings_features.cc
-index c32282c7bbf8d923b71f8bb2acda69bb022ffc50..3893742e3b1acb21c64b7077b7444803d23fcd32 100644
+index 97a176308b0fe576692d87d811314ca45c2d37e4..493ec8ac8ca6822ab494bcc7574a07511e487e19 100644
 --- a/components/history_embeddings/core/history_embeddings_features.cc
 +++ b/components/history_embeddings/core/history_embeddings_features.cc
 @@ -23,6 +23,7 @@ FeatureParameters& GetFeatureParametersMutable() {

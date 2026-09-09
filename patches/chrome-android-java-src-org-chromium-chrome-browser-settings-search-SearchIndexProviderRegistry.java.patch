@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index 8fc72720e1d9909becc0812c1b4e996deff94f44..8f8b19e82ae3f6d84869858d7fe9c370c14564d7 100644
+index b348f48a59a2e7a6658ee1fd085148161cd63816..0a1b0e6604d9f5bfba4c1717226b22fa324fcf36 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -31,7 +31,7 @@ index 8fc72720e1d9909becc0812c1b4e996deff94f44..8f8b19e82ae3f6d84869858d7fe9c370
  import org.chromium.chrome.browser.ssl.HttpsFirstModeSettingsFragment;
  import org.chromium.chrome.browser.sync.settings.AccountManagementFragment;
  import org.chromium.chrome.browser.sync.settings.GoogleServicesSettings;
-@@ -84,7 +80,7 @@ public final class SearchIndexProviderRegistry {
+@@ -83,7 +79,7 @@ public final class SearchIndexProviderRegistry {
                      // MainSettings always comes at the top. This fixes the order of the header
                      // groups in which they will be shown in the search results since the index
                      // uses LinkedHashMap internally.
@@ -40,7 +40,7 @@ index 8fc72720e1d9909becc0812c1b4e996deff94f44..8f8b19e82ae3f6d84869858d7fe9c370
                      AboutChromeSettings.SEARCH_INDEX_DATA_PROVIDER,
                      AdaptiveToolbarSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillOptionsFragment.SEARCH_INDEX_DATA_PROVIDER,
-@@ -114,7 +110,6 @@ public final class SearchIndexProviderRegistry {
+@@ -113,7 +109,6 @@ public final class SearchIndexProviderRegistry {
                      SafetyHubFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AccountManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AndroidPaymentAppsFragment.SEARCH_INDEX_DATA_PROVIDER,
@@ -48,7 +48,7 @@ index 8fc72720e1d9909becc0812c1b4e996deff94f44..8f8b19e82ae3f6d84869858d7fe9c370
                      BookmarkBarSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillAndPasswordsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillBuyNowPayLaterFragment.SEARCH_INDEX_DATA_PROVIDER,
-@@ -129,10 +124,8 @@ public final class SearchIndexProviderRegistry {
+@@ -128,10 +123,8 @@ public final class SearchIndexProviderRegistry {
                      FinancialAccountsManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      GoogleServicesSettings.SEARCH_INDEX_DATA_PROVIDER,
                      HttpsFirstModeSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
@@ -59,7 +59,7 @@ index 8fc72720e1d9909becc0812c1b4e996deff94f44..8f8b19e82ae3f6d84869858d7fe9c370
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -141,5 +134,38 @@ public final class SearchIndexProviderRegistry {
+@@ -139,5 +132,38 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,

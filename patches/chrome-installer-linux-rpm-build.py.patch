@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.py b/chrome/installer/linux/rpm/build.py
-index ec41903e6de422c0a8bbc598ce2f9805b7bedc90..85b8efa72ec37e9b526e6c4a12ed2f90cf985070 100755
+index c66d3309dbf6c3c160a26e4db02b409b729e16da..bfc9c12f8f5b9d9594d91c1800ee846eeb73d980 100755
 --- a/chrome/installer/linux/rpm/build.py
 +++ b/chrome/installer/linux/rpm/build.py
 @@ -30,6 +30,7 @@ def gen_spec(
@@ -18,7 +18,7 @@ index ec41903e6de422c0a8bbc598ce2f9805b7bedc90..85b8efa72ec37e9b526e6c4a12ed2f90
  
      staging_dir = output_dir / f"rpm-staging-{channel}"
      tmp_file_dir = output_dir / f"rpm-tmp-{channel}"
-@@ -122,6 +124,8 @@ def main() -> None:
+@@ -124,6 +126,8 @@ def main() -> None:
          with rpm_common_deps_file.open("r") as f:
              depends = f.read().replace("\n", ",")
          config.rpm_depends = depends

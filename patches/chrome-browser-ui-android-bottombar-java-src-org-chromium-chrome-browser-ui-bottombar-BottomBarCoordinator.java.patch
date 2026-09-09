@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
-index 7bee1bffa325b5a7158aee8ded729ce0dc31902d..c36a2fca1cfdde45999123fb11861c7e43fb32e0 100644
+index 319c6ada5017218ade55fb0d6109436cffde17be..fac30a4d6a88ad4ac93a7019fd07ad63122df851 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 @@ -44,7 +44,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
