@@ -39,9 +39,7 @@ class BraveAccountUIAndroid
 
  private:
   // brave_account::mojom::DialogController:
-  // No-op: the rows are native here, so nothing asks the WebUI to open the
-  // flows yet.
-  void OpenDialog(const std::string& initiating_service_name) override {}
+  void OpenDialog(const std::string& initiating_service_name) override;
   void CloseDialog() override;
 
   mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};

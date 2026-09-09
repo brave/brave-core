@@ -95,14 +95,17 @@ INSTANTIATE_TEST_SUITE_P(
                  std::nullopt},
         TestCase{true, "chrome://settings", false, false, std::nullopt,
                  std::nullopt},
-        TestCase{true, "chrome://account/path", false, false, std::nullopt,
-                 std::nullopt},
-        // Exact chrome://account URL => throttle created, navigation canceled
+        // Any chrome://account URL => throttle created, navigation canceled
         TestCase{true, "chrome://account", false, true,
                  content::NavigationThrottle::CANCEL, net::ERR_INVALID_URL},
-        // Exact chrome://account URL with PAGE_TRANSITION_AUTO_TOPLEVEL =>
-        // throttle created, navigation allowed
+        TestCase{true, "chrome://account/settings", false, true,
+                 content::NavigationThrottle::CANCEL, net::ERR_INVALID_URL},
+        TestCase{true, "chrome://account/authentication", false, true,
+                 content::NavigationThrottle::CANCEL, net::ERR_INVALID_URL},
+        // ... with PAGE_TRANSITION_AUTO_TOPLEVEL => navigation allowed
         TestCase{true, "chrome://account", true, true,
+                 content::NavigationThrottle::PROCEED, net::OK},
+        TestCase{true, "chrome://account/settings", true, true,
                  content::NavigationThrottle::PROCEED, net::OK}),
     [](const auto& info) -> std::string {
       if (!info.param.enable_feature) {

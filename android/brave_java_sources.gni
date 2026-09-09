@@ -82,6 +82,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPrefUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_account/BraveAccountDialogLauncherHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoVoiceRecognitionHandler.java",

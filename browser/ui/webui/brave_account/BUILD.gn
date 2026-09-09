@@ -30,7 +30,13 @@ source_set("brave_account") {
     "//ui/webui",
   ]
 
-  if (!is_android) {
+  if (is_android) {
+    deps += [
+      "//brave/browser/ui/android/brave_account",
+      "//net",
+      "//url",
+    ]
+  } else {
     deps += [
       "//chrome/browser/ui/webui",
       "//net",

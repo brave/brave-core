@@ -23,9 +23,12 @@ void BraveAccountNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
 
+  // Guards every path under the host, not just the bare one: the rows and the
+  // flows are separate routes, and neither should be reachable by typing or
+  // linking - only from an entry point that navigates with AUTO_TOPLEVEL.
   if (const GURL& url = registry.GetNavigationHandle().GetURL();
       !url.SchemeIs(content::kChromeUIScheme) ||
-      url.host() != kBraveAccountHost || url.path() != "/") {
+      url.host() != kBraveAccountHost) {
     return;
   }
 

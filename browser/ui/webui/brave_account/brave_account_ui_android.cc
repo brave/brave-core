@@ -8,13 +8,17 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/browser/ui/android/brave_account/brave_account_dialog_launcher_helper.h"
+#include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
+#include "net/base/url_util.h"
 #include "ui/webui/webui_util.h"
+#include "url/gurl.h"
 
 BraveAccountUIAndroid::BraveAccountUIAndroid(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
@@ -29,6 +33,19 @@ void BraveAccountUIAndroid::BindInterface(
         pending_receiver) {
   receiver_.reset();
   receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountUIAndroid::OpenDialog(
+    const std::string& initiating_service_name) {
+  const GURL url(kBraveAccountURL);
+  brave_account::ShowBraveAccountDialog(
+      web_ui()->GetWebContents(),
+      (initiating_service_name.empty()
+           ? url
+           : net::AppendQueryParameter(
+                 url, brave_account::kInitiatingServiceNameQueryParam,
+                 initiating_service_name))
+          .spec());
 }
 
 void BraveAccountUIAndroid::CloseDialog() {

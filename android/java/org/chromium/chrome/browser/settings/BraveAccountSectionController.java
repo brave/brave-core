@@ -154,7 +154,7 @@ public class BraveAccountSectionController
             return false;
         }
 
-        BraveAccountCustomTabActivity.show(activity, "");
+        BraveAccountCustomTabActivity.show(activity, "brave://account");
         return true;
     }
 
@@ -166,7 +166,7 @@ public class BraveAccountSectionController
             return false;
         }
 
-        BraveAccountCustomTabActivity.show(activity, "/settings");
+        BraveAccountCustomTabActivity.show(activity, "brave://account/settings");
         return true;
     }
 
