@@ -56,8 +56,6 @@ export function getBuildArgs(config: Config) {
     enable_cdm_host_verification: config.enableCDMHostVerification(),
     skip_signing: !config.shouldSign(),
     use_remoteexec: config.useRemoteExec,
-    use_reclient: config.useReclient,
-    use_siso: config.useSiso,
     use_libfuzzer: config.use_libfuzzer,
     enable_update_notifications: config.isOfficialBuild(),
   }
@@ -161,14 +159,6 @@ export function getBuildArgs(config: Config) {
     args.enable_profiling = true
   }
 
-  if (!config.useSiso) {
-    if (config.useRemoteExec) {
-      args.reclient_bin_dir = path.join(config.nativeRedirectCCDir)
-    } else {
-      args.cc_wrapper = path.join(config.nativeRedirectCCDir, 'redirect_cc')
-    }
-  }
-
   // Adjust symbol_level to 1 to workaround size restrictions:
   // 1. On Linux x86, ELF32 cannot be > 4GiB.
   // 2. On Linux Static builds, enable symbols (symbol_level is 0 by default in
@@ -196,8 +186,7 @@ export function getBuildArgs(config: Config) {
   }
 
   // For Linux Release builds, upstream doesn't want to use symbol_level = 2
-  // unless use_debug_fission is set. However, they don't set it when a
-  // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
+  // unless use_debug_fission is set.
   if (config.targetOS === 'linux' && config.isReleaseBuild()) {
     // use_debug_fission requires symbol_level >= 1
     args.symbol_level = 1

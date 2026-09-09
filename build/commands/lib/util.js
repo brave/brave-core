@@ -511,54 +511,6 @@ const util = {
     return Object.assign({}, config.defaultOptions, options)
   },
 
-  buildNativeRedirectCC: async () => {
-    if (config.useSiso) {
-      // redirect_cc logic is handled by siso handler.
-      return
-    }
-
-    // Expected path to redirect_cc.
-    const redirectCC = path.join(
-      config.nativeRedirectCCDir,
-      util.appendExeIfWin32('redirect_cc'),
-    )
-
-    // Only build if the source has changed.
-    if (
-      fs.existsSync(redirectCC)
-      && fs.statSync(redirectCC).mtime
-        >= fs.statSync(
-          path.join(
-            config.braveCoreDir,
-            'tools',
-            'redirect_cc',
-            'redirect_cc.cc',
-          ),
-        ).mtime
-    ) {
-      return
-    }
-
-    Log.progressStart('build redirect_cc')
-    const buildArgs = {
-      'import("//brave/tools/redirect_cc/args.gni")': null,
-      use_remoteexec: config.useRemoteExec,
-      use_reclient: config.useRemoteExec,
-      use_siso: false,
-      reclient_bin_dir: config.realRewrapperDir,
-      real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
-    }
-
-    util.runGnGen(config.nativeRedirectCCDir, buildArgs, [
-      '--root-target=//brave/tools/redirect_cc',
-    ])
-    await util.buildTargets(
-      ['brave/tools/redirect_cc'],
-      util.mergeWithDefault({ outputDir: config.nativeRedirectCCDir }),
-    )
-    Log.progressFinish('build redirect_cc')
-  },
-
   runGnGen: (
     outputDir,
     buildArgs,
@@ -663,8 +615,6 @@ const util = {
 
   generateNinjaFiles: async (options = config.defaultOptions) => {
     await Log.progressScopeAsync('generate ninja files', async () => {
-      await util.buildNativeRedirectCC()
-
       const extraGnGenOpts = config.extraGnGenOpts
         ? [config.extraGnGenOpts]
         : []

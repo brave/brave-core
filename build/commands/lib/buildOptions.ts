@@ -179,7 +179,7 @@ export function supportNinjaOptions<
     .option('--offline', 'use offline mode for RBE')
     .option(
       '--prepare_only',
-      'Do not build targets, but prepare everything (build redirect_cc, update branding, etc.)',
+      'Do not build targets, but prepare everything (update branding, etc.)',
     )
     .option(
       '--target <target>',
