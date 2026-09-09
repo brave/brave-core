@@ -4,9 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 # These use `InProcessBrowserTest`, which does not exist on Android, and nor
-# does `//chrome/test:test_support_ui`. They should move to
-# `PlatformBrowserTest` and join `platform_browser_tests` below, so that the
-# features they cover are checked on Android too.
+# does `//chrome/test:test_support_ui`.
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
@@ -46,8 +44,8 @@ if (!is_android) {
   }
 }
 
-# Unlike `browser_tests` above, these use `PlatformBrowserTest`, so they also
-# build and run on Android.
+# Unlike `browser_tests`, these use `PlatformBrowserTest`, so they also build
+# and run on Android.
 source_set("platform_browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

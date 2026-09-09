@@ -58,12 +58,12 @@ IN_PROC_BROWSER_TEST_F(WebOtpDisabledTest, ApiIsNotExposed) {
 // so a renderer that still exposes WebOTP asks for a binder that is not there,
 // which is a bad message and terminates the renderer.
 IN_PROC_BROWSER_TEST_F(WebOtpDisabledTest, RequestingOtpDoesNotKillTab) {
-  // Resolving means the renderer was still running a second after the request.
-  EXPECT_EQ(true, content::EvalJs(web_contents(),
-                                  "new Promise(resolve => {"
-                                  "  navigator.credentials"
-                                  "      .get({otp: {transport: ['sms']}})"
-                                  "      .catch(() => {});"
-                                  "  setTimeout(() => resolve(true), 1000);"
-                                  "})"));
+  // With WebOTP disabled the `otp` member is not recognized, so no credential
+  // type is requested and the promise rejects without the renderer ever asking
+  // for the binder.
+  EXPECT_EQ("NotSupportedError", content::EvalJs(web_contents(), R"(
+      navigator.credentials.get({otp: {transport: ['sms']}})
+          .then(() => 'resolved', e => e.name)
+  )"));
+  EXPECT_FALSE(web_contents()->IsCrashed());
 }
