@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
@@ -16,6 +17,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -26,11 +28,15 @@
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
+#include "chrome/browser/ui/views/frame/themed_background.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "ui/base/ui_base_features.h"
+#include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
@@ -308,6 +314,7 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
   delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
+  UpdateBackgroundsForGlassFrame();
 
   if (delegate().ShouldDrawVerticalTabStrip()) {
     return;
@@ -618,6 +625,75 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
 
   views().vertical_tab_strip_host->SetBorder(
       insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
+}
+
+bool BraveBrowserViewTabbedLayoutImpl::IsFullWindowGlassFrameActive() const {
+  // The chrome only paints over glass while this window is the one holding the
+  // glass frame, and never in fullscreen, where upstream keeps the frame
+  // opaque. Both vertical tab implementations qualify; they are mutually
+  // exclusive.
+  return in_glass_mode() &&
+         !is_fullscreen(delegate().GetBrowserWindowState()) &&
+         (delegate().ShouldDrawVerticalTabStrip() ||
+          delegate().ShouldShowVerticalTabs());
+}
+
+void BraveBrowserViewTabbedLayoutImpl::UpdateBackgroundsForGlassFrame() {
+  if (!features::IsGlassFrameEnabled()) {
+    return;
+  }
+
+  const bool use_glass = IsFullWindowGlassFrameActive();
+  const CustomCornersBackground::ColorChoiceWithAlpha primary_color(
+      CustomCornersBackground::ToolbarTheme(), use_glass ? 0.0f : 1.0f);
+
+  auto set_primary_color = [&primary_color](views::View* view) {
+    if (!view || !view->background()) {
+      return;
+    }
+    if (auto* const background =
+            view->background()->AsA<CustomCornersBackground>()) {
+      background->SetPrimaryColor(primary_color);
+    }
+  };
+
+  // The toolbar and main area colors are only set when those views are built,
+  // so they have to be restored here as well.
+  set_primary_color(views().toolbar);
+  set_primary_color(views().main_background_region);
+
+  // ConfigureTopContainerBackground() runs on every layout pass and resets the
+  // top container color, so only override it while the glass is showing.
+  if (use_glass) {
+    set_primary_color(views().top_container);
+  }
+
+  // The remaining surfaces have to have their background swapped out rather
+  // than recolored. Whether `view` still needs that swap: in glass mode it
+  // should end up with no background, otherwise with its opaque one back.
+  // Comparing against the current background rather than tracking transitions
+  // also covers the bookmark bar, which is created lazily.
+  const auto needs_swap = [use_glass](views::View* view) {
+    return view && static_cast<bool>(view->background()) == use_glass;
+  };
+
+  // The host sits behind the vertical tab strip, which floats above it in its
+  // own layer, so both have to let the glass through.
+  if (needs_swap(views().vertical_tab_strip_host)) {
+    views().vertical_tab_strip_host->SetBackground(
+        use_glass ? nullptr : views::CreateSolidBackground(kColorToolbar));
+  }
+
+  if (needs_swap(views().bookmark_bar)) {
+    views().bookmark_bar->SetBackground(
+        use_glass ? nullptr
+                  : std::make_unique<ThemedBackground>(
+                        views::AsViewClass<BrowserView>(views().browser_view)));
+  }
+
+  if (views().sidebar_container) {
+    views().sidebar_container->SetUseGlassBackground(use_glass);
+  }
 }
 
 gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {

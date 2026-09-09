@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/frame/browser_native_widget_mac.mm b/chrome/browser/ui/views/frame/browser_native_widget_mac.mm
+index fd63fdec82640fdb42de8388dfd691900f706674..d9025e63e8ddf8fd2a1f8f57f8fa7da07a36b2e5 100644
+--- a/chrome/browser/ui/views/frame/browser_native_widget_mac.mm
++++ b/chrome/browser/ui/views/frame/browser_native_widget_mac.mm
+@@ -271,6 +271,7 @@ void BrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
+ }
+ 
+ std::optional<int> BrowserNativeWidgetMac::GetGlassFrameHeight() const {
++  BRAVE_BROWSER_NATIVE_WIDGET_MAC_FULL_WINDOW_GLASS_FRAME
+   // If vertical tabs are being drawn, the glass effect view is not restricted
+   // vertically to top chrome (it spans full height).
+   if (!browser_view_ || browser_view_->ShouldDrawVerticalTabStrip()) {
+@@ -294,6 +295,7 @@ std::optional<int> BrowserNativeWidgetMac::GetGlassFrameHeight() const {
+ }
+ 
+ std::optional<int> BrowserNativeWidgetMac::GetGlassFrameWidth() const {
++  BRAVE_BROWSER_NATIVE_WIDGET_MAC_FULL_WINDOW_GLASS_FRAME
+   // If vertical tabs are not being drawn (e.g. horizontal tab strip mode,
+   // popup/app windows, or window too narrow to render vertical tabs), the glass
+   // effect view spans the full window width without horizontal restriction.

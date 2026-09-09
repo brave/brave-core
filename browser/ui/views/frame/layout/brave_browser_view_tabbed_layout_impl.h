@@ -121,6 +121,16 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
 
   void UpdateInsetsForVerticalTabStrip();
 
+  // Whether the macOS glass frame is showing behind the entire window, which
+  // Brave does with vertical tabs. See the glass frame width/height hooks in
+  // chromium_src/chrome/browser/ui/views/frame/browser_native_widget_mac.mm.
+  bool IsFullWindowGlassFrameActive() const;
+
+  // Makes the chrome surfaces sitting on top of the glass frame paint
+  // transparent, so the glass shows through all of them, and restores their
+  // opaque color once the glass frame goes away.
+  void UpdateBackgroundsForGlassFrame();
+
   gfx::Insets GetContentsMargins() const;
 
   // Whether the contents area reaches the top edge of the window, which happens
