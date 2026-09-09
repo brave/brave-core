@@ -41,15 +41,12 @@ export class BraveAccountSettingsElement extends CrLitElement {
 
   private accountStateListenerId: number | null = null
 
-  // Mobile has no ConstrainedWebDialog, so unlike the desktop mount, which
-  // asks the browser to open one, authentication is reached by navigating to
-  // the route that mounts the dialogs - see brave_account_route.ts.
-  //
-  // TODO: this reloads the document to swap one root element for another. Once
-  // the flows live at their own route, mount them in place via history
-  // navigation instead.
-  protected onOpenBraveAccountDialog() {
-    window.location.pathname = '/authentication'
+  // The rows and the flows share a WebUI here, so the page asks the browser to
+  // present the flows over it - unlike the desktop mount, which goes through
+  // `RowHandler` because its rows live in a different WebUI.
+  protected onOpenBraveAccountDialog(
+        e: CustomEvent<{ initiatingServiceName: string }>) {
+    this.browserProxy.dialogController.openDialog(e.detail.initiatingServiceName)
   }
 
   override connectedCallback() {

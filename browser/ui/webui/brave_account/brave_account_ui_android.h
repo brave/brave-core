@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_ANDROID_H_
 
 #include "brave/browser/brave_account/brave_account_service_factory.h"
+#include <string>
+
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -37,6 +39,9 @@ class BraveAccountUIAndroid
 
  private:
   // brave_account::mojom::DialogController:
+  // No-op: the rows are native here, so nothing asks the WebUI to open the
+  // flows yet.
+  void OpenDialog(const std::string& initiating_service_name) override {}
   void CloseDialog() override;
 
   mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};

@@ -230,5 +230,10 @@ interface Authentication {
 
 // Interface for controlling the Brave Account dialog.
 interface DialogController {
+  // Presents the authentication flows over the page serving the account rows.
+  // Only implemented where the rows and the flows share a WebUI - on desktop
+  // the rows live in brave://settings and go through `RowHandler` instead.
+  OpenDialog(string initiating_service_name);
+
   CloseDialog();
 };

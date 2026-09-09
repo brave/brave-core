@@ -59,7 +59,9 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver {
+class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver,
+  BraveAccountDialogPresenting
+{
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -423,14 +425,30 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }
 
   private func openBraveAccountDialog(path: String = "") {
+    presentBraveAccountDialog(for: URL(string: "brave://account\(path)")!)
+  }
+
+  // MARK: - BraveAccountDialogPresenting
+
+  // Also called from the WebUI serving the account rows, which asks for the
+  // flows to be presented over it rather than navigating in place.
+  func presentBraveAccountDialog(for url: URL) {
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
-    controller.webView.load(URLRequest(url: URL(string: "brave://account\(path)")!))
+    controller.webView.load(URLRequest(url: url))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
     }
-    present(container, animated: true)
+
+    // The rows are themselves served in a presented WebUI, so present the flows
+    // from whatever is on top rather than from here - UIKit ignores a second
+    // presentation from a controller that is already presenting.
+    var presenter: UIViewController = navigationController ?? self
+    while let presented = presenter.presentedViewController {
+      presenter = presented
+    }
+    presenter.present(container, animated: true)
   }
 
   private var braveAccountSection: Static.Section? {
