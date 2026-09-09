@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { assert } from '//resources/js/assert.js'
+import { CrActionMenuElement } from '//resources/cr_elements/cr_action_menu/cr_action_menu.js'
 import { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
@@ -62,11 +64,24 @@ export class BraveAccountLoggedInRowElement extends
     }
   }
 
+  protected onMoreActionsClicked(e: Event) {
+    const menu = this.shadowRoot?.querySelector<CrActionMenuElement>(
+        'cr-action-menu')
+    assert(menu)
+    menu.showAt(e.currentTarget as HTMLElement)
+  }
+
+  private closeMenu() {
+    this.shadowRoot?.querySelector<CrActionMenuElement>('cr-action-menu')?.close()
+  }
+
   protected onLogOutButtonClicked() {
+    this.closeMenu()
     this.browserProxy.authentication.logOut()
   }
 
   protected async onChangePasswordButtonClicked() {
+    this.closeMenu()
     if (this.isChangingPassword) return
     this.isChangingPassword = true
 
@@ -84,6 +99,11 @@ export class BraveAccountLoggedInRowElement extends
     }
 
     this.isChangingPassword = false
+  }
+
+  protected onDeleteAccountButtonClicked() {
+    this.closeMenu()
+    this.openBraveAccountDialog(true)
   }
 
   private updateEmailTruncation() {

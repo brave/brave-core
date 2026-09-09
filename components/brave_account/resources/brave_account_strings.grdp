@@ -64,6 +64,9 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE" desc="Title for the alert shown when starting the password change process fails" formatter_data="webui=BraveAccountSettings android_java">
     Unable to change password
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL" desc="Label for the button that starts the account deletion process when clicked" formatter_data="webui=BraveAccountSettings">
+    Delete account
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Log out
   </message>

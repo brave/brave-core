@@ -4,6 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import '//resources/cr_components/localized_link/localized_link.js'
+import '//resources/cr_elements/cr_action_menu/cr_action_menu.js'
+import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
 import { assert } from '//resources/js/assert.js'
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
@@ -82,20 +84,34 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
             <div id="email">${this.truncatedEmail}</div>
           </div>
         </div>
-        <leo-button kind="plain"
-                    size="small"
-                    ?isDisabled=${this.isChangingPassword}
-                    @click=${this.onChangePasswordButtonClicked}>
-          ${this.i18n(
-              BraveAccountSettingsStrings
-                   .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL)}
-        </leo-button>
-        <leo-button kind="outline"
-                    size="small"
-                    @click=${this.onLogOutButtonClicked}>
-          <leo-icon name="outside" slot="icon-before"></leo-icon>
-          ${this.i18n(
-              BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
-        </leo-button>
+        <cr-icon-button iron-icon="cr:more-vert"
+                        title="${this.i18n('moreActions')}"
+                        aria-label="${this.i18n('moreActions')}"
+                        @click=${this.onMoreActionsClicked}>
+        </cr-icon-button>
+        <cr-action-menu role-description="${this.i18n('menu')}">
+          <button class="dropdown-item"
+                  ?disabled=${this.isChangingPassword}
+                  @click=${this.onChangePasswordButtonClicked}>
+            <leo-icon name="lock"></leo-icon>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL)}
+          </button>
+          <button class="dropdown-item"
+                  @click=${this.onLogOutButtonClicked}>
+            <leo-icon name="outside"></leo-icon>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
+          </button>
+          <button class="dropdown-item destructive"
+                  @click=${this.onDeleteAccountButtonClicked}>
+            <leo-icon name="trash"></leo-icon>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL)}
+          </button>
+        </cr-action-menu>
       </div>`
 }

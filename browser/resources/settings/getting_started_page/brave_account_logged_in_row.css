@@ -13,3 +13,19 @@
 #email {
   text-wrap-mode: nowrap;
 }
+
+cr-icon-button {
+  flex: none;
+}
+
+.dropdown-item {
+  gap: var(--leo-spacing-l);
+}
+
+.dropdown-item leo-icon {
+  --leo-icon-size: var(--leo-icon-m);
+}
+
+.dropdown-item.destructive {
+  color: var(--leo-color-systemfeedback-error-text);
+}
