@@ -2520,14 +2520,19 @@
 # WebFrameWidgetImpl::UpdateLifecycle once a full (kAll) lifecycle update runs.
 # content::WaitForLoadStop() only waits for DidStopLoading, so on a loaded bot
 # the assertion can run before the first compositor lifecycle update and observe
-# nullopt instead of SK_ColorTRANSPARENT. Counting only verdicts since
-# 2026-08-18, upstream's own waterfall builders show 11.1% (Linux Tests), 13.7%
-# (Mac13 Tests) and 55.1% (win11-arm64-rel-tests), so the flake is not platform
-# specific and this all-platform file is used. Brave does override the overlay
-# stylesheet in chromium_src/chrome/browser/resources/actor_overlay/app.css, but
-# only the translucent :host(.background-visible) gradient plus its cursor and
-# the #border-stroke / #border-glow colors, not the document base background
-# color this assertion reads -- that is set by ActorOverlayWebView::ShowUI via
+# nullopt instead of SK_ColorTRANSPARENT. Over the past 30 days upstream's own
+# waterfall builders show 15.0% (Linux Tests), 15.3% (Mac13 Tests) and 53.8%
+# (win11-arm64-rel-tests), so the flake is not platform specific and this
+# all-platform file is used. generated/browser_tests-macos.filter lists the test
+# too, but macOS is the only config update-upstream-flake-filters.py catches it
+# on: that script averages over every matching upstream bot, and the near-0% CQ
+# bots (linux-rel and win-rel, 25k+ verdicts each) pull the linux config to
+# 0.87% and the windows config to 0.73%, just under its 1% threshold. Brave does
+# override the overlay stylesheet in
+# chromium_src/chrome/browser/resources/actor_overlay/app.css, but only the
+# translucent :host(.background-visible) gradient plus its cursor and the
+# #border-stroke / #border-glow colors, not the document base background color
+# this assertion reads -- that is set by ActorOverlayWebView::ShowUI via
 # WebContents::SetPageBaseBackgroundColor(SK_ColorTRANSPARENT), which no Brave
 # override or patch touches.
 # https://github.com/brave/brave-browser/issues/58297
