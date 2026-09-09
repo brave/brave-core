@@ -402,6 +402,8 @@ class FakeConversationUI : public mojom::ConversationUI {
                           std::vector<mojom::ModelPtr> all_models) override {}
   void OnAssociatedContentInfoChanged(
       std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+  void OnContentToolsChanged(const std::string& content_uuid,
+                             std::vector<mojom::ToolInfoPtr> tools) override {}
   void OnConversationDeleted() override {}
 };
 

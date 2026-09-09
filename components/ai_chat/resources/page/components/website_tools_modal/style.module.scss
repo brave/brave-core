@@ -48,22 +48,27 @@
 }
 
 .tool {
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+
   & + & {
     border-top: 1px solid var(--leo-color-divider-subtle);
   }
 }
 
-// The whole row toggles its description, so it's a button spanning the row
-// rather than just the description text.
+.toolHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--leo-spacing-l);
+}
+
 .toolToggle {
   appearance: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--leo-spacing-s);
+  display: block;
   width: 100%;
   box-sizing: border-box;
-  margin: 0;
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  margin: var(--leo-spacing-s) 0 0;
+  padding: 0;
   border: none;
   background: none;
   text-align: left;
@@ -79,6 +84,11 @@
   font: var(--leo-font-default-semibold);
   color: var(--leo-color-text-primary);
   word-break: break-word;
+}
+
+.toolPermission {
+  flex: none;
+  width: 160px;
 }
 
 .toolDescription {

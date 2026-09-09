@@ -24,8 +24,16 @@ const CONTENT: Mojom.AssociatedContent = {
 }
 
 const TOOLS: Mojom.ToolInfo[] = [
-  { name: 'browse_store', description: 'Browse OR navigate to collections.' },
-  { name: 'cancel_cart', description: 'Remove all items from the cart.' },
+  {
+    name: 'browse_store',
+    description: 'Browse OR navigate to collections.',
+    permission: Mojom.ToolPermission.kAsk,
+  },
+  {
+    name: 'cancel_cart',
+    description: 'Remove all items from the cart.',
+    permission: Mojom.ToolPermission.kNeverAllow,
+  },
 ]
 
 async function renderModal(ui: React.ReactElement) {
@@ -69,6 +77,184 @@ describe('WebsiteToolsModal', () => {
       screen.getByText('mywebsite.com/collections/water'),
     ).toBeInTheDocument()
   })
+
+  it('shows each tool the permission it currently has', async () => {
+    const { container } = await renderModal(
+      <MockContext
+        conversationHandler={{
+          getContentTools: () => Promise.resolve({ tools: TOOLS }),
+        }}
+      >
+        <WebsiteToolsModal
+          content={CONTENT}
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+    })
+    const dropdowns = container.querySelectorAll('leo-dropdown')
+    expect(dropdowns[0]).toHaveProperty(
+      'value',
+      String(Mojom.ToolPermission.kAsk),
+    )
+    expect(dropdowns[1]).toHaveProperty(
+      'value',
+      String(Mojom.ToolPermission.kNeverAllow),
+    )
+  })
+
+  it('records the permission the user picks for a tool', async () => {
+    const setContentToolPermission = jest.fn()
+
+    const { container } = await renderModal(
+      <MockContext
+        conversationHandler={{
+          getContentTools: () => Promise.resolve({ tools: TOOLS }),
+          setContentToolPermission,
+        }}
+      >
+        <WebsiteToolsModal
+          content={CONTENT}
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+    })
+
+    await act(async () => {
+      container.querySelectorAll('leo-dropdown')[0].dispatchEvent(
+        Object.assign(new Event('change', { bubbles: true }), {
+          value: String(Mojom.ToolPermission.kAlwaysAllow),
+        }),
+      )
+    })
+
+    expect(setContentToolPermission).toHaveBeenCalledWith(
+      'content-uuid',
+      'browse_store',
+      Mojom.ToolPermission.kAlwaysAllow,
+    )
+  })
+
+  it('shows a permission change the browser pushed', async () => {
+    // The choice is conversation-wide, so a dialog open in another view has to
+    // reflect it too - without asking the page for its tools again, which
+    // could answer with a different list mid-interaction.
+    const getContentTools = jest.fn(() => Promise.resolve({ tools: TOOLS }))
+    const observerRef: { current?: Mojom.ConversationUIInterface } = {}
+
+    const { container } = await renderModal(
+      <MockContext
+        conversationHandler={{ getContentTools }}
+        conversationUIObserverRef={observerRef}
+      >
+        <WebsiteToolsModal
+          content={CONTENT}
+          onClose={() => {}}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+    })
+
+    await act(async () => {
+      observerRef.current!.onContentToolsChanged('content-uuid', [
+        { ...TOOLS[0], permission: Mojom.ToolPermission.kAlwaysAllow },
+        TOOLS[1],
+      ])
+    })
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('leo-dropdown')[0]).toHaveProperty(
+        'value',
+        String(Mojom.ToolPermission.kAlwaysAllow),
+      )
+    })
+    expect(getContentTools).toHaveBeenCalledTimes(1)
+  })
+
+  it.each([
+    // The loop reads the choices once, when it starts, so a change made part
+    // way through wouldn't apply until the next one.
+    ['a response is generating', { isRequestInProgress: true }],
+    // The request is over by the time the tools run, so it's the task state
+    // that says the loop is still in flight - including while it waits on a
+    // permission challenge.
+    [
+      'a tool loop is running',
+      {
+        isRequestInProgress: false,
+        toolUseTaskState: Mojom.TaskState.kRunning,
+      },
+    ],
+    [
+      'a tool loop is paused',
+      { isRequestInProgress: false, toolUseTaskState: Mojom.TaskState.kPaused },
+    ],
+  ])(
+    'locks the permission pickers while %s',
+    async (_, conversationState: Partial<Mojom.ConversationState>) => {
+      const { container } = await renderModal(
+        <MockContext
+          conversationHandler={{
+            getContentTools: () => Promise.resolve({ tools: TOOLS }),
+          }}
+          initialState={{ conversationState }}
+        >
+          <WebsiteToolsModal
+            content={CONTENT}
+            onClose={() => {}}
+          />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+      })
+      for (const dropdown of container.querySelectorAll('leo-dropdown')) {
+        expect(dropdown).toHaveProperty('disabled', true)
+      }
+    },
+  )
+
+  it.each([
+    ['no tool loop has started', Mojom.TaskState.kNone],
+    ['the tool loop was stopped', Mojom.TaskState.kStopped],
+  ])(
+    'leaves the permission pickers usable when %s',
+    async (_, toolUseTaskState: Mojom.TaskState) => {
+      const { container } = await renderModal(
+        <MockContext
+          conversationHandler={{
+            getContentTools: () => Promise.resolve({ tools: TOOLS }),
+          }}
+          initialState={{
+            conversationState: { isRequestInProgress: false, toolUseTaskState },
+          }}
+        >
+          <WebsiteToolsModal
+            content={CONTENT}
+            onClose={() => {}}
+          />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        expect(container.querySelectorAll('leo-dropdown')).toHaveLength(2)
+      })
+      for (const dropdown of container.querySelectorAll('leo-dropdown')) {
+        expect(dropdown).toHaveProperty('disabled', false)
+      }
+    },
+  )
 
   it('counts the tools it lists', async () => {
     await renderModal(

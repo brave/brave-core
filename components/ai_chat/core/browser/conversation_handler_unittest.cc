@@ -179,6 +179,12 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
               (std::vector<mojom::AssociatedContentPtr>),
               (override));
 
+  MOCK_METHOD(void,
+              OnContentToolsChanged,
+              (const std::string& content_uuid,
+               std::vector<mojom::ToolInfoPtr> tools),
+              (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:
@@ -3999,8 +4005,9 @@ TEST_F(ConversationHandlerUnitTest,
   // interaction.
   EXPECT_CALL(*tool1, UseTool).Times(0);
 
-  // State should not be running, since we're waiting
-  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
+  // The loop is in flight even though this tool is waiting on the user, so
+  // that UI which mustn't change mid-loop can tell.
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kRunning);
 
   // Verify the tool use event exists and has no output
   const auto& history_before = conversation_handler_->GetConversationHistory();

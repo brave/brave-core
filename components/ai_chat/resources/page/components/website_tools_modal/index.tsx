@@ -5,11 +5,15 @@
 
 import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
+import Dropdown from '@brave/leo/react/dropdown'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { useConversation } from '../../state/conversation_context'
+import {
+  useConversation,
+  useConversationState,
+} from '../../state/conversation_context'
 import { AttachmentPageItem } from '../attachment_item'
 import styles from './style.module.scss'
 
@@ -19,10 +23,33 @@ interface Props {
   onClose: () => void
 }
 
+// Leo's Dropdown deals in strings, so the enum is stringified on the way in
+// and parsed back out.
+const PERMISSION_OPTIONS = [
+  {
+    permission: Mojom.ToolPermission.kAlwaysAllow,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW,
+  },
+  {
+    permission: Mojom.ToolPermission.kAsk,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ASK,
+  },
+  {
+    permission: Mojom.ToolPermission.kNeverAllow,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_NEVER_ALLOW,
+  },
+] as const
+
+const DEFAULT_PERMISSION_OPTION = PERMISSION_OPTIONS.find(
+  (option) => option.permission === Mojom.ToolPermission.kAsk,
+)!
+
 function ToolItem(props: {
   tool: Mojom.ToolInfo
   isExpanded: boolean
+  isPermissionChangeDisabled: boolean
   onToggle: () => void
+  onPermissionChange: (permission: Mojom.ToolPermission) => void
 }) {
   const [isClamped, setIsClamped] = React.useState(false)
   const descriptionRef = React.useRef<HTMLSpanElement>(null)
@@ -42,8 +69,37 @@ function ToolItem(props: {
     return () => observer.disconnect()
   }, [props.tool.description, props.isExpanded])
 
+  const selected =
+    PERMISSION_OPTIONS.find(
+      (option) => option.permission === props.tool.permission,
+    ) ?? DEFAULT_PERMISSION_OPTION
+
   return (
     <li className={styles.tool}>
+      <div className={styles.toolHeader}>
+        <span className={styles.toolName}>{props.tool.name}</span>
+        <Dropdown
+          size='small'
+          className={styles.toolPermission}
+          value={String(selected.permission)}
+          disabled={props.isPermissionChangeDisabled}
+          // The dialog scrolls, which would clip an absolutely positioned menu.
+          positionStrategy='fixed'
+          onChange={(e: { value: string }) =>
+            props.onPermissionChange(Number(e.value))
+          }
+        >
+          <div slot='value'>{getLocale(selected.label)}</div>
+          {PERMISSION_OPTIONS.map((option) => (
+            <leo-option
+              key={option.permission}
+              value={String(option.permission)}
+            >
+              {getLocale(option.label)}
+            </leo-option>
+          ))}
+        </Dropdown>
+      </div>
       <button
         type='button'
         disabled={!isClamped}
@@ -51,7 +107,6 @@ function ToolItem(props: {
         className={styles.toolToggle}
         onClick={props.onToggle}
       >
-        <span className={styles.toolName}>{props.tool.name}</span>
         {/* The clamp needs its own element: a button lays its content out in
             an anonymous box, which -webkit-box doesn't survive. */}
         <span
@@ -72,9 +127,23 @@ function ToolItem(props: {
 // pill above the input box.
 export default function WebsiteToolsModal(props: Props) {
   const conversation = useConversation()
-  // Placeholder data means the page hasn't answered yet.
-  const { getContentToolsData: tools, isPlaceholderData: isLoading } =
-    conversation.api.useGetContentTools(props.content.uuid)
+  // Placeholder data means the page hasn't answered yet. A cached answer isn't
+  // shown while re-fetching either: it could name a permission the browser has
+  // since forgotten.
+  const {
+    getContentToolsData: tools,
+    isPlaceholderData,
+    isFetching,
+  } = conversation.api.useGetContentTools(props.content.uuid)
+  const isLoading = isPlaceholderData || isFetching
+
+  // Don't allow changing permissions while a request is in progress, or while a
+  // tool loop is still in flight.
+  const { isRequestInProgress, toolUseTaskState } = useConversationState()
+  const isPermissionChangeDisabled =
+    isRequestInProgress
+    || (toolUseTaskState !== Mojom.TaskState.kNone
+      && toolUseTaskState !== Mojom.TaskState.kStopped)
   // Only one description is expanded at a time, to keep the list scannable.
   const [expandedToolName, setExpandedToolName] = React.useState<string | null>(
     null,
@@ -122,9 +191,17 @@ export default function WebsiteToolsModal(props: Props) {
                   key={tool.name}
                   tool={tool}
                   isExpanded={tool.name === expandedToolName}
+                  isPermissionChangeDisabled={isPermissionChangeDisabled}
                   onToggle={() =>
                     setExpandedToolName((expanded) =>
                       expanded === tool.name ? null : tool.name,
+                    )
+                  }
+                  onPermissionChange={(permission) =>
+                    conversation.api.conversationHandler.setContentToolPermission(
+                      props.content.uuid,
+                      tool.name,
+                      permission,
                     )
                   }
                 />

@@ -457,6 +457,11 @@ interface ConversationHandler {
   // Gets the tools the associated content with |content_uuid| currently
   // exposes, for the tools pill's dialog. Empty if it's no longer associated.
   GetContentTools(string content_uuid) => (array<ToolInfo> tools);
+
+  // Applies to every tool of that name from the content's origin, for the
+  // lifetime of this conversation.
+  SetContentToolPermission(string content_uuid, string tool_name,
+                           ToolPermission permission);
 };
 
 interface ConversationUI {
@@ -488,6 +493,13 @@ interface ConversationUI {
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
   OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content);
+
+  // The tools exposed by the associated content with |content_uuid|, after a
+  // change the browser made to them - currently only a permission choice.
+  // Pushed rather than invalidated so every open UI for this conversation
+  // settles on the same list without each one re-asking the page.
+  OnContentToolsChanged(string content_uuid, array<ToolInfo> tools);
+
   OnConversationDeleted();
 };
 

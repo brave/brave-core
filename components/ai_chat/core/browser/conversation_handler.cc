@@ -360,6 +360,14 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   }
 }
 
+void ConversationHandler::OnContentToolsChanged(
+    const std::string& content_uuid,
+    std::vector<mojom::ToolInfoPtr> tools) {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnContentToolsChanged(content_uuid, mojo::Clone(tools));
+  }
+}
+
 bool ConversationHandler::IsAnyClientConnected() {
   return !receivers_.empty() || !conversation_ui_handlers_.empty();
 }
@@ -1994,6 +2002,14 @@ void ConversationHandler::GetContentTools(const std::string& content_uuid,
   associated_content_manager_->GetToolInfos(content_uuid, std::move(callback));
 }
 
+void ConversationHandler::SetContentToolPermission(
+    const std::string& content_uuid,
+    const std::string& tool_name,
+    mojom::ToolPermission permission) {
+  associated_content_manager_->SetToolPermission(content_uuid, tool_name,
+                                                 permission);
+}
+
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {
   // A ToolProvider's task state has changed. Propogate this to the
   // conversation's task state.
@@ -2324,6 +2340,18 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       has_pending_tool_use_request = true;
       has_only_completed_tool_use_events = false;
 
+      // Initialize the task state for this tool loop if not already set. An
+      // unanswered tool use request means the loop is in flight, whether or
+      // not this particular tool needs the user first, so this has to happen
+      // before the user-interaction checks below - UI that must not change
+      // mid-loop (e.g. the website tools dialog's permission pickers) relies
+      // on the task state to know that. The cost is that a tool which only
+      // needs user interaction also puts the Task pause/stop UI up.
+      if (tool_use_task_state_ == mojom::TaskState::kNone) {
+        tool_use_task_state_ = mojom::TaskState::kRunning;
+        OnToolUseTaskStateChanged();
+      }
+
       // Now check if we're allowed to execute tools.
       if (tool_use_task_state_ == mojom::TaskState::kPaused ||
           tool_use_task_state_ == mojom::TaskState::kStopped) {
@@ -2414,18 +2442,6 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       }
 
       // No user interaction needed - execute tool
-
-      // Initialize the task state for this tool loop if not already set. We do
-      // this after checking for user interaction so that a tool requiring
-      // only user-interaction won't trigger a Task pause/stop UI. If we want
-      // the tool state to reset whenever there is a tool use that requires
-      // user interaction we should set it in the permission-challenge and
-      // user-output branches before they `break` (to kNone, or a new
-      // kWaitingForUser).
-      if (tool_use_task_state_ == mojom::TaskState::kNone) {
-        tool_use_task_state_ = mojom::TaskState::kRunning;
-        OnToolUseTaskStateChanged();
-      }
 
       is_tool_use_in_progress_ = true;
       OnAPIRequestInProgressChanged();
