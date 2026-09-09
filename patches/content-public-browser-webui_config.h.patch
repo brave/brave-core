@@ -1,0 +1,13 @@
+diff --git a/content/public/browser/webui_config.h b/content/public/browser/webui_config.h
+index 0e32041a05b114f8fc55c307116a954fd7447885..471bb5e2f64eaf654cb9f4e1462cf1e016c52016 100644
+--- a/content/public/browser/webui_config.h
++++ b/content/public/browser/webui_config.h
+@@ -84,6 +84,8 @@ class CONTENT_EXPORT WebUIConfig {
+   // the WebUIController or resources will fail to load.
+   virtual void RegisterURLDataSource(BrowserContext* browser_context) {}
+ 
++  virtual bool ShouldInterceptNavigationsWithServiceWorker();
++
+  private:
+   const std::string scheme_;
+   const std::string host_;
