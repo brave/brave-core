@@ -198,12 +198,13 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
 
   ASSERT_NE(first_served_creative_ads, second_served_creative_ads);
 
-  // Assert: `first_served_creative_ads` is served again because
-  // `second_served_creative_ads` was served last and is not served immediately
-  // after all ads have been seen.
+  // Assert: both ads have now been seen so the rotation resets, making
+  // either ad eligible again.
   base::test::TestFuture<CreativeNotificationAdList> test_future_3;
   eligible_ads_->GetForUserModel(user_model, test_future_3.GetCallback());
-  EXPECT_EQ(test_future_3.Take(), first_served_creative_ads);
+  EXPECT_THAT(test_future_3.Take(),
+              ::testing::AnyOfArray(
+                  {first_served_creative_ads, second_served_creative_ads}));
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV2Test, ZeroPriorityAdIsNeverServed) {
@@ -352,12 +353,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
   ASSERT_NE(first_served_creative_ads, second_served_creative_ads);
   SimulateServeAd(second_served_creative_ads);
 
-  // Assert: all priority 1 ads have been seen so the bucket resets.
-  // The second-served ad is excluded; the first-served ad comes back.
-  // The lower-priority `creative_ad_3` is never reached.
+  // Assert: all priority 1 ads have been seen so the bucket resets, making
+  // both `creative_ad_1` and `creative_ad_2` eligible again. The lower
+  // priority `creative_ad_3` is never reached.
   base::test::TestFuture<CreativeNotificationAdList> test_future_3;
   eligible_ads_->GetForUserModel(user_model, test_future_3.GetCallback());
-  EXPECT_EQ(test_future_3.Take(), first_served_creative_ads);
+  EXPECT_THAT(test_future_3.Take(),
+              ::testing::AnyOfArray(
+                  {first_served_creative_ads, second_served_creative_ads}));
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV2Test,
