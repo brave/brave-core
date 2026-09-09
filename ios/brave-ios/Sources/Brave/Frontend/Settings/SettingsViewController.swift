@@ -1538,9 +1538,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         Row(
           text: Strings.Autofill.managePasswordsTitle,
           selection: { [unowned self] in
-            if FeatureList.kUseChromiumWebViewsAutofill.enabled,
-              let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
-            {
+            if let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager {
               let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
               let controller = UIHostingController(
                 rootView:
