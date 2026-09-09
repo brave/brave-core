@@ -934,6 +934,17 @@
 -SearchPrefetchXGeoEnabledBrowserTest.*
 -SearchPreloadUnifiedMetricsDisabledBrowserTest.SearchPrefetchServedNavigationHandleUserDataFeatureDisabled
 
+# These tests expect a LoadingPredictor, which never exists now that
+# IsLoadingPredictorEnabled() always returns false.
+-All/SearchEnginePreconnectorWithAdjustPreconnectRetryIntervalFeatureBrowserTest.CalculateBackoffMultiplier/*
+-AnchorElementSetIsNavigationInDomainBrowserTest.TestPointerDownOnAnchor
+-Flags/LCPPTimingPredictorBrowserFlagTest.WithKCriticalPathFlag/*
+-LCPCriticalPathPredictorBrowserTest.*
+-LCPPPrefetchSubresourceTest.UMA
+-LCPPTimingPredictorBrowserTest.Base
+-SearchEnginePreconnectorDeviceBoundSessionBrowserTest.DoesNotPrewarmWhenSearchSuggestDisabled
+-SuppressesLoadingPredictorOnSlowNetworkBrowserTest.SuppressesOnSlowNetwork
+
 # The tests below are being disabled due to current incompatibilities between
 # Chromium storage partitioning and Brave epehemeral storage.
 -All/PartitionedBlobUrlUsagePolicyBrowserTestP.FetchingPartitionedBlobUrlUsageEnterprisePolicy/1
