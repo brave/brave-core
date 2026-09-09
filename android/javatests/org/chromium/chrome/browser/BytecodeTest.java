@@ -3168,6 +3168,7 @@ public class BytecodeTest {
         List<String> methods =
                 Arrays.asList(
                         "mediaSessionDestroyed",
+                        "mediaSessionDocumentChanged",
                         "mediaSessionStateChanged",
                         "mediaSessionMetadataChanged",
                         "mediaSessionActionsChanged",
