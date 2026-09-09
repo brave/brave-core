@@ -37,12 +37,12 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
       collectionView.dequeueReusableCell(for: indexPath) as DefaultBrowserCalloutNTPWidgetCell
     cell.contentConfiguration = UIHostingConfiguration {
       DefaultBrowserCalloutView(
-        openSettings: { [unowned self] in
-          openSettings(windowScene: collectionView.window?.windowScene)
+        openSettings: { [weak self] in
+          self?.openSettings(windowScene: collectionView.window?.windowScene)
         },
-        dismiss: { [unowned self] in
+        dismiss: { [weak self] in
           Preferences.General.defaultBrowserCalloutDismissed.value = true
-          sectionDidChange?()
+          self?.sectionDidChange?()
         }
       )
       .frame(maxWidth: 640)
@@ -152,7 +152,7 @@ private struct DefaultBrowserCalloutView: View {
           Text(LocalizedStringKey(Strings.setDefaultBrowserCalloutTitle))
             .font(.footnote)
         }
-        .accessibilityElement()
+        .accessibilityElement(children: .combine)
         .foregroundStyle(.white)
         Spacer()
         Button {

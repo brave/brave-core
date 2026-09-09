@@ -46,10 +46,10 @@ class StatsSectionProvider: NSObject, NTPSectionProvider {
     cell.contentConfiguration = UIHostingConfiguration {
       StatsNTPWidget(
         isPrivateBrowsing: isPrivateBrowsing
-      ) { [unowned self] in
-        openPrivacyHubPressed()
-      } hidePrivacyHubPressed: { [unowned self] in
-        hidePrivacyHubPressed()
+      ) { [weak self] in
+        self?.openPrivacyHubPressed()
+      } hidePrivacyHubPressed: { [weak self] in
+        self?.hidePrivacyHubPressed()
       }
       .frame(maxWidth: 640)
       .fixedSize(horizontal: false, vertical: true)
@@ -144,7 +144,7 @@ struct StatsNTPWidget: View {
       openPrivacyHubPressed()
     } label: {
       VStack(spacing: 8) {
-        Label("Privacy Hub", braveSystemImage: "leo.shield.done-filled")
+        Label(Strings.PrivacyHub.privacyReportsTitle, braveSystemImage: "leo.shield.done-filled")
           .foregroundStyle(.white)
           .font(.footnote.weight(.semibold))
           .frame(maxWidth: .infinity, alignment: .leading)
