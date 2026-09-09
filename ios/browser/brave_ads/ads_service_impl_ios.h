@@ -62,6 +62,7 @@ class AdsServiceImplIOS : public AdsService {
   void NotifyDidClearAdsServiceData() const;
 
   // AdsService:
+  base::WeakPtr<AdsService> GetWeakPtr() override;
   bool IsIneligibleToStart() const override;
   bool IsInitialized() const override;
 

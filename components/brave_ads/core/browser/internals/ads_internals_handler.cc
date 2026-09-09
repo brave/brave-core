@@ -44,7 +44,7 @@ AdsInternalsHandler::AdsInternalsHandler(
     GetComponentIdCallback get_language_resource_component_id_callback,
     GetIsSponsoredImagesLoadedCallback get_is_sponsored_images_loaded_callback,
     GetComponentIdCallback get_ntp_sponsored_images_manifest_version_callback)
-    : ads_service_(ads_service),
+    : ads_service_(ads_service ? ads_service->GetWeakPtr() : nullptr),
       prefs_(prefs),
       variations_service_(variations_service),
       get_ntp_sponsored_images_component_id_callback_(

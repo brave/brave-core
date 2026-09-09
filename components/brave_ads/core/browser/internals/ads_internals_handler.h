@@ -104,7 +104,7 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals,
   // brave_ads::AdsServiceObserver:
   void OnDidInitializeAdsService() override;
 
-  const raw_ptr<brave_ads::AdsService> ads_service_;  // Not owned.
+  base::WeakPtr<brave_ads::AdsService> ads_service_;
 
   const raw_ref<PrefService> prefs_;
 

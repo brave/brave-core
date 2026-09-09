@@ -487,6 +487,10 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
   NotifyDidInitializeAdsService();
 }
 
+base::WeakPtr<AdsService> AdsServiceImpl::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 bool AdsServiceImpl::IsIneligibleToStart() const {
   return is_ineligible_to_start_;
 }

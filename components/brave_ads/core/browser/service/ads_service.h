@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
@@ -63,6 +64,12 @@ class AdsService : public KeyedService {
   ~AdsService() override;
 
   AdsService::Delegate* delegate() { return delegate_.get(); }
+
+  // Returns a `WeakPtr` that becomes invalid once this object is destroyed,
+  // regardless of any bat-ads-only shutdown/restart cycles it goes through in
+  // the meantime. Consumers that outlive the profile's `AdsService`, e.g.
+  // WebUI handlers, should hold this instead of a raw pointer.
+  virtual base::WeakPtr<AdsService> GetWeakPtr() = 0;
 
   void AddObserver(AdsServiceObserver* observer);
   void RemoveObserver(AdsServiceObserver* observer);

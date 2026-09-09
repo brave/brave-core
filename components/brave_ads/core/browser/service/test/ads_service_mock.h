@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -25,6 +26,11 @@ class AdsServiceMock : public AdsService {
   AdsServiceMock& operator=(const AdsServiceMock&) = delete;
 
   ~AdsServiceMock() override;
+
+  base::WeakPtr<AdsService> GetWeakPtr() override;
+
+  void NotifyObserversOnDidShutdownAdsServiceForTesting();
+  void NotifyObserversOnDidInitializeAdsServiceForTesting();
 
   MOCK_METHOD(void,
               AddBatAdsObserver,
@@ -116,6 +122,9 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void, NotifyBrowserDidResignActive, ());
 
   MOCK_METHOD(void, NotifyDidSolveAdaptiveCaptcha, ());
+
+ private:
+  base::WeakPtrFactory<AdsServiceMock> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads
