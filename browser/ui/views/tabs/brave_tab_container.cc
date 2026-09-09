@@ -587,7 +587,16 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
 }
 
 void BraveTabContainer::OnUnlockLayout() {
-  CHECK(!IsSessionRestoreInProgress());
+  if (IsSessionRestoreInProgress()) {
+    // Session restore for this profile is still (or again) in progress by
+    // the time this deferred task runs (e.g. during the profile chooser
+    // startup flow). Wait for it to finish rather than unlocking early.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&BraveTabContainer::OnUnlockLayout,
+                                  weak_factory_.GetWeakPtr()));
+    return;
+  }
+
   layout_locked_ = false;
 
   InvalidateIdealBounds();
