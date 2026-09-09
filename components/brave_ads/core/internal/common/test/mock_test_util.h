@@ -10,9 +10,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 // Helpers for configuring `AdsClientMock` default behaviors in tests via
 // `ON_CALL`.
@@ -22,7 +22,7 @@ using URLResponsePair =
     std::pair</*response_status_code*/ int, /*response_body*/ std::string>;
 using URLResponseList = std::vector<URLResponsePair>;
 using URLResponseMap =
-    base::flat_map</*url_request_path*/ std::string, URLResponseList>;
+    absl::flat_hash_map</*url_request_path*/ std::string, URLResponseList>;
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       bool is_available);

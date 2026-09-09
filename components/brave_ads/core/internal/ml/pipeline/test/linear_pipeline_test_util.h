@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads::ml::pipeline {
 
@@ -26,7 +27,7 @@ class LinearPipelineBufferBuilder final {
   ~LinearPipelineBufferBuilder();
 
   LinearPipelineBufferBuilder& CreateClassifier(
-      const std::map<std::string, VectorData>& raw_weights,
+      const absl::flat_hash_map<std::string, VectorData>& raw_weights,
       const std::map<std::string, float>& raw_biases);
 
   LinearPipelineBufferBuilder& AddLowercaseTransformation();

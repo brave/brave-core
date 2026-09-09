@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 
 #include <algorithm>
+#include <optional>
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
@@ -27,9 +28,13 @@ bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
 
 bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad,
                                      const std::string& subdivision) {
-  return creative_ad.geo_targets.contains(subdivision) ||
-         creative_ad.geo_targets.contains(
-             GetSubdivisionCountryCode(subdivision));
+  if (creative_ad.geo_targets.contains(subdivision)) {
+    return true;
+  }
+
+  const std::optional<std::string> country_code =
+      GetSubdivisionCountryCode(subdivision);
+  return country_code && creative_ad.geo_targets.contains(*country_code);
 }
 
 }  // namespace

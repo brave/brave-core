@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULES_BASE_H_
 
 #include <memory>
-#include <set>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads {
 
@@ -43,7 +43,7 @@ class ExclusionRulesBase {
   bool IsCached(const CreativeAdInfo& creative_ad) const;
   void Cache(const std::string& key);
 
-  std::set</*key*/ std::string> cache_;
+  absl::flat_hash_set</*key*/ std::string> cache_;
 };
 
 }  // namespace brave_ads

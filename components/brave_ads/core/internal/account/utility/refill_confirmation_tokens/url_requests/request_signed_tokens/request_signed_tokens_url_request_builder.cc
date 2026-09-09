@@ -12,7 +12,6 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -22,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -82,7 +82,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     const std::string& body) const {
   CHECK(!body.empty());
 
-  const base::flat_map<std::string, std::string> headers = {
+  const absl::flat_hash_map<std::string, std::string> headers = {
       {"digest", BuildDigestHeaderValue(body)}};
 
   std::string concatenated_header;

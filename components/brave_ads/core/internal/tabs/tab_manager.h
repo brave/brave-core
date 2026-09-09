@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TABS_TAB_MANAGER_H_
 
 #include <cstdint>
-#include <map>
 #include <optional>
 #include <string>
 #include <vector>
@@ -18,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 class GURL;
 
@@ -85,7 +85,7 @@ class TabManager final : public AdsClientNotifierObserver {
 
   std::optional<int32_t> visible_tab_id_;
 
-  std::map</*tab_id*/ int32_t, TabInfo> tabs_;
+  absl::flat_hash_map</*tab_id*/ int32_t, TabInfo> tabs_;
 
   uint32_t last_text_content_hash_ = 0;
 };

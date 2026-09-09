@@ -8,18 +8,18 @@
 
 #include <string_view>
 
-#include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 
-using SubdivisionMap = base::flat_map</*subdivision*/ std::string_view,
-                                      /*name*/ std::string_view>;
+using SubdivisionMap = absl::flat_hash_map</*subdivision*/ std::string_view,
+                                           /*name*/ std::string_view>;
 
 using SupportedSubdivisionMap =
-    base::flat_map</*country_code*/ std::string_view, SubdivisionMap>;
+    absl::flat_hash_map</*country_code*/ std::string_view, SubdivisionMap>;
 
 const SupportedSubdivisionMap& GetSupportedSubdivisions();
 

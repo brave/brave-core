@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -50,7 +50,7 @@ struct CreativeAdInfo {
   std::string segment;
   ConditionMatcherMap condition_matchers;
   CreativeDaypartSet dayparts;
-  base::flat_set<std::string> geo_targets;
+  absl::flat_hash_set<std::string> geo_targets;
   GURL target_url;
 };
 

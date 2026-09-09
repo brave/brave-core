@@ -113,8 +113,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSignalForUrl) {
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  EXPECT_THAT(expected_purchase_intent_signal_history,
-              ::testing::ElementsAreArray(purchase_intent_signal_history));
+  EXPECT_EQ(expected_purchase_intent_signal_history,
+            purchase_intent_signal_history);
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
@@ -144,8 +144,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  EXPECT_THAT(expected_purchase_intent_signal_history,
-              ::testing::ElementsAreArray(purchase_intent_signal_history));
+  EXPECT_EQ(expected_purchase_intent_signal_history,
+            purchase_intent_signal_history);
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
@@ -179,8 +179,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  EXPECT_THAT(expected_purchase_intent_signal_history,
-              ::testing::ElementsAreArray(purchase_intent_signal_history));
+  EXPECT_EQ(expected_purchase_intent_signal_history,
+            purchase_intent_signal_history);
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
@@ -214,8 +214,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  EXPECT_THAT(expected_purchase_intent_signal_history,
-              ::testing::ElementsAreArray(purchase_intent_signal_history));
+  EXPECT_EQ(expected_purchase_intent_signal_history,
+            purchase_intent_signal_history);
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest,

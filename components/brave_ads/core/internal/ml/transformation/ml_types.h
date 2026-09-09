@@ -9,12 +9,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_ML_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_ML_TYPES_H_
 
-#include <map>
 #include <string>
+
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads::ml {
 
-using PredictionMap = std::map</*class*/ std::string, /*prediction*/ double>;
+using PredictionMap =
+    absl::flat_hash_map</*class*/ std::string, /*prediction*/ double>;
 
 }  // namespace brave_ads::ml
 

@@ -25,6 +25,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads::database::table {
 
@@ -33,8 +35,8 @@ namespace {
 constexpr char kTableName[] = "campaigns";
 
 size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const std::map</*campaign_id*/ std::string,
-                                  CreativeCampaignInfo>& campaigns) {
+                   const absl::flat_hash_map</*campaign_id*/ std::string,
+                                             CreativeCampaignInfo>& campaigns) {
   CHECK(mojom_db_action);
   CHECK(!campaigns.empty());
 
@@ -57,9 +59,10 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                           const std::map</*campaign_id*/ std::string,
-                                          CreativeCampaignInfo>& campaigns) {
+std::string BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const absl::flat_hash_map</*campaign_id*/ std::string,
+                              CreativeCampaignInfo>& campaigns) {
   CHECK(mojom_db_action);
   CHECK(!campaigns.empty());
 
@@ -95,14 +98,19 @@ void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     return;
   }
 
-  std::map</*campaign_id*/ std::string, CreativeCampaignInfo> campaigns;
-  std::map</*campaign_id*/ std::string, base::flat_set<std::string>>
+  absl::flat_hash_map</*campaign_id*/ std::string, CreativeCampaignInfo>
+      campaigns;
+  absl::flat_hash_map</*campaign_id*/ std::string,
+                      absl::flat_hash_set<std::string>>
       geo_targets;
-  std::map</*campaign_id*/ std::string, base::flat_set<CreativeDaypartInfo>>
+  absl::flat_hash_map</*campaign_id*/ std::string,
+                      base::flat_set<CreativeDaypartInfo>>
       dayparts;
-  std::map</*creative_set_id*/ std::string, base::flat_set<std::string>>
+  absl::flat_hash_map</*creative_set_id*/ std::string,
+                      base::flat_set<std::string>>
       segments;
-  std::map</*creative_instance_id*/ std::string, CreativeDepositInfo> deposits;
+  absl::flat_hash_map</*creative_instance_id*/ std::string, CreativeDepositInfo>
+      deposits;
 
   for (const auto& creative_ad : creative_ads) {
     campaigns[creative_ad.campaign_id] = {

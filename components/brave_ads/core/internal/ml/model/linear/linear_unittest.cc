@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/test/linear_pipeline_test_util.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -21,7 +22,7 @@ namespace brave_ads::ml {
 class BraveAdsLinearTest : public test::TestBase {
  public:
   std::optional<LinearModel> BuildLinearModel(
-      const std::map<std::string, VectorData>& raw_weights,
+      const absl::flat_hash_map<std::string, VectorData>& raw_weights,
       const std::map<std::string, float>& biases) {
     buffer_ = pipeline::LinearPipelineBufferBuilder()
                   .CreateClassifier(raw_weights, biases)
@@ -49,7 +50,7 @@ class BraveAdsLinearTest : public test::TestBase {
 
 TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
   // Arrange
-  const std::map<std::string, VectorData> weights = {
+  const absl::flat_hash_map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.0, 0.0})},
       {"class_2", VectorData({0.0, 1.0, 0.0})},
       {"class_3", VectorData({0.0, 0.0, 1.0})}};
@@ -85,7 +86,7 @@ TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
 
 TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
   // Arrange
-  const std::map<std::string, VectorData> weights = {
+  const absl::flat_hash_map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.0, 0.0})},
       {"class_2", VectorData({0.0, 1.0, 0.0})},
       {"class_3", VectorData({0.0, 0.0, 1.0})}};
@@ -110,7 +111,7 @@ TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
 TEST_F(BraveAdsLinearTest, BinaryClassifierPredictionTest) {
   // Arrange
   const std::vector<float> data = {0.3, 0.2, 0.25};
-  const std::map<std::string, VectorData> weights = {
+  const absl::flat_hash_map<std::string, VectorData> weights = {
       {"the_only_class", VectorData(data)}};
 
   const std::map<std::string, float> biases = {{"the_only_class", -0.45}};
@@ -137,7 +138,7 @@ TEST_F(BraveAdsLinearTest, BinaryClassifierPredictionTest) {
 TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
   // Arrange
   constexpr size_t kPredictionLimits[2] = {2, 1};
-  const std::map<std::string, VectorData> weights = {
+  const absl::flat_hash_map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.5, 0.8})},
       {"class_2", VectorData({0.3, 1.0, 0.7})},
       {"class_3", VectorData({0.6, 0.9, 1.0})},
