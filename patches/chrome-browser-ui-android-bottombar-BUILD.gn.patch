@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/android/bottombar/BUILD.gn b/chrome/browser/ui/android/bottombar/BUILD.gn
-index 88096dc11b937584ac16551f818edac1c3920feb..eecd57dfdb9f877cf5b7ccdfc070e85ea4501e6b 100644
+index 88096dc11b937584ac16551f818edac1c3920feb..8d57142b8981a65c585257ccee9cd3d11fdb1494 100644
 --- a/chrome/browser/ui/android/bottombar/BUILD.gn
 +++ b/chrome/browser/ui/android/bottombar/BUILD.gn
-@@ -58,6 +58,7 @@ android_library("metrics_java") {
+@@ -33,6 +33,7 @@ android_library("config_java") {
+   sources = [ "java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java" ]
+   deps = [
+     "//base:build_info_java",
++    "//brave/browser/ui/android/bottombar:prefs_java",
+     "//build/android:build_java",
+     "//chrome/browser/flags:java",
+     "//chrome/browser/preferences:java",
+@@ -58,6 +59,7 @@ android_library("metrics_java") {
  
  android_library("java") {
    sources = [

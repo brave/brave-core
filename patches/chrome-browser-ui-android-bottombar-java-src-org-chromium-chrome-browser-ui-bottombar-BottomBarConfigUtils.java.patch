@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
+index 33357a75ae7fc6fbec46bf991c3696d6905e981c..2ba0161334ffecb1a6c4551b83553da00bbd0109 100644
+--- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
++++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
+@@ -26,7 +26,8 @@ public class BottomBarConfigUtils {
+     // LINT.IfChange(isBottomBarEnabled)
+     /** Whether the bottom bar is enabled. */
+     public static boolean isBottomBarEnabled(Context context) {
+-        return !DeviceFormFactor.isNonMultiDisplayContextOnTablet(context)
++        return BraveBottomBarUserPrefs.isBottomBarEnabled()
++                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(context)
+                 && !DeviceInfo.isAutomotive()
+                 && ChromeFeatureList.sAndroidBottomBar.isEnabled();
+     }

@@ -839,6 +839,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BOTTOM_TOOLBAR_TITLE" desc="Title for the bottom navigation toolbar setting.">
         Bottom navigation toolbar
       </message>
+      <message name="IDS_ENABLE_BOTTOM_BAR_TITLE" desc="Title for the setting that enables the bottom bar.">
+        Enable bottom bar
+      </message>
       <message name="IDS_BOTTOM_TOOLBAR_SUMMARY" desc="Summary for preference that enables the bottom navigation toolbar.">
         Show a bottom bar for quick access to home, bookmarks, and search
       </message>
