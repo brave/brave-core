@@ -29,7 +29,7 @@ namespace page_actions {
 // Drives the Wayback Machine page action: shows an icon (badged once a
 // snapshot lookup has completed) when the current page looks like it might be
 // available on the Wayback Machine, and shows the Wayback Machine bubble when
-// clicked.
+// clicked or, when enabled, automatically after a failed navigation.
 class WaybackMachinePageActionController {
  public:
   WaybackMachinePageActionController(
@@ -55,6 +55,7 @@ class WaybackMachinePageActionController {
   // without a user gesture is shown inactive, so that it doesn't take focus
   // away from the page.
   void ShowBubble(actions::ActionItem* item, bool user_gesture);
+  void MaybeAutoShowBubble();
 
   // (Re-)registers for wayback-state updates on |contents|'
   // BraveWaybackMachineTabHelper, since the tab's contents can be swapped out

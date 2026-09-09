@@ -3,10 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#include "brave/components/brave_wayback_machine/features.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,6 +24,7 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/events/event_constants.h"
@@ -31,6 +34,7 @@
 #include "ui/views/test/widget_test.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
+#include "url/gurl.h"
 
 namespace page_actions {
 
@@ -83,6 +87,7 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, BubbleLaunchTest) {
 
   SetWaybackState(WaybackState::kNeedToCheck);
   EXPECT_TRUE(icon->GetVisible());
+  EXPECT_EQ(GetBubbleView(), nullptr);
 
   // Check bubble is launched.
   ClickButton(icon);
@@ -118,6 +123,72 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
 
   EXPECT_EQ(GetBubbleView(), nullptr);
   EXPECT_FALSE(prefs->GetBoolean(kBraveWaybackMachineEnabled));
+}
+
+class WaybackMachineAutoShowBubbleBrowserTest
+    : public WaybackMachinePageActionBrowserTest {
+ public:
+  WaybackMachineAutoShowBubbleBrowserTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_wayback_machine::features::kWaybackMachineAutoShowBubble);
+  }
+
+ protected:
+  void CloseBubble() {
+    WaybackMachineBubbleView* bubble = GetBubbleView();
+    ASSERT_NE(bubble, nullptr);
+    views::Widget* widget = bubble->GetWidget();
+    ASSERT_NE(widget, nullptr);
+    views::test::WidgetDestroyedWaiter waiter(widget);
+    widget->CloseWithReason(views::Widget::ClosedReason::kCancelButtonClicked);
+    waiter.Wait();
+    EXPECT_EQ(GetBubbleView(), nullptr);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,
+                       AutoShowsOnNeedToCheck) {
+  EXPECT_EQ(GetBubbleView(), nullptr);
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+
+  WaybackMachineBubbleView* bubble = GetBubbleView();
+  ASSERT_NE(bubble, nullptr);
+  ASSERT_NE(bubble->GetWidget(), nullptr);
+  EXPECT_TRUE(bubble->GetWidget()->IsVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,
+                       DoesNotReshowAfterDismiss) {
+  SetWaybackState(WaybackState::kNeedToCheck);
+  ASSERT_NE(GetBubbleView(), nullptr);
+
+  CloseBubble();
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  EXPECT_EQ(GetBubbleView(), nullptr);
+
+  SetWaybackState(WaybackState::kInitial);
+  SetWaybackState(WaybackState::kNeedToCheck);
+  EXPECT_NE(GetBubbleView(), nullptr);
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,
+                       DoesNotAutoShowForInactiveTab) {
+  content::WebContents* first_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
+  ASSERT_EQ(1, browser()->tab_strip_model()->active_index());
+
+  BraveWaybackMachineTabHelper::FromWebContents(first_tab)
+      ->SetWaybackStateForTesting(WaybackState::kNeedToCheck);
+  EXPECT_EQ(GetBubbleView(), nullptr);
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  EXPECT_EQ(GetBubbleView(), nullptr);
 }
 
 }  // namespace page_actions

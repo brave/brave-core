@@ -23,6 +23,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -133,6 +134,10 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -396,6 +401,19 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "internals.",                                                   \
           kOsDesktop | kOsAndroid,                                        \
           FEATURE_VALUE_TYPE(brave_ads::kAdsInternalsVerboseModeFeature), \
+      }))
+
+#define WAYBACK_MACHINE_FEATURE_ENTRIES                                        \
+  IF_BUILDFLAG(                                                                \
+      ENABLE_BRAVE_WAYBACK_MACHINE,                                            \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "brave-wayback-machine-auto-show-bubble",                            \
+          "Auto-show Wayback Machine bubble",                                  \
+          "Automatically show the Wayback Machine bubble when the current "    \
+          "page is missing (for example, a 404).",                             \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_wayback_machine::features::kWaybackMachineAutoShowBubble), \
       }))
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1627,6 +1645,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
+  WAYBACK_MACHINE_FEATURE_ENTRIES                                              \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
   EMAIL_ALIASES_FEATURE_ENTRIES                                                \
   BRAVE_WORKSPACE_FEATURE_ENTRY                                                \
