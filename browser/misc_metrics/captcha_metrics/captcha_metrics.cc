@@ -6,8 +6,10 @@
 #include "brave/browser/misc_metrics/captcha_metrics/captcha_metrics.h"
 
 #include <optional>
+#include <string_view>
 
 #include "base/check.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
@@ -18,6 +20,8 @@
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "url/gurl.h"
 
@@ -147,10 +151,12 @@ void CaptchaMetrics::EnsureDefaultCaptchaProviders() {
 }
 
 void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
-  base::DictValue dict =
-      local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref).Clone();
-  auto increment = [&dict](const char* key) {
-    dict.Set(key, dict.FindInt(key).value_or(0) + 1);
+  // ScopedDictPrefUpdate needs to be run on UI thread.
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
+  auto increment = [&update](const char* key) {
+    update->Set(key, update->FindInt(key).value_or(0) + 1);
   };
 
   increment(kMiscMetricsCaptchaCount);
@@ -158,18 +164,18 @@ void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
   switch (provider) {
     case CaptchaProvider::kGoogle:
       increment(kMiscMetricsCaptchaGoogleCount);
-      break;
+      return;
     case CaptchaProvider::kCloudflare:
       increment(kMiscMetricsCaptchaCloudflareCount);
-      break;
+      return;
     case CaptchaProvider::kHCaptcha:
       increment(kMiscMetricsCaptchaHCaptchaCount);
-      break;
+      return;
     case CaptchaProvider::kOther:
-      break;
+      return;
   }
 
-  local_state_->SetDict(kMiscMetricsCaptchaDictionaryPref, std::move(dict));
+  NOTREACHED();
 }
 
 void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
@@ -216,23 +222,30 @@ void CaptchaMetrics::ReportCounts() {
   // In the first ever recorded run, last_recorded_time is null and so are the
   // various captcha storages. So, we can skip emitting as it doesn't reflect no
   // captchas were seen.
+  const base::DictValue& counts =
+      local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
+  const int total_captchas =
+      counts.FindInt(kMiscMetricsCaptchaCount).value_or(0);
+
+  // Record only if the metric actually has a non zero value.
+  auto maybe_record = [](std::string_view histogram_name, const int value) {
+    if (value > 0) {
+      p3a_utils::RecordToHistogramBucket(histogram_name.data(),
+                                         kCaptchaCountBuckets, value);
+    }
+  };
+
   if (!last_recorded_time.is_null()) {
-    const base::DictValue& counts =
-        local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
-    p3a_utils::RecordToHistogramBucket(
-        kCaptchaTotalCountHistogramName, kCaptchaCountBuckets,
-        counts.FindInt(kMiscMetricsCaptchaCount).value_or(0));
-    p3a_utils::RecordToHistogramBucket(
-        kCaptchaGoogleCountHistogramName, kCaptchaCountBuckets,
-        counts.FindInt(kMiscMetricsCaptchaGoogleCount).value_or(0));
-    p3a_utils::RecordToHistogramBucket(
-        kCaptchaCloudflareCountHistogramName, kCaptchaCountBuckets,
+    maybe_record(kCaptchaTotalCountHistogramName, total_captchas);
+    maybe_record(kCaptchaGoogleCountHistogramName,
+                 counts.FindInt(kMiscMetricsCaptchaGoogleCount).value_or(0));
+    maybe_record(
+        kCaptchaCloudflareCountHistogramName,
         counts.FindInt(kMiscMetricsCaptchaCloudflareCount).value_or(0));
-    p3a_utils::RecordToHistogramBucket(
-        kCaptchaHCaptchaCountHistogramName, kCaptchaCountBuckets,
-        counts.FindInt(kMiscMetricsCaptchaHCaptchaCount).value_or(0));
+    maybe_record(kCaptchaHCaptchaCountHistogramName,
+                 counts.FindInt(kMiscMetricsCaptchaHCaptchaCount).value_or(0));
     // Re-initialize the dict.
-    local_state_->SetDict(kMiscMetricsCaptchaDictionaryPref, {});
+    local_state_->ClearPref(kMiscMetricsCaptchaDictionaryPref);
   }
 
   // Update the last recorded time to now, and start the timer.

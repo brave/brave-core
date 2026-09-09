@@ -8,9 +8,9 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "components/prefs/testing_pref_service.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace misc_metrics {
@@ -43,7 +43,7 @@ class CaptchaMetricsTest : public testing::Test {
   }
 
  protected:
-  base::test::TaskEnvironment task_environment_;
+  content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<CaptchaMetrics> metrics_;
   base::HistogramTester histogram_tester_;
@@ -130,9 +130,10 @@ TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 4, 1);
   histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 4, 1);
 
+  // An empty window does not emit; the previous day's samples are unchanged.
   task_environment_.FastForwardBy(base::Days(1));
-  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 0, 1);
-  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 0, 1);
+  histogram_tester_.ExpectTotalCount(kCaptchaTotalCountHistogramName, 1);
+  histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 1);
 }
 
 }  // namespace misc_metrics

@@ -194,8 +194,8 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotRecordInIncognito) {
                   .empty());
 
   ReportPendingCounts();
-  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 0, 1);
+  histogram_tester_.ExpectTotalCount(kCaptchaTotalCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 0);
 }
 
 IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsMainFrameGoogle) {
@@ -204,22 +204,18 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsMainFrameGoogle) {
 
   histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 1, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 0,
-                                       1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaHCaptchaCountHistogramName, 0,
-                                       1);
+  histogram_tester_.ExpectTotalCount(kCaptchaCloudflareCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
 }
 
 IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotRecordNonCaptcha) {
   NavigateAndWaitForLoad(GetURL("example.com", "/simple.html"));
   ReportPendingCounts();
 
-  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 0, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 0,
-                                       1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaHCaptchaCountHistogramName, 0,
-                                       1);
+  histogram_tester_.ExpectTotalCount(kCaptchaTotalCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaCloudflareCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
 }
 
 IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsSubframeProviders) {

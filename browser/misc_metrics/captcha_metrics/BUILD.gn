@@ -39,6 +39,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//components/prefs:test_support",
+    "//content/test:test_support",
     "//testing/gtest",
   ]
 }
