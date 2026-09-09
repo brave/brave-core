@@ -1,5 +1,5 @@
 diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
-index 518ada28dc04d6e00d10f741912441000c2de962..1e523e7bed9b37b21b3a91d3ec74eb8edd2d06c0 100644
+index dd91e7c38f4afc02875f8f7fda6970edf799f76f..57c8987f229d2952574d32d1a890ffc9f6dbc1b5 100644
 --- a/services/network/BUILD.gn
 +++ b/services/network/BUILD.gn
 @@ -398,6 +398,7 @@ component("network_service") {

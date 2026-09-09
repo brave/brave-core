@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
-index 28b9402bfcfed6f4d893b8ed5540f196922bbd9a..c6041bd193a3077510f1ffccb866ade84a1da2a2 100644
+index d67c56e16bcb7734dc6e2c74c6a40a7e829a8539..dfeb4b5905899a8ee8c036d4f7074a52601645f4 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.h
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
-@@ -145,8 +145,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
+@@ -147,8 +147,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
    scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory() final;
    AutofillCrowdsourcingManager& GetCrowdsourcingManager() final;
    VotesUploader& GetVotesUploader() final;
@@ -12,7 +12,7 @@ index 28b9402bfcfed6f4d893b8ed5540f196922bbd9a..c6041bd193a3077510f1ffccb866ade8
    FieldClassificationModelHandler* GetAutofillFieldClassificationModelHandler()
        final;
    FieldClassificationModelHandler*
-@@ -233,12 +232,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
+@@ -235,12 +234,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
    bool IsTabInActorMode() const final;
    ActorAutofillManager* GetActorAutofillManager() final;
    int64_t GetNavigationId() const final;
