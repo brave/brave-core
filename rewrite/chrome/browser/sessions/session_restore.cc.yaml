@@ -16,7 +16,7 @@ substitutions:
       re_pattern: |-
         ( *)(// Apply the stored group\.\n *WebContents\* web_contents = chrome::AddRestoredTab\()
       replace: |-
-        \1const bool cleaned = MaybeCleanupEphemeralStorage(tab.navigations[selected_index].virtual_url(), tab.timestamp, profile_);
+        \1const bool cleaned = MaybeCleanupEphemeralStorage(tab.navigations[selected_index].virtual_url(), profile_);
 
         \1\2
   - description: 'Wrap restored_tabs.push_back in ephemeral storage cleaned check'

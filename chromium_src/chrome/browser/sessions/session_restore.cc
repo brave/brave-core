@@ -38,15 +38,14 @@ void BraveModifyStartupTabNavigationParams(const StartupTab& tab,
 #endif
 }
 
-bool MaybeCleanupEphemeralStorage(const GURL& url, base::Time timestamp,
-                            Profile* profile) {
+bool MaybeCleanupEphemeralStorage(const GURL& url, Profile* profile) {
   auto* service = EphemeralStorageServiceFactory::GetForContext(profile);
   if (!service) {
     return false;
   }
 
-  return service->MaybeCleanupOnSessionRestore(
-      net::URLToEphemeralStorageDomain(url), timestamp);
+  return service->MaybeCleanupQueuedDomains(
+      net::URLToEphemeralStorageDomain(url));
 }
 
 }  // namespace

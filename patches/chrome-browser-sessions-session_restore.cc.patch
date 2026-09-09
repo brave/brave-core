@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 31cc627e9a6f978367e994a44e39ff94d80908d4..0035f7bb6c50a1ea17b5ba1104c503abf77c7e45 100644
+index 31cc627e9a6f978367e994a44e39ff94d80908d4..3b892a6c1e621ee05e5c634e3aa6617861adf680 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1120,6 +1120,8 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
        new_group = it->second;
      }
  
-+    const bool cleaned = MaybeCleanupEphemeralStorage(tab.navigations[selected_index].virtual_url(), tab.timestamp, profile_);
++    const bool cleaned = MaybeCleanupEphemeralStorage(tab.navigations[selected_index].virtual_url(), profile_);
 +
      // Apply the stored group.
      WebContents* web_contents = chrome::AddRestoredTab(

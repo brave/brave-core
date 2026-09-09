@@ -426,8 +426,8 @@ void EphemeralStorageService::TriggerCurrentAppStateNotification() {
   // Register again, as on Android the EphemeralStorageService may remain alive
   // across multiple app states, requiring the callback to be re-registered.
   RegisterFirstWindowOpenedCallback(
-      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
-                     weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&EphemeralStorageService::MaybeCleanupOnSessionRestore,
+                     weak_ptr_factory_.GetWeakPtr(), std::nullopt));
 
   delegate_->TriggerCurrentAppStateNotification();
 }
@@ -622,23 +622,17 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
 //   }
 // }
 
-// TODO remove base::Time timestamp parameter
-bool EphemeralStorageService::MaybeCleanupOnSessionRestore(
-    const std::string& ephemeral_domain,
-    base::Time timestamp) {
+bool EphemeralStorageService::MaybeCleanupQueuedDomains(
+    std::optional<std::string> ephemeral_domain) {
   DCHECK(!context_->IsOffTheRecord());
 
   bool result = false;
-  const GURL first_party_storage_url =
-      GetFirstPartyStorageURL(ephemeral_domain);
 
   base::ListValue first_party_storage_areas_to_cleanup_on_startup =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
   DVLOG(1) << __func__ << " Queued for cleanup:"
            << first_party_storage_areas_to_cleanup_on_startup.DebugString();
-  LOG(INFO) << "[SHRED] EphemeralStorageService::MaybeCleanupOnSessionRestore \nephemeral_domain:" << ephemeral_domain 
-    << " \ntimestamp:" << timestamp
-    << " \nfirst_party_storage_url:" << first_party_storage_url
+  LOG(INFO) << "[SHRED] EphemeralStorageService::MaybeCleanupOnSessionRestore \nephemeral_domain:" << ephemeral_domain.value_or("n/a") 
     << " \nqueued:" << first_party_storage_areas_to_cleanup_on_startup.DebugString()
     ;
 
@@ -654,7 +648,12 @@ bool EphemeralStorageService::MaybeCleanupOnSessionRestore(
 
     const auto& [url, storage_partition_config] =
         *url_and_storage_partition_config;
-    if (!url.is_valid() || url != first_party_storage_url) {
+    if (!url.is_valid()) {
+      continue;
+    }
+
+    if (ephemeral_domain.has_value() &&
+        url != GetFirstPartyStorageURL(*ephemeral_domain)) {
       continue;
     }
 
@@ -681,7 +680,7 @@ bool EphemeralStorageService::MaybeCleanupOnSessionRestore(
     }
     result = true;
   }
-LOG(INFO) << "[SHRED] EphemeralStorageService::MaybeCleanupOnSessionRestore \nephemeral_domain:" << ephemeral_domain << " result:" << result;
+LOG(INFO) << "[SHRED] EphemeralStorageService::MaybeCleanupOnSessionRestore \nephemeral_domain:" << ephemeral_domain.value_or("n/a") << " result:" << result;
   return result;
 }
 

@@ -93,7 +93,7 @@ class EphemeralStorageService : public KeyedService {
 #if BUILDFLAG(IS_ANDROID)
   void TriggerCurrentAppStateNotification();
 #endif  // BUILDFLAG(IS_ANDROID)
-  bool MaybeCleanupOnSessionRestore(const std::string& ephemeral_domain, base::Time timestamp);
+  bool MaybeCleanupQueuedDomains(std::optional<std::string> ephemeral_domain);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
