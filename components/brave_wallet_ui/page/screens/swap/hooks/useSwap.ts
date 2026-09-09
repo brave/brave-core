@@ -739,6 +739,9 @@ export const useSwap = () => {
   //  - Refresh quotes based on the new fromAmount, with debouncing.
   const handleOnSetFromAmount = useCallback(
     async (value: string) => {
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
       setFromAmount(value)
       setEditingFromOrToAmount('from')
       if (!value) {
@@ -759,6 +762,9 @@ export const useSwap = () => {
   //  - Refresh quotes based on the new toAmount, with debouncing.
   const handleOnSetToAmount = useCallback(
     async (value: string) => {
+      if (Amount.isNegativeOrPaddedZeroAmount(value)) {
+        return
+      }
       setToAmount(value)
       setEditingFromOrToAmount('to')
       if (!value) {
