@@ -35,7 +35,7 @@ import {
   useUpdateUserTokenMutation,
 } from '../../../common/slices/api.slice'
 import {
-  useGetCustomAssetSupportedNetworks, //
+  useGetCustomNftSupportedNetworks, //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
 
 // components
@@ -162,7 +162,7 @@ export const AddNftForm = (props: Props) => {
       : skipToken,
   )
 
-  const networkList = useGetCustomAssetSupportedNetworks()
+  const networkList = useGetCustomNftSupportedNetworks()
 
   const metadataLookupArg: GetBlockchainTokenIdArg | undefined =
     React.useMemo(() => {
