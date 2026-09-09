@@ -5,12 +5,9 @@
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
-import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("ai_chat") {
   sources = [
-    "ai_chat_distiller_javascript_feature.h",
-    "ai_chat_distiller_javascript_feature.mm",
     "ai_chat_service_factory.h",
     "ai_chat_service_factory.mm",
     "ai_chat_settings_helper.h",
@@ -29,7 +26,6 @@ source_set("ai_chat") {
   ]
 
   deps = [
-    ":ai_chat_distiller_js",
     "//base",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
@@ -39,6 +35,7 @@ source_set("ai_chat") {
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
+    "//brave/ios/browser/web/text_content_distiller",
     "//brave/ios/components/prefs",
     "//components/prefs",
     "//components/user_prefs",
@@ -52,12 +49,4 @@ source_set("ai_chat") {
   ]
 
   frameworks = [ "Foundation.framework" ]
-}
-
-optimize_ts("ai_chat_distiller_js") {
-  visibility = [ ":ai_chat" ]
-
-  sources = [ "resources/ai_chat_distiller.ts" ]
-
-  deps = [ "//ios/web/public/js_messaging:gcrweb" ]
 }

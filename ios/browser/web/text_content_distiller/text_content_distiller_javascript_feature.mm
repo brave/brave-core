@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
+#include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
@@ -14,13 +14,13 @@
 
 namespace {
 
-constexpr char kScriptName[] = "ai_chat_distiller";
+constexpr char kScriptName[] = "text_content_distiller";
 constexpr base::TimeDelta kJavaScriptExecutionTimeoutInSeconds =
     base::Seconds(5);
 
 }  // namespace
 
-AIChatDistillerJavaScriptFeature::AIChatDistillerJavaScriptFeature()
+TextContentDistillerJavaScriptFeature::TextContentDistillerJavaScriptFeature()
     : JavaScriptFeature(
           web::ContentWorld::kIsolatedWorld,
           {FeatureScript::CreateWithFilename(
@@ -29,16 +29,17 @@ AIChatDistillerJavaScriptFeature::AIChatDistillerJavaScriptFeature()
               FeatureScript::TargetFrames::kMainFrame,
               FeatureScript::ReinjectionBehavior::kInjectOncePerWindow)}) {}
 
-AIChatDistillerJavaScriptFeature::~AIChatDistillerJavaScriptFeature() = default;
+TextContentDistillerJavaScriptFeature::
+    ~TextContentDistillerJavaScriptFeature() = default;
 
 // static
-AIChatDistillerJavaScriptFeature*
-AIChatDistillerJavaScriptFeature::GetInstance() {
-  static base::NoDestructor<AIChatDistillerJavaScriptFeature> instance;
+TextContentDistillerJavaScriptFeature*
+TextContentDistillerJavaScriptFeature::GetInstance() {
+  static base::NoDestructor<TextContentDistillerJavaScriptFeature> instance;
   return instance.get();
 }
 
-void AIChatDistillerJavaScriptFeature::GetMainArticle(
+void TextContentDistillerJavaScriptFeature::GetTextContent(
     web::WebState* web_state,
     base::OnceCallback<void(std::string)> callback) {
   web::WebFrame* main_frame = GetWebFramesManager(web_state)->GetMainWebFrame();
@@ -47,7 +48,7 @@ void AIChatDistillerJavaScriptFeature::GetMainArticle(
     return;
   }
   CallJavaScriptFunction(
-      main_frame, "aiChatDistiller.getMainArticle", {},
+      main_frame, "textContentDistiller.getTextContent", {},
       base::BindOnce(
           [](base::OnceCallback<void(std::string)> handler,
              const base::Value* value) {
