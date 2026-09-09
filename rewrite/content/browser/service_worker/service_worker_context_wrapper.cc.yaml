@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let a chrome-untrusted:// service worker script be fetched from its
+      WebUI's data source.
+
+      Upstream fetched WebUI service worker scripts through the update-check
+      bundle here until crrev.com/c/7653454 removed the feature that gated it.
+      This is the only place it can be done: the fetch is browser-initiated, so
+      it reaches none of the ContentBrowserClient factory hooks.
+    regex:
+      re_pattern: '(loader_factory_bundle_for_update_check\(\)->Clone\(\);\n)'
+      replace: |-
+        \1
+          MaybeAddUntrustedWebUIScriptFactory(browser_context(), scope,
+                                              loader_factory_bundle_info.get());

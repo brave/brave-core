@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Keep the WebUI shortcut in Start() away from hosts a service worker
+      serves.
+
+      The shortcut returns before CreateInterceptors(), so a WebUI navigation
+      reaches no interceptor and its document never gets a service worker
+      client, which leaves a worker registered for the host unreachable. Hosts
+      that have not opted in (see
+      WebUIConfig::ShouldInterceptNavigationsWithServiceWorker()) keep taking
+      it.
+    regex:
+      re_pattern: |-
+        (contains\(URLDataManagerBackend::GetWebUISchemes\(\),\s+scheme\))(\) \{)
+      replace: |-
+        \1 &&
+                !ShouldInterceptWebUINavigation(
+                    browser_context_, request_info_->common_params->url)\2
+
+  - description: |
+      Serve WebUI from the non-network navigation factories as well.
+
+      Only the shortcut above ever created a WebUI factory for a navigation, so
+      an opted-in host whose service worker does not answer would otherwise have
+      nothing left to load it. Placed after the embedder's override, so that a
+      factory from the embedder still wins.
+    regex:
+      re_pattern: |-
+        (return factory_from_client;\s+\})
+      replace: |-
+        \1
+
+          if (mojo::PendingRemote<network::mojom::URLLoaderFactory> webui =
+                  MaybeCreateWebUILoaderFactory(frame_tree_node, url)) {
+            return webui;
+          }
