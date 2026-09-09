@@ -200,9 +200,12 @@ extension HttpsUpgradeTabHelper: TabPolicyDecider {
 extension HttpsUpgradeTabHelper: TabObserver {
 
   public func tabDidCommitNavigation(_ tab: some TabState) {
-    // Do NOT cancel the upgrade here: a navigation can commit and then immediately fail
-    // (see `didFailNavigationWithError`), so committing does not mean the upgraded load
-    // actually succeeded. Only clear the tracked upgrade once the navigation truly finishes.
+    // Upgraded load can still fail after commit, so only discard it if some
+    // other navigation superseded the upgrade.
+    guard let upgradedURL = upgradedHTTPSRequest?.url,
+      tab.lastCommittedURL?.baseDomain != upgradedURL.baseDomain
+    else { return }
+    cancelUpgrade()
   }
 
   public func tabDidFinishNavigation(_ tab: some TabState) {

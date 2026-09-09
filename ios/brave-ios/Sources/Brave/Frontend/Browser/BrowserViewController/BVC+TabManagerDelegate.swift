@@ -97,6 +97,18 @@ extension BrowserViewController: TabManagerDelegate {
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
     // we should add it as a policy decider at initialization.
     tab.addPolicyDecider(braveShieldsHelper)
+    // Must be added before `braveSearch`. HttpsUpgradeTabHelper needs first look at a
+    // main-frame http navigation so it can attempt the upgrade before BraveSearchTabHelper
+    // decides whether to route it into QuickView. BraveSearchTabHelper recognizes a reissued
+    // https request via `tab.httpsUpgradeHelper?.pendingUpgrade` and only opens QuickView once
+    // `tabDidFinishNavigation` confirms it actually landed on the upgraded (or
+    // gracefully-rolled-back) page rather than a failure/interstitial.
+    if FeatureList.kBraveHttpsByDefault.enabled {
+      tab.httpsUpgradeHelper = .init(
+        tab: tab,
+        httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService
+      )
+    }
     tab.cosmeticFilteringTabHelper = .init(tab: tab)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
     tab.protectionStats = .init(tab: tab)
@@ -139,18 +151,6 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    // Must be added before `braveSearch`. HttpsUpgradeTabHelper needs first look at a
-    // main-frame http navigation so it can attempt the upgrade before BraveSearchTabHelper
-    // decides whether to route it into QuickView. BraveSearchTabHelper recognizes a reissued
-    // https request via `tab.httpsUpgradeHelper?.pendingUpgrade` and only opens QuickView once
-    // `tabDidFinishNavigation` confirms it actually landed on the upgraded (or
-    // gracefully-rolled-back) page rather than a failure/interstitial.
-    if FeatureList.kBraveHttpsByDefault.enabled {
-      tab.httpsUpgradeHelper = .init(
-        tab: tab,
-        httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService
-      )
-    }
     tab.braveSearch = .init(tab: tab, rewards: rewards, searchEngines: profile.searchEngines)
     tab.braveSearch?.presentSearchResultClickedInfoBar = { [weak self] in
       guard let self else { return }
