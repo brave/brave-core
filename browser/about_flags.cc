@@ -30,7 +30,6 @@
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
-#include "brave/components/misc_metrics/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -1565,14 +1564,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "for BraveRequestInfo",                                              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
-      },                                                                       \
-      {                                                                        \
-          "brave-captcha-metrics-collection",                                  \
-          "Captcha metrics collection",                                        \
-          "Enables daily collection of captcha related metrics.",              \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              misc_metrics::features::kCaptchaMetricsCollection),              \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \

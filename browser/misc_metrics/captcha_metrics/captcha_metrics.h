@@ -22,6 +22,15 @@ class PageLoadMetricsObserverInterface;
 
 namespace misc_metrics {
 
+inline constexpr char kCaptchaTotalCountHistogramName[] =
+    "Brave.CaptchaCount.Total";
+inline constexpr char kCaptchaGoogleCountHistogramName[] =
+    "Brave.CaptchaCount.Google";
+inline constexpr char kCaptchaCloudflareCountHistogramName[] =
+    "Brave.CaptchaCount.Cloudflare";
+inline constexpr char kCaptchaHCaptchaCountHistogramName[] =
+    "Brave.CaptchaCount.hCaptcha";
+
 enum class CaptchaProvider {
   kOther = 0,
   kGoogle = 1,
@@ -63,7 +72,8 @@ class CaptchaMetrics {
 
   // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
   static void EnsureDefaultCaptchaProviders();
-
+  // TODO(https://github.com/brave/brave-browser/issues/58703): Migrate this to
+  // using a simpler data type like size_t.
   DailyStorage total_storage_;
   DailyStorage google_storage_;
   DailyStorage cloudflare_storage_;

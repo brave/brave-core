@@ -11,7 +11,6 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/components/misc_metrics/common/histogram_names.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/page_load_metrics/observers/captcha_provider_manager.h"

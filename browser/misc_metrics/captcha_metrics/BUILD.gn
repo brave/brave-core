@@ -39,7 +39,6 @@ source_set("unit_tests") {
     ":captcha_metrics",
     "//base",
     "//base/test:test_support",
-    "//brave/components/misc_metrics/common:histogram_names",
     "//components/prefs:test_support",
     "//testing/gtest",
   ]
@@ -58,7 +57,6 @@ source_set("browser_tests") {
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/misc_metrics",
-    "//brave/components/misc_metrics/common:histogram_names",
     "//chrome/browser:browser_process",
     "//chrome/browser/page_load_metrics",
     "//chrome/browser/profiles:profile",
