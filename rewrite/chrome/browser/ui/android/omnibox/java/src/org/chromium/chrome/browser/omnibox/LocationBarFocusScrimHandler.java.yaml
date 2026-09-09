@@ -29,8 +29,7 @@ substitutions:
       Brave hides the bottom toolbar while the omnibox is focused. The system
       navigation area must use the same scrim treatment as the focused page.
     regex:
-      re_pattern:
-        '^( *)(public LocationBarFocusScrimHandler.*?\{.*?)(\n^\1\})'
+      re_pattern: '^( *)(public LocationBarFocusScrimHandler.*?\{.*?)(\n^\1\})'
       re_flags: [DOTALL, MULTILINE]
       replace:
         '\1\2\n\1\1mScrimModel.set(ScrimProperties.AFFECTS_NAVIGATION_BAR,
