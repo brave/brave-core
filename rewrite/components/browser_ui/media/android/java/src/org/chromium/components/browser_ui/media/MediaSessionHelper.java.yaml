@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Notify the media observer when a new document commits.
+
+      Allows Brave clear stale media controls after a reload or navigation.
+      Same-document playlist changes and cancelled navigations keep their controls.
+    regex:
+      re_pattern:
+        '(public void didFinishNavigationInPrimaryMainFrame\([^)]*\) \{)'
+      replace: |-
+        \1
+                                if (navigation.hasCommitted() && !navigation.isSameDocument() && mMediaSessionObserver != null) mMediaSessionObserver.mediaSessionDocumentChanged();
