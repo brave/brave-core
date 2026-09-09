@@ -85,6 +85,7 @@
 #include "ios/web/public/js_messaging/content_world.h"
 #include "ios/web/public/js_messaging/web_frames_manager_observer_bridge.h"
 #include "ios/web/public/navigation/navigation_context.h"
+#include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -598,6 +599,37 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if ([self.UIDelegate respondsToSelector:selector]) {
     [self.UIDelegate webViewDidCreateNewWebView:self];
   }
+}
+
+- (web::WebState*)webState:(web::WebState*)webState
+         openURLWithParams:(const web::WebState::OpenURLParams&)params {
+  // `CWVWebView` loads every URL in the current web view regardless of the
+  // requested disposition, so handle the new tab dispositions here to match
+  // Chrome.
+  const bool inBackground =
+      params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  if ((params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
+       inBackground) &&
+      [self.UIDelegate
+          respondsToSelector:
+              @selector(webView:createWebViewForOpeningURL:inBackground:)]) {
+    CWVWebView* newWebView =
+        [self.UIDelegate webView:self
+            createWebViewForOpeningURL:net::NSURLWithGURL(params.url)
+                          inBackground:inBackground];
+    web::WebState* newWebState = newWebView.webState;
+    if (!newWebState) {
+      return nullptr;
+    }
+    web::NavigationManager::WebLoadParams loadParams(params.url);
+    loadParams.referrer = params.referrer;
+    loadParams.transition_type = params.transition;
+    loadParams.is_renderer_initiated = params.is_renderer_initiated;
+    loadParams.virtual_url = params.virtual_url;
+    newWebState->GetNavigationManager()->LoadURLWithParams(loadParams);
+    return newWebState;
+  }
+  return [super webState:webState openURLWithParams:params];
 }
 
 #pragma mark - CRWWebStateObserver

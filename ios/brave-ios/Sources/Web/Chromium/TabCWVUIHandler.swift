@@ -45,6 +45,19 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     }
   }
 
+  func webView(
+    _ webView: CWVWebView,
+    createWebViewForOpening url: URL,
+    inBackground: Bool
+  ) -> CWVWebView? {
+    guard let tab,
+      let newTab = tab.delegate?.tab(tab, createTabForOpeningURL: url, inBackground: inBackground)
+        as? ChromiumTabState
+    else { return nil }
+    newTab.createWebView()
+    return newTab.webView
+  }
+
   func webViewDidClose(_ webView: CWVWebView) {
     guard let tab else { return }
     tab.delegate?.tabWebViewDidClose(tab)
