@@ -14,6 +14,7 @@
 #include "base/no_destructor.h"
 #include "base/test/task_environment.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_test.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/accounts_delete.h"
@@ -36,34 +37,34 @@ struct DeleteAccountTestCase {
 
   static void Run(const DeleteAccountTestCase& test_case,
                   PrefService& pref_service,
-                  base::test::TaskEnvironment&,
+                  base::test::TaskEnvironment& task_environment,
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    AccountStatePrefs account_state_prefs(pref_service);
-    if (test_case.is_logged_in) {
-      account_state_prefs.SetLoggedIn(kEmailAddress,
-                                      EncryptedAuthenticationToken());
-    }
+    AccountStatePrefs(pref_service)
+        .SetLoggedIn(kEmailAddress, EncryptedAuthenticationToken());
 
     authentication->DeleteAccount(std::move(callback).Then(base::BindOnce(
-        [](PrefService* pref_service, bool is_logged_in, bool is_success) {
-          const auto state = AccountStatePrefs(*pref_service).GetAccountState();
-          if (is_success) {
+        [](PrefService* pref_service, bool success) {
+          AccountStatePrefs account_state_prefs(*pref_service);
+          const auto state = account_state_prefs.GetAccountState();
+          if (success) {
+            // LoggedIn ==> LoggedOut (state swap).
             ASSERT_TRUE(state->is_logged_out());
             EXPECT_FALSE(state->get_logged_out()->verification);
-          } else if (is_logged_in) {
-            ASSERT_TRUE(state->is_logged_in());
           } else {
-            ASSERT_TRUE(state->is_logged_out());
+            // The logged-in email and authentication token are left intact.
+            ASSERT_TRUE(state->is_logged_in());
+            EXPECT_FALSE(state->get_logged_in()->verification);
+            EXPECT_EQ(state->get_logged_in()->email, kEmailAddress);
+            EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
+                      EncryptedAuthenticationToken());
           }
         },
-        base::Unretained(&pref_service), test_case.is_logged_in,
-        test_case.mojo_expected.has_value())));
+        base::Unretained(&pref_service), test_case.mojo_expected.has_value())));
   }
 
   std::string test_name;
-  bool fail_decryption = false;
-  bool is_logged_in = true;
+  bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   MojoExpected mojo_expected;
 };
@@ -75,7 +76,6 @@ DeleteAccountAuthenticationTokenDecryptionFailed() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_authentication_token_decryption_failed",
       .fail_decryption = true,
-      .is_logged_in = true,
       .endpoint_response = {},  // not used
       .mojo_expected =
           base::unexpected(mojom::DeleteAccountError::NewClientError(
@@ -90,7 +90,6 @@ const DeleteAccountTestCase* DeleteAccountSuccess() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
       .test_name = "delete_account_success",
       .fail_decryption = false,
-      .is_logged_in = true,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_NO_CONTENT,
                              .body = std::nullopt}},
@@ -99,15 +98,49 @@ const DeleteAccountTestCase* DeleteAccountSuccess() {
   return kTestCase.get();
 }
 
-const DeleteAccountTestCase* DeleteAccountError() {
+const DeleteAccountTestCase* DeleteAccountBodyMissingOrFailedToParse() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
-      .test_name = "delete_account_error",
+      .test_name = "delete_account_body_missing_or_failed_to_parse",
       .fail_decryption = false,
-      .is_logged_in = true,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                             .body = std::nullopt}},
+      .mojo_expected =
+          base::unexpected(mojom::DeleteAccountError::NewServerError(
+              mojom::DeleteAccountServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::DeleteAccountServerErrorCode::kInvalidResponse))),
+  });
+  return kTestCase.get();
+}
+
+const DeleteAccountTestCase* DeleteAccountUnexpectedSuccessBody() {
+  static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
+      .test_name = "delete_account_unexpected_success_body",
+      .fail_decryption = false,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_OK,
+                             .body = AccountsDelete::Response::SuccessBody()}},
+      .mojo_expected =
+          base::unexpected(mojom::DeleteAccountError::NewServerError(
+              mojom::DeleteAccountServerError::New(
+                  net::HTTP_OK,
+                  mojom::DeleteAccountServerErrorCode::kInvalidResponse))),
+  });
+  return kTestCase.get();
+}
+
+const DeleteAccountTestCase* DeleteAccountErrorCodeIsNull() {
+  static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
+      .test_name = "delete_account_error_code_is_null",
+      .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_UNAUTHORIZED,
-                             .body = base::unexpected(
-                                 AccountsDelete::Response::ErrorBody())}},
+                             .body = base::unexpected([] {
+                               AccountsDelete::Response::ErrorBody body;
+                               body.code = base::Value();
+                               return body;
+                             }())}},
       .mojo_expected =
           base::unexpected(mojom::DeleteAccountError::NewServerError(
               mojom::DeleteAccountServerError::New(
@@ -117,16 +150,22 @@ const DeleteAccountTestCase* DeleteAccountError() {
   return kTestCase.get();
 }
 
-const DeleteAccountTestCase* DeleteAccountCalledInWrongState() {
+const DeleteAccountTestCase* DeleteAccountUnknownErrorCode() {
   static const base::NoDestructor<DeleteAccountTestCase> kTestCase({
-      .test_name = "delete_account_called_in_wrong_state",
-      .fail_decryption = {},  // not used
-      .is_logged_in = false,
-      .endpoint_response = {},  // not used
+      .test_name = "delete_account_unknown_error_code",
+      .fail_decryption = false,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_TOO_EARLY,
+                             .body = base::unexpected([] {
+                               AccountsDelete::Response::ErrorBody body;
+                               body.code = base::Value(42);
+                               return body;
+                             }())}},
       .mojo_expected =
-          base::unexpected(mojom::DeleteAccountError::NewClientError(
-              mojom::DeleteAccountClientError::New(
-                  mojom::DeleteAccountClientErrorCode::kCalledInWrongState))),
+          base::unexpected(mojom::DeleteAccountError::NewServerError(
+              mojom::DeleteAccountServerError::New(
+                  net::HTTP_TOO_EARLY,
+                  mojom::DeleteAccountServerErrorCode::kUnknown))),
   });
   return kTestCase.get();
 }
@@ -146,8 +185,10 @@ INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceDeleteAccountTest,
     testing::Values(DeleteAccountAuthenticationTokenDecryptionFailed(),
                     DeleteAccountSuccess(),
-                    DeleteAccountError(),
-                    DeleteAccountCalledInWrongState()),
+                    DeleteAccountBodyMissingOrFailedToParse(),
+                    DeleteAccountUnexpectedSuccessBody(),
+                    DeleteAccountErrorCodeIsNull(),
+                    DeleteAccountUnknownErrorCode()),
     BraveAccountServiceDeleteAccountTest::kNameGenerator);
 
 }  // namespace brave_account
