@@ -170,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsDisabledBrowserTest,
   NavigateAndWaitForLoad(GoogleCaptchaUrl());
 
   EXPECT_TRUE(g_browser_process->local_state()
-                  ->GetList(kMiscMetricsCaptchaCount)
+                  ->GetDict(kMiscMetricsCaptchaDictionaryPref)
                   .empty());
 }
 
@@ -190,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotRecordInIncognito) {
   NavigateAndWaitForLoad(GoogleCaptchaUrl(), incognito_contents.get());
 
   EXPECT_TRUE(g_browser_process->local_state()
-                  ->GetList(kMiscMetricsCaptchaCount)
+                  ->GetDict(kMiscMetricsCaptchaDictionaryPref)
                   .empty());
 
   ReportPendingCounts();

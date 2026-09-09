@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
-#include "brave/components/time_period_storage/daily_storage.h"
 
 class GURL;
 class PrefRegistrySimple;
@@ -61,7 +60,7 @@ class CaptchaMetrics {
   friend class CaptchaMetricsBrowserTest;
   friend class CaptchaMetricsTest;
 
-  // Records a captcha for |provider| in DailyStorage. Does not emit P3A.
+  // Records a captcha for |provider| in the dictionary pref. Does not emit P3A.
   void RecordCaptcha(CaptchaProvider provider);
 
   // Records a captcha if |url| matches a known provider. Does not emit P3A.
@@ -72,13 +71,8 @@ class CaptchaMetrics {
 
   // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
   static void EnsureDefaultCaptchaProviders();
-  // TODO(https://github.com/brave/brave-browser/issues/58703): Migrate this to
-  // using a simpler data type like size_t.
-  DailyStorage total_storage_;
-  DailyStorage google_storage_;
-  DailyStorage cloudflare_storage_;
-  DailyStorage hcaptcha_storage_;
 
+  // The timer to help schedule the next reporting.
   base::WallClockTimer report_timer_;
   raw_ptr<PrefService> local_state_;
 };

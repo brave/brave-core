@@ -21,7 +21,6 @@ source_set("captcha_metrics") {
     "//brave/browser/misc_metrics",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
-    "//brave/components/time_period_storage",
     "//chrome/browser/page_load_metrics",
     "//components/page_load_metrics/browser",
     "//components/prefs",

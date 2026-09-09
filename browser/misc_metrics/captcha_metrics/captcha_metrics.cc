@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -23,6 +24,16 @@
 namespace misc_metrics {
 
 namespace {
+
+// Keys to the dictionary pref.
+inline constexpr char kMiscMetricsCaptchaCount[] =
+    "brave.misc_metrics.captcha_count";
+inline constexpr char kMiscMetricsCaptchaGoogleCount[] =
+    "brave.misc_metrics.captcha_google_count";
+inline constexpr char kMiscMetricsCaptchaCloudflareCount[] =
+    "brave.misc_metrics.captcha_cloudflare_count";
+inline constexpr char kMiscMetricsCaptchaHCaptchaCount[] =
+    "brave.misc_metrics.captcha_hcaptcha_count";
 
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 // 0, 1, 2, 3-5, 6-10, 11+
@@ -90,21 +101,14 @@ class BraveCaptchaPageLoadMetricsObserver
 };
 
 CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
-    : total_storage_(local_state, kMiscMetricsCaptchaCount),
-      google_storage_(local_state, kMiscMetricsCaptchaGoogleCount),
-      cloudflare_storage_(local_state, kMiscMetricsCaptchaCloudflareCount),
-      hcaptcha_storage_(local_state, kMiscMetricsCaptchaHCaptchaCount),
-      local_state_(local_state) {
+    : local_state_(local_state) {
   ReportCounts();
 }
 
 CaptchaMetrics::~CaptchaMetrics() = default;
 
 void CaptchaMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kMiscMetricsCaptchaCount);
-  registry->RegisterListPref(kMiscMetricsCaptchaGoogleCount);
-  registry->RegisterListPref(kMiscMetricsCaptchaCloudflareCount);
-  registry->RegisterListPref(kMiscMetricsCaptchaHCaptchaCount);
+  registry->RegisterDictionaryPref(kMiscMetricsCaptchaDictionaryPref, {});
   registry->RegisterTimePref(kMiscMetricsCaptchaLastRecordTime, {});
 }
 
@@ -143,20 +147,29 @@ void CaptchaMetrics::EnsureDefaultCaptchaProviders() {
 }
 
 void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
-  total_storage_.RecordValueNow(1);
+  base::DictValue dict =
+      local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref).Clone();
+  auto increment = [&dict](const char* key) {
+    dict.Set(key, dict.FindInt(key).value_or(0) + 1);
+  };
+
+  increment(kMiscMetricsCaptchaCount);
+
   switch (provider) {
     case CaptchaProvider::kGoogle:
-      google_storage_.RecordValueNow(1);
+      increment(kMiscMetricsCaptchaGoogleCount);
       break;
     case CaptchaProvider::kCloudflare:
-      cloudflare_storage_.RecordValueNow(1);
+      increment(kMiscMetricsCaptchaCloudflareCount);
       break;
     case CaptchaProvider::kHCaptcha:
-      hcaptcha_storage_.RecordValueNow(1);
+      increment(kMiscMetricsCaptchaHCaptchaCount);
       break;
     case CaptchaProvider::kOther:
       break;
   }
+
+  local_state_->SetDict(kMiscMetricsCaptchaDictionaryPref, std::move(dict));
 }
 
 void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
@@ -204,18 +217,22 @@ void CaptchaMetrics::ReportCounts() {
   // various captcha storages. So, we can skip emitting as it doesn't reflect no
   // captchas were seen.
   if (!last_recorded_time.is_null()) {
+    const base::DictValue& counts =
+        local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
     p3a_utils::RecordToHistogramBucket(
         kCaptchaTotalCountHistogramName, kCaptchaCountBuckets,
-        static_cast<int>(total_storage_.GetLast24HourSum()));
+        counts.FindInt(kMiscMetricsCaptchaCount).value_or(0));
     p3a_utils::RecordToHistogramBucket(
         kCaptchaGoogleCountHistogramName, kCaptchaCountBuckets,
-        static_cast<int>(google_storage_.GetLast24HourSum()));
+        counts.FindInt(kMiscMetricsCaptchaGoogleCount).value_or(0));
     p3a_utils::RecordToHistogramBucket(
         kCaptchaCloudflareCountHistogramName, kCaptchaCountBuckets,
-        static_cast<int>(cloudflare_storage_.GetLast24HourSum()));
+        counts.FindInt(kMiscMetricsCaptchaCloudflareCount).value_or(0));
     p3a_utils::RecordToHistogramBucket(
         kCaptchaHCaptchaCountHistogramName, kCaptchaCountBuckets,
-        static_cast<int>(hcaptcha_storage_.GetLast24HourSum()));
+        counts.FindInt(kMiscMetricsCaptchaHCaptchaCount).value_or(0));
+    // Re-initialize the dict.
+    local_state_->SetDict(kMiscMetricsCaptchaDictionaryPref, {});
   }
 
   // Update the last recorded time to now, and start the timer.
