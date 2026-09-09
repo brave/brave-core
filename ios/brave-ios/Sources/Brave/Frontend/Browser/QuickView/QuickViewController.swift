@@ -24,6 +24,7 @@ class QuickViewController: UIViewController {
   private let syncAPI: BraveSyncAPI
   private let sendTabAPI: BraveSendTabAPI
   private let historyAPI: BraveHistoryAPI
+  private let httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -63,6 +64,7 @@ class QuickViewController: UIViewController {
     syncAPI: BraveSyncAPI,
     sendTabAPI: BraveSendTabAPI,
     historyAPI: BraveHistoryAPI,
+    httpsUpgradeExceptionsService: HTTPSUpgradeExceptionsService,
     onOpenInNewTab: ((URLRequest, Bool) -> Void)?,
     onOpenInNewWindow: ((URL, Bool) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?,
@@ -73,6 +75,7 @@ class QuickViewController: UIViewController {
     self.syncAPI = syncAPI
     self.sendTabAPI = sendTabAPI
     self.historyAPI = historyAPI
+    self.httpsUpgradeExceptionsService = httpsUpgradeExceptionsService
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
       isPrivate: profile.isOffTheRecord
@@ -141,6 +144,12 @@ class QuickViewController: UIViewController {
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
       tab.scriptletsTabHelper = .init(tab: tab)
       tab.blockedDomainTabHelper = .init(tab: tab)
+      if FeatureList.kBraveHttpsByDefault.enabled {
+        tab.httpsUpgradeHelper = .init(
+          tab: tab,
+          httpsUpgradeExceptionsService: httpsUpgradeExceptionsService
+        )
+      }
     }
     tab.protectionStats = .init(tab: tab)
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
@@ -769,6 +778,12 @@ extension QuickViewController: TabObserver {
     {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
       tab.blockedDomainTabHelper = .init(tab: tab)
+      if FeatureList.kBraveHttpsByDefault.enabled {
+        tab.httpsUpgradeHelper = .init(
+          tab: tab,
+          httpsUpgradeExceptionsService: httpsUpgradeExceptionsService
+        )
+      }
     }
   }
 
