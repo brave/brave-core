@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Re-arm the input protection only when the bubble actually moved.
+
+      The protection exists because the clickable surface may have shifted
+      under the cursor, but OnAnchorBoundsChanged() re-arms it whether or not
+      re-anchoring moved anything. BrowserView::Layout() re-anchors an open
+      permission prompt on every layout pass, so browser UI that animates its
+      layout - Brave's vertical tab strip collapsing when the prompt takes
+      activation, for one - restarts the cooldown frame after frame, and the
+      prompt silently drops the click the user meant. SizeToContents() is what
+      moves the bubble here, so its effect on the widget bounds is the signal.
+    regex:
+      re_pattern:
+        '(void BubbleDialogDelegate::OnAnchorBoundsChanged\(\)
+        \{.*?)(  SizeToContents\(\);.*?)(  UpdateInputProtectorsTimeStamp\(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  const gfx::Rect bounds_before_anchoring =
+              GetWidget()->GetWindowBoundsInScreen();
+        \2  if (GetWidget()->GetWindowBoundsInScreen() != bounds_before_anchoring) {
+            UpdateInputProtectorsTimeStamp();
+          }

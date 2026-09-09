@@ -1,0 +1,20 @@
+diff --git a/ui/views/bubble/bubble_dialog_delegate_view.cc b/ui/views/bubble/bubble_dialog_delegate_view.cc
+index 70d78fa06cb089617e37d17844f8bbaef3990f47..22506623904809a63dfd810fea34e7f4e2272711 100644
+--- a/ui/views/bubble/bubble_dialog_delegate_view.cc
++++ b/ui/views/bubble/bubble_dialog_delegate_view.cc
+@@ -942,10 +942,14 @@ void BubbleDialogDelegate::OnAnchorBoundsChanged() {
+   }
+   // TODO(pbos): Reconsider whether to update the anchor when the view isn't
+   // drawn.
++  const gfx::Rect bounds_before_anchoring =
++      GetWidget()->GetWindowBoundsInScreen();
+   SizeToContents();
+ 
+   // We will not accept input event a short time after anchored view changed.
+-  UpdateInputProtectorsTimeStamp();
++  if (GetWidget()->GetWindowBoundsInScreen() != bounds_before_anchoring) {
++    UpdateInputProtectorsTimeStamp();
++  }
+ }
+ 
+ void BubbleDialogDelegate::UpdateInputProtectorsTimeStamp() {
