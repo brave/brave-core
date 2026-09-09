@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
+#if __swift__
+#import "brave_account.mojom.objc.h"
+#else
+#include "brave/components/brave_account/mojom/brave_account.mojom.objc.h"
+#endif
+
 #import "cwv_export.h"               // NOLINT
 #import "cwv_navigation_action.h"    // NOLINT
 #import "cwv_navigation_delegate.h"  // NOLINT
@@ -166,6 +172,14 @@ CWV_EXPORT
 // via completionHandler. Returns an empty string if no article content could
 // be extracted.
 - (void)fetchMainArticle:(void (^)(NSString* text))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveAccountWebUI)
+/// The dialog mode the Brave Account WebUI page is served in.
+/// Set before loading brave://account; read back by the page through
+/// `brave_account::mojom::DialogController::GetDialogMode()`.
+@property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
 @end
 
 CWV_EXPORT

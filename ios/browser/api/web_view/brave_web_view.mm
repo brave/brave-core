@@ -40,6 +40,7 @@
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/brave_account/dialog_mode_holder.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
@@ -273,6 +274,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak)
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
+@property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
 @property(nonatomic, weak) id<LoginsTabHelperBridge> loginsHelper;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -396,6 +398,11 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
   ai_chat::AIChatTabHelper::FromWebState(self.webState)
       ->SetPageFetcher(self.aiChatUIHandler);
+
+  brave_account::DialogModeHolder::CreateForWebState(self.webState);
+  brave_account::DialogModeHolder::FromWebState(self.webState)
+      ->SetDialogMode(static_cast<brave_account::mojom::DialogMode>(
+          self.braveAccountDialogMode));
 
   brave_wallet::PageHandlerBridgeHolder::CreateForWebState(self.webState);
   brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
@@ -689,6 +696,18 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   ai_chat::AIChatTabHelper::CreateForWebState(self.webState);
   ai_chat::AIChatTabHelper::FromWebState(self.webState)
       ->SetPageFetcher(self.aiChatUIHandler);
+}
+
+@end
+
+@implementation BraveWebView (BraveAccountWebUI)
+
+- (void)setBraveAccountDialogMode:(BraveAccountDialogMode)dialogMode {
+  _braveAccountDialogMode = dialogMode;
+  brave_account::DialogModeHolder::CreateForWebState(self.webState);
+  brave_account::DialogModeHolder::FromWebState(self.webState)
+      ->SetDialogMode(
+          static_cast<brave_account::mojom::DialogMode>(dialogMode));
 }
 
 @end
