@@ -6,6 +6,8 @@
 #include "brave/browser/serp_metrics/serp_metrics_p3a.h"
 
 #include <climits>
+#include <cstddef>
+#include <iterator>
 #include <string>
 #include <string_view>
 
@@ -25,7 +27,6 @@
 #include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -74,12 +75,15 @@ SerpMetricsP3A::SerpMetricsP3A(PrefService& local_state)
 
 SerpMetricsP3A::~SerpMetricsP3A() = default;
 
-void SerpMetricsP3A::Init(p3a::P3AService* p3a_service,
-                          ProfileManager* profile_manager) {
-  if (profile_manager) {
-    profile_attributes_storage_ =
-        &profile_manager->GetProfileAttributesStorage();
-  }
+// static
+void SerpMetricsP3A::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(prefs::kP3ALastReportedAtDict);
+}
+
+void SerpMetricsP3A::Init(
+    p3a::P3AService* p3a_service,
+    ProfileAttributesStorage& profile_attributes_storage) {
+  profile_attributes_storage_ = &profile_attributes_storage;
 
   if (!base::FeatureList::IsEnabled(kSerpMetricsFeature) ||
       !kSerpMetricsP3A.Get()) {
@@ -98,9 +102,8 @@ void SerpMetricsP3A::Init(p3a::P3AService* p3a_service,
           &SerpMetricsP3A::OnMetricCycled, base::Unretained(this)));
 }
 
-// static
-void SerpMetricsP3A::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(prefs::kP3ALastReportedAtDict);
+void SerpMetricsP3A::Shutdown() {
+  profile_attributes_storage_ = nullptr;
 }
 
 void SerpMetricsP3A::OnRotation(p3a::MetricLogType log_type) {

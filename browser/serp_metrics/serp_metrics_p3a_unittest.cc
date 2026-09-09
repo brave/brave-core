@@ -63,7 +63,9 @@ class SerpMetricsP3ATest : public testing::Test {
                                     ->GetProfileAttributesStorage()));
 
     serp_metrics_p3a_ = std::make_unique<SerpMetricsP3A>(local_state_);
-    serp_metrics_p3a_->Init(nullptr, profile_manager_->profile_manager());
+    serp_metrics_p3a_->Init(
+        nullptr,
+        profile_manager_->profile_manager()->GetProfileAttributesStorage());
   }
 
   void TearDown() override {

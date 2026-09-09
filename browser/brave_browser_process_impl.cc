@@ -261,6 +261,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
   }
+  if (process_misc_metrics_) {
+    process_misc_metrics_->serp_metrics_p3a()->Shutdown();
+  }
   if (p3a_service_) {
     p3a_service_->StartTeardown();
   }
@@ -319,8 +322,8 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  process_misc_metrics()->serp_metrics_p3a()->Init(p3a_service(),
-                                                   profile_manager());
+  process_misc_metrics()->serp_metrics_p3a()->Init(
+      p3a_service(), profile_manager()->GetProfileAttributesStorage());
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   resource_component();
