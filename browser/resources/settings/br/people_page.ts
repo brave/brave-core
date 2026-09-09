@@ -67,6 +67,15 @@ RegisterPolymerTemplateModifications({
       throw new Error('[Settings] Missing signin template on people_page')
     }
 
+    // Remove Sign in to Brave for passwords promotion
+    const signinPromoTemplate = templateContent.
+      querySelector('template[is=dom-if][if="[[shouldShowSyncAccountControl_]]"]')
+    if (signinPromoTemplate) {
+        signinPromoTemplate.remove()
+    } else {
+        throw new Error('[Settings] Missing signin promo template on people_page')
+    }
+
     // Remove the google account button
     const manageGoogleAccount =
       signinTemplate.content.querySelector('#manage-google-account')
