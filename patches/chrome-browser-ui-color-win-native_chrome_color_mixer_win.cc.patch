@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc b/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc
+index 0552379dd864da0b6a6b5983695cdd0c387d04c5..c51c4916d0afc397acec2afa3df2f47e4cea7466 100644
+--- a/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc
++++ b/chrome/browser/ui/color/win/native_chrome_color_mixer_win.cc
+@@ -60,7 +60,7 @@ struct FrameTransforms {
+ 
+ FrameTransforms GetSystemFrameTransforms(const ui::ColorProviderKey& key) {
+   FrameTransforms frame_transforms;
+-  if (const auto* const accent_color_observer = ui::AccentColorObserver::Get();
++  if (const auto* const accent_color_observer = ui::FakeAccentColorObserver::Get();
+       accent_color_observer->ShouldUseAccentColorForWindowFrame()) {
+     if (const std::optional<SkColor> dwm_frame_color =
+             accent_color_observer->accent_color()) {
+@@ -94,14 +94,14 @@ FrameTransforms GetFrameTransforms(const ui::ColorProviderKey& key) {
+ 
+ void EnsureColorProviderCacheWillBeResetWhenAccentColorStateChanges() {
+   static base::NoDestructor<base::CallbackListSubscription> subscription(
+-      ui::AccentColorObserver::Get()->Subscribe(base::BindRepeating(
++      ui::FakeAccentColorObserver::Get()->Subscribe(base::BindRepeating(
+           // CAUTION: Do not bind directly to `ui::ColorProviderManager::Get()`
+           // here, as tests may reset that value!
+           [] { ui::ColorProviderManager::Get().ResetColorProviderCache(); })));
+ }
+ 
+ SkColor GetAccentBorderColor() {
+-  if (const auto* const accent_color_observer = ui::AccentColorObserver::Get();
++  if (const auto* const accent_color_observer = ui::FakeAccentColorObserver::Get();
+       accent_color_observer->ShouldUseAccentColorForWindowFrame()) {
+     if (const std::optional<SkColor> accent_border_color =
+             accent_color_observer->accent_border_color()) {

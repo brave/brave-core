@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/color/tab_strip_color_mixer.cc b/chrome/browser/ui/color/tab_strip_color_mixer.cc
+index cbb8807bcf5bdc03b35da4d9ecd96ee72202f807..bc97b7f41c0c8fba1e47bf61f0b51afa27c03719 100644
+--- a/chrome/browser/ui/color/tab_strip_color_mixer.cc
++++ b/chrome/browser/ui/color/tab_strip_color_mixer.cc
+@@ -18,6 +18,7 @@
+ 
+ void AddTabStripColorMixer(ui::ColorProvider* provider,
+                            const ui::ColorProviderKey& key) {
++  [&]() -> void {
+   const bool dark_mode =
+       key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
+   using TP = ThemeProperties;
+@@ -218,4 +219,11 @@ void AddTabStripColorMixer(ui::ColorProvider* provider,
+       SetAlpha(ui::kColorSysNeutralOutline, std::ceil(0.60f * 255.0f));
+   mixer[kColorVerticalTabPinnedOutline] = {
+       dark_mode ? kColorVerticalTabStripShadow : kColorTabDividerFrameActive};
++  }();
++  AddBraveTabStripColorMixer(provider, key);
++  #if !BUILDFLAG(IS_ANDROID)
++  // Set vertical tab mixer after adding tab strip mixer because
++  // vertical tab mixer uses tab strip mixer's color.
++  tabs::AddBraveTabThemeColorMixer(provider, key);
++  #endif  // #if !BUILDFLAG(IS_ANDROID)
+ }

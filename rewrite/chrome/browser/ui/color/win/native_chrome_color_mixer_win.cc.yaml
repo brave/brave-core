@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use the fake accent color observer on Windows.
+
+      Brave does not use the system accent color, so the real
+      ui::AccentColorObserver (which queries the OS) is replaced with
+      ui::FakeAccentColorObserver defined in the shadow; it reports no accent
+      colors and never fires updates.
+    rename_class:
+      class_name: AccentColorObserver
+      rename: FakeAccentColorObserver
