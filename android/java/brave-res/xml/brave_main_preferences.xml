@@ -19,6 +19,7 @@
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="change_password"
         android:order="2"
+        android:icon="@drawable/ic_lock"
         android:title="@string/settings_brave_account_change_password_button_label"
         app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
@@ -26,29 +27,34 @@
         android:order="3"
         android:icon="@drawable/ic_outside"
         android:title="@string/settings_brave_account_log_out_button_label"
-        app:iconTint="?attr/globalTextButtonTextColor"
         app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="almost_there"
+        android:key="delete_account"
         android:order="4"
+        android:icon="@drawable/ic_trash"
+        android:title="@string/settings_brave_account_delete_account_button_label"
+        app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.DestructiveAction"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="almost_there"
+        android:order="5"
         android:selectable="false"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="enter_verification_code"
-        android:order="5"
+        android:order="6"
         app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="resend_confirmation_email"
-        android:order="6"
+        android:order="7"
         android:title="@string/settings_brave_account_resend_confirmation_email_button_label"
         app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"
         android:summary="@string/settings_brave_account_verification_row_description_3"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="cancel_verification"
-        android:order="7"
+        android:order="8"
         app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.DestructiveAction"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="get_started"
-        android:order="8"
+        android:order="9"
         android:icon="@drawable/ic_social_brave_release_favicon_fullheight_color"
         android:title="@string/settings_brave_account_get_started_button_label"/>
     <PreferenceCategory

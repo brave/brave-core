@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -55,6 +57,13 @@ public class BraveAccountPreference extends ChromeBasePreference {
             if (mTitleTruncateMiddle) {
                 titleView.setSingleLine(true);
                 titleView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+            }
+
+            // Tint the icon with the title colour the appearance resolved to, so the two cannot
+            // drift apart. Rows without a custom appearance keep the framework's accent tint.
+            Drawable icon = getIcon();
+            if (icon != null && mTitleTextAppearanceResId != 0) {
+                icon.setColorFilter(titleView.getCurrentTextColor(), PorterDuff.Mode.SRC_IN);
             }
         }
     }
