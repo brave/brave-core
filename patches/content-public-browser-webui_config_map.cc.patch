@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/webui_config_map.cc b/content/public/browser/webui_config_map.cc
-index e74da278fedbfbc7a1b12bb8fb082bf5eebdba81..04d713d57db97e378291c97d26aa290a18ab3044 100644
+index e74da278fedbfbc7a1b12bb8fb082bf5eebdba81..a0090ac48b444da1ec0d55ae6303ff127b8fcc0c 100644
 --- a/content/public/browser/webui_config_map.cc
 +++ b/content/public/browser/webui_config_map.cc
 @@ -100,6 +100,9 @@ WebUIConfig* WebUIConfigMap::GetConfig(BrowserContext* browser_context,
@@ -7,7 +7,7 @@ index e74da278fedbfbc7a1b12bb8fb082bf5eebdba81..04d713d57db97e378291c97d26aa290a
  
    auto origin_and_config = configs_map_.find(url::Origin::Create(url));
 +  if (origin_and_config == configs_map_.end()) {
-+    origin_and_config = FindSubdomainConfig(configs_map_, url);
++    origin_and_config = FindConfigForSubdomain(configs_map_, url);
 +  }
    if (origin_and_config == configs_map_.end()) {
      return nullptr;

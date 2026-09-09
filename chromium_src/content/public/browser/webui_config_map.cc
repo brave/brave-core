@@ -28,11 +28,12 @@ namespace {
 // Called from WebUIConfigMap::GetConfig() via the plaster for
 // content/public/browser/webui_config_map.cc.
 std::map<url::Origin, std::unique_ptr<WebUIConfig>>::iterator
-FindSubdomainConfig(
+FindConfigForSubdomain(
     std::map<url::Origin, std::unique_ptr<WebUIConfig>>& configs,
     const GURL& url) {
-  // Only chrome-untrusted:// WebUIs may be served from subdomains: subdomains
-  // of chrome:// hosts would be new origins with WebUI bindings.
+  // Only chrome-untrusted:// WebUIs may be served from subdomains. A subdomain
+  // is always a new origin; for chrome:// that new origin would be granted
+  // WebUI bindings, which we don't want to hand out implicitly.
   if (url.GetScheme() != kChromeUIUntrustedScheme) {
     return configs.end();
   }
