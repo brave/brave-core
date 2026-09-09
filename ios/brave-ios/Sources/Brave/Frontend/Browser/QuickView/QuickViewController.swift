@@ -154,6 +154,7 @@ class QuickViewController: UIViewController {
     tab.addPolicyDecider(self)
     tab.createWebView()
     tab.delegate = self
+    tab.downloadDelegate = self
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
@@ -196,11 +197,7 @@ class QuickViewController: UIViewController {
         currentTab.reload()
       case .openTab:
         self?.dismiss(animated: true) {
-          guard let self, let currentTab = self.currentTab else { return }
-          currentTab.removeObserver(self.toolbarViewModel)
-          currentTab.removeObserver(self)
-          currentTab.historyTabHelper = nil
-          self.onAttachTab?(currentTab)
+          self?.promoteCurrentTabToBrowserTab()
         }
       case .share:
         guard let self, let visibleURL = self.currentTab?.visibleURL
@@ -560,6 +557,14 @@ class QuickViewController: UIViewController {
       }
       NSLayoutConstraint.activate(keyboardGuideHiddenConstraints)
     }
+  }
+
+  private func promoteCurrentTabToBrowserTab() {
+    guard let currentTab else { return }
+    currentTab.removeObserver(toolbarViewModel)
+    currentTab.removeObserver(self)
+    currentTab.historyTabHelper = nil
+    onAttachTab?(currentTab)
   }
 }
 
@@ -959,5 +964,19 @@ extension QuickViewController: TabPolicyDecider {
     dismiss(animated: true) {
       self.onOpenInNewTab?(request, isPrivate)
     }
+  }
+}
+
+extension QuickViewController: TabDownloadDelegate {
+  func tab(_ tab: some Web.TabState, didCreateDownload download: Web.Download) {
+    dismiss(animated: true) { [weak self] in
+      self?.promoteCurrentTabToBrowserTab()
+      tab.downloadDelegate?.tab(tab, didCreateDownload: download)
+    }
+  }
+
+  func tab(_ tab: some Web.TabState, didFinishDownload download: Web.Download, error: (any Error)?)
+  {
+    // no-op. download will be redirect to a regular tab
   }
 }
