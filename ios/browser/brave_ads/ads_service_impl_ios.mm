@@ -58,6 +58,10 @@ AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
   return ads_client_notifier_.get();
 }
 
+base::WeakPtr<AdsService> AdsServiceImplIOS::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 bool AdsServiceImplIOS::IsIneligibleToStart() const {
   // iOS has no eligibility gate; the service is never ineligible to start.
   return false;

@@ -133,6 +133,7 @@ class AdsServiceImpl : public AdsService,
   ~AdsServiceImpl() override;
 
   // AdsService:
+  base::WeakPtr<AdsService> GetWeakPtr() override;
   bool IsIneligibleToStart() const override;
   bool IsInitialized() const override;
 
