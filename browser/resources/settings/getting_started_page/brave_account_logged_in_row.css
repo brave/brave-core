@@ -13,3 +13,24 @@
 #email {
   text-wrap-mode: nowrap;
 }
+
+leo-buttonmenu {
+  flex: none;
+}
+
+leo-menu-item {
+  --leo-icon-size: var(--leo-icon-m);
+
+  align-items: center;
+  display: flex;
+  gap: var(--leo-spacing-l);
+}
+
+leo-menu-item.destructive {
+  color: var(--leo-color-systemfeedback-error-text);
+}
+
+leo-menu-item.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

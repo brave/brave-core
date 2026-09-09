@@ -82,20 +82,35 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
             <div id="email">${this.truncatedEmail}</div>
           </div>
         </div>
-        <leo-button kind="plain"
-                    size="small"
-                    ?isDisabled=${this.isChangingPassword}
-                    @click=${this.onChangePasswordButtonClicked}>
-          ${this.i18n(
-              BraveAccountSettingsStrings
-                   .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL)}
-        </leo-button>
-        <leo-button kind="outline"
-                    size="small"
-                    @click=${this.onLogOutButtonClicked}>
-          <leo-icon name="outside" slot="icon-before"></leo-icon>
-          ${this.i18n(
-              BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
-        </leo-button>
+        <leo-buttonmenu placement="bottom-end">
+          <leo-button slot="anchor-content"
+                      fab
+                      kind="plain-faint"
+                      size="small"
+                      title="${this.i18n('moreActions')}"
+                      aria-label="${this.i18n('moreActions')}">
+            <leo-icon name="more-vertical"></leo-icon>
+          </leo-button>
+          <leo-menu-item class="${this.isChangingPassword ? 'disabled' : ''}"
+                         @click=${this.onChangePasswordButtonClicked}>
+            <leo-icon name="lock"></leo-icon>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL)}
+          </leo-menu-item>
+          <leo-menu-item @click=${this.onLogOutButtonClicked}>
+            <leo-icon name="outside"></leo-icon>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
+          </leo-menu-item>
+          <leo-menu-item class="destructive"
+                         @click=${this.onDeleteAccountButtonClicked}>
+            <leo-icon name="trash"></leo-icon>
+            ${this.i18n(
+                BraveAccountSettingsStrings
+                     .SETTINGS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL)}
+          </leo-menu-item>
+        </leo-buttonmenu>
       </div>`
 }

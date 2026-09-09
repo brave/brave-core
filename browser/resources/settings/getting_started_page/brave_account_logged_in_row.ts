@@ -86,6 +86,10 @@ export class BraveAccountLoggedInRowElement extends
     this.isChangingPassword = false
   }
 
+  protected onDeleteAccountButtonClicked() {
+    this.openBraveAccountDialog(true)
+  }
+
   private updateEmailTruncation() {
     // The `#email` element only exists in the non-verification row, so skip
     // truncation while a password-change verification is pending.
