@@ -23,10 +23,6 @@ your code.
 Also remove includes you don't actually use. Double-check all includes in new
 files.
 
-**Platform-specific includes go in their own section below the standard
-includes**, repeating the normal include order within that section (see
-[CS-033](#CS-033)).
-
 **For type aliases:** include the header that declares the type alias, not the
 headers for the underlying types. Same principle as class inheritance — if class
 B inherits from A, include B's header, not A's.
@@ -732,7 +728,9 @@ macros like `WIN32`, `__APPLE__`, or `__linux__`, and never the long-removed
 ```
 
 Put platform-specific `#include`s in their own section below the standard
-includes, repeating the normal include order within that section.
+includes, repeating the normal include order within that section. Ordering is
+formatting, not review material — per [CS-010](#CS-010), leave it to
+`clang-format` and lint and don't flag it in review.
 
 ---
 
