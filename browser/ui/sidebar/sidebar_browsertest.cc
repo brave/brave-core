@@ -110,6 +110,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #endif
 
 using ::testing::Eq;
@@ -347,6 +348,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   ASSERT_TRUE(panel_ui);
   EXPECT_EQ(SidePanelEntryId::kWallet, panel_ui->GetCurrentEntryId());
+}
+
+// Built-in Wallet keeps its page URL even when open_in_panel is true, so the
+// + bubble does not offer the current brave://wallet tab as a web shortcut.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
+                       CannotAddWalletPageWhenBuiltInItemExists) {
+  const auto items = model()->GetAllSidebarItems();
+  const auto wallet_item_iter =
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                        &SidebarItem::built_in_item_type);
+  ASSERT_NE(wallet_item_iter, items.cend());
+  EXPECT_EQ(GURL(kBraveUIWalletPageURL), wallet_item_iter->url);
+  EXPECT_TRUE(wallet_item_iter->open_in_panel);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://wallet/")));
+  EXPECT_FALSE(CanAddCurrentActiveTabToSidebar(browser()));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
