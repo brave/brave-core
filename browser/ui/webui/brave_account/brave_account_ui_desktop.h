@@ -40,8 +40,8 @@ class BraveAccountUIDesktop
 
  private:
   // brave_account::mojom::DialogController:
-  // No-op: the rows live in brave://settings, which opens the dialog through
-  // `RowHandler` instead.
+  // No-op: the dialog is opened over brave://settings, whose own binding of
+  // this interface handles it.
   void OpenDialog(const std::string& initiating_service_name) override {}
   void CloseDialog() override;
 

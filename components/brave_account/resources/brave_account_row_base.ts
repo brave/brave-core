@@ -84,10 +84,9 @@ export abstract class BraveAccountRowBaseElement<
   }
 
   // How authentication is entered is the host's decision, not the row's:
-  // desktop opens a ConstrainedWebDialog over brave://settings via RowHandler,
-  // which is desktop-only (see //brave/components/brave_account/mojom/BUILD.gn),
-  // while mobile navigates to the authentication route in its own tab. So the
-  // rows only announce the intent and let their mount act on it.
+  // desktop opens a ConstrainedWebDialog over brave://settings, while iOS
+  // presents the flows over the page serving the rows. So the rows only
+  // announce the intent and let their mount act on it.
   protected openBraveAccountDialog() {
     this.fire('open-brave-account-dialog', {
       initiatingServiceName: this.initiatingServiceName,

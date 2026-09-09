@@ -11,7 +11,6 @@ import {
   BraveAccountRowBrowserProxyImpl
 } from '../brave_account_row_browser_proxy.js'
 import { AccountState } from '../brave_account.mojom-webui.js'
-import { RowHandler, RowHandlerRemote } from '../brave_account_row.mojom-webui.js'
 import { getHtml } from './brave_account_row.html.js'
 
 export class SettingsBraveAccountRowElement extends CrLitElement {
@@ -36,16 +35,14 @@ export class SettingsBraveAccountRowElement extends CrLitElement {
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
 
-  // Authentication runs in a ConstrainedWebDialog over brave://settings, which
-  // only the browser can open - unlike mobile, where the rows are served as a
-  // page and navigate to the authentication route in their own tab.
-  private rowHandler: RowHandlerRemote = RowHandler.getRemote()
-
   private accountStateListenerId: number | null = null
 
+  // The rows live here in brave://settings rather than in the Brave Account
+  // WebUI, so this asks the browser to open the flows in a ConstrainedWebDialog
+  // over the page.
   protected onOpenBraveAccountDialog(
         e: CustomEvent<{ initiatingServiceName: string }>) {
-    this.rowHandler.openDialog(e.detail.initiatingServiceName)
+    this.browserProxy.dialogController.openDialog(e.detail.initiatingServiceName)
   }
 
   override connectedCallback() {

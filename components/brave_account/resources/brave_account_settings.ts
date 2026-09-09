@@ -42,8 +42,7 @@ export class BraveAccountSettingsElement extends CrLitElement {
   private accountStateListenerId: number | null = null
 
   // The rows and the flows share a WebUI here, so the page asks the browser to
-  // present the flows over it - unlike the desktop mount, which goes through
-  // `RowHandler` because its rows live in a different WebUI.
+  // present the flows over it.
   protected onOpenBraveAccountDialog(
         e: CustomEvent<{ initiatingServiceName: string }>) {
     this.browserProxy.dialogController.openDialog(e.detail.initiatingServiceName)

@@ -3,18 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_controller.h"
 
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
 namespace brave_account {
 
-BraveAccountRowHandler::BraveAccountRowHandler(content::WebUI* web_ui)
+BraveAccountDialogController::BraveAccountDialogController(
+    content::WebUI* web_ui)
     : web_ui_(web_ui) {}
 
-BraveAccountRowHandler::~BraveAccountRowHandler() = default;
+BraveAccountDialogController::~BraveAccountDialogController() = default;
 
-void BraveAccountRowHandler::OpenDialog(
+void BraveAccountDialogController::OpenDialog(
     const std::string& initiating_service_name) {
   ShowBraveAccountDialog(web_ui_, initiating_service_name);
 }
