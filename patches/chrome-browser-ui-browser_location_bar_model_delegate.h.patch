@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_location_bar_model_delegate.h b/chrome/browser/ui/browser_location_bar_model_delegate.h
-index 95ea5d88f542832649bbe80e09d8fb243fa49a22..2df208f63be0c146377f864ddd8ad37e6a9f941f 100644
+index 95ea5d88f542832649bbe80e09d8fb243fa49a22..22a1b6cf7b2fced6b81994905c11ee5c929a56f0 100644
 --- a/chrome/browser/ui/browser_location_bar_model_delegate.h
 +++ b/chrome/browser/ui/browser_location_bar_model_delegate.h
 @@ -12,7 +12,7 @@ class TabStripModel;
@@ -11,12 +11,3 @@ index 95ea5d88f542832649bbe80e09d8fb243fa49a22..2df208f63be0c146377f864ddd8ad37e
   public:
    explicit BrowserLocationBarModelDelegate(TabStripModel* tab_strip_model);
  
-@@ -23,7 +23,7 @@ class BrowserLocationBarModelDelegate : public ChromeLocationBarModelDelegate {
- 
-   ~BrowserLocationBarModelDelegate() override;
- 
--  // ChromeLocationBarModelDelegate:
-+  // BraveLocationBarModelDelegate:
-   content::WebContents* GetActiveWebContents() const override;
- 
-  private:

@@ -4,11 +4,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |-
-      Replace ChromeLocationBarModelDelegate with BraveLocationBarModelDelegate.
+  - description: |
+      Rename ChromeLocationBarModelDelegate to
+      ChromeLocationBarModelDelegate_ChromiumImpl.
 
-      Makes BrowserLocationBarModelDelegate inherit the Brave overrides.
-    count: 0
-    regex:
-      pattern: 'ChromeLocationBarModelDelegate'
-      replace: 'BraveLocationBarModelDelegate'
+      This lets Brave shadow the upstream class with its own
+      `BrowserLocationBarModelDelegate` that reuses the name and derives from
+      the renamed upstream class.
+    rename_class:
+      class_name: ChromeLocationBarModelDelegate
+      rename: BraveLocationBarModelDelegate
