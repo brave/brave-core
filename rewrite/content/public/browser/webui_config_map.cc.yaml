@@ -7,7 +7,7 @@ substitutions:
   - description: |
       Retry the config lookup against the parent host, so a WebUIConfig that
       opts in via ShouldHandleSubdomains() also serves the single-label
-      subdomains of its host as distinct origins. FindSubdomainConfig() is
+      subdomains of its host as distinct origins. FindConfigForSubdomain() is
       defined in the chromium_src override.
     regex:
       re_pattern:
@@ -16,5 +16,5 @@ substitutions:
       replace: |-
         \1
           if (origin_and_config == configs_map_.end()) {
-            origin_and_config = FindSubdomainConfig(configs_map_, url);
+            origin_and_config = FindConfigForSubdomain(configs_map_, url);
           }
