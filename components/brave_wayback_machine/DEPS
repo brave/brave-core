@@ -13,4 +13,9 @@ specific_include_rules = {
   "brave_wayback_machine_policy_unittest.cc": [
     "+components/sync_preferences",
   ],
+  "brave_wayback_machine_browsertest.cc": [
+    "+ui/events",
+    "+ui/gfx/geometry/point.h",
+    "+ui/views/test/button_test_api.h",
+  ]
 }

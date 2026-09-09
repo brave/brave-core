@@ -76,6 +76,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:features",
     "//chrome/browser/ui/tabs:test_support",
+    "//chrome/browser/ui/views/tabs/tab",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
     "//components/tabs:public",

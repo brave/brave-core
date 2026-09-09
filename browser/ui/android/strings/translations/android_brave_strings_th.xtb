@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">ให้คะแนน Brave</translation>
 <translation id="4104400246019119780">ขอบคุณ!</translation>
 <translation id="5202255382948179481">เพิ่มคำแนะนำใหม่ของคุณ</translation>
-<translation id="7759809451544302770">ไม่บังคับ</translation>
 <translation id="4748689412569009273">บอกเล่าประสบการณ์ของคุณกับ Brave ด้วยหนึ่งอิโมจิได้หรือไม่</translation>
 <translation id="7335142069363686805">ให้คะแนนตอนนี้</translation>
 <translation id="6681362094306959654">คุณชอบ Brave ใช่ไหม</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">เสียใจ</translation>
 <translation id="5488843227043643519">ต้องการให้คะแนนที่ Play Store หรือไม่</translation>
 <translation id="5867854497245948308">ขอบคุณสำหรับความคิดเห็นของคุณ!</translation>
-<translation id="4935400164159327304">แจ้งให้เราทราบว่าควรปรับปรุง Brave อย่างไรบ้าง</translation>
+<translation id="5578122562331038807">แจ้งให้เราทราบว่าควรปรับปรุง Brave อย่างไรบ้าง</translation>
+<translation id="1483493594462132177">ส่ง</translation>
+<translation id="3889034478061064651">เพิ่มคำแนะนำใหม่ของคุณ (ไม่จำเป็น)</translation>
+<translation id="1769154760586570836">ส่งความคิดเห็นแล้ว ขอบคุณ!</translation>
+<translation id="4450893287417543264">ไม่ต้องแสดงอีก</translation>
 <translation id="8966035543003363155">การแจ้งเตือนของ Brave จะช่วยให้ง่ายขึ้น</translation>
 <translation id="7662771815233894695">จัดการการดาวน์โหลด รับโทเค็น ดูสถิติการใช้งานรายสัปดาห์ และอื่นๆ</translation>
 <translation id="4265429476391459783">คุณจะไม่ได้รับรางวัลหรือได้รับรายงานความเป็นส่วนตัว</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">การกระทำของหน้า</translation>
 <translation id="7104487676473617844">รายการต่อไปนี้จะแสดงบนเมนูเฉพาะเมื่อหน้าเว็บที่เปิดอยู่รองรับเท่านั้น</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="8038539967102225446">Brave Ads อยู่นี่!</translation>
 <translation id="222883304157347087">(อุปกรณ์นี้)</translation>
 <translation id="4157741509680155021">อุปกรณ์บนห่วงโซ่การซิงก์</translation>
@@ -535,7 +537,6 @@
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
-<translation id="1483493594462132177">ส่ง</translation>
 <translation id="538450413584738399">สวอป</translation>
 <translation id="4556086616242530072">เบราว์เซอร์ดั้งเดิม\nรูปแบบควบคุมได้เอง\nและมัลติเชน</translation>
 <translation id="7909462264772842773">ควบคุมคริปโตและ NFT ของคุณ Brave Wallet รองรับ Ethereum, EVM Chains, Solana, Filecoin และอื่นๆ อีกมากมาย</translation>
@@ -611,7 +612,6 @@
 <translation id="569068482611873351">นำเข้า...</translation>
 <translation id="4522570452068850558">รายละเอียด</translation>
 <translation id="3114681061018999547">กำลังป้องกัน</translation>
-<translation id="3784455785234192852">ล็อค</translation>
 <translation id="4412698727486357573">ศูนย์ช่วยเหลือ</translation>
 <translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
@@ -807,6 +807,10 @@
 <translation id="2478788592457735063">การดำเนินการนี้จะสลับเครือข่ายเป็นเครือข่ายที่เพิ่มไว้ก่อนหน้านี้</translation>
 <translation id="8756686998207163764">สลับเครือข่าย</translation>
 <translation id="8905793906896555159">เปิดใช้งานกลุ่มแท็บ</translation>
+<translation id="6735749683447943955">ปิดใช้งานกลุ่มแท็บ?</translation>
+<translation id="4616687974503500682">กลุ่มที่มีอยู่ทั้งหมดจะถูกลบ และแท็บภายในกลุ่มเหล่านั้นจะกลายเป็นแท็บที่เปิดอยู่แบบไม่จัดกลุ่มในหน้าต่างเบราว์เซอร์ของคุณ คุณแน่ใจหรือไม่ว่าต้องการดำเนินการต่อ?</translation>
+<translation id="4394049700291259645">ปิดการใช้งาน</translation>
+<translation id="3859027502409073633">แสดงกลุ่มแท็บที่ซิงค์</translation>
 <translation id="7632160823264702523">แถบกลุ่มแท็บ</translation>
 <translation id="2477807195394450274">แสดงแถบด้านล่างเพื่อเข้าถึงแท็บในกลุ่มแท็บที่เปิดอยู่ในปัจจุบันได้อย่างรวดเร็ว</translation>
 <translation id="8374720587111523381">เปิดลิงก์ในกลุ่มแท็บปัจจุบัน</translation>
@@ -814,6 +818,7 @@
 <translation id="1227658541937938697">เปิดลิงก์ทั้งหมดโดยอัตโนมัติในกลุ่มแท็บปัจจุบัน</translation>
 <translation id="5242300593039211344">ล็อกกระเป๋าเงิน</translation>
 <translation id="1108298724135935307">ไซต์ที่เชื่อมต่อ</translation>
+<translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="4255623233927788178">ดูบน Block Explorer</translation>
 <translation id="8274201358637112807">หน้านี้ต้องการโต้ตอบกับ Brave Wallet</translation>
 <translation id="3355936511340229503">ข้อผิดพลาดในการเชื่อมต่อ</translation>
@@ -855,7 +860,6 @@
 <translation id="6458565248779152483">ปิดใช้งาน Brave VPN</translation>
 <translation id="9080536793704001825">หยุดชั่วคราวเป็นเวลา 15 นาที</translation>
 <translation id="803706420145725977">หยุดชั่วคราวเป็นเวลา 1 ชั่วโมง</translation>
-<translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="7733890291091968191">แสดงการแจ้งเตือนของ Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave จะไม่ติดตามคุณและไม่รับรู้ว่าคุณใช้แอปของเราอย่างไร เราจึงไม่ทราบว่าคุณตั้งค่า VPN อย่างไร โปรดแชร์ข้อมูลเกี่ยวกับปัญหาที่คุณพบและเราจะเร่งแก้ไขโดยเร็วที่สุด ####\n\n</translation>
 <translation id="3367162038532116157">\n\nชื่อโฮสต์ VPN\n <ph name="VALUE"/></translation>

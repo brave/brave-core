@@ -767,9 +767,7 @@ class WindowsRepinTest(_FakeRepoTest):
         subject = message.splitlines()[0]
         self.assertIn('[cr150]', subject)
         self.assertIn('[toolchain]', subject)
-        self.assertIn(
-            'Switch to Windows SDK 10.0.28000.2270 '
-            '(Visual Studio Community 2026 18.2.34567.89)', subject)
+        self.assertIn('Switch to Windows SDK 10.0.28000.2270', subject)
         self.assertIn(
             f'https://chromium.googlesource.com/chromium/src/+/{culprit}',
             message)

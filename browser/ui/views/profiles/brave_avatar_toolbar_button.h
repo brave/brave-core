@@ -11,13 +11,13 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-class BrowserView;
+class BrowserWindowInterface;
 
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
   METADATA_HEADER(BraveAvatarToolbarButton, AvatarToolbarButton)
 
  public:
-  explicit BraveAvatarToolbarButton(BrowserView* browser_view);
+  explicit BraveAvatarToolbarButton(BrowserWindowInterface* browser);
   BraveAvatarToolbarButton(const BraveAvatarToolbarButton&) = delete;
   BraveAvatarToolbarButton& operator=(const BraveAvatarToolbarButton&) = delete;
   ~BraveAvatarToolbarButton() override;

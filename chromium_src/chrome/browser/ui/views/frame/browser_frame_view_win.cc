@@ -16,11 +16,11 @@
 // label even when Browser::SupportsWindowFeature(kFeatureTitleBar) returns
 // false at the time of creation, as users can switch tab orientation or title
 // bar visibility by changing preferences.
-#define SupportsWindowFeature(feature)                        \
-  SupportsWindowFeature(feature) ||                           \
-      (feature == Browser::WindowFeature::kFeatureTitleBar && \
-       VerticalTabController::FromBrowser(browser) &&         \
-       VerticalTabController::FromBrowser(browser)            \
+#define SupportsWindowFeature(feature)                                        \
+  SupportsWindowFeature(feature) ||                                           \
+      (feature == WindowFeatureController::WindowFeature::kFeatureTitleBar && \
+       VerticalTabController::FromBrowser(browser) &&                         \
+       VerticalTabController::FromBrowser(browser)                            \
            ->SupportsBraveVerticalTabs())
 
 #include <chrome/browser/ui/views/frame/browser_frame_view_win.cc>

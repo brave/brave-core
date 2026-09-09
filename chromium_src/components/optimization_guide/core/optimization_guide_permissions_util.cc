@@ -13,4 +13,8 @@ bool IsUserPermittedToFetchFromRemoteOptimizationGuide(
   return false;
 }
 
+bool ShouldSkipGoogleApiKeyConfigurationCheck() {
+  return false;
+}
+
 }  // namespace optimization_guide

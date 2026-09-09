@@ -3,8 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 source_set("page_action") {
   # TODO(https://github.com/brave/brave-browser/issues/52829)
@@ -52,21 +57,219 @@ source_set("page_action") {
       "//ui/menus",
     ]
   }
+
+  if (enable_speedreader) {
+    sources += [
+      "speedreader_page_action_controller.cc",
+      "speedreader_page_action_controller.h",
+    ]
+
+    deps += [
+      "//brave/browser/ui/speedreader",
+      "//brave/components/speedreader/common",
+      "//brave/components/vector_icons",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/color:mixers",
+      "//components/prefs",
+      "//ui/base",
+    ]
+  }
+
+  if (enable_tor) {
+    sources += [
+      "onion_location_page_action_controller.cc",
+      "onion_location_page_action_controller.h",
+    ]
+
+    deps += [
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/browser/tor",
+      "//brave/components/tor",
+      "//brave/components/vector_icons",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/color:mixers",
+      "//content/public/browser",
+      "//ui/base",
+      "//ui/color",
+      "//url",
+    ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    sources += [
+      "wayback_machine_bubble_view.cc",
+      "wayback_machine_bubble_view.h",
+      "wayback_machine_page_action_controller.cc",
+      "wayback_machine_page_action_controller.h",
+    ]
+
+    deps += [
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/components/brave_wayback_machine",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/color:mixers",
+      "//chrome/browser/ui/views:layout_provider",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/user_prefs",
+      "//ui/actions",
+      "//ui/base",
+      "//ui/views",
+    ]
+  }
 }
 
 source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "page_action_view_unittest.cc" ]
+  sources = [
+    "page_action_test_observer.cc",
+    "page_action_test_observer.h",
+    "page_action_view_unittest.cc",
+    "test_tab_interface.cc",
+    "test_tab_interface.h",
+  ]
   deps = [
     "//base",
+    "//chrome/browser/ui/page_action",
+    "//chrome/browser/ui/page_action:test_support",
     "//chrome/browser/ui/views/page_action",
     "//chrome/browser/ui/views/page_action:test_support",
     "//chrome/test:test_support",
+    "//components/tabs:test_support",
+    "//content/public/browser",
     "//testing/gmock",
     "//testing/gtest",
     "//ui/gfx",
     "//ui/views",
   ]
+
+  if (enable_speedreader) {
+    sources += [ "speedreader_page_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/browser/speedreader",
+      "//brave/browser/ui/speedreader",
+      "//brave/components/speedreader/common",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/prefs",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+      "//ui/base",
+      "//ui/events:test_support",
+    ]
+  }
+
+  if (enable_containers) {
+    sources += [ "partitioned_storage_page_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/browser/containers",
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/browser",
+      "//brave/components/containers/core/browser:test_support",
+      "//brave/components/containers/core/common:features",
+      "//chrome/browser/prefs",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/keyed_service/core",
+      "//components/pref_registry",
+      "//components/sync_preferences",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+    ]
+  }
+
+  if (enable_psst) {
+    sources += [ "psst_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/app:command_ids",
+      "//brave/components/psst/core/common",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+      "//ui/base",
+      "//ui/menus",
+    ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    sources += [ "wayback_machine_page_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/components/brave_wayback_machine",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/prefs",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+    ]
+  }
+
+  if (enable_playlist_webui) {
+    sources += [ "playlist_page_action_controller_unittest.cc" ]
+    deps += [
+      # PlaylistPageActionController itself lives in //brave/browser/ui; see
+      # the comment on that dep in browser/ui/tabs/BUILD.gn.
+      "//brave/browser/ui",
+      "//brave/components/playlist/content/browser",
+      "//brave/components/playlist/core/common",
+      "//chrome/browser/prefs",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/pref_registry",
+      "//components/prefs",
+      "//components/sync_preferences",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+    ]
+  }
+
+  if (enable_tor) {
+    sources += [ "onion_location_page_action_controller_unittest.cc" ]
+    deps += [
+      ":page_action",
+      "//brave/components/tor",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//ui/actions",
+      "//ui/base",
+      "//url",
+    ]
+  }
+
+  if (enable_brave_news) {
+    sources += [ "brave_news_page_action_controller_unittest.cc" ]
+    deps += [
+      "//brave/browser/brave_news",
+      "//brave/browser/brave_news:impl",
+      "//brave/browser/ui",
+      "//brave/components/brave_news/common",
+      "//brave/components/brave_news/common:mojom",
+      "//chrome/browser/ui:test_support",
+      "//chrome/browser/ui/page_action",
+      "//chrome/browser/ui/page_action:test_support",
+      "//components/prefs",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//testing/gmock",
+      "//ui/actions",
+      "//url",
+    ]
+  }
 }

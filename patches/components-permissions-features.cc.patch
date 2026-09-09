@@ -1,5 +1,5 @@
 diff --git a/components/permissions/features.cc b/components/permissions/features.cc
-index f4a1fa6a33d44e215332c39073940efc367036fa..eb857746488ae669720713f193d577b2dfdbcfdb 100644
+index 0928e763d1ed6f91cf44ef042c212829fd944410..d50f95d30ca5d5cbc3574574231d237a9140c2fd 100644
 --- a/components/permissions/features.cc
 +++ b/components/permissions/features.cc
 @@ -34,7 +34,8 @@ BASE_FEATURE(kPermissionElementPromptPositioning,
@@ -12,7 +12,7 @@ index f4a1fa6a33d44e215332c39073940efc367036fa..eb857746488ae669720713f193d577b2
  
  BASE_FEATURE(kPermissionsAIv4, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -61,7 +62,11 @@ BASE_FEATURE(kPermissionPromiseLifetimeModulationAndroid,
+@@ -64,7 +65,11 @@ BASE_FEATURE(kPermissionPromiseLifetimeModulationAndroid,
  // configuring `PermissionAction` does not make sense in that case, since the
  // user has not yet taken an action. Therefore, that parameter is ignored in
  // that case.
@@ -24,7 +24,7 @@ index f4a1fa6a33d44e215332c39073940efc367036fa..eb857746488ae669720713f193d577b2
  
  // When enabled, use the value of the `allowlist_urls` FeatureParam as the
  // list of origins which would be allowed to access browser permission and
-@@ -87,10 +92,12 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
+@@ -90,10 +95,12 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
  // When enabled, blocks condition to exclude auto granted permissions for
  // storage access exceptions. This will allow RWS permission grants to be
  // visible in the Embedded content settings page.

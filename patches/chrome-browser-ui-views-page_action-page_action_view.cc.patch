@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb0959f699 100644
+index e1438b90736803d787668703e1ceef176d75d5cc..002e83308d11a00f26bd71f8eb454f3f4e1b3801 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -244,7 +244,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
@@ -29,7 +29,7 @@ index ad5d3f6cc1ff686ba5e1a20af4afbadcd211f671..58946e68b01e7b67e07714d3299c4ffb
    action_item_->InvokeAction(std::move(builder).Build());
  }
  
-@@ -687,6 +691,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -690,6 +694,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {

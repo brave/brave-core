@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Square off the extension corner in HorizontalTabStyleViews::GetPath, so Brave
+      tabs don't carry upstream's rounded extension.
+    regex:
+      re_pattern:
+        '(  float left_extension_corner_radius = extension_corner_radius;)'
+      replace: '  extension_corner_radius = 0;\n\1'
+
+  - description: |-
+      Fully round the tab separators in HorizontalTabStyleViews::PaintSeparators
+
+      This patch computes a radius of half the separator width.
+    regex:
+      re_pattern:
+        '(void HorizontalTabStyleViews::PaintSeparators\(.*?\n)(  cc::PaintFlags
+        flags;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
+          // will be approximated with color, although extremely subtle and
+          // likely only on screens >= 2x (i.e. separator width is 2+px)!
+          const int separator_radius = separator_bounds.leading.width() / 2;
+        \2
+
+  - description: |-
+      Use the fully-rounded separator radius for both separator draws.
+    regex:
+      re_pattern: 'tab_style\(\)->GetSeparatorCornerRadius\(\) \* scale'
+      replace: 'separator_radius'
+    count: 2

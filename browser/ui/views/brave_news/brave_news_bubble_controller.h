@@ -14,8 +14,11 @@ namespace content {
 class WebContents;
 }
 
+namespace views {
+class View;
+}
+
 class BraveNewsBubbleView;
-class BraveNewsActionIconView;
 
 namespace brave_news {
 
@@ -27,7 +30,7 @@ class BraveNewsBubbleController
 
   ~BraveNewsBubbleController() override;
 
-  void ShowBubble(base::WeakPtr<BraveNewsActionIconView> anchor_view);
+  void ShowBubble(views::View* anchor_view);
   BraveNewsBubbleView* GetBubble();
   void OnBubbleClosed();
   base::WeakPtr<BraveNewsBubbleController> AsWeakPtr();

@@ -68,7 +68,7 @@ IN_PROC_BROWSER_TEST_P(BrowserNavigatorPopupAsTabBrowserTest, OpenPopupAsTab) {
           if (b == browser()) {
             return true;
           }
-          EXPECT_TRUE(b->GetBrowserForMigrationOnly()->is_type_popup());
+          EXPECT_EQ(b->GetType(), BrowserWindowInterface::Type::TYPE_POPUP);
           return true;
         });
     EXPECT_EQ(1, browser()->tab_strip_model()->count());

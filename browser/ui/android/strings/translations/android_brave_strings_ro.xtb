@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Evaluați Brave</translation>
 <translation id="4104400246019119780">Mulțumim!</translation>
 <translation id="5202255382948179481">Spuneți-ne sugestiile dvs.</translation>
-<translation id="7759809451544302770">Opțional</translation>
 <translation id="4748689412569009273">Cu un emoji, cum evaluați experiența dvs. cu Brave?</translation>
 <translation id="7335142069363686805">Evaluați acum</translation>
 <translation id="6681362094306959654">Vă place Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Trist(ă)</translation>
 <translation id="5488843227043643519">Dați-ne o evaluare în Play Store.</translation>
 <translation id="5867854497245948308">Vă mulțumim pentru feedback!</translation>
-<translation id="4935400164159327304">Spuneți-ne cum putem îmbunătăți Brave.</translation>
+<translation id="5578122562331038807">Spuneți-ne cum putem îmbunătăți Brave</translation>
+<translation id="1483493594462132177">Trimite</translation>
+<translation id="3889034478061064651">Adăugați sugestiile dvs. (opțional)</translation>
+<translation id="1769154760586570836">Feedback trimis. Vă mulțumim!</translation>
+<translation id="4450893287417543264">Nu mai afișa</translation>
 <translation id="8966035543003363155">Notificările Brave ușurează lucrurile</translation>
 <translation id="7662771815233894695">Gestionați descărcările, câștigați tokeni, vedeți statisticile de utilizare săptămânale și multe altele.</translation>
 <translation id="4265429476391459783">Nu câștigați recompense sau nu primiți rapoarte de confidențialitate</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Acțiuni pentru pagină</translation>
 <translation id="7104487676473617844">Următoarele elemente vor fi vizibile în meniu doar când sunt acceptate de pagina web deschisă.</translation>
 <translation id="4159764849281393303">Aplicație web</translation>
-<translation id="8428213095426709021">Setări</translation>
 <translation id="8038539967102225446">Reclamele Brave sunt aici!</translation>
 <translation id="222883304157347087">(acest dispozitiv)</translation>
 <translation id="4157741509680155021">DISPOZITIVE PE LANȚUL DE SINCRONIZARE</translation>
@@ -535,7 +537,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
-<translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
 <translation id="4556086616242530072">Nativ în browser.\nCustodie proprie.\nȘi multichain.</translation>
 <translation id="7909462264772842773">Preluați controlul criptomonedelor și al NFT-urilor dvs. Portofelul Brave acceptă Ethereum, chainuri EVM, Solana, Filecoin și altele.</translation>
@@ -611,7 +612,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="569068482611873351">Importați...</translation>
 <translation id="4522570452068850558">Detalii</translation>
 <translation id="3114681061018999547">Se protejează</translation>
-<translation id="3784455785234192852">Blocați</translation>
 <translation id="4412698727486357573">Centrul de ajutor</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
@@ -807,6 +807,10 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2478788592457735063">Acest lucru va schimba rețeaua la una adăugată anterior.</translation>
 <translation id="8756686998207163764">Schimbați rețeaua</translation>
 <translation id="8905793906896555159">Activează grupurile de file</translation>
+<translation id="6735749683447943955">Dezactivați grupurile de file?</translation>
+<translation id="4616687974503500682">Orice grupuri existente vor fi șterse, iar filele din acele grupuri vor deveni file deschise și negrupate în fereastra browserului. Sigur doriți să continuați?</translation>
+<translation id="4394049700291259645">Dezactivează</translation>
+<translation id="3859027502409073633">Afișează grupurile de file sincronizate</translation>
 <translation id="7632160823264702523">Bara de grupuri de file</translation>
 <translation id="2477807195394450274">Afișează o bară de jos pentru acces rapid la filele din grupul de file deschis în prezent</translation>
 <translation id="8374720587111523381">Deschide linkurile în grupul de file actual</translation>
@@ -814,6 +818,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1227658541937938697">Deschide automat toate linkurile în grupul de file actual</translation>
 <translation id="5242300593039211344">Blocați portofelul</translation>
 <translation id="1108298724135935307">Site-uri conectate</translation>
+<translation id="8428213095426709021">Setări</translation>
 <translation id="4255623233927788178">Vedeți în exploratorul de blocuri</translation>
 <translation id="8274201358637112807">Această pagină vrea să interacționeze cu portofelul Brave</translation>
 <translation id="3355936511340229503">Eroare de conexiune</translation>
@@ -855,7 +860,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6458565248779152483">Dezactivați VPN-ul Brave</translation>
 <translation id="9080536793704001825">Întrerupeți timp de 15 minute</translation>
 <translation id="803706420145725977">Întrerupeți timp de 1 oră</translation>
-<translation id="4394049700291259645">Dezactivează</translation>
 <translation id="7733890291091968191">Afișați notificările Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave nu vă urmărește pe dvs. sau cum utilizați aplicația, astfel că nu știm cum v-ați configurat conexiunea VPN. Trimiteți-ne informațiile despre problema pe care o întâmpinați și vom face tot posibilul să o rezolvăm cât mai repede cu putință.####\n\n</translation>
 <translation id="3367162038532116157">\n\nNume gazdă VPN\n <ph name="VALUE"/></translation>

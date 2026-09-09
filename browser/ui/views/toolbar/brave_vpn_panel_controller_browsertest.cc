@@ -23,7 +23,8 @@ class BraveVPNPanelControllerTest : public DialogBrowserTest {
 
   // TestBrowserUi:
   void ShowUi(const std::string& name) override {
-    browser()->command_controller()->ExecuteCommand(IDC_SHOW_BRAVE_VPN_PANEL);
+    chrome::BrowserCommandController::From(browser())->ExecuteCommand(
+        IDC_SHOW_BRAVE_VPN_PANEL);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

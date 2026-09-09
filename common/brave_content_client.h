@@ -17,7 +17,8 @@ class BraveContentClient : public ChromeContentClient {
 
  private:
   // ChromeContentClinet overrides:
-  base::RefCountedMemory* GetDataResourceBytes(int resource_id) override;
+  scoped_refptr<base::RefCountedMemory> GetDataResourceBytes(
+      int resource_id) override;
   void AddAdditionalSchemes(Schemes* schemes) override;
   void AddContentDecryptionModules(
       std::vector<content::CdmInfo>* cdms,

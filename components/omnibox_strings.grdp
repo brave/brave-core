@@ -123,6 +123,9 @@
   <message name="IDS_DANGEROUS_VERBOSE_STATE" desc="Text for the Dangerous Omnibox Verbose State. Displayed when the current page fails the malware check.">
     Dangerous
   </message>
+  <message name="IDS_SUSPICIOUS_VERBOSE_STATE" desc="Text for the Suspicious Omnibox Verbose State. Displayed when the current page is marked as a suspicious site.">
+    Suspicious
+  </message>
   <message name="IDS_OFFLINE_VERBOSE_STATE" desc="Text for the Offline Omnibox Verbose state. Displayed when the current page is loaded from a previously-downloaded cache.">
     Offline
   </message>
@@ -142,6 +145,12 @@
       </message>
       <message name="IDS_OMNIBOX_NAVATTACH_FILES" desc="The text displayed in the omnibox attachments popup. When clicked - opens file picker." formatter_data="android_java">
         Files
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_ADD_IMAGES" desc="The text displayed in the omnibox attachments popup. When clicked - opens image gallery." formatter_data="android_java">
+        Add images
+      </message>
+      <message name="IDS_OMNIBOX_NAVATTACH_ADD_FILES" desc="The text displayed in the omnibox attachments popup. When clicked - opens file picker." formatter_data="android_java">
+        Add files
       </message>
       <message name="IDS_OMNIBOX_NAVATTACH_TABS" desc="The text displayed in the omnibox attachments popup. When clicked - opens tabs picker." formatter_data="android_java">
         Tabs
@@ -402,7 +411,7 @@
     Submit
   </message>
   <message name="IDS_ACC_SEND_BUTTON_SEND_TO_AI" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the AI Mode context" formatter_data="android_java">
-    Send to assistant
+    Send
   </message>
   <message name="IDS_ACC_SEND_BUTTON_CREATE_IMAGE" desc="Accessibility text for the Omnibox `Send` button, announced when the user is in the Create Image context" formatter_data="android_java">
     Create image

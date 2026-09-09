@@ -37,9 +37,9 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
   std::unique_ptr<Browser> CreateAndActivateBrowser(
       const std::string& title,
       Profile* browser_profile = nullptr) {
-    Browser::CreateParams params(browser_profile ? browser_profile : profile(),
-                                 true);
-    auto browser = CreateBrowserWithTestWindowForParams(params);
+    BrowserWindowCreateParams params(
+        browser_profile ? browser_profile : profile(), true);
+    auto browser = CreateBrowserWithTestWindowForParams(std::move(params));
     WindowMetadataController::From(browser.get())->SetWindowUserTitle(title);
     ui_test_utils::DeprecatedFakeActivateBrowser(browser.get());
     return browser;

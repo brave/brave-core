@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.h b/chrome/browser/ui/views/page_info/page_info_bubble_view.h
-index ac6391594d70be59d02e31b1389e446c0f718212..dcc026a779a7424432d2786db1e718a4d05e15e8 100644
+index 71997156f1effc12a1964a6e57cc1a5e70984745..86e380e38e0a1b0f8206a87ab262e60a5fcf5b45 100644
 --- a/chrome/browser/ui/views/page_info/page_info_bubble_view.h
 +++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.h
 @@ -54,6 +54,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
@@ -7,10 +7,10 @@ index ac6391594d70be59d02e31b1389e446c0f718212..dcc026a779a7424432d2786db1e718a4
  
   private:
 +  friend class BravePageInfoBubbleView;
-   PageInfoBubbleView(views::BubbleAnchor anchor,
-                      const gfx::Rect& anchor_rect,
-                      gfx::NativeView parent_window,
-@@ -70,7 +71,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
+   PageInfoBubbleView(
+       views::BubbleAnchor anchor,
+       const gfx::Rect& anchor_rect,
+@@ -72,7 +73,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
    void WebContentsDestroyed() override;
    void ChildPreferredSizeChanged(views::View* child) override;
  

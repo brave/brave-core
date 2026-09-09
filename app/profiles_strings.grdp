@@ -168,6 +168,15 @@
     You can keep chatting with AI Mode without switching tabs. To get started, verify it's you. You'll also get your passwords and more on all your devices.
   </message>
 
+  <!-- Signin Composebox Drive context menu option promo. -->
+  <!-- TODO(crbug.com/545561312): Make translatable. -->
+  <message name="IDS_COMPOSEBOX_DRIVE_CONTEXT_MENU_OPTION_SIGNIN_PROMO_TITLE" translateable="false" desc="The title in the sign-in promo bubble shown to users when interacting with the Google Drive context menu option in the composebox while not signed in.">
+    Search with files from Drive
+  </message>
+  <message name="IDS_COMPOSEBOX_DRIVE_CONTEXT_MENU_OPTION_SIGNIN_PROMO_SUBTITLE" translateable="false" desc="The message shown in a sign-in promo bubble shown to users when interacting with the Google Drive context menu option in the composebox while not signed in.">
+    Sign in to easily add files from Drive to your AI Mode threads. You'll also get your passwords and more on all your devices.
+  </message>
+
   <if expr="use_titlecase">
       <message name="IDS_PROFILES_VERIFY_ACCOUNT_BUTTON" desc="The label of the button that is shown when the user is in a Signin paused state. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
         Verify It's You
@@ -187,11 +196,11 @@
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_SEPARATOR" desc="The user name and profile name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph>
   </message>
-  <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_NAME_AND_TIER" is_accessibility_with_no_ui="true" desc="The user name, profile name, and the Brave membership tier are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
-    <ph name="USER_NAME">$1<ex>John</ex></ph> • <ph name="PROFILE_NAME">$2<ex>Work</ex></ph> • <ph name="TIER_NAME">$3<ex>Brave Subscription</ex></ph>
-  </message>
   <message name="IDS_PROFILE_AVATAR_NAME_WITH_AI_MEMBERSHIP" desc="Label indicating that the profile has a Brave membership associated with the AI avatar ring, preceded by the profile name or details.">
     <ph name="PROFILE_NAME">$1<ex>Alice</ex></ph>. Brave membership
+  </message>
+  <message name="IDS_PROFILE_AVATAR_AI_MEMBERSHIP" is_accessibility_with_no_ui="true" desc="Label indicating that the profile has a Brave membership associated with the AI avatar ring.">
+    Brave membership
   </message>
   <message name="IDS_PROFILE_MENU_PROFILE_IDENTIFIER_WITH_TIER" is_accessibility_with_no_ui="true" desc="Label indicating that the profile has a Brave membership tier associated with the AI avatar ring, preceded by the profile name. The profile name and the tier name are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
     <ph name="PROFILE_NAME">$1<ex>Alice</ex></ph> • <ph name="TIER_NAME">$2<ex>Brave Subscription</ex></ph>
@@ -1142,6 +1151,10 @@
     </message>
 
     <!-- First Run Experience strings -->
+    <message name="IDS_FRE_WELCOME_TITLE" desc="This string is the main headline of the first onboarding screen intended to introduce users to Brave. It highlights productivity as a core value proposition. The tone should be motivating and professional. (CHAR LIMIT = 45)">
+      The browser that gets more done
+    </message>
+
     <message name="IDS_FRE_SIGN_IN_SUBTITLE_0" desc="This is the subtitle on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. These features are also described in the cards below as 'All your devices', 'Stronger security', and 'Back up data'. The tone should be inviting and alluring.">
       Get additional features
     </message>

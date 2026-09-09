@@ -21,6 +21,7 @@ source_set("impl") {
     ":workspaces",
     "//base",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
   ]
 }

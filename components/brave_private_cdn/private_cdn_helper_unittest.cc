@@ -6,11 +6,11 @@
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 
 #include <array>
+#include <ranges>
 #include <string>
 #include <string_view>
 
 #include "base/compiler_specific.h"
-#include "base/types/zip.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BravePrivateCdnHelperTest, RemovePadding) {
@@ -73,7 +73,7 @@ TEST(BravePrivateCdnHelperTest, RemovePadding) {
   static_assert(inputs.size() == outputs.size(),
                 "inputs and outputs must have the same size");
 
-  for (auto [input, output] : base::zip(inputs, outputs)) {
+  for (auto [input, output] : std::views::zip(inputs, outputs)) {
     std::string_view padded_string = input;
     EXPECT_TRUE(brave::private_cdn::RemovePadding(&padded_string));
     EXPECT_EQ(padded_string, output);

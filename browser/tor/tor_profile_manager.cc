@@ -22,9 +22,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/common/pref_names.h"
@@ -87,7 +89,7 @@ TorProfileManager& TorProfileManager::GetInstance() {
 class TorTabNavigator final : public content::WebContentsObserver,
                               public TorLauncherObserver {
  public:
-  static void Navigate(Browser* tor_browser,
+  static void Navigate(BrowserWindowInterface* tor_browser,
                        const GURL& url,
                        const std::optional<url::Origin>& initiator_origin) {
     auto* tab = FindNTPTab(tor_browser);
@@ -165,10 +167,10 @@ class TorTabNavigator final : public content::WebContentsObserver,
     }
   }
 
-  static content::WebContents* FindNTPTab(Browser* tor_browser) {
-    for (int i = 0; i < tor_browser->tab_strip_model()->count(); ++i) {
-      auto* tab = tor_browser->tab_strip_model()->GetWebContentsAt(i);
-      if (tab->GetURL() == tor_browser->GetNewTabURL()) {
+  static content::WebContents* FindNTPTab(BrowserWindowInterface* tor_browser) {
+    for (int i = 0; i < tor_browser->GetTabStripModel()->count(); ++i) {
+      auto* tab = tor_browser->GetTabStripModel()->GetWebContentsAt(i);
+      if (tab->GetURL() == chrome::GetNewTabURL(tor_browser)) {
         return tab;
       }
     }
@@ -199,19 +201,17 @@ Browser* TorProfileManager::SwitchToTorProfile(
   // Find an existing Tor Browser, making a new one if no such Browser is
   // located.
   auto* collection = ProfileBrowserCollection::GetForProfile(tor_profile);
-  auto* tabbed_browser = collection ? collection->FindTabbedBrowser() : nullptr;
-  auto* browser =
-      tabbed_browser ? tabbed_browser->GetBrowserForMigrationOnly() : nullptr;
-  if (!browser && Browser::GetCreationStatusForProfile(tor_profile) ==
+  auto* browser = collection ? collection->FindTabbedBrowser() : nullptr;
+  if (!browser && GetBrowserWindowCreationStatusForProfile(*tor_profile) ==
                       Browser::CreationStatus::kOk) {
-    browser = Browser::Create(Browser::CreateParams(tor_profile, true));
+    browser = CreateBrowserWindow(BrowserWindowCreateParams(tor_profile, true));
   }
   if (browser) {
     TorTabNavigator::Navigate(browser, url, initiator_origin);
     BrowserWindow::FromBrowser(browser)->Activate();
     BrowserWindow::FromBrowser(browser)->Show();
   }
-  return browser;
+  return browser->GetBrowserForMigrationOnly();
 }
 
 // static

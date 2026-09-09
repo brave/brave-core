@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/incognito_menu_view.h b/chrome/browser/ui/views/profiles/incognito_menu_view.h
-index 12c3919acc691412acdd2065e737b92a671aa603..caa0e7b52c70ecae04c46f9375d28347c11110a3 100644
+index 0fc9f0680c107bfe43ac2641cd9aa9488743389e..baaedc48ffdabecdfdf9b703c4e24d8ed563423a 100644
 --- a/chrome/browser/ui/views/profiles/incognito_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/incognito_menu_view.h
-@@ -31,11 +31,12 @@ class IncognitoMenuView : public ProfileMenuViewBase {
+@@ -32,11 +32,12 @@ class IncognitoMenuView : public ProfileMenuViewBase {
    void BuildMenu() override;
  
   private:

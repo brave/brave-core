@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_management.h b/chrome/browser/extensions/extension_management.h
-index 457ac3b12c28e9646d1a07fcc0e677e23300d29d..7295bf70056cced59a583b973c412c4d1f7ad393 100644
+index 66a2b462ff40bfcff9258081c9a35e4f2363cf24..c0182f323eba0406555b9f1c874076c2c44f25db 100644
 --- a/chrome/browser/extensions/extension_management.h
 +++ b/chrome/browser/extensions/extension_management.h
-@@ -207,6 +207,7 @@ class ExtensionManagement : public KeyedService,
+@@ -199,6 +199,7 @@ class ExtensionManagement : public KeyedService,
        const ExtensionId& extension_id);
  
   private:

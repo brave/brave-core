@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/frame/system_menu_model_builder.h b/chrome/browser/ui/views/frame/system_menu_model_builder.h
-index d0691a976cc218161e65e704ace414e70d2c9b1c..4986b58fbaa2ec8e1a9f8045dc33ac5cad9327f0 100644
+index ee3e4c24425626006772267288b9d9191ddc7622..a12f2f9c07ea2bef225d0182bf3ba9b06395495e 100644
 --- a/chrome/browser/ui/views/frame/system_menu_model_builder.h
 +++ b/chrome/browser/ui/views/frame/system_menu_model_builder.h
-@@ -45,11 +45,12 @@ class SystemMenuModelBuilder {
+@@ -46,11 +46,12 @@ class SystemMenuModelBuilder {
    ui::MenuModel* menu_model() { return menu_model_.get(); }
  
   private:
 +  friend class BraveSystemMenuModelBuilder;
-   Browser* browser() { return menu_delegate_.browser(); }
+   BrowserWindowInterface* browser() { return menu_delegate_.browser(); }
  
    // Populates |model| with the appropriate contents.
    void BuildMenu(ui::SimpleMenuModel* model);

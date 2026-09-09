@@ -1,0 +1,16 @@
+diff --git a/content/public/browser/hid_delegate.h b/content/public/browser/hid_delegate.h
+index cb1c313bea2bd7269f9560cd613a09596585fc95..a7f94a0bf8e071adc2426090dd149a3b2511dbe5 100644
+--- a/content/public/browser/hid_delegate.h
++++ b/content/public/browser/hid_delegate.h
+@@ -123,6 +123,11 @@ class CONTENT_EXPORT HidDelegate {
+   // |browser_context|.
+   virtual void DecrementConnectionCount(BrowserContext* browser_context,
+                                         const url::Origin& origin) = 0;
++
++  // Returns true if `render_frame_host` is allowed to request a device
++  // without transient user activation.
++  virtual bool AllowRequestDeviceWithoutTransientActivation(
++      RenderFrameHost* render_frame_host);
+ };
+ 
+ }  // namespace content

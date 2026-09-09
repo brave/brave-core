@@ -16,8 +16,8 @@ android_library("java") {
     "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesFragment.java",
     "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesModel.java",
     "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesSettingsViewHolder.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesSerializer.java",
     "java/src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtil.java",
-    "java/src/org/chromium/brave/browser/quick_search_engines/utils/SharedPreferencesHelper.java",
     "java/src/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewAdapter.java",
     "java/src/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewHolder.java",
   ]
@@ -30,7 +30,6 @@ android_library("java") {
     "//base:tasks_java",
     "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
     "//brave/browser/custom_search_engines/android:java",
-    "//brave/third_party/android_deps:com_google_code_gson_gson_java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/regional_capabilities/android:java",

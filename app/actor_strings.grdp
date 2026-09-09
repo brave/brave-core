@@ -54,7 +54,7 @@
   <message name="IDS_ACTOR_TASK_LIST_BUBBLE_ROW_FAILED_TASK_SUBTITLE" desc="Subtitle shown for a task in the task list bubble informing the user that the task has failed." formatter_data="android_java">
    Something went wrong
   </message>
-  <message name="IDS_TOOLTIP_TAB_ALERT_STATE_ACTOR_ACCESSING" desc="Extra tool tip text, when the tab's context is being shared with Gemini">
+  <message name="IDS_TOOLTIP_TAB_ALERT_STATE_ACTOR_ACCESSING" desc="Extra tool tip text, when the tab's context is being shared with Gemini" formatter_data="android_java">
     Gemini is working on your task...
   </message>
   <if expr="is_android">
@@ -155,6 +155,9 @@
   </message>
 
     <!-- Glic Peek View UI State Strings -->
+  <message name="IDS_PEEK_STATE_NEW_CHAT" desc="Default title text for the peek view when there is a new chat with no title." formatter_data="android_java">
+    New chat
+  </message>
   <message name="IDS_PEEK_STATE_ACTING" desc="Status message indicating that Gemini is actively working on a task the user assigned." formatter_data="android_java">
     Working on your task...
   </message>

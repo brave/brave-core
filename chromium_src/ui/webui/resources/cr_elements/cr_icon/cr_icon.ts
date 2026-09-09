@@ -90,7 +90,7 @@ const iconMap: { [key: string]: string } = {
     'settings20:lightbulb-2': 'idea',
     'cr:delete': 'trash', // delete browsing data
     'cr:security': 'lock',
-    'privacy:page-info-old': 'tune', // privacy page additional settings
+    'privacy:page-info': 'tune', // privacy page additional settings
     'cr:fullscreen': 'fullscreen-on', // automatic fullscreen
     'settings:picture-in-picture': 'picture-in-picture', // picture in picture
     'cr:file-download': 'download',

@@ -10,7 +10,7 @@
 #include "build/build_config.h"
 
 // `AdsServiceDelegate::OpenNewTabWithUrl` only drives `Navigate()` and
-// `Browser::Create()` on non-Android desktop platforms; Android uses
+// `CreateBrowserWindow()` on non-Android desktop platforms; Android uses
 // `ServiceTabLauncher` instead, which is untouched by this fix.
 #if !BUILDFLAG(IS_ANDROID)
 

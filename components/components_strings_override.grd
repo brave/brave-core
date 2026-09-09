@@ -93,7 +93,6 @@
       <part file="omnibox_strings_override.grdp" />
       <part file="page_info_strings_override.grdp" />
       <part file="payments_strings_override.grdp" />
-      <part file="privacy_sandbox_chrome_strings_override.grdp" />
       <part file="security_interstitials_strings_override.grdp" />
       <part file="supervised_user_strings_override.grdp" />
       <if expr="is_android">
@@ -130,6 +129,8 @@
         </if>
       <if expr="use_titlecase">
         </if>
-      </messages>
+      <if expr="not is_android">
+        </if>
+    </messages>
   </release>
 </grit>

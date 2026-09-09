@@ -1,0 +1,20 @@
+diff --git a/content/browser/hid/hid_service.cc b/content/browser/hid/hid_service.cc
+index 05ddfb8a7e3a60bd136a4dee790bb0de98206ea4..44172da1c7d04e2fdd5a4ff7fa86653f55993c00 100644
+--- a/content/browser/hid/hid_service.cc
++++ b/content/browser/hid/hid_service.cc
+@@ -422,11 +422,13 @@ void HidService::RequestDevice(
+     RequestDeviceCallback callback) {
+   HidDelegate* delegate = GetContentClient()->browser()->GetHidDelegate();
+   if (!render_frame_host_ ||
+-      !FrameTreeNode::From(render_frame_host_)
++      (!delegate->AllowRequestDeviceWithoutTransientActivation(
++           render_frame_host_) &&
++       !FrameTreeNode::From(render_frame_host_)
+            ->UpdateUserActivationState(
+                blink::mojom::UserActivationUpdateType::
+                    kConsumeTransientActivation,
+-               blink::mojom::UserActivationNotificationType::kNone) ||
++               blink::mojom::UserActivationNotificationType::kNone)) ||
+       !delegate->CanRequestDevicePermission(GetBrowserContext(), origin_)) {
+     std::move(callback).Run(std::vector<device::mojom::HidDeviceInfoPtr>());
+     return;

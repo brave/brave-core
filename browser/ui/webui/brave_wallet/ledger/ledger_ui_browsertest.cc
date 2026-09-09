@@ -138,9 +138,10 @@ IN_PROC_BROWSER_TEST_F(LedgerUIBrowserTest,
   auto waiter = test::ChooserBubbleUiWaiter::Create();
   result = ReturnLedgerDevice(https_rfh,
                               content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES);
-  EXPECT_TRUE(https_rfh->HasTransientUserActivation());
   waiter->WaitForChange();
   EXPECT_TRUE(waiter->has_shown());
+  // `HidService::RequestDevice` consumes the transient user activation.
+  EXPECT_FALSE(https_rfh->HasTransientUserActivation());
 }
 
 }  // namespace brave_wallet

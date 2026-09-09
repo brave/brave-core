@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/optimization_guide/chrome_browser_main_extra_parts_optimization_guide.cc b/chrome/browser/optimization_guide/chrome_browser_main_extra_parts_optimization_guide.cc
+index 80f820617cb9bae68b8f39c7e52ea3fbc820d438..b0236d81aa3882854497215de503aeeb997a9da5 100644
+--- a/chrome/browser/optimization_guide/chrome_browser_main_extra_parts_optimization_guide.cc
++++ b/chrome/browser/optimization_guide/chrome_browser_main_extra_parts_optimization_guide.cc
+@@ -9,5 +9,6 @@
+ // Ensures global state initialization, so we can have reliable logging of
+ // on-device model metrics post start-up.
+ void ChromeBrowserMainExtraPartsOptimizationGuide::PostBrowserStart() {
++  if ((true)) return;
+   optimization_guide::OptimizationGuideGlobalState::CreateOrGet();
+ }

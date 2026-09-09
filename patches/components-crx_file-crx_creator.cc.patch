@@ -1,8 +1,8 @@
 diff --git a/components/crx_file/crx_creator.cc b/components/crx_file/crx_creator.cc
-index cb90c22f3566a581946553a3cf07b6ad7e90bf87..db558ae734723ce6705c4ed328b01c0a7ca0d968 100644
+index 76a591c924355e8d7dfc43df7b5bb6a68cc4f962..0ae0f7a02f43b03c9c2d0c7660ea10e06bd3d30e 100644
 --- a/components/crx_file/crx_creator.cc
 +++ b/components/crx_file/crx_creator.cc
-@@ -70,7 +70,7 @@ CreatorResult SignArchiveAndCreateHeader(
+@@ -72,7 +72,7 @@ CreatorResult SignArchiveAndCreateHeader(
  
    // Assemble SignedData section.
    SignedData signed_header_data;

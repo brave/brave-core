@@ -33,13 +33,12 @@ class BraveTreeTabStripCollectionDelegate
 
   // tabs::BraveTabStripCollectionDelegate:
   bool ShouldHandleTabManipulation() const override;
-  void AddTabRecursive(std::unique_ptr<tabs::TabInterface> tab,
+  void AddTabRecursive(tabs::ScopedTab tab,
                        size_t index,
                        std::optional<tab_groups::TabGroupId> new_group_id,
                        bool new_pinned_state,
                        tabs::TabInterface* opener) const override;
-  std::unique_ptr<tabs::TabInterface> RemoveTabAtIndexRecursive(
-      size_t index) const override;
+  tabs::ScopedTab RemoveTabAtIndexRecursive(size_t index) const override;
   void MoveTabsRecursive(
       const std::vector<int>& tab_indices,
       size_t destination_index,
@@ -73,14 +72,12 @@ class BraveTreeTabStripCollectionDelegate
 
  private:
   // Tries to add the tab to the same tree as the opener. Returns base::ok(void)
-  // if successful, base::unexpected(std::unique_ptr<tabs::TabInterface>) so
-  // that the tab can be reused from the caller
-  using AddTabResult =
-      base::expected<void, std::unique_ptr<tabs::TabInterface>>;
-  AddTabResult TryAddTabToSameTreeAsOpener(
-      std::unique_ptr<tabs::TabInterface> tab,
-      size_t index,
-      tabs::TabInterface* opener) const;
+  // if successful, base::unexpected(tabs::ScopedTab) so that the tab can be
+  // reused from the caller
+  using AddTabResult = base::expected<void, tabs::ScopedTab>;
+  AddTabResult TryAddTabToSameTreeAsOpener(tabs::ScopedTab tab,
+                                           size_t index,
+                                           tabs::TabInterface* opener) const;
 
   // Checks if opener and previous tab collections are in the same tree
   // hierarchy.
@@ -95,7 +92,7 @@ class BraveTreeTabStripCollectionDelegate
       size_t recursive_index) const;
 
   // Adds a tab as a tree node to the specified collection at the given index.
-  void AddTabAsTreeNodeToCollection(std::unique_ptr<tabs::TabInterface> tab,
+  void AddTabAsTreeNodeToCollection(tabs::ScopedTab tab,
                                     tabs::TabCollection* target_collection,
                                     size_t target_index,
                                     size_t expected_recursive_index) const;
@@ -104,7 +101,7 @@ class BraveTreeTabStripCollectionDelegate
   void AddTabToUnpinnedCollectionAsTreeNode(
       size_t index,
       std::optional<tab_groups::TabGroupId> new_group_id,
-      std::unique_ptr<tabs::TabInterface> tab) const;
+      tabs::ScopedTab tab) const;
 
   // Inserts a tree-node wrapper (callbacks + model registration) for detached
   // split/group collections; used by InsertTabCollectionAt.
@@ -218,8 +215,7 @@ class BraveTreeTabStripCollectionDelegate
 
   // Detaches a single tab from its parent and returns it. Handles cases where
   // the parent is group or tree node.
-  std::unique_ptr<tabs::TabInterface> DetachTabFromParent(
-      tabs::TabInterface* tab) const;
+  tabs::ScopedTab DetachTabFromParent(tabs::TabInterface* tab) const;
 
   // Detaches a single split from its parent and returns it. Handles cases where
   // the parent is group or tree node.
@@ -229,8 +225,7 @@ class BraveTreeTabStripCollectionDelegate
   // Detaches a single tab from its group and returns it. If the group becomes
   // empty, removes the group collection and its tree node wrapper. The tab's
   // parent must be a TabGroupTabCollection.
-  std::unique_ptr<tabs::TabInterface> DetachTabOutOfGroup(
-      tabs::TabInterface* tab) const;
+  tabs::ScopedTab DetachTabOutOfGroup(tabs::TabInterface* tab) const;
 
   // Handles moving tabs out of a group: remove from group, wrap each in a tree
   // node, insert at destination, remove empty group.

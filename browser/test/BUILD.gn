@@ -9,6 +9,7 @@ source_set("browser_tests") {
 
   sources = [
     "disabled_features/disable_client_hints_browsertest.cc",
+    "disabled_features/fenced_frame_browsertest.cc",
     "disabled_features/navigator_battery_browsertest.cc",
     "disabled_features/navigator_bluetooth_browsertest.cc",
     "disabled_features/navigator_storage_browsertest.cc",

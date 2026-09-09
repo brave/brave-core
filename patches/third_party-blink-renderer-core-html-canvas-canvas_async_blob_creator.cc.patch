@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-index adb616defbf323aa0d94ead86822908c355601fc..6c733ab10595020a07a085d9317137a1762e10cd 100644
+index 943d6ed7b7ada7b4898fdb4423083233fd5d61d5..a7ef5c6b3ba3d6713518802a058acf18b7e1588a 100644
 --- a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
 +++ b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-@@ -208,6 +208,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
+@@ -207,6 +207,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
          src_data_.reset(info, src_data_.addr(), src_data_.rowBytes());
        }
      }

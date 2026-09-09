@@ -10,46 +10,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/layout_constants.h"
 
-// Upstream is no longer centering the tab favicon vertically within the tab
-// view (likely due to the fact that their tab contents rect happens to be the
-// same height as the favicon). Ensure that the favicon is centered vertically
-// within the tab.
-#define BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION \
-  favicon_bounds.set_y(contents_rect.y() +                  \
-                       Center(contents_rect.height(), gfx::kFaviconSize));
-
-// Set alert indicator's pos to start of the title and
-// move title after the alert indicator.
-// Title right should respect close btn's space
-#define BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION           \
-  alert_indicator_button_->SetX(title_left - after_title_padding); \
-  title_right = close_x - after_title_padding;                     \
-  if (showing_close_button_)                                       \
-    title_right = close_x - after_title_padding;                   \
-  title_left = alert_indicator_button_->x() +                      \
-               alert_indicator_button_->width() + after_title_padding;
-
-// `UpdateIconVisibility` currently has an early return when the tab view's
-// height is less than `GetLayoutConstant(LayoutConstant::kTabHeight)`.
-// Unfortunately, when in vertical tabs mode this will prevent the favicon and
-// close button from appearing. As a workaround, use `tabs::kVerticalTabHeight`
-// instead of LayoutConstant::kTabHeight when in vertical tabs mode.
-#define GetLayoutConstant(COMPONENT)                                      \
-  ((COMPONENT == LayoutConstant::kTabHeight &&                            \
-    [&] {                                                                 \
-      auto* vertical_tab_controller = VerticalTabController::FromBrowser( \
-          controller()->GetBrowserWindowInterface());                     \
-      return vertical_tab_controller &&                                   \
-             vertical_tab_controller->ShouldShowBraveVerticalTabs();      \
-    }())                                                                  \
-       ? tabs::kVerticalTabHeight                                         \
-       : GetLayoutConstant(COMPONENT))
-
 #include <chrome/browser/ui/views/tabs/tab.cc>
-
-#undef GetLayoutConstant
-#undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
-#undef BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION
 
 ControllableCloseButtonState::ControllableCloseButtonState(
     TabSlotController& controller,
@@ -85,4 +46,14 @@ void Tab::ResetTabStyle(std::unique_ptr<TabStyleViews> new_style) {
   views::HighlightPathGenerator::Install(
       this,
       std::make_unique<TabStyleHighlightPathGenerator>(tab_style_views()));
+}
+
+int Tab::GetTabHeight() const {
+  auto* vertical_tab_controller = VerticalTabController::FromBrowser(
+      controller()->GetBrowserWindowInterface());
+  if (vertical_tab_controller &&
+      vertical_tab_controller->ShouldShowBraveVerticalTabs()) {
+    return tabs::kVerticalTabHeight;
+  }
+  return GetLayoutConstant(LayoutConstant::kTabHeight);
 }

@@ -15,6 +15,18 @@ substitutions:
       replace: '\1\n  generate_legacy_js_bindings = true'
 
   - description: |
+      Enable legacy JS bindings generation for `fusebox_action_mojo_bindings`.
+
+      `mojo_bindings` depends on these bindings and we enabled legacy bindings
+      generation in `mojo_bindings`, so we also have to enable them in these
+      bindings. This plaster always adds the line at the beginning of the
+      target.
+    regex:
+      re_pattern: '(mojom\("fusebox_action_mojo_bindings"\)\s*\{)'
+      re_flags: [DOTALL]
+      replace: '\1\n  generate_legacy_js_bindings = true'
+
+  - description: |
       Brave additions to `static_library("browser")`.
 
       The Brave sources and deps are grouped together at the end of the target.

@@ -462,7 +462,7 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
   GlobalBrowserCollection::GetInstance()->ForEach(
       [](BrowserWindowInterface* browser) {
         static_cast<chrome::BraveBrowserCommandController*>(
-            browser->GetBrowserForMigrationOnly()->command_controller())
+            chrome::BrowserCommandController::From(browser))
             ->UpdateCommandForTor();
         return true;
       });

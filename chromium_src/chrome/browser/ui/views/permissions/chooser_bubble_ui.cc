@@ -5,10 +5,4 @@
 
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"  // IWYU pragma: keep
 
-#define SetExtraView(...)    \
-  SetExtraView(__VA_ARGS__); \
-  SetFootnoteView(device_chooser_content_view_->CreateFootnoteView(browser))
-
 #include <chrome/browser/ui/views/permissions/chooser_bubble_ui.cc>
-
-#undef SetExtraView

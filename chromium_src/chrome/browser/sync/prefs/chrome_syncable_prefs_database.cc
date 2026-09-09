@@ -5,7 +5,6 @@
 
 #include "chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
 
-#include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
@@ -209,12 +208,12 @@ const auto& BraveSyncablePreferences() {
 
 namespace browser_sync {
 
-std::optional<sync_preferences::SyncablePrefMetadata>
+const sync_preferences::SyncablePrefMetadata*
 ChromeSyncablePrefsDatabase::GetSyncablePrefMetadata(
     std::string_view pref_name) const {
   const auto it = BraveSyncablePreferences().find(pref_name);
   if (it != BraveSyncablePreferences().end()) {
-    return it->second;
+    return &it->second;
   }
   return GetSyncablePrefMetadata_ChromiumImpl(pref_name);
 }

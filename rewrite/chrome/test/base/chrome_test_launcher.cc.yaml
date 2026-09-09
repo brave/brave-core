@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Add content_client.h for SetRendererClientForTesting().'
+    regex:
+      pattern: '#include "content/public/common/content_switches.h"'
+      replace: |-
+        #include "content/public/common/content_client.h"
+        #include "content/public/common/content_switches.h"
+
+  - description: |-
+      Give ~ChromeTestChromeMainDelegate() a real body to preempt.
+
+      It is `= default` upstream, and `preempt_function_impl` needs an actual
+      compound statement to insert into.
+    regex:
+      pattern:
+        'ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate() =
+        default;'
+      replace:
+        "ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate() {\n}"
+
+  - description: |-
+      Clear the dangling ContentClient::renderer_ raw_ptr before freeing it.
+
+      content::BrowserTestBase::SetUp() calls SetRendererClientForTesting(),
+      storing a non-owning raw_ptr into ContentClient::renderer_ that aliases
+      chrome_content_renderer_client_ (owned here). ChromeMainDelegate (our
+      base class) owns the ContentClient (chrome_content_client_) as its own
+      member, destroyed after chrome_content_renderer_client_ since base
+      class members are destroyed after derived class members. That leaves
+      ContentClient::renderer_ dangling for the moment between the two,
+      which PartitionAlloc's BackupRefPtr flags as a dangling-pointer bug
+      once chrome_content_renderer_client_ is actually freed. Null it out
+      first so the later raw_ptr release sees an already-cleared pointer.
+    preempt_function_impl:
+      function_name: ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate
+      code: |
+        content::SetRendererClientForTesting(nullptr);

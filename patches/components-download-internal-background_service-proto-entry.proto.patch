@@ -1,5 +1,5 @@
 diff --git a/components/download/internal/background_service/proto/entry.proto b/components/download/internal/background_service/proto/entry.proto
-index 629efd9757163f4bf532c200a6a7b414ff40ac67..96e6f2b9852edf9719f2b3d0836cc1ea70b52cf3 100644
+index 3904d24ac12e3c6a991c8567660c77908c72a6a1..aba88893e06d2f7ab1c03b2dc71a7b9673f3c06b 100644
 --- a/components/download/internal/background_service/proto/entry.proto
 +++ b/components/download/internal/background_service/proto/entry.proto
 @@ -28,6 +28,7 @@ enum DownloadClient {

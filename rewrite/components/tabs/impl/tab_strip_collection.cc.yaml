@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Bypass upstream's tab removal for a tree-tab node.
+
+      Removing a tree-tab node through the upstream path can crash in
+      RemoveTabCollectionImpl(parent_collection), since the parent isn't a
+      plain group/pinned/unpinned collection. Handle that case directly and
+      return; otherwise fall through to the upstream body unchanged.
+      TODO(https://github.com/brave/brave-browser/issues/49789): revisit once
+      tab removal is fully handled for tree tabs.
+    preempt_function_impl:
+      function_name: TabStripCollection::RemoveTabAtIndexRecursive
+      code: |-
+        #if !BUILDFLAG(IS_ANDROID)
+        {
+          TabInterface* tab_to_be_removed = GetTabAtIndexRecursive(index);
+          TabCollection* parent_collection =
+              tab_to_be_removed->GetParentCollection(GetPassKey());
+          CHECK(parent_collection);
+          if (parent_collection->type() == TabCollection::Type::TREE_NODE) {
+            auto tab = RemoveTabImpl(tab_to_be_removed);
+            if (auto* grand_parent = parent_collection->GetParentCollection();
+                grand_parent &&
+                grand_parent->type() == TabCollection::Type::GROUP &&
+                grand_parent->TabCountRecursive() == 0) {
+              RemoveTabCollectionImpl(grand_parent);
+            }
+            return tab;
+          }
+        }
+        #endif  // !BUILDFLAG(IS_ANDROID)

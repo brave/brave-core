@@ -19,7 +19,7 @@ namespace {
 
 void InitClearServerDataContext(SyncCycle* cycle,
                                 sync_pb::ClientToServerMessage* message) {
-  message->set_share(cycle->context()->account_name());
+  message->set_share(cycle->context()->account_email());
   message->set_message_contents(
       sync_pb::ClientToServerMessage::CLEAR_SERVER_DATA);
 }

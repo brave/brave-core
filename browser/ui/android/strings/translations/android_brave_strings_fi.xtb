@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Arvostele Brave</translation>
 <translation id="4104400246019119780">Kiitos!</translation>
 <translation id="5202255382948179481">Lisää ehdotuksesi</translation>
-<translation id="7759809451544302770">Valinnainen</translation>
 <translation id="4748689412569009273">Kerro yhdellä emojilla mielipiteesi Brave-kokemuksesta?</translation>
 <translation id="7335142069363686805">Arvostele nyt</translation>
 <translation id="6681362094306959654">Tykkäätkö Bravesta?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Surullinen</translation>
 <translation id="5488843227043643519">Jätä Play Store -arvostelu?</translation>
 <translation id="5867854497245948308">Kiitos palautteestasi!</translation>
-<translation id="4935400164159327304">Kerro meille, miten voimme parantaa Bravea.</translation>
+<translation id="5578122562331038807">Kerro meille, miten voimme parantaa Bravea</translation>
+<translation id="1483493594462132177">Lähetä</translation>
+<translation id="3889034478061064651">Lisää ehdotuksesi (valinnainen)</translation>
+<translation id="1769154760586570836">Palaute lähetetty. Kiitos!</translation>
+<translation id="4450893287417543264">Älä näytä uudelleen</translation>
 <translation id="8966035543003363155">Brave-ilmoitukset tekevät sen helpommaksi</translation>
 <translation id="7662771815233894695">Hallitse latauksia, ansaitse tokeneita, katso viikottaisia käyttötilastoja ja paljon muuta.</translation>
 <translation id="4265429476391459783">Et ole ansaitsemassa palkintoja tai vastaanottamassa yksityisyysraportteja</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Sivutoiminnot</translation>
 <translation id="7104487676473617844">Seuraavat kohteet näkyvät valikossa vain, kun avattu verkkosivu tukee niitä.</translation>
 <translation id="4159764849281393303">Web-sovellus</translation>
-<translation id="8428213095426709021">Asetukset</translation>
 <translation id="8038539967102225446">Brave-mainokset ovat täällä!</translation>
 <translation id="222883304157347087">(tämä laite)</translation>
 <translation id="4157741509680155021">LAITTEET SYNKRONOINTIKETJUSSA</translation>
@@ -532,7 +534,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1822560017823072927">Julkinen ja yksityinen oletuskäyttöliittymä</translation>
 <translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
 <translation id="1689062823386843231">Estä yhteydetön UDP</translation>
-<translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Selaa natiivia.\nOmaa sisältöä.\nJa moniketjua.</translation>
 <translation id="7909462264772842773">Ota kryprovaluuttasi ja NFT:si hallintaan. Brave-lompakko tukee Ethereumia, EVM-ketjuja, Solanaa, Filecoinia ja muita.</translation>
@@ -608,7 +609,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="569068482611873351">Tuo...</translation>
 <translation id="4522570452068850558">Tarkat tiedot</translation>
 <translation id="3114681061018999547">Suojataan</translation>
-<translation id="3784455785234192852">Lukitse</translation>
 <translation id="4412698727486357573">Ohjekeskus</translation>
 <translation id="8239147115686034860">Lukitse Brave Wallet -lompakko automaattisesti</translation>
 <translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Brave Wallet -lompakko lukitaan automaattisesti</translation>
@@ -804,6 +804,10 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2478788592457735063">Tämä vaihtaa verkon aiemmin lisättyyn verkkoon.</translation>
 <translation id="8756686998207163764">Vaihda verkkoa</translation>
 <translation id="8905793906896555159">Ota välilehtiryhmät käyttöön</translation>
+<translation id="6735749683447943955">Poistetaanko välilehtiryhmät käytöstä?</translation>
+<translation id="4616687974503500682">Kaikki olemassa olevat ryhmät poistetaan, ja niiden välilehdet muuttuvat avoimiksi, ryhmittelemättömiksi välilehdiksi selainikkunassasi. Haluatko varmasti jatkaa?</translation>
+<translation id="4394049700291259645">Poista käytöstä</translation>
+<translation id="3859027502409073633">Näytä synkronoidut välilehtiryhmät</translation>
 <translation id="7632160823264702523">Välilehtiryhmäpalkki</translation>
 <translation id="2477807195394450274">Näytä alapalkki, jonka avulla pääset nopeasti nykyisessä avoimessa välilehtiryhmässä oleviin välilehtiin</translation>
 <translation id="8374720587111523381">Avaa linkit nykyisessä välilehtiryhmässä</translation>
@@ -811,6 +815,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1227658541937938697">Avaa automaattisesti kaikki linkit nykyisessä välilehtiryhmässä</translation>
 <translation id="5242300593039211344">Lukitse lompakko</translation>
 <translation id="1108298724135935307">Yhdistetyt sivustot</translation>
+<translation id="8428213095426709021">Asetukset</translation>
 <translation id="4255623233927788178">Näytä lohkoketjuohjelmassa</translation>
 <translation id="8274201358637112807">Tämä sivu haluaa käyttää Brave-lompakkoa</translation>
 <translation id="3355936511340229503">Yhteysvirhe</translation>
@@ -852,7 +857,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6458565248779152483">Poista Brave-VPN käytöstä</translation>
 <translation id="9080536793704001825">15 minuutin tauko</translation>
 <translation id="803706420145725977">1 tunnin tauko</translation>
-<translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="7733890291091968191">Näytä Web3-ilmoitukset</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave ei seuraa sinua eikä tiedä, kuinka käytät sovellustamme, joten emme tiedä VPN-asetuksiasi. Jaa tietoja kohtaamastasi ongelmasta, niin teemme parhaamme ratkaistaksemme sen mahdollisimman pian. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN-isäntänimi\n <ph name="VALUE"/></translation>

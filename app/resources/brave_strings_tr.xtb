@@ -70,6 +70,7 @@
 <translation id="5679816001365584346">Hareket halindeyken sekme gruplarını açmak veya yenilerini oluşturmak için telefonunuza Brave'u indirin.</translation>
 <translation id="4559627161887338743">Oturum açılmış Brave Hesaplarınızı yönetebilirsiniz. Brave Hesaplarınız; Brave tarayıcı, Play Store, Gmail ve daha başka yerlerde kullanılır. Aile üyesi gibi başka bir kullanıcı için hesap eklemek isterseniz bunun yerine <ph name="DEVICE_TYPE"/> cihazınıza yeni bir kişi ekleyin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Görsel Arama ile ara</translation>
+<translation id="2963742289915075304"><ph name="EXISTING_USER"/> zaten oturum açmış durumda. Göz atma işlemlerinizi ayrı tutmak için Brave'da kendi profilinizde <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açın. Ayrıca, <ph name="DEVICE"/> içindeki yer işaretlerinize ve diğer öğelere de erişebilirsiniz.</translation>
 <translation id="1880677175115548835">Metin seç</translation>
 <translation id="4528406859989804913">Yönetilen bir hesapla oturum açıyor ve hesabın yöneticisine Brave profilinizi denetleme izni veriyorsunuz. Uygulamalarınız, yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız gibi Brave verileriniz kalıcı olarak <ph name="USER_NAME"/> ile bağlantılandırılacaktır. Brave Hesapları Hesap Özeti'ni kullanarak bu verileri silebilecek, ancak bu verileri başka bir hesapla ilişkilendiremeyeceksiniz. İsterseniz mevcut Brave verilerinizi ayrı tutmak için yeni bir profil oluşturabilirsiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">Brave, arka plan etkinliğini ve görsel efektleri (ör. kolay kaydırma ve video kare hızı) sınırlandırarak pil gücünden tasarruf eder. <ph name="BEGIN_LINK"/>Enerji Tasarrufu hakkında daha fazla bilgi edinin<ph name="END_LINK"/>.</translation>
@@ -128,6 +129,7 @@
 <translation id="5298352791080868905">Uygulamalardaki bağlantıları Brave'da açın ve tarayıcıyı görev çubuğunuzda erişilebilir tutun</translation>
 <translation id="2600233721598267627">Kısa bir genel bakış almak ve ek sorular sormak için Özetle düğmesine tıklayıp bu belgeyi Brave'daki Gemini ile paylaşın</translation>
 <translation id="2118275934191847461"><ph name="BEGIN_LINK"/>Brave araçları<ph name="END_LINK"/> ile güvenli bir şekilde göz atabilir ve kontrolü elinizde tutabilirsiniz</translation>
+<translation id="7508460698788470991"><ph name="EXISTING_USER"/> zaten oturum açmış durumda. Göz atma işlemlerinizi ayrı tutmak için Brave'da kendi profilinizde <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açın. Ayrıca, şifrelerinize ve diğer öğelerinize tüm cihazlarınızdan erişebilirsiniz.</translation>
 <translation id="2451727308784734061">Şifre Yöneticisi'ne hızlıca gitmek için kısayolunuzu kullanın. Kısayolunuzu bilgisayarınızın ana ekranına veya uygulama başlatıcıya taşıyabilirsiniz.</translation>
 <translation id="6381750314821942592">Brave yakında kapanacak</translation>
 <translation id="6078442581074612226">Brave'da</translation>
@@ -146,6 +148,7 @@
 <translation id="7931230852267968641">Kuruluşunuz; yer işaretleri, geçmiş ve şifreler gibi tarama verilerini görüp yönetebilir. Diğer Brave profillerindeki tarama verilerini göremez</translation>
 <translation id="2257221826278123061">Brave verilerini kullanmak ve <ph name="ACCOUNT_EMAIL"/> hesabınıza kaydetmek için kimliğinizi doğrulayın</translation>
 <translation id="7048234400304379082">Brave'da Gemini'dan çıkmak veya Gemini'a dönmek için klavye kısayolunu kullanın.</translation>
+<translation id="5655607968417451974">Brave'u Başlat</translation>
 <translation id="7387051847644272380">Yükleme sırasında bir işletim sistemi hatası oluştu. Lütfen Brave'u yeniden indirin.</translation>
 <translation id="2648689842065142443">Bir cihazı paylaşıyorsanız arkadaşlarınız ve aileniz ayrı olarak göz atabilir ve Brave'u tam olarak istedikleri şekilde ayarlayabilirler.</translation>
 <translation id="1001521084148238686">Brave simge durumuna küçültülmüş olsa bile Brave'da Gemini'a cihazınızda kolayca erişebilirsiniz.</translation>
@@ -292,7 +295,6 @@
 <translation id="4304713468139749426">Şifre Yöneticisi</translation>
 <translation id="4334241893986177674">Bu ekran görüntüsünde arama yapın</translation>
 <translation id="242356249838681145">Windows başlatıldığında Brave'u aç</translation>
-<translation id="4747339441562331861">Brave'u varsayılan tarayıcınız olarak ayarlayarak bildiğiniz, sevdiğiniz ve güvendiğiniz özelliklere kolayca erişin. Brave, hızlı erişim için görev çubuğunuza sabitlenir.</translation>
 <translation id="4400772909124543403">Kullanılabilir güncelleme yok.</translation>
 <translation id="9183662282810237335">Yine de Brave'dan çıkılsın mı?</translation>
 <translation id="4413205837991854510">Görsel Arama Kısayolunu Her Zaman Göster</translation>
@@ -389,6 +391,7 @@
 
 Bu sayfa beklendiği gibi çalışmıyorsa optimizasyona izin vermeyi deneyin.</translation>
 <translation id="7074160267408082133">Brave'da Gemini'ı Mac menü çubuğunda göster ve klavye kısayolunu aç</translation>
+<translation id="2938507901464407819"><ph name="EXISTING_USER"/> zaten oturum açmış durumda. Göz atma işlemlerinizi ayrı tutmak için Brave'da kendi profilinizde <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açın. Ayrıca, <ph name="DEVICE"/> içindeki kayıtlı bilgilerinize ve diğer öğelere de erişebilirsiniz.</translation>
 <translation id="5579324208890605088">Başlatma hatası: Lütfen yükleyiciyi yönetici olarak değil, normal bir kullanıcı olarak çalıştırın.</translation>
 <translation id="3588973534877826647">Varsayılan olarak Brave'u kullanın ve sabitleyin</translation>
 <translation id="5596627076506792578">Diğer seçenekler</translation>
@@ -562,12 +565,12 @@ Bazı yer işaretlerini silene kadar hesabınıza yeni yer işaretleri kaydedile
 <translation id="5755581833598928580">Mesajlardaki, dokümanlardaki ve diğer uygulamalardaki bağlantıları tıkladığınızda Brave'u kullanabilirsiniz</translation>
 <translation id="7216228761061470870">Görsel Arama'yı kullandığınızda sayfa başlığı, URL'si ve içeriği (PDF'ler dahil) sunucuya gönderilir</translation>
 <translation id="5516268345616100622">Görev Yöneticisi - Brave</translation>
+<translation id="2416155625082200759"><ph name="EXISTING_USER"/> zaten oturum açmış durumda. Göz atma işlemlerinizi ayrı tutmak için Brave'da kendi profilinizde <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açın. Ayrıca, kayıtlı bilgilerinize ve diğer öğelere tüm cihazlarınızdan erişebilirsiniz.</translation>
 <translation id="1871621397473741084">Hemen göz atmaya başlayın: Brave artık Windows başlatıldığında açılabilir.</translation>
 <translation id="7274695763216404502">Sabitlendi. Araç çubuğundan Görsel Arama'yı tekrar kullanabilirsiniz</translation>
 <translation id="7288567540154601580">Sekmeler ve uzantılar</translation>
 <translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave bunu kaldırmanızı öneriyor}other{Brave bunları kaldırmanızı öneriyor}}</translation>
 <translation id="4600669988724328687">Sistem sesini paylaşmak için Sistem Ayarları'nı açıp Brave için "Yalnızca Sistem Ses Kaydı" seçeneğine izin verin. Ardından Brave'u yeniden başlatmanız gerekir.</translation>
-<translation id="9068395155143628872">Reklam ölçümü, ziyaret ettiğiniz sitelerin Brave'dan bilgi istemesine olanak tanır. Bu bilgiler de sitenin, reklamlarının performansını ölçmesine yardımcı olur. Reklam ölçümü, siteler arasında mümkün olduğunca az bilgi aktararak siteler arası izlemeyi kısıtlar.</translation>
 <translation id="1864557848095568223">Brave güncelleniyor</translation>
 <translation id="3403365884036456766">Tercihler dosyanız bozuk veya geçersiz.
 
@@ -630,6 +633,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="5687542525349822727">Brave'u varsayılan tarayıcınız olarak ayarlayın</translation>
 <translation id="6396151137840491551">Brave, güvensiz bağlantıları mümkün olduğunda otomatik olarak HTTPS'ye yükseltir</translation>
 <translation id="2925193881330501265">Brave'da <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açtınız. Tekrar oturum açmak için lütfen aynı hesabı kullanın.</translation>
+<translation id="3744141798014187630"><ph name="EXISTING_USER"/> zaten oturum açmış durumda. Göz atma işlemlerinizi ayrı tutmak için Brave'da kendi profilinizde <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açın. Ayrıca, yer işaretlerinize ve diğer öğelerinize tüm cihazlarınızdan erişebilirsiniz.</translation>
 <translation id="6915252145142862992">Bu, Brave'un ikincil bir yüklemesidir ve varsayılan tarayıcınız yapılamaz.</translation>
 <translation id="7766756101194440006"><ph name="DEVICE_TYPE"/> cihazınızda Brave uygulamasıyla Brave'dan en iyi şekilde yararlanın</translation>
 <translation id="8004582292198964060">Tarayıcı</translation>
@@ -660,10 +664,12 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="1755067029031059271">Brave, bu uzantının kaynağını doğrulayamadığı için uzantı güvenli olmayabilir. Kişisel bilgiler de dahil olmak üzere ziyaret ettiğiniz sitelerdeki verilerinizi artık görememesi ve değiştirememesi için bu uzantıyı Brave'dan kaldırın.</translation>
 <translation id="8207657266087451193">Bir resmin işe yarar bir açıklaması yoksa, Brave sizin için bir açıklama sağlamaya çalışır. Açıklama oluşturmak için resimler Brave'a gönderilir. Bu özelliği istediğiniz zaman ayarlardan kapatabilirsiniz.</translation>
 <translation id="7792526144795244436">Brave'da yeni bir profilde oturum açılsın mı?</translation>
+<translation id="784788600549915416"><ph name="EXISTING_USER"/> zaten oturum açmış durumda. Göz atma işlemlerinizi ayrı tutmak için Brave'da kendi profilinizde <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açın. Ayrıca, <ph name="DEVICE"/> içindeki şifrelerinize ve diğer öğelere de erişebilirsiniz.</translation>
 <translation id="183102473074922918">Brave'da Gemini'ı sistem tepsisinde göster ve klavye kısayolunu aç</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave sizi uyararak<ph name="END_LINK"/> güvenli olmayan sitelerden ve indirmelerden haberdar olmanızı sağlar</translation>
 <translation id="8060549744348950090">Son zamanlarda ziyaret etmediniz. Brave, <ph name="PERMISSION"/> iznini kaldırdı.</translation>
 <translation id="7402663241490331652">Brave iOS uygulamasında kameranızı kullanarak gördüklerinizi satın alın, çevirin ve tanımlayın</translation>
+<translation id="4470171586042711152">Brave'da <ph name="USER_NAME"/> olarak oturum açmak için QR kodu</translation>
 <translation id="8313851650939857356">Başlatma hatası: <ph name="STARTUP_ERROR"/></translation>
 <translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> boyunca kullanılmadığında Brave kuruluşunuz tarafından kapatılır.</translation>
 <translation id="8321888067342493336">Resim olarak kaydet</translation>

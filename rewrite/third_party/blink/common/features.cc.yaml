@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Upgrade all mixed content.
+    set_feature_flag_default_state:
+      feature_name: kMixedContentAutoupgrade
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kReducedReferrerGranularity enabled.'
+    set_feature_flag_default_state:
+      feature_name: kReducedReferrerGranularity
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kUACHOverrideBlank enabled.'
+    set_feature_flag_default_state:
+      feature_name: kUACHOverrideBlank
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kAllowURNsInIframes disabled.'
+    set_feature_flag_default_state:
+      feature_name: kAllowURNsInIframes
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kBackgroundResourceFetch disabled.'
+    set_feature_flag_default_state:
+      feature_name: kBackgroundResourceFetch
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kFencedFrames disabled.'
+    set_feature_flag_default_state:
+      feature_name: kFencedFrames
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kPreloadingEagerViewportHeuristics disabled.'
+    set_feature_flag_default_state:
+      feature_name: kPreloadingEagerViewportHeuristics
+      value: base::FEATURE_DISABLED_BY_DEFAULT

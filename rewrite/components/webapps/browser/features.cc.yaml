@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ship kWebAppsEnableMLModelForPromotion disabled on every platform.
+
+      Doing a manual replacement as the existing macro is chopped by buildflags
+      macros.
+    regex:
+      re_pattern:
+        'BASE_FEATURE\(kWebAppsEnableMLModelForPromotion,\s*#if
+        BUILDFLAG\(IS_ANDROID\)\s*base::FEATURE_ENABLED_BY_DEFAULT\);\s*#else\s*base::FEATURE_DISABLED_BY_DEFAULT\);\s*#endif[^\S\n]*(?://[^\n]*)?'
+      replace: |-
+        BASE_FEATURE(kWebAppsEnableMLModelForPromotion,
+                     base::FEATURE_DISABLED_BY_DEFAULT);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-index 96695a255df870dd5f5109bd00ec0a0f3c5edd02..69a17a4c809e316af6639eae529b0f56588ec321 100644
+index 7f51aadbe7ca492a928817a016de74bb9a2cc300..160dc94a1a840509e70360495770018c1c32f5fb 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 @@ -196,6 +196,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
@@ -10,7 +10,7 @@ index 96695a255df870dd5f5109bd00ec0a0f3c5edd02..69a17a4c809e316af6639eae529b0f56
  }
  
  CustomizeToolbarHandler::~CustomizeToolbarHandler() = default;
-@@ -370,7 +371,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
+@@ -369,7 +370,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
    add_action(kActionShowChromeLabs,
               side_panel::customize_chrome::mojom::CategoryId::kTools);
  
@@ -23,7 +23,7 @@ index 96695a255df870dd5f5109bd00ec0a0f3c5edd02..69a17a4c809e316af6639eae529b0f56
  }
  
  void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
-@@ -382,18 +387,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
+@@ -381,18 +386,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
    categories.push_back(side_panel::customize_chrome::mojom::Category::New(
        side_panel::customize_chrome::mojom::CategoryId::kYourChrome,
        l10n_util::GetStringUTF8(
@@ -50,7 +50,7 @@ index 96695a255df870dd5f5109bd00ec0a0f3c5edd02..69a17a4c809e316af6639eae529b0f56
    const std::optional<actions::ActionId> chrome_action =
        ChromeActionForMojoAction(action_id);
    if (!chrome_action.has_value()) {
-@@ -427,10 +438,15 @@ void CustomizeToolbarHandler::PinAction(
+@@ -426,10 +437,15 @@ void CustomizeToolbarHandler::PinAction(
  
  void CustomizeToolbarHandler::GetIsCustomized(
      GetIsCustomizedCallback callback) {

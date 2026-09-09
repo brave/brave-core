@@ -16,3 +16,44 @@ substitutions:
       re_flags: [DOTALL]
       replace:
         '\1, browser->GetFeatures().vertical_tab_controller()->GetWeakPtr()\2'
+
+  - description: |
+      Rename BrowserWindowFeatures to BrowserWindowFeatures_ChromiumImpl.
+
+      Matches the rename in browser_window_features.h so these definitions
+      target the class Brave's BrowserWindowFeatures subclass wraps.
+    rename_class:
+      class_name: BrowserWindowFeatures
+      rename: BrowserWindowFeatures_ChromiumImpl
+
+  - description: 'Construct BraveBrowserActions instead of BrowserActions.'
+    rename_class:
+      class_name: BrowserActions
+      rename: BraveBrowserActions
+
+  - description: |
+      Construct BraveBrowserCommandController instead of
+      chrome::BrowserCommandController.
+    rename_class:
+      class_name: BrowserCommandController
+      rename: BraveBrowserCommandController
+
+  - description: |
+      Construct BraveBrowserWebContentsDelegate instead of
+      BrowserWebContentsDelegate.
+    rename_class:
+      class_name: BrowserWebContentsDelegate
+      rename: BraveBrowserWebContentsDelegate
+
+  - description: |
+      Construct BraveBrowserContentSettingBubbleModelDelegate instead of
+      BrowserContentSettingBubbleModelDelegate.
+    rename_class:
+      class_name: BrowserContentSettingBubbleModelDelegate
+      rename: BraveBrowserContentSettingBubbleModelDelegate
+
+  - description:
+      'Construct BraveSidePanelCoordinator instead of SidePanelCoordinator.'
+    rename_class:
+      class_name: SidePanelCoordinator
+      rename: BraveSidePanelCoordinator

@@ -38,3 +38,17 @@ std::unique_ptr<content::HidChooser> BraveHidDelegate::RunChooser(
                                        std::move(exclusion_filters),
                                        std::move(callback));
 }
+
+bool BraveHidDelegate::AllowRequestDeviceWithoutTransientActivation(
+    content::RenderFrameHost* render_frame_host) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Mirrors the renderer-side check in `BraveContentSettingsAgentImpl::
+  // AllowHidRequestDeviceWithoutTransientActivation()`.
+  if (BraveWalletHidChooser::IsLedgerSubframeOfBraveWallet(render_frame_host)) {
+    return true;
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+  return ChromeHidDelegate::AllowRequestDeviceWithoutTransientActivation(
+      render_frame_host);
+}

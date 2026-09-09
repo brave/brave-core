@@ -21,7 +21,6 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.components.browser_ui.media.MediaNotificationController;
 import org.chromium.components.browser_ui.media.MediaNotificationManager;
 import org.chromium.url.GURL;
 
@@ -111,14 +110,10 @@ public final class BraveReturnToChromeUtil {
      * user's current tab with a fresh NTP on return from idle while audio/video is playing, since
      * background playback means the user is not truly idle.
      */
-    // Reads MediaNotificationController.mMediaNotificationInfo, which is @VisibleForTesting.
-    @SuppressWarnings("VisibleForTests")
     private static boolean isBackgroundMediaPlaying() {
-        MediaNotificationController controller =
-                MediaNotificationManager.getController(R.id.media_playback_notification);
-        return controller != null
-                && controller.mMediaNotificationInfo != null
-                && !controller.mMediaNotificationInfo.isPaused;
+        // Multiple playback notifications can coexist, one per tab, so ask for any non-paused
+        // controller of this media type rather than for a single controller.
+        return MediaNotificationManager.hasPlayingController(R.id.media_playback_notification);
     }
 
     /**

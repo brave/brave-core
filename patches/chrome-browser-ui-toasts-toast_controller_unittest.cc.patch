@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toasts/toast_controller_unittest.cc b/chrome/browser/ui/toasts/toast_controller_unittest.cc
-index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b55d9cbcc 100644
+index 15537b8ec7187b49ca4c36ec72ff0986e170fad1..0ad9362f80542ad34c7c764c8688338df5ffa432 100644
 --- a/chrome/browser/ui/toasts/toast_controller_unittest.cc
 +++ b/chrome/browser/ui/toasts/toast_controller_unittest.cc
 @@ -70,7 +70,7 @@ class ToastControllerUnitTest : public testing::Test {
@@ -55,6 +55,24 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
 +  EXPECT_TRUE(controller->CanShowToast(ToastId::kLinkToHighlightCopied));
  }
  
+ TEST_F(ToastControllerUnitTest, ShowToastWithReplacementsAndCardinality) {
+   ToastRegistry* const registry = toast_registry();
+   registry->RegisterToast(
+-      ToastId::kLinkCopied,
++      ToastId::kLinkToHighlightCopied,
+       ToastSpecification::Builder(features::IsRoundedIconsEnabled()
+                                       ? vector_icons::kMailFilledIcon
+                                       : vector_icons::kEmailOldIcon,
+@@ -130,7 +130,7 @@ TEST_F(ToastControllerUnitTest, ShowToastWithReplacementsAndCardinality) {
+ 
+   EXPECT_CALL(*controller, CreateToast);
+ 
+-  ToastParams params = ToastParams(ToastId::kLinkCopied);
++  ToastParams params = ToastParams(ToastId::kLinkToHighlightCopied);
+   params.body_string_replacement_params = {u"Ctrl+W"};
+   params.body_string_cardinality_param = 2;
+ 
+@@ -142,7 +142,7 @@ TEST_F(ToastControllerUnitTest, ShowToastWithReplacementsAndCardinality) {
  TEST_F(ToastControllerUnitTest, ShowToastWithImage) {
    ToastRegistry* const registry = toast_registry();
    registry->RegisterToast(
@@ -63,7 +81,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
        ToastSpecification::Builder(features::IsRoundedIconsEnabled()
                                        ? vector_icons::kMailFilledIcon
                                        : vector_icons::kEmailOldIcon,
-@@ -130,24 +130,24 @@ TEST_F(ToastControllerUnitTest, ShowToastWithImage) {
+@@ -153,24 +153,24 @@ TEST_F(ToastControllerUnitTest, ShowToastWithImage) {
  
    // We should be able to show the toast because there is no toast showing.
    EXPECT_FALSE(controller->IsShowingToast());
@@ -92,7 +110,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
        ToastSpecification::Builder(features::IsRoundedIconsEnabled()
                                        ? vector_icons::kMailFilledIcon
                                        : vector_icons::kEmailOldIcon,
-@@ -156,7 +156,7 @@ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
+@@ -179,7 +179,7 @@ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
    auto controller = std::make_unique<TestToastController>(registry);
  
    EXPECT_CALL(*controller, CreateToast);
@@ -101,7 +119,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
    ::testing::Mock::VerifyAndClear(controller.get());
    EXPECT_TRUE(controller->IsShowingToast());
  
-@@ -168,7 +168,7 @@ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
+@@ -191,7 +191,7 @@ TEST_F(ToastControllerUnitTest, ToastAutomaticallyCloses) {
  TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
    ToastRegistry* const registry = toast_registry();
    registry->RegisterToast(
@@ -110,7 +128,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
        ToastSpecification::Builder(features::IsRoundedIconsEnabled()
                                        ? vector_icons::kMailFilledIcon
                                        : vector_icons::kEmailOldIcon,
-@@ -177,7 +177,7 @@ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
+@@ -200,7 +200,7 @@ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
    auto controller = std::make_unique<TestToastController>(registry);
  
    EXPECT_CALL(*controller, CreateToast);
@@ -119,7 +137,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
    bool callback_called = false;
    params.toast_close_callback = base::ScopedClosureRunner(
        base::BindOnce([](bool* callback_called) { *callback_called = true; },
-@@ -196,7 +196,7 @@ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
+@@ -219,7 +219,7 @@ TEST_F(ToastControllerUnitTest, ToastCloseCallbackTriggered) {
  TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
    ToastRegistry* const registry = toast_registry();
    registry->RegisterToast(
@@ -128,7 +146,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
        ToastSpecification::Builder(features::IsRoundedIconsEnabled()
                                        ? vector_icons::kMailFilledIcon
                                        : vector_icons::kEmailOldIcon,
-@@ -205,7 +205,7 @@ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
+@@ -228,7 +228,7 @@ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
    auto controller = std::make_unique<TestToastController>(registry);
  
    EXPECT_CALL(*controller, CreateToast);
@@ -137,7 +155,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
    ::testing::Mock::VerifyAndClear(controller.get());
    EXPECT_TRUE(controller->IsShowingToast());
  
-@@ -217,14 +217,14 @@ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
+@@ -240,14 +240,14 @@ TEST_F(ToastControllerUnitTest, ToastWithActionButtonAutomaticallyCloses) {
  TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
    ToastRegistry* const registry = toast_registry();
    registry->RegisterToast(
@@ -154,7 +172,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
        ToastSpecification::Builder(features::IsRoundedIconsEnabled()
                                        ? vector_icons::kMailFilledIcon
                                        : vector_icons::kEmailOldIcon,
-@@ -234,7 +234,7 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+@@ -257,7 +257,7 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
    auto controller = std::make_unique<TestToastController>(registry);
  
    EXPECT_CALL(*controller, CreateToast);
@@ -163,7 +181,7 @@ index 387ee7597e9b38b67e776b0c8bca6c75896fb0db..b435124c26a5dbae8e84418bd18b539b
    ::testing::Mock::VerifyAndClear(controller.get());
    EXPECT_TRUE(controller->IsShowingToast());
  
-@@ -245,7 +245,7 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
+@@ -268,7 +268,7 @@ TEST_F(ToastControllerUnitTest, CloseTimerResetsWhenToastShown) {
  
    // Show a different toast before the link copied toast times out.
    EXPECT_CALL(*controller, CreateToast);

@@ -1,0 +1,23 @@
+diff --git a/chrome/test/base/chrome_test_launcher.cc b/chrome/test/base/chrome_test_launcher.cc
+index cf96f5cdd460dbb380ec91f5e1176777e58f72a1..1fd406183015d5bbaf86f58a140e2eceac3669c7 100644
+--- a/chrome/test/base/chrome_test_launcher.cc
++++ b/chrome/test/base/chrome_test_launcher.cc
+@@ -42,6 +42,7 @@
+ #include "components/crash/core/app/crashpad.h"
+ #include "components/sampling_profiler/thread_profiler.h"
+ #include "content/public/app/content_main.h"
++#include "content/public/common/content_client.h"
+ #include "content/public/common/content_switches.h"
+ #include "content/public/renderer/render_frame.h"
+ #include "content/public/renderer/render_frame_observer.h"
+@@ -208,7 +209,9 @@ ChromeTestChromeMainDelegate::ChromeTestChromeMainDelegate()
+     : ChromeMainDelegate({.exe_entry_point_ticks = base::TimeTicks::Now()}) {}
+ #endif
+ 
+-ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate() = default;
++ChromeTestChromeMainDelegate::~ChromeTestChromeMainDelegate() {
++  content::SetRendererClientForTesting(nullptr);
++}
+ 
+ content::ContentRendererClient*
+ ChromeTestChromeMainDelegate::CreateContentRendererClient() {

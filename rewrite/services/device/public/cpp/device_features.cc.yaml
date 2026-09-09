@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ship kLocationProviderManager enabled on every platform.
+
+      Upstream declares this as two separate BASE_FEATURE statements (one
+      for Mac/Win, one for the #else branch), so two matches are expected
+      here.
+    count: 2
+    set_feature_flag_default_state:
+      feature_name: kLocationProviderManager
+      value: base::FEATURE_ENABLED_BY_DEFAULT
+
+  - description: 'Ship kSensorsAllowAskBlockPermissionModel enabled.'
+    set_feature_flag_default_state:
+      feature_name: kSensorsAllowAskBlockPermissionModel
+      value: base::FEATURE_ENABLED_BY_DEFAULT

@@ -23,7 +23,7 @@ TEST(DataTypeTest, LowPriorityUserTypes) {
 // sync types are added or removed so that the team can investigate how to
 // properly support the upstream change.
 TEST(DataTypeTest, DataTypeCounts) {
-  EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 84);
+  EXPECT_EQ(static_cast<int>(DataTypeForHistograms::kMaxValue), 85);
 }
 
 TEST(DataTypeTest, AIChatConversationEncryptable) {

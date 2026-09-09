@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Brave 평가</translation>
 <translation id="4104400246019119780">감사합니다!</translation>
 <translation id="5202255382948179481">제안 사항 추가</translation>
-<translation id="7759809451544302770">선택사항</translation>
 <translation id="4748689412569009273">Brave 경험을 이모지 하나로 어떻게 표현하시겠습니까?</translation>
 <translation id="7335142069363686805">지금 평가하기</translation>
 <translation id="6681362094306959654">Brave가 마음에 드십니까?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">슬픔</translation>
 <translation id="5488843227043643519">Play 스토어 평점을 남겨주시겠습니까?</translation>
 <translation id="5867854497245948308">피드백을 주셔서 감사합니다!</translation>
-<translation id="4935400164159327304">Brave의 개선점을 알려주세요.</translation>
+<translation id="5578122562331038807">Brave의 개선점을 알려주세요</translation>
+<translation id="1483493594462132177">전송</translation>
+<translation id="3889034478061064651">제안 사항 추가(선택 사항)</translation>
+<translation id="1769154760586570836">피드백이 전송되었습니다. 감사합니다!</translation>
+<translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="8966035543003363155">Brave 알림으로 더욱 편하게</translation>
 <translation id="7662771815233894695">다운로드 관리, 토큰 적립, 주간 사용 통계 등을 받습니다.</translation>
 <translation id="4265429476391459783">리워드 미적립/프라이버시 보고서 미수신 중</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">페이지 작업</translation>
 <translation id="7104487676473617844">다음 항목들은 현재 열린 웹페이지가 지원할 때만 메뉴에 표시됩니다.</translation>
 <translation id="4159764849281393303">웹앱</translation>
-<translation id="8428213095426709021">설정</translation>
 <translation id="8038539967102225446">여기에 Brave 광고가 있습니다!</translation>
 <translation id="222883304157347087">(이 기기)</translation>
 <translation id="4157741509680155021">동기화 체인 장치</translation>
@@ -535,7 +537,6 @@
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
-<translation id="1483493594462132177">전송</translation>
 <translation id="538450413584738399">스왑(Swap)</translation>
 <translation id="4556086616242530072">브라우저 네이티브.\n자기 보호관리.\n멀티체인.</translation>
 <translation id="7909462264772842773">보유한 암호화폐 및 NFT를 온전히 관리하세요. Brave 월렛은 이더리움, EVM 체인, Solana, Filecoin 등을 지원합니다.</translation>
@@ -611,7 +612,6 @@
 <translation id="569068482611873351">가져오기...</translation>
 <translation id="4522570452068850558">세부 정보</translation>
 <translation id="3114681061018999547">차폐</translation>
-<translation id="3784455785234192852">잠금</translation>
 <translation id="4412698727486357573">고객센터</translation>
 <translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
 <translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
@@ -807,6 +807,10 @@
 <translation id="2478788592457735063">네트워크가 이전에 추가한 네트워크로 전환됩니다.</translation>
 <translation id="8756686998207163764">네트워크 전환</translation>
 <translation id="8905793906896555159">탭 그룹 활성화</translation>
+<translation id="6735749683447943955">탭 그룹을 비활성화할까요?</translation>
+<translation id="4616687974503500682">기존 그룹이 모두 삭제되며, 해당 그룹 내의 탭은 브라우저 창에서 그룹화되지 않은 열린 탭이 됩니다. 계속하시겠습니까?</translation>
+<translation id="4394049700291259645">사용 중지</translation>
+<translation id="3859027502409073633">동기화된 탭 그룹 표시</translation>
 <translation id="7632160823264702523">탭 그룹 표시줄</translation>
 <translation id="2477807195394450274">현재 열린 탭 그룹의 탭에 빠르게 접근할 수 있는 하단 표시줄 표시</translation>
 <translation id="8374720587111523381">현재 탭 그룹에서 링크 열기</translation>
@@ -814,6 +818,7 @@
 <translation id="1227658541937938697">현재 탭 그룹 내에서 모든 링크 자동으로 열기</translation>
 <translation id="5242300593039211344">월렛 잠금</translation>
 <translation id="1108298724135935307">연결된 사이트</translation>
+<translation id="8428213095426709021">설정</translation>
 <translation id="4255623233927788178">블록 탐색기에서 보기</translation>
 <translation id="8274201358637112807">이 페이지가 Brave 월렛과 상호작용하려고 합니다.</translation>
 <translation id="3355936511340229503">연결 오류</translation>
@@ -855,7 +860,6 @@
 <translation id="6458565248779152483">Brave VPN 비활성화</translation>
 <translation id="9080536793704001825">15분간 일시중지</translation>
 <translation id="803706420145725977">1시간 동안 일시중지</translation>
-<translation id="4394049700291259645">사용 중지</translation>
 <translation id="7733890291091968191">Web3 알림 표시</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave는 귀하를 추적하지 않아 앱을 어떻게 사용하는지 파악할 수 없기 때문에 VPN을 어떻게 셋업하셨는지 전혀 알지 못합니다. 겪으신 문제에 대한 정보를 공유해주시면 최대한 신속하게 해결책을 알아내서 도움을 드리겠습니다. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN 호스트 이름\n <ph name="VALUE"/></translation>

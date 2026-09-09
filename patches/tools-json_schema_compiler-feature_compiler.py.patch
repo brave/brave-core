@@ -1,12 +1,12 @@
 diff --git a/tools/json_schema_compiler/feature_compiler.py b/tools/json_schema_compiler/feature_compiler.py
-index 9633cfd0cffe5ca4e4192a6c017bde1b51c0ed4f..30ecd8d16d7fb33db55783d28d2aad201e80c657 100644
+index 9d303f892b94b268e88c431e61c99321fe00fb8c..37fa60363183848175846bf2071500a64dda6b77 100644
 --- a/tools/json_schema_compiler/feature_compiler.py
 +++ b/tools/json_schema_compiler/feature_compiler.py
-@@ -1025,6 +1025,7 @@ class FeatureCompiler(object):
+@@ -1072,6 +1072,7 @@ class FeatureCompiler(object):
        f.write(cc_file.Render().strip())
  
  
 +from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  if __name__ == '__main__':
    parser = argparse.ArgumentParser(description='Compile json feature files')
-   parser.add_argument('chrome_root',
+   parser.add_argument(

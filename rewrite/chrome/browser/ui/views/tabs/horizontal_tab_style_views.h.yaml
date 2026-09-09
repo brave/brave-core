@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose HorizontalTabStyleViews's private members to BraveVerticalTabStyle.
+
+      Friend access is needed to be able to call certain private methods.
+    add_friend:
+      class_name: HorizontalTabStyleViews
+      friend_type: class BraveVerticalTabStyle
+
+  - description: |-
+      Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
+    make_virtual:
+      class_name: HorizontalTabStyleViews
+      method_name: GetSeparatorBounds
+
+  - description: |-
+      Virtualise IsHovering for BraveVerticalTabStyle.
+    make_virtual:
+      class_name: HorizontalTabStyleViews
+      method_name: IsHovering
+
+  - description: |-
+      Virtualise GetSeparatorOpacity for BraveVerticalTabStyle.
+
+      Virtualising to tweak separator visibility for vertical tabs and split
+      tabs.
+    make_virtual:
+      class_name: HorizontalTabStyleViews
+      method_name: GetSeparatorOpacity
+
+  - description: |-
+      Virtualise GetCurrentTabBackgroundColor for BraveVerticalTabStyle.
+
+      Virtualising to supply its own vertical-tab background colors.
+    make_virtual:
+      class_name: HorizontalTabStyleViews
+      method_name: GetCurrentTabBackgroundColor

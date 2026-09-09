@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Rate Brave</translation>
 <translation id="4104400246019119780">Thanks!</translation>
 <translation id="5202255382948179481">Add your suggestions</translation>
-<translation id="7759809451544302770">Optional</translation>
 <translation id="4748689412569009273">In one emoji, how's your experience with Brave?</translation>
 <translation id="7335142069363686805">Rate now</translation>
 <translation id="6681362094306959654">Liking Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Sad</translation>
 <translation id="5488843227043643519">Leave a Play Store rating?</translation>
 <translation id="5867854497245948308">Thanks for your feedback!</translation>
-<translation id="4935400164159327304">Let us know how we can improve Brave.</translation>
+<translation id="5578122562331038807">Let us know how we can improve Brave</translation>
+<translation id="1483493594462132177">Send</translation>
+<translation id="3889034478061064651">Add your suggestions (Optional)</translation>
+<translation id="1769154760586570836">Feedback sent. Thank you!</translation>
+<translation id="4450893287417543264">Don't show again</translation>
 <translation id="8966035543003363155">Brave notifications make it easier</translation>
 <translation id="7662771815233894695">Manage downloads, earn tokens, see weekly usage stats and more.</translation>
 <translation id="4265429476391459783">You're not earning Rewards or receiving Privacy Reports</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Page actions</translation>
 <translation id="7104487676473617844">The following items will only appear in the menu when supported by the currently open webpage.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="8428213095426709021">Settings</translation>
 <translation id="8038539967102225446">Brave Ads are here!</translation>
 <translation id="222883304157347087">(this device)</translation>
 <translation id="4157741509680155021">DEVICES ON SYNC CHAIN</translation>
@@ -535,7 +537,6 @@ Are you sure you want to do this?</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
-<translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
 <translation id="7909462264772842773">Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin and more.</translation>
@@ -611,7 +612,6 @@ Are you sure you want to do this?</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="3114681061018999547">Shielding</translation>
-<translation id="3784455785234192852">Lock</translation>
 <translation id="4412698727486357573">Help Centre</translation>
 <translation id="8239147115686034860">Automatically lock Brave Wallet</translation>
 <translation id="414639769490080648">The number of minutes to wait until the Brave Wallet is automatically locked</translation>
@@ -807,6 +807,10 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2478788592457735063">This will switch the network to a previously added network.</translation>
 <translation id="8756686998207163764">Switch network</translation>
 <translation id="8905793906896555159">Enable tab groups</translation>
+<translation id="6735749683447943955">Disable tab groups?</translation>
+<translation id="4616687974503500682">Any existing groups will be deleted, and the tabs within those groups will become open, ungrouped tabs in your browser window. Are you sure you want to continue?</translation>
+<translation id="4394049700291259645">Disable</translation>
+<translation id="3859027502409073633">Show synced tab groups</translation>
 <translation id="7632160823264702523">Tab groups bar</translation>
 <translation id="2477807195394450274">Show a bottom bar for quick access to tabs in the currently open tab group</translation>
 <translation id="8374720587111523381">Open links in current tab group</translation>
@@ -814,6 +818,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1227658541937938697">Automatically open all links in the current tab group</translation>
 <translation id="5242300593039211344">Lock Wallet</translation>
 <translation id="1108298724135935307">Connected sites</translation>
+<translation id="8428213095426709021">Settings</translation>
 <translation id="4255623233927788178">View on block explorer</translation>
 <translation id="8274201358637112807">This page wants to interact with Brave Wallet</translation>
 <translation id="3355936511340229503">Connection error</translation>
@@ -855,7 +860,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6458565248779152483">Disable Brave VPN</translation>
 <translation id="9080536793704001825">Pause for 15 minutes</translation>
 <translation id="803706420145725977">Pause for 1 hour</translation>
-<translation id="4394049700291259645">Disable</translation>
 <translation id="7733890291091968191">Display Web3 notifications</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Brave doesn’t track you or know how you use our app, so we don’t know how you’ve set up VPN. Please share info about the issue you’re experiencing and we’ll do our best to resolve it as soon as we can. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPN Hostname\n <ph name="VALUE"/></translation>

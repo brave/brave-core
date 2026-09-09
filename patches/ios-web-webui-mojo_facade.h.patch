@@ -1,0 +1,44 @@
+diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
+index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..5d23b666ba35e3f352cd3425b2cac75aa508ebbb 100644
+--- a/ios/web/webui/mojo_facade.h
++++ b/ios/web/webui/mojo_facade.h
+@@ -35,7 +35,8 @@ class MojoFacade : public web::WebStateObserver,
+  public:
+   // Constructs MojoFacade. The calling code must retain ownership of
+   // `web_state`, which cannot be null.
+-  explicit MojoFacade(WebState* web_state);
++  explicit MojoFacade(WebState* web_state,
++                      const std::string& webui_host = std::string());
+   ~MojoFacade() override;
+ 
+   // A listener that polls for messages from a content page to be processed by
+@@ -58,6 +59,29 @@ class MojoFacade : public web::WebStateObserver,
+                          const base::DictValue* message,
+                          base::OnceCallback<void(int, std::string)> completion);
+ 
++ protected:
++  // Whether `frame` is the frame this facade serves, which is the one
++  // whose security origin host matches served_host_. An empty
++  // served_host_ means the main frame, as upstream assumes.
++  bool ServesFrame(WebFrame* frame) const;
++  // Gates Mojo.bindInterface from a chrome-untrusted:// frame against
++  // InterfaceBinder::IsAllowedForOrigin. See
++  // brave/chromium_src/ios/web/public/web_state.h for the allowlist.
++  bool IsBindInterfaceAllowedForFrame(const base::DictValue& args);
++  // Records what this facade knew when a message named a pipe id it
++  // doesn't hold.
++  void ReportUnknownPipe(const char* operation,
++                         std::optional<int> pipe_id);
++  // Whether a poll that came back empty is worth repeating. Counts the
++  // consecutive failures, so a frame that can no longer run scripts
++  // stops being asked.
++  bool ShouldRetryPoll();
++
++  // Host of the WebUI this facade serves, empty for the main frame.
++  std::string served_host_;
++  // Polls in a row that carried no message.
++  int consecutive_poll_failures_ = 0;
++
+  private:
+   // Callback for AwaitNextMessage completion.
+   void OnAwaitNextMessageCompleted(const std::string& web_frame_id,

@@ -80,7 +80,7 @@ BravePasswordImporter::ReadCredentialsFromLoginData(
   for (auto& credential : read_result.credentials) {
     if (credential.blocked_by_user) {
       credential.username_value.clear();
-      credential.password_value.clear();
+      credential.password_value = password_manager::PasswordString();
     }
   }
 

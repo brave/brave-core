@@ -19,7 +19,7 @@
 #include "brave/browser/ui/containers/containers_bookmark_menu_model_delegate.h"
 #endif
 
-class Browser;
+class BrowserWindowInterface;
 class Profile;
 class PrefService;
 
@@ -37,7 +37,7 @@ class BraveBookmarkContextMenuController
   BraveBookmarkContextMenuController(
       gfx::NativeWindow parent_window,
       BookmarkContextMenuControllerDelegate* delegate,
-      Browser* browser,
+      BrowserWindowInterface* browser,
       Profile* profile,
       BookmarkLaunchLocation opened_from,
       const std::vector<raw_ptr<const bookmarks::BookmarkNode,
@@ -81,7 +81,7 @@ class BraveBookmarkContextMenuController
 
   void SetPrefsForTesting(PrefService* prefs);
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<bookmarks::BookmarkModel> bookmark_model_ = nullptr;
   std::unique_ptr<BookmarkBarSubMenuModel> brave_bookmarks_submenu_model_;

@@ -1,19 +1,19 @@
 diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
-index 6a0c27e0f0a52de4bd95b6c5f3dd3f851144a282..f0fa874a56b4743f9ee024de39a47a73cce6512d 100644
+index fa10f1879a8fdd51eabc77638d7257bf76494df9..91758dab4d75fc26ab5d63887ac354dfa6f6baf8 100644
 --- a/components/sync/protocol/entity_specifics.proto
 +++ b/components/sync/protocol/entity_specifics.proto
-@@ -11,6 +11,7 @@ option optimize_for = LITE_RUNTIME;
+@@ -13,6 +13,7 @@ package sync_pb;
  
- package sync_pb;
- 
+ // keep-sorted start
+ import "components/sync/protocol/account_setting_specifics.proto";
 +import "brave/components/sync/protocol/ai_chat_specifics.proto";
  import "components/sync/protocol/ai_thread_specifics.proto";
- import "components/sync/protocol/contextual_task_specifics.proto";
- import "components/sync/protocol/encryption.proto";
-@@ -181,6 +182,7 @@ message EntitySpecifics {
-         1656053;
+ import "components/sync/protocol/app_list_specifics.proto";
+ import "components/sync/protocol/app_setting_specifics.proto";
+@@ -185,6 +186,7 @@ message EntitySpecifics {
      EncryptedTabContextItemSpecifics encrypted_tab_context_item = 1661069;
      NotebookSpecifics notebook = 1670544;
+     JourneySpecifics journey = 1670131;
 +    AIChatConversationSpecifics ai_chat_conversation = 10000001;
      // When adding a new type, follow the docs below and keep this comment as
      // the last entry.

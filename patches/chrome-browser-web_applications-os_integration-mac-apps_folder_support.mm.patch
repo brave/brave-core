@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
-index 3df2b253ccdb90e563f0a0dd30fe548ef2fa96c7..674851c0cca99f64353c85be50e96c6e2955e8f9 100644
+index d8cb9f66ac3b1fb1f6a2ca68a03dfe4b49028491..654096ca1c53ce8f0e43a6c8d8b2dd735c5afb72 100644
 --- a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
 +++ b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
-@@ -85,6 +85,7 @@ base::FilePath GetChromeAppsFolderImpl() {
+@@ -87,6 +87,7 @@ base::FilePath GetChromeAppsFolderImpl() {
      return path;
    }
  

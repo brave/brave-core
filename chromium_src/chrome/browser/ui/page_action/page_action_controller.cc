@@ -74,4 +74,13 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
   return std::make_unique<PageActionModel>(is_ephemeral);
 }
 
+void PageActionControllerImpl::Show(actions::ActionId action_id) {
+  // We have our own bookmark button in the toolbar, so the upstream's omnibox
+  // bookmark button should never be shown.
+  if (action_id == kActionBookmarkThisTab) {
+    return;
+  }
+  PageActionControllerImpl_ChromiumImpl::Show(action_id);
+}
+
 }  // namespace page_actions

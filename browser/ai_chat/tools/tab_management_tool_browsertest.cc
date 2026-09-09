@@ -484,9 +484,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
         tabs::TabHandle(tab_to_move).Get()));
     ASSERT_TRUE(b2->IsActive());
     ASSERT_TRUE(tabs::TabHandle(tab_to_move).Get()->IsActivated());
-    ASSERT_EQ(GetSessionIdForTabId(tab_to_move), b2->session_id());
+    ASSERT_EQ(GetSessionIdForTabId(tab_to_move), b2->GetSessionID());
     // Get a group in a different window
-    ASSERT_EQ(GetSessionIdForTabId(b_handle), b1->session_id());
+    ASSERT_EQ(GetSessionIdForTabId(b_handle), b1->GetSessionID());
     auto group_id = GetGroupIdForTabId(b_handle);
     ASSERT_TRUE(group_id.has_value());
     ASSERT_FALSE(GetGroupIdForTabId(tab_to_move).has_value());
@@ -717,7 +717,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // This validates the timing of the result in such scenarios.
   {
     Browser* bnew = CreateBrowser(profile());
-    auto bnew_session_id = bnew->session_id();
+    auto bnew_session_id = bnew->GetSessionID();
     auto bnewa =
         bnew->tab_strip_model()->GetTabAtIndex(0)->GetHandle().raw_value();
     auto bnewb = AddTabAndGetHandle(bnew, GURL("https://move-all.test/"));
@@ -744,7 +744,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // being closed and not returning a window with an empty tab strip.
   {
     Browser* bnew = CreateBrowser(profile());
-    auto bnew_session_id = bnew->session_id();
+    auto bnew_session_id = bnew->GetSessionID();
     auto bnewa =
         bnew->tab_strip_model()->GetTabAtIndex(0)->GetHandle().raw_value();
     auto bnewb = AddTabAndGetHandle(bnew, GURL("https://move-all.test/"));
@@ -817,7 +817,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
   {
     Browser* b2 = CreateBrowser(profile());
     AddTabAndGetHandle(b2, GURL("https://other.test/"));
-    int target_window_id = b2->session_id().id();
+    int target_window_id = b2->GetSessionID().id();
 
     RunToolAndGetText(FROM_HERE, &tool,
                       absl::StrFormat(

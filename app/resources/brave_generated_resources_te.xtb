@@ -212,6 +212,7 @@
 <translation id="8707615221880318679">ఈ గోప్యమైన సమాధానాలు కొన్ని ఫీచర్ల యొక్క ఒప్పుకోలు మరియు మెరుగుపరచడానికి Brave మద్దతును అంచనా వేయడానికి సహాయపడతాయి</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 డోమైన్లు</translation>
+<translation id="1458638489455808030">Wayback మెషిన్</translation>
 <translation id="4552520379838695057">క్షమించాలి, ఈ పేజీ లేద.</translation>
 <translation id="7299769530898469069">శేషమైన వెర్షన్ను లోడ్ చేయడంలో విఫలమైంది</translation>
 <translation id="2609895996619941644">వర్తిస్తున్న వెర్షన్ Wayback యంత్రం ఉనికిలో ఉందోలేదో చెక్ చేయాలా?</translation>
@@ -247,6 +248,7 @@
 <translation id="1185644444415356776">కంటైనర్‌లో లింక్‌ను తెరువు</translation>
 <translation id="6745991613881384719">కంటెనర్‌లను నిర్వహించండి</translation>
 <translation id="8523788649219117880">కొత్త తాత్కాలిక కంటెనర్</translation>
+<translation id="6738770788727894934"><ph name="TOOLTIP"/> - <ph name="CONTAINER_NAME"/> కంటైనర్</translation>
 <translation id="3704707436873245822">చిత్రం నుండి వచనం కాపీ చేయి</translation>
 <translation id="5268098808165185458">చిత్రం నుండి వచనాన్ని కాపీ చేస్తున్నాము...</translation>
 <translation id="4046485130884276245">చిత్రం నుండి వచనం కాపీ చేయబడింది</translation>
@@ -378,6 +380,7 @@
 <translation id="6724227215236550330">ఎంచుకున్న పాస్‌వర్డ్‌లు ఇక్కడ కనిపిస్తాయి. ఈ పరికరంలో <ph name="BRAND"/>కి పాస్‌వర్డ్‌లను దిగుమతి చేసేందుకు, <ph name="BEGIN_LINK"/>ఒక CSV ఫైల్‌ను ఎంచుకోండి<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">ఈ పరికరంలో <ph name="BRAND"/>కి పాస్‌వర్డ్‌లను దిగుమతి చేసేందుకు, ఒక CSV ఫైల్‌ను ఎంచుకోండి</translation>
 <translation id="8570228839666486945">డివైస్‌పై AI</translation>
+<translation id="7447041379556102185">పరికరంలో స్పీచ్ రికగ్నిషన్</translation>
 <translation id="3456536577668402695">మీ శోధనలు మరియు పేజీ కంటెంట్‌లు ఈ పరికరంలో ప్రాసెస్ చేయబడతాయి. ఏదీ Brave కి పంపబడదు లేదా మానవ సమీక్షకులు చూడరు.</translation>
 <translation id="4751537843966994505">సెమాంటిక్ హిస్టరీ సెర్చ్</translation>
 <translation id="6175973371938222040">మీరు స్థానికంగా సందర్శించే పేజీలను ఇండెక్స్ చేయండి, తద్వారా మీరు మీ హిస్టరీని అర్థం ద్వారా శోధించవచ్చు. అన్ని ప్రాసెసింగ్ ఈ పరికరంలోనే ఉంటుంది.</translation>
@@ -408,6 +411,7 @@
 <translation id="6017560037265964523">కంటైనర్లు</translation>
 <translation id="3718176486689879621">కంటెనర్‌లు అనేవి కుకీలు, కాష్, మరియు సైట్ స్టోరేజ్ వంటి మీ బ్రౌజింగ్ డేటాను వేర్వేరు సందర్భాలలోకి వేరుచేసే రంగు-కోడెడ్ బ్రౌజర్ ట్యాబ్‌లు. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="3721778624267551248">కంటెనర్‌లను ప్రారంభించండి</translation>
+<translation id="4858772568604670131">కంటైనర్‌ల కోసం ఎల్లప్పుడూ మినీ ఐకాన్‌ను ఉపయోగించండి</translation>
 <translation id="7773735778926921278">కొత్త కంటైనర్‌ను జోడించండి</translation>
 <translation id="8900907990448657776">కంటైనర్‌ని సవరించండి</translation>
 <translation id="7900511996284443779">కంటైనర్‌ని తొలగించండి</translation>
@@ -556,7 +560,6 @@
 <translation id="1799030480311994998">ఫీచర్లు</translation>
 <translation id="6709133671862442373">వార్తలు</translation>
 <translation id="6297791103122079275">Brave Talk</translation>
-<translation id="1458638489455808030">Wayback మెషిన్</translation>
 <translation id="4590997608186539865">ప్లేలిస్ట్</translation>
 <translation id="1199170151481311646">గోప్యతను కాపాడే గణాంక విశ్లేషణ</translation>
 <translation id="5990642573624858459">గణాంక నివేదిక</translation>
@@ -604,11 +607,14 @@
 <translation id="4891600875049212418">సంకేతాలను సందర్శించినప్పుడు గోప్యతా రికార్డులోకి వెళ్ళండి</translation>
 <translation id="1022603984240541480">అనుకూల సైట్‌లలో గోప్యతా సెట్టింగ్‌ల ట్యూనింగ్ నోటిఫికేషన్‌ను చూపించండి</translation>
 <translation id="3528176629974273019">Brave సైట్-నిర్దిష్ట గోప్యతా సెట్టింగ్‌లను స్వయంచాలకంగా సూచించడానికి (మరియు సర్దుబాటు చేయడానికి) అనుమతిస్తుంది.</translation>
+<translation id="2740687181110647855">గోప్యతా సెట్టింగ్‌ల ట్యూనింగ్ సాధనం</translation>
 <translation id="509873765238158442">Microsoft Recall ని నిరోధించండి</translation>
 <translation id="4763421121695677716">Microsoft Windows కంప్యూటర్‌లపై మైక్రోసాఫ్ట్ రీకాల్ ఫీచర్‌ను ఎందుకింత తేలికగా బ్లాకింగ్ చేయవచ్చు.</translation>
 <translation id="1968895725257436430">డేటా సేకరణ</translation>
 <translation id="1700052872056357670">బయటకు వెళ్లినప్పుడు డేటాను తొలగించండి</translation>
 <translation id="216468847346280584">Brave Ads డేటాను క్లియర్ చేయండి...</translation>
+<translation id="96212973142796240">Brave యాడ్స్ డేటా క్లియర్ చేయబడింది</translation>
+<translation id="6665923829462527507">Brave యాడ్స్ డేటాను క్లియర్ చేయలేకపోయాము. మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="2808630562319398131">Brave Rewards డేటాను రీసెట్ చేయండి...</translation>
 <translation id="6438096877646138757">మీరు మూసినప్పుడు కుకీలను క్లియర్ చేసే సైట్లను</translation>
 <translation id="2988792685798128092">సైట్ క్లోజ్‌లో క్లియర్ చేయండి</translation>
@@ -875,6 +881,7 @@
 <translation id="8631951653187535788">మీరు ఈ నమూనాను తొలగించాలని నిజంగా అనుకుంటున్నారా? ఈ మోడల్ ఏదైనా సక్రియ సంభాషణలో ఉపయోగిస్తే ఆ సంభాషణలల్ లియో యొక్క డిఫాల్ట్ మోడల్‌ను ఉపయోగించి మారుతుంది.</translation>
 <translation id="1907126221851170941">కొత్త మోడల్‌ని జోడించండి</translation>
 <translation id="8346224718149026088">మోడల్ సవరించండి</translation>
+<translation id="3914173277599553213">అవసరం</translation>
 <translation id="3468298837301810372">లేబుల్</translation>
 <translation id="3553035516792776805">మోడల్ వినతి పేరు</translation>
 <translation id="7634775528597575156">సర్వర్ ఎండ్పాయింట్</translation>

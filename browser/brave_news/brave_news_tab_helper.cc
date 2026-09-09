@@ -247,6 +247,12 @@ void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
   }
 }
 
+void BraveNewsTabHelper::SetDefaultFeedForTesting(
+    brave_news::mojom::PublisherPtr publisher) {
+  default_feed_ = std::move(publisher);
+  AvailableFeedsChanged();
+}
+
 void BraveNewsTabHelper::OnFoundFeedData(
     const GURL& feed_url,
     const GURL& site_url,

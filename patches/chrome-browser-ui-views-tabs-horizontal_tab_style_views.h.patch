@@ -1,0 +1,45 @@
+diff --git a/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h b/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h
+index 9b11b43819bb567d0a42e05333d96202023fb7fd..23c28086f994a8b3a89eb89ff4e8a770d989646a 100644
+--- a/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h
++++ b/chrome/browser/ui/views/tabs/horizontal_tab_style_views.h
+@@ -46,11 +46,12 @@ class HorizontalTabStyleViews : public TabStyleViews {
+   GlowHoverController* GetHoverControllerForTesting() override;
+ 
+  private:
++  friend class BraveVerticalTabStyle;
+   // Returns the color for the separator.
+   SkColor GetTabSeparatorColor() const;
+ 
+   // Painting helper functions:
+-  SkColor GetCurrentTabBackgroundColor(
++  virtual SkColor GetCurrentTabBackgroundColor(
+       TabStyle::TabSelectionState selection_state,
+       bool hovered) const;
+ 
+@@ -71,7 +72,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
+   // Returns a single separator's opacity based on whether it is the
+   // logically `leading` separator. `for_layout` has the same meaning as in
+   // GetSeparatorOpacities().
+-  float GetSeparatorOpacity(bool for_layout, bool leading) const;
++  virtual float GetSeparatorOpacity(bool for_layout, bool leading) const;
+ 
+   // Helper that returns an interpolated opacity if the tab or its neighbor
+   // `other_tab` is mid-hover-animation. Used in almost all cases when a
+@@ -84,7 +85,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
+   TabStyle::TabSelectionState GetSelectionState() const;
+ 
+   // Gets the bounds for the leading and trailing separators for a tab.
+-  TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
++  virtual TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
+ 
+   // Returns the opacities of the separators. If `for_layout` is true, returns
+   // the "layout" opacities, which ignore the effects of surrounding tabs' hover
+@@ -92,7 +93,7 @@ class HorizontalTabStyleViews : public TabStyleViews {
+   TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
+ 
+   // Returns whether the mouse is currently hovering this tab.
+-  bool IsHovering() const;
++  virtual bool IsHovering() const;
+ 
+   // Returns whether the hover animation is being shown.
+   bool IsHoverAnimationActive() const;

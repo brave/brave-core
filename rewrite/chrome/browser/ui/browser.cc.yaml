@@ -12,8 +12,8 @@ substitutions:
       place.
     count: 2
     regex:
-      pattern: 'base::WrapUnique(new Browser(params))'
-      replace: 'base::WrapUnique(new BraveBrowser(params))'
+      pattern: 'base::WrapUnique(new Browser(std::move(params)))'
+      replace: 'base::WrapUnique(new BraveBrowser(std::move(params)))'
 
   - description: |
       Use BraveTabStripModel for the browser's tab strip model

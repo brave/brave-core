@@ -29,6 +29,7 @@
 #include "chrome/browser/download/offline_item_model_manager_factory.h"
 #include "chrome/browser/offline_items_collection/offline_content_aggregator_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/download/download_display.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/test_browser_window.h"
@@ -331,10 +332,10 @@ class DownloadDisplayControllerTest : public testing::Test {
         .WillRepeatedly(Return(DownloadDisplay::ProgressInfo()));
     display_ = std::make_unique<FakeDownloadDisplay>();
     auto window = std::make_unique<TestBrowserWindow>();
-    Browser::CreateParams params(profile_, true);
+    BrowserWindowCreateParams params(profile_, true);
     params.type = Browser::TYPE_NORMAL;
     params.window = window.release();
-    browser_ = Browser::DeprecatedCreateOwnedForTesting(params);
+    browser_ = DeprecatedCreateOwnedBrowserWindowForTesting(std::move(params));
     bubble_controller_ = std::make_unique<DownloadBubbleUIController>(
         browser_.get(), mock_update_service_.get());
     controller_ = std::make_unique<DownloadDisplayController>(

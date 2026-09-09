@@ -7,72 +7,13 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_
 
 namespace tree_tab {
-class TreeTabNodeId;
+class TreeTabNodeId;  // NOLINT(build/forward_decl)
 }  // namespace tree_tab
 
 namespace tabs {
-class TreeTabNodeTabCollection;
+class TreeTabNodeTabCollection;  // NOLINT(build/forward_decl)
 }  // namespace tabs
 
-// Overload to AddTabRecursive() with an additional parameter and make it
-// virtual.
-#define AddTabRecursive(...)                                  \
-  virtual AddTabRecursive(__VA_ARGS__, TabInterface* opener); \
-  void AddTabRecursive(__VA_ARGS__)
-
-// Creates a wrapper method to avoid crash due to Brave specific customization,
-// especially in the case of tree tabs.
-#define RemoveTabAtIndexRecursive(...)             \
-  RemoveTabAtIndexRecursive_Chromium(__VA_ARGS__); \
-  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(__VA_ARGS__)
-
-// Make methods virtual for BraveTabStripCollection.
-#define MoveTabRecursive virtual MoveTabRecursive
-#define MoveTabsRecursive virtual MoveTabsRecursive
-#define CreateSplit virtual CreateSplit
-#define Unsplit virtual Unsplit
-
-// * Make method virtual and make BraveTabStripCollection friend.
-// * Add a method to get tree tab node id for a group.
-#define AddCollectionMapping(...)                                  \
-  AddCollectionMapping_Unused();                                   \
-  friend class BraveTabStripCollection;                            \
-  virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup( \
-      tab_groups::TabGroupId group_id) const;                      \
-  virtual void AddCollectionMapping(__VA_ARGS__)
-#define RemoveCollectionMapping virtual RemoveCollectionMapping
-
-// Add public method for delegate to insert a collection at a position (e.g.
-// when creating a split from tabs in different tree nodes). Inject in the
-// public section by expanding the single occurrence of InsertTabCollectionAt
-// (avoids redefining 'private', which would break included base headers).
-// BraveTabStripCollection wraps this with a PassKey-restricted overload.
-#define InsertTabCollectionAt                                            \
-  AddTabCollectionAtPosition(std::unique_ptr<TabCollection> collection,  \
-                             const TabCollection::Position& position);   \
-  virtual void PrepareTreeTabNodesForBatchDetach(                        \
-      const std::vector<TabInterface*>& moving_tabs) {}                  \
-  virtual bool ShouldDetachAsTreeSubtreeRoot(                            \
-      TabInterface* tab, const std::vector<TabInterface*>& moving_tabs); \
-  virtual void WillDetachTreeTabNodeSubtree(                             \
-      tabs::TreeTabNodeTabCollection& subtree_root) {}                   \
-  virtual void DidAttachTreeTabNodeSubtree(                              \
-      tabs::TreeTabNodeTabCollection& subtree_root) {}                   \
-  virtual void InsertDetachedTreeTabNode(                                \
-      std::unique_ptr<TabCollection> collection, int index);             \
-  virtual void InsertTabCollectionAt
-
 #include <components/tabs/public/tab_strip_collection.h>  // IWYU pragma: export
-
-#undef InsertTabCollectionAt
-#undef RemoveCollectionMapping
-#undef AddCollectionMapping
-#undef Unsplit
-#undef CreateSplit
-#undef MoveTabsRecursive
-#undef MoveTabRecursive
-#undef AddTabRecursive
-#undef RemoveTabAtIndexRecursive
-#undef AddTabRecursive
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_

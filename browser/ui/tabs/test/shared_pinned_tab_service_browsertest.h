@@ -40,7 +40,7 @@ class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
 
-  std::vector<base::WeakPtr<Browser>> browsers_;
+  std::vector<base::WeakPtr<BrowserWindowInterface>> browsers_;
 
   std::unique_ptr<base::RunLoop> run_loop_;
 };

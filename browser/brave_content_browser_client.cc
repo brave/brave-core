@@ -1231,26 +1231,28 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     bool* bypass_redirect_checks,
     bool* disable_secure_dns,
     network::mojom::URLLoaderFactoryOverridePtr* factory_override,
-    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
+    scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner,
+    bool is_for_network_service) {
   // TODO(iefremov): Skip proxying for certain requests?
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     BraveProxyingURLLoaderFactory<base::WeakPtr>::MaybeProxyRequest(
         browser_context, frame, factory_builder, type, request_initiator,
-        isolation_info, navigation_response_task_runner);
+        isolation_info, navigation_id, navigation_response_task_runner);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
     BraveProxyingURLLoaderFactory<
         std::shared_ptr>::MaybeProxyRequest(  // nocheck
         browser_context, frame, factory_builder, type, request_initiator,
-        isolation_info, navigation_response_task_runner);
+        isolation_info, navigation_id, navigation_response_task_runner);
   }
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
       isolation_info, std::move(navigation_id), ukm_source_id, factory_builder,
       header_client, bypass_redirect_checks, disable_secure_dns,
-      factory_override, navigation_response_task_runner);
+      factory_override, navigation_response_task_runner,
+      is_for_network_service);
 }
 
 bool BraveContentBrowserClient::WillInterceptWebSocket(

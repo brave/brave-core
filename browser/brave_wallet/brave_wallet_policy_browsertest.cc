@@ -146,7 +146,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, GetWalletService) {
 // Verify that Wallet menu item isn't enabled in the app menu when Brave
 // Wallet is disabled by policy.
 IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, AppMenuItemDisabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   if (IsBraveWalletDisabledTest()) {
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
   } else {

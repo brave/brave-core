@@ -208,6 +208,12 @@ CHAR_LIMIT guidelines:
         Private tabs will be locked when you leave Brave
      </message>
 
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_TITLE" desc="Title of the Locked Private card on the Safety Promo screen of the First Run Experience.">
+        Locked Private mode
+      </message>
+      <message name="IDS_SAFETY_FRE_PROMO_INCOGNITO_CAROUSEL_TITLE" desc="Title of the Locked Private slide on the Safety Promo Carousel screen of the First Run Experience.">
+        Lock your Private tabs
+      </message>
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
         New Private tab
       </message>
@@ -432,10 +438,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
         Search your Private tabs
       </message>
-      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic toolbar button in a Private tab.">
+      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic button in a Private tab.">
         Gemini isn’t available in Private mode
       </message>
-
       </messages>
   </release>
 </grit>

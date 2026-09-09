@@ -55,7 +55,7 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
               bool restore_tabbed_browser);
 
   void MaybeShowNonMilestoneUpdateToast(
-      Browser* browser,
+      BrowserWindowInterface* browser,
       const std::string& current_version_string) override {}
 };
 

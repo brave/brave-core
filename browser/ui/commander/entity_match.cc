@@ -164,7 +164,8 @@ std::vector<WindowMatch> WindowsMatchingInput(
       [&](BrowserWindowInterface* browser_window_interface) {
         Browser* browser =
             browser_window_interface->GetBrowserForMigrationOnly();
-        if (browser == browser_to_exclude || !browser->is_type_normal()) {
+        if (browser == browser_to_exclude ||
+            browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
           return true;  // continue iterating
         }
         if (match_profile &&

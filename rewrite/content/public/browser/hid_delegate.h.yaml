@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is necessary because of the use of `CONTENT_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Declare `HidDelegate::AllowRequestDeviceWithoutTransientActivation()`.
+
+      Brave lets the wallet's ledger subframe call `requestDevice()` without
+      transient user activation, so `HidService::RequestDevice()` needs a way to
+      ask the embedder whether the activation requirement applies.
+    add_to_public:
+      class_name: HidDelegate
+      code: |-
+
+        // Returns true if `render_frame_host` is allowed to request a device
+        // without transient user activation.
+        virtual bool AllowRequestDeviceWithoutTransientActivation(
+            RenderFrameHost* render_frame_host);

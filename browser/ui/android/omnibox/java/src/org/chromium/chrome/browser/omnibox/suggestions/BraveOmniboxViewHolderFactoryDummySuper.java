@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.omnibox.suggestions;
 
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.ui.modelutil.MVCListAdapter.ViewBuilder;
 import org.chromium.ui.modelutil.PropertyKey;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -21,8 +20,7 @@ import org.chromium.ui.modelutil.PropertyModelChangeProcessor.ViewBinder;
  */
 @NullMarked
 class BraveOmniboxViewHolderFactoryDummySuper extends OmniboxViewHolderFactory {
-    BraveOmniboxViewHolderFactoryDummySuper(OmniboxResourceProvider resourceProvider) {
-        super(resourceProvider);
+    BraveOmniboxViewHolderFactoryDummySuper() {
         assert false : "This class usage should be removed in the bytecode!";
     }
 

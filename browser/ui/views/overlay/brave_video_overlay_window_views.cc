@@ -9,6 +9,7 @@
 
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/browser_init_state.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/overlay/back_to_tab_button.h"
 #include "chrome/browser/ui/views/overlay/back_to_tab_label_button.h"
@@ -22,7 +23,6 @@
 #include "chrome/browser/ui/views/overlay/toggle_microphone_button.h"
 #include "ui/gfx/canvas.h"
 #include "ui/views/view_utils.h"
-
 namespace {
 
 constexpr int kTopControlIconSize = 20;

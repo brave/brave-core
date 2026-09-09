@@ -32,6 +32,7 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/sessions/session_restore_test_utils.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
@@ -165,10 +166,10 @@ class TestHttpsServerBuilder {
 };
 
 #if !BUILDFLAG(IS_ANDROID)
-Browser* CreateProfileAndOpenBrowser() {
+BrowserWindowInterface* CreateProfileAndOpenBrowser() {
   base::FilePath profile_path =
       g_browser_process->profile_manager()->GenerateNextProfileDirectoryPath();
-  base::test::TestFuture<Browser*> browser_test_future;
+  base::test::TestFuture<BrowserWindowInterface*> browser_test_future;
   profiles::SwitchToProfile(profile_path, /*always_create=*/false,
                             browser_test_future.GetCallback());
   EXPECT_TRUE(browser_test_future.Wait());
@@ -861,7 +862,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest, RecordForMultipleProfiles) {
       https_server_->GetURL("www.google.com", "/search?q=test"),
       /*number_of_navigations=*/1, /*ignore_uncommitted_navigations=*/true);
 
-  Browser* other_browser = CreateProfileAndOpenBrowser();
+  BrowserWindowInterface* other_browser = CreateProfileAndOpenBrowser();
   ASSERT_TRUE(other_browser);
   content::NavigateToURLBlockUntilNavigationsComplete(
       other_browser->tab_strip_model()->GetActiveWebContents(),

@@ -45,7 +45,9 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
         model.set(
                 BaseSuggestionViewProperties.ICON,
                 OmniboxDrawableState.forSmallIcon(
-                        mContext, R.drawable.ic_brave_ai_color, /* allowTint= */ false));
+                        mUiContext.resourceProvider,
+                        R.drawable.ic_brave_ai_color,
+                        /* allowTint= */ false));
         model.set(
                 SuggestionViewProperties.TEXT_LINE_1_TEXT,
                 new SuggestionSpannable(mUrlBarEditingTextProvider.getTextWithoutAutocomplete()));

@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index c641220728545cfee97549bc5704a19c57e0a01e..fc32327dffbc4645ba1d10ab9f9d0fb743846e39 100644
+index 43e265031941223c5d5eedbb20678ea297478834..7aaf8c077e7af12fb6592a9e3284183839288c6f 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -509,6 +509,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -505,6 +505,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterBooleanPref(kMetricsConsentRestructureFeatureState, false);
    registry->RegisterTimePref(kObsoleteManagementPlatformLastLogTime,
                               base::Time());
@@ -10,15 +10,15 @@ index c641220728545cfee97549bc5704a19c57e0a01e..fc32327dffbc4645ba1d10ab9f9d0fb7
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -993,6 +994,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // Deprecated 07/2026.
-   registry->RegisterTimePref(kObsoleteManagementProfileLastLogTime,
-                              base::Time());
+@@ -997,6 +998,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref("autofill.wallet_import_enabled", true);
+   registry->RegisterBooleanPref("sync.autofill_wallet_import_enabled_migrated",
+                                 false);
 +  brave::RegisterBrowserStatePrefs(registry);
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1024,6 +1026,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -1028,6 +1030,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 07/2026.
    prefs->ClearPref(kObsoleteManagementPlatformLastLogTime);
@@ -26,10 +26,10 @@ index c641220728545cfee97549bc5704a19c57e0a01e..fc32327dffbc4645ba1d10ab9f9d0fb7
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1100,6 +1103,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
- 
-   // Added 07/2026.
-   prefs->ClearPref(kObsoleteManagementProfileLastLogTime);
+@@ -1103,6 +1106,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+   // Added 08/2026.
+   prefs->ClearPref("autofill.wallet_import_enabled");
+   prefs->ClearPref("sync.autofill_wallet_import_enabled_migrated");
 +  brave::MigrateObsoleteProfilePrefs(prefs);
  }
  

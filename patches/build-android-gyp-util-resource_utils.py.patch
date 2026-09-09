@@ -1,12 +1,12 @@
 diff --git a/build/android/gyp/util/resource_utils.py b/build/android/gyp/util/resource_utils.py
-index 04b531ba03d31fe4ced8d9ad3ae41573f218d5d5..d608aca534267d6f94b36617ced54005fce75e0e 100644
+index 4773d496e5e03bec0c66fcdcca592097eaf23888..b9a023787ccc5440a5abacc5ceba2cc58b09cf63 100644
 --- a/build/android/gyp/util/resource_utils.py
 +++ b/build/android/gyp/util/resource_utils.py
-@@ -256,6 +256,7 @@ class ResourceInfoFile:
-       return
-     source_path = os.path.normpath(source_path)
-     new_value = self._entries.setdefault(archive_path, source_path)
-+    return
-     if new_value != source_path:
-       raise Exception('Duplicate AddMapping for "{}". old={} new={}'.format(
-           archive_path, new_value, source_path))
+@@ -287,6 +287,7 @@ class ResourceInfoFile:
+             return
+         source_path = os.path.normpath(source_path)
+         new_value = self._entries.setdefault(archive_path, source_path)
++        return
+         if new_value != source_path:
+             raise Exception(
+                 'Duplicate AddMapping for "{}". old={} new={}'.format(

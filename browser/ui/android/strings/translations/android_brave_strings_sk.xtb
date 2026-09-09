@@ -9,7 +9,6 @@
 <translation id="2524310205387880526">Ohodnotiť Brave</translation>
 <translation id="4104400246019119780">Ďakujeme!</translation>
 <translation id="5202255382948179481">Pridajte vlastné návrhy</translation>
-<translation id="7759809451544302770">Voliteľné</translation>
 <translation id="4748689412569009273">Akým emotikonom by ste vyjadrili svoju skúsenosť s prehliadačom Brave?</translation>
 <translation id="7335142069363686805">Ohodnoťte ho</translation>
 <translation id="6681362094306959654">Páči sa vám prehliadač Brave?</translation>
@@ -17,7 +16,11 @@
 <translation id="6826743502395386800">Smutný</translation>
 <translation id="5488843227043643519">Zanecháte hodnotenie v Obchode Play?</translation>
 <translation id="5867854497245948308">Ďakujeme za spätnú väzbu!</translation>
-<translation id="4935400164159327304">Povedzte nám, ako môžeme zlepšiť prehliadač Brave.</translation>
+<translation id="5578122562331038807">Povedzte nám, ako môžeme zlepšiť prehliadač Brave</translation>
+<translation id="1483493594462132177">Odoslať</translation>
+<translation id="3889034478061064651">Pridajte vlastné návrhy (voliteľné)</translation>
+<translation id="1769154760586570836">Spätná väzba bola odoslaná. Ďakujeme!</translation>
+<translation id="4450893287417543264">Už nezobrazovať</translation>
 <translation id="8966035543003363155">Upozornenia Brave uľahčujú prácu</translation>
 <translation id="7662771815233894695">Spravujte sťahovanie, získavajte tokeny, zobrazujte týždenné štatistiky používania a využívajte ďalšie funkcie.</translation>
 <translation id="4265429476391459783">Nezískavate odmeny ani nedostávate správy o ochrane osobných údajov</translation>
@@ -280,7 +283,6 @@
 <translation id="7002271985859760052">Akcie stránky</translation>
 <translation id="7104487676473617844">Nasledujúce položky sa zobrazia v ponuke len vtedy, ak ich podporuje aktuálne otvorená webová stránka.</translation>
 <translation id="4159764849281393303">Webová aplikácia</translation>
-<translation id="8428213095426709021">Nastavení</translation>
 <translation id="8038539967102225446">Brave reklamy sú tu!</translation>
 <translation id="222883304157347087">(toto zariadenie)</translation>
 <translation id="4157741509680155021">ZARIADENIA V REŤAZCI SYNC</translation>
@@ -535,7 +537,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
-<translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Vlastný prehliadač.\nVlastná úschova.\nA viacreťazcový.</translation>
 <translation id="7909462264772842773">Prevezmite kontrolu nad svojimi kryptomenami a NFT. Brave Wallet podporuje Ethereum, reťazce EVM, Solana, Filecoin a ďalšie.</translation>
@@ -611,7 +612,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Detaily</translation>
 <translation id="3114681061018999547">Ochraňuje sa</translation>
-<translation id="3784455785234192852">Uzamknúť</translation>
 <translation id="4412698727486357573">Centrum pomoci</translation>
 <translation id="8239147115686034860">Automaticky uzamknúť peňaženku Brave</translation>
 <translation id="414639769490080648">Počet minút čakania do automatického uzamknutia peňaženky Brave</translation>
@@ -807,6 +807,10 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2478788592457735063">Týmto sa prepne sieť na predchádzajúcu pridanú sieť.</translation>
 <translation id="8756686998207163764">Prepnúť sieť</translation>
 <translation id="8905793906896555159">Povoliť skupiny kariet</translation>
+<translation id="6735749683447943955">Zakázať skupiny kariet?</translation>
+<translation id="4616687974503500682">Všetky existujúce skupiny budú odstránené a karty v týchto skupinách sa stanú otvorenými, nezoskupenými kartami v okne prehliadača. Naozaj chcete pokračovať?</translation>
+<translation id="4394049700291259645">Zakázať</translation>
+<translation id="3859027502409073633">Zobraziť synchronizované skupiny kariet</translation>
 <translation id="7632160823264702523">Panel skupín kariet</translation>
 <translation id="2477807195394450274">Zobraziť spodný panel pre rýchly prístup ku kartám v aktuálne otvorenej skupine kariet</translation>
 <translation id="8374720587111523381">Otvárať prepojenia v aktuálnej skupine kariet</translation>
@@ -814,6 +818,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1227658541937938697">Automaticky otvárať všetky prepojenia v aktuálnej skupine kariet</translation>
 <translation id="5242300593039211344">Zámok peňaženky</translation>
 <translation id="1108298724135935307">Prepojené stránky</translation>
+<translation id="8428213095426709021">Nastavení</translation>
 <translation id="4255623233927788178">Zobraziť v blokovom prieskumníkovi</translation>
 <translation id="8274201358637112807">Táto stránka chce spolupracovať s peňaženkou Brave</translation>
 <translation id="3355936511340229503">Chyba pripojenia</translation>
@@ -855,7 +860,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6458565248779152483">Zakázať Brave VPN</translation>
 <translation id="9080536793704001825">Pozastaviť na 15 minút</translation>
 <translation id="803706420145725977">Pozastaviť na 1 hodinu</translation>
-<translation id="4394049700291259645">Zakázať</translation>
 <translation id="7733890291091968191">Zobrazenie upozornení Web3</translation>
 <translation id="1371627247679035769">\n\n\n\n#### Prehliadač Brave vás nesleduje ani nevie, ako používate našu aplikáciu, takže nevieme, ako ste si nastavili sieť VPN. Zdieľajte informácie o probléme, ktorý máte, a my urobíme všetko pre to, aby sme ho čo najskôr vyriešili. ####\n\n</translation>
 <translation id="3367162038532116157">\n\nNázov hostiteľa siete VPN\n <ph name="VALUE"/></translation>

@@ -24,6 +24,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/net/profile_network_context_service_test_utils.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
@@ -421,7 +422,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToNTP) {
     content::WaitForLoadStop(
         tor_browser->tab_strip_model()->GetActiveWebContents());
     EXPECT_EQ(tor_browser->tab_strip_model()->GetActiveWebContents()->GetURL(),
-              tor_browser->GetNewTabURL());
+              chrome::GetNewTabURL(tor_browser));
     ui_test_utils::BrowserDestroyedObserver observer(tor_browser);
     TorProfileManager::CloseTorProfileWindows(tor_profile);
     observer.Wait();

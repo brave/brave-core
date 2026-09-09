@@ -51,6 +51,9 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   const ImmersiveModeController* GetImmersiveModeController() const override {
     return nullptr;
   }
+  BrowserAnimationController* GetAnimationController() const override {
+    return nullptr;
+  }
   ExclusiveAccessBubbleViews* GetExclusiveAccessBubble() const override {
     return nullptr;
   }
@@ -66,6 +69,14 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool ShouldLayoutTabStrip() const override { return false; }
   int GetExtraInfobarOffset() const override { return 0; }
   bool IsOrganizerPanelVisible() const override { return false; }
+  base::CallbackListSubscription AddOnGlassModeChangedCallback(
+      base::RepeatingCallback<void(bool)> callback,
+      bool* current_state_out) override {
+    if (current_state_out) {
+      *current_state_out = false;
+    }
+    return base::CallbackListSubscription();
+  }
 
   bool ShouldShowVerticalTabs() const override { return false; }
   bool ShouldShowWindowTitleForVerticalTabs() const override { return false; }
@@ -318,7 +329,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
 
   // With no visible top UI, Brave's override returns a default-constructed
   // SeparatorInfo (no separators, no shadow box) before consulting upstream -
@@ -348,7 +359,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
 
   EXPECT_EQ(gfx::RoundedCornersF(),
             layout->CalculateContentsCornerRadiiForTesting());
@@ -366,7 +377,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
 
   // The web contents occupies the whole window, so nothing should be rounded.
   EXPECT_EQ(gfx::RoundedCornersF(),
@@ -387,7 +398,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   // reparented into the top overlay.
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
 
   const float window_radius = GetWindowCornerRadius();
   EXPECT_EQ(gfx::RoundedCornersF(window_radius),
@@ -409,7 +420,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
   layout->SetWindowStateForTesting(
       BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
 
@@ -433,7 +444,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
   layout->SetWindowStateForTesting(
       BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
 
@@ -455,7 +466,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
   layout->SetWindowStateForTesting(
       BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
 
@@ -477,7 +488,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
   // Plain kFullscreen (toolbar auto-hidden), not kFullscreenWithToolbar.
   layout->SetWindowStateForTesting(
       BrowserViewLayoutDelegate::WindowState::kFullscreen);
@@ -505,7 +516,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
 
   // The top margin is suppressed, but the other sides still reserve room for
   // the rounded-corners shadow.
@@ -531,7 +542,7 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
 
   BrowserViewLayoutViews views;
   auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
-      std::move(mock), nullptr, std::move(views));
+      std::move(mock), std::move(views));
 
   // The mac-only branch is scoped to kFullscreenWithToolbar; plain kFullscreen
   // must keep the top margin.

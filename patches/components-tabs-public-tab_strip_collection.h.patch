@@ -1,0 +1,95 @@
+diff --git a/components/tabs/public/tab_strip_collection.h b/components/tabs/public/tab_strip_collection.h
+index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f9e52176a 100644
+--- a/components/tabs/public/tab_strip_collection.h
++++ b/components/tabs/public/tab_strip_collection.h
+@@ -55,11 +55,11 @@ class TabStripCollection : public TabCollection {
+                     new_pinned_state);
+   }
+ 
+-  void MoveTabRecursive(size_t initial_index,
++  virtual void MoveTabRecursive(size_t initial_index,
+                         size_t final_index,
+                         std::optional<tab_groups::TabGroupId> new_group_id,
+                         bool new_pinned_state);
+-  void MoveTabsRecursive(
++  virtual void MoveTabsRecursive(
+       const std::vector<int>& tab_indices,
+       size_t destination_index,
+       std::optional<tab_groups::TabGroupId> new_group_id,
+@@ -69,7 +69,7 @@ class TabStripCollection : public TabCollection {
+   // Removes the tab present at a recursive index in the collection and
+   // returns the unique_ptr to the tab model. If there is no tab present
+   // due to bad input then CHECK.
+-  ScopedTab RemoveTabAtIndexRecursive(size_t index);
++  virtual ScopedTab RemoveTabAtIndexRecursive(size_t index);
+ 
+   // TabCollection:
+   // Tabs and Collections are not allowed to be removed from TabStripCollection.
+@@ -78,7 +78,7 @@ class TabStripCollection : public TabCollection {
+   std::unique_ptr<TabCollection> MaybeRemoveCollection(
+       TabCollection* collection) override;
+ 
+-  void InsertTabCollectionAt(
++  virtual void InsertTabCollectionAt(
+       std::unique_ptr<TabCollection> collection,
+       int index,
+       bool pinned,
+@@ -112,11 +112,11 @@ class TabStripCollection : public TabCollection {
+ 
+   // Split tab operations.
+   SplitTabCollection* GetSplitTabCollection(split_tabs::SplitTabId split_id);
+-  void CreateSplit(split_tabs::SplitTabId split_id,
++  virtual void CreateSplit(split_tabs::SplitTabId split_id,
+                    const std::vector<TabInterface*>& tabs,
+                    split_tabs::SplitTabVisualData visual_data);
+   void ReverseSplit(split_tabs::SplitTabId split_id);
+-  void Unsplit(split_tabs::SplitTabId split_id);
++  virtual void Unsplit(split_tabs::SplitTabId split_id);
+   std::set<split_tabs::SplitTabId> ListSplits() const;
+ 
+   void ValidateData() const;
+@@ -125,7 +125,33 @@ class TabStripCollection : public TabCollection {
+       const tabs::TabCollection::Handle& collection_handle,
+       base::PassKey<TabStripModel>) const;
+ 
++  virtual void AddTabRecursive(
++      ScopedTab tab,
++      size_t index,
++      std::optional<tab_groups::TabGroupId> new_group_id,
++      bool new_pinned_state,
++      TabInterface* opener);
++
++  void AddTabCollectionAtPosition(
++      std::unique_ptr<TabCollection> collection,
++      const TabCollection::Position& position);
++  virtual void PrepareTreeTabNodesForBatchDetach(
++      const std::vector<TabInterface*>& moving_tabs) {}
++  virtual bool ShouldDetachAsTreeSubtreeRoot(
++      TabInterface* tab, const std::vector<TabInterface*>& moving_tabs);
++  virtual void WillDetachTreeTabNodeSubtree(
++      tabs::TreeTabNodeTabCollection& subtree_root) {}
++  virtual void DidAttachTreeTabNodeSubtree(
++      tabs::TreeTabNodeTabCollection& subtree_root) {}
++  virtual void InsertDetachedTreeTabNode(
++      std::unique_ptr<TabCollection> collection, int index);
++
++ protected:
++  virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
++      tab_groups::TabGroupId group_id) const;
++
+  private:
++  friend class BraveTabStripCollection;
+   // Removes the group collection with `group_id` from
+   // `detached_group_collections_`.
+   std::unique_ptr<tabs::TabGroupTabCollection> PopDetachedGroupCollection(
+@@ -152,8 +178,8 @@ class TabStripCollection : public TabCollection {
+   // Helper to centralize updates to `group_mapping_` and `split_mapping_`. If
+   // `root_collection` is a group, the appropriate splits need to group need to
+   // be updated in the `split_mapping_`.
+-  void AddCollectionMapping(TabCollection* root_collection);
+-  void RemoveCollectionMapping(TabCollection* root_collection);
++  virtual void AddCollectionMapping(TabCollection* root_collection);
++  virtual void RemoveCollectionMapping(TabCollection* root_collection);
+ 
+   // Adds a tab or collection to the collection specified by 'position'.
+   // This is the final step for node addition, responsible for:

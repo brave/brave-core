@@ -58,7 +58,8 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
       ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
           profile->GetPrefs(), nullptr,
           profile_policy_connector ? profile_policy_connector->policy_service()
-                                   : nullptr);
+                                   : nullptr,
+          /*enterprise_proxy_service=*/nullptr);
   auto proxy_config_service = ProxyServiceFactory::CreateProxyConfigService(
       pref_proxy_config_tracker.get(), profile);
   service->StartProxyTracker(std::move(pref_proxy_config_tracker),

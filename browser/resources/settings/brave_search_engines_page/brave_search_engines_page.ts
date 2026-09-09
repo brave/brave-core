@@ -120,4 +120,10 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   }
 }
 
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-brave-search-page': BraveSearchEnginesPage
+  }
+}
+
 customElements.define(BraveSearchEnginesPage.is, BraveSearchEnginesPage)

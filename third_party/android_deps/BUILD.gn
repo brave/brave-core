@@ -99,6 +99,7 @@ android_aar_prebuilt("com_brave_playlist_java") {
   deps = [
     ":androidx_media3_media3_exoplayer_hls_java",
     ":androidx_room_room_runtime_java",
+    ":com_google_code_gson_gson_java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_media3_media3_common_java",
     "//third_party/androidx:androidx_media3_media3_exoplayer_java",
@@ -107,6 +108,13 @@ android_aar_prebuilt("com_brave_playlist_java") {
   ]
   resource_overlay = true
   ignore_manifest = true
+}
+
+java_prebuilt("com_google_code_gson_gson_java") {
+  jar_path = "libs/com_google_code_gson_gson/gson-2.9.0.jar"
+  output_name = "com_google_code_gson_gson"
+  supports_android = true
+  enable_bytecode_checks = false
 }
 
 android_aar_prebuilt("androidx_media3_media3_exoplayer_hls_java") {
@@ -148,11 +156,4 @@ android_aar_prebuilt("com_google_android_play_integrity_java") {
     "//third_party/android_deps:google_play_services_basement_java",
     "//third_party/android_deps:google_play_services_tasks_java",
   ]
-}
-
-java_prebuilt("com_google_code_gson_gson_java") {
-  jar_path = "libs/com_google_code_gson_gson/gson-2.9.0.jar"
-  output_name = "com_google_code_gson_gson"
-  supports_android = true
-  enable_bytecode_checks = false
 }

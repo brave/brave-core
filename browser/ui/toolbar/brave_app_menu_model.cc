@@ -19,7 +19,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/branded_strings.h"
@@ -66,7 +66,7 @@ class BraveHelpMenuModel : public ui::SimpleMenuModel {
 }  // namespace
 BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
-    Browser* browser,
+    BrowserWindowInterface* browser,
     AppMenuIconController* app_menu_icon_controller,
     AlertMenuItem alert_item)
     : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item) {}
@@ -138,6 +138,17 @@ void BraveAppMenuModel::BuildPasswordsAndAutofillSubmenu() {
       static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
           GetIndexOfCommandId(kPasswordsAndAutofillMenuPlaceholder).value()));
   CHECK(autofill_menu_model);
+
+  if (IsCommandIdEnabled(IDC_SHOW_IDENTITY_DOCS)) {
+    autofill_menu_model->RemoveItemAt(
+        autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_IDENTITY_DOCS)
+            .value());
+  }
+
+  if (IsCommandIdEnabled(IDC_SHOW_TRAVEL)) {
+    autofill_menu_model->RemoveItemAt(
+        autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_TRAVEL).value());
+  }
 
   if (IsCommandIdEnabled(IDC_SHOW_EMAIL_ALIASES)) {
     const auto index =

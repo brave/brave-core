@@ -94,7 +94,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, GetRewardsAndAdsServices) {
 // Verify that Rewards menu item is enabled in the app menu even when in an OFAC
 // sanctioned region.
 IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, AppMenuItemEnabled) {
-  auto* command_controller = browser()->command_controller();
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
   {
     const brave_l10n::test::ScopedDefaultLocale locale("en_CA");  // "Canada"
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));

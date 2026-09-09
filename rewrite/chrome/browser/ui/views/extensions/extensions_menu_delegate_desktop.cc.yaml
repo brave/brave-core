@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use Brave's main page view in ExtensionsMenuDelegateDesktop::OpenMainPage().
+
+      Brave subclasses ExtensionsMenuMainPageView to restyle the menu; swap the
+      concrete type created for the main page. The Brave header is supplied by
+      the chromium_src override.
+    regex:
+      re_pattern:
+        'auto main_page =\s*std::make_unique<ExtensionsMenuMainPageView>'
+      replace: |-
+        auto main_page =
+              std::make_unique<BraveExtensionsMenuMainPageView>

@@ -13,7 +13,7 @@
 
 namespace whats_new {
 
-void StartWhatsNewFetch(Browser* browser) {
+void StartWhatsNewFetch(BrowserWindowInterface* browser) {
   StartBraveWhatsNew(browser);
 }
 
