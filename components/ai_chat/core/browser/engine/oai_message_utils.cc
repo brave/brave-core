@@ -63,7 +63,7 @@ std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
 std::string SanitizeUntrustedTabText(std::string_view text) {
   // Attributes count: a model reads `</tabs foo>` as a closing tag too.
   static const base::NoDestructor<re2::RE2> kWrapperTag(
-      R"((?i)</?\s*tabs\b[^<>]*>)");
+      R"((?i)<\s*/?\s*tabs\b[^<>]*>)");
   // GlobalReplace is a silent no-op on an invalid pattern, which would
   // disable the sanitizer without any other symptom.
   CHECK(kWrapperTag->ok());
