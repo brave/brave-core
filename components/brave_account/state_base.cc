@@ -65,6 +65,11 @@ void StateBase::ChangePasswordStep4(const std::string& serialized_record,
       MakeCalledInWrongStateError<mojom::ChangePasswordError>());
 }
 
+void StateBase::DeleteAccount(DeleteAccountCallback callback) {
+  std::move(callback).Run(
+      MakeCalledInWrongStateError<mojom::DeleteAccountError>());
+}
+
 void StateBase::GetServiceToken(mojom::Service,
                                 GetServiceTokenCallback callback) {
   std::move(callback).Run(
@@ -72,11 +77,6 @@ void StateBase::GetServiceToken(mojom::Service,
 }
 
 void StateBase::LogOut() {}
-
-void StateBase::DeleteAccount(DeleteAccountCallback callback) {
-  std::move(callback).Run(
-      MakeCalledInWrongStateError<mojom::DeleteAccountError>());
-}
 
 void StateBase::LoginStep1(mojom::Service initiating_service,
                            const std::string& email,

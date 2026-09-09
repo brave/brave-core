@@ -71,12 +71,12 @@ class LoggedInState : public StateBase {
   void ChangePasswordStep4(const std::string& serialized_record,
                            ChangePasswordStep4Callback callback) override;
 
+  void DeleteAccount(DeleteAccountCallback callback) override;
+
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
 
   void LogOut() override;
-
-  void DeleteAccount(DeleteAccountCallback callback) override;
 
   void ResendVerificationEmail(
       mojom::VerificationIntentPtr intent,
@@ -84,9 +84,9 @@ class LoggedInState : public StateBase {
 
   class CancelVerification cancel_verification_;
   ChangePassword change_password_;
+  class DeleteAccount delete_account_;
   class GetServiceToken get_service_token_;
   class LogOut log_out_;
-  class DeleteAccount delete_account_;
   class ResendVerificationEmail resend_verification_email_;
   UpdateEmail update_email_;
 };

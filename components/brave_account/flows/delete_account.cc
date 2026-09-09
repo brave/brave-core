@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
@@ -54,18 +55,26 @@ void DeleteAccount::operator()(
 void DeleteAccount::OnResponse(
     mojom::Authentication::DeleteAccountCallback callback,
     AccountsDelete::Response response) {
-  if (response.status_code != net::HTTP_NO_CONTENT) {
+  if (response.status_code == net::HTTP_NO_CONTENT) {
+    // See `FlowBase`'s class comment on ordering.
+    std::move(callback).Run(mojom::DeleteAccountResult::New());
+
+    // LoggedIn ==> LoggedOut (state swap).
+    account_state_prefs_->SetLoggedOut();
+    return;
+  }
+
+  if (!response.body || response.body->has_value()) {
     return std::move(callback).Run(
         base::unexpected(MakeServerError<mojom::DeleteAccountError>(
             response.status_code.value_or(response.net_error),
-            mojom::DeleteAccountServerErrorCode::kNull)));
+            mojom::DeleteAccountServerErrorCode::kInvalidResponse)));
   }
 
-  // See `FlowBase`'s class comment on ordering.
-  std::move(callback).Run(mojom::DeleteAccountResult::New());
-
-  // LoggedIn ==> LoggedOut (state swap).
-  account_state_prefs_->SetLoggedOut();
+  std::move(callback).Run(
+      base::unexpected(MakeServerError<mojom::DeleteAccountError>(
+          CHECK_DEREF(response.status_code),
+          std::move(response.body->error()))));
 }
 
 }  // namespace brave_account

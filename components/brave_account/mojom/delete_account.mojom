@@ -20,9 +20,16 @@ struct DeleteAccountClientError {
 };
 
 enum DeleteAccountServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse = -1,
   // Sentinel: server returned "code": null in the JSON body.
-  // /v2/accounts has no user-facing error codes, so this is the only one.
-  kNull = 0,
+  kNull            = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown         = 1,
+  // /v2/accounts:
+  // - internal: -
+  // - user-facing: -
 };
 
 struct DeleteAccountServerError {
