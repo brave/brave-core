@@ -101,19 +101,48 @@ source_set("page_action") {
     sources += [
       "wayback_machine_bubble_view.cc",
       "wayback_machine_bubble_view.h",
-      "wayback_machine_page_action_controller.cc",
       "wayback_machine_page_action_controller.h",
     ]
+
+    public_deps = [ "//chrome/browser/ui/views/location_bar" ]
 
     deps += [
       "//brave/app:brave_generated_resources_grit_grit",
       "//brave/components/brave_wayback_machine",
       "//brave/components/vector_icons",
-      "//chrome/browser/ui/actions",
       "//chrome/browser/ui/color:mixers",
       "//chrome/browser/ui/views:layout_provider",
-      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/tabs:public",
       "//components/user_prefs",
+      "//ui/actions",
+      "//ui/base",
+      "//ui/views",
+    ]
+  }
+}
+
+source_set("impl") {
+  visibility = [
+    ":unit_tests",
+    "//brave/browser:core",
+  ]
+
+  sources = []
+  deps = [ ":page_action" ]
+
+  if (enable_brave_wayback_machine) {
+    sources += [ "wayback_machine_page_action_controller.cc" ]
+    deps += [
+      "//brave/components/brave_wayback_machine",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/color:mixers",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/tabs:public",
+      "//components/user_prefs",
+      "//content/public/browser",
       "//ui/actions",
       "//ui/base",
       "//ui/views",
@@ -133,6 +162,7 @@ source_set("unit_tests") {
     "test_tab_interface.h",
   ]
   deps = [
+    ":impl",
     "//base",
     "//chrome/browser/ui/page_action",
     "//chrome/browser/ui/page_action:test_support",
