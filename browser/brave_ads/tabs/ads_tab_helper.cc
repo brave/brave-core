@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/content_extraction/content/browser/inner_text.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
@@ -34,9 +34,6 @@ namespace {
 
 constexpr int kHttpClientErrorResponseStatusCodeClass = 4;
 constexpr int kHttpServerErrorResponseStatusCodeClass = 5;
-
-constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
-    u"document?.body?.innerText";
 
 // Returns 'false' if the navigation was a back/forward navigation or a reload,
 // otherwise 'true'.
@@ -251,24 +248,31 @@ void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
     return;
   }
 
-  if (IsNotificationAdsEnabled()) {
-    // Only utilized for text classification, which requires the user to have
-    // joined Brave Rewards and notification ads to be enabled.
-    web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-        kDocumentBodyInnerTextJavaScript,
-        base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
-                       weak_factory_.GetWeakPtr(), redirect_chain_),
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (!IsNotificationAdsEnabled()) {
+    return;
   }
+
+  content::RenderFrameHost* const render_frame_host =
+      web_contents()->GetPrimaryMainFrame();
+  if (!render_frame_host) {
+    return;
+  }
+
+  // Only utilized for text classification, which requires the user to have
+  // joined Brave Rewards and notification ads to be enabled.
+  content_extraction::GetInnerText(
+      *render_frame_host, /*node_id=*/std::nullopt,
+      base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
+                     weak_factory_.GetWeakPtr(), redirect_chain_));
 }
 
 void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
     const std::vector<GURL>& redirect_chain,
-    base::Value value) {
-  if (ads_service_ && value.is_string()) {
+    std::unique_ptr<content_extraction::InnerTextResult> result) {
+  if (ads_service_ && result && !result->inner_text.empty()) {
     ads_service_->NotifyTabTextContentDidChange(/*tab_id=*/session_id_.id(),
                                                 redirect_chain,
-                                                /*text=*/value.GetString());
+                                                /*text=*/result->inner_text);
   }
 }
 

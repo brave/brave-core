@@ -80,6 +80,8 @@ constexpr std::string_view kHostName = "brave.com";
 constexpr char kHandleRequestUrlPath[] = "/handle_request";
 constexpr char kHttpStatusCodeQueryKey[] = "http_status_code";
 
+constexpr char kEmptyBodyWebpage[] = "/brave_ads/empty_body.html";
+
 constexpr char kMultiPageApplicationWebpage[] =
     "/brave_ads/multi_page_application.html";
 constexpr char kMultiPageApplicationWebpageTextContent[] =
@@ -669,6 +671,18 @@ IN_PROC_BROWSER_TEST_F(
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
   SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsTabHelperTest,
+    DoNotNotifyTabTextContentDidChangeForWebpageWithEmptyBody) {
+  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
+
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabTextContentDidChange).Times(0);
+  NavigateToRelativeURL(kEmptyBodyWebpage, /*has_user_gesture=*/true);
+
+  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
 }
 
 IN_PROC_BROWSER_TEST_F(

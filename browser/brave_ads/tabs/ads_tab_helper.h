@@ -6,13 +6,13 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 #include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
@@ -27,6 +27,10 @@
 class GURL;
 class BrowserWindowInterface;
 class BrowserCollection;
+
+namespace content_extraction {
+struct InnerTextResult;
+}  // namespace content_extraction
 
 namespace brave_ads {
 
@@ -77,7 +81,7 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MaybeNotifyTabTextContentDidChange();
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,
-      base::Value value);
+      std::unique_ptr<content_extraction::InnerTextResult> result);
 
   bool IsPlayingMediaWithAudio(const content::MediaPlayerId& id);
   void PlayerStartedPlayingWithAudio(const content::MediaPlayerId& id);
