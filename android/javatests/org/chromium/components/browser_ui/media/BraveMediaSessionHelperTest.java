@@ -6,7 +6,13 @@
 package org.chromium.components.browser_ui.media;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
@@ -22,18 +28,20 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import org.chromium.base.CommandLine;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.content.browser.MediaSessionImpl;
+import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.content_public.browser.WebContentsObserver;
+import org.chromium.content_public.browser.test.NativeLibraryTestUtils;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.url.GURL;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Unit tests for the YouTube-aware predicates that {@link BraveMediaSessionHelper} uses to decide
- * whether to suppress media-session pause events.
- */
+/** Tests for media pause suppression and notification lifetime. */
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveMediaSessionHelperTest {
@@ -44,7 +52,9 @@ public class BraveMediaSessionHelperTest {
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private WebContents mWebContents;
+    @Mock(extraInterfaces = WebContentsObserver.Observable.class)
+    private WebContents mWebContents;
+
     @Mock private WebContents mOtherWebContents;
     @Mock private WindowAndroid mWindowAndroid;
     @Mock private Activity mActivity;
@@ -203,5 +213,115 @@ public class BraveMediaSessionHelperTest {
         mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
 
         assertFalse(mHelper.shouldSuppressMediaPause(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void reloadClearsPreservedMediaNotification() {
+        NativeLibraryTestUtils.loadNativeLibraryNoBrowserProcess();
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    // Set up a YouTube Music page with background playback enabled.
+                    CommandLine.getInstance().appendSwitch(DISABLE_BACKGROUND_MEDIA_SUSPEND);
+                    MediaSessionHelper.Delegate delegate = mock(MediaSessionHelper.Delegate.class);
+                    MediaSessionHelper helper =
+                            createMediaSessionHelper(
+                                    "https://music.youtube.com/watch?v=qrZhOZyXc-I", delegate);
+                    try {
+                        // Simulate the initial page load.
+                        NavigationHandle navigation = mock(NavigationHandle.class);
+                        when(navigation.hasCommitted()).thenReturn(true);
+                        helper.mWebContentsObserver.didFinishNavigationInPrimaryMainFrame(
+                                navigation);
+
+                        // Start playback, then preserve controls when it becomes uncontrollable.
+                        helper.mMediaSessionObserver.mediaSessionStateChanged(true, false);
+                        helper.mMediaSessionObserver.mediaSessionStateChanged(false, true);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+
+                        // A playlist URL change must keep the existing background controls.
+                        when(navigation.isSameDocument()).thenReturn(true);
+                        helper.mWebContentsObserver.didFinishNavigationInPrimaryMainFrame(
+                                navigation);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+                        clearInvocations(delegate);
+
+                        // A navigation that does not commit must leave the current controls intact.
+                        when(navigation.isSameDocument()).thenReturn(false);
+                        when(navigation.hasCommitted()).thenReturn(false);
+                        helper.mWebContentsObserver.didFinishNavigationInPrimaryMainFrame(
+                                navigation);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+
+                        // Later session updates must still preserve those controls.
+                        helper.mMediaSessionObserver.mediaSessionStateChanged(false, true);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+                        clearInvocations(delegate);
+
+                        // A committed reload must clear the preserved controls.
+                        when(navigation.hasCommitted()).thenReturn(true);
+                        helper.mWebContentsObserver.didFinishNavigationInPrimaryMainFrame(
+                                navigation);
+                        assertNull(helper.mNotificationInfoBuilder);
+
+                        // A stale session update must not bring the old controls back.
+                        helper.mMediaSessionObserver.mediaSessionStateChanged(false, true);
+                        assertNull(helper.mNotificationInfoBuilder);
+                        verify(delegate, never()).showMediaNotification(any());
+                    } finally {
+                        helper.destroy();
+                        MediaSessionHelper.setOverriddenMediaSessionForTesting(null);
+                    }
+                });
+    }
+
+    @Test
+    @SmallTest
+    public void reloadKeepsBraveTalkMediaNotification() {
+        NativeLibraryTestUtils.loadNativeLibraryNoBrowserProcess();
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    // Brave Talk keeps controls even with background playback disabled.
+                    CommandLine.getInstance().removeSwitch(DISABLE_BACKGROUND_MEDIA_SUSPEND);
+                    MediaSessionHelper.Delegate delegate = mock(MediaSessionHelper.Delegate.class);
+                    MediaSessionHelper helper =
+                            createMediaSessionHelper("https://talk.brave.com/room", delegate);
+                    try {
+                        NavigationHandle navigation = mock(NavigationHandle.class);
+                        when(navigation.hasCommitted()).thenReturn(true);
+                        helper.mWebContentsObserver.didFinishNavigationInPrimaryMainFrame(
+                                navigation);
+
+                        // Talk does not require a prior controllable session to keep controls.
+                        helper.mMediaSessionObserver.mediaSessionStateChanged(false, true);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+                        clearInvocations(delegate);
+
+                        // Reloading Talk must keep its controls, unlike the YouTube case.
+                        helper.mWebContentsObserver.didFinishNavigationInPrimaryMainFrame(
+                                navigation);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+
+                        helper.mMediaSessionObserver.mediaSessionStateChanged(false, true);
+                        assertFalse(helper.mNotificationInfoBuilder.build().isPaused);
+                        verify(delegate, never()).hideMediaNotification();
+                    } finally {
+                        helper.destroy();
+                        MediaSessionHelper.setOverriddenMediaSessionForTesting(null);
+                    }
+                });
+    }
+
+    private MediaSessionHelper createMediaSessionHelper(
+            String url, MediaSessionHelper.Delegate delegate) {
+        mockUrl(url);
+        when(mWebContents.getVisibleUrl()).thenReturn(new GURL(url));
+        when(delegate.createMediaNotificationInfoBuilder())
+                .thenAnswer(
+                        invocation ->
+                                new MediaNotificationInfo.Builder().setInstanceId(1).setId(1));
+        // The Brave wrapper only handles MediaSessionImpl instances.
+        MediaSessionHelper.setOverriddenMediaSessionForTesting(mock(MediaSessionImpl.class));
+        return new MediaSessionHelper(mWebContents, delegate);
     }
 }
