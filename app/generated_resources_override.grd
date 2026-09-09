@@ -165,6 +165,14 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
        <if expr="not is_android">
+        <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
+          New &amp;Private window
+        </message>
+
+        <message name="IDS_INCOGNITO" desc="The text label for the Private button in the block header section of the App Menu">
+          Private
+        </message>
+
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
@@ -211,31 +219,28 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="not is_android">
+        <message name="IDS_APP_MENU_INCOGNITO" desc="Label for the Private block button in the main App Menu">
+          Private
+        </message>
         <if expr="not use_titlecase">
-          <if expr="is_win or is_macosx or is_linux">
+        <if expr="is_win or is_macosx or is_linux">
           </if>
-          <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
-            New Private &amp;tab
-          </message>
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
-            New &amp;Private window
-          </message>
           </if>
         <if expr="use_titlecase">
+
+
+
           <if expr="is_win or is_macosx or is_linux">
               </if>
-          <message name="IDS_NEW_INCOGNITO_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
-            New Private &amp;Tab
-          </message>
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
-            New &amp;Private Window
-          </message>
           </if>
       </if>
 
       <if expr="is_chromeos">
         </if>
 
+      <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
+        New Private &amp;tab
+      </message>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -250,11 +255,13 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="not use_titlecase">
+
         <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions (title case).">
           Visit Web Store
         </message>
         </if>
       <if expr="use_titlecase">
+
         <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="In Title Case: The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions.">
           Visit Web Store
         </message>
@@ -377,21 +384,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="is_macosx">
-        </if>
-
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
         </if>
 
       <if expr="use_titlecase">
@@ -624,8 +616,17 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not is_macosx">
         </if>
+      <if expr="use_titlecase">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
 
-
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_WEBSTORE_LABEL" desc="The message that prompts user to customize Brave with Brave webstore.">
         Customize your browser even more with extensions from the <ph name="BEGIN_LINK1">&lt;a href="#" id="chromeWebstoreLink"&gt;</ph>Web Store<ph name="END_LINK1">&lt;/a&gt;</ph>
       </message>
@@ -640,19 +641,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
-        </if>
-
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
         </if>
 
       <if expr="use_titlecase">
@@ -878,13 +866,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not is_macosx">
         </if>
-      <if expr="use_titlecase">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -907,11 +888,9 @@ are declared in tools/grit/grit_args.gni.
 
       <if expr="not use_titlecase">
         </if>
-
       <if expr="use_titlecase">
         </if>
-
-    <if expr="use_titlecase">
+      <if expr="use_titlecase">
           </if>
         <if expr="not use_titlecase">
                 </if>
@@ -966,12 +945,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_linux">
         </if>
 
-      <if expr="use_titlecase">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -1362,6 +1335,20 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
     <if expr="not is_android">
+      <if expr="is_win">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_chromeos">
+        </if>
+      <if expr="is_linux">
+        </if>
+      <if expr="not is_win and not is_macosx and not is_chromeos and not is_linux">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       </if>
 
     <if expr="is_android">

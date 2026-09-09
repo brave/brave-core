@@ -123,22 +123,20 @@
   <message name="IDS_HISTORY_SEARCH_EMBEDDINGS_MATCH_RESULTS" desc="Used when plural/multiple results are found by history search powered by AI." translateable="false">
     best matches
   </message>
-  <if expr="not use_titlecase">
-    <message name="IDS_HISTORY_SHOW_HISTORY" desc="The show history menu in the app menu">
-      &amp;Open history page
-    </message>
-  </if>
-  <if expr="use_titlecase">
-    <message name="IDS_HISTORY_SHOW_HISTORY" desc="In Title Case: The show history menu in the app menu">
-      &amp;Open History Page
-    </message>
-  </if>
+  <message name="IDS_HISTORY_SHOW_HISTORY" desc="The show history menu in the app menu">
+    &amp;Open history page
+  </message>
   <message name="IDS_HISTORY_SHOW_SIDE_PANEL" desc="Label of the item in drop-down menu that allows user to open the history in the side panel.">
     History
   </message>
   <message name="IDS_HISTORY_SHOWFULLHISTORY_LINK" desc="The label of the Show Full History link at the bottom of the back/forward menu.">
-    Show Full History
+    Show full history
   </message>
+  <if expr="use_titlecase">
+    <message name="IDS_HISTORY_SHOWFULLHISTORY_MAC" desc="In Title Case: The label of the Show Full History item in the main menu.">
+      Show Full History
+    </message>
+  </if>
   <message name="IDS_HISTORY_SOURCE_FILTER_CHIPS_ARIA_LABEL" desc="This string is the ARIA label of the filter chips that filter the history results when the user selects them; they sit next to each other on top of the Brave history page, where users can see their browsing history.">
     Auto browse filters
   </message>
@@ -361,6 +359,18 @@
   </message>
   <message name="IDS_HISTORY_CRITICAL_ACTION_CREDENTIALS_OTP_TOOLTIP" desc="Tooltip for credentials OTP verification code critical action in history item." translateable="false">
     Verification codes
+  </message>
+  <message name="IDS_HISTORY_CRITICAL_ACTION_APP_MENU_IPH_BODY" desc="Text shown in the IPH bubble attached to the Brave app menu teaching users where to view Gemini's auto browse actions." translateable="false">
+    In Brave history, you can see the key actions that Gemini completed while browsing for you
+  </message>
+  <message name="IDS_HISTORY_CRITICAL_ACTION_APP_MENU_IPH_ACTION" desc="Button label on the app menu IPH bubble to navigate to Brave history." translateable="false">
+    Review key actions
+  </message>
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FILTER_CHIP_IPH_BODY" desc="Text shown in the IPH bubble attached to the Gemini filter chip on the Brave history page." translateable="false">
+    See the key actions that Gemini completed while browsing for you
+  </message>
+  <message name="IDS_HISTORY_CRITICAL_ACTION_FILTER_CHIP_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible screen reader text for the IPH bubble attached to the Gemini filter chip on the Brave history page." translateable="false">
+    See the key actions that Gemini completed while browsing for you
   </message>
 
 </grit-part>

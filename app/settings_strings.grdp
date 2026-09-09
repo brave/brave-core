@@ -612,6 +612,9 @@
     <message name="IDS_SETTINGS_PAYMENTS_MANAGE_LOYALTY_CARDS_AND_PAYMENT_METHODS" desc="Shown in the payments section of settings. Descriptive text to inform the user that payment methods and loyalty cards can be accessed via link. Brave Wallet should not be translated because it is the product name. Has two links that opens different pages on Brave Wallet.">
      Visit Brave Wallet to add or manage <ph name="BEGIN_LINK_LOYALTY_CARDS">&lt;a href="$1" target="_blank"&gt;</ph>loyalty cards<ph name="END_LINK_LOYALTY_CARDS">&lt;/a&gt;</ph> or Google Pay <ph name="BEGIN_LINK_PAYMENT_METHODS">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK_PAYMENT_METHODS">&lt;/a&gt;</ph>
     </message>
+    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_WALLET_DATA" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Brave Wallet should not be translated because it is the product name. Has three links that open different pages on Brave Wallet.">
+      Visit Brave Wallet to control <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/a&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="$3" target="_blank"&gt;</ph>passes<ph name="END_LINK3">&lt;/a&gt;</ph> like loyalty cards and IDs
+    </message>
     <message name="IDS_SETTINGS_REMOTE_WALLET_PASSES_LINK_LABEL" desc="The title and ARIA (accessibility) label for a link in Brave settings that opens the payment methods settings on https://wallet.google.com/wallet/passes. Note that the ARIA role and the link icon already convey that this is a link that will be opened when you click on it. Therefore, the message does not contain a verb.">
       Your Brave Wallet passes
     </message>
@@ -895,18 +898,6 @@
     </message>
     <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY" desc="Checkbox for deleting Browsing History">
       Browsing history
-    </message>
-    <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites.">
-      Signs you out of most sites
-    </message>
-    <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Delete Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
-      Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be deleted.
-    </message>
-    <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_SUPERVISED_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the the child user out of most websites but your Brave account and Family Link settings will stay .">
-      Signs you out of most sites. You'll stay signed in to your Brave sync chain so your Family Link settings for Brave apply.
-    </message>
-    <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_SIGNED_IN_PROFILE" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
-      Signs you out of most sites. You'll stay signed in to your Brave sync chain.
     </message>
     <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
       Deletes history, including in the search box
@@ -1748,6 +1739,12 @@
     <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_LEARN_MORE_ACCESSIBILITY_LABEL" desc="The accessibility label for a link to learn more about Do Not Track">
       Learn more about Do Not Track
     </message>
+    <message name="IDS_SETTINGS_UNIVERSAL_OPT_OUT_LABEL" desc="Title of a setting. Users choose whether they want to send a request to sites about how to treat their user data. On desktop computers, this string appears in the ‘Site requests’ section of the ‘Third-party cookies and site data’ page. On mobile devices, this string appears on its own subpage. The tone should be informative.">
+      Send an opt-out request to sites regarding use of your data
+    </message>
+    <message name="IDS_SETTINGS_UNIVERSAL_OPT_OUT_SUB_LABEL" desc="Subtitle of a setting. It appears below the title: ‘Send an opt-out request to sites regarding use of your data’. Users choose whether they want to send a request to sites about how to treat their user data. This string explains that sites may not respond to the user’s request even when this toggle is on; and, even when they do respond, sites may handle opt-out requests differently based on regional laws. On desktop computers, this string appears in the ‘Site requests’ section of the ‘Third-party cookies and site data’ page. On mobile devices, this string appears on its own subpage. The tone should be informative.">
+      The sites you visit, including Brave, are responsible for determining how they respond to this request. Depending on the laws in your region, sites may respond by limiting the sale and sharing of your data or its use for personalized ads.
+    </message>
     <message name="IDS_SETTINGS_PERMISSIONS_DESCRIPTION" desc="Description of the controls available on the permissions and site content settings page">
       Controls what information sites can use and show (location, camera, pop-ups, and more)
     </message>
@@ -2144,6 +2141,9 @@
     </message>
     <message name="IDS_SETTINGS_SEARCH_KEYBOARD_KEY_DESCRIPTION" desc="Text explaining how to use keyword mode">
       In the address bar, use this key with all your shortcuts
+    </message>
+    <message name="IDS_SETTINGS_OMNIBOX_EVERYWHERE_SHORTCUT_TITLE" desc="Label for the global keyboard shortcut setting to invoke Omnibox Everywhere.">
+      Keyboard shortcut
     </message>
     <message name="IDS_SETTINGS_SEARCH_ACTIVATE" desc="Text of the button that activates a search engine" meaning="To turn on/enable usage of the search engine">
       Turn on
@@ -3064,6 +3064,21 @@
     <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED" desc="3 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
       Third-party cookies are blocked
     </message>
+    <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_AND_SITE_DATA_PAGE_TITLE" desc="The title of a subpage in settings where users can manage cookies and request how sites can use their user data. ‘Third-party cookies’ refers to data files created by domains other than the website the user is currently visiting. ‘Site data’ refers to other information stored on the device by websites, as well as requests made to those sites regarding use of your data. The ampersand means ‘and’ and should be translated according to standard locale conventions. The tone should be informative.">
+      Third-party cookies &amp; site data
+    </message>
+    <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_AND_SITE_DATA_LINK_ROW_LABEL" desc="Title of an entry point in settings. Users click this to navigate to a subpage where they can manage cookies and request how sites can use their user data. It appears within the ‘Privacy and security’ section of settings. ‘Third-party cookies’ refers to data files created by domains other than the website the user is currently visiting. ‘Site data’ refers to other information stored on the device by websites, as well as requests made to those sites regarding use of your data. The ampersand means ‘and’ and should be translated according to standard locale conventions. The tone should be informative.">
+      Third-party cookies &amp; site data
+    </message>
+    <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_AND_SITE_DATA_LINK_ROW_SUB_LABEL" desc="Subtitle of a setting, which appears directly below the settings label ‘Third-party cookies and site data’. It explains that users can control the ways websites create and use files (cookies) and other user information (your data) on the user’s device. ‘Manage’ acts as an imperative verb. The tone should be informative.">
+      Manage how sites use cookies and your data
+    </message>
+    <message name="IDS_SETTINGS_SITE_REQUESTS_SUB_HEADER" desc="The subheading of a section on the settings subpage where users request how sites can use their user data. The tone should be informative.">
+      Site requests
+    </message>
+    <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_SUB_HEADER" desc="The subheading of a section on the settings subpage where users can manage cookies. ‘Third-party cookies’ refers to data files created by domains other than the website the user is currently visiting. The tone should be informative.">
+      Third-party cookies
+    </message>
     <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ALLOW_RADIO_LABEL" desc="1 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies.">
       Allow third-party cookies
     </message>
@@ -3084,6 +3099,9 @@
     </message>
     <message name="IDS_SETTINGS_TRACKING_PROTECTION_DO_NOT_TRACK_TOGGLE_SUB_LABEL" desc="Sub-label for the Do Not Track toggle. Explains that sites may not respond to 'do not track' requests even when this toggle is on.">
       Sites use their discretion when responding to this request
+    </message>
+    <message name="IDS_SETTINGS_TRACKING_PROTECTION_DO_NOT_TRACK_DISCLAIMER_TOGGLE_SUB_LABEL" desc="Sub-label for the Do Not Track toggle. Explains that sites may not respond to 'do not track' requests even when this toggle is on.">
+      Sites, including Brave, use their discretion when responding to this request
     </message>
     <message name="IDS_SETTINGS_TRACKING_PROTECTION_SITES_ALLOWED_COOKIES_TITLE" desc="Title of the section on the Tracking Protection settings page that lets users manage which sites are allowed to use third-party cookies.">
       Sites allowed to use third-party cookies
@@ -3280,26 +3298,17 @@
     <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE_DISPLAYED_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about deleting storage used by displayed sites.">
       This will delete <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by displayed sites
     </message>
-    <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE_RWS_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about deleting storage used by a site and its related sites.">
-      This will delete <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by <ph name="SITE_NAME">$2<ex>www.example.com</ex></ph> and related sites
-    </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE_ALL_STORAGE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about deleting storage used by all sites, shown when there are installed apps.">
       This will delete <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by sites and installed apps
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE_DISPLAYED_STORAGE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about deleting storage used by displayed sites, shown when there are installed apps.">
       This will delete <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by displayed sites and installed apps
     </message>
-    <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE_RWS_STORAGE_CONFIRMATION_INSTALLED" desc="Text for the dialog that warns about deleting storage used by a site and its related sites, shown when there are installed apps.">
-      This will delete <ph name="TOTAL_USAGE">$1<ex>8 GB</ex></ph> of data stored by <ph name="SITE_NAME">$2<ex>www.example.com</ex></ph>, related sites, and installed apps
-    </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_ALL_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by all sites.">
       You'll be signed out of all sites, including in open tabs
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by displayed sites.">
       You'll be signed out of displayed sites, including in open tabs
-    </message>
-    <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_RWS_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out of the related sites mentioned previously in the dialog when clearing storage.">
-      You'll be signed out of these sites, including in open tabs
     </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_DIALOG_TITLE" desc="Title of a dialog that asks users to confirm that they want to reset all permissions for a site.">
       Reset permissions?
