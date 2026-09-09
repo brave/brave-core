@@ -106,7 +106,12 @@ extension BrowserViewController: TabManagerDelegate {
     tab.cosmeticFilteringTabHelper = .init(tab: tab)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
     tab.protectionStats = .init(tab: tab)
-    tab.nightMode = .init(tab: tab)
+    tab.nightMode = .init(
+      tab: tab,
+      isDarkAppearance: { [weak self] in
+        self?.traitCollection.userInterfaceStyle == .dark
+      }
+    )
     // reader mode
     tab.readerMode = .init(tab: tab, readerModeCache: ReaderModeScriptHandler.cache(for: tab))
     tab.readerMode?.onStateChanged = { [weak self, weak tab] in

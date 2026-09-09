@@ -234,11 +234,12 @@ extension BrowserViewController {
       },
       .init(
         id: .toggleNightMode,
-        state: Preferences.General.nightModeEnabled.value
+        state: tab?.nightMode?.isEnabled ?? false
       ) { @MainActor action in
         var actionCopy = action
-        Preferences.General.nightModeEnabled.value.toggle()
-        actionCopy.state = Preferences.General.nightModeEnabled.value
+        let isEnabled = !(action.state ?? false)
+        Preferences.General.nightModeSetting = isEnabled ? .on : .off
+        actionCopy.state = isEnabled
         return .updateAction(actionCopy)
       },
     ]

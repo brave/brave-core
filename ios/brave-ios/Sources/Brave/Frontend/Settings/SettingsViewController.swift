@@ -1326,17 +1326,44 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       optionsViewController.headerText = Strings.themesDisplayBrightness
       optionsViewController.navigationItem.title = Strings.themesDisplayBrightness
 
+      let nightModeSectionUUID = UUID().uuidString
+      let nightModeRowUUID = UUID().uuidString
+      var nightModeRow = Row(
+        text: Strings.NightMode.settingsTitle,
+        detailText: Preferences.General.nightModeSetting.displayString,
+        image: UIImage(braveSystemNamed: "leo.theme.dark"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineSubtitleCell.self,
+        uuid: nightModeRowUUID
+      )
+      nightModeRow.selection = { [unowned optionsViewController] in
+        let nightModeOptionsViewController = OptionSelectionViewController<NightModeSetting>(
+          options: NightModeSetting.allCases,
+          selectedOption: Preferences.General.nightModeSetting,
+          optionChanged: { _, option in
+            Preferences.General.nightModeSetting = option
+            if let indexPath = optionsViewController.dataSource.indexPath(
+              rowUUID: nightModeRowUUID,
+              sectionUUID: nightModeSectionUUID
+            ) {
+              optionsViewController.dataSource.sections[indexPath.section].rows[indexPath.row]
+                .detailText = option.displayString
+            }
+          }
+        )
+        nightModeOptionsViewController.headerText = Strings.NightMode.settingsTitle
+        nightModeOptionsViewController.footerText = Strings.NightMode.sectionDescription
+        nightModeOptionsViewController.navigationItem.title = Strings.NightMode.settingsTitle
+        optionsViewController.navigationController?.pushViewController(
+          nightModeOptionsViewController,
+          animated: true
+        )
+      }
+
       let nightModeSection = Section(
         header: .title(Strings.NightMode.sectionTitle),
-        rows: [
-          .boolRow(
-            title: Strings.NightMode.settingsTitle,
-            detailText: Strings.NightMode.settingsDescription,
-            option: Preferences.General.nightModeEnabled,
-            image: UIImage(braveSystemNamed: "leo.theme.dark")
-          )
-        ],
-        footer: .title(Strings.NightMode.sectionDescription)
+        rows: [nightModeRow],
+        uuid: nightModeSectionUUID
       )
 
       optionsViewController.dataSource.sections.append(nightModeSection)

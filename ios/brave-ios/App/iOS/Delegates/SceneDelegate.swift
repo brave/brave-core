@@ -336,6 +336,14 @@ extension SceneDelegate {
       }
       .store(in: &cancellables)
 
+    Preferences.General.nightModeFollowsAppearance.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
+      }
+      .store(in: &cancellables)
+
     browserViewController.privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
       .receive(on: RunLoop.main)
@@ -686,7 +694,7 @@ extension SceneDelegate {
 
     // The expected appearance theme should be dark mode when night mode is enabled for websites
     let themeValue =
-      Preferences.General.nightModeEnabled.value
+      Preferences.General.nightModeSetting == .on
       ? DefaultTheme.dark.rawValue : Preferences.General.themeNormalMode.value
 
     let themeOverride =

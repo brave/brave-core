@@ -39,3 +39,33 @@ public enum DefaultTheme: String, RepresentableOptionType {
     }
   }
 }
+
+public enum NightModeSetting: String, CaseIterable, RepresentableOptionType {
+  case off
+  case on
+  case followAppearance
+
+  init(isEnabled: Bool, followsAppearance: Bool) {
+    if followsAppearance {
+      self = .followAppearance
+    } else {
+      self = isEnabled ? .on : .off
+    }
+  }
+
+  func isEnabled(whenAppearanceIsDark appearanceIsDark: Bool) -> Bool {
+    switch self {
+    case .off: return false
+    case .on: return true
+    case .followAppearance: return appearanceIsDark
+    }
+  }
+
+  public var displayString: String {
+    switch self {
+    case .off: return Strings.NightMode.offOption
+    case .on: return Strings.NightMode.onOption
+    case .followAppearance: return Strings.NightMode.followAppearanceOption
+    }
+  }
+}

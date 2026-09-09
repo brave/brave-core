@@ -971,6 +971,11 @@ public class BrowserViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = UIColor(braveSystemName: .containerBackground)
 
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+      (self: BrowserViewController, _: UITraitCollection) in
+      self.tabManager.selectedTab?.nightMode?.refreshNightMode()
+    }
+
     // Add layout guides
     view.addLayoutGuide(pageOverlayLayoutGuide)
     view.addLayoutGuide(headerHeightLayoutGuide)

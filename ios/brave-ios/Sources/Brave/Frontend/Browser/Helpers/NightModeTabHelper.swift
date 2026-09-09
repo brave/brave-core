@@ -20,15 +20,18 @@ extension TabDataValues {
 
 class NightModeTabHelper: TabObserver {
   private weak var tab: (any TabState)?
+  private let isDarkAppearance: () -> Bool
   private var prefObserver: PrefObserver?
 
-  init(tab: some TabState) {
+  init(tab: some TabState, isDarkAppearance: @escaping () -> Bool) {
     self.tab = tab
+    self.isDarkAppearance = isDarkAppearance
 
     let prefObserver = PrefObserver { [weak self] in
-      self?.isEnabled = Preferences.General.nightModeEnabled.value
+      self?.refreshNightMode()
     }
     Preferences.General.nightModeEnabled.observe(from: prefObserver)
+    Preferences.General.nightModeFollowsAppearance.observe(from: prefObserver)
     self.prefObserver = prefObserver
 
     tab.addObserver(self)
@@ -38,15 +41,10 @@ class NightModeTabHelper: TabObserver {
     tab?.removeObserver(self)
   }
 
-  private var isEnabled: Bool = Preferences.General.nightModeEnabled.value {
-    didSet {
-      guard let url = tab?.visibleURL else { return }
-      if isEnabled, !Self.isNightModeBlockedURL(url) {
-        enable()
-      } else {
-        disable()
-      }
-    }
+  var isEnabled: Bool {
+    return Preferences.General.nightModeSetting.isEnabled(
+      whenAppearanceIsDark: isDarkAppearance()
+    )
   }
 
   private func enable() {
@@ -88,13 +86,22 @@ class NightModeTabHelper: TabObserver {
     return siteList.contains(domainName)
   }
 
-  private func refreshNightMode() {
-    isEnabled = Preferences.General.nightModeEnabled.value
+  func refreshNightMode() {
+    guard let url = tab?.visibleURL else { return }
+    if isEnabled, !Self.isNightModeBlockedURL(url) {
+      enable()
+    } else {
+      disable()
+    }
   }
 
   // MARK: - TabObserver
 
   func tabDidCommitNavigation(_ tab: some TabState) {
+    refreshNightMode()
+  }
+
+  func tabWasShown(_ tab: some TabState) {
     refreshNightMode()
   }
 

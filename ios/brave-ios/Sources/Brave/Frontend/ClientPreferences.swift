@@ -72,6 +72,31 @@ extension Preferences {
       key: "general.night-mode-enabled",
       default: false
     )
+    /// Whether Night Mode follows the effective browser appearance
+    public static let nightModeFollowsAppearance = Option<Bool>(
+      key: "general.night-mode-follows-appearance",
+      default: false
+    )
+    public static var nightModeSetting: NightModeSetting {
+      get {
+        NightModeSetting(
+          isEnabled: nightModeEnabled.value,
+          followsAppearance: nightModeFollowsAppearance.value
+        )
+      }
+      set {
+        switch newValue {
+        case .off:
+          nightModeEnabled.value = false
+          nightModeFollowsAppearance.value = false
+        case .on:
+          nightModeEnabled.value = true
+          nightModeFollowsAppearance.value = false
+        case .followAppearance:
+          nightModeFollowsAppearance.value = true
+        }
+      }
+    }
     /// Specifies whether the bookmark button is present on toolbar
     public static let toolbarShortcutButton = Option<Int?>(
       key: "general.show-bookmark-toolbar-shortcut",

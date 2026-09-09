@@ -10,6 +10,28 @@ import XCTest
 
 class DarkModeTests: XCTestCase {
 
+  func testNightModeSettingFromStoredPreferences() {
+    XCTAssertEqual(NightModeSetting(isEnabled: false, followsAppearance: false), .off)
+    XCTAssertEqual(NightModeSetting(isEnabled: true, followsAppearance: false), .on)
+    XCTAssertEqual(
+      NightModeSetting(isEnabled: false, followsAppearance: true),
+      .followAppearance
+    )
+    XCTAssertEqual(
+      NightModeSetting(isEnabled: true, followsAppearance: true),
+      .followAppearance
+    )
+  }
+
+  func testNightModeSettingEffectiveState() {
+    XCTAssertFalse(NightModeSetting.off.isEnabled(whenAppearanceIsDark: false))
+    XCTAssertFalse(NightModeSetting.off.isEnabled(whenAppearanceIsDark: true))
+    XCTAssertTrue(NightModeSetting.on.isEnabled(whenAppearanceIsDark: false))
+    XCTAssertTrue(NightModeSetting.on.isEnabled(whenAppearanceIsDark: true))
+    XCTAssertFalse(NightModeSetting.followAppearance.isEnabled(whenAppearanceIsDark: false))
+    XCTAssertTrue(NightModeSetting.followAppearance.isEnabled(whenAppearanceIsDark: true))
+  }
+
   func testNightModeBlockedURL() {
     let blockList = [
       "twitter.com",

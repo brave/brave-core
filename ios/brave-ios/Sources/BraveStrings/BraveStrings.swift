@@ -7798,12 +7798,33 @@ extension Strings {
       comment:
         "A table cell subtitle for Night Mode - explanatory element for the toggle preference"
     )
+    public static let offOption = NSLocalizedString(
+      "nightMode.offOption",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Off",
+      comment: "Selection that disables Night Mode"
+    )
+    public static let onOption = NSLocalizedString(
+      "nightMode.onOption",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "On",
+      comment: "Selection that always enables Night Mode"
+    )
+    public static let followAppearanceOption = NSLocalizedString(
+      "nightMode.followAppearanceOption",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Follow Appearance",
+      comment: "Selection that enables Night Mode when the browser appearance is dark"
+    )
     public static let sectionDescription = NSLocalizedString(
       "nightMode.sectionDescription",
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Night mode will affect website appearance and general system appearance at the same time.",
+        "Follow Appearance enables Night Mode whenever the browser appearance is dark. When Appearance is Automatic, it follows the iOS appearance.",
       comment:
         "A table cell subtitle for Night Mode - explanatory element for the toggle preference"
     )
