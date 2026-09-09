@@ -11,7 +11,7 @@ import Foundation
 import Growth
 import Preferences
 import Shared
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 
 public class BraveRewards: PreferencesObserver {
 
@@ -235,6 +235,18 @@ public class BraveRewards: PreferencesObserver {
   func reportMediaStopped(tabId: Int) {
     if !ads.isServiceRunning() { return }
     ads.notifyTabDidStopPlayingMedia(tabId)
+  }
+
+  /// Report that a tab's distilled text content is available for ad text classification.
+  ///
+  /// This is only used for the legacy `WKWebView` path, since on the new path this is reported by
+  /// `AdsTabHelper` directly in C++. Only utilized for text classification, which requires the
+  /// user to have joined Brave Rewards and notification ads to be enabled.
+  func reportTextContentDidChange(tab: some TabState, redirectChain: [URL], text: String) {
+    guard !text.isEmpty, ads.isServiceRunning(), ads.isEnabled,
+      let tabId = BraveWebView.from(tab: tab)?.uniqueSessionID
+    else { return }
+    ads.notifyTabTextContentDidChange(Int(tabId), redirectChain: redirectChain, text: text)
   }
 
   private func tabRetrieved(_ tabId: Int, url: URL) {

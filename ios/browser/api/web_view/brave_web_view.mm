@@ -18,7 +18,6 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
@@ -48,6 +47,7 @@
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
+#include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
 #include "brave/ios/browser/youtube/youtube_network_change_observer.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
@@ -669,7 +669,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @implementation BraveWebView (AIChatDistiller)
 
 - (void)fetchMainArticle:(void (^)(NSString* text))completionHandler {
-  AIChatDistillerJavaScriptFeature::GetInstance()->GetMainArticle(
+  TextContentDistillerJavaScriptFeature::GetInstance()->GetTextContent(
       self.webState, base::BindOnce(^(std::string text) {
         completionHandler(base::SysUTF8ToNSString(text));
       }));

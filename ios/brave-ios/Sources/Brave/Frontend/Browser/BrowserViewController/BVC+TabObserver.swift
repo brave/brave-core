@@ -344,6 +344,7 @@ extension BrowserViewController {
       YoutubeQualityScriptHandler(),
       BraveLeoScriptHandler(),
       RequestBlockingContentScriptHandler(),
+      AdsTextContentDistillerScriptHandler(),
     ]
 
     if let contentBlocker = tab.contentBlocker {
