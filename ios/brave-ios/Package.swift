@@ -208,6 +208,9 @@ var package = Package(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"
         ),
         .copy(
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeDesktopCookieScript.js"
+        ),
+        .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"
         ),
         .copy(

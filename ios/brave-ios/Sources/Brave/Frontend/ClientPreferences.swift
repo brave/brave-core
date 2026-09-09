@@ -103,6 +103,12 @@ extension Preferences {
       default: false
     )
 
+    /// Whether to rewrite YouTube PREF cookies so the desktop site is used.
+    public static let preferYouTubeDesktopSite = Option<Bool>(
+      key: "general.youtube-desktop-site",
+      default: false
+    )
+
     /// Whether or not the pull-to-refresh control is added to web views
     static let enablePullToRefresh = Option<Bool>(
       key: "general.enable-pull-to-refresh",

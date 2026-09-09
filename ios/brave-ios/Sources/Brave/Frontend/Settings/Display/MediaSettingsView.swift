@@ -12,6 +12,7 @@ import SwiftUI
 struct MediaSettingsView: View {
   @Bindable var enableBackgroundAudio: PrefBackedBoolean
   @ObservedObject var keepYouTubeInBrave = Preferences.General.keepYouTubeInBrave
+  @ObservedObject var preferYouTubeDesktopSite = Preferences.General.preferYouTubeDesktopSite
   @ObservedObject var filterListStorage = FilterListStorage.shared
 
   @State var youtubeRecommendationsBlocking = false
@@ -36,6 +37,15 @@ struct MediaSettingsView: View {
       Section(header: Text(Strings.Settings.youtube)) {
         Toggle(isOn: $keepYouTubeInBrave.value) {
           Text(Strings.Settings.openYouTubeInBrave)
+        }
+        .tint(Color(braveSystemName: .primitivePrimary40))
+        Toggle(isOn: $preferYouTubeDesktopSite.value) {
+          VStack(alignment: .leading) {
+            Text(Strings.Settings.preferYouTubeDesktopSiteTitle)
+            Text(Strings.Settings.preferYouTubeDesktopSiteDesc)
+              .font(.footnote)
+              .foregroundColor(.secondary)
+          }
         }
         .tint(Color(braveSystemName: .primitivePrimary40))
         NavigationLink(destination: QualitySettingsView(prefs: prefs)) {

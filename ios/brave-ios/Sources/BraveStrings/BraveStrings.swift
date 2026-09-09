@@ -2275,6 +2275,25 @@ extension Strings {
         comment: "A toggle label which lets the user always open YouTube urls in Brave"
       )
 
+    public static let preferYouTubeDesktopSiteTitle =
+      NSLocalizedString(
+        "settings.preferYouTubeDesktopSiteTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Always Use Youtube Desktop Site When Requested",
+        comment: "Title beside the toggle for opening YouTube on the desktop site instead of mobile"
+      )
+
+    public static let preferYouTubeDesktopSiteDesc =
+      NSLocalizedString(
+        "settings.preferYouTubeDesktopSiteDesc",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Opens YouTube's desktop site instead of the mobile site when Always Request Desktop Site is on in Settings, or Request Desktop Site is on for a tab",
+        comment: "Description beside the toggle for opening YouTube on the desktop site instead of mobile"
+      )
+
+
     public static let highestQualityPlayback =
       NSLocalizedString(
         "settings.highestQualityPlayback",
