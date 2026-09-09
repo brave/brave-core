@@ -5,26 +5,34 @@
 
 substitutions:
   - description: |-
-      Skip the Material Chrome mixer here; Brave registers it from
-      AddBravifiedChromeThemeColorMixer() where call order matters.
+      Skip the Material Chrome mixer here.
+
+      Brave registers it from AddBravifiedChromeThemeColorMixer() instead,
+      where call order matters.
     regex:
       pattern: 'AddMaterialChromeColorMixer(provider, key);'
       replace: 'EmptyColorMixer(provider, key);'
   - description: |-
-      Skip the Material Omnibox mixer here; Brave registers it from
-      AddBravifiedChromeThemeColorMixer() where call order matters.
+      Skip the Material Omnibox mixer here.
+
+      Brave registers it from AddBravifiedChromeThemeColorMixer() instead,
+      where call order matters.
     regex:
       pattern: 'AddMaterialOmniboxColorMixer(provider, key);'
       replace: 'EmptyColorMixer(provider, key);'
   - description: |-
-      Skip the Material Side Panel mixer here; Brave registers it from
-      AddBravifiedChromeThemeColorMixer() where call order matters.
+      Skip the Material Side Panel mixer here.
+
+      Brave registers it from AddBravifiedChromeThemeColorMixer() instead,
+      where call order matters.
     regex:
       pattern: 'AddMaterialSidePanelColorMixer(provider, key);'
       replace: 'EmptyColorMixer(provider, key);'
   - description: |-
-      Skip the Material Tab Strip mixer here; Brave registers it from
-      AddBravifiedChromeThemeColorMixer() where call order matters.
+      Skip the Material Tab Strip mixer here.
+
+      Brave never uses upstream's Material tab strip colors, so this call is
+      replaced with a no-op rather than being registered elsewhere.
     regex:
       pattern: 'AddMaterialTabStripColorMixer(provider, key);'
       replace: 'EmptyColorMixer(provider, key);'
