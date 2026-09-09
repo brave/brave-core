@@ -395,17 +395,19 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       cell.isUserInteractionEnabled = enabled
 
       if var content = cell.contentConfiguration as? UIListContentConfiguration {
-        content.textProperties.color =
-          enabled ? view.tintColor : UIColor(braveSystemName: .textDisabled)
+        let color: UIColor = enabled ? view.tintColor : UIColor(braveSystemName: .textDisabled)
+        content.textProperties.color = color
+        content.imageProperties.tintColor = color
         cell.contentConfiguration = content
       }
     }
   }
 
-  private func openBraveAccountDialog() {
+  private func openBraveAccountDialog(dialogMode: BraveAccount.DialogMode = .default) {
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
+    controller.webView.braveAccountDialogMode = dialogMode
     controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
@@ -549,6 +551,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                   }
                 }
               },
+              image: UIImage(braveSystemNamed: "leo.lock"),
               cellClass: BraveAccountIconCell.self,
               context: [
                 BraveAccountIconCell.textColor: view.tintColor
@@ -562,6 +565,21 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               cellClass: BraveAccountIconCell.self,
               context: [
                 BraveAccountIconCell.textColor: view.tintColor
+              ]
+            ),
+            Row(
+              text: L10nUtils.string(
+                messageId: .SETTINGS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL
+              ),
+              selection: { [unowned self] in
+                openBraveAccountDialog(dialogMode: .accountDeletion)
+              },
+              image: UIImage(braveSystemNamed: "leo.trash"),
+              cellClass: BraveAccountIconCell.self,
+              context: [
+                BraveAccountIconCell.textColor: UIColor(
+                  braveSystemName: .systemfeedbackErrorText
+                )
               ]
             ),
           ],
@@ -2154,6 +2172,7 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
     }
     if let color = row.context?[Self.textColor] as? UIColor {
       content.textProperties.color = color
+      content.imageProperties.tintColor = color
     }
 
     content.secondaryText = row.detailText
