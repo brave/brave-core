@@ -100,6 +100,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession() override;
 #endif
 
+  std::unique_ptr<optimization_guide::ModelBrokerClient>
+  CreateModelBrokerClient(content::BrowserContext* browser_context) override;
+
   void RegisterBrowserInterfaceBindersForFrame(
       content::RenderFrameHost* render_frame_host,
       mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override;

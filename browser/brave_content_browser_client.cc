@@ -953,6 +953,12 @@ BraveContentBrowserClient::GetAsrSession() {
 }
 #endif
 
+std::unique_ptr<optimization_guide::ModelBrokerClient>
+BraveContentBrowserClient::CreateModelBrokerClient(content::BrowserContext*) {
+  // Brave does not use optimization guide models.
+  return nullptr;
+}
+
 bool BraveContentBrowserClient::CanCreateWindow(
     content::RenderFrameHost* opener,
     const GURL& opener_url,
