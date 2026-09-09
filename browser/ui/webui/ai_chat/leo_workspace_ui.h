@@ -23,6 +23,10 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
   std::unique_ptr<content::WebUIController> CreateWebUIController(
       content::WebUI* web_ui,
       const GURL& url) override;
+  void RegisterURLDataSource(content::BrowserContext* browser_context) override;
+  // The folder of each workspace is served by a service worker, so navigations
+  // to this host must reach it rather than taking the WebUI shortcut.
+  bool ShouldInterceptNavigationsWithServiceWorker() override;
 };
 
 // Hidden, headless Untrusted WebUI that hosts the Leo "workspace" tools. The
