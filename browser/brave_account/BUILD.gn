@@ -27,6 +27,11 @@ static_library("brave_account") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    sources += [ "android/brave_account_dialog_mode_android.cc" ]
+    deps += [ "//brave/browser/brave_account/android:jni_headers" ]
+  }
 }
 
 source_set("unit_tests") {

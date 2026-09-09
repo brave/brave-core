@@ -25,18 +25,23 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.base.IntentUtils;
+import org.chromium.brave_account.mojom.DialogMode;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSwipeRefreshHandler;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.SwipeRefreshHandler;
+import org.chromium.chrome.browser.brave_account.BraveAccountDialogMode;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.util.ColorUtils;
 
 @NullMarked
 public class BraveAccountCustomTabActivity extends CustomTabActivity {
     private static final int HORIZONTAL_MARGIN_DP = 12;
+    private static final String EXTRA_DIALOG_MODE =
+            "org.chromium.chrome.browser.customtabs.BRAVE_ACCOUNT_DIALOG_MODE";
 
     @Override
     public void performPostInflationStartup() {
@@ -44,6 +49,18 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
 
         Tab tab = getActivityTab();
         assert tab != null;
+
+        // The tab is created in performPreInflationStartup(), so its WebContents
+        // exists here. The mode only needs to be set before the page reads it,
+        // which happens once its renderer has booted — well after this returns.
+        WebContents webContents = tab.getWebContents();
+        if (webContents != null) {
+            BraveAccountDialogMode.set(
+                    webContents,
+                    IntentUtils.safeGetIntExtra(
+                            getIntent(), EXTRA_DIALOG_MODE, DialogMode.DEFAULT));
+        }
+
         // Due to bytecode manipulation, SwipeRefreshHandler instances
         // are actually BraveSwipeRefreshHandler at runtime.
         BraveSwipeRefreshHandler handler = (BraveSwipeRefreshHandler) SwipeRefreshHandler.get(tab);
@@ -100,9 +117,10 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         return dpToPx(this, 56); // the standard action bar height on phones in portrait
     }
 
-    public static void show(Activity activity) {
+    public static void show(Activity activity, @DialogMode.EnumType int dialogMode) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("brave://account"));
         intent.setClassName(activity, BraveAccountCustomTabActivity.class.getName());
+        intent.putExtra(EXTRA_DIALOG_MODE, dialogMode);
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, activity.getPackageName());
         intent.putExtra(
                 CustomTabsIntent.EXTRA_COLOR_SCHEME,
