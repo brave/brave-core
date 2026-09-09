@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/predictors/BUILD.gn b/chrome/browser/predictors/BUILD.gn
-index cc771a480cd03380ec188bff0275580ba3c12012..e70380a326a1a35311b76649aba5d032b11eb20d 100644
+index f6377bb030f9fcd34ac03a083f694e8cf9342405..058ebc326bdaf0ad39098557923d46cd83d255db 100644
 --- a/chrome/browser/predictors/BUILD.gn
 +++ b/chrome/browser/predictors/BUILD.gn
 @@ -118,6 +118,8 @@ source_set("impl") {
