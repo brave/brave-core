@@ -58,6 +58,14 @@ inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
 inline constexpr char kAIChatLeoWorkspaceUIURL[] =
     "chrome-untrusted://leo-workspace/";
 
+// The service worker that serves each workspace's folder, and its script.
+// Files sit under a reserved segment so that model-authored names cannot
+// collide with a workspace page at /<uuid>:
+// chrome-untrusted://leo-workspace/<uuid>/files/<path relative to the folder>.
+inline constexpr char kAIChatLeoWorkspaceServiceWorkerScript[] =
+    "leo_workspace_service_worker.js";
+inline constexpr char kAIChatLeoWorkspaceFilesSegment[] = "files";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

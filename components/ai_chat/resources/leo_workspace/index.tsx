@@ -13,6 +13,7 @@
 // The handle is delivered via launchQueue; once captured, the file tools are
 // registered with Leo via WebMCP (see tools.ts / file_ops.ts).
 
+import { serveFiles } from './file_server'
 import { registerTools } from './tools'
 
 // launchQueue is not in the default TS DOM lib; declare the minimal surface we
@@ -42,6 +43,7 @@ function onLaunch(params: LaunchParams) {
   }
   rootHandle = entry as FileSystemDirectoryHandle
   console.log('[leo-workspace] received directory handle:', rootHandle.name)
+  serveFiles(rootHandle)
   void registerTools(rootHandle)
 }
 

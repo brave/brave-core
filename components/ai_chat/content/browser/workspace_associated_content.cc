@@ -14,6 +14,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/content_tool.h"
+#include "brave/components/ai_chat/content/browser/workspace_service_worker.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -51,6 +52,11 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
   set_uuid(uuid);
   set_url(url);
   SetTitle(u"Workspace");
+
+  // Serves this folder's files at <this url>/files/, by asking the page below
+  // to read them. Registered per workspace, but scoped to the whole host, so
+  // this is a no-op after the first one.
+  RegisterWorkspaceServiceWorker(browser_context);
 
   // Hidden, headless background WebContents that hosts the workspace page.
   content::WebContents::CreateParams params(browser_context);
