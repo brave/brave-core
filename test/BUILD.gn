@@ -89,6 +89,7 @@ static_library("brave_test_support_unit") {
     "//chrome/browser",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_unit_test_suite",
   ]
 
   deps = [
@@ -184,6 +185,7 @@ test("brave_unit_tests") {
     "//brave/browser/ntp_background:unit_tests",
     "//brave/browser/permissions:unit_tests",
     "//brave/browser/policy/handlers:unit_tests",
+    "//brave/browser/predictors:unit_tests",
     "//brave/browser/profiles:unit_tests",
     "//brave/browser/profiles:util",
     "//brave/browser/serp_metrics:unit_tests",
@@ -793,6 +795,7 @@ static_library("browser_tests_runner") {
   deps = [
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_test_launcher",
+    "//chrome/test/base:chrome_test_suite",
     "//ui/compositor",
   ]
   if (is_win) {
@@ -825,6 +828,7 @@ if (!is_android) {
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//chrome/test/base:chrome_test_launcher",
+      "//chrome/test/base:chrome_test_suite",
       "//ui/base/interaction",
       "//ui/compositor",
     ]
@@ -1054,6 +1058,10 @@ test("brave_browser_tests") {
     "//chrome/browser/ui:incognito_allowed_url",
     "//chrome/browser/ui/views/translate",
   ]
+
+  if (toolkit_views) {
+    deps += [ "//chrome/browser/ui/views/tabs/hovercard:test_support" ]
+  }
 
   if (enable_session_service) {
     deps += [ "//brave/browser/sessions:browser_tests" ]
@@ -1443,6 +1451,7 @@ test("brave_browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/views/frame:custom_corners_background",
       "//chrome/browser/ui/views/profiles:avatar_toolbar_button",
       "//chrome/browser/ui/web_applications",
       "//ui/base/clipboard:clipboard_test_support",
@@ -1837,7 +1846,6 @@ if (is_android) {
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.messages",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.native_page",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.ntp",
-      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.omnibox",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.omnibox.geo",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.preferences.website",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.quick_search_engines",

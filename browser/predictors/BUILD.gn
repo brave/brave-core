@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("predictors") {
+  visibility = [
+    ":unit_tests",
+
+    # Where the chromium_src override for predictor_database.cc.
+    "//chrome/browser/predictors:impl",
+  ]
+
+  sources = [
+    "loading_predictor_data_cleanup.cc",
+    "loading_predictor_data_cleanup.h",
+  ]
+
+  deps = [
+    "//base",
+    "//sql",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "loading_predictor_data_cleanup_unittest.cc",
+    "loading_predictor_disabled_unittest.cc",
+  ]
+
+  deps = [
+    ":predictors",
+    "//base",
+    "//chrome/browser/predictors",
+    "//chrome/browser/predictors:config",
+    "//chrome/browser/preloading:prefs",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//sql",
+    "//sql:test_support",
+    "//testing/gtest",
+  ]
+}
