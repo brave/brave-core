@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_TEST_ADS_SERVICE_MOCK_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -43,6 +44,13 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void, GetInternals, (GetInternalsCallback));
 
   MOCK_METHOD(void, GetDiagnostics, (GetDiagnosticsCallback));
+
+  MOCK_METHOD(void,
+              EvaluateConditionMatcher,
+              (const std::string&,
+               const std::string&,
+               std::optional<std::string>,
+               EvaluateConditionMatcherCallback));
 
   MOCK_METHOD(void, GetStatementOfAccounts, (GetStatementOfAccountsCallback));
 

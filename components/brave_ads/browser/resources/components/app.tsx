@@ -7,12 +7,12 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useAppState } from '../lib/app_context'
 import { useRoute, useRouter } from '../lib/router'
 import { Conversions } from './conversions'
 import { Events } from './events'
 import { Diagnostics } from './diagnostics'
 // <if expr="enable_brave_rewards && !is_ios">
+import { useAppState } from '../lib/app_context'
 import { Logs } from './logs'
 // </if>
 import { ClearAdsDataButton } from './clear_ads_data_button'
@@ -20,10 +20,60 @@ import * as routes from '../lib/app_routes'
 
 import { style } from './app.style'
 
-function NavList() {
+interface TabConfig {
+  route: string
+  label: string
+  isVisible: boolean
+  content: React.ReactNode
+}
+
+// Single source of truth for the sidebar list and the routed content below,
+// so a tab's visibility rule can't drift between the two the way it could
+// when each kept its own copy. Every entry (even one gated off) still
+// handles its own route by falling back to `<Diagnostics />`, so navigating
+// there directly never falls through to `NavList`'s own "not found" case
+// instead.
+function useTabs(): TabConfig[] {
+  // <if expr="enable_brave_rewards && !is_ios">
+  const logsSupported = useAppState((state) => state.logsSupported)
+  // </if>
+
+  const tabs: TabConfig[] = [
+    {
+      route: routes.diagnostics,
+      label: 'Diagnostics',
+      isVisible: true,
+      content: <Diagnostics />,
+    },
+    {
+      route: routes.conversions,
+      label: 'Conversions',
+      isVisible: true,
+      content: <Conversions />,
+    },
+    {
+      route: routes.events,
+      label: 'Events',
+      isVisible: true,
+      content: <Events />,
+    },
+  ]
+
+  // <if expr="enable_brave_rewards && !is_ios">
+  tabs.push({
+    route: routes.logs,
+    label: 'Logs',
+    isVisible: logsSupported,
+    content: logsSupported ? <Logs /> : <Diagnostics />,
+  })
+  // </if>
+
+  return tabs
+}
+
+function NavList({ tabs }: { tabs: TabConfig[] }) {
   const router = useRouter()
   const currentRoute = useRoute() || routes.diagnostics
-  const logsSupported = useAppState((state) => state.logsSupported)
 
   function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (event.defaultPrevented || event.button !== 0 ||
@@ -37,99 +87,136 @@ function NavList() {
     }
   }
 
-  function renderLink(route: string, text: string) {
-    const className = route === currentRoute ? 'current' : ''
-    return (
-      <a
-        className={className}
-        href={route}
-        onClick={onLinkClick}
-      >
-        <span>{text}</span>
-      </a>
-    )
-  }
-
   return (
     <ul>
-      <li>{renderLink(routes.diagnostics, 'Diagnostics')}</li>
-      <li>{renderLink(routes.conversions, 'Conversions')}</li>
-      <li>{renderLink(routes.events, 'Events')}</li>
-      {logsSupported && <li>{renderLink(routes.logs, 'Logs')}</li>}
+      {tabs.filter((tab) => tab.isVisible).map((tab) => (
+        <li key={tab.route}>
+          <a
+            className={tab.route === currentRoute ? 'current' : ''}
+            href={tab.route}
+            onClick={onLinkClick}
+          >
+            <span>{tab.label}</span>
+          </a>
+        </li>
+      ))}
     </ul>
   )
 }
 
 export function App() {
   const route = useRoute()
-  // <if expr="enable_brave_rewards && !is_ios">
-  const logsSupported = useAppState((state) => state.logsSupported)
-  // </if>
+  const tabs = useTabs()
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
+  const pageContentRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
     setSidebarOpen(false)
+    // `.page-content` persists across tab switches, so it keeps the
+    // previous tab's scroll position; a shorter tab would otherwise
+    // render as already scrolled past its content.
+    pageContentRef.current?.scrollTo(0, 0)
   }, [route])
 
-  function renderContent() {
-    switch (route) {
-      case routes.conversions:
-        return <Conversions />
-      case routes.events:
-        return <Events />
-      case routes.logs:
-        // <if expr="enable_brave_rewards && !is_ios">
-        if (logsSupported) {
-          return <Logs />
-        }
-        // </if>
-        return <Diagnostics />
-      default:
-        return <Diagnostics />
+  // The backdrop/close-button close paths are mouse/touch-only; this is the
+  // only way a keyboard user can dismiss the drawer.
+  React.useEffect(() => {
+    if (!sidebarOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSidebarOpen(false)
+      }
     }
-  }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [sidebarOpen])
 
-  function maybeCloseSidebar(event: React.UIEvent) {
-    const isToggleClick =
-      event.target instanceof HTMLElement
-      && event.target.closest('.sidebar-toggle')
-    if (!isToggleClick) {
-      setSidebarOpen(false)
+  // The open sidebar is a fixed overlay, so dragging over it rubber-bands
+  // the WKWebView's document scroll; CSS containment doesn't reliably stop
+  // this here, so preventDefault() on touchmove is the only guaranteed
+  // fix. Skipped only while nav can still scroll away from its edge,
+  // since the same unreliable containment applies there too.
+  React.useEffect(() => {
+    if (!sidebarOpen) return
+    let lastTouchY = 0
+    const onTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches[0]?.clientY ?? 0
     }
-  }
+    const onTouchMove = (e: TouchEvent) => {
+      const touchY = e.touches[0]?.clientY ?? lastTouchY
+      const draggingDown = touchY > lastTouchY
+      lastTouchY = touchY
+
+      const target = e.target
+      const nav = target instanceof Element ? target.closest('nav') : null
+      if (nav && nav.scrollHeight > nav.clientHeight) {
+        const atTop = nav.scrollTop <= 0
+        const atBottom =
+          nav.scrollTop + nav.clientHeight >= nav.scrollHeight
+        if ((draggingDown && !atTop) || (!draggingDown && !atBottom)) {
+          return
+        }
+      }
+      e.preventDefault()
+    }
+    document.addEventListener('touchstart', onTouchStart, { passive: true })
+    document.addEventListener('touchmove', onTouchMove, { passive: false })
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart)
+      document.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [sidebarOpen])
+
+  const content =
+    tabs.find((tab) => tab.route === route)?.content ?? <Diagnostics />
 
   return (
     <div data-css-scope={style.scope}>
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <header />
+        <header className='sidebar-close'>
+          <span className='fixed-flex-item'>
+            <Button
+              size='small'
+              kind='plain-faint'
+              aria-label='Close menu'
+              onClick={() => setSidebarOpen(false)}
+            >
+              <Icon name='hamburger-menu' />
+            </Button>
+          </span>
+        </header>
         <nav>
-          <NavList />
+          <NavList tabs={tabs} />
         </nav>
       </div>
-      <div
-        className='page-content'
-        onClick={maybeCloseSidebar}
-        onKeyDown={maybeCloseSidebar}
-      >
-        <div className='sidebar-toggle'>
-          <Button
-            size='small'
-            kind='plain-faint'
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <Icon name='hamburger-menu' />
-          </Button>
-        </div>
-        <main>
+      {sidebarOpen && (
+        <div
+          className='sidebar-backdrop'
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      <div ref={pageContentRef} className='page-content'>
+        <div className='page-header'>
+          <div className='sidebar-toggle'>
+            <Button
+              size='small'
+              kind='plain-faint'
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <Icon name='hamburger-menu' />
+            </Button>
+          </div>
           <h1>Ads internals</h1>
           <div className='disclaimer'>
-            WARNING: data on these pages may be sensitive. Be careful who you
-            share it with.
+            WARNING: data on these pages may be sensitive. Be careful who
+            you share it with.
           </div>
+        </div>
+        <main>
           <div className='header-actions'>
             <ClearAdsDataButton />
           </div>
-          {renderContent()}
+          {content}
         </main>
       </div>
     </div>

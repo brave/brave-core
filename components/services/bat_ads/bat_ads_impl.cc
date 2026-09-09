@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -224,6 +225,23 @@ void BatAdsImpl::GetInternals(GetInternalsCallback callback) {
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   GetAds()->GetDiagnostics(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), /*value=*/std::nullopt));
+}
+
+void BatAdsImpl::EvaluateConditionMatcher(
+    const std::string& pref_path,
+    const std::string& condition,
+    const std::optional<std::string>& test_value,
+    EvaluateConditionMatcherCallback callback) {
+  GetAds()->EvaluateConditionMatcher(
+      pref_path, condition, test_value,
+      base::BindOnce(
+          [](EvaluateConditionMatcherCallback callback,
+             std::string current_value, std::string matches) {
+            std::move(callback).Run(current_value, matches);
+          },
+          mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+              std::move(callback), /*current_value=*/"Unknown",
+              /*matches=*/"N/A")));
 }
 
 void BatAdsImpl::ToggleLikeAd(brave_ads::mojom::ReactionInfoPtr reaction,

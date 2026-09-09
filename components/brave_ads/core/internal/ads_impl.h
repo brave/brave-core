@@ -57,6 +57,12 @@ class AdsImpl final : public Ads {
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
+  void EvaluateConditionMatcher(
+      const std::string& pref_path,
+      const std::string& condition,
+      std::optional<std::string> test_value,
+      EvaluateConditionMatcherCallback callback) override;
+
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void ParseAndSaveNewTabPageAds(base::DictValue dict,

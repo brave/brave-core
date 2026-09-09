@@ -12,6 +12,7 @@ source_set("ads_internals") {
   ]
 
   deps = [
+    "//brave/browser:browser_process",
     "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser/resources:generated_resources",
@@ -19,6 +20,7 @@ source_set("ads_internals") {
     "//brave/components/brave_rewards/core",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
+    "//components/variations/service",
   ]
 
   if (enable_brave_rewards) {

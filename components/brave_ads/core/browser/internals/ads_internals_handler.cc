@@ -23,7 +23,6 @@
 
 namespace {
 constexpr char kDiagnosticIdKey[] = "diagnosticId";
-constexpr char kEntriesKey[] = "entries";
 constexpr char kVariationsCountryCodeKey[] = "variationsCountryCode";
 constexpr char kNtpSponsoredImagesComponentIdKey[] =
     "ntpSponsoredImagesComponentId";
@@ -64,9 +63,22 @@ AdsInternalsHandler::AdsInternalsHandler(
       base::BindRepeating(
           &AdsInternalsHandler::OnBraveRewardsEnabledPrefChanged,
           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kExternalWalletType,
+      base::BindRepeating(
+          &AdsInternalsHandler::OnBraveRewardsWalletConnectedPrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
+
+  if (ads_service_) {
+    ads_service_->AddObserver(this);
+  }
 }
 
-AdsInternalsHandler::~AdsInternalsHandler() = default;
+AdsInternalsHandler::~AdsInternalsHandler() {
+  if (ads_service_) {
+    ads_service_->RemoveObserver(this);
+  }
+}
 
 void AdsInternalsHandler::BindInterface(
     mojo::PendingReceiver<bat_ads::mojom::AdsInternals>
@@ -87,6 +99,7 @@ void AdsInternalsHandler::CreateAdsInternalsPageHandler(
       std::move(ads_internals_page_pending_remote));
 
   UpdateBraveRewardsEnabled();
+  UpdateBraveRewardsWalletConnected();
 }
 
 void AdsInternalsHandler::GetAdsInternals(GetAdsInternalsCallback callback) {
@@ -111,8 +124,7 @@ void AdsInternalsHandler::GetDiagnostics(GetDiagnosticsCallback callback) {
   base::DictValue dict = BuildDiagnosticsDict();
 
   if (!ads_service_) {
-    return OnGetDiagnostics(std::move(callback), std::move(dict),
-                            /*diagnostic_entries=*/std::nullopt);
+    return WriteDiagnosticsJson(std::move(callback), std::move(dict));
   }
 
   ads_service_->GetDiagnostics(base::BindOnce(
@@ -120,8 +132,30 @@ void AdsInternalsHandler::GetDiagnostics(GetDiagnosticsCallback callback) {
       std::move(callback), std::move(dict)));
 }
 
+void AdsInternalsHandler::EvaluateConditionMatcher(
+    const std::string& pref_path,
+    const std::string& condition,
+    const std::optional<std::string>& test_value,
+    EvaluateConditionMatcherCallback callback) {
+  if (!ads_service_) {
+    return std::move(callback).Run(/*current_value=*/"Unknown",
+                                   /*matches=*/"N/A");
+  }
+
+  ads_service_->EvaluateConditionMatcher(
+      pref_path, condition, test_value,
+      base::BindOnce(
+          [](EvaluateConditionMatcherCallback callback,
+             std::string current_value, std::string matches) {
+            std::move(callback).Run(current_value, matches);
+          },
+          std::move(callback)));
+}
+
 void AdsInternalsHandler::SetDiagnosticId(const std::string& diagnostic_id) {
-  if (!base::Uuid::ParseCaseInsensitive(diagnostic_id).is_valid()) {
+  // Empty clears the diagnostic ID; anything else must be a valid UUID.
+  if (!diagnostic_id.empty() &&
+      !base::Uuid::ParseCaseInsensitive(diagnostic_id).is_valid()) {
     return;
   }
 
@@ -192,11 +226,16 @@ base::DictValue AdsInternalsHandler::BuildDiagnosticsDict() const {
 void AdsInternalsHandler::OnGetDiagnostics(
     GetDiagnosticsCallback callback,
     base::DictValue dict,
-    std::optional<base::ListValue> diagnostic_entries) {
-  if (diagnostic_entries) {
-    dict.Set(kEntriesKey, std::move(*diagnostic_entries));
+    std::optional<base::DictValue> diagnostics) {
+  if (diagnostics) {
+    dict.Merge(std::move(*diagnostics));
   }
 
+  WriteDiagnosticsJson(std::move(callback), std::move(dict));
+}
+
+void AdsInternalsHandler::WriteDiagnosticsJson(GetDiagnosticsCallback callback,
+                                               base::DictValue dict) {
   std::string json;
   CHECK(base::JSONWriter::Write(dict, &json));
   std::move(callback).Run(json);
@@ -214,4 +253,25 @@ void AdsInternalsHandler::UpdateBraveRewardsEnabled() {
 
   const bool is_enabled = prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
   ads_internals_page_remote_->UpdateBraveRewardsEnabled(is_enabled);
+}
+
+void AdsInternalsHandler::OnBraveRewardsWalletConnectedPrefChanged(
+    const std::string& /*path*/) {
+  UpdateBraveRewardsWalletConnected();
+}
+
+void AdsInternalsHandler::UpdateBraveRewardsWalletConnected() {
+  if (!ads_internals_page_remote_) {
+    return;
+  }
+
+  const bool is_connected =
+      !prefs_->GetString(brave_rewards::prefs::kExternalWalletType).empty();
+  ads_internals_page_remote_->UpdateBraveRewardsWalletConnected(is_connected);
+}
+
+void AdsInternalsHandler::OnDidInitializeAdsService() {
+  if (ads_internals_page_remote_) {
+    ads_internals_page_remote_->UpdateDidInitializeAdsService();
+  }
 }

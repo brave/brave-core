@@ -199,6 +199,20 @@ void AdsServiceImplIOS::GetDiagnostics(GetDiagnosticsCallback callback) {
   ads_->GetDiagnostics(std::move(callback));
 }
 
+void AdsServiceImplIOS::EvaluateConditionMatcher(
+    const std::string& pref_path,
+    const std::string& condition,
+    std::optional<std::string> test_value,
+    EvaluateConditionMatcherCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*current_value=*/"Unknown",
+                                   /*matches=*/"N/A");
+  }
+
+  ads_->EvaluateConditionMatcher(pref_path, condition, std::move(test_value),
+                                 std::move(callback));
+}
+
 void AdsServiceImplIOS::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
