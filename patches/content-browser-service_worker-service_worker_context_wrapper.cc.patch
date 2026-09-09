@@ -1,0 +1,13 @@
+diff --git a/content/browser/service_worker/service_worker_context_wrapper.cc b/content/browser/service_worker/service_worker_context_wrapper.cc
+index 6f44260b0ed2548f542cc12370aefcb4bc583ba5..4e32f45d70e4e23d6f1384c0389032b3206b6e5f 100644
+--- a/content/browser/service_worker/service_worker_context_wrapper.cc
++++ b/content/browser/service_worker/service_worker_context_wrapper.cc
+@@ -2054,6 +2054,8 @@ ServiceWorkerContextWrapper::GetLoaderFactoryForBrowserInitiatedRequest(
+       loader_factory_bundle_info =
+           context()->loader_factory_bundle_for_update_check()->Clone();
+ 
++  MaybeAddUntrustedWebUIScriptFactory(browser_context(), scope,
++                                      loader_factory_bundle_info.get());
+ 
+   static_cast<blink::PendingURLLoaderFactoryBundle*>(
+       loader_factory_bundle_info.get())

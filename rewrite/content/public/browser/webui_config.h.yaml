@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# WebUIConfig's class head carries CONTENT_EXPORT.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Let a WebUI ask for its navigations to reach the loader interceptors.
+
+      WebUI navigations take a shortcut in NavigationURLLoaderImpl::Start()
+      that returns before any interceptor is consulted, so a service worker
+      registered for a WebUI host can never serve one, for subresources as much
+      as for the navigation itself. A host that serves its own content from a
+      worker overrides this to leave that shortcut.
+    add_to_public:
+      class_name: WebUIConfig
+      code: 'virtual bool ShouldInterceptNavigationsWithServiceWorker();'
