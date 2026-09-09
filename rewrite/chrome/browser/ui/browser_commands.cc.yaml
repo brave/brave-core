@@ -4,12 +4,16 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      Rename ReloadBypassingCache to ReloadBypassingCache_ChromiumImpl to avoid
-      conflict with Brave implementation
-    regex:
-      re_pattern: (void ReloadBypassingCache)\(
-      replace: \1_ChromiumImpl(
+  - description: |-
+      Call BraveMaybeHandleReloadBypassingCache() in ReloadBypassingCache()
+
+      Before reloading, check if the browser is a Tor profile by calling
+      BraveMaybeHandleReloadBypassingCache() to handle the reload. If so,
+      return early.
+
+    preempt_function_impl:
+      function_name: ReloadBypassingCache
+      return_if: 'BraveMaybeHandleReloadBypassingCache(browser)'
 
   - description:
       Replace chrome::kChromeUISplitViewNewTabPageURL to kChromeUINewTabURL in
