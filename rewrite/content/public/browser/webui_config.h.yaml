@@ -13,12 +13,11 @@ substitutions:
 
       Brave gains the capability to serve some chrome-untrusted:// WebUIs from
       subdomains of their regular single-label domains, so that each instance
-      gets its own origin (e.g.
-      chrome-untrusted://<id>.leo-workspaces). `WebUIConfigMap::GetConfig()`
-      asks the config registered for the parent host whether it handles its own
-      subdomains, so the opt-in stays with the config instead of living in a
-      separate registry. Defaults to false, and is only honored for
-      chrome-untrusted:// configs.
+      gets its own origin (e.g. chrome-untrusted://<id>.leo-workspaces).
+      `WebUIConfigMap::GetConfig()` asks the config registered for the parent
+      host whether it handles its own subdomains, so the opt-in stays with the
+      config instead of living in a separate registry. Defaults to false, and is
+      only honored for chrome-untrusted:// configs.
     add_to_public:
       class_name: WebUIConfig
       code: 'virtual bool ShouldHandleSubdomains() const;'
