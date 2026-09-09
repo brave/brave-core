@@ -66,6 +66,7 @@ BraveVpnServiceImpl::BraveVpnServiceImpl(
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   agent_client_ = std::make_unique<AgentClient>();
   agent_client_->AddObserver(this);
+  agent_launcher_ = std::make_unique<AgentLauncher>();
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   purchased_state_manager_ = std::make_unique<PurchasedStateManager>(
       local_prefs, api_client_.get(), skus_client_.get(),
@@ -121,7 +122,9 @@ void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
 }
 
 void BraveVpnServiceImpl::Shutdown() {
+  weak_factory_.InvalidateWeakPtrs();
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  agent_launcher_.reset();
   agent_client_.reset();
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   purchased_state_manager_.reset();
@@ -202,11 +205,27 @@ void BraveVpnServiceImpl::OnAgentNotRunning() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(ERROR) << "Agent is not running";
 
-  // TODO(https://github.com/brave/brave-browser/issues/58243)
   // The agent process is apparently not running. While the agent client will
-  // retry on its own, check if the agent is running and start it if not. This
-  // is a workaround for the case where the agent is not started by the
-  // privileged helper.
+  // retry on its own, launch the agent process. This is a workaround for the
+  // case where the agent is not started by the privileged helper.
+  if (agent_launcher_) {
+    agent_launcher_->Launch(base::BindOnce(
+        &BraveVpnServiceImpl::OnAgentLaunchFailed, weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveVpnServiceImpl::OnAgentLaunchFailed(
+    AgentLauncher::LaunchError error) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  LOG(ERROR) << "Failed to launch agent: "
+             << AgentLauncher::ErrorToString(error);
+
+  // Purchased state is untouched - the subscription is valid and the UI stays
+  // fully enabled. Just stop the retry loop; the next user-initiated connect
+  // starts a fresh sequence.
+  if (agent_client_) {
+    agent_client_->Reset();
+  }
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
