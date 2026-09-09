@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 
 extension TabDataValues {
   private struct RenderProcessCrashTabHelperKey: TabDataKey {
@@ -34,8 +35,14 @@ class RenderProcessCrashTabHelper: TabObserver {
   }
 
   func tabRenderProcessDidTerminate(_ tab: some TabState) {
-    guard let url = tab.lastCommittedURL else { return }
-    guard recoveryAttemptURL != url else { return }
+    guard let url = tab.lastCommittedURL else {
+      return
+    }
+    if recoveryAttemptURL == url {
+      // Load generic error page instead of reload loop
+      BraveWebView.from(tab: tab)?.loadGenericErrorPage(for: url)
+      return
+    }
     recoveryAttemptURL = url
     tab.reload()
   }

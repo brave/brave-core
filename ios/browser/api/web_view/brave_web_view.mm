@@ -79,9 +79,12 @@
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #include "ios/chrome/browser/translate/model/translate_ranker_factory.h"
+#include "ios/chrome/browser/web/model/error_page_util.h"
 #include "ios/chrome/browser/web/model/print/print_handler.h"
 #include "ios/chrome/browser/web/model/print/print_tab_helper.h"
+#include "ios/net/protocol_handler_util.h"
 #include "ios/web/common/crw_input_view_provider.h"
+#include "ios/web/public/browser_state.h"
 #include "ios/web/public/js_messaging/content_world.h"
 #include "ios/web/public/js_messaging/web_frames_manager_observer_bridge.h"
 #include "ios/web/public/navigation/navigation_context.h"
@@ -97,6 +100,7 @@
 #include "ios/web_view/internal/translate/web_view_translate_client.h"
 #include "ios/web_view/public/cwv_autofill_controller.h"
 #include "net/base/apple/url_conversions.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -754,6 +758,27 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)forcePasteContents:(NSString*)contents {
   ForcePasteJavaScriptFeature::GetInstance()->ForcePaste(
       self.webState, base::SysNSStringToUTF8(contents));
+}
+
+@end
+
+@implementation BraveWebView (ErrorPage)
+
+- (void)loadGenericErrorPageForURL:(NSURL*)URL {
+  web::WebState* webState = self.webState;
+  if (!webState) {
+    return;
+  }
+  // `GetErrorPage` requires an error in the net error domain that carries the
+  // failing URL.
+  NSError* error =
+      [NSError errorWithDomain:net::kNSErrorDomain
+                          code:net::ERR_FAILED
+                      userInfo:@{NSURLErrorFailingURLErrorKey : URL}];
+  GURL url = net::GURLWithNSURL(URL);
+  NSString* html = GetErrorPage(url, error, /*is_post=*/false,
+                                webState->GetBrowserState()->IsOffTheRecord());
+  webState->LoadSimulatedRequest(url, html);
 }
 
 @end
